@@ -1,16 +1,31 @@
 # MSF---Monocle-Standalone-Frontend
+
+> Current Version 0.2 - Early Days!
+
 Monocle Standalone Frontend or MSF for short is a PHP Map Interface for the Monocle Scanner designed to be completely standalone and able to run on any traditional web server
 
 It supports all the common database engines, including MySQL, MariaDB, Postgres, MsSQL, SQLite
 
-> Current Version 0.2 - Early Days!
+## Get Started
 
-# Install
-1) To install either git clone into your desired website folder or hosting envirnment or download the zip and extract the files. For exmaple /var/www/html
+### Install via ZIP
 
-2) Edit the config.php file making sure to add your database details including database type and port if different to standard.  Google API Key and starting Lat/Lon
+* Download the Source Zip and Extract the Files to your Web Host
 
-3) Browse to your website and run the /install.php for example.... mywebsite.com/install.php.  If you see a white screen with no errors your map should now work, go to your website and enjoy the map!
+### Install via Git
+
+* Navigate to your Web Host and 
+```
+git clone https://github.com/Nuro/MSF.git
+```
+
+### Edit config.php
+
+* Edit the config.php file making sure to add your database details including database type and port if different to standard.  Google API Key and starting Lat/Lon
+
+### setup.php
+
+* Browse to your website and run the /install.php for example.... mywebsite.com/install.php.  If you see a white screen with no errors your map should now work, go to your website and enjoy the map!
 
 
 # Common Problems
