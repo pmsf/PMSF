@@ -128,6 +128,7 @@ function get_active($swLat, $swLng, $neLat, $neLng, $tstamp = 0, $oSwLat = 0, $o
             "encounter_id",
             "spawn_id"
         ],[
+            "expire_timestamp[>]" => time(),
             "last_updated[>]" => $tstamp,
             "lat[>]" => $swLat,
             "lon[>]" => $swLng,
@@ -225,6 +226,8 @@ function get_active($swLat, $swLng, $neLat, $neLng, $tstamp = 0, $oSwLat = 0, $o
         $p["spawnpoint_id"]         = $row["spawn_id"];
 
         $pokemons[]                 = $p;
+
+        unset($datas[$row]);
     }
 
     return $pokemons;
