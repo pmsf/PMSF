@@ -189,6 +189,8 @@ function get_active($swLat, $swLng, $neLat, $neLng, $tstamp = 0, $oSwLat = 0, $o
     $json_contents = file_get_contents($json_poke);
     $data = json_decode($json_contents, TRUE);
 
+    $i = 0;
+
         /* fetch associative array */
     foreach ($datas as $row) {
         $p = array();
@@ -227,7 +229,9 @@ function get_active($swLat, $swLng, $neLat, $neLng, $tstamp = 0, $oSwLat = 0, $o
 
         $pokemons[]                 = $p;
 
-        unset($datas[$row]);
+        unset($datas[$i]);
+
+        $i++;
     }
 
     return $pokemons;
