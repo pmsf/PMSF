@@ -226,7 +226,7 @@ include('config.php');
 <script src="https://cdnjs.cloudflare.com/ajax/libs/skel/3.0.1/skel.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.3/js/select2.min.js"></script>
 <script src="https://cdn.datatables.net/1.10.12/js/jquery.dataTables.min.js"></script>
-<script src="./static/dist/js/app.min.js"></script>
+<script src="./static/js/app.js"></script>
 <script src="./static/js/vendor/classie.js"></script>
 <script>
     var centerLat = <?= $startingLat; ?>;
