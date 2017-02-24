@@ -12,7 +12,7 @@ var spawnTimeMs = msPerMinute * spawnTimeMinutes;
 
 function loadRawData() {
     return $.ajax({
-        url: '../../../raw_data.php',
+        url: 'raw_data.php',
         type: 'GET',
         data: {
             'pokemon': false,
@@ -196,7 +196,7 @@ mapData.appearances = {};
 
 function loadDetails() {
     return $.ajax({
-        url: '../../../raw_data.php',
+        url: 'raw_data.php',
         type: 'GET',
         data: {
             'pokemon': false,
@@ -223,7 +223,7 @@ function loadDetails() {
 
 function loadAppearancesTimes(pokemonId, spawnpointId) {
     return $.ajax({
-        url: '../../../raw_data.php',
+        url: 'raw_data.php',
         type: 'GET',
         data: {
             'pokemon': false,

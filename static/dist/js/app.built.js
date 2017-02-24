@@ -182,7 +182,7 @@
     $gymSidebarClose.href = '#';
     $gymSidebarClose.className = 'close';
     $gymSidebarClose.tabIndex = 0;
-    // $gymSidebar.appendChild($gymSidebarClose);
+    $gymSidebar.appendChild($gymSidebarClose);
 
     // Event: Hide on ESC.
     window.addEventListener('keydown', function (event) {

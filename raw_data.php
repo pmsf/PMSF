@@ -1,38 +1,30 @@
 <?php
+include('config.php');
 $now = new DateTime();
 
 $d = array();
-$d["gyms"]          = "";
+
 $d["timestamp"]     = $now->getTimestamp();
-$d["lastgyms"]      = true;
-$d["lastpokemon"]   = true;
-$d["lastpokestops"] = true;
-$d["lastslocs"]     = true;
 
-$swLat         = isset($_GET['swLat'])         ? $_GET['swLat']           : 0;
-$neLng         = isset($_GET['neLng'])         ? $_GET['neLng']           : 0;
-$swLng         = isset($_GET['swLng'])         ? $_GET['swLng']           : 0;
-$neLat         = isset($_GET['neLat'])         ? $_GET['neLat']           : 0;
-$oSwLat        = isset($_GET['oSwLat'])        ? $_GET['oSwLat']          : 0;
-$oSwLng        = isset($_GET['oSwLng'])        ? $_GET['oSwLng']          : 0;
-$oNeLat        = isset($_GET['oNeLat'])        ? $_GET['oNeLat']          : 0;
-$oNeLng        = isset($_GET['oNeLng'])        ? $_GET['oNeLng']          : 0;
-$lastpokestops = isset($_GET['lastgyms'])      ? $_GET['lastgyms']        : false;
-$lastgyms      = isset($_GET['lastpokestops']) ? $_GET['lastpokestops']   : false;
-$lastslocs     = isset($_GET['lastslocs'])     ? $_GET['lastslocs']       : false;
-$lastspawns    = isset($_GET['lastspawns'])    ? $_GET['lastspawns']      : false;
-$lastpokemon   = isset($_GET['lastpokemon'])   ? $_GET['lastpokemon']     : true;
-
-$d["oSwLat"]     = $swLat;
-$d["oSwLng"]     = $swLng;
-$d["oNeLat"]     = $neLat;
-$d["oNeLng"]     = $neLng;
-
-if (isset($_GET['gyms']))        $d["lastgyms"]      = ($_GET['gyms']         == "true");
-if (isset($_GET['pokestops']))   $d["lastpokestops"] = ($_GET['pokestops']    == "true");
-if (isset($_GET['pokemon']))     $d["lastpokemon"]   = ($_GET['pokemon']      == "true");
-if (isset($_GET['scanned']))     $d["lastslocs"]     = ($_GET['scanned']      == "true");
-if (isset($_GET['spawnpoints'])) $d["lastspawns"]    = !($_GET['spawnpoints'] == "false");
+$swLat                  = isset($_GET['swLat'])         ? $_GET['swLat']            : 0;
+$neLng                  = isset($_GET['neLng'])         ? $_GET['neLng']            : 0;
+$swLng                  = isset($_GET['swLng'])         ? $_GET['swLng']            : 0;
+$neLat                  = isset($_GET['neLat'])         ? $_GET['neLat']            : 0;
+$oSwLat                 = isset($_GET['oSwLat'])        ? $_GET['oSwLat']           : 0;
+$oSwLng                 = isset($_GET['oSwLng'])        ? $_GET['oSwLng']           : 0;
+$oNeLat                 = isset($_GET['oNeLat'])        ? $_GET['oNeLat']           : 0;
+$oNeLng                 = isset($_GET['oNeLng'])        ? $_GET['oNeLng']           : 0;
+$luredonly              = isset($_GET['luredonly'])     ? $_GET['luredonly']        : false;
+$lastpokemon            = isset($_GET['lastpokemon'])   ? $_GET['lastpokemon']      : false;
+$lastgyms               = isset($_GET['lastgyms'])      ? $_GET['lastgyms']         : false;
+$lastpokestops          = isset($_GET['lastpokestops']) ? $_GET['lastpokestops']    : false;
+$lastlocs               = isset($_GET['lastslocs'])     ? $_GET['lastslocs']        : false;
+$lastspawns             = isset($_GET['lastspawns'])    ? $_GET['lastspawns']       : false;
+$d["lastpokestops"]     = isset($_GET['pokestops'])     ? $_GET['pokestops']        : false;
+$d["lastgyms"]          = isset($_GET['gyms'])          ? $_GET['gyms']             : false;
+$d["lastslocs"]         = isset($_GET['scanned'])       ? $_GET['scanned']          : false;
+$d["lastspawns"]        = isset($_GET['spawnpoints'])   ? $_GET['spawnpoints']      : false;
+$d["lastpokemon"]       = isset($_GET['pokemon'])       ? $_GET['pokemon']          : false;
 
 $newarea = false;
 
@@ -44,43 +36,60 @@ if (($oSwLng < $swLng) && ($oSwLat < $swLat) && ($oNeLat > $neLat) && ($oNeLng >
     $newarea = false;
 }
 
+$d["oSwLat"]     = $swLat;
+$d["oSwLng"]     = $swLng;
+$d["oNeLat"]     = $neLat;
+$d["oNeLng"]     = $neLng;
+
 $ids   = array();
 $eids  = array();
 $reids = array();
 
-if (isset($_GET['pokemon'])) {
-    if ($_GET['pokemon'] == "true") {
-        if ($lastpokemon != 'true') {
-            $d["pokemons"] = get_active($swLat, $swLng, $neLat, $neLng);
-        } else {
-            $timestamp = 0;
+if ($d["lastpokemon"] == "true") {
+    if ($lastpokemon != 'true') {
+        $d["pokemons"] = get_active($swLat, $swLng, $neLat, $neLng);
+    } else {
+        $timestamp = 0;
 
-            if (isset($_GET['timestamp'])) {
-                $timestamp = $_GET['timestamp'];
-                $timestamp = $timestamp - 10;
-                $timestamp = date("Y-m-d H:i:s",$timestamp);
-            }
-
-            if ($newarea) {
-                $d["pokemons"] = get_active($swLat, $swLng, $neLat, $neLng, 0, $oSwLat, $oSwLng, $oNeLat, $oNeLng);
-            } else {
-                $d["pokemons"] = get_active($swLat, $swLng, $neLat, $neLng, $timestamp);
-            }
+        if (isset($_GET['timestamp'])) {
+            $timestamp = $_GET['timestamp'];
+            $timestamp = $timestamp - 1;
+            $timestamp = date("Y-m-d H:i:s",$timestamp);
         }
 
-        if (isset($_GET['eids'])) {
-            $ids = explode(",", $_GET['eids']);
+        if ($newarea) {
+            $d["pokemons"] = get_active($swLat, $swLng, $neLat, $neLng, 0, $oSwLat, $oSwLng, $oNeLat, $oNeLng);
+        } else {
+            $d["pokemons"] = get_active($swLat, $swLng, $neLat, $neLng, $timestamp);
+        }
+    }
 
-            foreach($d['pokemons'] as $elementKey => $element) {
-                foreach($element as $valueKey => $value) {
-                    if($valueKey == 'pokemon_id'){
-                        if (in_array($value, $ids)) {
-                            //delete this particular object from the $array
-                            unset($d['pokemons'][$elementKey]);
-                        }
+    if (isset($_GET['eids'])) {
+        $ids = explode(",", $_GET['eids']);
+
+        foreach($d['pokemons'] as $elementKey => $element) {
+            foreach($element as $valueKey => $value) {
+                if($valueKey == 'pokemon_id'){
+                    if (in_array($value, $ids)) {
+                        //delete this particular object from the $array
+                        unset($d['pokemons'][$elementKey]);
                     }
                 }
             }
+        }
+    }
+}
+
+//currently really rubbish due to lack of data but need the formatting for tweaking later on!
+
+if ($d["lastpokestops"] == "true") {
+    if ($lastpokestops == "true") {
+        $d["pokestops"] = get_stops($swLat, $swLng, $neLat, $neLng);
+    } else {
+        if ($newarea) {
+            $d["pokestops"] = get_stops($swLat, $swLng, $neLat, $neLng);
+        } else {
+            $d["pokestops"] = get_stops($swLat, $swLng, $neLat, $neLng);
         }
     }
 }
@@ -90,12 +99,12 @@ echo $jaysson;
 
 function get_active($swLat, $swLng, $neLat, $neLng, $tstamp = 0, $oSwLat = 0, $oSwLng = 0, $oNeLat = 0, $oNeLng = 0)
 {
-    require 'config.php';
+    global $db;
+
     $datas = "";
 
     if ($swLat == 0) {
-
-        $datas = $database->select("sightings",[
+        $datas = $db->select("sightings",[
             "expire_timestamp",
             "lat",
             "lon",
@@ -114,7 +123,7 @@ function get_active($swLat, $swLng, $neLat, $neLng, $tstamp = 0, $oSwLat = 0, $o
 
     } elseif ($tstamp > 0) {
 
-        $datas = $database->select("sightings",[
+        $datas = $db->select("sightings",[
             "expire_timestamp",
             "lat",
             "lon",
@@ -138,7 +147,7 @@ function get_active($swLat, $swLng, $neLat, $neLng, $tstamp = 0, $oSwLat = 0, $o
 
     } elseif ($oSwLat != 0) {
 
-        $datas = $database->select("sightings",[
+        $datas = $db->select("sightings",[
             "expire_timestamp",
             "lat",
             "lon",
@@ -161,7 +170,7 @@ function get_active($swLat, $swLng, $neLat, $neLng, $tstamp = 0, $oSwLat = 0, $o
 
     } else {
 
-        $datas = $database->select("sightings",[
+        $datas = $db->select("sightings",[
             "expire_timestamp",
             "lat",
             "lon",
@@ -244,4 +253,80 @@ function get_active_by_id($ids, $swLat, $swLng, $neLat, $neLng)
     $pokemons = array();
 
     return $pokemons;
+}
+
+function get_stops($swLat, $swLng, $neLat, $neLng, $tstamp = 0, $oSwLat = 0, $oSwLng = 0, $oNeLat = 0, $oNeLng = 0) {
+
+    global $db;
+
+    $datas = "";
+
+    if ($swLat == 0) {
+        $datas = $db->select("pokestops",[
+            "external_id",
+            "lat",
+            "lon"
+        ]);
+    } elseif ($tstamp > 0) {
+        $datas = $db->select("pokestops",[
+            "external_id",
+            "lat",
+            "lon"
+        ],[
+            "lat[>]" => $swLat,
+            "lon[>]" => $swLng,
+            "lat[<]" => $neLat,
+            "lon[<]" => $neLng
+        ]);
+    } elseif ($oSwLat != 0) {
+        $datas = $db->select("pokestops",[
+            "external_id",
+            "lat",
+            "lon"
+        ],[
+            "lat[>]" => $swLat,
+            "lon[>]" => $swLng,
+            "lat[<]" => $neLat,
+            "lon[<]" => $neLng
+        ]);
+    } else {
+        $datas = $db->select("pokestops",[
+            "external_id",
+            "lat",
+            "lon"
+        ],[
+            "lat[>]" => $swLat,
+            "lon[>]" => $swLng,
+            "lat[<]" => $neLat,
+            "lon[<]" => $neLng
+        ]);
+    }
+
+    $i = 0;
+
+    $pokestops = array();
+
+    /* fetch associative array */
+    foreach ($datas as $row) {
+        $p = array();
+
+        $lat    = floatval($row["lat"]);
+        $lon    = floatval($row["lon"]);
+
+        $p["active_fort_modifier"]          = null;
+        $p["enabled"]                       = true;
+        $p["last_modified"]                 = 0;
+        $p["latitude"]                      = $lat;
+        $p["longitude"]                     = $lon;
+        $p["lure_expiration"]               = null;
+        $p["pokestop_id"]                   = $row["external_id"];
+
+        $pokestops[]                        = $p;
+
+        unset($datas[$i]);
+
+        $i++;
+    }
+
+    return $pokestops;
 }

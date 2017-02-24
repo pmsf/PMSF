@@ -975,7 +975,7 @@ function loadRawData() {
     var neLng = nePoint.lng();
 
     return $.ajax({
-        url: '../../../raw_data.php',
+        url: 'raw_data.php',
         type: 'GET',
         data: {
             'timestamp': timestamp,

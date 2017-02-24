@@ -789,13 +789,51 @@ var pGoStyleNight = [{
 }]
 
 var pokemonSprites = {
-    columns: 28,
-    iconWidth: 80,
-    iconHeight: 80,
-    spriteWidth: 2240,
-    spriteHeight: 1440,
-    filename: 'static/icons-large-sprite.png',
-    name: 'High-Res'
+    normal: {
+        columns: 28,
+        iconWidth: 80,
+        iconHeight: 80,
+        spriteWidth: 2240,
+        spriteHeight: 1440,
+        filename: 'static/icons-large-sprite.png',
+        name: 'Normal'
+    },
+    monoclelow: {
+        columns: 251,
+        iconWidth: 30,
+        iconHeight: 30,
+        spriteWidth: 7530,
+        spriteHeight: 30,
+        filename: 'static/icons-im-1.png',
+        name: 'Monocle LQ'
+    },
+    monoclehq: {
+        columns: 251,
+        iconWidth: 94.06,
+        iconHeight: 96,
+        spriteWidth: 23610,
+        spriteHeight: 96,
+        filename: 'static/icons-im-1-bigger.png',
+        name: 'Monocle HQ'
+    },
+    shiny: {
+        columns: 25,
+        iconWidth: 64,
+        iconHeight: 64,
+        spriteWidth: 1600,
+        spriteHeight: 1024,
+        filename: 'static/shiny.png',
+        name: 'Shiny'
+    },
+    shinyback: {
+        columns: 28,
+        iconWidth: 80,
+        iconHeight: 80,
+        spriteWidth: 2240,
+        spriteHeight: 1440,
+        filename: 'static/shiny-back.png',
+        name: 'Shiny Back'
+    }
 }
 
 //
@@ -951,7 +989,7 @@ var StoreOptions = {
         type: StoreTypes.Boolean
     },
     'pokemonIcons': {
-        default: 'highres',
+        default: 'monoclehq',
         type: StoreTypes.String
     },
     'iconSizeModifier': {
@@ -1038,7 +1076,7 @@ function setupPokemonMarker(item, map, isBounceDisabled) {
     // Scale icon size up with the map exponentially
     var iconSize = 2 + (map.getZoom() - 3) * (map.getZoom() - 3) * 0.2 + Store.get('iconSizeModifier')
     var pokemonIndex = item['pokemon_id'] - 1
-    var sprite = pokemonSprites
+    var sprite = pokemonSprites[Store.get('pokemonIcons')] || pokemonSprites['monoclehq']
     var icon = getGoogleSprite(pokemonIndex, sprite, iconSize)
 
     var animationDisabled = false

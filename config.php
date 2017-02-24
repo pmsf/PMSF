@@ -1,4 +1,5 @@
 <?php
+namespace Config;
 
 // Do not touch this!
 require 'Medoo.php';
@@ -15,8 +16,8 @@ use Medoo\Medoo;
 
 /* Location Settings */
 
-$startingLat = 50.000000;                                      // Starting latitude
-$startingLng = -8.000000;                                      // Starting longitude
+$startingLat = 50.4005976;                                      // Starting latitude
+$startingLng = -4.1355412;                                      // Starting longitude
 
 /* Map Title + Language */
 
@@ -25,7 +26,7 @@ $locale = "en";                                                 // Display langu
 
 /* Google Maps Key */
 
-$gmapsKey = "Your-Google-Maps-API-Key";          // Google Maps API Key
+$gmapsKey = "AIzaSyDosJv4qcYZsGNNXMC-4MmZsCR1eSE92VU";          // Google Maps API Key
 
 
 //-----------------------------------------------------
@@ -35,8 +36,6 @@ $gmapsKey = "Your-Google-Maps-API-Key";          // Google Maps API Key
 // Clear pokemon from database this many hours after they disappear (0 to disable)
 // This is recommended unless you wish to store a lot of backdata for statistics etc!
 
-// Currently not implemented (Coming Soon)
-
 $purgeData = 0;
 
 
@@ -44,17 +43,14 @@ $purgeData = 0;
 // DATABASE CONFIG
 //-----------------------------------------------------
 
-global $database;
+$db = new Medoo([// required
+            'database_type' => 'mysql',                                 // mysql/mariadb/pgsql/sybase/oracle/mssql/sqlite
+            'database_name' => 'pokeminer',
+            'server' => '127.0.0.1',
+            'username' => 'database_user',
+            'password' => 'database_password',
 
-$database = new Medoo([
-    // required
-    'database_type' => 'mysql',                                 // mysql/mariadb/pgsql/sybase/oracle/mssql/sqlite
-    'database_name' => 'pokeminer',
-    'server' => '127.0.0.1',
-    'username' => 'dbuser',
-    'password' => 'dbpassword',
-    'charset' => 'utf8',
-
-    // [optional]
-    //'port' => 5432,                                             // Comment out if not needed, just add // in front!
-]);
+            // [optional]
+            //'charset' => 'utf8',
+            //'port' => 5432,                                             // Comment out if not needed, just add // in front!
+        ]);
