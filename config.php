@@ -26,7 +26,7 @@ $locale = "en";                                                 // Display langu
 
 /* Google Maps Key */
 
-$gmapsKey = "AIzaSyDosJv4qcYZsGNNXMC-4MmZsCR1eSE92VU";          // Google Maps API Key
+$gmapsKey = "GMAPS_API_KEY;          // Google Maps API Key
 
 
 //-----------------------------------------------------

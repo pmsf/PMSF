@@ -809,7 +809,7 @@ var pokemonSprites = {
     },
     monoclehq: {
         columns: 251,
-        iconWidth: 94.06,
+        iconWidth: 94.028,
         iconHeight: 96,
         spriteWidth: 23610,
         spriteHeight: 96,

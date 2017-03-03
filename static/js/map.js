@@ -1107,7 +1107,7 @@ function loadRawData() {
             }
         },
         error: function () {
-            if (!$timeoutDialog) {
+            /*if (!$timeoutDialog) {
                 var opts = {
                     title: 'Reduce marker settings'
                 }
@@ -1116,7 +1116,7 @@ function loadRawData() {
                 $timeoutDialog.dialog('open')
             } else if (!$timeoutDialog.dialog('isOpen')) {
                 $timeoutDialog.dialog('open')
-            }
+            }*/
         },
         complete: function () {
             rawDataIsLoading = false
