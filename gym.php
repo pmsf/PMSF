@@ -5,6 +5,8 @@ $datas = $db->query("select t1.fort_id, t3.external_id, t3.lat, t3.lon, t1.last_
 
 $gyms = array();
 
+$i = 0;
+
 /* fetch associative array */
 foreach ($datas as $row) {
     $p = array();
