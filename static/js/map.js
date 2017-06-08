@@ -69,21 +69,21 @@ var gymPrestige = [2000, 4000, 8000, 12000, 16000, 20000, 30000, 40000, 50000]
 var audio = new Audio('static/sounds/ding.mp3')
 
 /*
-  text place holders:
-  <pkm> - pokemon name
-  <prc> - iv in percent without percent symbol
-  <atk> - attack as number
-  <def> - defense as number
-  <sta> - stamnia as number
-*/
+ text place holders:
+ <pkm> - pokemon name
+ <prc> - iv in percent without percent symbol
+ <atk> - attack as number
+ <def> - defense as number
+ <sta> - stamnia as number
+ */
 var notifyIvTitle = '<pkm> <prc>% (<atk>/<def>/<sta>)'
 var notifyNoIvTitle = '<pkm>'
 
 /*
-  text place holders:
-  <dist>  - disappear time
-  <udist> - time until disappear
-*/
+ text place holders:
+ <dist>  - disappear time
+ <udist> - time until disappear
+ */
 var notifyText = 'disappears at <dist> (<udist>)'
 
 //
@@ -386,22 +386,27 @@ function pokemonLabel(name, rarity, types, disappearTime, id, latitude, longitud
 }
 
 function gymLabel(teamName, teamId, gymPoints, latitude, longitude) {
-    var lastScanned = arguments.length > 5 && arguments[5] !== undefined ? arguments[5] : null;
     var name = arguments.length > 6 && arguments[6] !== undefined ? arguments[6] : null;
     var members = arguments.length > 7 && arguments[7] !== undefined ? arguments[7] : [];
     var gymId = arguments[8];
+    var lastModified = arguments.length > 9 && arguments[9] !== undefined ? arguments[9] : null;
+    var guardPokemon = arguments.length > 10 && arguments[10] !== undefined ? arguments[10] : null;
 
     var memberStr = '';
-    for (var i = 0; i < members.length; i++) {
-        memberStr += "\n            <span class=\"gym-member\" title=\"" + members[i].pokemon_name + " | " + members[i].trainer_name + " (Lvl " + members[i].trainer_level + ")\">\n                <i class=\"pokemon-sprite n" + members[i].pokemon_id + "\"></i>\n                <span class=\"cp team-" + teamId + "\">" + members[i].pokemon_cp + "</span>\n            </span>";
+    if (members.length > 0) {
+        for (var i = 0; i < members.length; i++) {
+            memberStr += "\n            <span class=\"gym-member\" title=\"" + members[i].pokemon_name + " | " + members[i].trainer_name + " (Lvl " + members[i].trainer_level + ")\">\n                <i class=\"pokemon-sprite n" + members[i].pokemon_id + "\"></i>\n                <span class=\"cp team-" + teamId + "\">" + members[i].pokemon_cp + "</span>\n            </span>";
+        }
+    } else {
+        memberStr = "\n            <span class=\"gym-member\">\n                <i class=\"pokemon-sprite n" + guardPokemon + "\"></i>\n            </span>";
     }
 
-    var lastScannedStr;
-    if (lastScanned) {
-        var lastScannedDate = new Date(lastScanned);
-        lastScannedStr = lastScannedDate.getFullYear() + '-' + pad(lastScannedDate.getMonth() + 1) + '-' + pad(lastScannedDate.getDate()) + ' ' + pad(lastScannedDate.getHours()) + ':' + pad(lastScannedDate.getMinutes()) + ':' + pad(lastScannedDate.getSeconds());
+    var lastModifiedStr;
+    if (lastModified) {
+        var lastModifiedDate = new Date(lastModified);
+        lastModifiedStr = lastModifiedDate.getFullYear() + '-' + pad(lastModifiedDate.getMonth() + 1) + '-' + pad(lastModifiedDate.getDate()) + ' ' + pad(lastModifiedDate.getHours()) + ':' + pad(lastModifiedDate.getMinutes()) + ':' + pad(lastModifiedDate.getSeconds());
     } else {
-        lastScannedStr = 'Unknown';
+        lastModifiedStr = 'Unknown';
     }
     var directionsStr = '';
     if (!Store.get('useGymSidebar')) {
@@ -413,10 +418,10 @@ function gymLabel(teamName, teamId, gymPoints, latitude, longitude) {
     var gymColor = ['0, 0, 0, .4', '74, 138, 202, .6', '240, 68, 58, .6', '254, 217, 40, .6'];
     var str;
     if (teamId === 0) {
-        str = "\n            <div>\n                <center>\n                    <div>\n                        <b style='color:rgba(" + gymColor[teamId] + ")'>" + teamName + "</b><br>\n                        <img height='70px' style='padding: 5px;' src='static/forts/" + teamName + "_large.png'>\n                    </div>\n                    " + nameStr + "\n                    <div>\n                        Location: " + latitude.toFixed(6) + ", " + longitude.toFixed(7) + "\n                    </div>\n                    <div>\n                        Last Scanned: " + lastScannedStr + "\n                    </div>\n                    " + directionsStr + "\n                </center>\n            </div>";
+        str = "\n            <div>\n                <center>\n                    <div>\n                        <b style='color:rgba(" + gymColor[teamId] + ")'>" + teamName + "</b><br>\n                        <img height='70px' style='padding: 5px;' src='static/forts/" + teamName + "_large.png'>\n                    </div>\n                    " + nameStr + "\n                    <div>\n                        Location: " + latitude.toFixed(6) + ", " + longitude.toFixed(7) + "\n                    </div>\n                    <div>\n                        Last Modified: " + lastModifiedStr + "\n                    </div>\n                    " + directionsStr + "\n                </center>\n            </div>";
     } else {
         var gymLevel = getGymLevel(gymPoints);
-        str = "\n            <div>\n                <center>\n                    <div style='padding-bottom: 2px'>\n                        Gym owned by:\n                    </div>\n                    <div>\n                        <b style='color:rgba(" + gymColor[teamId] + ")'>Team " + teamName + "</b><br>\n                        <img height='70px' style='padding: 5px;' src='static/forts/" + teamName + "_large.png'>\n                    </div>\n                    <div>\n                        " + nameStr + "\n                    </div>\n                    <div>\n                        Level: " + gymLevel + " | Prestige: " + gymPoints + "/" + (gymPrestige[gymLevel - 1] || 50000) + "\n                    </div>\n                    <div>\n                        " + memberStr + "\n                    </div>\n                    <div>\n                        Location: " + latitude.toFixed(6) + ", " + longitude.toFixed(7) + "\n                    </div>\n                    <div>\n                        Last Scanned: " + lastScannedStr + "\n                    </div>\n                    " + directionsStr + "\n                </center>\n            </div>";
+        str = "\n            <div>\n                <center>\n                    <div style='padding-bottom: 2px'>\n                        Gym owned by:\n                    </div>\n                    <div>\n                        <b style='color:rgba(" + gymColor[teamId] + ")'>Team " + teamName + "</b><br>\n                        <img height='70px' style='padding: 5px;' src='static/forts/" + teamName + "_large.png'>\n                    </div>\n                    <div>\n                        " + nameStr + "\n                    </div>\n                    <div>\n                        Level: " + gymLevel + " | Prestige: " + gymPoints + "/" + (gymPrestige[gymLevel - 1] || 50000) + "\n                    </div>\n                    <div>\n                        " + memberStr + "\n                    </div>\n                    <div>\n                        Location: " + latitude.toFixed(6) + ", " + longitude.toFixed(7) + "\n                    </div>\n                    <div>\n                        Last Modified: " + lastModifiedStr + "\n                    </div>\n                    " + directionsStr + "\n                </center>\n            </div>";
     }
 
     return str;
@@ -552,7 +557,8 @@ function getNotifyText(item) {
     var ntitle = repArray(((iv) ? notifyIvTitle : notifyNoIvTitle), find, replace)
     var dist = (new Date(item['disappear_time'])).toLocaleString([], {
         hour: '2-digit', minute: '2-digit',
-        second: '2-digit', hour12: false})
+        second: '2-digit', hour12: false
+    })
     var until = getTimeUntil(item['disappear_time'])
     var udist = (until.hour > 0) ? until.hour + ':' : ''
     udist += lpad(until.min, 2, 0) + 'm' + lpad(until.sec, 2, 0) + 's'
@@ -629,7 +635,7 @@ function setupGymMarker(item) {
     }
 
     marker.infoWindow = new google.maps.InfoWindow({
-        content: gymLabel(gymTypes[item['team_id']], item['team_id'], item['gym_points'], item['latitude'], item['longitude'], item['last_scanned'], item['name'], item['pokemon'], item['gym_id']),
+        content: gymLabel(gymTypes[item['team_id']], item['team_id'], item['gym_points'], item['latitude'], item['longitude'], item['last_scanned'], item['name'], item['pokemon'], item['gym_id'], item['last_modified'], item['guard_pokemon_id']),
         disableAutoPan: true
     })
 
@@ -672,7 +678,7 @@ function updateGymMarker(item, marker) {
         url: 'static/forts/' + Store.get('gymMarkerStyle') + '/' + gymTypes[item['team_id']] + (item['team_id'] !== 0 ? '_' + getGymLevel(item['gym_points']) : '') + '.png',
         scaledSize: new google.maps.Size(48, 48)
     })
-    marker.infoWindow.setContent(gymLabel(gymTypes[item['team_id']], item['team_id'], item['gym_points'], item['latitude'], item['longitude'], item['last_scanned'], item['name'], item['pokemon'], item['gym_id']))
+    marker.infoWindow.setContent(gymLabel(gymTypes[item['team_id']], item['team_id'], item['gym_points'], item['latitude'], item['longitude'], item['last_scanned'], item['name'], item['pokemon'], item['gym_id'], item['last_modified'], item['guard_pokemon_id']))
     return marker
 }
 
@@ -1002,15 +1008,15 @@ function loadRawData() {
         },
         error: function () {
             /*if (!$timeoutDialog) {
-                var opts = {
-                    title: 'Reduce marker settings'
-                }
+             var opts = {
+             title: 'Reduce marker settings'
+             }
 
-                $timeoutDialog = $('<div>Hmm... we\'re having problems getting data for your criteria. Try reducing what you\'re showing and zooming in to limit what\'s returned.</div>').dialog(opts)
-                $timeoutDialog.dialog('open')
-            } else if (!$timeoutDialog.dialog('isOpen')) {
-                $timeoutDialog.dialog('open')
-            }*/
+             $timeoutDialog = $('<div>Hmm... we\'re having problems getting data for your criteria. Try reducing what you\'re showing and zooming in to limit what\'s returned.</div>').dialog(opts)
+             $timeoutDialog.dialog('open')
+             } else if (!$timeoutDialog.dialog('isOpen')) {
+             $timeoutDialog.dialog('open')
+             }*/
         },
         complete: function () {
             rawDataIsLoading = false
@@ -1636,14 +1642,14 @@ $(function () {
             console.log('could not load notifications')
             return
         }
-    } catch(err) {
+    } catch (err) {
     }
 
     try {
-    if (Notification.permission !== 'granted') {
-        Notification.requestPermission()
-    }
-    } catch(err) {
+        if (Notification.permission !== 'granted') {
+            Notification.requestPermission()
+        }
+    } catch (err) {
     }
 })
 
@@ -2109,7 +2115,7 @@ $(function () {
             'emptyTable': ''
         },
         'columns': [
-            { 'orderable': false },
+            {'orderable': false},
             null,
             null,
             null

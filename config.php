@@ -16,17 +16,17 @@ use Medoo\Medoo;
 
 /* Location Settings */
 
-$startingLat = 50.4005976;                                      // Starting latitude
-$startingLng = -4.1355412;                                      // Starting longitude
+$startingLat = 41.652892;                                      // Starting latitude
+$startingLng = -83.541549;                                      // Starting longitude
 
 /* Map Title + Language */
 
-$title = "Pokemon Go Map";                                      // Title to display in title bar
+$title = "MSF Glennmen";                                      // Title to display in title bar
 $locale = "en";                                                 // Display language
 
 /* Google Maps Key */
 
-$gmapsKey = "GMAPS_API_KEY;          // Google Maps API Key
+$gmapsKey = "AIzaSyBXZSI0gZ6I4-gumIiUd8Dfs-4SAlYY_xM";          // Google Maps API Key
 
 
 //-----------------------------------------------------
@@ -44,13 +44,13 @@ $purgeData = 0;
 //-----------------------------------------------------
 
 $db = new Medoo([// required
-            'database_type' => 'mysql',                                 // mysql/mariadb/pgsql/sybase/oracle/mssql/sqlite
-            'database_name' => 'pokeminer',
-            'server' => '127.0.0.1',
-            'username' => 'database_user',
-            'password' => 'database_password',
+            'database_type' => 'pgsql',                                 // mysql/mariadb/pgsql/sybase/oracle/mssql/sqlite
+            'database_name' => 'Monocle',
+            'server' => '149.56.240.220',
+            'username' => 'monocle',
+            'password' => 'Password1!',
 
             // [optional]
-            //'charset' => 'utf8',
-            //'port' => 5432,                                             // Comment out if not needed, just add // in front!
+            'charset' => 'utf8',
+            'port' => 5432,                                             // Comment out if not needed, just add // in front!
         ]);
