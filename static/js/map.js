@@ -404,7 +404,16 @@ function gymLabel(teamName, teamId, gymPoints, latitude, longitude) {
     var lastModifiedStr;
     if (lastModified) {
         var lastModifiedDate = new Date(lastModified);
-        lastModifiedStr = lastModifiedDate.getFullYear() + '-' + pad(lastModifiedDate.getMonth() + 1) + '-' + pad(lastModifiedDate.getDate()) + ' ' + pad(lastModifiedDate.getHours()) + ':' + pad(lastModifiedDate.getMinutes()) + ':' + pad(lastModifiedDate.getSeconds());
+        var options = {
+            day: 'numeric',
+            month: 'numeric',
+            year: 'numeric',
+            hour: '2-digit',
+            minute: '2-digit',
+            second: '2-digit',
+            hour12: false
+        };
+        lastModifiedStr = lastModifiedDate.toLocaleString("en-US", options)
     } else {
         lastModifiedStr = 'Unknown';
     }
@@ -1167,7 +1176,7 @@ function processGyms(i, item) {
 
     if (Store.get('showLastUpdatedGymsOnly')) {
         var now = new Date()
-        if ((Store.get('showLastUpdatedGymsOnly') * 3600 * 1000) + item.last_scanned < now.getTime()) {
+        if ((Store.get('showLastUpdatedGymsOnly') * 3600 * 1000) + item.last_modified < now.getTime()) {
             removeGymFromMap(item['gym_id'])
             return true
         }
