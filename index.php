@@ -102,7 +102,7 @@ include('config.php');
                     </div>
                     <div class="form-control switch-container" id="open-gyms-only-wrapper">
                         <h3>Open Spot</h3>
-                        <select name="open-gyms-only-switch" id="open-gyms-only-switch">
+                        <select name="open-gyms-only-switch" id="open-gyms-only-switch" disabled>
                             <option value="0">All</option>
                             <option value="1">Open Spot</option>
                             <option value="2">&lt;= 1000 Prestige Until Open Spot</option>
@@ -215,8 +215,8 @@ include('config.php');
                 <div class="form-control switch-container" >
                     <h3>Start map at my position</h3>
                     <div class="onoffswitch">
-                        <input id="start-at-user-location-switch" type="checkbox" name="start-at-user-location-switch" class="onoffswitch-checkbox" checked/>
-                        <label class="onoffswitch-label" for="start-at-user-location-switch">
+                        <input id="start-at-user-location-switch" type="checkbox" name="start-at-user-location-switch" class="onoffswitch-checkbox" disabled/>
+                        <label class="onoffswitch-label" for="start-at-user-location-switch" style="background: gray;">
                             <span class="switch-label" data-on="On" data-off="Off"></span>
                             <span class="switch-handle"></span>
                         </label>
@@ -225,7 +225,7 @@ include('config.php');
                 <div class="form-control switch-container">
                     <h3>Follow me</h3>
                     <div class="onoffswitch">
-                        <input id="follow-my-location-switch" type="checkbox" name="follow-my-location-switch" class="onoffswitch-checkbox" checked/>
+                        <input id="follow-my-location-switch" type="checkbox" name="follow-my-location-switch" class="onoffswitch-checkbox" />
                         <label class="onoffswitch-label" for="follow-my-location-switch">
                             <span class="switch-label" data-on="On" data-off="Off"></span>
                             <span class="switch-handle"></span>
