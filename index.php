@@ -173,8 +173,8 @@ include('config.php');
                 <div class="form-control switch-container">
                     <h3>Scanned Locations</h3>
                     <div class="onoffswitch">
-                        <input id="scanned-switch" type="checkbox" name="scanned-switch" class="onoffswitch-checkbox">
-                        <label class="onoffswitch-label" for="scanned-switch">
+                        <input id="scanned-switch" type="checkbox" name="scanned-switch" class="onoffswitch-checkbox" disabled>
+                        <label class="onoffswitch-label" for="scanned-switch" style="background: gray;">
                             <span class="switch-label" data-on="On" data-off="Off"></span>
                             <span class="switch-handle"></span>
                         </label>
@@ -183,8 +183,8 @@ include('config.php');
                 <div class="form-control switch-container">
                     <h3>Spawn Points</h3>
                     <div class="onoffswitch">
-                        <input id="spawnpoints-switch" type="checkbox" name="spawnpoints-switch" class="onoffswitch-checkbox">
-                        <label class="onoffswitch-label" for="spawnpoints-switch">
+                        <input id="spawnpoints-switch" type="checkbox" name="spawnpoints-switch" class="onoffswitch-checkbox" disabled>
+                        <label class="onoffswitch-label" for="spawnpoints-switch" style="background: gray;">
                             <span class="switch-label" data-on="On" data-off="Off"></span>
                             <span class="switch-handle"></span>
                         </label>
@@ -212,47 +212,11 @@ include('config.php');
 
             <h3>Location &amp; Search Settings</h3>
             <div>
-                <div class="form-control switch-container" style="display:{{is_fixed}}" >
-                    <label for="next-location">
-                        <h3>Change search location</h3>
-                        <input id="next-location" type="text" name="next-location" placeholder="Change search location">
-                    </label>
-                </div>
-                <div class="form-control switch-container" style="display:{{is_fixed}}" >
-                    <h3>Lock search marker</h3>
-                    <div class="onoffswitch">
-                        <input id="lock-marker-switch" type="checkbox" name="lock-marker-switch" class="onoffswitch-checkbox" checked/>
-                        <label class="onoffswitch-label" for="lock-marker-switch">
-                            <span class="switch-label" data-on="On" data-off="Off"></span>
-                            <span class="switch-handle"></span>
-                        </label>
-                    </div>
-                </div>
-                <div class="form-control switch-container" style="display:{{is_fixed}}" >
-                    <h3>Search follows me</h3>
-                    <div class="onoffswitch">
-                        <input id="geoloc-switch" type="checkbox" name="geoloc-switch" class="onoffswitch-checkbox" checked/>
-                        <label class="onoffswitch-label" for="geoloc-switch">
-                            <span class="switch-label" data-on="On" data-off="Off"></span>
-                            <span class="switch-handle"></span>
-                        </label>
-                    </div>
-                </div>
                 <div class="form-control switch-container" >
-                    <h3>Start map at me</h3>
+                    <h3>Start map at my position</h3>
                     <div class="onoffswitch">
                         <input id="start-at-user-location-switch" type="checkbox" name="start-at-user-location-switch" class="onoffswitch-checkbox" checked/>
                         <label class="onoffswitch-label" for="start-at-user-location-switch">
-                            <span class="switch-label" data-on="On" data-off="Off"></span>
-                            <span class="switch-handle"></span>
-                        </label>
-                    </div>
-                </div>
-                <div class="form-control switch-container" style="display:{{search_control}}">
-                    <h3>Search</h3>
-                    <div class="onoffswitch">
-                        <input id="search-switch" type="checkbox" name="search-switch" class="onoffswitch-checkbox" checked/>
-                        <label class="onoffswitch-label" for="search-switch">
                             <span class="switch-label" data-on="On" data-off="Off"></span>
                             <span class="switch-handle"></span>
                         </label>
@@ -263,16 +227,6 @@ include('config.php');
                     <div class="onoffswitch">
                         <input id="follow-my-location-switch" type="checkbox" name="follow-my-location-switch" class="onoffswitch-checkbox" checked/>
                         <label class="onoffswitch-label" for="follow-my-location-switch">
-                            <span class="switch-label" data-on="On" data-off="Off"></span>
-                            <span class="switch-handle"></span>
-                        </label>
-                    </div>
-                </div>
-                <div class="form-control switch-container" style="display:{{show_scan}}">
-                    <h3>Scan here button</h3>
-                    <div class="onoffswitch">
-                        <input id="scan-here-switch" type="checkbox" name="scan-here-switch" class="onoffswitch-checkbox" checked/>
-                        <label class="onoffswitch-label" for="scan-here-switch">
                             <span class="switch-label" data-on="On" data-off="Off"></span>
                             <span class="switch-handle"></span>
                         </label>
@@ -341,6 +295,8 @@ include('config.php');
                         <option value='ingame'>In-Game</option>
                         <option value='shield'>Shield</option>
                     </select>
+                </div>
+                <div class="form-control switch-container">
                     <h3>Location Icon Marker</h3>
                     <select name="locationmarker-style" id="locationmarker-style"></select>
                 </div>
@@ -349,9 +305,9 @@ include('config.php');
     </nav>
     <nav id="stats">
         <div class="switch-container">
-            <div class="switch-container">
+            <!--<div class="switch-container">
                 <div><center><a href="stats">Full Stats</a></center></div>
-            </div>
+            </div>-->
             <div class="switch-container">
                 <center><h1 id="stats-ldg-label">Loading...</h1></center>
             </div>

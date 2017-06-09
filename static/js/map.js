@@ -239,7 +239,7 @@ function createLocationMarker() {
             lat: lat,
             lng: lng
         },
-        draggable: true,
+        draggable: false,
         icon: null,
         optimized: false,
         zIndex: google.maps.Marker.MAX_ZINDEX + 2
@@ -263,57 +263,6 @@ function createLocationMarker() {
     return locationMarker
 }
 
-function updateSearchMarker(style) {
-    if (style in searchMarkerStyles) {
-        searchMarker.setIcon(searchMarkerStyles[style].icon)
-        Store.set('searchMarkerStyle', style)
-    }
-
-    return searchMarker
-}
-
-function createSearchMarker() {
-    var searchMarker = new google.maps.Marker({ // need to keep reference.
-        position: {
-            lat: centerLat,
-            lng: centerLng
-        },
-        map: map,
-        animation: google.maps.Animation.DROP,
-        draggable: !Store.get('lockMarker'),
-        icon: null,
-        optimized: false,
-        zIndex: google.maps.Marker.MAX_ZINDEX + 1
-    })
-
-    searchMarker.infoWindow = new google.maps.InfoWindow({
-        content: '<div><b>Search Location</b></div>',
-        disableAutoPan: true
-    })
-
-    addListeners(searchMarker)
-
-    var oldLocation = null
-    google.maps.event.addListener(searchMarker, 'dragstart', function () {
-        oldLocation = searchMarker.getPosition()
-    })
-
-    google.maps.event.addListener(searchMarker, 'dragend', function () {
-        var newLocation = searchMarker.getPosition()
-        changeSearchLocation(newLocation.lat(), newLocation.lng())
-            .done(function () {
-                oldLocation = null
-            })
-            .fail(function () {
-                if (oldLocation) {
-                    searchMarker.setPosition(oldLocation)
-                }
-            })
-    })
-
-    return searchMarker
-}
-
 function initSidebar() {
     $('#gyms-switch').prop('checked', Store.get('showGyms'))
     $('#gym-sidebar-switch').prop('checked', Store.get('useGymSidebar'))
@@ -328,27 +277,12 @@ function initSidebar() {
     $('#pokestops-switch').prop('checked', Store.get('showPokestops'))
     $('#lured-pokestops-only-switch').val(Store.get('showLuredPokestopsOnly'))
     $('#lured-pokestops-only-wrapper').toggle(Store.get('showPokestops'))
-    $('#geoloc-switch').prop('checked', Store.get('geoLocate'))
-    $('#lock-marker-switch').prop('checked', Store.get('lockMarker'))
     $('#start-at-user-location-switch').prop('checked', Store.get('startAtUserLocation'))
     $('#follow-my-location-switch').prop('checked', Store.get('followMyLocation'))
-    $('#scan-here-switch').prop('checked', Store.get('scanHere'))
-    $('#scan-here').toggle(Store.get('scanHere'))
     $('#scanned-switch').prop('checked', Store.get('showScanned'))
     $('#spawnpoints-switch').prop('checked', Store.get('showSpawnpoints'))
     $('#ranges-switch').prop('checked', Store.get('showRanges'))
     $('#sound-switch').prop('checked', Store.get('playSound'))
-    var searchBox = new google.maps.places.Autocomplete(document.getElementById('next-location'))
-    $('#next-location').css('background-color', $('#geoloc-switch').prop('checked') ? '#e0e0e0' : '#ffffff')
-
-    searchBox.addListener('place_changed', function () {
-        var place = searchBox.getPlace()
-
-        if (!place.geometry) return
-
-        var loc = place.geometry.location
-        changeLocation(loc.lat(), loc.lng())
-    })
 
     var icons = $('#pokemon-icons')
     $.each(pokemonSprites, function (key, value) {
@@ -1595,21 +1529,12 @@ function i8ln(word) {
 }
 
 function updateGeoLocation() {
-    if (navigator.geolocation && (Store.get('geoLocate') || Store.get('followMyLocation'))) {
+    if (navigator.geolocation && (Store.get('followMyLocation'))) {
         navigator.geolocation.getCurrentPosition(function (position) {
             var lat = position.coords.latitude
             var lng = position.coords.longitude
             var center = new google.maps.LatLng(lat, lng)
 
-            if (Store.get('geoLocate')) {
-                // the search function makes any small movements cause a loop. Need to increase resolution
-                if ((typeof searchMarker !== 'undefined') && (getPointDistance(searchMarker.getPosition(), center) > 40)) {
-                    $.post('next_loc?lat=' + lat + '&lon=' + lng).done(function () {
-                        map.panTo(center)
-                        searchMarker.setPosition(center)
-                    })
-                }
-            }
             if (Store.get('followMyLocation')) {
                 if ((typeof locationMarker !== 'undefined') && (getPointDistance(locationMarker.getPosition(), center) >= 5)) {
                     map.panTo(center)
@@ -2147,21 +2072,6 @@ $(function () {
         Store.set('playSound', this.checked)
     })
 
-    $('#geoloc-switch').change(function () {
-        $('#next-location').prop('disabled', this.checked)
-        $('#next-location').css('background-color', this.checked ? '#e0e0e0' : '#ffffff')
-        if (!navigator.geolocation) {
-            this.checked = false
-        } else {
-            Store.set('geoLocate', this.checked)
-        }
-    })
-
-    $('#lock-marker-switch').change(function () {
-        Store.set('lockMarker', this.checked)
-        searchMarker.setDraggable(!this.checked)
-    })
-
     $('#start-at-user-location-switch').change(function () {
         Store.set('startAtUserLocation', this.checked)
     })
@@ -2173,15 +2083,6 @@ $(function () {
             Store.set('followMyLocation', this.checked)
         }
         locationMarker.setDraggable(!this.checked)
-    })
-
-    $('#scan-here-switch').change(function () {
-        if (this.checked && !Store.get('scanHereAlerted')) {
-            alert('Use this feature carefully ! This button will set the current map center as new search location. This may cause worker to teleport long range.')
-            Store.set('scanHereAlerted', true)
-        }
-        $('#scan-here').toggle(this.checked)
-        Store.set('scanHere', this.checked)
     })
 
     if ($('#nav-accordion').length) {
