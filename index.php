@@ -45,6 +45,8 @@ include('config.php');
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jqueryui/1.12.0/jquery-ui.min.css">
     <link rel="stylesheet" href="https://cdn.datatables.net/1.10.12/css/jquery.dataTables.css">
     <script src="static/js/vendor/modernizr.custom.js"></script>
+    <!-- Toastr -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.css">
 </head>
 <body id="top">
 <div class="wrapper">
@@ -354,6 +356,7 @@ include('config.php');
     var centerLat = <?= $startingLat; ?>;
     var centerLng = <?= $startingLng; ?>;
 </script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js"></script>
 <script src="static/js/map.common.js"></script>
 <script src="static/js/map.js"></script>
 <script src="static/dist/js/stats.min.js"></script>
