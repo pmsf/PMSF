@@ -306,6 +306,15 @@ function openMapDirections(lat, lng) { // eslint-disable-line no-unused-vars
     window.open(url, '_blank')
 }
 
+// Converts timestamp to readable String
+function getDateStr(t) {
+    var dateStr = 'Unknown'
+    if (t) {
+        dateStr = moment(t).format('DD-MM-YYYY, HH:mm:ss')
+    }
+    return dateStr
+}
+
 function pokemonLabel(item) {
     var name = item['pokemon_name']
     var rarityDisplay = item['pokemon_rarity'] ? '(' + item['pokemon_rarity'] + ')' : ''
@@ -388,13 +397,7 @@ function pokemonLabel(item) {
     return contentstring
 }
 
-function gymLabel(teamName, teamId, gymPoints, latitude, longitude) {
-    var name = arguments.length > 6 && arguments[6] !== undefined ? arguments[6] : null;
-    var members = arguments.length > 7 && arguments[7] !== undefined ? arguments[7] : [];
-    var gymId = arguments[8];
-    var lastModified = arguments.length > 9 && arguments[9] !== undefined ? arguments[9] : null;
-    var guardPokemon = arguments.length > 10 && arguments[10] !== undefined ? arguments[10] : null;
-
+function gymLabel(teamName, teamId, gymPoints, latitude, longitude, lastScanned = null, lastModified = null, name = null, members = [], gymId, guardPokemon) {
     var memberStr = '';
     if (members.length > 0) {
         for (var i = 0; i < members.length; i++) {
@@ -404,22 +407,7 @@ function gymLabel(teamName, teamId, gymPoints, latitude, longitude) {
         memberStr = "\n            <span class=\"gym-member\">\n                <i class=\"pokemon-sprite n" + guardPokemon + "\"></i>\n            </span>";
     }
 
-    var lastModifiedStr;
-    if (lastModified) {
-        var lastModifiedDate = new Date(lastModified);
-        var options = {
-            day: 'numeric',
-            month: 'numeric',
-            year: 'numeric',
-            hour: '2-digit',
-            minute: '2-digit',
-            second: '2-digit',
-            hour12: false
-        };
-        lastModifiedStr = lastModifiedDate.toLocaleString("en-US", options)
-    } else {
-        lastModifiedStr = 'Unknown';
-    }
+    var lastModifiedStr = getDateStr(lastModified)
     var directionsStr = '';
     if (!Store.get('useGymSidebar')) {
         directionsStr = '<div>\n                <a href=\'javascript:void(0);\' onclick=\'javascript:openMapDirections(' + latitude + ',' + longitude + ');\' title=\'View in Maps\'>Get directions</a>\n            </div>';
@@ -659,7 +647,7 @@ function setupGymMarker(item) {
     }
 
     marker.infoWindow = new google.maps.InfoWindow({
-        content: gymLabel(gymTypes[item['team_id']], item['team_id'], item['gym_points'], item['latitude'], item['longitude'], item['last_scanned'], item['name'], item['pokemon'], item['gym_id'], item['last_modified'], item['guard_pokemon_id']),
+        content: gymLabel(gymTypes[item['team_id']], item['team_id'], item['gym_points'], item['latitude'], item['longitude'], item['last_scanned'], item['last_modified'], item['name'], item['pokemon'], item['gym_id'], item['guard_pokemon_id']),
         disableAutoPan: true
     })
 
@@ -702,7 +690,7 @@ function updateGymMarker(item, marker) {
         url: 'static/forts/' + Store.get('gymMarkerStyle') + '/' + gymTypes[item['team_id']] + (item['team_id'] !== 0 ? '_' + getGymLevel(item['gym_points']) : '') + '.png',
         scaledSize: new google.maps.Size(48, 48)
     })
-    marker.infoWindow.setContent(gymLabel(gymTypes[item['team_id']], item['team_id'], item['gym_points'], item['latitude'], item['longitude'], item['last_scanned'], item['name'], item['pokemon'], item['gym_id'], item['last_modified'], item['guard_pokemon_id']))
+    marker.infoWindow.setContent(gymLabel(gymTypes[item['team_id']], item['team_id'], item['gym_points'], item['latitude'], item['longitude'], item['last_scanned'], item['last_modified'], item['name'], item['pokemon'], item['gym_id'], item['guard_pokemon_id']))
     return marker
 }
 
@@ -1604,17 +1592,7 @@ function showGymDetails(id) { // eslint-disable-line no-unused-vars
         var gymLevel = getGymLevel(result.gym_points)
         var nextLvlPrestige = gymPrestige[gymLevel - 1] || 50000
         var prestigePercentage = (result.gym_points / nextLvlPrestige) * 100
-        var lastModifiedDate = new Date(result.last_modified)
-        var options = {
-            day: 'numeric',
-            month: 'numeric',
-            year: 'numeric',
-            hour: '2-digit',
-            minute: '2-digit',
-            second: '2-digit',
-            hour12: false
-        };
-        lastModifiedStr = lastModifiedDate.toLocaleString("en-US", options)
+        var lastModifiedStr = getDateStr(result.last_modified)
         var pokemon = result.pokemon !== undefined ? result.pokemon : [];
         var freeSlots = pokemon.length ? gymLevel - pokemon.length : 0
         var freeSlotsStr = freeSlots ? ' - ' + freeSlots + ' Free Slots' : '';
@@ -1642,7 +1620,7 @@ function showGymDetails(id) { // eslint-disable-line no-unused-vars
         } else if (result.team_id === 0) {
             pokemonHtml = '';
         } else {
-            pokemonHtml = '\n                <center class="team-' + result.team_id + '-text">\n                    Gym Leader:<br>\n                    <i class="pokemon-large-sprite n' + result.guard_pokemon_id + '"></i><br>\n                    <b class="team-' + result.team_id + '-text">' + result.guard_pokemon_name + '</b>\n\n                    <p style="font-size: .75em; margin: 5px;">\n                        No additional gym information is available for this gym. Make sure you are collecting <a href="https://pgm.readthedocs.io/en/develop/extras/gyminfo.html">detailed gym info.</a>\n                        If you have detailed gym info collection running, this gym\'s Pokemon information may be out of date.\n                    </p>\n                </center>\n            ';
+            pokemonHtml = '\n                <center class="team-' + result.team_id + '-text">\n                    Gym Leader:<br>\n                    <i class="pokemon-large-sprite n' + result.guard_pokemon_id + '"></i><br>\n                    <b class="team-' + result.team_id + '-text">' + result.guard_pokemon_name + '</b>\n\n                    <p style="font-size: .75em; margin: 5px;">\n                        No additional gym information is available for this gym. Make sure you are collecting detailed gym info. If you have detailed gym info collection running, this gym\'s Pokemon information may be out of date.\n                    </p>\n                </center>\n            ';
         }
 
         sidebar.innerHTML = "" + headerHtml + pokemonHtml;

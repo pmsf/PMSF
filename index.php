@@ -65,7 +65,8 @@ include('config.php');
                 <div class="form-control switch-container">
                     <h3>Pokemon</h3>
                     <div class="onoffswitch">
-                        <input id="pokemon-switch" type="checkbox" name="pokemon-switch" class="onoffswitch-checkbox" checked>
+                        <input id="pokemon-switch" type="checkbox" name="pokemon-switch" class="onoffswitch-checkbox"
+                               checked>
                         <label class="onoffswitch-label" for="pokemon-switch">
                             <span class="switch-label" data-on="On" data-off="Off"></span>
                             <span class="switch-handle"></span>
@@ -85,7 +86,8 @@ include('config.php');
                 <div class="form-control switch-container" id="gym-sidebar-wrapper" style="display:none">
                     <h3>Use Gym Sidebar</h3>
                     <div class="onoffswitch">
-                        <input id="gym-sidebar-switch" type="checkbox" name="gym-sidebar-switch" class="onoffswitch-checkbox" checked>
+                        <input id="gym-sidebar-switch" type="checkbox" name="gym-sidebar-switch"
+                               class="onoffswitch-checkbox" checked>
                         <label class="onoffswitch-label" for="gym-sidebar-switch">
                             <span class="switch-label" data-on="On" data-off="Off"></span>
                             <span class="switch-handle"></span>
@@ -159,7 +161,8 @@ include('config.php');
                 <div class="form-control switch-container">
                     <h3>Pokestops</h3>
                     <div class="onoffswitch">
-                        <input id="pokestops-switch" type="checkbox" name="pokestops-switch" class="onoffswitch-checkbox" checked>
+                        <input id="pokestops-switch" type="checkbox" name="pokestops-switch"
+                               class="onoffswitch-checkbox" checked>
                         <label class="onoffswitch-label" for="pokestops-switch">
                             <span class="switch-label" data-on="On" data-off="Off"></span>
                             <span class="switch-handle"></span>
@@ -175,7 +178,8 @@ include('config.php');
                 <div class="form-control switch-container">
                     <h3>Scanned Locations</h3>
                     <div class="onoffswitch">
-                        <input id="scanned-switch" type="checkbox" name="scanned-switch" class="onoffswitch-checkbox" disabled>
+                        <input id="scanned-switch" type="checkbox" name="scanned-switch" class="onoffswitch-checkbox"
+                               disabled>
                         <label class="onoffswitch-label" for="scanned-switch" style="background: gray;">
                             <span class="switch-label" data-on="On" data-off="Off"></span>
                             <span class="switch-handle"></span>
@@ -185,7 +189,8 @@ include('config.php');
                 <div class="form-control switch-container">
                     <h3>Spawn Points</h3>
                     <div class="onoffswitch">
-                        <input id="spawnpoints-switch" type="checkbox" name="spawnpoints-switch" class="onoffswitch-checkbox" disabled>
+                        <input id="spawnpoints-switch" type="checkbox" name="spawnpoints-switch"
+                               class="onoffswitch-checkbox" disabled>
                         <label class="onoffswitch-label" for="spawnpoints-switch" style="background: gray;">
                             <span class="switch-label" data-on="On" data-off="Off"></span>
                             <span class="switch-handle"></span>
@@ -214,10 +219,11 @@ include('config.php');
 
             <h3>Location &amp; Search Settings</h3>
             <div>
-                <div class="form-control switch-container" >
+                <div class="form-control switch-container">
                     <h3>Start map at my position</h3>
                     <div class="onoffswitch">
-                        <input id="start-at-user-location-switch" type="checkbox" name="start-at-user-location-switch" class="onoffswitch-checkbox" disabled/>
+                        <input id="start-at-user-location-switch" type="checkbox" name="start-at-user-location-switch"
+                               class="onoffswitch-checkbox" disabled/>
                         <label class="onoffswitch-label" for="start-at-user-location-switch" style="background: gray;">
                             <span class="switch-label" data-on="On" data-off="Off"></span>
                             <span class="switch-handle"></span>
@@ -227,7 +233,8 @@ include('config.php');
                 <div class="form-control switch-container">
                     <h3>Follow me</h3>
                     <div class="onoffswitch">
-                        <input id="follow-my-location-switch" type="checkbox" name="follow-my-location-switch" class="onoffswitch-checkbox" />
+                        <input id="follow-my-location-switch" type="checkbox" name="follow-my-location-switch"
+                               class="onoffswitch-checkbox"/>
                         <label class="onoffswitch-label" for="follow-my-location-switch">
                             <span class="switch-label" data-on="On" data-off="Off"></span>
                             <span class="switch-handle"></span>
@@ -257,13 +264,15 @@ include('config.php');
                 <div class="form-control">
                     <label for="notify-perfection">
                         <h3>Notify of Perfection</h3>
-                        <input id="notify-perfection" type="text" name="notify-perfection" placeholder="Minimum perfection %"/>
+                        <input id="notify-perfection" type="text" name="notify-perfection"
+                               placeholder="Minimum perfection %"/>
                     </label>
                 </div>
                 <div class="form-control switch-container">
                     <h3>Notify with sound</h3>
                     <div class="onoffswitch">
-                        <input id="sound-switch" type="checkbox" name="sound-switch" class="onoffswitch-checkbox" checked>
+                        <input id="sound-switch" type="checkbox" name="sound-switch" class="onoffswitch-checkbox"
+                               checked>
                         <label class="onoffswitch-label" for="sound-switch">
                             <span class="switch-label" data-on="On" data-off="Off"></span>
                             <span class="switch-handle"></span>
@@ -320,7 +329,10 @@ include('config.php');
                 <table id="pokemonList_table" class="display" cellspacing="0" width="100%">
                     <thead>
                     <tr>
-                        <th>Icon</th> <th>Name</th> <th>Count</th> <th>%</th>
+                        <th>Icon</th>
+                        <th>Name</th>
+                        <th>Count</th>
+                        <th>%</th>
                     </tr>
                     </thead>
                     <tbody></tbody>
@@ -350,6 +362,7 @@ include('config.php');
 <script src="https://cdnjs.cloudflare.com/ajax/libs/skel/3.0.1/skel.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.3/js/select2.min.js"></script>
 <script src="https://cdn.datatables.net/1.10.12/js/jquery.dataTables.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.17.1/moment.min.js"></script>
 <script src="static/js/app.js"></script>
 <script src="static/js/vendor/classie.js"></script>
 <script>
