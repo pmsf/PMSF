@@ -1582,7 +1582,7 @@ function showGymDetails(id) { // eslint-disable-line no-unused-vars
     sidebar.classList.add('visible')
 
     var data = $.ajax({
-        url: 'gym_data',
+        url: 'gym_data.php',
         type: 'GET',
         data: {
             'id': id
@@ -1595,8 +1595,19 @@ function showGymDetails(id) { // eslint-disable-line no-unused-vars
         var gymLevel = getGymLevel(result.gym_points)
         var nextLvlPrestige = gymPrestige[gymLevel - 1] || 50000
         var prestigePercentage = (result.gym_points / nextLvlPrestige) * 100
-        var lastScannedDate = new Date(result.last_scanned)
-        var freeSlots = result.pokemon.length ? gymLevel - result.pokemon.length : 0
+        var lastModifiedDate = new Date(result.last_modified)
+        var options = {
+            day: 'numeric',
+            month: 'numeric',
+            year: 'numeric',
+            hour: '2-digit',
+            minute: '2-digit',
+            second: '2-digit',
+            hour12: false
+        };
+        lastModifiedStr = lastModifiedDate.toLocaleString("en-US", options)
+        var pokemon = result.pokemon !== undefined ? result.pokemon : [];
+        var freeSlots = pokemon.length ? gymLevel - pokemon.length : 0
         var freeSlotsStr = freeSlots ? ' - ' + freeSlots + ' Free Slots' : '';
         var gymLevelStr = ''
 
@@ -1608,10 +1619,10 @@ function showGymDetails(id) { // eslint-disable-line no-unused-vars
 
         var pokemonHtml = ''
 
-        var headerHtml = '\n            <center class="team-' + result.team_id + '-text">\n                <div>\n                    <b class="team-' + result.team_id + '-text">' + (result.name || '') + '</b>\n                </div>\n                <img height="100px" style="padding: 5px;" src="static/forts/' + gymTypes[result.team_id] + '_large.png">\n                <div class="prestige-bar team-' + result.team_id + '">\n                    <div class="prestige team-' + result.team_id + '" style="width: ' + prestigePercentage + '%">\n                    </div>\n                </div>\n                <div>\n                    ' + result.gym_points + '/' + nextLvlPrestige + '\n                </div>\n                ' + gymLevelStr + '\n                <div style="font-size: .7em;">\n                    Last Scanned: ' + lastScannedDate.getFullYear() + '-' + pad(lastScannedDate.getMonth() + 1) + '-' + pad(lastScannedDate.getDate()) + ' ' + pad(lastScannedDate.getHours()) + ':' + pad(lastScannedDate.getMinutes()) + ':' + pad(lastScannedDate.getSeconds()) + '\n                </div>\n                <div>\n                    <a href=\'javascript:void(0);\' onclick=\'javascript:openMapDirections(' + result.latitude + ',' + result.longitude + ');\' title=\'View in Maps\'>Get directions</a>\n                </div>\n            </center>\n       ;'
+        var headerHtml = '\n            <center class="team-' + result.team_id + '-text">\n                <div>\n                    <b class="team-' + result.team_id + '-text">' + (result.name || '') + '</b>\n                </div>\n                <img height="100px" style="padding: 5px;" src="static/forts/' + gymTypes[result.team_id] + '_large.png">\n                <div class="prestige-bar team-' + result.team_id + '">\n                    <div class="prestige team-' + result.team_id + '" style="width: ' + prestigePercentage + '%">\n                    </div>\n                </div>\n                <div>\n                    ' + result.gym_points + '/' + nextLvlPrestige + '\n                </div>\n                ' + gymLevelStr + '\n                <div style="font-size: .7em;">\n                    Last Modified: ' + lastModifiedStr + '\n                </div>\n                <div>\n                    <a href=\'javascript:void(0);\' onclick=\'javascript:openMapDirections(' + result.latitude + ',' + result.longitude + ');\' title=\'View in Maps\'>Get directions</a>\n                </div>\n            </center>\n       ;'
 
-        if (result.pokemon.length) {
-            $.each(result.pokemon, function (i, pokemon) {
+        if (pokemon.length) {
+            $.each(pokemon, function (i, pokemon) {
                 var perfectPercent = getIv(pokemon.iv_attack, pokemon.iv_defense, pokemon.iv_stamina);
                 var moveEnergy = Math.round(100 / pokemon.move_2_energy);
 

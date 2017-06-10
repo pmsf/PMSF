@@ -2,7 +2,7 @@
 <project version="4">
   <component name="ProjectTasksOptions">
     <TaskOptions isEnabled="true">
-      <option name="arguments" value="--no-cache --update $FileName$:$FileParentDir$/dist/css/app.built.css" />
+      <option name="arguments" value="--no-cache --sourcemap=none $FileName$:$FileParentDir$/dist/css/app.built.css" />
       <option name="checkSyntaxErrors" value="false" />
       <option name="description" value="Compiles .scss files into .css files" />
       <option name="exitCodeBehavior" value="ERROR" />
@@ -21,7 +21,7 @@
       <envs />
     </TaskOptions>
     <TaskOptions isEnabled="true">
-      <option name="arguments" value="--style compressed --no-cache --update $FileName$:$FileParentDir$/dist/css/app.min.css" />
+      <option name="arguments" value="--style compressed --no-cache --sourcemap=none $FileName$:$FileParentDir$/dist/css/app.min.css" />
       <option name="checkSyntaxErrors" value="true" />
       <option name="description" value="Compiles .scss files into .css files" />
       <option name="exitCodeBehavior" value="ERROR" />
