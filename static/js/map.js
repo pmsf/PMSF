@@ -951,7 +951,7 @@ function loadRawData() {
     var neLng = nePoint.lng();
 
     return $.ajax({
-        url: 'raw_data.php',
+        url: 'raw_data',
         type: 'GET',
         data: {
             'timestamp': timestamp,
@@ -1553,7 +1553,7 @@ function showGymDetails(id) {
     sidebar.classList.add('visible');
 
     var data = $.ajax({
-        url: 'gym_data.php',
+        url: 'gym_data',
         type: 'GET',
         data: {
             'id': id

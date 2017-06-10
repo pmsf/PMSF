@@ -1,0 +1,4 @@
+RewriteEngine on
+
+RewriteRule ^raw_data$ /raw_data.php?$1 [QSA,L]
+RewriteRule ^gym_data$ /gym_data.php?$1 [QSA,L]
