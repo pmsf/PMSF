@@ -97,6 +97,18 @@ if ($d["lastpokestops"] == "true") {
             $d["pokestops"] = get_stops($swLat, $swLng, $neLat, $neLng, $timestamp);
         }
     }
+
+    if ($luredonly == "true") {
+        foreach ($d["pokestops"] as $elementKey => $element) {
+            foreach ($element as $valueKey => $value) {
+                if ($valueKey == "lure_expiration") {
+                    if ($value == null) {
+                        unset($d["pokestops"][$elementKey]);
+                    }
+                }
+            }
+        }
+    }
 }
 
 if ($d["lastgyms"] == "true") {
