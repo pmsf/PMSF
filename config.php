@@ -16,8 +16,10 @@ use Medoo\Medoo;
 
 /* Location Settings */
 
-$startingLat = 41.652892;                                      // Starting latitude
-$startingLng = -83.541549;                                      // Starting longitude
+$startingLat = 41.771822;                                      // Starting latitude
+$startingLng = -87.8549371;                                      // Starting longitude
+
+$maxLatLng = 1;                                                 // Max latitude and longitude size (1 = ~110km, 0 to disable)
 
 /* Map Title + Language */
 
@@ -26,7 +28,7 @@ $locale = "en";                                                 // Display langu
 
 /* Google Maps Key */
 
-$gmapsKey = "AIzaSyBXZSI0gZ6I4-gumIiUd8Dfs-4SAlYY_xM";          // Google Maps API Key
+$gmapsKey = "";          // Google Maps API Key
 
 
 //-----------------------------------------------------
@@ -44,13 +46,13 @@ $purgeData = 0;
 //-----------------------------------------------------
 
 $db = new Medoo([// required
-            'database_type' => 'pgsql',                                 // mysql/mariadb/pgsql/sybase/oracle/mssql/sqlite
+            'database_type' => 'mysql',                                 // mysql/mariadb/pgsql/sybase/oracle/mssql/sqlite
             'database_name' => 'Monocle',
-            'server' => '149.56.240.220',
-            'username' => 'monocle',
-            'password' => 'Password1!',
+            'server' => '127.0.0.1',
+            'username' => 'database_user',
+            'password' => 'database_password',
+            'charset' => 'utf8',
 
             // [optional]
-            'charset' => 'utf8',
-            'port' => 5432,                                             // Comment out if not needed, just add // in front!
+            //'port' => 5432,                                             // Comment out if not needed, just add // in front!
         ]);

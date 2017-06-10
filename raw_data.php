@@ -1,5 +1,6 @@
 <?php
 include('config.php');
+
 $now = new DateTime();
 
 $d = array();
@@ -25,6 +26,17 @@ $d["lastgyms"] = isset($_GET['gyms']) ? $_GET['gyms'] : false;
 $d["lastslocs"] = isset($_GET['scanned']) ? $_GET['scanned'] : false;
 $d["lastspawns"] = isset($_GET['spawnpoints']) ? $_GET['spawnpoints'] : false;
 $d["lastpokemon"] = isset($_GET['pokemon']) ? $_GET['pokemon'] : false;
+
+$useragent = $_SERVER['HTTP_USER_AGENT'];
+if (empty($swLat) || empty($swLng) || empty($neLat) || empty($neLng) || preg_match("/curl|libcurl/", $useragent))
+{
+    http_response_code(400);
+    die();
+}
+if ($maxLatLng > 0 && ((($neLat - $swLat) > $maxLatLng) || (($neLng - $swLng) > $maxLatLng))) {
+    http_response_code(400);
+    die();
+}
 
 $newarea = false;
 
