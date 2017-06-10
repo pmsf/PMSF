@@ -1,3 +1,5 @@
+'use strict';
+
 /*eslint no-unused-vars: "off"*/
 
 var noLabelsStyle = [{
@@ -24,7 +26,7 @@ var noLabelsStyle = [{
     'stylers': [{
         'visibility': 'off'
     }]
-}]
+}];
 var light2Style = [{
     'elementType': 'geometry',
     'stylers': [{
@@ -115,7 +117,7 @@ var light2Style = [{
     }, {
         'weight': 2.7
     }]
-}]
+}];
 var darkStyle = [{
     'featureType': 'all',
     'elementType': 'labels.text.fill',
@@ -226,7 +228,7 @@ var darkStyle = [{
     }, {
         'color': '#525252'
     }]
-}]
+}];
 var pGoStyle = [{
     'featureType': 'landscape.man_made',
     'elementType': 'geometry.fill',
@@ -295,7 +297,7 @@ var pGoStyle = [{
     'stylers': [{
         'color': '#5ddad6'
     }]
-}]
+}];
 var light2StyleNoLabels = [{
     'elementType': 'geometry',
     'stylers': [{
@@ -404,7 +406,7 @@ var light2StyleNoLabels = [{
     'stylers': [{
         'visibility': 'off'
     }]
-}]
+}];
 var darkStyleNoLabels = [{
     'featureType': 'all',
     'elementType': 'labels.text.fill',
@@ -507,7 +509,7 @@ var darkStyleNoLabels = [{
     }, {
         'color': '#525252'
     }]
-}]
+}];
 var pGoStyleNoLabels = [{
     'featureType': 'landscape.man_made',
     'elementType': 'geometry.fill',
@@ -594,7 +596,7 @@ var pGoStyleNoLabels = [{
     'stylers': [{
         'visibility': 'off'
     }]
-}]
+}];
 var pGoStyleDay = [{
     'featureType': 'landscape.man_made',
     'elementType': 'geometry.fill',
@@ -681,7 +683,7 @@ var pGoStyleDay = [{
     'stylers': [{
         'color': '#d4ffbc'
     }]
-}]
+}];
 var pGoStyleNight = [{
     'featureType': 'landscape.man_made',
     'elementType': 'geometry.fill',
@@ -786,7 +788,7 @@ var pGoStyleNight = [{
     'stylers': [{
         'color': '#1fba9c'
     }]
-}]
+}];
 
 var pokemonSprites = {
     normal: {
@@ -834,56 +836,54 @@ var pokemonSprites = {
         filename: 'static/shiny-back.png',
         name: 'Shiny Back'
     }
-}
 
-//
-// LocalStorage helpers
-//
+    //
+    // LocalStorage helpers
+    //
 
-var StoreTypes = {
+};var StoreTypes = {
     Boolean: {
-        parse: function (str) {
+        parse: function parse(str) {
             switch (str.toLowerCase()) {
                 case '1':
                 case 'true':
                 case 'yes':
-                    return true
+                    return true;
                 default:
-                    return false
+                    return false;
             }
         },
-        stringify: function (b) {
-            return b ? 'true' : 'false'
+        stringify: function stringify(b) {
+            return b ? 'true' : 'false';
         }
     },
     JSON: {
-        parse: function (str) {
-            return JSON.parse(str)
+        parse: function parse(str) {
+            return JSON.parse(str);
         },
-        stringify: function (json) {
-            return JSON.stringify(json)
+        stringify: function stringify(json) {
+            return JSON.stringify(json);
         }
     },
     String: {
-        parse: function (str) {
-            return str
+        parse: function parse(str) {
+            return str;
         },
-        stringify: function (str) {
-            return str
+        stringify: function stringify(str) {
+            return str;
         }
     },
     Number: {
-        parse: function (str) {
-            return parseInt(str, 10)
+        parse: function parse(str) {
+            return parseInt(str, 10);
         },
-        stringify: function (number) {
-            return number.toString()
+        stringify: function stringify(number) {
+            return number.toString();
         }
     }
-}
 
-// set the default parameters for you map here
-var StoreOptions = {
+    // set the default parameters for you map here
+};var StoreOptions = {
     'map_style': {
         default: 'roadmap', // roadmap, satellite, hybrid, nolabels_style, dark_style, style_light2, style_pgo, dark_style_nl, style_pgo_day, style_pgo_night, style_pgo_dynamic
         type: StoreTypes.String
@@ -1012,36 +1012,36 @@ var StoreOptions = {
         default: 16,
         type: StoreTypes.Number
     }
-}
+};
 
 var Store = {
-    getOption: function (key) {
-        var option = StoreOptions[key]
+    getOption: function getOption(key) {
+        var option = StoreOptions[key];
         if (!option) {
-            throw new Error('Store key was not defined ' + key)
+            throw new Error('Store key was not defined ' + key);
         }
-        return option
+        return option;
     },
-    get: function (key) {
-        var option = this.getOption(key)
-        var optionType = option.type
-        var rawValue = localStorage[key]
+    get: function get(key) {
+        var option = this.getOption(key);
+        var optionType = option.type;
+        var rawValue = localStorage[key];
         if (rawValue === null || rawValue === undefined) {
-            return option.default
+            return option.default;
         }
-        var value = optionType.parse(rawValue)
-        return value
+        var value = optionType.parse(rawValue);
+        return value;
     },
-    set: function (key, value) {
-        var option = this.getOption(key)
-        var optionType = option.type || StoreTypes.String
-        var rawValue = optionType.stringify(value)
-        localStorage[key] = rawValue
+    set: function set(key, value) {
+        var option = this.getOption(key);
+        var optionType = option.type || StoreTypes.String;
+        var rawValue = optionType.stringify(value);
+        localStorage[key] = rawValue;
     },
-    reset: function (key) {
-        localStorage.removeItem(key)
+    reset: function reset(key) {
+        localStorage.removeItem(key);
     }
-}
+};
 
 var mapData = {
     pokemons: {},
@@ -1050,18 +1050,16 @@ var mapData = {
     lurePokemons: {},
     scanned: {},
     spawnpoints: {}
-}
+};
 
 function getGoogleSprite(index, sprite, displayHeight) {
-    displayHeight = Math.max(displayHeight, 3)
-    var scale = displayHeight / sprite.iconHeight
+    displayHeight = Math.max(displayHeight, 3);
+    var scale = displayHeight / sprite.iconHeight;
     // Crop icon just a tiny bit to avoid bleedover from neighbor
-    var scaledIconSize = new google.maps.Size(scale * sprite.iconWidth - 1, scale * sprite.iconHeight - 1)
-    var scaledIconOffset = new google.maps.Point(
-        (index % sprite.columns) * sprite.iconWidth * scale + 0.5,
-        Math.floor(index / sprite.columns) * sprite.iconHeight * scale + 0.5)
-    var scaledSpriteSize = new google.maps.Size(scale * sprite.spriteWidth, scale * sprite.spriteHeight)
-    var scaledIconCenterOffset = new google.maps.Point(scale * sprite.iconWidth / 2, scale * sprite.iconHeight / 2)
+    var scaledIconSize = new google.maps.Size(scale * sprite.iconWidth - 1, scale * sprite.iconHeight - 1);
+    var scaledIconOffset = new google.maps.Point(index % sprite.columns * sprite.iconWidth * scale + 0.5, Math.floor(index / sprite.columns) * sprite.iconHeight * scale + 0.5);
+    var scaledSpriteSize = new google.maps.Size(scale * sprite.spriteWidth, scale * sprite.spriteHeight);
+    var scaledIconCenterOffset = new google.maps.Point(scale * sprite.iconWidth / 2, scale * sprite.iconHeight / 2);
 
     return {
         url: sprite.filename,
@@ -1069,19 +1067,19 @@ function getGoogleSprite(index, sprite, displayHeight) {
         scaledSize: scaledSpriteSize,
         origin: scaledIconOffset,
         anchor: scaledIconCenterOffset
-    }
+    };
 }
 
 function setupPokemonMarker(item, map, isBounceDisabled) {
     // Scale icon size up with the map exponentially
-    var iconSize = 2 + (map.getZoom() - 3) * (map.getZoom() - 3) * 0.2 + Store.get('iconSizeModifier')
-    var pokemonIndex = item['pokemon_id'] - 1
-    var sprite = pokemonSprites[Store.get('pokemonIcons')] || pokemonSprites['monoclehq']
-    var icon = getGoogleSprite(pokemonIndex, sprite, iconSize)
+    var iconSize = 2 + (map.getZoom() - 3) * (map.getZoom() - 3) * 0.2 + Store.get('iconSizeModifier');
+    var pokemonIndex = item['pokemon_id'] - 1;
+    var sprite = pokemonSprites[Store.get('pokemonIcons')] || pokemonSprites['monoclehq'];
+    var icon = getGoogleSprite(pokemonIndex, sprite, iconSize);
 
-    var animationDisabled = false
+    var animationDisabled = false;
     if (isBounceDisabled === true) {
-        animationDisabled = true
+        animationDisabled = true;
     }
 
     var marker = new google.maps.Marker({
@@ -1093,17 +1091,18 @@ function setupPokemonMarker(item, map, isBounceDisabled) {
         map: map,
         icon: icon,
         animationDisabled: animationDisabled
-    })
+    });
 
-    return marker
+    return marker;
 }
 
 function isTouchDevice() {
     // Should cover most browsers
-    return 'ontouchstart' in window || navigator.maxTouchPoints
+    return 'ontouchstart' in window || navigator.maxTouchPoints;
 }
 
 function isMobileDevice() {
     //  Basic mobile OS (not browser) detection
-    return (/Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent))
+    return (/Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent)
+    );
 }
