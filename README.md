@@ -25,6 +25,9 @@ git clone https://Glennmen@bitbucket.org/Glennmen/msf-glennmen.git
 
 ### setup.php
 
+####Nginx
+* Add nginx.conf to your server nginx.conf file
+
 **Not needed, database columns are not used**
 * ~~Browse to your website and run the /install.php for example.... mywebsite.com/install.php.  If you see a white screen with no errors your map should now work, go to your website and enjoy the map!~~
 
