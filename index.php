@@ -104,7 +104,8 @@ include('config.php');
                             <option value="3">Instinct</option>
                         </select>
                     </div>
-                    <div class="form-control switch-container" id="open-gyms-only-wrapper">
+                    <?php if (false) {
+                        echo '<div class="form-control switch-container" id="open-gyms-only-wrapper">
                         <h3>Open Spot</h3>
                         <select name="open-gyms-only-switch" id="open-gyms-only-switch" disabled>
                             <option value="0">All</option>
@@ -113,7 +114,8 @@ include('config.php');
                             <option value="3">&lt;= 2500 Prestige Until Open Spot</option>
                             <option value="4">&lt;= 5000 Prestige Until Open Spot</option>
                         </select>
-                    </div>
+                    </div>';
+                    } ?>
                     <div class="form-control switch-container" id="min-level-gyms-filter-wrapper">
                         <h3>Minimum Level</h3>
                         <select name="min-level-gyms-filter-switch" id="min-level-gyms-filter-switch">
@@ -175,7 +177,8 @@ include('config.php');
                         <option value="1">Only Lured</option>
                     </select>
                 </div>
-                <div class="form-control switch-container">
+                <?php if (false) {
+                    echo '<div class="form-control switch-container">
                     <h3>Scanned Locations</h3>
                     <div class="onoffswitch">
                         <input id="scanned-switch" type="checkbox" name="scanned-switch" class="onoffswitch-checkbox"
@@ -196,7 +199,8 @@ include('config.php');
                             <span class="switch-handle"></span>
                         </label>
                     </div>
-                </div>
+                </div>';
+                } ?>
                 <div class="form-control switch-container">
                     <h3>Ranges</h3>
                     <div class="onoffswitch">
