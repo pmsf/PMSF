@@ -374,7 +374,7 @@ include('config.php');
     var centerLng = <?= $startingLng; ?>;
 </script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js"></script>
-<script src="static/js/map.common.js"></script>
+<script src="static/js/map.common.php"></script>
 <script src="static/js/map.js"></script>
 <script src="static/dist/js/stats.min.js"></script>
 <script defer
