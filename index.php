@@ -223,8 +223,8 @@ include('config.php');
                     <h3>Start map at my position</h3>
                     <div class="onoffswitch">
                         <input id="start-at-user-location-switch" type="checkbox" name="start-at-user-location-switch"
-                               class="onoffswitch-checkbox" disabled/>
-                        <label class="onoffswitch-label" for="start-at-user-location-switch" style="background: gray;">
+                               class="onoffswitch-checkbox"/>
+                        <label class="onoffswitch-label" for="start-at-user-location-switch">
                             <span class="switch-label" data-on="On" data-off="Off"></span>
                             <span class="switch-handle"></span>
                         </label>
