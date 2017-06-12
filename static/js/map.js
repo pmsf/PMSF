@@ -953,7 +953,7 @@ function loadRawData() {
     return $.ajax({
         url: 'raw_data',
         type: 'GET',
-        timeout: 10000,
+        timeout: 300000,
         data: {
             'timestamp': timestamp,
             'pokemon': loadPokemon,
@@ -1556,7 +1556,7 @@ function showGymDetails(id) {
     var data = $.ajax({
         url: 'gym_data',
         type: 'GET',
-        timeout: 10000,
+        timeout: 300000,
         data: {
             'id': id
         },
