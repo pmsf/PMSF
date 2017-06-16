@@ -189,19 +189,19 @@ include('config.php');
                             <span class="switch-handle" ></span >
                         </label >
                     </div >
-                </div >
-                <div class="form-control switch-container" >
-                    <h3 > Spawn Points </h3 >
-                    <div class="onoffswitch" >
-                        <input id = "spawnpoints-switch" type = "checkbox" name = "spawnpoints-switch"
-                               class="onoffswitch-checkbox" >
-                        <label class="onoffswitch-label" for="spawnpoints-switch" >
-                            <span class="switch-label" data - on = "On" data - off = "Off" ></span >
-                            <span class="switch-handle" ></span >
-                        </label >
-                    </div >
-                </div > ';
+                </div >';
                 } ?>
+                <div class="form-control switch-container">
+                    <h3> Spawn Points </h3>
+                    <div class="onoffswitch">
+                        <input id="spawnpoints-switch" type="checkbox" name="spawnpoints-switch"
+                               class="onoffswitch-checkbox">
+                        <label class="onoffswitch-label" for="spawnpoints-switch">
+                            <span class="switch-label" data - on="On" data - off="Off"></span>
+                            <span class="switch-handle"></span>
+                        </label>
+                    </div>
+                </div>
                 <div class="form-control switch-container">
                     <h3>Ranges</h3>
                     <div class="onoffswitch">

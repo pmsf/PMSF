@@ -436,60 +436,88 @@ function get_spawnpoints($swLat, $swLng, $neLat, $neLng, $tstamp = 0, $oSwLat = 
 
     global $map;
     if ($map == "monocle") {
+        if ($swLat == 0) {
+            $datas = $db->query("select lat, lon, spawn_id, despawn_time from spawnpoints where updated > 0")->fetchAll();
+        } elseif ($tstamp > 0) {
+            $datas = $db->query("select lat, lon, spawn_id, despawn_time from spawnpoints where updated > '" . $tstamp . "' and lat > " . $swLat . " and lon > " . $swLng . " and lat < " . $neLat . " and lon < " . $neLng)->fetchAll();
+        } elseif ($oSwLat != 0) {
+            $datas = $db->query("select lat, lon, spawn_id, despawn_time from spawnpoints where updated > 0 and lat > " . $swLat . " and lon > " . $swLng . " and lat < " . $neLat . " and lon < " . $neLng . " and not(lat > " . $oSwLat . " and lon > " . $oSwLng . " and lat < " . $oNeLat . " and lon < " . $oNeLng . ")")->fetchAll();
+        } else {
+            $datas = $db->query("select lat, lon, spawn_id, despawn_time from spawnpoints where updated > 0 and lat > " . $swLat . " and lon > " . $swLng . " and lat < " . $neLat . " and lon < " . $neLng)->fetchAll();
+        }
 
+        $spawnpoints = array();
+        $i = 0;
+
+        foreach ($datas as $row) {
+            $p = array();
+
+            $p["latitude"] = floatval($row["lat"]);
+            $p["longitude"] = floatval($row["lon"]);
+            $p["spawnpoint_id"] = $row["spawn_id"];
+            $p["time"] = intval($row["despawn_time"]);
+
+            $spawnpoints[] = $p;
+
+            unset($row[$i]);
+
+            $i++;
+        }
+
+        return $spawnpoints;
     } else {
         if ($swLat == 0) {
-            $datas = $db->query("select latitude as lat, longitude as lon, spawnpoint_id, UNIX_TIMESTAMP(CONVERT_TZ(disappear_time, '+00:00', @@global.time_zone)) as time, count(spawnpoint_id) as count from pokemon group by latitude, longitude, spawnpoint_id, time")->fetchAll();
+            $datas = $db->query("select latitude as lat, longitude as lon, spawnpoint_id as spawn_id, UNIX_TIMESTAMP(CONVERT_TZ(disappear_time, '+00:00', @@global.time_zone)) as time, count(spawnpoint_id) as count from pokemon group by latitude, longitude, spawnpoint_id, time")->fetchAll();
         } elseif ($tstamp > 0) {
             $date = new DateTime();
             $date->setTimezone(new DateTimeZone('UTC'));
             $date->setTimestamp($tstamp);
-            $datas = $db->query("select latitude as lat, longitude as lon, spawnpoint_id, UNIX_TIMESTAMP(CONVERT_TZ(disappear_time, '+00:00', @@global.time_zone)) as time, count(spawnpoint_id) as count from pokemon where last_modified > '" . date_format($date, 'Y-m-d H:i:s') . "' and latitude > " . $swLat . " and longitude > " . $swLng . " and latitude < " . $neLat . " and longitude < " . $neLng . " group by latitude, longitude, spawnpoint_id, time")->fetchAll();
+            $datas = $db->query("select latitude as lat, longitude as lon, spawnpoint_id as spawn_id, UNIX_TIMESTAMP(CONVERT_TZ(disappear_time, '+00:00', @@global.time_zone)) as time, count(spawnpoint_id) as count from pokemon where last_modified > '" . date_format($date, 'Y-m-d H:i:s') . "' and latitude > " . $swLat . " and longitude > " . $swLng . " and latitude < " . $neLat . " and longitude < " . $neLng . " group by latitude, longitude, spawnpoint_id, time")->fetchAll();
         } elseif ($oSwLat != 0) {
-            $datas = $db->query("select latitude as lat, longitude as lon, spawnpoint_id, UNIX_TIMESTAMP(CONVERT_TZ(disappear_time, '+00:00', @@global.time_zone)) as time, count(spawnpoint_id) as count from pokemon where latitude > " . $swLat . " and longitude > " . $swLng . " and latitude < " . $neLat . " and longitude < " . $neLng . " and not(latitude > " . $oSwLat . " and longitude > " . $oSwLng . " and latitude < " . $oNeLat . " and longitude < " . $oNeLng . ") group by latitude, longitude, spawnpoint_id, time")->fetchAll();
+            $datas = $db->query("select latitude as lat, longitude as lon, spawnpoint_id as spawn_id, UNIX_TIMESTAMP(CONVERT_TZ(disappear_time, '+00:00', @@global.time_zone)) as time, count(spawnpoint_id) as count from pokemon where latitude > " . $swLat . " and longitude > " . $swLng . " and latitude < " . $neLat . " and longitude < " . $neLng . " and not(latitude > " . $oSwLat . " and longitude > " . $oSwLng . " and latitude < " . $oNeLat . " and longitude < " . $oNeLng . ") group by latitude, longitude, spawnpoint_id, time")->fetchAll();
         } else {
-            $datas = $db->query("select latitude as lat, longitude as lon, spawnpoint_id, UNIX_TIMESTAMP(CONVERT_TZ(disappear_time, '+00:00', @@global.time_zone)) as time, count(spawnpoint_id) as count from pokemon where latitude > " . $swLat . " and longitude > " . $swLng . " and latitude < " . $neLat . " and longitude < " . $neLng . " group by latitude, longitude, spawnpoint_id, time")->fetchAll();
-        }
-    }
-
-    $spawnpoints = array();
-    $spawnpoint_values = array();
-    $i = 0;
-
-    foreach ($datas as $row) {
-        $key = $row["spawnpoint_id"];
-        $count = intval($row["count"]);
-        $time = ($row["time"] + 2700) % 3600;
-
-        $p = array();
-
-        if (!array_key_exists($key, $spawnpoints)) {
-            $p[$key]["spawnpoint_id"] = $key;
-            $p[$key]["latitude"] = floatval($row["lat"]);
-            $p[$key]["longitude"] = floatval($row["lon"]);
-        } else {
-            $p[$key]["special"] = true;
+            $datas = $db->query("select latitude as lat, longitude as lon, spawnpoint_id as spawn_id, UNIX_TIMESTAMP(CONVERT_TZ(disappear_time, '+00:00', @@global.time_zone)) as time, count(spawnpoint_id) as count from pokemon where latitude > " . $swLat . " and longitude > " . $swLng . " and latitude < " . $neLat . " and longitude < " . $neLng . " group by latitude, longitude, spawnpoint_id, time")->fetchAll();
         }
 
-        if (!array_key_exists("time", $p[$key]) || $count >= $p[$key]["count"]) {
-            $p[$key]["time"] = $time;
-            $p[$key]["count"] = $count;
+        $spawnpoints = array();
+        $spawnpoint_values = array();
+        $i = 0;
+
+        foreach ($datas as $row) {
+            $key = $row["spawn_id"];
+            $count = intval($row["count"]);
+            $time = ($row["time"] + 2700) % 3600;
+
+            $p = array();
+
+            if (!array_key_exists($key, $spawnpoints)) {
+                $p[$key]["spawnpoint_id"] = $key;
+                $p[$key]["latitude"] = floatval($row["lat"]);
+                $p[$key]["longitude"] = floatval($row["lon"]);
+            } else {
+                $p[$key]["special"] = true;
+            }
+
+            if (!array_key_exists("time", $p[$key]) || $count >= $p[$key]["count"]) {
+                $p[$key]["time"] = $time;
+                $p[$key]["count"] = $count;
+            }
+
+            $spawnpoints[] = $p;
+            $spawnpoint_values[] = $p[$key];
+
+            unset($datas[$i]);
+
+            $i++;
         }
 
-        $spawnpoints[] = $p;
-        $spawnpoint_values[] = $p[$key];
+        foreach ($spawnpoint_values as $key => $subArr) {
+            unset($subArr['count']);
+            $spawnpoint_values[$key] = $subArr;
+        }
 
-        unset($datas[$i]);
-
-        $i++;
+        return $spawnpoint_values;
     }
-
-    foreach ($spawnpoint_values as $key => $subArr) {
-        unset($subArr['count']);
-        $spawnpoint_values[$key] = $subArr;
-    }
-
-    return $spawnpoint_values;
 }
 
 function get_recent($swLat, $swLng, $neLat, $neLng, $tstamp = 0, $oSwLat = 0, $oSwLng = 0, $oNeLat = 0, $oNeLng = 0)
