@@ -207,6 +207,10 @@ function get_active($swLat, $swLng, $neLat, $neLng, $tstamp = 0, $oSwLat = 0, $o
         $sta = isset($row["sta_iv"]) ? intval($row["sta_iv"]) : null;
         $mv1 = isset($row["move_1"]) ? intval($row["move_1"]) : null;
         $mv2 = isset($row["move_2"]) ? intval($row["move_2"]) : null;
+        $weight = isset($row["weight"]) ? floatval($row["weight"]) : null;
+        $height = isset($row["height"]) ? floatval($row["height"]) : null;
+        $gender = isset($row["gender"]) ? intval($row["gender"]) : null;
+        $form = isset($row["form"]) ? intval($row["form"]) : null;
         $cp = isset($row["cp"]) ? intval($row["cp"]) : null;
         $cpm = isset($row["cp_multiplier"]) ? floatval($row["cp_multiplier"]) : null;
 
@@ -219,6 +223,10 @@ function get_active($swLat, $swLng, $neLat, $neLng, $tstamp = 0, $oSwLat = 0, $o
         $p["longitude"] = $lon; //done
         $p["move_1"] = $mv1; //done
         $p["move_2"] = $mv2;
+        $p["weight"] = $weight;
+        $p["height"] = $height;
+        $p["gender"] = $gender;
+        $p["form"] = $form;
         $p["pokemon_id"] = $pokeid;
         $p["pokemon_name"] = $data[$pokeid]['name'];
         $p["pokemon_rarity"] = $data[$pokeid]['rarity'];
