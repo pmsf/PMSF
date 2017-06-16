@@ -171,34 +171,36 @@ include('config.php');
                         </label>
                     </div>
                 </div>
-                <div class="form-control switch-container" id="lured-pokestops-only-wrapper" style="display:none">
+                <?php if ($map != "monocle") {
+                    echo '<div class="form-control switch-container" id="lured-pokestops-only-wrapper" style="display:none">
                     <select name="lured-pokestops-only-switch" id="lured-pokestops-only-switch">
                         <option value="0">All</option>
                         <option value="1">Only Lured</option>
                     </select>
-                </div>
-                <?php if ($map != "monocle") {
-                    echo '<div class="form-control switch-container">
-                    <h3>Scanned Locations</h3>
-                    <div class="onoffswitch">
-                        <input id="scanned-switch" type="checkbox" name="scanned-switch" class="onoffswitch-checkbox">
-                        <label class="onoffswitch-label" for="scanned-switch">
-                            <span class="switch-label" data-on="On" data-off="Off"></span>
-                            <span class="switch-handle"></span>
-                        </label>
-                    </div>
-                </div>
-                <div class="form-control switch-container">
-                    <h3>Spawn Points</h3>
-                    <div class="onoffswitch">
-                        <input id="spawnpoints-switch" type="checkbox" name="spawnpoints-switch"
-                               class="onoffswitch-checkbox">
-                        <label class="onoffswitch-label" for="spawnpoints-switch">
-                            <span class="switch-label" data-on="On" data-off="Off"></span>
-                            <span class="switch-handle"></span>
-                        </label>
-                    </div>
                 </div>';
+                } ?>
+                <?php if ($map != "monocle") {
+                    echo ' <div class="form-control switch-container" >
+                    <h3 > Scanned Locations </h3 >
+                    <div class="onoffswitch" >
+                        <input id = "scanned-switch" type = "checkbox" name = "scanned-switch" class="onoffswitch-checkbox" >
+                        <label class="onoffswitch-label" for="scanned-switch" >
+                            <span class="switch-label" data - on = "On" data - off = "Off" ></span >
+                            <span class="switch-handle" ></span >
+                        </label >
+                    </div >
+                </div >
+                <div class="form-control switch-container" >
+                    <h3 > Spawn Points </h3 >
+                    <div class="onoffswitch" >
+                        <input id = "spawnpoints-switch" type = "checkbox" name = "spawnpoints-switch"
+                               class="onoffswitch-checkbox" >
+                        <label class="onoffswitch-label" for="spawnpoints-switch" >
+                            <span class="switch-label" data - on = "On" data - off = "Off" ></span >
+                            <span class="switch-handle" ></span >
+                        </label >
+                    </div >
+                </div > ';
                 } ?>
                 <div class="form-control switch-container">
                     <h3>Ranges</h3>
