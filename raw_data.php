@@ -89,12 +89,12 @@ if ($d["lastpokemon"] == "true") {
 
 if ($d["lastpokestops"] == "true") {
     if ($lastpokestops != "true") {
-        $d["pokestops"] = get_stops($swLat, $swLng, $neLat, $neLng);
+        $d["pokestops"] = get_stops($swLat, $swLng, $neLat, $neLng, 0, 0, 0, 0, 0, $luredonly);
     } else {
         if ($newarea) {
-            $d["pokestops"] = get_stops($swLat, $swLng, $neLat, $neLng, 0, $oSwLat, $oSwLng, $oNeLat, $oNeLng);
+            $d["pokestops"] = get_stops($swLat, $swLng, $neLat, $neLng, 0, $oSwLat, $oSwLng, $oNeLat, $oNeLng, $luredonly);
         } else {
-            $d["pokestops"] = get_stops($swLat, $swLng, $neLat, $neLng, $timestamp);
+            $d["pokestops"] = get_stops($swLat, $swLng, $neLat, $neLng, $timestamp, 0, 0, 0, 0, $luredonly);
         }
     }
 
@@ -123,6 +123,30 @@ if ($d["lastgyms"] == "true") {
     }
 }
 
+if ($d["lastspawns"] == "true") {
+    if ($lastspawns != "true") {
+        $d["spawnpoints"] = get_spawnpoints($swLat, $swLng, $neLat, $neLng);
+    } else {
+        if ($newarea) {
+            $d["spawnpoints"] = get_spawnpoints($swLat, $swLng, $neLat, $neLng, 0, $oSwLat, $oSwLng, $oNeLat, $oNeLng);
+        } else {
+            $d["spawnpoints"] = get_spawnpoints($swLat, $swLng, $neLat, $neLng, $timestamp);
+        }
+    }
+}
+
+if ($d["lastslocs"] == "true") {
+    if ($lastlocs != "true") {
+        $d["scanned"] = get_recent($swLat, $swLng, $neLat, $neLng);
+    } else {
+        if ($newarea) {
+            $d["scanned"] = get_recent($swLat, $swLng, $neLat, $neLng, 0, $oSwLat, $oSwLng, $oNeLat, $oNeLng);
+        } else {
+            $d["scanned"] = get_recent($swLat, $swLng, $neLat, $neLng, $timestamp);
+        }
+    }
+}
+
 $jaysson = json_encode($d);
 echo $jaysson;
 
@@ -132,14 +156,33 @@ function get_active($swLat, $swLng, $neLat, $neLng, $tstamp = 0, $oSwLat = 0, $o
 
     $datas = "";
 
-    if ($swLat == 0) {
-        $datas = $db->query("select * from sightings where expire_timestamp > " . time())->fetchAll();
-    } elseif ($tstamp > 0) {
-        $datas = $db->query("select * from sightings where expire_timestamp > " . time() . " and lat > " . $swLat . " and lon > " . $swLng . " and lat < " . $neLat . " and lon < " . $neLng)->fetchAll();
-    } elseif ($oSwLat != 0) {
-        $datas = $db->query("select * from sightings where expire_timestamp > " . time() . " and lat > " . $swLat . " and lon > " . $swLng . " and lat < " . $neLat . " and lon < " . $neLng . " and not(lat > " . $oSwLat . " and lon > " . $oSwLng . " and lat < " . $oNeLat . " and lon < " . $oNeLng . ")")->fetchAll();
+    global $map;
+    if ($map == "monocle") {
+        if ($swLat == 0) {
+            $datas = $db->query("select * from sightings where expire_timestamp > " . time())->fetchAll();
+        } elseif ($tstamp > 0) {
+            $datas = $db->query("select * from sightings where expire_timestamp > " . time() . " and lat > " . $swLat . " and lon > " . $swLng . " and lat < " . $neLat . " and lon < " . $neLng)->fetchAll();
+        } elseif ($oSwLat != 0) {
+            $datas = $db->query("select * from sightings where expire_timestamp > " . time() . " and lat > " . $swLat . " and lon > " . $swLng . " and lat < " . $neLat . " and lon < " . $neLng . " and not(lat > " . $oSwLat . " and lon > " . $oSwLng . " and lat < " . $oNeLat . " and lon < " . $oNeLng . ")")->fetchAll();
+        } else {
+            $datas = $db->query("select * from sightings where expire_timestamp > " . time() . " and lat > " . $swLat . " and lon > " . $swLng . " and lat < " . $neLat . " and lon < " . $neLng)->fetchAll();
+        }
     } else {
-        $datas = $db->query("select * from sightings where expire_timestamp > " . time() . " and lat > " . $swLat . " and lon > " . $swLng . " and lat < " . $neLat . " and lon < " . $neLng)->fetchAll();
+        $time = new DateTime();
+        $time->setTimeZone(new DateTimeZone('UTC'));
+        $time->setTimestamp(time());
+        if ($swLat == 0) {
+            $datas = $db->query("select *, UNIX_TIMESTAMP(CONVERT_TZ(disappear_time, '+00:00', @@global.time_zone)) as expire_timestamp, latitude as lat, longitude as lon, individual_attack as atk_iv, individual_defense as def_iv, individual_stamina as sta_iv, spawnpoint_id as spawn_id from pokemon where disappear_time > '" . date_format($time, 'Y-m-d H:i:s') . "'")->fetchAll();
+        } elseif ($tstamp > 0) {
+            $date = new DateTime();
+            $date->setTimezone(new DateTimeZone('UTC'));
+            $date->setTimestamp($tstamp);
+            $datas = $db->query("select *, UNIX_TIMESTAMP(CONVERT_TZ(disappear_time, '+00:00', @@global.time_zone)) as expire_timestamp, latitude as lat, longitude as lon, individual_attack as atk_iv, individual_defense as def_iv, individual_stamina as sta_iv, spawnpoint_id as spawn_id from pokemon where disappear_time > '" . date_format($time, 'Y-m-d H:i:s') . "' and last_modified > '" . date_format($date, 'Y-m-d H:i:s') . "' and latitude > " . $swLat . " and longitude > " . $swLng . " and latitude < " . $neLat . " and longitude < " . $neLng)->fetchAll();
+        } elseif ($oSwLat != 0) {
+            $datas = $db->query("select *, UNIX_TIMESTAMP(CONVERT_TZ(disappear_time, '+00:00', @@global.time_zone)) as expire_timestamp, latitude as lat, longitude as lon, individual_attack as atk_iv, individual_defense as def_iv, individual_stamina as sta_iv, spawnpoint_id as spawn_id from pokemon where disappear_time > '" . date_format($time, 'Y-m-d H:i:s') . "' and latitude > " . $swLat . " and longitude > " . $swLng . " and latitude < " . $neLat . " and longitude < " . $neLng . " and not(latitude > " . $oSwLat . " and longitude > " . $oSwLng . " and latitude < " . $oNeLat . " and longitude < " . $oNeLng . ")")->fetchAll();
+        } else {
+            $datas = $db->query("select *, UNIX_TIMESTAMP(CONVERT_TZ(disappear_time, '+00:00', @@global.time_zone)) as expire_timestamp, latitude as lat, longitude as lon, individual_attack as atk_iv, individual_defense as def_iv, individual_stamina as sta_iv, spawnpoint_id as spawn_id from pokemon where disappear_time > '" . date_format($time, 'Y-m-d H:i:s') . "' and latitude > " . $swLat . " and longitude > " . $swLng . " and latitude < " . $neLat . " and longitude < " . $neLng)->fetchAll();
+        }
     }
 
     $pokemons = array();
@@ -204,21 +247,46 @@ function get_active_by_id($ids, $swLat, $swLng, $neLat, $neLng)
     return $pokemons;
 }
 
-function get_stops($swLat, $swLng, $neLat, $neLng, $tstamp = 0, $oSwLat = 0, $oSwLng = 0, $oNeLat = 0, $oNeLng = 0)
+function get_stops($swLat, $swLng, $neLat, $neLng, $tstamp = 0, $oSwLat = 0, $oSwLng = 0, $oNeLat = 0, $oNeLng = 0, $lured = false)
 {
 
     global $db;
 
     $datas = "";
 
-    if ($swLat == 0) {
-        $datas = $db->query("select external_id, lat, lon from pokestops")->fetchAll();
-    } elseif ($tstamp > 0) {
-        $datas = $db->query("select external_id, lat, lon from pokestops where lat > " . $swLat . " and lon > " . $swLng . " and lat < " . $neLat . " and lon < " . $neLng)->fetchAll();
-    } elseif ($oSwLat != 0) {
-        $datas = $db->query("select external_id, lat, lon from pokestops where lat > " . $swLat . " and lon > " . $swLng . " and lat < " . $neLat . " and lon < " . $neLng . " and not(lat > " . $oSwLat . " and lon > " . $oSwLng . " and lat < " . $oNeLat . " and lon < " . $oNeLng . ")")->fetchAll();
+    global $map;
+    if ($map == "monocle") {
+        if ($swLat == 0) {
+            $datas = $db->query("select external_id, lat, lon from pokestops")->fetchAll();
+        } elseif ($tstamp > 0) {
+            $datas = $db->query("select external_id, lat, lon from pokestops where lat > " . $swLat . " and lon > " . $swLng . " and lat < " . $neLat . " and lon < " . $neLng)->fetchAll();
+        } elseif ($oSwLat != 0) {
+            $datas = $db->query("select external_id, lat, lon from pokestops where lat > " . $swLat . " and lon > " . $swLng . " and lat < " . $neLat . " and lon < " . $neLng . " and not(lat > " . $oSwLat . " and lon > " . $oSwLng . " and lat < " . $oNeLat . " and lon < " . $oNeLng . ")")->fetchAll();
+        } else {
+            $datas = $db->query("select external_id, lat, lon from pokestops where lat > " . $swLat . " and lon > " . $swLng . " and lat < " . $neLat . " and lon < " . $neLng)->fetchAll();
+        }
     } else {
-        $datas = $db->query("select external_id, lat, lon from pokestops where lat > " . $swLat . " and lon > " . $swLng . " and lat < " . $neLat . " and lon < " . $neLng)->fetchAll();
+        if ($swLat == 0) {
+            $datas = $db->query("select active_fort_modifier, enabled, UNIX_TIMESTAMP(CONVERT_TZ(last_modified, '+00:00', @@global.time_zone)) as last_modified, UNIX_TIMESTAMP(CONVERT_TZ(lure_expiration, '+00:00', @@global.time_zone)) as lure_expiration, pokestop_id as external_id, latitude as lat, longitude as lon from pokestop")->fetchAll();
+        } elseif ($tstamp > 0 && $lured == "true") {
+            $date = new DateTime();
+            $date->setTimezone(new DateTimeZone('UTC'));
+            $date->setTimestamp($tstamp);
+            $datas = $db->query("select active_fort_modifier, enabled, UNIX_TIMESTAMP(CONVERT_TZ(last_modified, '+00:00', @@global.time_zone)) as last_modified, UNIX_TIMESTAMP(CONVERT_TZ(lure_expiration, '+00:00', @@global.time_zone)) as lure_expiration, pokestop_id as external_id, latitude as lat, longitude as lon from pokestop where last_updated > '" . date_format($date, 'Y-m-d H:i:s') . "' and active_fort_modifier is not null and latitude > " . $swLat . " and longitude > " . $swLng . " and latitude < " . $neLat . " and longitude < " . $neLng)->fetchAll();
+        } elseif ($tstamp > 0) {
+            $date = new DateTime();
+            $date->setTimezone(new DateTimeZone('UTC'));
+            $date->setTimestamp($tstamp);
+            $datas = $db->query("select active_fort_modifier, enabled, UNIX_TIMESTAMP(CONVERT_TZ(last_modified, '+00:00', @@global.time_zone)) as last_modified, UNIX_TIMESTAMP(CONVERT_TZ(lure_expiration, '+00:00', @@global.time_zone)) as lure_expiration, pokestop_id as external_id, latitude as lat, longitude as lon from pokestop where last_updated > '" . date_format($date, 'Y-m-d H:i:s') . "' and latitude > " . $swLat . " and longitude > " . $swLng . " and latitude < " . $neLat . " and longitude < " . $neLng)->fetchAll();
+        } elseif ($oSwLat != 0 && $lured == "true") {
+            $datas = $db->query("select active_fort_modifier, enabled, UNIX_TIMESTAMP(CONVERT_TZ(last_modified, '+00:00', @@global.time_zone)) as last_modified, UNIX_TIMESTAMP(CONVERT_TZ(lure_expiration, '+00:00', @@global.time_zone)) as lure_expiration, pokestop_id as external_id, latitude as lat, longitude as lon from pokestop where active_fort_modifier is not null and (latitude > " . $swLat . " and longitude > " . $swLng . " and latitude < " . $neLat . " and longitude < " . $neLng . ") and not(latitude > " . $oSwLat . " and longitude > " . $oSwLng . " and latitude < " . $oNeLat . " and longitude < " . $oNeLng . ") and active_fort_modifier is not null")->fetchAll();
+        } elseif ($oSwLat != 0) {
+            $datas = $db->query("select active_fort_modifier, enabled, UNIX_TIMESTAMP(CONVERT_TZ(last_modified, '+00:00', @@global.time_zone)) as last_modified, UNIX_TIMESTAMP(CONVERT_TZ(lure_expiration, '+00:00', @@global.time_zone)) as lure_expiration, pokestop_id as external_id, latitude as lat, longitude as lon from pokestop where latitude > " . $swLat . " and longitude > " . $swLng . " and latitude < " . $neLat . " and longitude < " . $neLng . " and not(latitude > " . $oSwLat . " and longitude > " . $oSwLng . " and latitude < " . $oNeLat . " and longitude < " . $oNeLng . ")")->fetchAll();
+        } elseif ($lured == "true") {
+            $datas = $db->query("select active_fort_modifier, enabled, UNIX_TIMESTAMP(CONVERT_TZ(last_modified, '+00:00', @@global.time_zone)) as last_modified, UNIX_TIMESTAMP(CONVERT_TZ(lure_expiration, '+00:00', @@global.time_zone)) as lure_expiration, pokestop_id as external_id, latitude as lat, longitude as lon from pokestop where active_fort_modifier is not null and latitude > " . $swLat . " and longitude > " . $swLng . " and latitude < " . $neLat . " and longitude < " . $neLng)->fetchAll();
+        } else {
+            $datas = $db->query("select active_fort_modifier, enabled, UNIX_TIMESTAMP(CONVERT_TZ(last_modified, '+00:00', @@global.time_zone)) as last_modified, UNIX_TIMESTAMP(CONVERT_TZ(lure_expiration, '+00:00', @@global.time_zone)) as lure_expiration, pokestop_id as external_id, latitude as lat, longitude as lon from pokestop where latitude > " . $swLat . " and longitude > " . $swLng . " and latitude < " . $neLat . " and longitude < " . $neLng)->fetchAll();
+        }
     }
 
     $i = 0;
@@ -232,12 +300,12 @@ function get_stops($swLat, $swLng, $neLat, $neLng, $tstamp = 0, $oSwLat = 0, $oS
         $lat = floatval($row["lat"]);
         $lon = floatval($row["lon"]);
 
-        $p["active_fort_modifier"] = null;
-        $p["enabled"] = true;
-        $p["last_modified"] = 0;
+        $p["active_fort_modifier"] = isset($row["active_fort_modifier"]) ? $row["active_fort_modifier"] : null;
+        $p["enabled"] = isset($row["enabled"]) ? boolval($row["enabled"]) : true;
+        $p["last_modified"] = isset($row["last_modified"]) ? intval($row["last_modified"]) * 1000 : 0;
         $p["latitude"] = $lat;
         $p["longitude"] = $lon;
-        $p["lure_expiration"] = null;
+        $p["lure_expiration"] = isset($row["lure_expiration"]) ? intval($row["lure_expiration"]) * 1000 : null;
         $p["pokestop_id"] = $row["external_id"];
 
         $pokestops[] = $p;
@@ -257,51 +325,213 @@ function get_gyms($swLat, $swLng, $neLat, $neLng, $tstamp = 0, $oSwLat = 0, $oSw
 
     $datas = "";
 
-    if ($swLat == 0) {
-        $datas = $db->query("select t1.fort_id, t3.external_id, t3.lat, t3.lon, t1.last_modified, t1.team, t1.prestige, t1.guard_pokemon_id from(select fort_id, MAX(last_modified) AS MaxLastModified from fort_sightings group by fort_id) t2 left join fort_sightings t1 on t2.fort_id = t1.fort_id and t2.MaxLastModified = t1.last_modified left join forts t3 on t1.fort_id = t3.id")->fetchAll();
-    } elseif ($tstamp > 0) {
-        $datas = $db->query("select t1.fort_id, t3.external_id, t3.lat, t3.lon, t1.last_modified, t1.team, t1.prestige, t1.guard_pokemon_id from(select fort_id, MAX(last_modified) AS MaxLastModified from fort_sightings group by fort_id) t2 left join fort_sightings t1 on t2.fort_id = t1.fort_id and t2.MaxLastModified = t1.last_modified left join forts t3 on t1.fort_id = t3.id where t1.last_modified > " . $tstamp . " and t3.lat > " . $swLat . " and t3.lon > " . $swLng . " and t3.lat < " . $neLat . " and t3.lon < " . $neLng)->fetchAll();
-    } elseif ($oSwLat != 0) {
-        $datas = $db->query("select t1.fort_id, t3.external_id, t3.lat, t3.lon, t1.last_modified, t1.team, t1.prestige, t1.guard_pokemon_id from(select fort_id, MAX(last_modified) AS MaxLastModified from fort_sightings group by fort_id) t2 left join fort_sightings t1 on t2.fort_id = t1.fort_id and t2.MaxLastModified = t1.last_modified left join forts t3 on t1.fort_id = t3.id where t3.lat > " . $swLat . " and t3.lon > " . $swLng . " and t3.lat < " . $neLat . " and t3.lon < " . $neLng . " and not(t3.lat > " . $oSwLat . " and t3.lon > " . $oSwLng . " and t3.lat < " . $oNeLat . " and t3.lon < " . $oNeLng . ")")->fetchAll();
+    global $map;
+    if ($map == "monocle") {
+        if ($swLat == 0) {
+            $datas = $db->query("select t3.external_id, t3.lat, t3.lon, t1.last_modified, t1.team, t1.prestige, t1.guard_pokemon_id from(select fort_id, MAX(last_modified) AS MaxLastModified from fort_sightings group by fort_id) t2 left join fort_sightings t1 on t2.fort_id = t1.fort_id and t2.MaxLastModified = t1.last_modified left join forts t3 on t1.fort_id = t3.id")->fetchAll();
+        } elseif ($tstamp > 0) {
+            $datas = $db->query("select t3.external_id, t3.lat, t3.lon, t1.last_modified, t1.team, t1.prestige, t1.guard_pokemon_id from(select fort_id, MAX(last_modified) AS MaxLastModified from fort_sightings group by fort_id) t2 left join fort_sightings t1 on t2.fort_id = t1.fort_id and t2.MaxLastModified = t1.last_modified left join forts t3 on t1.fort_id = t3.id where t1.last_modified > " . $tstamp . " and t3.lat > " . $swLat . " and t3.lon > " . $swLng . " and t3.lat < " . $neLat . " and t3.lon < " . $neLng)->fetchAll();
+        } elseif ($oSwLat != 0) {
+            $datas = $db->query("select t3.external_id, t3.lat, t3.lon, t1.last_modified, t1.team, t1.prestige, t1.guard_pokemon_id from(select fort_id, MAX(last_modified) AS MaxLastModified from fort_sightings group by fort_id) t2 left join fort_sightings t1 on t2.fort_id = t1.fort_id and t2.MaxLastModified = t1.last_modified left join forts t3 on t1.fort_id = t3.id where t3.lat > " . $swLat . " and t3.lon > " . $swLng . " and t3.lat < " . $neLat . " and t3.lon < " . $neLng . " and not(t3.lat > " . $oSwLat . " and t3.lon > " . $oSwLng . " and t3.lat < " . $oNeLat . " and t3.lon < " . $oNeLng . ")")->fetchAll();
+        } else {
+            $datas = $db->query("select t3.external_id, t3.lat, t3.lon, t1.last_modified, t1.team, t1.prestige, t1.guard_pokemon_id from(select fort_id, MAX(last_modified) AS MaxLastModified from fort_sightings group by fort_id) t2 left join fort_sightings t1 on t2.fort_id = t1.fort_id and t2.MaxLastModified = t1.last_modified left join forts t3 on t1.fort_id = t3.id where t3.lat > " . $swLat . " and t3.lon > " . $swLng . " and t3.lat < " . $neLat . " and t3.lon < " . $neLng)->fetchAll();
+        }
     } else {
-        $datas = $db->query("select t1.fort_id, t3.external_id, t3.lat, t3.lon, t1.last_modified, t1.team, t1.prestige, t1.guard_pokemon_id from(select fort_id, MAX(last_modified) AS MaxLastModified from fort_sightings group by fort_id) t2 left join fort_sightings t1 on t2.fort_id = t1.fort_id and t2.MaxLastModified = t1.last_modified left join forts t3 on t1.fort_id = t3.id where t3.lat > " . $swLat . " and t3.lon > " . $swLng . " and t3.lat < " . $neLat . " and t3.lon < " . $neLng)->fetchAll();
+        if ($swLat == 0) {
+            $datas = $db->query("select gym.gym_id as external_id, latitude as lat, longitude as lon, guard_pokemon_id, gym_points as prestige, UNIX_TIMESTAMP(CONVERT_TZ(last_modified, '+00:00', @@global.time_zone)) as last_modified, UNIX_TIMESTAMP(CONVERT_TZ(gym.last_scanned, '+00:00', @@global.time_zone)) as last_scanned, team_id as team, enabled, name from gym join gymdetails on gym.gym_id = gymdetails.gym_id")->fetchAll();
+        } elseif ($tstamp > 0) {
+            $date = new DateTime();
+            $date->setTimezone(new DateTimeZone('UTC'));
+            $date->setTimestamp($tstamp);
+            $datas = $db->query("select gym.gym_id as external_id, latitude as lat, longitude as lon, guard_pokemon_id, gym_points as prestige, UNIX_TIMESTAMP(CONVERT_TZ(last_modified, '+00:00', @@global.time_zone)) as last_modified, UNIX_TIMESTAMP(CONVERT_TZ(gym.last_scanned, '+00:00', @@global.time_zone)) as last_scanned, team_id as team, enabled, name from gym join gymdetails on gym.gym_id = gymdetails.gym_id where gym.last_scanned > '" . date_format($date, 'Y-m-d H:i:s') . "' and latitude > " . $swLat . " and longitude > " . $swLng . " and latitude < " . $neLat . " and longitude < " . $neLng)->fetchAll();
+        } elseif ($oSwLat != 0) {
+            $datas = $db->query("select gym.gym_id as external_id, latitude as lat, longitude as lon, guard_pokemon_id, gym_points as prestige, UNIX_TIMESTAMP(CONVERT_TZ(last_modified, '+00:00', @@global.time_zone)) as last_modified, UNIX_TIMESTAMP(CONVERT_TZ(gym.last_scanned, '+00:00', @@global.time_zone)) as last_scanned, team_id as team, enabled, name from gym join gymdetails on gym.gym_id = gymdetails.gym_id where latitude > " . $swLat . " and longitude > " . $swLng . " and latitude < " . $neLat . " and longitude < " . $neLng . " and not(latitude > " . $oSwLat . " and longitude > " . $oSwLng . " and latitude < " . $oNeLat . " and longitude < " . $oNeLng . ")")->fetchAll();
+        } else {
+            $datas = $db->query("select gym.gym_id as external_id, latitude as lat, longitude as lon, guard_pokemon_id, gym_points as prestige, UNIX_TIMESTAMP(CONVERT_TZ(last_modified, '+00:00', @@global.time_zone)) as last_modified, UNIX_TIMESTAMP(CONVERT_TZ(gym.last_scanned, '+00:00', @@global.time_zone)) as last_scanned, team_id as team, enabled, name from gym join gymdetails on gym.gym_id = gymdetails.gym_id where latitude > " . $swLat . " and longitude > " . $swLng . " and latitude < " . $neLat . " and longitude < " . $neLng)->fetchAll();
+        }
     }
 
     $i = 0;
 
     $gyms = array();
+    $gym_ids = array();
+
+    $json_poke = "static/data/pokemon.json";
+    $json_contents = file_get_contents($json_poke);
+    $data = json_decode($json_contents, TRUE);
 
     /* fetch associative array */
     foreach ($datas as $row) {
-        $p = array();
-
         $lat = floatval($row["lat"]);
         $lon = floatval($row["lon"]);
         $gpid = intval($row["guard_pokemon_id"]);
         $gp = intval($row["prestige"]);
         $lm = intval($row["last_modified"] * 1000);
+        $ls = isset($row["last_scanned"]) ? intval($row["last_scanned"]) * 1000 : null;
         $ti = isset($row["team"]) ? intval($row["team"]) : null;
 
-        $p2 = array();
+        $p = array();
 
-        $p2["enabled"] = true;
-        $p2["guard_pokemon_id"] = $gpid;
-        $p2["gym_id"] = $row["external_id"];
-        $p2["gym_points"] = $gp;
-        $p2["last_modified"] = $lm;
-        $p2["latitude"] = $lat;
-        $p2["longitude"] = $lon;
-        $p2["name"] = null;
-        $p2["team_id"] = $ti;
+        $p["enabled"] = isset($row["enabled"]) ? boolval($row["enabled"]) : true;
+        $p["guard_pokemon_id"] = $gpid;
+        $p["gym_id"] = $row["external_id"];
+        $p["gym_points"] = $gp;
+        $p["last_modified"] = $lm;
+        $p["last_scanned"] = $ls;
+        $p["latitude"] = $lat;
+        $p["longitude"] = $lon;
+        $p["name"] = isset($row["name"]) ? $row["name"] : null;
+        $p["team_id"] = $ti;
+        $p["pokemon"] = [];
 
-        $p[$row["external_id"]] = $p2;
+        $gym_ids[] = $row["external_id"];
 
-        $gyms[] = $p2;
+        $gyms[$row["external_id"]] = $p;
 
         unset($datas[$i]);
 
         $i++;
     }
 
+    $j = 0;
+    if ($map != "monocle") {
+        $ids = join("','", $gym_ids);
+        $pokemons = $db->query("select gymmember.gym_id, pokemon_id, cp, trainer.name, trainer.level from gymmember join gympokemon on gymmember.pokemon_uid = gympokemon.pokemon_uid join trainer on gympokemon.trainer_name = trainer.name join gym on gym.gym_id = gymmember.gym_id where gymmember.last_scanned > gym.last_modified and gymmember.gym_id in ('" . $ids . "') order by gymmember.gym_id, gympokemon.cp")->fetchAll();
+
+        foreach ($pokemons as $pokemon) {
+            $p = array();
+
+            $pid = $pokemon["pokemon_id"];
+
+            $p["pokemon_id"] = $pid;
+            $p["pokemon_name"] = $data[$pid]['name'];
+            $p["trainer_name"] = $pokemon["name"];
+            $p["trainer_level"] = $pokemon["level"];
+            $p["pokemon_cp"] = $pokemon["cp"];
+
+            $gyms[$pokemon["gym_id"]]["pokemon"][] = $p;
+
+            unset($pokemons[$j]);
+
+            $j++;
+        }
+    }
+
     return $gyms;
+}
+
+function get_spawnpoints($swLat, $swLng, $neLat, $neLng, $tstamp = 0, $oSwLat = 0, $oSwLng = 0, $oNeLat = 0, $oNeLng = 0)
+{
+    global $db;
+
+    $datas = "";
+
+    global $map;
+    if ($map == "monocle") {
+
+    } else {
+        if ($swLat == 0) {
+            $datas = $db->query("select latitude as lat, longitude as lon, spawnpoint_id, UNIX_TIMESTAMP(CONVERT_TZ(disappear_time, '+00:00', @@global.time_zone)) as time, count(spawnpoint_id) as count from pokemon group by latitude, longitude, spawnpoint_id, time")->fetchAll();
+        } elseif ($tstamp > 0) {
+            $date = new DateTime();
+            $date->setTimezone(new DateTimeZone('UTC'));
+            $date->setTimestamp($tstamp);
+            $datas = $db->query("select latitude as lat, longitude as lon, spawnpoint_id, UNIX_TIMESTAMP(CONVERT_TZ(disappear_time, '+00:00', @@global.time_zone)) as time, count(spawnpoint_id) as count from pokemon where last_modified > '" . date_format($date, 'Y-m-d H:i:s') . "' and latitude > " . $swLat . " and longitude > " . $swLng . " and latitude < " . $neLat . " and longitude < " . $neLng . " group by latitude, longitude, spawnpoint_id, time")->fetchAll();
+        } elseif ($oSwLat != 0) {
+            $datas = $db->query("select latitude as lat, longitude as lon, spawnpoint_id, UNIX_TIMESTAMP(CONVERT_TZ(disappear_time, '+00:00', @@global.time_zone)) as time, count(spawnpoint_id) as count from pokemon where latitude > " . $swLat . " and longitude > " . $swLng . " and latitude < " . $neLat . " and longitude < " . $neLng . " and not(latitude > " . $oSwLat . " and longitude > " . $oSwLng . " and latitude < " . $oNeLat . " and longitude < " . $oNeLng . ") group by latitude, longitude, spawnpoint_id, time")->fetchAll();
+        } else {
+            $datas = $db->query("select latitude as lat, longitude as lon, spawnpoint_id, UNIX_TIMESTAMP(CONVERT_TZ(disappear_time, '+00:00', @@global.time_zone)) as time, count(spawnpoint_id) as count from pokemon where latitude > " . $swLat . " and longitude > " . $swLng . " and latitude < " . $neLat . " and longitude < " . $neLng . " group by latitude, longitude, spawnpoint_id, time")->fetchAll();
+        }
+    }
+
+    $spawnpoints = array();
+    $spawnpoint_values = array();
+    $i = 0;
+
+    foreach ($datas as $row) {
+        $key = $row["spawnpoint_id"];
+        $count = intval($row["count"]);
+        $time = ($row["time"] + 2700) % 3600;
+
+        $p = array();
+
+        if (!array_key_exists($key, $spawnpoints)) {
+            $p[$key]["spawnpoint_id"] = $key;
+            $p[$key]["latitude"] = floatval($row["lat"]);
+            $p[$key]["longitude"] = floatval($row["lon"]);
+        } else {
+            $p[$key]["special"] = true;
+        }
+
+        if (!array_key_exists("time", $p[$key]) || $count >= $p[$key]["count"]) {
+            $p[$key]["time"] = $time;
+            $p[$key]["count"] = $count;
+        }
+
+        $spawnpoints[] = $p;
+        $spawnpoint_values[] = $p[$key];
+
+        unset($datas[$i]);
+
+        $i++;
+    }
+
+    foreach ($spawnpoint_values as $key => $subArr) {
+        unset($subArr['count']);
+        $spawnpoint_values[$key] = $subArr;
+    }
+
+    return $spawnpoint_values;
+}
+
+function get_recent($swLat, $swLng, $neLat, $neLng, $tstamp = 0, $oSwLat = 0, $oSwLng = 0, $oNeLat = 0, $oNeLng = 0)
+{
+    global $db;
+
+    $datas = "";
+
+    global $map;
+    if ($map == "monocle") {
+
+    } else {
+        if ($swLat == 0) {
+            $datas = $db->query("select latitude, longitude, UNIX_TIMESTAMP(CONVERT_TZ(last_modified, '+00:00', @@global.time_zone)) as last_modified from scannedlocation where last_modified >= '2017-06-16 15:57:32' order by last_modified asc")->fetchAll();
+        } elseif ($tstamp > 0) {
+            $date = new DateTime();
+            $date->setTimezone(new DateTimeZone('UTC'));
+            $date->setTimestamp($tstamp);
+            $datas = $db->query("select latitude, longitude, UNIX_TIMESTAMP(CONVERT_TZ(last_modified, '+00:00', @@global.time_zone)) as last_modified from scannedlocation where last_modified >= '" . date_format($date, 'Y-m-d H:i:s') . "' and latitude > " . $swLat . " and longitude > " . $swLng . " and latitude < " . $neLat . " and longitude < " . $neLng . " order by last_modified asc")->fetchAll();
+        } elseif ($oSwLat != 0) {
+            $date = new DateTime();
+            $date->setTimezone(new DateTimeZone('UTC'));
+            $date->sub(new DateInterval('PT15M'));
+            $datas = $db->query("select latitude, longitude, UNIX_TIMESTAMP(CONVERT_TZ(last_modified, '+00:00', @@global.time_zone)) as last_modified from scannedlocation where last_modified >= '" . date_format($date, 'Y-m-d H:i:s') . "' and latitude > " . $swLat . " and longitude > " . $swLng . " and latitude < " . $neLat . " and longitude < " . $neLng . " and not(latitude > " . $oSwLat . " and longitude > " . $oSwLng . " and latitude < " . $oNeLat . " and longitude < " . $oNeLng . ") and last_modified >= '" . date_format($date, 'Y-m-d H:i:s') . "' order by last_modified asc")->fetchAll();
+        } else {
+            $date = new DateTime();
+            $date->setTimezone(new DateTimeZone('UTC'));
+            $date->sub(new DateInterval('PT15M'));
+            $datas = $db->query("select latitude, longitude, UNIX_TIMESTAMP(CONVERT_TZ(last_modified, '+00:00', @@global.time_zone)) as last_modified from scannedlocation where last_modified >= '" . date_format($date, 'Y-m-d H:i:s') . "' and latitude > " . $swLat . " and longitude > " . $swLng . " and latitude < " . $neLat . " and longitude < " . $neLng . " order by last_modified asc")->fetchAll();
+        }
+    }
+
+    $recent = array();
+    $i = 0;
+
+    foreach ($datas as $row) {
+        $p = array();
+
+        $p["latitude"] = floatval($row["latitude"]);
+        $p["longitude"] = floatval($row["longitude"]);
+
+        $lm = intval($row["last_modified"] * 1000);
+        $p["last_modified"] = $lm;
+
+        $recent[] = $p;
+
+        unset($datas[$i]);
+
+        $i++;
+    }
+
+    return $recent;
 }

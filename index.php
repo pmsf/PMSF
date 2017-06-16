@@ -104,10 +104,10 @@ include('config.php');
                             <option value="3">Instinct</option>
                         </select>
                     </div>
-                    <?php if (false) {
+                    <?php if ($map != "monocle") {
                         echo '<div class="form-control switch-container" id="open-gyms-only-wrapper">
                         <h3>Open Spot</h3>
-                        <select name="open-gyms-only-switch" id="open-gyms-only-switch" disabled>
+                        <select name="open-gyms-only-switch" id="open-gyms-only-switch">
                             <option value="0">All</option>
                             <option value="1">Open Spot</option>
                             <option value="2">&lt;= 1000 Prestige Until Open Spot</option>
@@ -177,13 +177,12 @@ include('config.php');
                         <option value="1">Only Lured</option>
                     </select>
                 </div>
-                <?php if (false) {
+                <?php if ($map != "monocle") {
                     echo '<div class="form-control switch-container">
                     <h3>Scanned Locations</h3>
                     <div class="onoffswitch">
-                        <input id="scanned-switch" type="checkbox" name="scanned-switch" class="onoffswitch-checkbox"
-                               disabled>
-                        <label class="onoffswitch-label" for="scanned-switch" style="background: gray;">
+                        <input id="scanned-switch" type="checkbox" name="scanned-switch" class="onoffswitch-checkbox">
+                        <label class="onoffswitch-label" for="scanned-switch">
                             <span class="switch-label" data-on="On" data-off="Off"></span>
                             <span class="switch-handle"></span>
                         </label>
@@ -193,8 +192,8 @@ include('config.php');
                     <h3>Spawn Points</h3>
                     <div class="onoffswitch">
                         <input id="spawnpoints-switch" type="checkbox" name="spawnpoints-switch"
-                               class="onoffswitch-checkbox" disabled>
-                        <label class="onoffswitch-label" for="spawnpoints-switch" style="background: gray;">
+                               class="onoffswitch-checkbox">
+                        <label class="onoffswitch-label" for="spawnpoints-switch">
                             <span class="switch-label" data-on="On" data-off="Off"></span>
                             <span class="switch-handle"></span>
                         </label>
