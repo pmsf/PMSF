@@ -70,12 +70,12 @@ if ($d["lastpokemon"] == "true") {
     }
 
     if (isset($_GET['eids'])) {
-        $ids = explode(",", $_GET['eids']);
+        $eids = explode(",", $_GET['eids']);
 
         foreach ($d['pokemons'] as $elementKey => $element) {
             foreach ($element as $valueKey => $value) {
                 if ($valueKey == 'pokemon_id') {
-                    if (in_array($value, $ids)) {
+                    if (in_array($value, $eids)) {
                         //delete this particular object from the $array
                         unset($d['pokemons'][$elementKey]);
                     }
@@ -83,9 +83,15 @@ if ($d["lastpokemon"] == "true") {
             }
         }
     }
-}
 
-//currently really rubbish due to lack of data but need the formatting for tweaking later on!
+    if (isset($_GET['reids'])) {
+        $reids = explode(",", $_GET['reids']);
+
+        $d["pokemons"] = $d["pokemons"] + (get_active_by_id($reids, $swLat, $swLng, $neLat, $neLng));
+
+        $d["reids"] = !empty($_GET['reids']) ? $reids : null;
+    }
+}
 
 if ($d["lastpokestops"] == "true") {
     if ($lastpokestops != "true") {
@@ -236,9 +242,85 @@ function get_active($swLat, $swLng, $neLat, $neLng, $tstamp = 0, $oSwLat = 0, $o
 
 function get_active_by_id($ids, $swLat, $swLng, $neLat, $neLng)
 {
-    //to be added for when it's never used...
+    global $db;
+
+    $datas = "";
+
+    global $map;
+    if ($map == "monocle") {
+        if ($swLat == 0) {
+            $datas = $db->query("select * from sightings where expire_timestamp > " . time() . " and pokemon_id in (" . implode(',', array_map('intval', $ids)) . ")")->fetchAll();
+        } else {
+            $datas = $db->query("select * from sightings where expire_timestamp > " . time() . " and pokemon_id in (" . implode(',', array_map('intval', $ids)) . ") and lat > " . $swLat . " and lon > " . $swLng . " and lat < " . $neLat . " and lon < " . $neLng)->fetchAll();
+        }
+    } else {
+        $time = new DateTime();
+        $time->setTimeZone(new DateTimeZone('UTC'));
+        $time->setTimestamp(time());
+        if ($swLat == 0) {
+            $datas = $db->query("select *, UNIX_TIMESTAMP(CONVERT_TZ(disappear_time, '+00:00', @@global.time_zone)) as expire_timestamp, latitude as lat, longitude as lon, individual_attack as atk_iv, individual_defense as def_iv, individual_stamina as sta_iv, spawnpoint_id as spawn_id from pokemon where disappear_time > '" . date_format($time, 'Y-m-d H:i:s') . "' and pokemon_id in (" . implode(',', array_map('intval', $ids)) . ")")->fetchAll();
+        } else {
+            $datas = $db->query("select *, UNIX_TIMESTAMP(CONVERT_TZ(disappear_time, '+00:00', @@global.time_zone)) as expire_timestamp, latitude as lat, longitude as lon, individual_attack as atk_iv, individual_defense as def_iv, individual_stamina as sta_iv, spawnpoint_id as spawn_id from pokemon where disappear_time > '" . date_format($time, 'Y-m-d H:i:s') . "' and pokemon_id in (" . implode(',', array_map('intval', $ids)) . ") and latitude > " . $swLat . " and longitude > " . $swLng . " and latitude < " . $neLat . " and longitude < " . $neLng)->fetchAll();
+        }
+    }
 
     $pokemons = array();
+
+    $json_poke = "static/data/pokemon.json";
+    $json_contents = file_get_contents($json_poke);
+    $data = json_decode($json_contents, TRUE);
+
+    $i = 0;
+
+    /* fetch associative array */
+    foreach ($datas as $row) {
+        $p = array();
+
+        $dissapear = $row["expire_timestamp"] * 1000;
+        $lat = floatval($row["lat"]);
+        $lon = floatval($row["lon"]);
+        $pokeid = intval($row["pokemon_id"]);
+
+        $atk = isset($row["atk_iv"]) ? intval($row["atk_iv"]) : null;
+        $def = isset($row["def_iv"]) ? intval($row["def_iv"]) : null;
+        $sta = isset($row["sta_iv"]) ? intval($row["sta_iv"]) : null;
+        $mv1 = isset($row["move_1"]) ? intval($row["move_1"]) : null;
+        $mv2 = isset($row["move_2"]) ? intval($row["move_2"]) : null;
+        $weight = isset($row["weight"]) ? floatval($row["weight"]) : null;
+        $height = isset($row["height"]) ? floatval($row["height"]) : null;
+        $gender = isset($row["gender"]) ? intval($row["gender"]) : null;
+        $form = isset($row["form"]) ? intval($row["form"]) : null;
+        $cp = isset($row["cp"]) ? intval($row["cp"]) : null;
+        $cpm = isset($row["cp_multiplier"]) ? floatval($row["cp_multiplier"]) : null;
+
+        $p["disappear_time"] = $dissapear; //done
+        $p["encounter_id"] = $row["encounter_id"]; //done
+        $p["individual_attack"] = $atk; //done
+        $p["individual_defense"] = $def; //done
+        $p["individual_stamina"] = $sta; //done
+        $p["latitude"] = $lat; //done
+        $p["longitude"] = $lon; //done
+        $p["move_1"] = $mv1; //done
+        $p["move_2"] = $mv2;
+        $p["weight"] = $weight;
+        $p["height"] = $height;
+        $p["gender"] = $gender;
+        $p["form"] = $form;
+        $p["pokemon_id"] = $pokeid;
+        $p["pokemon_name"] = $data[$pokeid]['name'];
+        $p["pokemon_rarity"] = $data[$pokeid]['rarity'];
+        $p["cp"] = $cp;
+        $p["cp_multiplier"] = $cpm;
+
+        $p["pokemon_types"] = $data[$pokeid]["types"];
+        $p["spawnpoint_id"] = $row["spawn_id"];
+
+        $pokemons[] = $p;
+
+        unset($datas[$i]);
+
+        $i++;
+    }
 
     return $pokemons;
 }
