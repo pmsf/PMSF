@@ -7,17 +7,17 @@ PokeMap Standalone Frontend or PMSF for short is a PHP Map Interface for the Mon
 It supports all the common database engines, including MySQL, MariaDB, Postgres, MsSQL, SQLite
 
 ## Get Started
-Go to our[Wiki](https://github.com/Glennmen/PMSF/wiki)for more info about installation.
+Go to our [Wiki](https://github.com/Glennmen/PMSF/wiki) for more info about installation.
 
 ## Feedback
 Create an issue if you have any bugs, suggestions or improvements! (Discord channel will follow)
 
 ## Thanks
 
-* Thanks[MSF](https://github.com/Nuro/MSF)for the great basis for this project.
+* Thanks [MSF](https://github.com/Nuro/MSF) for the great basis for this project.
 
-* Noctem for the awesome[Monocle Scanner](https://github.com/Noctem/Monocle)!
+* Noctem for the awesome [Monocle Scanner](https://github.com/Noctem/Monocle)!
 
-* [RocketMap](https://github.com/RocketMap/RocketMap)for their scanner.
+* [RocketMap](https://github.com/RocketMap/RocketMap) for their scanner.
 
 * [Medoo](http://medoo.in) for the ORM framework.
