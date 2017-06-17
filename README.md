@@ -1,8 +1,8 @@
-# PMSF---Pokemon-Map-Standalone-Frontend
+# PMSF---PokeMap-Standalone-Frontend
 
 > Current Version 1.0 - First release!
 
-Pokemon Map Standalone Frontend or PMSF for short is a PHP Map Interface for the Monocle and RocketMap Scanner designed to be completely standalone and able to run on any traditional web server
+PokeMap Standalone Frontend or PMSF for short is a PHP Map Interface for the Monocle and RocketMap Scanner designed to be completely standalone and able to run on any traditional web server
 
 It supports all the common database engines, including MySQL, MariaDB, Postgres, MsSQL, SQLite
 
