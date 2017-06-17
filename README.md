@@ -1,8 +1,8 @@
-# MSF-Glennmen---Monocle-Standalone-Frontend
+# PMSF---Pokemon-Map-Standalone-Frontend
 
-> Current Version 0.3 - Early Days!
+> Current Version 1.0 - First release!
 
-Monocle Standalone Frontend or MSF for short is a PHP Map Interface for the Monocle Scanner designed to be completely standalone and able to run on any traditional web server
+Pokemon Map Standalone Frontend or PMSF for short is a PHP Map Interface for the Monocle and RocketMap Scanner designed to be completely standalone and able to run on any traditional web server
 
 It supports all the common database engines, including MySQL, MariaDB, Postgres, MsSQL, SQLite
 
@@ -16,7 +16,7 @@ It supports all the common database engines, including MySQL, MariaDB, Postgres,
 
 * Navigate to your Web Host and 
 ```
-git clone https://Glennmen@bitbucket.org/Glennmen/msf-glennmen.git
+git clone https://github.com/Glennmen/PMSF.git
 ```
 
 ### Edit config.php
@@ -36,10 +36,14 @@ git clone https://Glennmen@bitbucket.org/Glennmen/msf-glennmen.git
 1) Database wont connect but I know the details are correct.  In this scenario make sure you have the php-database driver installed. For example php7.0-mysql for mysql or php7.0-pgsql for Postgrel
 
 # Feedback
-Join us on Discord for any feedback, requests, ideas! https://discord.gg/mD6fHaG
+Create an issue if you have any bugs, suggestions, improvements! (Discord channel will follow)
 
 ## Thanks
 
+* Thanks MSF for the great basis for this project: [https://github.com/Nuro/MSF](https://github.com/Nuro/MSF)
+
 * Noctem for the awesome Monocle Scanner! [https://github.com/Noctem/Monocle](https://github.com/Noctem/Monocle)
+
+* RocketMap for their scanner: [https://github.com/RocketMap/RocketMap](https://github.com/RocketMap/RocketMap)
 
 * Medoo for the ORM framework: [http://medoo.in](http://medoo.in)

@@ -1,11 +1,5 @@
 <?php
 include('config.php');
-/**
- * Created by PhpStorm.
- * User: glenncarremans
- * Date: 10/06/2017
- * Time: 00:45
- */
 if (!isset($_GET['id'])) {
     http_response_code(400);
     die();

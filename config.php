@@ -61,6 +61,8 @@ $purgeData = 0;
 // DATABASE CONFIG
 //-----------------------------------------------------
 
+$map = "monocle";                                                 // monocle/rm
+
 $db = new Medoo([// required
     'database_type' => 'mysql',                                   // mysql/mariadb/pgsql/sybase/oracle/mssql/sqlite
     'database_name' => 'Monocle',
