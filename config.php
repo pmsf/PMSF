@@ -7,7 +7,7 @@ use Medoo\Medoo;
 
 //======================================================================
 // MSF - CONFIG FILE
-// https://github.com/Nuro/MSF
+// https://github.com/Glennmen/PMSF
 //======================================================================
 
 //-----------------------------------------------------
@@ -25,7 +25,7 @@ $maxLatLng = 1;                                                  // Max latitude
 
 /* Map Title + Language */
 
-$title = "MSF Glennmen";                                         // Title to display in title bar
+$title = "PMSF Glennmen";                                        // Title to display in title bar
 $locale = "en";                                                  // Display language
 
 /* Google Maps Key */
@@ -42,7 +42,7 @@ $showGyms = 'false';                                             // true/false
 $gymSidebar = 'true';                                            // true/false
 
 $showPokestops = 'false';                                        // true/false
-$showLured = 1;                                                  // O: all, 1: lured only
+$showLured = 0;                                                  // O: all, 1: lured only
 
 $showRanges = 'false';                                           // true/false
 
