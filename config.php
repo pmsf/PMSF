@@ -6,7 +6,7 @@ require 'Medoo.php';
 use Medoo\Medoo;
 
 //======================================================================
-// MSF - CONFIG FILE
+// PMSF - CONFIG FILE
 // https://github.com/Glennmen/PMSF
 //======================================================================
 
@@ -73,4 +73,5 @@ $db = new Medoo([// required
 
     // [optional]
     //'port' => 5432,                                             // Comment out if not needed, just add // in front!
+    //'socket' => /path/to/socket/,
 ]);
