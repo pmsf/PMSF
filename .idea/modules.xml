@@ -2,7 +2,7 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
-      <module fileurl="file://$PROJECT_DIR$/.idea/MSF.iml" filepath="$PROJECT_DIR$/.idea/MSF.iml" />
+      <module fileurl="file://$PROJECT_DIR$/../PMSF/.idea/MSF.iml" filepath="$PROJECT_DIR$/../PMSF/.idea/MSF.iml" />
     </modules>
   </component>
 </project>
