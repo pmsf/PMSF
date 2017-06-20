@@ -207,6 +207,7 @@ function get_active($swLat, $swLng, $neLat, $neLng, $tstamp = 0, $oSwLat = 0, $o
         $form = isset($row["form"]) ? intval($row["form"]) : null;
         $cp = isset($row["cp"]) ? intval($row["cp"]) : null;
         $cpm = isset($row["cp_multiplier"]) ? floatval($row["cp_multiplier"]) : null;
+        $level = isset($row["level"]) ? intval($row["level"]) : null;
 
         $p["disappear_time"] = $dissapear; //done
         $p["encounter_id"] = $row["encounter_id"]; //done
@@ -226,6 +227,7 @@ function get_active($swLat, $swLng, $neLat, $neLng, $tstamp = 0, $oSwLat = 0, $o
         $p["pokemon_rarity"] = $data[$pokeid]['rarity'];
         $p["cp"] = $cp;
         $p["cp_multiplier"] = $cpm;
+        $p["level"] = $level;
 
         $p["pokemon_types"] = $data[$pokeid]["types"];
         $p["spawnpoint_id"] = $row["spawn_id"];

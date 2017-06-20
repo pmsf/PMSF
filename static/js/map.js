@@ -326,6 +326,7 @@ function pokemonLabel(item) {
     var form = item['form'];
     var cp = item['cp'];
     var cpMultiplier = item['cp_multiplier'];
+    var level = item['level'];
 
     $.each(types, function (index, type) {
         typesDisplay += getTypeSpan(type);
@@ -336,8 +337,13 @@ function pokemonLabel(item) {
         var iv = getIv(atk, def, sta);
         details = "<div>" + "IV: " + iv.toFixed(1) + "% (" + atk + "/" + def + "/" + sta + ")" + "</div>";
 
-        if (cp != null && cpMultiplier != null) {
-            var pokemonLevel = getPokemonLevel(cpMultiplier);
+        if (cp != null && (cpMultiplier != null || level != null)) {
+            var pokemonLevel;
+            if (level != null) {
+                pokemonLevel = level;
+            } else  {
+                pokemonLevel = getPokemonLevel(cpMultiplier);
+            }
             details += "<div>" + "CP: " + cp + " | Level: " + pokemonLevel + "</div>";
         }
 
