@@ -10,7 +10,9 @@ It supports all the common database engines, including MySQL, MariaDB, Postgres,
 Go to our [Wiki](https://github.com/Glennmen/PMSF/wiki) for more info about installation.
 
 ## Feedback
-Create an issue if you have any bugs, suggestions or improvements! (Discord channel will follow)
+* Create an issue if you have any bugs, suggestions or improvements! (Discord channel will follow)
+
+* [Discord](https://discord.gg/k2f88B2) channel
 
 ## Thanks
 
