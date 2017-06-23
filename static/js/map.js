@@ -122,7 +122,7 @@ function initMap() {
             lat: centerLat,
             lng: centerLng
         },
-        zoom: Store.get('zoomLevel'),
+        zoom: zoom == null ? Store.get('zoomLevel') : zoom,
         fullscreenControl: true,
         streetViewControl: false,
         mapTypeControl: false,

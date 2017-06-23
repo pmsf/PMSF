@@ -1,5 +1,12 @@
 <?php
 include('config.php');
+$lat = isset($_GET['lat']) ? $_GET['lat'] : 0;
+$lon = isset($_GET['lon']) ? $_GET['lon'] : 0;
+$zoom = isset($_GET['zoom']) ? $_GET['zoom'] : null;
+if (!empty($lat) && !empty($lon)) {
+    $startingLat = $lat;
+    $startingLng = $lon;
+}
 ?>
 <!DOCTYPE html>
 <html lang="<?= $locale ?>">
@@ -373,6 +380,7 @@ include('config.php');
 <script>
     var centerLat = <?= $startingLat; ?>;
     var centerLng = <?= $startingLng; ?>;
+    var zoom<?php echo !empty($zoom) ? " = " . $zoom : null; ?>;
 </script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js"></script>
 <script src="static/js/map.common.js"></script>
