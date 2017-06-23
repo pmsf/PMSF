@@ -5,11 +5,12 @@ header('Content-type: text/javascript');
 $last_modified_time = filemtime("map.common.php");
 $etag = md5_file("map.common.php");
 // always send headers
-header("Last-Modified: ".gmdate("D, d M Y H:i:s", $last_modified_time)." GMT");
+header("Last-Modified: " . gmdate("D, d M Y H:i:s", $last_modified_time) . " GMT");
 header("Etag: $etag");
 // exit if not modified
 if (@strtotime($_SERVER['HTTP_IF_MODIFIED_SINCE']) == $last_modified_time ||
-    @trim($_SERVER['HTTP_IF_NONE_MATCH']) == $etag) {
+    @trim($_SERVER['HTTP_IF_NONE_MATCH']) == $etag
+) {
     header("HTTP/1.1 304 Not Modified");
     exit;
 }
@@ -901,31 +902,31 @@ return number.toString();
 // set the default parameters for you map here
 };var StoreOptions = {
 'map_style': {
-default: 'roadmap', // roadmap, satellite, hybrid, nolabels_style, dark_style, style_light2, style_pgo, dark_style_nl, style_pgo_day, style_pgo_night, style_pgo_dynamic
+default: '<?php echo $mapStyle ?>', // roadmap, satellite, hybrid, nolabels_style, dark_style, style_light2, style_pgo, dark_style_nl, style_pgo_day, style_pgo_night, style_pgo_dynamic
 type: StoreTypes.String
 },
 'remember_select_exclude': {
-default: <?php echo $hidePokemon ?>,
+default: <?php echo $noHidePokemon ? '[]' : $hidePokemon ?>,
 type: StoreTypes.JSON
 },
 'remember_select_notify': {
-default: [],
+default: <?php echo $noNotifyPokemon ? '[]' : $notifyPokemon ?>,
 type: StoreTypes.JSON
 },
 'remember_select_rarity_notify': {
-default: [], // Common, Uncommon, Rare, Very Rare, Ultra Rare
+default: <?php echo $noNotifyRarity ? '[]' : $notifyRarity ?>, // Common, Uncommon, Rare, Very Rare, Ultra Rare
 type: StoreTypes.JSON
 },
 'remember_text_perfection_notify': {
-default: '',
+default: <?php echo $noNotifyIv ? '' : $notifyIv ?>,
 type: StoreTypes.Number
 },
 'showGyms': {
-default: <?php echo $showGyms ?>,
+default: <?php echo $noGyms ? 'false' : $enableGyms ?>,
 type: StoreTypes.Boolean
 },
 'useGymSidebar': {
-default: <?php echo $gymSidebar ?>,
+default: <?php echo $noGymSidebar ? 'false' : $gymSidebar ?>,
 type: StoreTypes.Boolean
 },
 'showOpenGymsOnly': {
@@ -949,31 +950,31 @@ default: 10,
 type: StoreTypes.Number
 },
 'showPokemon': {
-default: <?php echo $showPokemon ?>,
+default: <?php echo $noPokemon ? 'false' : $enablePokemon ?>,
 type: StoreTypes.Boolean
 },
 'showPokestops': {
-default: <?php echo $showPokestops ?>,
+default: <?php echo $noPokestops ? 'false' : $enablePokestops ?>,
 type: StoreTypes.Boolean
 },
 'showLuredPokestopsOnly': {
-default: <?php echo $showLured ?>,
+default: <?php echo $map != "monocle" ? $enableLured : 0 ?>,
 type: StoreTypes.Number
 },
 'showScanned': {
-default: false,
+default: <?php echo $map != "monocle" && !$noScannedLocations ? $enableScannedLocations : 'false' ?>,
 type: StoreTypes.Boolean
 },
 'showSpawnpoints': {
-default: false,
+default: <?php echo $noSpawnPoints ? 'false' : $enableSpawnPoints ?>,
 type: StoreTypes.Boolean
 },
 'showRanges': {
-default: <?php echo $showRanges ?>,
+default: <?php echo $noRanges ? 'false' : $enableRanges ?>,
 type: StoreTypes.Boolean
 },
 'playSound': {
-default: false,
+default: <?php echo $noNotifySound ? 'false' : $notifySound ?>,
 type: StoreTypes.Boolean
 },
 'geoLocate': {
@@ -985,11 +986,11 @@ default: isTouchDevice(), // default to true if touch device
 type: StoreTypes.Boolean
 },
 'startAtUserLocation': {
-default: false,
+default: <?php echo $noStartMe ? 'false' : $enableStartMe ?>,
 type: StoreTypes.Boolean
 },
 'followMyLocation': {
-default: false,
+default: <?php echo $noFollowMe ? 'false' : $enableFollowMe ?>,
 type: StoreTypes.Boolean
 },
 'followMyLocationPosition': {
@@ -1005,11 +1006,11 @@ default: false,
 type: StoreTypes.Boolean
 },
 'pokemonIcons': {
-default: 'monoclehq',
+default: '<?php echo $icons ?>',
 type: StoreTypes.String
 },
 'iconSizeModifier': {
-default: 0,
+default: <?php echo $iconSize ?>,
 type: StoreTypes.Number
 },
 'searchMarkerStyle': {
@@ -1017,11 +1018,11 @@ default: 'google',
 type: StoreTypes.String
 },
 'locationMarkerStyle': {
-default: 'none',
+default: '<?php echo $locationStyle ?>',
 type: StoreTypes.String
 },
 'gymMarkerStyle': {
-default: 'shield',
+default: '<?php echo $gymStyle ?>',
 type: StoreTypes.String
 },
 'zoomLevel': {
