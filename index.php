@@ -243,9 +243,17 @@ if (!empty($lat) && !empty($lon)) {
                 } ?>
             </div>
 
-            <?php if (!$noStartMe || !$noFollowMe) {
+            <?php if (!$noSearchLocation || !$noStartMe || !$noFollowMe) {
                 echo '<h3>Location &amp; Search Settings</h3>
             <div>';
+            } ?>
+            <?php if (!$noSearchLocation) {
+                echo '<div class="form-control switch-container" style="display:{{is_fixed}}">
+                <label for="next-location">
+                    <h3>Change search location</h3>
+                    <input id="next-location" type="text" name="next-location" placeholder="Change search location">
+                </label>
+            </div>';
             } ?>
             <?php if (!$noStartMe) {
                 echo '<div class="form-control switch-container">
@@ -273,7 +281,7 @@ if (!empty($lat) && !empty($lon)) {
                     </div>
                 </div> ';
             } ?>
-            <?php if (!$noStartMe || !$noFollowMe) {
+            <?php if (!$noSearchLocation || !$noStartMe || !$noFollowMe) {
                 echo ' </div>';
             } ?>
 

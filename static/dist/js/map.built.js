@@ -270,6 +270,19 @@ function initSidebar() {
     $('#spawnpoints-switch').prop('checked', Store.get('showSpawnpoints'));
     $('#ranges-switch').prop('checked', Store.get('showRanges'));
     $('#sound-switch').prop('checked', Store.get('playSound'));
+    if (document.getElementById('next-location')) {
+        var searchBox = new google.maps.places.Autocomplete(document.getElementById('next-location'));
+        $('#next-location').css('background-color', $('#geoloc-switch').prop('checked') ? '#e0e0e0' : '#ffffff');
+
+        searchBox.addListener('place_changed', function () {
+            var place = searchBox.getPlace();
+
+            if (!place.geometry) return;
+
+            var loc = place.geometry.location;
+            changeLocation(loc.lat(), loc.lng());
+        });
+    }
 
     var icons = $('#pokemon-icons');
     $.each(pokemonSprites, function (key, value) {
@@ -1474,15 +1487,8 @@ function centerMapOnLocation() {
 }
 
 function changeLocation(lat, lng) {
-    // eslint-disable-line no-unused-vars
     var loc = new google.maps.LatLng(lat, lng);
-    changeSearchLocation(lat, lng).done(function () {
-        map.setCenter(loc);
-    });
-}
-
-function changeSearchLocation(lat, lng) {
-    return $.post('next_loc?lat=' + lat + '&lon=' + lng, {});
+    map.setCenter(loc);
 }
 
 function centerMap(lat, lng, zoom) {

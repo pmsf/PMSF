@@ -65,6 +65,8 @@ $enableRanges = 'false';                                         // true/false
 
 /* Location & Search Settings */
 
+$noSearchLocation = false;                                       // true/false
+
 $noStartMe = false;                                              // true/false
 $enableStartMe = 'false';                                        // true/false
 
