@@ -368,8 +368,6 @@ if (!empty($lat) && !empty($lon)) {
                 <h3>Location Icon Marker</h3>
                 <select name="locationmarker-style" id="locationmarker-style"></select>
             </div>';
-            } else {
-                echo '<div hidden><select name="locationmarker-style" id="locationmarker-style"></select></div>';
             } ?>
             <?php if (!$noMapStyle || !$noIcons || !$noIconSize || !$noGymStyle || !$noLocationStyle) {
                 echo '</div>';

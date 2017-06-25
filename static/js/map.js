@@ -202,7 +202,6 @@ function initMap() {
         redrawPokemon(mapData.pokemons);
         redrawPokemon(mapData.lurePokemons);
     });
-    locationMarker = createLocationMarker();
     createMyLocationButton();
     initSidebar();
 }
@@ -232,6 +231,8 @@ function createLocationMarker() {
         optimized: false,
         zIndex: google.maps.Marker.MAX_ZINDEX + 2
     });
+
+    locationMarker.setIcon(searchMarkerStyles[Store.get('locationMarkerStyle')].icon);
 
     locationMarker.infoWindow = new google.maps.InfoWindow({
         content: '<div><b>My Location</b></div>',
@@ -1830,6 +1831,8 @@ $(function () {
                 text: value.name
             });
         });
+
+        locationMarker = createLocationMarker();
 
         $selectLocationIconMarker.select2({
             placeholder: 'Select Location Marker',
