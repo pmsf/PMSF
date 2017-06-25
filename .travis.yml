@@ -1,0 +1,15 @@
+sudo: false
+language: php
+php:
+  - "7.1"
+
+# install steps MUST succeed or will immediately halt the build
+install:
+  - npm install
+
+# script steps, if erroring, will fail the build but not stop the build process
+# this is handy because we want to know that linting is broken, but it shouldn't
+# stop us from testing/linting/compiling other things as well
+script:
+  - npm run lint
+  - npm run build
