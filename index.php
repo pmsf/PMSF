@@ -195,7 +195,7 @@ if (!empty($lat) && !empty($lon)) {
                 </div>';
                 } ?>
                 <?php if ($map != "monocle" && !$noScannedLocations) {
-                    echo ' <div class="form-control switch-container">
+                    echo '<div class="form-control switch-container">
                     <h3> Scanned Locations </h3>
                     <div class="onoffswitch">
                         <input id = "scanned-switch" type = "checkbox" name = "scanned-switch" class="onoffswitch-checkbox">
@@ -243,7 +243,7 @@ if (!empty($lat) && !empty($lon)) {
                 } ?>
             </div>
 
-            <?php if (!$noSearchLocation || !$noStartMe || !$noFollowMe) {
+            <?php if (!$noSearchLocation || !$noStartMe || !$noStartLast || !$noFollowMe) {
                 echo '<h3>Location &amp; Search Settings</h3>
             <div>';
             } ?>
@@ -266,7 +266,20 @@ if (!empty($lat) && !empty($lon)) {
                             <span class="switch-handle"></span>
                         </label>
                     </div>
-                </div> ';
+                </div>';
+            } ?>
+            <?php if (!$noStartLast) {
+                echo '<div class="form-control switch-container">
+                    <h3> Start map at last position </h3>
+                    <div class="onoffswitch">
+                        <input id = "start-at-last-location-switch" type = "checkbox" name = "start-at-last-location-switch"
+                               class="onoffswitch-checkbox"/>
+                        <label class="onoffswitch-label" for="start-at-last-location-switch">
+                            <span class="switch-label" data - on = "On" data - off = "Off"></span>
+                            <span class="switch-handle"></span>
+                        </label>
+                    </div>
+                </div>';
             } ?>
             <?php if (!$noFollowMe) {
                 echo '<div class="form-control switch-container">
@@ -279,10 +292,10 @@ if (!empty($lat) && !empty($lon)) {
                             <span class="switch-handle"></span>
                         </label>
                     </div>
-                </div> ';
+                </div>';
             } ?>
-            <?php if (!$noSearchLocation || !$noStartMe || !$noFollowMe) {
-                echo ' </div>';
+            <?php if (!$noSearchLocation || !$noStartMe || !$noStartLast || !$noFollowMe) {
+                echo '</div>';
             } ?>
 
             <?php if (!$noNotifyPokemon || !$noNotifyRarity || !$noNotifyIv || !$noNotifySound) {

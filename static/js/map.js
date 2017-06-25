@@ -277,6 +277,7 @@ function initSidebar() {
     $('#lured-pokestops-only-switch').val(Store.get('showLuredPokestopsOnly'))
     $('#lured-pokestops-only-wrapper').toggle(Store.get('showPokestops'))
     $('#start-at-user-location-switch').prop('checked', Store.get('startAtUserLocation'))
+    $('#start-at-last-location-switch').prop('checked', Store.get('startAtLastLocation'))
     $('#follow-my-location-switch').prop('checked', Store.get('followMyLocation'))
     $('#scanned-switch').prop('checked', Store.get('showScanned'))
     $('#spawnpoints-switch').prop('checked', Store.get('showSpawnpoints'))
@@ -1414,6 +1415,12 @@ function updateSpawnPoints() {
 }
 
 function updateMap() {
+    var position = map.getCenter()
+    Store.set('startAtLastLocationPosition', {
+        lat: position.lat(),
+        lng: position.lng()
+    })
+
     loadRawData().done(function (result) {
         $.each(result.pokemons, processPokemons)
         $.each(result.pokestops, processPokestops)
@@ -1591,15 +1598,17 @@ function createMyLocationButton() {
 
 function centerMapOnLocation() {
     var currentLocation = document.getElementById('current-location')
-    var imgX = '0'
-    var animationInterval = setInterval(function () {
-        if (imgX === '-18') {
-            imgX = '0'
-        } else {
-            imgX = '-18'
-        }
-        currentLocation.style.backgroundPosition = imgX + 'px 0'
-    }, 500)
+    if (currentLocation !== null) {
+        var imgX = '0'
+        var animationInterval = setInterval(function () {
+            if (imgX === '-18') {
+                imgX = '0'
+            } else {
+                imgX = '-18'
+            }
+            currentLocation.style.backgroundPosition = imgX + 'px 0'
+        }, 500)
+    }
     if (navigator.geolocation) {
         navigator.geolocation.getCurrentPosition(function (position) {
             var latlng = new google.maps.LatLng(position.coords.latitude, position.coords.longitude)
@@ -1610,11 +1619,15 @@ function centerMapOnLocation() {
                 lng: position.coords.longitude
             })
             clearInterval(animationInterval)
-            currentLocation.style.backgroundPosition = '-144px 0px'
+            if (currentLocation !== null) {
+                currentLocation.style.backgroundPosition = '-144px 0px'
+            }
         })
     } else {
         clearInterval(animationInterval)
-        currentLocation.style.backgroundPosition = '0px 0px'
+        if (currentLocation !== null) {
+            currentLocation.style.backgroundPosition = '0px 0px'
+        }
     }
 }
 
@@ -1919,10 +1932,9 @@ $(function () {
 
 $(function () {
     // populate Navbar Style menu
-    $selectStyle = $('#map-style'
+    $selectStyle = $('#map-style')
 
-        // Load Stylenames, translate entries, and populate lists
-    )
+    // Load Stylenames, translate entries, and populate lists
     $.getJSON('static/dist/data/mapstyle.min.json').done(function (data) {
         var styleList = []
 
@@ -2088,6 +2100,20 @@ $(function () {
 
         locationMarker = createLocationMarker()
 
+        if (Store.get('startAtUserLocation')) {
+            centerMapOnLocation()
+        }
+
+        if (Store.get('startAtLastLocation')) {
+            var position = Store.get('startAtLastLocationPosition')
+            var lat = 'lat' in position ? position.lat : centerLat
+            var lng = 'lng' in position ? position.lng : centerLng
+
+            var latlng = new google.maps.LatLng(lat, lng)
+            locationMarker.setPosition(latlng)
+            map.setCenter(latlng)
+        }
+
         $selectLocationIconMarker.select2({
             placeholder: 'Select Location Marker',
             data: searchMarkerStyleList,
@@ -2124,10 +2150,6 @@ $(function () {
         }
         var $state = $('<span><i class="pokemon-sprite n' + state.element.value.toString() + '"></i> ' + state.text + '</span>')
         return $state
-    }
-
-    if (Store.get('startAtUserLocation')) {
-        centerMapOnLocation()
     }
 
     $.getJSON('static/dist/data/moves.min.json').done(function (data) {
@@ -2324,6 +2346,18 @@ $(function () {
 
     $('#start-at-user-location-switch').change(function () {
         Store.set('startAtUserLocation', this.checked)
+        if (this.checked === true && Store.get('startAtLastLocation') === true) {
+            Store.set('startAtLastLocation', false)
+            $('#start-at-last-location-switch').prop('checked', false)
+        }
+    })
+
+    $('#start-at-last-location-switch').change(function () {
+        Store.set('startAtLastLocation', this.checked)
+        if (this.checked === true && Store.get('startAtUserLocation') === true) {
+            Store.set('startAtUserLocation', false)
+            $('#start-at-user-location-switch').prop('checked', false)
+        }
     })
 
     $('#follow-my-location-switch').change(function () {

@@ -989,6 +989,14 @@ type: StoreTypes.Boolean
 default: <?php echo $noStartMe ? 'false' : $enableStartMe ?>,
 type: StoreTypes.Boolean
 },
+'startAtLastLocation': {
+default: <?php echo (!$noStartLast && $enableStartMe === 'false') ? $enableStartLast : 'false' ?>,
+type: StoreTypes.Boolean
+},
+'startAtLastLocationPosition': {
+default: [],
+type: StoreTypes.JSON
+},
 'followMyLocation': {
 default: <?php echo $noFollowMe ? 'false' : $enableFollowMe ?>,
 type: StoreTypes.Boolean

@@ -70,6 +70,9 @@ $noSearchLocation = false;                                       // true/false
 $noStartMe = false;                                              // true/false
 $enableStartMe = 'false';                                        // true/false
 
+$noStartLast = false;                                            // true/false
+$enableStartLast = 'false';                                      // true/false
+
 $noFollowMe = false;                                             // true/false
 $enableFollowMe = 'false';                                       // true/false
 
