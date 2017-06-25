@@ -9,6 +9,7 @@ var $selectPokemonNotify;
 var $selectRarityNotify;
 var $textPerfectionNotify;
 var $selectStyle;
+var $selectIconResolution;
 var $selectIconSize;
 var $selectOpenGymsOnly;
 var $selectTeamGymsOnly;
@@ -16,11 +17,9 @@ var $selectLastUpdateGymsOnly;
 var $selectMinGymLevel;
 var $selectMaxGymLevel;
 var $selectLuredPokestopsOnly;
-var $selectSearchIconMarker;
 var $selectGymMarkerStyle;
 var $selectLocationIconMarker;
 var $switchGymSidebar;
-var $timeoutDialog;
 
 var language = document.documentElement.lang === '' ? 'en' : document.documentElement.lang;
 var idToPokemon = {};
@@ -44,7 +43,6 @@ var map;
 var rawDataIsLoading = false;
 var locationMarker;
 var rangeMarkers = ['pokemon', 'pokestop', 'gym'];
-var searchMarker;
 var storeZoom = true;
 var scanPath;
 var moves;
@@ -69,22 +67,25 @@ var gymTypes = ['Uncontested', 'Mystic', 'Valor', 'Instinct'];
 var gymPrestige = [2000, 4000, 8000, 12000, 16000, 20000, 30000, 40000, 50000];
 var audio = new Audio('static/sounds/ding.mp3');
 
+var genderType = ['♂', '♀', '⚲'];
+var unownForm = ['unset', 'A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N', 'O', 'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z', '!', '?'];
+
 /*
-  text place holders:
-  <pkm> - pokemon name
-  <prc> - iv in percent without percent symbol
-  <atk> - attack as number
-  <def> - defense as number
-  <sta> - stamnia as number
-*/
+ text place holders:
+ <pkm> - pokemon name
+ <prc> - iv in percent without percent symbol
+ <atk> - attack as number
+ <def> - defense as number
+ <sta> - stamnia as number
+ */
 var notifyIvTitle = '<pkm> <prc>% (<atk>/<def>/<sta>)';
 var notifyNoIvTitle = '<pkm>';
 
 /*
-  text place holders:
-  <dist>  - disappear time
-  <udist> - time until disappear
-*/
+ text place holders:
+ <dist>  - disappear time
+ <udist> - time until disappear
+ */
 var notifyText = 'disappears at <dist> (<udist>)';
 
 //
@@ -118,7 +119,7 @@ function initMap() {
             lat: centerLat,
             lng: centerLng
         },
-        zoom: Store.get('zoomLevel'),
+        zoom: zoom == null ? Store.get('zoomLevel') : zoom,
         fullscreenControl: true,
         streetViewControl: false,
         mapTypeControl: false,
@@ -199,20 +200,8 @@ function initMap() {
         redrawPokemon(mapData.lurePokemons);
     });
 
-    searchMarker = createSearchMarker();
-    locationMarker = createLocationMarker();
     createMyLocationButton();
     initSidebar();
-
-    $('#scan-here').on('click', function () {
-        var loc = map.getCenter();
-        changeLocation(loc.lat(), loc.lng());
-
-        if (!$('#search-switch').checked) {
-            $('#search-switch').prop('checked', true);
-            searchControl('on');
-        }
-    });
 }
 
 function updateLocationMarker(style) {
@@ -235,11 +224,13 @@ function createLocationMarker() {
             lat: lat,
             lng: lng
         },
-        draggable: true,
+        draggable: false,
         icon: null,
         optimized: false,
         zIndex: google.maps.Marker.MAX_ZINDEX + 2
     });
+
+    locationMarker.setIcon(searchMarkerStyles[Store.get('locationMarkerStyle')].icon);
 
     locationMarker.infoWindow = new google.maps.InfoWindow({
         content: '<div><b>My Location</b></div>',
@@ -259,69 +250,6 @@ function createLocationMarker() {
     return locationMarker;
 }
 
-function updateSearchMarker(style) {
-    if (style in searchMarkerStyles) {
-        searchMarker.setIcon(searchMarkerStyles[style].icon);
-        Store.set('searchMarkerStyle', style);
-    }
-
-    return searchMarker;
-}
-
-function createSearchMarker() {
-    var searchMarker = new google.maps.Marker({ // need to keep reference.
-        position: {
-            lat: centerLat,
-            lng: centerLng
-        },
-        map: map,
-        animation: google.maps.Animation.DROP,
-        draggable: !Store.get('lockMarker'),
-        icon: null,
-        optimized: false,
-        zIndex: google.maps.Marker.MAX_ZINDEX + 1
-    });
-
-    searchMarker.infoWindow = new google.maps.InfoWindow({
-        content: '<div><b>Search Location</b></div>',
-        disableAutoPan: true
-    });
-
-    addListeners(searchMarker);
-
-    var oldLocation = null;
-    google.maps.event.addListener(searchMarker, 'dragstart', function () {
-        oldLocation = searchMarker.getPosition();
-    });
-
-    google.maps.event.addListener(searchMarker, 'dragend', function () {
-        var newLocation = searchMarker.getPosition();
-        changeSearchLocation(newLocation.lat(), newLocation.lng()).done(function () {
-            oldLocation = null;
-        }).fail(function () {
-            if (oldLocation) {
-                searchMarker.setPosition(oldLocation);
-            }
-        });
-    });
-
-    return searchMarker;
-}
-
-var searchControlURI = 'search_control';
-
-function searchControl(action) {
-    $.post(searchControlURI + '?action=' + encodeURIComponent(action));
-    $('#scan-here').toggleClass('disabled', action === 'off');
-}
-
-function updateSearchStatus() {
-    $.getJSON(searchControlURI).then(function (data) {
-        $('#search-switch').prop('checked', data.status);
-        $('#scan-here').toggleClass('disabled', !data.status);
-    });
-}
-
 function initSidebar() {
     $('#gyms-switch').prop('checked', Store.get('showGyms'));
     $('#gym-sidebar-switch').prop('checked', Store.get('useGymSidebar'));
@@ -336,30 +264,18 @@ function initSidebar() {
     $('#pokestops-switch').prop('checked', Store.get('showPokestops'));
     $('#lured-pokestops-only-switch').val(Store.get('showLuredPokestopsOnly'));
     $('#lured-pokestops-only-wrapper').toggle(Store.get('showPokestops'));
-    $('#geoloc-switch').prop('checked', Store.get('geoLocate'));
-    $('#lock-marker-switch').prop('checked', Store.get('lockMarker'));
     $('#start-at-user-location-switch').prop('checked', Store.get('startAtUserLocation'));
     $('#follow-my-location-switch').prop('checked', Store.get('followMyLocation'));
-    $('#scan-here-switch').prop('checked', Store.get('scanHere'));
-    $('#scan-here').toggle(Store.get('scanHere'));
     $('#scanned-switch').prop('checked', Store.get('showScanned'));
     $('#spawnpoints-switch').prop('checked', Store.get('showSpawnpoints'));
     $('#ranges-switch').prop('checked', Store.get('showRanges'));
     $('#sound-switch').prop('checked', Store.get('playSound'));
-    var searchBox = new google.maps.places.Autocomplete(document.getElementById('next-location'));
-    $('#next-location').css('background-color', $('#geoloc-switch').prop('checked') ? '#e0e0e0' : '#ffffff');
 
-    updateSearchStatus();
-    setInterval(updateSearchStatus, 5000);
-
-    searchBox.addListener('place_changed', function () {
-        var place = searchBox.getPlace();
-
-        if (!place.geometry) return;
-
-        var loc = place.geometry.location;
-        changeLocation(loc.lat(), loc.lng());
+    var icons = $('#pokemon-icons');
+    $.each(pokemonSprites, function (key, value) {
+        icons.append($('<option></option>').attr('value', key).text(value.name));
     });
+    icons.val(pokemonSprites[Store.get('pokemonIcons')] ? Store.get('pokemonIcons') : 'highres');
 
     $('#pokemon-icon-size').val(Store.get('iconSizeModifier'));
 }
@@ -369,7 +285,7 @@ function pad(number) {
 }
 
 function getTypeSpan(type) {
-    return '<span style=\'padding: 2px 5px; text-transform: uppercase; color: white; margin-right: 2px; border-radius: 4px; font-size: 0.8em; vertical-align: text-bottom; background-color: ' + type['color'] + '\'>' + type['type'] + '</span>';
+    return '<span style=\'padding: 2px 5px text-transform: uppercase color: white margin-right: 2px border-radius: 4px font-size: 0.8em vertical-align: text-bottom background-color: ' + type['color'] + '\'>' + type['type'] + '</span>';
 }
 
 function openMapDirections(lat, lng) {
@@ -378,43 +294,100 @@ function openMapDirections(lat, lng) {
     window.open(url, '_blank');
 }
 
-function pokemonLabel(name, rarity, types, disappearTime, id, latitude, longitude, encounterId, atk, def, sta, move1, move2) {
-    var disappearDate = new Date(disappearTime);
-    var rarityDisplay = rarity ? '(' + rarity + ')' : '';
+// Converts timestamp to readable String
+function getDateStr(t) {
+    var dateStr = 'Unknown';
+    if (t) {
+        dateStr = moment(t).format('DD-MM-YYYY, HH:mm:ss');
+    }
+    return dateStr;
+}
+
+function pokemonLabel(item) {
+    var name = item['pokemon_name'];
+    var rarityDisplay = item['pokemon_rarity'] ? '(' + item['pokemon_rarity'] + ')' : '';
+    var types = item['pokemon_types'];
     var typesDisplay = '';
+    var encounterId = item['encounter_id'];
+    var id = item['pokemon_id'];
+    var latitude = item['latitude'];
+    var longitude = item['longitude'];
+    var disappearTime = item['disappear_time'];
+    var disappearDate = new Date(disappearTime);
+    var atk = item['individual_attack'];
+    var def = item['individual_defense'];
+    var sta = item['individual_stamina'];
+    var pMove1 = moves[item['move_1']] !== undefined ? i8ln(moves[item['move_1']]['name']) : 'gen/unknown';
+    var pMove2 = moves[item['move_2']] !== undefined ? i8ln(moves[item['move_2']]['name']) : 'gen/unknown';
+    var weight = item['weight'];
+    var height = item['height'];
+    var gender = item['gender'];
+    var form = item['form'];
+    var cp = item['cp'];
+    var cpMultiplier = item['cp_multiplier'];
+    var level = item['level'];
+
     $.each(types, function (index, type) {
         typesDisplay += getTypeSpan(type);
     });
+
     var details = '';
-    if (atk != null) {
-        var iv = (atk + def + sta) / 45 * 100;
-        details = '\n            <div>\n                IV: ' + iv.toFixed(1) + '% (' + atk + '/' + def + '/' + sta + ')\n            </div>\n            <div>\n                Moves: ' + i8ln(moves[move1]['name']) + ' / ' + i8ln(moves[move2]['name']) + '\n            </div>\n            ';
+    if (atk != null && def != null && sta != null) {
+        var iv = getIv(atk, def, sta);
+        details = '<div>' + 'IV: ' + iv.toFixed(1) + '% (' + atk + '/' + def + '/' + sta + ')' + '</div>';
+
+        if (cp != null && (cpMultiplier != null || level != null)) {
+            var pokemonLevel;
+            if (level != null) {
+                pokemonLevel = level;
+            } else {
+                pokemonLevel = getPokemonLevel(cpMultiplier);
+            }
+            details += '<div>' + 'CP: ' + cp + ' | Level: ' + pokemonLevel + '</div>';
+        }
+
+        details += '<div>' + 'Moves: ' + pMove1 + ' / ' + pMove2 + '</div>';
     }
-    var contentstring = '\n        <div>\n            <b>' + name + '</b>\n            <span> - </span>\n            <small>\n                <a href=\'http://www.pokemon.com/us/pokedex/' + id + '\' target=\'_blank\' title=\'View in Pokedex\'>#' + id + '</a>\n            </small>\n            <span> ' + rarityDisplay + '</span>\n            <span> - </span>\n            <small>' + typesDisplay + '</small>\n        </div>\n        <div>\n            Disappears at ' + pad(disappearDate.getHours()) + ':' + pad(disappearDate.getMinutes()) + ':' + pad(disappearDate.getSeconds()) + '\n            <span class=\'label-countdown\' disappears-at=\'' + disappearTime + '\'>(00m00s)</span>\n        </div>\n        <div>\n            Location: ' + latitude.toFixed(6) + ', ' + longitude.toFixed(7) + '\n        </div>\n            ' + details + '\n        <div>\n            <a href=\'javascript:excludePokemon(' + id + ')\'>Exclude</a>&nbsp;&nbsp\n            <a href=\'javascript:notifyAboutPokemon(' + id + ')\'>Notify</a>&nbsp;&nbsp\n            <a href=\'javascript:removePokemonMarker("' + encounterId + '")\'>Remove</a>&nbsp;&nbsp\n            <a href=\'javascript:void(0);\' onclick=\'javascript:openMapDirections(' + latitude + ',' + longitude + ');\' title=\'View in Maps\'>Get directions</a>\n        </div>';
+    if (gender != null) {
+        details += '<div>' + 'Gender: ' + genderType[gender - 1];
+        if (weight != null && height != null) {
+            details += ' | Weight: ' + weight.toFixed(2) + 'kg | Height: ' + height.toFixed(2) + 'm';
+        }
+        details += '</div>';
+    }
+    var contentstring = '<div>' + '<b>' + name + '</b>';
+    if (id === 201 && form !== null && form > 0) {
+        contentstring += ' (' + unownForm[item['form']] + ')';
+    }
+    contentstring += '<span> - </span>' + '<small>' + '<a href="http://www.pokemon.com/us/pokedex/' + id + '" target="_blank" title="View in Pokedex">#' + id + '</a>' + '</small>' + '<span> ' + rarityDisplay + '</span>' + '<span> - </span>' + '<small>' + typesDisplay + '</small>' + '</div>' + '<div>' + 'Disappears at ' + pad(disappearDate.getHours()) + ':' + pad(disappearDate.getMinutes()) + ':' + pad(disappearDate.getSeconds()) + '<span class="label-countdown" disappears-at="' + disappearTime + '">(00m00s)</span>' + '</div>' + '<div>' + 'Location: ' + latitude.toFixed(6) + ', ' + longitude.toFixed(7) + '</div>' + details + '<div>' + '<a href="javascript:excludePokemon(' + id + ')">Exclude</a>&nbsp&nbsp' + '<a href="javascript:notifyAboutPokemon(' + id + ')">Notify</a>&nbsp&nbsp' + '<a href="javascript:removePokemonMarker\'"' + encounterId + '\')">Remove</a>&nbsp&nbsp' + '<a href="javascript:void(0)" onclick="javascript:openMapDirections(' + latitude + ', ' + longitude + ')" title="View in Maps">Get directions</a>' + '</div>';
     return contentstring;
 }
 
 function gymLabel(teamName, teamId, gymPoints, latitude, longitude) {
     var lastScanned = arguments.length > 5 && arguments[5] !== undefined ? arguments[5] : null;
-    var name = arguments.length > 6 && arguments[6] !== undefined ? arguments[6] : null;
-    var members = arguments.length > 7 && arguments[7] !== undefined ? arguments[7] : [];
-    var gymId = arguments[8];
+    var lastModified = arguments.length > 6 && arguments[6] !== undefined ? arguments[6] : null;
+    var name = arguments.length > 7 && arguments[7] !== undefined ? arguments[7] : null;
+    var members = arguments.length > 8 && arguments[8] !== undefined ? arguments[8] : [];
+    // var gymId = arguments[9]
+    var guardPokemon = arguments[10];
 
     var memberStr = '';
-    for (var i = 0; i < members.length; i++) {
-        memberStr += '\n            <span class="gym-member" title="' + members[i].pokemon_name + ' | ' + members[i].trainer_name + ' (Lvl ' + members[i].trainer_level + ')">\n                <i class="pokemon-sprite n' + members[i].pokemon_id + '"></i>\n                <span class="cp team-' + teamId + '">' + members[i].pokemon_cp + '</span>\n            </span>';
+    if (members.length > 0) {
+        for (var i = 0; i < members.length; i++) {
+            memberStr += '<span class="gym-member" title="' + members[i].pokemon_name + ' | ' + members[i].trainer_name + ' (Lvl ' + members[i].trainer_level + '">' + '<i class="pokemon-sprite n' + members[i].pokemon_id + '"></i>' + '<span class="cp team-' + teamId + '">' + members[i].pokemon_cp + '</span>' + '</span>';
+        }
+    } else {
+        memberStr = '<span class="gym-member">' + '<i class="pokemon-sprite n' + guardPokemon + '"></i>' + '</span>';
     }
 
-    var lastScannedStr;
-    if (lastScanned) {
-        var lastScannedDate = new Date(lastScanned);
-        lastScannedStr = lastScannedDate.getFullYear() + '-' + pad(lastScannedDate.getMonth() + 1) + '-' + pad(lastScannedDate.getDate()) + ' ' + pad(lastScannedDate.getHours()) + ':' + pad(lastScannedDate.getMinutes()) + ':' + pad(lastScannedDate.getSeconds());
-    } else {
-        lastScannedStr = 'Unknown';
+    var lastModifiedStr = getDateStr(lastModified);
+    var lastScannedStr = '';
+    if (lastScanned != null) {
+        lastScannedStr = '<div>' + 'Last Scanned: ' + getDateStr(lastScanned) + '</div>';
     }
     var directionsStr = '';
     if (!Store.get('useGymSidebar')) {
-        directionsStr = '<div>\n                <a href=\'javascript:void(0);\' onclick=\'javascript:openMapDirections(' + latitude + ',' + longitude + ');\' title=\'View in Maps\'>Get directions</a>\n            </div>';
+        directionsStr = '<div>' + '<a href=\'javascript:void(0)\' onclick=\'javascript:openMapDirections(' + latitude + ',' + longitude + ')\' title=\'View in Maps\'>Get directions</a>' + '</div>';
     }
 
     var nameStr = name ? '<div>' + name + '</div>' : '';
@@ -422,10 +395,10 @@ function gymLabel(teamName, teamId, gymPoints, latitude, longitude) {
     var gymColor = ['0, 0, 0, .4', '74, 138, 202, .6', '240, 68, 58, .6', '254, 217, 40, .6'];
     var str;
     if (teamId === 0) {
-        str = '\n            <div>\n                <center>\n                    <div>\n                        <b style=\'color:rgba(' + gymColor[teamId] + ')\'>' + teamName + '</b><br>\n                        <img height=\'70px\' style=\'padding: 5px;\' src=\'static/forts/' + teamName + '_large.png\'>\n                    </div>\n                    ' + nameStr + '\n                    <div>\n                        Location: ' + latitude.toFixed(6) + ', ' + longitude.toFixed(7) + '\n                    </div>\n                    <div>\n                        Last Scanned: ' + lastScannedStr + '\n                    </div>\n                    ' + directionsStr + '\n                </center>\n            </div>';
+        str = '<div> ' + '<center>' + '<div>' + '<b style="color:rgba(' + gymColor[teamId] + ')">' + teamName + '</b><br>' + '<img height="70px" style="padding: 5px" src="static/forts/' + teamName + '_large.png">' + '</div>' + nameStr + '<div>' + 'Location: ' + latitude.toFixed(6) + ', ' + longitude.toFixed(7) + '</div>' + '<div>' + 'Last Modified: ' + lastModifiedStr + '</div>' + lastScannedStr + directionsStr + '</center>' + '</div>';
     } else {
         var gymLevel = getGymLevel(gymPoints);
-        str = '\n            <div>\n                <center>\n                    <div style=\'padding-bottom: 2px\'>\n                        Gym owned by:\n                    </div>\n                    <div>\n                        <b style=\'color:rgba(' + gymColor[teamId] + ')\'>Team ' + teamName + '</b><br>\n                        <img height=\'70px\' style=\'padding: 5px;\' src=\'static/forts/' + teamName + '_large.png\'>\n                    </div>\n                    <div>\n                        ' + nameStr + '\n                    </div>\n                    <div>\n                        Level: ' + gymLevel + ' | Prestige: ' + gymPoints + '/' + (gymPrestige[gymLevel - 1] || 50000) + '\n                    </div>\n                    <div>\n                        ' + memberStr + '\n                    </div>\n                    <div>\n                        Location: ' + latitude.toFixed(6) + ', ' + longitude.toFixed(7) + '\n                    </div>\n                    <div>\n                        Last Scanned: ' + lastScannedStr + '\n                    </div>\n                    ' + directionsStr + '\n                </center>\n            </div>';
+        str = '<div>' + '<center>' + '<div style="padding-bottom: 2px">' + 'Gym owned by:' + '</div>' + '<div>' + '<b style="color:rgba(' + gymColor[teamId] + ')">Team ' + teamName + '</b><br>' + '<img height="70px" style="padding: 5px" src="static/forts/' + teamName + '_large.png">' + '</div>' + '<div>' + nameStr + '</div>' + '<div>' + 'Level: ' + gymLevel + ' | Prestige: ' + gymPoints + '/' + (gymPrestige[gymLevel - 1] || 50000) + '</div>' + '<div>' + memberStr + '</div>' + '<div>' + 'Location: ' + latitude.toFixed(6) + ', ' + longitude.toFixed(7) + '</div>' + '<div>' + 'Last Modified: ' + lastModifiedStr + '</div>' + lastScannedStr + directionsStr + '</center>' + '</div>';
     }
 
     return str;
@@ -445,9 +418,9 @@ function pokestopLabel(expireTime, latitude, longitude) {
     if (expireTime) {
         var expireDate = new Date(expireTime);
 
-        str = '\n            <div>\n                <b>Lured Pok\xE9stop</b>\n            </div>\n            <div>\n                Lure expires at ' + pad(expireDate.getHours()) + ':' + pad(expireDate.getMinutes()) + ':' + pad(expireDate.getSeconds()) + '\n                <span class=\'label-countdown\' disappears-at=\'' + expireTime + '\'>(00m00s)</span>\n            </div>\n            <div>\n                Location: ' + latitude.toFixed(6) + ', ' + longitude.toFixed(7) + '\n            </div>\n            <div>\n                <a href=\'javascript:void(0);\' onclick=\'javascript:openMapDirections(' + latitude + ',' + longitude + ');\' title=\'View in Maps\'>Get directions</a>\n            </div>';
+        str = '<div>' + '<b>Lured Pokéstop</b>' + '</div>' + '<div>' + 'Lure expires at ' + pad(expireDate.getHours()) + ':' + pad(expireDate.getMinutes()) + ':' + pad(expireDate.getSeconds()) + '<span class="label-countdown" disappears-at="' + expireTime + '">(00m00s)</span>' + '</div>' + '<div>' + 'Location: ' + latitude.toFixed(6) + ', ' + longitude.toFixed(7) + '</div>' + '<div>' + '<a href="javascript:void(0)" onclick="javascript:openMapDirections(' + latitude + ',' + longitude + ')" title="View in Maps">Get directions</a>' + '</div>';
     } else {
-        str = '\n            <div>\n                <b>Pok\xE9stop</b>\n            </div>\n            <div>\n                Location: ' + latitude.toFixed(6) + ', ' + longitude.toFixed(7) + '\n            </div>\n            <div>\n                <a href=\'javascript:void(0);\' onclick=\'javascript:openMapDirections(' + latitude + ',' + longitude + ');\' title=\'View in Maps\'>Get directions</a>\n            </div>';
+        str = '<div>' + '<b>Pokéstop</b>' + '</div>' + '<div>' + 'Location: ' + latitude.toFixed(6) + ', ' + longitude.toFixed(7) + '</div>' + '<div>' + '<a href="javascript:void(0)" onclick="javascript:openMapDirections(' + latitude + ',' + longitude + ')" title="View in Maps">Get directions</a>' + '</div>';
     }
 
     return str;
@@ -460,10 +433,10 @@ function formatSpawnTime(seconds) {
 }
 
 function spawnpointLabel(item) {
-    var str = '\n        <div>\n            <b>Spawn Point</b>\n        </div>\n        <div>\n            Every hour from ' + formatSpawnTime(item.time) + ' to ' + formatSpawnTime(item.time + 900) + '\n        </div>';
+    var str = '<div>' + '<b>Spawn Point</b>' + '</div>' + '<div>' + 'Every hour from ' + formatSpawnTime(item.time) + ' to ' + formatSpawnTime(item.time + 900) + '</div>';
 
     if (item.special) {
-        str += '\n            <div>\n                May appear as early as ' + formatSpawnTime(item.time - 1800) + '\n            </div>';
+        str += '<div>' + 'May appear as early as ' + formatSpawnTime(item.time - 1800) + '</div>';
     }
     return str;
 }
@@ -523,6 +496,17 @@ function getIv(atk, def, stm) {
     return false;
 }
 
+function getPokemonLevel(cpMultiplier) {
+    if (cpMultiplier < 0.734) {
+        var pokemonLevel = 58.35178527 * cpMultiplier * cpMultiplier - 2.838007664 * cpMultiplier + 0.8539209906;
+    } else {
+        pokemonLevel = 171.0112688 * cpMultiplier - 95.20425243;
+    }
+    pokemonLevel = Math.round(pokemonLevel) * 2 / 2;
+
+    return pokemonLevel;
+}
+
 function lpad(str, len, padstr) {
     return Array(Math.max(len - String(str).length + 1, 0)).join(padstr) + str;
 }
@@ -560,7 +544,8 @@ function getNotifyText(item) {
     var ntitle = repArray(iv ? notifyIvTitle : notifyNoIvTitle, find, replace);
     var dist = new Date(item['disappear_time']).toLocaleString([], {
         hour: '2-digit', minute: '2-digit',
-        second: '2-digit', hour12: false });
+        second: '2-digit', hour12: false
+    });
     var until = getTimeUntil(item['disappear_time']);
     var udist = until.hour > 0 ? until.hour + ':' : '';
     udist += lpad(until.min, 2, 0) + 'm' + lpad(until.sec, 2, 0) + 's';
@@ -585,7 +570,7 @@ function customizePokemonMarker(marker, item, skipNotification) {
     }
 
     marker.infoWindow = new google.maps.InfoWindow({
-        content: pokemonLabel(item['pokemon_name'], item['pokemon_rarity'], item['pokemon_types'], item['disappear_time'], item['pokemon_id'], item['latitude'], item['longitude'], item['encounter_id'], item['individual_attack'], item['individual_defense'], item['individual_stamina'], item['move_1'], item['move_2']),
+        content: pokemonLabel(item),
         disableAutoPan: true
     });
 
@@ -637,7 +622,7 @@ function setupGymMarker(item) {
     }
 
     marker.infoWindow = new google.maps.InfoWindow({
-        content: gymLabel(gymTypes[item['team_id']], item['team_id'], item['gym_points'], item['latitude'], item['longitude'], item['last_scanned'], item['name'], item['pokemon'], item['gym_id']),
+        content: gymLabel(gymTypes[item['team_id']], item['team_id'], item['gym_points'], item['latitude'], item['longitude'], item['last_scanned'], item['last_modified'], item['name'], item['pokemon'], item['gym_id'], item['guard_pokemon_id']),
         disableAutoPan: true
     });
 
@@ -680,7 +665,7 @@ function updateGymMarker(item, marker) {
         url: 'static/forts/' + Store.get('gymMarkerStyle') + '/' + gymTypes[item['team_id']] + (item['team_id'] !== 0 ? '_' + getGymLevel(item['gym_points']) : '') + '.png',
         scaledSize: new google.maps.Size(48, 48)
     });
-    marker.infoWindow.setContent(gymLabel(gymTypes[item['team_id']], item['team_id'], item['gym_points'], item['latitude'], item['longitude'], item['last_scanned'], item['name'], item['pokemon'], item['gym_id']));
+    marker.infoWindow.setContent(gymLabel(gymTypes[item['team_id']], item['team_id'], item['gym_points'], item['latitude'], item['longitude'], item['last_scanned'], item['last_modified'], item['name'], item['pokemon'], item['gym_id'], item['guard_pokemon_id']));
     return marker;
 }
 
@@ -783,7 +768,8 @@ function changeSpawnIcon(color, zoom) {
     }
     var zoomScale = 1.6; // adjust this value to change the size of the spawnpoint icons
     var minimumSize = 1;
-    var newSize = Math.round(zoomScale * (zoom - 10)); // this scales the icon based on zoom
+    var newSize = Math.round(zoomScale * (zoom - 10) // this scales the icon based on zoom
+    );
     if (newSize < minimumSize) {
         newSize = minimumSize;
     }
@@ -942,8 +928,9 @@ function showInBoundsMarkers(markers, type) {
         }
 
         if (show && !marker.getMap()) {
-            marker.setMap(map);
+            marker.setMap(map
             // Not all markers can be animated (ex: scan locations)
+            );
             if (marker.setAnimation && marker.oldAnimation) {
                 marker.setAnimation(marker.oldAnimation);
             }
@@ -975,8 +962,9 @@ function loadRawData() {
     var neLng = nePoint.lng();
 
     return $.ajax({
-        url: 'raw_data.php',
+        url: 'raw_data',
         type: 'GET',
+        timeout: 300000,
         data: {
             'timestamp': timestamp,
             'pokemon': loadPokemon,
@@ -1011,16 +999,25 @@ function loadRawData() {
             }
         },
         error: function error() {
-            if (!$timeoutDialog) {
-                var opts = {
-                    title: 'Reduce marker settings'
-                };
-
-                $timeoutDialog = $('<div>Hmm... we\'re having problems getting data for your criteria. Try reducing what you\'re showing and zooming in to limit what\'s returned.</div>').dialog(opts);
-                $timeoutDialog.dialog('open');
-            } else if (!$timeoutDialog.dialog('isOpen')) {
-                $timeoutDialog.dialog('open');
-            }
+            // Display error toast
+            toastr['error']('Please check connectivity or reduce marker settings.', 'Error getting data');
+            toastr.options = {
+                'closeButton': true,
+                'debug': false,
+                'newestOnTop': true,
+                'progressBar': false,
+                'positionClass': 'toast-top-right',
+                'preventDuplicates': true,
+                'onclick': null,
+                'showDuration': '300',
+                'hideDuration': '1000',
+                'timeOut': '25000',
+                'extendedTimeOut': '1000',
+                'showEasing': 'swing',
+                'hideEasing': 'linear',
+                'showMethod': 'fadeIn',
+                'hideMethod': 'fadeOut'
+            };
         },
         complete: function complete() {
             rawDataIsLoading = false;
@@ -1172,9 +1169,16 @@ function processGyms(i, item) {
 
     if (Store.get('showLastUpdatedGymsOnly')) {
         var now = new Date();
-        if (Store.get('showLastUpdatedGymsOnly') * 3600 * 1000 + item.last_scanned < now.getTime()) {
-            removeGymFromMap(item['gym_id']);
-            return true;
+        if (item.last_scanned == null) {
+            if (Store.get('showLastUpdatedGymsOnly') * 3600 * 1000 + item.last_modified < now.getTime()) {
+                removeGymFromMap(item['gym_id']);
+                return true;
+            }
+        } else {
+            if (Store.get('showLastUpdatedGymsOnly') * 3600 * 1000 + item.last_scanned < now.getTime()) {
+                removeGymFromMap(item['gym_id']);
+                return true;
+            }
         }
     }
 
@@ -1275,8 +1279,9 @@ function updateMap() {
         showInBoundsMarkers(mapData.gyms, 'gym');
         showInBoundsMarkers(mapData.pokestops, 'pokestop');
         showInBoundsMarkers(mapData.scanned, 'scanned');
-        showInBoundsMarkers(mapData.spawnpoints, 'inbound');
-        //      drawScanPath(result.scanned);
+        showInBoundsMarkers(mapData.spawnpoints, 'inbound'
+        //      drawScanPath(result.scanned)
+        );
         clearStaleMarkers();
 
         updateScanned();
@@ -1469,10 +1474,10 @@ function centerMapOnLocation() {
 }
 
 function changeLocation(lat, lng) {
+    // eslint-disable-line no-unused-vars
     var loc = new google.maps.LatLng(lat, lng);
     changeSearchLocation(lat, lng).done(function () {
         map.setCenter(loc);
-        searchMarker.setPosition(loc);
     });
 }
 
@@ -1515,21 +1520,12 @@ function i8ln(word) {
 }
 
 function updateGeoLocation() {
-    if (navigator.geolocation && (Store.get('geoLocate') || Store.get('followMyLocation'))) {
+    if (navigator.geolocation && Store.get('followMyLocation')) {
         navigator.geolocation.getCurrentPosition(function (position) {
             var lat = position.coords.latitude;
             var lng = position.coords.longitude;
             var center = new google.maps.LatLng(lat, lng);
 
-            if (Store.get('geoLocate')) {
-                // the search function makes any small movements cause a loop. Need to increase resolution
-                if (typeof searchMarker !== 'undefined' && getPointDistance(searchMarker.getPosition(), center) > 40) {
-                    $.post('next_loc?lat=' + lat + '&lon=' + lng).done(function () {
-                        map.panTo(center);
-                        searchMarker.setPosition(center);
-                    });
-                }
-            }
             if (Store.get('followMyLocation')) {
                 if (typeof locationMarker !== 'undefined' && getPointDistance(locationMarker.getPosition(), center) >= 5) {
                     map.panTo(center);
@@ -1547,7 +1543,7 @@ function updateGeoLocation() {
 function createUpdateWorker() {
     try {
         if (isMobileDevice() && window.Worker) {
-            var updateBlob = new Blob(['onmessage = function(e) {\n                var data = e.data\n                if (data.name === \'backgroundUpdate\') {\n                    self.setInterval(function () {self.postMessage({name: \'backgroundUpdate\'})}, 5000)\n                }\n            }']);
+            var updateBlob = new Blob(["onmessage = function(e) {\n                var data = e.data\n                if (data.name === 'backgroundUpdate') {\n                    self.setInterval(function () {self.postMessage({name: 'backgroundUpdate'})}, 5000)\n                }\n            }"]);
 
             var updateBlobURL = window.URL.createObjectURL(updateBlob);
 
@@ -1580,6 +1576,7 @@ function showGymDetails(id) {
     var data = $.ajax({
         url: 'gym_data',
         type: 'GET',
+        timeout: 300000,
         data: {
             'id': id
         },
@@ -1591,35 +1588,42 @@ function showGymDetails(id) {
         var gymLevel = getGymLevel(result.gym_points);
         var nextLvlPrestige = gymPrestige[gymLevel - 1] || 50000;
         var prestigePercentage = result.gym_points / nextLvlPrestige * 100;
-        var lastScannedDate = new Date(result.last_scanned);
-        var freeSlots = result.pokemon.length ? gymLevel - result.pokemon.length : 0;
+        var lastModifiedStr = getDateStr(result.last_modified);
+        var lastScannedStr = '';
+        if (result.last_scanned != null) {
+            lastScannedStr = '<div style="font-size: .7em">' + 'Last Scanned: ' + getDateStr(result.last_scanned) + '</div>';
+        }
+        var pokemon = result.pokemon !== undefined ? result.pokemon : [];
+        var freeSlots = pokemon.length ? gymLevel - pokemon.length : 0;
         var freeSlotsStr = freeSlots ? ' - ' + freeSlots + ' Free Slots' : '';
         var gymLevelStr = '';
 
         if (result.team_id === 0) {
-            gymLevelStr = '\n                <center class="team-' + result.team_id + '-text">\n                    <b class="team-' + result.team_id + '-text">Uncontested - 1 Free Slot</b>\n                </center>';
+            gymLevelStr = '<center class="team-' + result.team_id + '-text">' + '<b class="team-' + result.team_id + '-text">Uncontested - 1 Free Slot</b>' + '</center>';
         } else {
-            gymLevelStr = '<div>\n                <b class="team-' + result.team_id + '-text">Level ' + gymLevel + freeSlotsStr + '</b>\n            </div>';
+            gymLevelStr = '<div>' + '<b class="team-' + result.team_id + '-text">Level ' + gymLevel + freeSlotsStr + '</b>' + '</div>';
         }
-        var pokemonHtml = '';
-        var headerHtml = '\n            <center class="team-' + result.team_id + '-text">\n                <div>\n                    <b class="team-' + result.team_id + '-text">' + (result.name || '') + '</b>\n                </div>\n                <img height="100px" style="padding: 5px;" src="static/forts/' + gymTypes[result.team_id] + '_large.png">\n                <div class="prestige-bar team-' + result.team_id + '">\n                    <div class="prestige team-' + result.team_id + '" style="width: ' + prestigePercentage + '%">\n                    </div>\n                </div>\n                <div>\n                    ' + result.gym_points + '/' + nextLvlPrestige + '\n                </div>\n                ' + gymLevelStr + '\n                <div style="font-size: .7em;">\n                    Last Scanned: ' + lastScannedDate.getFullYear() + '-' + pad(lastScannedDate.getMonth() + 1) + '-' + pad(lastScannedDate.getDate()) + ' ' + pad(lastScannedDate.getHours()) + ':' + pad(lastScannedDate.getMinutes()) + ':' + pad(lastScannedDate.getSeconds()) + '\n                </div>\n                <div>\n                    <a href=\'javascript:void(0);\' onclick=\'javascript:openMapDirections(' + result.latitude + ',' + result.longitude + ');\' title=\'View in Maps\'>Get directions</a>\n                </div>\n            </center>\n        ';
 
-        if (result.pokemon.length) {
-            $.each(result.pokemon, function (i, pokemon) {
+        var pokemonHtml = '';
+
+        var headerHtml = '<center class="team-' + result.team_id + '-text">' + '<div>' + '<b class="team-' + result.team_id + '-text">' + (result.name || '') + '</b>' + '</div>' + '<img height="100px" style="padding: 5px" src="static/forts/' + gymTypes[result.team_id] + '_large.png">' + '<div class="prestige-bar team-' + result.team_id + '">' + '<div class="prestige team-' + result.team_id + '" style="width: ' + prestigePercentage + '%">' + '</div>' + '</div>' + '<div>' + result.gym_points + '/' + nextLvlPrestige + '</div>' + gymLevelStr + '<div style="font-size: .7em">' + 'Last Modified: ' + lastModifiedStr + '</div>' + lastScannedStr + '<div>' + '<a href=\'javascript:void(0)\' onclick=\'javascript:openMapDirections(' + result.latitude + ',' + result.longitude + ')\' title=\'View in Maps\'>Get directions</a>' + '</div>' + '</center>';
+
+        if (pokemon.length) {
+            $.each(pokemon, function (i, pokemon) {
                 var perfectPercent = getIv(pokemon.iv_attack, pokemon.iv_defense, pokemon.iv_stamina);
                 var moveEnergy = Math.round(100 / pokemon.move_2_energy);
 
-                pokemonHtml += '\n                    <tr onclick=toggleGymPokemonDetails(this)>\n                        <td width="30px">\n                            <i class="pokemon-sprite n' + pokemon.pokemon_id + '"></i>\n                        </td>\n                        <td class="team-' + result.team_id + '-text">\n                            <div style="line-height:1em;">' + pokemon.pokemon_name + '</div>\n                            <div class="cp">CP ' + pokemon.pokemon_cp + '</div>\n                        </td>\n                        <td width="190" class="team-' + result.team_id + '-text" align="center">\n                            <div class="trainer-level">' + pokemon.trainer_level + '</div>\n                            <div style="line-height: 1em;">' + pokemon.trainer_name + '</div>\n                        </td>\n                        <td width="10">\n                            <!--<a href="#" onclick="toggleGymPokemonDetails(this)">-->\n                                <i class="team-' + result.team_id + '-text fa fa-angle-double-down"></i>\n                            <!--</a>-->\n                        </td>\n                    </tr>\n                    <tr class="details">\n                        <td colspan="2">\n                            <div class="ivs">\n                                <div class="iv">\n                                    <div class="type">ATK</div>\n                                    <div class="value">\n                                        ' + pokemon.iv_attack + '\n                                    </div>\n                                </div>\n                                <div class="iv">\n                                    <div class="type">DEF</div>\n                                    <div class="value">\n                                        ' + pokemon.iv_defense + '\n                                    </div>\n                                </div>\n                                <div class="iv">\n                                    <div class="type">STA</div>\n                                    <div class="value">\n                                        ' + pokemon.iv_stamina + '\n                                    </div>\n                                </div>\n                                <div class="iv" style="width: 36px;"">\n                                    <div class="type">PERFECT</div>\n                                    <div class="value">\n                                        ' + perfectPercent.toFixed(0) + '<span style="font-size: .6em;">%</span>\n                                    </div>\n                                </div>\n                            </div>\n                        </td>\n                        <td colspan="2">\n                            <div class="moves">\n                                <div class="move">\n                                    <div class="name">\n                                        ' + pokemon.move_1_name + '\n                                        <div class="type ' + pokemon.move_1_type['type_en'].toLowerCase() + '">' + pokemon.move_1_type['type'] + '</div>\n                                    </div>\n                                    <div class="damage">\n                                        ' + pokemon.move_1_damage + '\n                                    </div>\n                                </div>\n                                <br>\n                                <div class="move">\n                                    <div class="name">\n                                        ' + pokemon.move_2_name + '\n                                        <div class="type ' + pokemon.move_2_type['type_en'].toLowerCase() + '">' + pokemon.move_2_type['type'] + '</div>\n                                        <div>\n                                            <i class="move-bar-sprite move-bar-sprite-' + moveEnergy + '"></i>\n                                        </div>\n                                    </div>\n                                    <div class="damage">\n                                        ' + pokemon.move_2_damage + '\n                                    </div>\n                                </div>\n                            </div>\n                        </td>\n                    </tr>\n                    ';
+                pokemonHtml += '<tr onclick=toggleGymPokemonDetails(this)>' + '<td width="30px">' + '<i class="pokemon-sprite n' + pokemon.pokemon_id + '"></i>' + '</td>' + '<td class="team-' + result.team_id + '-text">' + '<div style="line-height:1em">' + pokemon.pokemon_name + '</div>' + '<div class="cp">CP ' + pokemon.pokemon_cp + '</div>' + '</td>' + '<td width="190" class="team-' + result.team_id + '-text" align="center">' + '<div class="trainer-level">' + pokemon.trainer_level + '</div>' + '<div style="line-height: 1em">' + pokemon.trainer_name + '</div>' + '</td>' + '<td width="10">' + '<!--<a href="#" onclick="toggleGymPokemonDetails(this)">-->' + '<i class="team-' + result.team_id + '-text fa fa-angle-double-down"></i>' + '<!--</a>-->' + '</td>' + '</tr>' + '<tr class="details">' + '<td colspan="2">' + '<div class="ivs">' + '<div class="iv">' + '<div class="type">ATK</div>' + '<div class="value">' + pokemon.iv_attack + '</div>' + '</div>' + '<div class="iv">' + '<div class="type">DEF</div>' + '<div class="value">' + pokemon.iv_defense + '</div>' + '</div>' + '<div class="iv">' + '<div class="type">STA</div>' + '<div class="value">' + pokemon.iv_stamina + '</div>' + '</div>' + '<div class="iv" style="width: 36px">' + '<div class="type">PERFECT</div>' + '<div class="value">' + perfectPercent.toFixed(0) + '' + '<span style="font-size: .6em">%</span>' + '</div>' + '</div>' + '</div>' + '</td>' + '<td colspan="2">' + '<div class="moves">' + '<div class="move">' + '<div class="name">' + pokemon.move_1_name + ' <div class="type ' + pokemon.move_1_type.toLowerCase() + '">' + pokemon.move_1_type + '</div>' + '</div>' + '<div class="damage">' + pokemon.move_1_damage + '</div>' + '</div>' + '<br>' + '<div class="move">' + '<div class="name">' + pokemon.move_2_name + ' <div class="type ' + pokemon.move_2_type.toLowerCase() + '">' + pokemon.move_2_type + '</div>' + '<div>' + '<i class="move-bar-sprite move-bar-sprite-' + moveEnergy + '"></i>' + '</div>' + '</div>' + '<div class="damage">' + pokemon.move_2_damage + '</div>' + '</div>' + '</div>' + '</td>' + '</tr>';
             });
 
             pokemonHtml = '<table><tbody>' + pokemonHtml + '</tbody></table>';
         } else if (result.team_id === 0) {
             pokemonHtml = '';
         } else {
-            pokemonHtml = '\n                <center class="team-' + result.team_id + '-text">\n                    Gym Leader:<br>\n                    <i class="pokemon-large-sprite n' + result.guard_pokemon_id + '"></i><br>\n                    <b class="team-' + result.team_id + '-text">' + result.guard_pokemon_name + '</b>\n\n                    <p style="font-size: .75em; margin: 5px;">\n                        No additional gym information is available for this gym. Make sure you are collecting <a href="https://pgm.readthedocs.io/en/develop/extras/gyminfo.html">detailed gym info.</a>\n                        If you have detailed gym info collection running, this gym\'s Pokemon information may be out of date.\n                    </p>\n                </center>\n            ';
+            pokemonHtml = '<center class="team-' + result.team_id + '-text">' + 'Gym Leader:<br>' + '<i class="pokemon-large-sprite n' + result.guard_pokemon_id + '"></i><br>' + '<b class="team-' + result.team_id + '-text">' + result.guard_pokemon_name + '</b>' + '<p style="font-size: .75em margin: 5px">' + 'No additional gym information is available for this gym. Make sure you are collecting detailed gym info. If you have detailed gym info collection running, this gym\'s Pokemon information may be out of date.' + '</p>' + '</center>';
         }
 
-        sidebar.innerHTML = '' + headerHtml + pokemonHtml;
+        sidebar.innerHTML = headerHtml + pokemonHtml;
 
         sidebarClose = document.createElement('a');
         sidebarClose.href = '#';
@@ -1647,21 +1651,26 @@ function toggleGymPokemonDetails(e) {
 //
 
 $(function () {
-    if (!Notification) {
-        console.log('could not load notifications');
-        return;
-    }
+    try {
+        if (!Notification) {
+            console.log('could not load notifications');
+            return;
+        }
+    } catch (err) {}
 
-    if (Notification.permission !== 'granted') {
-        Notification.requestPermission();
-    }
+    try {
+        if (Notification.permission !== 'granted') {
+            Notification.requestPermission();
+        }
+    } catch (err) {}
 });
 
 $(function () {
     // populate Navbar Style menu
-    $selectStyle = $('#map-style');
+    $selectStyle = $('#map-style'
 
     // Load Stylenames, translate entries, and populate lists
+    );
     $.getJSON('static/dist/data/mapstyle.min.json').done(function (data) {
         var styleList = [];
 
@@ -1688,6 +1697,19 @@ $(function () {
 
         // recall saved mapstyle
         $selectStyle.val(Store.get('map_style')).trigger('change');
+    });
+
+    $selectIconResolution = $('#pokemon-icons');
+
+    $selectIconResolution.select2({
+        placeholder: 'Select Icon Resolution',
+        minimumResultsForSearch: Infinity
+    });
+
+    $selectIconResolution.on('change', function () {
+        Store.set('pokemonIcons', this.value);
+        redrawPokemon(mapData.pokemons);
+        redrawPokemon(mapData.lurePokemons);
     });
 
     $selectIconSize = $('#pokemon-icon-size');
@@ -1799,7 +1821,6 @@ $(function () {
         updateMap();
     });
 
-    $selectSearchIconMarker = $('#iconmarker-style');
     $selectLocationIconMarker = $('#locationmarker-style');
 
     $.getJSON('static/dist/data/searchmarkerstyle.min.json').done(function (data) {
@@ -1813,21 +1834,7 @@ $(function () {
             });
         });
 
-        $selectSearchIconMarker.select2({
-            placeholder: 'Select Icon Marker',
-            data: searchMarkerStyleList,
-            minimumResultsForSearch: Infinity
-        });
-
-        $selectSearchIconMarker.on('change', function (e) {
-            var selectSearchIconMarker = $selectSearchIconMarker.val();
-            Store.set('searchMarkerStyle', selectSearchIconMarker);
-            updateSearchMarker(selectSearchIconMarker);
-        });
-
-        $selectSearchIconMarker.val(Store.get('searchMarkerStyle')).trigger('change');
-
-        updateSearchMarker(Store.get('lockMarker'));
+        locationMarker = createLocationMarker();
 
         $selectLocationIconMarker.select2({
             placeholder: 'Select Location Marker',
@@ -2063,25 +2070,6 @@ $(function () {
         Store.set('playSound', this.checked);
     });
 
-    $('#geoloc-switch').change(function () {
-        $('#next-location').prop('disabled', this.checked);
-        $('#next-location').css('background-color', this.checked ? '#e0e0e0' : '#ffffff');
-        if (!navigator.geolocation) {
-            this.checked = false;
-        } else {
-            Store.set('geoLocate', this.checked);
-        }
-    });
-
-    $('#lock-marker-switch').change(function () {
-        Store.set('lockMarker', this.checked);
-        searchMarker.setDraggable(!this.checked);
-    });
-
-    $('#search-switch').change(function () {
-        searchControl(this.checked ? 'on' : 'off');
-    });
-
     $('#start-at-user-location-switch').change(function () {
         Store.set('startAtUserLocation', this.checked);
     });
@@ -2093,15 +2081,6 @@ $(function () {
             Store.set('followMyLocation', this.checked);
         }
         locationMarker.setDraggable(!this.checked);
-    });
-
-    $('#scan-here-switch').change(function () {
-        if (this.checked && !Store.get('scanHereAlerted')) {
-            alert('Use this feature carefully ! This button will set the current map center as new search location. This may cause worker to teleport long range.');
-            Store.set('scanHereAlerted', true);
-        }
-        $('#scan-here').toggle(this.checked);
-        Store.set('scanHere', this.checked);
     });
 
     if ($('#nav-accordion').length) {

@@ -423,7 +423,7 @@ if (!empty($lat) && !empty($lon)) {
 <script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.3/js/select2.min.js"></script>
 <script src="https://cdn.datatables.net/1.10.12/js/jquery.dataTables.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.17.1/moment.min.js"></script>
-<script src="static/js/app.js"></script>
+<script src="static/dist/js/app.min.js"></script>
 <script src="static/js/vendor/classie.js"></script>
 <script>
     var centerLat = <?= $startingLat; ?>;
@@ -432,7 +432,7 @@ if (!empty($lat) && !empty($lon)) {
 </script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js"></script>
 <script src="static/js/map.common.js"></script>
-<script src="static/js/map.js"></script>
+<script src="static/dist/js/map.min.js"></script>
 <script src="static/dist/js/stats.min.js"></script>
 <script defer
         src="https://maps.googleapis.com/maps/api/js?key=<?= $gmapsKey ?>&amp;callback=initMap&amp;libraries=places,geometry"></script>

@@ -1,0 +1,55 @@
+{
+  "extends": "standard",
+  "parserOptions": {
+    "ecmaFeatures": {
+      "jsx": false
+    },
+    "ecmaVersion": 6,
+    "sourceType": "module"
+  },
+  "rules": {
+    "indent": ["error", 4, {
+        "SwitchCase": 1
+    }],
+    "space-before-function-paren": ["error", {
+        "anonymous": "always",
+        "named": "never",
+        "asyncArrow": "ignore"
+    }],
+    "no-multiple-empty-lines": ["error", {
+        "max": 2
+    }]
+  },
+  "env": {
+    "browser": true,
+    "jquery": true
+  },
+  "globals": {
+    "toastr": true,
+    "google": true,
+    "mapData": true,
+    "Store": true,
+    "centerLat": true,
+    "centerLng": true,
+    "zoom": true,
+    "showConfig": true,	
+    "pageLoaded": true,
+    "countMarkers": true,
+    "skel": true,
+    "setupPokemonMarker": true,
+
+    "isTouchDevice": true,
+    "isMobileDevice": true,
+    "pokemonSprites": true,
+    "noLabelsStyle": true,
+    "darkStyle": true,
+    "light2Style": true,
+    "pGoStyle": true,
+    "darkStyleNoLabels": true,
+    "light2StyleNoLabels": true,
+    "pGoStyleNoLabels": true,
+    "pGoStyleDay": true,
+    "pGoStyleNight": true,
+    "moment": false
+  }
+}
