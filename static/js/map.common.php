@@ -918,7 +918,7 @@ default: <?php echo $noNotifyRarity ? '[]' : $notifyRarity ?>, // Common, Uncomm
 type: StoreTypes.JSON
 },
 'remember_text_perfection_notify': {
-default: <?php echo $noNotifyIv ? '' : $notifyIv ?>,
+default: <?php echo $noNotifyIv ? '""' : $notifyIv ?>,
 type: StoreTypes.Number
 },
 'showGyms': {
