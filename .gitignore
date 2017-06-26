@@ -47,3 +47,4 @@ fabric.properties
 #PMSF
 /.sass-cache/
 /node_modules/
+/config.php
