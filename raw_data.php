@@ -1,5 +1,6 @@
 <?php
 include('config.php');
+include('utils.php');
 
 $now = new DateTime();
 
@@ -223,13 +224,17 @@ function get_active($swLat, $swLng, $neLat, $neLng, $tstamp = 0, $oSwLat = 0, $o
         $p["gender"] = $gender;
         $p["form"] = $form;
         $p["pokemon_id"] = $pokeid;
-        $p["pokemon_name"] = $data[$pokeid]['name'];
-        $p["pokemon_rarity"] = $data[$pokeid]['rarity'];
+        $p["pokemon_name"] = i8ln($data[$pokeid]['name']);
+        $p["pokemon_rarity"] = i8ln($data[$pokeid]['rarity']);
         $p["cp"] = $cp;
         $p["cp_multiplier"] = $cpm;
         $p["level"] = $level;
 
-        $p["pokemon_types"] = $data[$pokeid]["types"];
+        $types = $data[$pokeid]["types"];
+        foreach ($types as $k=>$v) {
+            $types[$k]['type'] = i8ln($v['type']);
+        }
+        $p["pokemon_types"] = $types;
         $p["spawnpoint_id"] = $row["spawn_id"];
 
         $pokemons[] = $p;
@@ -309,8 +314,8 @@ function get_active_by_id($ids, $swLat, $swLng, $neLat, $neLng)
         $p["gender"] = $gender;
         $p["form"] = $form;
         $p["pokemon_id"] = $pokeid;
-        $p["pokemon_name"] = $data[$pokeid]['name'];
-        $p["pokemon_rarity"] = $data[$pokeid]['rarity'];
+        $p["pokemon_name"] = i8ln($data[$pokeid]['name']);
+        $p["pokemon_rarity"] = i8ln($data[$pokeid]['rarity']);
         $p["cp"] = $cp;
         $p["cp_multiplier"] = $cpm;
 

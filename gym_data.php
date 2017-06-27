@@ -1,5 +1,7 @@
 <?php
 include('config.php');
+include('utils.php');
+
 if (!isset($_GET['id'])) {
     http_response_code(400);
     die();
@@ -40,7 +42,7 @@ $p["latitude"] = $lat;
 $p["longitude"] = $lon;
 $p["name"] = isset($row["name"]) ? $row["name"] : null;
 $p["team_id"] = $ti;
-$p["guard_pokemon_name"] = $data[$gpid]['name'];
+$p["guard_pokemon_name"] = i8ln($data[$gpid]['name']);
 
 unset($row);
 
@@ -58,7 +60,7 @@ if ($map != "monocle") {
         $p1 = array();
 
         $p1["pokemon_id"] = $pid;
-        $p1["pokemon_name"] = $data[$pid]['name'];
+        $p1["pokemon_name"] = i8ln($data[$pid]['name']);
         $p1["trainer_name"] = $pokemon["name"];
         $p1["trainer_level"] = $pokemon["level"];
         $p1["pokemon_cp"] = $pokemon["cp"];
@@ -67,15 +69,17 @@ if ($map != "monocle") {
         $p1["iv_defense"] = intval($pokemon["iv_defense"]);
         $p1["iv_stamina"] = intval($pokemon["iv_stamina"]);
 
-        $p1['move_1_name'] = $moves[$pokemon['move_1']]['name'];
+        $p1['move_1_name'] = i8ln($moves[$pokemon['move_1']]['name']);
         $p1['move_1_damage'] = $moves[$pokemon['move_1']]['damage'];
         $p1['move_1_energy'] = $moves[$pokemon['move_1']]['energy'];
-        $p1['move_1_type'] = $moves[$pokemon['move_1']]['type'];
+        $p1['move_1_type']['type'] = i8ln($moves[$pokemon['move_1']]['type']);
+        $p1['move_1_type']['type_en'] = $moves[$pokemon['move_1']]['type'];
 
-        $p1['move_2_name'] = $moves[$pokemon['move_2']]['name'];
+        $p1['move_2_name'] = i8ln($moves[$pokemon['move_2']]['name']);
         $p1['move_2_damage'] = $moves[$pokemon['move_2']]['damage'];
         $p1['move_2_energy'] = $moves[$pokemon['move_2']]['energy'];
-        $p1['move_2_type'] = $moves[$pokemon['move_2']]['type'];
+        $p1['move_2_type']['type'] = i8ln($moves[$pokemon['move_2']]['type']);
+        $p1['move_2_type']['type_en'] = $moves[$pokemon['move_2']]['type'];
 
         $p['pokemon'][] = $p1;
 
