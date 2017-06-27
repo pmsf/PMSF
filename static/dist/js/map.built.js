@@ -120,6 +120,7 @@ function initMap() {
             lng: centerLng
         },
         zoom: zoom == null ? Store.get('zoomLevel') : zoom,
+        minZoom: minZoom,
         fullscreenControl: true,
         streetViewControl: false,
         mapTypeControl: false,

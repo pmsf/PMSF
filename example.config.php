@@ -22,6 +22,7 @@ $startingLng = -87.8549371;                                      // Starting lon
 /* Anti scrape Settings */
 
 $maxLatLng = 1;                                                  // Max latitude and longitude size (1 = ~110km, 0 to disable)
+$maxZoomOut = 11;                                                // Max zoom out level (11 ~= $maxLatLng = 1, 0 to disable, lower = the further you can zoom out)
 
 /* Map Title + Language */
 

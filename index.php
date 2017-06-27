@@ -450,6 +450,7 @@ if (!empty($lat) && !empty($lon)) {
     var centerLat = <?= $startingLat; ?>;
     var centerLng = <?= $startingLng; ?>;
     var zoom<?php echo !empty($zoom) ? " = " . $zoom : null; ?>;
+    var minZoom = <?= $maxZoomOut; ?>;
 </script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js"></script>
 <script src="static/js/map.common.js"></script>
