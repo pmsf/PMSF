@@ -299,7 +299,7 @@ function pad(number) {
 }
 
 function getTypeSpan(type) {
-    return '<span style=\'padding: 2px 5px text-transform: uppercase color: white margin-right: 2px border-radius: 4px font-size: 0.8em vertical-align: text-bottom background-color: ' + type['color'] + '\'>' + type['type'] + '</span>';
+    return '<span style="padding: 2px 5px; text-transform: uppercase; color: white; margin-right: 2px; border-radius: 4px; font-size: 0.8em; vertical-align: text-bottom; background-color: ' + type['color'] + ';">' + type['type'] + '</span>';
 }
 
 function openMapDirections(lat, lng) {
