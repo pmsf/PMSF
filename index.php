@@ -1,5 +1,5 @@
 <?php
-include('config.php');
+include('config/config.php');
 $lat = isset($_GET['lat']) ? $_GET['lat'] : 0;
 $lon = isset($_GET['lon']) ? $_GET['lon'] : 0;
 $zoom = isset($_GET['zoom']) ? $_GET['zoom'] : null;

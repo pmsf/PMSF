@@ -1,5 +1,5 @@
 <?php
-include('../../config.php');
+include('../../config/config.php');
 header('Content-type: text/javascript');
 
 $last_modified_time = filemtime("map.common.php");

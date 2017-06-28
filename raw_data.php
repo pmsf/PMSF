@@ -1,5 +1,5 @@
 <?php
-include('config.php');
+include('config/config.php');
 include('utils.php');
 
 $now = new DateTime();
