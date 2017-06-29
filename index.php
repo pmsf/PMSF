@@ -398,7 +398,7 @@ if (!empty($lat) && !empty($lon)) {
             <center>
                 <button class="settings"
                         onclick="confirm('Are you sure you want to reset settings to default values?') ? (localStorage.clear(), window.location.reload()) : false">
-                    Reset Settings
+                    <i class="fa fa-refresh" aria-hidden="true"></i> Reset Settings
                 </button>
             </center>
         </div>

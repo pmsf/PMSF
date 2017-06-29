@@ -32,6 +32,7 @@ var excludedPokemon = []
 var notifiedPokemon = []
 var notifiedRarity = []
 var notifiedMinPerfection = null
+var onlyPokemon = 0
 
 var buffer = []
 var reincludedPokemon = []
@@ -329,6 +330,22 @@ function getDateStr(t) {
     return dateStr
 }
 
+function toggleOtherPokemon(pokemonId) { // eslint-disable-line no-unused-vars
+    onlyPokemon = onlyPokemon === 0 ? pokemonId : 0
+    if (onlyPokemon === 0) {
+        // reload all Pokemon
+        lastpokemon = false
+        updateMap()
+    } else {
+        // remove other Pokemon
+        clearStaleMarkers()
+    }
+}
+
+function isTemporaryHidden(pokemonId) {
+    return onlyPokemon !== 0 && pokemonId !== onlyPokemon
+}
+
 function pokemonLabel(item) {
     var name = item['pokemon_name']
     var rarityDisplay = item['pokemon_rarity'] ? '(' + item['pokemon_rarity'] + ')' : ''
@@ -412,14 +429,14 @@ function pokemonLabel(item) {
         '<span class="label-countdown" disappears-at="' + disappearTime + '">(00m00s)</span>' +
         '</div>' +
         '<div>' +
-        'Location: ' + latitude.toFixed(6) + ', ' + longitude.toFixed(7) +
+        'Location: <a href="javascript:void(0)" onclick="javascript:openMapDirections(' + latitude + ', ' + longitude + ')" title="View in Maps">' + latitude.toFixed(6) + ', ' + longitude.toFixed(7) + '</a>' +
         '</div>' +
         details +
         '<div>' +
         '<a href="javascript:excludePokemon(' + id + ')">Exclude</a>&nbsp&nbsp' +
         '<a href="javascript:notifyAboutPokemon(' + id + ')">Notify</a>&nbsp&nbsp' +
         '<a href="javascript:removePokemonMarker\'"' + encounterId + '\')">Remove</a>&nbsp&nbsp' +
-        '<a href="javascript:void(0)" onclick="javascript:openMapDirections(' + latitude + ', ' + longitude + ')" title="View in Maps">Get directions</a>' +
+        '<a href="javascript:void(0);" onclick="javascript:toggleOtherPokemon(' + id + ');" title="Toggle display of other Pokemon">Toggle Others</a>' +
         '</div>'
     return contentstring
 }
@@ -456,13 +473,6 @@ function gymLabel(teamName, teamId, gymPoints, latitude, longitude) {
             'Last Scanned: ' + getDateStr(lastScanned) +
             '</div>'
     }
-    var directionsStr = ''
-    if (!Store.get('useGymSidebar')) {
-        directionsStr =
-            '<div>' +
-            '<a href=\'javascript:void(0)\' onclick=\'javascript:openMapDirections(' + latitude + ',' + longitude + ')\' title=\'View in Maps\'>Get directions</a>' +
-            '</div>'
-    }
 
     var nameStr = name ? '<div>' + name + '</div>' : ''
 
@@ -477,13 +487,12 @@ function gymLabel(teamName, teamId, gymPoints, latitude, longitude) {
             '</div>' +
             nameStr +
             '<div>' +
-            'Location: ' + latitude.toFixed(6) + ', ' + longitude.toFixed(7) +
+            'Location: <a href="javascript:void(0)" onclick="javascript:openMapDirections(' + latitude + ',' + longitude + ')" title="View in Maps">' + latitude.toFixed(6) + ', ' + longitude.toFixed(7) + '</a>' +
             '</div>' +
             '<div>' +
             'Last Modified: ' + lastModifiedStr +
             '</div>' +
             lastScannedStr +
-            directionsStr +
             '</center>' +
             '</div>'
     } else {
@@ -507,12 +516,11 @@ function gymLabel(teamName, teamId, gymPoints, latitude, longitude) {
             '<div>' + memberStr +
             '</div>' +
             '<div>' +
-            'Location: ' + latitude.toFixed(6) + ', ' + longitude.toFixed(7) +
+            'Location: <a href="javascript:void(0)" onclick="javascript:openMapDirections(' + latitude + ',' + longitude + ')" title="View in Maps">' + latitude.toFixed(6) + ', ' + longitude.toFixed(7) + '</a>' +
             '</div>' +
             '<div>' +
             'Last Modified: ' + lastModifiedStr +
             '</div>' + lastScannedStr +
-            directionsStr +
             '</center>' +
             '</div>'
     }
@@ -543,10 +551,7 @@ function pokestopLabel(expireTime, latitude, longitude) {
             '<span class="label-countdown" disappears-at="' + expireTime + '">(00m00s)</span>' +
             '</div>' +
             '<div>' +
-            'Location: ' + latitude.toFixed(6) + ', ' + longitude.toFixed(7) +
-            '</div>' +
-            '<div>' +
-            '<a href="javascript:void(0)" onclick="javascript:openMapDirections(' + latitude + ',' + longitude + ')" title="View in Maps">Get directions</a>' +
+            'Location: <a href="javascript:void(0)" onclick="javascript:openMapDirections(' + latitude + ',' + longitude + ')" title="View in Maps">' + latitude.toFixed(6) + ', ' + longitude.toFixed(7) + '</a>' +
             '</div>'
     } else {
         str =
@@ -554,10 +559,7 @@ function pokestopLabel(expireTime, latitude, longitude) {
             '<b>Pokéstop</b>' +
             '</div>' +
             '<div>' +
-            'Location: ' + latitude.toFixed(6) + ', ' + longitude.toFixed(7) +
-            '</div>' +
-            '<div>' +
-            '<a href="javascript:void(0)" onclick="javascript:openMapDirections(' + latitude + ',' + longitude + ')" title="View in Maps">Get directions</a>' +
+            'Location: <a href="javascript:void(0)" onclick="javascript:openMapDirections(' + latitude + ',' + longitude + ')" title="View in Maps">' + latitude.toFixed(6) + ', ' + longitude.toFixed(7) + '</a>' +
             '</div>'
     }
 
@@ -1015,7 +1017,7 @@ function addListeners(marker) {
 
 function clearStaleMarkers() {
     $.each(mapData.pokemons, function (key, value) {
-        if (mapData.pokemons[key]['disappear_time'] < new Date().getTime() || excludedPokemon.indexOf(mapData.pokemons[key]['pokemon_id']) >= 0) {
+        if (mapData.pokemons[key]['disappear_time'] < new Date().getTime() || excludedPokemon.indexOf(mapData.pokemons[key]['pokemon_id']) >= 0 || isTemporaryHidden(mapData.pokemons[key]['pokemon_id'])) {
             if (mapData.pokemons[key].marker.rangeCircle) {
                 mapData.pokemons[key].marker.rangeCircle.setMap(null)
                 delete mapData.pokemons[key].marker.rangeCircle
@@ -1178,7 +1180,7 @@ function processPokemons(i, item) {
         return false // in case the checkbox was unchecked in the meantime.
     }
 
-    if (!(item['encounter_id'] in mapData.pokemons) && excludedPokemon.indexOf(item['pokemon_id']) < 0 && item['disappear_time'] > Date.now()) {
+    if (!(item['encounter_id'] in mapData.pokemons) && excludedPokemon.indexOf(item['pokemon_id']) < 0 && item['disappear_time'] > Date.now() && !isTemporaryHidden(item['pokemon_id'])) {
         // add marker to map and item to dict
         if (item.marker) {
             item.marker.setMap(null)
