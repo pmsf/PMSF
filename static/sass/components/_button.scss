@@ -20,6 +20,7 @@
     text-align: center;
     text-decoration: none;
     white-space: nowrap;
+    margin-top: 1em;
 
     &:hover {
       background-color: lighten(_palette(accent2, bg), 5);

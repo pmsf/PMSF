@@ -394,6 +394,14 @@ if (!empty($lat) && !empty($lon)) {
                 echo '</div>';
             } ?>
         </div>
+        <div>
+            <center>
+                <button class="settings"
+                        onclick="confirm('Are you sure you want to reset settings to default values?') ? (localStorage.clear(), window.location.reload()) : false">
+                    Reset Settings
+                </button>
+            </center>
+        </div>
     </nav>
     <nav id="stats">
         <div class="switch-container">
