@@ -48,6 +48,16 @@ if (!empty($lat) && !empty($lon)) {
     <!-- retina iPhone 6 iOS 7 -->
     <link rel="apple-touch-icon" href="static/appicons/180x180.png"
           sizes="180x180">
+    <?php if ($gAnalyticsId != "") {
+        echo '<!-- Google Analytics -->
+    <script>
+        window.ga=window.ga||function(){(ga.q=ga.q||[]).push(arguments)};ga.l=+new Date;
+        ga("create", "' . $gAnalyticsId . '", "auto");
+        ga("send", "pageview");
+    </script>
+    <script async src="https://www.google-analytics.com/analytics.js"></script>
+    <!-- End Google Analytics -->';
+    } ?>
     <link rel="stylesheet" href="static/dist/css/app.min.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jqueryui/1.12.0/jquery-ui.min.css">
     <link rel="stylesheet" href="https://cdn.datatables.net/1.10.12/css/jquery.dataTables.css">

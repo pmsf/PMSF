@@ -34,6 +34,10 @@ $locale = "en";                                                     // Display l
 
 $gmapsKey = "";                                                     // Google Maps API Key
 
+/* Google Analytics */
+
+$gAnalyticsId = "";                                                 // "" for empty, "UA-XXXXX-Y" add your Google Analytics tracking ID
+
 
 //-----------------------------------------------------
 // FRONTEND SETTINGS
