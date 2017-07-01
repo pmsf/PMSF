@@ -9,7 +9,7 @@ var $textPerfectionNotify
 var $selectStyle
 var $selectIconResolution
 var $selectIconSize
-var $selectOpenGymsOnly
+var $switchOpenGymsOnly
 var $selectTeamGymsOnly
 var $selectLastUpdateGymsOnly
 var $selectMinGymLevel
@@ -63,7 +63,6 @@ var updateWorker
 var lastUpdateTime
 
 var gymTypes = ['Uncontested', 'Mystic', 'Valor', 'Instinct']
-var gymPrestige = [2000, 4000, 8000, 12000, 16000, 20000, 30000, 40000, 50000]
 var audio = new Audio('static/sounds/ding.mp3')
 
 var genderType = ['♂', '♀', '⚲']
@@ -270,7 +269,7 @@ function initSidebar() {
     $('#gym-sidebar-wrapper').toggle(Store.get('showGyms'))
     $('#gyms-filter-wrapper').toggle(Store.get('showGyms'))
     $('#team-gyms-only-switch').val(Store.get('showTeamGymsOnly'))
-    $('#open-gyms-only-switch').val(Store.get('showOpenGymsOnly'))
+    $('#open-gyms-only-switch').prop('checked', Store.get('showOpenGymsOnly'))
     $('#min-level-gyms-filter-switch').val(Store.get('minGymLevel'))
     $('#max-level-gyms-filter-switch').val(Store.get('maxGymLevel'))
     $('#last-update-gyms-switch').val(Store.get('showLastUpdatedGymsOnly'))
@@ -496,7 +495,6 @@ function gymLabel(teamName, teamId, gymPoints, latitude, longitude) {
             '</center>' +
             '</div>'
     } else {
-        var gymLevel = getGymLevel(gymPoints)
         str =
             '<div>' +
             '<center>' +
@@ -509,9 +507,6 @@ function gymLabel(teamName, teamId, gymPoints, latitude, longitude) {
             '</div>' +
             '<div>' +
             nameStr +
-            '</div>' +
-            '<div>' +
-            'Level: ' + gymLevel + ' | Prestige: ' + gymPoints + '/' + (gymPrestige[gymLevel - 1] || 50000) +
             '</div>' +
             '<div>' + memberStr +
             '</div>' +
@@ -526,15 +521,6 @@ function gymLabel(teamName, teamId, gymPoints, latitude, longitude) {
     }
 
     return str
-}
-
-function getGymLevel(points) {
-    var level = 1
-    while (points >= gymPrestige[level - 1]) {
-        level++
-    }
-
-    return level
 }
 
 function pokestopLabel(expireTime, latitude, longitude) {
@@ -761,7 +747,7 @@ function setupGymMarker(item) {
         },
         map: map,
         icon: {
-            url: 'static/forts/' + Store.get('gymMarkerStyle') + '/' + gymTypes[item['team_id']] + (item['team_id'] !== 0 ? '_' + getGymLevel(item['gym_points']) : '') + '.png',
+            url: 'static/forts/' + Store.get('gymMarkerStyle') + '/' + gymTypes[item['team_id']] + (item['pokemon'].length !== 0 ? '_' + item['pokemon'].length : '') + '.png',
             scaledSize: new google.maps.Size(48, 48)
         }
     })
@@ -811,7 +797,7 @@ function setupGymMarker(item) {
 
 function updateGymMarker(item, marker) {
     marker.setIcon({
-        url: 'static/forts/' + Store.get('gymMarkerStyle') + '/' + gymTypes[item['team_id']] + (item['team_id'] !== 0 ? '_' + getGymLevel(item['gym_points']) : '') + '.png',
+        url: 'static/forts/' + Store.get('gymMarkerStyle') + '/' + gymTypes[item['team_id']] + (item['pokemon'].length !== 0 ? '_' + item['pokemon'].length : '') + '.png',
         scaledSize: new google.maps.Size(48, 48)
     })
     marker.infoWindow.setContent(gymLabel(gymTypes[item['team_id']], item['team_id'], item['gym_points'], item['latitude'], item['longitude'], item['last_scanned'], item['last_modified'], item['name'], item['pokemon'], item['gym_id'], item['guard_pokemon_id']))
@@ -821,7 +807,7 @@ function updateGymMarker(item, marker) {
 function updateGymIcons() {
     $.each(mapData.gyms, function (key, value) {
         mapData.gyms[key]['marker'].setIcon({
-            url: 'static/forts/' + Store.get('gymMarkerStyle') + '/' + gymTypes[mapData.gyms[key]['team_id']] + (mapData.gyms[key]['team_id'] !== 0 ? '_' + getGymLevel(mapData.gyms[key]['gym_points']) : '') + '.png',
+            url: 'static/forts/' + Store.get('gymMarkerStyle') + '/' + gymTypes[mapData.gyms[key]['team_id']] + (mapData.gyms[key]['pokemon'].length !== 0 ? '_' + mapData.gyms[key]['pokemon'].length : '') + '.png',
             scaledSize: new google.maps.Size(48, 48)
         })
     })
@@ -1270,7 +1256,7 @@ function processGyms(i, item) {
         return false // in case the checkbox was unchecked in the meantime.
     }
 
-    var gymLevel = getGymLevel(item.gym_points)
+    var gymLevel = item.pokemon.length
     var removeGymFromMap = function removeGymFromMap(gymid) {
         if (mapData.gyms[gymid] && mapData.gyms[gymid].marker) {
             if (mapData.gyms[gymid].marker.rangeCircle) {
@@ -1281,32 +1267,8 @@ function processGyms(i, item) {
         }
     }
 
-    var gymHasOpenSpot = function gymHasOpenSpot(gymLevel, pokemonInGym) {
-        return gymLevel > item.pokemon.length && item.pokemon.length !== 0
-    }
-
-    if (Store.get('showOpenGymsOnly') === 1) {
-        if (!gymHasOpenSpot(gymLevel, item.pokemon.length)) {
-            removeGymFromMap(item['gym_id'])
-            return true
-        }
-    }
-
-    if (Store.get('showOpenGymsOnly') > 1) {
-        var closePrestige = 0
-        switch (Store.get('showOpenGymsOnly')) {
-            case 2:
-                closePrestige = 1000
-                break
-            case 3:
-                closePrestige = 2500
-                break
-            case 4:
-                closePrestige = 5000
-                break
-        }
-
-        if (!gymHasOpenSpot(gymLevel, item.pokemon.length) && (gymPrestige[gymLevel - 1] > closePrestige + item.gym_points || gymLevel === 10)) {
+    if (Store.get('showOpenGymsOnly')) {
+        if (item.pokemon.length === 6) {
             removeGymFromMap(item['gym_id'])
             return true
         }
@@ -1720,8 +1682,7 @@ function createUpdateWorker() {
     }
 }
 
-function showGymDetails(id) {
-    // eslint-disable-line no-unused-vars
+function showGymDetails(id) { // eslint-disable-line no-unused-vars
     var sidebar = document.querySelector('#gym-details')
     var sidebarClose
 
@@ -1739,9 +1700,6 @@ function showGymDetails(id) {
     })
 
     data.done(function (result) {
-        var gymLevel = getGymLevel(result.gym_points)
-        var nextLvlPrestige = gymPrestige[gymLevel - 1] || 50000
-        var prestigePercentage = result.gym_points / nextLvlPrestige * 100
         var lastModifiedStr = getDateStr(result.last_modified)
         var lastScannedStr = ''
         if (result.last_scanned != null) {
@@ -1751,20 +1709,13 @@ function showGymDetails(id) {
                 '</div>'
         }
         var pokemon = result.pokemon !== undefined ? result.pokemon : []
-        var freeSlots = pokemon.length ? gymLevel - pokemon.length : 0
-        var freeSlotsStr = freeSlots ? ' - ' + freeSlots + ' Free Slots' : ''
+        var freeSlots = result.slots_available
         var gymLevelStr = ''
-
-        if (result.team_id === 0) {
+        if (result.team_id !== 0) {
             gymLevelStr =
                 '<center class="team-' + result.team_id + '-text">' +
-                '<b class="team-' + result.team_id + '-text">Uncontested - 1 Free Slot</b>' +
+                '<b class="team-' + result.team_id + '-text">' + freeSlots + ' Free Slots</b>' +
                 '</center>'
-        } else {
-            gymLevelStr =
-                '<div>' +
-                '<b class="team-' + result.team_id + '-text">Level ' + gymLevel + freeSlotsStr + '</b>' +
-                '</div>'
         }
 
         var pokemonHtml = ''
@@ -1775,13 +1726,6 @@ function showGymDetails(id) {
             '<b class="team-' + result.team_id + '-text">' + (result.name || '') + '</b>' +
             '</div>' +
             '<img height="100px" style="padding: 5px" src="static/forts/' + gymTypes[result.team_id] + '_large.png">' +
-            '<div class="prestige-bar team-' + result.team_id + '">' +
-            '<div class="prestige team-' + result.team_id + '" style="width: ' + prestigePercentage + '%">' +
-            '</div>' +
-            '</div>' +
-            '<div>' +
-            result.gym_points + '/' + nextLvlPrestige +
-            '</div>' +
             gymLevelStr +
             '<div style="font-size: .7em">' +
             'Last Modified: ' + lastModifiedStr +
@@ -1992,15 +1936,10 @@ $(function () {
         redrawPokemon(mapData.lurePokemons)
     })
 
-    $selectOpenGymsOnly = $('#open-gyms-only-switch')
+    $switchOpenGymsOnly = $('#open-gyms-only-switch')
 
-    $selectOpenGymsOnly.select2({
-        placeholder: 'Only Show Open Gyms',
-        minimumResultsForSearch: Infinity
-    })
-
-    $selectOpenGymsOnly.on('change', function () {
-        Store.set('showOpenGymsOnly', this.value)
+    $switchOpenGymsOnly.on('change', function () {
+        Store.set('showOpenGymsOnly', this.checked)
         lastgyms = false
         updateMap()
     })

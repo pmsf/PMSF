@@ -13,9 +13,9 @@ global $db;
 
 global $map;
 if ($map == "monocle") {
-    $row = $db->query("select t3.external_id, t3.lat, t3.lon, t1.last_modified, t1.team, t1.prestige, t1.guard_pokemon_id from(select fort_id, MAX(last_modified) AS MaxLastModified from fort_sightings group by fort_id) t2 left join fort_sightings t1 on t2.fort_id = t1.fort_id and t2.MaxLastModified = t1.last_modified left join forts t3 on t1.fort_id = t3.id where external_id = '"  . $id . "'")->fetch();
+    $row = $db->query("select t3.external_id, t3.lat, t3.lon, t1.last_modified, t1.team, t1.slots_available, t1.guard_pokemon_id from(select fort_id, MAX(last_modified) AS MaxLastModified from fort_sightings group by fort_id) t2 left join fort_sightings t1 on t2.fort_id = t1.fort_id and t2.MaxLastModified = t1.last_modified left join forts t3 on t1.fort_id = t3.id where external_id = '"  . $id . "'")->fetch();
 } else {
-    $row = $db->query("select gym.gym_id as external_id, latitude as lat, longitude as lon, guard_pokemon_id, gym_points as prestige, UNIX_TIMESTAMP(CONVERT_TZ(last_modified, '+00:00', @@global.time_zone)) as last_modified, UNIX_TIMESTAMP(CONVERT_TZ(gym.last_scanned, '+00:00', @@global.time_zone)) as last_scanned, team_id as team, enabled, name from gym join gymdetails on gym.gym_id = gymdetails.gym_id where gym.gym_id = '" . $id . "'")->fetch();
+    $row = $db->query("select gym.gym_id as external_id, latitude as lat, longitude as lon, guard_pokemon_id, slots_available, UNIX_TIMESTAMP(CONVERT_TZ(last_modified, '+00:00', @@global.time_zone)) as last_modified, UNIX_TIMESTAMP(CONVERT_TZ(gym.last_scanned, '+00:00', @@global.time_zone)) as last_scanned, team_id as team, enabled, name from gym join gymdetails on gym.gym_id = gymdetails.gym_id where gym.gym_id = '" . $id . "'")->fetch();
 }
 
 $json_poke = "static/data/pokemon.json";
@@ -27,7 +27,7 @@ $p = array();
 $lat = floatval($row["lat"]);
 $lon = floatval($row["lon"]);
 $gpid = intval($row["guard_pokemon_id"]);
-$gp = intval($row["prestige"]);
+$sa = intval($row["slots_available"]);
 $lm = intval($row["last_modified"] * 1000);
 $ls = isset($row["last_scanned"]) ? intval($row["last_scanned"]) * 1000 : null;
 $ti = isset($row["team"]) ? intval($row["team"]) : null;
@@ -35,7 +35,7 @@ $ti = isset($row["team"]) ? intval($row["team"]) : null;
 $p["enabled"] = isset($row["enabled"]) ? boolval($row["enabled"]) : true;
 $p["guard_pokemon_id"] = $gpid;
 $p["gym_id"] = $row["external_id"];
-$p["gym_points"] = $gp;
+$p["slots_available"] = $sa;
 $p["last_modified"] = $lm;
 $p["last_scanned"] = $ls;
 $p["latitude"] = $lat;

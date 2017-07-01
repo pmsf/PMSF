@@ -130,13 +130,13 @@ if (!empty($lat) && !empty($lon)) {
                     <?php if ($map != "monocle") {
                         echo '<div class="form-control switch-container" id = "open-gyms-only-wrapper">
                         <h3> Open Spot </h3>
-                        <select name = "open-gyms-only-switch" id = "open-gyms-only-switch">
-                            <option value = "0" > All</option>
-                            <option value = "1" > Open Spot </option>
-                            <option value = "2" >&lt;= 1000 Prestige Until Open Spot </option>
-                            <option value = "3" >&lt;= 2500 Prestige Until Open Spot </option>
-                            <option value = "4" >&lt;= 5000 Prestige Until Open Spot </option>
-                        </select>
+                        <div class="onoffswitch">
+                        <input id="open-gyms-only-switch" type="checkbox" name="open-gyms-only-switch" class="onoffswitch-checkbox" checked>
+                        <label class="onoffswitch-label" for="open-gyms-only-switch">
+                        <span class="switch-label" data-on="On" data-off="Off"></span>
+                        <span class="switch-handle"></span>
+                        </label>
+                    </div>
                     </div>';
                     } ?>
                     <div class="form-control switch-container" id="min-level-gyms-filter-wrapper">
@@ -149,10 +149,6 @@ if (!empty($lat) && !empty($lon)) {
                             <option value="4">4</option>
                             <option value="5">5</option>
                             <option value="6">6</option>
-                            <option value="7">7</option>
-                            <option value="8">8</option>
-                            <option value="9">9</option>
-                            <option value="10">10</option>
                         </select>
                     </div>
                     <div class="form-control switch-container" id="max-level-gyms-filter-wrapper">
@@ -165,10 +161,6 @@ if (!empty($lat) && !empty($lon)) {
                             <option value="4">4</option>
                             <option value="5">5</option>
                             <option value="6">6</option>
-                            <option value="7">7</option>
-                            <option value="8">8</option>
-                            <option value="9">9</option>
-                            <option value="10">10</option>
                         </select>
                     </div>
                     <div class="form-control switch-container" id="last-update-gyms-wrapper">
