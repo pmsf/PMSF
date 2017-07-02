@@ -6,6 +6,7 @@ var $selectExclude
 var $selectPokemonNotify
 var $selectRarityNotify
 var $textPerfectionNotify
+var $raidNotify
 var $selectStyle
 var $selectIconResolution
 var $selectIconSize
@@ -851,6 +852,35 @@ function setupGymMarker(item) {
         disableAutoPan: true
     })
 
+    var raidLevel = item.raid_level
+    if (raidLevel >= Store.get('remember_raid_notify') && item.raid_end > Date.now() && Store.get('remember_raid_notify') !== 0) {
+        if (Store.get('playSound')) {
+            audio.play()
+        }
+        var title = 'Raid level: ' + raidLevel
+
+        var raidStartStr = getTimeStr(item['raid_battle'])
+        var raidEndStr = getTimeStr(item['raid_end'])
+        var text = raidStartStr + ' - ' + raidEndStr
+
+        var raidStarted = item['raid_pokemon_id'] != null
+        var icon
+        if (raidStarted) {
+            icon = 'static/icons/' + item.raid_pokemon_id + '.png'
+        } else {
+            var raidEgg = ''
+            if (item['raid_level'] <= 2) {
+                raidEgg = 'normal'
+            } else if (item['raid_level'] <= 4) {
+                raidEgg = 'rare'
+            } else {
+                raidEgg = 'legendary'
+            }
+            icon = 'static/raids/egg_' + raidEgg + '.png'
+        }
+        sendNotification(title, text, icon, item['latitude'], item['longitude'])
+    }
+
     if (Store.get('useGymSidebar')) {
         marker.addListener('click', function () {
             var gymSidebar = document.querySelector('#gym-details')
@@ -888,6 +918,36 @@ function setupGymMarker(item) {
 function updateGymMarker(item, marker) {
     marker.setContent(getGymMarkerIcon(item))
     marker.infoWindow.setContent(gymLabel(item))
+
+    var raidLevel = item.raid_level
+    if (raidLevel >= Store.get('remember_raid_notify') && item.raid_end > Date.now() && Store.get('remember_raid_notify') !== 0) {
+        if (Store.get('playSound')) {
+            audio.play()
+        }
+        var title = 'Raid level: ' + raidLevel
+
+        var raidStartStr = getTimeStr(item['raid_battle'])
+        var raidEndStr = getTimeStr(item['raid_end'])
+        var text = raidStartStr + ' - ' + raidEndStr
+
+        var raidStarted = item['raid_pokemon_id'] != null
+        var icon
+        if (raidStarted) {
+            icon = 'static/icons/' + item.raid_pokemon_id + '.png'
+        } else {
+            var raidEgg = ''
+            if (item['raid_level'] <= 2) {
+                raidEgg = 'normal'
+            } else if (item['raid_level'] <= 4) {
+                raidEgg = 'rare'
+            } else {
+                raidEgg = 'legendary'
+            }
+            icon = 'static/raids/egg_' + raidEgg + '.png'
+        }
+        sendNotification(title, text, icon, item['latitude'], item['longitude'])
+    }
+
     return marker
 }
 
@@ -2281,7 +2341,17 @@ $(function () {
     $selectPokemonNotify = $('#notify-pokemon')
     $selectRarityNotify = $('#notify-rarity')
     $textPerfectionNotify = $('#notify-perfection')
+    $raidNotify = $('#notify-raid')
     var numberOfPokemon = 493
+
+    $raidNotify.select2({
+        placeholder: 'Minimum raid level',
+        minimumResultsForSearch: Infinity
+    })
+
+    $raidNotify.on('change', function () {
+        Store.set('remember_raid_notify', this.value)
+    })
 
     // Load pokemon names and populate lists
     $.getJSON('static/dist/data/pokemon.min.json').done(function (data) {
@@ -2361,6 +2431,7 @@ $(function () {
         $selectPokemonNotify.val(Store.get('remember_select_notify')).trigger('change')
         $selectRarityNotify.val(Store.get('remember_select_rarity_notify')).trigger('change')
         $textPerfectionNotify.val(Store.get('remember_text_perfection_notify')).trigger('change')
+        $raidNotify.val(Store.get('remember_raid_notify')).trigger('change')
 
         if (isTouchDevice() && isMobileDevice()) {
             $('.select2-search input').prop('readonly', true)

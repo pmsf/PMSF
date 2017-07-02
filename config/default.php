@@ -94,6 +94,9 @@ $notifyRarity = '[]';                                               // "Common",
 $noNotifyIv = false;                                                // true/false
 $notifyIv = '""';                                                   // "" for empty or a number
 
+$noNotifyRaid = false;                                              // true/false
+$notifyRaid = 5;                                                    // O to disable
+
 $noNotifySound = false;                                             // true/false
 $notifySound = 'false';                                             // true/false
 

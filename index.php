@@ -334,7 +334,7 @@ if (!empty($lat) && !empty($lon)) {
                 echo '</div>';
             } ?>
 
-            <?php if (!$noNotifyPokemon || !$noNotifyRarity || !$noNotifyIv || !$noNotifySound) {
+            <?php if (!$noNotifyPokemon || !$noNotifyRarity || !$noNotifyIv || !$noNotifySound || !$noNotifyRaid) {
                 echo '<h3>Notification Settings</h3>
             <div>';
             } ?>
@@ -367,6 +367,19 @@ if (!empty($lat) && !empty($lon)) {
                 </label>
             </div>';
             } ?>
+            <?php if (!$noNotifyRaid) {
+                echo '<div class="form-control switch-container" id="notify-raid-wrapper">
+                        <h3>Notify of Minimum Raid Level</h3>
+                        <select name="notify-raid" id="notify-raid">
+                            <option value="0">Disable</option>
+                            <option value="1">1</option>
+                            <option value="2">2</option>
+                            <option value="3">3</option>
+                            <option value="4">4</option>
+                            <option value="5">5</option>
+                        </select>
+                    </div>';
+            } ?>
             <?php if (!$noNotifySound) {
                 echo '<div class="form-control switch-container">
                 <h3>Notify with sound</h3>
@@ -380,7 +393,7 @@ if (!empty($lat) && !empty($lon)) {
                 </div>
             </div>';
             } ?>
-            <?php if (!$noNotifyPokemon || !$noNotifyRarity || !$noNotifyIv || !$noNotifySound) {
+            <?php if (!$noNotifyPokemon || !$noNotifyRarity || !$noNotifyIv || !$noNotifySound || !$noNotifyRaid) {
                 echo '</div>';
             } ?>
 

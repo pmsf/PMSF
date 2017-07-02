@@ -921,6 +921,10 @@ type: StoreTypes.JSON
 default: <?php echo $noNotifyIv ? '""' : $notifyIv ?>,
 type: StoreTypes.Number
 },
+'remember_raid_notify': {
+default: <?php echo $noNotifyRaid ? 0 : $notifyRaid ?>,
+type: StoreTypes.Number
+},
 'showRaids': {
 default: <?php echo $noRaids ? 'false' : $enableRaids ?>,
 type: StoreTypes.Boolean
