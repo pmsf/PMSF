@@ -921,6 +921,18 @@ type: StoreTypes.JSON
 default: <?php echo $noNotifyIv ? '""' : $notifyIv ?>,
 type: StoreTypes.Number
 },
+'showRaids': {
+default: <?php echo $noRaids ? 'false' : $enableRaids ?>,
+type: StoreTypes.Boolean
+},
+'minRaidLevel': {
+default: 1,
+type: StoreTypes.Number
+},
+'maxRaidLevel': {
+default: 5,
+type: StoreTypes.Number
+},
 'showGyms': {
 default: <?php echo $noGyms ? 'false' : $enableGyms ?>,
 type: StoreTypes.Boolean

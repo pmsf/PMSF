@@ -27,6 +27,8 @@
   "globals": {
     "toastr": true,
     "google": true,
+    "RichMarker": true,
+    "RichMarkerPosition": true,
     "mapData": true,
     "Store": true,
     "centerLat": true,

@@ -92,6 +92,41 @@ if (!empty($lat) && !empty($lon)) {
                     </div>
                 </div>';
                 } ?>
+                <?php if (!$noRaids) {
+                    echo '<div class="form-control switch-container" id="raids-wrapper">
+                    <h3>Raids</h3>
+                    <div class="onoffswitch">
+                        <input id="raids-switch" type="checkbox" name="raids-switch"
+                               class="onoffswitch-checkbox" checked>
+                        <label class="onoffswitch-label" for="raids-switch">
+                            <span class="switch-label" data-on="On" data-off="Off"></span>
+                            <span class="switch-handle"></span>
+                        </label>
+                    </div>
+                </div>';
+                } ?>
+                <div id="raids-filter-wrapper" style="display:none">
+                    <div class="form-control switch-container" id="min-level-raids-filter-wrapper">
+                        <h3>Minimum Raid Level</h3>
+                        <select name="min-level-raids-filter-switch" id="min-level-raids-filter-switch">
+                            <option value="1">1</option>
+                            <option value="2">2</option>
+                            <option value="3">3</option>
+                            <option value="4">4</option>
+                            <option value="5">5</option>
+                        </select>
+                    </div>
+                    <div class="form-control switch-container" id="max-level-raids-filter-wrapper">
+                        <h3>Maximum Raid Level</h3>
+                        <select name="max-level-raids-filter-switch" id="max-level-raids-filter-switch">
+                            <option value="1">1</option>
+                            <option value="2">2</option>
+                            <option value="3">3</option>
+                            <option value="4">4</option>
+                            <option value="5">5</option>
+                        </select>
+                    </div>
+                </div>
                 <?php if (!$noGyms) {
                     echo '<div class="form-control switch-container">
                     <h3>Gyms</h3>
@@ -127,20 +162,19 @@ if (!empty($lat) && !empty($lon)) {
                             <option value="3">Instinct</option>
                         </select>
                     </div>
-                    <?php if ($map != "monocle") {
-                        echo '<div class="form-control switch-container" id = "open-gyms-only-wrapper">
-                        <h3> Open Spot </h3>
+                    <div class="form-control switch-container" id="open-gyms-only-wrapper">
+                        <h3>Open Spot</h3>
                         <div class="onoffswitch">
-                        <input id="open-gyms-only-switch" type="checkbox" name="open-gyms-only-switch" class="onoffswitch-checkbox" checked>
-                        <label class="onoffswitch-label" for="open-gyms-only-switch">
-                        <span class="switch-label" data-on="On" data-off="Off"></span>
-                        <span class="switch-handle"></span>
-                        </label>
+                            <input id="open-gyms-only-switch" type="checkbox" name="open-gyms-only-switch"
+                                   class="onoffswitch-checkbox" checked>
+                            <label class="onoffswitch-label" for="open-gyms-only-switch">
+                                <span class="switch-label" data-on="On" data-off="Off"></span>
+                                <span class="switch-handle"></span>
+                            </label>
+                        </div>
                     </div>
-                    </div>';
-                    } ?>
                     <div class="form-control switch-container" id="min-level-gyms-filter-wrapper">
-                        <h3>Minimum Level</h3>
+                        <h3>Minimum Free Slots</h3>
                         <select name="min-level-gyms-filter-switch" id="min-level-gyms-filter-switch">
                             <option value="0">0</option>
                             <option value="1">1</option>
@@ -152,7 +186,7 @@ if (!empty($lat) && !empty($lon)) {
                         </select>
                     </div>
                     <div class="form-control switch-container" id="max-level-gyms-filter-wrapper">
-                        <h3>Maximum Level</h3>
+                        <h3>Maximum Free Slots</h3>
                         <select name="max-level-gyms-filter-switch" id="max-level-gyms-filter-switch">
                             <option value="0">0</option>
                             <option value="1">1</option>
@@ -468,5 +502,6 @@ if (!empty($lat) && !empty($lon)) {
 <script src="static/dist/js/stats.min.js"></script>
 <script defer
         src="https://maps.googleapis.com/maps/api/js?key=<?= $gmapsKey ?>&amp;callback=initMap&amp;libraries=places,geometry"></script>
+<script defer src="static/js/vendor/richmarker-compiled.js"></script>
 </body>
 </html>

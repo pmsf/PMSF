@@ -56,6 +56,9 @@ $enableGyms = 'false';                                              // true/fals
 $noGymSidebar = false;                                              // true/false
 $gymSidebar = 'true';                                               // true/false
 
+$noRaids = false;                                                   // true/false
+$enableRaids = 'false';                                             // true/false
+
 $noPokestops = false;                                               // true/false
 $enablePokestops = 'false';                                         // true/false
 $enableLured = 1;                                                   // O: all, 1: lured only
