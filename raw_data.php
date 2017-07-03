@@ -477,7 +477,7 @@ function get_gyms($swLat, $swLng, $neLat, $neLng, $tstamp = 0, $oSwLat = 0, $oSw
             if ($rpid)
                 $p['raid_pokemon_id'] = $rpid;
             if ($rpid)
-                $p['raid_pokemon_name'] = $data[$rpid]['name'];
+                $p['raid_pokemon_name'] = i8ln($data[$rpid]['name']);
             $p['raid_pokemon_cp'] = isset($row['cp']) ? intval($row['cp']) : null;
             $p['raid_pokemon_move_1'] = isset($row['move_1']) ? intval($row['move_1']) : null;
             $p['raid_pokemon_move_2'] = isset($row['move_2']) ? intval($row['move_2']) : null;
@@ -526,7 +526,7 @@ function get_gyms($swLat, $swLng, $neLat, $neLng, $tstamp = 0, $oSwLat = 0, $oSw
             if ($rpid)
                 $gyms[$raid["fort_id"]]['raid_pokemon_id'] = $rpid;
             if ($rpid)
-                $gyms[$raid["fort_id"]]['raid_pokemon_name'] = $data[$rpid]['name'];
+                $gyms[$raid["fort_id"]]['raid_pokemon_name'] = i8ln($data[$rpid]['name']);
             $gyms[$raid["fort_id"]]['raid_pokemon_cp'] = isset($raid['cp']) ? intval($raid['cp']) : null;
             $gyms[$raid["fort_id"]]['raid_pokemon_move_1'] = isset($raid['move_1']) ? intval($raid['move_1']) : null;
             $gyms[$raid["fort_id"]]['raid_pokemon_move_2'] = isset($raid['move_2']) ? intval($raid['move_2']) : null;
