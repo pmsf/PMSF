@@ -127,18 +127,6 @@ if (!empty($lat) && !empty($lon)) {
                         </select>
                     </div>
                 </div>
-                <?php if (!$noGyms) {
-                    echo '<div class="form-control switch-container">
-                    <h3>Gyms</h3>
-                    <div class="onoffswitch">
-                        <input id="gyms-switch" type="checkbox" name="gyms-switch" class="onoffswitch-checkbox" checked>
-                        <label class="onoffswitch-label" for="gyms-switch">
-                            <span class="switch-label" data-on="On" data-off="Off"></span>
-                            <span class="switch-handle"></span>
-                        </label>
-                    </div>
-                </div>';
-                } ?>
                 <?php if (!$noGymSidebar) {
                     echo '<div class="form-control switch-container" id="gym-sidebar-wrapper" style="display:none">
                     <h3>Use Gym Sidebar</h3>
@@ -146,6 +134,18 @@ if (!empty($lat) && !empty($lon)) {
                         <input id="gym-sidebar-switch" type="checkbox" name="gym-sidebar-switch"
                                class="onoffswitch-checkbox" checked>
                         <label class="onoffswitch-label" for="gym-sidebar-switch">
+                            <span class="switch-label" data-on="On" data-off="Off"></span>
+                            <span class="switch-handle"></span>
+                        </label>
+                    </div>
+                </div>';
+                } ?>
+                <?php if (!$noGyms) {
+                    echo '<div class="form-control switch-container">
+                    <h3>Gyms</h3>
+                    <div class="onoffswitch">
+                        <input id="gyms-switch" type="checkbox" name="gyms-switch" class="onoffswitch-checkbox" checked>
+                        <label class="onoffswitch-label" for="gyms-switch">
                             <span class="switch-label" data-on="On" data-off="Off"></span>
                             <span class="switch-handle"></span>
                         </label>

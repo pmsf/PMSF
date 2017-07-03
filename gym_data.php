@@ -13,7 +13,7 @@ global $db;
 
 global $map;
 if ($map == "monocle") {
-    $row = $db->query("select distinct t3.external_id, t3.lat, t3.lon, t1.last_modified, t1.team, t1.slots_available, t1.guard_pokemon_id, t4.level, t4.pokemon_id, t4.time_battle as raid_start, t4.time_end as raid_end from(select fort_id, MAX(last_modified) AS MaxLastModified from fort_sightings group by fort_id) t2 left join fort_sightings t1 on t2.fort_id = t1.fort_id and t2.MaxLastModified = t1.last_modified left join forts t3 on t1.fort_id = t3.id left join raids t4 on t1.fort_id = t4.fort_id where t3.external_id = '" . $id . "' order by external_id, raid_start desc")->fetch();
+    $row = $db->query("select t3.external_id, t3.lat, t3.lon, t1.last_modified, t1.team, t1.slots_available, t1.guard_pokemon_id from (select fort_id, MAX(last_modified) AS MaxLastModified from fort_sightings group by fort_id) t2 left join fort_sightings t1 on t2.fort_id = t1.fort_id and t2.MaxLastModified = t1.last_modified left join forts t3 on t1.fort_id = t3.id where t3.external_id = '" . $id . "'")->fetch();
 } else {
     $row = $db->query("select gym.gym_id as external_id, latitude as lat, longitude as lon, guard_pokemon_id, slots_available, UNIX_TIMESTAMP(CONVERT_TZ(last_modified, '+00:00', @@global.time_zone)) as last_modified, UNIX_TIMESTAMP(CONVERT_TZ(gym.last_scanned, '+00:00', @@global.time_zone)) as last_scanned, team_id as team, enabled, name, level, pokemon_id, cp, move_1, move_2, UNIX_TIMESTAMP(CONVERT_TZ(raid_start, '+00:00', @@global.time_zone)) as raid_start, UNIX_TIMESTAMP(CONVERT_TZ(raid_end, '+00:00', @@global.time_zone)) as raid_end from gym left join gymdetails on gym.gym_id = gymdetails.gym_id left join raid on gym.gym_id = raid.gym_id where gym.gym_id = '" . $id . "'")->fetch();
 }
@@ -45,17 +45,19 @@ $p["team_id"] = $ti;
 if ($gpid)
     $p["guard_pokemon_name"] = i8ln($data[$gpid]['name']);
 
-$rpid = intval($row['pokemon_id']);
-$p['raid_level'] = intval($row['level']);
-if ($rpid)
-    $p['raid_pokemon_id'] = $rpid;
-if ($rpid)
-    $p['raid_pokemon_name'] = $data[$rpid]['name'];
-$p['raid_pokemon_cp'] = isset($row['cp']) ? intval($row['cp']) : null;
-$p['raid_pokemon_move_1'] = isset($row['move_1']) ? intval($row['move_1']) : null;
-$p['raid_pokemon_move_2'] = isset($row['move_2']) ? intval($row['move_2']) : null;
-$p['raid_start'] = intval($row["raid_start"] * 1000);
-$p['raid_end'] = intval($row["raid_end"] * 1000);
+if ($map != "monocle") {
+    $rpid = intval($row['pokemon_id']);
+    $p['raid_level'] = intval($row['level']);
+    if ($rpid)
+        $p['raid_pokemon_id'] = $rpid;
+    if ($rpid)
+        $p['raid_pokemon_name'] = $data[$rpid]['name'];
+    $p['raid_pokemon_cp'] = isset($row['cp']) ? intval($row['cp']) : null;
+    $p['raid_pokemon_move_1'] = isset($row['move_1']) ? intval($row['move_1']) : null;
+    $p['raid_pokemon_move_2'] = isset($row['move_2']) ? intval($row['move_2']) : null;
+    $p['raid_start'] = intval($row["raid_start"] * 1000);
+    $p['raid_end'] = intval($row["raid_end"] * 1000);
+}
 
 unset($row);
 
@@ -100,6 +102,22 @@ if ($map != "monocle") {
 
         $j++;
     }
+} else {
+    $raid = $db->query("select t1.fort_id, level, pokemon_id, time_battle as raid_start, time_end as raid_end from (select fort_id, MAX(time_end) AS MaxTimeEnd from raids group by fort_id) t1 left join raids t2 on t1.fort_id = t2.fort_id and MaxTimeEnd = time_end where t1.fort_id in ('" . $id . "')")->fetch();
+
+    $rpid = intval($raid['pokemon_id']);
+    $p['raid_level'] = intval($raid['level']);
+    if ($rpid)
+        $p['raid_pokemon_id'] = $rpid;
+    if ($rpid)
+        $p['raid_pokemon_name'] = $data[$rpid]['name'];
+    $p['raid_pokemon_cp'] = isset($raid['cp']) ? intval($raid['cp']) : null;
+    $p['raid_pokemon_move_1'] = isset($raid['move_1']) ? intval($raid['move_1']) : null;
+    $p['raid_pokemon_move_2'] = isset($raid['move_2']) ? intval($raid['move_2']) : null;
+    $p['raid_start'] = intval($raid["raid_start"] * 1000);
+    $p['raid_end'] = intval($raid["raid_end"] * 1000);
+
+    unset($raid);
 }
 
 echo json_encode($p);
