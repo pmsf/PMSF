@@ -269,7 +269,6 @@ function createLocationMarker() {
 function initSidebar() {
     $('#gyms-switch').prop('checked', Store.get('showGyms'))
     $('#gym-sidebar-switch').prop('checked', Store.get('useGymSidebar'))
-    $('#gym-sidebar-wrapper').toggle(Store.get('showGyms'))
     $('#gyms-filter-wrapper').toggle(Store.get('showGyms'))
     $('#team-gyms-only-switch').val(Store.get('showTeamGymsOnly'))
     $('#open-gyms-only-switch').prop('checked', Store.get('showOpenGymsOnly'))

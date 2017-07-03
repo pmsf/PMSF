@@ -128,7 +128,7 @@ if (!empty($lat) && !empty($lon)) {
                     </div>
                 </div>
                 <?php if (!$noGymSidebar) {
-                    echo '<div class="form-control switch-container" id="gym-sidebar-wrapper" style="display:none">
+                    echo '<div class="form-control switch-container">
                     <h3>Use Gym Sidebar</h3>
                     <div class="onoffswitch">
                         <input id="gym-sidebar-switch" type="checkbox" name="gym-sidebar-switch"
