@@ -149,7 +149,7 @@ function get_active($swLat, $swLng, $neLat, $neLng, $tstamp = 0, $oSwLat = 0, $o
 {
     global $db;
 
-    $datas = "";
+    $datas = array();
 
     global $map;
     if ($map == "monocle") {
@@ -251,7 +251,7 @@ function get_active_by_id($ids, $swLat, $swLng, $neLat, $neLng)
 {
     global $db;
 
-    $datas = "";
+    $datas = array();
 
     global $map;
     if ($map == "monocle") {
@@ -337,7 +337,7 @@ function get_stops($swLat, $swLng, $neLat, $neLng, $tstamp = 0, $oSwLat = 0, $oS
 
     global $db;
 
-    $datas = "";
+    $datas = array();
 
     global $map;
     if ($map == "monocle") {
@@ -408,31 +408,31 @@ function get_gyms($swLat, $swLng, $neLat, $neLng, $tstamp = 0, $oSwLat = 0, $oSw
 
     global $db;
 
-    $datas = "";
+    $datas = array();
 
     global $map;
     if ($map == "monocle") {
         if ($swLat == 0) {
-            $datas = $db->query("select t3.external_id, t3.lat, t3.lon, t1.last_modified, t1.team, t1.slots_available, t1.guard_pokemon_id, t4.raid_level as level, t4.pokemon_id, t4.cp, t4.move_1, t4.move_2, t4.raid_start as battle, t4.raid_end as end from(select fort_id, MAX(last_modified) AS MaxLastModified from fort_sightings group by fort_id) t2 left join fort_sightings t1 on t2.fort_id = t1.fort_id and t2.MaxLastModified = t1.last_modified left join forts t3 on t1.fort_id = t3.id join raid_info t4 on t1.fort_id = t4.fort_id")->fetchAll();
+            $datas = $db->query("select t3.external_id, t3.lat, t3.lon, t1.last_modified, t1.team, t1.slots_available, t1.guard_pokemon_id, t4.level, t4.pokemon_id, t4.time_battle as raid_start, t4.time_end as raid_end from(select fort_id, MAX(last_modified) AS MaxLastModified from fort_sightings group by fort_id) t2 left join fort_sightings t1 on t2.fort_id = t1.fort_id and t2.MaxLastModified = t1.last_modified left join forts t3 on t1.fort_id = t3.id left join raids t4 on t1.fort_id = t4.fort_id")->fetchAll();
         } elseif ($tstamp > 0) {
-            $datas = $db->query("select t3.external_id, t3.lat, t3.lon, t1.last_modified, t1.team, t1.slots_available, t1.guard_pokemon_id, t4.raid_level as level, t4.pokemon_id, t4.cp, t4.move_1, t4.move_2, t4.raid_start as battle, t4.raid_end as end from(select fort_id, MAX(last_modified) AS MaxLastModified from fort_sightings group by fort_id) t2 left join fort_sightings t1 on t2.fort_id = t1.fort_id and t2.MaxLastModified = t1.last_modified left join forts t3 on t1.fort_id = t3.id join raid_info t4 on t1.fort_id = t4.fort_id where t1.last_modified > " . $tstamp . " and t3.lat > " . $swLat . " and t3.lon > " . $swLng . " and t3.lat < " . $neLat . " and t3.lon < " . $neLng)->fetchAll();
+            $datas = $db->query("select t3.external_id, t3.lat, t3.lon, t1.last_modified, t1.team, t1.slots_available, t1.guard_pokemon_id, t4.level, t4.pokemon_id, t4.time_battle as raid_start, t4.time_end as raid_end from(select fort_id, MAX(last_modified) AS MaxLastModified from fort_sightings group by fort_id) t2 left join fort_sightings t1 on t2.fort_id = t1.fort_id and t2.MaxLastModified = t1.last_modified left join forts t3 on t1.fort_id = t3.id left join raids t4 on t1.fort_id = t4.fort_id where t1.last_modified > " . $tstamp . " and t3.lat > " . $swLat . " and t3.lon > " . $swLng . " and t3.lat < " . $neLat . " and t3.lon < " . $neLng)->fetchAll();
         } elseif ($oSwLat != 0) {
-            $datas = $db->query("select t3.external_id, t3.lat, t3.lon, t1.last_modified, t1.team, t1.slots_available, t1.guard_pokemon_id, t4.raid_level as level, t4.pokemon_id, t4.cp, t4.move_1, t4.move_2, t4.raid_start as battle, t4.raid_end as end from(select fort_id, MAX(last_modified) AS MaxLastModified from fort_sightings group by fort_id) t2 left join fort_sightings t1 on t2.fort_id = t1.fort_id and t2.MaxLastModified = t1.last_modified left join forts t3 on t1.fort_id = t3.id join raid_info t4 on t1.fort_id = t4.fort_id where t3.lat > " . $swLat . " and t3.lon > " . $swLng . " and t3.lat < " . $neLat . " and t3.lon < " . $neLng . " and not(t3.lat > " . $oSwLat . " and t3.lon > " . $oSwLng . " and t3.lat < " . $oNeLat . " and t3.lon < " . $oNeLng . ")")->fetchAll();
+            $datas = $db->query("select t3.external_id, t3.lat, t3.lon, t1.last_modified, t1.team, t1.slots_available, t1.guard_pokemon_id, t4.level, t4.pokemon_id, t4.time_battle as raid_start, t4.time_end as raid_end from(select fort_id, MAX(last_modified) AS MaxLastModified from fort_sightings group by fort_id) t2 left join fort_sightings t1 on t2.fort_id = t1.fort_id and t2.MaxLastModified = t1.last_modified left join forts t3 on t1.fort_id = t3.id left join raids t4 on t1.fort_id = t4.fort_id where t3.lat > " . $swLat . " and t3.lon > " . $swLng . " and t3.lat < " . $neLat . " and t3.lon < " . $neLng . " and not(t3.lat > " . $oSwLat . " and t3.lon > " . $oSwLng . " and t3.lat < " . $oNeLat . " and t3.lon < " . $oNeLng . ")")->fetchAll();
         } else {
-            $datas = $db->query("select t3.external_id, t3.lat, t3.lon, t1.last_modified, t1.team, t1.slots_available, t1.guard_pokemon_id, t4.raid_level as level, t4.pokemon_id, t4.cp, t4.move_1, t4.move_2, t4.raid_start as battle, t4.raid_end as end from(select fort_id, MAX(last_modified) AS MaxLastModified from fort_sightings group by fort_id) t2 left join fort_sightings t1 on t2.fort_id = t1.fort_id and t2.MaxLastModified = t1.last_modified left join forts t3 on t1.fort_id = t3.id join raid_info t4 on t1.fort_id = t4.fort_id where t3.lat > " . $swLat . " and t3.lon > " . $swLng . " and t3.lat < " . $neLat . " and t3.lon < " . $neLng)->fetchAll();
+            $datas = $db->query("select t3.external_id, t3.lat, t3.lon, t1.last_modified, t1.team, t1.slots_available, t1.guard_pokemon_id, t4.level, t4.pokemon_id, t4.time_battle as raid_start, t4.time_end as raid_end from(select fort_id, MAX(last_modified) AS MaxLastModified from fort_sightings group by fort_id) t2 left join fort_sightings t1 on t2.fort_id = t1.fort_id and t2.MaxLastModified = t1.last_modified left join forts t3 on t1.fort_id = t3.id left join raids t4 on t1.fort_id = t4.fort_id where t3.lat > " . $swLat . " and t3.lon > " . $swLng . " and t3.lat < " . $neLat . " and t3.lon < " . $neLng)->fetchAll();
         }
     } else {
         if ($swLat == 0) {
-            $datas = $db->query("select gym.gym_id as external_id, latitude as lat, longitude as lon, guard_pokemon_id, slots_available, total_cp, UNIX_TIMESTAMP(CONVERT_TZ(last_modified, '+00:00', @@global.time_zone)) as last_modified, UNIX_TIMESTAMP(CONVERT_TZ(gym.last_scanned, '+00:00', @@global.time_zone)) as last_scanned, team_id as team, enabled, name, level, pokemon_id, cp, move_1, move_2, UNIX_TIMESTAMP(CONVERT_TZ(battle, '+00:00', @@global.time_zone)) as battle, UNIX_TIMESTAMP(CONVERT_TZ(end, '+00:00', @@global.time_zone)) as end from gym join gymdetails on gym.gym_id = gymdetails.gym_id join raid on gym.gym_id = raid.gym_id")->fetchAll();
+            $datas = $db->query("select gym.gym_id as external_id, latitude as lat, longitude as lon, guard_pokemon_id, slots_available, total_cp, UNIX_TIMESTAMP(CONVERT_TZ(last_modified, '+00:00', @@global.time_zone)) as last_modified, UNIX_TIMESTAMP(CONVERT_TZ(gym.last_scanned, '+00:00', @@global.time_zone)) as last_scanned, team_id as team, enabled, name, level, pokemon_id, cp, move_1, move_2, UNIX_TIMESTAMP(CONVERT_TZ(raid_start, '+00:00', @@global.time_zone)) as raid_start, UNIX_TIMESTAMP(CONVERT_TZ(raid_end, '+00:00', @@global.time_zone)) as raid_end from gym left join gymdetails on gym.gym_id = gymdetails.gym_id left join raid on gym.gym_id = raid.gym_id")->fetchAll();
         } elseif ($tstamp > 0) {
             $date = new DateTime();
             $date->setTimezone(new DateTimeZone('UTC'));
             $date->setTimestamp($tstamp);
-            $datas = $db->query("select gym.gym_id as external_id, latitude as lat, longitude as lon, guard_pokemon_id, slots_available, total_cp, UNIX_TIMESTAMP(CONVERT_TZ(last_modified, '+00:00', @@global.time_zone)) as last_modified, UNIX_TIMESTAMP(CONVERT_TZ(gym.last_scanned, '+00:00', @@global.time_zone)) as last_scanned, team_id as team, enabled, name, level, pokemon_id, cp, move_1, move_2, UNIX_TIMESTAMP(CONVERT_TZ(battle, '+00:00', @@global.time_zone)) as battle, UNIX_TIMESTAMP(CONVERT_TZ(end, '+00:00', @@global.time_zone)) as end from gym join gymdetails on gym.gym_id = gymdetails.gym_id join raid on gym.gym_id = raid.gym_id where gym.last_scanned > '" . date_format($date, 'Y-m-d H:i:s') . "' and latitude > " . $swLat . " and longitude > " . $swLng . " and latitude < " . $neLat . " and longitude < " . $neLng)->fetchAll();
+            $datas = $db->query("select gym.gym_id as external_id, latitude as lat, longitude as lon, guard_pokemon_id, slots_available, total_cp, UNIX_TIMESTAMP(CONVERT_TZ(last_modified, '+00:00', @@global.time_zone)) as last_modified, UNIX_TIMESTAMP(CONVERT_TZ(gym.last_scanned, '+00:00', @@global.time_zone)) as last_scanned, team_id as team, enabled, name, level, pokemon_id, cp, move_1, move_2, UNIX_TIMESTAMP(CONVERT_TZ(raid_start, '+00:00', @@global.time_zone)) as raid_start, UNIX_TIMESTAMP(CONVERT_TZ(raid_end, '+00:00', @@global.time_zone)) as raid_end from gym left join gymdetails on gym.gym_id = gymdetails.gym_id left join raid on gym.gym_id = raid.gym_id where gym.last_scanned > '" . date_format($date, 'Y-m-d H:i:s') . "' and latitude > " . $swLat . " and longitude > " . $swLng . " and latitude < " . $neLat . " and longitude < " . $neLng)->fetchAll();
         } elseif ($oSwLat != 0) {
-            $datas = $db->query("select gym.gym_id as external_id, latitude as lat, longitude as lon, guard_pokemon_id, slots_available, total_cp, UNIX_TIMESTAMP(CONVERT_TZ(last_modified, '+00:00', @@global.time_zone)) as last_modified, UNIX_TIMESTAMP(CONVERT_TZ(gym.last_scanned, '+00:00', @@global.time_zone)) as last_scanned, team_id as team, enabled, name, level, pokemon_id, cp, move_1, move_2, UNIX_TIMESTAMP(CONVERT_TZ(battle, '+00:00', @@global.time_zone)) as battle, UNIX_TIMESTAMP(CONVERT_TZ(end, '+00:00', @@global.time_zone)) as end from gym join gymdetails on gym.gym_id = gymdetails.gym_id join raid on gym.gym_id = raid.gym_id where latitude > " . $swLat . " and longitude > " . $swLng . " and latitude < " . $neLat . " and longitude < " . $neLng . " and not(latitude > " . $oSwLat . " and longitude > " . $oSwLng . " and latitude < " . $oNeLat . " and longitude < " . $oNeLng . ")")->fetchAll();
+            $datas = $db->query("select gym.gym_id as external_id, latitude as lat, longitude as lon, guard_pokemon_id, slots_available, total_cp, UNIX_TIMESTAMP(CONVERT_TZ(last_modified, '+00:00', @@global.time_zone)) as last_modified, UNIX_TIMESTAMP(CONVERT_TZ(gym.last_scanned, '+00:00', @@global.time_zone)) as last_scanned, team_id as team, enabled, name, level, pokemon_id, cp, move_1, move_2, UNIX_TIMESTAMP(CONVERT_TZ(raid_start, '+00:00', @@global.time_zone)) as raid_start, UNIX_TIMESTAMP(CONVERT_TZ(raid_end, '+00:00', @@global.time_zone)) as raid_end from gym left join gymdetails on gym.gym_id = gymdetails.gym_id left join raid on gym.gym_id = raid.gym_id where latitude > " . $swLat . " and longitude > " . $swLng . " and latitude < " . $neLat . " and longitude < " . $neLng . " and not(latitude > " . $oSwLat . " and longitude > " . $oSwLng . " and latitude < " . $oNeLat . " and longitude < " . $oNeLng . ")")->fetchAll();
         } else {
-            $datas = $db->query("select gym.gym_id as external_id, latitude as lat, longitude as lon, guard_pokemon_id, slots_available, total_cp, UNIX_TIMESTAMP(CONVERT_TZ(last_modified, '+00:00', @@global.time_zone)) as last_modified, UNIX_TIMESTAMP(CONVERT_TZ(gym.last_scanned, '+00:00', @@global.time_zone)) as last_scanned, team_id as team, enabled, name, level, pokemon_id, cp, move_1, move_2, UNIX_TIMESTAMP(CONVERT_TZ(battle, '+00:00', @@global.time_zone)) as battle, UNIX_TIMESTAMP(CONVERT_TZ(end, '+00:00', @@global.time_zone)) as end from gym join gymdetails on gym.gym_id = gymdetails.gym_id join raid on gym.gym_id = raid.gym_id where latitude > " . $swLat . " and longitude > " . $swLng . " and latitude < " . $neLat . " and longitude < " . $neLng)->fetchAll();
+            $datas = $db->query("select gym.gym_id as external_id, latitude as lat, longitude as lon, guard_pokemon_id, slots_available, total_cp, UNIX_TIMESTAMP(CONVERT_TZ(last_modified, '+00:00', @@global.time_zone)) as last_modified, UNIX_TIMESTAMP(CONVERT_TZ(gym.last_scanned, '+00:00', @@global.time_zone)) as last_scanned, team_id as team, enabled, name, level, pokemon_id, cp, move_1, move_2, UNIX_TIMESTAMP(CONVERT_TZ(raid_start, '+00:00', @@global.time_zone)) as raid_start, UNIX_TIMESTAMP(CONVERT_TZ(raid_end, '+00:00', @@global.time_zone)) as raid_end from gym left join gymdetails on gym.gym_id = gymdetails.gym_id left join raid on gym.gym_id = raid.gym_id where latitude > " . $swLat . " and longitude > " . $swLng . " and latitude < " . $neLat . " and longitude < " . $neLng)->fetchAll();
         }
     }
 
@@ -477,11 +477,11 @@ function get_gyms($swLat, $swLng, $neLat, $neLng, $tstamp = 0, $oSwLat = 0, $oSw
             $p['raid_pokemon_id'] = $rpid;
         if ($rpid)
             $p['raid_pokemon_name'] = $data[$rpid]['name'];
-        $p['raid_pokemon_cp'] = intval($row['cp']);
-        $p['raid_pokemon_move_1'] = intval($row['move_1']);
-        $p['raid_pokemon_move_2'] = intval($row['move_2']);
-        $p['raid_battle'] = intval($row["battle"] * 1000);
-        $p['raid_end'] = intval($row["end"] * 1000);
+        $p['raid_pokemon_cp'] = isset($row['cp']) ? intval($row['cp']) : null;
+        $p['raid_pokemon_move_1'] = isset($row['move_1']) ? intval($row['move_1']) : null;
+        $p['raid_pokemon_move_2'] = isset($row['move_2']) ? intval($row['move_2']) : null;
+        $p['raid_start'] = intval($row["raid_start"] * 1000);
+        $p['raid_end'] = intval($row["raid_end"] * 1000);
 
         $gym_ids[] = $row["external_id"];
 
@@ -523,7 +523,7 @@ function get_spawnpoints($swLat, $swLng, $neLat, $neLng, $tstamp = 0, $oSwLat = 
 {
     global $db;
 
-    $datas = "";
+    $datas = array();
 
     global $map;
     if ($map == "monocle") {
@@ -615,7 +615,7 @@ function get_recent($swLat, $swLng, $neLat, $neLng, $tstamp = 0, $oSwLat = 0, $o
 {
     global $db;
 
-    $datas = "";
+    $datas = array();
 
     global $map;
     if ($map == "monocle") {

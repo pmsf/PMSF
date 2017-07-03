@@ -478,16 +478,20 @@ function gymLabel(item) {
         }
         raidStr = '<h3 style="margin-bottom: 0">Raid ' + levelStr
         if (raidStarted) {
-            raidStr += '<br>' + item.raid_pokemon_name + ' CP ' + item.raid_pokemon_cp
+            var cpStr = ''
+            if (item.raid_pokemon_cp != null) {
+                cpStr = ' CP ' + item.raid_pokemon_cp
+            }
+            raidStr += '<br>' + item.raid_pokemon_name + cpStr
         }
         raidStr += '</h3>'
-        if (raidStarted) {
+        if (raidStarted && item.raid_pokemon_move_1 != null && item.raid_pokemon_move_2 != null) {
             var pMove1 = (moves[item['raid_pokemon_move_1']] !== undefined) ? i8ln(moves[item['raid_pokemon_move_1']]['name']) : 'gen/unknown'
             var pMove2 = (moves[item['raid_pokemon_move_2']] !== undefined) ? i8ln(moves[item['raid_pokemon_move_2']]['name']) : 'gen/unknown'
             raidStr += '<div><b>' + pMove1 + ' / ' + pMove2 + '</b></div>'
         }
 
-        var raidStartStr = getTimeStr(item['raid_battle'])
+        var raidStartStr = getTimeStr(item['raid_start'])
         var raidEndStr = getTimeStr(item['raid_end'])
         raidStr += '<div style="margin-bottom: 10px">Time: <b>' + raidStartStr + '</b> - <b>' + raidEndStr + '</b></div>'
 
@@ -809,9 +813,16 @@ function customizePokemonMarker(marker, item, skipNotification) {
 
 function getGymMarkerIcon(item) {
     var level = item.raid_level
+    var team = item.team_id
+    var teamStr = ''
+    if (team === 0) {
+        teamStr = gymTypes[item['team_id']]
+    } else {
+        teamStr = gymTypes[item['team_id']] + '_' + level
+    }
     if (item['raid_pokemon_id'] != null && item.raid_end > Date.now()) {
         return '<div style="position:relative;">' +
-            '<img src="static/forts/' + Store.get('gymMarkerStyle') + '/' + gymTypes[item['team_id']] + '_' + level + '.png" style="width:48px;height:auto;"/>' +
+            '<img src="static/forts/' + Store.get('gymMarkerStyle') + '/' + teamStr + '.png" style="width:48px;height:auto;"/>' +
             '<i class="pokemon-raid-sprite n' + item.raid_pokemon_id + '"></i>' +
             '</div>'
     } else if (item['raid_level'] !== null && item.raid_end > Date.now()) {
@@ -824,7 +835,7 @@ function getGymMarkerIcon(item) {
             raidEgg = 'legendary'
         }
         return '<div style="position:relative;">' +
-            '<img src="static/forts/' + Store.get('gymMarkerStyle') + '/' + gymTypes[item['team_id']] + '_' + level + '.png" style="width:48px;height:auto;"/>' +
+            '<img src="static/forts/' + Store.get('gymMarkerStyle') + '/' + teamStr + '.png" style="width:48px;height:auto;"/>' +
             '<img src="static/raids/egg_' + raidEgg + '.png" style="width:30px;height:auto;position:absolute;top:8px;right:8px;"/>' +
             '</div>'
     } else {
@@ -859,7 +870,7 @@ function setupGymMarker(item) {
         }
         var title = 'Raid level: ' + raidLevel
 
-        var raidStartStr = getTimeStr(item['raid_battle'])
+        var raidStartStr = getTimeStr(item['raid_start'])
         var raidEndStr = getTimeStr(item['raid_end'])
         var text = raidStartStr + ' - ' + raidEndStr
 
@@ -926,7 +937,7 @@ function updateGymMarker(item, marker) {
         }
         var title = 'Raid level: ' + raidLevel
 
-        var raidStartStr = getTimeStr(item['raid_battle'])
+        var raidStartStr = getTimeStr(item['raid_start'])
         var raidEndStr = getTimeStr(item['raid_end'])
         var text = raidStartStr + ' - ' + raidEndStr
 
@@ -1899,16 +1910,20 @@ function showGymDetails(id) { // eslint-disable-line no-unused-vars
             }
             raidStr = '<h3 style="margin-bottom: 0">Raid ' + levelStr
             if (raidStarted) {
-                raidStr += '<br>' + result.raid_pokemon_name + ' CP ' + result.raid_pokemon_cp
+                var cpStr = ''
+                if (result.raid_pokemon_cp != null) {
+                    cpStr = ' CP ' + result.raid_pokemon_cp
+                }
+                raidStr += '<br>' + result.raid_pokemon_name + cpStr
             }
             raidStr += '</h3>'
-            if (raidStarted) {
+            if (raidStarted && result.raid_pokemon_move_1 != null && result.raid_pokemon_move_2 != null) {
                 var pMove1 = (moves[result['raid_pokemon_move_1']] !== undefined) ? i8ln(moves[result['raid_pokemon_move_1']]['name']) : 'gen/unknown'
                 var pMove2 = (moves[result['raid_pokemon_move_2']] !== undefined) ? i8ln(moves[result['raid_pokemon_move_2']]['name']) : 'gen/unknown'
                 raidStr += '<div><b>' + pMove1 + ' / ' + pMove2 + '</b></div>'
             }
 
-            var raidStartStr = getTimeStr(result['raid_battle'])
+            var raidStartStr = getTimeStr(result['raid_start'])
             var raidEndStr = getTimeStr(result['raid_end'])
             raidStr += '<div style="margin-bottom: 10px">Time: <b>' + raidStartStr + '</b> - <b>' + raidEndStr + '</b></div>'
 
