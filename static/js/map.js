@@ -859,7 +859,8 @@ function setupGymMarker(item) {
 
     marker.infoWindow = new google.maps.InfoWindow({
         content: gymLabel(item),
-        disableAutoPan: true
+        disableAutoPan: true,
+        pixelOffset: new google.maps.Size(0, -20)
     })
 
     var raidLevel = item.raid_level
