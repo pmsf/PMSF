@@ -932,31 +932,34 @@ function updateGymMarker(item, marker) {
 
     var raidLevel = item.raid_level
     if (raidLevel >= Store.get('remember_raid_notify') && item.raid_end > Date.now() && Store.get('remember_raid_notify') !== 0) {
-        if (Store.get('playSound')) {
-            audio.play()
-        }
-        var title = 'Raid level: ' + raidLevel
-
-        var raidStartStr = getTimeStr(item['raid_start'])
-        var raidEndStr = getTimeStr(item['raid_end'])
-        var text = raidStartStr + ' - ' + raidEndStr
-
-        var raidStarted = item['raid_pokemon_id'] != null
-        var icon
-        if (raidStarted) {
-            icon = 'static/icons/' + item.raid_pokemon_id + '.png'
-        } else {
-            var raidEgg = ''
-            if (item['raid_level'] <= 2) {
-                raidEgg = 'normal'
-            } else if (item['raid_level'] <= 4) {
-                raidEgg = 'rare'
-            } else {
-                raidEgg = 'legendary'
+        var raidPokemon = mapData.gyms[item['gym_id']].raid_pokemon_id
+        if (item.raid_pokemon_id !== raidPokemon) {
+            if (Store.get('playSound')) {
+                audio.play()
             }
-            icon = 'static/raids/egg_' + raidEgg + '.png'
+            var title = 'Raid level: ' + raidLevel
+
+            var raidStartStr = getTimeStr(item['raid_start'])
+            var raidEndStr = getTimeStr(item['raid_end'])
+            var text = raidStartStr + ' - ' + raidEndStr
+
+            var raidStarted = item['raid_pokemon_id'] != null
+            var icon
+            if (raidStarted) {
+                icon = 'static/icons/' + item.raid_pokemon_id + '.png'
+            } else {
+                var raidEgg = ''
+                if (item['raid_level'] <= 2) {
+                    raidEgg = 'normal'
+                } else if (item['raid_level'] <= 4) {
+                    raidEgg = 'rare'
+                } else {
+                    raidEgg = 'legendary'
+                }
+                icon = 'static/raids/egg_' + raidEgg + '.png'
+            }
+            sendNotification(title, text, icon, item['latitude'], item['longitude'])
         }
-        sendNotification(title, text, icon, item['latitude'], item['longitude'])
     }
 
     return marker
