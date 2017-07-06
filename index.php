@@ -473,6 +473,23 @@ if (!empty($lat) && !empty($lon)) {
                 </button>
             </center>
         </div>
+        <div>
+            <center>
+                <button class="settings"
+                        onclick="download('<?= $title ?>', JSON.stringify(JSON.stringify(localStorage)))">
+                    <i class="fa fa-upload" aria-hidden="true"></i> Export Settings
+                </button>
+            </center>
+        </div>
+        <div>
+            <center>
+                <input id="fileInput" type="file" style="display:none;" onchange="openFile(event)"/>
+                <button class="settings"
+                        onclick="document.getElementById('fileInput').click()">
+                    <i class="fa fa-download" aria-hidden="true"></i> Import Settings
+                </button>
+            </center>
+        </div>
     </nav>
     <nav id="stats">
         <div class="switch-container">

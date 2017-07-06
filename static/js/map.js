@@ -2617,3 +2617,34 @@ $(function () {
         'columns': [{'orderable': false}, null, null, null]
     }).order([1, 'asc'])
 })
+
+function download(filename, text) { // eslint-disable-line no-unused-vars
+    var element = document.createElement('a')
+    element.setAttribute('href', 'data:text/plain;charset=utf-8,' + encodeURIComponent(text))
+    element.setAttribute('download', filename + '_' + moment().format('DD-MM-YYYY HH:mm'))
+
+    element.style.display = 'none'
+    document.body.appendChild(element)
+
+    element.click()
+
+    document.body.removeChild(element)
+}
+
+function upload(fileText) {
+    var data = JSON.parse(JSON.parse(fileText))
+    Object.keys(data).forEach(function (k) {
+        localStorage.setItem(k, data[k])
+    })
+    window.location.reload()
+}
+
+function openFile(event) { // eslint-disable-line no-unused-vars
+    var input = event.target
+    var reader = new FileReader()
+    reader.onload = function () {
+        console.log(reader.result)
+        upload(reader.result)
+    }
+    reader.readAsText(input.files[0])
+}
