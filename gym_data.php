@@ -28,8 +28,8 @@ $lat = floatval($row["lat"]);
 $lon = floatval($row["lon"]);
 $gpid = intval($row["guard_pokemon_id"]);
 $sa = intval($row["slots_available"]);
-$lm = intval($row["last_modified"] * 1000);
-$ls = isset($row["last_scanned"]) ? intval($row["last_scanned"]) * 1000 : null;
+$lm = $row["last_modified"] * 1000;
+$ls = isset($row["last_scanned"]) ? $row["last_scanned"] * 1000 : null;
 $ti = isset($row["team"]) ? intval($row["team"]) : null;
 
 $p["enabled"] = isset($row["enabled"]) ? boolval($row["enabled"]) : true;
@@ -55,8 +55,8 @@ if ($map != "monocle") {
     $p['raid_pokemon_cp'] = isset($row['cp']) ? intval($row['cp']) : null;
     $p['raid_pokemon_move_1'] = isset($row['move_1']) ? intval($row['move_1']) : null;
     $p['raid_pokemon_move_2'] = isset($row['move_2']) ? intval($row['move_2']) : null;
-    $p['raid_start'] = intval($row["raid_start"] * 1000);
-    $p['raid_end'] = intval($row["raid_end"] * 1000);
+    $p['raid_start'] = $row["raid_start"] * 1000;
+    $p['raid_end'] = $row["raid_end"] * 1000;
 }
 
 unset($row);
@@ -118,8 +118,8 @@ if ($map != "monocle") {
     $p['raid_pokemon_cp'] = isset($raid['cp']) ? intval($raid['cp']) : null;
     $p['raid_pokemon_move_1'] = isset($raid['move_1']) ? intval($raid['move_1']) : null;
     $p['raid_pokemon_move_2'] = isset($raid['move_2']) ? intval($raid['move_2']) : null;
-    $p['raid_start'] = intval($raid["raid_start"] * 1000);
-    $p['raid_end'] = intval($raid["raid_end"] * 1000);
+    $p['raid_start'] = $raid["raid_start"] * 1000;
+    $p['raid_end'] = $raid["raid_end"] * 1000;
 
     unset($raid);
 }

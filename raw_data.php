@@ -387,10 +387,10 @@ function get_stops($swLat, $swLng, $neLat, $neLng, $tstamp = 0, $oSwLat = 0, $oS
 
         $p["active_fort_modifier"] = isset($row["active_fort_modifier"]) ? $row["active_fort_modifier"] : null;
         $p["enabled"] = isset($row["enabled"]) ? boolval($row["enabled"]) : true;
-        $p["last_modified"] = isset($row["last_modified"]) ? intval($row["last_modified"]) * 1000 : 0;
+        $p["last_modified"] = isset($row["last_modified"]) ? $row["last_modified"] * 1000 : 0;
         $p["latitude"] = $lat;
         $p["longitude"] = $lon;
-        $p["lure_expiration"] = isset($row["lure_expiration"]) ? intval($row["lure_expiration"]) * 1000 : null;
+        $p["lure_expiration"] = isset($row["lure_expiration"]) ? $row["lure_expiration"] * 1000 : null;
         $p["pokestop_id"] = $row["external_id"];
 
         $pokestops[] = $p;
@@ -450,8 +450,8 @@ function get_gyms($swLat, $swLng, $neLat, $neLng, $tstamp = 0, $oSwLat = 0, $oSw
         $lat = floatval($row["lat"]);
         $lon = floatval($row["lon"]);
         $gpid = intval($row["guard_pokemon_id"]);
-        $lm = intval($row["last_modified"] * 1000);
-        $ls = isset($row["last_scanned"]) ? intval($row["last_scanned"]) * 1000 : null;
+        $lm = $row["last_modified"] * 1000;
+        $ls = isset($row["last_scanned"]) ? $row["last_scanned"] * 1000 : null;
         $ti = isset($row["team"]) ? intval($row["team"]) : null;
         $tc = isset($row["total_cp"]) ? intval($row["total_cp"]) : null;
         $sa = intval($row["slots_available"]);
@@ -481,8 +481,8 @@ function get_gyms($swLat, $swLng, $neLat, $neLng, $tstamp = 0, $oSwLat = 0, $oSw
             $p['raid_pokemon_cp'] = isset($row['cp']) ? intval($row['cp']) : null;
             $p['raid_pokemon_move_1'] = isset($row['move_1']) ? intval($row['move_1']) : null;
             $p['raid_pokemon_move_2'] = isset($row['move_2']) ? intval($row['move_2']) : null;
-            $p['raid_start'] = intval($row["raid_start"] * 1000);
-            $p['raid_end'] = intval($row["raid_end"] * 1000);
+            $p['raid_start'] = $row["raid_start"] * 1000;
+            $p['raid_end'] = $row["raid_end"] * 1000;
         }
 
         $gym_ids[] = $row["external_id"];
@@ -539,8 +539,8 @@ function get_gyms($swLat, $swLng, $neLat, $neLng, $tstamp = 0, $oSwLat = 0, $oSw
             $gyms[$id]['raid_pokemon_cp'] = isset($raid['cp']) ? intval($raid['cp']) : null;
             $gyms[$id]['raid_pokemon_move_1'] = isset($raid['move_1']) ? intval($raid['move_1']) : null;
             $gyms[$id]['raid_pokemon_move_2'] = isset($raid['move_2']) ? intval($raid['move_2']) : null;
-            $gyms[$id]['raid_start'] = intval($raid["raid_start"] * 1000);
-            $gyms[$id]['raid_end'] = intval($raid["raid_end"] * 1000);
+            $gyms[$id]['raid_start'] = $raid["raid_start"] * 1000;
+            $gyms[$id]['raid_end'] = $raid["raid_end"] * 1000;
 
             unset($raids[$j]);
 
@@ -682,7 +682,7 @@ function get_recent($swLat, $swLng, $neLat, $neLng, $tstamp = 0, $oSwLat = 0, $o
         $p["latitude"] = floatval($row["latitude"]);
         $p["longitude"] = floatval($row["longitude"]);
 
-        $lm = intval($row["last_modified"] * 1000);
+        $lm = $row["last_modified"] * 1000;
         $p["last_modified"] = $lm;
 
         $recent[] = $p;
