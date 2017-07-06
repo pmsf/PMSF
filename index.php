@@ -88,6 +88,12 @@ if (!empty($lat) && !empty($lon)) {
         <a href="#nav"><span class="label">Options</span></a>
 
         <h1><a href="#"><?= $title ?></a></h1>
+        <?php if ($paypalUrl != "") {
+            echo '<a href="' . $paypalUrl . '" target="_blank" style="margin-bottom: 5px; vertical-align: middle;">
+            <img src="https://www.paypal.com/en_US/i/btn/btn_donate_LG.gif" border="0" name="submit"
+                 title="PayPal - The safer, easier way to pay online!" alt="Donate" style="float: right;">
+        </a>';
+        } ?>
         <a href="#stats" id="statsToggle" class="statsNav" style="float: right;"><span class="label">Stats</span></a>
     </header>
     <!-- NAV -->

@@ -41,6 +41,9 @@ $gAnalyticsId = "";                                                 // "" for em
 $piwikUrl = "";
 $piwikSiteId = "";
 
+/* PayPal */
+
+$paypalUrl = "";                                                    // PayPal donation URL, leave "" for empty
 
 
 //-----------------------------------------------------
