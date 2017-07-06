@@ -50,13 +50,29 @@ if (!empty($lat) && !empty($lon)) {
           sizes="180x180">
     <?php if ($gAnalyticsId != "") {
         echo '<!-- Google Analytics -->
-    <script>
-        window.ga=window.ga||function(){(ga.q=ga.q||[]).push(arguments)};ga.l=+new Date;
-        ga("create", "' . $gAnalyticsId . '", "auto");
-        ga("send", "pageview");
-    </script>
-    <script async src="https://www.google-analytics.com/analytics.js"></script>
-    <!-- End Google Analytics -->';
+            <script>
+                window.ga=window.ga||function(){(ga.q=ga.q||[]).push(arguments)};ga.l=+new Date;
+                ga("create", "' . $gAnalyticsId . '", "auto");
+                ga("send", "pageview");
+            </script>
+            <script async src="https://www.google-analytics.com/analytics.js"></script>
+            <!-- End Google Analytics -->';
+    } ?>
+    <?php if ($piwikUrl != "" && $piwikSiteId != "") {
+        echo '<!-- Piwik -->
+            <script type="text/javascript">
+              var _paq = _paq || [];
+              _paq.push(["trackPageView"]);
+              _paq.push(["enableLinkTracking"]);
+              (function() {
+                var u="//' . $piwikUrl . '/";
+                _paq.push(["setTrackerUrl", u+"piwik.php"]);
+                _paq.push(["setSiteId", "' . $piwikSiteId . '"]);
+                var d=document, g=d.createElement("script"), s=d.getElementsByTagName("script")[0];
+                g.type="text/javascript"; g.async=true; g.defer=true; g.src=u+"piwik.js"; s.parentNode.insertBefore(g,s);
+              })();
+            </script>
+            <!-- End Piwik Code -->';
     } ?>
     <link rel="stylesheet" href="static/dist/css/app.min.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jqueryui/1.12.0/jquery-ui.min.css">

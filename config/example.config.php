@@ -38,6 +38,11 @@ $gmapsKey = "";                                                     // Google Ma
 
 $gAnalyticsId = "";                                                 // "" for empty, "UA-XXXXX-Y" add your Google Analytics tracking ID
 
+/* Piwik Analytics */
+
+$piwikUrl = "";
+$piwikSiteId = "";
+
 
 //-----------------------------------------------------
 // FRONTEND SETTINGS
