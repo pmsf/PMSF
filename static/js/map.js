@@ -1458,13 +1458,13 @@ function processGyms(i, item) {
     }
 
     if (Store.get('showOpenGymsOnly')) {
-        if (item.slots_available === 0 && item.raid_end < Date.now()) {
+        if (item.slots_available === 0 && (item.raid_end === undefined || item.raid_end < Date.now())) {
             removeGymFromMap(item['gym_id'])
             return true
         }
     }
 
-    if (Store.get('showTeamGymsOnly') && Store.get('showTeamGymsOnly') !== item.team_id && item.raid_end < Date.now()) {
+    if (Store.get('showTeamGymsOnly') && Store.get('showTeamGymsOnly') !== item.team_id && (item.raid_end === undefined || item.raid_end < Date.now())) {
         removeGymFromMap(item['gym_id'])
         return true
     }
@@ -1472,24 +1472,24 @@ function processGyms(i, item) {
     if (Store.get('showLastUpdatedGymsOnly')) {
         var now = new Date()
         if (item.last_scanned == null) {
-            if (Store.get('showLastUpdatedGymsOnly') * 3600 * 1000 + item.last_modified < now.getTime() && item.raid_end < Date.now()) {
+            if (Store.get('showLastUpdatedGymsOnly') * 3600 * 1000 + item.last_modified < now.getTime() && (item.raid_end === undefined || item.raid_end < Date.now())) {
                 removeGymFromMap(item['gym_id'])
                 return true
             }
         } else {
-            if (Store.get('showLastUpdatedGymsOnly') * 3600 * 1000 + item.last_scanned < now.getTime() && item.raid_end < Date.now()) {
+            if (Store.get('showLastUpdatedGymsOnly') * 3600 * 1000 + item.last_scanned < now.getTime() && (item.raid_end === undefined || item.raid_end < Date.now())) {
                 removeGymFromMap(item['gym_id'])
                 return true
             }
         }
     }
 
-    if (gymLevel < Store.get('minGymLevel') && item.raid_end < Date.now()) {
+    if (gymLevel < Store.get('minGymLevel') && (item.raid_end === undefined || item.raid_end < Date.now())) {
         removeGymFromMap(item['gym_id'])
         return true
     }
 
-    if (gymLevel > Store.get('maxGymLevel') && item.raid_end < Date.now()) {
+    if (gymLevel > Store.get('maxGymLevel') && (item.raid_end === undefined || item.raid_end < Date.now())) {
         removeGymFromMap(item['gym_id'])
         return true
     }
