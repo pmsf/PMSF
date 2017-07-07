@@ -2622,7 +2622,7 @@ $(function () {
 
     if ($('#nav-accordion').length) {
         $('#nav-accordion').accordion({
-            active: 0,
+            active: false,
             collapsible: true,
             heightStyle: 'content'
         })
