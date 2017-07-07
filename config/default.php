@@ -94,6 +94,9 @@ $enableStartLast = 'false';                                         // true/fals
 $noFollowMe = false;                                                // true/false
 $enableFollowMe = 'false';                                          // true/false
 
+$noSpawnArea = false;                                               // true/false
+$enableSpawnArea = 'false';                                         // true/false
+
 /* Notification Settings */
 
 $noNotifyPokemon = false;                                           // true/false

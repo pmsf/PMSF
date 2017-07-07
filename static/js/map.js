@@ -286,6 +286,7 @@ function initSidebar() {
     $('#start-at-user-location-switch').prop('checked', Store.get('startAtUserLocation'))
     $('#start-at-last-location-switch').prop('checked', Store.get('startAtLastLocation'))
     $('#follow-my-location-switch').prop('checked', Store.get('followMyLocation'))
+    $('#spawn-area-switch').prop('checked', Store.get('spawnArea'))
     $('#scanned-switch').prop('checked', Store.get('showScanned'))
     $('#spawnpoints-switch').prop('checked', Store.get('showSpawnpoints'))
     $('#ranges-switch').prop('checked', Store.get('showRanges'))
@@ -1836,6 +1837,23 @@ function updateGeoLocation() {
                 if (typeof locationMarker !== 'undefined' && getPointDistance(locationMarker.getPosition(), center) >= 5) {
                     map.panTo(center)
                     locationMarker.setPosition(center)
+                    if (Store.get('spawnArea')) {
+                        if (locationMarker.rangeCircle) {
+                            locationMarker.rangeCircle.setMap(null)
+                            delete locationMarker.rangeCircle
+                        }
+                        var rangeCircleOpts = {
+                            map: map,
+                            radius: 35, // meters
+                            strokeWeight: 1,
+                            strokeColor: '#FF9200',
+                            strokeOpacity: 0.9,
+                            center: center,
+                            fillColor: '#FF9200',
+                            fillOpacity: 0.3
+                        }
+                        locationMarker.rangeCircle = new google.maps.Circle(rangeCircleOpts)
+                    }
                     Store.set('followMyLocationPosition', {
                         lat: lat,
                         lng: lng
@@ -2592,6 +2610,14 @@ $(function () {
             Store.set('followMyLocation', this.checked)
         }
         locationMarker.setDraggable(!this.checked)
+    })
+
+    $('#spawn-area-switch').change(function () {
+        Store.set('spawnArea', this.checked)
+        if (locationMarker.rangeCircle) {
+            locationMarker.rangeCircle.setMap(null)
+            delete locationMarker.rangeCircle
+        }
     })
 
     if ($('#nav-accordion').length) {

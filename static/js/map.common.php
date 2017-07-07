@@ -1021,6 +1021,10 @@ type: StoreTypes.Boolean
 default: [],
 type: StoreTypes.JSON
 },
+'spawnArea': {
+default: <?php echo $noSpawnArea ? 'false' : $enableSpawnArea ?>,
+type: StoreTypes.Boolean
+},
 'scanHere': {
 default: false,
 type: StoreTypes.Boolean

@@ -301,7 +301,7 @@ if (!empty($lat) && !empty($lon)) {
                 } ?>
             </div>
 
-            <?php if (!$noSearchLocation || !$noStartMe || !$noStartLast || !$noFollowMe) {
+            <?php if (!$noSearchLocation || !$noStartMe || !$noStartLast || !$noFollowMe || !$noSpawnArea) {
                 echo '<h3>Location &amp; Search Settings</h3>
             <div>';
             } ?>
@@ -352,7 +352,20 @@ if (!empty($lat) && !empty($lon)) {
                     </div>
                 </div>';
             } ?>
-            <?php if (!$noSearchLocation || !$noStartMe || !$noStartLast || !$noFollowMe) {
+            <?php if (!$noSpawnArea) {
+                echo '<div class="form-control switch-container">
+                <h3> Spawn area </h3>
+                <div class="onoffswitch">
+                    <input id = "spawn-area-switch" type = "checkbox" name = "spawn-area-switch"
+                           class="onoffswitch-checkbox"/>
+                    <label class="onoffswitch-label" for="spawn-area-switch">
+                        <span class="switch-label" data - on = "On" data - off = "Off"></span>
+                        <span class="switch-handle"></span>
+                    </label>
+                </div>
+            </div>';
+            } ?>
+            <?php if (!$noSearchLocation || !$noStartMe || !$noStartLast || !$noFollowMe || !$noSpawnArea) {
                 echo '</div>';
             } ?>
 
