@@ -67,6 +67,8 @@ $gymSidebar = 'true';                                               // true/fals
 
 $noRaids = false;                                                   // true/false
 $enableRaids = 'false';                                             // true/false
+$minRaidLevel = 1;
+$maxRaidLevel = 5;
 
 $noPokestops = false;                                               // true/false
 $enablePokestops = 'false';                                         // true/false

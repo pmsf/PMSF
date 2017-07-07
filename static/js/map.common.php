@@ -930,11 +930,11 @@ default: <?php echo $noRaids ? 'false' : $enableRaids ?>,
 type: StoreTypes.Boolean
 },
 'minRaidLevel': {
-default: 1,
+default: <?php echo $minRaidLevel ?>,
 type: StoreTypes.Number
 },
 'maxRaidLevel': {
-default: 5,
+default: <?php echo $maxRaidLevel ?>,
 type: StoreTypes.Number
 },
 'showGyms': {
