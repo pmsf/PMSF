@@ -450,7 +450,7 @@ function pokemonLabel(item) {
         '<div>' +
         '<a href="javascript:excludePokemon(' + id + ')">Exclude</a>&nbsp&nbsp' +
         '<a href="javascript:notifyAboutPokemon(' + id + ')">Notify</a>&nbsp&nbsp' +
-        '<a href="javascript:removePokemonMarker\'"' + encounterId + '\')">Remove</a>&nbsp&nbsp' +
+        '<a href="javascript:removePokemonMarker(\'' + encounterId + '\')">Remove</a>&nbsp&nbsp' +
         '<a href="javascript:void(0);" onclick="javascript:toggleOtherPokemon(' + id + ');" title="Toggle display of other Pokemon">Toggle Others</a>' +
         '</div>'
     return contentstring
