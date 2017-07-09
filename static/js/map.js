@@ -441,7 +441,7 @@ function pokemonLabel(item) {
         '</div>' +
         '<div>' +
         'Disappears at ' + pad(disappearDate.getHours()) + ':' + pad(disappearDate.getMinutes()) + ':' + pad(disappearDate.getSeconds()) +
-        '<span class="label-countdown" disappears-at="' + disappearTime + '">(00m00s)</span>' +
+        ' <span class="label-countdown" disappears-at="' + disappearTime + '">(00m00s)</span>' +
         '</div>' +
         '<div>' +
         'Location: <a href="javascript:void(0)" onclick="javascript:openMapDirections(' + latitude + ', ' + longitude + ')" title="View in Maps">' + latitude.toFixed(6) + ', ' + longitude.toFixed(7) + '</a>' +
@@ -493,7 +493,8 @@ function gymLabel(item) {
 
         var raidStartStr = getTimeStr(item['raid_start'])
         var raidEndStr = getTimeStr(item['raid_end'])
-        raidStr += '<div style="margin-bottom: 10px">Time: <b>' + raidStartStr + '</b> - <b>' + raidEndStr + '</b></div>'
+        raidStr += '<div>Start: <b>' + raidStartStr + '</b> <span class="label-countdown" disappears-at="' + item['raid_start'] + '" start>(00m00s)</span></div>'
+        raidStr += '<div>End: <b>' + raidEndStr + '</b> <span class="label-countdown" disappears-at="' + item['raid_end'] + '" end>(00m00s)</span></div>'
 
         if (raidStarted) {
             raidIcon = '<i class="pokemon-large-raid-sprite n' + item.raid_pokemon_id + '"></i>'
@@ -606,7 +607,7 @@ function pokestopLabel(expireTime, latitude, longitude) {
             '</div>' +
             '<div>' +
             'Lure expires at ' + pad(expireDate.getHours()) + ':' + pad(expireDate.getMinutes()) + ':' + pad(expireDate.getSeconds()) +
-            '<span class="label-countdown" disappears-at="' + expireTime + '">(00m00s)</span>' +
+            ' <span class="label-countdown" disappears-at="' + expireTime + '">(00m00s)</span>' +
             '</div>' +
             '<div>' +
             'Location: <a href="javascript:void(0)" onclick="javascript:openMapDirections(' + latitude + ',' + longitude + ')" title="View in Maps">' + latitude.toFixed(6) + ', ' + longitude.toFixed(7) + '</a>' +
@@ -1668,11 +1669,17 @@ var updateLabelDiffTime = function updateLabelDiffTime() {
         var timestring = ''
 
         if (disappearsAt.ttime < disappearsAt.now) {
-            timestring = '(expired)'
+            if (element.hasAttribute('start')) {
+                timestring = '(started)'
+            } else if (element.hasAttribute('end')) {
+                timestring = '(ended)'
+            } else {
+                timestring = '(expired)'
+            }
         } else {
             timestring = '('
             if (hours > 0) {
-                timestring = hours + 'h'
+                timestring += hours + 'h'
             }
 
             timestring += lpad(minutes, 2, 0) + 'm'
@@ -1953,7 +1960,8 @@ function showGymDetails(id) { // eslint-disable-line no-unused-vars
 
             var raidStartStr = getTimeStr(result['raid_start'])
             var raidEndStr = getTimeStr(result['raid_end'])
-            raidStr += '<div style="margin-bottom: 10px">Time: <b>' + raidStartStr + '</b> - <b>' + raidEndStr + '</b></div>'
+            raidStr += '<div>Start: <b>' + raidStartStr + '</b> <span class="label-countdown" disappears-at="' + result['raid_start'] + '" start>(00m00s)</span></div>'
+            raidStr += '<div>End: <b>' + raidEndStr + '</b> <span class="label-countdown" disappears-at="' + result['raid_end'] + '" end>(00m00s)</span></div>'
 
             if (raidStarted) {
                 raidIcon = '<i class="pokemon-large-raid-sprite n' + result.raid_pokemon_id + '"></i>'
