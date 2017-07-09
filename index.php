@@ -129,7 +129,7 @@ if (!empty($lat) && !empty($lon)) {
                 } ?>
                 <div id="raids-filter-wrapper">
                     <div class="form-control switch-container" id="active-raids-wrapper">
-                        <h3>Active Raids</h3>
+                        <h3>Only Active Raids</h3>
                         <div class="onoffswitch">
                             <input id="active-raids-switch" type="checkbox" name="active-raids-switch"
                                    class="onoffswitch-checkbox" checked>

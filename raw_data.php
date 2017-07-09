@@ -59,85 +59,100 @@ $ids = array();
 $eids = array();
 $reids = array();
 
-if ($d["lastpokemon"] == "true") {
-    if ($lastpokemon != 'true') {
-        $d["pokemons"] = get_active($swLat, $swLng, $neLat, $neLng);
-    } else {
-        if ($newarea) {
-            $d["pokemons"] = get_active($swLat, $swLng, $neLat, $neLng, 0, $oSwLat, $oSwLng, $oNeLat, $oNeLng);
+global $noPokemon;
+if (!$noPokemon) {
+    if ($d["lastpokemon"] == "true") {
+        if ($lastpokemon != 'true') {
+            $d["pokemons"] = get_active($swLat, $swLng, $neLat, $neLng);
         } else {
-            $d["pokemons"] = get_active($swLat, $swLng, $neLat, $neLng, $timestamp);
+            if ($newarea) {
+                $d["pokemons"] = get_active($swLat, $swLng, $neLat, $neLng, 0, $oSwLat, $oSwLng, $oNeLat, $oNeLng);
+            } else {
+                $d["pokemons"] = get_active($swLat, $swLng, $neLat, $neLng, $timestamp);
+            }
         }
-    }
 
-    if (isset($_GET['eids'])) {
-        $eids = explode(",", $_GET['eids']);
+        if (isset($_GET['eids'])) {
+            $eids = explode(",", $_GET['eids']);
 
-        foreach ($d['pokemons'] as $elementKey => $element) {
-            foreach ($element as $valueKey => $value) {
-                if ($valueKey == 'pokemon_id') {
-                    if (in_array($value, $eids)) {
-                        //delete this particular object from the $array
-                        unset($d['pokemons'][$elementKey]);
+            foreach ($d['pokemons'] as $elementKey => $element) {
+                foreach ($element as $valueKey => $value) {
+                    if ($valueKey == 'pokemon_id') {
+                        if (in_array($value, $eids)) {
+                            //delete this particular object from the $array
+                            unset($d['pokemons'][$elementKey]);
+                        }
                     }
                 }
             }
         }
-    }
 
-    if (isset($_GET['reids'])) {
-        $reids = explode(",", $_GET['reids']);
+        if (isset($_GET['reids'])) {
+            $reids = explode(",", $_GET['reids']);
 
-        $d["pokemons"] = $d["pokemons"] + (get_active_by_id($reids, $swLat, $swLng, $neLat, $neLng));
+            $d["pokemons"] = $d["pokemons"] + (get_active_by_id($reids, $swLat, $swLng, $neLat, $neLng));
 
-        $d["reids"] = !empty($_GET['reids']) ? $reids : null;
-    }
-}
-
-if ($d["lastpokestops"] == "true") {
-    if ($lastpokestops != "true") {
-        $d["pokestops"] = get_stops($swLat, $swLng, $neLat, $neLng, 0, 0, 0, 0, 0, $luredonly);
-    } else {
-        if ($newarea) {
-            $d["pokestops"] = get_stops($swLat, $swLng, $neLat, $neLng, 0, $oSwLat, $oSwLng, $oNeLat, $oNeLng, $luredonly);
-        } else {
-            $d["pokestops"] = get_stops($swLat, $swLng, $neLat, $neLng, $timestamp, 0, 0, 0, 0, $luredonly);
+            $d["reids"] = !empty($_GET['reids']) ? $reids : null;
         }
     }
 }
 
-if ($d["lastgyms"] == "true") {
-    if ($lastgyms != "true") {
-        $d["gyms"] = get_gyms($swLat, $swLng, $neLat, $neLng);
-    } else {
-        if ($newarea) {
-            $d["gyms"] = get_gyms($swLat, $swLng, $neLat, $neLng, 0, $oSwLat, $oSwLng, $oNeLat, $oNeLng);
+global $noPokestops;
+if (!$noPokestops) {
+    if ($d["lastpokestops"] == "true") {
+        if ($lastpokestops != "true") {
+            $d["pokestops"] = get_stops($swLat, $swLng, $neLat, $neLng, 0, 0, 0, 0, 0, $luredonly);
         } else {
-            $d["gyms"] = get_gyms($swLat, $swLng, $neLat, $neLng, $timestamp);
+            if ($newarea) {
+                $d["pokestops"] = get_stops($swLat, $swLng, $neLat, $neLng, 0, $oSwLat, $oSwLng, $oNeLat, $oNeLng, $luredonly);
+            } else {
+                $d["pokestops"] = get_stops($swLat, $swLng, $neLat, $neLng, $timestamp, 0, 0, 0, 0, $luredonly);
+            }
         }
     }
 }
 
-if ($d["lastspawns"] == "true") {
-    if ($lastspawns != "true") {
-        $d["spawnpoints"] = get_spawnpoints($swLat, $swLng, $neLat, $neLng);
-    } else {
-        if ($newarea) {
-            $d["spawnpoints"] = get_spawnpoints($swLat, $swLng, $neLat, $neLng, 0, $oSwLat, $oSwLng, $oNeLat, $oNeLng);
+global $noGyms, $noRaids;
+if (!$noGyms && !$noRaids) {
+    if ($d["lastgyms"] == "true") {
+        if ($lastgyms != "true") {
+            $d["gyms"] = get_gyms($swLat, $swLng, $neLat, $neLng);
         } else {
-            $d["spawnpoints"] = get_spawnpoints($swLat, $swLng, $neLat, $neLng, $timestamp);
+            if ($newarea) {
+                $d["gyms"] = get_gyms($swLat, $swLng, $neLat, $neLng, 0, $oSwLat, $oSwLng, $oNeLat, $oNeLng);
+            } else {
+                $d["gyms"] = get_gyms($swLat, $swLng, $neLat, $neLng, $timestamp);
+            }
         }
     }
 }
 
-if ($d["lastslocs"] == "true") {
-    if ($lastlocs != "true") {
-        $d["scanned"] = get_recent($swLat, $swLng, $neLat, $neLng);
-    } else {
-        if ($newarea) {
-            $d["scanned"] = get_recent($swLat, $swLng, $neLat, $neLng, 0, $oSwLat, $oSwLng, $oNeLat, $oNeLng);
+global $noSpawnPoints;
+if (!$noSpawnPoints) {
+    if ($d["lastspawns"] == "true") {
+        if ($lastspawns != "true") {
+            $d["spawnpoints"] = get_spawnpoints($swLat, $swLng, $neLat, $neLng);
         } else {
-            $d["scanned"] = get_recent($swLat, $swLng, $neLat, $neLng, $timestamp);
+            if ($newarea) {
+                $d["spawnpoints"] = get_spawnpoints($swLat, $swLng, $neLat, $neLng, 0, $oSwLat, $oSwLng, $oNeLat, $oNeLng);
+            } else {
+                $d["spawnpoints"] = get_spawnpoints($swLat, $swLng, $neLat, $neLng, $timestamp);
+            }
+        }
+    }
+}
+
+global $noScannedLocations;
+if (!$noScannedLocations) {
+    if ($d["lastslocs"] == "true") {
+        if ($lastlocs != "true") {
+            $d["scanned"] = get_recent($swLat, $swLng, $neLat, $neLng);
+        } else {
+            if ($newarea) {
+                $d["scanned"] = get_recent($swLat, $swLng, $neLat, $neLng, 0, $oSwLat, $oSwLng, $oNeLat, $oNeLng);
+            } else {
+                $d["scanned"] = get_recent($swLat, $swLng, $neLat, $neLng, $timestamp);
+            }
         }
     }
 }
