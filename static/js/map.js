@@ -13,6 +13,7 @@ var $selectIconSize
 var $switchOpenGymsOnly
 var $selectTeamGymsOnly
 var $selectLastUpdateGymsOnly
+var $switchActiveRaids
 var $selectMinGymLevel
 var $selectMaxGymLevel
 var $selectMinRaidLevel
@@ -274,6 +275,7 @@ function initSidebar() {
     $('#open-gyms-only-switch').prop('checked', Store.get('showOpenGymsOnly'))
     $('#raids-switch').prop('checked', Store.get('showRaids'))
     $('#raids-filter-wrapper').toggle(Store.get('showRaids'))
+    $('#active-raids-switch').prop('checked', Store.get('activeRaids'))
     $('#min-level-gyms-filter-switch').val(Store.get('minGymLevel'))
     $('#max-level-gyms-filter-switch').val(Store.get('maxGymLevel'))
     $('#min-level-raids-filter-switch').val(Store.get('minRaidLevel'))
@@ -1449,6 +1451,13 @@ function processGyms(i, item) {
         }
     }
 
+    if (Store.get('activeRaids') && item.raid_end > Date.now()) {
+        if (item.raid_pokemon_id === undefined) {
+            removeGymFromMap(item['gym_id'])
+            return true
+        }
+    }
+
     if (raidLevel < Store.get('minRaidLevel') && item.raid_end > Date.now()) {
         removeGymFromMap(item['gym_id'])
         return true
@@ -2257,6 +2266,13 @@ $(function () {
     $selectMaxGymLevel.on('change', function () {
         Store.set('maxGymLevel', this.value)
         lastgyms = false
+        updateMap()
+    })
+
+    $switchActiveRaids = $('#active-raids-switch')
+
+    $switchActiveRaids.on('change', function () {
+        Store.set('activeRaids', this.checked)
         updateMap()
     })
 

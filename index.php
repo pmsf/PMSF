@@ -127,7 +127,18 @@ if (!empty($lat) && !empty($lon)) {
                     </div>
                 </div>';
                 } ?>
-                <div id="raids-filter-wrapper" style="display:none">
+                <div id="raids-filter-wrapper">
+                    <div class="form-control switch-container" id="active-raids-wrapper">
+                        <h3>Active Raids</h3>
+                        <div class="onoffswitch">
+                            <input id="active-raids-switch" type="checkbox" name="active-raids-switch"
+                                   class="onoffswitch-checkbox" checked>
+                            <label class="onoffswitch-label" for="active-raids-switch">
+                                <span class="switch-label" data-on="On" data-off="Off"></span>
+                                <span class="switch-handle"></span>
+                            </label>
+                        </div>
+                    </div>
                     <div class="form-control switch-container" id="min-level-raids-filter-wrapper">
                         <h3>Minimum Raid Level</h3>
                         <select name="min-level-raids-filter-switch" id="min-level-raids-filter-switch">

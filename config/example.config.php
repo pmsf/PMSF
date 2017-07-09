@@ -67,6 +67,7 @@ $gymSidebar = 'true';                                               // true/fals
 
 $noRaids = false;                                                   // true/false
 $enableRaids = 'false';                                             // true/false
+$activeRaids = 'false';                                             // true/false
 $minRaidLevel = 1;
 $maxRaidLevel = 5;
 

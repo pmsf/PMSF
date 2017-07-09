@@ -929,6 +929,10 @@ type: StoreTypes.Number
 default: <?php echo $noRaids ? 'false' : $enableRaids ?>,
 type: StoreTypes.Boolean
 },
+'activeRaids': {
+default: <?php echo $activeRaids ?>,
+type: StoreTypes.Boolean
+},
 'minRaidLevel': {
 default: <?php echo $minRaidLevel ?>,
 type: StoreTypes.Number
