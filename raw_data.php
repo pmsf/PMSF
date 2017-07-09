@@ -227,23 +227,28 @@ function get_active($swLat, $swLng, $neLat, $neLng, $tstamp = 0, $oSwLat = 0, $o
 
         $p["disappear_time"] = $dissapear; //done
         $p["encounter_id"] = $row["encounter_id"]; //done
-        $p["individual_attack"] = $atk; //done
-        $p["individual_defense"] = $def; //done
-        $p["individual_stamina"] = $sta; //done
+
+        global $noHighLevelData;
+        if (!$noHighLevelData) {
+            $p["individual_attack"] = $atk; //done
+            $p["individual_defense"] = $def; //done
+            $p["individual_stamina"] = $sta; //done
+            $p["move_1"] = $mv1; //done
+            $p["move_2"] = $mv2;
+            $p["weight"] = $weight;
+            $p["height"] = $height;
+            $p["cp"] = $cp;
+            $p["cp_multiplier"] = $cpm;
+            $p["level"] = $level;
+        }
+
         $p["latitude"] = $lat; //done
         $p["longitude"] = $lon; //done
-        $p["move_1"] = $mv1; //done
-        $p["move_2"] = $mv2;
-        $p["weight"] = $weight;
-        $p["height"] = $height;
         $p["gender"] = $gender;
         $p["form"] = $form;
         $p["pokemon_id"] = $pokeid;
         $p["pokemon_name"] = i8ln($data[$pokeid]['name']);
         $p["pokemon_rarity"] = i8ln($data[$pokeid]['rarity']);
-        $p["cp"] = $cp;
-        $p["cp_multiplier"] = $cpm;
-        $p["level"] = $level;
 
         $types = $data[$pokeid]["types"];
         foreach ($types as $k => $v) {
@@ -314,25 +319,32 @@ function get_active_by_id($ids, $swLat, $swLng, $neLat, $neLng)
         $form = isset($row["form"]) ? intval($row["form"]) : null;
         $cp = isset($row["cp"]) ? intval($row["cp"]) : null;
         $cpm = isset($row["cp_multiplier"]) ? floatval($row["cp_multiplier"]) : null;
+        $level = isset($row["level"]) ? intval($row["level"]) : null;
 
         $p["disappear_time"] = $dissapear; //done
         $p["encounter_id"] = $row["encounter_id"]; //done
-        $p["individual_attack"] = $atk; //done
-        $p["individual_defense"] = $def; //done
-        $p["individual_stamina"] = $sta; //done
+
+        global $noHighLevelData;
+        if (!$noHighLevelData) {
+            $p["individual_attack"] = $atk; //done
+            $p["individual_defense"] = $def; //done
+            $p["individual_stamina"] = $sta; //done
+            $p["move_1"] = $mv1; //done
+            $p["move_2"] = $mv2;
+            $p["weight"] = $weight;
+            $p["height"] = $height;
+            $p["cp"] = $cp;
+            $p["cp_multiplier"] = $cpm;
+            $p["level"] = $level;
+        }
+
         $p["latitude"] = $lat; //done
         $p["longitude"] = $lon; //done
-        $p["move_1"] = $mv1; //done
-        $p["move_2"] = $mv2;
-        $p["weight"] = $weight;
-        $p["height"] = $height;
         $p["gender"] = $gender;
         $p["form"] = $form;
         $p["pokemon_id"] = $pokeid;
         $p["pokemon_name"] = i8ln($data[$pokeid]['name']);
         $p["pokemon_rarity"] = i8ln($data[$pokeid]['rarity']);
-        $p["cp"] = $cp;
-        $p["cp_multiplier"] = $cpm;
 
         $p["pokemon_types"] = $data[$pokeid]["types"];
         $p["spawnpoint_id"] = $row["spawn_id"];
