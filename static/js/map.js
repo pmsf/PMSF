@@ -496,7 +496,7 @@ function gymLabel(item) {
         raidStr += '<div style="margin-bottom: 10px">Time: <b>' + raidStartStr + '</b> - <b>' + raidEndStr + '</b></div>'
 
         if (raidStarted) {
-            raidIcon = '<i class="pokemon-large-sprite n' + item.raid_pokemon_id + '"></i>'
+            raidIcon = '<i class="pokemon-large-raid-sprite n' + item.raid_pokemon_id + '"></i>'
         } else {
             var raidEgg = ''
             if (item['raid_level'] <= 2) {
@@ -1956,7 +1956,7 @@ function showGymDetails(id) { // eslint-disable-line no-unused-vars
             raidStr += '<div style="margin-bottom: 10px">Time: <b>' + raidStartStr + '</b> - <b>' + raidEndStr + '</b></div>'
 
             if (raidStarted) {
-                raidIcon = '<i class="pokemon-large-sprite n' + result.raid_pokemon_id + '"></i>'
+                raidIcon = '<i class="pokemon-large-raid-sprite n' + result.raid_pokemon_id + '"></i>'
             } else {
                 var raidEgg = ''
                 if (result['raid_level'] <= 2) {
