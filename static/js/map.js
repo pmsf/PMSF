@@ -67,7 +67,7 @@ var updateWorker
 var lastUpdateTime
 
 var gymTypes = ['Uncontested', 'Mystic', 'Valor', 'Instinct']
-var audio = new Audio('static/sounds/ding.mp3')
+createjs.Sound.registerSound('static/sounds/ding.mp3', 'ding')
 
 var genderType = ['♂', '♀', '⚲']
 var unownForm = ['unset', 'A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N', 'O', 'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z', '!', '?']
@@ -787,7 +787,7 @@ function customizePokemonMarker(marker, item, skipNotification) {
     if (notifiedPokemon.indexOf(item['pokemon_id']) > -1 || notifiedRarity.indexOf(item['pokemon_rarity']) > -1) {
         if (!skipNotification) {
             if (Store.get('playSound')) {
-                audio.play()
+                createjs.Sound.play('ding')
             }
             sendNotification(getNotifyText(item).fav_title, getNotifyText(item).fav_text, 'static/icons/' + item['pokemon_id'] + '.png', item['latitude'], item['longitude'])
         }
@@ -801,7 +801,7 @@ function customizePokemonMarker(marker, item, skipNotification) {
         if (notifiedMinPerfection > 0 && perfection >= notifiedMinPerfection) {
             if (!skipNotification) {
                 if (Store.get('playSound')) {
-                    audio.play()
+                    createjs.Sound.play('ding')
                 }
                 sendNotification(getNotifyText(item).fav_title, getNotifyText(item).fav_text, 'static/icons/' + item['pokemon_id'] + '.png', item['latitude'], item['longitude'])
             }
@@ -870,7 +870,7 @@ function setupGymMarker(item) {
     var raidLevel = item.raid_level
     if (raidLevel >= Store.get('remember_raid_notify') && item.raid_end > Date.now() && Store.get('remember_raid_notify') !== 0) {
         if (Store.get('playSound')) {
-            audio.play()
+            createjs.Sound.play('ding')
         }
         var title = 'Raid level: ' + raidLevel
 
@@ -939,7 +939,7 @@ function updateGymMarker(item, marker) {
         var raidPokemon = mapData.gyms[item['gym_id']].raid_pokemon_id
         if (item.raid_pokemon_id !== raidPokemon) {
             if (Store.get('playSound')) {
-                audio.play()
+                createjs.Sound.play('ding')
             }
             var title = 'Raid level: ' + raidLevel
 
@@ -1709,21 +1709,17 @@ function sendNotification(title, text, icon, lat, lng) {
         return false // Notifications are not present in browser
     }
 
-    if (Notification.permission !== 'granted') {
-        Notification.requestPermission()
-    } else {
-        var notification = new Notification(title, {
+    if (Push.Permission.has()) {
+        Push.create(title, {
             icon: icon,
             body: text,
-            sound: 'sounds/ding.mp3'
+            vibrate: 1000,
+            onClick: function () {
+                window.focus()
+                this.close()
+                centerMap(lat, lng, 20)
+            }
         })
-
-        notification.onclick = function () {
-            window.focus()
-            notification.close()
-
-            centerMap(lat, lng, 20)
-        }
     }
 }
 
@@ -2134,20 +2130,12 @@ function toggleGymPokemonDetails(e) { // eslint-disable-line no-unused-vars
 //
 
 $(function () {
-    try {
-        if (!Notification) {
-            console.log('could not load notifications')
-            return
-        }
-    } catch (err) {
+    if (Push.Permission.has()) {
+        console.log('Push has notification permission')
+        return
     }
 
-    try {
-        if (Notification.permission !== 'granted') {
-            Notification.requestPermission()
-        }
-    } catch (err) {
-    }
+    Push.Permission.request()
 })
 
 $(function () {

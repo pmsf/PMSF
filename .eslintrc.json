@@ -40,7 +40,8 @@
     "countMarkers": true,
     "skel": true,
     "setupPokemonMarker": true,
-
+    "createjs": true,
+    "Push": true,
     "isTouchDevice": true,
     "isMobileDevice": true,
     "pokemonSprites": true,
