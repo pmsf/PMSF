@@ -120,6 +120,9 @@ $notifyRaid = 5;                                                    // O to disa
 $noNotifySound = false;                                             // true/false
 $notifySound = 'false';                                             // true/false
 
+$noCriesSound = false;                                             // true/false
+$criesSound = 'false';                                             // true/false
+
 /* Style Settings */
 
 $noMapStyle = false;                                                // true/false

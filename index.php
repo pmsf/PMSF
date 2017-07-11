@@ -437,6 +437,17 @@ if (!empty($lat) && !empty($lon)) {
                         <span class="switch-handle"></span>
                     </label>
                 </div>
+                <div class="form-control switch-container" id="cries-switch-wrapper">
+                    <h3>Use Pok&eacute;mon cries</h3>
+                    <div class="onoffswitch">
+                        <input id="cries-switch" type="checkbox" name="cries-switch" class="onoffswitch-checkbox"
+                               checked>
+                        <label class="onoffswitch-label" for="cries-switch">
+                            <span class="switch-label" data-on="On" data-off="Off"></span>
+                            <span class="switch-handle"></span>
+                        </label>
+                   </div>
+                </div>
             </div>';
             } ?>
             <?php if (!$noNotifyPokemon || !$noNotifyRarity || !$noNotifyIv || !$noNotifySound || !$noNotifyRaid) {

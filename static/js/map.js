@@ -66,8 +66,14 @@ var selectedStyle = 'light'
 var updateWorker
 var lastUpdateTime
 
+var cries
+var criesLoaded = false
+
+var assetsPath = 'static/sounds/'
+
 var gymTypes = ['Uncontested', 'Mystic', 'Valor', 'Instinct']
 createjs.Sound.registerSound('static/sounds/ding.mp3', 'ding')
+
 
 var genderType = ['♂', '♀', '⚲']
 var unownForm = ['unset', 'A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N', 'O', 'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z', '!', '?']
@@ -293,6 +299,8 @@ function initSidebar() {
     $('#spawnpoints-switch').prop('checked', Store.get('showSpawnpoints'))
     $('#ranges-switch').prop('checked', Store.get('showRanges'))
     $('#sound-switch').prop('checked', Store.get('playSound'))
+    $('#cries-switch').prop('checked', Store.get('playCries'))
+    $('#cries-switch-wrapper').toggle(Store.get('playSound'))
     if (document.getElementById('next-location')) {
         var searchBox = new google.maps.places.Autocomplete(document.getElementById('next-location'))
         $('#next-location').css('background-color', $('#geoloc-switch').prop('checked') ? '#e0e0e0' : '#ffffff')
@@ -786,9 +794,7 @@ function customizePokemonMarker(marker, item, skipNotification) {
 
     if (notifiedPokemon.indexOf(item['pokemon_id']) > -1 || notifiedRarity.indexOf(item['pokemon_rarity']) > -1) {
         if (!skipNotification) {
-            if (Store.get('playSound')) {
-                createjs.Sound.play('ding')
-            }
+            checkAndCreateSound(item['pokemon_id'])
             sendNotification(getNotifyText(item).fav_title, getNotifyText(item).fav_text, 'static/icons/' + item['pokemon_id'] + '.png', item['latitude'], item['longitude'])
         }
         if (marker.animationDisabled !== true) {
@@ -800,9 +806,7 @@ function customizePokemonMarker(marker, item, skipNotification) {
         var perfection = getIv(item['individual_attack'], item['individual_defense'], item['individual_stamina'])
         if (notifiedMinPerfection > 0 && perfection >= notifiedMinPerfection) {
             if (!skipNotification) {
-                if (Store.get('playSound')) {
-                    createjs.Sound.play('ding')
-                }
+                checkAndCreateSound(item['pokemon_id'])
                 sendNotification(getNotifyText(item).fav_title, getNotifyText(item).fav_text, 'static/icons/' + item['pokemon_id'] + '.png', item['latitude'], item['longitude'])
             }
             if (marker.animationDisabled !== true) {
@@ -869,9 +873,6 @@ function setupGymMarker(item) {
 
     var raidLevel = item.raid_level
     if (raidLevel >= Store.get('remember_raid_notify') && item.raid_end > Date.now() && Store.get('remember_raid_notify') !== 0) {
-        if (Store.get('playSound')) {
-            createjs.Sound.play('ding')
-        }
         var title = 'Raid level: ' + raidLevel
 
         var raidStartStr = getTimeStr(item['raid_start'])
@@ -882,6 +883,7 @@ function setupGymMarker(item) {
         var icon
         if (raidStarted) {
             icon = 'static/icons/' + item.raid_pokemon_id + '.png'
+            checkAndCreateSound(item.raid_pokemon_id)
         } else {
             var raidEgg = ''
             if (item['raid_level'] <= 2) {
@@ -892,6 +894,7 @@ function setupGymMarker(item) {
                 raidEgg = 'legendary'
             }
             icon = 'static/raids/egg_' + raidEgg + '.png'
+            checkAndCreateSound()
         }
         sendNotification(title, text, icon, item['latitude'], item['longitude'])
     }
@@ -938,9 +941,6 @@ function updateGymMarker(item, marker) {
     if (raidLevel >= Store.get('remember_raid_notify') && item.raid_end > Date.now() && Store.get('remember_raid_notify') !== 0) {
         var raidPokemon = mapData.gyms[item['gym_id']].raid_pokemon_id
         if (item.raid_pokemon_id !== raidPokemon) {
-            if (Store.get('playSound')) {
-                createjs.Sound.play('ding')
-            }
             var title = 'Raid level: ' + raidLevel
 
             var raidStartStr = getTimeStr(item['raid_start'])
@@ -951,7 +951,9 @@ function updateGymMarker(item, marker) {
             var icon
             if (raidStarted) {
                 icon = 'static/icons/' + item.raid_pokemon_id + '.png'
+                checkAndCreateSound(item.raid_pokemon_id)
             } else {
+                checkAndCreateSound()
                 var raidEgg = ''
                 if (item['raid_level'] <= 2) {
                     raidEgg = 'normal'
@@ -2125,6 +2127,20 @@ function toggleGymPokemonDetails(e) { // eslint-disable-line no-unused-vars
     e.nextElementSibling.classList.toggle('visible')
 }
 
+function fetchCriesJson() {
+    $.ajax({
+        'global': false,
+        'url': 'static/dist/data/cries.min.json',
+        'dataType': 'json',
+        'success': function (data) {
+            cries = data
+            createjs.Sound.alternateExtensions = ['mp3']
+            createjs.Sound.registerSounds(cries, assetsPath)
+            criesLoaded = true
+        }
+    })
+}
+
 //
 // Page Ready Exection
 //
@@ -2139,6 +2155,9 @@ $(function () {
 })
 
 $(function () {
+    if (Store.get('playCries')) {
+        fetchCriesJson()
+    }
     // load MOTD, if set
     $.ajax({
         url: 'motd_data',
@@ -2614,6 +2633,22 @@ $(function () {
 
     $('#sound-switch').change(function () {
         Store.set('playSound', this.checked)
+        var options = {
+            'duration': 500
+        }
+        var wrapper = $('#cries-switch-wrapper')
+        if (this.checked) {
+            wrapper.show(options)
+        } else {
+            wrapper.hide(options)
+        }
+    })
+
+    $('#cries-switch').change(function () {
+        Store.set('playCries', this.checked)
+        if (this.checked && !criesLoaded) {
+            fetchCriesJson()
+        }
     })
 
     $('#start-at-user-location-switch').change(function () {
@@ -2702,4 +2737,14 @@ function openFile(event) { // eslint-disable-line no-unused-vars
         upload(reader.result)
     }
     reader.readAsText(input.files[0])
+}
+
+function checkAndCreateSound(pokemonId = 0) {
+    if (Store.get('playSound')) {
+        if (!Store.get('playCries') || pokemonId === 0) {
+            createjs.Sound.play('ding')
+        } else {
+            createjs.Sound.play(pokemonId)
+        }
+    }
 }

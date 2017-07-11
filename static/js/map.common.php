@@ -997,6 +997,10 @@ type: StoreTypes.Boolean
 default: <?php echo $noNotifySound ? 'false' : $notifySound ?>,
 type: StoreTypes.Boolean
 },
+'playCries': {
+default: <?php echo $noCriesSound ? 'false' : $criesSound ?>,
+type: StoreTypes.Boolean
+},
 'geoLocate': {
 default: false,
 type: StoreTypes.Boolean
