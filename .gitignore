@@ -51,3 +51,4 @@ config/*
 !config/example.config.php
 !config/default.php
 /static/dist/
+package-lock.json
