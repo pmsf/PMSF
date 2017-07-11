@@ -2139,6 +2139,23 @@ $(function () {
 })
 
 $(function () {
+    // load MOTD, if set
+    $.ajax({
+        url: 'motd_data',
+        type: 'GET',
+        dataType: 'json',
+        cache: false,
+        success: function (data) {
+            // set content of motd banner
+            $('#motd').attr('title', data.title).html(data.content).dialog()
+        },
+        fail: function () {
+            return false
+        }
+    })
+})
+
+$(function () {
     // populate Navbar Style menu
     $selectStyle = $('#map-style')
 

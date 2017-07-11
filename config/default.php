@@ -45,6 +45,10 @@ $piwikSiteId = "";
 
 $paypalUrl = "";                                                    // PayPal donation URL, leave "" for empty
 
+/* MOTD */
+
+$motdTitle = "";
+$motdContent ="";
 
 //-----------------------------------------------------
 // FRONTEND SETTINGS
