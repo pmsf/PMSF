@@ -158,7 +158,7 @@ $purgeData = 0;
 //-----------------------------------------------------
 
 $map = "monocle";                                                   // monocle/rm
-$fork = "default";                                                  // default/asner
+$fork = "default";                                                  // default/asner/sloppy
 
 $db = new Medoo([// required
     'database_type' => 'mysql',                                     // mysql/mariadb/pgsql/sybase/oracle/mssql/sqlite

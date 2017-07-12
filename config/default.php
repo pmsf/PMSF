@@ -144,4 +144,4 @@ $locationStyle = 'none';                                            // none, goo
 // DATABASE CONFIG
 //-----------------------------------------------------
 
-$fork = "default";                                                  // default/asner
+$fork = "default";                                                  // default/asner/sloppy
