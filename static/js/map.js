@@ -1301,6 +1301,27 @@ function loadRawData() {
         dataType: 'json',
         cache: false,
         beforeSend: function beforeSend() {
+            if (maxLatLng > 0 && (((neLat - swLat) > maxLatLng) || ((neLng - swLng) > maxLatLng))) {
+                toastr['error']('Please zoom in to get data.', 'Max zoom')
+                toastr.options = {
+                    'closeButton': true,
+                    'debug': false,
+                    'newestOnTop': true,
+                    'progressBar': false,
+                    'positionClass': 'toast-top-right',
+                    'preventDuplicates': true,
+                    'onclick': null,
+                    'showDuration': '300',
+                    'hideDuration': '1000',
+                    'timeOut': '25000',
+                    'extendedTimeOut': '1000',
+                    'showEasing': 'swing',
+                    'hideEasing': 'linear',
+                    'showMethod': 'fadeIn',
+                    'hideMethod': 'fadeOut'
+                }
+                return false
+            }
             if (rawDataIsLoading) {
                 return false
             } else {

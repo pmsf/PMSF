@@ -35,6 +35,7 @@
     "centerLng": true,
     "zoom": true,
     "minZoom": true,
+    "maxLatLng": true,
     "showConfig": true,	
     "pageLoaded": true,
     "countMarkers": true,
