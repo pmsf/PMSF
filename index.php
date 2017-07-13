@@ -127,7 +127,7 @@ if (!empty($lat) && !empty($lon)) {
                     </div>
                 </div>';
                 } ?>
-                <div id="raids-filter-wrapper">
+                <div id="raids-filter-wrapper" style="display:none">
                     <div class="form-control switch-container" id="active-raids-wrapper">
                         <h3>Only Active Raids</h3>
                         <div class="onoffswitch">
@@ -160,8 +160,8 @@ if (!empty($lat) && !empty($lon)) {
                         </select>
                     </div>
                 </div>
-                <?php if (!$noGymSidebar) {
-                    echo '<div class="form-control switch-container">
+                <?php if (!$noGymSidebar && (!$noGyms || !$noRaids)) {
+                    echo '<div id="gym-sidebar-wrapper" class="form-control switch-container">
                     <h3>Use Gym Sidebar</h3>
                     <div class="onoffswitch">
                         <input id="gym-sidebar-switch" type="checkbox" name="gym-sidebar-switch"
@@ -312,7 +312,7 @@ if (!empty($lat) && !empty($lon)) {
                 } ?>
             </div>
 
-            <?php if (!$noSearchLocation || !$noStartMe || !$noStartLast || !$noFollowMe || !$noSpawnArea) {
+            <?php if (!$noSearchLocation || !$noStartMe || !$noStartLast || !$noFollowMe) {
                 echo '<h3>Location &amp; Search Settings</h3>
             <div>';
             } ?>
@@ -364,7 +364,7 @@ if (!empty($lat) && !empty($lon)) {
                 </div>';
             } ?>
             <?php if (!$noSpawnArea) {
-                echo '<div class="form-control switch-container">
+                echo '<div id="spawn-area-wrapper" class="form-control switch-container">
                 <h3> Spawn area </h3>
                 <div class="onoffswitch">
                     <input id = "spawn-area-switch" type = "checkbox" name = "spawn-area-switch"
@@ -376,7 +376,7 @@ if (!empty($lat) && !empty($lon)) {
                 </div>
             </div>';
             } ?>
-            <?php if (!$noSearchLocation || !$noStartMe || !$noStartLast || !$noFollowMe || !$noSpawnArea) {
+            <?php if (!$noSearchLocation || !$noStartMe || !$noStartLast || !$noFollowMe) {
                 echo '</div>';
             } ?>
 
@@ -436,19 +436,23 @@ if (!empty($lat) && !empty($lon)) {
                         <span class="switch-label" data-on="On" data-off="Off"></span>
                         <span class="switch-handle"></span>
                     </label>
-                </div>
-                <div class="form-control switch-container" id="cries-switch-wrapper">
-                    <h3>Use Pok&eacute;mon cries</h3>
-                    <div class="onoffswitch">
-                        <input id="cries-switch" type="checkbox" name="cries-switch" class="onoffswitch-checkbox"
-                               checked>
-                        <label class="onoffswitch-label" for="cries-switch">
-                            <span class="switch-label" data-on="On" data-off="Off"></span>
-                            <span class="switch-handle"></span>
-                        </label>
-                   </div>
+                </div>';
+            } ?>
+            <?php if (!$noCriesSound) {
+                echo '<div class="form-control switch-container" id="cries-switch-wrapper">
+                <h3>Use Pok&eacute;mon cries</h3>
+                <div class="onoffswitch">
+                    <input id="cries-switch" type="checkbox" name="cries-switch" class="onoffswitch-checkbox"
+                           checked>
+                    <label class="onoffswitch-label" for="cries-switch">
+                        <span class="switch-label" data-on="On" data-off="Off"></span>
+                        <span class="switch-handle"></span>
+                    </label>
                 </div>
             </div>';
+            } ?>
+            <?php if (!$noNotifySound) {
+                echo '</div>';
             } ?>
             <?php if (!$noNotifyPokemon || !$noNotifyRarity || !$noNotifyIv || !$noNotifySound || !$noNotifyRaid) {
                 echo '</div>';

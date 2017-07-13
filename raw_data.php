@@ -113,7 +113,7 @@ if (!$noPokestops) {
 }
 
 global $noGyms, $noRaids;
-if (!$noGyms && !$noRaids) {
+if (!$noGyms || !$noRaids) {
     if ($d["lastgyms"] == "true") {
         if ($lastgyms != "true") {
             $d["gyms"] = get_gyms($swLat, $swLng, $neLat, $neLng);

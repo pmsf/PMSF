@@ -276,6 +276,7 @@ function createLocationMarker() {
 function initSidebar() {
     $('#gyms-switch').prop('checked', Store.get('showGyms'))
     $('#gym-sidebar-switch').prop('checked', Store.get('useGymSidebar'))
+    $('#gym-sidebar-wrapper').toggle(Store.get('showGyms') || Store.get('showRaids'))
     $('#gyms-filter-wrapper').toggle(Store.get('showGyms'))
     $('#team-gyms-only-switch').val(Store.get('showTeamGymsOnly'))
     $('#open-gyms-only-switch').prop('checked', Store.get('showOpenGymsOnly'))
@@ -295,6 +296,7 @@ function initSidebar() {
     $('#start-at-last-location-switch').prop('checked', Store.get('startAtLastLocation'))
     $('#follow-my-location-switch').prop('checked', Store.get('followMyLocation'))
     $('#spawn-area-switch').prop('checked', Store.get('spawnArea'))
+    $('#spawn-area-wrapper').toggle(Store.get('followMyLocation'))
     $('#scanned-switch').prop('checked', Store.get('showScanned'))
     $('#spawnpoints-switch').prop('checked', Store.get('showSpawnpoints'))
     $('#ranges-switch').prop('checked', Store.get('showRanges'))
@@ -2582,12 +2584,17 @@ $(function () {
             'duration': 500
         }
         var wrapper = $('#raids-filter-wrapper')
+        var gymSidebarWrapper = $('#gym-sidebar-wrapper')
         if (this.checked) {
             lastgyms = false
             wrapper.show(options)
+            gymSidebarWrapper.show(options)
         } else {
             lastgyms = false
             wrapper.hide(options)
+            if (!Store.get('showGyms')) {
+                gymSidebarWrapper.hide(options)
+            }
         }
         buildSwitchChangeListener(mapData, ['gyms'], 'showRaids').bind(this)()
     })
@@ -2595,13 +2602,18 @@ $(function () {
         var options = {
             'duration': 500
         }
-        var wrapper2 = $('#gyms-filter-wrapper')
+        var wrapper = $('#gyms-filter-wrapper')
+        var gymSidebarWrapper = $('#gym-sidebar-wrapper')
         if (this.checked) {
             lastgyms = false
-            wrapper2.show(options)
+            wrapper.show(options)
+            gymSidebarWrapper.show(options)
         } else {
             lastgyms = false
-            wrapper2.hide(options)
+            wrapper.hide(options)
+            if (!Store.get('showRaids')) {
+                gymSidebarWrapper.hide(options)
+            }
         }
         buildSwitchChangeListener(mapData, ['gyms'], 'showGyms').bind(this)()
     })
@@ -2672,6 +2684,16 @@ $(function () {
             this.checked = false
         } else {
             Store.set('followMyLocation', this.checked)
+
+            var options = {
+                'duration': 500
+            }
+            var wrapper = $('#spawn-area-wrapper')
+            if (this.checked) {
+                wrapper.show(options)
+            } else {
+                wrapper.hide(options)
+            }
         }
         locationMarker.setDraggable(!this.checked)
     })
