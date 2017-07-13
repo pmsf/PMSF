@@ -451,6 +451,16 @@ if (!empty($lat) && !empty($lon)) {
                 </div>
             </div>';
             } ?>
+            <?php if (!$noCriesType) {
+            echo '<div class="form-control switch-container" id="cries-type-filter-wrapper">
+                <h3>Cry Style</h3>
+                <select name="cries-type-filter-switch" id="cries-type-filter-switch">
+                    <option value="game">Game</option>
+                    <option value="anime">Anime voices</option>
+                </select>
+            </div>
+            ';
+            } ?>
             <?php if (!$noNotifySound) {
                 echo '</div>';
             } ?>
@@ -581,7 +591,7 @@ if (!empty($lat) && !empty($lon)) {
 <script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.3/js/select2.min.js"></script>
 <script src="https://cdn.datatables.net/1.10.12/js/jquery.dataTables.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.17.1/moment.min.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/SoundJS/0.6.0/soundjs.min.js"></script>
+<script src="https://code.createjs.com/soundjs-0.6.2.min.js"></script>
 <script src="node_modules/push.js/bin/push.min.js"></script>
 <script src="static/dist/js/app.min.js"></script>
 <script src="static/js/vendor/classie.js"></script>

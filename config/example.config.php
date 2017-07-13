@@ -125,6 +125,9 @@ $notifySound = 'false';                                             // true/fals
 $noCriesSound = false;                                             // true/false
 $criesSound = 'false';                                             // true/false
 
+$noCriesType = false;                                              // true/false
+$criesType = 'game';                                               // game/anime
+
 /* Style Settings */
 
 $noMapStyle = false;                                                // true/false

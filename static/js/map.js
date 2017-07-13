@@ -22,6 +22,7 @@ var $selectLuredPokestopsOnly
 var $selectGymMarkerStyle
 var $selectLocationIconMarker
 var $switchGymSidebar
+var $selectCriesType
 
 var language = document.documentElement.lang === '' ? 'en' : document.documentElement.lang
 var idToPokemon = {}
@@ -67,11 +68,15 @@ var updateWorker
 var lastUpdateTime
 
 var cries
+var animeCries
 var criesLoaded = false
+var animeCriesLoaded = false
 
 var assetsPath = 'static/sounds/'
 
 var gymTypes = ['Uncontested', 'Mystic', 'Valor', 'Instinct']
+
+
 createjs.Sound.registerSound('static/sounds/ding.mp3', 'ding')
 
 
@@ -303,6 +308,8 @@ function initSidebar() {
     $('#sound-switch').prop('checked', Store.get('playSound'))
     $('#cries-switch').prop('checked', Store.get('playCries'))
     $('#cries-switch-wrapper').toggle(Store.get('playSound'))
+    $('#cries-type-filter-wrapper').toggle(Store.get('playCries'))
+    $('#cries-type-filter-switch').val(Store.get('criesType'))
     if (document.getElementById('next-location')) {
         var searchBox = new google.maps.places.Autocomplete(document.getElementById('next-location'))
         $('#next-location').css('background-color', $('#geoloc-switch').prop('checked') ? '#e0e0e0' : '#ffffff')
@@ -2137,12 +2144,33 @@ function fetchCriesJson() {
         'success': function (data) {
             cries = data
             createjs.Sound.alternateExtensions = ['mp3']
+            if (animeCriesLoaded) {
+                createjs.Sound.removeSounds(animeCries, assetsPath)
+                animeCriesLoaded = false
+            }
             createjs.Sound.registerSounds(cries, assetsPath)
             criesLoaded = true
         }
     })
 }
 
+function fetchAnimeCriesJson() {
+    $.ajax({
+        'global': false,
+        'url': 'static/dist/data/cries_anime.min.json',
+        'dataType': 'json',
+        'success': function (data) {
+            animeCries = data
+            createjs.Sound.alternateExtensions = ['mp3']
+            if (criesLoaded) {
+                createjs.Sound.removeSounds(cries, assetsPath)
+                criesLoaded = false
+            }
+            createjs.Sound.registerSounds(animeCries, assetsPath)
+            animeCriesLoaded = true
+        }
+    })
+}
 //
 // Page Ready Exection
 //
@@ -2158,7 +2186,11 @@ $(function () {
 
 $(function () {
     if (Store.get('playCries')) {
-        fetchCriesJson()
+        if (Store.get('criesType') === 'anime') {
+            fetchAnimeCriesJson()
+        } else {
+            fetchCriesJson()
+        }
     }
     // load MOTD, if set
     $.ajax({
@@ -2415,6 +2447,23 @@ $(function () {
     })
 
     $selectGymMarkerStyle.val(Store.get('gymMarkerStyle')).trigger('change')
+
+
+    $selectCriesType = $('#cries-type-filter-switch')
+
+    $selectCriesType.select2({
+        placeholder: 'Cry Style',
+        minimumResultsForSearch: Infinity
+    })
+
+    $selectCriesType.on('change', function () {
+        Store.set('criesType', this.value)
+        if (this.value === 'anime') {
+            fetchAnimeCriesJson()
+        } else {
+            fetchCriesJson()
+        }
+    })
 })
 
 $(function () {
@@ -2657,9 +2706,23 @@ $(function () {
     })
 
     $('#cries-switch').change(function () {
+        var wrapper = $('#cries-type-filter-wrapper')
+        var options = {
+            'duration': 500
+        }
+        if (this.checked) {
+            wrapper.show(options)
+        } else {
+            wrapper.hide(options)
+        }
         Store.set('playCries', this.checked)
-        if (this.checked && !criesLoaded) {
-            fetchCriesJson()
+        if (this.checked) {
+            if (Store.get('criesType') === 'anime') {
+                fetchAnimeCriesJson()
+            } else {
+                console.log('loading normal cries...')
+                fetchCriesJson()
+            }
         }
     })
 
