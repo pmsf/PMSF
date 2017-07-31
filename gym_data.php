@@ -1,25 +1,115 @@
 <?php
 include('config/config.php');
-include('utils.php');
 
-if (!isset($_GET['id'])) {
+if (empty($_POST['id'])) {
+    http_response_code(400);
+    die();
+}
+if (!validateToken($_POST['token'])) {
     http_response_code(400);
     die();
 }
 
-$id = $_GET['id'];
+
+$id = $_POST['id'];
 
 global $db;
 
 global $map;
 if ($map == "monocle") {
-    $row = $db->query("select t3.external_id, t3.lat, t3.lon, t1.last_modified, t1.team, t1.slots_available, t1.guard_pokemon_id from (select fort_id, MAX(last_modified) AS MaxLastModified from fort_sightings group by fort_id) t2 left join fort_sightings t1 on t2.fort_id = t1.fort_id and t2.MaxLastModified = t1.last_modified left join forts t3 on t1.fort_id = t3.id where t3.external_id = '" . $id . "'")->fetch();
+    $row = $db->query("SELECT t3.external_id, 
+       t3.lat, 
+       t3.lon, 
+       t1.last_modified, 
+       t1.team, 
+       t1.slots_available, 
+       t1.guard_pokemon_id 
+FROM   (SELECT fort_id, 
+               Max(last_modified) AS MaxLastModified 
+        FROM   fort_sightings 
+        GROUP  BY fort_id) t2 
+       LEFT JOIN fort_sightings t1 
+              ON t2.fort_id = t1.fort_id 
+                 AND t2.maxlastmodified = t1.last_modified 
+       LEFT JOIN forts t3 
+              ON t1.fort_id = t3.id 
+WHERE  t3.external_id = :id ", [':id'=>$id])->fetch();
 } else {
     global $fork;
     if ($fork != "sloppy")
-        $row = $db->query("select gym.gym_id as external_id, latitude as lat, longitude as lon, guard_pokemon_id, slots_available, UNIX_TIMESTAMP(CONVERT_TZ(last_modified, '+00:00', @@global.time_zone)) as last_modified, UNIX_TIMESTAMP(CONVERT_TZ(gym.last_scanned, '+00:00', @@global.time_zone)) as last_scanned, team_id as team, enabled, name, level, pokemon_id, cp, move_1, move_2, UNIX_TIMESTAMP(CONVERT_TZ(start, '+00:00', @@global.time_zone)) as raid_start, UNIX_TIMESTAMP(CONVERT_TZ(end, '+00:00', @@global.time_zone)) as raid_end from gym left join gymdetails on gym.gym_id = gymdetails.gym_id left join raid on gym.gym_id = raid.gym_id where gym.gym_id = '" . $id . "'")->fetch();
+        $row = $db->query("SELECT gym.gym_id 
+       AS 
+       external_id, 
+       latitude 
+       AS lat, 
+       longitude 
+       AS lon, 
+       guard_pokemon_id, 
+       slots_available, 
+       Unix_timestamp(Convert_tz(last_modified, '+00:00', @@global.time_zone)) 
+       AS 
+       last_modified, 
+       Unix_timestamp(Convert_tz(gym.last_scanned, '+00:00', 
+       @@global.time_zone)) AS 
+       last_scanned, 
+       team_id 
+       AS team, 
+       enabled, 
+       name, 
+       level, 
+       pokemon_id, 
+       cp, 
+       move_1, 
+       move_2, 
+       Unix_timestamp(Convert_tz(start, '+00:00', @@global.time_zone)) 
+       AS raid_start, 
+       Unix_timestamp(Convert_tz(end, '+00:00', @@global.time_zone)) 
+       AS raid_end 
+FROM   gym 
+       LEFT JOIN gymdetails 
+              ON gym.gym_id = gymdetails.gym_id 
+       LEFT JOIN raid 
+              ON gym.gym_id = raid.gym_id 
+WHERE  gym.gym_id = :id", [':id'=>$id])->fetch();
     else
-        $row = $db->query("select gym.gym_id as external_id, latitude as lat, longitude as lon, guard_pokemon_id, slots_available, UNIX_TIMESTAMP(CONVERT_TZ(last_modified, '+00:00', @@global.time_zone)) as last_modified, UNIX_TIMESTAMP(CONVERT_TZ(gym.last_scanned, '+00:00', @@global.time_zone)) as last_scanned, team_id as team, enabled, name, raid_level as level, raid_pokemon_id as pokemon_id, raid_pokemon_cp as cp, raid_pokemon_move_1 as move_1, raid_pokemon_move_2 as move_2, UNIX_TIMESTAMP(CONVERT_TZ(raid_battle, '+00:00', @@global.time_zone)) as raid_start, UNIX_TIMESTAMP(CONVERT_TZ(raid_end, '+00:00', @@global.time_zone)) as raid_end from gym left join gymdetails on gym.gym_id = gymdetails.gym_id where gym.gym_id = '" . $id . "'")->fetch();
+        $row = $db->query("SELECT gym.gym_id 
+       AS 
+       external_id, 
+       latitude 
+       AS lat, 
+       longitude 
+       AS lon, 
+       guard_pokemon_id, 
+       slots_available, 
+       Unix_timestamp(Convert_tz(last_modified, '+00:00', @@global.time_zone)) 
+       AS 
+       last_modified, 
+       Unix_timestamp(Convert_tz(gym.last_scanned, '+00:00', 
+       @@global.time_zone)) AS 
+       last_scanned, 
+       team_id 
+       AS team, 
+       enabled, 
+       name, 
+       raid_level 
+       AS level, 
+       raid_pokemon_id 
+       AS pokemon_id, 
+       raid_pokemon_cp 
+       AS cp, 
+       raid_pokemon_move_1 
+       AS move_1, 
+       raid_pokemon_move_2 
+       AS move_2, 
+       Unix_timestamp(Convert_tz(raid_battle, '+00:00', @@global.time_zone)) 
+       AS 
+       raid_start, 
+       Unix_timestamp(Convert_tz(raid_end, '+00:00', @@global.time_zone)) 
+       AS raid_end 
+FROM   gym 
+       LEFT JOIN gymdetails 
+              ON gym.gym_id = gymdetails.gym_id 
+WHERE  gym.gym_id = :id". [':id'=>$id])->fetch();
 }
 
 $json_poke = "static/data/pokemon.json";
@@ -70,8 +160,27 @@ if ($map != "monocle") {
     $json_moves = "static/data/moves.json";
     $json_contents = file_get_contents($json_moves);
     $moves = json_decode($json_contents, TRUE);
-
-    $pokemons = $db->query("select gymmember.gym_id, pokemon_id, cp, trainer.name, trainer.level, move_1, move_2, iv_attack, iv_defense, iv_stamina from gymmember join gympokemon on gymmember.pokemon_uid = gympokemon.pokemon_uid join trainer on gympokemon.trainer_name = trainer.name join gym on gym.gym_id = gymmember.gym_id where gymmember.last_scanned > gym.last_modified and gymmember.gym_id in ('" . $id . "') group by name order by gympokemon.cp desc")->fetchAll();
+    $pokemons = $db->query("SELECT gymmember.gym_id, 
+       pokemon_id, 
+       cp, 
+       trainer.name, 
+       trainer.level, 
+       move_1, 
+       move_2, 
+       iv_attack, 
+       iv_defense, 
+       iv_stamina 
+FROM   gymmember 
+       JOIN gympokemon 
+         ON gymmember.pokemon_uid = gympokemon.pokemon_uid 
+       JOIN trainer 
+         ON gympokemon.trainer_name = trainer.name 
+       JOIN gym 
+         ON gym.gym_id = gymmember.gym_id 
+WHERE  gymmember.last_scanned > gym.last_modified 
+       AND gymmember.gym_id IN ( :id ) 
+GROUP  BY name 
+ORDER  BY gympokemon.cp DESC ", [':id'=>$id])->fetchAll();
 
     foreach ($pokemons as $pokemon) {
         $pid = $pokemon["pokemon_id"];
@@ -109,9 +218,39 @@ if ($map != "monocle") {
 } else {
     global $fork;
     if ($fork != "asner")
-        $raid = $db->query("select t1.fort_id, level, pokemon_id, time_battle as raid_start, time_end as raid_end from (select fort_id, MAX(time_end) AS MaxTimeEnd from raids group by fort_id) t1 left join raids t2 on t1.fort_id = t2.fort_id and MaxTimeEnd = time_end where t1.fort_id in ('" . $id . "')")->fetch();
+        $raid = $db->query("SELECT t1.fort_id, 
+       level, 
+       pokemon_id, 
+       time_battle AS raid_start, 
+       time_end    AS raid_end 
+FROM   (SELECT fort_id, 
+               Max(time_end) AS MaxTimeEnd 
+        FROM   raids 
+        GROUP  BY fort_id) t1 
+       LEFT JOIN raids t2 
+              ON t1.fort_id = t2.fort_id 
+                 AND maxtimeend = time_end 
+WHERE  t1.fort_id IN ( :id ) ", [':id'=>$id])->fetch();
     else
-        $raid = $db->query("select t3.external_id, t1.fort_id, raid_level as level, pokemon_id, cp, move_1, move_2, raid_start, raid_end from (select fort_id, MAX(raid_end) AS MaxTimeEnd from raid_info group by fort_id) t1 left join raid_info t2 on t1.fort_id = t2.fort_id and MaxTimeEnd = raid_end join forts t3 on t2.fort_id = t3.id where t3.external_id in ('" . $id . "')")->fetch();
+        $raid = $db->query("SELECT t3.external_id, 
+       t1.fort_id, 
+       raid_level AS level, 
+       pokemon_id, 
+       cp, 
+       move_1, 
+       move_2, 
+       raid_start, 
+       raid_end 
+FROM   (SELECT fort_id, 
+               Max(raid_end) AS MaxTimeEnd 
+        FROM   raid_info 
+        GROUP  BY fort_id) t1 
+       LEFT JOIN raid_info t2 
+              ON t1.fort_id = t2.fort_id 
+                 AND maxtimeend = raid_end 
+       JOIN forts t3 
+         ON t2.fort_id = t3.id 
+WHERE  t3.external_id IN ( :id ) ", [':id'=>$id])->fetch();
 
     $rpid = intval($raid['pokemon_id']);
     $p['raid_level'] = intval($raid['level']);
@@ -127,5 +266,7 @@ if ($map != "monocle") {
 
     unset($raid);
 }
+
+$p['token'] = refreshCsrfToken();
 
 echo json_encode($p);

@@ -1,6 +1,6 @@
 <?php
 include('config/config.php');
-include('utils.php');
+
 header('Content-Type: application/json');
 if ($motdTitle && $motdContent) {
     echo (json_encode(array('title' => $motdTitle, 'content' => $motdContent)));

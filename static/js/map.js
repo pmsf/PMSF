@@ -67,6 +67,8 @@ var selectedStyle = 'light'
 var updateWorker
 var lastUpdateTime
 
+var token
+
 var cries
 var animeCries
 var criesLoaded = false
@@ -1272,7 +1274,7 @@ function loadRawData() {
 
     return $.ajax({
         url: 'raw_data',
-        type: 'GET',
+        type: 'POST',
         timeout: 300000,
         data: {
             'timestamp': timestamp,
@@ -1296,7 +1298,8 @@ function loadRawData() {
             'oNeLat': oNeLat,
             'oNeLng': oNeLng,
             'reids': String(reincludedPokemon),
-            'eids': String(excludedPokemon)
+            'eids': String(excludedPokemon),
+            'token': token
         },
         dataType: 'json',
         cache: false,
@@ -1662,6 +1665,7 @@ function updateMap() {
         }
         timestamp = result.timestamp
         lastUpdateTime = Date.now()
+        token = result.token
     })
 }
 
@@ -1942,10 +1946,11 @@ function showGymDetails(id) { // eslint-disable-line no-unused-vars
 
     var data = $.ajax({
         url: 'gym_data',
-        type: 'GET',
+        type: 'POST',
         timeout: 300000,
         data: {
-            'id': id
+            'id': id,
+            'token': token
         },
         dataType: 'json',
         cache: false
@@ -2148,6 +2153,7 @@ function showGymDetails(id) { // eslint-disable-line no-unused-vars
             event.stopPropagation()
             sidebar.classList.remove('visible')
         })
+        token = result.token
     })
 }
 
@@ -2216,7 +2222,7 @@ $(function () {
     // load MOTD, if set
     $.ajax({
         url: 'motd_data',
-        type: 'GET',
+        type: 'POST',
         dataType: 'json',
         cache: false,
         success: function (data) {

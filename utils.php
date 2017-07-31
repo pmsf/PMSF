@@ -25,3 +25,32 @@ function i8ln($word)
         return $word;
     }
 }
+
+function setSessionCsrfToken()
+{
+    if (empty($_SESSION['token'])) {
+        generateToken();
+    }
+}
+function refreshCsrfToken() {
+    global $sessionLifetime;
+    if (time() - $_SESSION['c'] > $sessionLifetime) {
+        session_regenerate_id(true);
+        generateToken();
+    }
+    return $_SESSION['token'];
+}
+function generateToken()
+{
+    $_SESSION['token'] = base64_encode(openssl_random_pseudo_bytes(32));
+    $_SESSION['c'] = time();
+}
+function validateToken($token)
+{
+    global $enableCsrf;
+    if ((!$enableCsrf) || ($enableCsrf && isset($token) && $token === $_SESSION['token'])) {
+        return true;
+    } else {
+        return false;
+    }
+}
