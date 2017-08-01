@@ -1203,11 +1203,14 @@ ORDER  BY gymmember.gym_id,
             $gym_in_ids = [];
         }
         if ($fork != "asner")
-            $raids = $db->query("SELECT t1.fort_id, 
+            $raids = $db->query("SELECT t3.external_id,
+       t1.fort_id, 
        level, 
        pokemon_id, 
        time_battle AS raid_start, 
-       time_end    AS raid_end 
+       time_end    AS raid_end,
+       move_1,
+       move_2
 FROM   (SELECT fort_id, 
                Max(time_end) AS MaxTimeEnd 
         FROM   raids 
@@ -1215,7 +1218,9 @@ FROM   (SELECT fort_id,
        LEFT JOIN raids t2 
               ON t1.fort_id = t2.fort_id 
                  AND maxtimeend = time_end 
-WHERE  t1.fort_id IN ( $gyms_in ) ", $gym_in_ids)->fetchAll();
+       LEFT JOIN forts t3
+              ON t3.id = t1.fort_id
+WHERE  t3.external_id IN ( $gyms_in ) ", $gym_in_ids)->fetchAll();
         else
             $raids = $db->query("SELECT t3.external_id, 
        t1.fort_id, 
@@ -1238,10 +1243,7 @@ FROM   (SELECT fort_id,
 WHERE  t3.external_id IN ( $gyms_in ) ", $gym_in_ids)->fetchAll();
 
         foreach ($raids as $raid) {
-            if ($fork != "asner")
-                $id = $raid["fort_id"];
-            else
-                $id = $raid["external_id"];
+            $id = $raid["external_id"];
 
             $rpid = intval($raid['pokemon_id']);
             $gyms[$id]['raid_level'] = intval($raid['level']);

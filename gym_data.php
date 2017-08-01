@@ -218,19 +218,24 @@ ORDER  BY gympokemon.cp DESC ", [':id'=>$id])->fetchAll();
 } else {
     global $fork;
     if ($fork != "asner")
-        $raid = $db->query("SELECT t1.fort_id, 
+        $raid = $db->query("SELECT t3.external_id,
+       t1.fort_id, 
        level, 
        pokemon_id, 
        time_battle AS raid_start, 
-       time_end    AS raid_end 
+       time_end    AS raid_end,
+       move_1,
+       move_2
 FROM   (SELECT fort_id, 
                Max(time_end) AS MaxTimeEnd 
         FROM   raids 
         GROUP  BY fort_id) t1 
        LEFT JOIN raids t2 
               ON t1.fort_id = t2.fort_id 
-                 AND maxtimeend = time_end 
-WHERE  t1.fort_id IN ( :id ) ", [':id'=>$id])->fetch();
+                 AND maxtimeend = time_end  
+       LEFT JOIN forts t3
+              ON t3.id = t1.fort_id
+WHERE  t3.external_id IN ( :id ) ", [':id'=>$id])->fetch();
     else
         $raid = $db->query("SELECT t3.external_id, 
        t1.fort_id, 
