@@ -52,3 +52,4 @@ config/*
 !config/default.php
 /static/dist/
 package-lock.json
+index.php

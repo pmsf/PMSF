@@ -122,6 +122,27 @@ module.exports = function (grunt) {
                 phpCmd: '/usr/bin/php'
             },
             files: ['**.php', '**/*.php', '!node_modules/**']
+        },
+        htmlmin: {
+            dist: {
+                options: {
+                    removeComments: true,
+                    collapseWhitespace: true
+                },
+                files: {
+                    'index.php': 'pre-index.php'
+                }
+            }
+        },
+        cacheBust: {
+            options: {
+                assets: ['static/dist/**/*.css', 'static/dist/**/*.json', 'static/dist/**/*.js', '!static/dist/**/*built*']
+            },
+            taskName: {
+                files: [{
+                    src: ['index.php']
+                }]
+            }
         }
     });
 
@@ -129,9 +150,10 @@ module.exports = function (grunt) {
     grunt.registerTask('css-build', ['newer:sass', 'newer:cssmin']);
     grunt.registerTask('js-lint', ['newer:eslint']);
     grunt.registerTask('json', ['newer:minjson']);
-    grunt.registerTask('php-lint', ['phplint']);
+    grunt.registerTask('php-lint', ['newer:phplint']);
+    grunt.registerTask('html-build', ['htmlmin', 'cacheBust']);
 
-    grunt.registerTask('build', ['clean', 'js-build', 'css-build', 'json']);
+    grunt.registerTask('build', ['clean', 'js-build', 'css-build', 'json', 'html-build']);
     grunt.registerTask('lint', ['js-lint', 'php-lint']);
     grunt.registerTask('default', ['build', 'watch']);
 
