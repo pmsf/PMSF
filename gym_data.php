@@ -123,7 +123,7 @@ $lon = floatval($row["lon"]);
 $gpid = intval($row["guard_pokemon_id"]);
 $sa = intval($row["slots_available"]);
 $lm = $row["last_modified"] * 1000;
-$ls = isset($row["last_scanned"]) ? $row["last_scanned"] * 1000 : null;
+$ls = !empty($row["last_scanned"]) ? $row["last_scanned"] * 1000 : null;
 $ti = isset($row["team"]) ? intval($row["team"]) : null;
 
 $p["enabled"] = isset($row["enabled"]) ? boolval($row["enabled"]) : true;
@@ -134,7 +134,7 @@ $p["last_modified"] = $lm;
 $p["last_scanned"] = $ls;
 $p["latitude"] = $lat;
 $p["longitude"] = $lon;
-$p["name"] = isset($row["name"]) ? $row["name"] : null;
+$p["name"] = !empty($row["name"]) ? $row["name"] : null;
 $p["team_id"] = $ti;
 if ($gpid)
     $p["guard_pokemon_name"] = i8ln($data[$gpid]['name']);
@@ -146,9 +146,9 @@ if ($map != "monocle") {
         $p['raid_pokemon_id'] = $rpid;
     if ($rpid)
         $p['raid_pokemon_name'] = i8ln($data[$rpid]['name']);
-    $p['raid_pokemon_cp'] = isset($row['cp']) ? intval($row['cp']) : null;
-    $p['raid_pokemon_move_1'] = isset($row['move_1']) ? intval($row['move_1']) : null;
-    $p['raid_pokemon_move_2'] = isset($row['move_2']) ? intval($row['move_2']) : null;
+    $p['raid_pokemon_cp'] = !empty($row['cp']) ? intval($row['cp']) : null;
+    $p['raid_pokemon_move_1'] = !empty($row['move_1']) ? intval($row['move_1']) : null;
+    $p['raid_pokemon_move_2'] = !empty($row['move_2']) ? intval($row['move_2']) : null;
     $p['raid_start'] = $row["raid_start"] * 1000;
     $p['raid_end'] = $row["raid_end"] * 1000;
 }
@@ -263,9 +263,9 @@ WHERE  t3.external_id IN ( :id ) ", [':id'=>$id])->fetch();
         $p['raid_pokemon_id'] = $rpid;
     if ($rpid)
         $p['raid_pokemon_name'] = i8ln($data[$rpid]['name']);
-    $p['raid_pokemon_cp'] = isset($raid['cp']) ? intval($raid['cp']) : null;
-    $p['raid_pokemon_move_1'] = isset($raid['move_1']) ? intval($raid['move_1']) : null;
-    $p['raid_pokemon_move_2'] = isset($raid['move_2']) ? intval($raid['move_2']) : null;
+    $p['raid_pokemon_cp'] = !empty($raid['cp']) ? intval($raid['cp']) : null;
+    $p['raid_pokemon_move_1'] = !empty($raid['move_1']) ? intval($raid['move_1']) : null;
+    $p['raid_pokemon_move_2'] = !empty($raid['move_2']) ? intval($raid['move_2']) : null;
     $p['raid_start'] = $raid["raid_start"] * 1000;
     $p['raid_end'] = $raid["raid_end"] * 1000;
 

@@ -295,15 +295,15 @@ AND    longitude < :neLng",  [':disappearTime' => date_format($time, 'y-m-d H:I:
         $lon = floatval($row["lon"]);
         $pokeid = intval($row["pokemon_id"]);
 
-        $atk = !empty($row["atk_iv"]) ? intval($row["atk_iv"]) : null;
-        $def = !empty($row["def_iv"]) ? intval($row["def_iv"]) : null;
-        $sta = !empty($row["sta_iv"]) ? intval($row["sta_iv"]) : null;
+        $atk = isset($row["atk_iv"]) ? intval($row["atk_iv"]) : null;
+        $def = isset($row["def_iv"]) ? intval($row["def_iv"]) : null;
+        $sta = isset($row["sta_iv"]) ? intval($row["sta_iv"]) : null;
         $mv1 = !empty($row["move_1"]) ? intval($row["move_1"]) : null;
         $mv2 = !empty($row["move_2"]) ? intval($row["move_2"]) : null;
         $weight = !empty($row["weight"]) ? floatval($row["weight"]) : null;
         $height = !empty($row["height"]) ? floatval($row["height"]) : null;
-        $gender = !empty($row["gender"]) ? intval($row["gender"]) : null;
-        $form = !empty($row["form"]) ? intval($row["form"]) : null;
+        $gender = isset($row["gender"]) ? intval($row["gender"]) : null;
+        $form = isset($row["form"]) ? intval($row["form"]) : null;
         $cp = !empty($row["cp"]) ? intval($row["cp"]) : null;
         $cpm = !empty($row["cp_multiplier"]) ? floatval($row["cp_multiplier"]) : null;
         $level = !empty($row["level"]) ? intval($row["level"]) : null;
@@ -437,15 +437,15 @@ AND    longitude < :neLng", array_merge($pkmn_ids, [':disappearTime' => date_for
         $lon = floatval($row["lon"]);
         $pokeid = intval($row["pokemon_id"]);
 
-        $atk = !empty($row["atk_iv"]) ? intval($row["atk_iv"]) : null;
-        $def = !empty($row["def_iv"]) ? intval($row["def_iv"]) : null;
-        $sta = !empty($row["sta_iv"]) ? intval($row["sta_iv"]) : null;
+        $atk = isset($row["atk_iv"]) ? intval($row["atk_iv"]) : null;
+        $def = isset($row["def_iv"]) ? intval($row["def_iv"]) : null;
+        $sta = isset($row["sta_iv"]) ? intval($row["sta_iv"]) : null;
         $mv1 = !empty($row["move_1"]) ? intval($row["move_1"]) : null;
         $mv2 = !empty($row["move_2"]) ? intval($row["move_2"]) : null;
         $weight = !empty($row["weight"]) ? floatval($row["weight"]) : null;
         $height = !empty($row["height"]) ? floatval($row["height"]) : null;
-        $gender = !empty($row["gender"]) ? intval($row["gender"]) : null;
-        $form = !empty($row["form"]) ? intval($row["form"]) : null;
+        $gender = isset($row["gender"]) ? intval($row["gender"]) : null;
+        $form = isset($row["form"]) ? intval($row["form"]) : null;
         $cp = !empty($row["cp"]) ? intval($row["cp"]) : null;
         $cpm = !empty($row["cp_multiplier"]) ? floatval($row["cp_multiplier"]) : null;
         $level = !empty($row["level"]) ? intval($row["level"]) : null;
@@ -674,7 +674,7 @@ AND    longitude < :neLng", [':swLat' => $swLat, ':swLng' => $swLng, ':neLat' =>
         $lon = floatval($row["lon"]);
 
         $p["active_fort_modifier"] = !empty($row["active_fort_modifier"]) ? $row["active_fort_modifier"] : null;
-        $p["enabled"] = !empty($row["enabled"]) ? boolval($row["enabled"]) : true;
+        $p["enabled"] = isset($row["enabled"]) ? boolval($row["enabled"]) : true;
         $p["last_modified"] = !empty($row["last_modified"]) ? $row["last_modified"] * 1000 : 0;
         $p["latitude"] = $lat;
         $p["longitude"] = $lon;
@@ -1094,13 +1094,13 @@ AND       longitude < :neLng",[':swLat' => $swLat, ':swLng' => $swLng, ':neLat' 
         $gpid = intval($row["guard_pokemon_id"]);
         $lm = $row["last_modified"] * 1000;
         $ls = !empty($row["last_scanned"]) ? $row["last_scanned"] * 1000 : null;
-        $ti = !empty($row["team"]) ? intval($row["team"]) : null;
+        $ti = isset($row["team"]) ? intval($row["team"]) : null;
         $tc = !empty($row["total_cp"]) ? intval($row["total_cp"]) : null;
         $sa = intval($row["slots_available"]);
 
         $p = array();
 
-        $p["enabled"] = !empty($row["enabled"]) ? boolval($row["enabled"]) : true;
+        $p["enabled"] = isset($row["enabled"]) ? boolval($row["enabled"]) : true;
         $p["guard_pokemon_id"] = $gpid;
         $p["gym_id"] = $row["external_id"];
         $p["slots_available"] = $sa;

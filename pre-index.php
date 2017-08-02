@@ -1,11 +1,9 @@
 <?php
 include('config/config.php');
-$lat = isset($_GET['lat']) ? $_GET['lat'] : 0;
-$lon = isset($_GET['lon']) ? $_GET['lon'] : 0;
-$zoom = isset($_GET['zoom']) ? $_GET['zoom'] : null;
-if (!empty($lat) && !empty($lon)) {
-    $startingLat = $lat;
-    $startingLng = $lon;
+$zoom = !empty($_GET['zoom']) ? $_GET['zoom'] : null;
+if (!empty($_GET['lat']) && !empty($_GET['lon'])) {
+    $startingLat = $_GET['lat'];
+    $startingLng = $_GET['lon'];
 }
 ?>
 <!DOCTYPE html>
@@ -601,7 +599,7 @@ if (!empty($lat) && !empty($lon)) {
 <script>
     var centerLat = <?= $startingLat; ?>;
     var centerLng = <?= $startingLng; ?>;
-    var zoom<?php echo !empty($zoom) ? " = " . $zoom : null; ?>;
+    var zoom<?php echo $zoom ? " = " . $zoom : null; ?>;
     var minZoom = <?= $maxZoomOut; ?>;
     var maxLatLng = <?= $maxLatLng; ?>;
 </script>
