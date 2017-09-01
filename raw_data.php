@@ -221,7 +221,7 @@ AND    lon < :neLng", [':time' => time(), ':swLat' => $swLat, ':swLng' => $swLng
        individual_stamina                                                       AS sta_iv, 
        spawnpoint_id                                                            AS spawn_id 
 FROM   pokemon 
-WHERE  disappear_time > :disappearTime", [':disappearTime' => date_format($time, 'y-m-d H:I:s')])->fetchAll();
+WHERE  disappear_time > :disappearTime", [':disappearTime' => date_format($time, 'Y-m-d H:i:s')])->fetchAll();
         } elseif ($tstamp > 0) {
             $date = new DateTime();
             $date->setTimezone(new DateTimeZone('UTC'));
@@ -240,7 +240,7 @@ AND    last_modified > :lastModified
 AND    latitude > :swLat 
 AND    longitude > :swLng
 AND    latitude < :neLat
-AND    longitude < :neLng", [':disappearTime' => date_format($time, 'y-m-d H:I:s'), ':lastModified'=>date_format($date, 'y -m-d H:I:s'), ':swLat' => $swLat, ':swLng' => $swLng, ':neLat' => $neLat, ':neLng' => $neLng])->fetchAll();
+AND    longitude < :neLng", [':disappearTime' => date_format($time, 'Y-m-d H:i:s'), ':lastModified'=>date_format($date, 'Y-m-d H:i:s'), ':swLat' => $swLat, ':swLng' => $swLng, ':neLat' => $neLat, ':neLng' => $neLng])->fetchAll();
         } elseif ($oSwLat != 0) {
             $datas = $db->query("SELECT *, 
        Unix_timestamp(Convert_tz(disappear_time, '+00:00', @@global.time_zone)) AS expire_timestamp,
@@ -260,7 +260,7 @@ AND    NOT(
               latitude > :oSwLat 
        AND    longitude > :oSwLng 
        AND    latitude < :oNeLat 
-       AND    longitude < :oNeLng)", [':disappearTime' => date_format($time, 'y-m-d H:I:s'), ':swLat' => $swLat, ':swLng' => $swLng, ':neLat' => $neLat, ':neLng' => $neLng,  ':oSwLat' => $oSwLat, ':oSwLng' => $oSwLng, ':oNeLat' => $oNeLat, ':oNeLng' => $oNeLng])->fetchAll();
+       AND    longitude < :oNeLng)", [':disappearTime' => date_format($time, 'Y-m-d H:i:s'), ':swLat' => $swLat, ':swLng' => $swLng, ':neLat' => $neLat, ':neLng' => $neLng,  ':oSwLat' => $oSwLat, ':oSwLng' => $oSwLng, ':oNeLat' => $oNeLat, ':oNeLng' => $oNeLng])->fetchAll();
         } else {
             $datas = $db->query("SELECT *, 
        Unix_timestamp(Convert_tz(disappear_time, '+00:00', @@global.time_zone)) AS expire_timestamp,
@@ -275,7 +275,7 @@ WHERE  disappear_time > :disappearTime
 AND    latitude > :swLat
 AND    longitude > :swLng 
 AND    latitude < :neLat 
-AND    longitude < :neLng",  [':disappearTime' => date_format($time, 'y-m-d H:I:s'), ':swLat' => $swLat, ':swLng' => $swLng, ':neLat' => $neLat, ':neLng' => $neLng])->fetchAll();
+AND    longitude < :neLng",  [':disappearTime' => date_format($time, 'Y-m-d H:i:s'), ':swLat' => $swLat, ':swLng' => $swLng, ':neLat' => $neLat, ':neLng' => $neLng])->fetchAll();
         }
     }
     $pokemons = array();
@@ -401,7 +401,7 @@ AND    lon < :neLng", array_merge($pkmn_ids, [':timeStamp'=> time(), ':swLat' =>
        spawnpoint_id                                                            AS spawn_id 
 FROM   pokemon 
 WHERE  disappear_time > :disappearTime
-AND    pokemon_id  IN ( $pkmn_in )", array_merge($pkmn_ids, [':disappearTime' => date_format($time, 'y-m-d H:I:s')]))->fetchAll();
+AND    pokemon_id  IN ( $pkmn_in )", array_merge($pkmn_ids, [':disappearTime' => date_format($time, 'Y-m-d H:i:s')]))->fetchAll();
         } else {
             $datas = $db->query("SELECT *, 
        Unix_timestamp(Convert_tz(disappear_time, '+00:00', @@global.time_zone)) AS expire_timestamp,
@@ -417,7 +417,7 @@ AND    pokemon_id  IN ( $pkmn_in )
 AND    latitude > :swLat
 AND    longitude > :swLng 
 AND    latitude < :neLat 
-AND    longitude < :neLng", array_merge($pkmn_ids, [':disappearTime' => date_format($time, 'y-m-d H:I:s'), ':swLat' => $swLat, ':swLng' => $swLng, ':neLat' => $neLat, ':neLng' => $neLng]))->fetchAll();
+AND    longitude < :neLng", array_merge($pkmn_ids, [':disappearTime' => date_format($time, 'Y-m-d H:i:s'), ':swLat' => $swLat, ':swLng' => $swLng, ':neLat' => $neLat, ':neLng' => $neLng]))->fetchAll();
         }
     }
     $pokemons = array();
@@ -564,7 +564,7 @@ AND    active_fort_modifier IS NOT NULL
 AND    latitude > :swLat 
 AND    longitude > :swLng 
 AND    latitude < :neLat
-AND    longitude < :neLng", [':lastUpdated' => date_format($date, 'y-m-d H:I:s'), ':swLat' => $swLat, ':swLng' => $swLng, ':neLat' => $neLat, ':neLng' => $neLng])->fetchAll();
+AND    longitude < :neLng", [':lastUpdated' => date_format($date, 'Y-m-d H:i:s'), ':swLat' => $swLat, ':swLng' => $swLng, ':neLat' => $neLat, ':neLng' => $neLng])->fetchAll();
         } elseif ($tstamp > 0) {
             $date = new DateTime();
             $date->setTimezone(new DateTimeZone('UTC'));
@@ -581,7 +581,7 @@ WHERE  last_updated > :lastUpdated
 AND    latitude > :swLat
 AND    longitude > :swLng 
 AND    latitude < :neLat  
-AND    longitude < :neLng", [':lastUpdated' => date_format($date, 'y-m-d H:I:s'), ':swLat' => $swLat, ':swLng' => $swLng, ':neLat' => $neLat, ':neLng' => $neLng])->fetchAll();
+AND    longitude < :neLng", [':lastUpdated' => date_format($date, 'Y-m-d H:i:s'), ':swLat' => $swLat, ':swLng' => $swLng, ':neLat' => $neLat, ':neLng' => $neLng])->fetchAll();
         } elseif ($oSwLat != 0 && $lured == "true") {
             $datas = $db->query("SELECT active_fort_modifier, 
        enabled, 
@@ -851,11 +851,11 @@ LEFT JOIN gymdetails
 ON        gym.gym_id = gymdetails.gym_id 
 LEFT JOIN raid 
 ON        gym.gym_id = raid.gym_id 
-WHERE     gym.last_scanned > '" . date_format($date, 'y-m-d H:I:s') . "' 
+WHERE     gym.last_scanned > :lastScanned
 AND       latitude > :swLat
-AND       longitude > :swLat
+AND       longitude > :swLng
 AND       latitude < :neLat
-AND       longitude < :neLng",[':swLat' => $swLat, ':swLng' => $swLng, ':neLat' => $neLat, ':neLng' => $neLng])->fetchAll();
+AND       longitude < :neLng", [':lastScanned' => date_format($date, 'Y-m-d H:i:s'), ':swLat' => $swLat, ':swLng' => $swLng, ':neLat' => $neLat, ':neLng' => $neLng])->fetchAll();
             } elseif ($oSwLat != 0) {
                 $datas = $db->query("SELECT gym.gym_id 
        AS 
@@ -999,7 +999,7 @@ WHERE     gym.last_scanned > :lastScanned
 AND       latitude > :swLat 
 AND       longitude > :swLng 
 AND       latitude < :neLat 
-AND       longitude < :neLng". ['lastScanned'=>date_format($date, 'y-m-d H:I:s'), ':swLat' => $swLat, ':swLng' => $swLng, ':neLat' => $neLat, ':neLng' => $neLng])->fetchAll();
+AND       longitude < :neLng", [':lastScanned' => date_format($date, 'Y-m-d H:i:s'), ':swLat' => $swLat, ':swLng' => $swLng, ':neLat' => $neLat, ':neLng' => $neLng])->fetchAll();
             } elseif ($oSwLat != 0) {
                 $datas = $db->query("SELECT gym.gym_id 
        AS 
@@ -1369,7 +1369,7 @@ AND      longitude < :neLng
 GROUP BY latitude, 
          longitude, 
          spawnpoint_id, 
-         time", [':lastModified' => date_format($date, 'y-m-d H:I:s'), ':swLat' => $swLat, ':swLng' => $swLng, ':neLat' => $neLat, ':neLng' => $neLng])->fetchAll();
+         time", [':lastModified' => date_format($date, 'Y-m-d H:i:s'), ':swLat' => $swLat, ':swLng' => $swLng, ':neLat' => $neLat, ':neLng' => $neLng])->fetchAll();
         } elseif ($oSwLat != 0) {
             $datas = $db->query("SELECT latitude 
        AS lat, 
@@ -1489,7 +1489,7 @@ AND      latitude > :swLat
 AND      longitude > :swLng
 AND      latitude < :neLat 
 AND      longitude < :neLng 
-ORDER BY last_modified ASC", [':lastModified' => date_format($date, 'y-m-d H:I:s'), ':swLat' => $swLat, ':swLng' => $swLng, ':neLat' => $neLat, ':neLng' => $neLng])->fetchAll();
+ORDER BY last_modified ASC", [':lastModified' => date_format($date, 'Y-m-d H:i:s'), ':swLat' => $swLat, ':swLng' => $swLng, ':neLat' => $neLat, ':neLng' => $neLng])->fetchAll();
         } elseif ($oSwLat != 0) {
             $date = new DateTime();
             $date->setTimezone(new DateTimeZone('UTC'));
@@ -1508,7 +1508,7 @@ AND      NOT( latitude >  :oSwLat
                 AND latitude <  :oNeLat
                 AND longitude <  :oNeLng ) 
 AND      last_modified >= :lastModified
-ORDER BY last_modified ASC", [':lastModified' => date_format($date, 'y-m-d H:I:s'), ':swLat' => $swLat, ':swLng' => $swLng, ':neLat' => $neLat, ':neLng' => $neLng,  ':oSwLat' => $oSwLat, ':oSwLng' => $oSwLng, ':oNeLat' => $oNeLat, ':oNeLng' => $oNeLng])->fetchAll();
+ORDER BY last_modified ASC", [':lastModified' => date_format($date, 'Y-m-d H:i:s'), ':swLat' => $swLat, ':swLng' => $swLng, ':neLat' => $neLat, ':neLng' => $neLng,  ':oSwLat' => $oSwLat, ':oSwLng' => $oSwLng, ':oNeLat' => $oNeLat, ':oNeLng' => $oNeLng])->fetchAll();
         } else {
             $date = new DateTime();
             $date->setTimezone(new DateTimeZone('UTC'));
@@ -1522,7 +1522,7 @@ AND      latitude > :swLat
 AND      longitude > :swLng
 AND      latitude < :neLat 
 AND      longitude < :neLng 
-ORDER BY last_modified ASC", [':lastModified' => date_format($date, 'y-m-d H:I:s'), ':swLat' => $swLat, ':swLng' => $swLng, ':neLat' => $neLat, ':neLng' => $neLng])->fetchAll();
+ORDER BY last_modified ASC", [':lastModified' => date_format($date, 'Y-m-d H:i:s'), ':swLat' => $swLat, ':swLng' => $swLng, ':neLat' => $neLat, ':neLng' => $neLng])->fetchAll();
         }
     }
 
