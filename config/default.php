@@ -10,6 +10,18 @@
 //======================================================================
 session_start();
 require_once(__DIR__.'/../utils.php');
+
+$libs[] = "Scanner.php";
+$libs[] = "Monocle.php";
+$libs[] = "Monocle_Asner.php";
+$libs[] = "Monocle_Monkey.php";
+$libs[] = "RocketMap.php";
+$libs[] = "RocketMap_Sloppy.php";
+
+// Include libraries
+foreach ($libs as $file) {
+    include(__DIR__.'/../lib/'.$file);
+}
 setSessionCsrfToken();
 
 //-----------------------------------------------------
@@ -49,6 +61,10 @@ $piwikSiteId = "";
 /* PayPal */
 
 $paypalUrl = "";                                                    // PayPal donation URL, leave "" for empty
+
+/* Discord */
+
+$discordUrl = "";                                                    // Discord URL, leave "" for empty
 
 /* MOTD */
 
@@ -147,6 +163,14 @@ $gymStyle = 'ingame';                                               // ingame, s
 
 $noLocationStyle = false;                                           // true/false
 $locationStyle = 'none';                                            // none, google, red, red_animated, blue, blue_animated, yellow, yellow_animated, pokesition, pokeball
+
+//-----------------------------------------------------
+// DEBUGGING
+//-----------------------------------------------------
+
+// Do not enable unless requested
+
+$enableDebug = false;
 
 //-----------------------------------------------------
 // DATABASE CONFIG

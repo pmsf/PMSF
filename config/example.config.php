@@ -49,6 +49,10 @@ $piwikSiteId = "";
 
 $paypalUrl = "";                                                    // PayPal donation URL, leave "" for empty
 
+/* Discord */
+
+$discordUrl = "https://discord.gg/INVITE_LINK";                     // Discord URL, leave "" for empty
+
 /* MOTD */
 
 $motdTitle = "Message of the Day";
@@ -159,11 +163,19 @@ $purgeData = 0;
 
 
 //-----------------------------------------------------
+// DEBUGGING
+//-----------------------------------------------------
+
+// Do not enable unless requested
+
+$enableDebug = false;
+
+//-----------------------------------------------------
 // DATABASE CONFIG
 //-----------------------------------------------------
 
 $map = "monocle";                                                   // monocle/rm
-$fork = "default";                                                  // default/asner/sloppy
+$fork = "default";                                                  // default/asner/sloppy/monkey
 
 $db = new Medoo([// required
     'database_type' => 'mysql',                                     // mysql/mariadb/pgsql/sybase/oracle/mssql/sqlite

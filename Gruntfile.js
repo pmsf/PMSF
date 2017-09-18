@@ -118,9 +118,6 @@ module.exports = function (grunt) {
             }
         },
         phplint: {
-            options: {
-                phpCmd: '/usr/bin/php'
-            },
             files: ['**.php', '**/*.php', '!node_modules/**']
         },
         htmlmin: {

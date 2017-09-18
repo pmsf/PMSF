@@ -1487,7 +1487,7 @@ function processGyms(i, item) {
     }
 
     if (Store.get('activeRaids') && item.raid_end > Date.now()) {
-        if (item.raid_pokemon_id === undefined) {
+        if ((item.raid_pokemon_id === undefined) || (item.raid_pokemon_id === null)) {
             removeGymFromMap(item['gym_id'])
             return true
         }
