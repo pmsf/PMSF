@@ -51,5 +51,7 @@ config/*
 !config/example.config.php
 !config/default.php
 /static/dist/
+/static/icons-im-1.png
+/static/icons-im-1-bigger.png
 package-lock.json
 index.php
