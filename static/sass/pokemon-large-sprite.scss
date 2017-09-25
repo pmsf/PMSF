@@ -1,6 +1,7 @@
 .pokemon-large-sprite {
   display: inline-block;
-  background-image: url(../../../static/icons-large-sprite.png);
+  background-image: url(../../../static/icons-safe-1-bigger.png);
+  background-image: var(--sprite-large);
   background-repeat: no-repeat;
   top: 6px;
   position: relative;

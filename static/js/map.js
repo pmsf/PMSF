@@ -8,7 +8,6 @@ var $selectRarityNotify
 var $textPerfectionNotify
 var $raidNotify
 var $selectStyle
-var $selectIconResolution
 var $selectIconSize
 var $switchOpenGymsOnly
 var $selectTeamGymsOnly
@@ -326,13 +325,10 @@ function initSidebar() {
         })
     }
 
-    var icons = $('#pokemon-icons')
-    $.each(pokemonSprites, function (key, value) {
-        icons.append($('<option></option>').attr('value', key).text(value.name))
-    })
-    icons.val(pokemonSprites[Store.get('pokemonIcons')] ? Store.get('pokemonIcons') : 'highres')
-
     $('#pokemon-icon-size').val(Store.get('iconSizeModifier'))
+
+    document.body.style.setProperty('--sprite', 'url(../../../' + Store.get('spritefile') + ')')
+    document.body.style.setProperty('--sprite-large', 'url(../../../' + Store.get('spritefileLarge') + ')')
 }
 
 function pad(number) {
@@ -2198,6 +2194,7 @@ function fetchAnimeCriesJson() {
         }
     })
 }
+
 //
 // Page Ready Exection
 //
@@ -2266,19 +2263,6 @@ $(function () {
 
         // recall saved mapstyle
         $selectStyle.val(Store.get('map_style')).trigger('change')
-    })
-
-    $selectIconResolution = $('#pokemon-icons')
-
-    $selectIconResolution.select2({
-        placeholder: 'Select Icon Resolution',
-        minimumResultsForSearch: Infinity
-    })
-
-    $selectIconResolution.on('change', function () {
-        Store.set('pokemonIcons', this.value)
-        redrawPokemon(mapData.pokemons)
-        redrawPokemon(mapData.lurePokemons)
     })
 
     $selectIconSize = $('#pokemon-icon-size')

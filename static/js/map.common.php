@@ -808,57 +808,18 @@ var pGoStyleNight = [{
 }];
 
 var pokemonSprites = {
-normal: {
 columns: 28,
 iconWidth: 80,
 iconHeight: 80,
 spriteWidth: 2240,
-spriteHeight: 1440,
-filename: 'static/icons-large-sprite.png',
-name: 'Normal'
-},
-monoclelow: {
-columns: 28,
-iconWidth: 80,
-iconHeight: 80,
-spriteWidth: 2240,
-spriteHeight: 1440,
-filename: 'static/icons-im-1.png',
-name: 'Monocle LQ'
-},
-monoclehq: {
-columns: 28,
-iconWidth: 80,
-iconHeight: 80,
-spriteWidth: 2240,
-spriteHeight: 1440,
-filename: 'static/icons-im-1-bigger.png',
-name: 'Monocle HQ'
-},
-shiny: {
-columns: 25,
-iconWidth: 64,
-iconHeight: 64,
-spriteWidth: 1600,
-spriteHeight: 1024,
-filename: 'static/shiny.png',
-name: 'Shiny'
-},
-shinyback: {
-columns: 28,
-iconWidth: 80,
-iconHeight: 80,
-spriteWidth: 2240,
-spriteHeight: 1440,
-filename: 'static/shiny-back.png',
-name: 'Shiny Back'
+spriteHeight: 1440
 }
 
 //
 // LocalStorage helpers
 //
 
-};var StoreTypes = {
+var StoreTypes = {
 Boolean: {
 parse: function parse(str) {
 switch (str.toLowerCase()) {
@@ -1045,10 +1006,6 @@ type: StoreTypes.Boolean
 default: false,
 type: StoreTypes.Boolean
 },
-'pokemonIcons': {
-default: '<?php echo $icons ?>',
-type: StoreTypes.String
-},
 'iconSizeModifier': {
 default: <?php echo $iconSize ?>,
 type: StoreTypes.Number
@@ -1068,6 +1025,14 @@ type: StoreTypes.String
 'zoomLevel': {
 default: 16,
 type: StoreTypes.Number
+},
+'spritefile': {
+default: '<?php echo $copyrightSafe ? 'static/icons-safe-1.png' : 'static/icons-im-1.png' ?>',
+type: StoreTypes.String
+},
+'spritefileLarge': {
+default: '<?php echo $copyrightSafe ? 'static/icons-safe-1-bigger.png' : 'static/icons-im-1-bigger.png' ?>',
+type: StoreTypes.String
 }
 };
 
@@ -1119,7 +1084,7 @@ var scaledSpriteSize = new google.maps.Size(scale * sprite.spriteWidth, scale * 
 var scaledIconCenterOffset = new google.maps.Point(scale * sprite.iconWidth / 2, scale * sprite.iconHeight / 2);
 
 return {
-url: sprite.filename,
+url: Store.get('spritefileLarge'),
 size: scaledIconSize,
 scaledSize: scaledSpriteSize,
 origin: scaledIconOffset,
@@ -1131,7 +1096,7 @@ function setupPokemonMarker(item, map, isBounceDisabled) {
 // Scale icon size up with the map exponentially
 var iconSize = 2 + (map.getZoom() - 3) * (map.getZoom() - 3) * 0.2 + Store.get('iconSizeModifier');
 var pokemonIndex = item['pokemon_id'] - 1;
-var sprite = pokemonSprites[Store.get('pokemonIcons')] || pokemonSprites['monoclehq'];
+var sprite = pokemonSprites;
 var icon = getGoogleSprite(pokemonIndex, sprite, iconSize);
 
 var animationDisabled = false;

@@ -136,11 +136,10 @@ $criesType = 'game';                                               // game/anime
 
 /* Style Settings */
 
+$copyrightSafe = true;
+
 $noMapStyle = false;                                                // true/false
 $mapStyle = 'style_pgo_dynamic';                                    // roadmap, satellite, hybrid, nolabels_style, dark_style, style_light2, style_pgo, dark_style_nl, style_pgo_day, style_pgo_night, style_pgo_dynamic
-
-$noIcons = false;                                                   // true/false
-$icons = 'monoclehq';                                               // normal, monoclelow, monoclehq, shiny, shinyback
 
 $noIconSize = false;                                                // true/false
 $iconSize = 0;                                                      // -8, 0, 10, 20

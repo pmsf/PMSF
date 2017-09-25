@@ -476,7 +476,7 @@ if (!empty($_GET['lat']) && !empty($_GET['lon'])) {
                 echo '</div>';
             } ?>
 
-            <?php if (!$noMapStyle || !$noIcons || !$noIconSize || !$noGymStyle || !$noLocationStyle) {
+            <?php if (!$noMapStyle || !$noIconSize || !$noGymStyle || !$noLocationStyle) {
                 echo '<h3>Style Settings</h3>
             <div>';
             } ?>
@@ -484,12 +484,6 @@ if (!empty($_GET['lat']) && !empty($_GET['lon'])) {
                 echo '<div class="form-control switch-container">
                 <h3>Map Style</h3>
                 <select id="map-style"></select>
-            </div>';
-            } ?>
-            <?php if (!$noIcons) {
-                echo '<div class="form-control switch-container">
-                <h3>Icons</h3>
-                <select name="pokemon-icons" id="pokemon-icons"></select>
             </div>';
             } ?>
             <?php if (!$noIconSize) {
@@ -518,7 +512,7 @@ if (!empty($_GET['lat']) && !empty($_GET['lon'])) {
                 <select name="locationmarker-style" id="locationmarker-style"></select>
             </div>';
             } ?>
-            <?php if (!$noMapStyle || !$noIcons || !$noIconSize || !$noGymStyle || !$noLocationStyle) {
+            <?php if (!$noMapStyle || !$noIconSize || !$noGymStyle || !$noLocationStyle) {
                 echo '</div>';
             } ?>
         </div>

@@ -46,7 +46,7 @@ function countMarkers(map) { // eslint-disable-line no-unused-vars
             if (pkmnCount[i] && pkmnCount[i].Count > 0) {
                 pokeCounts.push(
                     [
-                        '<img src=\'static/icons/' + pkmnCount[i].ID + '.png\' />',
+                        '<i class="pokemon-sprite n' + pkmnCount[i].ID + '"></i>',
                         '<a href=\'https://pokemon.gameinfo.io/en/pokemon/' + pkmnCount[i].ID + '\' target=\'_blank\' title=\'View in Pokédex\' style=\'color: black;\'>' + pkmnCount[i].Name + '</a>',
                         pkmnCount[i].Count,
                         (Math.round(pkmnCount[i].Count * 100 / pkmnTotal * 10) / 10) + '%'

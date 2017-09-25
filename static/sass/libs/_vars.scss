@@ -1,3 +1,8 @@
+// Root.
+:root {
+        --sprite: url(../../../static/icons-safe-1.png);
+        --sprite-large: url(../../../static/icons-safe-1-bigger.png);
+}
 // Misc.
 $misc: (
         z-index-base: 10000

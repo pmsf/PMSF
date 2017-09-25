@@ -100,6 +100,7 @@ class Monkey extends Monocle
                 $gym["raid_pokemon_id"] = NULL;
             }
             $gym["enabled"] = true;
+            $gym["team_id"] = intval($gym["team_id"]);
             $gym["pokemon"] = [];
             $gym["guard_pokemon_name"] = empty($guard_pid) ? NULL : i8ln($this->data[$guard_pid]["name"]);
             $gym["raid_pokemon_name"] = empty($raid_pid) ? NULL : i8ln($this->data[$raid_pid]["name"]);
