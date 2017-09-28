@@ -1,6 +1,6 @@
 .pokemon-sprite {
   display: inline-block;
-  background-image: url(../../../static/icons-safe-1.png);
+  background-image: url($sprite);
   background-image: var(--sprite);
   background-repeat: no-repeat;
   top: 6px;

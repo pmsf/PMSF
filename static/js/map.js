@@ -327,8 +327,11 @@ function initSidebar() {
 
     $('#pokemon-icon-size').val(Store.get('iconSizeModifier'))
 
-    document.body.style.setProperty('--sprite', 'url(../../../' + Store.get('spritefile') + ')')
-    document.body.style.setProperty('--sprite-large', 'url(../../../' + Store.get('spritefileLarge') + ')')
+    var r = new RegExp('^(?:[a-z]+:)?//', 'i')
+    var urlSprite = r.test(Store.get('spritefile')) ? Store.get('spritefile') : window.location.href + Store.get('spritefile')
+    var urlSpriteLarge = r.test(Store.get('spritefileLarge')) ? Store.get('spritefileLarge') : window.location.href + Store.get('spritefileLarge')
+    document.body.style.setProperty('--sprite', 'url(' + urlSprite + ')')
+    document.body.style.setProperty('--sprite-large', 'url(' + urlSpriteLarge + ')')
 }
 
 function pad(number) {

@@ -9,7 +9,7 @@
 // https://github.com/Glennmen/PMSF
 //======================================================================
 session_start();
-require_once(__DIR__.'/../utils.php');
+require_once(__DIR__ . '/../utils.php');
 
 $libs[] = "Scanner.php";
 $libs[] = "Monocle.php";
@@ -20,7 +20,7 @@ $libs[] = "RocketMap_Sloppy.php";
 
 // Include libraries
 foreach ($libs as $file) {
-    include(__DIR__.'/../lib/'.$file);
+    include(__DIR__ . '/../lib/' . $file);
 }
 setSessionCsrfToken();
 
@@ -69,7 +69,7 @@ $discordUrl = "";                                                    // Discord 
 /* MOTD */
 
 $motdTitle = "";
-$motdContent ="";
+$motdContent = "";
 
 //-----------------------------------------------------
 // FRONTEND SETTINGS

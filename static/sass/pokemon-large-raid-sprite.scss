@@ -1,6 +1,6 @@
 .pokemon-large-raid-sprite {
   display: inline-block;
-  background-image: url(../../../static/icons-safe-1-bigger.png);
+  background-image: url($spriteLarge);
   background-image: var(--sprite-large);
   background-repeat: no-repeat;
   top: 6px;
