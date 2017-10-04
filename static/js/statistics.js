@@ -136,11 +136,11 @@ function processSeen(seen) {
         var percentage = (item['count'] / total * 100).toFixed(4)
         var lastSeen = new Date(item['disappear_time'])
         lastSeen = lastSeen.getHours() + ':' +
-        ('0' + lastSeen.getMinutes()).slice(-2) + ':' +
-        ('0' + lastSeen.getSeconds()).slice(-2) + ' ' +
-        lastSeen.getDate() + ' ' +
-        monthArray[lastSeen.getMonth()] + ' ' +
-        lastSeen.getFullYear()
+            ('0' + lastSeen.getMinutes()).slice(-2) + ':' +
+            ('0' + lastSeen.getSeconds()).slice(-2) + ' ' +
+            lastSeen.getDate() + ' ' +
+            monthArray[lastSeen.getMonth()] + ' ' +
+            lastSeen.getFullYear()
         var location = (item['latitude'] * 1).toFixed(7) + ', ' + (item['longitude'] * 1).toFixed(7)
         if (!$('#seen_' + item['pokemon_id']).length) {
             addElement(item['pokemon_id'], item['pokemon_name'])
@@ -425,7 +425,10 @@ function processAppearance(i, item) {
         item['marker'].spawnpointId = spawnpointId
         mapData.appearances[spawnpointId] = item
     }
-    heatmapPoints.push({location: new google.maps.LatLng(item['latitude'], item['longitude']), weight: parseFloat(item['count'])})
+    heatmapPoints.push({
+        location: new google.maps.LatLng(item['latitude'], item['longitude']),
+        weight: parseFloat(item['count'])
+    })
 }
 
 function redrawAppearances(appearances) {
@@ -447,11 +450,11 @@ function appearanceTab(item) {
         $.each(result.appearancesTimes, function (key, value) {
             var saw = new Date(value - spawnTimeMs)
             saw = saw.getHours() + ':' +
-                    ('0' + saw.getMinutes()).slice(-2) + ':' +
-                    ('0' + saw.getSeconds()).slice(-2) + ' ' +
-                    saw.getDate() + ' ' +
-                    monthArray[saw.getMonth()] + ' ' +
-                    saw.getFullYear()
+                ('0' + saw.getMinutes()).slice(-2) + ':' +
+                ('0' + saw.getSeconds()).slice(-2) + ' ' +
+                saw.getDate() + ' ' +
+                monthArray[saw.getMonth()] + ' ' +
+                saw.getFullYear()
             times = '<div class="row' + (key % 2) + '">' + saw + '</div>' + times
         })
         return `<div>

@@ -23,7 +23,7 @@ function countMarkers(map) { // eslint-disable-line no-unused-vars
 
     if (Store.get('showPokemon')) {
         $.each(mapData.pokemons, function (key, value) {
-            var thisPokeLocation = { lat: mapData.pokemons[key]['latitude'], lng: mapData.pokemons[key]['longitude'] }
+            var thisPokeLocation = {lat: mapData.pokemons[key]['latitude'], lng: mapData.pokemons[key]['longitude']}
             thisPokeIsVisible = currentVisibleMap.contains(thisPokeLocation)
 
             if (thisPokeIsVisible) {
@@ -74,7 +74,7 @@ function countMarkers(map) { // eslint-disable-line no-unused-vars
     // begin Gyms processing
     if (Store.get('showGyms')) {
         $.each(mapData.gyms, function (key, value) {
-            var thisGymLocation = { lat: mapData.gyms[key]['latitude'], lng: mapData.gyms[key]['longitude'] }
+            var thisGymLocation = {lat: mapData.gyms[key]['latitude'], lng: mapData.gyms[key]['longitude']}
             thisGymIsVisible = currentVisibleMap.contains(thisGymLocation)
 
             if (thisGymIsVisible) {
@@ -109,7 +109,10 @@ function countMarkers(map) { // eslint-disable-line no-unused-vars
 
     if (Store.get('showPokestops')) {
         $.each(mapData.pokestops, function (key, value) {
-            var thisPokestopLocation = { lat: mapData.pokestops[key]['latitude'], lng: mapData.pokestops[key]['longitude'] }
+            var thisPokestopLocation = {
+                lat: mapData.pokestops[key]['latitude'],
+                lng: mapData.pokestops[key]['longitude']
+            }
             thisPokestopIsVisible = currentVisibleMap.contains(thisPokestopLocation)
 
             if (thisPokestopIsVisible) {

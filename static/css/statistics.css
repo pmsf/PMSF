@@ -1,51 +1,51 @@
 @charset "UTF-8";
 
-body{
+body {
     background: #f1f1f1;
     z-index: 0;
     overflow: auto;
 }
 
-table{
+table {
     background: #f8f8f8;
 }
 
-table thead{
+table thead {
     font-weight: bold;
 }
 
-table thead .title{
+table thead .title {
     text-align: center;
 }
 
-table .even{
+table .even {
     background: #f1f1f1;
 }
 
-table tfoot{
+table tfoot {
     font-weight: bold;
 }
 
-table td{
+table td {
     padding: 5px;
 }
 
-.label{
+.label {
     font-weight: bold;
 }
 
-.totals{
+.totals {
     margin-top: 3.5em;
     margin-left: 10px;
     margin-right: 10px;
     text-transform: uppercase;
 }
 
-.options{
+.options {
     padding-bottom: 5px;
 }
 
-.container{
+.container {
     overflow: auto;
     line-height: 20px;
     font-size: 15px;
@@ -53,7 +53,7 @@ table td{
     margin-right: 10px;
 }
 
-.container .item{
+.container .item {
     float: left;
     border: 1px solid #acacac;
     border-radius: 5px;
@@ -66,25 +66,25 @@ table td{
     min-width: 260px;
 }
 
-.container .item .image{
+.container .item .image {
     float: left;
     width: 40px;
     text-align: center;
 }
 
-.container .item .name{
+.container .item .name {
     height: 36px;
     line-height: 30px;
 }
 
-.container .item .name a{
+.container .item .name a {
     font-weight: bold;
 }
 
-.overlay{
+.overlay {
     z-index: 100000;
     display: none;
-    background-color: rgba(0,0,0,0.5);
+    background-color: rgba(0, 0, 0, 0.5);
     position: fixed;
     top: 0;
     left: 0;
@@ -92,11 +92,11 @@ table td{
     min-height: 100%;
 }
 
-#location_map{
+#location_map {
     height: 100%;
 }
 
-#times_list{
+#times_list {
     float: left;
     background: white;
     position: fixed;
@@ -107,19 +107,19 @@ table td{
     overflow: auto;
 }
 
-#times_list div{
+#times_list div {
     padding-bottom: 2px;
 }
 
-#times_list .row0{
+#times_list .row0 {
     background: #f1f1f1;
 }
 
-#times_list .row1{
+#times_list .row1 {
     background: #f8f8f8;
 }
 
-.overlay .close{
+.overlay .close {
     position: relative;
     float: right;
     margin-top: 20px;
@@ -128,7 +128,7 @@ table td{
     cursor: pointer;
 }
 
-.overlay .content{
+.overlay .content {
     background: white;
     margin: 50px;
     border-radius: 10px;
@@ -141,14 +141,14 @@ table td{
     right: 0px;
 }
 
-#loading{
+#loading {
     width: 100%;
     height: 100%;
     position: fixed;
     top: 0px;
 }
 
-#loading img{
+#loading img {
     top: 50%;
     left: 50%;
     margin-right: -50%;

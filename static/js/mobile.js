@@ -50,6 +50,7 @@ function updateTimes() {
         element.innerText = (remain > 0) ? min + ' min ' + sec + ' sec' : '(expired)'
     }
 }
+
 setInterval(updateTimes, 1000)
 
 document.querySelectorAll('li').forEach(function (listItem) {
