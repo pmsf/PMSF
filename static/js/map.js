@@ -2345,6 +2345,7 @@ $(function () {
 
     $switchActiveRaids.on('change', function () {
         Store.set('activeRaids', this.checked)
+        lastgyms = false
         updateMap()
     })
 
