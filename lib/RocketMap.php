@@ -142,7 +142,6 @@ AND    longitude < :neLng", array_merge($pkmn_ids, [':disappearTime' => date_for
 
     public function get_stops($swLat, $swLng, $neLat, $neLng, $tstamp = 0, $oSwLat = 0, $oSwLng = 0, $oNeLat = 0, $oNeLng = 0, $lured = false)
     {
-
         global $db;
 
         $datas = array();
@@ -284,7 +283,6 @@ AND    longitude < :neLng", [':swLat' => $swLat, ':swLng' => $swLng, ':neLat' =>
 
     public function get_gyms($swLat, $swLng, $neLat, $neLng, $tstamp = 0, $oSwLat = 0, $oSwLng = 0, $oNeLat = 0, $oNeLng = 0)
     {
-
         global $db;
 
         $datas = array();
@@ -805,7 +803,6 @@ ORDER  BY gympokemon.cp DESC ", [':id' => $id])->fetchAll();
         }
 
         return $p;
-
     }
 
 
@@ -829,15 +826,16 @@ ORDER  BY gympokemon.cp DESC ", [':id' => $id])->fetchAll();
         $p["longitude"] = $lon;
         $p["name"] = !empty($row["name"]) ? $row["name"] : null;
         $p["team_id"] = $ti;
-        if ($gpid)
+        if ($gpid) {
             $p["guard_pokemon_name"] = i8ln($this->data[$gpid]['name']);
+        }
 
         $rpid = intval($row['pokemon_id']);
         $p['raid_level'] = intval($row['level']);
-        if ($rpid)
+        if ($rpid) {
             $p['raid_pokemon_id'] = $rpid;
-        if ($rpid)
             $p['raid_pokemon_name'] = i8ln($this->data[$rpid]['name']);
+        }
         $p['raid_pokemon_cp'] = !empty($row['cp']) ? intval($row['cp']) : null;
         $p['raid_pokemon_move_1'] = !empty($row['move_1']) ? intval($row['move_1']) : null;
         $p['raid_pokemon_move_2'] = !empty($row['move_2']) ? intval($row['move_2']) : null;
@@ -846,5 +844,4 @@ ORDER  BY gympokemon.cp DESC ", [':id' => $id])->fetchAll();
 
         return $p;
     }
-
 }

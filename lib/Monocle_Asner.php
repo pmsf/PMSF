@@ -1,17 +1,11 @@
 <?php
+
 namespace Scanner;
 
-/**
- * Created by PhpStorm.
- * User: JamesHarland
- * Date: 09/08/2017
- * Time: 17:26
- */
-class Asner extends Monocle
+class Monocle_Asner extends Monocle
 {
     public function get_gyms($swLat, $swLng, $neLat, $neLng, $tstamp = 0, $oSwLat = 0, $oSwLng = 0, $oNeLat = 0, $oNeLng = 0)
     {
-
         global $db;
 
         $datas = array();
@@ -54,7 +48,7 @@ FROM   (SELECT fort_id,
 WHERE  t3.lat > :swLat 
        AND t3.lon > :swLng 
        AND t3.lat < :neLat 
-       AND t3.lon < :neLng",[':swLat' => $swLat, ':swLng' => $swLng, ':neLat' => $neLat, ':neLng' => $neLng])->fetchAll();
+       AND t3.lon < :neLng", [':swLat' => $swLat, ':swLng' => $swLng, ':neLat' => $neLat, ':neLng' => $neLng])->fetchAll();
         } elseif ($oSwLat != 0) {
             $datas = $db->query("SELECT t3.external_id, 
        t3.lat, 
@@ -79,7 +73,7 @@ WHERE  t3.lat > :swLat
        AND NOT( t3.lat > :oSwLat
                 AND t3.lon > :oSwLng
                 AND t3.lat < :oNeLat
-                AND t3.lon < :oNeLng)", [':swLat' => $swLat, ':swLng' => $swLng, ':neLat' => $neLat, ':neLng' => $neLng,  ':oSwLat' => $oSwLat, ':oSwLng' => $oSwLng, ':oNeLat' => $oNeLat, ':oNeLng' => $oNeLng])->fetchAll();
+                AND t3.lon < :oNeLng)", [':swLat' => $swLat, ':swLng' => $swLng, ':neLat' => $neLat, ':neLng' => $neLng, ':oSwLat' => $oSwLat, ':oSwLng' => $oSwLng, ':oNeLat' => $oNeLat, ':oNeLng' => $oNeLng])->fetchAll();
         } else {
             $datas = $db->query("SELECT    t3.external_id, 
           t3.lat, 
@@ -101,9 +95,8 @@ ON        t1.fort_id = t3.id
 WHERE     t3.lat > :swLat
 AND       t3.lon > :swLng 
 AND       t3.lat < :neLat 
-AND       t3.lon < :neLng",[':swLat' => $swLat, ':swLng' => $swLng, ':neLat' => $neLat, ':neLng' => $neLng])->fetchAll();
+AND       t3.lon < :neLng", [':swLat' => $swLat, ':swLng' => $swLng, ':neLat' => $neLat, ':neLng' => $neLng])->fetchAll();
         }
-
 
 
         $gyminfo = $this->returnGyms($datas);
@@ -116,17 +109,17 @@ AND       t3.lon < :neLng",[':swLat' => $swLat, ':swLng' => $swLng, ':neLat' => 
         global $fork;
         $gyms_in = '';
         if (count($gym_ids)) {
-            $i=1;
+            $i = 1;
             foreach ($gym_ids as $id) {
-                $gym_in_ids[':qry_'.$i] = $id;
-                $gyms_in .= ':'.'qry_'.$i.",";
+                $gym_in_ids[':qry_' . $i] = $id;
+                $gyms_in .= ':' . 'qry_' . $i . ",";
                 $i++;
             }
             $gyms_in = substr($gyms_in, 0, -1);
         } else {
             $gym_in_ids = [];
         }
-            $raids = $db->query("SELECT t3.external_id, 
+        $raids = $db->query("SELECT t3.external_id, 
        t1.fort_id, 
        raid_level AS level, 
        pokemon_id, 
@@ -150,10 +143,10 @@ WHERE  t3.external_id IN ( $gyms_in ) ", $gym_in_ids)->fetchAll();
             $id = $raid["external_id"];
             $rpid = intval($raid['pokemon_id']);
             $gyms[$id]['raid_level'] = intval($raid['level']);
-            if ($rpid)
+            if ($rpid) {
                 $gyms[$id]['raid_pokemon_id'] = $rpid;
-            if ($rpid)
                 $gyms[$id]['raid_pokemon_name'] = i8ln($this->data[$rpid]['name']);
+            }
             $gyms[$id]['raid_pokemon_cp'] = !empty($raid['cp']) ? intval($raid['cp']) : null;
             $gyms[$id]['raid_pokemon_move_1'] = !empty($raid['move_1']) ? intval($raid['move_1']) : null;
             $gyms[$id]['raid_pokemon_move_2'] = !empty($raid['move_2']) ? intval($raid['move_2']) : null;
@@ -189,7 +182,7 @@ FROM   (SELECT fort_id,
                  AND t2.maxlastmodified = t1.last_modified 
        LEFT JOIN forts t3 
               ON t1.fort_id = t3.id 
-WHERE  t3.external_id = :id ", [':id'=>$id])->fetch();
+WHERE  t3.external_id = :id ", [':id' => $id])->fetch();
 
         $raid = $db->query("SELECT t3.external_id, 
        t1.fort_id, 
@@ -209,7 +202,7 @@ FROM   (SELECT fort_id,
                  AND maxtimeend = raid_end 
        JOIN forts t3 
          ON t2.fort_id = t3.id 
-WHERE  t3.external_id IN ( :id ) ", [':id'=>$id])->fetch();
+WHERE  t3.external_id IN ( :id ) ", [':id' => $id])->fetch();
 
         $return = $this->returnGymInfo($row, $raid);
         unset($raid);

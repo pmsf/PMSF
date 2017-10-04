@@ -1,5 +1,7 @@
 <?php
+
 namespace Scanner;
+
 class Scanner
 {
     // Common functions for both RM and Monocle
@@ -8,13 +10,13 @@ class Scanner
      * Used for Pokemon data
      * @var array|mixed
      */
-    var $data = [];
+    public $data = [];
     /**
      * $moves
      * Used for Pokemon moves
      * @var array|mixed
      */
-    var $moves = [];
+    public $moves = [];
 
     /**
      * Scanner constructor.
@@ -24,11 +26,11 @@ class Scanner
     {
         $json_poke = "static/data/pokemon.json";
         $json_contents = file_get_contents($json_poke);
-        $this->data = json_decode($json_contents, TRUE);
+        $this->data = json_decode($json_contents, true);
 
         $json_moves = "static/data/moves.json";
         $json_contents = file_get_contents($json_moves);
-        $this->moves = json_decode($json_contents, TRUE);
+        $this->moves = json_decode($json_contents, true);
     }
 
     /**
@@ -184,10 +186,10 @@ class Scanner
             if ($map != "monocle") {
                 $rpid = intval($row['pokemon_id']);
                 $p['raid_level'] = intval($row['level']);
-                if ($rpid)
+                if ($rpid) {
                     $p['raid_pokemon_id'] = $rpid;
-                if ($rpid)
                     $p['raid_pokemon_name'] = i8ln($this->data[$rpid]['name']);
+                }
                 $p['raid_pokemon_cp'] = !empty($row['cp']) ? intval($row['cp']) : null;
                 $p['raid_pokemon_move_1'] = !empty($row['move_1']) ? intval($row['move_1']) : null;
                 $p['raid_pokemon_move_2'] = !empty($row['move_2']) ? intval($row['move_2']) : null;
@@ -203,9 +205,6 @@ class Scanner
 
             $i++;
         }
-        return ['gyms'=>$gyms, 'gym_ids'=>$gym_ids];
+        return ['gyms' => $gyms, 'gym_ids' => $gym_ids];
     }
-
-
-
 }

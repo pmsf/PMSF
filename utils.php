@@ -5,15 +5,16 @@ $localeData = null;
 function i8ln($word)
 {
     global $locale;
-    if ($locale == "en")
+    if ($locale == "en") {
         return $word;
+    }
 
     global $localeData;
     if ($localeData == null) {
         $filepath = 'static/dist/locales/' . $locale . '.min.json';
         if (file_exists($filepath)) {
             $json_contents = file_get_contents($filepath);
-            $localeData = json_decode($json_contents, TRUE);
+            $localeData = json_decode($json_contents, true);
         } else {
             return $word;
         }
@@ -32,7 +33,9 @@ function setSessionCsrfToken()
         generateToken();
     }
 }
-function refreshCsrfToken() {
+
+function refreshCsrfToken()
+{
     global $sessionLifetime;
     if (time() - $_SESSION['c'] > $sessionLifetime) {
         session_regenerate_id(true);
@@ -40,11 +43,13 @@ function refreshCsrfToken() {
     }
     return $_SESSION['token'];
 }
+
 function generateToken()
 {
     $_SESSION['token'] = base64_encode(openssl_random_pseudo_bytes(32));
     $_SESSION['c'] = time();
 }
+
 function validateToken($token)
 {
     global $enableCsrf;

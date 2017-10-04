@@ -1,15 +1,8 @@
 <?php
-/**
- * Created by PhpStorm.
- * User: JamesHarland
- * Date: 08/09/2017
- * Time: 15:09
- */
 
 namespace Scanner;
 
-
-class Monkey extends Monocle
+class Monocle_Monkey extends Monocle
 {
     public function get_active($swLat, $swLng, $neLat, $neLng, $tstamp = 0, $oSwLat = 0, $oSwLng = 0, $oNeLat = 0, $oNeLng = 0)
     {
@@ -41,7 +34,6 @@ WHERE  expire_timestamp > :time
             AND lat < :oNeLat 
             AND lon < :oNeLng ) ", [':time' => time(), ':swLat' => $swLat, ':swLng' => $swLng, ':neLat' => $neLat, ':neLng' => $neLng, ':oSwLat' => $oSwLat, ':oSwLng' => $oSwLng, ':oNeLat' => $oNeLat, ':oNeLng' => $oNeLng])->fetchAll();
         } else {
-
             $datas = $db->query("SELECT * 
 FROM   sightings 
 WHERE  expire_timestamp > :time 
@@ -55,7 +47,6 @@ AND    lon < :neLng", [':time' => time(), ':swLat' => $swLat, ':swLng' => $swLng
 
     public function get_stops($swLat, $swLng, $neLat, $neLng, $tstamp = 0, $oSwLat = 0, $oSwLng = 0, $oNeLat = 0, $oNeLng = 0, $lured = false)
     {
-
         global $db;
 
         $datas = array();
@@ -173,19 +164,19 @@ AND    lon < :neLng", [':swLat' => $swLat, ':swLng' => $swLng, ':neLat' => $neLa
         foreach ($gyms as $gym) {
             $guard_pid = $gym["guard_pokemon_id"];
             if ($guard_pid == "0") {
-                $guard_pid = NULL;
-                $gym["guard_pokemon_id"] = NULL;
+                $guard_pid = null;
+                $gym["guard_pokemon_id"] = null;
             }
             $raid_pid = $gym["raid_pokemon_id"];
             if ($raid_pid == "0") {
-                $raid_pid = NULL;
-                $gym["raid_pokemon_id"] = NULL;
+                $raid_pid = null;
+                $gym["raid_pokemon_id"] = null;
             }
             $gym["enabled"] = true;
             $gym["team_id"] = intval($gym["team_id"]);
             $gym["pokemon"] = [];
-            $gym["guard_pokemon_name"] = empty($guard_pid) ? NULL : i8ln($this->data[$guard_pid]["name"]);
-            $gym["raid_pokemon_name"] = empty($raid_pid) ? NULL : i8ln($this->data[$raid_pid]["name"]);
+            $gym["guard_pokemon_name"] = empty($guard_pid) ? null : i8ln($this->data[$guard_pid]["name"]);
+            $gym["raid_pokemon_name"] = empty($raid_pid) ? null : i8ln($this->data[$raid_pid]["name"]);
             $gym["latitude"] = floatval($gym["latitude"]);
             $gym["longitude"] = floatval($gym["longitude"]);
             $gym["last_modified"] = $gym["last_modified"] * 1000;

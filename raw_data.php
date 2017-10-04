@@ -3,7 +3,6 @@ $timing['start'] = microtime(true);
 include('config/config.php');
 global $map, $fork;
 
-
 $now = new DateTime();
 
 $d = array();
@@ -50,15 +49,15 @@ if (!validateToken($_POST['token'])) {
 // init map
 if ($map == "monocle") {
     if ($fork == "asner") {
-        $scanner = new \Scanner\Asner();
+        $scanner = new \Scanner\Monocle_Asner();
     } elseif ($fork == "monkey") {
-        $scanner = new \Scanner\Monkey();
+        $scanner = new \Scanner\Monocle_Monkey();
     } else {
         $scanner = new \Scanner\Monocle();
     }
-} elseif ($map =="rm") {
+} elseif ($map == "rm") {
     if ($fork == "sloppy") {
-        $scanner = new \Scanner\Sloppy();
+        $scanner = new \Scanner\RocketMap_Sloppy();
     } else {
         $scanner = new \Scanner\RocketMap();
     }
@@ -193,7 +192,7 @@ if ($enableDebug == true) {
     foreach ($debug as $k => $v) {
         header("X-Debug-Time-" . $k . ": " . $v);
     }
- }
+}
 
 $jaysson = json_encode($d);
 echo $jaysson;

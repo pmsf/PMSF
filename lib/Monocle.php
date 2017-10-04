@@ -33,7 +33,6 @@ WHERE  expire_timestamp > :time
             AND lat < :oNeLat 
             AND lon < :oNeLng ) ", [':time' => time(), ':swLat' => $swLat, ':swLng' => $swLng, ':neLat' => $neLat, ':neLng' => $neLng, ':oSwLat' => $oSwLat, ':oSwLng' => $oSwLng, ':oNeLat' => $oNeLat, ':oNeLng' => $oNeLng])->fetchAll();
         } else {
-
             $datas = $db->query("SELECT * 
 FROM   sightings 
 WHERE  expire_timestamp > :time 
@@ -81,12 +80,10 @@ AND    lon < :neLng", array_merge($pkmn_ids, [':timeStamp' => time(), ':swLat' =
         }
 
         return $this->returnPokemon($datas);
-
     }
 
     public function get_stops($swLat, $swLng, $neLat, $neLng, $tstamp = 0, $oSwLat = 0, $oSwLng = 0, $oNeLat = 0, $oNeLng = 0, $lured = false)
     {
-
         global $db;
 
         $datas = array();
@@ -131,7 +128,6 @@ AND    lon < :neLng", [':swLat' => $swLat, ':swLng' => $swLng, ':neLat' => $neLa
 
     public function get_gyms($swLat, $swLng, $neLat, $neLng, $tstamp = 0, $oSwLat = 0, $oSwLng = 0, $oNeLat = 0, $oNeLng = 0)
     {
-
         global $db;
 
         $datas = array();
@@ -267,10 +263,10 @@ FROM   (SELECT fort_id,
             $id = $raid["external_id"];
             $rpid = intval($raid['pokemon_id']);
             $gyms[$id]['raid_level'] = intval($raid['level']);
-            if ($rpid)
+            if ($rpid) {
                 $gyms[$id]['raid_pokemon_id'] = $rpid;
-            if ($rpid)
                 $gyms[$id]['raid_pokemon_name'] = i8ln($this->data[$rpid]['name']);
+            }
             $gyms[$id]['raid_pokemon_cp'] = !empty($raid['cp']) ? intval($raid['cp']) : null;
             $gyms[$id]['raid_pokemon_move_1'] = !empty($raid['move_1']) ? intval($raid['move_1']) : null;
             $gyms[$id]['raid_pokemon_move_2'] = !empty($raid['move_2']) ? intval($raid['move_2']) : null;
@@ -352,7 +348,6 @@ AND    lon < :neLng", [':swLat' => $swLat, ':swLng' => $swLng, ':neLat' => $neLa
         }
 
         return $spawnpoints;
-
     }
 
     public function get_recent($swLat, $swLng, $neLat, $neLng, $tstamp = 0, $oSwLat = 0, $oSwLng = 0, $oNeLat = 0, $oNeLng = 0)
@@ -418,7 +413,6 @@ FROM   (SELECT fort_id,
 
     public function returnGymInfo($row, $raid)
     {
-
         $p = array();
 
         $lat = floatval($row["lat"]);
@@ -439,16 +433,16 @@ FROM   (SELECT fort_id,
         $p["longitude"] = $lon;
         $p["name"] = !empty($row["name"]) ? $row["name"] : null;
         $p["team_id"] = $ti;
-        if ($gpid)
+        if ($gpid) {
             $p["guard_pokemon_name"] = i8ln($this->data[$gpid]['name']);
-
+        }
 
         $rpid = intval($raid['pokemon_id']);
         $p['raid_level'] = intval($raid['level']);
-        if ($rpid)
+        if ($rpid) {
             $p['raid_pokemon_id'] = $rpid;
-        if ($rpid)
             $p['raid_pokemon_name'] = i8ln($this->data[$rpid]['name']);
+        }
         $p['raid_pokemon_cp'] = !empty($row['cp']) ? intval($row['cp']) : null;
         $p['raid_pokemon_move_1'] = !empty($row['move_1']) ? intval($row['move_1']) : null;
         $p['raid_pokemon_move_2'] = !empty($row['move_2']) ? intval($row['move_2']) : null;
