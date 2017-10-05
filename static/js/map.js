@@ -1539,14 +1539,31 @@ function processGyms(i, item) {
         removeGymFromMap(item['gym_id'])
         return true
     }
-
     if (item['gym_id'] in mapData.gyms) {
         item.marker = updateGymMarker(item, mapData.gyms[item['gym_id']].marker)
     } else {
         // add marker to map and item to dict
         item.marker = setupGymMarker(item)
     }
+    if (item.raid_start !== undefined && item.raid_start > Date.now()) {
+        var delayStart = item.raid_start - Date.now()
+        setTimeOut(item['gym_id'], item, delayStart)
+    } else if (item.raid_end !== undefined && item.raid_end > Date.now()) {
+        var delayEnd = item.raid_end - Date.now()
+        setTimeOut(item['gym_id'], item, delayEnd)
+    }
     mapData.gyms[item['gym_id']] = item
+}
+
+var timeoutHandles = []
+
+function setTimeOut(id, item, time) {
+    if (id in timeoutHandles) {
+        clearTimeout(timeoutHandles[id])
+    }
+    timeoutHandles[id] = setTimeout(function () {
+        processGyms(null, item)
+    }, time)
 }
 
 function processScanned(i, item) {
