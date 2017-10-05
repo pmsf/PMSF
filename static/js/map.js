@@ -231,6 +231,9 @@ function initMap() { // eslint-disable-line no-unused-vars
 
     createMyLocationButton()
     initSidebar()
+
+    var locale = window.navigator.userLanguage || window.navigator.language
+    moment.locale(locale)
 }
 
 function updateLocationMarker(style) {
@@ -334,10 +337,6 @@ function initSidebar() {
     document.body.style.setProperty('--sprite-large', 'url(' + urlSpriteLarge + ')')
 }
 
-function pad(number) {
-    return number <= 99 ? ('0' + number).slice(-2) : number
-}
-
 function getTypeSpan(type) {
     return '<span style="padding: 2px 5px; text-transform: uppercase; color: white; margin-right: 2px; border-radius: 4px; font-size: 0.8em; vertical-align: text-bottom; background-color: ' + type['color'] + ';">' + type['type'] + '</span>'
 }
@@ -351,7 +350,7 @@ function openMapDirections(lat, lng) { // eslint-disable-line no-unused-vars
 function getDateStr(t) {
     var dateStr = 'Unknown'
     if (t) {
-        dateStr = moment(t).format('DD-MM-YYYY, HH:mm:ss')
+        dateStr = moment(t).format('L')
     }
     return dateStr
 }
@@ -360,7 +359,7 @@ function getDateStr(t) {
 function getTimeStr(t) {
     var dateStr = 'Unknown'
     if (t) {
-        dateStr = moment(t).format('HH:mm:ss')
+        dateStr = moment(t).format('LTS')
     }
     return dateStr
 }
@@ -391,7 +390,6 @@ function pokemonLabel(item) {
     var latitude = item['latitude']
     var longitude = item['longitude']
     var disappearTime = item['disappear_time']
-    var disappearDate = new Date(disappearTime)
     var atk = item['individual_attack']
     var def = item['individual_defense']
     var sta = item['individual_stamina']
@@ -460,7 +458,7 @@ function pokemonLabel(item) {
         '<small>' + typesDisplay + '</small>' +
         '</div>' +
         '<div>' +
-        'Disappears at ' + pad(disappearDate.getHours()) + ':' + pad(disappearDate.getMinutes()) + ':' + pad(disappearDate.getSeconds()) +
+        'Disappears at ' + getTimeStr(disappearTime) +
         ' <span class="label-countdown" disappears-at="' + disappearTime + '">(00m00s)</span>' +
         '</div>' +
         '<div>' +
@@ -544,11 +542,11 @@ function gymLabel(item) {
     if (lastScanned != null) {
         lastScannedStr =
             '<div>' +
-            'Last Scanned: ' + getDateStr(lastScanned) +
+            'Last Scanned: ' + getDateStr(lastScanned) + ' ' + getTimeStr(lastScanned) +
             '</div>'
     }
 
-    var lastModifiedStr = getDateStr(lastModified)
+    var lastModifiedStr = getDateStr(lastModified) + ' ' + getTimeStr(lastScanned)
 
     var nameStr = (name ? '<div>' + name + '</div>' : '')
 
@@ -619,14 +617,12 @@ function gymLabel(item) {
 function pokestopLabel(expireTime, latitude, longitude) {
     var str
     if (expireTime) {
-        var expireDate = new Date(expireTime)
-
         str =
             '<div>' +
             '<b>Lured Pokéstop</b>' +
             '</div>' +
             '<div>' +
-            'Lure expires at ' + pad(expireDate.getHours()) + ':' + pad(expireDate.getMinutes()) + ':' + pad(expireDate.getSeconds()) +
+            'Lure expires at ' + getTimeStr(expireTime) +
             ' <span class="label-countdown" disappears-at="' + expireTime + '">(00m00s)</span>' +
             '</div>' +
             '<div>' +
@@ -761,7 +757,7 @@ function getTimeUntil(time) {
         'min': min,
         'sec': sec,
         'now': now,
-        'ttime': time
+        'time': time
     }
 }
 
@@ -1712,7 +1708,7 @@ var updateLabelDiffTime = function updateLabelDiffTime() {
         var seconds = disappearsAt.sec
         var timestring = ''
 
-        if (disappearsAt.ttime < disappearsAt.now) {
+        if (disappearsAt.time < disappearsAt.now) {
             if (element.hasAttribute('start')) {
                 timestring = '(started)'
             } else if (element.hasAttribute('end')) {
@@ -1956,12 +1952,12 @@ function showGymDetails(id) { // eslint-disable-line no-unused-vars
     })
 
     data.done(function (result) {
-        var lastModifiedStr = getDateStr(result.last_modified)
+        var lastModifiedStr = getDateStr(result.last_modified) + ' ' + getTimeStr(result.last_modified)
         var lastScannedStr = ''
         if (result.last_scanned != null) {
             lastScannedStr =
                 '<div style="font-size: .7em">' +
-                'Last Scanned: ' + getDateStr(result.last_scanned) +
+                'Last Scanned: ' + getDateStr(result.last_scanned) + ' ' + getTimeStr(result.last_scanned) +
                 '</div>'
         }
         var pokemon = result.pokemon !== undefined ? result.pokemon : []

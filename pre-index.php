@@ -662,7 +662,7 @@ if (!empty($_GET['lat']) && !empty($_GET['lon'])) {
 <script src="https://cdnjs.cloudflare.com/ajax/libs/skel/3.0.1/skel.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.3/js/select2.min.js"></script>
 <script src="https://cdn.datatables.net/1.10.12/js/jquery.dataTables.min.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.17.1/moment.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.17.1/moment-with-locales.min.js"></script>
 <script src="https://code.createjs.com/soundjs-0.6.2.min.js"></script>
 <script src="node_modules/push.js/bin/push.min.js"></script>
 <script src="static/dist/js/app.min.js"></script>
