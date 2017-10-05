@@ -330,9 +330,14 @@ function initSidebar() {
 
     $('#pokemon-icon-size').val(Store.get('iconSizeModifier'))
 
+    var port = ''
+    if (window.location.port.length > 0) {
+        port = ':' + window.location.port
+    }
+    var path = window.location.protocol + '//' + window.location.hostname + port + window.location.pathname
     var r = new RegExp('^(?:[a-z]+:)?//', 'i')
-    var urlSprite = r.test(Store.get('spritefile')) ? Store.get('spritefile') : window.location.href + Store.get('spritefile')
-    var urlSpriteLarge = r.test(Store.get('spritefileLarge')) ? Store.get('spritefileLarge') : window.location.href + Store.get('spritefileLarge')
+    var urlSprite = r.test(Store.get('spritefile')) ? Store.get('spritefile') : path + Store.get('spritefile')
+    var urlSpriteLarge = r.test(Store.get('spritefileLarge')) ? Store.get('spritefileLarge') : path + Store.get('spritefileLarge')
     document.body.style.setProperty('--sprite', 'url(' + urlSprite + ')')
     document.body.style.setProperty('--sprite-large', 'url(' + urlSpriteLarge + ')')
 }
