@@ -4,6 +4,7 @@ include('config/config.php');
 global $map, $fork;
 
 $now = new DateTime();
+$now->sub(new DateInterval('PT1S'));
 
 $d = array();
 
