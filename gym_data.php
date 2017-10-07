@@ -12,6 +12,7 @@ if ($map == "monocle") {
 } elseif ($map == "rm") {
     if ($fork == "sloppy") {
         $scanner = new \Scanner\RocketMap_Sloppy();
+    } else {
         $scanner = new \Scanner\RocketMap();
     }
 }
