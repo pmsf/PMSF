@@ -1033,6 +1033,10 @@ type: StoreTypes.String
 'spritefileLarge': {
 default: '<?php echo $copyrightSafe ? 'static/icons-safe-1-bigger.png' : 'static/icons-im-1-bigger.png' ?>',
 type: StoreTypes.String
+},
+'icons': {
+default: '<?php echo $copyrightSafe ? 'static/icons-safe/' : 'static/icons-pokemon/' ?>',
+type: StoreTypes.String
 }
 };
 

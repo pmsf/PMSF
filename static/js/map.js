@@ -74,6 +74,7 @@ var criesLoaded = false
 var animeCriesLoaded = false
 
 var assetsPath = 'static/sounds/'
+var iconpath = null
 
 var gymTypes = ['Uncontested', 'Mystic', 'Valor', 'Instinct']
 
@@ -340,6 +341,7 @@ function initSidebar() {
     var urlSpriteLarge = r.test(Store.get('spritefileLarge')) ? Store.get('spritefileLarge') : path + Store.get('spritefileLarge')
     document.body.style.setProperty('--sprite', 'url(' + urlSprite + ')')
     document.body.style.setProperty('--sprite-large', 'url(' + urlSpriteLarge + ')')
+    iconpath = r.test(Store.get('icons')) ? Store.get('icons') : path + Store.get('icons')
 }
 
 function getTypeSpan(type) {
@@ -806,7 +808,7 @@ function customizePokemonMarker(marker, item, skipNotification) {
     if (notifiedPokemon.indexOf(item['pokemon_id']) > -1 || notifiedRarity.indexOf(item['pokemon_rarity']) > -1) {
         if (!skipNotification) {
             checkAndCreateSound(item['pokemon_id'])
-            sendNotification(getNotifyText(item).fav_title, getNotifyText(item).fav_text, 'static/icons/' + item['pokemon_id'] + '.png', item['latitude'], item['longitude'])
+            sendNotification(getNotifyText(item).fav_title, getNotifyText(item).fav_text, iconpath + item['pokemon_id'] + '.png', item['latitude'], item['longitude'])
         }
         if (marker.animationDisabled !== true) {
             marker.setAnimation(google.maps.Animation.BOUNCE)
@@ -818,7 +820,7 @@ function customizePokemonMarker(marker, item, skipNotification) {
         if (notifiedMinPerfection > 0 && perfection >= notifiedMinPerfection) {
             if (!skipNotification) {
                 checkAndCreateSound(item['pokemon_id'])
-                sendNotification(getNotifyText(item).fav_title, getNotifyText(item).fav_text, 'static/icons/' + item['pokemon_id'] + '.png', item['latitude'], item['longitude'])
+                sendNotification(getNotifyText(item).fav_title, getNotifyText(item).fav_text, iconpath + item['pokemon_id'] + '.png', item['latitude'], item['longitude'])
             }
             if (marker.animationDisabled !== true) {
                 marker.setAnimation(google.maps.Animation.BOUNCE)
@@ -893,7 +895,7 @@ function setupGymMarker(item) {
         var raidStarted = item['raid_pokemon_id'] != null
         var icon
         if (raidStarted) {
-            icon = 'static/icons/' + item.raid_pokemon_id + '.png'
+            icon = iconpath + item.raid_pokemon_id + '.png'
             checkAndCreateSound(item.raid_pokemon_id)
         } else {
             var raidEgg = ''
@@ -961,7 +963,7 @@ function updateGymMarker(item, marker) {
             var raidStarted = item['raid_pokemon_id'] != null
             var icon
             if (raidStarted) {
-                icon = 'static/icons/' + item.raid_pokemon_id + '.png'
+                icon = iconpath + item.raid_pokemon_id + '.png'
                 checkAndCreateSound(item.raid_pokemon_id)
             } else {
                 checkAndCreateSound()
