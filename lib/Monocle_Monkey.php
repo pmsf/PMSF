@@ -136,7 +136,7 @@ AND    lon < :neLng", [':swLat' => $swLat, ':swLng' => $swLng, ':neLat' => $neLa
 
         $query = "SELECT f.external_id as gym_id,
       fs.last_modified as last_modified,
-      fs.updated as last_scanned,
+      updated as last_scanned,
       f.lat as latitude,
       f.lon as longitude,
       f.name,

@@ -551,7 +551,7 @@ function gymLabel(item) {
             '</div>'
     }
 
-    var lastModifiedStr = getDateStr(lastModified) + ' ' + getTimeStr(lastScanned)
+    var lastModifiedStr = getDateStr(lastModified) + ' ' + getTimeStr(lastModified)
 
     var nameStr = (name ? '<div>' + name + '</div>' : '')
 
@@ -1563,7 +1563,7 @@ function setTimeOut(id, item, time) {
     }
     timeoutHandles[id] = setTimeout(function () {
         processGyms(null, item)
-    }, time)
+    }, time + 1000)
 }
 
 function processScanned(i, item) {
