@@ -69,7 +69,8 @@ function countMarkers(map) { // eslint-disable-line no-unused-vars
 
         document.getElementById('pokeStatStatus').innerHTML = 'Pokémon markers are disabled'
         $('#pokemonList_table').dataTable().hide()
-    }       // end Pokémon processing
+    }
+    // end Pokémon processing
 
     // begin Gyms processing
     if (Store.get('showGyms')) {

@@ -496,6 +496,7 @@ function gymLabel(item) {
 
     var raidStr = ''
     var raidIcon = ''
+    var i = 0
     if (raidSpawned && item.raid_end > Date.now()) {
         var levelStr = ''
         for (i = 0; i < item['raid_level']; i++) {
@@ -537,7 +538,7 @@ function gymLabel(item) {
     }
 
     var memberStr = ''
-    for (var i = 0; i < members.length; i++) {
+    for (i = 0; i < members.length; i++) {
         memberStr +=
             '<span class="gym-member" title="' + members[i].pokemon_name + ' | ' + members[i].trainer_name + ' (Lvl ' + members[i].trainer_level + ')">' +
             '<i class="pokemon-sprite n' + members[i].pokemon_id + '"></i>' +
@@ -774,8 +775,10 @@ function getNotifyText(item) {
     var replace = [iv ? iv.toFixed(1) : '', item['pokemon_name'], item['individual_attack'], item['individual_defense'], item['individual_stamina']]
     var ntitle = repArray(iv ? notifyIvTitle : notifyNoIvTitle, find, replace)
     var dist = new Date(item['disappear_time']).toLocaleString([], {
-        hour: '2-digit', minute: '2-digit',
-        second: '2-digit', hour12: false
+        hour: '2-digit',
+        minute: '2-digit',
+        second: '2-digit',
+        hour12: false
     })
     var until = getTimeUntil(item['disappear_time'])
     var udist = until.hour > 0 ? until.hour + ':' : ''
