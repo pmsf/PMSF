@@ -6,88 +6,92 @@ class Monocle_Monkey extends Monocle
 {
     public function get_active($swLat, $swLng, $neLat, $neLng, $tstamp = 0, $oSwLat = 0, $oSwLng = 0, $oNeLat = 0, $oNeLng = 0)
     {
+        $conds = array();
+        $params = array();
+
+        $select = "pokemon_id, spawn_id, expire_timestamp, encounter_id, lat, lon, gender, form";
+        global $noHighLevelData;
+        if (!$noHighLevelData) {
+            $select = $select . ", atk_iv, def_iv, sta_iv, move_1, move_2, cp, level";
+        }
+
+        $conds[] = "lat > :swLat AND lon > :swLng AND lat < :neLat AND lon < :neLng AND expire_timestamp > :time";
+        $params[':swLat'] = $swLat;
+        $params[':swLng'] = $swLng;
+        $params[':neLat'] = $neLat;
+        $params[':neLng'] = $neLng;
+        $params[':time'] = time();
+
+        if ($oSwLat != 0) {
+            $conds[] = "NOT (lat > :oswLat AND lon > :oswLng AND lat < :oneLat AND lon < :oneLng)";
+            $params[':oswLat'] = $oSwLat;
+            $params[':oswLng'] = $oSwLng;
+            $params[':oneLat'] = $oNeLat;
+            $params[':oneLng'] = $oNeLng;
+        }
+        if ($tstamp > 0) {
+            $conds[] = "updated > :lastUpdated";
+            $params[':lastUpdated'] = $tstamp;
+        }
+
+        return $this->query_active($select, $conds, $params);
+    }
+
+    private function query_active($select, $conds, $params)
+    {
         global $db;
 
-        $datas = array();
-        global $map;
-        if ($swLat == 0) {
-            $datas = $db->query("SELECT * FROM sightings WHERE expire_timestamp > :time", [':time' => time()])->fetchAll();
-        } elseif ($tstamp > 0) {
-            $datas = $db->query("SELECT * 
-FROM   sightings 
-WHERE  expire_timestamp > :time 
-AND    updated > :lastUpdated
-AND    lat > :swLat 
-AND    lon > :swLng 
-AND    lat < :neLat 
-AND    lon < :neLng", [':time' => time(), ':lastUpdated' => $tstamp, ':swLat' => $swLat, ':swLng' => $swLng, ':neLat' => $neLat, ':neLng' => $neLng])->fetchAll();
-        } elseif ($oSwLat != 0) {
-            $datas = $db->query("SELECT * 
-FROM   sightings 
-WHERE  expire_timestamp > :time 
-   AND lat > :swLat
-   AND lon > :swLng 
-   AND lat < :neLat 
-   AND lon < :neLng 
-   AND NOT( lat > :oSwLat 
-            AND lon > :oSwLng 
-            AND lat < :oNeLat 
-            AND lon < :oNeLng ) ", [':time' => time(), ':swLat' => $swLat, ':swLng' => $swLng, ':neLat' => $neLat, ':neLng' => $neLng, ':oSwLat' => $oSwLat, ':oSwLng' => $oSwLng, ':oNeLat' => $oNeLat, ':oNeLng' => $oNeLng])->fetchAll();
-        } else {
-            $datas = $db->query("SELECT * 
-FROM   sightings 
-WHERE  expire_timestamp > :time 
-AND    lat > :swLat 
-AND    lon > :swLng 
-AND    lat < :neLat 
-AND    lon < :neLng", [':time' => time(), ':swLat' => $swLat, ':swLng' => $swLng, ':neLat' => $neLat, ':neLng' => $neLng])->fetchAll();
-        }
-        return $this->returnPokemon($datas);
+        $query = "SELECT :select
+        FROM sightings 
+        WHERE :conditions";
+
+        $query = str_replace(":select", $select, $query);
+        $query = str_replace(":conditions", join(" AND ", $conds), $query);
+        $pokemons = $db->query($query, $params)->fetchAll(\PDO::FETCH_ASSOC);
+
+        return $this->returnPokemon($pokemons);
     }
 
     public function get_stops($swLat, $swLng, $neLat, $neLng, $tstamp = 0, $oSwLat = 0, $oSwLng = 0, $oNeLat = 0, $oNeLng = 0, $lured = false)
     {
-        global $db;
+        $conds = array();
+        $params = array();
 
-        $datas = array();
-        global $map;
-        if ($swLat == 0) {
-            $datas = $db->query("SELECT external_id, lat, lon FROM pokestops")->fetchAll();
-        } elseif ($tstamp > 0) {
-            $datas = $db->query("SELECT external_id, 
-       lat, 
-       lon 
-FROM   pokestops 
-WHERE  updated > :lastUpdated
-AND    lat > :swLat 
-AND    lon > :swLng 
-AND    lat < :neLat 
-AND    lon < :neLng", [':lastUpdated' => $tstamp, ':swLat' => $swLat, ':swLng' => $swLng, ':neLat' => $neLat, ':neLng' => $neLng])->fetchAll();
-        } elseif ($oSwLat != 0) {
-            $datas = $db->query("SELECT external_id, 
-       lat, 
-       lon 
-FROM   pokestops 
-WHERE  lat > :swLat
-       AND lon > :swLng 
-       AND lat < :neLat 
-       AND lon < :neLng
-       AND NOT( lat > :oSwLat 
-                AND lon > :oSwLng 
-                AND lat < :oNeLat 
-                AND lon < :oNeLng ) ", [':swLat' => $swLat, ':swLng' => $swLng, ':neLat' => $neLat, ':neLng' => $neLng, ':oSwLat' => $oSwLat, ':oSwLng' => $oSwLng, ':oNeLat' => $oNeLat, ':oNeLng' => $oNeLng])->fetchAll();
-        } else {
-            $datas = $db->query("SELECT external_id, 
-       lat, 
-       lon 
-FROM   pokestops 
-WHERE  lat > :swLat 
-AND    lon > :swLng 
-AND    lat < :neLat 
-AND    lon < :neLng", [':swLat' => $swLat, ':swLng' => $swLng, ':neLat' => $neLat, ':neLng' => $neLng])->fetchAll();
+        $conds[] = "lat > :swLat AND lon > :swLng AND lat < :neLat AND lon < :neLng";
+        $params[':swLat'] = $swLat;
+        $params[':swLng'] = $swLng;
+        $params[':neLat'] = $neLat;
+        $params[':neLng'] = $neLng;
+
+        if ($oSwLat != 0) {
+            $conds[] = "NOT (lat > :oswLat AND lon > :oswLng AND lat < :oneLat AND lon < :oneLng)";
+            $params[':oswLat'] = $oSwLat;
+            $params[':oswLng'] = $oSwLng;
+            $params[':oneLat'] = $oNeLat;
+            $params[':oneLng'] = $oNeLng;
+        }
+        if ($tstamp > 0) {
+            $conds[] = "updated > :lastUpdated";
+            $params[':lastUpdated'] = $tstamp;
         }
 
-        return $this->returnPokestops($datas);
+        return $this->query_stops($conds, $params);
+    }
+
+    private function query_stops($conds, $params)
+    {
+        global $db;
+
+        $query = "SELECT external_id, 
+        lat, 
+        lon 
+        FROM pokestops
+        WHERE :conditions";
+
+        $query = str_replace(":conditions", join(" AND ", $conds), $query);
+        $pokestops = $db->query($query, $params)->fetchAll(\PDO::FETCH_ASSOC);
+
+        return $this->returnPokestops($pokestops);
     }
 
     public function get_gym($gymId)
@@ -134,11 +138,11 @@ AND    lon < :neLng", [':swLat' => $swLat, ':swLng' => $swLng, ':neLat' => $neLa
     {
         global $db;
 
-        $query = "SELECT f.external_id as gym_id,
-      fs.last_modified as last_modified,
-      updated as last_scanned,
-      f.lat as latitude,
-      f.lon as longitude,
+        $query = "SELECT f.external_id AS gym_id,
+      fs.last_modified AS last_modified,
+      updated AS last_scanned,
+      f.lat AS latitude,
+      f.lon AS longitude,
       f.name,
       fs.team team_id,
       fs.guard_pokemon_id,

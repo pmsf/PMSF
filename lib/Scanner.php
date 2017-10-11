@@ -49,7 +49,7 @@ class Scanner
         foreach ($datas as $row) {
             $p = array();
 
-            $dissapear = $row["expire_timestamp"] * 1000;
+            $disappear = $row["expire_timestamp"] * 1000;
             $lat = floatval($row["lat"]);
             $lon = floatval($row["lon"]);
             $pokeid = intval($row["pokemon_id"]);
@@ -67,7 +67,7 @@ class Scanner
             $cpm = !empty($row["cp_multiplier"]) ? floatval($row["cp_multiplier"]) : null;
             $level = !empty($row["level"]) ? intval($row["level"]) : null;
 
-            $p["disappear_time"] = $dissapear; //done
+            $p["disappear_time"] = $disappear; //done
             $p["encounter_id"] = $row["encounter_id"]; //done
 
             global $noHighLevelData;
