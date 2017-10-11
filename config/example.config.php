@@ -28,6 +28,7 @@ $maxLatLng = 1;                                                     // Max latit
 $maxZoomOut = 11;                                                   // Max zoom out level (11 ~= $maxLatLng = 1, 0 to disable, lower = the further you can zoom out)
 $enableCsrf = true;                                                 // Don't disable this unless you know why you need to :)
 $sessionLifetime = 43200;                                           // Session lifetime, in seconds
+$blockIframe = true;                                                // Block your map being loaded in an iframe
 
 /* Map Title + Language */
 

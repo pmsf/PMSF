@@ -5,6 +5,9 @@ if (!empty($_GET['lat']) && !empty($_GET['lon'])) {
     $startingLat = $_GET['lat'];
     $startingLng = $_GET['lon'];
 }
+if ($blockIframe) {
+    header('X-Frame-Options: DENY');
+}
 ?>
 <!DOCTYPE html>
 <html lang="<?= $locale ?>">
