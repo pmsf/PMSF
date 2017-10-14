@@ -6,207 +6,103 @@ class Monocle_Asner extends Monocle
 {
     public function get_gyms($swLat, $swLng, $neLat, $neLng, $tstamp = 0, $oSwLat = 0, $oSwLng = 0, $oNeLat = 0, $oNeLng = 0)
     {
-        global $db;
+        $conds = array();
+        $params = array();
 
-        $datas = array();
+        $conds[] = "f.lat > :swLat AND f.lon > :swLng AND f.lat < :neLat AND f.lon < :neLng";
+        $params[':swLat'] = $swLat;
+        $params[':swLng'] = $swLng;
+        $params[':neLat'] = $neLat;
+        $params[':neLng'] = $neLng;
 
-        global $map;
-        if ($swLat == 0) {
-            $datas = $db->query("SELECT t3.external_id, 
-       t3.lat, 
-       t3.lon, 
-       t1.last_modified, 
-       t1.team, 
-       t1.slots_available, 
-       t1.guard_pokemon_id 
-FROM   (SELECT fort_id, 
-               Max(last_modified) AS MaxLastModified 
-        FROM   fort_sightings 
-        GROUP  BY fort_id) t2 
-       LEFT JOIN fort_sightings t1 
-              ON t2.fort_id = t1.fort_id 
-                 AND t2.maxlastmodified = t1.last_modified 
-       LEFT JOIN forts t3 
-              ON t1.fort_id = t3.id")->fetchAll();
-        } elseif ($tstamp > 0) {
-            $datas = $db->query("SELECT t3.external_id, 
-       t3.lat, 
-       t3.lon, 
-       t1.last_modified, 
-       t1.team, 
-       t1.slots_available, 
-       t1.guard_pokemon_id 
-FROM   (SELECT fort_id, 
-               Max(last_modified) AS MaxLastModified 
-        FROM   fort_sightings 
-        GROUP  BY fort_id) t2 
-       LEFT JOIN fort_sightings t1 
-              ON t2.fort_id = t1.fort_id 
-                 AND t2.maxlastmodified = t1.last_modified 
-       LEFT JOIN forts t3 
-              ON t1.fort_id = t3.id 
-WHERE  t3.lat > :swLat 
-       AND t3.lon > :swLng 
-       AND t3.lat < :neLat 
-       AND t3.lon < :neLng", [':swLat' => $swLat, ':swLng' => $swLng, ':neLat' => $neLat, ':neLng' => $neLng])->fetchAll();
-        } elseif ($oSwLat != 0) {
-            $datas = $db->query("SELECT t3.external_id, 
-       t3.lat, 
-       t3.lon, 
-       t1.last_modified, 
-       t1.team, 
-       t1.slots_available, 
-       t1.guard_pokemon_id 
-FROM   (SELECT fort_id, 
-               Max(last_modified) AS MaxLastModified 
-        FROM   fort_sightings 
-        GROUP  BY fort_id) t2 
-       LEFT JOIN fort_sightings t1 
-              ON t2.fort_id = t1.fort_id 
-                 AND t2.maxlastmodified = t1.last_modified 
-       LEFT JOIN forts t3 
-              ON t1.fort_id = t3.id 
-WHERE  t3.lat > :swLat 
-       AND t3.lon > :swLng
-       AND t3.lat < :neLat
-       AND t3.lon < :neLng
-       AND NOT( t3.lat > :oSwLat
-                AND t3.lon > :oSwLng
-                AND t3.lat < :oNeLat
-                AND t3.lon < :oNeLng)", [':swLat' => $swLat, ':swLng' => $swLng, ':neLat' => $neLat, ':neLng' => $neLng, ':oSwLat' => $oSwLat, ':oSwLng' => $oSwLng, ':oNeLat' => $oNeLat, ':oNeLng' => $oNeLng])->fetchAll();
-        } else {
-            $datas = $db->query("SELECT    t3.external_id, 
-          t3.lat, 
-          t3.lon, 
-          t1.last_modified, 
-          t1.team, 
-          t1.slots_available, 
-          t1.guard_pokemon_id 
-FROM      ( 
-                   SELECT   fort_id, 
-                            Max(last_modified) AS maxlastmodified 
-                   FROM     fort_sightings 
-                   GROUP BY fort_id) t2 
-LEFT JOIN fort_sightings t1 
-ON        t2.fort_id = t1.fort_id 
-AND       t2.maxlastmodified = t1.last_modified 
-LEFT JOIN forts t3 
-ON        t1.fort_id = t3.id 
-WHERE     t3.lat > :swLat
-AND       t3.lon > :swLng 
-AND       t3.lat < :neLat 
-AND       t3.lon < :neLng", [':swLat' => $swLat, ':swLng' => $swLng, ':neLat' => $neLat, ':neLng' => $neLng])->fetchAll();
+        if ($oSwLat != 0) {
+            $conds[] = "NOT (f.lat > :oswLat AND f.lon > :oswLng AND f.lat < :oneLat AND f.lon < :oneLng)";
+            $params[':oswLat'] = $oSwLat;
+            $params[':oswLng'] = $oSwLng;
+            $params[':oneLat'] = $oNeLat;
+            $params[':oneLng'] = $oNeLng;
         }
 
-
-        $gyminfo = $this->returnGyms($datas);
-        $gyms = $gyminfo['gyms'];
-        $gym_ids = $gyminfo['gym_ids'];
-
-
-        $j = 0;
-
-        global $fork;
-        $gyms_in = '';
-        if (count($gym_ids)) {
-            $i = 1;
-            foreach ($gym_ids as $id) {
-                $gym_in_ids[':qry_' . $i] = $id;
-                $gyms_in .= ':' . 'qry_' . $i . ",";
-                $i++;
-            }
-            $gyms_in = substr($gyms_in, 0, -1);
-        } else {
-            $gym_in_ids = [];
-        }
-        $raids = $db->query("SELECT t3.external_id, 
-       t1.fort_id, 
-       raid_level AS level, 
-       pokemon_id, 
-       cp, 
-       move_1, 
-       move_2, 
-       raid_start, 
-       raid_end 
-FROM   (SELECT fort_id, 
-               Max(raid_end) AS MaxTimeEnd 
-        FROM   raid_info 
-        GROUP  BY fort_id) t1 
-       LEFT JOIN raid_info t2 
-              ON t1.fort_id = t2.fort_id 
-                 AND maxtimeend = raid_end 
-       JOIN forts t3 
-         ON t2.fort_id = t3.id 
-WHERE  t3.external_id IN ( $gyms_in ) ", $gym_in_ids)->fetchAll();
-
-        foreach ($raids as $raid) {
-            $id = $raid["external_id"];
-            $rpid = intval($raid['pokemon_id']);
-            $gyms[$id]['raid_level'] = intval($raid['level']);
-            if ($rpid) {
-                $gyms[$id]['raid_pokemon_id'] = $rpid;
-                $gyms[$id]['raid_pokemon_name'] = i8ln($this->data[$rpid]['name']);
-            }
-            $gyms[$id]['raid_pokemon_cp'] = !empty($raid['cp']) ? intval($raid['cp']) : null;
-            $gyms[$id]['raid_pokemon_move_1'] = !empty($raid['move_1']) ? intval($raid['move_1']) : null;
-            $gyms[$id]['raid_pokemon_move_2'] = !empty($raid['move_2']) ? intval($raid['move_2']) : null;
-            $gyms[$id]['raid_start'] = $raid["raid_start"] * 1000;
-            $gyms[$id]['raid_end'] = $raid["raid_end"] * 1000;
-
-            unset($raids[$j]);
-
-            $j++;
-        }
-
-
-        return $gyms;
+        return $this->query_gyms($conds, $params);
     }
 
-    public function get_gym($id)
+    public function get_gym($gymId)
+    {
+        $conds = array();
+        $params = array();
+
+        $conds[] = "f.external_id = :gymId";
+        $params[':gymId'] = $gymId;
+
+        $gyms = $this->query_gyms($conds, $params);
+        $gym = $gyms[$gymId];
+        return $gym;
+    }
+
+    public function query_gyms($conds, $params)
     {
         global $db;
 
-        $row = $db->query("SELECT t3.external_id, 
-       t3.lat, 
-       t3.lon, 
-       t1.last_modified, 
-       t1.team, 
-       t1.slots_available, 
-       t1.guard_pokemon_id 
-FROM   (SELECT fort_id, 
-               Max(last_modified) AS MaxLastModified 
-        FROM   fort_sightings 
-        GROUP  BY fort_id) t2 
-       LEFT JOIN fort_sightings t1 
-              ON t2.fort_id = t1.fort_id 
-                 AND t2.maxlastmodified = t1.last_modified 
-       LEFT JOIN forts t3 
-              ON t1.fort_id = t3.id 
-WHERE  t3.external_id = :id ", [':id' => $id])->fetch();
+        $query = "SELECT f.external_id AS gym_id, 
+        f.lat AS latitude, 
+        f.lon AS longitude, 
+        fs.last_modified, 
+        fs.team AS team_id, 
+        fs.slots_available, 
+        fs.guard_pokemon_id,
+        raid_level, 
+        pokemon_id AS raid_pokemon_id, 
+        cp AS raid_pokemon_cp, 
+        move_1 AS raid_pokemon_move_1, 
+        move_2 AS raid_pokemon_move_2, 
+        raid_start, 
+        raid_end 
+        FROM (SELECT f.id,
+          f.external_id,
+          f.lat,
+          f.lon, 
+          MAX(fs.id) AS fort_sightings_id,
+          MAX(r.id)  AS raid_id
+          FROM   forts f
+          LEFT JOIN fort_sightings fs ON fs.fort_id = f.id
+          LEFT JOIN raid_info r ON r.fort_id = f.id
+          GROUP  BY f.id) f
+        LEFT JOIN fort_sightings fs ON fs.id = f.fort_sightings_id
+        LEFT JOIN raid_info r ON r.id = f.raid_id
+        WHERE :conditions";
 
-        $raid = $db->query("SELECT t3.external_id, 
-       t1.fort_id, 
-       raid_level AS level, 
-       pokemon_id, 
-       cp, 
-       move_1, 
-       move_2, 
-       raid_start, 
-       raid_end 
-FROM   (SELECT fort_id, 
-               Max(raid_end) AS MaxTimeEnd 
-        FROM   raid_info 
-        GROUP  BY fort_id) t1 
-       LEFT JOIN raid_info t2 
-              ON t1.fort_id = t2.fort_id 
-                 AND maxtimeend = raid_end 
-       JOIN forts t3 
-         ON t2.fort_id = t3.id 
-WHERE  t3.external_id IN ( :id ) ", [':id' => $id])->fetch();
+        $query = str_replace(":conditions", join(" AND ", $conds), $query);
+        $gyms = $db->query($query, $params)->fetchAll(\PDO::FETCH_ASSOC);
 
-        $return = $this->returnGymInfo($row, $raid);
-        unset($raid);
+        $data = array();
+        $i = 0;
 
-        return $return;
+        foreach ($gyms as $gym) {
+            $guard_pid = $gym["guard_pokemon_id"];
+            if ($guard_pid == "0") {
+                $guard_pid = null;
+                $gym["guard_pokemon_id"] = null;
+            }
+            $raid_pid = $gym["raid_pokemon_id"];
+            if ($raid_pid == "0") {
+                $raid_pid = null;
+                $gym["raid_pokemon_id"] = null;
+            }
+            $gym["enabled"] = true;
+            $gym["team_id"] = intval($gym["team_id"]);
+            $gym["pokemon"] = [];
+            $gym["guard_pokemon_name"] = empty($guard_pid) ? null : i8ln($this->data[$guard_pid]["name"]);
+            $gym["raid_pokemon_name"] = empty($raid_pid) ? null : i8ln($this->data[$raid_pid]["name"]);
+            $gym["latitude"] = floatval($gym["latitude"]);
+            $gym["longitude"] = floatval($gym["longitude"]);
+            $gym["last_modified"] = $gym["last_modified"] * 1000;
+            $gym["raid_start"] = $gym["raid_start"] * 1000;
+            $gym["raid_end"] = $gym["raid_end"] * 1000;
+            $data[$gym["gym_id"]] = $gym;
+
+            unset($gyms[$i]);
+            $i++;
+        }
+        return $data;
     }
 }

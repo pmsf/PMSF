@@ -838,7 +838,7 @@ function getGymMarkerIcon(item) {
     var level = item.raid_level
     var team = item.team_id
     var teamStr = ''
-    if (team === 0) {
+    if (team === 0 || level === null) {
         teamStr = gymTypes[item['team_id']]
     } else {
         teamStr = gymTypes[item['team_id']] + '_' + level
