@@ -9,10 +9,10 @@ class Monocle_Monkey extends Monocle
         $conds = array();
         $params = array();
 
-        $select = "pokemon_id, spawn_id, expire_timestamp, encounter_id, lat, lon, gender, form";
+        $select = "pokemon_id, spawn_id AS spawnpoint_id, expire_timestamp AS disappear_time, encounter_id, lat AS latitude, lon AS longitude, gender, form";
         global $noHighLevelData;
         if (!$noHighLevelData) {
-            $select = $select . ", atk_iv, def_iv, sta_iv, move_1, move_2, cp, level";
+            $select = $select . ", atk_iv AS individual_attack, def_iv AS individual_defense, sta_iv AS individual_stamina, move_1, move_2, cp, level";
         }
 
         $conds[] = "lat > :swLat AND lon > :swLng AND lat < :neLat AND lon < :neLng AND expire_timestamp > :time";
@@ -37,6 +37,28 @@ class Monocle_Monkey extends Monocle
         return $this->query_active($select, $conds, $params);
     }
 
+    public function get_active_by_id($ids, $swLat, $swLng, $neLat, $neLng)
+    {
+        $conds = array();
+        $params = array();
+
+        $select = "pokemon_id, spawn_id AS spawnpoint_id, expire_timestamp AS disappear_time, encounter_id, lat AS latitude, lon AS longitude, gender, form";
+        global $noHighLevelData;
+        if (!$noHighLevelData) {
+            $select = $select . ", atk_iv AS individual_attack, def_iv AS individual_defense, sta_iv AS individual_stamina, move_1, move_2, cp, level";
+        }
+
+        $conds[] = "lat > :swLat AND lon > :swLng AND lat < :neLat AND lon < :neLng AND expire_timestamp > :time AND pokemon_id IN ( :ids )";
+        $params[':swLat'] = $swLat;
+        $params[':swLng'] = $swLng;
+        $params[':neLat'] = $neLat;
+        $params[':neLng'] = $neLng;
+        $params[':time'] = time();
+        $params[':ids'] = implode(",", $ids);
+
+        return $this->query_active($select, $conds, $params);
+    }
+
     private function query_active($select, $conds, $params)
     {
         global $db;
@@ -49,7 +71,33 @@ class Monocle_Monkey extends Monocle
         $query = str_replace(":conditions", join(" AND ", $conds), $query);
         $pokemons = $db->query($query, $params)->fetchAll(\PDO::FETCH_ASSOC);
 
-        return $this->returnPokemon($pokemons);
+        $data = array();
+        $i = 0;
+
+        foreach ($pokemons as $pokemon) {
+            $pokemon["latitude"] = floatval($pokemon["latitude"]);
+            $pokemon["longitude"] = floatval($pokemon["longitude"]);
+            $pokemon["disappear_time"] = $pokemon["disappear_time"] * 1000;
+
+            $pokemon["individual_attack"] = isset($row["individual_attack"]) ? intval($pokemon["individual_attack"]) : null;
+            $pokemon["individual_defense"] = isset($row["individual_defense"]) ? intval($pokemon["individual_defense"]) : null;
+            $pokemon["individual_stamina"] = isset($row["individual_stamina"]) ? intval($pokemon["individual_stamina"]) : null;
+
+            $pokemon["pokemon_id"] = intval($pokemon["pokemon_id"]);
+            $pokemon["pokemon_name"] = i8ln($this->data[$pokemon["pokemon_id"]]['name']);
+            $pokemon["pokemon_rarity"] = i8ln($this->data[$pokemon["pokemon_id"]]['rarity']);
+            $types = $this->data[$pokemon["pokemon_id"]]["types"];
+            foreach ($types as $k => $v) {
+                $types[$k]['type'] = i8ln($v['type']);
+            }
+            $pokemon["pokemon_types"] = $types;
+
+            $data[] = $pokemon;
+
+            unset($pokemons[$i]);
+            $i++;
+        }
+        return $data;
     }
 
     public function get_stops($swLat, $swLng, $neLat, $neLng, $tstamp = 0, $oSwLat = 0, $oSwLng = 0, $oNeLat = 0, $oNeLng = 0, $lured = false)
@@ -82,16 +130,27 @@ class Monocle_Monkey extends Monocle
     {
         global $db;
 
-        $query = "SELECT external_id, 
-        lat, 
-        lon 
+        $query = "SELECT external_id AS pokestop_id, 
+        lat AS latitude, 
+        lon AS longitude 
         FROM pokestops
         WHERE :conditions";
 
         $query = str_replace(":conditions", join(" AND ", $conds), $query);
         $pokestops = $db->query($query, $params)->fetchAll(\PDO::FETCH_ASSOC);
 
-        return $this->returnPokestops($pokestops);
+        $data = array();
+        $i = 0;
+
+        foreach ($pokestops as $pokestop) {
+            $pokestop["latitude"] = floatval($pokestop["latitude"]);
+            $pokestop["longitude"] = floatval($pokestop["longitude"]);
+            $data[$pokestop['pokestop_id']] = $pokestop;
+
+            unset($pokestops[$i]);
+            $i++;
+        }
+        return $data;
     }
 
     public function get_gym($gymId)

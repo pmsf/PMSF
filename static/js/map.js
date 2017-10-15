@@ -111,6 +111,7 @@ function excludePokemon(id) { // eslint-disable-line no-unused-vars
     $selectExclude.val(
         $selectExclude.val().concat(id)
     ).trigger('change')
+    clearStaleMarkers()
 }
 
 function notifyAboutPokemon(id) { // eslint-disable-line no-unused-vars
