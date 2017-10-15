@@ -6,449 +6,301 @@ class Monocle extends Scanner
 {
     public function get_active($swLat, $swLng, $neLat, $neLng, $tstamp = 0, $oSwLat = 0, $oSwLng = 0, $oNeLat = 0, $oNeLng = 0)
     {
-        global $db;
+        $conds = array();
+        $params = array();
 
-        $datas = array();
-        global $map;
-        if ($swLat == 0) {
-            $datas = $db->query("SELECT * FROM sightings WHERE expire_timestamp > :time", [':time' => time()])->fetchAll();
-        } elseif ($tstamp > 0) {
-            $datas = $db->query("SELECT * 
-FROM   sightings 
-WHERE  expire_timestamp > :time 
-AND    lat > :swLat 
-AND    lon > :swLng 
-AND    lat < :neLat 
-AND    lon < :neLng", [':time' => time(), ':swLat' => $swLat, ':swLng' => $swLng, ':neLat' => $neLat, ':neLng' => $neLng])->fetchAll();
-        } elseif ($oSwLat != 0) {
-            $datas = $db->query("SELECT * 
-FROM   sightings 
-WHERE  expire_timestamp > :time 
-   AND lat > :swLat
-   AND lon > :swLng 
-   AND lat < :neLat 
-   AND lon < :neLng 
-   AND NOT( lat > :oSwLat 
-            AND lon > :oSwLng 
-            AND lat < :oNeLat 
-            AND lon < :oNeLng ) ", [':time' => time(), ':swLat' => $swLat, ':swLng' => $swLng, ':neLat' => $neLat, ':neLng' => $neLng, ':oSwLat' => $oSwLat, ':oSwLng' => $oSwLng, ':oNeLat' => $oNeLat, ':oNeLng' => $oNeLng])->fetchAll();
-        } else {
-            $datas = $db->query("SELECT * 
-FROM   sightings 
-WHERE  expire_timestamp > :time 
-AND    lat > :swLat 
-AND    lon > :swLng 
-AND    lat < :neLat 
-AND    lon < :neLng", [':time' => time(), ':swLat' => $swLat, ':swLng' => $swLng, ':neLat' => $neLat, ':neLng' => $neLng])->fetchAll();
+        $select = "pokemon_id, spawn_id AS spawnpoint_id, expire_timestamp AS disappear_time, encounter_id, lat AS latitude, lon AS longitude, gender, form";
+        global $noHighLevelData;
+        if (!$noHighLevelData) {
+            $select = $select . ", atk_iv AS individual_attack, def_iv AS individual_defense, sta_iv AS individual_stamina, move_1, move_2, cp, level";
         }
-        return $this->returnPokemon($datas);
+
+        $conds[] = "lat > :swLat AND lon > :swLng AND lat < :neLat AND lon < :neLng AND expire_timestamp > :time";
+        $params[':swLat'] = $swLat;
+        $params[':swLng'] = $swLng;
+        $params[':neLat'] = $neLat;
+        $params[':neLng'] = $neLng;
+        $params[':time'] = time();
+
+        if ($oSwLat != 0) {
+            $conds[] = "NOT (lat > :oswLat AND lon > :oswLng AND lat < :oneLat AND lon < :oneLng)";
+            $params[':oswLat'] = $oSwLat;
+            $params[':oswLng'] = $oSwLng;
+            $params[':oneLat'] = $oNeLat;
+            $params[':oneLng'] = $oNeLng;
+        }
+
+        return $this->query_active($select, $conds, $params);
     }
 
     public function get_active_by_id($ids, $swLat, $swLng, $neLat, $neLng)
     {
+        $conds = array();
+        $params = array();
+
+        $select = "pokemon_id, spawn_id AS spawnpoint_id, expire_timestamp AS disappear_time, encounter_id, lat AS latitude, lon AS longitude, gender, form";
+        global $noHighLevelData;
+        if (!$noHighLevelData) {
+            $select = $select . ", atk_iv AS individual_attack, def_iv AS individual_defense, sta_iv AS individual_stamina, move_1, move_2, cp, level";
+        }
+
+        $conds[] = "lat > :swLat AND lon > :swLng AND lat < :neLat AND lon < :neLng AND expire_timestamp > :time AND pokemon_id IN ( :ids )";
+        $params[':swLat'] = $swLat;
+        $params[':swLng'] = $swLng;
+        $params[':neLat'] = $neLat;
+        $params[':neLng'] = $neLng;
+        $params[':time'] = time();
+        $params[':ids'] = implode(",", $ids);
+
+        return $this->query_active($select, $conds, $params);
+    }
+
+    public function query_active($select, $conds, $params)
+    {
         global $db;
 
-        $datas = array();
-        global $map;
-        $pkmn_in = '';
-        if (count($ids)) {
-            $i = 1;
-            foreach ($ids as $id) {
-                $pkmn_ids[':qry_' . $i] = $id;
-                $pkmn_in .= ':' . 'qry_' . $i . ",";
-                $i++;
+        $query = "SELECT :select
+        FROM sightings 
+        WHERE :conditions";
+
+        $query = str_replace(":select", $select, $query);
+        $query = str_replace(":conditions", join(" AND ", $conds), $query);
+        $pokemons = $db->query($query, $params)->fetchAll(\PDO::FETCH_ASSOC);
+
+        $data = array();
+        $i = 0;
+
+        foreach ($pokemons as $pokemon) {
+            $pokemon["latitude"] = floatval($pokemon["latitude"]);
+            $pokemon["longitude"] = floatval($pokemon["longitude"]);
+            $pokemon["disappear_time"] = $pokemon["disappear_time"] * 1000;
+
+            $pokemon["individual_attack"] = isset($row["individual_attack"]) ? intval($pokemon["individual_attack"]) : null;
+            $pokemon["individual_defense"] = isset($row["individual_defense"]) ? intval($pokemon["individual_defense"]) : null;
+            $pokemon["individual_stamina"] = isset($row["individual_stamina"]) ? intval($pokemon["individual_stamina"]) : null;
+
+            $pokemon["pokemon_id"] = intval($pokemon["pokemon_id"]);
+            $pokemon["pokemon_name"] = i8ln($this->data[$pokemon["pokemon_id"]]['name']);
+            $pokemon["pokemon_rarity"] = i8ln($this->data[$pokemon["pokemon_id"]]['rarity']);
+            $types = $this->data[$pokemon["pokemon_id"]]["types"];
+            foreach ($types as $k => $v) {
+                $types[$k]['type'] = i8ln($v['type']);
             }
-            $pkmn_in = substr($pkmn_in, 0, -1);
-        } else {
-            $pkmn_ids = [];
-        }
+            $pokemon["pokemon_types"] = $types;
+            $data[] = $pokemon;
 
-        if ($swLat == 0) {
-            $datas = $db->query("SELECT * 
-FROM   sightings 
-WHERE  `expire_timestamp` > :time
-       AND pokemon_id IN ( $pkmn_in ) ", array_merge($pkmn_ids, [':time' => time()]))->fetchAll();
-        } else {
-            $datas = $db->query("SELECT * 
-FROM   sightings 
-WHERE  expire_timestamp > :timeStamp
-AND    pokemon_id IN ( $pkmn_in ) 
-AND    lat > :swLat 
-AND    lon > :swLng
-AND    lat < :neLat
-AND    lon < :neLng", array_merge($pkmn_ids, [':timeStamp' => time(), ':swLat' => $swLat, ':swLng' => $swLng, ':neLat' => $neLat, ':neLng' => $neLng]))->fetchAll();
+            unset($pokemons[$i]);
+            $i++;
         }
-
-        return $this->returnPokemon($datas);
+        return $data;
     }
 
     public function get_stops($swLat, $swLng, $neLat, $neLng, $tstamp = 0, $oSwLat = 0, $oSwLng = 0, $oNeLat = 0, $oNeLng = 0, $lured = false)
     {
-        global $db;
+        $conds = array();
+        $params = array();
 
-        $datas = array();
-        global $map;
-        if ($swLat == 0) {
-            $datas = $db->query("SELECT external_id, lat, lon FROM pokestops")->fetchAll();
-        } elseif ($tstamp > 0) {
-            $datas = $db->query("SELECT external_id, 
-       lat, 
-       lon 
-FROM   pokestops 
-WHERE  lat > :swLat 
-AND    lon > :swLng 
-AND    lat < :neLat 
-AND    lon < :neLng", [':swLat' => $swLat, ':swLng' => $swLng, ':neLat' => $neLat, ':neLng' => $neLng])->fetchAll();
-        } elseif ($oSwLat != 0) {
-            $datas = $db->query("SELECT external_id, 
-       lat, 
-       lon 
-FROM   pokestops 
-WHERE  lat > :swLat
-       AND lon > :swLng 
-       AND lat < :neLat 
-       AND lon < :neLng
-       AND NOT( lat > :oSwLat 
-                AND lon > :oSwLng 
-                AND lat < :oNeLat 
-                AND lon < :oNeLng ) ", [':swLat' => $swLat, ':swLng' => $swLng, ':neLat' => $neLat, ':neLng' => $neLng, ':oSwLat' => $oSwLat, ':oSwLng' => $oSwLng, ':oNeLat' => $oNeLat, ':oNeLng' => $oNeLng])->fetchAll();
-        } else {
-            $datas = $db->query("SELECT external_id, 
-       lat, 
-       lon 
-FROM   pokestops 
-WHERE  lat > :swLat 
-AND    lon > :swLng 
-AND    lat < :neLat 
-AND    lon < :neLng", [':swLat' => $swLat, ':swLng' => $swLng, ':neLat' => $neLat, ':neLng' => $neLng])->fetchAll();
+        $conds[] = "lat > :swLat AND lon > :swLng AND lat < :neLat AND lon < :neLng";
+        $params[':swLat'] = $swLat;
+        $params[':swLng'] = $swLng;
+        $params[':neLat'] = $neLat;
+        $params[':neLng'] = $neLng;
+
+        if ($oSwLat != 0) {
+            $conds[] = "NOT (lat > :oswLat AND lon > :oswLng AND lat < :oneLat AND lon < :oneLng)";
+            $params[':oswLat'] = $oSwLat;
+            $params[':oswLng'] = $oSwLng;
+            $params[':oneLat'] = $oNeLat;
+            $params[':oneLng'] = $oNeLng;
         }
 
-        return $this->returnPokestops($datas);
+        return $this->query_stops($conds, $params);
     }
 
-    public function get_gyms($swLat, $swLng, $neLat, $neLng, $tstamp = 0, $oSwLat = 0, $oSwLng = 0, $oNeLat = 0, $oNeLng = 0)
+    public function query_stops($conds, $params)
     {
         global $db;
 
-        $datas = array();
+        $query = "SELECT external_id AS pokestop_id, 
+        lat AS latitude, 
+        lon AS longitude 
+        FROM pokestops
+        WHERE :conditions";
 
-        global $map;
-        if ($swLat == 0) {
-            $datas = $db->query("SELECT t3.external_id, 
-       t3.lat, 
-       t3.lon, 
-       t1.last_modified, 
-       t1.team, 
-       t1.slots_available, 
-       t1.guard_pokemon_id 
-FROM   (SELECT fort_id, 
-               Max(last_modified) AS MaxLastModified 
-        FROM   fort_sightings 
-        GROUP  BY fort_id) t2 
-       LEFT JOIN fort_sightings t1 
-              ON t2.fort_id = t1.fort_id 
-                 AND t2.maxlastmodified = t1.last_modified 
-       LEFT JOIN forts t3 
-              ON t1.fort_id = t3.id")->fetchAll();
-        } elseif ($tstamp > 0) {
-            $datas = $db->query("SELECT t3.external_id, 
-       t3.lat, 
-       t3.lon, 
-       t1.last_modified, 
-       t1.team, 
-       t1.slots_available, 
-       t1.guard_pokemon_id 
-FROM   (SELECT fort_id, 
-               Max(last_modified) AS MaxLastModified 
-        FROM   fort_sightings 
-        GROUP  BY fort_id) t2 
-       LEFT JOIN fort_sightings t1 
-              ON t2.fort_id = t1.fort_id 
-                 AND t2.maxlastmodified = t1.last_modified 
-       LEFT JOIN forts t3 
-              ON t1.fort_id = t3.id 
-WHERE  t3.lat > :swLat 
-       AND t3.lon > :swLng 
-       AND t3.lat < :neLat 
-       AND t3.lon < :neLng", [':swLat' => $swLat, ':swLng' => $swLng, ':neLat' => $neLat, ':neLng' => $neLng])->fetchAll();
-        } elseif ($oSwLat != 0) {
-            $datas = $db->query("SELECT t3.external_id, 
-       t3.lat, 
-       t3.lon, 
-       t1.last_modified, 
-       t1.team, 
-       t1.slots_available, 
-       t1.guard_pokemon_id 
-FROM   (SELECT fort_id, 
-               Max(last_modified) AS MaxLastModified 
-        FROM   fort_sightings 
-        GROUP  BY fort_id) t2 
-       LEFT JOIN fort_sightings t1 
-              ON t2.fort_id = t1.fort_id 
-                 AND t2.maxlastmodified = t1.last_modified 
-       LEFT JOIN forts t3 
-              ON t1.fort_id = t3.id 
-WHERE  t3.lat > :swLat 
-       AND t3.lon > :swLng
-       AND t3.lat < :neLat
-       AND t3.lon < :neLng
-       AND NOT( t3.lat > :oSwLat
-                AND t3.lon > :oSwLng
-                AND t3.lat < :oNeLat
-                AND t3.lon < :oNeLng)", [':swLat' => $swLat, ':swLng' => $swLng, ':neLat' => $neLat, ':neLng' => $neLng, ':oSwLat' => $oSwLat, ':oSwLng' => $oSwLng, ':oNeLat' => $oNeLat, ':oNeLng' => $oNeLng])->fetchAll();
-        } else {
-            $datas = $db->query("SELECT    t3.external_id, 
-          t3.lat, 
-          t3.lon, 
-          t1.last_modified, 
-          t1.team, 
-          t1.slots_available, 
-          t1.guard_pokemon_id 
-FROM      ( 
-                   SELECT   fort_id, 
-                            Max(last_modified) AS maxlastmodified 
-                   FROM     fort_sightings 
-                   GROUP BY fort_id) t2 
-LEFT JOIN fort_sightings t1 
-ON        t2.fort_id = t1.fort_id 
-AND       t2.maxlastmodified = t1.last_modified 
-LEFT JOIN forts t3 
-ON        t1.fort_id = t3.id 
-WHERE     t3.lat > :swLat
-AND       t3.lon > :swLng 
-AND       t3.lat < :neLat 
-AND       t3.lon < :neLng", [':swLat' => $swLat, ':swLng' => $swLng, ':neLat' => $neLat, ':neLng' => $neLng])->fetchAll();
+        $query = str_replace(":conditions", join(" AND ", $conds), $query);
+        $pokestops = $db->query($query, $params)->fetchAll(\PDO::FETCH_ASSOC);
+
+        $data = array();
+        $i = 0;
+
+        foreach ($pokestops as $pokestop) {
+            $pokestop["latitude"] = floatval($pokestop["latitude"]);
+            $pokestop["longitude"] = floatval($pokestop["longitude"]);
+            $data[] = $pokestop;
+
+            unset($pokestops[$i]);
+            $i++;
         }
-
-
-        $gyminfo = $this->returnGyms($datas);
-        $gyms = $gyminfo['gyms'];
-        $gym_ids = $gyminfo['gym_ids'];
-
-
-        $j = 0;
-
-        $gyms_in = '';
-        if (count($gym_ids)) {
-            $i = 1;
-            foreach ($gym_ids as $id) {
-                $gym_in_ids[':qry_' . $i] = $id;
-                $gyms_in .= ':' . 'qry_' . $i . ",";
-                $i++;
-            }
-            $gyms_in = substr($gyms_in, 0, -1);
-        } else {
-            $gym_in_ids = [];
-        }
-        $raids = $db->query("SELECT t3.external_id,
-       t1.fort_id, 
-       level, 
-       pokemon_id, 
-       time_battle AS raid_start, 
-       time_end    AS raid_end,
-       move_1,
-       move_2
-FROM   (SELECT fort_id, 
-               Max(time_end) AS MaxTimeEnd 
-        FROM   raids 
-        GROUP  BY fort_id) t1 
-       LEFT JOIN raids t2 
-              ON t1.fort_id = t2.fort_id 
-                 AND maxtimeend = time_end 
-       LEFT JOIN forts t3
-               ON t3.id = t1.fort_id
- WHERE  t3.external_id IN ( $gyms_in ) ", $gym_in_ids)->fetchAll();
-
-        foreach ($raids as $raid) {
-            $id = $raid["external_id"];
-            $rpid = intval($raid['pokemon_id']);
-            $gyms[$id]['raid_level'] = intval($raid['level']);
-            if ($rpid) {
-                $gyms[$id]['raid_pokemon_id'] = $rpid;
-                $gyms[$id]['raid_pokemon_name'] = i8ln($this->data[$rpid]['name']);
-            }
-            $gyms[$id]['raid_pokemon_cp'] = !empty($raid['cp']) ? intval($raid['cp']) : null;
-            $gyms[$id]['raid_pokemon_move_1'] = !empty($raid['move_1']) ? intval($raid['move_1']) : null;
-            $gyms[$id]['raid_pokemon_move_2'] = !empty($raid['move_2']) ? intval($raid['move_2']) : null;
-            $gyms[$id]['raid_start'] = $raid["raid_start"] * 1000;
-            $gyms[$id]['raid_end'] = $raid["raid_end"] * 1000;
-
-            unset($raids[$j]);
-
-            $j++;
-        }
-
-
-        return $gyms;
+        return $data;
     }
 
     public function get_spawnpoints($swLat, $swLng, $neLat, $neLng, $tstamp = 0, $oSwLat = 0, $oSwLng = 0, $oNeLat = 0, $oNeLng = 0)
     {
+        $conds = array();
+        $params = array();
+
+        $conds[] = "lat > :swLat AND lon > :swLng AND lat < :neLat AND lon < :neLng AND updated > :lastUpdated";
+        $params[':swLat'] = $swLat;
+        $params[':swLng'] = $swLng;
+        $params[':neLat'] = $neLat;
+        $params[':neLng'] = $neLng;
+        $params[':lastUpdated'] = $tstamp;
+
+        if ($oSwLat != 0) {
+            $conds[] = "NOT (lat > :oswLat AND lon > :oswLng AND lat < :oneLat AND lon < :oneLng)";
+            $params[':oswLat'] = $oSwLat;
+            $params[':oswLng'] = $oSwLng;
+            $params[':oneLat'] = $oNeLat;
+            $params[':oneLng'] = $oNeLng;
+        }
+
+        return $this->query_spawnpoints($conds, $params);
+    }
+
+    private function query_spawnpoints($conds, $params)
+    {
         global $db;
 
-        $datas = array();
+        $query = "SELECT lat AS latitude, 
+        lon AS longitude, 
+        spawn_id AS spawnpoint_id, 
+        despawn_time AS time 
+        FROM   spawnpoints 
+        WHERE :conditions";
 
-        if ($swLat == 0) {
-            $datas = $db->query("SELECT lat, lon, spawn_id, despawn_time FROM spawnpoints WHERE updated > 0")->fetchAll();
-        } elseif ($tstamp > 0) {
-            $datas = $db->query("SELECT lat, 
-       lon, 
-       spawn_id, 
-       despawn_time 
-FROM   spawnpoints 
-WHERE  updated > :updated
-AND    lat > :swLat 
-AND    lon > :swLng
-AND    lat < :neLat 
-AND    lon < :neLng", [':updated' => $tstamp, ':swLat' => $swLat, ':swLng' => $swLng, ':neLat' => $neLat, ':neLng' => $neLng])->fetchAll();
-        } elseif ($oSwLat != 0) {
-            $datas = $db->query("SELECT lat, 
-       lon, 
-       spawn_id, 
-       despawn_time 
-FROM   spawnpoints 
-WHERE  updated > 0 
-       AND lat > :swLat  
-       AND lon > :swLng 
-       AND lat < :neLat 
-       AND lon <  :neLng  
-       AND NOT( lat >  :oSwLat 
-                AND lon >  :oSwLng
-                AND lat <  :oNeLat
-                AND lon <  :oNeLng ) ", [':swLat' => $swLat, ':swLng' => $swLng, ':neLat' => $neLat, ':neLng' => $neLng, ':oSwLat' => $oSwLat, ':oSwLng' => $oSwLng, ':oNeLat' => $oNeLat, ':oNeLng' => $oNeLng])->fetchAll();
-        } else {
-            $datas = $db->query("SELECT lat, 
-       lon, 
-       spawn_id, 
-       despawn_time 
-FROM   spawnpoints 
-WHERE  updated > 0 
-AND    lat >  :swLat  
-AND    lon >  :swLng 
-AND    lat < :neLat 
-AND    lon < :neLng", [':swLat' => $swLat, ':swLng' => $swLng, ':neLat' => $neLat, ':neLng' => $neLng])->fetchAll();
-        }
+        $query = str_replace(":conditions", join(" AND ", $conds), $query);
+        $spawnpoints = $db->query($query, $params)->fetchAll(\PDO::FETCH_ASSOC);
 
-        $spawnpoints = array();
+        $data = array();
         $i = 0;
 
-        foreach ($datas as $row) {
-            $p = array();
+        foreach ($spawnpoints as $spawnpoint) {
+            $spawnpoint["latitude"] = floatval($spawnpoint["latitude"]);
+            $spawnpoint["longitude"] = floatval($spawnpoint["longitude"]);
+            $data[] = $spawnpoint;
 
-            $p["latitude"] = floatval($row["lat"]);
-            $p["longitude"] = floatval($row["lon"]);
-            $p["spawnpoint_id"] = $row["spawn_id"];
-            $p["time"] = intval($row["despawn_time"]);
-
-            $spawnpoints[] = $p;
-
-            unset($row[$i]);
-
+            unset($spawnpoints[$i]);
             $i++;
         }
-
-        return $spawnpoints;
+        return $data;
     }
 
     public function get_recent($swLat, $swLng, $neLat, $neLng, $tstamp = 0, $oSwLat = 0, $oSwLng = 0, $oNeLat = 0, $oNeLng = 0)
     {
-        global $db;
-
-        $datas = array();
-
         $recent = array();
         // Monocle doesn't currently do anything for this.
 
         return $recent;
     }
 
-    // Used in gym_data.php
-    public function get_gym($id)
+    public function get_gyms($swLat, $swLng, $neLat, $neLng, $tstamp = 0, $oSwLat = 0, $oSwLng = 0, $oNeLat = 0, $oNeLng = 0)
     {
-        global $db;
-        $row = $db->query("SELECT t3.external_id, 
-       t3.lat, 
-       t3.lon, 
-       t1.last_modified, 
-       t1.team, 
-       t1.slots_available, 
-       t1.guard_pokemon_id 
-FROM   (SELECT fort_id, 
-               Max(last_modified) AS MaxLastModified 
-        FROM   fort_sightings 
-        GROUP  BY fort_id) t2 
-       LEFT JOIN fort_sightings t1 
-              ON t2.fort_id = t1.fort_id 
-                 AND t2.maxlastmodified = t1.last_modified 
-       LEFT JOIN forts t3 
-              ON t1.fort_id = t3.id 
-WHERE  t3.external_id = :id ", [':id' => $id])->fetch();
+        $conds = array();
+        $params = array();
 
+        $conds[] = "f.lat > :swLat AND f.lon > :swLng AND f.lat < :neLat AND f.lon < :neLng";
+        $params[':swLat'] = $swLat;
+        $params[':swLng'] = $swLng;
+        $params[':neLat'] = $neLat;
+        $params[':neLng'] = $neLng;
 
-        $raid = $db->query("SELECT t3.external_id,
-       t1.fort_id, 
-       level, 
-       pokemon_id, 
-       time_battle AS raid_start, 
-       time_end    AS raid_end,
-       move_1,
-       move_2
-FROM   (SELECT fort_id, 
-               Max(time_end) AS MaxTimeEnd 
-        FROM   raids 
-        GROUP  BY fort_id) t1 
-       LEFT JOIN raids t2 
-              ON t1.fort_id = t2.fort_id 
-                 AND maxtimeend = time_end  
-        LEFT JOIN forts t3
-               ON t3.id = t1.fort_id
- WHERE  t3.external_id IN ( :id ) ", [':id' => $id])->fetch();
+        if ($oSwLat != 0) {
+            $conds[] = "NOT (f.lat > :oswLat AND f.lon > :oswLng AND f.lat < :oneLat AND f.lon < :oneLng)";
+            $params[':oswLat'] = $oSwLat;
+            $params[':oswLng'] = $oSwLng;
+            $params[':oneLat'] = $oNeLat;
+            $params[':oneLng'] = $oNeLng;
+        }
 
-
-        $return = $this->returnGymInfo($row, $raid);
-        unset($raid);
-
-        return $return;
+        return $this->query_gyms($conds, $params);
     }
 
-    public function returnGymInfo($row, $raid)
+    public function get_gym($gymId)
     {
-        $p = array();
+        $conds = array();
+        $params = array();
 
-        $lat = floatval($row["lat"]);
-        $lon = floatval($row["lon"]);
-        $gpid = intval($row["guard_pokemon_id"]);
-        $sa = intval($row["slots_available"]);
-        $lm = $row["last_modified"] * 1000;
-        $ls = !empty($row["last_scanned"]) ? $row["last_scanned"] * 1000 : null;
-        $ti = isset($row["team"]) ? intval($row["team"]) : null;
+        $conds[] = "f.external_id = :gymId";
+        $params[':gymId'] = $gymId;
 
-        $p["enabled"] = isset($row["enabled"]) ? boolval($row["enabled"]) : true;
-        $p["guard_pokemon_id"] = $gpid;
-        $p["gym_id"] = $row["external_id"];
-        $p["slots_available"] = $sa;
-        $p["last_modified"] = $lm;
-        $p["last_scanned"] = $ls;
-        $p["latitude"] = $lat;
-        $p["longitude"] = $lon;
-        $p["name"] = !empty($row["name"]) ? $row["name"] : null;
-        $p["team_id"] = $ti;
-        if ($gpid) {
-            $p["guard_pokemon_name"] = i8ln($this->data[$gpid]['name']);
+        $gyms = $this->query_gyms($conds, $params);
+        $gym = $gyms[0];
+        return $gym;
+    }
+
+    public function query_gyms($conds, $params)
+    {
+        global $db;
+
+        $query = "SELECT f.external_id AS gym_id, 
+        f.lat AS latitude, 
+        f.lon AS longitude, 
+        fs.last_modified, 
+        fs.team AS team_id, 
+        fs.slots_available, 
+        fs.guard_pokemon_id,
+        level AS raid_level, 
+        pokemon_id AS raid_pokemon_id, 
+        move_1 AS raid_pokemon_move_1, 
+        move_2 AS raid_pokemon_move_2, 
+        time_battle AS raid_start, 
+        time_end AS raid_end 
+        FROM (SELECT f.id,
+          f.external_id,
+          f.lat,
+          f.lon, 
+          MAX(fs.id) AS fort_sightings_id,
+          MAX(r.id)  AS raid_id
+          FROM   forts f
+          LEFT JOIN fort_sightings fs ON fs.fort_id = f.id
+          LEFT JOIN raids r ON r.fort_id = f.id
+          GROUP  BY f.id) f
+        LEFT JOIN fort_sightings fs ON fs.id = f.fort_sightings_id
+        LEFT JOIN raids r ON r.id = f.raid_id
+        WHERE :conditions";
+
+        $query = str_replace(":conditions", join(" AND ", $conds), $query);
+        $gyms = $db->query($query, $params)->fetchAll(\PDO::FETCH_ASSOC);
+
+        $data = array();
+        $i = 0;
+
+        foreach ($gyms as $gym) {
+            $guard_pid = $gym["guard_pokemon_id"];
+            if ($guard_pid == "0") {
+                $guard_pid = null;
+                $gym["guard_pokemon_id"] = null;
+            }
+            $raid_pid = $gym["raid_pokemon_id"];
+            if ($raid_pid == "0") {
+                $raid_pid = null;
+                $gym["raid_pokemon_id"] = null;
+            }
+            $gym["enabled"] = true;
+            $gym["team_id"] = intval($gym["team_id"]);
+            $gym["pokemon"] = [];
+            $gym["guard_pokemon_name"] = empty($guard_pid) ? null : i8ln($this->data[$guard_pid]["name"]);
+            $gym["raid_pokemon_name"] = empty($raid_pid) ? null : i8ln($this->data[$raid_pid]["name"]);
+            $gym["latitude"] = floatval($gym["latitude"]);
+            $gym["longitude"] = floatval($gym["longitude"]);
+            $gym["last_modified"] = $gym["last_modified"] * 1000;
+            $gym["raid_start"] = $gym["raid_start"] * 1000;
+            $gym["raid_end"] = $gym["raid_end"] * 1000;
+            $data[] = $gym;
+
+            unset($gyms[$i]);
+            $i++;
         }
-
-        $rpid = intval($raid['pokemon_id']);
-        $p['raid_level'] = intval($raid['level']);
-        if ($rpid) {
-            $p['raid_pokemon_id'] = $rpid;
-            $p['raid_pokemon_name'] = i8ln($this->data[$rpid]['name']);
-        }
-        $p['raid_pokemon_cp'] = !empty($row['cp']) ? intval($row['cp']) : null;
-        $p['raid_pokemon_move_1'] = !empty($row['move_1']) ? intval($row['move_1']) : null;
-        $p['raid_pokemon_move_2'] = !empty($row['move_2']) ? intval($row['move_2']) : null;
-        $p['raid_start'] = $raid["raid_start"] * 1000;
-        $p['raid_end'] = $raid["raid_end"] * 1000;
-
-        return $p;
+        return $data;
     }
 }

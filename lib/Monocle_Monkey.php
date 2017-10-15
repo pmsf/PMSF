@@ -37,69 +37,6 @@ class Monocle_Monkey extends Monocle
         return $this->query_active($select, $conds, $params);
     }
 
-    public function get_active_by_id($ids, $swLat, $swLng, $neLat, $neLng)
-    {
-        $conds = array();
-        $params = array();
-
-        $select = "pokemon_id, spawn_id AS spawnpoint_id, expire_timestamp AS disappear_time, encounter_id, lat AS latitude, lon AS longitude, gender, form";
-        global $noHighLevelData;
-        if (!$noHighLevelData) {
-            $select = $select . ", atk_iv AS individual_attack, def_iv AS individual_defense, sta_iv AS individual_stamina, move_1, move_2, cp, level";
-        }
-
-        $conds[] = "lat > :swLat AND lon > :swLng AND lat < :neLat AND lon < :neLng AND expire_timestamp > :time AND pokemon_id IN ( :ids )";
-        $params[':swLat'] = $swLat;
-        $params[':swLng'] = $swLng;
-        $params[':neLat'] = $neLat;
-        $params[':neLng'] = $neLng;
-        $params[':time'] = time();
-        $params[':ids'] = implode(",", $ids);
-
-        return $this->query_active($select, $conds, $params);
-    }
-
-    private function query_active($select, $conds, $params)
-    {
-        global $db;
-
-        $query = "SELECT :select
-        FROM sightings 
-        WHERE :conditions";
-
-        $query = str_replace(":select", $select, $query);
-        $query = str_replace(":conditions", join(" AND ", $conds), $query);
-        $pokemons = $db->query($query, $params)->fetchAll(\PDO::FETCH_ASSOC);
-
-        $data = array();
-        $i = 0;
-
-        foreach ($pokemons as $pokemon) {
-            $pokemon["latitude"] = floatval($pokemon["latitude"]);
-            $pokemon["longitude"] = floatval($pokemon["longitude"]);
-            $pokemon["disappear_time"] = $pokemon["disappear_time"] * 1000;
-
-            $pokemon["individual_attack"] = isset($row["individual_attack"]) ? intval($pokemon["individual_attack"]) : null;
-            $pokemon["individual_defense"] = isset($row["individual_defense"]) ? intval($pokemon["individual_defense"]) : null;
-            $pokemon["individual_stamina"] = isset($row["individual_stamina"]) ? intval($pokemon["individual_stamina"]) : null;
-
-            $pokemon["pokemon_id"] = intval($pokemon["pokemon_id"]);
-            $pokemon["pokemon_name"] = i8ln($this->data[$pokemon["pokemon_id"]]['name']);
-            $pokemon["pokemon_rarity"] = i8ln($this->data[$pokemon["pokemon_id"]]['rarity']);
-            $types = $this->data[$pokemon["pokemon_id"]]["types"];
-            foreach ($types as $k => $v) {
-                $types[$k]['type'] = i8ln($v['type']);
-            }
-            $pokemon["pokemon_types"] = $types;
-
-            $data[] = $pokemon;
-
-            unset($pokemons[$i]);
-            $i++;
-        }
-        return $data;
-    }
-
     public function get_stops($swLat, $swLng, $neLat, $neLng, $tstamp = 0, $oSwLat = 0, $oSwLng = 0, $oNeLat = 0, $oNeLng = 0, $lured = false)
     {
         $conds = array();
@@ -126,33 +63,6 @@ class Monocle_Monkey extends Monocle
         return $this->query_stops($conds, $params);
     }
 
-    private function query_stops($conds, $params)
-    {
-        global $db;
-
-        $query = "SELECT external_id AS pokestop_id, 
-        lat AS latitude, 
-        lon AS longitude 
-        FROM pokestops
-        WHERE :conditions";
-
-        $query = str_replace(":conditions", join(" AND ", $conds), $query);
-        $pokestops = $db->query($query, $params)->fetchAll(\PDO::FETCH_ASSOC);
-
-        $data = array();
-        $i = 0;
-
-        foreach ($pokestops as $pokestop) {
-            $pokestop["latitude"] = floatval($pokestop["latitude"]);
-            $pokestop["longitude"] = floatval($pokestop["longitude"]);
-            $data[$pokestop['pokestop_id']] = $pokestop;
-
-            unset($pokestops[$i]);
-            $i++;
-        }
-        return $data;
-    }
-
     public function get_gym($gymId)
     {
         $conds = array();
@@ -162,7 +72,7 @@ class Monocle_Monkey extends Monocle
         $params[':gymId'] = $gymId;
 
         $gyms = $this->query_gyms($conds, $params);
-        $gym = $gyms[$gymId];
+        $gym = $gyms[0];
         $gym["pokemon"] = $this->query_gym_defenders($gymId);
         return $gym;
     }
@@ -193,26 +103,26 @@ class Monocle_Monkey extends Monocle
         return $this->query_gyms($conds, $params);
     }
 
-    private function query_gyms($conds, $params)
+    public function query_gyms($conds, $params)
     {
         global $db;
 
         $query = "SELECT f.external_id AS gym_id,
-      fs.last_modified AS last_modified,
-      updated AS last_scanned,
-      f.lat AS latitude,
-      f.lon AS longitude,
-      f.name,
-      fs.team team_id,
-      fs.guard_pokemon_id,
-      fs.slots_available,
-      r.level raid_level,
-      r.pokemon_id raid_pokemon_id,
-      r.time_battle raid_start,
-      r.time_end raid_end,
-      r.cp raid_pokemon_cp,
-      r.move_1 raid_pokemon_move_1,
-      r.move_2 raid_pokemon_move_2
+        fs.last_modified AS last_modified,
+        updated AS last_scanned,
+        f.lat AS latitude,
+        f.lon AS longitude,
+        f.name,
+        fs.team team_id,
+        fs.guard_pokemon_id,
+        fs.slots_available,
+        r.level raid_level,
+        r.pokemon_id raid_pokemon_id,
+        r.time_battle raid_start,
+        r.time_end raid_end,
+        r.cp raid_pokemon_cp,
+        r.move_1 raid_pokemon_move_1,
+        r.move_2 raid_pokemon_move_2
         FROM forts f
         LEFT JOIN fort_sightings fs ON fs.fort_id = f.id
         LEFT JOIN raids r ON r.fort_id = f.id
@@ -246,7 +156,7 @@ class Monocle_Monkey extends Monocle
             $gym["last_scanned"] = $gym["last_scanned"] * 1000;
             $gym["raid_start"] = $gym["raid_start"] * 1000;
             $gym["raid_end"] = $gym["raid_end"] * 1000;
-            $data[$gym["gym_id"]] = $gym;
+            $data[] = $gym;
 
             unset($gyms[$i]);
             $i++;

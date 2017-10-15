@@ -35,7 +35,7 @@ class Monocle_Asner extends Monocle
         $params[':gymId'] = $gymId;
 
         $gyms = $this->query_gyms($conds, $params);
-        $gym = $gyms[$gymId];
+        $gym = $gyms[0];
         return $gym;
     }
 
@@ -98,7 +98,7 @@ class Monocle_Asner extends Monocle
             $gym["last_modified"] = $gym["last_modified"] * 1000;
             $gym["raid_start"] = $gym["raid_start"] * 1000;
             $gym["raid_end"] = $gym["raid_end"] * 1000;
-            $data[$gym["gym_id"]] = $gym;
+            $data[] = $gym;
 
             unset($gyms[$i]);
             $i++;
