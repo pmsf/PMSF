@@ -75,9 +75,9 @@ class Monocle extends Scanner
             $pokemon["longitude"] = floatval($pokemon["longitude"]);
             $pokemon["disappear_time"] = $pokemon["disappear_time"] * 1000;
 
-            $pokemon["individual_attack"] = isset($row["individual_attack"]) ? intval($pokemon["individual_attack"]) : null;
-            $pokemon["individual_defense"] = isset($row["individual_defense"]) ? intval($pokemon["individual_defense"]) : null;
-            $pokemon["individual_stamina"] = isset($row["individual_stamina"]) ? intval($pokemon["individual_stamina"]) : null;
+            $pokemon["individual_attack"] = isset($pokemon["individual_attack"]) ? intval($pokemon["individual_attack"]) : null;
+            $pokemon["individual_defense"] = isset($pokemon["individual_defense"]) ? intval($pokemon["individual_defense"]) : null;
+            $pokemon["individual_stamina"] = isset($pokemon["individual_stamina"]) ? intval($pokemon["individual_stamina"]) : null;
 
             $pokemon["pokemon_id"] = intval($pokemon["pokemon_id"]);
             $pokemon["pokemon_name"] = i8ln($this->data[$pokemon["pokemon_id"]]['name']);
@@ -149,12 +149,11 @@ class Monocle extends Scanner
         $conds = array();
         $params = array();
 
-        $conds[] = "lat > :swLat AND lon > :swLng AND lat < :neLat AND lon < :neLng AND updated > :lastUpdated";
+        $conds[] = "lat > :swLat AND lon > :swLng AND lat < :neLat AND lon < :neLng";
         $params[':swLat'] = $swLat;
         $params[':swLng'] = $swLng;
         $params[':neLat'] = $neLat;
         $params[':neLng'] = $neLng;
-        $params[':lastUpdated'] = $tstamp;
 
         if ($oSwLat != 0) {
             $conds[] = "NOT (lat > :oswLat AND lon > :oswLng AND lat < :oneLat AND lon < :oneLng)";
@@ -162,6 +161,10 @@ class Monocle extends Scanner
             $params[':oswLng'] = $oSwLng;
             $params[':oneLat'] = $oNeLat;
             $params[':oneLng'] = $oNeLng;
+        }
+        if ($tstamp > 0) {
+            $conds[] = "updated > :lastUpdated";
+            $params[':lastUpdated'] = $tstamp;
         }
 
         return $this->query_spawnpoints($conds, $params);
