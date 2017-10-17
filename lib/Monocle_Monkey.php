@@ -4,7 +4,7 @@ namespace Scanner;
 
 class Monocle_Monkey extends Monocle
 {
-    public function get_active($swLat, $swLng, $neLat, $neLng, $tstamp = 0, $oSwLat = 0, $oSwLng = 0, $oNeLat = 0, $oNeLng = 0)
+    public function get_active($eids, $swLat, $swLng, $neLat, $neLng, $tstamp = 0, $oSwLat = 0, $oSwLng = 0, $oNeLat = 0, $oNeLng = 0)
     {
         $conds = array();
         $params = array();
@@ -32,6 +32,10 @@ class Monocle_Monkey extends Monocle
         if ($tstamp > 0) {
             $conds[] = "updated > :lastUpdated";
             $params[':lastUpdated'] = $tstamp;
+        }
+        if ($eids != null) {
+            $conds[] = "pokemon_id NOT IN ( :ids )";
+            $params[':ids'] = $eids;
         }
 
         return $this->query_active($select, $conds, $params);

@@ -4,7 +4,7 @@ namespace Scanner;
 
 class RocketMap extends Scanner
 {
-    public function get_active($swLat, $swLng, $neLat, $neLng, $tstamp = 0, $oSwLat = 0, $oSwLng = 0, $oNeLat = 0, $oNeLng = 0)
+    public function get_active($eids, $swLat, $swLng, $neLat, $neLng, $tstamp = 0, $oSwLat = 0, $oSwLng = 0, $oNeLat = 0, $oNeLng = 0)
     {
         $conds = array();
         $params = array();
@@ -34,8 +34,12 @@ class RocketMap extends Scanner
         }
         if ($tstamp > 0) {
             $date->setTimestamp($tstamp);
-            $conds[] = "last_updated > :lastUpdated";
+            $conds[] = "last_modified > :lastUpdated";
             $params[':lastUpdated'] = date_format($date, 'Y-m-d H:i:s');
+        }
+        if ($eids != null) {
+            $conds[] = "pokemon_id NOT IN ( :ids )";
+            $params[':ids'] = $eids;
         }
 
         return $this->query_active($select, $conds, $params);
@@ -61,7 +65,7 @@ class RocketMap extends Scanner
         $date->setTimezone(new \DateTimeZone('UTC'));
         $date->setTimestamp(time());
         $params[':time'] = date_format($date, 'Y-m-d H:i:s');
-        $params[':ids'] = implode(",", $ids);
+        $params[':ids'] = $ids;
 
         return $this->query_active($select, $conds, $params);
     }

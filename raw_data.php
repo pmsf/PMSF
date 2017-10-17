@@ -86,37 +86,23 @@ $debug['1_before_functions'] = microtime(true) - $timing['start'];
 global $noPokemon;
 if (!$noPokemon) {
     if ($d["lastpokemon"] == "true") {
+        $eids = !empty($_POST['eids']) ? $_POST['eids'] : null;
         if ($lastpokemon != 'true') {
-            $d["pokemons"] = $scanner->get_active($swLat, $swLng, $neLat, $neLng);
+            $d["pokemons"] = $scanner->get_active($eids, $swLat, $swLng, $neLat, $neLng);
         } else {
             if ($newarea) {
-                $d["pokemons"] = $scanner->get_active($swLat, $swLng, $neLat, $neLng, 0, $oSwLat, $oSwLng, $oNeLat, $oNeLng);
+                $d["pokemons"] = $scanner->get_active($eids, $swLat, $swLng, $neLat, $neLng, 0, $oSwLat, $oSwLng, $oNeLat, $oNeLng);
             } else {
-                $d["pokemons"] = $scanner->get_active($swLat, $swLng, $neLat, $neLng, $timestamp);
-            }
-        }
-
-        if (!empty($_POST['eids'])) {
-            $eids = explode(",", $_POST['eids']);
-
-            foreach ($d['pokemons'] as $elementKey => $element) {
-                foreach ($element as $valueKey => $value) {
-                    if ($valueKey == 'pokemon_id') {
-                        if (in_array($value, $eids)) {
-                            //delete this particular object from the $array
-                            unset($d['pokemons'][$elementKey]);
-                        }
-                    }
-                }
+                $d["pokemons"] = $scanner->get_active($eids, $swLat, $swLng, $neLat, $neLng, $timestamp);
             }
         }
 
         if (!empty($_POST['reids'])) {
-            $reids = explode(",", $_POST['reids']);
+            $reids = $_POST['reids'];
 
             $d["pokemons"] = array_merge($d["pokemons"], $scanner->get_active_by_id($reids, $swLat, $swLng, $neLat, $neLng));
 
-            $d["reids"] = !empty($_POST['reids']) ? $reids : null;
+            $d["reids"] = $reids;
         }
     }
 }

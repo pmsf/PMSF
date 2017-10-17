@@ -4,7 +4,7 @@ namespace Scanner;
 
 class Monocle extends Scanner
 {
-    public function get_active($swLat, $swLng, $neLat, $neLng, $tstamp = 0, $oSwLat = 0, $oSwLng = 0, $oNeLat = 0, $oNeLng = 0)
+    public function get_active($eids, $swLat, $swLng, $neLat, $neLng, $tstamp = 0, $oSwLat = 0, $oSwLng = 0, $oNeLat = 0, $oNeLng = 0)
     {
         $conds = array();
         $params = array();
@@ -29,6 +29,10 @@ class Monocle extends Scanner
             $params[':oneLat'] = $oNeLat;
             $params[':oneLng'] = $oNeLng;
         }
+        if ($eids != null) {
+            $conds[] = "pokemon_id NOT IN ( :ids )";
+            $params[':ids'] = $eids;
+        }
 
         return $this->query_active($select, $conds, $params);
     }
@@ -50,7 +54,7 @@ class Monocle extends Scanner
         $params[':neLat'] = $neLat;
         $params[':neLng'] = $neLng;
         $params[':time'] = time();
-        $params[':ids'] = implode(",", $ids);
+        $params[':ids'] = $ids;
 
         return $this->query_active($select, $conds, $params);
     }
