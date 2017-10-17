@@ -9,10 +9,10 @@ class Monocle extends Scanner
         $conds = array();
         $params = array();
 
-        $select = "pokemon_id, spawn_id AS spawnpoint_id, expire_timestamp AS disappear_time, encounter_id, lat AS latitude, lon AS longitude, gender, form";
+        $select = "pokemon_id, expire_timestamp AS disappear_time, encounter_id, lat AS latitude, lon AS longitude, gender, form";
         global $noHighLevelData;
         if (!$noHighLevelData) {
-            $select = $select . ", atk_iv AS individual_attack, def_iv AS individual_defense, sta_iv AS individual_stamina, move_1, move_2, cp, level";
+            $select .= ", atk_iv AS individual_attack, def_iv AS individual_defense, sta_iv AS individual_stamina, move_1, move_2, cp, level";
         }
 
         $conds[] = "lat > :swLat AND lon > :swLng AND lat < :neLat AND lon < :neLng AND expire_timestamp > :time";
@@ -38,10 +38,10 @@ class Monocle extends Scanner
         $conds = array();
         $params = array();
 
-        $select = "pokemon_id, spawn_id AS spawnpoint_id, expire_timestamp AS disappear_time, encounter_id, lat AS latitude, lon AS longitude, gender, form";
+        $select = "pokemon_id, expire_timestamp AS disappear_time, encounter_id, lat AS latitude, lon AS longitude, gender, form";
         global $noHighLevelData;
         if (!$noHighLevelData) {
-            $select = $select . ", atk_iv AS individual_attack, def_iv AS individual_defense, sta_iv AS individual_stamina, move_1, move_2, cp, level";
+            $select .= ", atk_iv AS individual_attack, def_iv AS individual_defense, sta_iv AS individual_stamina, move_1, move_2, cp, level";
         }
 
         $conds[] = "lat > :swLat AND lon > :swLng AND lat < :neLat AND lon < :neLng AND expire_timestamp > :time AND pokemon_id IN ( :ids )";
@@ -289,7 +289,6 @@ class Monocle extends Scanner
                 $raid_pid = null;
                 $gym["raid_pokemon_id"] = null;
             }
-            $gym["enabled"] = true;
             $gym["team_id"] = intval($gym["team_id"]);
             $gym["pokemon"] = [];
             $gym["guard_pokemon_name"] = empty($guard_pid) ? null : i8ln($this->data[$guard_pid]["name"]);

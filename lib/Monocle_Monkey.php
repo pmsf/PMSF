@@ -9,10 +9,10 @@ class Monocle_Monkey extends Monocle
         $conds = array();
         $params = array();
 
-        $select = "pokemon_id, spawn_id AS spawnpoint_id, expire_timestamp AS disappear_time, encounter_id, lat AS latitude, lon AS longitude, gender, form";
+        $select = "pokemon_id, expire_timestamp AS disappear_time, encounter_id, lat AS latitude, lon AS longitude, gender, form";
         global $noHighLevelData;
         if (!$noHighLevelData) {
-            $select = $select . ", atk_iv AS individual_attack, def_iv AS individual_defense, sta_iv AS individual_stamina, move_1, move_2, cp, level";
+            $select .= ", atk_iv AS individual_attack, def_iv AS individual_defense, sta_iv AS individual_stamina, move_1, move_2, cp, level";
         }
 
         $conds[] = "lat > :swLat AND lon > :swLng AND lat < :neLat AND lon < :neLng AND expire_timestamp > :time";
@@ -113,16 +113,16 @@ class Monocle_Monkey extends Monocle
         f.lat AS latitude,
         f.lon AS longitude,
         f.name,
-        fs.team team_id,
+        fs.team AS team_id,
         fs.guard_pokemon_id,
         fs.slots_available,
-        r.level raid_level,
-        r.pokemon_id raid_pokemon_id,
-        r.time_battle raid_start,
-        r.time_end raid_end,
-        r.cp raid_pokemon_cp,
-        r.move_1 raid_pokemon_move_1,
-        r.move_2 raid_pokemon_move_2
+        r.level AS raid_level,
+        r.pokemon_id AS raid_pokemon_id,
+        r.time_battle AS raid_start,
+        r.time_end AS raid_end,
+        r.cp AS raid_pokemon_cp,
+        r.move_1 AS raid_pokemon_move_1,
+        r.move_2 AS raid_pokemon_move_2
         FROM forts f
         LEFT JOIN fort_sightings fs ON fs.fort_id = f.id
         LEFT JOIN raids r ON r.fort_id = f.id
@@ -145,7 +145,6 @@ class Monocle_Monkey extends Monocle
                 $raid_pid = null;
                 $gym["raid_pokemon_id"] = null;
             }
-            $gym["enabled"] = true;
             $gym["team_id"] = intval($gym["team_id"]);
             $gym["pokemon"] = [];
             $gym["guard_pokemon_name"] = empty($guard_pid) ? null : i8ln($this->data[$guard_pid]["name"]);
@@ -170,15 +169,15 @@ class Monocle_Monkey extends Monocle
 
 
         $query = "SELECT gd.pokemon_id,
-        gd.cp pokemon_cp,
+        gd.cp AS pokemon_cp,
         gd.move_1,
         gd.move_2,
         gd.nickname,
-        gd.atk_iv iv_attack,
-        gd.def_iv iv_defense,
-        gd.sta_iv iv_stamina,
-        gd.cp pokemon_cp,
-        gd.owner_name trainer_name
+        gd.atk_iv AS iv_attack,
+        gd.def_iv AS iv_defense,
+        gd.sta_iv AS iv_stamina,
+        gd.cp AS pokemon_cp,
+        gd.owner_name AS trainer_name
       FROM gym_defenders gd
       LEFT JOIN forts f ON gd.fort_id = f.id
       WHERE f.external_id = :gymId";

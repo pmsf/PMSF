@@ -9,10 +9,10 @@ class RocketMap extends Scanner
         $conds = array();
         $params = array();
 
-        $select = "pokemon_id, spawnpoint_id, Unix_timestamp(Convert_tz(disappear_time, '+00:00', @@global.time_zone)) AS disappear_time, encounter_id, latitude, longitude, gender, form";
+        $select = "pokemon_id, Unix_timestamp(Convert_tz(disappear_time, '+00:00', @@global.time_zone)) AS disappear_time, encounter_id, latitude, longitude, gender, form";
         global $noHighLevelData;
         if (!$noHighLevelData) {
-            $select = $select . ", individual_attack, individual_defense, individual_stamina, move_1, move_2, cp, cp_multiplier";
+            $select .= ", individual_attack, individual_defense, individual_stamina, move_1, move_2, cp, cp_multiplier";
         }
 
         $conds[] = "latitude > :swLat AND longitude > :swLng AND latitude < :neLat AND longitude < :neLng AND disappear_time > :time";
@@ -46,10 +46,10 @@ class RocketMap extends Scanner
         $conds = array();
         $params = array();
 
-        $select = "pokemon_id, spawnpoint_id, Unix_timestamp(Convert_tz(disappear_time, '+00:00', @@global.time_zone)) AS disappear_time, encounter_id, latitude, longitude, gender, form";
+        $select = "pokemon_id, Unix_timestamp(Convert_tz(disappear_time, '+00:00', @@global.time_zone)) AS disappear_time, encounter_id, latitude, longitude, gender, form";
         global $noHighLevelData;
         if (!$noHighLevelData) {
-            $select = $select . ", individual_attack, individual_defense, individual_stamina, move_1, move_2, cp, cp_multiplier";
+            $select .= ", individual_attack, individual_defense, individual_stamina, move_1, move_2, cp, cp_multiplier";
         }
 
         $conds[] = "latitude > :swLat AND longitude > :swLng AND latitude < :neLat AND longitude < :neLng AND disappear_time > :time AND pokemon_id IN ( :ids )";
@@ -366,7 +366,6 @@ class RocketMap extends Scanner
         Unix_timestamp(Convert_tz(last_modified, '+00:00', @@global.time_zone)) AS last_modified, 
         Unix_timestamp(Convert_tz(gym.last_scanned, '+00:00', @@global.time_zone)) AS last_scanned, 
         team_id, 
-        enabled, 
         name, 
         level AS raid_level, 
         pokemon_id AS raid_pokemon_id, 
