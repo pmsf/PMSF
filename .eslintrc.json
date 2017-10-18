@@ -8,17 +8,27 @@
     "sourceType": "module"
   },
   "rules": {
-    "indent": ["error", 4, {
+    "indent": [
+      "error",
+      4,
+      {
         "SwitchCase": 1
-    }],
-    "space-before-function-paren": ["error", {
+      }
+    ],
+    "space-before-function-paren": [
+      "error",
+      {
         "anonymous": "always",
         "named": "never",
         "asyncArrow": "ignore"
-    }],
-    "no-multiple-empty-lines": ["error", {
+      }
+    ],
+    "no-multiple-empty-lines": [
+      "error",
+      {
         "max": 2
-    }]
+      }
+    ]
   },
   "env": {
     "browser": true,
@@ -36,7 +46,7 @@
     "zoom": true,
     "minZoom": true,
     "maxLatLng": true,
-    "showConfig": true,	
+    "showConfig": true,
     "pageLoaded": true,
     "countMarkers": true,
     "skel": true,
@@ -55,6 +65,37 @@
     "pGoStyleNoLabels": true,
     "pGoStyleDay": true,
     "pGoStyleNight": true,
-    "moment": false
+    "moment": false,
+    "mapStyle": true,
+    "hidePokemon": true,
+    "notifyPokemon": true,
+    "notifyRarity": true,
+    "notifyIv": true,
+    "notifyRaid": true,
+    "enableRaids": true,
+    "activeRaids": true,
+    "minRaidLevel": true,
+    "maxRaidLevel": true,
+    "enableGyms": true,
+    "gymSidebar": true,
+    "enablePokemon": true,
+    "enablePokestops": true,
+    "enableLured": true,
+    "enableScannedLocations": true,
+    "enableSpawnpoints": true,
+    "enableRanges": true,
+    "notifySound": true,
+    "criesSound": true,
+    "criesType": true,
+    "enableStartMe": true,
+    "enableStartLast": true,
+    "enableFollowMe": true,
+    "enableSpawnArea": true,
+    "iconSize": true,
+    "locationStyle": true,
+    "gymStyle": true,
+    "spriteFile": true,
+    "spriteFileLarge": true,
+    "icons": true
   }
 }

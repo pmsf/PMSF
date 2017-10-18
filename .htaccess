@@ -3,4 +3,3 @@ RewriteEngine on
 RewriteRule ^raw_data$ raw_data.php?$1 [QSA,L]
 RewriteRule ^gym_data$ gym_data.php?$1 [QSA,L]
 RewriteRule ^motd_data$ motd_data.php?$1 [QSA,L]
-RewriteRule ^(.*)map.common.js$ static/js/map.common.php [QSA,L]

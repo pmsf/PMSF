@@ -676,9 +676,41 @@ if ($blockIframe) {
     var zoom<?php echo $zoom ? " = " . $zoom : null; ?>;
     var minZoom = <?= $maxZoomOut; ?>;
     var maxLatLng = <?= $maxLatLng; ?>;
+
+    var mapStyle = '<?php echo $mapStyle ?>';
+    var hidePokemon = <?php echo $noHidePokemon ? '[]' : $hidePokemon ?>;
+    var notifyPokemon = <?php echo $noNotifyPokemon ? '[]' : $notifyPokemon ?>;
+    var notifyRarity = <?php echo $noNotifyRarity ? '[]' : $notifyRarity ?>;
+    var notifyIv = <?php echo $noNotifyIv ? '""' : $notifyIv ?>;
+    var notifyRaid = <?php echo $noNotifyRaid ? 0 : $notifyRaid ?>;
+    var enableRaids = <?php echo $noRaids ? 'false' : $enableRaids ?>;
+    var activeRaids = <?php echo $activeRaids ?>;
+    var minRaidLevel = <?php echo $minRaidLevel ?>;
+    var maxRaidLevel = <?php echo $maxRaidLevel ?>;
+    var enableGyms = <?php echo $noGyms ? 'false' : $enableGyms ?>;
+    var gymSidebar = <?php echo $noGymSidebar ? 'false' : $gymSidebar ?>;
+    var enablePokemon = <?php echo $noPokemon ? 'false' : $enablePokemon ?>;
+    var enablePokestops = <?php echo $noPokestops ? 'false' : $enablePokestops ?>;
+    var enableLured = <?php echo $map != "monocle" ? $enableLured : 0 ?>;
+    var enableScannedLocations = <?php echo $map != "monocle" && !$noScannedLocations ? $enableScannedLocations : 'false' ?>;
+    var enableSpawnpoints = <?php echo $noSpawnPoints ? 'false' : $enableSpawnPoints ?>;
+    var enableRanges = <?php echo $noRanges ? 'false' : $enableRanges ?>;
+    var notifySound = <?php echo $noNotifySound ? 'false' : $notifySound ?>;
+    var criesSound = <?php echo $noCriesSound ? 'false' : $criesSound ?>;
+    var criesType = '<?php echo $criesType; ?>';
+    var enableStartMe = <?php echo $noStartMe ? 'false' : $enableStartMe ?>;
+    var enableStartLast = <?php echo (!$noStartLast && $enableStartMe === 'false') ? $enableStartLast : 'false' ?>;
+    var enableFollowMe = <?php echo $noFollowMe ? 'false' : $enableFollowMe ?>;
+    var enableSpawnArea = <?php echo $noSpawnArea ? 'false' : $enableSpawnArea ?>;
+    var iconSize = <?php echo $iconSize ?>;
+    var locationStyle = '<?php echo $locationStyle ?>';
+    var gymStyle = '<?php echo $gymStyle ?>';
+    var spriteFile = '<?php echo $copyrightSafe ? 'static/icons-safe-1.png' : 'static/icons-im-1.png' ?>';
+    var spriteFileLarge = '<?php echo $copyrightSafe ? 'static/icons-safe-1-bigger.png' : 'static/icons-im-1-bigger.png' ?>';
+    var icons = '<?php echo $copyrightSafe ? 'static/icons-safe/' : 'static/icons-pokemon/' ?>';
 </script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js"></script>
-<script src="static/js/map.common.js"></script>
+<script src="static/dist/js/map.common.min.js"></script>
 <script src="static/dist/js/map.min.js"></script>
 <script src="static/dist/js/stats.min.js"></script>
 <script defer
