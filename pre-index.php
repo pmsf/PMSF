@@ -512,18 +512,6 @@ if (!empty($_GET['lat']) && !empty($_GET['lon'])) {
             }
             ?>
             <?php
-            if (!$noCriesType) {
-                echo '<div class="form-control switch-container" id="cries-type-filter-wrapper">
-                <h3>Cry Style</h3>
-                <select name="cries-type-filter-switch" id="cries-type-filter-switch">
-                    <option value="game">Game</option>
-                    <option value="anime">Anime voices</option>
-                </select>
-            </div>
-            ';
-            }
-            ?>
-            <?php
             if (!$noNotifySound) {
                 echo '</div>';
             }
