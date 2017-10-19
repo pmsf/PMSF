@@ -515,18 +515,6 @@ if ($blockIframe) {
             }
             ?>
             <?php
-            if (!$noCriesType) {
-                echo '<div class="form-control switch-container" id="cries-type-filter-wrapper">
-                <h3>Cry Style</h3>
-                <select name="cries-type-filter-switch" id="cries-type-filter-switch">
-                    <option value="game">Game</option>
-                    <option value="anime">Anime voices</option>
-                </select>
-            </div>
-            ';
-            }
-            ?>
-            <?php
             if (!$noNotifySound) {
                 echo '</div>';
             }
@@ -697,7 +685,6 @@ if ($blockIframe) {
     var enableRanges = <?php echo $noRanges ? 'false' : $enableRanges ?>;
     var notifySound = <?php echo $noNotifySound ? 'false' : $notifySound ?>;
     var criesSound = <?php echo $noCriesSound ? 'false' : $criesSound ?>;
-    var criesType = '<?php echo $criesType; ?>';
     var enableStartMe = <?php echo $noStartMe ? 'false' : $enableStartMe ?>;
     var enableStartLast = <?php echo (!$noStartLast && $enableStartMe === 'false') ? $enableStartLast : 'false' ?>;
     var enableFollowMe = <?php echo $noFollowMe ? 'false' : $enableFollowMe ?>;

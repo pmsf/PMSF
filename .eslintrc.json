@@ -86,7 +86,6 @@
     "enableRanges": true,
     "notifySound": true,
     "criesSound": true,
-    "criesType": true,
     "enableStartMe": true,
     "enableStartLast": true,
     "enableFollowMe": true,

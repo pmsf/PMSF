@@ -969,11 +969,6 @@ var StoreOptions = {
             default: criesSound,
             type: StoreTypes.Boolean
         },
-    'criesType':
-        {
-            default: criesType,
-            type: StoreTypes.String
-        },
     'geoLocate':
         {
             default: false,
