@@ -9,7 +9,7 @@
   height: 30px;
   width: 30px;
 
-  @for $i from 1 through 493 {
+  @for $i from 1 through $numberOfPokemon {
     &.n#{$i} {
       background-position: -#{(($i - 1) % 28) * 30}px -#{floor(($i - 1) / 28) * 30}px
     }
