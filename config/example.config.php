@@ -151,6 +151,13 @@ $noLocationStyle = false;                                           // true/fals
 $locationStyle = 'none';                                            // none, google, red, red_animated, blue, blue_animated, yellow, yellow_animated, pokesition, pokeball
 
 
+//-----------------------------------------------
+// Raid API
+//-----------------------------------------------------
+
+$raidApiKey = '';                                                   // Raid API Key, '' to deny access
+
+
 //-----------------------------------------------------
 // DATA MANAGEMENT
 //-----------------------------------------------------

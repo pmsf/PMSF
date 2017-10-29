@@ -161,6 +161,14 @@ $gymStyle = 'ingame';                                               // ingame, s
 $noLocationStyle = false;                                           // true/false
 $locationStyle = 'none';                                            // none, google, red, red_animated, blue, blue_animated, yellow, yellow_animated, pokesition, pokeball
 
+
+//-----------------------------------------------------
+// Raid API
+//-----------------------------------------------------
+
+$raidApiKey = '';                                                   // Raid API Key, '' to deny access
+
+
 //-----------------------------------------------------
 // DEBUGGING
 //-----------------------------------------------------
