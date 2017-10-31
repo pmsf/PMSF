@@ -37,9 +37,16 @@ class RocketMap extends Scanner
             $conds[] = "last_modified > :lastUpdated";
             $params[':lastUpdated'] = date_format($date, 'Y-m-d H:i:s');
         }
-        if ($eids != null) {
-            $conds[] = "pokemon_id NOT IN ( :ids )";
-            $params[':ids'] = $eids;
+        if (count($eids)) {
+            $pkmn_in = '';
+            $i = 1;
+            foreach ($eids as $id) {
+                $params[':qry_' . $i] = $id;
+                $pkmn_in .= ':qry_' . $i . ",";
+                $i++;
+            }
+            $pkmn_in = substr($pkmn_in, 0, -1);
+            $conds[] = "pokemon_id NOT IN ( $pkmn_in )";
         }
 
         return $this->query_active($select, $conds, $params);
@@ -65,7 +72,17 @@ class RocketMap extends Scanner
         $date->setTimezone(new \DateTimeZone('UTC'));
         $date->setTimestamp(time());
         $params[':time'] = date_format($date, 'Y-m-d H:i:s');
-        $params[':ids'] = $ids;
+        if (count($ids)) {
+            $pkmn_in = '';
+            $i = 1;
+            foreach ($ids as $id) {
+                $params[':qry_' . $i] = $id;
+                $pkmn_in .= ':qry_' . $i . ",";
+                $i++;
+            }
+            $pkmn_in = substr($pkmn_in, 0, -1);
+            $conds[] = "pokemon_id IN ( $pkmn_in )";
+        }
 
         return $this->query_active($select, $conds, $params);
     }

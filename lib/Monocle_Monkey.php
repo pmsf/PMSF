@@ -33,9 +33,16 @@ class Monocle_Monkey extends Monocle
             $conds[] = "updated > :lastUpdated";
             $params[':lastUpdated'] = $tstamp;
         }
-        if ($eids != null) {
-            $conds[] = "pokemon_id NOT IN ( :ids )";
-            $params[':ids'] = $eids;
+        if (count($eids)) {
+            $pkmn_in = '';
+            $i = 1;
+            foreach ($eids as $id) {
+                $params[':qry_' . $i] = $id;
+                $pkmn_in .= ':qry_' . $i . ",";
+                $i++;
+            }
+            $pkmn_in = substr($pkmn_in, 0, -1);
+            $conds[] = "pokemon_id NOT IN ( $pkmn_in )";
         }
 
         return $this->query_active($select, $conds, $params);

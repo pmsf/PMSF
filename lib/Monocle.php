@@ -29,9 +29,16 @@ class Monocle extends Scanner
             $params[':oneLat'] = $oNeLat;
             $params[':oneLng'] = $oNeLng;
         }
-        if ($eids != null) {
-            $conds[] = "pokemon_id NOT IN ( :ids )";
-            $params[':ids'] = $eids;
+        if (count($eids)) {
+            $pkmn_in = '';
+            $i = 1;
+            foreach ($eids as $id) {
+                $params[':qry_' . $i] = $id;
+                $pkmn_in .= ':qry_' . $i . ",";
+                $i++;
+            }
+            $pkmn_in = substr($pkmn_in, 0, -1);
+            $conds[] = "pokemon_id NOT IN ( $pkmn_in )";
         }
 
         return $this->query_active($select, $conds, $params);
@@ -48,13 +55,23 @@ class Monocle extends Scanner
             $select .= ", atk_iv AS individual_attack, def_iv AS individual_defense, sta_iv AS individual_stamina, move_1, move_2, cp, level";
         }
 
-        $conds[] = "lat > :swLat AND lon > :swLng AND lat < :neLat AND lon < :neLng AND expire_timestamp > :time AND pokemon_id IN ( :ids )";
+        $conds[] = "lat > :swLat AND lon > :swLng AND lat < :neLat AND lon < :neLng AND expire_timestamp > :time";
         $params[':swLat'] = $swLat;
         $params[':swLng'] = $swLng;
         $params[':neLat'] = $neLat;
         $params[':neLng'] = $neLng;
         $params[':time'] = time();
-        $params[':ids'] = $ids;
+        if (count($ids)) {
+            $pkmn_in = '';
+            $i = 1;
+            foreach ($ids as $id) {
+                $params[':qry_' . $i] = $id;
+                $pkmn_in .= ':qry_' . $i . ",";
+                $i++;
+            }
+            $pkmn_in = substr($pkmn_in, 0, -1);
+            $conds[] = "pokemon_id IN ( $pkmn_in )";
+        }
 
         return $this->query_active($select, $conds, $params);
     }
