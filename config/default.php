@@ -167,6 +167,7 @@ $locationStyle = 'none';                                            // none, goo
 //-----------------------------------------------------
 
 $raidApiKey = '';                                                   // Raid API Key, '' to deny access
+$sendRaidData = false;                                              // Send Raid data, false to only send gym data
 
 
 //-----------------------------------------------------
