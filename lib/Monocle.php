@@ -339,10 +339,11 @@ class Monocle extends Scanner
         $params[':neLng'] = $neLng;
 
         global $sendRaidData;
-        if (!$sendRaidData)
+        if (!$sendRaidData) {
             return $this->query_gyms_api($conds, $params);
-        else
+        } else {
             return $this->query_raids_api($conds, $params);
+        }
     }
 
     public function query_gyms_api($conds, $params)
