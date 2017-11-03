@@ -26,7 +26,7 @@ class RocketMap extends Scanner
         $params[':time'] = date_format($date, 'Y-m-d H:i:s');
 
         if ($oSwLat != 0) {
-            $conds[] = "NOT (latitude > :oswLat AND lolongituden > :oswLng AND latitude < :oneLat AND longitude < :oneLng)";
+            $conds[] = "NOT (latitude > :oswLat AND longitude > :oswLng AND latitude < :oneLat AND longitude < :oneLng)";
             $params[':oswLat'] = $oSwLat;
             $params[':oswLng'] = $oSwLng;
             $params[':oneLat'] = $oNeLat;
@@ -41,8 +41,8 @@ class RocketMap extends Scanner
             $pkmn_in = '';
             $i = 1;
             foreach ($eids as $id) {
-                $params[':qry_' . $i] = $id;
-                $pkmn_in .= ':qry_' . $i . ",";
+                $params[':qry_' . $i . "_"] = $id;
+                $pkmn_in .= ':qry_' . $i . "_,";
                 $i++;
             }
             $pkmn_in = substr($pkmn_in, 0, -1);
@@ -76,8 +76,8 @@ class RocketMap extends Scanner
             $pkmn_in = '';
             $i = 1;
             foreach ($ids as $id) {
-                $params[':qry_' . $i] = $id;
-                $pkmn_in .= ':qry_' . $i . ",";
+                $params[':qry_' . $i . "_"] = $id;
+                $pkmn_in .= ':qry_' . $i . "_,";
                 $i++;
             }
             $pkmn_in = substr($pkmn_in, 0, -1);

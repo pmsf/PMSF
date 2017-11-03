@@ -37,8 +37,8 @@ class Monocle_Monkey extends Monocle
             $pkmn_in = '';
             $i = 1;
             foreach ($eids as $id) {
-                $params[':qry_' . $i] = $id;
-                $pkmn_in .= ':qry_' . $i . ",";
+                $params[':qry_' . $i . "_"] = $id;
+                $pkmn_in .= ':qry_' . $i . "_,";
                 $i++;
             }
             $pkmn_in = substr($pkmn_in, 0, -1);
