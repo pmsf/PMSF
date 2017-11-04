@@ -571,10 +571,10 @@ function gymLabel(item) {
             'Location: <a href="javascript:void(0);" onclick="javascript:openMapDirections(' + latitude + ',' + longitude + ');" title="View in Maps">' + latitude.toFixed(6) + ' , ' + longitude.toFixed(7) + '</a>' +
             '</div>' +
             '<div>' +
-            lastScannedStr +
+            'Last Modified: ' + lastModifiedStr +
             '</div>' +
             '<div>' +
-            'Last Modified: ' + lastModifiedStr +
+            lastScannedStr +
             '</div>' +
             '</center>' +
             '</div>'
@@ -606,10 +606,10 @@ function gymLabel(item) {
             'Location: <a href="javascript:void(0);" onclick="javascript:openMapDirections(' + latitude + ',' + longitude + ');" title="View in Maps">' + latitude.toFixed(6) + ' , ' + longitude.toFixed(7) + '</a>' +
             '</div>' +
             '<div>' +
-            lastScannedStr +
+            'Last Modified: ' + lastModifiedStr +
             '</div>' +
             '<div>' +
-            'Last Modified: ' + lastModifiedStr +
+            lastScannedStr +
             '</div>' +
             '</center>' +
             '</div>'
