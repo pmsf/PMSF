@@ -618,12 +618,13 @@ function gymLabel(item) {
     return str
 }
 
-function pokestopLabel(expireTime, latitude, longitude) {
+function pokestopLabel(expireTime, latitude, longitude, stopName) {
     var str
+    if (stopName === undefined) { stopName = 'Pokéstop' }
     if (expireTime) {
         str =
             '<div>' +
-            '<b>Lured Pokéstop</b>' +
+            '<b>' + stopName + ' (Lured)</b>' +
             '</div>' +
             '<div>' +
             'Lure expires at ' + getTimeStr(expireTime) +
@@ -635,7 +636,7 @@ function pokestopLabel(expireTime, latitude, longitude) {
     } else {
         str =
             '<div>' +
-            '<b>Pokéstop</b>' +
+            '<b>' + stopName + '</b>' +
             '</div>' +
             '<div>' +
             'Location: <a href="javascript:void(0)" onclick="javascript:openMapDirections(' + latitude + ',' + longitude + ')" title="View in Maps">' + latitude.toFixed(6) + ', ' + longitude.toFixed(7) + '</a>' +
@@ -1006,7 +1007,7 @@ function setupPokestopMarker(item) {
     }
 
     marker.infoWindow = new google.maps.InfoWindow({
-        content: pokestopLabel(item['lure_expiration'], item['latitude'], item['longitude']),
+        content: pokestopLabel(item['lure_expiration'], item['latitude'], item['longitude'], item['pokestop_name']),
         disableAutoPan: true
     })
 

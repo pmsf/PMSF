@@ -74,6 +74,34 @@ class Monocle_Monkey extends Monocle
         return $this->query_stops($conds, $params);
     }
 
+    public function query_stops($conds, $params)
+    {
+        global $db;
+
+        $query = "SELECT external_id AS pokestop_id,
+        name AS pokestop_name,
+        lat AS latitude,
+        lon AS longitude
+        FROM pokestops
+        WHERE :conditions";
+
+        $query = str_replace(":conditions", join(" AND ", $conds), $query);
+        $pokestops = $db->query($query, $params)->fetchAll(\PDO::FETCH_ASSOC);
+
+        $data = array();
+        $i = 0;
+
+        foreach ($pokestops as $pokestop) {
+            $pokestop["latitude"] = floatval($pokestop["latitude"]);
+            $pokestop["longitude"] = floatval($pokestop["longitude"]);
+            $data[] = $pokestop;
+
+            unset($pokestops[$i]);
+            $i++;
+        }
+        return $data;
+    }
+
     public function get_gym($gymId)
     {
         $conds = array();
@@ -254,8 +282,8 @@ class Monocle_Monkey extends Monocle
     {
         global $db;
 
-        $query = "SELECT f.external_id AS gym_id, 
-        f.lat AS latitude, 
+        $query = "SELECT f.external_id AS gym_id,
+        f.lat AS latitude,
         f.lon AS longitude,
         name
         FROM forts f
@@ -282,8 +310,8 @@ class Monocle_Monkey extends Monocle
     {
         global $db;
 
-        $query = "SELECT f.external_id AS gym_id, 
-        f.lat AS latitude, 
+        $query = "SELECT f.external_id AS gym_id,
+        f.lat AS latitude,
         f.lon AS longitude,
         name,
         level AS raid_level,
