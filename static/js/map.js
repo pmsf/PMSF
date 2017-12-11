@@ -1481,10 +1481,8 @@ function processGyms(i, item) {
     }
 
     if (Store.get('showGyms') && !Store.get('showRaids')) {
-        if (item.raid_end > Date.now()) {
-            removeGymFromMap(item['gym_id'])
-            return true
-        }
+        item.raid_end = 0
+        item.raid_level = item.raid_pokemon_cp = item.raid_pokemon_id = item.raid_pokemon_move_1 = item.raid_pokemon_move_1 = item.raid_pokemon_name = null
     }
 
     if (Store.get('activeRaids') && item.raid_end > Date.now()) {
