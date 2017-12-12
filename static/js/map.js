@@ -48,6 +48,7 @@ var rangeMarkers = ['pokemon', 'pokestop', 'gym']
 var storeZoom = true
 var scanPath
 var moves
+var osmTileServer
 
 var oSwLat
 var oSwLng
@@ -153,7 +154,8 @@ function initMap() { // eslint-disable-line no-unused-vars
                 'style_pgo_nl',
                 'style_pgo_day',
                 'style_pgo_night',
-                'style_pgo_dynamic'
+                'style_pgo_dynamic',
+                'osm'
             ]
         }
     })
@@ -202,6 +204,16 @@ function initMap() { // eslint-disable-line no-unused-vars
         name: 'PokemonGo Night'
     })
     map.mapTypes.set('style_pgo_night', stylePgoNight)
+
+    // OpenStreetMap support
+    map.mapTypes.set('openstreetmap', new google.maps.ImageMapType({
+        getTileUrl: function (coord, zoom) {
+            return '//' + osmTileServer + '/' + zoom + '/' + coord.x + '/' + coord.y + '.png'
+        },
+        tileSize: new google.maps.Size(256, 256),
+        name: 'OpenStreetMap',
+        maxZoom: 18
+    }))
 
     // dynamic map style chooses stylePgoDay or stylePgoNight depending on client time
     var currentDate = new Date()
