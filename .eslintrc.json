@@ -72,6 +72,7 @@
     "notifyPokemon": true,
     "notifyRarity": true,
     "notifyIv": true,
+    "notifyLevel": true,
     "notifyRaid": true,
     "enableRaids": true,
     "activeRaids": true,
