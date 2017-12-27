@@ -43,6 +43,7 @@
     "Store": true,
     "centerLat": true,
     "centerLng": true,
+    "locationSet": true,
     "zoom": true,
     "minZoom": true,
     "maxLatLng": true,

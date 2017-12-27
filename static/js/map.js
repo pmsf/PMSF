@@ -2424,11 +2424,11 @@ $(function () {
 
         locationMarker = createLocationMarker()
 
-        if (Store.get('startAtUserLocation')) {
+        if (Store.get('startAtUserLocation') && !locationSet) {
             centerMapOnLocation()
         }
 
-        if (Store.get('startAtLastLocation')) {
+        if (Store.get('startAtLastLocation') && !locationSet) {
             var position = Store.get('startAtLastLocationPosition')
             var lat = 'lat' in position ? position.lat : centerLat
             var lng = 'lng' in position ? position.lng : centerLng

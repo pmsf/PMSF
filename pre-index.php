@@ -4,6 +4,9 @@ $zoom = !empty($_GET['zoom']) ? $_GET['zoom'] : null;
 if (!empty($_GET['lat']) && !empty($_GET['lon'])) {
     $startingLat = $_GET['lat'];
     $startingLng = $_GET['lon'];
+    $locationSet = 1;
+} else {
+    $locationSet = 0;
 }
 if ($blockIframe) {
     header('X-Frame-Options: DENY');
@@ -661,6 +664,7 @@ if ($blockIframe) {
 <script>
     var centerLat = <?= $startingLat; ?>;
     var centerLng = <?= $startingLng; ?>;
+    var locationSet = <?= $locationSet; ?>;
     var zoom<?php echo $zoom ? " = " . $zoom : null; ?>;
     var minZoom = <?= $maxZoomOut; ?>;
     var maxLatLng = <?= $maxLatLng; ?>;
