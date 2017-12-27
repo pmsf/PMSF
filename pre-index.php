@@ -474,6 +474,17 @@ if ($blockIframe) {
             }
             ?>
             <?php
+            if (!$noNotifyLevel) {
+                echo '<div class="form-control">
+                <label for="notify-level">
+                    <h3>'.i8ln('Notify of Level').'</h3>
+                    <input id="notify-level" type="text" name="notify-level"
+                           placeholder="'.i8ln('Minimum level').'"/>
+                </label>
+            </div>';
+            }
+            ?>
+            <?php
             if (!$noNotifyRaid) {
                 echo '<div class="form-control switch-container" id="notify-raid-wrapper">
                         <h3>Notify of Minimum Raid Level</h3>
@@ -675,6 +686,7 @@ if ($blockIframe) {
     var notifyPokemon = <?php echo $noNotifyPokemon ? '[]' : $notifyPokemon ?>;
     var notifyRarity = <?php echo $noNotifyRarity ? '[]' : $notifyRarity ?>;
     var notifyIv = <?php echo $noNotifyIv ? '""' : $notifyIv ?>;
+    var notifyLevel = <?php echo $noNotifyLevel ? '""' : $notifyLevel ?>;
     var notifyRaid = <?php echo $noNotifyRaid ? 0 : $notifyRaid ?>;
     var enableRaids = <?php echo $noRaids ? 'false' : $enableRaids ?>;
     var activeRaids = <?php echo $activeRaids ?>;

@@ -869,6 +869,11 @@ var StoreOptions = {
             default: notifyIv,
             type: StoreTypes.Number
         },
+    'remember_text_level_notify':
+        {
+            default: notifyLevel,
+            type: StoreTypes.Number
+        },
     'remember_raid_notify':
         {
             default: notifyRaid,
