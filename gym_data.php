@@ -1,5 +1,9 @@
 <?php
 include('config/config.php');
+
+// set content type
+header('Content-Type: application/json');
+
 // init map
 if (strtolower($map) == "monocle") {
     if (strtolower($fork) == "asner") {

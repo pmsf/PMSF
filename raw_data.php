@@ -3,6 +3,9 @@ $timing['start'] = microtime(true);
 include('config/config.php');
 global $map, $fork;
 
+// set content type
+header('Content-Type: application/json');
+
 $now = new DateTime();
 $now->sub(new DateInterval('PT20S'));
 
