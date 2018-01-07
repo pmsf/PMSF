@@ -370,7 +370,13 @@ class RocketMap extends Scanner
 
         $gyms = $this->query_gyms($conds, $params);
         $gym = $gyms[0];
-        $gym["pokemon"] = $this->query_gym_defenders($gymId);
+
+        $select = "gymmember.gym_id, pokemon_id, cp AS pokemon_cp, move_1, move_2, iv_attack, iv_defense, iv_stamina";
+        global $noTrainerName;
+        if (!$noTrainerName) {
+            $select .= ", trainer_name, level AS trainer_level";
+        }
+        $gym["pokemon"] = $this->query_gym_defenders($gymId, $select);
         return $gym;
     }
 
@@ -437,21 +443,12 @@ class RocketMap extends Scanner
         return $data;
     }
 
-    private function query_gym_defenders($gymId)
+    private function query_gym_defenders($gymId, $select)
     {
         global $db;
 
 
-        $query = "SELECT gymmember.gym_id, 
-        pokemon_id, 
-        cp AS pokemon_cp, 
-        trainer_name, 
-        level AS trainer_level, 
-        move_1, 
-        move_2, 
-        iv_attack, 
-        iv_defense, 
-        iv_stamina 
+        $query = "SELECT :select 
         FROM gymmember 
         JOIN gympokemon 
         ON gymmember.pokemon_uid = gympokemon.pokemon_uid 
@@ -464,6 +461,7 @@ class RocketMap extends Scanner
         GROUP BY name 
         ORDER BY gympokemon.cp DESC";
 
+        $query = str_replace(":select", $select, $query);
         $gym_defenders = $db->query($query, [":gymId" => $gymId])->fetchAll(\PDO::FETCH_ASSOC);
 
         $data = array();

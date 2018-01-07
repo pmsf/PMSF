@@ -112,7 +112,13 @@ class Monocle_Monkey extends Monocle
 
         $gyms = $this->query_gyms($conds, $params);
         $gym = $gyms[0];
-        $gym["pokemon"] = $this->query_gym_defenders($gymId);
+
+        $select = "gd.pokemon_id, gd.cp AS pokemon_cp, gd.move_1, gd.move_2, gd.nickname, gd.atk_iv AS iv_attack, gd.def_iv AS iv_defense, gd.sta_iv AS iv_stamina, gd.cp AS pokemon_cp";
+        global $noTrainerName;
+        if (!$noTrainerName) {
+            $select .= ", gd.owner_name AS trainer_name";
+        }
+        $gym["pokemon"] = $this->query_gym_defenders($gymId, $select);
         return $gym;
     }
 
@@ -202,25 +208,17 @@ class Monocle_Monkey extends Monocle
         return $data;
     }
 
-    private function query_gym_defenders($gymId)
+    private function query_gym_defenders($gymId, $select)
     {
         global $db;
 
 
-        $query = "SELECT gd.pokemon_id,
-        gd.cp AS pokemon_cp,
-        gd.move_1,
-        gd.move_2,
-        gd.nickname,
-        gd.atk_iv AS iv_attack,
-        gd.def_iv AS iv_defense,
-        gd.sta_iv AS iv_stamina,
-        gd.cp AS pokemon_cp,
-        gd.owner_name AS trainer_name
+        $query = "SELECT :select
       FROM gym_defenders gd
       LEFT JOIN forts f ON gd.fort_id = f.id
       WHERE f.external_id = :gymId";
 
+        $query = str_replace(":select", $select, $query);
         $gym_defenders = $db->query($query, [":gymId" => $gymId])->fetchAll(\PDO::FETCH_ASSOC);
 
         $data = array();
@@ -237,7 +235,6 @@ class Monocle_Monkey extends Monocle
             $defender["iv_attack"] = floatval($defender["iv_attack"]);
             $defender["iv_defense"] = floatval($defender["iv_defense"]);
             $defender["iv_stamina"] = floatval($defender["iv_stamina"]);
-            $defender["trainer_level"] = "";
 
             $defender['move_1_name'] = i8ln($this->moves[$defender['move_1']]['name']);
             $defender['move_1_damage'] = $this->moves[$defender['move_1']]['damage'];
