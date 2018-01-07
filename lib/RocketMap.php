@@ -353,7 +353,7 @@ class RocketMap extends Scanner
             $date = new \DateTime();
             $date->setTimezone(new \DateTimeZone('UTC'));
             $date->setTimestamp($tstamp);
-            $conds[] = "last_scanned > :lastUpdated";
+            $conds[] = "gym.last_scanned > :lastUpdated";
             $params[':lastUpdated'] = date_format($date, 'Y-m-d H:i:s');
         }
 
