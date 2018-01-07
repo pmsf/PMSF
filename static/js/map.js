@@ -634,7 +634,9 @@ function gymLabel(item) {
 
 function pokestopLabel(expireTime, latitude, longitude, stopName) {
     var str
-    if (stopName === undefined) { stopName = 'Pokéstop' }
+    if (stopName === undefined) {
+        stopName = 'Pokéstop'
+    }
     if (expireTime) {
         str =
             '<div>' +
@@ -2100,9 +2102,16 @@ function showGymDetails(id) { // eslint-disable-line no-unused-vars
                     '<div style="line-height:1em">' + pokemon.pokemon_name + '</div>' +
                     '<div class="cp">CP ' + pokemon.pokemon_cp + '</div>' +
                     '</td>' +
-                    '<td width="190" class="team-' + result.team_id + '-text" align="center">' +
-                    '<div class="trainer-level">' + pokemon.trainer_level + '</div>' +
-                    '<div style="line-height: 1em">' + pokemon.trainer_name + '</div>' +
+                    '<td width="190" class="team-' + result.team_id + '-text" align="center">'
+                if (pokemon.trainer_level) {
+                    pokemonHtml +=
+                        '<div class="trainer-level">' + pokemon.trainer_level + '</div>'
+                }
+                if (pokemon.trainer_name) {
+                    pokemonHtml +=
+                        '<div style="line-height: 1em">' + pokemon.trainer_name + '</div>'
+                }
+                pokemonHtml +=
                     '</td>' +
                     '<td width="10">' +
                     '<!--<a href="#" onclick="toggleGymPokemonDetails(this)">-->' +
