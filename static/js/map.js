@@ -359,7 +359,7 @@ function getTypeSpan(type) {
 }
 
 function openMapDirections(lat, lng) { // eslint-disable-line no-unused-vars
-    var url = 'https://www.google.com/maps/?daddr=' + lat + ',' + lng
+    var url = 'https://www.google.com/maps/dir/?api=1&destination=' + lat + ',' + lng
     window.open(url, '_blank')
 }
 
