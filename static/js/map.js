@@ -453,9 +453,12 @@ function pokemonLabel(item) {
     if (gender != null) {
         details +=
             '<div>' +
-            i8ln('Gender') + ' : ' + genderType[gender - 1]
-        if (weight != null && height != null) {
-            details += ' | ' + i8ln('Weight') + ' : ' + weight.toFixed(2) + 'kg | ' + i8ln('Height') + ': ' + height.toFixed(2) + 'm'
+            i8ln('Gender') + ': ' + genderType[gender - 1]
+        if (weight != null) {
+            details += ' | ' + i8ln('Weight') + ': ' + weight.toFixed(2) + 'kg'
+        }
+        if (height != null) {
+            details += ' | ' + i8ln('Height') + ': ' + height.toFixed(2) + 'm'
         }
         details +=
             '</div>'
