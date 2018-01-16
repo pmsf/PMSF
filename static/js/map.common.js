@@ -1063,6 +1063,11 @@ var StoreOptions = {
         {
             default: icons,
             type: StoreTypes.String
+        },
+    'triggerGyms':
+        {
+            default: triggerGyms,
+            type: StoreTypes.JSON
         }
 }
 
