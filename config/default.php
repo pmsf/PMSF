@@ -168,6 +168,8 @@ $locationStyle = 'none';                                            // none, goo
 $osmTileServer = 'tile.openstreetmap.org';                          // osm tile server (no trailing slash)
 
 $triggerGyms = '[]';                                                // Add Gyms that the OSM-Query doesn't take care of like '["gym_id", "gym_id"]'
+$noExGyms = false;                                                  // Do not display EX-Gyms on the map
+$noParkInfo = false;                                                // Do not display Park info on the map
 
 //-----------------------------------------------------
 // Raid API

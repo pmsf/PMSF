@@ -713,6 +713,8 @@ if ($blockIframe) {
     var spriteFileLarge = '<?php echo $copyrightSafe ? 'static/icons-safe-1-bigger.png' : 'static/icons-im-1-bigger.png' ?>';
     var icons = '<?php echo $copyrightSafe ? 'static/icons-safe/' : 'static/icons-pokemon/' ?>';
     var triggerGyms = <?php echo $triggerGyms ?>;
+    var noExGyms = <?php echo $noExGyms === true ? 'true' : 'false' ?>;
+    var noParkInfo = <?php echo $noParkInfo === true ? 'true' : 'false' ?>;
 </script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js"></script>
 <script src="static/dist/js/map.common.min.js"></script>
