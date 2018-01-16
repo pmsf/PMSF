@@ -441,21 +441,21 @@ function pokemonLabel(item) {
             }
             details +=
                 '<div>' +
-                'CP: ' + cp + ' | Level: ' + pokemonLevel +
+                i8ln('CP') + ' : ' + cp + ' | ' + i8ln('Level') + ' : ' + pokemonLevel +
                 '</div>'
         }
 
         details +=
             '<div>' +
-            'Moves: ' + pMove1 + ' / ' + pMove2 +
+            i8ln('Moves') + ' : ' + pMove1 + ' / ' + pMove2 +
             '</div>'
     }
     if (gender != null) {
         details +=
             '<div>' +
-            'Gender: ' + genderType[gender - 1]
+            i8ln('Gender') + ' : ' + genderType[gender - 1]
         if (weight != null && height != null) {
-            details += ' | Weight: ' + weight.toFixed(2) + 'kg | Height: ' + height.toFixed(2) + 'm'
+            details += ' | ' + i8ln('Weight') + ' : ' + weight.toFixed(2) + 'kg | ' + i8ln('Height') + ': ' + height.toFixed(2) + 'm'
         }
         details +=
             '</div>'
@@ -468,25 +468,25 @@ function pokemonLabel(item) {
     }
     contentstring += '<span> - </span>' +
         '<small>' +
-        '<a href="https://pokemon.gameinfo.io/en/pokemon/' + id + '" target="_blank" title="View in Pokedex">#' + id + '</a>' +
+        '<a href="https://pokemon.gameinfo.io/' + language + '/pokemon/' + id + '" target="_blank" title="' + i8ln('View in Pokedex') + '">#' + id + '</a>' +
         '</small>' +
         '<span> ' + rarityDisplay + '</span>' +
         '<span> - </span>' +
         '<small>' + typesDisplay + '</small>' +
         '</div>' +
         '<div>' +
-        'Disappears at ' + getTimeStr(disappearTime) +
+        i8ln('Disappears at') + ' ' + getTimeStr(disappearTime) +
         ' <span class="label-countdown" disappears-at="' + disappearTime + '">(00m00s)</span>' +
         '</div>' +
         '<div>' +
-        'Location: <a href="javascript:void(0)" onclick="javascript:openMapDirections(' + latitude + ', ' + longitude + ')" title="View in Maps">' + latitude.toFixed(6) + ', ' + longitude.toFixed(7) + '</a>' +
+        i8ln('Location') + ': <a href="javascript:void(0)" onclick="javascript:openMapDirections(' + latitude + ', ' + longitude + ')" title="' + i8ln('View in Maps') + '">' + latitude.toFixed(6) + ', ' + longitude.toFixed(7) + '</a>' +
         '</div>' +
         details +
         '<div>' +
-        '<a href="javascript:excludePokemon(' + id + ')">Exclude</a>&nbsp&nbsp' +
-        '<a href="javascript:notifyAboutPokemon(' + id + ')">Notify</a>&nbsp&nbsp' +
-        '<a href="javascript:removePokemonMarker(\'' + encounterId + '\')">Remove</a>&nbsp&nbsp' +
-        '<a href="javascript:void(0);" onclick="javascript:toggleOtherPokemon(' + id + ');" title="Toggle display of other Pokemon">Toggle Others</a>' +
+        '<a href="javascript:excludePokemon(' + id + ')">' + i8ln('Exclude') + '</a>&nbsp&nbsp' +
+        '<a href="javascript:notifyAboutPokemon(' + id + ')">' + i8ln('Notify') + '</a>&nbsp&nbsp' +
+        '<a href="javascript:removePokemonMarker(\'' + encounterId + '\')">' + i8ln('Remove') + '</a>&nbsp&nbsp' +
+        '<a href="javascript:void(0);" onclick="javascript:toggleOtherPokemon(' + id + ');" title="' + i8ln('Toggle display of other Pokemon') + '">' + i8ln('Toggle Others') + '</a>' +
         '</div>'
     return contentstring
 }
@@ -529,8 +529,8 @@ function gymLabel(item) {
 
         var raidStartStr = getTimeStr(item['raid_start'])
         var raidEndStr = getTimeStr(item['raid_end'])
-        raidStr += '<div>Start: <b>' + raidStartStr + '</b> <span class="label-countdown" disappears-at="' + item['raid_start'] + '" start>(00m00s)</span></div>'
-        raidStr += '<div>End: <b>' + raidEndStr + '</b> <span class="label-countdown" disappears-at="' + item['raid_end'] + '" end>(00m00s)</span></div>'
+        raidStr += '<div>' + i8ln('Start') + ': <b>' + raidStartStr + '</b> <span class="label-countdown" disappears-at="' + item['raid_start'] + '" start>(00m00s)</span></div>'
+        raidStr += '<div>' + i8ln('End') + ': <b>' + raidEndStr + '</b> <span class="label-countdown" disappears-at="' + item['raid_end'] + '" end>(00m00s)</span></div>'
 
         if (raidStarted) {
             raidIcon = '<i class="pokemon-large-raid-sprite n' + item.raid_pokemon_id + '"></i>'
@@ -560,7 +560,7 @@ function gymLabel(item) {
     if (lastScanned != null) {
         lastScannedStr =
             '<div>' +
-            'Last Scanned: ' + getDateStr(lastScanned) + ' ' + getTimeStr(lastScanned) +
+            i8ln('Last Scanned') + ' : ' + getDateStr(lastScanned) + ' ' + getTimeStr(lastScanned) +
             '</div>'
     }
 
@@ -575,17 +575,18 @@ function gymLabel(item) {
             '<div>' +
             '<center>' +
             '<div>' +
-            '<b style="color:rgba(' + gymColor[teamId] + ')">' + teamName + '</b><br>' +
+            '<b style="color:rgba(' + gymColor[teamId] + ')">' + i8ln(teamName) + '</b><br>' +
             '<img height="70px" style="padding: 5px;" src="static/forts/' + teamName + '_large.png">' +
             raidIcon +
             '</div>' +
             nameStr +
             raidStr +
             '<div>' +
-            'Location: <a href="javascript:void(0);" onclick="javascript:openMapDirections(' + latitude + ',' + longitude + ');" title="View in Maps">' + latitude.toFixed(6) + ' , ' + longitude.toFixed(7) + '</a>' +
+            i8ln('Location') + '<a href="javascript:void(0);" onclick="javascript:openMapDirections(' + latitude + ',' + longitude + ');" title="' + i8ln('View in Maps') + '">' + latitude.toFixed(6) + ' , ' + longitude.toFixed(7) + '</a>' +
             '</div>' +
             '<div>' +
-            'Last Modified: ' + lastModifiedStr +
+
+            i8ln('Last Modified') + ' : ' + lastModifiedStr +
             '</div>' +
             '<div>' +
             lastScannedStr +
@@ -596,31 +597,33 @@ function gymLabel(item) {
         var freeSlots = item['slots_available']
         var gymCp = ''
         if (item['total_gym_cp'] != null) {
-            gymCp = '<div>Total Gym CP: <b>' + item.total_gym_cp + '</b></div>'
+            gymCp = '<div>' + i8ln('Total Gym CP') + ' : <b>' + item.total_gym_cp + '</b></div>'
         }
         str =
             '<div>' +
             '<center>' +
             '<div style="padding-bottom: 2px">' +
-            'Gym owned by:' +
+
+            i8ln('Gym owned by') + ' : ' +
             '</div>' +
             '<div>' +
-            '<b style="color:rgba(' + gymColor[teamId] + ')">Team ' + teamName + '</b><br>' +
+            '<b style="color:rgba(' + gymColor[teamId] + ')">' + i8ln('Team') + ' ' + i8ln(teamName) + '</b><br>' +
             '<img height="70px" style="padding: 5px;" src="static/forts/' + teamName + '_large.png">' +
             raidIcon +
             '</div>' +
             nameStr +
             raidStr +
-            '<div><b>' + freeSlots + ' Free Slots</b></div>' +
+            '<div><b>' + freeSlots + ' ' + i8ln('Free Slots') + '</b></div>' +
             gymCp +
             '<div>' +
             memberStr +
             '</div>' +
             '<div>' +
-            'Location: <a href="javascript:void(0);" onclick="javascript:openMapDirections(' + latitude + ',' + longitude + ');" title="View in Maps">' + latitude.toFixed(6) + ' , ' + longitude.toFixed(7) + '</a>' +
+            i8ln('Location') + ' : <a href="javascript:void(0);" onclick="javascript:openMapDirections(' + latitude + ',' + longitude + ');" title="' + i8ln('View in Maps') + '">' + latitude.toFixed(6) + ' , ' + longitude.toFixed(7) + '</a>' +
             '</div>' +
             '<div>' +
-            'Last Modified: ' + lastModifiedStr +
+
+            i8ln('Last Modified') + ' : ' + lastModifiedStr +
             '</div>' +
             '<div>' +
             lastScannedStr +
@@ -643,11 +646,11 @@ function pokestopLabel(expireTime, latitude, longitude, stopName) {
             '<b>' + stopName + ' (Lured)</b>' +
             '</div>' +
             '<div>' +
-            'Lure expires at ' + getTimeStr(expireTime) +
+            i8ln('Lure expires at') + ' ' + getTimeStr(expireTime) +
             ' <span class="label-countdown" disappears-at="' + expireTime + '">(00m00s)</span>' +
             '</div>' +
             '<div>' +
-            'Location: <a href="javascript:void(0)" onclick="javascript:openMapDirections(' + latitude + ',' + longitude + ')" title="View in Maps">' + latitude.toFixed(6) + ', ' + longitude.toFixed(7) + '</a>' +
+            'Location: <a href="javascript:void(0)" onclick="javascript:openMapDirections(' + latitude + ',' + longitude + ')" title="' + i8ln('View in Maps') + '">' + latitude.toFixed(6) + ', ' + longitude.toFixed(7) + '</a>' +
             '</div>'
     } else {
         str =
@@ -655,7 +658,7 @@ function pokestopLabel(expireTime, latitude, longitude, stopName) {
             '<b>' + stopName + '</b>' +
             '</div>' +
             '<div>' +
-            'Location: <a href="javascript:void(0)" onclick="javascript:openMapDirections(' + latitude + ',' + longitude + ')" title="View in Maps">' + latitude.toFixed(6) + ', ' + longitude.toFixed(7) + '</a>' +
+            'Location: <a href="javascript:void(0)" onclick="javascript:openMapDirections(' + latitude + ',' + longitude + ')" title="' + i8ln('View in Maps') + '">' + latitude.toFixed(6) + ', ' + longitude.toFixed(7) + '</a>' +
             '</div>'
     }
 
@@ -671,16 +674,16 @@ function formatSpawnTime(seconds) {
 function spawnpointLabel(item) {
     var str =
         '<div>' +
-        '<b>Spawn Point</b>' +
+        '<b>' + i8ln('Spawn Point') + '</b>' +
         '</div>' +
         '<div>' +
-        'Every hour from ' + formatSpawnTime(item.time) + ' to ' + formatSpawnTime(item.time + 900) +
+        i8ln('Every hour from') + ' ' + formatSpawnTime(item.time) + ' ' + i8ln('to') + ' ' + formatSpawnTime(item.time + 900) +
         '</div>'
 
     if (item.special) {
         str +=
             '<div>' +
-            'May appear as early as ' + formatSpawnTime(item.time - 1800) +
+            i8ln('May appear as early as') + ' ' + formatSpawnTime(item.time - 1800) +
             '</div>'
     }
     return str
@@ -1336,7 +1339,7 @@ function loadRawData() {
         cache: false,
         beforeSend: function beforeSend() {
             if (maxLatLng > 0 && (((neLat - swLat) > maxLatLng) || ((neLng - swLng) > maxLatLng))) {
-                toastr['error']('Please zoom in to get data.', 'Max zoom')
+                toastr['error'](i8ln('Please zoom in to get data.'), i8ln('Max zoom'))
                 toastr.options = {
                     'closeButton': true,
                     'debug': false,
@@ -1761,11 +1764,11 @@ var updateLabelDiffTime = function updateLabelDiffTime() {
 
         if (disappearsAt.time < disappearsAt.now) {
             if (element.hasAttribute('start')) {
-                timestring = '(started)'
+                timestring = '(' + i8ln('started') + ')'
             } else if (element.hasAttribute('end')) {
-                timestring = '(ended)'
+                timestring = '(' + i8ln('ended') + ')'
             } else {
-                timestring = '(expired)'
+                timestring = '(' + i8ln('expired') + ')'
             }
         } else {
             timestring = '('
@@ -2008,7 +2011,7 @@ function showGymDetails(id) { // eslint-disable-line no-unused-vars
         if (result.last_scanned != null) {
             lastScannedStr =
                 '<div style="font-size: .7em">' +
-                'Last Scanned: ' + getDateStr(result.last_scanned) + ' ' + getTimeStr(result.last_scanned) +
+                i8ln('Last Scanned') + ' : ' + getDateStr(result.last_scanned) + ' ' + getTimeStr(result.last_scanned) +
                 '</div>'
         }
         var pokemon = result.pokemon !== undefined ? result.pokemon : []
@@ -2017,7 +2020,7 @@ function showGymDetails(id) { // eslint-disable-line no-unused-vars
         if (result.team_id !== 0) {
             gymLevelStr =
                 '<center class="team-' + result.team_id + '-text">' +
-                '<b class="team-' + result.team_id + '-text">' + freeSlots + ' Free Slots</b>' +
+                '<b class="team-' + result.team_id + '-text">' + freeSlots + ' ' + i8ln('Free Slots') + '</b>' +
                 '</center>'
         }
 
@@ -2048,8 +2051,8 @@ function showGymDetails(id) { // eslint-disable-line no-unused-vars
 
             var raidStartStr = getTimeStr(result['raid_start'])
             var raidEndStr = getTimeStr(result['raid_end'])
-            raidStr += '<div>Start: <b>' + raidStartStr + '</b> <span class="label-countdown" disappears-at="' + result['raid_start'] + '" start>(00m00s)</span></div>'
-            raidStr += '<div>End: <b>' + raidEndStr + '</b> <span class="label-countdown" disappears-at="' + result['raid_end'] + '" end>(00m00s)</span></div>'
+            raidStr += '<div>' + i8ln('Start') + ': <b>' + raidStartStr + '</b> <span class="label-countdown" disappears-at="' + result['raid_start'] + '" start>(00m00s)</span></div>'
+            raidStr += '<div>' + i8ln('End') + ': <b>' + raidEndStr + '</b> <span class="label-countdown" disappears-at="' + result['raid_end'] + '" end>(00m00s)</span></div>'
 
             if (raidStarted) {
                 raidIcon = '<i class="pokemon-large-raid-sprite n' + result.raid_pokemon_id + '"></i>'
@@ -2080,11 +2083,11 @@ function showGymDetails(id) { // eslint-disable-line no-unused-vars
             raidStr +
             gymLevelStr +
             '<div style="font-size: .7em">' +
-            'Last Modified: ' + lastModifiedStr +
+            i8ln('Last Modified') + ' : ' + lastModifiedStr +
             '</div>' +
             lastScannedStr +
             '<div>' +
-            '<a href=\'javascript:void(0)\' onclick=\'javascript:openMapDirections(' + result.latitude + ',' + result.longitude + ')\' title=\'View in Maps\'>Get directions</a>' +
+            '<a href=\'javascript:void(0)\' onclick=\'javascript:openMapDirections(' + result.latitude + ',' + result.longitude + ')\' title=\'' + i8ln('View in Maps') + '\'>' + i8ln('Get directions') + '</a>' +
             '</div>' +
             '</center>'
 
