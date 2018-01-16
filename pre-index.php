@@ -96,7 +96,7 @@ if ($blockIframe) {
 <div class="wrapper">
     <!-- Header -->
     <header id="header">
-        <a href="#nav"><span class="label">Options</span></a>
+        <a href="#nav"><span class="label"><?php echo i8ln('Options') ?></span></a>
 
         <h1><a href="#"><?= $title ?></a></h1>
         <?php
@@ -112,12 +112,12 @@ if ($blockIframe) {
         </a>';
         }
         ?>
-        <a href="#stats" id="statsToggle" class="statsNav" style="float: right;"><span class="label">Stats</span></a>
+        <a href="#stats" id="statsToggle" class="statsNav" style="float: right;"><span class="label"><?php echo i8ln('Stats') ?></span></a>
     </header>
     <!-- NAV -->
     <nav id="nav">
         <div id="nav-accordion">
-            <h3>Marker Settings</h3>
+            <h3><?php echo i8ln('Marker Settings') ?></h3>
             <div>
                 <?php
                 if (!$noPokemon) {
@@ -151,7 +151,7 @@ if ($blockIframe) {
                 ?>
                 <div id="raids-filter-wrapper" style="display:none">
                     <div class="form-control switch-container" id="active-raids-wrapper">
-                        <h3>Only Active Raids</h3>
+                        <h3><?php echo i8ln('Only Active Raids') ?></h3>
                         <div class="onoffswitch">
                             <input id="active-raids-switch" type="checkbox" name="active-raids-switch"
                                    class="onoffswitch-checkbox" checked>
@@ -162,7 +162,7 @@ if ($blockIframe) {
                         </div>
                     </div>
                     <div class="form-control switch-container" id="min-level-raids-filter-wrapper">
-                        <h3>Minimum Raid Level</h3>
+                        <h3><?php echo i8ln('Minimum Raid Level') ?></h3>
                         <select name="min-level-raids-filter-switch" id="min-level-raids-filter-switch">
                             <option value="1">1</option>
                             <option value="2">2</option>
@@ -172,7 +172,7 @@ if ($blockIframe) {
                         </select>
                     </div>
                     <div class="form-control switch-container" id="max-level-raids-filter-wrapper">
-                        <h3>Maximum Raid Level</h3>
+                        <h3><?php echo i8ln('Maximum Raid Level') ?></h3>
                         <select name="max-level-raids-filter-switch" id="max-level-raids-filter-switch">
                             <option value="1">1</option>
                             <option value="2">2</option>
@@ -185,7 +185,7 @@ if ($blockIframe) {
                 <?php
                 if (!$noGymSidebar && (!$noGyms || !$noRaids)) {
                     echo '<div id="gym-sidebar-wrapper" class="form-control switch-container">
-                    <h3>Use Gym Sidebar</h3>
+                    <h3>'.i8ln('Use Gym Sidebar').'</h3>
                     <div class="onoffswitch">
                         <input id="gym-sidebar-switch" type="checkbox" name="gym-sidebar-switch"
                                class="onoffswitch-checkbox" checked>
@@ -200,7 +200,7 @@ if ($blockIframe) {
                 <?php
                 if (!$noGyms) {
                     echo '<div class="form-control switch-container">
-                    <h3>Gyms</h3>
+                    <h3>'.i8ln('Gyms').'</h3>
                     <div class="onoffswitch">
                         <input id="gyms-switch" type="checkbox" name="gyms-switch" class="onoffswitch-checkbox" checked>
                         <label class="onoffswitch-label" for="gyms-switch">
@@ -213,16 +213,16 @@ if ($blockIframe) {
                 ?>
                 <div id="gyms-filter-wrapper" style="display:none">
                     <div class="form-control switch-container" id="team-gyms-only-wrapper">
-                        <h3>Team</h3>
+                        <h3><?php echo i8ln('Team') ?></h3>
                         <select name="team-gyms-filter-switch" id="team-gyms-only-switch">
-                            <option value="0">All</option>
-                            <option value="1">Mystic</option>
-                            <option value="2">Valor</option>
-                            <option value="3">Instinct</option>
+                            <option value="0"><?php echo i8ln('All') ?></option>
+                            <option value="1"><?php echo i8ln('Mystic') ?></option>
+                            <option value="2"><?php echo i8ln('Valor') ?></option>
+                            <option value="3"><?php echo i8ln('Instinct') ?></option>
                         </select>
                     </div>
                     <div class="form-control switch-container" id="open-gyms-only-wrapper">
-                        <h3>Open Spot</h3>
+                        <h3><?php echo i8ln('Open Spot') ?></h3>
                         <div class="onoffswitch">
                             <input id="open-gyms-only-switch" type="checkbox" name="open-gyms-only-switch"
                                    class="onoffswitch-checkbox" checked>
@@ -233,7 +233,7 @@ if ($blockIframe) {
                         </div>
                     </div>
                     <div class="form-control switch-container" id="min-level-gyms-filter-wrapper">
-                        <h3>Minimum Free Slots</h3>
+                        <h3><?php echo i8ln('Minimum Free Slots') ?></h3>
                         <select name="min-level-gyms-filter-switch" id="min-level-gyms-filter-switch">
                             <option value="0">0</option>
                             <option value="1">1</option>
@@ -245,7 +245,7 @@ if ($blockIframe) {
                         </select>
                     </div>
                     <div class="form-control switch-container" id="max-level-gyms-filter-wrapper">
-                        <h3>Maximum Free Slots</h3>
+                        <h3><?php echo i8ln('Maximum Free Slots') ?></h3>
                         <select name="max-level-gyms-filter-switch" id="max-level-gyms-filter-switch">
                             <option value="0">0</option>
                             <option value="1">1</option>
@@ -257,21 +257,21 @@ if ($blockIframe) {
                         </select>
                     </div>
                     <div class="form-control switch-container" id="last-update-gyms-wrapper">
-                        <h3>Last Scan</h3>
+                        <h3><?php echo i8ln('Last Scan') ?></h3>
                         <select name="last-update-gyms-switch" id="last-update-gyms-switch">
-                            <option value="0">All</option>
-                            <option value="1">Last Hour</option>
-                            <option value="6">Last 6 Hours</option>
-                            <option value="12">Last 12 Hours</option>
-                            <option value="24">Last 24 Hours</option>
-                            <option value="168">Last Week</option>
+                            <option value="0"><?php echo i8ln('All') ?></option>
+                            <option value="1"><?php echo i8ln('Last Hour') ?></option>
+                            <option value="6"><?php echo i8ln('Last 6 Hours') ?></option>
+                            <option value="12"><?php echo i8ln('Last 12 Hours') ?></option>
+                            <option value="24"><?php echo i8ln('Last 24 Hours') ?></option>
+                            <option value="168"><?php echo i8ln('Last Week') ?></option>
                         </select>
                     </div>
                 </div>
                 <?php
                 if (!$noPokestops) {
                     echo '<div class="form-control switch-container">
-                    <h3>Pokestops</h3>
+                    <h3>'.i8ln('Pokestops').'</h3>
                     <div class="onoffswitch">
                         <input id="pokestops-switch" type="checkbox" name="pokestops-switch"
                                class="onoffswitch-checkbox" checked>
@@ -287,8 +287,8 @@ if ($blockIframe) {
                 if ($map != "monocle") {
                     echo '<div class="form-control switch-container" id = "lured-pokestops-only-wrapper" style = "display:none">
                     <select name = "lured-pokestops-only-switch" id = "lured-pokestops-only-switch">
-                        <option value = "0"> All</option>
-                        <option value = "1"> Only Lured </option>
+                        <option value = "0"> '.i8ln('All').'</option>
+                        <option value = "1"> '.i8ln('Only Lured').' </option>
                     </select>
                 </div>';
                 }
@@ -296,7 +296,7 @@ if ($blockIframe) {
                 <?php
                 if ($map != "monocle" && !$noScannedLocations) {
                     echo '<div class="form-control switch-container">
-                    <h3> Scanned Locations </h3>
+                    <h3> '.i8ln('Scanned Locations').' </h3>
                     <div class="onoffswitch">
                         <input id = "scanned-switch" type = "checkbox" name = "scanned-switch" class="onoffswitch-checkbox">
                         <label class="onoffswitch-label" for="scanned-switch">
@@ -310,7 +310,7 @@ if ($blockIframe) {
                 <?php
                 if (!$noSpawnPoints) {
                     echo '<div class="form-control switch-container">
-                    <h3> Spawn Points </h3>
+                    <h3> '.i8ln('Spawn Points').' </h3>
                     <div class="onoffswitch">
                         <input id="spawnpoints-switch" type="checkbox" name="spawnpoints-switch"
                                class="onoffswitch-checkbox">
@@ -325,7 +325,7 @@ if ($blockIframe) {
                 <?php
                 if (!$noRanges) {
                     echo '<div class="form-control switch-container">
-                    <h3>Ranges</h3>
+                    <h3>'.i8ln('Ranges').'</h3>
                     <div class="onoffswitch">
                         <input id="ranges-switch" type="checkbox" name="ranges-switch" class="onoffswitch-checkbox">
                         <label class="onoffswitch-label" for="ranges-switch">
@@ -340,7 +340,7 @@ if ($blockIframe) {
                 if (!$noHidePokemon) {
                     echo '<div class="form-control">
                     <label for="exclude-pokemon">
-                        <h3>Hide Pokemon</h3>
+                        <h3>'.i8ln('Hide Pokemon').'</h3>
                         <div style="max-height:165px;overflow-y:auto">
                             <select id="exclude-pokemon" multiple="multiple"></select>
                         </div>
@@ -352,7 +352,7 @@ if ($blockIframe) {
 
             <?php
             if (!$noSearchLocation || !$noStartMe || !$noStartLast || !$noFollowMe) {
-                echo '<h3>Location &amp; Search Settings</h3>
+                echo '<h3>'.i8ln('Location &amp; Search Settings').'</h3>
             <div>';
             }
             ?>
@@ -360,8 +360,8 @@ if ($blockIframe) {
             if (!$noSearchLocation) {
                 echo '<div class="form-control switch-container" style="display:{{is_fixed}}">
                 <label for="next-location">
-                    <h3>Change search location</h3>
-                    <input id="next-location" type="text" name="next-location" placeholder="Change search location">
+                    <h3>'.i8ln('Change search location').'</h3>
+                    <input id="next-location" type="text" name="next-location" placeholder="'.i8ln('Change search location').'">
                 </label>
             </div>';
             }
@@ -369,7 +369,7 @@ if ($blockIframe) {
             <?php
             if (!$noStartMe) {
                 echo '<div class="form-control switch-container">
-                    <h3> Start map at my position </h3>
+                    <h3> '.i8ln('Start map at my position').' </h3>
                     <div class="onoffswitch">
                         <input id = "start-at-user-location-switch" type = "checkbox" name = "start-at-user-location-switch"
                                class="onoffswitch-checkbox"/>
@@ -384,7 +384,7 @@ if ($blockIframe) {
             <?php
             if (!$noStartLast) {
                 echo '<div class="form-control switch-container">
-                    <h3> Start map at last position </h3>
+                    <h3> '.i8ln('Start map at last position').' </h3>
                     <div class="onoffswitch">
                         <input id = "start-at-last-location-switch" type = "checkbox" name = "start-at-last-location-switch"
                                class="onoffswitch-checkbox"/>
@@ -399,7 +399,7 @@ if ($blockIframe) {
             <?php
             if (!$noFollowMe) {
                 echo '<div class="form-control switch-container">
-                    <h3> Follow me </h3>
+                    <h3> '.i8ln('Follow me').' </h3>
                     <div class="onoffswitch">
                         <input id = "follow-my-location-switch" type = "checkbox" name = "follow-my-location-switch"
                                class="onoffswitch-checkbox"/>
@@ -414,7 +414,7 @@ if ($blockIframe) {
             <?php
             if (!$noSpawnArea) {
                 echo '<div id="spawn-area-wrapper" class="form-control switch-container">
-                <h3> Spawn area </h3>
+                <h3> '.i8ln('Spawn area').' </h3>
                 <div class="onoffswitch">
                     <input id = "spawn-area-switch" type = "checkbox" name = "spawn-area-switch"
                            class="onoffswitch-checkbox"/>
@@ -434,7 +434,7 @@ if ($blockIframe) {
 
             <?php
             if (!$noNotifyPokemon || !$noNotifyRarity || !$noNotifyIv || !$noNotifySound || !$noNotifyRaid) {
-                echo '<h3>Notification Settings</h3>
+                echo '<h3>'.i8ln('Notification Settings').'</h3>
             <div>';
             }
             ?>
@@ -442,7 +442,7 @@ if ($blockIframe) {
             if (!$noNotifyPokemon) {
                 echo '<div class="form-control">
                 <label for="notify-pokemon">
-                    <h3>Notify of Pokemon</h3>
+                    <h3>'.i8ln('Notify of Pokemon').'</h3>
                     <div style="max-height:165px;overflow-y:auto">
                         <select id="notify-pokemon" multiple="multiple"></select>
                     </div>
@@ -454,7 +454,7 @@ if ($blockIframe) {
             if (!$noNotifyRarity) {
                 echo '<div class="form-control">
                 <label for="notify-rarity">
-                    <h3>Notify of Rarity</h3>
+                    <h3>'.i8ln('Notify of Rarity').'</h3>
                     <div style="max-height:165px;overflow-y:auto">
                         <select id="notify-rarity" multiple="multiple"></select>
                     </div>
@@ -466,9 +466,9 @@ if ($blockIframe) {
             if (!$noNotifyIv) {
                 echo '<div class="form-control">
                 <label for="notify-perfection">
-                    <h3>Notify of Perfection</h3>
+                    <h3>'.i8ln('Notify of Perfection').'</h3>
                     <input id="notify-perfection" type="text" name="notify-perfection"
-                           placeholder="Minimum perfection %"/>
+                           placeholder="'.i8ln('Minimum perfection').' %"/>
                 </label>
             </div>';
             }
@@ -487,7 +487,7 @@ if ($blockIframe) {
             <?php
             if (!$noNotifyRaid) {
                 echo '<div class="form-control switch-container" id="notify-raid-wrapper">
-                        <h3>Notify of Minimum Raid Level</h3>
+                        <h3>'.i8ln('Notify of Minimum Raid Level').'</h3>
                         <select name="notify-raid" id="notify-raid">
                             <option value="0">Disable</option>
                             <option value="1">1</option>
@@ -502,7 +502,7 @@ if ($blockIframe) {
             <?php
             if (!$noNotifySound) {
                 echo '<div class="form-control switch-container">
-                <h3>Notify with sound</h3>
+                <h3>'.i8ln('Notify with sound').'</h3>
                 <div class="onoffswitch">
                     <input id="sound-switch" type="checkbox" name="sound-switch" class="onoffswitch-checkbox"
                            checked>
@@ -516,7 +516,7 @@ if ($blockIframe) {
             <?php
             if (!$noCriesSound) {
                 echo '<div class="form-control switch-container" id="cries-switch-wrapper">
-                <h3>Use Pok&eacute;mon cries</h3>
+                <h3>'.i8ln('Use Pokemon cries').'</h3>
                 <div class="onoffswitch">
                     <input id="cries-switch" type="checkbox" name="cries-switch" class="onoffswitch-checkbox"
                            checked>
@@ -541,14 +541,14 @@ if ($blockIframe) {
 
             <?php
             if (!$noMapStyle || !$noIconSize || !$noGymStyle || !$noLocationStyle) {
-                echo '<h3>Style Settings</h3>
+                echo '<h3>'.i8ln('Style Settings').'</h3>
             <div>';
             }
             ?>
             <?php
             if (!$noMapStyle) {
                 echo '<div class="form-control switch-container">
-                <h3>Map Style</h3>
+                <h3>'.i8ln('Map Style').'</h3>
                 <select id="map-style"></select>
             </div>';
             }
@@ -556,12 +556,12 @@ if ($blockIframe) {
             <?php
             if (!$noIconSize) {
                 echo '<div class="form-control switch-container">
-                <h3>Icon Size</h3>
+                <h3>'.i8ln('Icon Size').'</h3>
                 <select name="pokemon-icon-size" id="pokemon-icon-size">
-                    <option value="-8">Small</option>
-                    <option value="0">Normal</option>
-                    <option value="10">Large</option>
-                    <option value="20">X-Large</option>
+                    <option value="-8">'.i8ln('Small').'</option>
+                    <option value="0">'.i8ln('Normal').'</option>
+                    <option value="10">'.i8ln('Large').'</option>
+                    <option value="20">'.i8ln('X-Large').'</option>
                 </select>
             </div>';
             }
@@ -569,10 +569,10 @@ if ($blockIframe) {
             <?php
             if (!$noGymStyle) {
                 echo '<div class="form-control switch-container">
-                <h3>Gym Marker Style</h3>
+                <h3>'.i8ln('Gym Marker Style').'</h3>
                 <select name="gym-marker-style" id="gym-marker-style">
-                    <option value="ingame">In-Game</option>
-                    <option value="shield">Shield</option>
+                    <option value="ingame">'.i8ln('In-Game').'</option>
+                    <option value="shield">'.i8ln('Shield').'</option>
                 </select>
             </div>';
             }
@@ -580,7 +580,7 @@ if ($blockIframe) {
             <?php
             if (!$noLocationStyle) {
                 echo '<div class="form-control switch-container">
-                <h3>Location Icon Marker</h3>
+                <h3>'.i8ln('Location Icon Marker').'</h3>
                 <select name="locationmarker-style" id="locationmarker-style"></select>
             </div>';
             }
@@ -595,7 +595,7 @@ if ($blockIframe) {
             <center>
                 <button class="settings"
                         onclick="confirm('Are you sure you want to reset settings to default values?') ? (localStorage.clear(), window.location.reload()) : false">
-                    <i class="fa fa-refresh" aria-hidden="true"></i> Reset Settings
+                    <i class="fa fa-refresh" aria-hidden="true"></i> <?php echo i8ln('Reset Settings') ?>
                 </button>
             </center>
         </div>
@@ -603,7 +603,7 @@ if ($blockIframe) {
             <center>
                 <button class="settings"
                         onclick="download('<?= addslashes($title) ?>', JSON.stringify(JSON.stringify(localStorage)))">
-                    <i class="fa fa-upload" aria-hidden="true"></i> Export Settings
+                    <i class="fa fa-upload" aria-hidden="true"></i> <?php echo i8ln('Export Settings') ?>
                 </button>
             </center>
         </div>
@@ -612,7 +612,7 @@ if ($blockIframe) {
                 <input id="fileInput" type="file" style="display:none;" onchange="openFile(event)"/>
                 <button class="settings"
                         onclick="document.getElementById('fileInput').click()">
-                    <i class="fa fa-download" aria-hidden="true"></i> Import Settings
+                    <i class="fa fa-download" aria-hidden="true"></i> <?php echo i8ln('Import Settings') ?>
                 </button>
             </center>
         </div>
@@ -623,7 +623,7 @@ if ($blockIframe) {
                 <div><center><a href="stats">Full Stats</a></center></div>
             </div>-->
             <div class="switch-container">
-                <center><h1 id="stats-ldg-label">Loading...</h1></center>
+                <center><h1 id="stats-ldg-label"><?php echo i8ln('Loading') ?>...</h1></center>
             </div>
             <div class="stats-label-container">
                 <center><h1 id="stats-pkmn-label"></h1></center>
@@ -632,9 +632,9 @@ if ($blockIframe) {
                 <table id="pokemonList_table" class="display" cellspacing="0" width="100%">
                     <thead>
                     <tr>
-                        <th>Icon</th>
-                        <th>Name</th>
-                        <th>Count</th>
+                        <th><?php echo i8ln('Icon') ?></th>
+                        <th><?php echo i8ln('Name') ?></th>
+                        <th><?php echo i8ln('Count') ?></th>
                         <th>%</th>
                     </tr>
                     </thead>
@@ -653,7 +653,7 @@ if ($blockIframe) {
         </div>
     </nav>
     <nav id="gym-details">
-        <center><h1>Loading...</h1></center>
+        <center><h1><?php echo i8ln('Loading') ?>...</h1></center>
     </nav>
 
     <div id="motd" title=""></div>

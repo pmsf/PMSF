@@ -97,6 +97,7 @@
     "gymStyle": true,
     "spriteFile": true,
     "spriteFileLarge": true,
-    "icons": true
+    "icons": true,
+    "i8ln": false
   }
 }
