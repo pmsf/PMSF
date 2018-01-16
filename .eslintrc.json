@@ -98,6 +98,7 @@
     "spriteFile": true,
     "spriteFileLarge": true,
     "icons": true,
+    "triggerGyms": true,
     "i8ln": false
   }
 }

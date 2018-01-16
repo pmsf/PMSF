@@ -126,8 +126,8 @@ $notifyRarity = '[]';                                               // "Common",
 $noNotifyIv = false;                                                // true/false
 $notifyIv = '""';                                                   // "" for empty or a number
 
-$noNotifyLevel = false;                                                // true/false
-$notifyLevel = '""';                                                   // "" for empty or a number
+$noNotifyLevel = false;                                             // true/false
+$notifyLevel = '""';                                                // "" for empty or a number
 
 $noNotifyRaid = false;                                              // true/false
 $notifyRaid = 5;                                                    // O to disable
@@ -135,8 +135,8 @@ $notifyRaid = 5;                                                    // O to disa
 $noNotifySound = false;                                             // true/false
 $notifySound = 'false';                                             // true/false
 
-$noCriesSound = false;                                             // true/false
-$criesSound = 'false';                                             // true/false
+$noCriesSound = false;                                              // true/false
+$criesSound = 'false';                                              // true/false
 
 /* Style Settings */
 
@@ -155,6 +155,8 @@ $noLocationStyle = false;                                           // true/fals
 $locationStyle = 'none';                                            // none, google, red, red_animated, blue, blue_animated, yellow, yellow_animated, pokesition, pokeball
 
 $osmTileServer = 'tile.openstreetmap.org';                          // osm tile server (no trailing slash)
+
+$triggerGyms = '[]';                                                // Add Gyms that the OSM-Query doesn't take care of like '["gym_id", "gym_id"]'
 
 //-----------------------------------------------
 // Raid API

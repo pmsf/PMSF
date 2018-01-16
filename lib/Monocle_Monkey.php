@@ -158,6 +158,7 @@ class Monocle_Monkey extends Monocle
         f.lat AS latitude,
         f.lon AS longitude,
         f.name,
+        f.park,
         fs.team AS team_id,
         fs.guard_pokemon_id,
         fs.slots_available,
