@@ -715,6 +715,7 @@ if ($blockIframe) {
     var triggerGyms = <?php echo $triggerGyms ?>;
     var noExGyms = <?php echo $noExGyms === true ? 'true' : 'false' ?>;
     var noParkInfo = <?php echo $noParkInfo === true ? 'true' : 'false' ?>;
+    var onlyTriggerGyms = <?php echo $onlyTriggerGyms === true ? 'true' : 'false' ?>;
 </script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js"></script>
 <script src="static/dist/js/map.common.min.js"></script>
