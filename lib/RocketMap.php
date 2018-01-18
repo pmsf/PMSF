@@ -9,7 +9,7 @@ class RocketMap extends Scanner
         $conds = array();
         $params = array();
 
-        $select = "pokemon_id, Unix_timestamp(Convert_tz(disappear_time, '+00:00', @@global.time_zone)) AS disappear_time, encounter_id, latitude, longitude, gender, form";
+        $select = "pokemon_id, Unix_timestamp(Convert_tz(disappear_time, '+00:00', @@global.time_zone)) AS disappear_time, encounter_id, latitude, longitude, gender, form, weight, height";
         global $noHighLevelData;
         if (!$noHighLevelData) {
             $select .= ", individual_attack, individual_defense, individual_stamina, move_1, move_2, cp, cp_multiplier";
@@ -57,7 +57,7 @@ class RocketMap extends Scanner
         $conds = array();
         $params = array();
 
-        $select = "pokemon_id, Unix_timestamp(Convert_tz(disappear_time, '+00:00', @@global.time_zone)) AS disappear_time, encounter_id, latitude, longitude, gender, form";
+        $select = "pokemon_id, Unix_timestamp(Convert_tz(disappear_time, '+00:00', @@global.time_zone)) AS disappear_time, encounter_id, latitude, longitude, gender, form, weight, height";
         global $noHighLevelData;
         if (!$noHighLevelData) {
             $select .= ", individual_attack, individual_defense, individual_stamina, move_1, move_2, cp, cp_multiplier";
@@ -106,6 +106,9 @@ class RocketMap extends Scanner
             $pokemon["latitude"] = floatval($pokemon["latitude"]);
             $pokemon["longitude"] = floatval($pokemon["longitude"]);
             $pokemon["disappear_time"] = $pokemon["disappear_time"] * 1000;
+
+            $pokemon["weight"] = isset($pokemon["weight"]) ? floatval($pokemon["weight"]) : null;
+            $pokemon["height"] = isset($pokemon["height"]) ? floatval($pokemon["height"]) : null;
 
             $pokemon["individual_attack"] = isset($pokemon["individual_attack"]) ? intval($pokemon["individual_attack"]) : null;
             $pokemon["individual_defense"] = isset($pokemon["individual_defense"]) ? intval($pokemon["individual_defense"]) : null;
