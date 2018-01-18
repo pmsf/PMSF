@@ -556,7 +556,7 @@ function gymLabel(item) {
     }
 
     var park = ''
-    if ((item['park'] !== 'None' && item['park'] !== undefined) && (noParkInfo === false)) {
+    if ((item['park'] !== 'None' && item['park'] !== undefined && item['park']) && (noParkInfo === false)) {
         park = i8ln('Park') + ': ' + item['park']
     }
 
@@ -893,7 +893,7 @@ function getGymMarkerIcon(item) {
         teamStr = gymTypes[item['team_id']] + '_' + level
     }
     var exIcon = ''
-    if ((((park !== 'None' && park !== undefined && onlyTriggerGyms === false) || triggerGyms.includes(item['gym_id'])) && (noExGyms === false))) {
+    if ((((park !== 'None' && park !== undefined && onlyTriggerGyms === false && park) || triggerGyms.includes(item['gym_id'])) && (noExGyms === false))) {
         exIcon = '<img src="static/images/ex.png" style="position:absolute;right:25px;bottom:2px;"/>'
     }
     if (item['raid_pokemon_id'] != null && item.raid_end > Date.now()) {
@@ -2052,7 +2052,7 @@ function showGymDetails(id) { // eslint-disable-line no-unused-vars
         }
 
         var park = ''
-        if (((result['park'] !== 'None' && result['park'] !== undefined) && (noParkInfo === false))) {
+        if (((result['park'] !== 'None' && result['park'] !== undefined && result['park']) && (noParkInfo === false))) {
             park = i8ln('Park') + ': ' + result['park']
         }
 
