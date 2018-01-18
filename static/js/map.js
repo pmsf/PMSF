@@ -24,6 +24,7 @@ var $selectLocationIconMarker
 var $switchGymSidebar
 
 var language = document.documentElement.lang === '' ? 'en' : document.documentElement.lang
+var languageSite = 'en'
 var idToPokemon = {}
 var i8lnDictionary = {}
 var languageLookups = 0
@@ -251,6 +252,16 @@ function initMap() { // eslint-disable-line no-unused-vars
 
     var locale = window.navigator.userLanguage || window.navigator.language
     moment.locale(locale)
+
+    if (language === 'jp') {
+        languageSite = 'ja'
+    } else if (language === 'pt_br') {
+        languageSite = 'pt-br'
+    } else if (language === 'zh_tw') {
+        languageSite = 'zh-tw'
+    } else {
+        languageSite = language
+    }
 }
 
 function updateLocationMarker(style) {
@@ -476,7 +487,7 @@ function pokemonLabel(item) {
     }
     contentstring += '<span> - </span>' +
         '<small>' +
-        '<a href="https://pokemon.gameinfo.io/' + language + '/pokemon/' + id + '" target="_blank" title="' + i8ln('View in Pokedex') + '">#' + id + '</a>' +
+        '<a href="https://pokemon.gameinfo.io/' + languageSite + '/pokemon/' + id + '" target="_blank" title="' + i8ln('View in Pokedex') + '">#' + id + '</a>' +
         '</small>' +
         '<span> ' + rarityDisplay + '</span>' +
         '<span> - </span>' +
