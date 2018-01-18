@@ -1,4 +1,3 @@
-
 function countMarkers(map) { // eslint-disable-line no-unused-vars
     document.getElementById('stats-ldg-label').innerHTML = ''
     document.getElementById('stats-pkmn-label').innerHTML = i8ln('Pokémon')
@@ -48,7 +47,7 @@ function countMarkers(map) { // eslint-disable-line no-unused-vars
                 pokeCounts.push(
                     [
                         '<i class="pokemon-sprite n' + pkmnCount[i].ID + '"></i>',
-                        '<a href=\'https://pokemon.gameinfo.io/en/pokemon/' + pkmnCount[i].ID + '\' target=\'_blank\' title=\'' + i8ln('View in Pokédex') + '\' style=\'color: black;\'>' + pkmnCount[i].Name + '</a>',
+                        '<a href=\'https://pokemon.gameinfo.io/' + languageSite + '/pokemon/' + pkmnCount[i].ID + '\' target=\'_blank\' title=\'' + i8ln('View in Pokédex') + '\' style=\'color: black;\'>' + pkmnCount[i].Name + '</a>',
                         pkmnCount[i].Count,
                         (Math.round(pkmnCount[i].Count * 100 / pkmnTotal * 10) / 10) + '%'
                     ]

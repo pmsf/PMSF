@@ -99,6 +99,7 @@
     "spriteFileLarge": true,
     "icons": true,
     "triggerGyms": true,
-    "i8ln": false
+    "i8ln": false,
+    "languageSite": true
   }
 }
