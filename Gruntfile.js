@@ -67,10 +67,12 @@ module.exports = function (grunt) {
                     'static/dist/data/searchmarkerstyle.min.json': 'static/data/searchmarkerstyle.json',
                     'static/dist/locales/de.min.json': 'static/locales/de.json',
                     'static/dist/locales/fr.min.json': 'static/locales/fr.json',
-                    'static/dist/locales/ja.min.json': 'static/locales/ja.json',
+                    'static/dist/locales/it.min.json': 'static/locales/it.json',
+                    'static/dist/locales/jp.min.json': 'static/locales/jp.json',
                     'static/dist/locales/ko.min.json': 'static/locales/ko.json',
                     'static/dist/locales/pt_br.min.json': 'static/locales/pt_br.json',
                     'static/dist/locales/ru.min.json': 'static/locales/ru.json',
+                    'static/dist/locales/sp.min.json': 'static/locales/sp.json',
                     'static/dist/locales/zh_cn.min.json': 'static/locales/zh_cn.json',
                     'static/dist/locales/zh_tw.min.json': 'static/locales/zh_tw.json',
                     'static/dist/locales/zh_hk.min.json': 'static/locales/zh_hk.json'
