@@ -854,6 +854,11 @@ var StoreOptions = {
         default: hidePokemon,
         type: StoreTypes.JSON
     },
+    'remember_select_exclude_min_iv':
+        {
+            default: excludeMinIV,
+            type: StoreTypes.JSON
+        },
     'remember_select_notify':
         {
             default: notifyPokemon,
@@ -872,6 +877,16 @@ var StoreOptions = {
     'remember_text_level_notify':
         {
             default: notifyLevel,
+            type: StoreTypes.Number
+        },
+    'remember_text_min_iv':
+        {
+            default: minIV,
+            type: StoreTypes.Number
+        },
+    'remember_text_min_level':
+        {
+            default: minLevel,
             type: StoreTypes.Number
         },
     'remember_raid_notify':

@@ -8,8 +8,8 @@ header('Content-Type: application/json');
 if (strtolower($map) == "monocle") {
     if (strtolower($fork) == "asner") {
         $scanner = new \Scanner\Monocle_Asner();
-    } elseif (strtolower($fork) == "monkey") {
-        $scanner = new \Scanner\Monocle_Monkey();
+    } elseif (strtolower($fork) == "alternate") {
+        $scanner = new \Scanner\Monocle_Alternate();
     } else {
         $scanner = new \Scanner\Monocle();
     }
