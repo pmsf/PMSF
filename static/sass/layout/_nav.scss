@@ -60,6 +60,178 @@
       }
     }
   }
+  .pokemon-list {
+    display: -webkit-box;
+    display: -ms-flexbox;
+    display: -webkit-flex;
+    display: flex;
+    -webkit-flex-flow: row wrap;
+    flex-flow: row wrap;
+    -webkit-align-items:center;
+    align-items: center;
+    text-align:center;
+    max-width: 100%;
+    img {
+      width: calc(20% - 10px);
+      padding: 2px;
+      margin: 2px 5px;
+      box-sizing: border-box;
+    }
+    .pokemon-icon-sprite{
+      border:1px solid #FFF;
+      width: calc( 20% - 2px);
+      margin-bottom: 5px;
+      margin-left: 1px;
+      margin-right: 1px;
+      .inner-bg{
+        width: 48.13px;
+        height: 48.13px;
+        background-image: url($spriteLarge);
+        background-image: var(--sprite-large);
+        background-size:1350px;
+        background-repeat:no-repeat;
+        background-position:left;
+        display: block;
+        margin: 0 auto;
+      }
+    }
+  }
+  #pokemon-filter-wrapper{
+    #tabs{
+      padding:0;
+      border:0;
+      &:after{
+        display: table;
+        content: "";
+        clear: both;
+      }
+      .ui-tabs-nav{
+        background: transparent;
+        border: 0;
+        padding: 0;
+        li{
+          width: 50%;
+          box-sizing: border-box;
+          margin:0;
+          border-right:1px solid #fff;
+          &:last-child{
+            border-right-color:#c5c5c5;
+          }
+          &:focus{
+
+          }
+          a{
+            padding: 0.5em 0.1em;
+            text-align: center;
+            width: 100%;
+          }
+        }
+      }
+      .ui-tabs-panel{
+        padding:0;
+        .form-control{
+          float:none;
+          .pokemon-container{
+            box-shadow:none!important;
+            border:1px solid #3b3b3b;
+            max-height:350px!important;
+          }
+          a{
+            width: 50%;
+            float: left;
+            background: #3b3b3b;
+            text-align: center;
+            padding: 10px;
+            color: white;
+            text-transform: uppercase;
+            text-decoration: none;
+            border-right:1px solid #FFF;
+            &:last-child{
+              border-right:0;
+            }
+          }
+        }
+      }
+    }
+    .min-stats-row{
+      clear:both;
+      margin-top:10px;
+      .form-control{
+        margin-bottom:0;
+      }
+    }
+    .form-row{
+      display: -ms-flexbox;
+      display: -webkit-flex;
+      display:flex;
+      align-items:center;
+      .form-control{
+        label{
+          display: -ms-flexbox;
+          display: -webkit-flex;
+          display:flex;
+          align-items:center;
+        }
+        h3{
+          float:left;
+          margin-bottom:0;
+        }
+        input{
+          float:left;
+          width: 50px;
+          text-align:center;
+          margin-left: 5px;
+        }
+      }
+    }
+  }
+
+  label[for="notify-perfection"],label[for="notify-level"]{
+    h3{
+      float:left;
+      display: -webkit-box;
+      display: -ms-flexbox;
+      display: -webkit-flex;
+      display: flex;
+      height: 34px;
+      -webkit-align-items:center;
+      align-items: center;
+      margin-bottom: 0;
+    }
+  }
+  label[for="notify-pokemon"]{
+    .pokemon-list .active{
+      border: 1px solid #0089ff;
+      background: rgba(0, 114, 255, 0.4);
+    }
+  }
+  label[for="exclude-pokemon"]{
+    .pokemon-list .active {
+      border: 1px solid red;
+      background: rgba(255, 0, 0, 0.4);
+    }
+  }
+  label[for="exclude-min-iv"]{
+    .pokemon-list .active {
+      border: 1px solid #12940a;
+      background: rgba(45, 234, 11, 0.4);
+    }
+  }
+  .hide-select-2{
+    h3{
+      display:inline-block;
+      margin-right:10px;
+    }
+    label > div {
+      max-height: 200px !important;
+      overflow-y: auto !important;
+      padding: 5px !important;
+      box-shadow: 0 0 2px #000 !important;
+    }
+    .select2 {
+      display: none;
+    }
+  }
 
   .form-control > select,
   .form-control > span {
@@ -122,10 +294,10 @@
     color: #d6d6d6;
   }
   .ui-corner-all {
-    border-top-left-radius: 0px;
-    border-top-right-radius: 0px;
-    border-bottom-left-radius: 0px;
-    border-bottom-right-radius: 0px;
+    border-top-left-radius: 0;
+    border-top-right-radius: 0;
+    border-bottom-left-radius: 0;
+    border-bottom-right-radius: 0;
   }
   .ui-state-focus {
     outline: none;

@@ -4,8 +4,16 @@ namespace Scanner;
 
 class RocketMap extends Scanner
 {
-    public function get_active($eids, $swLat, $swLng, $neLat, $neLng, $tstamp = 0, $oSwLat = 0, $oSwLng = 0, $oNeLat = 0, $oNeLng = 0)
+    private $cpMultiplier;
+    public function __construct()
     {
+        parent::__construct();
+        $this->setCpMultiplier();
+    }
+
+    public function get_active($eids, $minIv, $minLevel, $exMinIv, $swLat, $swLng, $neLat, $neLng, $tstamp = 0, $oSwLat = 0, $oSwLng = 0, $oNeLat = 0, $oNeLng = 0)
+    {
+        global $db;
         $conds = array();
         $params = array();
 
@@ -48,12 +56,27 @@ class RocketMap extends Scanner
             $pkmn_in = substr($pkmn_in, 0, -1);
             $conds[] = "pokemon_id NOT IN ( $pkmn_in )";
         }
-
+        $float = $db->info()['driver'] == 'pgsql' ? "::float" : "";
+        if (!empty($minIv) && !is_nan((float)$minIv) && $minIv != 0) {
+            if (empty($exMinIv)) {
+                $conds[] = '((individual_attack' . $float . ' + individual_defense' . $float . ' + individual_stamina' . $float . ')' . $float . ' / 45.00) * 100.00 >= ' . $minIv;
+            } else {
+                $conds[] = '(((individual_attack' . $float . ' + individual_defense' . $float . ' + individual_stamina' . $float . ')' . $float . ' / 45.00) * 100.00 >= ' . $minIv . ' OR pokemon_id IN(' . $exMinIv . ') )';
+            }
+        }
+        if (!empty($minLevel) && !is_nan((float)$minLevel) && $minLevel != 0) {
+            if (empty($exMinIv)) {
+                $conds[] = 'cp_multiplier >= ' . $this->cp_multiplier[$minLevel];
+            } else {
+                $conds[] = '(cp_multiplier >= ' . $this->cp_multiplier[$minLevel] . ' OR pokemon_id IN(' . $exMinIv . ') )';
+            }
+        }
         return $this->query_active($select, $conds, $params);
     }
 
-    public function get_active_by_id($ids, $swLat, $swLng, $neLat, $neLng)
+    public function get_active_by_id($ids, $minIv, $minLevel, $exMinIv, $swLat, $swLng, $neLat, $neLng)
     {
+        global $db;
         $conds = array();
         $params = array();
 
@@ -83,7 +106,21 @@ class RocketMap extends Scanner
             $pkmn_in = substr($pkmn_in, 0, -1);
             $conds[] = "pokemon_id IN ( $pkmn_in )";
         }
-
+        $float = $db->info()['driver'] == 'pgsql' ? "::float" : "";
+        if (!empty($minIv) && !is_nan((float)$minIv) && $minIv != 0) {
+            if (empty($exMinIv)) {
+                $conds[] = '((individual_attack' . $float . ' + individual_defense' . $float . ' + individual_stamina' . $float . ')' . $float . ' / 45.00) * 100.00 >= ' . $minIv;
+            } else {
+                $conds[] = '(((individual_attack' . $float . ' + individual_defense' . $float . ' + individual_stamina' . $float . ')' . $float . ' / 45.00) * 100.00 >= ' . $minIv . ' OR pokemon_id IN(' . $exMinIv . ') )';
+            }
+        }
+        if (!empty($minLevel) && !is_nan((float)$minLevel) && $minLevel != 0) {
+            if (empty($exMinIv)) {
+                $conds[] = 'cp_multiplier >= ' . $this->cp_multiplier[$minLevel];
+            } else {
+                $conds[] = '(cp_multiplier >= ' . $this->cp_multiplier[$minLevel] . ' OR pokemon_id IN(' . $exMinIv . ') )';
+            }
+        }
         return $this->query_active($select, $conds, $params);
     }
 
@@ -584,5 +621,45 @@ class RocketMap extends Scanner
             $i++;
         }
         return $data;
+    }
+    private function setCpMultiplier()
+    {
+        $this->cpMultiplier = array(
+            1 =>0.094,
+            2 =>0.16639787,
+            3 =>0.21573247,
+            4 =>0.25572005,
+            5 =>0.29024988,
+            6 =>0.3210876,
+            7 =>0.34921268,
+            8 =>0.37523559,
+            9 =>0.39956728,
+            10 =>0.42250001,
+            11 =>0.44310755,
+            12 =>0.46279839,
+            13 =>0.48168495,
+            14 =>0.49985844,
+            15 =>0.51739395,
+            16 =>0.53435433,
+            17 =>0.55079269,
+            18 =>0.56675452,
+            19 =>0.58227891,
+            20 =>0.59740001,
+            21 =>0.61215729,
+            22 =>0.62656713,
+            23 =>0.64065295,
+            24 =>0.65443563,
+            25 =>0.667934,
+            26 =>0.68116492,
+            27 =>0.69414365,
+            28 =>0.70688421,
+            29 =>0.71939909,
+            30 =>0.7317,
+            31 =>0.73776948,
+            32 =>0.74378943,
+            33 =>0.74976104,
+            34 =>0.75568551,
+            35 =>0.76156384
+        );
     }
 }

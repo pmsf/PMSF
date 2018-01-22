@@ -69,6 +69,9 @@
     "moment": false,
     "mapStyle": true,
     "hidePokemon": true,
+    "excludeMinIV": true,
+    "minIV": true,
+    "minLevel": true,
     "notifyPokemon": true,
     "notifyRarity": true,
     "notifyIv": true,
@@ -98,6 +101,7 @@
     "spriteFile": true,
     "spriteFileLarge": true,
     "icons": true,
+    "mapType": true,
     "triggerGyms": true,
     "i8ln": false,
     "languageSite": true
