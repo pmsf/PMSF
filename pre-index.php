@@ -1,6 +1,6 @@
 <?php
 if (!file_exists('config/config.php')) {
-    http_response_code (500);
+    http_response_code(500);
     die("<h1>Config file missing</h1><p>Please ensure you have created your config file (<code>config/config.php</code>).</p>");
 }
 include('config/config.php');
