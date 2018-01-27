@@ -98,7 +98,6 @@
     "iconSize": true,
     "locationStyle": true,
     "gymStyle": true,
-    "spriteFile": true,
     "spriteFileLarge": true,
     "icons": true,
     "mapType": true,

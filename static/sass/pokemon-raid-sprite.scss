@@ -1,7 +1,8 @@
 .pokemon-raid-sprite {
-  background-image: url($sprite);
-  background-image: var(--sprite);
+  background-image: url($spriteLarge);
+  background-image: var(--sprite-large);
   background-repeat: no-repeat;
+  background-size: 840px 540px;
   top: 8px;
   right: 12px;
   position: absolute;
