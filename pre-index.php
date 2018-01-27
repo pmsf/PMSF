@@ -800,7 +800,6 @@ if ($blockIframe) {
     var iconSize = <?php echo $iconSize ?>;
     var locationStyle = '<?php echo $locationStyle ?>';
     var gymStyle = '<?php echo $gymStyle ?>';
-    var spriteFile = '<?php echo $copyrightSafe ? 'static/icons-safe-1.png' : 'static/icons-im-1.png' ?>';
     var spriteFileLarge = '<?php echo $copyrightSafe ? 'static/icons-safe-1-bigger.png' : 'static/icons-im-1-bigger.png' ?>';
     var icons = '<?php echo $copyrightSafe ? 'static/icons-safe/' : 'static/icons-pokemon/' ?>';
     var mapType = '<?php echo $map; ?>';
