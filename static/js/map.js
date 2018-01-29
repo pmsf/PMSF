@@ -544,6 +544,10 @@ function pokemonLabel(item) {
     if (id === 201 && form !== null && form > 0) {
         contentstring += ' (' + unownForm[item['form']] + ')'
     }
+    var coordText = latitude.toFixed(6) + ', ' + longitude.toFixed(7)
+    if (hidePokemonCoords === true) {
+        coordText = i8ln('Directions')
+    }
     contentstring += '<span> - </span>' +
         '<small>' +
         '<a href="https://pokemon.gameinfo.io/' + languageSite + '/pokemon/' + id + '" target="_blank" title="' + i8ln('View in Pokedex') + '">#' + id + '</a>' +
@@ -557,7 +561,7 @@ function pokemonLabel(item) {
         ' <span class="label-countdown" disappears-at="' + disappearTime + '">(00m00s)</span>' +
         '</div>' +
         '<div>' +
-        i8ln('Location') + ': <a href="javascript:void(0)" onclick="javascript:openMapDirections(' + latitude + ', ' + longitude + ')" title="' + i8ln('View in Maps') + '">' + latitude.toFixed(6) + ', ' + longitude.toFixed(7) + '</a>' +
+        i8ln('Location') + ': <a href="javascript:void(0)" onclick="javascript:openMapDirections(' + latitude + ', ' + longitude + ')" title="' + i8ln('View in Maps') + '">' + coordText + '</a>' +
         '</div>' +
         details +
         '<div>' +
