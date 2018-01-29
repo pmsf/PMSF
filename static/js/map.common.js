@@ -1064,6 +1064,11 @@ var StoreOptions = {
             default: locationStyle,
             type: StoreTypes.String
         },
+    'directionProvider':
+        {
+            default: directionProvider,
+            type: StoreTypes.String
+        },
     'gymMarkerStyle':
         {
             default: gymStyle,

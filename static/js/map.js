@@ -26,6 +26,8 @@ var $selectLuredPokestopsOnly
 var $selectGymMarkerStyle
 var $selectLocationIconMarker
 var $switchGymSidebar
+var $selectDirectionProvider
+
 
 var language = document.documentElement.lang === '' ? 'en' : document.documentElement.lang
 var languageSite = 'en'
@@ -47,6 +49,7 @@ var minIV = null
 var prevMinIV = null
 var prevMinLevel = null
 var onlyPokemon = 0
+var directionProvider
 
 var buffer = []
 var reincludedPokemon = []
@@ -375,6 +378,7 @@ function initSidebar() {
     $('#scanned-switch').prop('checked', Store.get('showScanned'))
     $('#weather-switch').prop('checked', Store.get('showWeather'))
     $('#spawnpoints-switch').prop('checked', Store.get('showSpawnpoints'))
+    $('#direction-provider').val(Store.get('directionProvider'))
     $('#ranges-switch').prop('checked', Store.get('showRanges'))
     $('#sound-switch').prop('checked', Store.get('playSound'))
     $('#cries-switch').prop('checked', Store.get('playCries'))
@@ -414,6 +418,17 @@ function getTypeSpan(type) {
 
 function openMapDirections(lat, lng) { // eslint-disable-line no-unused-vars
     var url = 'https://www.google.com/maps/dir/?api=1&destination=' + lat + ',' + lng
+    switch (directionProvider) {
+        case 'apple':
+            url = 'https://maps.apple.com/?daddr=' + lat + ',' + lng
+            break
+        case 'waze':
+            url = 'https://waze.com/ul?ll=' + lat + ',' + lng
+            break
+        case 'bing':
+            url = 'https://www.bing.com/maps/?v=2&where1=' + lat + ',' + lng
+            break
+    }
     window.open(url, '_blank')
 }
 
@@ -2570,6 +2585,7 @@ $(function () {
 $(function () {
     // populate Navbar Style menu
     $selectStyle = $('#map-style')
+    $selectDirectionProvider = $('#direction-provider')
 
     // Load Stylenames, translate entries, and populate lists
     $.getJSON('static/dist/data/mapstyle.min.json').done(function (data) {
@@ -2599,6 +2615,17 @@ $(function () {
         // recall saved mapstyle
         $selectStyle.val(Store.get('map_style')).trigger('change')
     })
+    $selectDirectionProvider.select2({
+        placeholder: 'Select Provider',
+        minimumResultsForSearch: Infinity
+    })
+
+    $selectDirectionProvider.on('change', function () {
+        directionProvider = $selectDirectionProvider.val()
+        Store.set('directionProvider', directionProvider)
+    })
+
+    $selectDirectionProvider.val(Store.get('directionProvider')).trigger('change')
 
     $selectIconSize = $('#pokemon-icon-size')
 
