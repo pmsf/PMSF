@@ -33,13 +33,13 @@ if (!empty($_POST['key']) && $_POST['key'] == $raidApiKey && !empty($_POST['type
             die();
         }
 
-        if (strtolower($map) == "monocle") {
-            if (strtolower($fork) == "alternate") {
+        if (strtolower($map) === "monocle") {
+            if (strtolower($fork) === "alternate") {
                 $scanner = new \Scanner\Monocle_Alternate();
             } else {
                 $scanner = new \Scanner\Monocle();
             }
-        } elseif (strtolower($map) == "rm") {
+        } elseif (strtolower($map) === "rm") {
             $scanner = new \Scanner\RocketMap();
         }
 

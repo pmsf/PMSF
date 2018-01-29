@@ -5,16 +5,16 @@ include('config/config.php');
 header('Content-Type: application/json');
 
 // init map
-if (strtolower($map) == "monocle") {
-    if (strtolower($fork) == "asner") {
+if (strtolower($map) === "monocle") {
+    if (strtolower($fork) === "asner") {
         $scanner = new \Scanner\Monocle_Asner();
-    } elseif (strtolower($fork) == "alternate") {
-        $scanner = new \Scanner\Monocle_Alternate();
-    } else {
+    } elseif (strtolower($fork) === "default") {
         $scanner = new \Scanner\Monocle();
+    } else {
+        $scanner = new \Scanner\Monocle_Alternate();
     }
-} elseif (strtolower($map) == "rm") {
-    if (strtolower($fork) == "sloppy") {
+} elseif (strtolower($map) === "rm") {
+    if (strtolower($fork) === "sloppy") {
         $scanner = new \Scanner\RocketMap_Sloppy();
     } else {
         $scanner = new \Scanner\RocketMap();
