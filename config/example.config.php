@@ -158,6 +158,9 @@ $mapStyle = 'style_pgo_dynamic';                                    // roadmap, 
 $noIconSize = false;                                                // true/false
 $iconSize = 0;                                                      // -8, 0, 10, 20
 
+$noIconNotifySizeModifier = false;                                  // true/false | Increase size of notified Pokemon
+$iconNotifySizeModifier = 45;                                       // 0, 15, 30, 45
+
 $noGymStyle = false;                                                // true/false
 $gymStyle = 'ingame';                                               // ingame, shield
 
