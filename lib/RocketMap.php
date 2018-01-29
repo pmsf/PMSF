@@ -644,16 +644,8 @@ class RocketMap extends Scanner
     public function get_weather($updated=null)
     {
         global $db;
-        $query = "SELECT * FROM weather WHERE :conditions ORDER BY id ASC";
-        $conds[] = "updated > :time";
-        if ($updated) {
-            $params[':time'] = $updated;
-        } else {
-            // show all weather
-            $params[':time'] = 0;
-        }
-        $query = str_replace(":conditions", join(" AND ", $conds), $query);
-        $weathers = $db->query($query, $params)->fetchAll(\PDO::FETCH_ASSOC);
+        $query = "SELECT * FROM weather ORDER BY id ASC";
+        $weathers = $db->query($query)->fetchAll(\PDO::FETCH_ASSOC);
         foreach ($weathers as $weather) {
             $data["weather_".$weather['s2_cell_id']] = $weather;
             // force re-bind of gameplay_weather to condition
