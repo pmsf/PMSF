@@ -3,3 +3,4 @@ RewriteEngine on
 RewriteRule ^raw_data$ raw_data.php?$1 [QSA,L]
 RewriteRule ^gym_data$ gym_data.php?$1 [QSA,L]
 RewriteRule ^motd_data$ motd_data.php?$1 [QSA,L]
+RewriteRule ^weather_data$ weather_data.php?$1 [QSA,L]

@@ -146,6 +146,11 @@ if ($blockIframe) {
         </a>';
         }
         ?>
+        <?php if (!$noWeatherOverlay) {
+            ?>
+        <div id="currentWeather"></div>
+        <?php
+        } ?>
         <a href="#stats" id="statsToggle" class="statsNav" style="float: right;"><span class="label"><?php echo i8ln('Stats') ?></span></a>
     </header>
     <!-- NAV -->
@@ -425,6 +430,20 @@ if ($blockIframe) {
                     </div>
                 </div>';
             } ?>
+                <?php
+                if (!$noWeatherOverlay) {
+                    echo '<div class="form-control switch-container">
+                    <h3> '.i8ln('Weather Conditions').' </h3>
+                    <div class="onoffswitch">
+                        <input id="weather-switch" type="checkbox" name="weather-switch"
+                               class="onoffswitch-checkbox">
+                        <label class="onoffswitch-label" for="weather-switch">
+                            <span class="switch-label" data-on="On" data-off="Off"></span>
+                            <span class="switch-handle"></span>
+                        </label>
+                    </div>
+                </div>';
+                } ?>
             <?php
             if (!$noSpawnPoints) {
                 echo '<div class="form-control switch-container">
@@ -759,6 +778,8 @@ if ($blockIframe) {
 <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.17.1/moment-with-locales.min.js"></script>
 <script src="https://code.createjs.com/soundjs-0.6.2.min.js"></script>
 <script src="node_modules/push.js/bin/push.min.js"></script>
+<script src="node_modules/long/src/long.js"></script>
+<script src="static/js/vendor/s2geometry.js"></script>
 <script src="static/dist/js/app.min.js"></script>
 <script src="static/js/vendor/classie.js"></script>
 <script>
@@ -788,6 +809,7 @@ if ($blockIframe) {
     var enablePokemon = <?php echo $noPokemon ? 'false' : $enablePokemon ?>;
     var enablePokestops = <?php echo $noPokestops ? 'false' : $enablePokestops ?>;
     var enableLured = <?php echo $map != "monocle" ? $enableLured : 0 ?>;
+    var enableWeatherOverlay = <?php echo !$noWeatherOverlay ? $enableWeatherOverlay : 'false' ?>;
     var enableScannedLocations = <?php echo $map != "monocle" && !$noScannedLocations ? $enableScannedLocations : 'false' ?>;
     var enableSpawnpoints = <?php echo $noSpawnPoints ? 'false' : $enableSpawnPoints ?>;
     var enableRanges = <?php echo $noRanges ? 'false' : $enableRanges ?>;
@@ -801,7 +823,9 @@ if ($blockIframe) {
     var locationStyle = '<?php echo $locationStyle ?>';
     var gymStyle = '<?php echo $gymStyle ?>';
     var spriteFileLarge = '<?php echo $copyrightSafe ? 'static/icons-safe-1-bigger.png' : 'static/icons-im-1-bigger.png' ?>';
+    var weatherSpritesSrc = '<?php echo $copyrightSafe ? 'static/sprites-safe/' : 'static/sprites-pokemon/' ?>';
     var icons = '<?php echo $copyrightSafe ? 'static/icons-safe/' : 'static/icons-pokemon/' ?>';
+    var weatherColors = <?php echo json_encode($weatherColors); ?>;
     var mapType = '<?php echo $map; ?>';
     var triggerGyms = <?php echo $triggerGyms ?>;
     var noExGyms = <?php echo $noExGyms === true ? 'true' : 'false' ?>;

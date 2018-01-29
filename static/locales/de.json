@@ -980,5 +980,13 @@
   "Doom Desire":"Kismetwunsch",
   "Precipice Blades":"Abgrundsklinge",
   "Origin Pulse":"Ursprungswoge",
-  "Present":"Geschenk"
+  "Present":"Geschenk",
+  "Weather":"Wetter",
+  "Clear":"Klar",
+  "Rain":"Regen",
+  "Partly Cloudy":"Teilweise bewölkt",
+  "Cloudy":"Bedeckt",
+  "Windy":"Windig",
+  "Snow":"Schnee",
+  "Fog":"Nebel"
 }

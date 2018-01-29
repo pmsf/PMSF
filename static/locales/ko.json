@@ -980,5 +980,13 @@
   "Doom Desire":"파멸의소원",
   "Precipice Blades":"단애의칼",
   "Origin Pulse":"근원의파동",
-  "Present":"선물"
+  "Present":"선물",
+  "Weather":"날씨",
+  "Clear":"맑음",
+  "Rain":"비",
+  "Partly Cloudy":"약간 구름",
+  "Cloudy":"구름",
+  "Windy":"강풍",
+  "Snow":"눈",
+  "Fog":"안개"
 }
