@@ -742,5 +742,13 @@
   "Zorua": "索罗亚",
   "Zubat": "超音蝠",
   "Zweilous": "双头龙",
-  "Zygarde": "基格尔德"
+  "Zygarde": "基格尔德",
+  "Weather":"天氣",
+  "Clear":"晴天",
+  "Rain":"雨天",
+  "Partly Cloudy":"多雲",
+  "Cloudy":"陰天",
+  "Windy":"強風",
+  "Snow":"下雪",
+  "Fog":"起霧"
 }

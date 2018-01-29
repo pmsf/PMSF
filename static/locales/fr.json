@@ -112,13 +112,14 @@
   "Not Lured":"Non leurré",
   "Lured":"Leurré",
   "Weather Bonus":"Bonus Météo",
-  "Clear":"Ensoleillé",
-  "Rainy":"Pluvieux",
-  "Partly cloudy":"Quelques nuages",
-  "Overcast":"Couvert",
-  "Windy":"Venteux",
+  "Weather":"Météo",
+  "Clear":"Temps clair",
+  "Rain":"Pluvieux",
+  "Partly Cloudy":"Quelques nuages",
+  "Cloudy":"Couvert",
+  "Windy":"Vent",
   "Snow":"Neigeux",
-  "Fog":"Brumeux",
+  "Fog":"Brouillard",
   "Abomasnow": "Blizzaroi",
   "Abra": "Abra",
   "Absol": "Absol",
@@ -1044,5 +1045,6 @@
   "Psycho Boost":"Psycho Boost",
   "Origin Pulse":"Onde Originelle",
   "Precipice Blades":"Lame Pangéenne",
-  "Present":"Cadeau"
+  "Present":"Cadeau",
+  "Weather Conditions": "Conditions Météo"
 }

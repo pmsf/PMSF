@@ -37,5 +37,6 @@ config/*
 /static/icons-im-1.png
 /static/icons-im-1-bigger.png
 /static/icons-pokemon/
+/static/sprites-pokemon/
 package-lock.json
 index.php

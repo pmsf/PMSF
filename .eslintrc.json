@@ -86,6 +86,8 @@
     "enablePokemon": true,
     "enablePokestops": true,
     "enableLured": true,
+    "showWeather": true,
+    "enableWeatherOverlay": true,
     "enableScannedLocations": true,
     "enableSpawnpoints": true,
     "enableRanges": true,
@@ -99,10 +101,12 @@
     "locationStyle": true,
     "gymStyle": true,
     "spriteFileLarge": true,
+    "weatherSpritesSrc": true,
     "icons": true,
     "mapType": true,
     "triggerGyms": true,
     "i8ln": false,
-    "languageSite": true
+    "languageSite": true,
+    "boostedMons": true
   }
 }

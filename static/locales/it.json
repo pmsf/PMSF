@@ -227,5 +227,13 @@
   "Doom Desire":"Obbliderio",
   "Precipice Blades":"Spade Telluriche",
   "Origin Pulse":"Primopulsar",
-  "Present":"Regalino"
+  "Present":"Regalino",
+  "Weather":"Condizioni atmosferiche",
+  "Clear":"Sereno",
+  "Rain":"Pioggia",
+  "Partly Cloudy":"Parzialmente nuvoloso",
+  "Cloudy":"Coperto",
+  "Windy":"Vento",
+  "Snow":"Neve",
+  "Fog":"Nebbia"
 }

@@ -151,6 +151,8 @@ class RocketMap extends Scanner
             $pokemon["individual_defense"] = isset($pokemon["individual_defense"]) ? intval($pokemon["individual_defense"]) : null;
             $pokemon["individual_stamina"] = isset($pokemon["individual_stamina"]) ? intval($pokemon["individual_stamina"]) : null;
 
+            $pokemon["weather_boosted_condition"] = isset($pokemon["weather_boosted_condition"]) ? intval($pokemon["weather_boosted_condition"]) : 0;
+
             $pokemon["pokemon_id"] = intval($pokemon["pokemon_id"]);
             $pokemon["pokemon_name"] = i8ln($this->data[$pokemon["pokemon_id"]]['name']);
             $pokemon["pokemon_rarity"] = i8ln($this->data[$pokemon["pokemon_id"]]['rarity']);
@@ -622,6 +624,45 @@ class RocketMap extends Scanner
         }
         return $data;
     }
+
+    public function get_weather_by_cell_id($cell_id)
+    {
+        global $db;
+        $query = "SELECT * FROM weather WHERE s2_cell_id = :cell_id";
+        $params = [':cell_id' => $cell_id];
+        $weather_info = $db->query($query, $params)->fetchAll(\PDO::FETCH_ASSOC);
+        if ($weather_info) {
+            // force re-bind of gameplay_weather to condition
+            $weather_info[0]['condition'] = $weather_info[0]['gameplay_weather'];
+            unset($weather_info[0]['gameplay_weather']);
+            return $weather_info[0];
+        } else {
+            return null;
+        }
+    }
+
+    public function get_weather($updated=null)
+    {
+        global $db;
+        $query = "SELECT * FROM weather WHERE :conditions ORDER BY id ASC";
+        $conds[] = "updated > :time";
+        if ($updated) {
+            $params[':time'] = $updated;
+        } else {
+            // show all weather
+            $params[':time'] = 0;
+        }
+        $query = str_replace(":conditions", join(" AND ", $conds), $query);
+        $weathers = $db->query($query, $params)->fetchAll(\PDO::FETCH_ASSOC);
+        foreach ($weathers as $weather) {
+            $data["weather_".$weather['s2_cell_id']] = $weather;
+            // force re-bind of gameplay_weather to condition
+            $data["weather_".$weather['s2_cell_id']]['condition'] = $data["weather_".$weather['s2_cell_id']]['gameplay_weather'];
+            unset($data["weather_".$weather['s2_cell_id']]['gameplay_weather']);
+        }
+        return $data;
+    }
+
     private function setCpMultiplier()
     {
         $this->cpMultiplier = array(

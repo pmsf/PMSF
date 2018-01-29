@@ -980,5 +980,13 @@
   "Doom Desire":"はめつのねがい",
   "Precipice Blades":"だんがいのつるぎ",
   "Origin Pulse":"こんげんのはどう",
-  "Present":"プレゼント"
+  "Present":"プレゼント",
+  "Weather":"天候",
+  "Clear":"晴天",
+  "Rain":"雨",
+  "Partly Cloudy":"ときどき曇り",
+  "Cloudy":"曇り",
+  "Windy":"強風",
+  "Snow":"雪",
+  "Fog":"霧"
 }

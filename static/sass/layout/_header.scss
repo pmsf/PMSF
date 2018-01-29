@@ -92,6 +92,10 @@
         }
       }
     }
+    #currentWeather {
+      height: 64px;
+      float: right;
+    }
   }
 
   @include breakpoint(medium) {

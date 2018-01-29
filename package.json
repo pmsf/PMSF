@@ -54,6 +54,7 @@
     "grunt-unused": "latest",
     "grunt-usemin": "latest",
     "jit-grunt": "^0.10.0",
+    "long": "^3.2.0",
     "phplint": "^1.7.4",
     "push.js": "^1.0.4"
   }

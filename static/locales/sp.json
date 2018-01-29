@@ -227,5 +227,13 @@
   "Doom Desire":"Deseo Oculto",
   "Precipice Blades":"Filo del Abismo",
   "Origin Pulse":"Pulso Primigenio",
-  "Present":"Presente"
+  "Present":"Presente",
+  "Weather":"Tiempo atmosférico",
+  "Clear":"Despejado",
+  "Rain":"Lluvioso",
+  "Partly Cloudy":"Parcialmente nublado",
+  "Cloudy":"Cielo cubierto",
+  "Windy":"Viento",
+  "Snow":"Nieve",
+  "Fog":"Niebla"
 }
