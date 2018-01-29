@@ -648,7 +648,7 @@ if ($blockIframe) {
             ?>
 
             <?php
-            if (!$noMapStyle || !$noIconSize || !$noIconNotifySizeModifier || !$noGymStyle || !$noLocationStyle) {
+            if (!$noMapStyle || !$noDirectionProvider || !$noIconSize || !$noIconNotifySizeModifier || !$noGymStyle || !$noLocationStyle) {
                 echo '<h3>'.i8ln('Style').'</h3>
             <div>';
             }
@@ -658,6 +658,19 @@ if ($blockIframe) {
                 echo '<div class="form-control switch-container">
                 <h3>'.i8ln('Map Style').'</h3>
                 <select id="map-style"></select>
+            </div>';
+            }
+            ?>
+            <?php
+            if (!$noDirectionProvider) {
+                echo '<div class="form-control switch-container">
+                <h3>'.i8ln('Direction Provider').'</h3>
+                <select name="direction-provider" id="direction-provider">
+                    <option value="apple">'.i8ln('Apple').'</option>
+                    <option value="google">'.i8ln('Google').'</option>
+                    <option value="waze">'.i8ln('Waze').'</option>
+                    <option value="bing">'.i8ln('Bing').'</option>
+                </select>
             </div>';
             }
             ?>
@@ -707,7 +720,7 @@ if ($blockIframe) {
             }
             ?>
             <?php
-            if (!$noMapStyle || !$noIconSize || !$noIconNotifySizeModifier || !$noGymStyle || !$noLocationStyle) {
+            if (!$noMapStyle || !$noDirectionProvider || !$noIconSize || !$noIconNotifySizeModifier || !$noGymStyle || !$noLocationStyle) {
                 echo '</div>';
             }
             ?>
@@ -845,6 +858,7 @@ if ($blockIframe) {
     var noExGyms = <?php echo $noExGyms === true ? 'true' : 'false' ?>;
     var noParkInfo = <?php echo $noParkInfo === true ? 'true' : 'false' ?>;
     var onlyTriggerGyms = <?php echo $onlyTriggerGyms === true ? 'true' : 'false' ?>;
+    var directionProvider = '<?php echo $noDirectionProvider === true ? $directionProvider : 'google' ?>';
 </script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js"></script>
 <script src="static/dist/js/map.common.min.js"></script>
