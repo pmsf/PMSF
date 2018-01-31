@@ -12,7 +12,7 @@ class RocketMap extends Scanner
         $this->setCpMultiplier();
     }
 
-    public function get_active($eids, $minIv, $minLevel, $exMinIv, $swLat, $swLng, $neLat, $neLng, $tstamp = 0, $oSwLat = 0, $oSwLng = 0, $oNeLat = 0, $oNeLng = 0)
+    public function get_active($eids, $minIv, $minLevel, $exMinIv, $bigKarp, $tinyRat, $swLat, $swLng, $neLat, $neLng, $tstamp = 0, $oSwLat = 0, $oSwLng = 0, $oNeLat = 0, $oNeLng = 0)
     {
         global $db;
         $conds = array();
@@ -47,6 +47,15 @@ class RocketMap extends Scanner
             $params[':lastUpdated'] = date_format($date, 'Y-m-d H:i:s');
         }
         if (count($eids)) {
+            $tmpSQL = '';
+            if (!empty($tinyRat) && $tinyRat === 'true' && ($key = array_search("19", $eids)) === false) {
+                $tmpSQL .= ' || (pokemon_id = 19 && weight < 2.41)';
+                $eids[] = "19";
+            }
+            if (!empty($bigKarp) && $bigKarp === 'true' && ($key = array_search("129", $eids)) === false) {
+                $tmpSQL .= ' || (pokemon_id = 129 && weight > 13.13)';
+                $eids[] = "129";
+            }
             $pkmn_in = '';
             $i = 1;
             foreach ($eids as $id) {
@@ -55,7 +64,7 @@ class RocketMap extends Scanner
                 $i++;
             }
             $pkmn_in = substr($pkmn_in, 0, -1);
-            $conds[] = "pokemon_id NOT IN ( $pkmn_in )";
+            $conds[] = "pokemon_id NOT IN ( $pkmn_in )" . $tmpSQL;
         }
         $float = $db->info()['driver'] == 'pgsql' ? "::float" : "";
         if (!empty($minIv) && !is_nan((float)$minIv) && $minIv != 0) {
@@ -75,7 +84,7 @@ class RocketMap extends Scanner
         return $this->query_active($select, $conds, $params);
     }
 
-    public function get_active_by_id($ids, $minIv, $minLevel, $exMinIv, $swLat, $swLng, $neLat, $neLng)
+    public function get_active_by_id($ids, $minIv, $minLevel, $exMinIv, $bigKarp, $tinyRat, $swLat, $swLng, $neLat, $neLng)
     {
         global $db;
         $conds = array();
@@ -97,6 +106,15 @@ class RocketMap extends Scanner
         $date->setTimestamp(time());
         $params[':time'] = date_format($date, 'Y-m-d H:i:s');
         if (count($ids)) {
+            $tmpSQL = '';
+            if (!empty($tinyRat) && $tinyRat === 'true' && ($key = array_search("19", $ids)) === false) {
+                $tmpSQL .= ' || (pokemon_id = 19 && weight < 2.41)';
+                $eids[] = "19";
+            }
+            if (!empty($bigKarp) && $bigKarp === 'true' && ($key = array_search("129", $ids)) === false) {
+                $tmpSQL .= ' || (pokemon_id = 129 && weight > 13.13)';
+                $eids[] = "129";
+            }
             $pkmn_in = '';
             $i = 1;
             foreach ($ids as $id) {
@@ -105,7 +123,7 @@ class RocketMap extends Scanner
                 $i++;
             }
             $pkmn_in = substr($pkmn_in, 0, -1);
-            $conds[] = "pokemon_id IN ( $pkmn_in )";
+            $conds[] = "pokemon_id NOT IN ( $pkmn_in )" . $tmpSQL;
         }
         $float = $db->info()['driver'] == 'pgsql' ? "::float" : "";
         if (!empty($minIv) && !is_nan((float)$minIv) && $minIv != 0) {
@@ -655,7 +673,7 @@ class RocketMap extends Scanner
         }
         return $data;
     }
-
+  
     private function setCpMultiplier()
     {
         $this->cpMultiplier = array(

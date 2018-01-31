@@ -73,6 +73,8 @@
     "excludeMinIV": true,
     "minIV": true,
     "minLevel": true,
+    "showBigKarp":true,
+    "showTinyRat":true,
     "hidePokemonCoords": true,
     "notifyPokemon": true,
     "notifyRarity": true,

@@ -4,7 +4,7 @@ namespace Scanner;
 
 class Monocle extends Scanner
 {
-    public function get_active($eids, $minIv, $minLevel, $exMinIv, $swLat, $swLng, $neLat, $neLng, $tstamp = 0, $oSwLat = 0, $oSwLng = 0, $oNeLat = 0, $oNeLng = 0)
+    public function get_active($eids, $minIv, $minLevel, $exMinIv, $bigKarp, $tinyRat, $swLat, $swLng, $neLat, $neLng, $tstamp = 0, $oSwLat = 0, $oSwLng = 0, $oNeLat = 0, $oNeLng = 0)
     {
         global $db;
         $conds = array();
@@ -52,7 +52,7 @@ class Monocle extends Scanner
         return $this->query_active($select, $conds, $params);
     }
 
-    public function get_active_by_id($ids, $minIv, $minLevel, $exMinIv, $swLat, $swLng, $neLat, $neLng)
+    public function get_active_by_id($ids, $minIv, $minLevel, $exMinIv, $bigKarp, $tinyRat, $swLat, $swLng, $neLat, $neLng)
     {
         global $db;
         $conds = array();
@@ -79,7 +79,7 @@ class Monocle extends Scanner
                 $i++;
             }
             $pkmn_in = substr($pkmn_in, 0, -1);
-            $conds[] = "pokemon_id IN ( $pkmn_in )";
+            $conds[] = "pokemon_id NOT IN ( $pkmn_in )";
         }
         $float = $db->info()['driver'] == 'pgsql' ? "::float" : "";
         if (!empty($minIv) && !is_nan((float)$minIv) && $minIv != 0) {
