@@ -96,6 +96,9 @@ $minIV = '0';                                                       // "0" for e
 $noMinLevel = false;                                                // true/false
 $minLevel = '0';                                                    // "0" for empty or a number
 
+$noBigKarp = false;                                               // true/false
+$noTinyRat = false;                                                 // true/false
+
 $noGyms = false;                                                    // true/false
 $enableGyms = 'false';                                              // true/false
 $noGymSidebar = false;                                              // true/false
