@@ -629,8 +629,8 @@ class RocketMap extends Scanner
     public function get_weather_by_cell_id($cell_id)
     {
         global $db;
-        $query = "SELECT * FROM weather WHERE s2_cell_id = :cell_id";
-        $params = [':cell_id' => $cell_id];
+        $query = "SELECT s2_cell_id, gameplay_weather FROM weather WHERE s2_cell_id = :cell_id";
+        $params = [':cell_id' => intval((float)$cell_id)]; // use float to intval because RM is signed int
         $weather_info = $db->query($query, $params)->fetchAll(\PDO::FETCH_ASSOC);
         if ($weather_info) {
             // force re-bind of gameplay_weather to condition
@@ -645,11 +645,11 @@ class RocketMap extends Scanner
     public function get_weather($updated = null)
     {
         global $db;
-        $query = "SELECT * FROM weather";
+        $query = "SELECT s2_cell_id, gameplay_weather FROM weather";
         $weathers = $db->query($query)->fetchAll(\PDO::FETCH_ASSOC);
         foreach ($weathers as $weather) {
-            $data["weather_" . $weather['s2_cell_id']] = $weather;
-            // force re-bind of gameplay_weather to condition
+            $weather['s2_cell_id'] = sprintf("%u", $weather['s2_cell_id']);
+            $data["weather_".$weather['s2_cell_id']] = $weather;
             $data["weather_" . $weather['s2_cell_id']]['condition'] = $data["weather_" . $weather['s2_cell_id']]['gameplay_weather'];
             unset($data["weather_" . $weather['s2_cell_id']]['gameplay_weather']);
         }
