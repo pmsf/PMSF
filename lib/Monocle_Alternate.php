@@ -78,6 +78,7 @@ class Monocle_Alternate extends Monocle
         global $db;
         $conds = array();
         $params = array();
+        $float = $db->info()['driver'] == 'pgsql' ? "::float" : "";
 
         $select = "pokemon_id, expire_timestamp AS disappear_time, encounter_id, lat AS latitude, lon AS longitude, gender, form, weight, weather_boosted_condition";
 
@@ -95,11 +96,11 @@ class Monocle_Alternate extends Monocle
         if (count($ids)) {
             $tmpSQL = '';
             if (!empty($tinyRat) && $tinyRat === 'true' && ($key = array_search("19", $ids)) === false) {
-                $tmpSQL .= ' || (pokemon_id = 19 && weight < 2.41)';
+                $tmpSQL .= ' || (pokemon_id = 19 && weight' . $float . ' < 2.41)';
                 $eids[] = "19";
             }
             if (!empty($bigKarp) && $bigKarp === 'true' && ($key = array_search("129", $ids)) === false) {
-                $tmpSQL .= ' || (pokemon_id = 129 && weight > 13.13)';
+                $tmpSQL .= ' || (pokemon_id = 129 && weight' . $float . ' > 13.13)';
                 $eids[] = "129";
             }
             $pkmn_in = '';
@@ -112,7 +113,7 @@ class Monocle_Alternate extends Monocle
             $pkmn_in = substr($pkmn_in, 0, -1);
             $conds[] = "(pokemon_id NOT IN ( $pkmn_in )" . $tmpSQL . ")";
         }
-        $float = $db->info()['driver'] == 'pgsql' ? "::float" : "";
+
         if (!empty($minIv) && !is_nan((float)$minIv) && $minIv != 0) {
             if (empty($exMinIv)) {
                 $conds[] = '((atk_iv' . $float . ' + def_iv' . $float . ' + sta_iv' . $float . ') / 45.00)' . $float . ' * 100.00 >= ' . $minIv;
