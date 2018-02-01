@@ -17,6 +17,7 @@ class RocketMap extends Scanner
         global $db;
         $conds = array();
         $params = array();
+        $float = $db->info()['driver'] == 'pgsql' ? "::float" : "";
 
         $select = "pokemon_id, Unix_timestamp(Convert_tz(disappear_time, '+00:00', @@global.time_zone)) AS disappear_time, encounter_id, latitude, longitude, gender, form, weight, height";
         global $noHighLevelData;
@@ -49,11 +50,11 @@ class RocketMap extends Scanner
         if (count($eids)) {
             $tmpSQL = '';
             if (!empty($tinyRat) && $tinyRat === 'true' && ($key = array_search("19", $eids)) === false) {
-                $tmpSQL .= ' || (pokemon_id = 19 && weight < 2.41)';
+                $tmpSQL .= ' || (pokemon_id = 19 && weight' . $float . ' < 2.41)';
                 $eids[] = "19";
             }
             if (!empty($bigKarp) && $bigKarp === 'true' && ($key = array_search("129", $eids)) === false) {
-                $tmpSQL .= ' || (pokemon_id = 129 && weight > 13.13)';
+                $tmpSQL .= ' || (pokemon_id = 129 && weight' . $float . ' > 13.13)';
                 $eids[] = "129";
             }
             $pkmn_in = '';
@@ -66,7 +67,6 @@ class RocketMap extends Scanner
             $pkmn_in = substr($pkmn_in, 0, -1);
             $conds[] = "(pokemon_id NOT IN ( $pkmn_in )" . $tmpSQL . ")";
         }
-        $float = $db->info()['driver'] == 'pgsql' ? "::float" : "";
         if (!empty($minIv) && !is_nan((float)$minIv) && $minIv != 0) {
             if (empty($exMinIv)) {
                 $conds[] = '((individual_attack' . $float . ' + individual_defense' . $float . ' + individual_stamina' . $float . ')' . $float . ' / 45.00) * 100.00 >= ' . $minIv;
@@ -673,7 +673,7 @@ class RocketMap extends Scanner
         }
         return $data;
     }
-  
+
     private function setCpMultiplier()
     {
         $this->cpMultiplier = array(
