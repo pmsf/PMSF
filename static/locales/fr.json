@@ -39,7 +39,7 @@
   "to":"jusqu'à",
   "May appear as early as":"Devrait apparaître au plus tôt à",
   "Ranges":"Distances",
-  "Hide Pokemon":"Cacher des pokémons",
+  "Hide Pokemon":"Masquer",
   "Location &amp; Search Settings":"Paramètres de position et de recherche",
   "Change search location":"Changer la position de recherche",
   "Start map at my position":"Démarrer la map à ma position",
@@ -78,8 +78,8 @@
   "Exclude":"Exclure",
   "Notify":"Notifier",
   "Remove":"Supprimer",
-  "Toggle display of other Pokemon":"Afficher/Masquer les autres pokémons",
-  "Toggle Others":"Afficher/Masquer les mêmes",
+  "Toggle display of other Pokemon":"Poursuite On/Off",
+  "Toggle Others":"Poursuite On/Off",
   "Disappears at":"Disparaît à",
   "View in Pokedex":"Voir dans le pokédex",
   "Moves":"Attaques",
@@ -1046,5 +1046,11 @@
   "Origin Pulse":"Onde Originelle",
   "Precipice Blades":"Lame Pangéenne",
   "Present":"Cadeau",
-  "Weather Conditions": "Conditions Météo"
+  "Weather Conditions": "Conditions Météo",
+  "Tiny Rats": "Petits Ratata",
+  "Big Karp" : "Gros Magicarpes",
+  "Gym/Raid" : "Raids/Arènes",
+  "NONE" : "AUCUN",
+  "All" : "Tous",
+  "None" : "Aucun"
 }
