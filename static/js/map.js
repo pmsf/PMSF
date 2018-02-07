@@ -1317,8 +1317,9 @@ function addListeners(marker) {
 }
 
 function clearStaleMarkers() {
+    var encounterId = getParameterByName('encId')
     $.each(mapData.pokemons, function (key, value) {
-        if (mapData.pokemons[key]['disappear_time'] < new Date().getTime() || excludedPokemon.indexOf(mapData.pokemons[key]['pokemon_id']) >= 0 || isTemporaryHidden(mapData.pokemons[key]['pokemon_id']) || ((((mapData.pokemons[key]['individual_attack'] + mapData.pokemons[key]['individual_defense'] + mapData.pokemons[key]['individual_stamina']) / 45 * 100 < minIV) || ((mapType === 'monocle' && mapData.pokemons[key]['level'] < minLevel) || (mapType === 'rm' && !isNaN(minLevel) && (mapData.pokemons[key]['cp_multiplier'] < cpMultiplier[minLevel - 1])))) && !excludedMinIV.includes(mapData.pokemons[key]['pokemon_id'])) || (Store.get('showBigKarp') === true && mapData.pokemons[key]['pokemon_id'] === 129 && (mapData.pokemons[key]['weight'] < 13.14 || mapData.pokemons[key]['weight'] === null)) || (Store.get('showTinyRat') === true && mapData.pokemons[key]['pokemon_id'] === 19 && (mapData.pokemons[key]['weight'] > 2.40 || mapData.pokemons[key]['weight'] === null))) {
+        if (mapData.pokemons[key]['disappear_time'] < new Date().getTime() || (excludedPokemon.indexOf(mapData.pokemons[key]['pokemon_id']) >= 0 && ((encounterId && encounterId !== mapData.pokemons[key]['encounter_id']) || !encounterId)) || isTemporaryHidden(mapData.pokemons[key]['pokemon_id']) || ((((mapData.pokemons[key]['individual_attack'] + mapData.pokemons[key]['individual_defense'] + mapData.pokemons[key]['individual_stamina']) / 45 * 100 < minIV) || ((mapType === 'monocle' && mapData.pokemons[key]['level'] < minLevel) || (mapType === 'rm' && !isNaN(minLevel) && (mapData.pokemons[key]['cp_multiplier'] < cpMultiplier[minLevel - 1])))) && !excludedMinIV.includes(mapData.pokemons[key]['pokemon_id'])) || (Store.get('showBigKarp') === true && mapData.pokemons[key]['pokemon_id'] === 129 && (mapData.pokemons[key]['weight'] < 13.14 || mapData.pokemons[key]['weight'] === null)) || (Store.get('showTinyRat') === true && mapData.pokemons[key]['pokemon_id'] === 19 && (mapData.pokemons[key]['weight'] > 2.40 || mapData.pokemons[key]['weight'] === null))) {
             if (mapData.pokemons[key].marker.rangeCircle) {
                 mapData.pokemons[key].marker.rangeCircle.setMap(null)
                 delete mapData.pokemons[key].marker.rangeCircle
@@ -1329,7 +1330,7 @@ function clearStaleMarkers() {
     })
 
     $.each(mapData.lurePokemons, function (key, value) {
-        if (mapData.lurePokemons[key]['lure_expiration'] < new Date().getTime() || excludedPokemon.indexOf(mapData.lurePokemons[key]['pokemon_id']) >= 0) {
+        if (mapData.lurePokemons[key]['lure_expiration'] < new Date().getTime() || (excludedPokemon.indexOf(mapData.lurePokemons[key]['pokemon_id']) >= 0 && ((encounterId && encounterId !== mapData.pokemons[key]['encounter_id']) || !encounterId))) {
             mapData.lurePokemons[key].marker.setMap(null)
             delete mapData.lurePokemons[key]
         }
@@ -1450,7 +1451,8 @@ function loadRawData() {
             'reids': String(reincludedPokemon),
             'eids': String(excludedPokemon),
             'exMinIV': String(excludedMinIV),
-            'token': token
+            'token': token,
+            'encId': getParameterByName('encId')
         },
         dataType: 'json',
         cache: false,
@@ -1580,12 +1582,23 @@ function loadWeatherCellData(cell) {
     })
 }
 
+function getParameterByName(name, url) {
+    if (!url) url = window.location.href
+    name = name.replace(/[[\]]/g, '\\$&')
+    var regex = new RegExp('[?&]' + name + '(=([^&#]*)|&|#|$)')
+    var results = regex.exec(url)
+    if (!results) return null
+    if (!results[2]) return ''
+    return decodeURIComponent(results[2].replace(/\+/g, ' '))
+}
+
 function processPokemons(i, item) {
     if (!Store.get('showPokemon')) {
         return false // in case the checkbox was unchecked in the meantime.
     }
 
-    if (!(item['encounter_id'] in mapData.pokemons) && excludedPokemon.indexOf(item['pokemon_id']) < 0 && item['disappear_time'] > Date.now() && !isTemporaryHidden(item['pokemon_id'])) {
+    var encounterId = getParameterByName('encId')
+    if (!(item['encounter_id'] in mapData.pokemons) && item['disappear_time'] > Date.now() && ((encounterId && encounterId === item['encounter_id']) || (excludedPokemon.indexOf(item['pokemon_id']) < 0 && !isTemporaryHidden(item['pokemon_id'])))) {
         // add marker to map and item to dict
         if (item.marker) {
             item.marker.setMap(null)
@@ -1594,6 +1607,20 @@ function processPokemons(i, item) {
             item.marker = setupPokemonMarker(item, map)
             customizePokemonMarker(item.marker, item)
             mapData.pokemons[item['encounter_id']] = item
+        }
+
+        if (encounterId && encounterId === item['encounter_id']) {
+            if (!item.marker.infoWindowIsOpen) {
+                item.marker.infoWindow.open(map, item.marker)
+                clearSelection()
+                updateLabelDiffTime()
+                item.marker.persist = true
+                item.marker.infoWindowIsOpen = true
+            } else {
+                item.marker.persist = null
+                item.marker.infoWindow.close()
+                item.marker.infoWindowIsOpen = false
+            }
         }
     }
 }

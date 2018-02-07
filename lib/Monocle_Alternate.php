@@ -4,11 +4,12 @@ namespace Scanner;
 
 class Monocle_Alternate extends Monocle
 {
-    public function get_active($eids, $minIv, $minLevel, $exMinIv, $bigKarp, $tinyRat, $swLat, $swLng, $neLat, $neLng, $tstamp = 0, $oSwLat = 0, $oSwLng = 0, $oNeLat = 0, $oNeLng = 0)
+    public function get_active($eids, $minIv, $minLevel, $exMinIv, $bigKarp, $tinyRat, $swLat, $swLng, $neLat, $neLng, $tstamp = 0, $oSwLat = 0, $oSwLng = 0, $oNeLat = 0, $oNeLng = 0, $encId = 0)
     {
         global $db;
         $conds = array();
         $params = array();
+        $float = $db->info()['driver'] == 'pgsql' ? "::float" : "";
 
         $select = "pokemon_id, expire_timestamp AS disappear_time, encounter_id, lat AS latitude, lon AS longitude, gender, form, weight, weather_boosted_condition";
         global $noHighLevelData;
@@ -37,11 +38,11 @@ class Monocle_Alternate extends Monocle
         if (count($eids)) {
             $tmpSQL = '';
             if (!empty($tinyRat) && $tinyRat === 'true' && ($key = array_search("19", $eids)) === false) {
-                $tmpSQL .= ' || (pokemon_id = 19 && weight < 2.41)';
+                $tmpSQL .= ' OR (pokemon_id = 19 AND weight' . $float . ' < 2.41)';
                 $eids[] = "19";
             }
             if (!empty($bigKarp) && $bigKarp === 'true' && ($key = array_search("129", $eids)) === false) {
-                $tmpSQL .= ' || (pokemon_id = 129 && weight > 13.13)';
+                $tmpSQL .= ' OR (pokemon_id = 129 AND weight' . $float . ' > 13.13)';
                 $eids[] = "129";
             }
             $pkmn_in = '';
@@ -54,7 +55,6 @@ class Monocle_Alternate extends Monocle
             $pkmn_in = substr($pkmn_in, 0, -1);
             $conds[] = "(pokemon_id NOT IN ( $pkmn_in )" . $tmpSQL . ")";
         }
-        $float = $db->info()['driver'] == 'pgsql' ? "::float" : "";
         if (!empty($minIv) && !is_nan((float)$minIv) && $minIv != 0) {
             if (empty($exMinIv)) {
                 $conds[] = '((atk_iv' . $float . ' + def_iv' . $float . ' + sta_iv' . $float . ') / 45.00)' . $float . ' * 100.00 >= ' . $minIv;
@@ -70,7 +70,7 @@ class Monocle_Alternate extends Monocle
             }
         }
 
-        return $this->query_active($select, $conds, $params);
+        return $this->query_active($select, $conds, $params, $encId);
     }
 
     public function get_active_by_id($ids, $minIv, $minLevel, $exMinIv, $bigKarp, $tinyRat, $swLat, $swLng, $neLat, $neLng)
@@ -96,11 +96,11 @@ class Monocle_Alternate extends Monocle
         if (count($ids)) {
             $tmpSQL = '';
             if (!empty($tinyRat) && $tinyRat === 'true' && ($key = array_search("19", $ids)) === false) {
-                $tmpSQL .= ' || (pokemon_id = 19 && weight' . $float . ' < 2.41)';
+                $tmpSQL .= ' OR (pokemon_id = 19 AND weight' . $float . ' < 2.41)';
                 $eids[] = "19";
             }
             if (!empty($bigKarp) && $bigKarp === 'true' && ($key = array_search("129", $ids)) === false) {
-                $tmpSQL .= ' || (pokemon_id = 129 && weight' . $float . ' > 13.13)';
+                $tmpSQL .= ' OR (pokemon_id = 129 AND weight' . $float . ' > 13.13)';
                 $eids[] = "129";
             }
             $pkmn_in = '';

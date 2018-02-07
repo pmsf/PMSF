@@ -4,7 +4,7 @@ namespace Scanner;
 
 class Monocle extends Scanner
 {
-    public function get_active($eids, $minIv, $minLevel, $exMinIv, $bigKarp, $tinyRat, $swLat, $swLng, $neLat, $neLng, $tstamp = 0, $oSwLat = 0, $oSwLng = 0, $oNeLat = 0, $oNeLng = 0)
+    public function get_active($eids, $minIv, $minLevel, $exMinIv, $bigKarp, $tinyRat, $swLat, $swLng, $neLat, $neLng, $tstamp = 0, $oSwLat = 0, $oSwLng = 0, $oNeLat = 0, $oNeLng = 0, $encId = 0)
     {
         global $db;
         $conds = array();
@@ -39,7 +39,7 @@ class Monocle extends Scanner
                 $i++;
             }
             $pkmn_in = substr($pkmn_in, 0, -1);
-            $conds[] = "pokemon_id NOT IN ( $pkmn_in )";
+            $conds[] = "(pokemon_id NOT IN ( $pkmn_in ))";
         }
         $float = $db->info()['driver'] == 'pgsql' ? "::float" : "";
         if (!empty($minIv) && !is_nan((float)$minIv) && $minIv != 0) {
@@ -49,7 +49,7 @@ class Monocle extends Scanner
                 $conds[] = '(((atk_iv' . $float . ' + def_iv' . $float . ' + sta_iv' . $float . ') / 45.00)' . $float . ' * 100.00 >= ' . $minIv . ' OR pokemon_id IN(' . $exMinIv . ') )';
             }
         }
-        return $this->query_active($select, $conds, $params);
+        return $this->query_active($select, $conds, $params, $encId);
     }
 
     public function get_active_by_id($ids, $minIv, $minLevel, $exMinIv, $bigKarp, $tinyRat, $swLat, $swLng, $neLat, $neLng)
@@ -92,7 +92,7 @@ class Monocle extends Scanner
         return $this->query_active($select, $conds, $params);
     }
 
-    public function query_active($select, $conds, $params)
+    public function query_active($select, $conds, $params, $encId = 0)
     {
         global $db;
 
@@ -100,8 +100,12 @@ class Monocle extends Scanner
         FROM sightings 
         WHERE :conditions";
 
+        $tmpSQL = '';
+        if ($encId != 0) {
+            $tmpSQL = " OR encounter_id = " . $encId;
+        }
         $query = str_replace(":select", $select, $query);
-        $query = str_replace(":conditions", join(" AND ", $conds), $query);
+        $query = str_replace(":conditions", '(' . join(" AND ", $conds) . ')' . $tmpSQL, $query);
         $pokemons = $db->query($query, $params)->fetchAll(\PDO::FETCH_ASSOC);
         $data = array();
         $i = 0;
@@ -435,6 +439,7 @@ class Monocle extends Scanner
         }
         return $data;
     }
+
     public function get_weather_by_cell_id($cell_id)
     {
         global $db;
@@ -447,7 +452,8 @@ class Monocle extends Scanner
             return null;
         }
     }
-    public function get_weather($updated=null)
+
+    public function get_weather($updated = null)
     {
         global $db;
         $query = "SELECT * FROM weather WHERE :conditions ORDER BY id ASC";
@@ -461,7 +467,7 @@ class Monocle extends Scanner
         $query = str_replace(":conditions", join(" AND ", $conds), $query);
         $weathers = $db->query($query, $params)->fetchAll(\PDO::FETCH_ASSOC);
         foreach ($weathers as $weather) {
-            $data["weather_".$weather['s2_cell_id']] = $weather;
+            $data["weather_" . $weather['s2_cell_id']] = $weather;
         }
         return $data;
     }
