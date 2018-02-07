@@ -773,13 +773,15 @@ function spawnpointLabel(item) {
         '<b>' + i8ln('Spawn Point') + '</b>' +
         '</div>' +
         '<div>' +
-        i8ln('Every hour from') + ' ' + formatSpawnTime(item.time) + ' ' + i8ln('to') + ' ' + formatSpawnTime(item.time + 900) +
+        i8ln('Every hour from') + ' ' + formatSpawnTime(item.time + 1800) + ' ' + i8ln('to') + ' ' + formatSpawnTime(item.time) +
         '</div>'
-
-    if (item.special) {
-        str +=
+    if (item.duration === 60 || item.kind === 'ssss') {
+        str =
             '<div>' +
-            i8ln('May appear as early as') + ' ' + formatSpawnTime(item.time - 1800) +
+            '<b>Spawn Point</b>' +
+            '</div>' +
+            '<div>' +
+            i8ln('Every hour from') + ' ' + formatSpawnTime(item.time) +
             '</div>'
     }
     return str
