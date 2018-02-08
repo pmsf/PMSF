@@ -49,7 +49,11 @@ class Monocle extends Scanner
                 $conds[] = '(((atk_iv' . $float . ' + def_iv' . $float . ' + sta_iv' . $float . ') / 45.00)' . $float . ' * 100.00 >= ' . $minIv . ' OR pokemon_id IN(' . $exMinIv . ') )';
             }
         }
-        return $this->query_active($select, $conds, $params, $encId);
+        $encSql = '';
+        if ($encId != 0) {
+            $encSql = " OR (encounter_id = " . $encId . " AND lat > '" . $swLat . "' AND lon > '" . $swLng . "' AND lat < '" . $neLat . "' AND lon < '" . $neLng . "' AND expire_timestamp > '" . $params[':time'] . "')";
+        }
+        return $this->query_active($select, $conds, $params, $encSql);
     }
 
     public function get_active_by_id($ids, $minIv, $minLevel, $exMinIv, $bigKarp, $tinyRat, $swLat, $swLng, $neLat, $neLng)
@@ -92,7 +96,7 @@ class Monocle extends Scanner
         return $this->query_active($select, $conds, $params);
     }
 
-    public function query_active($select, $conds, $params, $encId = 0)
+    public function query_active($select, $conds, $params, $encSql = '')
     {
         global $db;
 
@@ -100,12 +104,8 @@ class Monocle extends Scanner
         FROM sightings 
         WHERE :conditions";
 
-        $tmpSQL = '';
-        if ($encId != 0) {
-            $tmpSQL = " OR encounter_id = " . $encId;
-        }
         $query = str_replace(":select", $select, $query);
-        $query = str_replace(":conditions", '(' . join(" AND ", $conds) . ')' . $tmpSQL, $query);
+        $query = str_replace(":conditions", '(' . join(" AND ", $conds) . ')' . $encSql, $query);
         $pokemons = $db->query($query, $params)->fetchAll(\PDO::FETCH_ASSOC);
         $data = array();
         $i = 0;
