@@ -791,9 +791,15 @@ if ($blockIframe) {
     </nav>
     <nav id="stats">
         <div class="switch-container">
-            <!--<div class="switch-container">
-                <div><center><a href="stats">Full Stats</a></center></div>
-            </div>-->
+            <?php 
+            if ($worldopoleUrl !== "") {
+                ?>
+                <div class="switch-container">
+                    <div><center><a href="<?= $worldopoleUrl ?>">Full Stats</a></center></div>
+                </div>
+                <?php
+            }
+            ?>
             <div class="switch-container">
                 <center><h1 id="stats-ldg-label"><?php echo i8ln('Loading') ?>...</h1></center>
             </div>
