@@ -2609,19 +2609,21 @@ $(function () {
         fetchCriesJson()
     }
     // load MOTD, if set
-    $.ajax({
-        url: 'motd_data',
-        type: 'POST',
-        dataType: 'json',
-        cache: false,
-        success: function (data) {
-            // set content of motd banner
-            $('#motd').attr('title', data.title).html(data.content).dialog()
-        },
-        fail: function () {
-            return false
-        }
-    })
+    if (motd) {
+        $.ajax({
+            url: 'motd_data',
+            type: 'POST',
+            dataType: 'json',
+            cache: false,
+            success: function (data) {
+                // set content of motd banner
+                $('#motd').attr('title', data.title).html(data.content).dialog()
+            },
+            fail: function () {
+                return false
+            }
+        })
+    }
 })
 
 $(function () {
