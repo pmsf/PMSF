@@ -40,3 +40,5 @@ config/*
 /static/sprites-pokemon/
 package-lock.json
 index.php
+.DS_Store
+static/.DS_Store
