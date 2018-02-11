@@ -61,19 +61,24 @@ class RocketMap_Sloppy extends RocketMap
             $conds[] = "(pokemon_id NOT IN ( $pkmn_in )" . $tmpSQL . ")";
         }
 
-        if (!empty($minIv) && !is_nan((float)$minIv) && $minIv != 0) {
-            if (empty($exMinIv)) {
-                $conds[] = '((individual_attack' . $float . ' + individual_defense' . $float . ' + individual_stamina' . $float . ')' . $float . ' / 45.00) * 100.00 >= ' . $minIv;
-            } else {
-                $conds[] = '(((individual_attack' . $float . ' + individual_defense' . $float . ' + individual_stamina' . $float . ')' . $float . ' / 45.00) * 100.00 >= ' . $minIv . ' OR pokemon_id IN(' . $exMinIv . ') )';
-            }
+        $excIvSql = '';
+        $tmpCond = '';
+        if (!empty($exMinIv)) {
+            $excIvSql = ' OR pokemon_id IN(' . $exMinIv . ')';
         }
+        if (!empty($minIv) && !is_nan((float)$minIv) && $minIv != 0) {
+            $convIv = $minIv * .45;
+            $tmpCond .= 'individual_attack' . $float . ' + individual_defense' . $float . ' + individual_stamina' . $float . ' >= ' . $convIv;
+        }
+
         if (!empty($minLevel) && !is_nan((float)$minLevel) && $minLevel != 0) {
-            if (empty($exMinIv)) {
-                $conds[] = 'cp_multiplier >= ' . $this->cpMultiplier[$minLevel];
-            } else {
-                $conds[] = '(cp_multiplier >= ' . $this->cpMultiplier[$minLevel] . ' OR pokemon_id IN(' . $exMinIv . ') )';
+            if ($minIv > 0) {
+                $tmpCond .= " AND ";
             }
+            $tmpCond .= 'level >= ' . $minLevel;
+        }
+        if (!empty($tmpCond)) {
+            $conds[] = '(' . $tmpCond . ')' . $excIvSql;
         }
         $encSql = '';
         if ($encId != 0) {
@@ -124,19 +129,24 @@ class RocketMap_Sloppy extends RocketMap
             $pkmn_in = substr($pkmn_in, 0, -1);
             $conds[] = "(pokemon_id NOT IN ( $pkmn_in )" . $tmpSQL . ")";
         }
-        if (!empty($minIv) && !is_nan((float)$minIv) && $minIv != 0) {
-            if (empty($exMinIv)) {
-                $conds[] = '((individual_attack' . $float . ' + individual_defense' . $float . ' + individual_stamina' . $float . ')' . $float . ' / 45.00) * 100.00 >= ' . $minIv;
-            } else {
-                $conds[] = '(((individual_attack' . $float . ' + individual_defense' . $float . ' + individual_stamina' . $float . ')' . $float . ' / 45.00) * 100.00 >= ' . $minIv . ' OR pokemon_id IN(' . $exMinIv . ') )';
-            }
+        $excIvSql = '';
+        $tmpCond = '';
+        if (!empty($exMinIv)) {
+            $excIvSql = ' OR pokemon_id IN(' . $exMinIv . ')';
         }
+        if (!empty($minIv) && !is_nan((float)$minIv) && $minIv != 0) {
+            $convIv = $minIv * .45;
+            $tmpCond .= 'individual_attack' . $float . ' + individual_defense' . $float . ' + individual_stamina' . $float . ' >= ' . $convIv;
+        }
+
         if (!empty($minLevel) && !is_nan((float)$minLevel) && $minLevel != 0) {
-            if (empty($exMinIv)) {
-                $conds[] = 'cp_multiplier >= ' . $this->cpMultiplier[$minLevel];
-            } else {
-                $conds[] = '(cp_multiplier >= ' . $this->cpMultiplier[$minLevel] . ' OR pokemon_id IN(' . $exMinIv . ') )';
+            if ($minIv > 0) {
+                $tmpCond .= " AND ";
             }
+            $tmpCond .= 'level >= ' . $minLevel;
+        }
+        if (!empty($tmpCond)) {
+            $conds[] = '(' . $tmpCond . ')' . $excIvSql;
         }
         return $this->query_active($select, $conds, $params);
     }
