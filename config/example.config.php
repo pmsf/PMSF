@@ -61,7 +61,7 @@ $discordUrl = "https://discord.gg/INVITE_LINK";                     // Discord U
 $worldopoleUrl = "";                                                // Link to Worldopole, leave "" for empty
 
 /* MOTD */
-
+$noMotd = true;
 $motdTitle = "Message of the Day";
 $motdContent = "This is an example MOTD<br>Do whatever you like with it.";
 
@@ -79,7 +79,7 @@ $noHidePokemon = false;                                             // true/fals
 $hidePokemon = '[10, 13, 16, 19, 21, 29, 32, 41, 46, 48, 50, 52, 56, 74, 77, 96, 111, 133,
                   161, 163, 167, 177, 183, 191, 194, 168]';         // [] for empty
 
-$hidePokemonCoords = false;                                          // true/false
+$hidePokemonCoords = false;                                         // true/false
 
 $noExcludeMinIV = false;                                            // true/false
 $excludeMinIV = '[131, 143, 147, 148, 149, 248]';                   // [] for empty
@@ -90,7 +90,7 @@ $minIV = '0';                                                       // "0" for e
 $noMinLevel = false;                                                // true/false
 $minLevel = '0';                                                    // "0" for empty or a number
 
-$noBigKarp = false;                                               // true/false
+$noBigKarp = false;                                                 // true/false
 $noTinyRat = false;                                                 // true/false
 
 $noGyms = false;                                                    // true/false

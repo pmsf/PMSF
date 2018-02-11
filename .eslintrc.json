@@ -113,6 +113,7 @@
     "triggerGyms": true,
     "i8ln": false,
     "languageSite": true,
-    "boostedMons": true
+    "boostedMons": true,
+    "motd": true
   }
 }
