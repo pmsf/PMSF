@@ -42,19 +42,24 @@ class Monocle_Asner extends Monocle
             $conds[] = "(pokemon_id NOT IN ( $pkmn_in ))";
         }
         $float = $db->info()['driver'] == 'pgsql' ? "::float" : "";
-        if (!empty($minIv) && !is_nan((float)$minIv) && $minIv != 0) {
-            if (empty($exMinIv)) {
-                $conds[] = '((atk_iv' . $float . ' + def_iv' . $float . ' + sta_iv' . $float . ') / 45.00)' . $float . ' * 100.00 >= ' . $minIv;
-            } else {
-                $conds[] = '(((atk_iv' . $float . ' + def_iv' . $float . ' + sta_iv' . $float . ') / 45.00)' . $float . ' * 100.00 >= ' . $minIv . ' OR pokemon_id IN(' . $exMinIv . ') )';
-            }
+        $excIvSql = '';
+        $tmpCond = '';
+        if (!empty($exMinIv)) {
+            $excIvSql = ' OR pokemon_id IN(' . $exMinIv . ')';
         }
+        if (!empty($minIv) && !is_nan((float)$minIv) && $minIv != 0) {
+            $convIv = $minIv * .45;
+            $tmpCond .= 'atk_iv' . $float . ' + def_iv' . $float . ' + sta_iv' . $float . ' >= ' . $convIv;
+        }
+
         if (!empty($minLevel) && !is_nan((float)$minLevel) && $minLevel != 0) {
-            if (empty($exMinIv)) {
-                $conds[] = 'level >= ' . $minLevel;
-            } else {
-                $conds[] = '(level >= ' . $minLevel . ' OR pokemon_id IN(' . $exMinIv . ') )';
+            if ($minIv > 0) {
+                $tmpCond .= " AND ";
             }
+            $tmpCond .= 'level >= ' . $minLevel;
+        }
+        if (!empty($tmpCond)) {
+            $cond[] = '(' . $tmpCond . ')' . $excIvSql;
         }
         $encSql = '';
         if ($encId != 0) {
@@ -93,19 +98,24 @@ class Monocle_Asner extends Monocle
             $conds[] = "pokemon_id NOT IN ( $pkmn_in )";
         }
         $float = $db->info()['driver'] == 'pgsql' ? "::float" : "";
-        if (!empty($minIv) && !is_nan((float)$minIv) && $minIv != 0) {
-            if (empty($exMinIv)) {
-                $conds[] = '((atk_iv' . $float . ' + def_iv' . $float . ' + sta_iv' . $float . ') / 45.00)' . $float . ' * 100.00 >= ' . $minIv;
-            } else {
-                $conds[] = '(((atk_iv' . $float . ' + def_iv' . $float . ' + sta_iv' . $float . ') / 45.00)' . $float . ' * 100.00 >= ' . $minIv . ' OR pokemon_id IN(' . $exMinIv . ') )';
-            }
+        $excIvSql = '';
+        $tmpCond = '';
+        if (!empty($exMinIv)) {
+            $excIvSql = ' OR pokemon_id IN(' . $exMinIv . ')';
         }
+        if (!empty($minIv) && !is_nan((float)$minIv) && $minIv != 0) {
+            $convIv = $minIv * .45;
+            $tmpCond .= 'atk_iv' . $float . ' + def_iv' . $float . ' + sta_iv' . $float . ' >= ' . $convIv;
+        }
+
         if (!empty($minLevel) && !is_nan((float)$minLevel) && $minLevel != 0) {
-            if (empty($exMinIv)) {
-                $conds[] = 'level >= ' . $minLevel;
-            } else {
-                $conds[] = '(level >= ' . $minLevel . ' OR pokemon_id IN(' . $exMinIv . ') )';
+            if ($minIv > 0) {
+                $tmpCond .= " AND ";
             }
+            $tmpCond .= 'level >= ' . $minLevel;
+        }
+        if (!empty($tmpCond)) {
+            $conds[] = '(' . $tmpCond . ')' . $excIvSql;
         }
 
         return $this->query_active($select, $conds, $params);
