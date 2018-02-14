@@ -2993,9 +2993,9 @@ $(function () {
             excludedMinIV = $selectExcludeMinIV.val().split(',').map(Number).sort(function (a, b) {
                 return parseInt(a) - parseInt(b)
             })
-            buffer = buffer.filter(function (e) {
+            buffer = excludedMinIV.filter(function (e) {
                 return this.indexOf(e) < 0
-            }, excludedMinIV)
+            }, buffer)
             reincludedPokemon = reincludedPokemon.concat(buffer)
             clearStaleMarkers()
             Store.set('remember_select_exclude_min_iv', excludedMinIV)
