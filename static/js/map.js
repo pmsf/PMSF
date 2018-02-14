@@ -257,6 +257,8 @@ function initMap() { // eslint-disable-line no-unused-vars
         Store.set('map_style', this.mapTypeId)
     })
 
+    excludedPokemon = Store.get('remember_select_exclude')
+
     map.setMapTypeId(Store.get('map_style'))
     map.addListener('idle', updateMap)
 
