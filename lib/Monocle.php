@@ -43,12 +43,12 @@ class Monocle extends Scanner
         }
         $float = $db->info()['driver'] == 'pgsql' ? "::float" : "";
         if (!empty($minIv) && !is_nan((float)$minIv) && $minIv != 0) {
-            $convIv = $minIv * .45;
-            $excIvSql = '';
-            if (!empty($exMinIv)) {
-                $excIvSql = ' OR pokemon_id IN(' . $exMinIv . ')';
+            $minIv = $minIv * .45;
+            if (empty($exMinIv)) {
+                $conds[] = '(atk_iv' . $float . ' + def_iv' . $float . ' + sta_iv' . $float . ') >= ' . $minIv;
+            } else {
+                $conds[] = '((atk_iv' . $float . ' + def_iv' . $float . ' + sta_iv' . $float . ') >= ' . $minIv . ' OR pokemon_id IN(' . $exMinIv . ') )';
             }
-            $conds[] = '(atk_iv' . $float . ' + def_iv' . $float . ' + sta_iv' . $float . ' >= ' . $convIv . $excIvSql . ')';
         }
         $encSql = '';
         if ($encId != 0) {
@@ -84,16 +84,16 @@ class Monocle extends Scanner
                 $i++;
             }
             $pkmn_in = substr($pkmn_in, 0, -1);
-            $conds[] = "pokemon_id NOT IN ( $pkmn_in )";
+            $conds[] = "pokemon_id IN ( $pkmn_in )";
         }
         $float = $db->info()['driver'] == 'pgsql' ? "::float" : "";
         if (!empty($minIv) && !is_nan((float)$minIv) && $minIv != 0) {
-            $convIv = $minIv * .45;
-            $excIvSql = '';
-            if (!empty($exMinIv)) {
-                $excIvSql = ' OR pokemon_id IN(' . $exMinIv . ')';
+            $minIv = $minIv * .45;
+            if (empty($exMinIv)) {
+                $conds[] = '(atk_iv' . $float . ' + def_iv' . $float . ' + sta_iv' . $float . ') >= ' . $minIv;
+            } else {
+                $conds[] = '((atk_iv' . $float . ' + def_iv' . $float . ' + sta_iv' . $float . ') >= ' . $minIv . ' OR pokemon_id IN(' . $exMinIv . ') )';
             }
-            $conds[] = '(atk_iv' . $float . ' + def_iv' . $float . ' + sta_iv' . $float . ' >= ' . $convIv . $excIvSql . ')';
         }
         return $this->query_active($select, $conds, $params);
     }
