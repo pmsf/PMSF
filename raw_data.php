@@ -34,6 +34,7 @@ $lastgyms = !empty($_POST['lastgyms']) ? $_POST['lastgyms'] : false;
 $lastpokestops = !empty($_POST['lastpokestops']) ? $_POST['lastpokestops'] : false;
 $lastlocs = !empty($_POST['lastslocs']) ? $_POST['lastslocs'] : false;
 $lastspawns = !empty($_POST['lastspawns']) ? $_POST['lastspawns'] : false;
+$exEligible = !empty($_POST['exEligible']) ? $_POST['exEligible'] : false;
 $d["lastpokestops"] = !empty($_POST['pokestops']) ? $_POST['pokestops'] : false;
 $d["lastgyms"] = !empty($_POST['gyms']) ? $_POST['gyms'] : false;
 $d["lastslocs"] = !empty($_POST['scanned']) ? $_POST['scanned'] : false;
@@ -143,12 +144,12 @@ global $noGyms, $noRaids;
 if (!$noGyms || !$noRaids) {
     if ($d["lastgyms"] == "true") {
         if ($lastgyms != "true") {
-            $d["gyms"] = $scanner->get_gyms($swLat, $swLng, $neLat, $neLng);
+            $d["gyms"] = $scanner->get_gyms($swLat, $swLng, $neLat, $neLng, $exEligible);
         } else {
             if ($newarea) {
-                $d["gyms"] = $scanner->get_gyms($swLat, $swLng, $neLat, $neLng, 0, $oSwLat, $oSwLng, $oNeLat, $oNeLng);
+                $d["gyms"] = $scanner->get_gyms($swLat, $swLng, $neLat, $neLng, $exEligible, 0, $oSwLat, $oSwLng, $oNeLat, $oNeLng);
             } else {
-                $d["gyms"] = $scanner->get_gyms($swLat, $swLng, $neLat, $neLng, $timestamp);
+                $d["gyms"] = $scanner->get_gyms($swLat, $swLng, $neLat, $neLng, $exEligible, $timestamp);
             }
         }
     }
