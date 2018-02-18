@@ -207,7 +207,7 @@ class Monocle_Alternate extends Monocle
         return $gym;
     }
 
-    public function get_gyms($swLat, $swLng, $neLat, $neLng, $tstamp = 0, $oSwLat = 0, $oSwLng = 0, $oNeLat = 0, $oNeLng = 0)
+    public function get_gyms($swLat, $swLng, $neLat, $neLng, $exEligible = false, $tstamp = 0, $oSwLat = 0, $oSwLng = 0, $oNeLat = 0, $oNeLng = 0)
     {
         $conds = array();
         $params = array();
@@ -228,6 +228,9 @@ class Monocle_Alternate extends Monocle
         if ($tstamp > 0) {
             $conds[] = "updated > :lastUpdated";
             $params[':lastUpdated'] = $tstamp;
+        }
+        if ($exEligible === "true") {
+            $conds[] = "(parkid IS NOT NULL OR sponsor > 0)";
         }
 
         return $this->query_gyms($conds, $params);
@@ -283,6 +286,7 @@ class Monocle_Alternate extends Monocle
             $gym["raid_pokemon_name"] = empty($raid_pid) ? null : i8ln($this->data[$raid_pid]["name"]);
             $gym["latitude"] = floatval($gym["latitude"]);
             $gym["longitude"] = floatval($gym["longitude"]);
+            $gym["slots_available"] = intval($gym["slots_available"]);
             $gym["last_modified"] = $gym["last_modified"] * 1000;
             $gym["last_scanned"] = $gym["last_scanned"] * 1000;
             $gym["raid_start"] = $gym["raid_start"] * 1000;
