@@ -28,6 +28,7 @@ $maxLatLng = 1;                                                     // Max latit
 $maxZoomOut = 11;                                                   // Max zoom out level (11 ~= $maxLatLng = 1, 0 to disable, lower = the further you can zoom out)
 $enableCsrf = true;                                                 // Don't disable this unless you know why you need to :)
 $sessionLifetime = 43200;                                           // Session lifetime, in seconds
+$blockIframe = true;                                                // Block your map being loaded in an iframe
 
 /* Map Title + Language */
 
@@ -55,8 +56,12 @@ $paypalUrl = "";                                                    // PayPal do
 
 $discordUrl = "https://discord.gg/INVITE_LINK";                     // Discord URL, leave "" for empty
 
-/* MOTD */
+/* Worldopole */
 
+$worldopoleUrl = "";                                                // Link to Worldopole, leave "" for empty
+
+/* MOTD */
+$noMotd = true;
 $motdTitle = "Message of the Day";
 $motdContent = "This is an example MOTD<br>Do whatever you like with it.";
 
@@ -68,15 +73,33 @@ $motdContent = "This is an example MOTD<br>Do whatever you like with it.";
 
 $noPokemon = false;                                                 // true/false
 $enablePokemon = 'true';                                            // true/false
+$noPokemonNumbers = false;                                          // true/false
 $noHighLevelData = false;                                           // true/false
 $noHidePokemon = false;                                             // true/false
 $hidePokemon = '[10, 13, 16, 19, 21, 29, 32, 41, 46, 48, 50, 52, 56, 74, 77, 96, 111, 133,
                   161, 163, 167, 177, 183, 191, 194, 168]';         // [] for empty
 
+$hidePokemonCoords = false;                                         // true/false
+
+$noExcludeMinIV = false;                                            // true/false
+$excludeMinIV = '[131, 143, 147, 148, 149, 248]';                   // [] for empty
+
+$noMinIV = false;                                                   // true/false
+$minIV = '0';                                                       // "0" for empty or a number
+
+$noMinLevel = false;                                                // true/false
+$minLevel = '0';                                                    // "0" for empty or a number
+
+$noBigKarp = false;                                                 // true/false
+$noTinyRat = false;                                                 // true/false
+
 $noGyms = false;                                                    // true/false
 $enableGyms = 'false';                                              // true/false
 $noGymSidebar = false;                                              // true/false
 $gymSidebar = 'true';                                               // true/false
+$noTrainerName = false;                                             // true/false
+$noExEligible = false;                                               // true/false
+$exEligible = 'false';                                               // true/false
 
 $noRaids = false;                                                   // true/false
 $enableRaids = 'false';                                             // true/false
@@ -124,14 +147,17 @@ $notifyRarity = '[]';                                               // "Common",
 $noNotifyIv = false;                                                // true/false
 $notifyIv = '""';                                                   // "" for empty or a number
 
+$noNotifyLevel = false;                                             // true/false
+$notifyLevel = '""';                                                // "" for empty or a number
+
 $noNotifyRaid = false;                                              // true/false
 $notifyRaid = 5;                                                    // O to disable
 
 $noNotifySound = false;                                             // true/false
 $notifySound = 'false';                                             // true/false
 
-$noCriesSound = false;                                             // true/false
-$criesSound = 'false';                                             // true/false
+$noCriesSound = false;                                              // true/false
+$criesSound = 'false';                                              // true/false
 
 /* Style Settings */
 
@@ -140,8 +166,14 @@ $copyrightSafe = true;
 $noMapStyle = false;                                                // true/false
 $mapStyle = 'style_pgo_dynamic';                                    // roadmap, satellite, hybrid, nolabels_style, dark_style, style_light2, style_pgo, dark_style_nl, style_pgo_day, style_pgo_night, style_pgo_dynamic
 
+$noDirectionProvider = false;                                       // true/false
+$directionProvider = 'google';                                      // google, waze, apple
+
 $noIconSize = false;                                                // true/false
 $iconSize = 0;                                                      // -8, 0, 10, 20
+
+$noIconNotifySizeModifier = false;                                  // true/false | Increase size of notified Pokemon
+$iconNotifySizeModifier = 15;                                       // 0, 15, 30, 45
 
 $noGymStyle = false;                                                // true/false
 $gymStyle = 'ingame';                                               // ingame, shield
@@ -149,6 +181,37 @@ $gymStyle = 'ingame';                                               // ingame, s
 $noLocationStyle = false;                                           // true/false
 $locationStyle = 'none';                                            // none, google, red, red_animated, blue, blue_animated, yellow, yellow_animated, pokesition, pokeball
 
+$osmTileServer = 'tile.openstreetmap.org';                          // osm tile server (no trailing slash)
+
+$triggerGyms = '[]';                                                // Add Gyms that the OSM-Query doesn't take care of like '["gym_id", "gym_id"]'
+$onlyTriggerGyms = false;                                           // Only show EX-Gyms that are defined in $triggerGyms
+$noExGyms = false;                                                  // Do not display EX-Gyms on the map
+$noParkInfo = false;                                                // Do not display Park info on the map
+
+//-----------------------------------------------
+// Raid API
+//-----------------------------------------------------
+
+$raidApiKey = '';                                                   // Raid API Key, '' to deny access
+$sendRaidData = false;                                              // Send Raid data, false to only send gym data
+
+//-----------------------------------------------------
+// Weather Config
+//-----------------------------------------------------
+
+$noWeatherOverlay = false;                                          // true/false
+$enableWeatherOverlay = 'false';                                    // true/false
+
+$weatherColors = [
+    'grey',                                                         // no weather
+    '#fdfd96',                                                      // clear
+    'darkblue',                                                     // rain
+    'grey',                                                         // partly cloudy
+    'darkgrey',                                                     // cloudy
+    'purple',                                                       // windy
+    'white',                                                        // snow
+    'black'                                                         // fog
+];
 
 //-----------------------------------------------------
 // DATA MANAGEMENT
@@ -173,7 +236,7 @@ $enableDebug = false;
 //-----------------------------------------------------
 
 $map = "monocle";                                                   // monocle/rm
-$fork = "default";                                                  // default/asner/sloppy/monkey
+$fork = "default";                                                  // default/asner/sloppy/alternate
 
 $db = new Medoo([// required
     'database_type' => 'mysql',                                     // mysql/mariadb/pgsql/sybase/oracle/mssql/sqlite

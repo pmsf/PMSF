@@ -1,6 +1,4 @@
 (function () {
-    'use strict'
-
     // Methods/polyfills.
     if (!Element.prototype.matches) {
         Element.prototype.matches =
@@ -42,6 +40,7 @@
             }) : t.__defineGetter__(n, i)
         }
 
+        /* eslint-disable no-unused-expressions */
         if (!(typeof window.Element === 'undefined' || 'classList' in document.documentElement)) {
             var i = Array.prototype
             var e = i.push

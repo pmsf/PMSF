@@ -56,8 +56,6 @@
 @import 'layout/main';
 @import 'layout/footer';
 
-@import 'pokemon-sprite.scss';
-@import 'pokemon-large-sprite.scss';
-@import 'pokemon-raid-sprite.scss';
-@import 'pokemon-large-raid-sprite.scss';
+@import 'pokemon-sprite';
+@import 'pokemon-raid-sprite';
 @import 'move-bar-sprite.scss';

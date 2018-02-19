@@ -11,5 +11,6 @@
   "style_pgo_nl": "Pokémon Go (No Labels)",
   "style_pgo_day": "Pokémon Go Day",
   "style_pgo_night": "Pokémon Go Night",
-  "style_pgo_dynamic": "Pokémon Go Dynamic"
+  "style_pgo_dynamic": "Pokémon Go Dynamic",
+  "openstreetmap": "OpenStreetMap"
 }
