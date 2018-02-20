@@ -95,7 +95,7 @@ class RocketMap_Sloppy extends RocketMap
             $select .= ", individual_attack, individual_defense, individual_stamina, move_1, move_2, cp, cp_multiplier";
         }
 
-        $conds[] = "latitude > :swLat AND longitude > :swLng AND latitude < :neLat AND longitude < :neLng AND disappear_time > :time AND pokemon_id IN ( :ids )";
+        $conds[] = "latitude > :swLat AND longitude > :swLng AND latitude < :neLat AND longitude < :neLng AND disappear_time > :time";
         $params[':swLat'] = $swLat;
         $params[':swLng'] = $swLng;
         $params[':neLat'] = $neLat;
