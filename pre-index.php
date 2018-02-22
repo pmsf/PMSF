@@ -448,7 +448,7 @@ if ($blockIframe) {
             }
             ?>
             <?php
-            if (!$noSearchLocation || !$noStartMe || !$noStartLast || !$noFollowMe || !$noPokestops || !$noScannedLocations || !$noSpawnPoints || !$noRanges) {
+            if (!$noSearchLocation || !$noStartMe || !$noStartLast || !$noFollowMe || !$noPokestops || !$noScannedLocations || !$noSpawnPoints || !$noRanges || !$noWeatherOverlay || !$noSpawnArea) {
                 echo '<h3>' . i8ln('Location &amp; Search') . '</h3>
             <div>'; ?>
                 <?php
