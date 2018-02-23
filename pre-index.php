@@ -283,8 +283,6 @@ if ($blockIframe) {
                                 <?php
                             } ?>
                         </div>
-
-
                     </div>
                 </div>
                 <?php
@@ -427,10 +425,10 @@ if ($blockIframe) {
                         </div>
                     </div>
                     <div id="gyms-raid-filter-wrapper" style="display:none">
-                        <?php if ($fork === "alternate" && !$noExEligible) {
-                        ?>
-                            <div class="form-control switch-container" id="ex-eligible-wrapper">
-                                <h3><?php echo i8ln('EX Eligible Only') ?></h3>
+                        <?php
+                        if ($fork === "alternate" && !$noExEligible) {
+                            echo '<div class="form-control switch-container" id="ex-eligible-wrapper">
+                                <h3>' . i8ln('EX Eligible Only') . '</h3>
                                 <div class="onoffswitch">
                                     <input id="ex-eligible-switch" type="checkbox" name="ex-eligible-switch"
                                            class="onoffswitch-checkbox" checked>
@@ -439,9 +437,8 @@ if ($blockIframe) {
                                         <span class="switch-handle"></span>
                                     </label>
                                 </div>
-                            </div>
-                            <?php
-                    } ?>
+                            </div>';
+                        } ?>
                     </div>
                 </div>
                 <?php
@@ -779,6 +776,19 @@ if ($blockIframe) {
             <?php
             if (!$noMapStyle || !$noDirectionProvider || !$noIconSize || !$noIconNotifySizeModifier || !$noGymStyle || !$noLocationStyle) {
                 echo '</div>';
+            }
+            ?>
+            <?php
+            if (!$noAreas) {
+                echo '<h3>' . i8ln('Areas') . '</h3>';
+                $count = sizeof($areas);
+                if ($count > 0) {
+                    echo '<div class="form-control switch-container area-container"><ul>';
+                    for ($i = 0; $i <= $count - 1; $i++) {
+                        echo '<li><a href="" data-lat="' . $areas[$i][0] . '" data-lng="' . $areas[$i][1] . '" data-zoom="' . $areas[$i][2] . '" class="area-go-to">' . $areas[$i][3] . '</a></li>';
+                    }
+                    echo '</ul></div>';
+                }
             }
             ?>
         </div>

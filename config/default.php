@@ -206,6 +206,13 @@ $raidApiKey = '';                                                   // Raid API 
 $sendRaidData = false;                                              // Send Raid data, false to only send gym data
 
 //-----------------------------------------------------
+// Areas
+//-----------------------------------------------------
+
+$noAreas = true;
+$areas = [];                                                   // [[latitude,longitude,zoom,"name"],[latitude,longitude,zoom,"name"]]
+
+//-----------------------------------------------------
 // Weather Config
 //-----------------------------------------------------
 
