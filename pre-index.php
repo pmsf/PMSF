@@ -594,7 +594,7 @@ if ($blockIframe) {
             }
             ?>
             <?php
-            if (!$noNotifyPokemon || !$noNotifyRarity || !$noNotifyIv || !$noNotifySound || !$noNotifyRaid) {
+            if (!$noNotifyPokemon || !$noNotifyRarity || !$noNotifyIv || !$noNotifyLevel || !$noNotifySound || !$noNotifyRaid) {
                 echo '<h3>' . i8ln('Notification') . '</h3>
             <div>';
             }
@@ -696,7 +696,7 @@ if ($blockIframe) {
             }
             ?>
             <?php
-            if (!$noNotifyPokemon || !$noNotifyRarity || !$noNotifyIv || !$noNotifySound || !$noNotifyRaid) {
+            if (!$noNotifyPokemon || !$noNotifyRarity || !$noNotifyIv || !$noNotifyLevel || !$noNotifySound || !$noNotifyRaid) {
                 echo '</div>';
             }
             ?>
