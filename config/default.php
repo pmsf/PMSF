@@ -109,7 +109,7 @@ $noGymSidebar = false;                                              // true/fals
 $gymSidebar = 'true';                                               // true/false
 $noTrainerName = false;                                             // true/false
 $noExEligible = false;                                              // true/false
-$exEligible = 'false';                                               // true/false
+$exEligible = 'false';                                              // true/false
 
 $noRaids = false;                                                   // true/false
 $enableRaids = 'false';                                             // true/false
@@ -169,6 +169,12 @@ $notifySound = 'false';                                             // true/fals
 $noCriesSound = false;                                              // true/false
 $criesSound = 'false';                                              // true/false
 
+$noNotifyBounce = false;                                            // true/false
+$notifyBounce = 'true';                                             // true/false
+
+$noNotifyNotification = false;                                      // true/false
+$notifyNotification = 'true';                                       // true/false
+
 /* Style Settings */
 
 $copyrightSafe = true;
@@ -210,7 +216,7 @@ $sendRaidData = false;                                              // Send Raid
 //-----------------------------------------------------
 
 $noAreas = true;
-$areas = [];                                                   // [[latitude,longitude,zoom,"name"],[latitude,longitude,zoom,"name"]]
+$areas = [];                                                        // [[latitude,longitude,zoom,"name"],[latitude,longitude,zoom,"name"]]
 
 //-----------------------------------------------------
 // Weather Config

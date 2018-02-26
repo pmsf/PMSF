@@ -405,6 +405,8 @@ function initSidebar() {
     $('#cries-switch').prop('checked', Store.get('playCries'))
     $('#cries-switch-wrapper').toggle(Store.get('playSound'))
     $('#cries-type-filter-wrapper').toggle(Store.get('playCries'))
+    $('#bounce-switch').prop('checked', Store.get('remember_bounce_notify'))
+    $('#notification-switch').prop('checked', Store.get('remember_notification_notify'))
 
     if (Store.get('showGyms') === true || Store.get('showRaids') === true) {
         $('#gyms-raid-filter-wrapper').toggle(true)
@@ -949,7 +951,7 @@ function customizePokemonMarker(marker, item, skipNotification) {
             checkAndCreateSound(item['pokemon_id'])
             sendNotification(getNotifyText(item).fav_title, getNotifyText(item).fav_text, iconpath + item['pokemon_id'] + '.png', item['latitude'], item['longitude'])
         }
-        if (marker.animationDisabled !== true) {
+        if (marker.animationDisabled !== true && Store.get('remember_bounce_notify')) {
             marker.setAnimation(google.maps.Animation.BOUNCE)
         }
     }
@@ -961,7 +963,7 @@ function customizePokemonMarker(marker, item, skipNotification) {
                 checkAndCreateSound(item['pokemon_id'])
                 sendNotification(getNotifyText(item).fav_title, getNotifyText(item).fav_text, iconpath + item['pokemon_id'] + '.png', item['latitude'], item['longitude'])
             }
-            if (marker.animationDisabled !== true) {
+            if (marker.animationDisabled !== true && Store.get('remember_bounce_notify')) {
                 marker.setAnimation(google.maps.Animation.BOUNCE)
             }
         }
@@ -974,7 +976,7 @@ function customizePokemonMarker(marker, item, skipNotification) {
                 checkAndCreateSound(item['pokemon_id'])
                 sendNotification(getNotifyText(item).fav_title, getNotifyText(item).fav_text, iconpath + item['pokemon_id'] + '.png', item['latitude'], item['longitude'])
             }
-            if (marker.animationDisabled !== true) {
+            if (marker.animationDisabled !== true && Store.get('remember_bounce_notify')) {
                 marker.setAnimation(google.maps.Animation.BOUNCE)
             }
         }
@@ -2112,33 +2114,35 @@ function getPointDistance(pointA, pointB) {
 }
 
 function sendNotification(title, text, icon, lat, lon) {
-    var notificationDetails = {
-        icon: icon,
-        body: text,
-        data: {
-            lat: lat,
-            lon: lon
-        }
-    }
-
-    if (Push._agents.desktop.isSupported()) {
-        /* This will only run in browsers which support the old
-         * Notifications API. Browsers supporting the newer Push API
-         * are handled by serviceWorker.js. */
-        notificationDetails.onClick = function (event) {
-            if (Push._agents.desktop.isSupported()) {
-                window.focus()
-                event.currentTarget.close()
-                centerMap(lat, lon, 20)
+    if (Store.get('remember_notification_notify')) {
+        var notificationDetails = {
+            icon: icon,
+            body: text,
+            data: {
+                lat: lat,
+                lon: lon
             }
         }
-    }
 
-    /* Push.js requests the Notification permission automatically if
-     * necessary. */
-    Push.create(title, notificationDetails).catch(function () {
-        sendToastrPokemonNotification(title, text, icon, lat, lon)
-    })
+        if (Push._agents.desktop.isSupported()) {
+            /* This will only run in browsers which support the old
+             * Notifications API. Browsers supporting the newer Push API
+             * are handled by serviceWorker.js. */
+            notificationDetails.onClick = function (event) {
+                if (Push._agents.desktop.isSupported()) {
+                    window.focus()
+                    event.currentTarget.close()
+                    centerMap(lat, lon, 20)
+                }
+            }
+        }
+
+        /* Push.js requests the Notification permission automatically if
+         * necessary. */
+        Push.create(title, notificationDetails).catch(function () {
+            sendToastrPokemonNotification(title, text, icon, lat, lon)
+        })
+    }
 }
 
 function sendToastrPokemonNotification(title, text, icon, lat, lon) {
@@ -3361,6 +3365,14 @@ $(function () {
         if (this.checked) {
             fetchCriesJson()
         }
+    })
+
+    $('#bounce-switch').change(function () {
+        Store.set('remember_bounce_notify', this.checked)
+    })
+
+    $('#notification-switch').change(function () {
+        Store.set('remember_notification_notify', this.checked)
     })
 
     $('#start-at-user-location-switch').change(function () {
