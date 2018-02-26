@@ -2161,7 +2161,7 @@ function sendToastrPokemonNotification(title, text, icon, lat, lon) {
     notification.removeClass('toast-info')
     notification.css({
         'padding-left': '74px',
-        'background-image': `url('./${icon}')`,
+        'background-image': `url('${icon}')`,
         'background-size': '48px',
         'background-color': '#0c5952'
     })
