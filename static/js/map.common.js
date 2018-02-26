@@ -894,6 +894,16 @@ var StoreOptions = {
             default: notifyRaid,
             type: StoreTypes.Number
         },
+    'remember_bounce_notify':
+        {
+            default: notifyBounce,
+            type: StoreTypes.Boolean
+        },
+    'remember_notification_notify':
+        {
+            default: notifyNotification,
+            type: StoreTypes.Boolean
+        },
     'showRaids':
         {
             default: enableRaids,
