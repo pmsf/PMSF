@@ -1764,7 +1764,7 @@ function processGyms(i, item) {
         return true
     }
 
-    if (Store.get('exEligible') && item.park === null) {
+    if (Store.get('exEligible') && item.park === null && item.park === 0) {
         removeGymFromMap(item['gym_id'])
         return true
     }
