@@ -422,6 +422,9 @@ class RocketMap extends Scanner
             $conds[] = "gym.last_scanned > :lastUpdated";
             $params[':lastUpdated'] = date_format($date, 'Y-m-d H:i:s');
         }
+        if ($exEligible === "true") {
+            $conds[] = "(park = 1)";
+        }
 
         return $this->query_gyms($conds, $params);
     }
@@ -459,7 +462,8 @@ class RocketMap extends Scanner
         Unix_timestamp(Convert_tz(last_modified, '+00:00', @@global.time_zone)) AS last_modified, 
         Unix_timestamp(Convert_tz(gym.last_scanned, '+00:00', @@global.time_zone)) AS last_scanned, 
         team_id, 
-        name, 
+        name,
+        park,
         level AS raid_level, 
         pokemon_id AS raid_pokemon_id, 
         cp AS raid_pokemon_cp, 
@@ -491,6 +495,7 @@ class RocketMap extends Scanner
                 $raid_pid = null;
                 $gym["raid_pokemon_id"] = null;
             }
+            $gym["park"] = intval($gym["park"]);
             $gym["team_id"] = intval($gym["team_id"]);
             $gym["pokemon"] = [];
             $gym["guard_pokemon_name"] = empty($guard_pid) ? null : i8ln($this->data[$guard_pid]["name"]);

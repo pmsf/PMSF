@@ -286,6 +286,7 @@ class Monocle_Alternate extends Monocle
             $gym["raid_pokemon_name"] = empty($raid_pid) ? null : i8ln($this->data[$raid_pid]["name"]);
             $gym["latitude"] = floatval($gym["latitude"]);
             $gym["longitude"] = floatval($gym["longitude"]);
+            $gym["sponsor"] = intval($gym["sponsor"]);
             $gym["slots_available"] = intval($gym["slots_available"]);
             $gym["last_modified"] = $gym["last_modified"] * 1000;
             $gym["last_scanned"] = $gym["last_scanned"] * 1000;
