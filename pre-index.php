@@ -426,7 +426,7 @@ if ($blockIframe) {
                     </div>
                     <div id="gyms-raid-filter-wrapper" style="display:none">
                         <?php
-                        if ($fork === "alternate" && !$noExEligible) {
+                        if (($fork === "alternate" || ($map === "rm" && $fork !== "sloppy")) && !$noExEligible) {
                             echo '<div class="form-control switch-container" id="ex-eligible-wrapper">
                                 <h3>' . i8ln('EX Eligible Only') . '</h3>
                                 <div class="onoffswitch">
