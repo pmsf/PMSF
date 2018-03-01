@@ -19,7 +19,7 @@ class RocketMap extends Scanner
         $params = array();
         $float = $db->info()['driver'] == 'pgsql' ? "::float" : "";
 
-        $select = "pokemon_id, Unix_timestamp(Convert_tz(disappear_time, '+00:00', @@global.time_zone)) AS disappear_time, encounter_id, latitude, longitude, gender, form, weight, height";
+        $select = "pokemon_id, Unix_timestamp(Convert_tz(disappear_time, '+00:00', @@global.time_zone)) AS disappear_time, encounter_id, latitude, longitude, gender, form, weight, height, weather_boosted_condition";
         global $noHighLevelData;
         if (!$noHighLevelData) {
             $select .= ", individual_attack, individual_defense, individual_stamina, move_1, move_2, cp, cp_multiplier";
@@ -96,7 +96,7 @@ class RocketMap extends Scanner
         $params = array();
         $float = $db->info()['driver'] == 'pgsql' ? "::float" : "";
 
-        $select = "pokemon_id, Unix_timestamp(Convert_tz(disappear_time, '+00:00', @@global.time_zone)) AS disappear_time, encounter_id, latitude, longitude, gender, form, weight, height";
+        $select = "pokemon_id, Unix_timestamp(Convert_tz(disappear_time, '+00:00', @@global.time_zone)) AS disappear_time, encounter_id, latitude, longitude, gender, form, weight, height, weather_boosted_condition";
         global $noHighLevelData;
         if (!$noHighLevelData) {
             $select .= ", individual_attack, individual_defense, individual_stamina, move_1, move_2, cp, cp_multiplier";
@@ -175,7 +175,7 @@ class RocketMap extends Scanner
             $pokemon["individual_defense"] = isset($pokemon["individual_defense"]) ? intval($pokemon["individual_defense"]) : null;
             $pokemon["individual_stamina"] = isset($pokemon["individual_stamina"]) ? intval($pokemon["individual_stamina"]) : null;
 
-            $pokemon["weather_boosted_condition"] = isset($pokemon["weather_boosted_condition"]) ? intval($pokemon["weather_boosted_condition"]) : 0;
+            $pokemon["weather_boosted_condition"] = intval($pokemon["weather_boosted_condition"]);
 
             $pokemon["pokemon_id"] = intval($pokemon["pokemon_id"]);
             $pokemon["pokemon_name"] = i8ln($this->data[$pokemon["pokemon_id"]]['name']);
@@ -501,6 +501,7 @@ class RocketMap extends Scanner
             $gym["last_scanned"] = $gym["last_scanned"] * 1000;
             $gym["raid_start"] = $gym["raid_start"] * 1000;
             $gym["raid_end"] = $gym["raid_end"] * 1000;
+            $gym["slots_available"] = intval($gym["slots_available"]);
             $data[] = $gym;
 
             unset($gyms[$i]);
@@ -653,7 +654,7 @@ class RocketMap extends Scanner
     {
         global $db;
         $query = "SELECT s2_cell_id, gameplay_weather FROM weather WHERE s2_cell_id = :cell_id";
-        $params = [':cell_id' => intval((float)$cell_id)]; // use float to intval because RM is signed int
+        $params = [':cell_id' => $cell_id]; // use float to intval because RM is signed int
         $weather_info = $db->query($query, $params)->fetchAll(\PDO::FETCH_ASSOC);
         if ($weather_info) {
             // force re-bind of gameplay_weather to condition
@@ -671,7 +672,6 @@ class RocketMap extends Scanner
         $query = "SELECT s2_cell_id, gameplay_weather FROM weather";
         $weathers = $db->query($query)->fetchAll(\PDO::FETCH_ASSOC);
         foreach ($weathers as $weather) {
-            $weather['s2_cell_id'] = sprintf("%u", $weather['s2_cell_id']);
             $data["weather_" . $weather['s2_cell_id']] = $weather;
             $data["weather_" . $weather['s2_cell_id']]['condition'] = $data["weather_" . $weather['s2_cell_id']]['gameplay_weather'];
             unset($data["weather_" . $weather['s2_cell_id']]['gameplay_weather']);
