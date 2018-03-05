@@ -173,7 +173,7 @@ $noMapStyle = false;                                                // true/fals
 $mapStyle = 'style_pgo_dynamic';                                    // roadmap, satellite, hybrid, nolabels_style, dark_style, style_light2, style_pgo, dark_style_nl, style_pgo_day, style_pgo_night, style_pgo_dynamic
 
 $noDirectionProvider = false;                                       // true/false
-$directionProvider = 'google';                                      // google, waze, apple
+$directionProvider = 'google';                                      // google, waze, apple, bing, google_pin
 
 $noIconSize = false;                                                // true/false
 $iconSize = 0;                                                      // -8, 0, 10, 20
