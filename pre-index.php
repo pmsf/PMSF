@@ -751,7 +751,8 @@ if ($blockIframe) {
                 <h3>' . i8ln('Direction Provider') . '</h3>
                 <select name="direction-provider" id="direction-provider">
                     <option value="apple">' . i8ln('Apple') . '</option>
-                    <option value="google">' . i8ln('Google') . '</option>
+                    <option value="google">' . i8ln('Google (Directions)') . '</option>
+                    <option value="google_pin">' . i8ln('Google (Pin)') . '</option>
                     <option value="waze">' . i8ln('Waze') . '</option>
                     <option value="bing">' . i8ln('Bing') . '</option>
                 </select>
