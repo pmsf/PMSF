@@ -23,7 +23,7 @@ if (!empty($_POST['key']) && $_POST['key'] == $raidApiKey && !empty($_POST['type
         $swLng = !empty($_POST['swLng']) ? $_POST['swLng'] : 0;
         $neLat = !empty($_POST['neLat']) ? $_POST['neLat'] : 0;
 
-        $useragent = $_SERVER['HTTP_USER_AGENT'];
+        $useragent = isset($_SERVER['HTTP_USER_AGENT']) ? $_SERVER['HTTP_USER_AGENT'] : '';
         if (empty($swLat) || empty($swLng) || empty($neLat) || empty($neLng) || preg_match("/curl|libcurl/", $useragent)) {
             http_response_code(400);
             die();

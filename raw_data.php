@@ -47,7 +47,7 @@ $enc_id = !empty($_POST['encId']) ? $_POST['encId'] : null;
 
 $timestamp = !empty($_POST['timestamp']) ? $_POST['timestamp'] : 0;
 
-$useragent = $_SERVER['HTTP_USER_AGENT'];
+$useragent = isset($_SERVER['HTTP_USER_AGENT']) ? $_SERVER['HTTP_USER_AGENT'] : '';
 if (empty($swLat) || empty($swLng) || empty($neLat) || empty($neLng) || preg_match("/curl|libcurl/", $useragent)) {
     http_response_code(400);
     die();
