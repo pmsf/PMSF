@@ -463,7 +463,7 @@ if ($blockIframe) {
                 </div>';
                 } ?>
                 <?php
-                if ($map != "monocle") {
+                if (($map != "monocle") || ($fork == "alternate")) {
                     echo '<div class="form-control switch-container" id = "lured-pokestops-only-wrapper" style = "display:none">
                     <select name = "lured-pokestops-only-switch" id = "lured-pokestops-only-switch">
                         <option value = "0"> ' . i8ln('All') . '</option>
