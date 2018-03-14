@@ -152,6 +152,12 @@ class Monocle_Alternate extends Monocle
             $params[':oneLat'] = $oNeLat;
             $params[':oneLng'] = $oNeLng;
         }
+
+        if ($lured == "true") {
+            $conds[] = "expires > :time";
+            $params[':time'] = time();
+        }
+
         if ($tstamp > 0) {
             $conds[] = "updated > :lastUpdated";
             $params[':lastUpdated'] = $tstamp;
@@ -161,9 +167,11 @@ class Monocle_Alternate extends Monocle
 
     public function query_stops($conds, $params)
     {
-        global $db;
+        global $db, $noTrainerName;
 
         $query = "SELECT external_id AS pokestop_id,
+        expires AS lure_expiration,
+        deployer AS lure_user,
         name AS pokestop_name,
         lat AS latitude,
         lon AS longitude
@@ -179,6 +187,11 @@ class Monocle_Alternate extends Monocle
         foreach ($pokestops as $pokestop) {
             $pokestop["latitude"] = floatval($pokestop["latitude"]);
             $pokestop["longitude"] = floatval($pokestop["longitude"]);
+            $pokestop["lure_expiration"] = !empty($pokestop["lure_expiration"]) ? $pokestop["lure_expiration"] * 1000 : null;
+            if ($noTrainerName === true) {
+                // trainer names hidden, so don't show trainer who lured
+                unset($pokestop["lure_user"]);
+            }
             $data[] = $pokestop;
 
             unset($pokestops[$i]);
