@@ -944,7 +944,7 @@ if ($blockIframe) {
     var gymSidebar = <?php echo $noGymSidebar ? 'false' : $gymSidebar ?>;
     var enablePokemon = <?php echo $noPokemon ? 'false' : $enablePokemon ?>;
     var enablePokestops = <?php echo $noPokestops ? 'false' : $enablePokestops ?>;
-    var enableLured = <?php echo $map != "monocle" ? $enableLured : 0 ?>;
+    var enableLured = <?php echo (($map != "monocle") || ($fork == "alternate")) ? $enableLured : 0 ?>;
     var enableWeatherOverlay = <?php echo !$noWeatherOverlay ? $enableWeatherOverlay : 'false' ?>;
     var enableScannedLocations = <?php echo $map != "monocle" && !$noScannedLocations ? $enableScannedLocations : 'false' ?>;
     var enableSpawnpoints = <?php echo $noSpawnPoints ? 'false' : $enableSpawnPoints ?>;
