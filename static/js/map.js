@@ -1527,7 +1527,7 @@ function loadRawData() {
         },
         error: function error() {
             // Display error toast
-            toastr['error']('Please check connectivity or reduce marker settings.', 'Error getting data')
+            toastr['error'](i8ln('Please check connectivity or reduce marker settings.'), i8ln('Error getting data'))
             toastr.options = {
                 'closeButton': true,
                 'debug': false,
@@ -1561,7 +1561,7 @@ function loadWeather() {
         cache: false,
         error: function error() {
             // Display error toast
-            toastr['error']('Please check connectivity or reduce marker settings.', 'Error getting weather')
+            toastr['error'](i8ln('Please check connectivity or reduce marker settings.'), i8ln('Error getting weather'))
             toastr.options = {
                 'closeButton': true,
                 'debug': false,
@@ -1598,7 +1598,7 @@ function loadWeatherCellData(cell) {
         },
         error: function error() {
             // Display error toast
-            toastr['error']('Please check connectivity or reduce marker settings.', 'Error getting weather')
+            toastr['error'](i8ln('Please check connectivity or reduce marker settings.'), i8ln('Error getting weather'))
             toastr.options = {
                 'closeButton': true,
                 'debug': false,
@@ -3120,7 +3120,7 @@ $(function () {
             buffer = buffer.filter(function (e) {
                 return this.indexOf(e) < 0
             }, excludedPokemon)
-            reincludedPokemon = reincludedPokemon.concat(buffer)
+            reincludedPokemon = reincludedPokemon.concat(buffer).map(String)
             clearStaleMarkers()
             Store.set('remember_select_exclude', excludedPokemon)
         })
@@ -3132,7 +3132,7 @@ $(function () {
             buffer = excludedMinIV.filter(function (e) {
                 return this.indexOf(e) < 0
             }, buffer)
-            reincludedPokemon = reincludedPokemon.concat(buffer)
+            reincludedPokemon = reincludedPokemon.concat(buffer).map(String)
             clearStaleMarkers()
             Store.set('remember_select_exclude_min_iv', excludedMinIV)
         })
