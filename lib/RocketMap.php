@@ -19,7 +19,7 @@ class RocketMap extends Scanner
         $params = array();
         $float = $db->info()['driver'] == 'pgsql' ? "::float" : "";
 
-        $select = "pokemon_id, Unix_timestamp(Convert_tz(disappear_time, '+00:00', @@global.time_zone)) AS disappear_time, encounter_id, latitude, longitude, gender, form, weight, height";
+        $select = "pokemon_id, Unix_timestamp(Convert_tz(disappear_time, '+00:00', @@global.time_zone)) AS disappear_time, encounter_id, latitude, longitude, gender, form, weight, height, weather_boosted_condition";
         global $noHighLevelData;
         if (!$noHighLevelData) {
             $select .= ", individual_attack, individual_defense, individual_stamina, move_1, move_2, cp, cp_multiplier";
@@ -47,16 +47,16 @@ class RocketMap extends Scanner
             $conds[] = "last_modified > :lastUpdated";
             $params[':lastUpdated'] = date_format($date, 'Y-m-d H:i:s');
         }
+        $tmpSQL = '';
+        if (!empty($tinyRat) && $tinyRat === 'true' && ($key = array_search("19", $eids)) === false) {
+            $tmpSQL .= ' OR (pokemon_id = 19 AND weight' . $float . ' < 2.41)';
+            $eids[] = "19";
+        }
+        if (!empty($bigKarp) && $bigKarp === 'true' && ($key = array_search("129", $eids)) === false) {
+            $tmpSQL .= ' OR (pokemon_id = 129 AND weight' . $float . ' > 13.13)';
+            $eids[] = "129";
+        }
         if (count($eids)) {
-            $tmpSQL = '';
-            if (!empty($tinyRat) && $tinyRat === 'true' && ($key = array_search("19", $eids)) === false) {
-                $tmpSQL .= ' OR (pokemon_id = 19 AND weight' . $float . ' < 2.41)';
-                $eids[] = "19";
-            }
-            if (!empty($bigKarp) && $bigKarp === 'true' && ($key = array_search("129", $eids)) === false) {
-                $tmpSQL .= ' OR (pokemon_id = 129 AND weight' . $float . ' > 13.13)';
-                $eids[] = "129";
-            }
             $pkmn_in = '';
             $i = 1;
             foreach ($eids as $id) {
@@ -96,13 +96,13 @@ class RocketMap extends Scanner
         $params = array();
         $float = $db->info()['driver'] == 'pgsql' ? "::float" : "";
 
-        $select = "pokemon_id, Unix_timestamp(Convert_tz(disappear_time, '+00:00', @@global.time_zone)) AS disappear_time, encounter_id, latitude, longitude, gender, form, weight, height";
+        $select = "pokemon_id, Unix_timestamp(Convert_tz(disappear_time, '+00:00', @@global.time_zone)) AS disappear_time, encounter_id, latitude, longitude, gender, form, weight, height, weather_boosted_condition";
         global $noHighLevelData;
         if (!$noHighLevelData) {
             $select .= ", individual_attack, individual_defense, individual_stamina, move_1, move_2, cp, cp_multiplier";
         }
 
-        $conds[] = "latitude > :swLat AND longitude > :swLng AND latitude < :neLat AND longitude < :neLng AND disappear_time > :time AND pokemon_id IN ( :ids )";
+        $conds[] = "latitude > :swLat AND longitude > :swLng AND latitude < :neLat AND longitude < :neLng AND disappear_time > :time";
         $params[':swLat'] = $swLat;
         $params[':swLng'] = $swLng;
         $params[':neLat'] = $neLat;
@@ -115,9 +115,11 @@ class RocketMap extends Scanner
             $tmpSQL = '';
             if (!empty($tinyRat) && $tinyRat === 'true' && ($key = array_search("19", $ids)) !== false) {
                 $tmpSQL .= ' OR (pokemon_id = 19 AND weight' . $float . ' < 2.41)';
+                unset($ids[$key]);
             }
             if (!empty($bigKarp) && $bigKarp === 'true' && ($key = array_search("129", $ids)) !== false) {
                 $tmpSQL .= ' OR (pokemon_id = 129 AND weight' . $float . ' > 13.13)';
+                unset($ids[$key]);
             }
             $pkmn_in = '';
             $i = 1;
@@ -126,8 +128,12 @@ class RocketMap extends Scanner
                 $pkmn_in .= ':qry_' . $i . "_,";
                 $i++;
             }
-            $pkmn_in = substr($pkmn_in, 0, -1);
-            $conds[] = "(pokemon_id IN ( $pkmn_in )" . $tmpSQL . ")";
+            if (count($ids)) {
+                $pkmn_in = substr($pkmn_in, 0, -1);
+                $conds[] = "(pokemon_id IN ( $pkmn_in )" . $tmpSQL . ")";
+            } else {
+                $conds[] = str_replace("OR", "", $tmpSQL);
+            }
         }
 
         if (!empty($minIv) && !is_nan((float)$minIv) && $minIv != 0) {
@@ -175,7 +181,7 @@ class RocketMap extends Scanner
             $pokemon["individual_defense"] = isset($pokemon["individual_defense"]) ? intval($pokemon["individual_defense"]) : null;
             $pokemon["individual_stamina"] = isset($pokemon["individual_stamina"]) ? intval($pokemon["individual_stamina"]) : null;
 
-            $pokemon["weather_boosted_condition"] = isset($pokemon["weather_boosted_condition"]) ? intval($pokemon["weather_boosted_condition"]) : 0;
+            $pokemon["weather_boosted_condition"] = intval($pokemon["weather_boosted_condition"]);
 
             $pokemon["pokemon_id"] = intval($pokemon["pokemon_id"]);
             $pokemon["pokemon_name"] = i8ln($this->data[$pokemon["pokemon_id"]]['name']);
@@ -422,6 +428,9 @@ class RocketMap extends Scanner
             $conds[] = "gym.last_scanned > :lastUpdated";
             $params[':lastUpdated'] = date_format($date, 'Y-m-d H:i:s');
         }
+        if ($exEligible === "true") {
+            $conds[] = "(park = 1)";
+        }
 
         return $this->query_gyms($conds, $params);
     }
@@ -459,7 +468,8 @@ class RocketMap extends Scanner
         Unix_timestamp(Convert_tz(last_modified, '+00:00', @@global.time_zone)) AS last_modified, 
         Unix_timestamp(Convert_tz(gym.last_scanned, '+00:00', @@global.time_zone)) AS last_scanned, 
         team_id, 
-        name, 
+        name,
+        park,
         level AS raid_level, 
         pokemon_id AS raid_pokemon_id, 
         cp AS raid_pokemon_cp, 
@@ -491,6 +501,7 @@ class RocketMap extends Scanner
                 $raid_pid = null;
                 $gym["raid_pokemon_id"] = null;
             }
+            $gym["park"] = intval($gym["park"]);
             $gym["team_id"] = intval($gym["team_id"]);
             $gym["pokemon"] = [];
             $gym["guard_pokemon_name"] = empty($guard_pid) ? null : i8ln($this->data[$guard_pid]["name"]);
@@ -501,6 +512,7 @@ class RocketMap extends Scanner
             $gym["last_scanned"] = $gym["last_scanned"] * 1000;
             $gym["raid_start"] = $gym["raid_start"] * 1000;
             $gym["raid_end"] = $gym["raid_end"] * 1000;
+            $gym["slots_available"] = intval($gym["slots_available"]);
             $data[] = $gym;
 
             unset($gyms[$i]);
@@ -653,7 +665,7 @@ class RocketMap extends Scanner
     {
         global $db;
         $query = "SELECT s2_cell_id, gameplay_weather FROM weather WHERE s2_cell_id = :cell_id";
-        $params = [':cell_id' => intval((float)$cell_id)]; // use float to intval because RM is signed int
+        $params = [':cell_id' => $cell_id]; // use float to intval because RM is signed int
         $weather_info = $db->query($query, $params)->fetchAll(\PDO::FETCH_ASSOC);
         if ($weather_info) {
             // force re-bind of gameplay_weather to condition
@@ -671,7 +683,6 @@ class RocketMap extends Scanner
         $query = "SELECT s2_cell_id, gameplay_weather FROM weather";
         $weathers = $db->query($query)->fetchAll(\PDO::FETCH_ASSOC);
         foreach ($weathers as $weather) {
-            $weather['s2_cell_id'] = sprintf("%u", $weather['s2_cell_id']);
             $data["weather_" . $weather['s2_cell_id']] = $weather;
             $data["weather_" . $weather['s2_cell_id']]['condition'] = $data["weather_" . $weather['s2_cell_id']]['gameplay_weather'];
             unset($data["weather_" . $weather['s2_cell_id']]['gameplay_weather']);

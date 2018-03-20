@@ -127,6 +127,7 @@
           }
         }
       }
+
       .ui-tabs-panel{
         padding:0;
         .form-control{
@@ -184,6 +185,34 @@
           margin-left: 5px;
         }
       }
+    }
+  }
+  .area-container{
+    padding:0!important;
+    ul{
+      padding:0;
+    }
+    li{
+      list-style: none;
+      padding-left: 0;
+      width: 50%;
+      float: left;
+      text-align: center;
+      background: #c7c7c7;
+      border-top: 1px solid #d8d8d8;
+      border-left: 1px solid #d8d8d8;
+      border-right: 1px solid #d8d8d8;
+      &:hover{
+        background:grey;
+        a{
+          color:#FFF;
+        }
+      }
+    }
+    a{
+      padding: 10px 5px;
+      display: block;
+      text-decoration: none;
     }
   }
 

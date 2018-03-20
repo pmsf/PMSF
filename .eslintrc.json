@@ -82,6 +82,8 @@
     "notifyIv": true,
     "notifyLevel": true,
     "notifyRaid": true,
+    "notifyBounce": true,
+    "notifyNotification": true,
     "enableRaids": true,
     "activeRaids": true,
     "minRaidLevel": true,

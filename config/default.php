@@ -109,7 +109,7 @@ $noGymSidebar = false;                                              // true/fals
 $gymSidebar = 'true';                                               // true/false
 $noTrainerName = false;                                             // true/false
 $noExEligible = false;                                              // true/false
-$exEligible = 'false';                                               // true/false
+$exEligible = 'false';                                              // true/false
 
 $noRaids = false;                                                   // true/false
 $enableRaids = 'false';                                             // true/false
@@ -169,6 +169,12 @@ $notifySound = 'false';                                             // true/fals
 $noCriesSound = false;                                              // true/false
 $criesSound = 'false';                                              // true/false
 
+$noNotifyBounce = false;                                            // true/false
+$notifyBounce = 'true';                                             // true/false
+
+$noNotifyNotification = false;                                      // true/false
+$notifyNotification = 'true';                                       // true/false
+
 /* Style Settings */
 
 $copyrightSafe = true;
@@ -177,7 +183,7 @@ $noMapStyle = false;                                                // true/fals
 $mapStyle = 'style_pgo_dynamic';                                    // roadmap, satellite, hybrid, nolabels_style, dark_style, style_light2, style_pgo, dark_style_nl, style_pgo_day, style_pgo_night, style_pgo_dynamic, openstreetmap
 
 $noDirectionProvider = false;                                       // true/false
-$directionProvider = 'google';                                      // google, waze, apple
+$directionProvider = 'google';                                      // google, waze, apple, bing, google_pin
 
 $noIconSize = false;                                                // true/false
 $iconSize = 0;                                                      // -8, 0, 10, 20
@@ -204,6 +210,13 @@ $noParkInfo = false;                                                // Do not di
 
 $raidApiKey = '';                                                   // Raid API Key, '' to deny access
 $sendRaidData = false;                                              // Send Raid data, false to only send gym data
+
+//-----------------------------------------------------
+// Areas
+//-----------------------------------------------------
+
+$noAreas = true;
+$areas = [];                                                        // [[latitude,longitude,zoom,"name"],[latitude,longitude,zoom,"name"]]
 
 //-----------------------------------------------------
 // Weather Config
