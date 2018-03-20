@@ -572,7 +572,12 @@ function pokemonLabel(item) {
         '<div>' +
         '<b>' + name + '</b>'
     if (form !== null && form > 0 && forms.length > form) {
-        contentstring += ' (' + forms[item['form']] + ')'
+        // todo: check how rocket map handles this (if at all):
+        if (id === 132) {
+            contentstring += ' (' + idToPokemon[item['form']].name + ')'
+        } else {
+            contentstring += ' (' + forms[item['form']] + ')'
+        }
     }
     var coordText = latitude.toFixed(6) + ', ' + longitude.toFixed(7)
     if (hidePokemonCoords === true) {
