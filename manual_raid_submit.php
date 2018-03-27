@@ -67,7 +67,7 @@ if (array_key_exists($pokemonId, $raid_bosses)) {
     // no boss or egg matched
     http_response_code(500);
 }
-$db->query('DELETE FROM raids WHERE fort_id IN ( SELECT id FROM forts WHERE external_id = ":external")', [':external' => $gymId]);
+$db->query('DELETE FROM raids WHERE fort_id = :gymId', [':gymId' => $gymId]);
 $db->insert("raids", $cols);
 
 if ($sendWebhook === true) {
