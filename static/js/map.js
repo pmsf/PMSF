@@ -663,47 +663,45 @@ function gymLabel(item) {
             raidIcon = '<img src="static/raids/egg_' + raidEgg + '.png">'
         }
     }
-    else{
-        raidStr += '<div class="raid-container"><i class="fa fa-binoculars submit-raid" onclick="openRaidModal(event);" style="cursor:pointer;font-size:22px;margin-top: 5px;margin-bottom: 5px;"></i>'
-        raidStr += '<form class="raid-modal" style="display:none;" title="' + i8ln('Submit a Raid Report') + '">'
-        raidStr += '<input type="hidden" value="'+item['gym_id']+'" id="gymId" name="gymId">'
-        raidStr += '<div class=" switch-container">' +
-            '<h5 style="margin-bottom:0;">Raid to Report:</h5>' +
-            '<select name="pokemonId">\n' +
-            '<optgroup label="Raid Eggs">' +
-            '<option value="egg_1">Egg Level 1</option>' +
-            '<option value="egg_2">Egg Level 2</option>' +
-            '<option value="egg_3">Egg Level 3</option>' +
-            '<option value="egg_4">Egg Level 4</option>' +
-            '<option value="egg_5">Egg Level 5</option>' +
-            '</optgroup>' +
-            '\t<optgroup label="Raid Bosses">' +
-            '<option value="249">Lugia</option>\n' +
-            '<option value="76">Golem</option>\n' +
-            '<option value="221">Piloswine</option>\n' +
-            '<option value="135">Jolteon</option>\n' +
-            '<option value="124">Jynx</option>\n' +
-            '<option value="94">Gengar</option>\n' +
-            '<option value="310">Manectric</option>\n' +
-            '<option value="303">Mawile</option>\n' +
-            '<option value="302">Sableye</option>\n' +
-            '<option value="125">Electabuzz</option>\n' +
-            '<option value="103">Exeggutor</option>\n' +
-            '<option value="361">Snorunt</option>\n' +
-            '<option value="333">Swablu</option>\n' +
-            '<option value="320">Wailmer</option>\n' +
-            '<option value="129">Magikarp</option>' +
-            '\t</optgroup>' +
-            '</select>' +
-            '</div>' +
-            '<div class="switch-container">' +
-            '<h5 style="margin-bottom:0;">Hatch/expiry (mm:ss):</h5>' +
-            '<input type="number" name="mins" id="" size="2" maxlength="2" value="45" required style="display:inline;width:50px;">:<input required type="number" name="secs" id="" size="2" value="00" maxlength="2" style="display:inline;width:50px;">' +
-            '</div>' +
-            '<button type="button" onclick="manualRaidData(event);" class="submit-raid"><i class="fa fa-binoculars" style="margin-right:10px;"></i>' + i8ln('Submit Raid') + '</button>' +
-            '</form>' +
-            '</div>'
-    }
+    raidStr += '<div class="raid-container"><i class="fa fa-binoculars submit-raid" onclick="openRaidModal(event);" style="cursor:pointer;font-size:22px;margin-top: 5px;margin-bottom: 5px;"></i>'
+    raidStr += '<form class="raid-modal" style="display:none;" title="' + i8ln('Submit a Raid Report') + '">'
+    raidStr += '<input type="hidden" value="'+item['gym_id']+'" id="gymId" name="gymId">'
+    raidStr += '<div class=" switch-container">' +
+        '<h5 style="margin-bottom:0;">Raid to Report:</h5>' +
+        '<select name="pokemonId">\n' +
+        '<optgroup label="Raid Eggs">' +
+        '<option value="egg_1">Egg Level 1</option>' +
+        '<option value="egg_2">Egg Level 2</option>' +
+        '<option value="egg_3">Egg Level 3</option>' +
+        '<option value="egg_4">Egg Level 4</option>' +
+        '<option value="egg_5">Egg Level 5</option>' +
+        '</optgroup>' +
+        '\t<optgroup label="Raid Bosses">' +
+        '<option value="249">Lugia</option>\n' +
+        '<option value="76">Golem</option>\n' +
+        '<option value="221">Piloswine</option>\n' +
+        '<option value="135">Jolteon</option>\n' +
+        '<option value="124">Jynx</option>\n' +
+        '<option value="94">Gengar</option>\n' +
+        '<option value="310">Manectric</option>\n' +
+        '<option value="303">Mawile</option>\n' +
+        '<option value="302">Sableye</option>\n' +
+        '<option value="125">Electabuzz</option>\n' +
+        '<option value="103">Exeggutor</option>\n' +
+        '<option value="361">Snorunt</option>\n' +
+        '<option value="333">Swablu</option>\n' +
+        '<option value="320">Wailmer</option>\n' +
+        '<option value="129">Magikarp</option>' +
+        '\t</optgroup>' +
+        '</select>' +
+        '</div>' +
+        '<div class="switch-container">' +
+        '<h5 style="margin-bottom:0;">Hatch/expiry (mm:ss):</h5>' +
+        '<input type="number" name="mins" id="" size="2" maxlength="2" value="45" required style="display:inline;width:50px;">:<input required type="number" name="secs" id="" size="2" value="00" maxlength="2" style="display:inline;width:50px;">' +
+        '</div>' +
+        '<button type="button" onclick="manualRaidData(event);" class="submit-raid"><i class="fa fa-binoculars" style="margin-right:10px;"></i>' + i8ln('Submit Raid') + '</button>' +
+        '</form>' +
+        '</div>'
 
     var park = ''
     if ((item['park'] !== 'None' && item['park'] !== undefined && item['park']) && (noParkInfo === false)) {
@@ -2588,48 +2586,50 @@ function showGymDetails(id) { // eslint-disable-line no-unused-vars
                 }
                 raidIcon = '<img src="static/raids/egg_' + raidEgg + '.png">'
             }
-        } else {
-            raidStr += '<hr style="margin:0;"><div><h3>Report Raid</h3></div>'
-            raidStr += '<div style="margin:0px 10px;"><form>'
-            raidStr += '<input type="hidden" value="'+id+'" id="gymId" name="gymId">'
-            raidStr += '<div class=" switch-container">' +
-                '<h3>Raid to Report:</h3>' +
-                '<select name="pokemonId">\n' +
-                '<optgroup label="Raid Eggs">' +
-                '<option value="egg_1">Egg Level 1</option>' +
-                '<option value="egg_2">Egg Level 2</option>' +
-                '<option value="egg_3">Egg Level 3</option>' +
-                '<option value="egg_4">Egg Level 4</option>' +
-                '<option value="egg_5">Egg Level 5</option>' +
-                '</optgroup>' +
-                '\t<optgroup label="Raid Bosses">' +
-                '<option value="249">Lugia</option>\n' +
-                '<option value="76">Golem</option>\n' +
-                '<option value="221">Piloswine</option>\n' +
-                '<option value="135">Jolteon</option>\n' +
-                '<option value="124">Jynx</option>\n' +
-                '<option value="94">Gengar</option>\n' +
-                '<option value="310">Manectric</option>\n' +
-                '<option value="303">Mawile</option>\n' +
-                '<option value="302">Sableye</option>\n' +
-                '<option value="125">Electabuzz</option>\n' +
-                '<option value="103">Exeggutor</option>\n' +
-                '<option value="361">Snorunt</option>\n' +
-                '<option value="333">Swablu</option>\n' +
-                '<option value="320">Wailmer</option>\n' +
-                '<option value="129">Magikarp</option>' +
-                '\t</optgroup>' +
-                '</select>' +
-                '</div>' +
-                '<div class="switch-container">' +
-                '<h3>Hatch/expiry (mm:ss):</h3>' +
-                '<input type="number" name="mins" id="" size="2" maxlength="2" value="45" required style="display:inline;width:50px;">:<input required type="number" name="secs" id="" size="2" value="00" maxlength="2" style="display:inline;width:50px;">' +
-                '</div>' +
-                '<button type="button" onclick="manualRaidData(event);" class="submit-raid"><i class="fa fa-binoculars" style="margin-right:10px;"></i> ' + i8ln('Submit Raid') + '</button>' +
-                '</form>' +
-                '</div>' +
-                '<hr style="margin:0;">'
         }
+        raidStr += '<hr style="margin:0;">'
+        raidStr += '<i class="fa fa-binoculars submit-raid" onclick="$(\'.raid-report\').slideToggle();" style="cursor:pointer;font-size:22px;margin-top: 5px;margin-bottom: 5px;"></i>'
+        raidStr += '<div class="raid-report" style="display:none"><div><h3>Report Raid</h3></div>'
+        raidStr += '<div style="margin:0px 10px;"><form>'
+        raidStr += '<input type="hidden" value="'+id+'" id="gymId" name="gymId">'
+        raidStr += '<div class=" switch-container">' +
+            '<h3>Raid to Report:</h3>' +
+            '<select name="pokemonId">\n' +
+            '<optgroup label="Raid Eggs">' +
+            '<option value="egg_1">Egg Level 1</option>' +
+            '<option value="egg_2">Egg Level 2</option>' +
+            '<option value="egg_3">Egg Level 3</option>' +
+            '<option value="egg_4">Egg Level 4</option>' +
+            '<option value="egg_5">Egg Level 5</option>' +
+            '</optgroup>' +
+            '\t<optgroup label="Raid Bosses">' +
+            '<option value="249">Lugia</option>\n' +
+            '<option value="76">Golem</option>\n' +
+            '<option value="221">Piloswine</option>\n' +
+            '<option value="135">Jolteon</option>\n' +
+            '<option value="124">Jynx</option>\n' +
+            '<option value="94">Gengar</option>\n' +
+            '<option value="310">Manectric</option>\n' +
+            '<option value="303">Mawile</option>\n' +
+            '<option value="302">Sableye</option>\n' +
+            '<option value="125">Electabuzz</option>\n' +
+            '<option value="103">Exeggutor</option>\n' +
+            '<option value="361">Snorunt</option>\n' +
+            '<option value="333">Swablu</option>\n' +
+            '<option value="320">Wailmer</option>\n' +
+            '<option value="129">Magikarp</option>' +
+            '\t</optgroup>' +
+            '</select>' +
+            '</div>' +
+            '<div class="switch-container">' +
+            '<h3>Hatch/expiry (mm:ss):</h3>' +
+            '<input type="number" name="mins" id="" size="2" maxlength="2" value="45" required style="display:inline;width:50px;">:<input required type="number" name="secs" id="" size="2" value="00" maxlength="2" style="display:inline;width:50px;">' +
+            '</div>' +
+            '<button type="button" onclick="manualRaidData(event);" class="submit-raid"><i class="fa fa-binoculars" style="margin-right:10px;"></i> ' + i8ln('Submit Raid') + '</button>' +
+            '</form>' +
+            '</div>' +
+            '</div>' +
+            '<hr style="margin:0;">'
 
         var pokemonHtml = ''
 
