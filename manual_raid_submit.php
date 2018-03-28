@@ -64,6 +64,9 @@ if (array_key_exists($pokemonId, $raidBosses)) {
     $cols['move_2'] = 133;
     $cols['level'] = $raidBosses[$pokemonId]['level']; // struggle :(
     $cols['cp'] = $raidBosses[$pokemonId]['cp'];
+    $cols['time_spawn'] = $time_spawn;
+    $cols['time_battle'] = $time_battle;
+    $cols['time_end'] = $time_end;
 } elseif($cols['level'] === 0) {
     // no boss or egg matched
     http_response_code(500);
