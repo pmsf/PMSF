@@ -89,7 +89,7 @@ var token
 
 var cries
 
-var raidBoss = {};
+var raidBoss = {}
 
 var assetsPath = 'static/sounds/'
 var iconpath = null
@@ -667,7 +667,7 @@ function gymLabel(item) {
     }
     raidStr += '<div class="raid-container"><i class="fa fa-binoculars submit-raid" onclick="openRaidModal(event);" style="cursor:pointer;font-size:22px;margin-top: 5px;margin-bottom: 5px;"></i>'
     raidStr += '<form class="raid-modal" style="display:none;" title="' + i8ln('Submit a Raid Report') + '">'
-    raidStr += '<input type="hidden" value="'+item['gym_id']+'" id="gymId" name="gymId">'
+    raidStr += '<input type="hidden" value="' + item['gym_id'] + '" id="gymId" name="gymId">'
     raidStr += '<div class=" switch-container">' +
         '<h5 style="margin-bottom:0;">Raid to Report:</h5>' +
         generateRaidBossList() +
@@ -1644,9 +1644,9 @@ function loadWeatherCellData(cell) {
     })
 }
 
-function manualRaidData(event) {
-    if(confirm('I confirm this is an accurate sighting of a raid')){
-        var form = $(event.target).parent().parent();
+function manualRaidData(event) { // eslint-disable-line no-unused-vars
+    if (confirm('I confirm this is an accurate sighting of a raid')) {
+        var form = $(event.target).parent().parent()
         return $.ajax({
             url: 'manual_raid_submit',
             type: 'POST',
@@ -1662,7 +1662,7 @@ function manualRaidData(event) {
             },
             error: function error() {
                 // Display error toast
-                toastr['error'](i8ln('Please check connectivity or reduce marker settings.'), i8ln('Error getting weather'))
+                toastr['error'](i8ln('Please check connectivity or reduce marker settings.'), i8ln('Error submitting raid'))
                 toastr.options = {
                     'closeButton': true,
                     'debug': false,
@@ -1684,27 +1684,22 @@ function manualRaidData(event) {
             complete: function complete() {
                 lastgyms = false
                 updateMap()
-                if(Store.get('useGymSidebar')){
-                    showGymDetails(form.find('[name="gymId"]').val());
+                if (Store.get('useGymSidebar')) {
+                    showGymDetails(form.find('[name="gymId"]').val())
+                } else {
+                    $('.ui-dialog-content').dialog('close')
                 }
-                else{
-                    $(".ui-dialog-content").dialog("close");
-                }
-
             }
         })
     }
-    else{
-        return;
-    }
 }
 
-function openRaidModal(event){
-    var modal = $(event.target).parent().parent().find('.raid-modal');
+function openRaidModal(event) { // eslint-disable-line no-unused-vars
+    var modal = $(event.target).parent().parent().find('.raid-modal')
     modal.clone().dialog({
         modal: true,
         buttons: {}
-    });
+    })
 }
 
 function processPokemons(i, item) {
@@ -2568,7 +2563,7 @@ function showGymDetails(id) { // eslint-disable-line no-unused-vars
         raidStr += '<i class="fa fa-binoculars submit-raid" onclick="$(\'.raid-report\').slideToggle();" style="cursor:pointer;font-size:22px;margin-top: 5px;margin-bottom: 5px;"></i>'
         raidStr += '<div class="raid-report" style="display:none"><div><h3>Report Raid</h3></div>'
         raidStr += '<div style="margin:0px 10px;"><form>'
-        raidStr += '<input type="hidden" value="'+id+'" id="gymId" name="gymId">'
+        raidStr += '<input type="hidden" value="' + id + '" id="gymId" name="gymId">'
         raidStr += '<div class=" switch-container">' +
             '<h3>Raid to Report:</h3>' +
             generateRaidBossList() +
@@ -2749,8 +2744,8 @@ function fetchCriesJson() {
     })
 }
 
-function generateRaidBossList(){
-    var data =  '<select name="pokemonId">\n' +
+function generateRaidBossList() {
+    var data = '<select name="pokemonId">\n' +
         '<optgroup label="Raid Eggs">' +
         '<option value="egg_1">Egg Level 1</option>' +
         '<option value="egg_2">Egg Level 2</option>' +
@@ -2759,13 +2754,13 @@ function generateRaidBossList(){
         '<option value="egg_5">Egg Level 5</option>' +
         '</optgroup>' +
         '\t<optgroup label="Raid Bosses">'
-    var boss = raidBossActive;
-    boss.forEach(function(element) {
+    var boss = raidBossActive
+    boss.forEach(function (element) {
         data += '<option value="' + element + '">' + i8ln(raidBoss[element].name) + '</option>\n'
-    });
+    })
     data += '\t</optgroup>' +
     '</select>'
-   return data
+    return data
 }
 
 function pokemonSpritesFilter() {
@@ -3190,7 +3185,7 @@ $(function () {
                 cp: value['cp']
             }
         })
-    });
+    })
 
     // Load pokemon names and populate lists
     $.getJSON('static/dist/data/pokemon.min.json').done(function (data) {
