@@ -89,6 +89,8 @@ var token
 
 var cries
 
+var raidBoss = {};
+
 var assetsPath = 'static/sounds/'
 var iconpath = null
 
@@ -668,32 +670,7 @@ function gymLabel(item) {
     raidStr += '<input type="hidden" value="'+item['gym_id']+'" id="gymId" name="gymId">'
     raidStr += '<div class=" switch-container">' +
         '<h5 style="margin-bottom:0;">Raid to Report:</h5>' +
-        '<select name="pokemonId">\n' +
-        '<optgroup label="Raid Eggs">' +
-        '<option value="egg_1">Egg Level 1</option>' +
-        '<option value="egg_2">Egg Level 2</option>' +
-        '<option value="egg_3">Egg Level 3</option>' +
-        '<option value="egg_4">Egg Level 4</option>' +
-        '<option value="egg_5">Egg Level 5</option>' +
-        '</optgroup>' +
-        '\t<optgroup label="Raid Bosses">' +
-        '<option value="249">Lugia</option>\n' +
-        '<option value="76">Golem</option>\n' +
-        '<option value="221">Piloswine</option>\n' +
-        '<option value="135">Jolteon</option>\n' +
-        '<option value="124">Jynx</option>\n' +
-        '<option value="94">Gengar</option>\n' +
-        '<option value="310">Manectric</option>\n' +
-        '<option value="303">Mawile</option>\n' +
-        '<option value="302">Sableye</option>\n' +
-        '<option value="125">Electabuzz</option>\n' +
-        '<option value="103">Exeggutor</option>\n' +
-        '<option value="361">Snorunt</option>\n' +
-        '<option value="333">Swablu</option>\n' +
-        '<option value="320">Wailmer</option>\n' +
-        '<option value="129">Magikarp</option>' +
-        '\t</optgroup>' +
-        '</select>' +
+        generateRaidBossList() +
         '</div>' +
         '<div class="switch-container">' +
         '<h5 style="margin-bottom:0;">Hatch/expiry (mm:ss):</h5>' +
@@ -2594,32 +2571,7 @@ function showGymDetails(id) { // eslint-disable-line no-unused-vars
         raidStr += '<input type="hidden" value="'+id+'" id="gymId" name="gymId">'
         raidStr += '<div class=" switch-container">' +
             '<h3>Raid to Report:</h3>' +
-            '<select name="pokemonId">\n' +
-            '<optgroup label="Raid Eggs">' +
-            '<option value="egg_1">Egg Level 1</option>' +
-            '<option value="egg_2">Egg Level 2</option>' +
-            '<option value="egg_3">Egg Level 3</option>' +
-            '<option value="egg_4">Egg Level 4</option>' +
-            '<option value="egg_5">Egg Level 5</option>' +
-            '</optgroup>' +
-            '\t<optgroup label="Raid Bosses">' +
-            '<option value="249">Lugia</option>\n' +
-            '<option value="76">Golem</option>\n' +
-            '<option value="221">Piloswine</option>\n' +
-            '<option value="135">Jolteon</option>\n' +
-            '<option value="124">Jynx</option>\n' +
-            '<option value="94">Gengar</option>\n' +
-            '<option value="310">Manectric</option>\n' +
-            '<option value="303">Mawile</option>\n' +
-            '<option value="302">Sableye</option>\n' +
-            '<option value="125">Electabuzz</option>\n' +
-            '<option value="103">Exeggutor</option>\n' +
-            '<option value="361">Snorunt</option>\n' +
-            '<option value="333">Swablu</option>\n' +
-            '<option value="320">Wailmer</option>\n' +
-            '<option value="129">Magikarp</option>' +
-            '\t</optgroup>' +
-            '</select>' +
+            generateRaidBossList() +
             '</div>' +
             '<div class="switch-container">' +
             '<h3>Hatch/expiry (mm:ss):</h3>' +
@@ -2795,6 +2747,25 @@ function fetchCriesJson() {
             createjs.Sound.registerSounds(cries, assetsPath)
         }
     })
+}
+
+function generateRaidBossList(){
+    var data =  '<select name="pokemonId">\n' +
+        '<optgroup label="Raid Eggs">' +
+        '<option value="egg_1">Egg Level 1</option>' +
+        '<option value="egg_2">Egg Level 2</option>' +
+        '<option value="egg_3">Egg Level 3</option>' +
+        '<option value="egg_4">Egg Level 4</option>' +
+        '<option value="egg_5">Egg Level 5</option>' +
+        '</optgroup>' +
+        '\t<optgroup label="Raid Bosses">'
+    var boss = raidBossActive;
+    boss.forEach(function(element) {
+        data += '<option value="' + element + '">' + i8ln(raidBoss[element].name) + '</option>\n'
+    });
+    data += '\t</optgroup>' +
+    '</select>'
+   return data
 }
 
 function pokemonSpritesFilter() {
@@ -3207,6 +3178,19 @@ $(function () {
     $raidNotify.on('change', function () {
         Store.set('remember_raid_notify', this.value)
     })
+
+    $.getJSON('static/dist/data/raid-boss.min.json').done(function (data) {
+        $.each(data, function (key, value) {
+            if (key > numberOfPokemon) {
+                return false
+            }
+            raidBoss[key] = {
+                name: i8ln(value['name']),
+                level: value['level'],
+                cp: value['cp']
+            }
+        })
+    });
 
     // Load pokemon names and populate lists
     $.getJSON('static/dist/data/pokemon.min.json').done(function (data) {

@@ -118,6 +118,7 @@
     "languageSite": true,
     "boostedMons": true,
     "exEligible": true,
-    "motd": true
+    "motd": true,
+    "raidBossActive": true
   }
 }
