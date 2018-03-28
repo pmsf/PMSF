@@ -1,7 +1,8 @@
 <?php
 $timing['start'] = microtime(true);
 include('config/config.php');
-global $map, $fork, $db, $raid_bosses, $webhookUrl, $sendWebhook;
+global $map, $fork, $db, $raidBosses, $webhookUrl, $sendWebhook;
+$raidBosses = json_decode(file_get_contents("static/dist/data/raid-boss.min.json"), true);
 $pokemonId = !empty($_POST['pokemonId']) ? $_POST['pokemonId'] : 0;
 $gymId = !empty($_POST['gymId']) ? $_POST['gymId'] : 0;
 $mins = !empty($_POST['mins']) ? $_POST['mins'] : 0;
@@ -53,7 +54,7 @@ $cols = [
     'move_2' => 0
 
 ];
-if (array_key_exists($pokemonId, $raid_bosses)) {
+if (array_key_exists($pokemonId, $raidBosses)) {
     $time_end = time() + $add_seconds;
 // fake the battle start and spawn times cuz rip hashing :(
     $time_battle = $time_end - $forty_five;
@@ -61,8 +62,8 @@ if (array_key_exists($pokemonId, $raid_bosses)) {
     $cols['pokemon_id'] = $pokemonId;
     $cols['move_1'] = 133; // struggle :(
     $cols['move_2'] = 133;
-    $cols['level'] = $raid_bosses[$pokemonId]['level']; // struggle :(
-    $cols['cp'] = $raid_bosses[$pokemonId]['cp'];
+    $cols['level'] = $raidBosses[$pokemonId]['level']; // struggle :(
+    $cols['cp'] = $raidBosses[$pokemonId]['cp'];
 } elseif($cols['level'] === 0) {
     // no boss or egg matched
     http_response_code(500);
