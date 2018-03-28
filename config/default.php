@@ -216,23 +216,7 @@ $sendRaidData = false;                                              // Send Raid
 // Raids
 //-----------------------------------------------------
 
-$raid_bosses = [
-    249 => ['name' => 'Lugia', 'cp' => 42753, 'level' => 5],
-    76 => ['name' => 'Golem', 'cp' => 30572, 'level' => 4],
-    221 => ['name' => 'Piloswine', 'cp' => 13663, 'level' => 3],
-    135 => ['name' => 'Jolteon', 'cp' => 19883, 'level' => 3],
-    124 => ['name' => 'Jynx', 'cp' => 18296, 'level' => 3],
-    94 => ['name' => 'Gengar', 'cp' => 19768, 'level' => 3],
-    310 => ['name' => 'Manectric', 'cp' => 11628, 'level' => 2],
-    303 => ['name' => 'Mawile', 'cp' => 9403, 'level' => 2],
-    302 => ['name' => 'Sableye', 'cp' => 8266, 'level' => 2],
-    125 => ['name' => 'Electabuzz', 'cp' => 12390, 'level' => 2],
-    103 => ['name' => 'Exeggutor', 'cp' => 13839, 'level' => 2],
-    361 => ['name' => 'Snorunt', 'cp' => 2825, 'level' => 1],
-    333 => ['name' => 'Swablu', 'cp' => 2766, 'level' => 1],
-    320 => ['name' => 'Wailmer', 'cp' => 3369, 'level' => 1],
-    129 => ['name' => 'Magikarp', 'cp' => 1165, 'level' => 1]
-];
+$raidBosses = [68,76,94,103,124,125,129,135,150,221,248,249,302,303,306,310,320,333,359,361];
 
 $sendWebhook = false;
 $webhookUrl = null;
