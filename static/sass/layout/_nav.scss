@@ -60,42 +60,7 @@
       }
     }
   }
-  .pokemon-list {
-    display: -webkit-box;
-    display: -ms-flexbox;
-    display: -webkit-flex;
-    display: flex;
-    -webkit-flex-flow: row wrap;
-    flex-flow: row wrap;
-    -webkit-align-items:center;
-    align-items: center;
-    text-align:center;
-    max-width: 100%;
-    img {
-      width: calc(20% - 10px);
-      padding: 2px;
-      margin: 2px 5px;
-      box-sizing: border-box;
-    }
-    .pokemon-icon-sprite{
-      border:1px solid #FFF;
-      width: calc( 20% - 2px);
-      margin-bottom: 5px;
-      margin-left: 1px;
-      margin-right: 1px;
-      .inner-bg{
-        width: 48.13px;
-        height: 48.13px;
-        background-image: url($spriteLarge);
-        background-image: var(--sprite-large);
-        background-size:1350px;
-        background-repeat:no-repeat;
-        background-position:left;
-        display: block;
-        margin: 0 auto;
-      }
-    }
-  }
+
   #pokemon-filter-wrapper{
     #tabs{
       padding:0;
@@ -331,5 +296,57 @@
   }
   .ui-state-focus {
     outline: none;
+  }
+}
+.pokemon-list {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: -webkit-flex;
+  display: flex;
+  -webkit-flex-flow: row wrap;
+  flex-flow: row wrap;
+  -webkit-align-items:center;
+  align-items: center;
+  text-align:center;
+  max-width: 100%;
+  img {
+    width: calc(20% - 10px);
+    padding: 2px;
+    margin: 2px 5px;
+    box-sizing: border-box;
+  }
+  .pokemon-icon-sprite{
+    border:1px solid #FFF;
+    width: calc( 20% - 2px);
+    margin-bottom: 5px;
+    margin-left: 1px;
+    margin-right: 1px;
+    position:relative;
+    .inner-bg{
+      width: 48.13px;
+      height: 48.13px;
+      background-image: url($spriteLarge);
+      background-image: var(--sprite-large);
+      background-size:1350px;
+      background-repeat:no-repeat;
+      background-position:left;
+      display: block;
+      margin: 0 auto;
+    }
+  }
+  .active {
+    border: 1px solid red;
+    background: rgba(255, 0, 0, 0.4);
+  }
+  span.egg-number {
+    position: absolute;
+    bottom: 0;
+    right: 0;
+    background: black;
+    width: 20px;
+    border-radius: 50%;
+    color: white;
+    height: 20px;
+    font-size: 13px;
   }
 }

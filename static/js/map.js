@@ -665,18 +665,17 @@ function gymLabel(item) {
             raidIcon = '<img src="static/raids/egg_' + raidEgg + '.png">'
         }
     }
-    raidStr += '<div class="raid-container"><i class="fa fa-binoculars submit-raid" onclick="openRaidModal(event);" style="cursor:pointer;font-size:22px;margin-top: 5px;margin-bottom: 5px;"></i>'
+    raidStr += '<div class="raid-container"><i class="fa fa-binoculars submit-raid" onclick="openRaidModal(event);"></i>'
     raidStr += '<form class="raid-modal" style="display:none;" title="' + i8ln('Submit a Raid Report') + '">'
-    raidStr += '<input type="hidden" value="' + item['gym_id'] + '" id="gymId" name="gymId">'
+    raidStr += '<input type="hidden" value="' + item['gym_id'] + '" id="gymId" name="gymId" autofocus>'
     raidStr += '<div class=" switch-container">' +
-        '<h5 style="margin-bottom:0;">Raid to Report:</h5>' +
         generateRaidBossList() +
         '</div>' +
-        '<div class="switch-container">' +
+        '<div class="switch-container" style="text-align:center;">' +
         '<h5 style="margin-bottom:0;">Hatch/expiry (mm:ss):</h5>' +
-        '<input type="number" name="mins" id="" size="2" maxlength="2" value="45" required style="display:inline;width:50px;">:<input required type="number" name="secs" id="" size="2" value="00" maxlength="2" style="display:inline;width:50px;">' +
+        '<input type="number" name="mins" size="2" maxlength="2" value="45">:<input type="number" name="secs" size="2" value="00" maxlength="2">' +
         '</div>' +
-        '<button type="button" onclick="manualRaidData(event);" class="submit-raid"><i class="fa fa-binoculars" style="margin-right:10px;"></i>' + i8ln('Submit Raid') + '</button>' +
+        '<button type="button" onclick="manualRaidData(event);" class="submitting-raid"><i class="fa fa-binoculars" style="margin-right:10px;"></i>' + i8ln('Submit Raid') + '</button>' +
         '</form>' +
         '</div>'
 
@@ -1644,7 +1643,7 @@ function loadWeatherCellData(cell) {
     })
 }
 
-function manualRaidData(event) { // eslint-disable-line no-unused-vars
+function manualRaidData(event) {
     if (confirm('I confirm this is an accurate sighting of a raid')) {
         var form = $(event.target).parent().parent()
         return $.ajax({
@@ -1662,7 +1661,7 @@ function manualRaidData(event) { // eslint-disable-line no-unused-vars
             },
             error: function error() {
                 // Display error toast
-                toastr['error'](i8ln('Please check connectivity or reduce marker settings.'), i8ln('Error submitting raid'))
+                toastr['error'](i8ln('Please check connectivity or reduce marker settings.'), i8ln('Error getting weather'))
                 toastr.options = {
                     'closeButton': true,
                     'debug': false,
@@ -1694,7 +1693,7 @@ function manualRaidData(event) { // eslint-disable-line no-unused-vars
     }
 }
 
-function openRaidModal(event) { // eslint-disable-line no-unused-vars
+function openRaidModal(event) {
     var modal = $(event.target).parent().parent().find('.raid-modal')
     modal.clone().dialog({
         modal: true,
@@ -2520,6 +2519,7 @@ function showGymDetails(id) { // eslint-disable-line no-unused-vars
 
         var raidStr = ''
         var raidIcon = ''
+        var rbList = generateRaidBossList()
         if (raidSpawned && result.raid_end > Date.now()) {
             var levelStr = ''
             for (var i = 0; i < result['raid_level']; i++) {
@@ -2559,24 +2559,21 @@ function showGymDetails(id) { // eslint-disable-line no-unused-vars
                 raidIcon = '<img src="static/raids/egg_' + raidEgg + '.png">'
             }
         }
-        raidStr += '<hr style="margin:0;">'
-        raidStr += '<i class="fa fa-binoculars submit-raid" onclick="$(\'.raid-report\').slideToggle();" style="cursor:pointer;font-size:22px;margin-top: 5px;margin-bottom: 5px;"></i>'
-        raidStr += '<div class="raid-report" style="display:none"><div><h3>Report Raid</h3></div>'
+        raidStr += '<i class="fa fa-binoculars submit-raid" onclick="$(this).toggleClass(\'open\');$(\'.raid-report\').slideToggle()" ></i>'
+        raidStr += '<div class="raid-report">'
         raidStr += '<div style="margin:0px 10px;"><form>'
         raidStr += '<input type="hidden" value="' + id + '" id="gymId" name="gymId">'
         raidStr += '<div class=" switch-container">' +
-            '<h3>Raid to Report:</h3>' +
-            generateRaidBossList() +
+            rbList +
             '</div>' +
             '<div class="switch-container">' +
-            '<h3>Hatch/expiry (mm:ss):</h3>' +
-            '<input type="number" name="mins" id="" size="2" maxlength="2" value="45" required style="display:inline;width:50px;">:<input required type="number" name="secs" id="" size="2" value="00" maxlength="2" style="display:inline;width:50px;">' +
+            '<h5 style="margin-bottom: 2px;">Hatch/expiry (mm:ss):</h5>' +
+            '<input type="number" name="mins" id="" size="2" maxlength="2" value="45" required style="display:inline;width:50px;text-align:center;">:<input required type="number" name="secs" id="" size="2" value="00" maxlength="2" style="display:inline;width:50px;text-align:center;">' +
             '</div>' +
-            '<button type="button" onclick="manualRaidData(event);" class="submit-raid"><i class="fa fa-binoculars" style="margin-right:10px;"></i> ' + i8ln('Submit Raid') + '</button>' +
+            '<button type="button" onclick="manualRaidData(event);" class="submitting-raid"><i class="fa fa-binoculars" style="margin-right:10px;"></i> ' + i8ln('Submit Raid') + '</button>' +
             '</form>' +
             '</div>' +
-            '</div>' +
-            '<hr style="margin:0;">'
+            '</div>'
 
         var pokemonHtml = ''
 
@@ -2586,7 +2583,7 @@ function showGymDetails(id) { // eslint-disable-line no-unused-vars
             '<b class="team-' + result.team_id + '-text">' + (result.name || '') + '</b>' +
             '</div>' +
             '<div>' +
-            '<img height="100px" style="padding: 5px;" src="static/forts/' + gymTypes[result.team_id] + '_large.png">' +
+            '<img height="60px" style="padding: 5px;" src="static/forts/' + gymTypes[result.team_id] + '_large.png">' +
             raidIcon +
             '</div>' +
             raidStr +
@@ -2744,24 +2741,34 @@ function fetchCriesJson() {
     })
 }
 
+function pokemonRaidFilter(event) {
+    var img = $(event.target).parent()
+    var cont = img.parent().parent()
+    var select = cont.find('input')
+    var id = img.data('value').toString()
+    select.val(id)
+    cont.find('.pokemon-icon-sprite').removeClass('active')
+    img.addClass('active')
+}
 function generateRaidBossList() {
-    var data = '<select name="pokemonId">\n' +
-        '<optgroup label="Raid Eggs">' +
-        '<option value="egg_1">Egg Level 1</option>' +
-        '<option value="egg_2">Egg Level 2</option>' +
-        '<option value="egg_3">Egg Level 3</option>' +
-        '<option value="egg_4">Egg Level 4</option>' +
-        '<option value="egg_5">Egg Level 5</option>' +
-        '</optgroup>' +
-        '\t<optgroup label="Raid Bosses">'
     var boss = raidBossActive
+    var data = '<div class="pokemon-list">'
+    data += '<input type="hidden" name="pokemonId" value="">'
+    data += '<span class="pokemon-icon-sprite" data-value="egg_1" onclick="pokemonRaidFilter(event);"><span class="egg_1 inner-bg" style="background: url(\'static/raids/egg_normal.png\');background-size:100%"></span><span class="egg-number">1</span></span>'
+    data += '<span class="pokemon-icon-sprite" data-value="egg_2" onclick="pokemonRaidFilter(event);"><span class="egg_2 inner-bg" style="background: url(\'static/raids/egg_normal.png\');background-size:100%"></span><span class="egg-number">2</span></span>'
+    data += '<span class="pokemon-icon-sprite" data-value="egg_3" onclick="pokemonRaidFilter(event);"><span class="egg_3 inner-bg" style="background: url(\'static/raids/egg_rare.png\');background-size:100%"></span><span class="egg-number">3</span></span>'
+    data += '<span class="pokemon-icon-sprite" data-value="egg_4" onclick="pokemonRaidFilter(event);"><span class="egg_4 inner-bg" style="background: url(\'static/raids/egg_rare.png\');background-size:100%"></span><span class="egg-number">4</span></span>'
+    data += '<span class="pokemon-icon-sprite" data-value="egg_5" onclick="pokemonRaidFilter(event);"><span class="egg_5 inner-bg" style="background: url(\'static/raids/egg_legendary.png\');background-size:100%"></span><span class="egg-number">5</span></span>'
     boss.forEach(function (element) {
-        data += '<option value="' + element + '">' + i8ln(raidBoss[element].name) + '</option>\n'
+        var j = Math.floor(element / 28)
+        var k = (element % 28) - 1
+        var p = j * 48.25
+        data += '<span class="pokemon-icon-sprite" data-value="' + element + '" onclick="pokemonRaidFilter(event);"><span class="' + element + ' inner-bg" style="background-position:-' + k * 48.25 + 'px -' + p + 'px"></span></span>'
     })
-    data += '\t</optgroup>' +
-    '</select>'
+    data += '</div>'
     return data
 }
+
 
 function pokemonSpritesFilter() {
     jQuery('.pokemon-list').parent().find('.select2').hide()
