@@ -1660,7 +1660,7 @@ function manualRaidData(event) { // eslint-disable-line no-unused-vars
                 cache: false,
                 data: {
                     'pokemonId': pokemonId,
-                    'gymId': gymid,
+                    'gymId': gymId,
                     'mins': mins,
                     'secs': secs
                 },
