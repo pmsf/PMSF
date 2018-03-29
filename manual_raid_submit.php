@@ -56,7 +56,7 @@ $cols = [
 ];
 if (array_key_exists($pokemonId, $raidBosses)) {
     $time_end = time() + $add_seconds;
-// fake the battle start and spawn times cuz rip hashing :(
+    // fake the battle start and spawn times cuz rip hashing :(
     $time_battle = $time_end - $forty_five;
     $time_spawn = $time_battle - $hour;
     $cols['pokemon_id'] = $pokemonId;
@@ -73,6 +73,10 @@ if (array_key_exists($pokemonId, $raidBosses)) {
 }
 $db->query('DELETE FROM raids WHERE fort_id = :gymId', [':gymId' => $gymId]);
 $db->insert("raids", $cols);
+
+// also update fort_sightings so PMSF knows the gym has changed
+// todo: put team stuff in here too
+$db->query("UPDATE fort_sightings SET updated = :updated WHERE fort_id = :gymId", ['updated'=>time(), ':gymId' => $gymId]);
 
 if ($sendWebhook === true) {
     // webhook stuff:
@@ -98,16 +102,8 @@ if ($sendWebhook === true) {
         $webhook['message']['raid_begin'] = $time_spawn;
     }
 
+    sendToWebhook($webhookUrl, $webhook);
 
-    $c = curl_init($webhookUrl);
-    curl_setopt($c, CURLOPT_SSL_VERIFYPEER, false);
-    curl_setopt($c, CURLOPT_POST, true);
-    curl_setopt($c, CURLOPT_CUSTOMREQUEST, "POST");
-    curl_setopt($c, CURLOPT_RETURNTRANSFER, true);
-    curl_setopt($c, CURLOPT_HTTPHEADER, ['Content-type: application/json', 'User-Agent: python-requests/2.18.4']);
-    curl_setopt($c, CURLOPT_POSTFIELDS, json_encode($webhook));
-    curl_exec($c);
-    curl_close($c);
 }
 
 $jaysson = json_encode($d);
