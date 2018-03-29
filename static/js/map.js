@@ -1647,7 +1647,7 @@ function loadWeatherCellData(cell) {
 function manualRaidData(event) { // eslint-disable-line no-unused-vars
     var form = $(event.target).parent().parent()
     var pokemonId = form.find('[name="pokemonId"]').val()
-    var gymid = form.find('[name="gymId"]').val()
+    gymId = form.find('[name="gymId"]').val()
     var mins = form.find('[name="mins"]').val()
     var secs = form.find('[name="secs"]').val()
     if (pokemonId && pokemonId !== '' && gymId && gymId !== '' && mins && mins !== '' && secs && secs !== '') {
