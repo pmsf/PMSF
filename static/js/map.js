@@ -1644,52 +1644,57 @@ function loadWeatherCellData(cell) {
 }
 
 function manualRaidData(event) {
-    if (confirm('I confirm this is an accurate sighting of a raid')) {
-        var form = $(event.target).parent().parent()
-        return $.ajax({
-            url: 'manual_raid_submit',
-            type: 'POST',
-            timeout: 300000,
-            dataType: 'json',
-            cache: false,
-            data: {
-                'pokemonId': form.find('[name="pokemonId"]').val(),
-                'gymId': form.find('[name="gymId"]').val(),
-                'mins': form.find('[name="mins"]').val(),
-                'secs': form.find('[name="secs"]').val()
-
-            },
-            error: function error() {
-                // Display error toast
-                toastr['error'](i8ln('Please check connectivity or reduce marker settings.'), i8ln('Error getting weather'))
-                toastr.options = {
-                    'closeButton': true,
-                    'debug': false,
-                    'newestOnTop': true,
-                    'progressBar': false,
-                    'positionClass': 'toast-top-right',
-                    'preventDuplicates': true,
-                    'onclick': null,
-                    'showDuration': '300',
-                    'hideDuration': '1000',
-                    'timeOut': '25000',
-                    'extendedTimeOut': '1000',
-                    'showEasing': 'swing',
-                    'hideEasing': 'linear',
-                    'showMethod': 'fadeIn',
-                    'hideMethod': 'fadeOut'
+    var form = $(event.target).parent().parent()
+    var pokemonId = form.find('[name="pokemonId"]').val()
+    var gymid = form.find('[name="gymId"]').val()
+    var mins = form.find('[name="mins"]').val()
+    var secs = form.find('[name="secs"]').val()
+    if(pokemonId && pokemonId !== "" && gymId && gymId !== "" && mins && mins !== "" && secs && secs !== ""){
+        if (confirm('I confirm this is an accurate sighting of a raid')) {
+            return $.ajax({
+                url: 'manual_raid_submit',
+                type: 'POST',
+                timeout: 300000,
+                dataType: 'json',
+                cache: false,
+                data: {
+                    'pokemonId': pokemonId,
+                    'gymId': gymid,
+                    'mins': mins,
+                    'secs': secs
+                },
+                error: function error() {
+                    // Display error toast
+                    toastr['error'](i8ln('Please check connectivity or reduce marker settings.'), i8ln('Error getting weather'))
+                    toastr.options = {
+                        'closeButton': true,
+                        'debug': false,
+                        'newestOnTop': true,
+                        'progressBar': false,
+                        'positionClass': 'toast-top-right',
+                        'preventDuplicates': true,
+                        'onclick': null,
+                        'showDuration': '300',
+                        'hideDuration': '1000',
+                        'timeOut': '25000',
+                        'extendedTimeOut': '1000',
+                        'showEasing': 'swing',
+                        'hideEasing': 'linear',
+                        'showMethod': 'fadeIn',
+                        'hideMethod': 'fadeOut'
+                    }
+                },
+                complete: function complete() {
+                    lastgyms = false
+                    updateMap()
+                    if (Store.get('useGymSidebar')) {
+                        showGymDetails(form.find('[name="gymId"]').val())
+                    } else {
+                        $('.ui-dialog-content').dialog('close')
+                    }
                 }
-            },
-            complete: function complete() {
-                lastgyms = false
-                updateMap()
-                if (Store.get('useGymSidebar')) {
-                    showGymDetails(form.find('[name="gymId"]').val())
-                } else {
-                    $('.ui-dialog-content').dialog('close')
-                }
-            }
-        })
+            })
+        }
     }
 }
 
