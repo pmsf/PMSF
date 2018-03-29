@@ -370,5 +370,44 @@
     font-weight: bold;
     font-family: 'Quicksand';
   }
+  .submit-raid{
+    padding: 5px 20px;
+    cursor: pointer;
+    font-size: 22px;
+    &.open{
+      background:#FFF;
+      border-top: 1px solid rgba(0,0,0,0.2);
+      border-left: 1px solid rgba(0,0,0,0.2);
+      border-right: 1px solid rgba(0,0,0,0.2);
+    }
+  }
+  .raid-report{
+    display:none;
+    background: white;
+    padding: 15px 5px;
+    margin: 0px 10px;
+    border-top: 1px solid rgba(0,0,0,0.2);
+    border-left: 1px solid rgba(0,0,0,0.2);
+    border-right: 1px solid rgba(0,0,0,0.2);
+    border-bottom: 1px solid rgba(0,0,0,0.2);
+    margin-top: -1px;
+  }
+  .pokemon-list {
+    .pokemon-icon-sprite{
+      width: calc( 16.65% - 2px);
+    }
+  }
+}
 
+
+@media(max-width:768px){
+  #gym-details {
+    max-width: 85%;
+    width:100%;
+    .pokemon-list {
+      .pokemon-icon-sprite{
+        width: calc( 20% - 2px);
+      }
+    }
+  }
 }

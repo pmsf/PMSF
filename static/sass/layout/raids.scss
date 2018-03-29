@@ -1,0 +1,17 @@
+.raid-container{
+  .submit-raid{
+    cursor:pointer;
+    font-size:22px;
+    margin-top: 5px;
+    margin-bottom: 5px;
+  }
+}
+.raid-modal{
+  text-align:center;
+  input[type="number"]{
+    display:inline;
+    width:50px;
+    text-align:center;
+    margin:0 10px;
+  }
+}
