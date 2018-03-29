@@ -92,6 +92,7 @@ if ($sendWebhook === true) {
             'level' => $cols['level'],
             'latitude' => $gym['lat'],
             'longitude' => $gym['lon'],
+            'raid_begin' => $time_battle,
             'raid_end' => $time_end,
             'team' => 0,
             'name' => $gym['name']
