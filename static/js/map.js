@@ -90,6 +90,7 @@ var token
 var cries
 
 var raidBoss = {}
+var gymId
 
 var assetsPath = 'static/sounds/'
 var iconpath = null
@@ -1643,13 +1644,13 @@ function loadWeatherCellData(cell) {
     })
 }
 
-function manualRaidData(event) {
+function manualRaidData(event) { // eslint-disable-line no-unused-vars
     var form = $(event.target).parent().parent()
     var pokemonId = form.find('[name="pokemonId"]').val()
     var gymid = form.find('[name="gymId"]').val()
     var mins = form.find('[name="mins"]').val()
     var secs = form.find('[name="secs"]').val()
-    if(pokemonId && pokemonId !== "" && gymId && gymId !== "" && mins && mins !== "" && secs && secs !== ""){
+    if (pokemonId && pokemonId !== '' && gymId && gymId !== '' && mins && mins !== '' && secs && secs !== '') {
         if (confirm('I confirm this is an accurate sighting of a raid')) {
             return $.ajax({
                 url: 'manual_raid_submit',
@@ -1698,7 +1699,7 @@ function manualRaidData(event) {
     }
 }
 
-function openRaidModal(event) {
+function openRaidModal(event) { // eslint-disable-line no-unused-vars
     var modal = $(event.target).parent().parent().find('.raid-modal')
     modal.clone().dialog({
         modal: true,
@@ -2746,7 +2747,7 @@ function fetchCriesJson() {
     })
 }
 
-function pokemonRaidFilter(event) {
+function pokemonRaidFilter(event) { // eslint-disable-line no-unused-vars
     var img = $(event.target).parent()
     var cont = img.parent().parent()
     var select = cont.find('input')
