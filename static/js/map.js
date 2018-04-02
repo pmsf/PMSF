@@ -677,6 +677,7 @@ function gymLabel(item) {
         '<input type="number" name="mins" size="2" maxlength="2" value="45">:<input type="number" name="secs" size="2" value="00" maxlength="2">' +
         '</div>' +
         '<button type="button" onclick="manualRaidData(event);" class="submitting-raid"><i class="fa fa-binoculars" style="margin-right:10px;"></i>' + i8ln('Submit Raid') + '</button>' +
+        '<button type="button" onclick="$(\'.ui-dialog-content\').dialog(\'close\');" class="close-modal"><i class="fa fa-times" aria-hidden="true"></i></button>' +
         '</form>' +
         '</div>'
 
@@ -1703,6 +1704,7 @@ function openRaidModal(event) { // eslint-disable-line no-unused-vars
     var modal = $(event.target).parent().parent().find('.raid-modal')
     modal.clone().dialog({
         modal: true,
+        maxHeight: 600,
         buttons: {}
     })
 }
@@ -2850,6 +2852,9 @@ $(function () {
             }
         })
     }
+    $("#dialog_edit").on('click', '#closeButtonId', function(){
+        $(this).closest("#dialog_edit").dialog('close');
+    });
 })
 
 $(function () {
