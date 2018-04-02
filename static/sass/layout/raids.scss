@@ -14,4 +14,21 @@
     text-align:center;
     margin:0 10px;
   }
+  button.submitting-raid {
+    width: 73%;
+    float: left;
+  }
+  button.close-modal {
+    width: 25%;
+    float: left;
+    text-align: center;
+    margin-left: 2%;
+    padding:0;
+    .fa-times{
+      font-size: 28px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+  }
 }
