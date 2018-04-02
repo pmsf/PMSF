@@ -40,7 +40,7 @@ if (count($eggs) > 0) {
     $fort_ids = rtrim($fort_ids, ", ");
 
     // update raids table
-    $db->query("UPDATE raids SET pokemon_id = 249, move_1 = 133, move_2 = 133, cp = 42753 WHERE fort_id IN(:fort_ids) AND level = 5", [':fort_ids' => $fort_ids]);
+    $db->query("UPDATE raids SET pokemon_id = 381, move_1 = 133, move_2 = 133, cp = 42753 WHERE fort_id IN(:fort_ids) AND level = 5", [':fort_ids' => $fort_ids]);
 
     // also mark fort_sightings as updated:
     $db->query("UPDATE fort_sightings SET updated = :updated WHERE fort_id IN (:fort_ids)", [':updated' => time(), ':fort_ids' => $fort_ids]);
