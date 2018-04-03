@@ -223,7 +223,7 @@ $webhookUrl = null;
 
 $manualFiveStar = [
     'pokemon_id' => 381,
-    'cp' => 45704,
+    'cp' => 49322,
     'move_1' => 133,
     'move_2' => 133
 ];
