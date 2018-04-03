@@ -134,6 +134,11 @@
     "level": 2,
     "cp": 12390
   },
+  "127": {
+    "name": "Pinsir",
+    "level": 3,
+    "cp": 11652
+  },
   "129": {
     "name": "Magikarp",
     "level": 1,
@@ -224,10 +229,25 @@
     "level": 3,
     "cp": 8989
   },
+  "200": {
+    "name": "Misdreavus",
+    "level": 2,
+    "cp": 8989
+  },
   "202": {
     "name": "Wobbuffet",
     "level": 4,
     "cp": 7144
+  },
+  "210": {
+    "name": "Granbull",
+    "level": 3,
+    "cp": 7144
+  },
+  "215": {
+    "name": "Sneasel",
+    "level": 2,
+    "cp": 27409
   },
   "217": {
     "name": "Ursaring",
@@ -328,6 +348,11 @@
     "name": "Snorunt",
     "level": 1,
     "cp": 2825
+  },
+  "365": {
+    "name": "Walrein",
+    "level": 4,
+    "cp": 28250
   },
   "377": {
     "name": "Regirock",
