@@ -10,10 +10,10 @@ $eggs = $db->query("
 ", [':time_battle'=>time()])->fetchAll(PDO::FETCH_ASSOC);
 
 if (count($eggs) > 0) {
-    $fort_ids = "";
+    $fort_ids = [];
     foreach ($eggs as $egg) {
-        // build the in() query for sql:
-        $fort_ids .= $egg['fort_id'] . ",";
+        // add each fort to the array for updating
+        array_push($fort_ids, $egg['fort_id']);
 
         // do we need to send to webhooks?
         if ($sendWebhook === true) {
@@ -27,6 +27,7 @@ if (count($eggs) > 0) {
                     'level' => 5,
                     'latitude' => $egg['lat'],
                     'longitude' => $egg['lon'],
+                    'raid_begin' => time(),
                     'raid_end' => (float)$egg['time_end'],
                     'team' => 0,
                     'name' => $egg['name']
@@ -36,14 +37,12 @@ if (count($eggs) > 0) {
             sendToWebhook($webhookUrl, $webhook);
         }
     }
-    // remove trailing comma
-    $fort_ids = rtrim($fort_ids, ", ");
 
     // update raids table
-    $db->query("UPDATE raids SET pokemon_id = :pokemon_id, move_1 = 133, move_2 = 133, cp = :cp WHERE fort_id IN(:fort_ids) AND level = 5", [':pokemon_id' => $manualFiveStar['pokemon_id'], ':cp' => $manualFiveStar['cp'], ':fort_ids' => $fort_ids]);
+    $db->update("raids", ["pokemon_id" => $manualFiveStar['pokemon_id'], "move_1" => 133, "move_2" => 133, "cp" => $manualFiveStar['cp']], ["fort_id" => $fort_ids]);
 
     // also mark fort_sightings as updated:
-    $db->query("UPDATE fort_sightings SET updated = :updated WHERE fort_id IN (:fort_ids)", [':updated' => time(), ':fort_ids' => $fort_ids]);
+    $db->update("fort_sightings", ["updated" => time()], ["fort_id" => $fort_ids]);
 } else {
     echo "nothing to update";
 }
