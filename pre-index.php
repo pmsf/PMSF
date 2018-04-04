@@ -441,6 +441,11 @@ if ($blockIframe) {
                         } ?>
                     </div>
                 </div>
+                <h3><?php echo i8ln('Gym Search'); ?></h3>
+                <div>
+                    <input type="search" id="gym-search" name="gym-search" placeholder="Enter Gym Name"/>
+                    <ul id="gym-search-results"></ul>
+                </div>
                 <?php
             }
             ?>
