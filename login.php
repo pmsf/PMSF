@@ -1,11 +1,5 @@
 <?php
 include('config/config.php');
-if (!file_exists($logfile)) {
-    if(file_put_contents($logfile, "-- This is a test to make sure the logging actually works.\r\n", FILE_APPEND) == false){
-        http_response_code(500);
-        die("<h1>Warning</h1><p>Your backup logging doesn't work. In case of database corruption all data may be lost.</p>");
-    }
-}
 ?>
 <!DOCTYPE html>
 <html lang="<?= $locale ?>">
@@ -62,6 +56,13 @@ if (!file_exists($logfile)) {
 <div class="wrapper">
 <?php
 if ($enableLogin === true) {
+    if (!file_exists($logfile)) {
+        if(file_put_contents($logfile, "-- This is a test to make sure the logging actually works.\r\n", FILE_APPEND) == false){
+            http_response_code(500);
+            die("<h1>Warning</h1><p>Your backup logging doesn't work. In case of database corruption all data may be lost.</p>");
+        }
+    }
+
     if (isset($_POST['submit_updatePwd'])) {
         if (!empty($_POST["password"]) && ($_POST["password"] == $_POST["repassword"])) {
             $passwordErr = '';
@@ -216,7 +217,7 @@ if ($enableLogin === true) {
                 }
             }
 
-            if (($_POST['ResetPwd'] == "off" && $_POST['checkboxDate'] == 0 && $_POST['email'] == i8ln('Select a user...')) || empty($_POST['createUserEmail'])) {
+            if (($_POST['ResetPwd'] == "off" && $_POST['checkboxDate'] == 0 && $_POST['email'] == i8ln('Select a user...')) && empty($_POST['createUserEmail'])) {
                 $Err = i8ln('No changes made.');
             }
         } else {
