@@ -153,6 +153,36 @@ if ($blockIframe) {
             <div id="currentWeather"></div>
             <?php
         } ?>
+        
+        <?php
+        if ($enableLogin === true) {
+            if ($_SESSION['user']->email) {
+                $info = $db->query(
+                    "SELECT expire_timestamp FROM users WHERE email = :email", [
+                        ":email" => $_SESSION['user']->email,
+                    ]
+                )->fetch();
+
+                $_SESSION['user']->expire_timestamp = $info['expire_timestamp'];
+
+                if ($_SESSION['user']->updatePwd == 1) {
+                    header("Location: /login.php");
+                    die();
+                }
+                
+                if ($info['expire_timestamp'] > time()) {
+                    $color = "green";
+                } else {
+                    $color = "red";
+                }
+
+                echo "<span style='color: {$color};'>" . substr($_SESSION['user']->email,0, 3) . "...</span>";
+
+            } else {
+                echo "<a href='/login.php'>Login</a>";
+            }
+        }
+        ?>
         <a href="#stats" id="statsToggle" class="statsNav" style="float: right;"><span
                 class="label"><?php echo i8ln('Stats') ?></span></a>
     </header>
@@ -848,6 +878,35 @@ if ($blockIframe) {
                 </button>
             </center>
         </div>
+        <?php
+        if ($enableLogin === true && $_SESSION['user']->email) {
+            ?>
+            <div>
+                <center>
+                    <button class="settings"
+                            onclick="document.location.href='logout.php'">
+                        <i class="fa" aria-hidden="true"></i> <?php echo i8ln('Logout'); ?>
+                    </button>
+                </center>
+            </div><br>
+            <div>
+                <center>
+                    <p>
+                    <?php
+                    $time = date("Y-m-d", $_SESSION['user']->expire_timestamp);
+                    
+                    echo $_SESSION['user']->email . "<br>";
+                    if ($_SESSION['user']->expire_timestamp > time()) {
+                        echo "<span style='color: green;'>" . i8ln('Membership expires on') . " {$time}</span>";
+                    } else {
+                        echo "<span style='color: red;'>" . i8ln('Membership expired on') . " {$time}</span>";
+                    } ?>
+                    </p>
+                </center>
+            </div>
+        <?php
+        }
+        ?>
     </nav>
     <nav id="stats">
         <div class="switch-container">

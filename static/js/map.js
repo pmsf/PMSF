@@ -2,6 +2,8 @@
 // Global map.js variables
 //
 
+var donator
+
 var $selectExclude
 var $selectExcludeMinIV
 var $selectPokemonNotify
@@ -547,6 +549,12 @@ function pokemonLabel(item) {
         details +=
             '<div>' +
             i8ln('Moves') + ' : ' + pMove1 + ' / ' + pMove2 +
+            '</div>'
+    }
+    if (donator.enableLogin === true && (donator.isLoggedIn === false || donator.current_timestamp > donator.user.expire_timestamp)) {
+        details +=
+            '<div>' +
+            '<b>' + i8ln('Sorry, IV stats is a donator only feature.') + '</b>' +
             '</div>'
     }
     if (weatherBoostedCondition !== 0) {
@@ -2714,6 +2722,13 @@ $(function () {
             }
         })
     }
+})
+
+$(function () {
+    $.ajax('/checklogin.php', {success: function (json) {
+        donator = json
+    },
+    dataType: 'json'})
 })
 
 $(function () {

@@ -59,3 +59,90 @@ function validateToken($token)
         return false;
     }
 }
+
+function generateRandomString($length = 8)
+{
+    $characters = '0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ';
+    $charactersLength = strlen($characters);
+    $randomString = '';
+    for ($i = 0; $i < $length; $i++) {
+        $randomString .= $characters[rand(0, $charactersLength - 1)];
+    }
+    return $randomString;
+}
+
+function createUserAccount($email, $password, $new_expire_timestamp)
+{
+    global $db;
+
+    $count = $db->count("users",[
+        "email" => $email
+    ]);
+
+    if ($count == 0) {
+        $hashedPwd = password_hash($password, PASSWORD_DEFAULT);
+        $db->insert("users", [
+            "email" => $email,
+            "temp_password" => $hashedPwd,
+            "expire_timestamp" => $new_expire_timestamp
+        ]);
+        
+        $logMsg = "INSERT INTO users (email, temp_password, expire_timestamp) VALUES ('{$email}', '{$hashedPwd}', '{$new_expire_timestamp}');\r\n";
+        file_put_contents($logfile, $logMsg, FILE_APPEND);
+
+        return true;
+    } else {
+        return false;
+    }
+}
+
+function resetUserPassword($email, $password, $resetType)
+{
+    global $db;
+    
+    $hashedPwd = password_hash($password, PASSWORD_DEFAULT);
+    if ($resetType == 0) {
+        $db->update("users", [
+            "temp_password" => $hashedPwd
+        ], [
+            "email" => $email
+        ]);
+        $logMsg = "UPDATE users SET temp_password = '{$hashedPwd}' WHERE email = '{$email}';\r\n";
+    } elseif ($resetType == 1) {
+        $db->update("users", [
+            "password" => null,
+            "temp_password" => $hashedPwd
+        ], [
+            "email" => $email
+        ]);
+        $logMsg = "UPDATE users SET password = null, temp_password = '{$hashedPwd}' WHERE email = '{$email}';\r\n";
+    } else {
+        $db->update("users", [
+            "password" => $hashedPwd,
+            "temp_password" => null
+        ], [
+            "email" => $email
+        ]);
+        $logMsg = "UPDATE users SET password = '{$hashedPwd}', temp_password = null WHERE email = '{$email}';\r\n";
+    }
+
+    file_put_contents($logfile, $logMsg, FILE_APPEND);
+
+    return true;
+}
+
+function updateExpireTimestamp($email, $new_expire_timestamp)
+{
+    global $db;
+
+    $db->update("users", [
+        "expire_timestamp" => $new_expire_timestamp
+    ], [
+        "email" => $email
+    ]);
+
+    $logMsg = "UPDATE users SET expire_timestamp = '{$new_expire_timestamp}' WHERE email = '{$email}';\r\n";
+    file_put_contents($logfile, $logMsg, FILE_APPEND);
+
+    return true;
+}
