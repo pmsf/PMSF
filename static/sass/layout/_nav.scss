@@ -60,7 +60,27 @@
       }
     }
   }
-
+  #gym-search{
+    width: 100%;
+    height: 40px;
+    margin-bottom: 5px;
+    padding: 5px;
+  }
+  #gym-search-results{
+    padding:0;
+    .gym-search-result{
+      padding: 10px;
+      background: #c7c7c7;
+      border-top: 1px solid #d8d8d8;
+      border-left: 1px solid #d8d8d8;
+      border-right: 1px solid #d8d8d8;
+      cursor: pointer;
+      &:hover{
+        background:grey;
+        color: #fff;
+      }
+    }
+  }
   #pokemon-filter-wrapper{
     #tabs{
       padding:0;

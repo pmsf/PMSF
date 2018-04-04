@@ -1645,6 +1645,61 @@ function loadWeatherCellData(cell) {
     })
 }
 
+function gymSearch() { // eslint-disable-line no-unused-vars
+    var term = $('#gym-search').val()
+    if (term !== '') {
+        $.ajax({
+            url: 'gym_search',
+            type: 'POST',
+            timeout: 300000,
+            dataType: 'json',
+            cache: false,
+            data: {
+                'term': term
+            },
+            error: function error() {
+                // Display error toast
+                toastr['error'](i8ln('Please check connectivity or reduce marker settings.'), i8ln('Error searching for gym'))
+                toastr.options = {
+                    'closeButton': true,
+                    'debug': false,
+                    'newestOnTop': true,
+                    'progressBar': false,
+                    'positionClass': 'toast-top-right',
+                    'preventDuplicates': true,
+                    'onclick': null,
+                    'showDuration': '300',
+                    'hideDuration': '1000',
+                    'timeOut': '25000',
+                    'extendedTimeOut': '1000',
+                    'showEasing': 'swing',
+                    'hideEasing': 'linear',
+                    'showMethod': 'fadeIn',
+                    'hideMethod': 'fadeOut'
+                }
+            }
+        }).done(function (data) {
+            if (data) {
+                var sr = $('#gym-search-results')
+                sr.html('')
+                var z = 1
+                data.forEach(function (element) {
+                    sr.append('<li class="gym-search-result" onClick="centerMapOnCoords(event);" data-lat="' + element.lat + '" data-lon="' + element.lon + '">' + z + '. ' + element.name + '</li>')
+                    z += 1
+                })
+            }
+        })
+    }
+}
+
+function centerMapOnCoords(event) {
+    var gym = $(event.target)
+    var lat = gym.data('lat')
+    var lon = gym.data('lon')
+    map.setCenter(new google.maps.LatLng(lat, lon))
+    map.setZoom(18)
+}
+
 function manualRaidData(event) { // eslint-disable-line no-unused-vars
     var form = $(event.target).parent().parent()
     var pokemonId = form.find('[name="pokemonId"]').val()
@@ -2852,9 +2907,12 @@ $(function () {
             }
         })
     }
-    $("#dialog_edit").on('click', '#closeButtonId', function(){
-        $(this).closest("#dialog_edit").dialog('close');
-    });
+    $('#dialog_edit').on('click', '#closeButtonId', function () {
+        $(this).closest('#dialog_edit').dialog('close')
+    })
+    $('#gym-search').bind('input', function () {
+        gymSearch()
+    })
 })
 
 $(function () {
