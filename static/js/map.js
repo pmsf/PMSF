@@ -1645,21 +1645,23 @@ function loadWeatherCellData(cell) {
     })
 }
 
-function gymSearch() { // eslint-disable-line no-unused-vars
-    var term = $('#gym-search').val()
+function searchAjax(field) { // eslint-disable-line no-unused-vars
+    var term = field.val()
+    var type = field.data('type')
     if (term !== '') {
         $.ajax({
-            url: 'gym_search',
+            url: 'search',
             type: 'POST',
             timeout: 300000,
             dataType: 'json',
             cache: false,
             data: {
+                'action' : type,
                 'term': term
             },
             error: function error() {
                 // Display error toast
-                toastr['error'](i8ln('Please check connectivity or reduce marker settings.'), i8ln('Error searching for gym'))
+                toastr['error'](i8ln('Please check connectivity or reduce marker settings.'), i8ln('Error searching'))
                 toastr.options = {
                     'closeButton': true,
                     'debug': false,
@@ -1680,11 +1682,17 @@ function gymSearch() { // eslint-disable-line no-unused-vars
             }
         }).done(function (data) {
             if (data) {
-                var sr = $('#gym-search-results')
+                var par = field.parent()
+                var sr = par.find('.search-results')
                 sr.html('')
                 var z = 1
                 data.forEach(function (element) {
-                    sr.append('<li class="gym-search-result" onClick="centerMapOnCoords(event);" data-lat="' + element.lat + '" data-lon="' + element.lon + '">' + z + '. ' + element.name + '</li>')
+                    var html = '<li class="search-result" onClick="centerMapOnCoords(event);" data-lat="' + element.lat + '" data-lon="' + element.lon + '">'
+                    if(element.url !== ""){
+                        html += '<span style="background:url(' + element.url + ') no-repeat;" class="i-icon" data-lat="' + element.lat + '" data-lon="' + element.lon + '"></span>'
+                    }
+                    html +=  '<span class="name" data-lat="' + element.lat + '" data-lon="' + element.lon + '">' + element.name + '</span></li>'
+                    sr.append(html)
                     z += 1
                 })
             }
@@ -1693,11 +1701,12 @@ function gymSearch() { // eslint-disable-line no-unused-vars
 }
 
 function centerMapOnCoords(event) {
-    var gym = $(event.target)
-    var lat = gym.data('lat')
-    var lon = gym.data('lon')
+    var point = $(event.target)
+    var lat = point.data('lat')
+    var lon = point.data('lon')
     map.setCenter(new google.maps.LatLng(lat, lon))
-    map.setZoom(18)
+    map.setZoom(20)
+    $(".ui-dialog-content").dialog("close");
 }
 
 function manualRaidData(event) { // eslint-disable-line no-unused-vars
@@ -1761,6 +1770,31 @@ function openRaidModal(event) { // eslint-disable-line no-unused-vars
         modal: true,
         maxHeight: 600,
         buttons: {}
+    })
+}
+function openSearchModal(event) { // eslint-disable-line no-unused-vars
+    var modal = $('.search-modal')
+    var wwidth = $(window).width()
+    var width = 300
+    if(wwidth > 768){
+        width = 500
+    }
+    modal.clone().dialog({
+        autoOpen: true,
+        resizable: false,
+        draggable:false,
+        modal: true,
+        classes: {
+            "ui-dialog" : "ui-dialog search-widget-popup"
+        },
+        width:width,
+        buttons: {},
+        open: function( event, ui ) {
+            jQuery('input[name="gym-search"], input[name="pokestop-search"]').bind('input', function () {
+                searchAjax($(this))
+            })
+            $( ".search-widget-popup #search-tabs" ).tabs();
+        }
     })
 }
 
@@ -2909,9 +2943,6 @@ $(function () {
     }
     $('#dialog_edit').on('click', '#closeButtonId', function () {
         $(this).closest('#dialog_edit').dialog('close')
-    })
-    $('#gym-search').bind('input', function () {
-        gymSearch()
     })
 })
 
