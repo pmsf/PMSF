@@ -441,11 +441,6 @@ if ($blockIframe) {
                         } ?>
                     </div>
                 </div>
-                <h3><?php echo i8ln('Gym Search'); ?></h3>
-                <div>
-                    <input type="search" id="gym-search" name="gym-search" placeholder="Enter Gym Name"/>
-                    <ul id="gym-search-results"></ul>
-                </div>
                 <?php
             }
             ?>
@@ -904,6 +899,31 @@ if ($blockIframe) {
     <div id="motd" title=""></div>
 
     <div id="map"></div>
+    <div class="search-container">
+        <button class="search-modal-button" onClick="openSearchModal(event);"><i class="fa fa-search" aria-hidden="true"></i></button>
+        <div class="search-modal" style="display:none;">
+            <div id="search-tabs">
+                <ul>
+                    <!--<li><a href="#tab-location">Location</a></li>-->
+                    <li><a href="#tab-gym">Gyms</a></li>
+                    <li><a href="#tab-pokestop">Pokestops</a></li>
+                </ul>
+<!--                <div id="tab-location">
+                    <input type="search" id="gym-search" name="gym-search" placeholder="Enter Gym Name"/>
+                    <ul id="gym-search-results"></ul>
+                </div>-->
+                <div id="tab-gym">
+                    <input type="search" id="gym-search" name="gym-search" placeholder="Enter Gym Name" data-type="forts"/>
+                    <ul id="gym-search-results" class="search-results"></ul>
+                </div>
+                <div id="tab-pokestop">
+                    <input type="search" id="pokestop-search" name="pokestop-search" placeholder="Enter Pokestop Name" data-type="pokestops"/>
+                    <ul id="pokestop-search-results" class="search-results"></ul>
+                </div>
+            </div>
+
+        </div>
+    </div>
 </div>
 <!-- Scripts -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/babel-polyfill/6.9.1/polyfill.min.js"></script>
