@@ -666,19 +666,7 @@ function gymLabel(item) {
             raidIcon = '<img src="static/raids/egg_' + raidEgg + '.png">'
         }
     }
-    raidStr += '<div class="raid-container"><i class="fa fa-binoculars submit-raid" onclick="openRaidModal(event);"></i>'
-    raidStr += '<form class="raid-modal" style="display:none;" title="' + i8ln('Submit a Raid Report') + '">'
-    raidStr += '<input type="hidden" value="' + item['gym_id'] + '" id="gymId" name="gymId" autofocus>'
-    raidStr += '<div class=" switch-container">' +
-        generateRaidBossList() +
-        '</div>' +
-        '<div class="switch-container" style="text-align:center;">' +
-        '<h5 style="margin-bottom:0;">Hatch/expiry (mm:ss):</h5>' +
-        '<input type="number" name="mins" size="2" maxlength="2" value="45">:<input type="number" name="secs" size="2" value="00" maxlength="2">' +
-        '</div>' +
-        '<button type="button" onclick="manualRaidData(event);" class="submitting-raid"><i class="fa fa-binoculars" style="margin-right:10px;"></i>' + i8ln('Submit Raid') + '</button>' +
-        '<button type="button" onclick="$(\'.ui-dialog-content\').dialog(\'close\');" class="close-modal"><i class="fa fa-times" aria-hidden="true"></i></button>' +
-        '</form>' +
+    raidStr += '<div class="raid-container"><i class="fa fa-binoculars submit-raid" onclick="openRaidModal(event);" data-id="' + item['gym_id'] + '"></i>' +
         '</div>'
 
     var park = ''
@@ -1687,11 +1675,15 @@ function searchAjax(field) { // eslint-disable-line no-unused-vars
                 sr.html('')
                 var z = 1
                 data.forEach(function (element) {
-                    var html = '<li class="search-result" onClick="centerMapOnCoords(event);" data-lat="' + element.lat + '" data-lon="' + element.lon + '">'
+                    var html = '<li class="search-result" data-lat="' + element.lat + '" data-lon="' + element.lon + '"><div class="left-column" onClick="centerMapOnCoords(event);">'
                     if(element.url !== ""){
-                        html += '<span style="background:url(' + element.url + ') no-repeat;" class="i-icon" data-lat="' + element.lat + '" data-lon="' + element.lon + '"></span>'
+                        html += '<span style="background:url(' + element.url + ') no-repeat;" class="i-icon" ></span>'
                     }
-                    html +=  '<span class="name" data-lat="' + element.lat + '" data-lon="' + element.lon + '">' + element.name + '</span></li>'
+                    html +=  '<span class="name" >' + element.name + '</span></div>';
+                    if(sr.hasClass('gym-results')){
+                        html +=  '<div class="right-column"><i class="fa fa-binoculars submit-raid"  onClick="openRaidModal(event);" data-id="' + element.external_id + '"></i></div>';
+                    }
+                    html += '</li>'
                     sr.append(html)
                     z += 1
                 })
@@ -1702,6 +1694,12 @@ function searchAjax(field) { // eslint-disable-line no-unused-vars
 
 function centerMapOnCoords(event) {
     var point = $(event.target)
+    if(point.hasClass('left-column')){
+       point = point.parent();
+    }
+    else if(!point.hasClass('.search-result')){
+        point = point.parent().parent();
+    }
     var lat = point.data('lat')
     var lon = point.data('lon')
     map.setCenter(new google.maps.LatLng(lat, lon))
@@ -1755,9 +1753,8 @@ function manualRaidData(event) { // eslint-disable-line no-unused-vars
                     updateMap()
                     if (Store.get('useGymSidebar')) {
                         showGymDetails(form.find('[name="gymId"]').val())
-                    } else {
-                        $('.ui-dialog-content').dialog('close')
                     }
+                    $('.ui-dialog-content').dialog('close');
                 }
             })
         }
@@ -1765,14 +1762,36 @@ function manualRaidData(event) { // eslint-disable-line no-unused-vars
 }
 
 function openRaidModal(event) { // eslint-disable-line no-unused-vars
-    var modal = $(event.target).parent().parent().find('.raid-modal')
-    modal.clone().dialog({
+    $(".ui-dialog").remove();
+    var val = $(event.target).data('id')
+    $('#raidModalGymId').val(val)
+    $('.raid-modal').clone().dialog({
         modal: true,
         maxHeight: 600,
-        buttons: {}
+        buttons: {},
+        classes: {
+            "ui-dialog" : "ui-dialog raid-widget-popup"
+        },
     })
 }
+
+function generateRaidModal(){
+    var raidStr = '<form class="raid-modal" style="display:none;" title="' + i8ln('Submit a Raid Report') + '">'
+    raidStr += '<input type="hidden" value="" id="raidModalGymId" name="gymId" autofocus>'
+    raidStr += '<div class=" switch-container">' +
+        generateRaidBossList() +
+        '</div>' +
+        '<div class="switch-container" style="text-align:center;">' +
+        '<h5 style="margin-bottom:0;">Hatch/expiry (mm:ss):</h5>' +
+        '<input type="number" name="mins" size="2" maxlength="2" value="45">:<input type="number" name="secs" size="2" value="00" maxlength="2">' +
+        '</div>' +
+        '<button type="button" onclick="manualRaidData(event);" class="submitting-raid"><i class="fa fa-binoculars" style="margin-right:10px;"></i>' + i8ln('Submit Raid') + '</button>' +
+        '<button type="button" onclick="$(\'.ui-dialog-content\').dialog(\'close\');" class="close-modal"><i class="fa fa-times" aria-hidden="true"></i></button>' +
+        '</form>'
+    return raidStr;
+}
 function openSearchModal(event) { // eslint-disable-line no-unused-vars
+    $(".ui-dialog").remove();
     var modal = $('.search-modal')
     var wwidth = $(window).width()
     var width = 300
@@ -1784,6 +1803,7 @@ function openSearchModal(event) { // eslint-disable-line no-unused-vars
         resizable: false,
         draggable:false,
         modal: true,
+        title: "Search...",
         classes: {
             "ui-dialog" : "ui-dialog search-widget-popup"
         },
@@ -1801,8 +1821,7 @@ function openSearchModal(event) { // eslint-disable-line no-unused-vars
 function processPokemons(i, item) {
     if (!Store.get('showPokemon')) {
         return false // in case the checkbox was unchecked in the meantime.
-    }
-
+    }submit-raid
     if (!(item['encounter_id'] in mapData.pokemons) && item['disappear_time'] > Date.now() && ((encounterId && encounterId === item['encounter_id']) || (excludedPokemon.indexOf(item['pokemon_id']) < 0 && !isTemporaryHidden(item['pokemon_id'])))) {
         // add marker to map and item to dict
         if (item.marker) {
@@ -2944,6 +2963,7 @@ $(function () {
     $('#dialog_edit').on('click', '#closeButtonId', function () {
         $(this).closest('#dialog_edit').dialog('close')
     })
+    $('.global-raid-modal').html(generateRaidModal());
 })
 
 $(function () {

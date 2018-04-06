@@ -899,6 +899,9 @@ if ($blockIframe) {
     <div id="motd" title=""></div>
 
     <div id="map"></div>
+    <div class="global-raid-modal">
+
+    </div>
     <div class="search-container">
         <button class="search-modal-button" onClick="openSearchModal(event);"><i class="fa fa-search" aria-hidden="true"></i></button>
         <div class="search-modal" style="display:none;">
@@ -914,11 +917,11 @@ if ($blockIframe) {
                 </div>-->
                 <div id="tab-gym">
                     <input type="search" id="gym-search" name="gym-search" placeholder="Enter Gym Name" data-type="forts"/>
-                    <ul id="gym-search-results" class="search-results"></ul>
+                    <ul id="gym-search-results" class="search-results gym-results"></ul>
                 </div>
                 <div id="tab-pokestop">
                     <input type="search" id="pokestop-search" name="pokestop-search" placeholder="Enter Pokestop Name" data-type="pokestops"/>
-                    <ul id="pokestop-search-results" class="search-results"></ul>
+                    <ul id="pokestop-search-results" class="search-results pokestop-results"></ul>
                 </div>
             </div>
 

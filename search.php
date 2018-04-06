@@ -12,10 +12,10 @@ elseif($action === "forts") {
 }
 if($dbname !== '') {
     if($db->info()['driver'] === 'pgsql') {
-        $data = $db->query("SELECT id,name,lat,lon,url FROM " . $dbname . " WHERE LOWER(name) LIKE :name LIMIT 10",  [':name' => "%" . strtolower($term) . "%"])->fetchAll();
+        $data = $db->query("SELECT id,external_id,name,lat,lon,url FROM " . $dbname . " WHERE LOWER(name) LIKE :name LIMIT 10",  [':name' => "%" . strtolower($term) . "%"])->fetchAll();
     }
     else {
-        $data = $db->select($action, ['id', 'name', 'lat', 'lon', 'url'], ['name[~]' => $term, 'LIMIT' => 10]);
+        $data = $db->select($action, ['id', 'external_id', 'name', 'lat', 'lon', 'url'], ['name[~]' => $term, 'LIMIT' => 10]);
     }
     // set content type
     header('Content-Type: application/json');
