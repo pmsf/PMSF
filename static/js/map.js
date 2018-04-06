@@ -1783,7 +1783,7 @@ function generateRaidModal(){
         '</div>' +
         '<div class="switch-container" style="text-align:center;">' +
         '<h5 style="margin-bottom:0;">Hatch/expiry (mm:ss):</h5>' +
-        '<input type="number" name="mins" size="2" maxlength="2" value="45">:<input type="number" name="secs" size="2" value="00" maxlength="2">' +
+        '<input type="number" name="mins" size="2" maxlength="2" value="45">:<input type="number" name="secs" size="2" value="00" maxlength="2" max="59" min="0">' +
         '</div>' +
         '<button type="button" onclick="manualRaidData(event);" class="submitting-raid"><i class="fa fa-binoculars" style="margin-right:10px;"></i>' + i8ln('Submit Raid') + '</button>' +
         '<button type="button" onclick="$(\'.ui-dialog-content\').dialog(\'close\');" class="close-modal"><i class="fa fa-times" aria-hidden="true"></i></button>' +
@@ -2684,7 +2684,7 @@ function showGymDetails(id) { // eslint-disable-line no-unused-vars
             '</div>' +
             '<div class="switch-container">' +
             '<h5 style="margin-bottom: 2px;">Hatch/expiry (mm:ss):</h5>' +
-            '<input type="number" name="mins" id="" size="2" maxlength="2" value="45" required style="display:inline;width:50px;text-align:center;">:<input required type="number" name="secs" id="" size="2" value="00" maxlength="2" style="display:inline;width:50px;text-align:center;">' +
+            '<input type="number" name="mins" min="0" id="" size="2" maxlength="2" value="45" required style="display:inline;width:50px;text-align:center;">:<input required type="number" name="secs" id="" size="2" value="00" maxlength="2" max="59" min="0" style="display:inline;width:50px;text-align:center;">' +
             '</div>' +
             '<button type="button" onclick="manualRaidData(event);" class="submitting-raid"><i class="fa fa-binoculars" style="margin-right:10px;"></i> ' + i8ln('Submit Raid') + '</button>' +
             '</form>' +
