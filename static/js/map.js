@@ -616,8 +616,6 @@ function gymLabel(item) {
     var teamId = item['team_id']
     var latitude = item['latitude']
     var longitude = item['longitude']
-    var lastScanned = item['last_scanned']
-    var lastModified = item['last_modified']
     var name = item['name']
     var members = item['pokemon']
 
@@ -688,16 +686,6 @@ function gymLabel(item) {
             '</span>'
     }
 
-    var lastScannedStr = ''
-    if (lastScanned != null) {
-        lastScannedStr =
-            '<div>' +
-            i8ln('Last Scanned') + ' : ' + getDateStr(lastScanned) + ' ' + getTimeStr(lastScanned) +
-            '</div>'
-    }
-
-    var lastModifiedStr = getDateStr(lastModified) + ' ' + getTimeStr(lastModified)
-
     var nameStr = (name ? '<div>' + name + '</div>' : '')
 
     var gymColor = ['0, 0, 0, .4', '74, 138, 202, .6', '240, 68, 58, .6', '254, 217, 40, .6']
@@ -718,13 +706,6 @@ function gymLabel(item) {
             '</div>' +
             '<div>' +
             i8ln('Location') + '<a href="javascript:void(0);" onclick="javascript:openMapDirections(' + latitude + ',' + longitude + ');" title="' + i8ln('View in Maps') + '">' + latitude.toFixed(6) + ' , ' + longitude.toFixed(7) + '</a>' +
-            '</div>' +
-            '<div>' +
-
-            i8ln('Last Modified') + ' : ' + lastModifiedStr +
-            '</div>' +
-            '<div>' +
-            lastScannedStr +
             '</div>' +
             '</center>' +
             '</div>'
@@ -758,13 +739,6 @@ function gymLabel(item) {
             '</div>' +
             '<div>' +
             i8ln('Location') + ' : <a href="javascript:void(0);" onclick="javascript:openMapDirections(' + latitude + ',' + longitude + ');" title="' + i8ln('View in Maps') + '">' + latitude.toFixed(6) + ' , ' + longitude.toFixed(7) + '</a>' +
-            '</div>' +
-            '<div>' +
-
-            i8ln('Last Modified') + ' : ' + lastModifiedStr +
-            '</div>' +
-            '<div>' +
-            lastScannedStr +
             '</div>' +
             '</center>' +
             '</div>'
@@ -2602,14 +2576,6 @@ function showGymDetails(id) { // eslint-disable-line no-unused-vars
     })
 
     data.done(function (result) {
-        var lastModifiedStr = getDateStr(result.last_modified) + ' ' + getTimeStr(result.last_modified)
-        var lastScannedStr = ''
-        if (result.last_scanned != null) {
-            lastScannedStr =
-                '<div style="font-size: .7em">' +
-                i8ln('Last Scanned') + ' : ' + getDateStr(result.last_scanned) + ' ' + getTimeStr(result.last_scanned) +
-                '</div>'
-        }
         var pokemon = result.pokemon !== undefined ? result.pokemon : []
         var freeSlots = result.slots_available
         var gymLevelStr = ''
@@ -2707,10 +2673,6 @@ function showGymDetails(id) { // eslint-disable-line no-unused-vars
             '<div>' +
             park +
             '</div>' +
-            '<div style="font-size: .7em">' +
-            i8ln('Last Modified') + ' : ' + lastModifiedStr +
-            '</div>' +
-            lastScannedStr +
             '<div>' +
             '<a href=\'javascript:void(0)\' onclick=\'javascript:openMapDirections(' + result.latitude + ',' + result.longitude + ')\' title=\'' + i8ln('View in Maps') + '\'>' + i8ln('Get directions') + '</a>' +
             '</div>' +
