@@ -1669,7 +1669,7 @@ function searchAjax(field) { // eslint-disable-line no-unused-vars
 function centerMapOnCoords(event) {
     var point = $(event.target)
     if(point.hasClass('left-column')){
-       point = point.parent();
+        point = point.parent();
     }
     else if(!point.hasClass('.search-result')){
         point = point.parent().parent();
@@ -1755,7 +1755,7 @@ function generateRaidModal(){
     raidStr += '<div class=" switch-container">' +
         generateRaidBossList() +
         '</div>' +
-        '<div class="switch-container" style="text-align:center;">' +
+        '<div class="switch-container timer-cont" style="text-align:center;display:none">' +
         '<h5 style="margin-bottom:0;">Hatch/expiry (mm:ss):</h5>' +
         '<input type="number" name="mins" size="2" maxlength="2" value="45">:<input type="number" name="secs" size="2" value="00" maxlength="2" max="59" min="0">' +
         '</div>' +
@@ -2648,7 +2648,7 @@ function showGymDetails(id) { // eslint-disable-line no-unused-vars
         raidStr += '<div class=" switch-container">' +
             rbList +
             '</div>' +
-            '<div class="switch-container">' +
+            '<div class="switch-container timer-cont" style="display:none;">' +
             '<h5 style="margin-bottom: 2px;">Hatch/expiry (mm:ss):</h5>' +
             '<input type="number" name="mins" min="0" id="" size="2" maxlength="2" value="45" required style="display:inline;width:50px;text-align:center;">:<input required type="number" name="secs" id="" size="2" value="00" maxlength="2" max="59" min="0" style="display:inline;width:50px;text-align:center;">' +
             '</div>' +
@@ -2832,16 +2832,16 @@ function generateRaidBossList() {
     var boss = raidBossActive
     var data = '<div class="pokemon-list">'
     data += '<input type="hidden" name="pokemonId" value="">'
-    data += '<span class="pokemon-icon-sprite" data-value="egg_1" onclick="pokemonRaidFilter(event);"><span class="egg_1 inner-bg" style="background: url(\'static/raids/egg_normal.png\');background-size:100%"></span><span class="egg-number">1</span></span>'
-    data += '<span class="pokemon-icon-sprite" data-value="egg_2" onclick="pokemonRaidFilter(event);"><span class="egg_2 inner-bg" style="background: url(\'static/raids/egg_normal.png\');background-size:100%"></span><span class="egg-number">2</span></span>'
-    data += '<span class="pokemon-icon-sprite" data-value="egg_3" onclick="pokemonRaidFilter(event);"><span class="egg_3 inner-bg" style="background: url(\'static/raids/egg_rare.png\');background-size:100%"></span><span class="egg-number">3</span></span>'
-    data += '<span class="pokemon-icon-sprite" data-value="egg_4" onclick="pokemonRaidFilter(event);"><span class="egg_4 inner-bg" style="background: url(\'static/raids/egg_rare.png\');background-size:100%"></span><span class="egg-number">4</span></span>'
-    data += '<span class="pokemon-icon-sprite" data-value="egg_5" onclick="pokemonRaidFilter(event);"><span class="egg_5 inner-bg" style="background: url(\'static/raids/egg_legendary.png\');background-size:100%"></span><span class="egg-number">5</span></span>'
+    data += '<span class="pokemon-icon-sprite" data-value="egg_1" data-label="Level 1" onclick="pokemonRaidFilter(event);"><span class="egg_1 inner-bg" style="background: url(\'static/raids/egg_normal.png\');background-size:100%"></span><span class="egg-number">1</span></span>'
+    data += '<span class="pokemon-icon-sprite" data-value="egg_2" data-label="Level 2" onclick="pokemonRaidFilter(event);"><span class="egg_2 inner-bg" style="background: url(\'static/raids/egg_normal.png\');background-size:100%"></span><span class="egg-number">2</span></span>'
+    data += '<span class="pokemon-icon-sprite" data-value="egg_3" data-label="Level 3" onclick="pokemonRaidFilter(event);"><span class="egg_3 inner-bg" style="background: url(\'static/raids/egg_rare.png\');background-size:100%"></span><span class="egg-number">3</span></span>'
+    data += '<span class="pokemon-icon-sprite" data-value="egg_4" data-label="Level 4" onclick="pokemonRaidFilter(event);"><span class="egg_4 inner-bg" style="background: url(\'static/raids/egg_rare.png\');background-size:100%"></span><span class="egg-number">4</span></span>'
+    data += '<span class="pokemon-icon-sprite" data-value="egg_5" data-label="Level 5" onclick="pokemonRaidFilter(event);"><span class="egg_5 inner-bg" style="background: url(\'static/raids/egg_legendary.png\');background-size:100%"></span><span class="egg-number">5</span></span>'
     boss.forEach(function (element) {
         var j = Math.floor(element / 28)
         var k = (element % 28) - 1
         var p = j * 48.25
-        data += '<span class="pokemon-icon-sprite" data-value="' + element + '" onclick="pokemonRaidFilter(event);"><span class="' + element + ' inner-bg" style="background-position:-' + k * 48.25 + 'px -' + p + 'px"></span></span>'
+        data += '<span class="pokemon-icon-sprite" data-value="' + element + '" data-label="' + element.name + '" onclick="pokemonRaidFilter(event);"><span class="' + element + ' inner-bg" style="background-position:-' + k * 48.25 + 'px -' + p + 'px"></span></span>'
     })
     data += '</div>'
     return data
