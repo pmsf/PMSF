@@ -80,7 +80,7 @@ $motdContent = "";
 // Login
 //-----------------------------------------------------
 
-$enableLogin = false;                                               // true/false
+$noLogin = true;                                                    // true/false
 $adminEmail = array();                                              // You can add multiple admins by adding them to the array.
 $logfile = '../members.log';                                        // Path to log file. Make sure this works as it will be your life saver if your db crashes.
 
@@ -88,25 +88,71 @@ $logfile = '../members.log';                                        // Path to l
 // FRONTEND SETTINGS
 //-----------------------------------------------------
 
+if ($noLogin === true || ($noLogin === false && isset($_SESSION['user']->expire_timestamp) && $_SESSION['user']->expire_timestamp > time())) {
+
+    /*
+        THESE SETTINGS WILL BE APPLIED IF:
+            - LOGIN IS DISABLED
+            - LOGIN IS ENABLED AND THE USER IS LOGGED ON
+    */
+
+    /* Marker Settings */
+    $noExcludeMinIV = false;                                        // true/false
+    $noMinIV = false;                                               // true/false
+    $noMinLevel = false;                                            // true/false
+    $noHighLevelData = false;                                       // true/false
+
+    /* Notification Settings */
+    $noNotifyPokemon = false;                                       // true/false
+    $noNotifyRarity = false;                                        // true/false
+    $noNotifyIv = false;                                            // true/false
+    $noNotifyLevel = false;                                         // true/false
+    $noNotifyRaid = false;                                          // true/false
+    $noNotifySound = false;                                         // true/false
+    $noCriesSound = false;                                          // true/false
+    $noNotifyBounce = false;                                        // true/false
+    $noNotifyNotification = false;                                  // true/false
+
+    /* Style Settings */
+    $iconNotifySizeModifier = 15;                                   // 0, 15, 30, 45
+
+} else {
+
+    /*
+        THESE SETTINGS WILL BE APPLIED IF:
+            - LOGIN IS ENABLED AND THE USER IS _NOT_ LOGGED ON
+    */
+
+    /* Marker Settings */
+    $noExcludeMinIV = true;                                         // true/false
+    $noMinIV = true;                                                // true/false
+    $noMinLevel = true;                                             // true/false
+    $noHighLevelData = true;                                        // true/false
+
+    /* Notification Settings */
+    $noNotifyPokemon = true;                                        // true/false
+    $noNotifyRarity = true;                                         // true/false
+    $noNotifyIv = true;                                             // true/false
+    $noNotifyLevel = true;                                          // true/false
+    $noNotifyRaid = true;                                           // true/false
+    $noNotifySound = true;                                          // true/false
+    $noCriesSound = true;                                           // true/false
+    $noNotifyBounce = true;                                         // true/false
+    $noNotifyNotification = true;                                   // true/false
+
+    /* Style Settings */
+    $iconNotifySizeModifier = 0;                                    // 0, 15, 30, 45
+
+}
+
 /* Marker Settings */
 
 $noPokemon = false;                                                 // true/false
 $enablePokemon = 'true';                                            // true/false
 $noPokemonNumbers = false;                                          // true/false
-$noHighLevelData = false;                                           // true/false
 $noHidePokemon = false;                                             // true/false
 $hidePokemon = '[10, 13, 16, 19, 21, 29, 32, 41, 46, 48, 50, 52, 56, 74, 77, 96, 111, 133,
                   161, 163, 167, 177, 183, 191, 194, 168]';         // [] for empty
-
-if ($enableLogin === false || ($enableLogin === true && isset($_SESSION['user']->expire_timestamp) && $_SESSION['user']->expire_timestamp > time())) {
-    $noExcludeMinIV = false;                                        // true/false
-    $noMinIV = false;                                               // true/false
-    $noMinLevel = false;                                            // true/false
-} else {
-    $noExcludeMinIV = true;                                         // true/false
-    $noMinIV = true;                                                // true/false
-    $noMinLevel = true;                                             // true/false
-}
 
 $hidePokemonCoords = false;                                         // true/false
 
@@ -163,31 +209,22 @@ $enableSpawnArea = 'false';                                         // true/fals
 
 /* Notification Settings */
 
-$noNotifyPokemon = false;                                           // true/false
 $notifyPokemon = '[201]';                                           // [] for empty
 
-$noNotifyRarity = false;                                            // true/false
 $notifyRarity = '[]';                                               // "Common", "Uncommon", "Rare", "Very Rare", "Ultra Rare"
 
-$noNotifyIv = false;                                                // true/false
 $notifyIv = '""';                                                   // "" for empty or a number
 
-$noNotifyLevel = false;                                             // true/false
 $notifyLevel = '""';                                                // "" for empty or a number
 
-$noNotifyRaid = false;                                              // true/false
 $notifyRaid = 5;                                                    // O to disable
 
-$noNotifySound = false;                                             // true/false
 $notifySound = 'false';                                             // true/false
 
-$noCriesSound = false;                                              // true/false
 $criesSound = 'false';                                              // true/false
 
-$noNotifyBounce = false;                                            // true/false
 $notifyBounce = 'true';                                             // true/false
 
-$noNotifyNotification = false;                                      // true/false
 $notifyNotification = 'true';                                       // true/false
 
 /* Style Settings */
@@ -204,7 +241,6 @@ $noIconSize = false;                                                // true/fals
 $iconSize = 0;                                                      // -8, 0, 10, 20
 
 $noIconNotifySizeModifier = false;                                  // true/false | Increase size of notified Pokemon
-$iconNotifySizeModifier = 15;                                       // 0, 15, 30, 45
 
 $noGymStyle = false;                                                // true/false
 $gymStyle = 'ingame';                                               // ingame, shield

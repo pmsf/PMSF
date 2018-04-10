@@ -155,7 +155,7 @@ if ($blockIframe) {
         } ?>
         
         <?php
-        if ($enableLogin === true) {
+        if ($noLogin === false) {
             if ($_SESSION['user']->email) {
                 $info = $db->query(
                     "SELECT expire_timestamp FROM users WHERE email = :email", [
@@ -179,7 +179,7 @@ if ($blockIframe) {
                 echo "<span style='color: {$color};'>" . substr($_SESSION['user']->email,0, 3) . "...</span>";
 
             } else {
-                echo "<a href='/login.php'>Login</a>";
+                echo "<a href='./login.php'>Login</a>";
             }
         }
         ?>
@@ -879,7 +879,7 @@ if ($blockIframe) {
             </center>
         </div>
         <?php
-        if ($enableLogin === true && $_SESSION['user']->email) {
+        if ($noLogin === false && $_SESSION['user']->email) {
             ?>
             <div>
                 <center>
@@ -1032,6 +1032,9 @@ if ($blockIframe) {
     var hidePokemonCoords = <?php echo $hidePokemonCoords === true ? 'true' : 'false' ?>;
     var directionProvider = '<?php echo $noDirectionProvider === true ? $directionProvider : 'google' ?>';
     var exEligible = <?php echo $noExEligible === true ? 'false' : $exEligible  ?>;
+    var login = <?php echo $noLogin === false ? 'true' : 'false' ?>;
+    var expire_timestamp = <?php echo isset($_SESSION['user']->expire_timestamp) ? $_SESSION['user']->expire_timestamp : 0 ?>;
+    var timestamp = <?php echo time() ?>;
 </script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js"></script>
 <script src="static/dist/js/map.common.min.js"></script>

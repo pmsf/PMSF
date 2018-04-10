@@ -2,7 +2,8 @@
 // Global map.js variables
 //
 
-var donator
+var login
+var expire_timestamp
 
 var $selectExclude
 var $selectExcludeMinIV
@@ -551,11 +552,13 @@ function pokemonLabel(item) {
             i8ln('Moves') + ' : ' + pMove1 + ' / ' + pMove2 +
             '</div>'
     }
-    if (donator.enableLogin === true && (donator.isLoggedIn === false || donator.current_timestamp > donator.user.expire_timestamp)) {
-        details +=
-            '<div>' +
-            '<b>' + i8ln('Sorry, IV stats is a donator only feature.') + '</b>' +
-            '</div>'
+console.log('Timestamp: ' + timestamp)
+console.log('Expire Timestamp: ' + expire_timestamp)
+    if (login === true && timestamp > expire_timestamp) {
+    details +=
+        '<div>' +
+        '<b>' + i8ln('IV stats is a donator only feature.') + '</b>' +
+        '</div>'
     }
     if (weatherBoostedCondition !== 0) {
         details +=
@@ -1463,6 +1466,8 @@ function loadRawData() {
         timeout: 300000,
         data: {
             'timestamp': timestamp,
+            'login': login,
+            'expire_timestamp': expire_timestamp,
             'pokemon': loadPokemon,
             'lastpokemon': lastpokemon,
             'pokestops': loadPokestops,
@@ -1971,6 +1976,8 @@ function updateMap() {
         lastpokemon = result.lastpokemon
         lastslocs = result.lastslocs
         lastspawns = result.lastspawns
+        login = result.login
+        expire_timestamp = result.expire_timestamp
 
         prevMinIV = result.preMinIV
         prevMinLevel = result.preMinLevel
@@ -2722,13 +2729,6 @@ $(function () {
             }
         })
     }
-})
-
-$(function () {
-    $.ajax('/checklogin.php', {success: function (json) {
-        donator = json
-    },
-    dataType: 'json'})
 })
 
 $(function () {

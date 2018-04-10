@@ -55,13 +55,7 @@ include('config/config.php');
 <body id="top" style="overflow: auto;">
 <div class="wrapper">
 <?php
-if ($enableLogin === true) {
-    if (!file_exists($logfile)) {
-        if(file_put_contents($logfile, "-- This is a test to make sure the logging actually works.\r\n", FILE_APPEND) == false){
-            http_response_code(500);
-            die("<h1>Warning</h1><p>Your backup logging doesn't work. In case of database corruption all data may be lost.</p>");
-        }
-    }
+if ($noLogin === false) {
 
     if (isset($_POST['submit_updatePwd'])) {
         if (!empty($_POST["password"]) && ($_POST["password"] == $_POST["repassword"])) {
@@ -102,6 +96,13 @@ if ($enableLogin === true) {
             
             $_SESSION['user']->email = $info['email'];
             $_SESSION['user']->expire_timestamp = $info['expire_timestamp'];
+            $_SESSION['user']->login_timestamp = time();
+
+            $db->update("users", [
+                "login_timestamp" => time()
+            ], [
+                "email" => $_POST['email']
+            ]);
 
             if (password_verify($_POST['password'], $info['password']) == 1) {
             
@@ -169,8 +170,12 @@ if ($enableLogin === true) {
                 'Content-Type: text/html; charset=ISO-8859-1' . "\r\n" .
                 'X-Mailer: PHP/' . phpversion();
 
-            mail($_POST['email'], $subject, $message, $headers);
+            $sendMail = mail($_POST['email'], $subject, $message, $headers);
 
+            if (!$sendMail) {
+                http_response_code(500);
+                die("<h1>Warning</h1><p>The email has not been sent.<br>If you're an user please contact your administrator.<br>If you're an administrator install <i><b>apt-get install sendmail</b></i> and restart your web server and try again.</p><p><a href='.'>Back to Map</a> - <a href='./login.php?forgotPwd'>Retry</a></p>");
+            }
         }
         
         header("Location: ?sentPwd");
@@ -194,7 +199,7 @@ if ($enableLogin === true) {
 
                 if ($_POST['checkboxDate'] != 0) {
 
-                    if ($_POST['checkboxDate'] >= 0 && $_POST['checkboxDate'] <= 13) {
+                    if ($_POST['checkboxDate'] >= 1 && $_POST['checkboxDate'] <= 12) {
                         if ($info['expire_timestamp'] > time()) {
                             $new_expire_timestamp = $info['expire_timestamp'] + 60 * 60 * 24 * 31 * $_POST['checkboxDate'];
                         } else {
@@ -269,6 +274,13 @@ if ($enableLogin === true) {
     } elseif (!empty($_SESSION['user']->email && in_array($_SESSION['user']->email, $adminEmail))) {
     ?>
         <p><h2><?php echo "[<a href='.'>{$title}</a>] - "; echo i8ln('Admin page'); ?></h2></p>
+        <?php
+        if (!file_exists($logfile)) {
+            if(file_put_contents($logfile, "-- This is a test to make sure logging is okay. " . date('Y-m-d H:i:s') ."\r\n", FILE_APPEND) == false){
+                echo "<h1>Warning</h1><p>Your backup logging doesn't work. In case of database corruption all data may be lost.<br>To solve this, type:<br><i><b>sudo chgrp www-data " . dirname(__DIR__) . "<br>sudo chmod g+w " . dirname(__DIR__) . "</b></i></p>";
+            }
+        }
+        ?>
         <form action='' method='POST'>
             <table>
                 <tr>
@@ -297,7 +309,7 @@ if ($enableLogin === true) {
                         <label><input onclick="document.getElementById('customDate').disabled = true;" type="radio" name="checkboxDate" value="3"><?php echo i8ln('3 Months'); ?></label>
                         <label><input onclick="document.getElementById('customDate').disabled = true;" type="radio" name="checkboxDate" value="6"><?php echo i8ln('6 Months'); ?></label>
                         <label><input onclick="document.getElementById('customDate').disabled = true;" type="radio" name="checkboxDate" value="12"><?php echo i8ln('12 Months'); ?></label>
-                        <label><input onclick="document.getElementById('customDate').disabled = false;" type="radio" name="checkboxDate" value="custom"><?php echo i8ln('Custom'); ?></label>
+                        <label><input onclick="document.getElementById('customDate').disabled = false;" type="radio" name="checkboxDate" value="100"><?php echo i8ln('Custom'); ?></label>
                         <input class="date" type="date" name="customDate" id="customDate" value="<?php echo date('Y-m-d', time()); ?>" disabled="disabled">
                     </td>
                 </tr>
