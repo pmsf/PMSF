@@ -552,8 +552,6 @@ function pokemonLabel(item) {
             i8ln('Moves') + ' : ' + pMove1 + ' / ' + pMove2 +
             '</div>'
     }
-console.log('Timestamp: ' + timestamp)
-console.log('Expire Timestamp: ' + expire_timestamp)
     if (login === true && timestamp > expire_timestamp) {
     details +=
         '<div>' +
@@ -606,8 +604,12 @@ console.log('Expire Timestamp: ' + expire_timestamp)
         '</div>' +
         details +
         '<div>' +
-        '<a href="javascript:excludePokemon(' + id + ')">' + i8ln('Exclude') + '</a>&nbsp&nbsp' +
-        '<a href="javascript:notifyAboutPokemon(' + id + ')">' + i8ln('Notify') + '</a>&nbsp&nbsp' +
+        '<a href="javascript:excludePokemon(' + id + ')">' + i8ln('Exclude') + '</a>&nbsp&nbsp'
+
+	if (login === true && timestamp < expire_timestamp) {
+        contentstring += '<a href="javascript:notifyAboutPokemon(' + id + ')">' + i8ln('Notify') + '</a>&nbsp&nbsp'
+	}
+    contentstring +=
         '<a href="javascript:removePokemonMarker(\'' + encounterId + '\')">' + i8ln('Remove') + '</a>&nbsp&nbsp' +
         '<a href="javascript:void(0);" onclick="javascript:toggleOtherPokemon(' + id + ');" title="' + i8ln('Toggle display of other Pokemon') + '">' + i8ln('Toggle Others') + '</a>' +
         '</div>'

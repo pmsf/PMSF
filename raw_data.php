@@ -210,7 +210,7 @@ if ($d['login'] === true) {
         ]
         )->fetch();
 
-        $d["expire_timestamp"] = $_SESSION['user']->expire_timestamp;
+        $d["expire_timestamp"] = (int)$_SESSION['user']->expire_timestamp;
 
     } else {
         $d["expire_timestamp"] = 0;
