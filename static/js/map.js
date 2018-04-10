@@ -705,7 +705,7 @@ function gymLabel(item) {
             park +
             '</div>' +
             '<div>' +
-            i8ln('Location') + '<a href="javascript:void(0);" onclick="javascript:openMapDirections(' + latitude + ',' + longitude + ');" title="' + i8ln('View in Maps') + '">' + latitude.toFixed(6) + ' , ' + longitude.toFixed(7) + '</a>' +
+            i8ln('Location') + ': <a href="javascript:void(0);" onclick="javascript:openMapDirections(' + latitude + ',' + longitude + ');" title="' + i8ln('View in Maps') + '">' + latitude.toFixed(6) + ' , ' + longitude.toFixed(7) + '</a>' +
             '</div>' +
             '</center>' +
             '</div>'
@@ -738,7 +738,7 @@ function gymLabel(item) {
             memberStr +
             '</div>' +
             '<div>' +
-            i8ln('Location') + ' : <a href="javascript:void(0);" onclick="javascript:openMapDirections(' + latitude + ',' + longitude + ');" title="' + i8ln('View in Maps') + '">' + latitude.toFixed(6) + ' , ' + longitude.toFixed(7) + '</a>' +
+            i8ln('Location') + ': <a href="javascript:void(0);" onclick="javascript:openMapDirections(' + latitude + ',' + longitude + ');" title="' + i8ln('View in Maps') + '">' + latitude.toFixed(6) + ' , ' + longitude.toFixed(7) + '</a>' +
             '</div>' +
             '</center>' +
             '</div>'
@@ -1618,7 +1618,7 @@ function searchAjax(field) { // eslint-disable-line no-unused-vars
             dataType: 'json',
             cache: false,
             data: {
-                'action' : type,
+                'action': type,
                 'term': term
             },
             error: function error() {
@@ -1647,19 +1647,17 @@ function searchAjax(field) { // eslint-disable-line no-unused-vars
                 var par = field.parent()
                 var sr = par.find('.search-results')
                 sr.html('')
-                var z = 1
                 data.forEach(function (element) {
                     var html = '<li class="search-result" data-lat="' + element.lat + '" data-lon="' + element.lon + '"><div class="left-column" onClick="centerMapOnCoords(event);">'
-                    if(element.url !== ""){
+                    if (element.url !== '') {
                         html += '<span style="background:url(' + element.url + ') no-repeat;" class="i-icon" ></span>'
                     }
-                    html +=  '<span class="name" >' + element.name + '</span></div>';
-                    if(sr.hasClass('gym-results')){
-                        html +=  '<div class="right-column"><i class="fa fa-binoculars submit-raid"  onClick="openRaidModal(event);" data-id="' + element.external_id + '"></i></div>';
+                    html += '<span class="name" >' + element.name + '</span></div>'
+                    if (sr.hasClass('gym-results')) {
+                        html += '<div class="right-column"><i class="fa fa-binoculars submit-raid"  onClick="openRaidModal(event);" data-id="' + element.external_id + '"></i></div>'
                     }
                     html += '</li>'
                     sr.append(html)
-                    z += 1
                 })
             }
         })
@@ -1668,26 +1666,25 @@ function searchAjax(field) { // eslint-disable-line no-unused-vars
 
 function centerMapOnCoords(event) {
     var point = $(event.target)
-    if(point.hasClass('left-column')){
-        point = point.parent();
-    }
-    else if(!point.hasClass('.search-result')){
-        point = point.parent().parent();
+    if (point.hasClass('left-column')) {
+        point = point.parent()
+    } else if (!point.hasClass('.search-result')) {
+        point = point.parent().parent()
     }
     var lat = point.data('lat')
     var lon = point.data('lon')
     map.setCenter(new google.maps.LatLng(lat, lon))
     map.setZoom(20)
-    $(".ui-dialog-content").dialog("close");
+    $('.ui-dialog-content').dialog('close')
 }
 
 function manualRaidData(event) { // eslint-disable-line no-unused-vars
     var form = $(event.target).parent().parent()
     var pokemonId = form.find('[name="pokemonId"]').val()
     gymId = form.find('[name="gymId"]').val()
-    var mins = form.find('[name="mins"]').val()
-    var secs = form.find('[name="secs"]').val()
-    if (pokemonId && pokemonId !== '' && gymId && gymId !== '' && mins && mins !== '' && secs && secs !== '') {
+    var monTime = form.find('[name="mon_time"]').val()
+    var eggTime = form.find('[name="egg_time"]').val()
+    if (pokemonId && pokemonId !== '' && gymId && gymId !== '' && eggTime && eggTime !== '' && monTime && monTime !== '') {
         if (confirm('I confirm this is an accurate sighting of a raid')) {
             return $.ajax({
                 url: 'manual_raid_submit',
@@ -1698,8 +1695,8 @@ function manualRaidData(event) { // eslint-disable-line no-unused-vars
                 data: {
                     'pokemonId': pokemonId,
                     'gymId': gymId,
-                    'mins': mins,
-                    'secs': secs
+                    'monTime': monTime,
+                    'eggTime': eggTime
                 },
                 error: function error() {
                     // Display error toast
@@ -1728,7 +1725,7 @@ function manualRaidData(event) { // eslint-disable-line no-unused-vars
                     if (Store.get('useGymSidebar')) {
                         showGymDetails(form.find('[name="gymId"]').val())
                     }
-                    $('.ui-dialog-content').dialog('close');
+                    $('.ui-dialog-content').dialog('close')
                 }
             })
         }
@@ -1736,7 +1733,7 @@ function manualRaidData(event) { // eslint-disable-line no-unused-vars
 }
 
 function openRaidModal(event) { // eslint-disable-line no-unused-vars
-    $(".ui-dialog").remove();
+    $('.ui-dialog').remove()
     var val = $(event.target).data('id')
     $('#raidModalGymId').val(val)
     $('.raid-modal').clone().dialog({
@@ -1744,50 +1741,164 @@ function openRaidModal(event) { // eslint-disable-line no-unused-vars
         maxHeight: 600,
         buttons: {},
         classes: {
-            "ui-dialog" : "ui-dialog raid-widget-popup"
-        },
+            'ui-dialog': 'ui-dialog raid-widget-popup'
+        }
     })
 }
 
-function generateRaidModal(){
+function generateRaidModal() {
     var raidStr = '<form class="raid-modal" style="display:none;" title="' + i8ln('Submit a Raid Report') + '">'
     raidStr += '<input type="hidden" value="" id="raidModalGymId" name="gymId" autofocus>'
     raidStr += '<div class=" switch-container">' +
         generateRaidBossList() +
         '</div>' +
+        '<div class="mon-name" style="display:none;"></div>' +
         '<div class="switch-container timer-cont" style="text-align:center;display:none">' +
-        '<h5 style="margin-bottom:0;">Hatch/expiry (mm:ss):</h5>' +
-        '<input type="number" name="mins" size="2" maxlength="2" value="45">:<input type="number" name="secs" size="2" value="00" maxlength="2" max="59" min="0">' +
+        '<h5 class="timer-name" style="margin-bottom:0;"></h5>' +
+        generateTimerLists() +
         '</div>' +
         '<button type="button" onclick="manualRaidData(event);" class="submitting-raid"><i class="fa fa-binoculars" style="margin-right:10px;"></i>' + i8ln('Submit Raid') + '</button>' +
         '<button type="button" onclick="$(\'.ui-dialog-content\').dialog(\'close\');" class="close-modal"><i class="fa fa-times" aria-hidden="true"></i></button>' +
         '</form>'
-    return raidStr;
+    return raidStr
+}
+
+function generateTimerLists() {
+    var html = '<select name="egg_time" class="egg_time" style="display:none;">' +
+        '<option value="60" selected>60</option>' +
+        '<option value="59">59</option>' +
+        '<option value="58">58</option>' +
+        '<option value="57">57</option>' +
+        '<option value="56">56</option>' +
+        '<option value="55">55</option>' +
+        '<option value="54">54</option>' +
+        '<option value="53">53</option>' +
+        '<option value="52">52</option>' +
+        '<option value="51">51</option>' +
+        '<option value="50">50</option>' +
+        '<option value="49">49</option>' +
+        '<option value="48">48</option>' +
+        '<option value="47">47</option>' +
+        '<option value="46">46</option>' +
+        '<option value="45">45</option>' +
+        '<option value="44">44</option>' +
+        '<option value="43">43</option>' +
+        '<option value="42">42</option>' +
+        '<option value="41">41</option>' +
+        '<option value="40">40</option>' +
+        '<option value="39">39</option>' +
+        '<option value="38">38</option>' +
+        '<option value="37">37</option>' +
+        '<option value="36">36</option>' +
+        '<option value="35">35</option>' +
+        '<option value="34">34</option>' +
+        '<option value="33">33</option>' +
+        '<option value="32">32</option>' +
+        '<option value="31">31</option>' +
+        '<option value="30">30</option>' +
+        '<option value="29">29</option>' +
+        '<option value="28">28</option>' +
+        '<option value="27">27</option>' +
+        '<option value="26">26</option>' +
+        '<option value="25">25</option>' +
+        '<option value="24">24</option>' +
+        '<option value="23">23</option>' +
+        '<option value="22">22</option>' +
+        '<option value="21">21</option>' +
+        '<option value="20">20</option>' +
+        '<option value="19">19</option>' +
+        '<option value="18">18</option>' +
+        '<option value="17">17</option>' +
+        '<option value="16">16</option>' +
+        '<option value="15">15</option>' +
+        '<option value="14">14</option>' +
+        '<option value="13">13</option>' +
+        '<option value="12">12</option>' +
+        '<option value="11">11</option>' +
+        '<option value="10">10</option>' +
+        '<option value="9">9</option>' +
+        '<option value="8">8</option>' +
+        '<option value="7">7</option>' +
+        '<option value="6">6</option>' +
+        '<option value="5">5</option>' +
+        '<option value="4">4</option>' +
+        '<option value="3">3</option>' +
+        '<option value="2">2</option>' +
+        '<option value="1">1</option>' +
+    '</select>' +
+    '<select name="mon_time" class="mon_time" style="display:none;">' +
+        '<option value="45" selected>45</option>' +
+        '<option value="44">44</option>' +
+        '<option value="43">43</option>' +
+        '<option value="42">42</option>' +
+        '<option value="41">41</option>' +
+        '<option value="40">40</option>' +
+        '<option value="39">39</option>' +
+        '<option value="38">38</option>' +
+        '<option value="37">37</option>' +
+        '<option value="36">36</option>' +
+        '<option value="35">35</option>' +
+        '<option value="34">34</option>' +
+        '<option value="33">33</option>' +
+        '<option value="32">32</option>' +
+        '<option value="31">31</option>' +
+        '<option value="30">30</option>' +
+        '<option value="29">29</option>' +
+        '<option value="28">28</option>' +
+        '<option value="27">27</option>' +
+        '<option value="26">26</option>' +
+        '<option value="25">25</option>' +
+        '<option value="24">24</option>' +
+        '<option value="23">23</option>' +
+        '<option value="22">22</option>' +
+        '<option value="21">21</option>' +
+        '<option value="20">20</option>' +
+        '<option value="19">19</option>' +
+        '<option value="18">18</option>' +
+        '<option value="17">17</option>' +
+        '<option value="16">16</option>' +
+        '<option value="15">15</option>' +
+        '<option value="14">14</option>' +
+        '<option value="13">13</option>' +
+        '<option value="12">12</option>' +
+        '<option value="11">11</option>' +
+        '<option value="10">10</option>' +
+        '<option value="9">9</option>' +
+        '<option value="8">8</option>' +
+        '<option value="7">7</option>' +
+        '<option value="6">6</option>' +
+        '<option value="5">5</option>' +
+        '<option value="4">4</option>' +
+        '<option value="3">3</option>' +
+        '<option value="2">2</option>' +
+        '<option value="1">1</option>' +
+    '</select>'
+    return html
 }
 function openSearchModal(event) { // eslint-disable-line no-unused-vars
-    $(".ui-dialog").remove();
+    $('.ui-dialog').remove()
     var modal = $('.search-modal')
     var wwidth = $(window).width()
     var width = 300
-    if(wwidth > 768){
+    if (wwidth > 768) {
         width = 500
     }
     modal.clone().dialog({
         autoOpen: true,
         resizable: false,
-        draggable:false,
+        draggable: false,
         modal: true,
-        title: "Search...",
+        title: i8ln('Search...'),
         classes: {
-            "ui-dialog" : "ui-dialog search-widget-popup"
+            'ui-dialog': 'ui-dialog search-widget-popup'
         },
-        width:width,
+        width: width,
         buttons: {},
-        open: function( event, ui ) {
+        open: function (event, ui) {
             jQuery('input[name="gym-search"], input[name="pokestop-search"]').bind('input', function () {
                 searchAjax($(this))
             })
-            $( ".search-widget-popup #search-tabs" ).tabs();
+            $('.search-widget-popup #search-tabs').tabs()
         }
     })
 }
@@ -1795,7 +1906,7 @@ function openSearchModal(event) { // eslint-disable-line no-unused-vars
 function processPokemons(i, item) {
     if (!Store.get('showPokemon')) {
         return false // in case the checkbox was unchecked in the meantime.
-    }submit-raid
+    }
     if (!(item['encounter_id'] in mapData.pokemons) && item['disappear_time'] > Date.now() && ((encounterId && encounterId === item['encounter_id']) || (excludedPokemon.indexOf(item['pokemon_id']) < 0 && !isTemporaryHidden(item['pokemon_id'])))) {
         // add marker to map and item to dict
         if (item.marker) {
@@ -2648,9 +2759,10 @@ function showGymDetails(id) { // eslint-disable-line no-unused-vars
         raidStr += '<div class=" switch-container">' +
             rbList +
             '</div>' +
+            '<div class="mon-name" style="display:none;"></div>' +
             '<div class="switch-container timer-cont" style="display:none;">' +
-            '<h5 style="margin-bottom: 2px;">Hatch/expiry (mm:ss):</h5>' +
-            '<input type="number" name="mins" min="0" id="" size="2" maxlength="2" value="45" required style="display:inline;width:50px;text-align:center;">:<input required type="number" name="secs" id="" size="2" value="00" maxlength="2" max="59" min="0" style="display:inline;width:50px;text-align:center;">' +
+            '<h5 class="timer-name" style="margin-bottom:0;"></h5>' +
+            generateTimerLists() +
             '</div>' +
             '<button type="button" onclick="manualRaidData(event);" class="submitting-raid"><i class="fa fa-binoculars" style="margin-right:10px;"></i> ' + i8ln('Submit Raid') + '</button>' +
             '</form>' +
@@ -2821,16 +2933,30 @@ function fetchCriesJson() {
 
 function pokemonRaidFilter(event) { // eslint-disable-line no-unused-vars
     var img = $(event.target).parent()
+    var label = img.data('label')
     var cont = img.parent().parent()
     var select = cont.find('input')
     var id = img.data('value').toString()
+    var par = cont.parent()
+    par.find('.mon-name').text(label).show()
+    par.find('.timer-cont').show()
+    var text = i8ln('Time Remaining (mins)')
+    if (id.includes('egg')) {
+        text = i8ln('Time Until Hatch (mins)')
+        par.find('.mon_time').hide()
+        par.find('.egg_time').show()
+    } else {
+        par.find('.mon_time').show()
+        par.find('.egg_time').hide()
+    }
+    par.find('.timer-name').text(text)
     select.val(id)
     cont.find('.pokemon-icon-sprite').removeClass('active')
     img.addClass('active')
 }
 function generateRaidBossList() {
     var boss = raidBossActive
-    var data = '<div class="pokemon-list">'
+    var data = '<div class="pokemon-list raid-submission">'
     data += '<input type="hidden" name="pokemonId" value="">'
     data += '<span class="pokemon-icon-sprite" data-value="egg_1" data-label="Level 1" onclick="pokemonRaidFilter(event);"><span class="egg_1 inner-bg" style="background: url(\'static/raids/egg_normal.png\');background-size:100%"></span><span class="egg-number">1</span></span>'
     data += '<span class="pokemon-icon-sprite" data-value="egg_2" data-label="Level 2" onclick="pokemonRaidFilter(event);"><span class="egg_2 inner-bg" style="background: url(\'static/raids/egg_normal.png\');background-size:100%"></span><span class="egg-number">2</span></span>'
@@ -2841,7 +2967,7 @@ function generateRaidBossList() {
         var j = Math.floor(element / 28)
         var k = (element % 28) - 1
         var p = j * 48.25
-        data += '<span class="pokemon-icon-sprite" data-value="' + element + '" data-label="' + element.name + '" onclick="pokemonRaidFilter(event);"><span class="' + element + ' inner-bg" style="background-position:-' + k * 48.25 + 'px -' + p + 'px"></span></span>'
+        data += '<span class="pokemon-icon-sprite" data-value="' + element + '" data-label="' + raidBoss[element].name + '" onclick="pokemonRaidFilter(event);"><span class="' + element + ' inner-bg" style="background-position:-' + k * 48.25 + 'px -' + p + 'px"></span></span>'
     })
     data += '</div>'
     return data
@@ -2922,10 +3048,6 @@ $(function () {
             }
         })
     }
-    $('#dialog_edit').on('click', '#closeButtonId', function () {
-        $(this).closest('#dialog_edit').dialog('close')
-    })
-    $('.global-raid-modal').html(generateRaidModal());
 })
 
 $(function () {
@@ -3274,7 +3396,12 @@ $(function () {
                 cp: value['cp']
             }
         })
+        $('.global-raid-modal').html(generateRaidModal())
     })
+    $('#dialog_edit').on('click', '#closeButtonId', function () {
+        $(this).closest('#dialog_edit').dialog('close')
+    })
+
 
     // Load pokemon names and populate lists
     $.getJSON('static/dist/data/pokemon.min.json').done(function (data) {

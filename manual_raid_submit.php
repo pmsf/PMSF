@@ -5,8 +5,8 @@ global $map, $fork, $db, $raidBosses, $webhookUrl, $sendWebhook;
 $raidBosses = json_decode(file_get_contents("static/dist/data/raid-boss.min.json"), true);
 $pokemonId = !empty($_POST['pokemonId']) ? $_POST['pokemonId'] : 0;
 $gymId = !empty($_POST['gymId']) ? $_POST['gymId'] : 0;
-$mins = !empty($_POST['mins']) ? $_POST['mins'] : 0;
-$secs = !empty($_POST['secs']) ? $_POST['secs'] : 0;
+$eggTime = !empty($_POST['eggTime']) ? $_POST['eggTime'] : 0;
+$monTime = !empty($_POST['monTime']) ? $_POST['monTime'] : 0;
 
 // brimful of asha on the:
 $forty_five = 45 * 60;
@@ -27,19 +27,18 @@ $d["timestamp"] = $now->getTimestamp();
 // fetch fort_id
 $gym = $db->get("forts", ['id', 'name', 'lat', 'lon'], ['external_id' => $gymId]);
 $gymId = $gym['id'];
-
-$add_seconds = ($mins * 60) + $secs;
-$time_battle = time() + $add_seconds;
-$time_end = $time_battle + $forty_five;
-// fake the battle start and spawn times cuz rip hashing :(
+$add_seconds = ($monTime * 60);
 $time_spawn = time() - $forty_five;
-$extId = rand(0, 65535) . rand(0, 65535);
 $level = 0;
 if(strpos($pokemonId,'egg_') !== false){
+    $add_seconds = ($monTime * 60);
     $level = (int)substr($pokemonId,4,1);
     $time_spawn = time() + $add_seconds;
 }
 
+$time_battle = time() + $add_seconds;
+$time_end = $time_battle + $forty_five;
+$extId = rand(0, 65535) . rand(0, 65535);
 
 $cols = [
     'external_id' => $gymId,
