@@ -902,7 +902,7 @@ if ($blockIframe) {
     <div class="global-raid-modal">
 
     </div>
-    <?php if(!$noGyms && !$noPokestops){ ?>
+    <?php if(!$noGyms || !$noPokestops){ ?>
     <div class="search-container">
         <button class="search-modal-button" onClick="openSearchModal(event);"><i class="fa fa-search" aria-hidden="true"></i></button>
         <div class="search-modal" style="display:none;">
