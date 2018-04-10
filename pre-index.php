@@ -902,31 +902,41 @@ if ($blockIframe) {
     <div class="global-raid-modal">
 
     </div>
+    <?php if(!$noGyms && !$noPokestops){ ?>
     <div class="search-container">
         <button class="search-modal-button" onClick="openSearchModal(event);"><i class="fa fa-search" aria-hidden="true"></i></button>
         <div class="search-modal" style="display:none;">
             <div id="search-tabs">
                 <ul>
                     <!--<li><a href="#tab-location">Location</a></li>-->
+                    <?php if(!$noGyms){ ?>
                     <li><a href="#tab-gym">Gyms</a></li>
+                    <?php }
+                    if(!$noPokestops){ ?>
                     <li><a href="#tab-pokestop">Pokestops</a></li>
+                    <?php } ?>
                 </ul>
 <!--                <div id="tab-location">
                     <input type="search" id="gym-search" name="gym-search" placeholder="Enter Gym Name"/>
                     <ul id="gym-search-results"></ul>
                 </div>-->
-                <div id="tab-gym">
-                    <input type="search" id="gym-search" name="gym-search" placeholder="Enter Gym Name" data-type="forts"/>
-                    <ul id="gym-search-results" class="search-results gym-results"></ul>
-                </div>
-                <div id="tab-pokestop">
-                    <input type="search" id="pokestop-search" name="pokestop-search" placeholder="Enter Pokestop Name" data-type="pokestops"/>
-                    <ul id="pokestop-search-results" class="search-results pokestop-results"></ul>
-                </div>
+                <?php if(!$noGyms){ ?>
+                    <div id="tab-gym">
+                        <input type="search" id="gym-search" name="gym-search" placeholder="Enter Gym Name" data-type="forts"/>
+                        <ul id="gym-search-results" class="search-results gym-results"></ul>
+                    </div>
+                <?php }
+                if(!$noPokestops){ ?>
+                    <div id="tab-pokestop">
+                        <input type="search" id="pokestop-search" name="pokestop-search" placeholder="Enter Pokestop Name" data-type="pokestops"/>
+                        <ul id="pokestop-search-results" class="search-results pokestop-results"></ul>
+                    </div>
+                <?php } ?>
             </div>
 
         </div>
     </div>
+    <?php } ?>
 </div>
 <!-- Scripts -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/babel-polyfill/6.9.1/polyfill.min.js"></script>
@@ -1005,7 +1015,8 @@ if ($blockIframe) {
 </script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js"></script>
 <script src="static/dist/js/map.common.min.js"></script>
-<script src="static/dist/js/map.min.js"></script>
+<!--<script src="static/dist/js/map.min.js"></script>-->
+<script src="static/js/map.js"></script>
 <script src="static/dist/js/stats.min.js"></script>
 <script defer
         src="https://maps.googleapis.com/maps/api/js?v=3.31&amp;key=<?= $gmapsKey ?>&amp;callback=initMap&amp;libraries=places,geometry"></script>

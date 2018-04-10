@@ -32,3 +32,27 @@
     }
   }
 }
+.pokemon-list.raid-submission{
+  .active{
+    border: 1px solid rgb(0, 255, 19);
+    background: rgba(0, 255, 19,.7);
+  }
+}
+
+.timer-cont{
+  display:flex;
+  align-items: center;
+  justify-content: center;
+  h5{
+    font-size: 14px;
+    margin-right: 10px;
+  }
+  select{
+    width:75px;
+  }
+}
+.raid-report{
+  .mon-name{
+    font-size:14px;
+  }
+}
