@@ -31,7 +31,7 @@ $add_seconds = ($monTime * 60);
 $time_spawn = time() - $forty_five;
 $level = 0;
 if(strpos($pokemonId,'egg_') !== false){
-    $add_seconds = ($monTime * 60);
+    $add_seconds = ($eggTime * 60);
     $level = (int)substr($pokemonId,4,1);
     $time_spawn = time() + $add_seconds;
 }
