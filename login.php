@@ -105,7 +105,7 @@ if ($noLogin === false) {
             $_SESSION['user']->email = $info['email'];
             $_SESSION['user']->expire_timestamp = $info['expire_timestamp'];
 
-            setcookie("LoginCookie",session_id(),time()+604800); 
+            setcookie("LoginCookie",session_id(),time()+60*60*24*7);
 
             $db->update("users", [
                 "Session_ID" => session_id()

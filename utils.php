@@ -169,6 +169,7 @@ function validateCookie($cookie)
     if (!empty($info['email'])) {
         $_SESSION['user']->email = $info['email'];
         $_SESSION['user']->expire_timestamp = $info['expire_timestamp'];
+        setcookie("LoginCookie", $cookie, time()+60*60*24*7);
         return true;
     } else {
         destroyCookiesAndSessions();
