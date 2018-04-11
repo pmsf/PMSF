@@ -2949,7 +2949,7 @@ function pokemonRaidFilter(event) { // eslint-disable-line no-unused-vars
         par.find('.mon_time').show()
         par.find('.egg_time').hide()
     }
-    par.find('.timer-name').text(text)
+    par.find('.timer-name').text(i8ln(text))
     select.val(id)
     cont.find('.pokemon-icon-sprite').removeClass('active')
     img.addClass('active')

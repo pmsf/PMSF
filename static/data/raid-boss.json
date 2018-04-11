@@ -1,8 +1,18 @@
 {
+  "1": {
+    "name": "Bulbasaur",
+    "level": 1,
+    "cp": 2456
+  },
   "2": {
     "name": "Ivysaur",
     "level": 1,
     "cp": 5238
+  },
+  "4": {
+    "name": "Charmander",
+    "level": 1,
+    "cp": 2456
   },
   "5": {
     "name": "Charmeleon",
@@ -13,6 +23,11 @@
     "name": "Charizard",
     "level": 4,
     "cp": 28485
+  },
+  "7": {
+    "name": "Squirtle",
+    "level": 1,
+    "cp": 2456
   },
   "8": {
     "name": "Wartortle",
@@ -48,6 +63,11 @@
     "name": "Ninetales",
     "level": 3,
     "cp": 14914
+  },
+  "49": {
+    "name": "Venomoth",
+    "level": 2,
+    "cp": 9079
   },
   "52": {
     "name": "Meowth",
@@ -94,6 +114,11 @@
     "level": 2,
     "cp": 9216
   },
+  "89": {
+    "name": "Muk",
+    "level": 2,
+    "cp": 12269
+  },
   "91": {
     "name": "Cloyster",
     "level": 2,
@@ -101,6 +126,11 @@
   },
   "94": {
     "name": "Gengar",
+    "level": 3,
+    "cp": 19768
+  },
+  "95": {
+    "name": "Onix",
     "level": 3,
     "cp": 19768
   },
@@ -113,6 +143,21 @@
     "name": "Marowak",
     "level": 2,
     "cp": 9891
+  },
+  "108": {
+    "name": "Lickitung",
+    "level": 2,
+    "cp": 9891
+  },
+  "110": {
+    "name": "Weezing",
+    "level": 2,
+    "cp": 9891
+  },
+  "112": {
+    "name": "Rhydon",
+    "level": 4,
+    "cp": 30512
   },
   "121": {
     "name": "Starmie",
@@ -163,6 +208,11 @@
     "name": "Omastar",
     "level": 3,
     "cp": 18915
+  },
+  "141": {
+    "name": "Kabutops",
+    "level": 3,
+    "cp": 17294
   },
   "142": {
     "name": "Aerodactyl",
