@@ -156,11 +156,11 @@ if ($blockIframe) {
         
         <?php
         if ($noLogin === false) {
-			if (isset($_COOKIE["LoginCookie"])) {
-				if (validateCookie($_COOKIE["LoginCookie"]) === false) {
-					header("Location: .");
-				}
-			}
+            if (isset($_COOKIE["LoginCookie"])) {
+                if (validateCookie($_COOKIE["LoginCookie"]) === false) {
+                    header("Location: .");
+                }
+            }
             if (!empty($_SESSION['user']->email)) {
                 $info = $db->query(
                     "SELECT expire_timestamp FROM users WHERE email = :email", [
