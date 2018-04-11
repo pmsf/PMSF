@@ -2,7 +2,7 @@
   "1": {
     "name": "Bulbasaur",
     "level": 1,
-    "cp": 2456
+    "cp": 3757
   },
   "2": {
     "name": "Ivysaur",
@@ -12,7 +12,7 @@
   "4": {
     "name": "Charmander",
     "level": 1,
-    "cp": 2456
+    "cp": 3380
   },
   "5": {
     "name": "Charmeleon",
@@ -27,7 +27,7 @@
   "7": {
     "name": "Squirtle",
     "level": 1,
-    "cp": 2456
+    "cp": 3125
   },
   "8": {
     "name": "Wartortle",
@@ -67,7 +67,7 @@
   "49": {
     "name": "Venomoth",
     "level": 2,
-    "cp": 9079
+    "cp": 10572
   },
   "52": {
     "name": "Meowth",
@@ -132,7 +132,7 @@
   "95": {
     "name": "Onix",
     "level": 3,
-    "cp": 19768
+    "cp": 9534
   },
   "103": {
     "name": "Exeggutor",
@@ -147,12 +147,12 @@
   "108": {
     "name": "Lickitung",
     "level": 2,
-    "cp": 9891
+    "cp": 6433
   },
   "110": {
     "name": "Weezing",
     "level": 2,
-    "cp": 9891
+    "cp": 12318
   },
   "112": {
     "name": "Rhydon",
@@ -212,7 +212,7 @@
   "141": {
     "name": "Kabutops",
     "level": 3,
-    "cp": 17294
+    "cp": 19004
   },
   "142": {
     "name": "Aerodactyl",
