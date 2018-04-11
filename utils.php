@@ -146,3 +146,32 @@ function updateExpireTimestamp($email, $new_expire_timestamp)
 
     return true;
 }
+
+function destroyCookiesAndSessions()
+{
+    unset($_SESSION);
+    unset($_COOKIE['LoginCookie']);
+    setcookie("LoginCookie", "", time()-3600);
+    session_destroy();
+    session_write_close();
+}
+
+function validateCookie($cookie)
+{
+    global $db;
+
+    $info = $db->query(
+        "SELECT email, password, expire_timestamp, temp_password FROM users WHERE Session_ID = :session_id", [
+            ":session_id" => $cookie
+        ]
+    )->fetch();
+
+    if (!empty($info['email'])) {
+        $_SESSION['user']->email = $info['email'];
+        $_SESSION['user']->expire_timestamp = $info['expire_timestamp'];
+        return true;
+    } else {
+        destroyCookiesAndSessions();
+        return false;
+    }
+}

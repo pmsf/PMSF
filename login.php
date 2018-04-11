@@ -57,6 +57,15 @@ include('config/config.php');
 <?php
 if ($noLogin === false) {
 
+    if (isset($_COOKIE["LoginCookie"])) {
+		if (validateCookie($_COOKIE["LoginCookie"]) === true) {
+			if (!in_array($_SESSION['user']->email, $adminEmail)) {
+				header("Location: .");
+			}
+		} else {
+			header("Location: ./login.php");
+		}
+    }
     if (isset($_POST['submit_updatePwd'])) {
         if (!empty($_POST["password"]) && ($_POST["password"] == $_POST["repassword"])) {
             $passwordErr = '';
@@ -84,7 +93,6 @@ if ($noLogin === false) {
             die();
         }
     }
-
     if (isset($_POST['submit_login'])) {
         $info = $db->query(
             "SELECT email, password, expire_timestamp, temp_password FROM users WHERE email = :email", [
@@ -96,10 +104,11 @@ if ($noLogin === false) {
             
             $_SESSION['user']->email = $info['email'];
             $_SESSION['user']->expire_timestamp = $info['expire_timestamp'];
-            $_SESSION['user']->login_timestamp = time();
+
+            setcookie("LoginCookie",session_id(),time()+604800); 
 
             $db->update("users", [
-                "login_timestamp" => time()
+                "Session_ID" => session_id()
             ], [
                 "email" => $_POST['email']
             ]);
@@ -131,7 +140,6 @@ if ($noLogin === false) {
             }
         }
     }
-    
     if (isset($_POST['submit_forgotPwd'])) {
 
         $count = $db->count("users",[
@@ -181,7 +189,6 @@ if ($noLogin === false) {
         header("Location: ?sentPwd");
         die();
     }
-
     if (isset($_POST['submit_updateUser'])) {
         $Err = '';
         if ($_POST['email'] != i8ln('Select a user...') || !empty($_POST['createUserEmail'])) {
@@ -229,7 +236,6 @@ if ($noLogin === false) {
             $Err = i8ln('No changes made.');
         }
     }
-
     if (isset($_GET['resetPwd'])) {
     ?>
         <p><h2><?php echo "[<a href='.'>{$title}</a>] - "; echo i8ln('Forgot password'); ?></h2></p>
