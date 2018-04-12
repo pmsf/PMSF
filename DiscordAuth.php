@@ -18,11 +18,12 @@ class DiscordAuth
         $httpClient = new Client(['base_uri' => 'https://discordapp.com']);
         $redirector = new DiscordRedirector($this);
 
-        // Add information about your discord bot
+		global $discord_bot_client_id, $discord_bot_client_secret, $discord_bot_redirect_uri;
+
         $clientConfig = new ClientConfig([
-            'client_id' => id,
-            'client_secret' => "secret",
-            'redirect_uri' => "https://example.com/discord-callback.php"
+            'client_id' => $discord_bot_client_id,
+            'client_secret' => $discord_bot_client_secret,
+            'redirect_uri' => $discord_bot_redirect_uri
         ]);
 
         $serverConfig = new ServerConfig([
