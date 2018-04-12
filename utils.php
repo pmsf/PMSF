@@ -71,23 +71,25 @@ function generateRandomString($length = 8)
     return $randomString;
 }
 
-function createUserAccount($email, $password, $new_expire_timestamp)
+function createUserAccount($user, $password, $new_expire_timestamp)
 {
     global $db, $logfile;
 
     $count = $db->count("users",[
-        "email" => $email
+        "user" => $user,
+		"login_system" => 'native'
     ]);
 
     if ($count == 0) {
         $hashedPwd = password_hash($password, PASSWORD_DEFAULT);
         $db->insert("users", [
-            "email" => $email,
+            "user" => $user,
             "temp_password" => $hashedPwd,
-            "expire_timestamp" => $new_expire_timestamp
+            "expire_timestamp" => $new_expire_timestamp,
+			"login_system" => 'native'
         ]);
         
-        $logMsg = "INSERT INTO users (email, temp_password, expire_timestamp) VALUES ('{$email}', '{$hashedPwd}', '{$new_expire_timestamp}'); -- " . date('Y-m-d H:i:s') . "\r\n";
+        $logMsg = "INSERT INTO users (user, temp_password, expire_timestamp, login_system) VALUES ('{$user}', '{$hashedPwd}', '{$new_expire_timestamp}', 'native'); -- " . date('Y-m-d H:i:s') . "\r\n";
         file_put_contents($logfile, $logMsg, FILE_APPEND);
 
         return true;
@@ -96,7 +98,7 @@ function createUserAccount($email, $password, $new_expire_timestamp)
     }
 }
 
-function resetUserPassword($email, $password, $resetType)
+function resetUserPassword($user, $password, $resetType)
 {
     global $db, $logfile;
     
@@ -105,25 +107,28 @@ function resetUserPassword($email, $password, $resetType)
         $db->update("users", [
             "temp_password" => $hashedPwd
         ], [
-            "email" => $email
+            "user" => $user,
+			"login_system" => 'native'
         ]);
-        $logMsg = "UPDATE users SET temp_password = '{$hashedPwd}' WHERE email = '{$email}'; -- " . date('Y-m-d H:i:s') . "\r\n";
+        $logMsg = "UPDATE users SET temp_password = '{$hashedPwd}' WHERE user = '{$user}' AND login_system = 'native'; -- " . date('Y-m-d H:i:s') . "\r\n";
     } elseif ($resetType == 1) {
         $db->update("users", [
             "password" => null,
             "temp_password" => $hashedPwd
         ], [
-            "email" => $email
+            "user" => $user,
+			"login_system" => 'native'
         ]);
-        $logMsg = "UPDATE users SET password = null, temp_password = '{$hashedPwd}' WHERE email = '{$email}'; -- " . date('Y-m-d H:i:s') . "\r\n";
+        $logMsg = "UPDATE users SET password = null, temp_password = '{$hashedPwd}' WHERE user = '{$user}' AND login_system = 'native'; -- " . date('Y-m-d H:i:s') . "\r\n";
     } else {
         $db->update("users", [
             "password" => $hashedPwd,
             "temp_password" => null
         ], [
-            "email" => $email
+            "user" => $user,
+			"login_system" => 'native'
         ]);
-        $logMsg = "UPDATE users SET password = '{$hashedPwd}', temp_password = null WHERE email = '{$email}'; -- " . date('Y-m-d H:i:s') . "\r\n";
+        $logMsg = "UPDATE users SET password = '{$hashedPwd}', temp_password = null WHERE user = '{$user}' AND login_system = 'native'; -- " . date('Y-m-d H:i:s') . "\r\n";
     }
 
     file_put_contents($logfile, $logMsg, FILE_APPEND);
@@ -131,17 +136,18 @@ function resetUserPassword($email, $password, $resetType)
     return true;
 }
 
-function updateExpireTimestamp($email, $new_expire_timestamp)
+function updateExpireTimestamp($user, $login_system, $new_expire_timestamp)
 {
     global $db, $logfile;
 
     $db->update("users", [
         "expire_timestamp" => $new_expire_timestamp
     ], [
-        "email" => $email
+        "user" => $user,
+		"login_system" => $login_system
     ]);
 
-    $logMsg = "UPDATE users SET expire_timestamp = '{$new_expire_timestamp}' WHERE email = '{$email}'; -- " . date('Y-m-d H:i:s') . "\r\n";
+    $logMsg = "UPDATE users SET expire_timestamp = '{$new_expire_timestamp}' WHERE user = '{$user}' AND login_system = '{$login_system}'; -- " . date('Y-m-d H:i:s') . "\r\n";
     file_put_contents($logfile, $logMsg, FILE_APPEND);
 
     return true;
@@ -149,6 +155,15 @@ function updateExpireTimestamp($email, $new_expire_timestamp)
 
 function destroyCookiesAndSessions()
 {
+	global $db;
+	
+	$db->update("users", [
+        "Session_ID" => null
+    ], [
+        "id" => $_SESSION['user']->id,
+		"login_system" => $_SESSION['user']->login_system
+    ]);
+
     unset($_SESSION);
     unset($_COOKIE['LoginCookie']);
     setcookie("LoginCookie", "", time()-3600);
@@ -159,15 +174,16 @@ function destroyCookiesAndSessions()
 function validateCookie($cookie)
 {
     global $db;
-
     $info = $db->query(
-        "SELECT email, password, expire_timestamp, temp_password FROM users WHERE Session_ID = :session_id", [
+        "SELECT id, user, login_system, expire_timestamp FROM users WHERE Session_ID = :session_id", [
             ":session_id" => $cookie
         ]
     )->fetch();
 
-    if (!empty($info['email'])) {
-        $_SESSION['user']->email = $info['email'];
+    if (!empty($info['user'])) {
+        $_SESSION['user']->id = $info['id'];
+        $_SESSION['user']->user = $info['user'];
+        $_SESSION['user']->login_system = $info['login_system'];
         $_SESSION['user']->expire_timestamp = $info['expire_timestamp'];
         setcookie("LoginCookie", $cookie, time()+60*60*24*7);
         return true;

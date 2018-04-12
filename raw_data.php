@@ -200,7 +200,7 @@ if ($enableDebug == true) {
     }
 }
 
-$d['login'] = $noLogin === true ? false : true;
+$d['login'] = $noNativeLogin === true && $noDiscordLogin === true ? false : true;
 if ($d['login'] === true) {
 
     if (isset($_SESSION['user']->login_timestamp)) {

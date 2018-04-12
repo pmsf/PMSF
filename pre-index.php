@@ -155,23 +155,24 @@ if ($blockIframe) {
         } ?>
         
         <?php
-        if ($noLogin === false) {
+        if ($noNativeLogin === false || $noDiscordLogin === false) {
             if (isset($_COOKIE["LoginCookie"])) {
                 if (validateCookie($_COOKIE["LoginCookie"]) === false) {
                     header("Location: .");
                 }
             }
-            if (!empty($_SESSION['user']->email)) {
+            if (!empty($_SESSION['user']->id)) {
                 $info = $db->query(
-                    "SELECT expire_timestamp FROM users WHERE email = :email", [
-                        ":email" => $_SESSION['user']->email,
+                    "SELECT expire_timestamp FROM users WHERE id = :id AND login_system = :login_system", [
+                        ":id" => $_SESSION['user']->id,
+						":login_system" => $_SESSION['user']->login_system
                     ]
                 )->fetch();
 
                 $_SESSION['user']->expire_timestamp = $info['expire_timestamp'];
 
                 if (!empty($_SESSION['user']->updatePwd) && $_SESSION['user']->updatePwd == 1) {
-                    header("Location: /login.php");
+                    header("Location: /user");
                     die();
                 }
                 
@@ -181,10 +182,10 @@ if ($blockIframe) {
                     $color = "red";
                 }
 
-                echo "<span style='color: {$color};'>" . substr($_SESSION['user']->email,0, 3) . "...</span>";
+                echo "<span style='color: {$color};'>" . substr($_SESSION['user']->user,0, 3) . "...</span>";
 
             } else {
-                echo "<a href='./login.php'>Login</a>";
+                echo "<a href='./user'>Login</a>";
             }
         }
         ?>
@@ -884,8 +885,16 @@ if ($blockIframe) {
             </center>
         </div>
         <?php
-        if ($noLogin === false && $_SESSION['user']->email) {
-            ?>
+		if (($noNativeLogin === false || $noDiscordLogin === false) && $_SESSION['user']->id) {
+        ?>
+			<div>
+                <center>
+                    <button class="settings"
+                            onclick="document.location.href='user'">
+                        <i class="fa" aria-hidden="true"></i> <?php echo i8ln('Activate Key'); ?>
+                    </button>
+                </center>
+            </div>
             <div>
                 <center>
                     <button class="settings"
@@ -900,7 +909,7 @@ if ($blockIframe) {
                     <?php
                     $time = date("Y-m-d", $_SESSION['user']->expire_timestamp);
                     
-                    echo $_SESSION['user']->email . "<br>";
+                    echo $_SESSION['user']->user . "<br>";
                     if ($_SESSION['user']->expire_timestamp > time()) {
                         echo "<span style='color: green;'>" . i8ln('Membership expires on') . " {$time}</span>";
                     } else {
@@ -1037,7 +1046,7 @@ if ($blockIframe) {
     var hidePokemonCoords = <?php echo $hidePokemonCoords === true ? 'true' : 'false' ?>;
     var directionProvider = '<?php echo $noDirectionProvider === true ? $directionProvider : 'google' ?>';
     var exEligible = <?php echo $noExEligible === true ? 'false' : $exEligible  ?>;
-    var login = <?php echo $noLogin === false ? 'true' : 'false' ?>;
+    var login = <?php echo $noNativeLogin === false || $noDiscordLogin === false  ? 'true' : 'false' ?>;
     var expire_timestamp = <?php echo isset($_SESSION['user']->expire_timestamp) ? $_SESSION['user']->expire_timestamp : 0 ?>;
     var timestamp = <?php echo time() ?>;
 </script>

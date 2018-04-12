@@ -55,17 +55,14 @@ include('config/config.php');
 <body id="top" style="overflow: auto;">
 <div class="wrapper">
 <?php
-if ($noLogin === false) {
+if ($noNativeLogin === false || $noDiscordLogin === false) {
+	if(isset($_COOKIE["LoginCookie"])) {
+		validateCookie($_COOKIE["LoginCookie"]);
+	}
+	if ($noNativeLogin === true && $noDiscordLogin == false && empty($_SESSION['user']->id)) {
+		header("Location: ./discord-login");
+	}
 
-    if (isset($_COOKIE["LoginCookie"])) {
-		if (validateCookie($_COOKIE["LoginCookie"]) === true) {
-			if (!in_array($_SESSION['user']->email, $adminEmail)) {
-				header("Location: .");
-			}
-		} else {
-			header("Location: ./login.php");
-		}
-    }
     if (isset($_POST['submit_updatePwd'])) {
         if (!empty($_POST["password"]) && ($_POST["password"] == $_POST["repassword"])) {
             $passwordErr = '';
@@ -86,7 +83,7 @@ if ($noLogin === false) {
         
         if (empty($passwordErr)) {
 
-            resetUserPassword($_SESSION['user']->email, $_POST['password'], 2);
+            resetUserPassword($_SESSION['user']->user, $_POST['password'], 2);
             unset($_SESSION['user']->updatePwd);
             
             header("Location: .");
@@ -95,22 +92,21 @@ if ($noLogin === false) {
     }
     if (isset($_POST['submit_login'])) {
         $info = $db->query(
-            "SELECT email, password, expire_timestamp, temp_password FROM users WHERE email = :email", [
-                ":email" => $_POST['email']
+            "SELECT id, user, password, expire_timestamp, temp_password FROM users WHERE user = :user AND login_system = :login_system", [
+                ":user" => $_POST['email'],
+				":login_system" => 'native'
             ]
         )->fetch();
 
         if (password_verify($_POST['password'], $info['password']) == 1 || password_verify($_POST['password'], $info['temp_password']) == 1) {
-            
-            $_SESSION['user']->email = $info['email'];
-            $_SESSION['user']->expire_timestamp = $info['expire_timestamp'];
 
             setcookie("LoginCookie",session_id(),time()+60*60*24*7);
 
             $db->update("users", [
                 "Session_ID" => session_id()
             ], [
-                "email" => $_POST['email']
+                "user" => $_POST['email'],
+				"login_system" => 'native'
             ]);
 
             if (password_verify($_POST['password'], $info['password']) == 1) {
@@ -119,39 +115,39 @@ if ($noLogin === false) {
                     $db->update("users", [
                         "temp_password" => null
                     ], [
-                        "email" => $_POST['email']
+                        "user" => $_POST['email'],
+						"login_system" => 'native'
                     ]);
                 }
 
-                if (in_array($info['email'], $adminEmail)){
-                    header("Location: /login.php");
+                if (in_array($info['user'], $adminUsers)){
+                    header("Location: /user");
                 } else {
                     header("Location: .");
                 }
                 die();
 
             } else {
-                
                 $_SESSION['user']->updatePwd = 1;
                 
-                header("Location: /login.php");
+                header("Location: /user");
                 die();
-
-            }
+			}
         }
     }
     if (isset($_POST['submit_forgotPwd'])) {
 
         $count = $db->count("users",[
-            "email" => $_POST['email']
+            "user" => $_POST['email'],
+			"login_system" => 'native'
         ]);
         
-        if ($count == 1 || (in_array($_POST['email'], $adminEmail))) {
+        if ($count == 1 || (in_array($_POST['email'], $adminUsers))) {
 
             $randomPwd = generateRandomString();
             
             if ($count == 1) {
-                resetUserPassword($_POST['email'], $randomPwd, 0);
+                resetUserPassword($_SESSION['user']->user, $randomPwd, 0);
             } else {
                 $expire_timestamp = time() + 60 * 60 * 24 * 365 * 10;
                 createUserAccount($_POST['email'], $randomPwd, $expire_timestamp);
@@ -182,7 +178,7 @@ if ($noLogin === false) {
 
             if (!$sendMail) {
                 http_response_code(500);
-                die("<h1>Warning</h1><p>The email has not been sent.<br>If you're an user please contact your administrator.<br>If you're an administrator install <i><b>apt-get install sendmail</b></i> and restart your web server and try again.</p><p><a href='.'>Back to Map</a> - <a href='./login.php?forgotPwd'>Retry</a></p>");
+                die("<h1>Warning</h1><p>The email has not been sent.<br>If you're an user please contact your administrator.<br>If you're an administrator install <i><b>apt-get install sendmail</b></i> and restart your web server and try again.</p><p><a href='.'>Back to Map</a> - <a href='./user?forgotPwd'>Retry</a></p>");
             }
         }
         
@@ -193,13 +189,21 @@ if ($noLogin === false) {
         $Err = '';
         if ($_POST['email'] != i8ln('Select a user...') || !empty($_POST['createUserEmail'])) {
             if (($_POST['ResetPwd'] == "on" || $_POST['checkboxDate'] != 0) && $_POST['email'] != i8ln('Select a user...')) {
+
+				if (strpos($_POST['email'], '#')) {
+					$login_system = 'discord';
+				} else {
+					$login_system = 'native';
+				}
+
                 $info = $db->query(
-                    "SELECT email, expire_timestamp FROM users WHERE email = :email", [
-                        ":email" => $_POST['email']
+                    "SELECT user, expire_timestamp FROM users WHERE user = :user AND login_system = :login_system", [
+                        ":user" => $_POST['email'],
+						":login_system" => $login_system
                     ]
                 )->fetch();
 
-                if ($_POST['ResetPwd'] == "on") {
+                if ($_POST['ResetPwd'] == "on" && $login_system = 'native') {
                     $resetUserPwd = generateRandomString();
                     resetUserPassword($_POST['email'], $resetUserPwd, 1);
                 }
@@ -216,10 +220,9 @@ if ($noLogin === false) {
                         $new_expire_timestamp = strtotime($_POST['customDate']);
                     }
 
-                    updateExpireTimestamp($info['email'], $new_expire_timestamp);
+                    updateExpireTimestamp($_POST['email'], $login_system, $new_expire_timestamp);
 
                 }
-
             }
 
             if (!empty($_POST['createUserEmail'])) {
@@ -236,6 +239,21 @@ if ($noLogin === false) {
             $Err = i8ln('No changes made.');
         }
     }
+    if (isset($_POST['submit_key'])) {
+		$Err = '';
+		$info = $db->query(
+			"SELECT selly_id, activated, quantity FROM payments WHERE selly_id = :selly_id", [
+				":selly_id" => $_POST['key']
+			]
+		)->fetch();
+
+		if(empty($info['selly_id'])) {
+			$Err = i8ln('Invalid key.');
+		} elseif ($info['activated'] == 1) {
+			$Err = i8ln('This key has already been activated.');
+		}
+	}
+
     if (isset($_GET['resetPwd'])) {
     ?>
         <p><h2><?php echo "[<a href='.'>{$title}</a>] - "; echo i8ln('Forgot password'); ?></h2></p>
@@ -245,7 +263,7 @@ if ($noLogin === false) {
                     <th><?php echo i8ln('E-mail'); ?></th><td><input type="text" name="email" required></td>
                 </tr>
                 <tr>
-                    <td id="one-third"><input id="margin" type="submit" name="submit_forgotPwd"><a class='button' href='/login.php'><?php echo i8ln('Back'); ?></a></td><td></td>
+                    <td id="one-third"><input id="margin" type="submit" name="submit_forgotPwd"><a class='button' href='/user'><?php echo i8ln('Back'); ?></a></td><td></td>
                 </tr>
             </table>
         </form>
@@ -272,12 +290,12 @@ if ($noLogin === false) {
                 }
                 ?>
                 <tr>
-                    <td id="one-third"><input id="margin" type="submit" name="submit_updatePwd"><a class='button' href='/login.php'><?php echo i8ln('Back'); ?></a></td><td></td>
+                    <td id="one-third"><input id="margin" type="submit" name="submit_updatePwd"><a class='button' href='/user'><?php echo i8ln('Back'); ?></a></td><td></td>
                 </tr>
             </table>
         </form>
    <?php
-    } elseif (!empty($_SESSION['user']->email && in_array($_SESSION['user']->email, $adminEmail))) {
+    } elseif (!empty($_SESSION['user']->user && in_array($_SESSION['user']->user, $adminUsers))) {
     ?>
         <p><h2><?php echo "[<a href='.'>{$title}</a>] - "; echo i8ln('Admin page'); ?></h2></p>
         <?php
@@ -292,16 +310,20 @@ if ($noLogin === false) {
                 <tr>
                     <th><?php echo i8ln('Select user'); ?></th>
                     <td>
-                        <select name="email" class='select' required>
+                        <select name="email" class='select' style='text-indent: 20px;' required>
                             <option><?php echo i8ln('Select a user...'); ?></option>
                             <?php
                             $users = $db->select("users", [
-                                "email"
-                            ]);
+                                "user"
+                            ],[
+								"ORDER" => [
+									"user" => "ASC"
+								]
+							]);
 
                             foreach($users as $user)
                             {
-                                echo "<option>{$user['email']}</option>";
+                                echo "<option>{$user['user']}</option>";
                             }
                             ?>
                         </select>
@@ -341,7 +363,7 @@ if ($noLogin === false) {
                     if (isset($_POST['submit_updateUser']) && $_POST['checkboxDate'] != 0 && $_POST['email'] != i8ln('Select a user...')) {
                     ?>
                     <tr>
-                        <th id="one-third"><?php echo $_POST['email'] . " - " . i8ln('Expire Date'); ?></th>
+                        <th id="one-third"><?php echo $tempUser[0] . " - " . i8ln('Expire Date'); ?></th>
                         <td><input type="text" name="infoMess" value="<?php echo date('Y-m-d', $new_expire_timestamp); ?>" id="greenBox" disabled></td>
                     </tr>
                     <?php
@@ -375,7 +397,46 @@ if ($noLogin === false) {
             </table>
         <?php
         }
-    } else {
+    } elseif (!empty($_SESSION['user']->user)) {
+	?>
+        <p><h2><?php echo "[<a href='.'>{$title}</a>] - "; echo i8ln('Activate key'); ?></h2></p>
+		<?php
+			if (isset($_POST['submit_key']) && empty($Err)) {
+				
+				if ($_SESSION['user']->expire_timestamp > time()) {
+					$new_expire_timestamp = $_SESSION['user']->expire_timestamp + 60*60*24*31*$info['quantity'];
+				} else {
+					$new_expire_timestamp = time() + 60*60*24*31*$info['quantity'];
+				}
+
+				$_SESSION['user']->expire_timestamp = $new_expire_timestamp;
+
+				$db->update("payments", [
+					"activated" => 1
+				], [
+					"selly_id" => $info['selly_id']
+				]);
+
+				updateExpireTimestamp($_SESSION['user']->user, $_SESSION['user']->login_system, $new_expire_timestamp);
+				$time = date("Y-m-d H:i", $new_expire_timestamp);
+
+				echo "<h3><span style='color: green;'>" . i8ln('Your key has been activated!') . "<br>" . i8ln('Your account expires on: ') . $time . "</span></h3>";
+			} elseif (isset($_POST['submit_key']) && !empty($Err)) {
+				echo "<h3><span style='color: red;'>{$Err}</span></h3>";
+			}
+		?>
+		<form action='' method='POST'>
+            <table>
+                <tr>
+                    <th><?php echo i8ln('Selly Order ID'); ?></th><td><input type="text" name="key" required placeholder="123a4b5c-de67-8901-f234-5g6789801h23"></td>
+                </tr>
+                <tr>
+                    <td id="one-third"><input id="margin" type="submit" name="submit_key"><a class='button' id="margin" href='.'><?php echo i8ln('Back to map'); ?></a></td><td></td>
+                </tr>
+            </table>
+        </form>
+	<?php
+	} else {
         ?>
         <p><h2><?php echo "[<a href='.'>{$title}</a>] - "; echo i8ln('Login'); ?></h2></p>
         <form action='' method='POST'>
@@ -404,13 +465,12 @@ if ($noLogin === false) {
                 }
                 ?>
                 <tr>
-                    <td id="one-third"><input id="margin" type="submit" name="submit_login"><a class='button' href='?resetPwd'><?php echo i8ln('Reset Password'); ?></a></td><td></td>
+                    <td id="one-third"><input id="margin" type="submit" name="submit_login"><a class='button' id="margin" href='?resetPwd'><?php echo i8ln('Reset Password'); ?></a><?php if ($noDiscordLogin === false) echo "<a class='button' id='margin' href='./discord-login'>" . i8ln('Discord Login'); ?></a></td><td></td>
                 </tr>
             </table>
         </form>
    <?php
     }
-
 } else {
     header("Location: .");
 }

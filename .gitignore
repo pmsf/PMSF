@@ -42,3 +42,5 @@ package-lock.json
 index.php
 .DS_Store
 static/.DS_Store
+vendor
+composer.lock

@@ -80,15 +80,21 @@ $motdContent = "";
 // Login
 //-----------------------------------------------------
 
-$noLogin = true;                                                    // true/false
-$adminEmail = array();                                              // You can add multiple admins by adding them to the array.
+$noNativeLogin = true;                                              // true/false - This will enable the built in login system.
+                                                                    
+$noDiscordLogin = true;                                             // true/false - This will enable login through discord. A discord bot is needed for this to work.
+																	// Composer is also needed. Type "composer install" to install the dependencies.
+                                                                    // Enter client_id, client_secret and callback uri from your discord bot to DiscordAuth.php
+                                                                    // https://discordapp.com/developers/applications/me
+
+$adminUsers = array('admin@example.com', 'Superadmin#13337');       // You can add multiple admins by adding them to the array.
 $logfile = '../members.log';                                        // Path to log file. Make sure this works as it will be your life saver if your db crashes.
 
 //-----------------------------------------------------
 // FRONTEND SETTINGS
 //-----------------------------------------------------
 
-if ($noLogin === true || ($noLogin === false && isset($_SESSION['user']->expire_timestamp) && $_SESSION['user']->expire_timestamp > time())) {
+if ($noNativeLogin === true && $noDiscordLogin == true ||  (($noNativeLogin === false || $noDiscordLogin === false) && isset($_SESSION['user']->expire_timestamp) && $_SESSION['user']->expire_timestamp > time())) {
 
     /*
         THESE SETTINGS WILL BE APPLIED IF:
@@ -120,7 +126,7 @@ if ($noLogin === true || ($noLogin === false && isset($_SESSION['user']->expire_
 
     /*
         THESE SETTINGS WILL BE APPLIED IF:
-            - LOGIN IS ENABLED AND THE USER IS _NOT_ LOGGED ON
+            - LOGIN IS ENABLED AND THE USER IS NOT A DONATOR
     */
 
     /* Marker Settings */
