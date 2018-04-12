@@ -165,7 +165,7 @@ if ($blockIframe) {
                 $info = $db->query(
                     "SELECT expire_timestamp FROM users WHERE id = :id AND login_system = :login_system", [
                         ":id" => $_SESSION['user']->id,
-						":login_system" => $_SESSION['user']->login_system
+                        ":login_system" => $_SESSION['user']->login_system
                     ]
                 )->fetch();
 
@@ -885,9 +885,9 @@ if ($blockIframe) {
             </center>
         </div>
         <?php
-		if (($noNativeLogin === false || $noDiscordLogin === false) && $_SESSION['user']->id) {
+        if (($noNativeLogin === false || $noDiscordLogin === false) && $_SESSION['user']->id) {
         ?>
-			<div>
+            <div>
                 <center>
                     <button class="settings"
                             onclick="document.location.href='user'">

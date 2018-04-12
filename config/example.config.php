@@ -72,7 +72,7 @@ $motdContent = "This is an example MOTD<br>Do whatever you like with it.";
 $noNativeLogin = true;                                              // true/false - This will enable the built in login system.
                                                                     
 $noDiscordLogin = true;                                             // true/false - This will enable login through discord. A discord bot is needed for this to work.
-																	// Composer is also needed. Type "composer install" to install the dependencies.
+                                                                    // Composer is also needed. Type "composer install" to install the dependencies.
                                                                     // Enter client_id, client_secret and callback uri from your discord bot to DiscordAuth.php
                                                                     // https://discordapp.com/developers/applications/me
 

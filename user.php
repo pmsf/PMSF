@@ -56,12 +56,12 @@ include('config/config.php');
 <div class="wrapper">
 <?php
 if ($noNativeLogin === false || $noDiscordLogin === false) {
-	if(isset($_COOKIE["LoginCookie"])) {
-		validateCookie($_COOKIE["LoginCookie"]);
-	}
-	if ($noNativeLogin === true && $noDiscordLogin == false && empty($_SESSION['user']->id)) {
-		header("Location: ./discord-login");
-	}
+    if(isset($_COOKIE["LoginCookie"])) {
+        validateCookie($_COOKIE["LoginCookie"]);
+    }
+    if ($noNativeLogin === true && $noDiscordLogin == false && empty($_SESSION['user']->id)) {
+        header("Location: ./discord-login");
+    }
 
     if (isset($_POST['submit_updatePwd'])) {
         if (!empty($_POST["password"]) && ($_POST["password"] == $_POST["repassword"])) {
@@ -94,7 +94,7 @@ if ($noNativeLogin === false || $noDiscordLogin === false) {
         $info = $db->query(
             "SELECT id, user, password, expire_timestamp, temp_password FROM users WHERE user = :user AND login_system = :login_system", [
                 ":user" => $_POST['email'],
-				":login_system" => 'native'
+                ":login_system" => 'native'
             ]
         )->fetch();
 
@@ -106,7 +106,7 @@ if ($noNativeLogin === false || $noDiscordLogin === false) {
                 "Session_ID" => session_id()
             ], [
                 "user" => $_POST['email'],
-				"login_system" => 'native'
+                "login_system" => 'native'
             ]);
 
             if (password_verify($_POST['password'], $info['password']) == 1) {
@@ -116,7 +116,7 @@ if ($noNativeLogin === false || $noDiscordLogin === false) {
                         "temp_password" => null
                     ], [
                         "user" => $_POST['email'],
-						"login_system" => 'native'
+                        "login_system" => 'native'
                     ]);
                 }
 
@@ -132,14 +132,14 @@ if ($noNativeLogin === false || $noDiscordLogin === false) {
                 
                 header("Location: /user");
                 die();
-			}
+            }
         }
     }
     if (isset($_POST['submit_forgotPwd'])) {
 
         $count = $db->count("users",[
             "user" => $_POST['email'],
-			"login_system" => 'native'
+            "login_system" => 'native'
         ]);
         
         if ($count == 1 || (in_array($_POST['email'], $adminUsers))) {
@@ -190,16 +190,16 @@ if ($noNativeLogin === false || $noDiscordLogin === false) {
         if ($_POST['email'] != i8ln('Select a user...') || !empty($_POST['createUserEmail'])) {
             if (($_POST['ResetPwd'] == "on" || $_POST['checkboxDate'] != 0) && $_POST['email'] != i8ln('Select a user...')) {
 
-				if (strpos($_POST['email'], '#')) {
-					$login_system = 'discord';
-				} else {
-					$login_system = 'native';
-				}
+                if (strpos($_POST['email'], '#')) {
+                    $login_system = 'discord';
+                } else {
+                    $login_system = 'native';
+                }
 
                 $info = $db->query(
                     "SELECT user, expire_timestamp FROM users WHERE user = :user AND login_system = :login_system", [
                         ":user" => $_POST['email'],
-						":login_system" => $login_system
+                        ":login_system" => $login_system
                     ]
                 )->fetch();
 
@@ -240,19 +240,19 @@ if ($noNativeLogin === false || $noDiscordLogin === false) {
         }
     }
     if (isset($_POST['submit_key'])) {
-		$Err = '';
-		$info = $db->query(
-			"SELECT selly_id, activated, quantity FROM payments WHERE selly_id = :selly_id", [
-				":selly_id" => $_POST['key']
-			]
-		)->fetch();
+        $Err = '';
+        $info = $db->query(
+            "SELECT selly_id, activated, quantity FROM payments WHERE selly_id = :selly_id", [
+                ":selly_id" => $_POST['key']
+            ]
+        )->fetch();
 
-		if(empty($info['selly_id'])) {
-			$Err = i8ln('Invalid key.');
-		} elseif ($info['activated'] == 1) {
-			$Err = i8ln('This key has already been activated.');
-		}
-	}
+        if(empty($info['selly_id'])) {
+            $Err = i8ln('Invalid key.');
+        } elseif ($info['activated'] == 1) {
+            $Err = i8ln('This key has already been activated.');
+        }
+    }
 
     if (isset($_GET['resetPwd'])) {
     ?>
@@ -316,10 +316,10 @@ if ($noNativeLogin === false || $noDiscordLogin === false) {
                             $users = $db->select("users", [
                                 "user"
                             ],[
-								"ORDER" => [
-									"user" => "ASC"
-								]
-							]);
+                                "ORDER" => [
+                                    "user" => "ASC"
+                                ]
+                            ]);
 
                             foreach($users as $user)
                             {
@@ -398,34 +398,34 @@ if ($noNativeLogin === false || $noDiscordLogin === false) {
         <?php
         }
     } elseif (!empty($_SESSION['user']->user)) {
-	?>
+    ?>
         <p><h2><?php echo "[<a href='.'>{$title}</a>] - "; echo i8ln('Activate key'); ?></h2></p>
-		<?php
-			if (isset($_POST['submit_key']) && empty($Err)) {
-				
-				if ($_SESSION['user']->expire_timestamp > time()) {
-					$new_expire_timestamp = $_SESSION['user']->expire_timestamp + 60*60*24*31*$info['quantity'];
-				} else {
-					$new_expire_timestamp = time() + 60*60*24*31*$info['quantity'];
-				}
+        <?php
+            if (isset($_POST['submit_key']) && empty($Err)) {
+                
+                if ($_SESSION['user']->expire_timestamp > time()) {
+                    $new_expire_timestamp = $_SESSION['user']->expire_timestamp + 60*60*24*31*$info['quantity'];
+                } else {
+                    $new_expire_timestamp = time() + 60*60*24*31*$info['quantity'];
+                }
 
-				$_SESSION['user']->expire_timestamp = $new_expire_timestamp;
+                $_SESSION['user']->expire_timestamp = $new_expire_timestamp;
 
-				$db->update("payments", [
-					"activated" => 1
-				], [
-					"selly_id" => $info['selly_id']
-				]);
+                $db->update("payments", [
+                    "activated" => 1
+                ], [
+                    "selly_id" => $info['selly_id']
+                ]);
 
-				updateExpireTimestamp($_SESSION['user']->user, $_SESSION['user']->login_system, $new_expire_timestamp);
-				$time = date("Y-m-d H:i", $new_expire_timestamp);
+                updateExpireTimestamp($_SESSION['user']->user, $_SESSION['user']->login_system, $new_expire_timestamp);
+                $time = date("Y-m-d H:i", $new_expire_timestamp);
 
-				echo "<h3><span style='color: green;'>" . i8ln('Your key has been activated!') . "<br>" . i8ln('Your account expires on: ') . $time . "</span></h3>";
-			} elseif (isset($_POST['submit_key']) && !empty($Err)) {
-				echo "<h3><span style='color: red;'>{$Err}</span></h3>";
-			}
-		?>
-		<form action='' method='POST'>
+                echo "<h3><span style='color: green;'>" . i8ln('Your key has been activated!') . "<br>" . i8ln('Your account expires on: ') . $time . "</span></h3>";
+            } elseif (isset($_POST['submit_key']) && !empty($Err)) {
+                echo "<h3><span style='color: red;'>{$Err}</span></h3>";
+            }
+        ?>
+        <form action='' method='POST'>
             <table>
                 <tr>
                     <th><?php echo i8ln('Selly Order ID'); ?></th><td><input type="text" name="key" required placeholder="123a4b5c-de67-8901-f234-5g6789801h23"></td>
@@ -435,8 +435,8 @@ if ($noNativeLogin === false || $noDiscordLogin === false) {
                 </tr>
             </table>
         </form>
-	<?php
-	} else {
+    <?php
+    } else {
         ?>
         <p><h2><?php echo "[<a href='.'>{$title}</a>] - "; echo i8ln('Login'); ?></h2></p>
         <form action='' method='POST'>

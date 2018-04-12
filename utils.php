@@ -77,7 +77,7 @@ function createUserAccount($user, $password, $new_expire_timestamp)
 
     $count = $db->count("users",[
         "user" => $user,
-		"login_system" => 'native'
+        "login_system" => 'native'
     ]);
 
     if ($count == 0) {
@@ -86,7 +86,7 @@ function createUserAccount($user, $password, $new_expire_timestamp)
             "user" => $user,
             "temp_password" => $hashedPwd,
             "expire_timestamp" => $new_expire_timestamp,
-			"login_system" => 'native'
+            "login_system" => 'native'
         ]);
         
         $logMsg = "INSERT INTO users (user, temp_password, expire_timestamp, login_system) VALUES ('{$user}', '{$hashedPwd}', '{$new_expire_timestamp}', 'native'); -- " . date('Y-m-d H:i:s') . "\r\n";
@@ -108,7 +108,7 @@ function resetUserPassword($user, $password, $resetType)
             "temp_password" => $hashedPwd
         ], [
             "user" => $user,
-			"login_system" => 'native'
+            "login_system" => 'native'
         ]);
         $logMsg = "UPDATE users SET temp_password = '{$hashedPwd}' WHERE user = '{$user}' AND login_system = 'native'; -- " . date('Y-m-d H:i:s') . "\r\n";
     } elseif ($resetType == 1) {
@@ -117,7 +117,7 @@ function resetUserPassword($user, $password, $resetType)
             "temp_password" => $hashedPwd
         ], [
             "user" => $user,
-			"login_system" => 'native'
+            "login_system" => 'native'
         ]);
         $logMsg = "UPDATE users SET password = null, temp_password = '{$hashedPwd}' WHERE user = '{$user}' AND login_system = 'native'; -- " . date('Y-m-d H:i:s') . "\r\n";
     } else {
@@ -126,7 +126,7 @@ function resetUserPassword($user, $password, $resetType)
             "temp_password" => null
         ], [
             "user" => $user,
-			"login_system" => 'native'
+            "login_system" => 'native'
         ]);
         $logMsg = "UPDATE users SET password = '{$hashedPwd}', temp_password = null WHERE user = '{$user}' AND login_system = 'native'; -- " . date('Y-m-d H:i:s') . "\r\n";
     }
@@ -144,7 +144,7 @@ function updateExpireTimestamp($user, $login_system, $new_expire_timestamp)
         "expire_timestamp" => $new_expire_timestamp
     ], [
         "user" => $user,
-		"login_system" => $login_system
+        "login_system" => $login_system
     ]);
 
     $logMsg = "UPDATE users SET expire_timestamp = '{$new_expire_timestamp}' WHERE user = '{$user}' AND login_system = '{$login_system}'; -- " . date('Y-m-d H:i:s') . "\r\n";
@@ -155,13 +155,13 @@ function updateExpireTimestamp($user, $login_system, $new_expire_timestamp)
 
 function destroyCookiesAndSessions()
 {
-	global $db;
-	
-	$db->update("users", [
+    global $db;
+    
+    $db->update("users", [
         "Session_ID" => null
     ], [
         "id" => $_SESSION['user']->id,
-		"login_system" => $_SESSION['user']->login_system
+        "login_system" => $_SESSION['user']->login_system
     ]);
 
     unset($_SESSION);
