@@ -87,7 +87,6 @@ function createUserAccount($user, $password, $new_expire_timestamp)
 
         $getId++;
 
-
         $hashedPwd = password_hash($password, PASSWORD_DEFAULT);
         $db->insert("users", [
             "id" => $getId,
