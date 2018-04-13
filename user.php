@@ -188,7 +188,7 @@ if ($noNativeLogin === false || $noDiscordLogin === false) {
     if (isset($_POST['submit_updateUser'])) {
         $Err = '';
         if ($_POST['email'] != i8ln('Select a user...') || !empty($_POST['createUserEmail'])) {
-            if (($_POST['ResetPwd'] == "on" || $_POST['checkboxDate'] != 0) && $_POST['email'] != i8ln('Select a user...')) {
+            if ((isset($_POST['ResetPwd']) == "on" || $_POST['checkboxDate'] != 0) && $_POST['email'] != i8ln('Select a user...')) {
 
                 if (strpos($_POST['email'], '#')) {
                     $login_system = 'discord';
@@ -203,7 +203,7 @@ if ($noNativeLogin === false || $noDiscordLogin === false) {
                     ]
                 )->fetch();
 
-                if ($_POST['ResetPwd'] == "on" && $login_system = 'native') {
+                if (isset($_POST['ResetPwd']) == "on" && $login_system = 'native') {
                     $resetUserPwd = generateRandomString();
                     resetUserPassword($_POST['email'], $resetUserPwd, 1);
                 }
@@ -232,7 +232,7 @@ if ($noNativeLogin === false || $noDiscordLogin === false) {
                 }
             }
 
-            if (($_POST['ResetPwd'] == "off" && $_POST['checkboxDate'] == 0 && $_POST['email'] == i8ln('Select a user...')) && empty($_POST['createUserEmail'])) {
+            if ((isset($_POST['ResetPwd']) == "off" && $_POST['checkboxDate'] == 0 && $_POST['email'] == i8ln('Select a user...')) && empty($_POST['createUserEmail'])) {
                 $Err = i8ln('No changes made.');
             }
         } else {
@@ -295,7 +295,7 @@ if ($noNativeLogin === false || $noDiscordLogin === false) {
             </table>
         </form>
    <?php
-    } elseif (!empty($_SESSION['user']->user && in_array($_SESSION['user']->user, $adminUsers))) {
+    } elseif (in_array(!empty($_SESSION['user']->user), $adminUsers)) {
     ?>
         <p><h2><?php echo "[<a href='.'>{$title}</a>] - "; echo i8ln('Admin page'); ?></h2></p>
         <?php
@@ -363,12 +363,12 @@ if ($noNativeLogin === false || $noDiscordLogin === false) {
                     if (isset($_POST['submit_updateUser']) && $_POST['checkboxDate'] != 0 && $_POST['email'] != i8ln('Select a user...')) {
                     ?>
                     <tr>
-                        <th id="one-third"><?php echo $tempUser[0] . " - " . i8ln('Expire Date'); ?></th>
+                        <th id="one-third"><?php echo $_POST['email'] . " - " . i8ln('Expire Date'); ?></th>
                         <td><input type="text" name="infoMess" value="<?php echo date('Y-m-d', $new_expire_timestamp); ?>" id="greenBox" disabled></td>
                     </tr>
                     <?php
                     }
-                    if (isset($_POST['submit_updateUser']) && $_POST['ResetPwd'] == "on" && $_POST['email'] != i8ln('Select a user...')) {
+                    if (isset($_POST['submit_updateUser']) && isset($_POST['ResetPwd']) == "on" && $_POST['email'] != i8ln('Select a user...')) {
                     ?>
                     <tr>
                         <th id="one-third"><?php echo $_POST['email'] . " - " . i8ln('Password'); ?></th>

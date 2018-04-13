@@ -97,7 +97,7 @@ $logfile = '../members.log';                                        // Path to l
 // FRONTEND SETTINGS
 //-----------------------------------------------------
 
-if ($noNativeLogin === true && $noDiscordLogin == true ||  (($noNativeLogin === false || $noDiscordLogin === false) && isset($_SESSION['user']->expire_timestamp) && $_SESSION['user']->expire_timestamp > time())) {
+if ($noNativeLogin === true && $noDiscordLogin == true ||  (($noNativeLogin === false || $noDiscordLogin === false) && !empty($_SESSION['user']->expire_timestamp) && $_SESSION['user']->expire_timestamp > time())) {
 
     /*
         THESE SETTINGS WILL BE APPLIED IF:

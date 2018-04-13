@@ -885,7 +885,7 @@ if ($blockIframe) {
             </center>
         </div>
         <?php
-        if (($noNativeLogin === false || $noDiscordLogin === false) && $_SESSION['user']->id) {
+        if (($noNativeLogin === false || $noDiscordLogin === false) && !empty($_SESSION['user']->id)) {
         ?>
             <div>
                 <center>

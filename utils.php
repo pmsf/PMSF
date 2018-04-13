@@ -181,6 +181,7 @@ function validateCookie($cookie)
     )->fetch();
 
     if (!empty($info['user'])) {
+		$_SESSION['user'] = new \stdClass();
         $_SESSION['user']->id = $info['id'];
         $_SESSION['user']->user = $info['user'];
         $_SESSION['user']->login_system = $info['login_system'];
