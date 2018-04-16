@@ -43,7 +43,8 @@ class DiscordAuth
         $this->oauthSession->setScope($scope);
     }
 
-    public function gotoDiscord(){
+    public function gotoDiscord()
+    {
         $this->setUpOAuth();
         return $this->oauthSession->authorize();
 
@@ -56,7 +57,8 @@ class DiscordAuth
         $this->oauthSession->handleAuthorizationResponse($authorizationResponse);
     }
 
-    private function setUpResource(){
+    private function setUpResource()
+    {
         if ($this->resource != null) {
            return $this->resource;
         }
@@ -71,7 +73,8 @@ class DiscordAuth
 
     }
 
-    public function get($uri) {
+    public function get($uri)
+    {
         $this->setUpResource();
         return $this->resource->get($uri)->getBody()->getContents();
     }

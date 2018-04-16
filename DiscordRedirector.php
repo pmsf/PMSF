@@ -13,7 +13,6 @@ class DiscordRedirector implements RedirectorInterface
 
     public function redirect($url)
     {
-    // does something which eventually calls header() to redirect user
-    return header("Location: $url");
+        return header("Location: $url");
     }
 }

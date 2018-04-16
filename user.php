@@ -1,4 +1,5 @@
 <?php
+
 include('config/config.php');
 ?>
 <!DOCTYPE html>
@@ -268,8 +269,9 @@ if ($noNativeLogin === false || $noDiscordLogin === false) {
             </table>
         </form>
     <?php
+
     } elseif (!empty($_SESSION['user']->updatePwd)) {
-        ?>
+    ?>
         <h2><?php echo "[<a href='.'>{$title}</a>] - " . i8ln('Change your password.'); ?></h2>
         <form action='' method='POST'>
             <table>
@@ -281,6 +283,7 @@ if ($noNativeLogin === false || $noDiscordLogin === false) {
                 </tr>
                 <?php
                 if (!empty($passwordErr)) {
+
                 ?>
                 <tr>
                     <th><?php echo i8ln('Message'); ?></th>
@@ -358,7 +361,7 @@ if ($noNativeLogin === false || $noDiscordLogin === false) {
         
         <?php
         if (isset($_POST['submitUpdateUserBtn'])) {
-        ?>
+            ?>
             <h2><?php echo i8ln('CHANGES'); ?></h2>
             <table>
                 <?php
