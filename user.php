@@ -63,7 +63,7 @@ if ($noNativeLogin === false || $noDiscordLogin === false) {
         header("Location: ./discord-login");
     }
 
-    if (isset($_POST['submit_updatePwd'])) {
+    if (isset($_POST['submitUpdatePwdBtn'])) {
         if (!empty($_POST["password"]) && ($_POST["password"] === $_POST["repassword"])) {
             $passwordErr = '';
             $password = $_POST["password"];
@@ -90,7 +90,7 @@ if ($noNativeLogin === false || $noDiscordLogin === false) {
             die();
         }
     }
-    if (isset($_POST['submit_login'])) {
+    if (isset($_POST['submitLoginBtn'])) {
         $info = $db->query(
             "SELECT id, user, password, expire_timestamp, temp_password FROM users WHERE user = :user AND login_system = :login_system", [
                 ":user" => $_POST['email'],
@@ -135,7 +135,7 @@ if ($noNativeLogin === false || $noDiscordLogin === false) {
             }
         }
     }
-    if (isset($_POST['submit_forgotPwd'])) {
+    if (isset($_POST['submitForgotPwdBtn'])) {
 
         $count = $db->count("users",[
             "user" => $_POST['email'],
@@ -185,10 +185,10 @@ if ($noNativeLogin === false || $noDiscordLogin === false) {
         header("Location: ?sentPwd");
         die();
     }
-    if (isset($_POST['submit_updateUser'])) {
+    if (isset($_POST['submitUpdateUserBtn'])) {
         $Err = '';
-        if ($_POST['email'] !== i8ln('Select a user...') || !empty($_POST['createUserEmail'])) {
-            if ((isset($_POST['ResetPwd']) == "on" || $_POST['checkboxDate'] != 0) && $_POST['email'] != i8ln('Select a user...')) {
+        if ($_POST['email'] !== '-1' || !empty($_POST['createUserEmail'])) {
+            if ((isset($_POST['ResetPwd']) || $_POST['checkboxDate'] != 0) && $_POST['email'] !== '-1') {
 
                 if (strpos($_POST['email'], '#')) {
                     $login_system = 'discord';
@@ -212,15 +212,15 @@ if ($noNativeLogin === false || $noDiscordLogin === false) {
 
                     if ($_POST['checkboxDate'] >= 1 && $_POST['checkboxDate'] <= 12) {
                         if ($info['expire_timestamp'] > time()) {
-                            $new_expire_timestamp = $info['expire_timestamp'] + 60 * 60 * 24 * 31 * $_POST['checkboxDate'];
+                            $newExpireTimestamp = $info['expire_timestamp'] + 60 * 60 * 24 * 31 * $_POST['checkboxDate'];
                         } else {
-                            $new_expire_timestamp = time() + 60 * 60 * 24 * 31;
+                            $newExpireTimestamp = time() + 60 * 60 * 24 * 31;
                         }
                     } else {
-                        $new_expire_timestamp = strtotime($_POST['customDate']);
+                        $newExpireTimestamp = strtotime($_POST['customDate']);
                     }
 
-                    updateExpireTimestamp($_POST['email'], $login_system, $new_expire_timestamp);
+                    updateExpireTimestamp($_POST['email'], $login_system, $newExpireTimestamp);
 
                 }
             }
@@ -263,7 +263,7 @@ if ($noNativeLogin === false || $noDiscordLogin === false) {
                     <th><?php echo i8ln('E-mail'); ?></th><td><input type="text" name="email" required></td>
                 </tr>
                 <tr>
-                    <td id="one-third"><input id="margin" type="submit" name="submit_forgotPwd"><a class='button' href='/user'><?php echo i8ln('Back'); ?></a></td><td></td>
+                    <td id="one-third"><input id="margin" type="submit" name="submitForgotPwdBtn"><a class='button' href='/user'><?php echo i8ln('Back'); ?></a></td><td></td>
                 </tr>
             </table>
         </form>
@@ -290,7 +290,7 @@ if ($noNativeLogin === false || $noDiscordLogin === false) {
                 }
                 ?>
                 <tr>
-                    <td id="one-third"><input id="margin" type="submit" name="submit_updatePwd"><a class='button' href='/user'><?php echo i8ln('Back'); ?></a></td><td></td>
+                    <td id="one-third"><input id="margin" type="submit" name="submitUpdatePwdBtn"><a class='button' href='/user'><?php echo i8ln('Back'); ?></a></td><td></td>
                 </tr>
             </table>
         </form>
@@ -351,27 +351,27 @@ if ($noNativeLogin === false || $noDiscordLogin === false) {
                     <th><?php echo i8ln('Create User'); ?></th><td><input type="text" name="createUserEmail" placeholder='<?php echo i8ln('E-mail'); ?>'></td>
                 </tr>
                 <tr>
-                    <td id="one-third"><input id="margin" type="submit" name="submit_updateUser"></td><td></td>
+                    <td id="one-third"><input id="margin" type="submit" name="submitUpdateUserBtn"></td><td></td>
                 </tr>
             </table>
         </form>
         
         <?php
-        if (isset($_POST['submit_updateUser'])) {
+        if (isset($_POST['submitUpdateUserBtn'])) {
         ?>
             <h2><?php echo i8ln('CHANGES'); ?></h2>
             <table>
                 <?php
                 if (empty($Err)) {
-                    if (isset($_POST['submit_updateUser']) && $_POST['checkboxDate'] !== 0 && $_POST['email'] !== '-1') {
+                    if (isset($_POST['submitUpdateUserBtn']) && $_POST['checkboxDate'] !== 0 && $_POST['email'] !== '-1') {
                     ?>
                     <tr>
                         <th id="one-third"><?php echo $_POST['email'] . " - " . i8ln('Expire Date'); ?></th>
-                        <td><input type="text" name="infoMess" value="<?php echo date('Y-m-d', $new_expire_timestamp); ?>" id="greenBox" disabled></td>
+                        <td><input type="text" name="infoMess" value="<?php echo date('Y-m-d', $newExpireTimestamp); ?>" id="greenBox" disabled></td>
                     </tr>
                     <?php
                     }
-                    if (isset($_POST['submit_updateUser']) && isset($_POST['ResetPwd']) && $_POST['email'] !== '-1') {
+                    if (isset($_POST['submitUpdateUserBtn']) && isset($_POST['ResetPwd']) && $_POST['email'] !== '-1') {
                     ?>
                     <tr>
                         <th id="one-third"><?php echo $_POST['email'] . " - " . i8ln('Password'); ?></th>
@@ -379,7 +379,7 @@ if ($noNativeLogin === false || $noDiscordLogin === false) {
                     </tr>
                     <?php
                     }
-                    if (isset($_POST['submit_updateUser']) && !empty($_POST['createUserEmail'])) {
+                    if (isset($_POST['submitUpdateUserBtn']) && !empty($_POST['createUserEmail'])) {
                     ?>
                     <tr>
                         <th id="one-third"><?php echo $_POST['createUserEmail'] . " - " . i8ln('Created Account'); ?></th>
@@ -407,12 +407,12 @@ if ($noNativeLogin === false || $noDiscordLogin === false) {
             if (isset($_POST['submitKey']) && empty($Err)) {
                 
                 if ($_SESSION['user']->expire_timestamp > time()) {
-                    $new_expire_timestamp = $_SESSION['user']->expire_timestamp + 60*60*24*31*$info['quantity'];
+                    $newExpireTimestamp = $_SESSION['user']->expire_timestamp + 60*60*24*31*$info['quantity'];
                 } else {
-                    $new_expire_timestamp = time() + 60*60*24*31*$info['quantity'];
+                    $newExpireTimestamp = time() + 60*60*24*31*$info['quantity'];
                 }
 
-                $_SESSION['user']->expire_timestamp = $new_expire_timestamp;
+                $_SESSION['user']->expire_timestamp = $newExpireTimestamp;
 
                 $db->update("payments", [
                     "activated" => 1
@@ -420,8 +420,8 @@ if ($noNativeLogin === false || $noDiscordLogin === false) {
                     "selly_id" => $info['selly_id']
                 ]);
 
-                updateExpireTimestamp($_SESSION['user']->user, $_SESSION['user']->login_system, $new_expire_timestamp);
-                $time = date("Y-m-d H:i", $new_expire_timestamp);
+                updateExpireTimestamp($_SESSION['user']->user, $_SESSION['user']->login_system, $newExpireTimestamp);
+                $time = date("Y-m-d H:i", $newExpireTimestamp);
 
                 echo "<h3><span style='color: green;'>" . i8ln('Your key has been activated!') . "<br>" . i8ln('Your account expires on: ') . $time . "</span></h3>";
             } elseif (isset($_POST['submitKey']) && !empty($Err)) {
@@ -445,13 +445,13 @@ if ($noNativeLogin === false || $noDiscordLogin === false) {
         <form action='' method='POST'>
             <table>
                 <tr>
-                    <th><?php echo i8ln('E-mail'); ?></th><td><input type="text" name="email" required <?php if(isset($_POST['submit_login'])) { echo "value='$_POST[email]'"; } ?> placeholder="<?php echo i8ln('E-mail'); ?>"></td>
+                    <th><?php echo i8ln('E-mail'); ?></th><td><input type="text" name="email" required <?php if(isset($_POST['submitLoginBtn'])) { echo "value='$_POST[email]'"; } ?> placeholder="<?php echo i8ln('E-mail'); ?>"></td>
                 </tr>
                 <tr>
                     <th><?php echo i8ln('Password'); ?></th><td><input type="password" name="password" required placeholder="<?php echo i8ln('Password'); ?>"></td>
                 </tr>
                 <?php
-                if (isset($_POST['submit_login']) && password_verify($_POST['password'], $info['password']) !== 1) {
+                if (isset($_POST['submitLoginBtn']) && password_verify($_POST['password'], $info['password']) !== 1) {
                 ?>
                 <tr>
                     <th><?php echo i8ln('Message'); ?></th>
@@ -468,7 +468,7 @@ if ($noNativeLogin === false || $noDiscordLogin === false) {
                 }
                 ?>
                 <tr>
-                    <td id="one-third"><input id="margin" type="submit" name="submit_login"><a class='button' id="margin" href='?resetPwd'><?php echo i8ln('Reset Password'); ?></a><?php if ($noDiscordLogin === false) echo "<a class='button' id='margin' href='./discord-login'>" . i8ln('Discord Login'); ?></a></td><td></td>
+                    <td id="one-third"><input id="margin" type="submit" name="submitLoginBtn"><a class='button' id="margin" href='?resetPwd'><?php echo i8ln('Reset Password'); ?></a><?php if ($noDiscordLogin === false) echo "<a class='button' id='margin' href='./discord-login'>" . i8ln('Discord Login'); ?></a></td><td></td>
                 </tr>
             </table>
         </form>
