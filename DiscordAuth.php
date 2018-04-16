@@ -47,7 +47,6 @@ class DiscordAuth
     {
         $this->setUpOAuth();
         return $this->oauthSession->authorize();
-
     }
 
     public function handleAuthorizationResponse()
