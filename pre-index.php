@@ -171,7 +171,7 @@ if ($blockIframe) {
 
                 $_SESSION['user']->expire_timestamp = $info['expire_timestamp'];
 
-                if (!empty($_SESSION['user']->updatePwd) && $_SESSION['user']->updatePwd === 1) {
+                if (!empty($_SESSION['user']->updatePwd) && $_SESSION['user']->updatePwd === true) {
                     header("Location: ./user");
                     die();
                 }
@@ -1042,7 +1042,7 @@ if ($blockIframe) {
     var directionProvider = '<?php echo $noDirectionProvider === true ? $directionProvider : 'google' ?>';
     var exEligible = <?php echo $noExEligible === true ? 'false' : $exEligible  ?>;
     var login = <?php echo $noNativeLogin === false || $noDiscordLogin === false  ? 'true' : 'false' ?>;
-    var expire_timestamp = <?php echo isset($_SESSION['user']->expire_timestamp) ? $_SESSION['user']->expire_timestamp : 0 ?>;
+    var expireTimestamp = <?php echo isset($_SESSION['user']->expire_timestamp) ? $_SESSION['user']->expire_timestamp : 0 ?>;
     var timestamp = <?php echo time() ?>;
 </script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js"></script>

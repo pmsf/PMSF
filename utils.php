@@ -85,21 +85,25 @@ function createUserAccount($user, $password, $newExpireTimestamp)
             "login_system" => 'native'
         ]);
 
-        $getId++;
+        if (is_int($getId)) {
+            $getId++;
 
-        $hashedPwd = password_hash($password, PASSWORD_DEFAULT);
-        $db->insert("users", [
-            "id" => $getId,
-            "user" => $user,
-            "temp_password" => $hashedPwd,
-            "expire_timestamp" => $newExpireTimestamp,
-            "login_system" => 'native'
-        ]);
-        
-        $logMsg = "INSERT INTO users (id, user, expire_timestamp, login_system) VALUES ('{$getId}', '{$user}', '{$newExpireTimestamp}', 'native'); -- " . date('Y-m-d H:i:s') . "\r\n";
-        file_put_contents($logfile, $logMsg, FILE_APPEND);
+            $hashedPwd = password_hash($password, PASSWORD_DEFAULT);
+            $db->insert("users", [
+                "id" => $getId,
+                "user" => $user,
+                "temp_password" => $hashedPwd,
+                "expire_timestamp" => $newExpireTimestamp,
+                "login_system" => 'native'
+            ]);
+            
+            $logMsg = "INSERT INTO users (id, user, expire_timestamp, login_system) VALUES ('{$getId}', '{$user}', '{$newExpireTimestamp}', 'native'); -- " . date('Y-m-d H:i:s') . "\r\n";
+            file_put_contents($logfile, $logMsg, FILE_APPEND);
 
-        return true;
+            return true;
+        } else {
+            return false;
+        }
     } else {
         return false;
     }
@@ -183,7 +187,6 @@ function validateCookie($cookie)
     )->fetch();
 
     if (!empty($info['user'])) {
-        $_SESSION['user'] = new \stdClass();
         $_SESSION['user']->id = $info['id'];
         $_SESSION['user']->user = $info['user'];
         $_SESSION['user']->login_system = $info['login_system'];

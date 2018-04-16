@@ -46,7 +46,6 @@ include('config/config.php');
         var token = '<?php echo (!empty($_SESSION['token'])) ? $_SESSION['token'] : ""; ?>';
     </script>
     <link rel="stylesheet" href="static/dist/css/app.min.css">
-    <link rel="stylesheet" href="static/css/login.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jqueryui/1.12.0/jquery-ui.min.css">
     <link rel="stylesheet" href="https://cdn.datatables.net/1.10.12/css/jquery.dataTables.css">
     <script src="static/js/vendor/modernizr.custom.js"></script>
@@ -93,13 +92,12 @@ include('config/config.php');
         }
         if (isset($_POST['submitLoginBtn'])) {
             $info = $db->query(
-                "SELECT id, user, password, expire_timestamp, temp_password FROM users WHERE user = :user AND login_system = :login_system", [
-                    ":user" => $_POST['email'],
-                    ":login_system" => 'native'
+                "SELECT id, user, password, expire_timestamp, temp_password FROM users WHERE user = :user AND login_system = 'native'", [
+                    ":user" => $_POST['email']
                 ]
             )->fetch();
 
-            if (password_verify($_POST['password'], $info['password']) === 1 || password_verify($_POST['password'], $info['temp_password']) === 1) {
+            if (password_verify($_POST['password'], $info['password']) === true || password_verify($_POST['password'], $info['temp_password']) === true) {
 
                 setcookie("LoginCookie",session_id(),time()+60*60*24*7);
 
@@ -110,8 +108,8 @@ include('config/config.php');
                     "login_system" => 'native'
                 ]);
 
-                if (password_verify($_POST['password'], $info['password']) === 1) {
-                
+                if (password_verify($_POST['password'], $info['password']) === true) {
+
                     if (!empty($info['temp_password'])) {
                         $db->update("users", [
                             "temp_password" => null
@@ -130,8 +128,7 @@ include('config/config.php');
 
                 } else {
                     $_SESSION['user']->updatePwd = 1;
-                    
-                    header("Location: /user");
+                    header("Location: ./user");
                     die();
                 }
             }
@@ -148,7 +145,7 @@ include('config/config.php');
                 $randomPwd = generateRandomString();
                 
                 if ($count === 1) {
-                    resetUserPassword($_SESSION['user']->user, $randomPwd, 0);
+                    resetUserPassword($_POST['email'], $randomPwd, 0);
                 } else {
                     $expire_timestamp = time() + 60 * 60 * 24 * 365 * 10;
                     createUserAccount($_POST['email'], $randomPwd, $expire_timestamp);
@@ -170,8 +167,9 @@ include('config/config.php');
                 }
                 
                 $subject = "[{$title}] - Password Reset";
-                $headers = "From: no-reply@" .$domainName ? $domainName : $_SERVER['SERVER_NAME'] . "\r\n" .
-                    "Reply-To: no-reply@" . $domainName ? $domainName : $_SERVER['SERVER_NAME']. "\r\n" .
+                !empty($domainName) ? $domainName = $domainName : $domainName = $_SERVER['SERVER_NAME'];
+                $headers = "From: no-reply@{$domainName}" . "\r\n" .
+                    "Reply-To: no-reply@{$domainName}" . "\r\n" .
                     'Content-Type: text/html; charset=ISO-8859-1' . "\r\n" .
                     'X-Mailer: PHP/' . phpversion();
 
@@ -189,8 +187,7 @@ include('config/config.php');
         if (isset($_POST['submitUpdateUserBtn'])) {
             $Err = '';
             if ($_POST['email'] !== '-1' || !empty($_POST['createUserEmail'])) {
-                if ((isset($_POST['ResetPwd']) || $_POST['checkboxDate'] != 0) && $_POST['email'] !== '-1') {
-
+                if ((isset($_POST['ResetPwd']) || $_POST['checkboxDate'] > 0) && $_POST['email'] !== '-1') {
                     if (strpos($_POST['email'], '#')) {
                         $login_system = 'discord';
                     } else {
@@ -204,12 +201,12 @@ include('config/config.php');
                         ]
                     )->fetch();
 
-                    if (isset($_POST['ResetPwd']) === "on" && $login_system === 'native') {
+                    if (isset($_POST['ResetPwd']) && $login_system === 'native') {
                         $resetUserPwd = generateRandomString();
                         resetUserPassword($_POST['email'], $resetUserPwd, 1);
                     }
 
-                    if ($_POST['checkboxDate'] !== 0) {
+                    if ($_POST['checkboxDate'] > 0) {
 
                         if ($_POST['checkboxDate'] >= 1 && $_POST['checkboxDate'] <= 12) {
                             if ($info['expire_timestamp'] > time()) {
@@ -224,6 +221,8 @@ include('config/config.php');
                         updateExpireTimestamp($_POST['email'], $login_system, $newExpireTimestamp);
 
                     }
+                } else {
+                    $Err = i8ln('No changes made.');
                 }
 
                 if (!empty($_POST['createUserEmail'])) {
@@ -233,7 +232,7 @@ include('config/config.php');
                     }
                 }
 
-                if ((!isset($_POST['ResetPwd']) && $_POST['checkboxDate'] === 0 && $_POST['email'] === '-1') && empty($_POST['createUserEmail'])) {
+                if ((!isset($_POST['ResetPwd']) && $_POST['checkboxDate'] == 0 && $_POST['email'] === '-1') && empty($_POST['createUserEmail'])) {
                     $Err = i8ln('No changes made.');
                 }
             } else {
@@ -257,7 +256,7 @@ include('config/config.php');
 
         if (isset($_GET['resetPwd'])) {
         ?>
-            <p><h2><?php echo "[<a href='.'>{$title}</a>] - "; echo i8ln('Forgot password'); ?></h2></p>
+            <p><h2><?php echo "[<a href='.'>{$title}</a>] - " . i8ln('Forgot password'); ?></h2></p>
             <form action='' method='POST'>
                 <table>
                     <tr>
@@ -305,9 +304,9 @@ include('config/config.php');
             if (!file_exists($logfile)) {
                 if(file_put_contents($logfile, "-- " . i8ln('This is a test to make sure logging is okay.') . " " . date('Y-m-d H:i:s') ."\r\n", FILE_APPEND) == false){
                     echo "<h1>" . i8ln('Warning') . "</h1>" .
-    "<p>" . i8ln('Your backup logging doesn\'t work. In case of database corruption all data may be lost.') .
-    "<br>" . i8ln('To solve this, type') .
-    ":<br><i><b>sudo chgrp " . exec('whoami') . " " . dirname(__DIR__) . "<br>sudo chmod g+w " . dirname(__DIR__) . "</b></i></p>";
+                        "<p>" . i8ln('Your backup logging doesn\'t work. In case of database corruption all data may be lost.') .
+                        "<br>" . i8ln('To solve this, type') .
+                        ":<br><i><b>sudo chgrp " . exec('whoami') . " " . dirname(__DIR__) . "<br>sudo chmod g+w " . dirname(__DIR__) . "</b></i></p>";
                 }
             }
             ?>
@@ -316,7 +315,7 @@ include('config/config.php');
                     <tr>
                         <th><?php echo i8ln('Select user'); ?></th>
                         <td>
-                            <select name="email" class='select' style='text-indent: 20px;' required>
+                            <select name="email" class='select' required>
                                 <option value='-1'><?php echo i8ln('Select a user...'); ?></option>
                                 <?php
                                 $users = $db->select("users", [
@@ -327,9 +326,11 @@ include('config/config.php');
                                     ]
                                 ]);
 
-                                foreach($users as $user)
-                                {
-                                    echo "<option>{$user['user']}</option>";
+                                if ($users) {
+                                    foreach($users as $user)
+                                    {
+                                        echo "<option>{$user['user']}</option>";
+                                    }
                                 }
                                 ?>
                             </select>
@@ -366,7 +367,7 @@ include('config/config.php');
                 <table>
                     <?php
                     if (empty($Err)) {
-                        if (isset($_POST['submitUpdateUserBtn']) && $_POST['checkboxDate'] !== 0 && $_POST['email'] !== '-1') {
+                        if (isset($_POST['submitUpdateUserBtn']) && $_POST['checkboxDate'] > 0 && $_POST['email'] !== '-1') {
                         ?>
                         <tr>
                             <th id="one-third"><?php echo $_POST['email'] . " - " . i8ln('Expire Date'); ?></th>
@@ -374,7 +375,7 @@ include('config/config.php');
                         </tr>
                         <?php
                         }
-                        if (isset($_POST['submitUpdateUserBtn']) && isset($_POST['ResetPwd']) && $_POST['email'] !== '-1') {
+                        if (isset($_POST['submitUpdateUserBtn']) && isset($_POST['ResetPwd']) && $login_system === 'native' && $_POST['email'] !== '-1') {
                         ?>
                         <tr>
                             <th id="one-third"><?php echo $_POST['email'] . " - " . i8ln('Password'); ?></th>
@@ -444,7 +445,7 @@ include('config/config.php');
         <?php
         } else {
             ?>
-            <p><h2><?php echo "[<a href='.'>{$title}</a>] - "; echo i8ln('Login'); ?></h2></p>
+            <p><h2><?php echo "[<a href='.'>{$title}</a>] - " . i8ln('Login'); ?></h2></p>
             <form action='' method='POST'>
                 <table>
                     <tr>
