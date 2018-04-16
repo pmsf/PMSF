@@ -60,7 +60,7 @@ class DiscordAuth
     private function setUpResource()
     {
         if ($this->resource != null) {
-           return $this->resource;
+            return $this->resource;
         }
         $handler = \GuzzleHttp\HandlerStack::create();
         $handler->before('http_errors', function ($callable) {
@@ -70,7 +70,6 @@ class DiscordAuth
             'base_uri' => 'https://discordapp.com',
             'handler' => $handler,
         ]);
-
     }
 
     public function get($uri)

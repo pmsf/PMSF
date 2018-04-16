@@ -22,7 +22,6 @@ if (($noNativeLogin === false || $noDiscordLogin === false) && !empty($id) && !e
 
     $logMsg = "INSERT INTO payments (selly_id, product_id, email, value, quantity, timestamp) VALUES ('{$id}', '{$product_id}', '{$email}, '{$value}, '{$quantity}, '{$timestamp}');\r\n";
     file_put_contents($logfile, $logMsg, FILE_APPEND);
-
 } else {
     header("Location: .");
 }

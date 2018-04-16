@@ -182,7 +182,7 @@ if ($blockIframe) {
                     $color = "red";
                 }
 
-                echo "<span style='color: {$color};'>" . substr($_SESSION['user']->user,0, 3) . "...</span>";
+                echo "<span style='color: {$color};'>" . substr($_SESSION['user']->user, 0, 3) . "...</span>";
             } else {
                 echo "<a href='./user'>" . i8ln('Login') . "</a>";
             }
@@ -902,19 +902,17 @@ if ($blockIframe) {
                     </button>
                 </center>
             </div><br>
-            <div>
-                <center><p>
-                <?php
-                $time = date("Y-m-d", $_SESSION['user']->expire_timestamp);
-                
-                echo $_SESSION['user']->user . "<br>";
-                if ($_SESSION['user']->expire_timestamp > time()) {
-                    echo "<span style='color: green;'>" . i8ln('Membership expires on') . " {$time}</span>";
-                } else {
-                    echo "<span style='color: red;'>" . i8ln('Membership expired on') . " {$time}</span>";
-                } ?>
-                </p></center>
-            </div>
+            <div><center><p>
+            <?php
+            $time = date("Y-m-d", $_SESSION['user']->expire_timestamp);
+            
+            echo $_SESSION['user']->user . "<br>";
+            if ($_SESSION['user']->expire_timestamp > time()) {
+                echo "<span style='color: green;'>" . i8ln('Membership expires on') . " {$time}</span>";
+            } else {
+                echo "<span style='color: red;'>" . i8ln('Membership expired on') . " {$time}</span>";
+            } ?>
+            </p></center></div>
         <?php
         }
         ?>
