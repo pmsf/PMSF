@@ -70,14 +70,15 @@ $motdContent = "This is an example MOTD<br>Do whatever you like with it.";
 //-----------------------------------------------------
 
 $noNativeLogin = true;                                              // true/false - This will enable the built in login system.
-                                                                    
+$domainName = "";                                                   // If this is empty, reset-password emails will use the domain name taken from URL.
+
 $noDiscordLogin = true;                                             // true/false - This will enable login through discord. A discord bot is needed for this to work.
                                                                     // Composer is also needed. Type "composer install" to install the dependencies.
                                                                     // Enter client_id, client_secret and callback uri from your discord bot to DiscordAuth.php
                                                                     // https://discordapp.com/developers/applications/me
-$discord_bot_client_id = 0;
-$discord_bot_client_secret = "";
-$discord_bot_redirect_uri = "https://example.com/discord-callback.php";
+$discordBotClientId = 0;
+$discordBotClientSecret = "";
+$discordBotRedirectUri = "https://example.com/discord-callback.php";
 
 $adminUsers = array('admin@example.com', 'Superadmin#13337');       // You can add multiple admins by adding them to the array.
 $logfile = '../members.log';                                        // Path to log file. Make sure this works as it will be your life saver if your db crashes.
@@ -113,7 +114,6 @@ if ($noNativeLogin === true && $noDiscordLogin == true ||  (($noNativeLogin === 
 
     /* Style Settings */
     $iconNotifySizeModifier = 15;                                   // 0, 15, 30, 45
-
 } else {
 
     /*
@@ -140,7 +140,6 @@ if ($noNativeLogin === true && $noDiscordLogin == true ||  (($noNativeLogin === 
 
     /* Style Settings */
     $iconNotifySizeModifier = 0;                                    // 0, 15, 30, 45
-
 }
 
 /* Marker Settings */

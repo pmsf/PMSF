@@ -59,12 +59,12 @@ if ($noNativeLogin === false || $noDiscordLogin === false) {
     if(isset($_COOKIE["LoginCookie"])) {
         validateCookie($_COOKIE["LoginCookie"]);
     }
-    if ($noNativeLogin === true && $noDiscordLogin == false && empty($_SESSION['user']->id)) {
+    if ($noNativeLogin === true && $noDiscordLogin === false && empty($_SESSION['user']->id)) {
         header("Location: ./discord-login");
     }
 
     if (isset($_POST['submit_updatePwd'])) {
-        if (!empty($_POST["password"]) && ($_POST["password"] == $_POST["repassword"])) {
+        if (!empty($_POST["password"]) && ($_POST["password"] === $_POST["repassword"])) {
             $passwordErr = '';
             $password = $_POST["password"];
             
@@ -98,7 +98,7 @@ if ($noNativeLogin === false || $noDiscordLogin === false) {
             ]
         )->fetch();
 
-        if (password_verify($_POST['password'], $info['password']) == 1 || password_verify($_POST['password'], $info['temp_password']) == 1) {
+        if (password_verify($_POST['password'], $info['password']) === 1 || password_verify($_POST['password'], $info['temp_password']) === 1) {
 
             setcookie("LoginCookie",session_id(),time()+60*60*24*7);
 
@@ -109,7 +109,7 @@ if ($noNativeLogin === false || $noDiscordLogin === false) {
                 "login_system" => 'native'
             ]);
 
-            if (password_verify($_POST['password'], $info['password']) == 1) {
+            if (password_verify($_POST['password'], $info['password']) === 1) {
             
                 if (!empty($info['temp_password'])) {
                     $db->update("users", [
@@ -121,7 +121,7 @@ if ($noNativeLogin === false || $noDiscordLogin === false) {
                 }
 
                 if (in_array($info['user'], $adminUsers)){
-                    header("Location: /user");
+                    header("Location: ./user");
                 } else {
                     header("Location: .");
                 }
@@ -142,11 +142,11 @@ if ($noNativeLogin === false || $noDiscordLogin === false) {
             "login_system" => 'native'
         ]);
         
-        if ($count == 1 || (in_array($_POST['email'], $adminUsers))) {
+        if ($count === 1 || (in_array($_POST['email'], $adminUsers))) {
 
             $randomPwd = generateRandomString();
             
-            if ($count == 1) {
+            if ($count === 1) {
                 resetUserPassword($_SESSION['user']->user, $randomPwd, 0);
             } else {
                 $expire_timestamp = time() + 60 * 60 * 24 * 365 * 10;
@@ -161,16 +161,16 @@ if ($noNativeLogin === false || $noDiscordLogin === false) {
             $message .= i8ln('New password:') . " {$randomPwd}<br><br>";
             
             if ($discordUrl) {
-                $message .= i8ln('For support, ask your questions in the ') . "<a href='{$discordUrl}'>discord guild</a>!<br><br>";
+                $message .= i8ln('For support, ask your questions in the ') . "<a href='{$discordUrl}'>" . i8ln('discord guild') . "</a>!<br><br>";
             }
-            $message .= i8ln('Best Regards') . "<br>Admin";
+            $message .= i8ln('Best Regards') . "<br>" . i8ln('Admin');
             if ($title) {
                 $message .= " @ {$title}";
             }
             
             $subject = "[{$title}] - Password Reset";
-            $headers = "From: no-reply@{$_SERVER['SERVER_NAME']}" . "\r\n" .
-                "Reply-To: no-reply@{$_SERVER['SERVER_NAME']}" . "\r\n" .
+            $headers = "From: no-reply@" .$domainName ? $domainName : $_SERVER['SERVER_NAME'] . "\r\n" .
+                "Reply-To: no-reply@" . $domainName ? $domainName : $_SERVER['SERVER_NAME']. "\r\n" .
                 'Content-Type: text/html; charset=ISO-8859-1' . "\r\n" .
                 'X-Mailer: PHP/' . phpversion();
 
@@ -187,7 +187,7 @@ if ($noNativeLogin === false || $noDiscordLogin === false) {
     }
     if (isset($_POST['submit_updateUser'])) {
         $Err = '';
-        if ($_POST['email'] != i8ln('Select a user...') || !empty($_POST['createUserEmail'])) {
+        if ($_POST['email'] !== i8ln('Select a user...') || !empty($_POST['createUserEmail'])) {
             if ((isset($_POST['ResetPwd']) == "on" || $_POST['checkboxDate'] != 0) && $_POST['email'] != i8ln('Select a user...')) {
 
                 if (strpos($_POST['email'], '#')) {
@@ -203,12 +203,12 @@ if ($noNativeLogin === false || $noDiscordLogin === false) {
                     ]
                 )->fetch();
 
-                if (isset($_POST['ResetPwd']) == "on" && $login_system = 'native') {
+                if (isset($_POST['ResetPwd']) === "on" && $login_system === 'native') {
                     $resetUserPwd = generateRandomString();
                     resetUserPassword($_POST['email'], $resetUserPwd, 1);
                 }
 
-                if ($_POST['checkboxDate'] != 0) {
+                if ($_POST['checkboxDate'] !== 0) {
 
                     if ($_POST['checkboxDate'] >= 1 && $_POST['checkboxDate'] <= 12) {
                         if ($info['expire_timestamp'] > time()) {
@@ -227,19 +227,19 @@ if ($noNativeLogin === false || $noDiscordLogin === false) {
 
             if (!empty($_POST['createUserEmail'])) {
                 $createUserPwd = generateRandomString();
-                if (createUserAccount($_POST['createUserEmail'], $createUserPwd, time()) == false) {
+                if (createUserAccount($_POST['createUserEmail'], $createUserPwd, time()) === false) {
                     $Err = i8ln('Email already in use.');
                 }
             }
 
-            if ((isset($_POST['ResetPwd']) == "off" && $_POST['checkboxDate'] == 0 && $_POST['email'] == i8ln('Select a user...')) && empty($_POST['createUserEmail'])) {
+            if ((!isset($_POST['ResetPwd']) && $_POST['checkboxDate'] === 0 && $_POST['email'] === '-1') && empty($_POST['createUserEmail'])) {
                 $Err = i8ln('No changes made.');
             }
         } else {
             $Err = i8ln('No changes made.');
         }
     }
-    if (isset($_POST['submit_key'])) {
+    if (isset($_POST['submitKey'])) {
         $Err = '';
         $info = $db->query(
             "SELECT selly_id, activated, quantity FROM payments WHERE selly_id = :selly_id", [
@@ -249,7 +249,7 @@ if ($noNativeLogin === false || $noDiscordLogin === false) {
 
         if(empty($info['selly_id'])) {
             $Err = i8ln('Invalid key.');
-        } elseif ($info['activated'] == 1) {
+        } elseif ($info['activated'] === 1) {
             $Err = i8ln('This key has already been activated.');
         }
     }
@@ -270,7 +270,7 @@ if ($noNativeLogin === false || $noDiscordLogin === false) {
     <?php
     } elseif (!empty($_SESSION['user']->updatePwd)) {
         ?>
-        <p><h2><?php echo "[<a href='.'>{$title}</a>] - "; echo i8ln('Change your password.'); ?></h2></p>
+        <h2><?php echo "[<a href='.'>{$title}</a>] - " . i8ln('Change your password.'); ?></h2>
         <form action='' method='POST'>
             <table>
                 <tr>
@@ -297,11 +297,14 @@ if ($noNativeLogin === false || $noDiscordLogin === false) {
    <?php
     } elseif (in_array(!empty($_SESSION['user']->user), $adminUsers)) {
     ?>
-        <p><h2><?php echo "[<a href='.'>{$title}</a>] - "; echo i8ln('Admin page'); ?></h2></p>
+        <h2><?php echo "[<a href='.'>{$title}</a>] - " . i8ln('Admin page'); ?></h2>
         <?php
         if (!file_exists($logfile)) {
-            if(file_put_contents($logfile, "-- This is a test to make sure logging is okay. " . date('Y-m-d H:i:s') ."\r\n", FILE_APPEND) == false){
-                echo "<h1>Warning</h1><p>Your backup logging doesn't work. In case of database corruption all data may be lost.<br>To solve this, type:<br><i><b>sudo chgrp www-data " . dirname(__DIR__) . "<br>sudo chmod g+w " . dirname(__DIR__) . "</b></i></p>";
+            if(file_put_contents($logfile, "-- " . i8ln('This is a test to make sure logging is okay.') . " " . date('Y-m-d H:i:s') ."\r\n", FILE_APPEND) == false){
+                echo "<h1>" . i8ln('Warning') . "</h1>" .
+"<p>" . i8ln('Your backup logging doesn\'t work. In case of database corruption all data may be lost.') .
+"<br>" . i8ln('To solve this, type') .
+":<br><i><b>sudo chgrp " . exec('whoami') . " " . dirname(__DIR__) . "<br>sudo chmod g+w " . dirname(__DIR__) . "</b></i></p>";
             }
         }
         ?>
@@ -311,7 +314,7 @@ if ($noNativeLogin === false || $noDiscordLogin === false) {
                     <th><?php echo i8ln('Select user'); ?></th>
                     <td>
                         <select name="email" class='select' style='text-indent: 20px;' required>
-                            <option><?php echo i8ln('Select a user...'); ?></option>
+                            <option value='-1'><?php echo i8ln('Select a user...'); ?></option>
                             <?php
                             $users = $db->select("users", [
                                 "user"
@@ -345,7 +348,7 @@ if ($noNativeLogin === false || $noDiscordLogin === false) {
                     <th><?php echo i8ln('Reset Password'); ?></th><td><input type="checkbox" name="ResetPwd"></td>
                 </tr>
                 <tr>
-                    <th><?php echo i8ln('Create User'); ?></th><td><input type="text" name="createUserEmail" placeholder='E-mail'></td>
+                    <th><?php echo i8ln('Create User'); ?></th><td><input type="text" name="createUserEmail" placeholder='<?php echo i8ln('E-mail'); ?>'></td>
                 </tr>
                 <tr>
                     <td id="one-third"><input id="margin" type="submit" name="submit_updateUser"></td><td></td>
@@ -356,11 +359,11 @@ if ($noNativeLogin === false || $noDiscordLogin === false) {
         <?php
         if (isset($_POST['submit_updateUser'])) {
         ?>
-            <p><h2>CHANGES</h2></p>
+            <h2><?php echo i8ln('CHANGES'); ?></h2>
             <table>
                 <?php
                 if (empty($Err)) {
-                    if (isset($_POST['submit_updateUser']) && $_POST['checkboxDate'] != 0 && $_POST['email'] != i8ln('Select a user...')) {
+                    if (isset($_POST['submit_updateUser']) && $_POST['checkboxDate'] !== 0 && $_POST['email'] !== '-1') {
                     ?>
                     <tr>
                         <th id="one-third"><?php echo $_POST['email'] . " - " . i8ln('Expire Date'); ?></th>
@@ -368,7 +371,7 @@ if ($noNativeLogin === false || $noDiscordLogin === false) {
                     </tr>
                     <?php
                     }
-                    if (isset($_POST['submit_updateUser']) && isset($_POST['ResetPwd']) == "on" && $_POST['email'] != i8ln('Select a user...')) {
+                    if (isset($_POST['submit_updateUser']) && isset($_POST['ResetPwd']) && $_POST['email'] !== '-1') {
                     ?>
                     <tr>
                         <th id="one-third"><?php echo $_POST['email'] . " - " . i8ln('Password'); ?></th>
@@ -399,9 +402,9 @@ if ($noNativeLogin === false || $noDiscordLogin === false) {
         }
     } elseif (!empty($_SESSION['user']->user)) {
     ?>
-        <p><h2><?php echo "[<a href='.'>{$title}</a>] - "; echo i8ln('Activate key'); ?></h2></p>
+        <h2><?php echo "[<a href='.'>{$title}</a>] - " . i8ln('Activate key'); ?></h2>
         <?php
-            if (isset($_POST['submit_key']) && empty($Err)) {
+            if (isset($_POST['submitKey']) && empty($Err)) {
                 
                 if ($_SESSION['user']->expire_timestamp > time()) {
                     $new_expire_timestamp = $_SESSION['user']->expire_timestamp + 60*60*24*31*$info['quantity'];
@@ -421,7 +424,7 @@ if ($noNativeLogin === false || $noDiscordLogin === false) {
                 $time = date("Y-m-d H:i", $new_expire_timestamp);
 
                 echo "<h3><span style='color: green;'>" . i8ln('Your key has been activated!') . "<br>" . i8ln('Your account expires on: ') . $time . "</span></h3>";
-            } elseif (isset($_POST['submit_key']) && !empty($Err)) {
+            } elseif (isset($_POST['submitKey']) && !empty($Err)) {
                 echo "<h3><span style='color: red;'>{$Err}</span></h3>";
             }
         ?>
@@ -431,7 +434,7 @@ if ($noNativeLogin === false || $noDiscordLogin === false) {
                     <th><?php echo i8ln('Selly Order ID'); ?></th><td><input type="text" name="key" required placeholder="123a4b5c-de67-8901-f234-5g6789801h23"></td>
                 </tr>
                 <tr>
-                    <td id="one-third"><input id="margin" type="submit" name="submit_key"><a class='button' id="margin" href='.'><?php echo i8ln('Back to map'); ?></a></td><td></td>
+                    <td id="one-third"><input id="margin" type="submit" name="submitKey"><a class='button' id="margin" href='.'><?php echo i8ln('Back to map'); ?></a></td><td></td>
                 </tr>
             </table>
         </form>
@@ -442,13 +445,13 @@ if ($noNativeLogin === false || $noDiscordLogin === false) {
         <form action='' method='POST'>
             <table>
                 <tr>
-                    <th><?php echo i8ln('E-mail'); ?></th><td><input type="text" name="email" required <?php if(isset($_POST['submit_login'])) { echo "value='$_POST[email]'"; } ?> placeholder="E-mail"></td>
+                    <th><?php echo i8ln('E-mail'); ?></th><td><input type="text" name="email" required <?php if(isset($_POST['submit_login'])) { echo "value='$_POST[email]'"; } ?> placeholder="<?php echo i8ln('E-mail'); ?>"></td>
                 </tr>
                 <tr>
-                    <th><?php echo i8ln('Password'); ?></th><td><input type="password" name="password" required placeholder="Password"></td>
+                    <th><?php echo i8ln('Password'); ?></th><td><input type="password" name="password" required placeholder="<?php echo i8ln('Password'); ?>"></td>
                 </tr>
                 <?php
-                if (isset($_POST['submit_login']) && password_verify($_POST['password'], $info['password']) != 1) {
+                if (isset($_POST['submit_login']) && password_verify($_POST['password'], $info['password']) !== 1) {
                 ?>
                 <tr>
                     <th><?php echo i8ln('Message'); ?></th>

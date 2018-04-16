@@ -18,12 +18,12 @@ class DiscordAuth
         $httpClient = new Client(['base_uri' => 'https://discordapp.com']);
         $redirector = new DiscordRedirector($this);
 
-		global $discord_bot_client_id, $discord_bot_client_secret, $discord_bot_redirect_uri;
+        global $discordBotClientId, $discordBotClientSecret, $discordBotRedirectUri;
 
         $clientConfig = new ClientConfig([
-            'client_id' => $discord_bot_client_id,
-            'client_secret' => $discord_bot_client_secret,
-            'redirect_uri' => $discord_bot_redirect_uri
+            'client_id' => $discordBotClientId,
+            'client_secret' => $discordBotClientSecret,
+            'redirect_uri' => $discordBotRedirectUri
         ]);
 
         $serverConfig = new ServerConfig([

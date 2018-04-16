@@ -71,17 +71,17 @@ function generateRandomString($length = 8)
     return $randomString;
 }
 
-function createUserAccount($user, $password, $new_expire_timestamp)
+function createUserAccount($user, $password, $newExpireTimestamp)
 {
     global $db, $logfile;
 
-    $count = $db->count("users",[
+    $count = $db->count("users", [
         "user" => $user,
         "login_system" => 'native'
     ]);
 
-    if ($count == 0) {
-        $getId = $db->count("users",[
+    if ($count === 0) {
+        $getId = $db->count("users", [
             "login_system" => 'native'
         ]);
 
@@ -92,11 +92,11 @@ function createUserAccount($user, $password, $new_expire_timestamp)
             "id" => $getId,
             "user" => $user,
             "temp_password" => $hashedPwd,
-            "expire_timestamp" => $new_expire_timestamp,
+            "expire_timestamp" => $newExpireTimestamp,
             "login_system" => 'native'
         ]);
         
-        $logMsg = "INSERT INTO users (id, user, temp_password, expire_timestamp, login_system) VALUES ('{$getId}', '{$user}', '{$hashedPwd}', '{$new_expire_timestamp}', 'native'); -- " . date('Y-m-d H:i:s') . "\r\n";
+        $logMsg = "INSERT INTO users (id, user, expire_timestamp, login_system) VALUES ('{$getId}', '{$user}', '{$newExpireTimestamp}', 'native'); -- " . date('Y-m-d H:i:s') . "\r\n";
         file_put_contents($logfile, $logMsg, FILE_APPEND);
 
         return true;
@@ -110,15 +110,14 @@ function resetUserPassword($user, $password, $resetType)
     global $db, $logfile;
     
     $hashedPwd = password_hash($password, PASSWORD_DEFAULT);
-    if ($resetType == 0) {
+    if ($resetType === 0) {
         $db->update("users", [
             "temp_password" => $hashedPwd
         ], [
             "user" => $user,
             "login_system" => 'native'
         ]);
-        $logMsg = "UPDATE users SET temp_password = '{$hashedPwd}' WHERE user = '{$user}' AND login_system = 'native'; -- " . date('Y-m-d H:i:s') . "\r\n";
-    } elseif ($resetType == 1) {
+    } elseif ($resetType === 1) {
         $db->update("users", [
             "password" => null,
             "temp_password" => $hashedPwd
@@ -126,7 +125,6 @@ function resetUserPassword($user, $password, $resetType)
             "user" => $user,
             "login_system" => 'native'
         ]);
-        $logMsg = "UPDATE users SET password = null, temp_password = '{$hashedPwd}' WHERE user = '{$user}' AND login_system = 'native'; -- " . date('Y-m-d H:i:s') . "\r\n";
     } else {
         $db->update("users", [
             "password" => $hashedPwd,
@@ -135,26 +133,23 @@ function resetUserPassword($user, $password, $resetType)
             "user" => $user,
             "login_system" => 'native'
         ]);
-        $logMsg = "UPDATE users SET password = '{$hashedPwd}', temp_password = null WHERE user = '{$user}' AND login_system = 'native'; -- " . date('Y-m-d H:i:s') . "\r\n";
     }
-
-    file_put_contents($logfile, $logMsg, FILE_APPEND);
 
     return true;
 }
 
-function updateExpireTimestamp($user, $login_system, $new_expire_timestamp)
+function updateExpireTimestamp($user, $login_system, $newExpireTimestamp)
 {
     global $db, $logfile;
 
     $db->update("users", [
-        "expire_timestamp" => $new_expire_timestamp
+        "expire_timestamp" => $newExpireTimestamp
     ], [
         "user" => $user,
         "login_system" => $login_system
     ]);
 
-    $logMsg = "UPDATE users SET expire_timestamp = '{$new_expire_timestamp}' WHERE user = '{$user}' AND login_system = '{$login_system}'; -- " . date('Y-m-d H:i:s') . "\r\n";
+    $logMsg = "UPDATE users SET expire_timestamp = '{$newExpireTimestamp}' WHERE user = '{$user}' AND login_system = '{$login_system}'; -- " . date('Y-m-d H:i:s') . "\r\n";
     file_put_contents($logfile, $logMsg, FILE_APPEND);
 
     return true;

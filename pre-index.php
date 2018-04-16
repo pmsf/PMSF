@@ -171,8 +171,8 @@ if ($blockIframe) {
 
                 $_SESSION['user']->expire_timestamp = $info['expire_timestamp'];
 
-                if (!empty($_SESSION['user']->updatePwd) && $_SESSION['user']->updatePwd == 1) {
-                    header("Location: /user");
+                if (!empty($_SESSION['user']->updatePwd) && $_SESSION['user']->updatePwd === 1) {
+                    header("Location: ./user");
                     die();
                 }
                 
@@ -185,7 +185,7 @@ if ($blockIframe) {
                 echo "<span style='color: {$color};'>" . substr($_SESSION['user']->user,0, 3) . "...</span>";
 
             } else {
-                echo "<a href='./user'>Login</a>";
+                echo "<a href='./user'>" . i8ln('Login') . "</a>";
             }
         }
         ?>
