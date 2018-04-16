@@ -3,7 +3,7 @@
 //
 
 var login
-var expire_timestamp
+var expireTimestamp
 
 var $selectExclude
 var $selectExcludeMinIV
@@ -552,11 +552,11 @@ function pokemonLabel(item) {
             i8ln('Moves') + ' : ' + pMove1 + ' / ' + pMove2 +
             '</div>'
     }
-    if (login === true && timestamp > expire_timestamp) {
-    details +=
-        '<div>' +
-        '<b>' + i8ln('IV stats is a donator only feature.') + '</b>' +
-        '</div>'
+    if (login === true && timestamp > expireTimestamp) {
+        details +=
+            '<div>' +
+            '<b>' + i8ln('IV stats is a donator only feature.') + '</b>' +
+            '</div>'
     }
     if (weatherBoostedCondition !== 0) {
         details +=
@@ -606,7 +606,7 @@ function pokemonLabel(item) {
         '<div>' +
         '<a href="javascript:excludePokemon(' + id + ')">' + i8ln('Exclude') + '</a>&nbsp&nbsp'
 
-    if (login === true && timestamp < expire_timestamp) {
+    if (login === true && timestamp < expireTimestamp) {
         contentstring += '<a href="javascript:notifyAboutPokemon(' + id + ')">' + i8ln('Notify') + '</a>&nbsp&nbsp'
     }
     contentstring +=
@@ -1469,7 +1469,7 @@ function loadRawData() {
         data: {
             'timestamp': timestamp,
             'login': login,
-            'expire_timestamp': expire_timestamp,
+            'expireTimestamp': expireTimestamp,
             'pokemon': loadPokemon,
             'lastpokemon': lastpokemon,
             'pokestops': loadPokestops,
@@ -1979,7 +1979,7 @@ function updateMap() {
         lastslocs = result.lastslocs
         lastspawns = result.lastspawns
         login = result.login
-        expire_timestamp = result.expire_timestamp
+        expireTimestamp = result.expireTimestamp
 
         prevMinIV = result.preMinIV
         prevMinLevel = result.preMinLevel
