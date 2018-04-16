@@ -466,7 +466,7 @@ function openMapDirections(lat, lng) { // eslint-disable-line no-unused-vars
 }
 
 // Converts timestamp to readable String
-function getDateStr(t) {
+function getDateStr(t) { // eslint-disable-line no-unused-vars
     var dateStr = 'Unknown'
     if (t) {
         dateStr = moment(t).format('L')
@@ -1664,7 +1664,7 @@ function searchAjax(field) { // eslint-disable-line no-unused-vars
     }
 }
 
-function centerMapOnCoords(event) {
+function centerMapOnCoords(event) { // eslint-disable-line no-unused-vars
     var point = $(event.target)
     if (point.hasClass('left-column')) {
         point = point.parent()
@@ -2965,8 +2965,8 @@ function generateRaidBossList() {
     data += '<span class="pokemon-icon-sprite" data-value="egg_5" data-label="Level 5" onclick="pokemonRaidFilter(event);"><span class="egg_5 inner-bg" style="background: url(\'static/raids/egg_legendary.png\');background-size:100%"></span><span class="egg-number">5</span></span>'
     boss.forEach(function (element) {
         var j = Math.floor(element / 28)
-        var b = element % 28;
-        if(b == 0){
+        var b = element % 28
+        if (b === 0) {
             b = 28
             j = j - 1
         }
