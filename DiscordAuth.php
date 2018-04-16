@@ -1,4 +1,5 @@
 <?php
+
 require_once("config/config.php");
 require_once("DiscordRedirector.php");
 use EasyBib\OAuth2\Client\AuthorizationCodeGrant\ClientConfig;
