@@ -82,7 +82,6 @@ include('config/config.php');
             }
             
             if (empty($passwordErr)) {
-
                 resetUserPassword($_SESSION['user']->user, $_POST['password'], 2);
                 unset($_SESSION['user']->updatePwd);
                 
@@ -98,7 +97,6 @@ include('config/config.php');
             )->fetch();
 
             if (password_verify($_POST['password'], $info['password']) === true || password_verify($_POST['password'], $info['temp_password']) === true) {
-
                 $_SESSION['user'] = new \stdClass();
                 setcookie("LoginCookie", session_id(), time()+60*60*24*7);
 
@@ -110,7 +108,6 @@ include('config/config.php');
                 ]);
 
                 if (password_verify($_POST['password'], $info['password']) === true) {
-
                     if (!empty($info['temp_password'])) {
                         $db->update("users", [
                             "temp_password" => null
@@ -126,7 +123,6 @@ include('config/config.php');
                         header("Location: .");
                     }
                     die();
-
                 } else {
                     $_SESSION['user']->updatePwd = 1;
                     header("Location: ./user");
@@ -135,14 +131,12 @@ include('config/config.php');
             }
         }
         if (isset($_POST['submitForgotPwdBtn'])) {
-
             $count = $db->count("users", [
                 "user" => $_POST['email'],
                 "login_system" => 'native'
             ]);
             
             if ($count === 1 || (in_array($_POST['email'], $adminUsers))) {
-
                 $randomPwd = generateRandomString();
                 
                 if ($count === 1) {
@@ -208,7 +202,6 @@ include('config/config.php');
                     }
 
                     if ($_POST['checkboxDate'] > 0) {
-
                         if ($_POST['checkboxDate'] >= 1 && $_POST['checkboxDate'] <= 12) {
                             if ($info['expire_timestamp'] > time()) {
                                 $newExpireTimestamp = $info['expire_timestamp'] + 60 * 60 * 24 * $daysMembershipPerQuantity * $_POST['checkboxDate'];
@@ -220,7 +213,6 @@ include('config/config.php');
                         }
 
                         updateExpireTimestamp($_POST['email'], $login_system, $newExpireTimestamp);
-
                     }
                 } else {
                     $Err = i8ln('No changes made.');
@@ -324,12 +316,10 @@ include('config/config.php');
                                 ]);
 
             if ($users) {
-                foreach($users as $user)
-                {
+                foreach ($users as $user) {
                     echo "<option>{$user['user']}</option>";
                 }
-            }
-                                ?>
+            } ?>
                             </select>
                         </td>
                     </tr>
@@ -395,8 +385,7 @@ include('config/config.php');
                             <td><input type="text" name="infoMess" value="<?php echo i8ln($Err); ?>" id="redBox" disabled></td>
                         </tr>
                         <?php
-                    }
-                    ?>
+                    } ?>
                 </table>
             <?php
             }
@@ -443,7 +432,9 @@ include('config/config.php');
             <form action='' method='POST'>
                 <table>
                     <tr>
-                        <th><?php echo i8ln('E-mail'); ?></th><td><input type="text" name="email" required <?php if(isset($_POST['submitLoginBtn'])) { echo "value='$_POST[email]'"; } ?> placeholder="<?php echo i8ln('E-mail'); ?>"></td>
+                        <th><?php echo i8ln('E-mail'); ?></th><td><input type="text" name="email" required <?php if (isset($_POST['submitLoginBtn'])) {
+                echo "value='$_POST[email]'";
+            } ?> placeholder="<?php echo i8ln('E-mail'); ?>"></td>
                     </tr>
                     <tr>
                         <th><?php echo i8ln('Password'); ?></th><td><input type="password" name="password" required placeholder="<?php echo i8ln('Password'); ?>"></td>
@@ -465,7 +456,9 @@ include('config/config.php');
                     <?php
                     } ?>
                     <tr>
-                        <td id="one-third"><input id="margin" type="submit" name="submitLoginBtn"><a class='button' id="margin" href='?resetPwd'><?php echo i8ln('Reset Password'); ?></a><?php if ($noDiscordLogin === false) echo "<a class='button' id='margin' href='./discord-login'>" . i8ln('Discord Login'); ?></a></td><td></td>
+                        <td id="one-third"><input id="margin" type="submit" name="submitLoginBtn"><a class='button' id="margin" href='?resetPwd'><?php echo i8ln('Reset Password'); ?></a><?php if ($noDiscordLogin === false) {
+                        echo "<a class='button' id='margin' href='./discord-login'>" . i8ln('Discord Login');
+                    } ?></a></td><td></td>
                     </tr>
                 </table>
             </form>
