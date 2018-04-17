@@ -432,7 +432,7 @@ include('config/config.php');
                 <table style='margin: 0;'>
                     <tr>
                         <th><?php echo i8ln('E-mail'); ?></th><td><input type="text" name="email" required <?php if (isset($_POST['submitLoginBtn'])) {
-                    echo "value='$_POST[email]'";
+                echo "value='$_POST[email]'";
             } ?> placeholder="<?php echo i8ln('E-mail'); ?>"></td>
                     </tr>
                     <tr>
