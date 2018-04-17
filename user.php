@@ -259,10 +259,8 @@ include('config/config.php');
                     <tr>
                         <th><?php echo i8ln('E-mail'); ?></th><td><input type="text" name="email" required></td>
                     </tr>
-                    <tr>
-                        <td id="one-third"><input id="margin" type="submit" name="submitCreateUserOrResetPasswordBtn"><a class='button' href='/user'><?php echo i8ln('Back'); ?></a></td><td></td>
-                    </tr>
                 </table>
+                <table><tr><td><input id="margin" type="submit" name="submitCreateUserOrResetPasswordBtn" value="Submit"><a class='button' href='/user'><?php echo i8ln('Back'); ?></a></td></tr></table>
             </form>
         <?php
         } elseif (!empty($_SESSION['user']->updatePwd)) {
@@ -285,10 +283,8 @@ include('config/config.php');
                     </tr>
                     <?php
                     } ?>
-                    <tr>
-                        <td id="one-third"><input id="margin" type="submit" name="submitUpdatePwdBtn"></td><td></td>
-                    </tr>
                 </table>
+                <table><tr><td><input id="margin" type="submit" name="submitUpdatePwdBtn"></td></tr></table>
             </form>
         <?php
         } elseif (in_array($_SESSION['user']->user ? $_SESSION['user']->user : null, $adminUsers)) {
@@ -345,10 +341,8 @@ include('config/config.php');
                     <tr>
                         <th><?php echo i8ln('Create User'); ?></th><td><input type="text" name="createUserEmail" placeholder='<?php echo i8ln('E-mail'); ?>'></td>
                     </tr>
-                    <tr>
-                        <td id="one-third"><input id="margin" type="submit" name="submitUpdateUserBtn"></td><td></td>
-                    </tr>
                 </table>
+                <table><tr><td><input id="margin" type="submit" name="submitUpdateUserBtn"></td></tr></table>
             </form>
             
             <?php
@@ -425,20 +419,21 @@ include('config/config.php');
                         <th><?php echo i8ln('Selly Order ID'); ?></th><td><input type="text" name="key" required placeholder="123a4b5c-de67-8901-f234-5g6789801h23"></td>
                     </tr>
                     <tr>
-                        <td id="one-third"><input id="margin" type="submit" name="submitKey"><a class='button' id="margin" href='.'><?php echo i8ln('Back to map'); ?></a></td><td></td>
+                        
                     </tr>
                 </table>
+                <table><tr><td><input id="margin" type="submit" name="submitKey"><a class='button' id="margin" href='.'><?php echo i8ln('Back to map'); ?></a></td></tr></table>
             </form>
         <?php
         } else {
             ?>
             <p><h2><?php echo "[<a href='.'>{$title}</a>] - " . i8ln('Login'); ?></h2></p>
             <form action='' method='POST'>
-                <table>
+                <table style='margin: 0;'>
                     <tr>
                         <th><?php echo i8ln('E-mail'); ?></th><td><input type="text" name="email" required <?php if (isset($_POST['submitLoginBtn'])) {
-                        echo "value='$_POST[email]'";
-                    } ?> placeholder="<?php echo i8ln('E-mail'); ?>"></td>
+                    echo "value='$_POST[email]'";
+            } ?> placeholder="<?php echo i8ln('E-mail'); ?>"></td>
                     </tr>
                     <tr>
                         <th><?php echo i8ln('Password'); ?></th><td><input type="password" name="password" required placeholder="<?php echo i8ln('Password'); ?>"></td>
@@ -459,12 +454,10 @@ include('config/config.php');
                         </tr>
                     <?php
                     } ?>
-                    <tr>
-                        <td id="one-third"><input id="margin" type="submit" name="submitLoginBtn" value="Login"><a class='button' id="margin" href='?account'><?php echo i8ln('Create User / Reset Password'); ?></a><?php if ($noDiscordLogin === false) {
-                        echo "<a class='button' id='margin' href='./discord-login'>" . i8ln('Discord Login');
-                    } ?></a></td><td></td>
-                    </tr>
                 </table>
+                <table><tr><td><input id="margin" type="submit" name="submitLoginBtn" value="Login"><a class='button' id="margin" href='?account'><?php echo i8ln('Create User / Reset Password'); ?></a><?php if ($noDiscordLogin === false) {
+                        echo "<a class='button' id='margin' href='./discord-login'>" . i8ln('Login with Discord') . "</a>";
+                    } ?> <a class='button' id='margin' href='.'><?php echo i8ln('Back to Map'); ?></a></td></tr></table>
             </form>
        <?php
         }
