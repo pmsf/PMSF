@@ -412,9 +412,9 @@ include('config/config.php');
                 if (isset($_POST['submitKey']) && empty($Err)) {
                     
                     if ($_SESSION['user']->expire_timestamp > time()) {
-                        $newExpireTimestamp = $_SESSION['user']->expire_timestamp + 60 * 60 * 24 * $daysMembershipPerQuantity *$info['quantity'];
+                        $newExpireTimestamp = $_SESSION['user']->expire_timestamp + 60 * 60 * 24 * $daysMembershipPerQuantity * $info['quantity'];
                     } else {
-                        $newExpireTimestamp = time() + 60 * 60 * 24 * $daysMembershipPerQuantity * *$info['quantity'];
+                        $newExpireTimestamp = time() + 60 * 60 * 24 * $daysMembershipPerQuantity * $info['quantity'];
                     }
 
                     $_SESSION['user']->expire_timestamp = $newExpireTimestamp;
