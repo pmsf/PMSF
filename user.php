@@ -56,7 +56,7 @@ include('config/config.php');
 <div class="wrapper">
     <?php
     if ($noNativeLogin === false || $noDiscordLogin === false) {
-        if(isset($_COOKIE["LoginCookie"])) {
+        if (isset($_COOKIE["LoginCookie"])) {
             validateCookie($_COOKIE["LoginCookie"]);
         }
         if ($noNativeLogin === true && $noDiscordLogin === false && empty($_SESSION['user']->id)) {
@@ -100,7 +100,7 @@ include('config/config.php');
             if (password_verify($_POST['password'], $info['password']) === true || password_verify($_POST['password'], $info['temp_password']) === true) {
 
                 $_SESSION['user'] = new \stdClass();
-                setcookie("LoginCookie",session_id(),time()+60*60*24*7);
+                setcookie("LoginCookie", session_id(), time()+60*60*24*7);
 
                 $db->update("users", [
                     "Session_ID" => session_id()
@@ -120,7 +120,7 @@ include('config/config.php');
                         ]);
                     }
 
-                    if (in_array($info['user'], $adminUsers)){
+                    if (in_array($info['user'], $adminUsers)) {
                         header("Location: ./user");
                     } else {
                         header("Location: .");
@@ -136,7 +136,7 @@ include('config/config.php');
         }
         if (isset($_POST['submitForgotPwdBtn'])) {
 
-            $count = $db->count("users",[
+            $count = $db->count("users", [
                 "user" => $_POST['email'],
                 "login_system" => 'native'
             ]);
@@ -248,7 +248,7 @@ include('config/config.php');
                 ]
             )->fetch();
 
-            if(empty($info['selly_id'])) {
+            if (empty($info['selly_id'])) {
                 $Err = i8ln('Invalid key.');
             } elseif ($info['activated'] === 1) {
                 $Err = i8ln('This key has already been activated.');
@@ -256,7 +256,7 @@ include('config/config.php');
         }
 
         if (isset($_GET['resetPwd'])) {
-        ?>
+            ?>
             <p><h2><?php echo "[<a href='.'>{$title}</a>] - " . i8ln('Forgot password'); ?></h2></p>
             <form action='' method='POST'>
                 <table>
@@ -269,9 +269,8 @@ include('config/config.php');
                 </table>
             </form>
         <?php
-
         } elseif (!empty($_SESSION['user']->updatePwd)) {
-        ?>
+            ?>
             <h2><?php echo "[<a href='.'>{$title}</a>] - " . i8ln('Change your password.'); ?></h2>
             <form action='' method='POST'>
                 <table>
@@ -283,34 +282,31 @@ include('config/config.php');
                     </tr>
                     <?php
                     if (!empty($passwordErr)) {
-
-                    ?>
+                        ?>
                     <tr>
                         <th><?php echo i8ln('Message'); ?></th>
                         <td><input type="text" name="errMess" value="<?php echo $passwordErr; ?>" id="redBox" disabled></td>
                     </tr>
                     <?php
-                    }
-                    ?>
+                    } ?>
                     <tr>
                         <td id="one-third"><input id="margin" type="submit" name="submitUpdatePwdBtn"><a class='button' href='/user'><?php echo i8ln('Back'); ?></a></td><td></td>
                     </tr>
                 </table>
             </form>
-       <?php
+        <?php
         } elseif (in_array(!empty($_SESSION['user']->user), $adminUsers)) {
-        ?>
+            ?>
             <h2><?php echo "[<a href='.'>{$title}</a>] - " . i8ln('Admin page'); ?></h2>
             <?php
             if (!file_exists($logfile)) {
-                if(file_put_contents($logfile, "-- " . i8ln('This is a test to make sure logging is okay.') . " " . date('Y-m-d H:i:s') ."\r\n", FILE_APPEND) == false){
+                if (file_put_contents($logfile, "-- " . i8ln('This is a test to make sure logging is okay.') . " " . date('Y-m-d H:i:s') ."\r\n", FILE_APPEND) == false) {
                     echo "<h1>" . i8ln('Warning') . "</h1>" .
                         "<p>" . i8ln('Your backup logging doesn\'t work. In case of database corruption all data may be lost.') .
                         "<br>" . i8ln('To solve this, type') .
                         ":<br><i><b>sudo chgrp " . exec('whoami') . " " . dirname(__DIR__) . "<br>sudo chmod g+w " . dirname(__DIR__) . "</b></i></p>";
                 }
-            }
-            ?>
+            } ?>
             <form action='' method='POST'>
                 <table>
                     <tr>
@@ -321,18 +317,18 @@ include('config/config.php');
                                 <?php
                                 $users = $db->select("users", [
                                     "user"
-                                ],[
+                                ], [
                                     "ORDER" => [
                                         "user" => "ASC"
                                     ]
                                 ]);
 
-                                if ($users) {
-                                    foreach($users as $user)
-                                    {
-                                        echo "<option>{$user['user']}</option>";
-                                    }
-                                }
+            if ($users) {
+                foreach($users as $user)
+                {
+                    echo "<option>{$user['user']}</option>";
+                }
+            }
                                 ?>
                             </select>
                         </td>
@@ -369,7 +365,7 @@ include('config/config.php');
                     <?php
                     if (empty($Err)) {
                         if (isset($_POST['submitUpdateUserBtn']) && $_POST['checkboxDate'] > 0 && $_POST['email'] !== '-1') {
-                        ?>
+                            ?>
                         <tr>
                             <th id="one-third"><?php echo $_POST['email'] . " - " . i8ln('Expire Date'); ?></th>
                             <td><input type="text" name="infoMess" value="<?php echo date('Y-m-d', $newExpireTimestamp); ?>" id="greenBox" disabled></td>
@@ -377,22 +373,21 @@ include('config/config.php');
                         <?php
                         }
                         if (isset($_POST['submitUpdateUserBtn']) && isset($_POST['ResetPwd']) && $login_system === 'native' && $_POST['email'] !== '-1') {
-                        ?>
+                            ?>
                         <tr>
                             <th id="one-third"><?php echo $_POST['email'] . " - " . i8ln('Password'); ?></th>
-                            <td><input type="text" name="infoMess2" value="<?php echo $resetUserPwd;?>" id="greenBox"></td>
+                            <td><input type="text" name="infoMess2" value="<?php echo $resetUserPwd; ?>" id="greenBox"></td>
                         </tr>
                         <?php
                         }
                         if (isset($_POST['submitUpdateUserBtn']) && !empty($_POST['createUserEmail'])) {
-                        ?>
-                        <tr>
-                            <th id="one-third"><?php echo $_POST['createUserEmail'] . " - " . i8ln('Created Account'); ?></th>
-                            <td><input type="text" name="infoMess2" value="<?php echo $createUserPwd;?>" id="greenBox"></td>
-                        </tr>
+                            ?>
+                            <tr>
+                                <th id="one-third"><?php echo $_POST['createUserEmail'] . " - " . i8ln('Created Account'); ?></th>
+                                <td><input type="text" name="infoMess2" value="<?php echo $createUserPwd; ?>" id="greenBox"></td>
+                            </tr>
                         <?php
                         }
-
                     } else {
                         ?>
                         <tr>
@@ -406,11 +401,10 @@ include('config/config.php');
             <?php
             }
         } elseif (!empty($_SESSION['user']->user)) {
-        ?>
+            ?>
             <h2><?php echo "[<a href='.'>{$title}</a>] - " . i8ln('Activate key'); ?></h2>
             <?php
                 if (isset($_POST['submitKey']) && empty($Err)) {
-                    
                     if ($_SESSION['user']->expire_timestamp > time()) {
                         $newExpireTimestamp = $_SESSION['user']->expire_timestamp + 60 * 60 * 24 * $daysMembershipPerQuantity * $info['quantity'];
                     } else {
@@ -431,8 +425,7 @@ include('config/config.php');
                     echo "<h3><span style='color: green;'>" . i8ln('Your key has been activated!') . "<br>" . i8ln('Your account expires on: ') . $time . "</span></h3>";
                 } elseif (isset($_POST['submitKey']) && !empty($Err)) {
                     echo "<h3><span style='color: red;'>{$Err}</span></h3>";
-                }
-            ?>
+                } ?>
             <form action='' method='POST'>
                 <table>
                     <tr>
@@ -457,21 +450,20 @@ include('config/config.php');
                     </tr>
                     <?php
                     if (isset($_POST['submitLoginBtn']) && password_verify($_POST['password'], $info['password']) !== 1) {
-                    ?>
-                    <tr>
-                        <th><?php echo i8ln('Message'); ?></th>
-                        <td><input type="text" name="infoMess" value="<?php echo i8ln('Wrong credentials'); ?>" id="redBox" disabled></td>
-                    </tr>
+                        ?>
+                        <tr>
+                            <th><?php echo i8ln('Message'); ?></th>
+                            <td><input type="text" name="infoMess" value="<?php echo i8ln('Wrong credentials'); ?>" id="redBox" disabled></td>
+                        </tr>
                     <?php
                     } elseif (isset($_GET['sentPwd'])) {
-                    ?>
+                        ?>
                         <tr>
                             <th><?php echo i8ln('Message'); ?></th>
                             <td><input type="text" name="infoMess" value="<?php echo i8ln('An email has been sent to the specified email.'); ?>" id="greenBox" disabled></td>
                         </tr>
                     <?php
-                    }
-                    ?>
+                    } ?>
                     <tr>
                         <td id="one-third"><input id="margin" type="submit" name="submitLoginBtn"><a class='button' id="margin" href='?resetPwd'><?php echo i8ln('Reset Password'); ?></a><?php if ($noDiscordLogin === false) echo "<a class='button' id='margin' href='./discord-login'>" . i8ln('Discord Login'); ?></a></td><td></td>
                     </tr>

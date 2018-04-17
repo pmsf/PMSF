@@ -10,7 +10,7 @@ if ($noDiscordLogin === false) {
             $auth->handleAuthorizationResponse($_GET);
             $user = json_decode($auth->get("/api/users/@me"));
 
-            $count = $db->count("users",[
+            $count = $db->count("users", [
                 "id" => $user->{'id'},
                 "login_system" => 'discord'
             ]);
@@ -25,7 +25,6 @@ if ($noDiscordLogin === false) {
 
                 $logMsg = "INSERT INTO users (id, user, expire_timestamp, login_system) VALUES ('{$user->id}', '{$user->username}" . "#" . "{$user->discriminator}', '" . time() ."', 'discord'); -- " . date('Y-m-d H:i:s') . "\r\n";
                 file_put_contents($logfile, $logMsg, FILE_APPEND);
-
             }
 
             setcookie("LoginCookie", session_id(), time()+60*60*24*7);
