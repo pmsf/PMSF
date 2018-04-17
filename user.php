@@ -97,7 +97,6 @@ include('config/config.php');
             )->fetch();
 
             if (password_verify($_POST['password'], $info['password']) === true || password_verify($_POST['password'], $info['temp_password']) === true) {
-                
                 setcookie("LoginCookie", session_id(), time()+60*60*24*7);
 
                 $db->update("users", [
@@ -117,8 +116,8 @@ include('config/config.php');
                         ]);
                     }
                 }
-				header("Location: .");
-				die();
+                header("Location: .");
+                die();
             }
         }
         if (isset($_POST['submitCreateUserOrResetPasswordBtn'])) {
@@ -413,7 +412,9 @@ include('config/config.php');
                         
                     </tr>
                 </table>
-                <table><tr><td><input id="margin" type="submit" name="submitKey" value="<?php echo i8ln('Submit'); ?>"><?php if ($sellyPage) { echo "<a class='button' target='_TAB' id='margin' href='{$sellyPage}'>" . i8ln('Extend Membership') . "</a>"; } ?><a class='button' id="margin" href='.'><?php echo i8ln('Back to map'); ?></a></td></tr></table>
+                <table><tr><td><input id="margin" type="submit" name="submitKey" value="<?php echo i8ln('Submit'); ?>"><?php if ($sellyPage) {
+                    echo "<a class='button' target='_TAB' id='margin' href='{$sellyPage}'>" . i8ln('Extend Membership') . "</a>";
+                } ?><a class='button' id="margin" href='.'><?php echo i8ln('Back to map'); ?></a></td></tr></table>
             </form>
         <?php
         } else {
