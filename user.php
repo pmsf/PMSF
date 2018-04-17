@@ -99,6 +99,7 @@ include('config/config.php');
 
             if (password_verify($_POST['password'], $info['password']) === true || password_verify($_POST['password'], $info['temp_password']) === true) {
 
+                $_SESSION['user'] = new \stdClass();
                 setcookie("LoginCookie",session_id(),time()+60*60*24*7);
 
                 $db->update("users", [
@@ -210,9 +211,9 @@ include('config/config.php');
 
                         if ($_POST['checkboxDate'] >= 1 && $_POST['checkboxDate'] <= 12) {
                             if ($info['expire_timestamp'] > time()) {
-                                $newExpireTimestamp = $info['expire_timestamp'] + 60 * 60 * 24 * 31 * $_POST['checkboxDate'];
+                                $newExpireTimestamp = $info['expire_timestamp'] + 60 * 60 * 24 * $daysMembershipPerQuantity * $_POST['checkboxDate'];
                             } else {
-                                $newExpireTimestamp = time() + 60 * 60 * 24 * 31;
+                                $newExpireTimestamp = time() + 60 * 60 * 24 * $daysMembershipPerQuantity;
                             }
                         } else {
                             $newExpireTimestamp = strtotime($_POST['customDate']);
@@ -411,9 +412,9 @@ include('config/config.php');
                 if (isset($_POST['submitKey']) && empty($Err)) {
                     
                     if ($_SESSION['user']->expire_timestamp > time()) {
-                        $newExpireTimestamp = $_SESSION['user']->expire_timestamp + 60*60*24*31*$info['quantity'];
+                        $newExpireTimestamp = $_SESSION['user']->expire_timestamp + 60 * 60 * 24 * $daysMembershipPerQuantity *$info['quantity'];
                     } else {
-                        $newExpireTimestamp = time() + 60*60*24*31*$info['quantity'];
+                        $newExpireTimestamp = time() + 60 * 60 * 24 * $daysMembershipPerQuantity * *$info['quantity'];
                     }
 
                     $_SESSION['user']->expire_timestamp = $newExpireTimestamp;
