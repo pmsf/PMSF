@@ -171,7 +171,7 @@ if ($blockIframe) {
 
                 $_SESSION['user']->expire_timestamp = $info['expire_timestamp'];
 
-                if (!empty($_SESSION['user']->updatePwd) && $_SESSION['user']->updatePwd === true) {
+                if (!empty($_SESSION['user']->updatePwd) && $_SESSION['user']->updatePwd === 1) {
                     header("Location: ./user");
                     die();
                 }

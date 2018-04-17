@@ -97,7 +97,7 @@ include('config/config.php');
             )->fetch();
 
             if (password_verify($_POST['password'], $info['password']) === true || password_verify($_POST['password'], $info['temp_password']) === true) {
-                $_SESSION['user'] = new \stdClass();
+                
                 setcookie("LoginCookie", session_id(), time()+60*60*24*7);
 
                 $db->update("users", [
@@ -116,18 +116,9 @@ include('config/config.php');
                             "login_system" => 'native'
                         ]);
                     }
-
-                    if (in_array($info['user'], $adminUsers)) {
-                        header("Location: ./user");
-                    } else {
-                        header("Location: .");
-                    }
-                    die();
-                } else {
-                    $_SESSION['user']->updatePwd = 1;
-                    header("Location: ./user");
-                    die();
                 }
+				header("Location: .");
+				die();
             }
         }
         if (isset($_POST['submitCreateUserOrResetPasswordBtn'])) {
@@ -255,19 +246,19 @@ include('config/config.php');
             ?>
             <p><h2><?php echo "[<a href='.'>{$title}</a>] - " . i8ln('Create User / Reset Password'); ?></h2></p>
             <form action='' method='POST'>
-                <table>
+                <table style='margin: 0;'>
                     <tr>
                         <th><?php echo i8ln('E-mail'); ?></th><td><input type="text" name="email" required></td>
                     </tr>
                 </table>
-                <table><tr><td><input id="margin" type="submit" name="submitCreateUserOrResetPasswordBtn" value="Submit"><a class='button' href='/user'><?php echo i8ln('Back'); ?></a></td></tr></table>
+                <table><tr><td><input id="margin" type="submit" name="submitCreateUserOrResetPasswordBtn" value="<?php echo i8ln('Submit'); ?>"><a class='button' href='/user'><?php echo i8ln('Back'); ?></a></td></tr></table>
             </form>
         <?php
         } elseif (!empty($_SESSION['user']->updatePwd)) {
             ?>
             <h2><?php echo "[<a href='.'>{$title}</a>] - " . i8ln('Change your password.'); ?></h2>
             <form action='' method='POST'>
-                <table>
+                <table style='margin: 0;'>
                     <tr>
                         <th><?php echo i8ln('New password'); ?></th><td><input type="password" name="password" required></td>
                     </tr>
@@ -284,10 +275,10 @@ include('config/config.php');
                     <?php
                     } ?>
                 </table>
-                <table><tr><td><input id="margin" type="submit" name="submitUpdatePwdBtn"></td></tr></table>
+                <table><tr><td><input id="margin" type="submit" name="submitUpdatePwdBtn" value="<?php echo i8ln('Submit'); ?>"><a class='button' href='./logout.php'><?php echo i8ln('Logout'); ?></a></td></tr></table>
             </form>
         <?php
-        } elseif (in_array($_SESSION['user']->user ? $_SESSION['user']->user : null, $adminUsers)) {
+        } elseif (in_array(isset($_SESSION['user']->user) ? $_SESSION['user']->user : null, $adminUsers)) {
             ?>
             <h2><?php echo "[<a href='.'>{$title}</a>] - " . i8ln('Admin page'); ?></h2>
             <?php
@@ -300,7 +291,7 @@ include('config/config.php');
                 }
             } ?>
             <form action='' method='POST'>
-                <table>
+                <table style='margin: 0;'>
                     <tr>
                         <th><?php echo i8ln('Select user'); ?></th>
                         <td>
@@ -342,14 +333,14 @@ include('config/config.php');
                         <th><?php echo i8ln('Create User'); ?></th><td><input type="text" name="createUserEmail" placeholder='<?php echo i8ln('E-mail'); ?>'></td>
                     </tr>
                 </table>
-                <table><tr><td><input id="margin" type="submit" name="submitUpdateUserBtn"></td></tr></table>
+                <table><tr><td><input id="margin" type="submit" name="submitUpdateUserBtn" value="<?php echo i8ln('Submit'); ?>"></td></tr></table>
             </form>
             
             <?php
             if (isset($_POST['submitUpdateUserBtn'])) {
                 ?>
                 <h2><?php echo i8ln('CHANGES'); ?></h2>
-                <table>
+                <table style='margin: 0;'>
                     <?php
                     if (empty($Err)) {
                         if (isset($_POST['submitUpdateUserBtn']) && $_POST['radioExpireDate'] > 0 && $_POST['email'] !== '-1') {
@@ -414,7 +405,7 @@ include('config/config.php');
                     echo "<h3><span style='color: red;'>{$Err}</span></h3>";
                 } ?>
             <form action='' method='POST'>
-                <table>
+                <table style='margin: 0;'>
                     <tr>
                         <th><?php echo i8ln('Selly Order ID'); ?></th><td><input type="text" name="key" required placeholder="123a4b5c-de67-8901-f234-5g6789801h23"></td>
                     </tr>
@@ -422,7 +413,7 @@ include('config/config.php');
                         
                     </tr>
                 </table>
-                <table><tr><td><input id="margin" type="submit" name="submitKey"><a class='button' id="margin" href='.'><?php echo i8ln('Back to map'); ?></a></td></tr></table>
+                <table><tr><td><input id="margin" type="submit" name="submitKey" value="<?php echo i8ln('Submit'); ?>"><?php if ($sellyPage) { echo "<a class='button' target='_TAB' id='margin' href='{$sellyPage}'>" . i8ln('Extend Membership') . "</a>"; } ?><a class='button' id="margin" href='.'><?php echo i8ln('Back to map'); ?></a></td></tr></table>
             </form>
         <?php
         } else {
@@ -455,7 +446,7 @@ include('config/config.php');
                     <?php
                     } ?>
                 </table>
-                <table><tr><td><input id="margin" type="submit" name="submitLoginBtn" value="Login"><a class='button' id="margin" href='?account'><?php echo i8ln('Create User / Reset Password'); ?></a><?php if ($noDiscordLogin === false) {
+                <table><tr><td><input id="margin" type="submit" name="submitLoginBtn" value="<?php echo i8ln('Submit'); ?>"><a class='button' id="margin" href='?account'><?php echo i8ln('Create User / Reset Password'); ?></a><?php if ($noDiscordLogin === false) {
                         echo "<a class='button' id='margin' href='./discord-login'>" . i8ln('Login with Discord') . "</a>";
                     } ?> <a class='button' id='margin' href='.'><?php echo i8ln('Back to Map'); ?></a></td></tr></table>
             </form>

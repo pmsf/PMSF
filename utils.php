@@ -181,16 +181,21 @@ function validateCookie($cookie)
 {
     global $db;
     $info = $db->query(
-        "SELECT id, user, login_system, expire_timestamp FROM users WHERE Session_ID = :session_id", [
+        "SELECT id, user, password, temp_password, login_system, expire_timestamp FROM users WHERE Session_ID = :session_id", [
             ":session_id" => $cookie
         ]
     )->fetch();
 
     if (!empty($info['user'])) {
+		$_SESSION['user'] = new \stdClass();
         $_SESSION['user']->id = $info['id'];
         $_SESSION['user']->user = $info['user'];
         $_SESSION['user']->login_system = $info['login_system'];
         $_SESSION['user']->expire_timestamp = $info['expire_timestamp'];
+		
+		if (empty($info['password']) && $info['login_system'] == 'native') {
+			$_SESSION['user']->updatePwd = 1;
+		}
         setcookie("LoginCookie", $cookie, time()+60*60*24*7);
         return true;
     } else {
