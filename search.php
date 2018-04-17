@@ -1,6 +1,10 @@
 <?php
 include('config/config.php');
-global $map, $fork, $db;
+global $map, $fork, $db, $noSearch, $noGyms, $noPokestops, $noRaids;
+if($noSearch === true || ($noGyms && $noRaids && $noPokestops)){
+    http_response_code(401);
+    die();
+}
 $term = !empty($_POST['term']) ? $_POST['term'] : '';
 $action = !empty($_POST['action']) ? $_POST['action'] : '';
 $dbname = '';

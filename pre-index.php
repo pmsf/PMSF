@@ -902,7 +902,7 @@ if ($blockIframe) {
     <div class="global-raid-modal">
 
     </div>
-    <?php if(!$noGyms || !$noPokestops){ ?>
+    <?php if((!$noGyms || !$noPokestops) && !$noSearch ){ ?>
     <div class="search-container">
         <button class="search-modal-button" onClick="openSearchModal(event);"><i class="fa fa-search" aria-hidden="true"></i></button>
         <div class="search-modal" style="display:none;">
@@ -1012,6 +1012,7 @@ if ($blockIframe) {
     var directionProvider = '<?php echo $noDirectionProvider === true ? $directionProvider : 'google' ?>';
     var exEligible = <?php echo $noExEligible === true ? 'false' : $exEligible  ?>;
     var raidBossActive = <?php echo json_encode($raidBosses); ?>;
+    var manualRaids = <?php echo $noManualRaids === true ? 'false' : 'true' ?>;
 </script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js"></script>
 <script src="static/dist/js/map.common.min.js"></script>
