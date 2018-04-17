@@ -119,6 +119,7 @@
     "boostedMons": true,
     "exEligible": true,
     "motd": true,
-    "raidBossActive": true
+    "raidBossActive": true,
+    "manualRaids": true
   }
 }

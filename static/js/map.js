@@ -664,8 +664,11 @@ function gymLabel(item) {
             raidIcon = '<img src="static/raids/egg_' + raidEgg + '.png">'
         }
     }
-    raidStr += '<div class="raid-container"><i class="fa fa-binoculars submit-raid" onclick="openRaidModal(event);" data-id="' + item['gym_id'] + '"></i>' +
-        '</div>'
+    if (manualRaids) {
+        raidStr += '<div class="raid-container"><i class="fa fa-binoculars submit-raid" onclick="openRaidModal(event);" data-id="' + item['gym_id'] + '"></i>' +
+            '</div>'
+    }
+
 
     var park = ''
     if ((item['park'] !== 'None' && item['park'] !== undefined && item['park']) && (noParkInfo === false)) {
@@ -1653,7 +1656,7 @@ function searchAjax(field) { // eslint-disable-line no-unused-vars
                         html += '<span style="background:url(' + element.url + ') no-repeat;" class="i-icon" ></span>'
                     }
                     html += '<span class="name" >' + element.name + '</span></div>'
-                    if (sr.hasClass('gym-results')) {
+                    if (sr.hasClass('gym-results') && manualRaids) {
                         html += '<div class="right-column"><i class="fa fa-binoculars submit-raid"  onClick="openRaidModal(event);" data-id="' + element.external_id + '"></i></div>'
                     }
                     html += '</li>'
@@ -1687,7 +1690,7 @@ function manualRaidData(event) { // eslint-disable-line no-unused-vars
     if (pokemonId && pokemonId !== '' && gymId && gymId !== '' && eggTime && eggTime !== '' && monTime && monTime !== '') {
         if (confirm('I confirm this is an accurate sighting of a raid')) {
             return $.ajax({
-                url: 'manual_raid_submit',
+                url: 'raid_submit',
                 type: 'POST',
                 timeout: 300000,
                 dataType: 'json',
@@ -1700,7 +1703,7 @@ function manualRaidData(event) { // eslint-disable-line no-unused-vars
                 },
                 error: function error() {
                     // Display error toast
-                    toastr['error'](i8ln('Please check connectivity or reduce marker settings.'), i8ln('Error getting weather'))
+                    toastr['error'](i8ln('Please check connectivity or reduce marker settings.'), i8ln('Error Submitting Raid'))
                     toastr.options = {
                         'closeButton': true,
                         'debug': false,
@@ -2712,7 +2715,9 @@ function showGymDetails(id) { // eslint-disable-line no-unused-vars
 
         var raidStr = ''
         var raidIcon = ''
-        var rbList = generateRaidBossList()
+        if (manualRaids) {
+            var rbList = generateRaidBossList()
+        }
         if (raidSpawned && result.raid_end > Date.now()) {
             var levelStr = ''
             for (var i = 0; i < result['raid_level']; i++) {
@@ -2752,22 +2757,24 @@ function showGymDetails(id) { // eslint-disable-line no-unused-vars
                 raidIcon = '<img src="static/raids/egg_' + raidEgg + '.png">'
             }
         }
-        raidStr += '<i class="fa fa-binoculars submit-raid" onclick="$(this).toggleClass(\'open\');$(\'.raid-report\').slideToggle()" ></i>'
-        raidStr += '<div class="raid-report">'
-        raidStr += '<div style="margin:0px 10px;"><form>'
-        raidStr += '<input type="hidden" value="' + id + '" id="gymId" name="gymId">'
-        raidStr += '<div class=" switch-container">' +
-            rbList +
-            '</div>' +
-            '<div class="mon-name" style="display:none;"></div>' +
-            '<div class="switch-container timer-cont" style="display:none;">' +
-            '<h5 class="timer-name" style="margin-bottom:0;"></h5>' +
-            generateTimerLists() +
-            '</div>' +
-            '<button type="button" onclick="manualRaidData(event);" class="submitting-raid"><i class="fa fa-binoculars" style="margin-right:10px;"></i> ' + i8ln('Submit Raid') + '</button>' +
-            '</form>' +
-            '</div>' +
-            '</div>'
+        if (manualRaids) {
+            raidStr += '<i class="fa fa-binoculars submit-raid" onclick="$(this).toggleClass(\'open\');$(\'.raid-report\').slideToggle()" ></i>'
+            raidStr += '<div class="raid-report">'
+            raidStr += '<div style="margin:0px 10px;"><form>'
+            raidStr += '<input type="hidden" value="' + id + '" id="gymId" name="gymId">'
+            raidStr += '<div class=" switch-container">' +
+                rbList +
+                '</div>' +
+                '<div class="mon-name" style="display:none;"></div>' +
+                '<div class="switch-container timer-cont" style="display:none;">' +
+                '<h5 class="timer-name" style="margin-bottom:0;"></h5>' +
+                generateTimerLists() +
+                '</div>' +
+                '<button type="button" onclick="manualRaidData(event);" class="submitting-raid"><i class="fa fa-binoculars" style="margin-right:10px;"></i> ' + i8ln('Submit Raid') + '</button>' +
+                '</form>' +
+                '</div>' +
+                '</div>'
+        }
 
         var pokemonHtml = ''
 
@@ -3390,20 +3397,21 @@ $(function () {
     $raidNotify.on('change', function () {
         Store.set('remember_raid_notify', this.value)
     })
-
-    $.getJSON('static/dist/data/raid-boss.min.json').done(function (data) {
-        $.each(data, function (key, value) {
-            if (key > numberOfPokemon) {
-                return false
-            }
-            raidBoss[key] = {
-                name: i8ln(value['name']),
-                level: value['level'],
-                cp: value['cp']
-            }
+    if (manualRaids) {
+        $.getJSON('static/dist/data/raid-boss.min.json').done(function (data) {
+            $.each(data, function (key, value) {
+                if (key > numberOfPokemon) {
+                    return false
+                }
+                raidBoss[key] = {
+                    name: i8ln(value['name']),
+                    level: value['level'],
+                    cp: value['cp']
+                }
+            })
+            $('.global-raid-modal').html(generateRaidModal())
         })
-        $('.global-raid-modal').html(generateRaidModal())
-    })
+    }
     $('#dialog_edit').on('click', '#closeButtonId', function () {
         $(this).closest('#dialog_edit').dialog('close')
     })

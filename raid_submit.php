@@ -1,7 +1,11 @@
 <?php
 $timing['start'] = microtime(true);
 include('config/config.php');
-global $map, $fork, $db, $raidBosses, $webhookUrl, $sendWebhook;
+global $map, $fork, $db, $raidBosses, $webhookUrl, $sendWebhook, $noManualRaids, $noRaids;
+if($noManualRaids === true || $noRaids === true){
+    http_response_code(401);
+    die();
+}
 $raidBosses = json_decode(file_get_contents("static/dist/data/raid-boss.min.json"), true);
 $pokemonId = !empty($_POST['pokemonId']) ? $_POST['pokemonId'] : 0;
 $gymId = !empty($_POST['gymId']) ? $_POST['gymId'] : 0;
