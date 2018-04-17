@@ -130,50 +130,54 @@ include('config/config.php');
                 }
             }
         }
-        if (isset($_POST['submitForgotPwdBtn'])) {
+        if (isset($_POST['submitCreateUserOrResetPasswordBtn'])) {
             $count = $db->count("users", [
                 "user" => $_POST['email'],
                 "login_system" => 'native'
             ]);
             
-            if ($count === 1 || (in_array($_POST['email'], $adminUsers))) {
-                $randomPwd = generateRandomString();
+            $randomPwd = generateRandomString();
+            $message = "";
+            if ($count === 1) {
+                resetUserPassword($_POST['email'], $randomPwd, 0);
+                $subject = "[{$title}] - Password Reset";
                 
-                if ($count === 1) {
-                    resetUserPassword($_POST['email'], $randomPwd, 0);
-                } else {
-                    $expire_timestamp = time() + 60 * 60 * 24 * 365 * 10;
-                    createUserAccount($_POST['email'], $randomPwd, $expire_timestamp);
-                }
-                
-                $message = "";
                 $message .= i8ln('Dear') . " {$_POST['email']},<br><br>";
                 $message .= i8ln('Your password has been reset') . "<br>";
                 $message .= i8ln('If you haven\'t requested a new password you can ignore this email.') . "<br>";
                 $message .= i8ln('Your old password is still working.') . "<br><br>";
-                $message .= i8ln('New password:') . " {$randomPwd}<br><br>";
+                $message .= i8ln('New password: ') . " {$randomPwd}<br><br>";
+            } else {
+                createUserAccount($_POST['email'], $randomPwd, time());
+                $subject = "[{$title}] - Welcome";
                 
-                if ($discordUrl) {
-                    $message .= i8ln('For support, ask your questions in the ') . "<a href='{$discordUrl}'>" . i8ln('discord guild') . "</a>!<br><br>";
-                }
-                $message .= i8ln('Best Regards') . "<br>" . i8ln('Admin');
-                if ($title) {
-                    $message .= " @ {$title}";
-                }
+                $message .= i8ln('Dear') . " {$_POST['email']},<br><br>";
+                $message .= i8ln('Thank you for signing up.') . "<br>";
+                $message .= i8ln('Your temporary password is ') . " {$randomPwd}<br><br>";
+            }
+            
+            if ($sellyPage) {
+                $message .= i8ln('You can purchase membership on ') . "<a href='{$sellyPage}'>selly</a>.<br><br>";
+            }
+            if ($discordUrl) {
+                $message .= i8ln('For support, ask your questions in the ') . "<a href='{$discordUrl}'>" . i8ln('discord guild') . "</a>!<br><br>";
+            }
+            $message .= i8ln('Best Regards') . "<br>" . i8ln('Admin');
+            if ($title) {
+                $message .= " @ {$title}";
+            }
                 
-                $subject = "[{$title}] - Password Reset";
-                !empty($domainName) ? $domainName = $domainName : $domainName = $_SERVER['SERVER_NAME'];
-                $headers = "From: no-reply@{$domainName}" . "\r\n" .
-                    "Reply-To: no-reply@{$domainName}" . "\r\n" .
-                    'Content-Type: text/html; charset=ISO-8859-1' . "\r\n" .
-                    'X-Mailer: PHP/' . phpversion();
+            !empty($domainName) ? $domainName = $domainName : $domainName = $_SERVER['SERVER_NAME'];
+            $headers = "From: no-reply@{$domainName}" . "\r\n" .
+                "Reply-To: no-reply@{$domainName}" . "\r\n" .
+                'Content-Type: text/html; charset=ISO-8859-1' . "\r\n" .
+                'X-Mailer: PHP/' . phpversion();
 
-                $sendMail = mail($_POST['email'], $subject, $message, $headers);
+            $sendMail = mail($_POST['email'], $subject, $message, $headers);
 
-                if (!$sendMail) {
-                    http_response_code(500);
-                    die("<h1>Warning</h1><p>The email has not been sent.<br>If you're an user please contact your administrator.<br>If you're an administrator install <i><b>apt-get install sendmail</b></i> and restart your web server and try again.</p><p><a href='.'>Back to Map</a> - <a href='./user?forgotPwd'>Retry</a></p>");
-                }
+            if (!$sendMail) {
+                http_response_code(500);
+                die("<h1>Warning</h1><p>The email has not been sent.<br>If you're an user please contact your administrator.<br>If you're an administrator install <i><b>apt-get install sendmail</b></i> and restart your web server and try again.</p><p><a href='.'>Back to Map</a> - <a href='./user?forgotPwd'>Retry</a></p>");
             }
             
             header("Location: ?sentPwd");
@@ -182,7 +186,7 @@ include('config/config.php');
         if (isset($_POST['submitUpdateUserBtn'])) {
             $Err = '';
             if ($_POST['email'] !== '-1' || !empty($_POST['createUserEmail'])) {
-                if ((isset($_POST['ResetPwd']) || $_POST['checkboxDate'] > 0) && $_POST['email'] !== '-1') {
+                if ((isset($_POST['ResetPwd']) || $_POST['radioExpireDate'] > 0) && $_POST['email'] !== '-1') {
                     if (strpos($_POST['email'], '#')) {
                         $login_system = 'discord';
                     } else {
@@ -201,10 +205,10 @@ include('config/config.php');
                         resetUserPassword($_POST['email'], $resetUserPwd, 1);
                     }
 
-                    if ($_POST['checkboxDate'] > 0) {
-                        if ($_POST['checkboxDate'] >= 1 && $_POST['checkboxDate'] <= 12) {
+                    if ($_POST['radioExpireDate'] > 0) {
+                        if ($_POST['radioExpireDate'] >= 1 && $_POST['radioExpireDate'] <= 12) {
                             if ($info['expire_timestamp'] > time()) {
-                                $newExpireTimestamp = $info['expire_timestamp'] + 60 * 60 * 24 * $daysMembershipPerQuantity * $_POST['checkboxDate'];
+                                $newExpireTimestamp = $info['expire_timestamp'] + 60 * 60 * 24 * $daysMembershipPerQuantity * $_POST['radioExpireDate'];
                             } else {
                                 $newExpireTimestamp = time() + 60 * 60 * 24 * $daysMembershipPerQuantity;
                             }
@@ -225,7 +229,7 @@ include('config/config.php');
                     }
                 }
 
-                if ((!isset($_POST['ResetPwd']) && $_POST['checkboxDate'] == 0 && $_POST['email'] === '-1') && empty($_POST['createUserEmail'])) {
+                if ((!isset($_POST['ResetPwd']) && $_POST['radioExpireDate'] == 0 && $_POST['email'] === '-1') && empty($_POST['createUserEmail'])) {
                     $Err = i8ln('No changes made.');
                 }
             } else {
@@ -247,16 +251,16 @@ include('config/config.php');
             }
         }
 
-        if (isset($_GET['resetPwd'])) {
+        if (isset($_GET['account'])) {
             ?>
-            <p><h2><?php echo "[<a href='.'>{$title}</a>] - " . i8ln('Forgot password'); ?></h2></p>
+            <p><h2><?php echo "[<a href='.'>{$title}</a>] - " . i8ln('Create User / Reset Password'); ?></h2></p>
             <form action='' method='POST'>
                 <table>
                     <tr>
                         <th><?php echo i8ln('E-mail'); ?></th><td><input type="text" name="email" required></td>
                     </tr>
                     <tr>
-                        <td id="one-third"><input id="margin" type="submit" name="submitForgotPwdBtn"><a class='button' href='/user'><?php echo i8ln('Back'); ?></a></td><td></td>
+                        <td id="one-third"><input id="margin" type="submit" name="submitCreateUserOrResetPasswordBtn"><a class='button' href='/user'><?php echo i8ln('Back'); ?></a></td><td></td>
                     </tr>
                 </table>
             </form>
@@ -282,12 +286,12 @@ include('config/config.php');
                     <?php
                     } ?>
                     <tr>
-                        <td id="one-third"><input id="margin" type="submit" name="submitUpdatePwdBtn"><a class='button' href='/user'><?php echo i8ln('Back'); ?></a></td><td></td>
+                        <td id="one-third"><input id="margin" type="submit" name="submitUpdatePwdBtn"></td><td></td>
                     </tr>
                 </table>
             </form>
         <?php
-        } elseif (in_array(!empty($_SESSION['user']->user), $adminUsers)) {
+        } elseif (in_array($_SESSION['user']->user ? $_SESSION['user']->user : null, $adminUsers)) {
             ?>
             <h2><?php echo "[<a href='.'>{$title}</a>] - " . i8ln('Admin page'); ?></h2>
             <?php
@@ -326,12 +330,12 @@ include('config/config.php');
                     <tr>
                         <th><?php echo i8ln('Expire Date'); ?></th>
                         <td>
-                            <label><input onclick="document.getElementById('customDate').disabled = true;" type="radio" name="checkboxDate" value="0" checked="checked"><?php echo i8ln('No change'); ?></label>
-                            <label><input onclick="document.getElementById('customDate').disabled = true;" type="radio" name="checkboxDate" value="1"><?php echo i8ln('1 Month'); ?></label>
-                            <label><input onclick="document.getElementById('customDate').disabled = true;" type="radio" name="checkboxDate" value="3"><?php echo i8ln('3 Months'); ?></label>
-                            <label><input onclick="document.getElementById('customDate').disabled = true;" type="radio" name="checkboxDate" value="6"><?php echo i8ln('6 Months'); ?></label>
-                            <label><input onclick="document.getElementById('customDate').disabled = true;" type="radio" name="checkboxDate" value="12"><?php echo i8ln('12 Months'); ?></label>
-                            <label><input onclick="document.getElementById('customDate').disabled = false;" type="radio" name="checkboxDate" value="100"><?php echo i8ln('Custom'); ?></label>
+                            <label><input onclick="document.getElementById('customDate').disabled = true;" type="radio" name="radioExpireDate" value="0" checked="checked"><?php echo i8ln('No change'); ?></label>
+                            <label><input onclick="document.getElementById('customDate').disabled = true;" type="radio" name="radioExpireDate" value="1"><?php echo i8ln('1 Month'); ?></label>
+                            <label><input onclick="document.getElementById('customDate').disabled = true;" type="radio" name="radioExpireDate" value="3"><?php echo i8ln('3 Months'); ?></label>
+                            <label><input onclick="document.getElementById('customDate').disabled = true;" type="radio" name="radioExpireDate" value="6"><?php echo i8ln('6 Months'); ?></label>
+                            <label><input onclick="document.getElementById('customDate').disabled = true;" type="radio" name="radioExpireDate" value="12"><?php echo i8ln('12 Months'); ?></label>
+                            <label><input onclick="document.getElementById('customDate').disabled = false;" type="radio" name="radioExpireDate" value="100"><?php echo i8ln('Custom'); ?></label>
                             <input class="date" type="date" name="customDate" id="customDate" value="<?php echo date('Y-m-d', time()); ?>" disabled="disabled">
                         </td>
                     </tr>
@@ -354,7 +358,7 @@ include('config/config.php');
                 <table>
                     <?php
                     if (empty($Err)) {
-                        if (isset($_POST['submitUpdateUserBtn']) && $_POST['checkboxDate'] > 0 && $_POST['email'] !== '-1') {
+                        if (isset($_POST['submitUpdateUserBtn']) && $_POST['radioExpireDate'] > 0 && $_POST['email'] !== '-1') {
                             ?>
                         <tr>
                             <th id="one-third"><?php echo $_POST['email'] . " - " . i8ln('Expire Date'); ?></th>
@@ -433,8 +437,8 @@ include('config/config.php');
                 <table>
                     <tr>
                         <th><?php echo i8ln('E-mail'); ?></th><td><input type="text" name="email" required <?php if (isset($_POST['submitLoginBtn'])) {
-                echo "value='$_POST[email]'";
-            } ?> placeholder="<?php echo i8ln('E-mail'); ?>"></td>
+                        echo "value='$_POST[email]'";
+                    } ?> placeholder="<?php echo i8ln('E-mail'); ?>"></td>
                     </tr>
                     <tr>
                         <th><?php echo i8ln('Password'); ?></th><td><input type="password" name="password" required placeholder="<?php echo i8ln('Password'); ?>"></td>
@@ -456,7 +460,7 @@ include('config/config.php');
                     <?php
                     } ?>
                     <tr>
-                        <td id="one-third"><input id="margin" type="submit" name="submitLoginBtn"><a class='button' id="margin" href='?resetPwd'><?php echo i8ln('Reset Password'); ?></a><?php if ($noDiscordLogin === false) {
+                        <td id="one-third"><input id="margin" type="submit" name="submitLoginBtn" value="Login"><a class='button' id="margin" href='?account'><?php echo i8ln('Create User / Reset Password'); ?></a><?php if ($noDiscordLogin === false) {
                         echo "<a class='button' id='margin' href='./discord-login'>" . i8ln('Discord Login');
                     } ?></a></td><td></td>
                     </tr>

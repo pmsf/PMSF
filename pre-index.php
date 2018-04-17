@@ -629,7 +629,7 @@ if ($blockIframe) {
             }
             ?>
             <?php
-            if (!$noNotifyPokemon || !$noNotifyRarity || !$noNotifyIv || !$noNotifyLevel || !$noNotifySound || !$noNotifyRaid || !$noNotifyBounce || !noNotifyNotification) {
+            if (!$noNotifyPokemon || !$noNotifyRarity || !$noNotifyIv || !$noNotifyLevel || !$noNotifySound || !$noNotifyRaid || !$noNotifyBounce || !$noNotifyNotification) {
                 echo '<h3>' . i8ln('Notification') . '</h3>
             <div>';
             }

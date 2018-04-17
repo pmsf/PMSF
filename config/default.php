@@ -83,10 +83,12 @@ $motdContent = "";
 $noNativeLogin = true;                                              // true/false - This will enable the built in login system.
 $domainName = '';                                                   // If this is empty, reset-password emails will use the domain name taken from the URL.
                                                                     
-$noDiscordLogin = true;                                             // true/false - This will enable login through discord. A discord bot is needed for this to work.
-                                                                    // Composer is also needed. Type "composer install" to install the dependencies.
-                                                                    // Enter client_id, client_secret and callback uri from your discord bot to DiscordAuth.php
-                                                                    // https://discordapp.com/developers/applications/me
+$noDiscordLogin = true;                                             // true/false - This will enable login through discord.
+                                                                    // 1. Create a discord bot here -> https://discordapp.com/developers/applications/me
+                                                                    // 2. Install composer with "apt-get install composer".
+                                                                    // 3. Navigate to your website's root folder and type "composer install" to install the dependencies.
+                                                                    // 4. Add your callback-page as a REDIRECT URI to your discord bot. Should be the same as $discordBotRedirectUri.
+                                                                    // 5. Enter Client ID, Client Secret and Redirect URI below.
 $discordBotClientId = 0;
 $discordBotClientSecret = "";
 $discordBotRedirectUri = "https://example.com/discord-callback.php";
@@ -94,6 +96,7 @@ $discordBotRedirectUri = "https://example.com/discord-callback.php";
 $adminUsers = array('admin@example.com', 'Superadmin#13337');       // You can add multiple admins by adding them to the array.
 $logfile = '../members.log';                                        // Path to log file. Make sure this works as it will be your life saver if your db crashes.
 $daysMembershipPerQuantity = 31;                                    // How many days membership one selly quantity will give.
+$sellyPage = '';                                                    // Link to selly purchase page for membership renewal.
 
 //-----------------------------------------------------
 // FRONTEND SETTINGS
