@@ -1,8 +1,10 @@
 # PMSF---PokeMap-Standalone-Frontend
 
+This is the manual raid posting branch I put together a while back and only supports Hydro's Scanner.
+
 > Current Version 1.0 - First release!
 
-PokeMap Standalone Frontend or PMSF for short is a PHP Map Interface for the Monocle and RocketMap Scanner designed to be completely standalone and able to run on any traditional web server
+PokeMap Standalone Frontend or PMSF for short is a PHP Map Interface for the Monocle Scanner designed to be completely standalone and able to run on any traditional web server
 
 It supports all the common database engines, including MySQL, MariaDB, Postgres, MsSQL, SQLite
 
