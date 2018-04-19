@@ -922,13 +922,13 @@ if ($blockIframe) {
                 </div>-->
                 <?php if(!$noGyms){ ?>
                     <div id="tab-gym">
-                        <input type="search" id="gym-search" name="gym-search" placeholder="Enter Gym Name" data-type="forts"/>
+                        <input type="search" id="gym-search" name="gym-search" placeholder=<?php echo i8ln('Enter Gym Name') ?> data-type="forts"/>
                         <ul id="gym-search-results" class="search-results gym-results"></ul>
                     </div>
                 <?php }
                 if(!$noPokestops){ ?>
                     <div id="tab-pokestop">
-                        <input type="search" id="pokestop-search" name="pokestop-search" placeholder="Enter Pokestop Name" data-type="pokestops"/>
+                        <input type="search" id="pokestop-search" name="pokestop-search" placeholder=<?php echo i8ln('Enter Pokestop Name') ?> data-type="pokestops"/>
                         <ul id="pokestop-search-results" class="search-results pokestop-results"></ul>
                     </div>
                 <?php } ?>
