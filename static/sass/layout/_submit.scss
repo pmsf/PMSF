@@ -1,0 +1,33 @@
+.submit-on-off-button{
+  position: absolute;
+  top: 9.7em;
+  right: 13px;
+  margin-top: 0;
+  padding: 0!important;
+  width: 26px;
+  line-height: 26px;
+  height: 26px;
+  &.on{
+    background:green;
+  }
+}
+.ui-dialog-content{
+  .pokemon-list{
+    .pokemon-icon-sprite{
+      &.active{
+        border: 1px solid rgb(18, 148, 10);
+        background: rgba(45,234,11,.4);
+      }
+      .inner-bg{
+        width:48px;
+        height:48px;
+      }
+    }
+  }
+  .button-container{
+    text-align:center;
+    button{
+      margin-bottom:15px;
+    }
+  }
+}
