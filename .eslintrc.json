@@ -121,6 +121,8 @@
     "motd": true,
     "raidBossActive": true,
     "manualRaids": true,
-    "pokemonReportTime": true
+    "pokemonReportTime": true,
+    "noDeleteGyms": true,
+    "noDeletePokestops": true
   }
 }
