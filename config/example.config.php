@@ -213,10 +213,13 @@ $noManualPokestops = false;
 $pokemonReportTime = true;
 $pokemonToExclude = [];
 
+$noDeleteGyms = false;
+$noDeletePokestops = false;
+
 $raidBosses = [361,355,353,333,129,303,302,215,200,103,221,210,127,124,94,68,365,359,306,248,229,381,150];
 
 $sendWebhook = false;
-$webhookUrl = null;
+$webhookUrl = null;                                                 //['url-1','url-2']
 
 $manualFiveStar = [
     'pokemon_id' => 381,

@@ -17,9 +17,9 @@ $d['status'] = "ok";
 
 $d["timestamp"] = $now->getTimestamp();
 
-if($action === "raid"){
+if ($action === "raid") {
 
-    if($noManualRaids === true || $noRaids === true){
+    if ($noManualRaids === true || $noRaids === true) {
         http_response_code(401);
         die();
     }
@@ -28,16 +28,16 @@ if($action === "raid"){
     $gymId = !empty($_POST['gymId']) ? $_POST['gymId'] : 0;
     $eggTime = !empty($_POST['eggTime']) ? $_POST['eggTime'] : 0;
     $monTime = !empty($_POST['monTime']) ? $_POST['monTime'] : 0;
-    if($eggTime >60){
+    if ($eggTime > 60) {
         $eggTime = 60;
     }
-    if($monTime >45){
+    if ($monTime > 45) {
         $monTime = 45;
     }
-    if($eggTime <0){
+    if ($eggTime < 0) {
         $eggTime = 0;
     }
-    if($monTime <0){
+    if ($monTime < 0) {
         $monTime = 45;
     }
 
@@ -52,9 +52,9 @@ if($action === "raid"){
     $add_seconds = ($monTime * 60);
     $time_spawn = time() - $forty_five;
     $level = 0;
-    if(strpos($pokemonId,'egg_') !== false){
+    if (strpos($pokemonId, 'egg_') !== false) {
         $add_seconds = ($eggTime * 60);
-        $level = (int)substr($pokemonId,4,1);
+        $level = (int)substr($pokemonId, 4, 1);
         $time_spawn = time() + $add_seconds;
     }
 
@@ -88,7 +88,7 @@ if($action === "raid"){
         $cols['time_spawn'] = $time_spawn;
         $cols['time_battle'] = $time_battle;
         $cols['time_end'] = $time_end;
-    } elseif($cols['level'] === 0) {
+    } elseif ($cols['level'] === 0) {
         // no boss or egg matched
         http_response_code(500);
     }
@@ -97,7 +97,7 @@ if($action === "raid"){
 
 // also update fort_sightings so PMSF knows the gym has changed
 // todo: put team stuff in here too
-    $db->query("UPDATE fort_sightings SET updated = :updated WHERE fort_id = :gymId", ['updated'=>time(), ':gymId' => $gymId]);
+    $db->query("UPDATE fort_sightings SET updated = :updated WHERE fort_id = :gymId", ['updated' => time(), ':gymId' => $gymId]);
     if ($sendWebhook === true) {
         $webhook = [
             'message' => [
@@ -116,18 +116,21 @@ if($action === "raid"){
             ],
             'type' => 'raid'
         ];
-        if(strpos($pokemonId,'egg_') !== false) {
+        if (strpos($pokemonId, 'egg_') !== false) {
             $webhook['message']['raid_begin'] = $time_spawn;
         }
-        sendToWebhook($webhookUrl, $webhook);
+        foreach ($webhookUrl as $url) {
+            sendToWebhook($url, $webhook);
+        }
+
     }
 } elseif ($action === "pokemon") {
-    if($noManualPokemon === true || $noPokemon === true){
+    if ($noManualPokemon === true || $noPokemon === true) {
         http_response_code(401);
         die();
     }
     $id = !empty($_POST['id']) ? $_POST['id'] : 0;
-    if(!empty($lat) && !empty($lng) && !empty($id)){
+    if (!empty($lat) && !empty($lng) && !empty($id)) {
         $spawnID = randomNum();
         $cols = [
             'spawn_id' => $spawnID,
@@ -143,42 +146,81 @@ if($action === "raid"){
     }
 
 } elseif ($action === "gym") {
-    if($noManualGyms === true || $noGyms === true){
+    if ($noManualGyms === true || $noGyms === true) {
         http_response_code(401);
         die();
     }
     $gymName = !empty($_POST['gymName']) ? $_POST['gymName'] : '';
-    if(!empty($lat) && !empty($lng) && !empty($gymName)){
+    if (!empty($lat) && !empty($lng) && !empty($gymName)) {
         $gymId = randomGymId();
         $cols = [
             'external_id' => $gymId,
             'lat' => $lat,
             'lon' => $lng,
-            'name'=> $gymName
+            'name' => $gymName
         ];
         $db->insert("forts", $cols);
     }
 } elseif ($action === "pokestop") {
-    if($noManualPokestops === true || $noPokestops === true){
+    if ($noManualPokestops === true || $noPokestops === true) {
         http_response_code(401);
         die();
     }
     $pokestopName = !empty($_POST['pokestop']) ? $_POST['pokestop'] : '';
-    if(!empty($lat) && !empty($lng) && !empty($pokestopName)){
+    if (!empty($lat) && !empty($lng) && !empty($pokestopName)) {
         $pokestopId = randomGymId();
         $cols = [
             'external_id' => $pokestopId,
             'lat' => $lat,
             'lon' => $lng,
-            'name'=> $pokestopName,
+            'name' => $pokestopName,
             'updated' => time()
         ];
         $db->insert("pokestops", $cols);
-        //var_dump($db->last());
+    }
+} elseif ($action === "delete-gym") {
+    if ($noDeleteGyms === true || $noGyms === true) {
+        http_response_code(401);
+        die();
+    }
+    $gymId = !empty($_POST['id']) ? $_POST['id'] : '';
+    if (!empty($gymId)) {
+        $fortid = $db->get("forts", ['id'], ['external_id' => $gymId]);
+        if ($fortid) {
+            $db->delete('fort_sightings', [
+                "AND" => [
+                    'fort_id' => $fortid['id']
+                ]
+            ]);
+            $db->delete('raids', [
+                "AND" => [
+                    'fort_id' => $fortid['id']
+                ]
+            ]);
+            $db->delete('forts', [
+                "AND" => [
+                    'external_id' => $gymId
+                ]
+            ]);
+        }
+    }
+} elseif ($action === "delete-pokestop") {
+    if ($noDeletePokestops === true || $noDeletePokestops === true) {
+        http_response_code(401);
+        die();
+    }
+    $pokestopId = !empty($_POST['id']) ? $_POST['id'] : '';
+    if (!empty($pokestopId)) {
+        $db->delete('pokestops', [
+            "AND" => [
+                'external_id' => $pokestopId
+            ]
+        ]);
     }
 }
 
-function randomGymId() {
+function randomGymId()
+{
     $alphabet = 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890';
     $pass = array(); //remember to declare $pass as an array
     $alphaLength = strlen($alphabet) - 1; //put the length -1 in cache
@@ -188,7 +230,9 @@ function randomGymId() {
     }
     return implode($pass); //turn the array into a string
 }
-function randomNum() {
+
+function randomNum()
+{
     $alphabet = '1234567890';
     $pass = array(); //remember to declare $pass as an array
     $alphaLength = strlen($alphabet) - 1; //put the length -1 in cache
@@ -198,5 +242,6 @@ function randomNum() {
     }
     return implode($pass); //turn the array into a string
 }
+
 $jaysson = json_encode($d);
 echo $jaysson;
