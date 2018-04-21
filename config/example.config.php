@@ -202,10 +202,17 @@ $raidApiKey = '';                                                   // Raid API 
 $sendRaidData = false;                                              // Send Raid data, false to only send gym data
 
 //-----------------------------------------------------
-// Raids
+// Manual Submissions
 //-----------------------------------------------------
 
 $noManualRaids = false;
+$noManualPokemon = false;
+$noManualGyms = false;
+$noManualPokestops = false;
+
+$pokemonReportTime = true;
+$pokemonToExclude = [];
+
 $raidBosses = [361,355,353,333,129,303,302,215,200,103,221,210,127,124,94,68,365,359,306,248,229,381,150];
 
 $sendWebhook = false;

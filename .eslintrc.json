@@ -120,6 +120,7 @@
     "exEligible": true,
     "motd": true,
     "raidBossActive": true,
-    "manualRaids": true
+    "manualRaids": true,
+    "pokemonReportTime": true
   }
 }

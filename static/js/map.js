@@ -101,6 +101,23 @@ var triggerGyms = Store.get('triggerGyms')
 var onlyTriggerGyms
 var noExGyms
 var noParkInfo
+var toastrOptions = {
+    'closeButton': true,
+    'debug': false,
+    'newestOnTop': true,
+    'progressBar': false,
+    'positionClass': 'toast-top-right',
+    'preventDuplicates': true,
+    'onclick': null,
+    'showDuration': '300',
+    'hideDuration': '1000',
+    'timeOut': '25000',
+    'extendedTimeOut': '1000',
+    'showEasing': 'swing',
+    'hideEasing': 'linear',
+    'showMethod': 'fadeIn',
+    'hideMethod': 'fadeOut'
+}
 
 createjs.Sound.registerSound('static/sounds/ding.mp3', 'ding')
 
@@ -323,6 +340,28 @@ function initMap() { // eslint-disable-line no-unused-vars
     }
 
     updateWeatherOverlay()
+
+    map.addListener('click', function (e) {
+        if ($('.submit-on-off-button').hasClass('on')) {
+            console.log(e.latLng.lat())
+            console.log(e.latLng.lng())
+            $('.submitLatitude').val(e.latLng.lat())
+            $('.submitLongitude').val(e.latLng.lng())
+            $('.ui-dialog').remove()
+            $('.submit-modal').clone().dialog({
+                modal: true,
+                maxHeight: 600,
+                buttons: {},
+                title: i8ln('Submit Data to Map'),
+                classes: {
+                    'ui-dialog': 'ui-dialog submit-widget-popup'
+                },
+                open: function (event, ui) {
+                    $('.submit-widget-popup #submit-tabs').tabs()
+                }
+            })
+        }
+    })
 }
 
 function updateLocationMarker(style) {
@@ -509,6 +548,7 @@ function pokemonLabel(item) {
     var latitude = item['latitude']
     var longitude = item['longitude']
     var disappearTime = item['disappear_time']
+    var reportTime = disappearTime - 1800000
     var atk = item['individual_attack']
     var def = item['individual_defense']
     var sta = item['individual_stamina']
@@ -593,12 +633,19 @@ function pokemonLabel(item) {
         '<span> ' + rarityDisplay + '</span>' +
         '<span> - </span>' +
         '<small>' + typesDisplay + '</small>' +
-        '</div>' +
-        '<div>' +
-        i8ln('Disappears at') + ' ' + getTimeStr(disappearTime) +
-        ' <span class="label-countdown" disappears-at="' + disappearTime + '">(00m00s)</span>' +
-        '</div>' +
-        '<div>' +
+        '</div>'
+    if (pokemonReportTime === true) {
+        contentstring += '<div>' +
+            i8ln('Reported at') + ' ' + getTimeStr(reportTime) +
+            '</div>'
+    } else {
+        contentstring += '<div>' +
+            i8ln('Disappears at') + ' ' + getTimeStr(disappearTime) +
+            ' <span class="label-countdown" disappears-at="' + disappearTime + '">(00m00s)</span>' +
+            '</div>'
+    }
+
+    contentstring += '<div>' +
         i8ln('Location') + ': <a href="javascript:void(0)" onclick="javascript:openMapDirections(' + latitude + ', ' + longitude + ')" title="' + i8ln('View in Maps') + '">' + coordText + '</a>' +
         '</div>' +
         details +
@@ -1487,23 +1534,7 @@ function loadRawData() {
         beforeSend: function beforeSend() {
             if (maxLatLng > 0 && (((neLat - swLat) > maxLatLng) || ((neLng - swLng) > maxLatLng))) {
                 toastr['error'](i8ln('Please zoom in to get data.'), i8ln('Max zoom'))
-                toastr.options = {
-                    'closeButton': true,
-                    'debug': false,
-                    'newestOnTop': true,
-                    'progressBar': false,
-                    'positionClass': 'toast-top-right',
-                    'preventDuplicates': true,
-                    'onclick': null,
-                    'showDuration': '300',
-                    'hideDuration': '1000',
-                    'timeOut': '25000',
-                    'extendedTimeOut': '1000',
-                    'showEasing': 'swing',
-                    'hideEasing': 'linear',
-                    'showMethod': 'fadeIn',
-                    'hideMethod': 'fadeOut'
-                }
+                toastr.options = toastrOptions
                 return false
             }
             if (rawDataIsLoading) {
@@ -1515,23 +1546,7 @@ function loadRawData() {
         error: function error() {
             // Display error toast
             toastr['error'](i8ln('Please check connectivity or reduce marker settings.'), i8ln('Error getting data'))
-            toastr.options = {
-                'closeButton': true,
-                'debug': false,
-                'newestOnTop': true,
-                'progressBar': false,
-                'positionClass': 'toast-top-right',
-                'preventDuplicates': true,
-                'onclick': null,
-                'showDuration': '300',
-                'hideDuration': '1000',
-                'timeOut': '25000',
-                'extendedTimeOut': '1000',
-                'showEasing': 'swing',
-                'hideEasing': 'linear',
-                'showMethod': 'fadeIn',
-                'hideMethod': 'fadeOut'
-            }
+            toastr.options = toastrOptions
         },
         complete: function complete() {
             rawDataIsLoading = false
@@ -1549,23 +1564,7 @@ function loadWeather() {
         error: function error() {
             // Display error toast
             toastr['error'](i8ln('Please check connectivity or reduce marker settings.'), i8ln('Error getting weather'))
-            toastr.options = {
-                'closeButton': true,
-                'debug': false,
-                'newestOnTop': true,
-                'progressBar': false,
-                'positionClass': 'toast-top-right',
-                'preventDuplicates': true,
-                'onclick': null,
-                'showDuration': '300',
-                'hideDuration': '1000',
-                'timeOut': '25000',
-                'extendedTimeOut': '1000',
-                'showEasing': 'swing',
-                'hideEasing': 'linear',
-                'showMethod': 'fadeIn',
-                'hideMethod': 'fadeOut'
-            }
+            toastr.options = toastrOptions
         },
         complete: function complete() {
 
@@ -1586,23 +1585,7 @@ function loadWeatherCellData(cell) {
         error: function error() {
             // Display error toast
             toastr['error'](i8ln('Please check connectivity or reduce marker settings.'), i8ln('Error getting weather'))
-            toastr.options = {
-                'closeButton': true,
-                'debug': false,
-                'newestOnTop': true,
-                'progressBar': false,
-                'positionClass': 'toast-top-right',
-                'preventDuplicates': true,
-                'onclick': null,
-                'showDuration': '300',
-                'hideDuration': '1000',
-                'timeOut': '25000',
-                'extendedTimeOut': '1000',
-                'showEasing': 'swing',
-                'hideEasing': 'linear',
-                'showMethod': 'fadeIn',
-                'hideMethod': 'fadeOut'
-            }
+            toastr.options = toastrOptions
         },
         complete: function complete() {
 
@@ -1627,23 +1610,7 @@ function searchAjax(field) { // eslint-disable-line no-unused-vars
             error: function error() {
                 // Display error toast
                 toastr['error'](i8ln('Please check connectivity or reduce marker settings.'), i8ln('Error searching'))
-                toastr.options = {
-                    'closeButton': true,
-                    'debug': false,
-                    'newestOnTop': true,
-                    'progressBar': false,
-                    'positionClass': 'toast-top-right',
-                    'preventDuplicates': true,
-                    'onclick': null,
-                    'showDuration': '300',
-                    'hideDuration': '1000',
-                    'timeOut': '25000',
-                    'extendedTimeOut': '1000',
-                    'showEasing': 'swing',
-                    'hideEasing': 'linear',
-                    'showMethod': 'fadeIn',
-                    'hideMethod': 'fadeOut'
-                }
+                toastr.options = toastrOptions
             }
         }).done(function (data) {
             if (data) {
@@ -1681,6 +1648,107 @@ function centerMapOnCoords(event) { // eslint-disable-line no-unused-vars
     $('.ui-dialog-content').dialog('close')
 }
 
+function manualPokestopData(event) { // eslint-disable-line no-unused-vars
+    var form = $(event.target).parent().parent()
+    var pokestopName = form.find('[name="pokestop-name"]').val()
+    var lat = $('.submit-modal.ui-dialog-content .submitLatitude').val()
+    var lng = $('.submit-modal.ui-dialog-content .submitLongitude').val()
+    if (pokestopName && pokestopName !== '') {
+        if (confirm('I confirm this is an accurate reporting of a new pokestop')) {
+            return $.ajax({
+                url: 'submit',
+                type: 'POST',
+                timeout: 300000,
+                dataType: 'json',
+                cache: false,
+                data: {
+                    'action': 'pokestop',
+                    'pokestop': pokestopName,
+                    'lat': lat,
+                    'lng': lng
+                },
+                error: function error() {
+                    // Display error toast
+                    toastr['error'](i8ln('Please check connectivity or reduce marker settings.'), i8ln('Error Submitting Pokestop'))
+                    toastr.options = toastrOptions
+                },
+                complete: function complete() {
+                    lastpokestops = false
+                    updateMap()
+                    $('.ui-dialog-content').dialog('close')
+                }
+            })
+        }
+    }
+}
+
+function manualGymData(event) { // eslint-disable-line no-unused-vars
+    var form = $(event.target).parent().parent()
+    var gymName = form.find('[name="gym-name"]').val()
+    var lat = $('.submit-modal.ui-dialog-content .submitLatitude').val()
+    var lng = $('.submit-modal.ui-dialog-content .submitLongitude').val()
+    if (gymName && gymName !== '') {
+        if (confirm('I confirm this is an accurate reporting of a new gym')) {
+            return $.ajax({
+                url: 'submit',
+                type: 'POST',
+                timeout: 300000,
+                dataType: 'json',
+                cache: false,
+                data: {
+                    'action': 'gym',
+                    'gymName': gymName,
+                    'lat': lat,
+                    'lng': lng
+                },
+                error: function error() {
+                    // Display error toast
+                    toastr['error'](i8ln('Please check connectivity or reduce marker settings.'), i8ln('Error Submitting Gym'))
+                    toastr.options = toastrOptions
+                },
+                complete: function complete() {
+                    lastgyms = false
+                    updateMap()
+                    $('.ui-dialog-content').dialog('close')
+                }
+            })
+        }
+    }
+}
+function manualPokemonData(event) { // eslint-disable-line no-unused-vars
+    var form = $(event.target).parent().parent()
+    var id = form.find('.pokemonID').val()
+    var lat = $('.submit-modal.ui-dialog-content .submitLatitude').val()
+    var lng = $('.submit-modal.ui-dialog-content .submitLongitude').val()
+    if (id && id !== '') {
+        if (confirm('I confirm this is an accurate reporting of a new pokemon')) {
+            return $.ajax({
+                url: 'submit',
+                type: 'POST',
+                timeout: 300000,
+                dataType: 'json',
+                cache: false,
+                data: {
+                    'action': 'pokemon',
+                    'id': id,
+                    'lat': lat,
+                    'lng': lng
+                },
+                error: function error() {
+                    // Display error toast
+                    toastr['error'](i8ln('Please check connectivity or reduce marker settings.'), i8ln('Error Submitting Pokemon'))
+                    toastr.options = toastrOptions
+                },
+                complete: function complete() {
+                    lastpokemon = false
+                    updateMap()
+                    $('.ui-dialog-content').dialog('close')
+                }
+            })
+        }
+    }
+}
+
 function manualRaidData(event) { // eslint-disable-line no-unused-vars
     var form = $(event.target).parent().parent()
     var pokemonId = form.find('[name="pokemonId"]').val()
@@ -1690,12 +1758,13 @@ function manualRaidData(event) { // eslint-disable-line no-unused-vars
     if (pokemonId && pokemonId !== '' && gymId && gymId !== '' && eggTime && eggTime !== '' && monTime && monTime !== '') {
         if (confirm('I confirm this is an accurate sighting of a raid')) {
             return $.ajax({
-                url: 'raid_submit',
+                url: 'submit',
                 type: 'POST',
                 timeout: 300000,
                 dataType: 'json',
                 cache: false,
                 data: {
+                    'action': 'raid',
                     'pokemonId': pokemonId,
                     'gymId': gymId,
                     'monTime': monTime,
@@ -1704,23 +1773,7 @@ function manualRaidData(event) { // eslint-disable-line no-unused-vars
                 error: function error() {
                     // Display error toast
                     toastr['error'](i8ln('Please check connectivity or reduce marker settings.'), i8ln('Error Submitting Raid'))
-                    toastr.options = {
-                        'closeButton': true,
-                        'debug': false,
-                        'newestOnTop': true,
-                        'progressBar': false,
-                        'positionClass': 'toast-top-right',
-                        'preventDuplicates': true,
-                        'onclick': null,
-                        'showDuration': '300',
-                        'hideDuration': '1000',
-                        'timeOut': '25000',
-                        'extendedTimeOut': '1000',
-                        'showEasing': 'swing',
-                        'hideEasing': 'linear',
-                        'showMethod': 'fadeIn',
-                        'hideMethod': 'fadeOut'
-                    }
+                    toastr.options = toastrOptions
                 },
                 complete: function complete() {
                     lastgyms = false
@@ -2936,6 +2989,16 @@ function fetchCriesJson() {
             createjs.Sound.registerSounds(cries, assetsPath)
         }
     })
+}
+
+function pokemonSubmitFilter(event) { // eslint-disable-line no-unused-vars
+    var img = $(event.target).parent()
+    var cont = img.parent().parent()
+    var select = cont.find('input')
+    var id = img.data('value').toString()
+    select.val(id)
+    cont.find('.pokemon-icon-sprite').removeClass('active')
+    img.addClass('active')
 }
 
 function pokemonRaidFilter(event) { // eslint-disable-line no-unused-vars
