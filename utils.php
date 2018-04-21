@@ -164,7 +164,7 @@ function destroyCookiesAndSessions()
     global $db;
     
     $db->update("users", [
-        "Session_ID" => null
+        "session_id" => null
     ], [
         "id" => $_SESSION['user']->id,
         "login_system" => $_SESSION['user']->login_system
@@ -181,7 +181,7 @@ function validateCookie($cookie)
 {
     global $db;
     $info = $db->query(
-        "SELECT id, user, password, login_system, expire_timestamp FROM users WHERE Session_ID = :session_id", [
+        "SELECT id, user, password, login_system, expire_timestamp FROM users WHERE session_id = :session_id", [
             ":session_id" => $cookie
         ]
     )->fetch();
