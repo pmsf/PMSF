@@ -715,6 +715,9 @@ function gymLabel(item) {
         raidStr += '<div class="raid-container"><i class="fa fa-binoculars submit-raid" onclick="openRaidModal(event);" data-id="' + item['gym_id'] + '"></i>' +
             '</div>'
     }
+    if (!noDeleteGyms) {
+        raidStr += '<i class="fa fa-trash-o delete-gym" onclick="deleteGym(event);" data-id="' + item['gym_id'] + '"></i>'
+    }
 
 
     var park = ''
@@ -1773,6 +1776,7 @@ function deleteGym(event) { // eslint-disable-line no-unused-vars
                 complete: function complete() {
                     jQuery('label[for="gyms-switch"]').click()
                     jQuery('label[for="gyms-switch"]').click()
+                    jQuery('#gym-details').removeClass('visible')
                 }
             })
         }
@@ -2868,6 +2872,9 @@ function showGymDetails(id) { // eslint-disable-line no-unused-vars
                 }
                 raidIcon = '<img src="static/raids/egg_' + raidEgg + '.png">'
             }
+        }
+        if (!noDeleteGyms) {
+            raidStr += '<i class="fa fa-trash-o delete-gym" onclick="deleteGym(event);" data-id="' + id + '"></i>'
         }
         if (manualRaids) {
             raidStr += '<i class="fa fa-binoculars submit-raid" onclick="$(this).toggleClass(\'open\');$(\'.raid-report\').slideToggle()" ></i>'
