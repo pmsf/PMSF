@@ -3,7 +3,6 @@ module.exports = function (grunt) {
     // load plugins as needed instead of up front
     require('jit-grunt')(grunt);
     require('phplint').gruntPlugin(grunt);
-    grunt.loadNpmTasks('grunt-contrib-obfuscator');
 
     grunt.initConfig({
         pkg: grunt.file.readJSON('package.json'),
