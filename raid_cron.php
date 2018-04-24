@@ -48,7 +48,9 @@ if (count($eggs) > 0) {
                 ],
                 'type' => 'raid'
             ];
-            sendToWebhook($webhookUrl, $webhook);
+            foreach ($webhookUrl as $url) {
+                sendToWebhook($url, $webhook);
+            }
         }
     }
 
