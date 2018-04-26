@@ -1232,22 +1232,16 @@ function setupPokestopMarker(item) {
     })
 
     if(questList.length === 0 && !noManualQuests){
-        $.getJSON('static/dist/data/quests.min.json').done(function (data) {
-            $.each(data, function (key, value) {
-                questList[key] = value['name'];
-            })
-        }).done(function() {
-            if (!marker.rangeCircle && isRangeActive(map)) {
-                marker.rangeCircle = addRangeCircle(marker, map, 'pokestop')
-            }
+        if (!marker.rangeCircle && isRangeActive(map)) {
+            marker.rangeCircle = addRangeCircle(marker, map, 'pokestop')
+        }
 
-            marker.infoWindow = new google.maps.InfoWindow({
-                content: pokestopLabel(item['lure_expiration'], item['latitude'], item['longitude'], item['pokestop_name'], item['lure_user'], item['pokestop_id'], item['quest_id']),
-                disableAutoPan: true
-            })
-
-            addListeners(marker)
+        marker.infoWindow = new google.maps.InfoWindow({
+            content: pokestopLabel(item['lure_expiration'], item['latitude'], item['longitude'], item['pokestop_name'], item['lure_user'], item['pokestop_id'], item['quest_id']),
+            disableAutoPan: true
         })
+
+        addListeners(marker)
     }
     else{
         if (!marker.rangeCircle && isRangeActive(map)) {
@@ -3562,6 +3556,12 @@ $(function () {
     $.getJSON('static/dist/data/weather.min.json').done(function (data) {
         weather = data.weather
         boostedMons = data.boosted_mons
+    })
+    
+    $.getJSON('static/dist/data/quests.min.json').done(function (data) {
+        $.each(data, function (key, value) {
+            questList[key] = value['name'];
+        })
     })
 
     $selectExclude = $('#exclude-pokemon')
