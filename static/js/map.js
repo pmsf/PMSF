@@ -1255,7 +1255,7 @@ function setupPokestopMarker(item) {
         }
 
         marker.infoWindow = new google.maps.InfoWindow({
-            content: pokestopLabel(item['lure_expiration'], item['latitude'], item['longitude'], item['pokestop_name'], item['lure_user'], item['pokestop_id'], item['quest']),
+            content: pokestopLabel(item['lure_expiration'], item['latitude'], item['longitude'], item['pokestop_name'], item['lure_user'], item['pokestop_id'], item['quest_id']),
             disableAutoPan: true
         })
 
