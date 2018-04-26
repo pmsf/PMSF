@@ -209,6 +209,7 @@ $noManualRaids = false;
 $noManualPokemon = false;
 $noManualGyms = false;
 $noManualPokestops = false;
+$noManualQuests = false;
 
 $pokemonReportTime = true;
 $pokemonToExclude = [];

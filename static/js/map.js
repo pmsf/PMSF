@@ -90,6 +90,7 @@ var token
 var cries
 
 var raidBoss = {}
+var questList = []
 var gymId
 
 var assetsPath = 'static/sounds/'
@@ -800,7 +801,7 @@ function gymLabel(item) {
     return str
 }
 
-function pokestopLabel(expireTime, latitude, longitude, stopName, lureUser, id) {
+function pokestopLabel(expireTime, latitude, longitude, stopName, lureUser, id, quest) {
     var str
     if (stopName === undefined) {
         stopName = 'Pokéstop'
@@ -822,6 +823,7 @@ function pokestopLabel(expireTime, latitude, longitude, stopName, lureUser, id) 
             i8ln('Lure expires at') + ' ' + getTimeStr(expireTime) +
             ' <span class="label-countdown" disappears-at="' + expireTime + '">(00m00s)</span>' +
             '</div>' +
+
             '<div>' +
             'Location: <a href="javascript:void(0)" onclick="javascript:openMapDirections(' + latitude + ',' + longitude + ')" title="' + i8ln('View in Maps') + '">' + latitude.toFixed(6) + ', ' + longitude.toFixed(7) + '</a>' +
             '</div>'
@@ -829,13 +831,23 @@ function pokestopLabel(expireTime, latitude, longitude, stopName, lureUser, id) 
         str =
             '<div>' +
             '<b>' + stopName + '</b>' +
-        '</div>' +
-            '<div>' +
-            'Location: <a href="javascript:void(0)" onclick="javascript:openMapDirections(' + latitude + ',' + longitude + ')" title="' + i8ln('View in Maps') + '">' + latitude.toFixed(6) + ', ' + longitude.toFixed(7) + '</a>' +
+        '</div>';
+        if (!noManualQuests && quest !== null) {
+            str += '<div>'+
+                i8ln('Quest:') + ' ' +
+                i8ln(questList[quest]) +
+                '</div>'
+        }
+        str +=  '<div>' +
+            i8ln('Location:') + ' ' + '<a href="javascript:void(0)" onclick="javascript:openMapDirections(' + latitude + ',' + longitude + ')" title="' + i8ln('View in Maps') + '">' + latitude.toFixed(6) + ', ' + longitude.toFixed(7) + '</a>' +
             '</div>'
         if (!noDeletePokestops) {
             str += '<i class="fa fa-trash-o delete-pokestop" onclick="deletePokestop(event);" data-id="' + id + '"></i>'
         }
+        if (!noManualQuests) {
+            str += '<i class="fa fa-binoculars submit-quest" onclick="openQuestModal(event);" data-id="' + id + '"></i>'
+        }
+
     }
     return str
 }
@@ -1219,16 +1231,37 @@ function setupPokestopMarker(item) {
         icon: 'static/forts/' + imagename + '.png'
     })
 
-    if (!marker.rangeCircle && isRangeActive(map)) {
-        marker.rangeCircle = addRangeCircle(marker, map, 'pokestop')
+    if(questList.length === 0 && !noManualQuests){
+        $.getJSON('static/dist/data/quests.min.json').done(function (data) {
+            $.each(data, function (key, value) {
+                questList[key] = value['name'];
+            })
+        }).done(function() {
+            if (!marker.rangeCircle && isRangeActive(map)) {
+                marker.rangeCircle = addRangeCircle(marker, map, 'pokestop')
+            }
+
+            marker.infoWindow = new google.maps.InfoWindow({
+                content: pokestopLabel(item['lure_expiration'], item['latitude'], item['longitude'], item['pokestop_name'], item['lure_user'], item['pokestop_id'], item['quest_id']),
+                disableAutoPan: true
+            })
+
+            addListeners(marker)
+        })
+    }
+    else{
+        if (!marker.rangeCircle && isRangeActive(map)) {
+            marker.rangeCircle = addRangeCircle(marker, map, 'pokestop')
+        }
+
+        marker.infoWindow = new google.maps.InfoWindow({
+            content: pokestopLabel(item['lure_expiration'], item['latitude'], item['longitude'], item['pokestop_name'], item['lure_user'], item['pokestop_id'], item['quest']),
+            disableAutoPan: true
+        })
+
+        addListeners(marker)
     }
 
-    marker.infoWindow = new google.maps.InfoWindow({
-        content: pokestopLabel(item['lure_expiration'], item['latitude'], item['longitude'], item['pokestop_name'], item['lure_user'], item['pokestop_id']),
-        disableAutoPan: true
-    })
-
-    addListeners(marker)
     return marker
 }
 
@@ -1811,6 +1844,39 @@ function deletePokestop(event) { // eslint-disable-line no-unused-vars
     }
 }
 
+function manualQuestData(event) { // eslint-disable-line no-unused-vars
+    var cont = $(event.target).parent().parent()
+    var questId = cont.find('.questList').val()
+    var pokestopId = cont.find('.questPokestop').val()
+    if (pokestopId && pokestopId !== '') {
+        if (confirm(i8ln('I confirm this is an accurate sighting of a quest'))) {
+            return $.ajax({
+                url: 'submit',
+                type: 'POST',
+                timeout: 300000,
+                dataType: 'json',
+                cache: false,
+                data: {
+                    'action': 'quest',
+                    'questId': questId,
+                    'pokestopId': pokestopId,
+                },
+                error: function error() {
+                    // Display error toast
+                    toastr['error'](i8ln('Please check connectivity or reduce marker settings.'), i8ln('Error Submitting Quest'))
+                    toastr.options = toastrOptions
+                },
+                complete: function complete() {
+                    lastpokestops = false
+                    updateMap()
+                    jQuery('label[for="pokestops-switch"]').click()
+                    jQuery('label[for="pokestops-switch"]').click()
+                    $('.ui-dialog-content').dialog('close')
+                }
+            })
+        }
+    }
+}
 
 function manualRaidData(event) { // eslint-disable-line no-unused-vars
     var form = $(event.target).parent().parent()
@@ -1859,6 +1925,21 @@ function openRaidModal(event) { // eslint-disable-line no-unused-vars
         modal: true,
         maxHeight: 600,
         buttons: {},
+        classes: {
+            'ui-dialog': 'ui-dialog raid-widget-popup'
+        }
+    })
+}
+
+function openQuestModal(event) { // eslint-disable-line no-unused-vars
+    $('.ui-dialog').remove()
+    var val = $(event.target).data('id')
+    $('.questPokestop').val(val)
+    $('.quest-modal').clone().dialog({
+        modal: true,
+        maxHeight: 600,
+        buttons: {},
+        title:i8ln('Submit a Quest'),
         classes: {
             'ui-dialog': 'ui-dialog raid-widget-popup'
         }
