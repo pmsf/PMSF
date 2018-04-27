@@ -801,7 +801,7 @@ function gymLabel(item) {
     return str
 }
 
-function pokestopLabel(expireTime, latitude, longitude, stopName, lureUser, id, quest) {
+function pokestopLabel(expireTime, latitude, longitude, stopName, lureUser, id, quest, reward) {
     var str
     if (stopName === undefined) {
         stopName = 'Pokéstop'
@@ -837,6 +837,12 @@ function pokestopLabel(expireTime, latitude, longitude, stopName, lureUser, id, 
                 i8ln('Quest:') + ' ' +
                 i8ln(questList[quest]) +
                 '</div>'
+            if(reward !== null){
+                str += '<div>'+
+                    i8ln('Reward:') + ' ' +
+                    i8ln(reward) +
+                    '</div>'
+            }
         }
         str +=  '<div>' +
             i8ln('Location:') + ' ' + '<a href="javascript:void(0)" onclick="javascript:openMapDirections(' + latitude + ',' + longitude + ')" title="' + i8ln('View in Maps') + '">' + latitude.toFixed(6) + ', ' + longitude.toFixed(7) + '</a>' +
@@ -1221,6 +1227,7 @@ function updateGymIcons() {
 
 function setupPokestopMarker(item) {
     var imagename = item['lure_expiration'] ? 'PstopLured' : 'Pstop'
+    imagename = item['quest_id'] > 0 ? 'Pstop-quest' : imagename
     var marker = new google.maps.Marker({
         position: {
             lat: item['latitude'],
@@ -1231,30 +1238,16 @@ function setupPokestopMarker(item) {
         icon: 'static/forts/' + imagename + '.png'
     })
 
-    if(questList.length === 0 && !noManualQuests){
-        if (!marker.rangeCircle && isRangeActive(map)) {
-            marker.rangeCircle = addRangeCircle(marker, map, 'pokestop')
-        }
-
-        marker.infoWindow = new google.maps.InfoWindow({
-            content: pokestopLabel(item['lure_expiration'], item['latitude'], item['longitude'], item['pokestop_name'], item['lure_user'], item['pokestop_id'], item['quest_id']),
-            disableAutoPan: true
-        })
-
-        addListeners(marker)
+    if (!marker.rangeCircle && isRangeActive(map)) {
+        marker.rangeCircle = addRangeCircle(marker, map, 'pokestop')
     }
-    else{
-        if (!marker.rangeCircle && isRangeActive(map)) {
-            marker.rangeCircle = addRangeCircle(marker, map, 'pokestop')
-        }
 
-        marker.infoWindow = new google.maps.InfoWindow({
-            content: pokestopLabel(item['lure_expiration'], item['latitude'], item['longitude'], item['pokestop_name'], item['lure_user'], item['pokestop_id'], item['quest_id']),
-            disableAutoPan: true
-        })
+    marker.infoWindow = new google.maps.InfoWindow({
+        content: pokestopLabel(item['lure_expiration'], item['latitude'], item['longitude'], item['pokestop_name'], item['lure_user'], item['pokestop_id'], item['quest_id'], item['reward']),
+        disableAutoPan: true
+    })
 
-        addListeners(marker)
-    }
+    addListeners(marker)
 
     return marker
 }
@@ -1650,13 +1643,19 @@ function searchAjax(field) { // eslint-disable-line no-unused-vars
                 var sr = par.find('.search-results')
                 sr.html('')
                 data.forEach(function (element) {
-                    var html = '<li class="search-result" data-lat="' + element.lat + '" data-lon="' + element.lon + '"><div class="left-column" onClick="centerMapOnCoords(event);">'
+                    var html = '<li class="search-result ' + type + '" data-lat="' + element.lat + '" data-lon="' + element.lon + '"><div class="left-column" onClick="centerMapOnCoords(event);">'
                     if (element.url !== '') {
                         html += '<span style="background:url(' + element.url + ') no-repeat;" class="i-icon" ></span>'
                     }
-                    html += '<span class="name" >' + element.name + '</span></div>'
+                    html += '<div class="cont"><span class="name" >' + element.name + '</span>'
+                    if(sr.hasClass('reward-results')){
+                        html += '<span>&nbsp;-&nbsp;</span> <span class="reward" style="font-weight:bold">' + element.reward + '</span>'
+                    }
+                    html += '</div></div>'
                     if (sr.hasClass('gym-results') && manualRaids) {
                         html += '<div class="right-column"><i class="fa fa-binoculars submit-raid"  onClick="openRaidModal(event);" data-id="' + element.external_id + '"></i></div>'
+                    } if (sr.hasClass('pokestop-results') && !noManualQuests) {
+                        html += '<div class="right-column"><i class="fa fa-binoculars submit-quests"  onClick="openQuestModal(event);" data-id="' + element.external_id + '"></i></div>'
                     }
                     html += '</li>'
                     sr.append(html)
@@ -1670,8 +1669,14 @@ function centerMapOnCoords(event) { // eslint-disable-line no-unused-vars
     var point = $(event.target)
     if (point.hasClass('left-column')) {
         point = point.parent()
-    } else if (!point.hasClass('.search-result')) {
+    } else if (point.hasClass('cont')) {
+        point = point.parent().parent().parent()
+    } else if (point.hasClass('name') || point.hasClass('reward')) {
+        point = point.parent().parent().parent()
+    } else if (!point.hasClass('search-result')) {
         point = point.parent().parent()
+    }  else{
+        point = point.parent().parent().parent()
     }
     var lat = point.data('lat')
     var lon = point.data('lon')
@@ -1841,6 +1846,7 @@ function deletePokestop(event) { // eslint-disable-line no-unused-vars
 function manualQuestData(event) { // eslint-disable-line no-unused-vars
     var cont = $(event.target).parent().parent()
     var questId = cont.find('.questList').val()
+    var reward = cont.find('.rewardList').val()
     var pokestopId = cont.find('.questPokestop').val()
     if (pokestopId && pokestopId !== '') {
         if (confirm(i8ln('I confirm this is an accurate sighting of a quest'))) {
@@ -1853,6 +1859,7 @@ function manualQuestData(event) { // eslint-disable-line no-unused-vars
                 data: {
                     'action': 'quest',
                     'questId': questId,
+                    'reward': reward,
                     'pokestopId': pokestopId,
                 },
                 error: function error() {
@@ -2089,7 +2096,7 @@ function openSearchModal(event) { // eslint-disable-line no-unused-vars
         width: width,
         buttons: {},
         open: function (event, ui) {
-            jQuery('input[name="gym-search"], input[name="pokestop-search"]').bind('input', function () {
+            jQuery('input[name="gym-search"], input[name="pokestop-search"], input[name="reward-search"]').bind('input', function () {
                 searchAjax($(this))
             })
             $('.search-widget-popup #search-tabs').tabs()
@@ -3557,7 +3564,7 @@ $(function () {
         weather = data.weather
         boostedMons = data.boosted_mons
     })
-    
+
     $.getJSON('static/dist/data/quests.min.json').done(function (data) {
         $.each(data, function (key, value) {
             questList[key] = value['name'];
