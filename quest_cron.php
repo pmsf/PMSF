@@ -1,7 +1,11 @@
 <?php
-/**
- * Created by PhpStorm.
- * User: compu
- * Date: 4/26/2018
- * Time: 10:53 PM
- */
+include(dirname(__FILE__) . '/config/config.php');
+global $map, $fork, $db, $noManualQuests;
+
+if($noManualQuests === true){
+    http_response_code(401);
+    die();
+}
+
+$db->update('pokestops',['quest_id' => null, 'reward' => null]);
+echo 'updated pokestops';

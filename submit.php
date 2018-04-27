@@ -167,8 +167,8 @@ if ($action === "raid") {
         die();
     }
     $pokestopId = !empty($_POST['pokestopId']) ? $_POST['pokestopId'] : '';
-    $questId = !empty($_POST['questId']) ? $_POST['questId'] : 'NULL';
-    $reward = !empty($_POST['reward']) ? $_POST['reward'] : 'NULL';
+    $questId = $_POST['questId'] == "NULL" ? 0 : $_POST['questId'];
+    $reward = $_POST['reward'] == "NULL" ? 0 : $_POST['reward'] ;
     if (!empty($pokestopId) && !empty($questId) && !empty($reward)) {
         $cols = [
             'quest_id' => $questId,
