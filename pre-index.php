@@ -918,8 +918,17 @@ if ($blockIframe) {
                     'name' => $value['name']
                 );
             }
+            $rewards = array();
+            $json = file_get_contents('static/dist/data/rewards.min.json');
+            $input = json_decode($json, true);
+            foreach ($input as $key => $value) {
+                $rewards[$key] = array(
+                    'name' => $value['name']
+                );
+            }
             ?>
             <select name="questList" class="questList">
+                <option value="NULL"><?php echo i8ln('Choose a Quest');?></option>
                 <?php
                 foreach ($quests as $key => $value) {
                     ?>
@@ -932,6 +941,16 @@ if ($blockIframe) {
                         }
                         ?>
                     </optgroup>
+                    <?php
+                }
+                ?>
+            </select>
+            <select name="rewardList" class="rewardList">
+                <option value="NULL"><?php echo i8ln('Choose a Reward');?></option>
+                <?php
+                foreach ($rewards as $key => $value) {
+                    ?>
+                    <option value="<?php echo $value['name']; ?>"><?php echo i8ln($value['name']); ?></option>
                     <?php
                 }
                 ?>
@@ -952,7 +971,7 @@ if ($blockIframe) {
             <div class="search-modal" style="display:none;">
                 <div id="search-tabs">
                     <ul>
-                        <!--<li><a href="#tab-location">Location</a></li>-->
+                        <li><a href="#tab-rewards">Rewards</a></li>
                         <?php if (!$noGyms) { ?>
                             <li><a href="#tab-gym"><?php echo i8ln('Gyms'); ?></a></li>
                         <?php }
@@ -960,10 +979,14 @@ if ($blockIframe) {
                             <li><a href="#tab-pokestop"><?php echo i8ln('Pokestops'); ?></a></li>
                         <?php } ?>
                     </ul>
-                    <!--                <div id="tab-location">
-                                        <input type="search" id="gym-search" name="gym-search" placeholder="Enter Gym Name"/>
-                                        <ul id="gym-search-results"></ul>
-                                    </div>-->
+                    <?php if (!$noManualQuests) { ?>
+                        <div id="tab-rewards">
+                            <input type="search" id="reward-search" name="reward-search"
+                                   placeholder="<?php echo i8ln('Enter Reward Name'); ?>"
+                                   data-type="reward"/>
+                            <ul id="reward-search-results" class="search-results reward-results"></ul>
+                        </div>
+                    <?php } ?>
                     <?php if (!$noGyms) { ?>
                         <div id="tab-gym">
                             <input type="search" id="gym-search" name="gym-search"
