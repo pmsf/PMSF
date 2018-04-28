@@ -905,6 +905,64 @@ if ($blockIframe) {
 
     </div>
 
+    <?php if (!$noManualQuests) { ?>
+        <div class="quest-modal" style="display: none;">
+            <input type="hidden" value="" name="questPokestop" class="questPokestop"/>
+            <?php
+            $quests = array();
+            $json = file_get_contents('static/dist/data/quests.min.json');
+            $input = json_decode($json, true);
+            foreach ($input as $key => $value) {
+                $quests[$value['cat']][] = array(
+                    'id' => $key,
+                    'name' => $value['name']
+                );
+            }
+            $rewards = array();
+            $json = file_get_contents('static/dist/data/rewards.min.json');
+            $input = json_decode($json, true);
+            foreach ($input as $key => $value) {
+                $rewards[$key] = array(
+                    'name' => $value['name']
+                );
+            }
+            ?>
+            <select name="questList" class="questList">
+                <option value="NULL"><?php echo i8ln('Choose a Quest');?></option>
+                <?php
+                foreach ($quests as $key => $value) {
+                    ?>
+                    <optgroup label="<?php echo $key; ?>">
+                        <?php
+                        foreach ($value as $t) {
+                            ?>
+                            <option value="<?php echo $t['id']; ?>"><?php echo i8ln($t['name']); ?></option>
+                            <?php
+                        }
+                        ?>
+                    </optgroup>
+                    <?php
+                }
+                ?>
+            </select>
+            <select name="rewardList" class="rewardList">
+                <option value="NULL"><?php echo i8ln('Choose a Reward');?></option>
+                <?php
+                foreach ($rewards as $key => $value) {
+                    ?>
+                    <option value="<?php echo $value['name']; ?>"><?php echo i8ln($value['name']); ?></option>
+                    <?php
+                }
+                ?>
+            </select>
+            <div class="button-container">
+                <button type="button" onclick="manualQuestData(event);" class="submitting-quest"><i
+                        class="fa fa-binoculars"
+                        style="margin-right:10px;"></i><?php echo i8ln('Submit Quest'); ?>
+                </button>
+            </div>
+        </div>
+    <?php } ?>
 
     <?php if ((!$noGyms || !$noPokestops) && !$noSearch) { ?>
         <div class="search-container">
@@ -913,7 +971,7 @@ if ($blockIframe) {
             <div class="search-modal" style="display:none;">
                 <div id="search-tabs">
                     <ul>
-                        <!--<li><a href="#tab-location">Location</a></li>-->
+                        <li><a href="#tab-rewards">Rewards</a></li>
                         <?php if (!$noGyms) { ?>
                             <li><a href="#tab-gym"><?php echo i8ln('Gyms'); ?></a></li>
                         <?php }
@@ -921,10 +979,14 @@ if ($blockIframe) {
                             <li><a href="#tab-pokestop"><?php echo i8ln('Pokestops'); ?></a></li>
                         <?php } ?>
                     </ul>
-                    <!--                <div id="tab-location">
-                                        <input type="search" id="gym-search" name="gym-search" placeholder="Enter Gym Name"/>
-                                        <ul id="gym-search-results"></ul>
-                                    </div>-->
+                    <?php if (!$noManualQuests) { ?>
+                        <div id="tab-rewards">
+                            <input type="search" id="reward-search" name="reward-search"
+                                   placeholder="<?php echo i8ln('Enter Reward Name'); ?>"
+                                   data-type="reward"/>
+                            <ul id="reward-search-results" class="search-results reward-results"></ul>
+                        </div>
+                    <?php } ?>
                     <?php if (!$noGyms) { ?>
                         <div id="tab-gym">
                             <input type="search" id="gym-search" name="gym-search"
@@ -1092,6 +1154,7 @@ if ($blockIframe) {
     var pokemonReportTime = <?php echo $pokemonReportTime === true ? 'true' : 'false' ?>;
     var noDeleteGyms = <?php echo $noDeleteGyms === true ? 'true' : 'false' ?>;
     var noDeletePokestops = <?php echo $noDeletePokestops === true ? 'true' : 'false' ?>;
+    var noManualQuests = <?php echo $noManualQuests === true ? 'true' : 'false' ?>;
 </script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js"></script>
 <script src="static/dist/js/map.common.min.js"></script>

@@ -71,7 +71,19 @@ html, body {
   line-height: 26px;
   height: 26px;
 }
-
+#reward-search-results.search-results{
+  .search-result{
+    .name{
+      max-width: 250px;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      @media(max-width:768px){
+        max-width: 200px;
+      }
+    }
+  }
+}
 .search-results{
   padding:0;
   margin:0;
@@ -119,7 +131,7 @@ html, body {
       background-position: center!important;
       background-size: cover!important;
     }
-    .name{
+    .cont{
       display: flex;
       align-items:center;
       margin-left: 10px;
@@ -196,4 +208,8 @@ html, body {
   font-size: 20px;
   padding: 5px;
   color: rgb(255, 0, 0);
+}
+.submit-quest{
+  font-size: 20px;
+  padding: 5px;
 }
