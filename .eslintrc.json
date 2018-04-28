@@ -123,6 +123,7 @@
     "manualRaids": true,
     "pokemonReportTime": true,
     "noDeleteGyms": true,
-    "noDeletePokestops": true
+    "noDeletePokestops": true,
+    "manualQuests": true
   }
 }

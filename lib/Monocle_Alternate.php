@@ -173,15 +173,18 @@ class Monocle_Alternate extends Monocle
 
     public function query_stops($conds, $params)
     {
-        global $db, $noTrainerName;
+        global $db, $noTrainerName, $noManualQuests;
 
         $query = "SELECT external_id AS pokestop_id,
         expires AS lure_expiration,
         deployer AS lure_user,
         name AS pokestop_name,
         lat AS latitude,
-        lon AS longitude
-        FROM pokestops
+        lon AS longitude";
+        if (!$noManualQuests) {
+            $query .= ",quest_id,reward";
+        }
+        $query .= " FROM pokestops
         WHERE :conditions";
 
         $query = str_replace(":conditions", join(" AND ", $conds), $query);
