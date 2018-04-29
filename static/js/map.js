@@ -829,9 +829,9 @@ function pokestopLabel(expireTime, latitude, longitude, stopName, lureUser, id, 
             '</div>'
     } else {
         str =
-            '<div>' +
+            '<center>' + '<div>' +
             '<b>' + stopName + '</b>' +
-        '</div>'
+        '</div>' + '</center>'
         if (!noManualQuests && quest !== null) {
             str += '<div>' +
                 i8ln('Quest:') + ' ' +
@@ -851,7 +851,7 @@ function pokestopLabel(expireTime, latitude, longitude, stopName, lureUser, id, 
             str += '<i class="fa fa-trash-o delete-pokestop" onclick="deletePokestop(event);" data-id="' + id + '"></i>'
         }
         if (!noManualQuests) {
-            str += '<i class="fa fa-binoculars submit-quest" onclick="openQuestModal(event);" data-id="' + id + '"></i>'
+            str += '<center><i class="fa fa-binoculars submit-quest" onclick="openQuestModal(event);" data-id="' + id + '"></i></center>'
         }
     }
     return str
