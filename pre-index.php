@@ -447,9 +447,23 @@ if ($blockIframe) {
             }
             ?>
             <?php
-            if (!$noSearchLocation || !$noStartMe || !$noStartLast || !$noFollowMe || !$noPokestops || !$noScannedLocations || !$noSpawnPoints || !$noRanges || !$noWeatherOverlay || !$noSpawnArea) {
+            if (!$noSearchLocation || !$noNests || !$noStartMe || !$noStartLast || !$noFollowMe || !$noPokestops || !$noScannedLocations || !$noSpawnPoints || !$noRanges || !$noWeatherOverlay || !$noSpawnArea) {
                 echo '<h3>' . i8ln('Location &amp; Search') . '</h3>
             <div>'; ?>
+                <?php
+                if (!$noNests) {
+                    echo '<div class="form-control switch-container">
+                    <h3>' . i8ln('Nests') . '</h3>
+                    <div class="onoffswitch">
+                        <input id="nests-switch" type="checkbox" name="nests-switch"
+                               class="onoffswitch-checkbox" checked>
+                        <label class="onoffswitch-label" for="nests-switch">
+                            <span class="switch-label" data-on="On" data-off="Off"></span>
+                            <span class="switch-handle"></span>
+                        </label>
+                    </div>
+                </div>';
+                } ?>
                 <?php
                 if (!$noPokestops) {
                     echo '<div class="form-control switch-container">
@@ -1117,6 +1131,7 @@ if ($blockIframe) {
     var minRaidLevel = <?php echo $minRaidLevel ?>;
     var maxRaidLevel = <?php echo $maxRaidLevel ?>;
     var enableGyms = <?php echo $noGyms ? 'false' : $enableGyms ?>;
+    var enableNests = <?php echo $noNests ? 'false' : $enableNests ?>;
     var gymSidebar = <?php echo $noGymSidebar ? 'false' : $gymSidebar ?>;
     var enablePokemon = <?php echo $noPokemon ? 'false' : $enablePokemon ?>;
     var enablePokestops = <?php echo $noPokestops ? 'false' : $enablePokestops ?>;

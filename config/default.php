@@ -103,6 +103,9 @@ $minLevel = '0';                                                    // "0" for e
 $noBigKarp = false;                                                 // true/false
 $noTinyRat = false;                                                 // true/false
 
+$noNests = false;                                                   // true/false
+$enableNests = 'false';                                             // true/false
+
 $noGyms = false;                                                    // true/false
 $enableGyms = 'false';                                              // true/false
 $noGymSidebar = false;                                              // true/false

@@ -75,6 +75,7 @@ var oNeLng
 
 var lastpokestops
 var lastgyms
+var lastnests
 var lastpokemon
 var lastslocs
 var lastspawns
@@ -413,6 +414,7 @@ function createLocationMarker() {
 
 function initSidebar() {
     $('#gyms-switch').prop('checked', Store.get('showGyms'))
+    $('#nests-switch').prop('checked', Store.get('showNests'))
     $('#gym-sidebar-switch').prop('checked', Store.get('useGymSidebar'))
     $('#ex-eligible-switch').prop('checked', Store.get('exEligible'))
     $('#gym-sidebar-wrapper').toggle(Store.get('showGyms') || Store.get('showRaids'))
@@ -1251,6 +1253,40 @@ function setupPokestopMarker(item) {
 
     return marker
 }
+function setupNestMarker(item){
+    var str = '<div>' +
+        '<img src="static/images/nest.png" style="width:48px;height: auto;"/>' +
+        '<i class="nest-pokemon-sprite n' + item.pokemon_id + '"></i>' +
+        '</div>'
+    var marker = new RichMarker({
+        position: new google.maps.LatLng(item['lat'], item['lon']),
+        map: map,
+        content: str,
+        flat: true,
+        anchor: RichMarkerPosition.MIDDLE
+    })
+
+    marker.infoWindow = new google.maps.InfoWindow({
+        content: nestLabel(item),
+        disableAutoPan: true,
+        pixelOffset: new google.maps.Size(0, -20)
+    })
+    addListeners(marker)
+
+    return marker
+}
+
+
+function nestLabel(item) {
+    var str =
+        '<div>' +
+        '<b>' + item.pokemon_name + ' Nest</b>' +
+        '</div>' +
+        '<div>' +
+    'Location: <a href="javascript:void(0)" onclick="javascript:openMapDirections(' + item.lat + ',' + item.lon + ')" title="' + i8ln('View in Maps') + '">' + item.lat.toFixed(6) + ', ' + item.lon.toFixed(7) + '</a>' +
+    '</div>'
+    return str
+}
 
 function getColorByDate(value) {
     // Changes the color from red to green over 15 mins
@@ -1499,6 +1535,7 @@ function loadRawData() {
     var loadPokemon = Store.get('showPokemon')
     var loadGyms = (Store.get('showGyms') || Store.get('showRaids')) ? 'true' : 'false'
     var loadPokestops = Store.get('showPokestops')
+    var loadNests = Store.get('showNests')
     var loadScanned = Store.get('showScanned')
     var loadSpawnpoints = Store.get('showSpawnpoints')
     var loadLuredOnly = Boolean(Store.get('showLuredPokestopsOnly'))
@@ -1525,6 +1562,8 @@ function loadRawData() {
             'pokemon': loadPokemon,
             'lastpokemon': lastpokemon,
             'pokestops': loadPokestops,
+            'nests': loadNests,
+            'lastnests': lastnests,
             'lastpokestops': lastpokestops,
             'luredonly': loadLuredOnly,
             'gyms': loadGyms,
@@ -2134,6 +2173,30 @@ function processPokemons(i, item) {
         }
     }
 }
+function processNests(i, item) {
+    if (!Store.get('showNests')) {
+        return false
+    }
+
+    if (!mapData.nests[item['nest_id']]) {
+        // new pokestop, add marker to map and item to dict
+        if (item.marker && item.marker.rangeCircle) {
+            item.marker.rangeCircle.setMap(null)
+        }
+        if (item.marker) {
+            item.marker.setMap(null)
+        }
+        item.marker = setupNestMarker(item)
+        mapData.nests[item['nest_id']] = item
+    } else {
+        // change existing pokestop marker to unlured/lured
+        var item2 = mapData.nests[item['nest_id']]
+        item2.marker.setMap(null)
+        item.marker = setupNestMarker(item)
+        mapData.nests[item['nest_id']] = item
+
+    }
+}
 
 function processPokestops(i, item) {
     if (!Store.get('showPokestops')) {
@@ -2423,6 +2486,7 @@ function updateMap() {
         $.each(result.gyms, processGyms)
         $.each(result.scanned, processScanned)
         $.each(result.spawnpoints, processSpawnpoints)
+        $.each(result.nests, processNests)
         showInBoundsMarkers(mapData.pokemons, 'pokemon')
         showInBoundsMarkers(mapData.lurePokemons, 'pokemon')
         showInBoundsMarkers(mapData.gyms, 'gym')
@@ -2451,6 +2515,7 @@ function updateMap() {
         lastpokemon = result.lastpokemon
         lastslocs = result.lastslocs
         lastspawns = result.lastspawns
+        lastnests = result.lastnests
 
         prevMinIV = result.preMinIV
         prevMinLevel = result.preMinLevel
@@ -3888,6 +3953,10 @@ $(function () {
             }
         }
         buildSwitchChangeListener(mapData, ['gyms'], 'showGyms').bind(this)()
+    })
+    $('#nests-switch').change(function () {
+        lastnests = false
+        buildSwitchChangeListener(mapData, ['nests'], 'showNests').bind(this)()
     })
     $('#pokemon-switch').change(function () {
         var options = {
