@@ -831,7 +831,7 @@ function pokestopLabel(expireTime, latitude, longitude, stopName, lureUser, id, 
         str =
             '<div>' +
             '<b>' + stopName + '</b>' +
-        '</div>';
+        '</div>'
         if (!noManualQuests && quest !== null) {
             str += '<div>' +
                 i8ln('Quest:') + ' ' +
@@ -853,7 +853,6 @@ function pokestopLabel(expireTime, latitude, longitude, stopName, lureUser, id, 
         if (!noManualQuests) {
             str += '<i class="fa fa-binoculars submit-quest" onclick="openQuestModal(event);" data-id="' + id + '"></i>'
         }
-
     }
     return str
 }
@@ -3567,7 +3566,7 @@ $(function () {
 
     $.getJSON('static/dist/data/quests.min.json').done(function (data) {
         $.each(data, function (key, value) {
-            questList[key] = value['name'];
+            questList[key] = value['name']
         })
     })
 
