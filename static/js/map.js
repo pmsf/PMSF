@@ -833,18 +833,18 @@ function pokestopLabel(expireTime, latitude, longitude, stopName, lureUser, id, 
             '<b>' + stopName + '</b>' +
         '</div>';
         if (!noManualQuests && quest !== null) {
-            str += '<div>'+
+            str += '<div>' +
                 i8ln('Quest:') + ' ' +
                 i8ln(questList[quest]) +
                 '</div>'
-            if(reward !== null && reward !== "NULL"){
-                str += '<div>'+
+            if (reward !== null && reward !== 'NULL') {
+                str += '<div>' +
                     i8ln('Reward:') + ' ' +
                     i8ln(reward) +
                     '</div>'
             }
         }
-        str +=  '<div>' +
+        str += '<div>' +
             i8ln('Location:') + ' ' + '<a href="javascript:void(0)" onclick="javascript:openMapDirections(' + latitude + ',' + longitude + ')" title="' + i8ln('View in Maps') + '">' + latitude.toFixed(6) + ', ' + longitude.toFixed(7) + '</a>' +
             '</div>'
         if (!noDeletePokestops) {
@@ -1648,7 +1648,7 @@ function searchAjax(field) { // eslint-disable-line no-unused-vars
                         html += '<span style="background:url(' + element.url + ') no-repeat;" class="i-icon" ></span>'
                     }
                     html += '<div class="cont"><span class="name" >' + element.name + '</span>'
-                    if(sr.hasClass('reward-results')){
+                    if (sr.hasClass('reward-results')) {
                         html += '<span>&nbsp;-&nbsp;</span> <span class="reward" style="font-weight:bold">' + element.reward + '</span>'
                     }
                     html += '</div></div>'
@@ -1675,7 +1675,7 @@ function centerMapOnCoords(event) { // eslint-disable-line no-unused-vars
         point = point.parent().parent().parent()
     } else if (!point.hasClass('search-result')) {
         point = point.parent().parent()
-    }  else{
+    } else {
         point = point.parent().parent().parent()
     }
     var lat = point.data('lat')
@@ -1860,7 +1860,7 @@ function manualQuestData(event) { // eslint-disable-line no-unused-vars
                     'action': 'quest',
                     'questId': questId,
                     'reward': reward,
-                    'pokestopId': pokestopId,
+                    'pokestopId': pokestopId
                 },
                 error: function error() {
                     // Display error toast
@@ -1940,7 +1940,7 @@ function openQuestModal(event) { // eslint-disable-line no-unused-vars
         modal: true,
         maxHeight: 600,
         buttons: {},
-        title:i8ln('Submit a Quest'),
+        title: i8ln('Submit a Quest'),
         classes: {
             'ui-dialog': 'ui-dialog raid-widget-popup'
         }
