@@ -972,14 +972,14 @@ if ($blockIframe) {
                 <div id="search-tabs">
                     <ul>
                         <li><a href="#tab-rewards">Rewards</a></li>
-                        <?php if (!$noGyms) { ?>
+                        <?php if (!$noSearchGyms) { ?>
                             <li><a href="#tab-gym"><?php echo i8ln('Gyms'); ?></a></li>
                         <?php }
-                        if (!$noPokestops) { ?>
+                        if (!$noSearchPokestops) { ?>
                             <li><a href="#tab-pokestop"><?php echo i8ln('Pokestops'); ?></a></li>
                         <?php } ?>
                     </ul>
-                    <?php if (!$noManualQuests) { ?>
+                    <?php if (!$noSearchManualQuests) { ?>
                         <div id="tab-rewards">
                             <input type="search" id="reward-search" name="reward-search"
                                    placeholder="<?php echo i8ln('Enter Reward Name'); ?>"
@@ -987,7 +987,7 @@ if ($blockIframe) {
                             <ul id="reward-search-results" class="search-results reward-results"></ul>
                         </div>
                     <?php } ?>
-                    <?php if (!$noGyms) { ?>
+                    <?php if (!$noSearchGyms) { ?>
                         <div id="tab-gym">
                             <input type="search" id="gym-search" name="gym-search"
                                    placeholder="<?php echo i8ln('Enter Gym Name'); ?>"
@@ -995,7 +995,7 @@ if ($blockIframe) {
                             <ul id="gym-search-results" class="search-results gym-results"></ul>
                         </div>
                     <?php }
-                    if (!$noPokestops) { ?>
+                    if (!$noSearchPokestops) { ?>
                         <div id="tab-pokestop">
                             <input type="search" id="pokestop-search" name="pokestop-search"
                                    placeholder="<?php echo i8ln('Enter Pokestop Name'); ?>" data-type="pokestops"/>
