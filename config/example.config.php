@@ -19,8 +19,8 @@ use Medoo\Medoo;
 
 /* Location Settings */
 
-$startingLat = 41.771822;                                           // Starting latitude
-$startingLng = -87.8549371;                                         // Starting longitude
+$startingLat = 52.090737;                                           // Starting latitude
+$startingLng = 5.121420;                                         // Starting longitude
 
 /* Anti scrape Settings */
 
@@ -32,7 +32,7 @@ $blockIframe = true;                                                // Block you
 
 /* Map Title + Language */
 
-$title = "PMSF Glennmen";                                           // Title to display in title bar
+$title = "Raidmap";                                           // Title to display in title bar
 $locale = "en";                                                     // Display language
 
 /* Google Maps Key */
@@ -234,7 +234,9 @@ $manualFiveStar = [
 //-----------------------------------------------------
 
 $noSearch = false;
-
+$noSearchPokestops = false;     //Wont work if noSearch = false
+$noSearchGyms = false;          //Wont work if noSearch = false
+$noSearchManualQuests = false;  //Wont work if noSearch = false
 //-----------------------------------------------------
 // Areas
 //-----------------------------------------------------
