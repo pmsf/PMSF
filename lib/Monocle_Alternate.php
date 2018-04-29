@@ -502,6 +502,11 @@ class Monocle_Alternate extends Monocle
             $nest["lat"] = floatval($nest["lat"]);
             $nest["lon"] = floatval($nest["lon"]);
             $nest["pokemon_name"] = i8ln($this->data[$nest["pokemon_id"]]['name']);
+            $types = $this->data[$nest["pokemon_id"]]["types"];
+            foreach ($types as $k => $v) {
+                $types[$k]['type'] = i8ln($v['type']);
+            }
+            $nest["pokemon_types"] = $types;
             $data[] = $nest;
 
             unset($nests[$i]);

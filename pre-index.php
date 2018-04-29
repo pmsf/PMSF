@@ -1173,7 +1173,8 @@ if ($blockIframe) {
 </script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js"></script>
 <script src="static/dist/js/map.common.min.js"></script>
-<script src="static/dist/js/map.min.js"></script>
+<script src="static/js/map.js"></script>
+<!--<script src="static/dist/js/map.min.js"></script>-->
 <script src="static/dist/js/stats.min.js"></script>
 <script defer
         src="https://maps.googleapis.com/maps/api/js?v=3.31&amp;key=<?= $gmapsKey ?>&amp;callback=initMap&amp;libraries=places,geometry"></script>

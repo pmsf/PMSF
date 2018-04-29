@@ -1254,8 +1254,8 @@ function setupPokestopMarker(item) {
     return marker
 }
 function setupNestMarker(item){
-    var str = '<div>' +
-        '<img src="static/images/nest.png" style="width:48px;height: auto;"/>' +
+    var str = '<div class="marker-nests">' +
+       '<img src="static/images/nest-' + item.pokemon_types[0].type.toLowerCase() + '.png" style="width:36px;height: auto;"/>' +
         '<i class="nest-pokemon-sprite n' + item.pokemon_id + '"></i>' +
         '</div>'
     var marker = new RichMarker({
@@ -1278,9 +1278,17 @@ function setupNestMarker(item){
 
 
 function nestLabel(item) {
+    var types = item['pokemon_types']
+    var typesDisplay = ''
+    $.each(types, function (index, type) {
+        typesDisplay += getTypeSpan(type)
+    })
     var str =
         '<div>' +
         '<b>' + item.pokemon_name + ' Nest</b>' +
+        '</div>' +
+            '<div>' +
+        typesDisplay +
         '</div>' +
         '<div>' +
     'Location: <a href="javascript:void(0)" onclick="javascript:openMapDirections(' + item.lat + ',' + item.lon + ')" title="' + i8ln('View in Maps') + '">' + item.lat.toFixed(6) + ', ' + item.lon.toFixed(7) + '</a>' +
