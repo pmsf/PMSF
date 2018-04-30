@@ -81,8 +81,8 @@ if ($action === "raid") {
         $time_battle = $time_end - $forty_five;
         $time_spawn = $time_battle - $hour;
         $cols['pokemon_id'] = $pokemonId;
-        $cols['move_1'] = 133; // struggle :(
-        $cols['move_2'] = 133;
+        $cols['move_1'] = null; // struggle :(
+        $cols['move_2'] = null;
         $cols['level'] = $raidBosses[$pokemonId]['level']; // struggle :(
         $cols['cp'] = $raidBosses[$pokemonId]['cp'];
         $cols['time_spawn'] = $time_spawn;
