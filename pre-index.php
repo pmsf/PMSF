@@ -971,8 +971,10 @@ if ($blockIframe) {
             <div class="search-modal" style="display:none;">
                 <div id="search-tabs">
                     <ul>   
-		        <li><a href="#tab-rewards">Rewards</a></li>
-			<?php if (!$noSearchGyms) { ?>
+			<?php if (!$noSearchManualQuests) { ?>
+			    <li><a href="#tab-rewards"><?php echo i8ln('Rewards'); ?></a></li>
+			<?php } 
+			if (!$noSearchGyms) { ?>
                             <li><a href="#tab-gym"><?php echo i8ln('Gyms'); ?></a></li>
                         <?php }
                         if (!$noSearchPokestops) { ?>
