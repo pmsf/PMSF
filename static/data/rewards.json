@@ -1,254 +1,275 @@
 {
   "1": {
-    "name": "1 Max Revive"
+    "name": "1 Charge TM"
   },
   "2": {
-    "name": "1 Pinap Berry"
+    "name": "1 Max Revive"
   },
   "3": {
-    "name": "1 Rare Candy"
+    "name": "1 Pinap Berry"
   },
   "4": {
-    "name": "1 Ultra Ball"
+    "name": "1 Rare Candy"
   },
   "5": {
-    "name": "10 Nanab Berries"
+    "name": "1 Ultra Ball"
   },
   "6": {
-    "name": "10 Pokeballs"
+    "name": "10 Nanab Berries"
   },
   "7": {
-    "name": "10 Ultra Balls"
+    "name": "10 Pokeballs"
   },
   "8": {
-    "name": "1000 Stardust"
+    "name": "10 Ultra Balls"
   },
   "9": {
-    "name": "1000 XP"
+    "name": "1000 Stardust"
   },
   "10": {
-    "name": "1-2 Pinap Berries"
+    "name": "1000 XP"
   },
   "11": {
-    "name": "1-2 Rare Candy"
+    "name": "1-2 Pinap Berries"
   },
   "12": {
-    "name": "1-3 Max Revives"
+    "name": "1-2 Rare Candy"
   },
   "13": {
-    "name": "1-3 Pinap Berries"
+    "name": "1-3 Max Revives"
   },
   "14": {
-    "name": "1500 Stardust"
+    "name": "1-3 Pinap Berries"
   },
   "15": {
-    "name": "2 Golden Razzberries"
+    "name": "1500 Stardust"
   },
   "16": {
-    "name": "2 Pinap Berries"
+    "name": "2 Golden Razzberries"
   },
   "17": {
-    "name": "2 Revives"
+    "name": "2 Pinap Berries"
   },
   "18": {
-    "name": "2 Ultra Balls"
+    "name": "2 Revives"
   },
   "19": {
-    "name": "200 Stardust"
+    "name": "2 Ultra Balls"
   },
   "20": {
-    "name": "200-500 Stardust"
+    "name": "200 Stardust"
   },
   "21": {
-    "name": "2-3 Rare Candies"
+    "name": "200-500 Stardust"
   },
   "22": {
-    "name": "2-4 Revives"
+    "name": "2-3 Rare Candies"
   },
   "23": {
-    "name": "3 Hyper Potions"
+    "name": "2-4 Revives"
   },
   "24": {
-    "name": "3 Max Potions"
+    "name": "3 Hyper Potions"
   },
   "25": {
-    "name": "3 Nanab Berries"
+    "name": "3 Max Potions"
   },
   "26": {
-    "name": "3 Pinap Berries"
+    "name": "3 Nanab Berries"
   },
   "27": {
-    "name": "3 Rare Candies"
+    "name": "3 Pinap Berries"
   },
   "28": {
-    "name": "3 Razz Berries"
+    "name": "3 Rare Candies"
   },
   "29": {
-    "name": "3 Super Potions"
+    "name": "3 Razz Berries"
   },
   "30": {
-    "name": "3-6 Razz Berries"
+    "name": "3 Super Potions"
   },
   "31": {
-    "name": "4 Revives"
+    "name": "3-6 Razz Berries"
   },
   "32": {
-    "name": "4-6 Razz Berries"
+    "name": "4 Revives"
   },
   "33": {
-    "name": "5 Great Balls"
+    "name": "4-6 Razz Berries"
   },
   "34": {
-    "name": "5 Nanab Berries"
+    "name": "5 Great Balls"
   },
   "35": {
-    "name": "5 Pokeballs"
+    "name": "5 Nanab Berries"
   },
   "36": {
-    "name": "5 Potions"
+    "name": "5 Pokeballs"
   },
   "37": {
-    "name": "5 Razz Berries"
+    "name": "5 Potions"
   },
   "38": {
-    "name": "5 Ultra Balls"
+    "name": "5 Razz Berries"
   },
   "39": {
-    "name": "500 Stardust"
+    "name": "5 Ultra Balls"
   },
   "40": {
-    "name": "500 XP"
+    "name": "500 Stardust"
   },
   "41": {
-    "name": "5-10 Pokeballs"
+    "name": "500 XP"
   },
   "42": {
-    "name": "5-10 Ultra Balls"
+    "name": "5-10 Pokeballs"
   },
   "43": {
-    "name": "6 Nanab Berries"
+    "name": "5-10 Ultra Balls"
   },
   "44": {
-    "name": "6 Razz Berries"
+    "name": "6 Nanab Berries"
   },
   "45": {
-    "name": "6 Revives"
+    "name": "6 Razz Berries"
   },
   "46": {
-    "name": "9 Razz Berries"
+    "name": "6 Revives"
   },
   "47": {
-    "name": "Bulbasaur"
+    "name": "9 Razz Berries"
   },
   "48": {
-    "name": "Chansey"
+    "name": "Bulbasaur"
   },
   "49": {
-    "name": "Charmander"
+    "name": "Chansey"
   },
   "50": {
-    "name": "Charmeleon"
+    "name": "Charmander"
   },
   "51": {
-    "name": "Doduo"
+    "name": "Charmeleon"
   },
   "52": {
-    "name": "Dratini"
+    "name": "Doduo"
   },
   "53": {
-    "name": "Eevee"
+    "name": "Dratini"
   },
   "54": {
-    "name": "Ekans"
+    "name": "Eevee"
   },
   "55": {
-    "name": "Electabuzz"
+    "name": "Ekans"
   },
   "56": {
-    "name": "Exeggcute"
+    "name": "Electabuzz"
   },
   "57": {
-    "name": "Exeggutor"
+    "name": "Electrike"
   },
   "58": {
-    "name": "Flareon"
+    "name": "Electrode"
   },
   "59": {
-    "name": "Gastly"
+    "name": "Exeggcute"
   },
   "60": {
-    "name": "Grimer"
+    "name": "Exeggutor"
   },
   "61": {
-    "name": "Growlithe"
+    "name": "Flareon"
   },
   "62": {
-    "name": "Houndour"
+    "name": "Gastly"
   },
   "63": {
-    "name": "Jynx"
+    "name": "Grimer"
   },
   "64": {
-    "name": "Larvitar"
+    "name": "Growlithe"
   },
   "65": {
-    "name": "Machop"
+    "name": "Houndour"
   },
   "66": {
-    "name": "Magcargo"
+    "name": "Jolteon"
   },
   "67": {
-    "name": "Magikarp"
+    "name": "Jynx"
   },
   "68": {
-    "name": "Magmar"
+    "name": "Larvitar"
   },
   "69": {
-    "name": "Mankey"
+    "name": "Machop"
   },
   "70": {
-    "name": "Ninetales"
+    "name": "Magcargo"
   },
   "71": {
-    "name": "Numel"
+    "name": "Magikarp"
   },
   "72": {
-    "name": "Onix"
+    "name": "Magmar"
   },
   "73": {
-    "name": "Pikachu"
+    "name": "Magneton"
   },
   "74": {
-    "name": "Pinsir"
+    "name": "Mankey"
   },
   "75": {
-    "name": "Poliwag"
+    "name": "Minum"
   },
   "76": {
-    "name": "Ponyta"
+    "name": "Ninetales"
   },
   "77": {
-    "name": "Quilava"
+    "name": "Numel"
   },
   "78": {
-    "name": "Reward"
+    "name": "Onix"
   },
   "79": {
-    "name": "Squirtle"
+    "name": "Pikachu"
   },
   "80": {
-    "name": "Tangela"
+    "name": "Pinsir"
   },
   "81": {
-    "name": "Torchic"
+    "name": "Plusle"
   },
   "82": {
-    "name": "Typhlosion"
+    "name": "Poliwag"
   },
   "83": {
-    "name": "Voltorb"
+    "name": "Ponyta"
   },
   "84": {
+    "name": "Quilava"
+  },
+  "85": {
+    "name": "Squirtle"
+  },
+  "86": {
+    "name": "Swablu"
+  },
+  "87": {
+    "name": "Tangela"
+  },
+  "88": {
+    "name": "Torchic"
+  },
+  "89": {
+    "name": "Typhlosion"
+  },
+  "90": {
+    "name": "Voltorb"
+  },
+  "91": {
     "name": "Vulpix"
   }
 }
