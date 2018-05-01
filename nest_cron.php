@@ -30,10 +30,9 @@ foreach($nestCoords as $c){
     if ($result === FALSE) { /* Handle error */ }
 
     $nests = json_decode($result,true)['localMarkers'];
-//var_dump($nests);
     foreach($nests as $nest){
         $query = "INSERT INTO nests (nest_id, lat, lon, pokemon_id, updated,type) VALUES (" . $nest['id'] . "," . $nest['lt'] . "," . $nest['ln'] . "," . $nest['pokemon_id'] . "," . time() . ",1) ON DUPLICATE KEY UPDATE pokemon_id=" . $nest['pokemon_id'] . ", updated=" . time() . ", type=1";
         $db->query($query)->fetchAll();
-        var_dump($db->last());
     }
 }
+echo 'Done Successfully';
