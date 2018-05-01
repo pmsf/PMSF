@@ -141,135 +141,144 @@
     "name": "9 Razz Berries"
   },
   "48": {
-    "name": "Bulbasaur"
+    "name": "Aerodactyl"
   },
   "49": {
-    "name": "Chansey"
+    "name": "Bulbasaur"
   },
   "50": {
-    "name": "Charmander"
+    "name": "Chansey"
   },
   "51": {
-    "name": "Charmeleon"
+    "name": "Charmander"
   },
   "52": {
-    "name": "Doduo"
+    "name": "Charmeleon"
   },
   "53": {
-    "name": "Dratini"
+    "name": "Doduo"
   },
   "54": {
-    "name": "Eevee"
+    "name": "Dratini"
   },
   "55": {
-    "name": "Ekans"
+    "name": "Eevee"
   },
   "56": {
-    "name": "Electabuzz"
+    "name": "Ekans"
   },
   "57": {
-    "name": "Electrike"
+    "name": "Electabuzz"
   },
   "58": {
-    "name": "Electrode"
+    "name": "Electrike"
   },
   "59": {
-    "name": "Exeggcute"
+    "name": "Electrode"
   },
   "60": {
-    "name": "Exeggutor"
+    "name": "Exeggcute"
   },
   "61": {
-    "name": "Flareon"
+    "name": "Exeggutor"
   },
   "62": {
-    "name": "Gastly"
+    "name": "Flaafy"
   },
   "63": {
-    "name": "Grimer"
+    "name": "Flareon"
   },
   "64": {
-    "name": "Growlithe"
+    "name": "Gastly"
   },
   "65": {
-    "name": "Houndour"
+    "name": "Gligar"
   },
   "66": {
-    "name": "Jolteon"
+    "name": "Grimer"
   },
   "67": {
-    "name": "Jynx"
+    "name": "Growlithe"
   },
   "68": {
-    "name": "Larvitar"
+    "name": "Houndour"
   },
   "69": {
-    "name": "Machop"
+    "name": "Jolteon"
   },
   "70": {
-    "name": "Magcargo"
+    "name": "Jynx"
   },
   "71": {
-    "name": "Magikarp"
+    "name": "Larvitar"
   },
   "72": {
-    "name": "Magmar"
+    "name": "Machop"
   },
   "73": {
-    "name": "Magneton"
+    "name": "Magcargo"
   },
   "74": {
-    "name": "Mankey"
+    "name": "Magikarp"
   },
   "75": {
-    "name": "Minum"
+    "name": "Magmar"
   },
   "76": {
-    "name": "Ninetales"
+    "name": "Magneton"
   },
   "77": {
-    "name": "Numel"
+    "name": "Mankey"
   },
   "78": {
-    "name": "Onix"
+    "name": "Minum"
   },
   "79": {
-    "name": "Pikachu"
+    "name": "Ninetales"
   },
   "80": {
-    "name": "Pinsir"
+    "name": "Numel"
   },
   "81": {
-    "name": "Plusle"
+    "name": "Onix"
   },
   "82": {
-    "name": "Poliwag"
+    "name": "Pikachu"
   },
   "83": {
-    "name": "Ponyta"
+    "name": "Pinsir"
   },
   "84": {
-    "name": "Quilava"
+    "name": "Plusle"
   },
   "85": {
-    "name": "Squirtle"
+    "name": "Poliwag"
   },
   "86": {
-    "name": "Swablu"
+    "name": "Ponyta"
   },
   "87": {
-    "name": "Tangela"
+    "name": "Quilava"
   },
   "88": {
-    "name": "Torchic"
+    "name": "Squirtle"
   },
   "89": {
-    "name": "Typhlosion"
+    "name": "Swablu"
   },
   "90": {
-    "name": "Voltorb"
+    "name": "Tangela"
   },
   "91": {
+    "name": "Torchic"
+  },
+  "92": {
+    "name": "Typhlosion"
+  },
+  "93": {
+    "name": "Voltorb"
+  },
+  "94": {
     "name": "Vulpix"
   }
 }
