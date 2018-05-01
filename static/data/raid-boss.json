@@ -74,6 +74,16 @@
     "level": 4,
     "cp": 9079
   },
+  "57": {
+    "name": "Primeape",
+    "level": 2,
+    "cp": 11876
+  },
+  "62": {
+    "name": "Poliwrath",
+    "level": 4,
+    "cp": 24247
+  },
   "65": {
     "name": "Alakazam",
     "level": 3,
@@ -143,6 +153,16 @@
     "name": "Marowak",
     "level": 2,
     "cp": 9891
+  },
+  "106": {
+    "name": "Hitmonlee",
+    "level": 3,
+    "cp": 19679
+  },
+  "107": {
+    "name": "Hitmonchan",
+    "level": 3,
+    "cp": 17164
   },
   "108": {
     "name": "Lickitung",
@@ -348,6 +368,16 @@
     "name": "Celebi",
     "level": 5,
     "cp": 37726
+  },
+  "256": {
+    "name": "Combusken",
+    "level": 2,
+    "cp": 8610
+  },
+  "286": {
+    "name": "Breloom",
+    "level": 3,
+    "cp": 18174
   },
   "302": {
     "name": "Sableye",
