@@ -21,41 +21,41 @@ else{
     WHERE time_battle < :time_battle AND time_end > :time_battle AND pokemon_id = 0 AND level = 5
 ", [':time_battle'=>time()])->fetchAll(PDO::FETCH_ASSOC);
 }
-
-
+   
 if (count($eggs) > 0) {
     $fort_ids = [];
     foreach ($eggs as $egg) {
         // add each fort to the array for updating
         array_push($fort_ids, $egg['fort_id']);
+        $gym = $db->get("forts", ['external_id'], ['id' => $fort_ids]);
 
         // do we need to send to webhooks?
         if ($sendWebhook === true) {
             $webhook = [
                 'message' => [
-                    'gym_id' => $egg['fort_id'],
+                    'gym_id' => $gym['external_id'],
                     'pokemon_id' => $manualFiveStar['pokemon_id'],
                     'cp' => $manualFiveStar['cp'],
-                    'move_1' => $manualFiveStar['move_1'],
-                    'move_2' => $manualFiveStar['move_2'],
+                    'move_1' => 133,
+                    'move_2' => 133,
                     'level' => 5,
                     'latitude' => $egg['lat'],
                     'longitude' => $egg['lon'],
-                    'raid_begin' => time(),
-                    'raid_end' => (float)$egg['time_end'],
-                    'team' => 0,
+                    'start' => time(),
+                    'end' => (float)$egg['time_end'],
+                    'team_id' => 0,
                     'name' => $egg['name']
                 ],
                 'type' => 'raid'
             ];
             foreach ($webhookUrl as $url) {
-                sendToWebhook($url, $webhook);
+                sendToWebhook($url, array($webhook));
             }
         }
     }
 
     // update raids table
-    $db->update("raids", ["pokemon_id" => $manualFiveStar['pokemon_id'], "move_1" => 133, "move_2" => 133, "cp" => $manualFiveStar['cp']], ["fort_id" => $fort_ids]);
+    $db->update("raids", ["pokemon_id" => $manualFiveStar['pokemon_id'], "move_1" => $manualFiveStar['move_1'], "move_2" => $manualFiveStar['move_2'], "cp" => $manualFiveStar['cp']], ["fort_id" => $fort_ids]);
 
     // also mark fort_sightings as updated:
     $db->update("fort_sightings", ["updated" => time()], ["fort_id" => $fort_ids]);
