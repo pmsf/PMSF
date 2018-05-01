@@ -489,7 +489,8 @@ class Monocle_Alternate extends Monocle
         $query = "SELECT nest_id,
         lat,
         lon,
-        pokemon_id
+        pokemon_id,
+        type
         FROM nests
         WHERE :conditions";
 
@@ -501,12 +502,15 @@ class Monocle_Alternate extends Monocle
         foreach ($nests as $nest) {
             $nest["lat"] = floatval($nest["lat"]);
             $nest["lon"] = floatval($nest["lon"]);
-            $nest["pokemon_name"] = i8ln($this->data[$nest["pokemon_id"]]['name']);
-            $types = $this->data[$nest["pokemon_id"]]["types"];
-            foreach ($types as $k => $v) {
-                $types[$k]['type'] = i8ln($v['type']);
+            $nest["type"] = intval($nest["type"]);
+            if($nest['pokemon_id'] > 0 ){
+                $nest["pokemon_name"] = i8ln($this->data[$nest["pokemon_id"]]['name']);
+                $types = $this->data[$nest["pokemon_id"]]["types"];
+                foreach ($types as $k => $v) {
+                    $types[$k]['type'] = i8ln($v['type']);
+                }
+                $nest["pokemon_types"] = $types;
             }
-            $nest["pokemon_types"] = $types;
             $data[] = $nest;
 
             unset($nests[$i]);

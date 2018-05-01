@@ -16,3 +16,22 @@
     }
   }
 }
+
+.delete-nest{
+  font-size:18px;
+  color:red;
+  margin-right:10px;
+}
+.submit-nest{
+  font-size:18px;
+}
+.nest-widget-popup{
+  .ui-dialog-content.global-nest-modal{
+    padding:0;
+  }
+   .pokemon-list {
+    max-height: 381px;
+    overflow-x: hidden;
+    overflow-y: scroll;
+  }
+}

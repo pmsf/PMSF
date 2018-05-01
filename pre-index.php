@@ -918,6 +918,18 @@ if ($blockIframe) {
     <div class="global-raid-modal">
 
     </div>
+    <?php if (!$noManualNests) { ?>
+    <div class="global-nest-modal" style="display:none;">
+        <input type="hidden" name="pokemonID" class="pokemonID"/>
+        <?php pokemonFilterImages($noPokemonNumbers, 'pokemonSubmitFilter(event)'); ?>
+        <div class="button-container">
+            <button type="button" onclick="manualNestData(event);" class="submitting-nests"><i
+                    class="fa fa-binoculars"
+                    style="margin-right:10px;"></i><?php echo i8ln('Submit Nest'); ?>
+            </button>
+        </div>
+    </div>
+    <?php } ?>
 
     <?php if (!$noManualQuests) { ?>
         <div class="quest-modal" style="display: none;">
@@ -1169,12 +1181,13 @@ if ($blockIframe) {
     var pokemonReportTime = <?php echo $pokemonReportTime === true ? 'true' : 'false' ?>;
     var noDeleteGyms = <?php echo $noDeleteGyms === true ? 'true' : 'false' ?>;
     var noDeletePokestops = <?php echo $noDeletePokestops === true ? 'true' : 'false' ?>;
+    var noDeleteNests = <?php echo $noDeleteNests === true ? 'true' : 'false' ?>;
+    var noManualNests = <?php echo $noManualNests === true ? 'true' : 'false' ?>;
     var noManualQuests = <?php echo $noManualQuests === true ? 'true' : 'false' ?>;
 </script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js"></script>
 <script src="static/dist/js/map.common.min.js"></script>
-<script src="static/js/map.js"></script>
-<!--<script src="static/dist/js/map.min.js"></script>-->
+<script src="static/dist/js/map.min.js"></script>
 <script src="static/dist/js/stats.min.js"></script>
 <script defer
         src="https://maps.googleapis.com/maps/api/js?v=3.31&amp;key=<?= $gmapsKey ?>&amp;callback=initMap&amp;libraries=places,geometry"></script>

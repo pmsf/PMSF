@@ -1,29 +1,10 @@
 <?php
 include(dirname(__FILE__) . '/config/config.php');
-global $map, $fork, $db;
+global $map, $fork, $db, $nestCoords;
 
 $url = 'https://thesilphroad.com/atlas/getLocalNests.json';
-$coords = array(
-    array(
-        'lat1' => 42.8307723529682,
-        'lng1' => -88.7527692278689,
-        'lat2' => 42.1339901128552,
-        'lng2' => -88.0688703020877
-    ),
-    array(
-        'lat1' => 42.8529250952743,
-        'lng1' => -88.1292951067752,
-        'lat2' => 41.7929306950085,
-        'lng2' => -87.5662457903689
-    ),
-    array(
-        'lat1' => 42.125842369748,
-        'lng1' => -88.7280499895877,
-        'lat2' => 41.4315162889464,
-        'lng2' => -88.0056989153689
-    )
-);
-foreach($coords as $c){
+
+foreach($nestCoords as $c){
     $data = array(
         "data[lat1]"=> $c['lat1'],
         "data[lng1]"=> $c['lng1'],
@@ -51,7 +32,7 @@ foreach($coords as $c){
     $nests = json_decode($result,true)['localMarkers'];
 //var_dump($nests);
     foreach($nests as $nest){
-        $query = "INSERT INTO nests (nest_id, lat, lon, pokemon_id, updated) VALUES (" . $nest['id'] . "," . $nest['lt'] . "," . $nest['ln'] . "," . $nest['pokemon_id'] . "," . time() . ") ON DUPLICATE KEY UPDATE pokemon_id=" . $nest['pokemon_id'] . ", updated=" . time();
+        $query = "INSERT INTO nests (nest_id, lat, lon, pokemon_id, updated,type) VALUES (" . $nest['id'] . "," . $nest['lt'] . "," . $nest['ln'] . "," . $nest['pokemon_id'] . "," . time() . ",1) ON DUPLICATE KEY UPDATE pokemon_id=" . $nest['pokemon_id'] . ", updated=" . time() . ", type=1";
         $db->query($query)->fetchAll();
         var_dump($db->last());
     }
