@@ -47,7 +47,7 @@ if ($action === "raid") {
 
 //$db->debug();
 // fetch fort_id
-    $gym = $db->get("forts", ['id', 'name', 'lat', 'lon'], ['external_id' => $gymId]);
+    $gym = $db->get("forts", ['id', 'name', 'lat', 'lon', 'external_id'], ['external_id' => $gymId]);
     $gymId = $gym['id'];
     $add_seconds = ($monTime * 60);
     $time_spawn = time() - $forty_five;
@@ -99,19 +99,19 @@ if ($action === "raid") {
 // todo: put team stuff in here too
     $db->query("UPDATE fort_sightings SET updated = :updated WHERE fort_id = :gymId", ['updated' => time(), ':gymId' => $gymId]);
     if ($sendWebhook === true) {
-        $webhook = [
+	    $webhook = [
             'message' => [
-                'gym_id' => $cols['external_id'],
+                'gym_id' => $gym['external_id'],
                 'pokemon_id' => $cols['pokemon_id'],
                 'cp' => $cols['cp'],
-                'move_1' => $cols['move_1'],
-                'move_2' => $cols['move_2'],
+                'move_1' => 133,
+                'move_2' => 133,
                 'level' => $cols['level'],
                 'latitude' => $gym['lat'],
                 'longitude' => $gym['lon'],
-                'raid_begin' => $time_battle,
-                'raid_end' => $time_end,
-                'team' => 0,
+                'start' => $time_battle,
+                'end' => $time_end,
+                'team_id' => 0,
                 'name' => $gym['name']
             ],
             'type' => 'raid'
@@ -120,7 +120,7 @@ if ($action === "raid") {
             $webhook['message']['raid_begin'] = $time_spawn;
         }
         foreach ($webhookUrl as $url) {
-            sendToWebhook($url, $webhook);
+            sendToWebhook($url, array($webhook));
         }
 
     }
