@@ -1,7 +1,7 @@
 <?php
 $timing['start'] = microtime(true);
 include('config/config.php');
-global $map, $fork, $db, $raidBosses, $webhookUrl, $sendWebhook, $noManualRaids, $noRaids, $noManualPokemon, $noPokemon, $noPokestops, $noManualPokestops, $noGyms, $noManualGyms, $noManualQuests;
+global $map, $fork, $db, $raidBosses, $webhookUrl, $sendWebhook, $noManualRaids, $noRaids, $noManualPokemon, $noPokemon, $noPokestops, $noManualPokestops, $noGyms, $noManualGyms, $noManualQuests, $noManualNests, $noNests;
 $action = !empty($_POST['action']) ? $_POST['action'] : '';
 $lat = !empty($_POST['lat']) ? $_POST['lat'] : '';
 $lng = !empty($_POST['lng']) ? $_POST['lng'] : '';
@@ -179,6 +179,22 @@ if ($action === "raid") {
         ];
         $db->update("pokestops", $cols, $where);
     }
+} elseif ($action === "nest") {
+    if ($noManualNests === true || $noNests === true) {
+        http_response_code(401);
+        die();
+    }
+    $pokemonId = !empty($_POST['pokemonId']) ? $_POST['pokemonId'] : '';
+    $nestId = !empty($_POST['nestId']) ? $_POST['nestId'] : '';
+    if (!empty($pokemonId) && !empty($nestId)) {
+        $cols = [
+            'pokemon_id' => $pokemonId,
+        ];
+        $where = [
+            'nest_id' => $nestId
+        ];
+        $db->update("nests", $cols, $where);
+    }
 } elseif ($action === "pokestop") {
     if ($noManualPokestops === true || $noPokestops === true) {
         http_response_code(401);
@@ -232,6 +248,19 @@ if ($action === "raid") {
         $db->delete('pokestops', [
             "AND" => [
                 'external_id' => $pokestopId
+            ]
+        ]);
+    }
+} elseif ($action === "delete-nest") {
+    if ($noManualNests === true || $noNests === true) {
+        http_response_code(401);
+        die();
+    }
+    $nestId = !empty($_POST['nestId']) ? $_POST['nestId'] : '';
+    if (!empty($nestId)) {
+        $db->delete('nests', [
+            "AND" => [
+                'nest_id' => $nestId
             ]
         ]);
     }
