@@ -125,7 +125,9 @@
     "noDeleteGyms": true,
     "noDeletePokestops": true,
     "manualQuests": true,
-	"enableNests" : true,
-    "noManualQuests": true
+    "enableNests" : true,
+    "noManualQuests": true,
+    "noDeleteNests": true,
+    "NoManualNests": true
   }
 }
