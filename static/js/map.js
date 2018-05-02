@@ -1938,7 +1938,7 @@ function deleteNest(event) { // eslint-disable-line no-unused-vars
 
 function submitNewNest(event) { // eslint-disable-line no-unused-vars
     var cont = $(event.target).parent().parent()
-    var id = cont.find( '.pokemonID' ).val()
+    var id = cont.find('.pokemonID').val()
     var lat = $('.submit-modal.ui-dialog-content .submitLatitude').val()
     var lng = $('.submit-modal.ui-dialog-content .submitLongitude').val()
     if (lat && lat !== '' && lng && lng !== '') {
@@ -1953,7 +1953,7 @@ function submitNewNest(event) { // eslint-disable-line no-unused-vars
                     'action': 'new-nest',
                     'lat': lat,
                     'lng': lng,
-                    'id' : id
+                    'id': id
                 },
                 error: function error() {
                     // Display error toast
@@ -2083,7 +2083,7 @@ function manualRaidData(event) { // eslint-disable-line no-unused-vars
 function openNestModal(event) { // eslint-disable-line no-unused-vars
     $('.ui-dialog').remove()
     var val = $(event.target).data('id')
-    $('.submitting-nests').attr('data-nest',val)
+    $('.submitting-nests').attr('data-nest', val)
     $('.global-nest-modal').clone().dialog({
         modal: true,
         maxHeight: 600,
@@ -2331,7 +2331,6 @@ function processNests(i, item) {
         item2.marker.setMap(null)
         item.marker = setupNestMarker(item)
         mapData.nests[item['nest_id']] = item
-
     }
 }
 
