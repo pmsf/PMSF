@@ -1250,14 +1250,14 @@ function setupPokestopMarker(item) {
 
     return marker
 }
-function setupNestMarker(item){
-    if(item.pokemon_id > 0){
+function setupNestMarker(item) {
+    if (item.pokemon_id > 0) {
         var str = '<div class="marker-nests">' +
             '<img src="static/images/nest-' + item.pokemon_types[0].type.toLowerCase() + '.png" style="width:36px;height: auto;"/>' +
             '<i class="nest-pokemon-sprite n' + item.pokemon_id + '"></i>' +
             '</div>'
     }
-    else{
+    else {
         var str = '<div class="marker-nests">' +
             '<img src="static/images/nest-empty.png" style="width:36px;height: auto;"/>' +
             '</div>'
@@ -1281,9 +1281,7 @@ function setupNestMarker(item){
     return marker
 }
 
-
 function nestLabel(item) {
-
     var str = '<div>';
     if (item.pokemon_id > 0) {
         var types = item['pokemon_types']
@@ -1291,7 +1289,7 @@ function nestLabel(item) {
         $.each(types, function (index, type) {
             typesDisplay += getTypeSpan(type)
         })
-        str += '<b>' + item.pokemon_name  + '</b>' +
+        str += '<b>' + item.pokemon_name + '</b>' +
             '</div>' +
             '<div>' +
             typesDisplay +
@@ -1302,7 +1300,7 @@ function nestLabel(item) {
     str += '<div>' +
     'Location: <a href="javascript:void(0)" onclick="javascript:openMapDirections(' + item.lat + ',' + item.lon + ')" title="' + i8ln('View in Maps') + '">' + item.lat.toFixed(6) + ', ' + item.lon.toFixed(7) + '</a>' +
     '</div>'
-    if(item.type === 1){
+    if (item.type === 1) {
         str += '<div style="margin-bottom:5px;">' + i8ln('As found on thesilphroad.com') + '</div>'
     }
     if (!noDeleteNests) {
