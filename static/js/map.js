@@ -345,8 +345,6 @@ function initMap() { // eslint-disable-line no-unused-vars
 
     map.addListener('click', function (e) {
         if ($('.submit-on-off-button').hasClass('on')) {
-            console.log(e.latLng.lat())
-            console.log(e.latLng.lng())
             $('.submitLatitude').val(e.latLng.lat())
             $('.submitLongitude').val(e.latLng.lng())
             $('.ui-dialog').remove()
@@ -1294,15 +1292,15 @@ function nestLabel(item) {
         $.each(types, function (index, type) {
             typesDisplay += getTypeSpan(type)
         })
-        str += '<b>' + item.pokemon_name + ' Nest</b>' +
+        str += '<b>' + item.pokemon_name  + '</b>' +
             '</div>' +
             '<div>' +
             typesDisplay +
             '</div>'
     } else {
-        str += '<b>' + i8ln('No Pokemon assigned to this Nest') + '</b>'
+        str += '<b>' + i8ln('No Pokemon - Assign One Below') + '</b>'
     }
-    str += '<div>' +
+    str += '<div style="margin-bottom:5px;">' +
     'Location: <a href="javascript:void(0)" onclick="javascript:openMapDirections(' + item.lat + ',' + item.lon + ')" title="' + i8ln('View in Maps') + '">' + item.lat.toFixed(6) + ', ' + item.lon.toFixed(7) + '</a>' +
     '</div>'
     if (!noDeleteNests) {
@@ -1934,6 +1932,42 @@ function deleteNest(event) { // eslint-disable-line no-unused-vars
                 complete: function complete() {
                     jQuery('label[for="nests-switch"]').click()
                     jQuery('label[for="nests-switch"]').click()
+                }
+            })
+        }
+    }
+}
+
+function submitNewNest(event) { // eslint-disable-line no-unused-vars
+    var cont = $(event.target).parent().parent()
+    var id = cont.find( '.pokemonID' ).val()
+    var lat = $('.submit-modal.ui-dialog-content .submitLatitude').val()
+    var lng = $('.submit-modal.ui-dialog-content .submitLongitude').val()
+    if (lat && lat !== '' && lng && lng !== '') {
+        if (confirm(i8ln('I confirm this is an new nest'))) {
+            return $.ajax({
+                url: 'submit',
+                type: 'POST',
+                timeout: 300000,
+                dataType: 'json',
+                cache: false,
+                data: {
+                    'action': 'new-nest',
+                    'lat': lat,
+                    'lng': lng,
+                    'id' : id
+                },
+                error: function error() {
+                    // Display error toast
+                    toastr['error'](i8ln('Please check connectivity or reduce marker settings.'), i8ln('Error Submitting Nest'))
+                    toastr.options = toastrOptions
+                },
+                complete: function complete() {
+                    lastnests = false
+                    updateMap()
+                    jQuery('label[for="nests-switch"]').click()
+                    jQuery('label[for="nests-switch"]').click()
+                    $('.ui-dialog-content').dialog('close')
                 }
             })
         }

@@ -26,9 +26,13 @@
           a{
             text-align:center;
             font-size:12px;
+            padding: .25em 1em;
             width:100%;
             @media(min-width:768px){
               font-size:16px;
+            }
+            img{
+              height:32px;
             }
           }
         }

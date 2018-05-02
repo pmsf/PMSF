@@ -1046,15 +1046,19 @@ if ($blockIframe) {
                 <ul>
                     <?php if (!$noManualPokemon) {
                         ?>
-                        <li><a href="#tab-pokemon"><?php echo i8ln('Pokemon'); ?></a></li>
+                        <li><a href="#tab-pokemon"><img src="static/images/pokeball.png" /></a></li>
                     <?php } ?>
                     <?php if (!$noManualGyms) {
                         ?>
-                        <li><a href="#tab-gym"><?php echo i8ln('Gym'); ?></a></li>
+                        <li><a href="#tab-gym"><img src="static/forts/ingame/Uncontested.png" /></a></li>
                     <?php } ?>
                     <?php if (!$noManualPokestops) {
                         ?>
-                        <li><a href="#tab-pokestop"><?php echo i8ln('Pokestop'); ?></a></li>
+                        <li><a href="#tab-pokestop"><img src="static/forts/Pstop.png" /></a></li>
+                    <?php } ?>
+                    <?php if (!$noManualNests) {
+                        ?>
+                        <li><a href="#tab-nests"><img src="static/images/nest.png" /></a></li>
                     <?php } ?>
                 </ul>
                 <?php if (!$noManualPokemon) {
@@ -1092,6 +1096,19 @@ if ($blockIframe) {
                             <button type="button" onclick="manualPokestopData(event);" class="submitting-pokestop"><i
                                     class="fa fa-binoculars"
                                     style="margin-right:10px;"></i><?php echo i8ln('Submit Pokestop'); ?>
+                            </button>
+                        </div>
+                    </div>
+                <?php } ?>
+                <?php if (!$noManualNests) {
+                    ?>
+                    <div id="tab-nests">
+                        <input type="hidden" name="pokemonID" class="pokemonID"/>
+                        <?php pokemonFilterImages($noPokemonNumbers, 'pokemonSubmitFilter(event)'); ?>
+                        <div class="button-container">
+                            <button type="button" onclick="submitNewNest(event);" class="submitting-nest"><i
+                                    class="fa fa-binoculars"
+                                    style="margin-right:10px;"></i><?php echo i8ln('Submit Nest'); ?>
                             </button>
                         </div>
                     </div>
@@ -1187,7 +1204,8 @@ if ($blockIframe) {
 </script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js"></script>
 <script src="static/dist/js/map.common.min.js"></script>
-<script src="static/dist/js/map.min.js"></script>
+<!--<script src="static/dist/js/map.min.js"></script>-->
+<script src="static/js/map.js"></script>
 <script src="static/dist/js/stats.min.js"></script>
 <script defer
         src="https://maps.googleapis.com/maps/api/js?v=3.31&amp;key=<?= $gmapsKey ?>&amp;callback=initMap&amp;libraries=places,geometry"></script>
