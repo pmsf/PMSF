@@ -1,35 +1,22 @@
 <?php
-
 $timing['start'] = microtime( true );
 include( 'config/config.php' );
 global $map, $fork, $db, $raidBosses, $webhookUrl, $sendWebhook, $noManualRaids, $noRaids, $noManualPokemon, $noPokemon, $noPokestops, $noManualPokestops, $noGyms, $noManualGyms, $noManualQuests, $noManualNests, $noNests;
 $action = ! empty( $_POST['action'] ) ? $_POST['action'] : '';
 $lat    = ! empty( $_POST['lat'] ) ? $_POST['lat'] : '';
 $lng    = ! empty( $_POST['lng'] ) ? $_POST['lng'] : '';
-
 // set content type
-
 header( 'Content-Type: application/json' );
-
 $now = new DateTime();
-
 $now->sub( new DateInterval( 'PT20S' ) );
-
-
 $d           = array();
 $d['status'] = "ok";
-
 $d["timestamp"] = $now->getTimestamp();
-
-
 if ( $action === "raid" ) {
-
-
     if ( $noManualRaids === true || $noRaids === true ) {
         http_response_code( 401 );
         die();
     }
-
     $raidBosses = json_decode( file_get_contents( "static/dist/data/raid-boss.min.json" ), true );
     $pokemonId  = ! empty( $_POST['pokemonId'] ) ? $_POST['pokemonId'] : 0;
     $gymId      = ! empty( $_POST['gymId'] ) ? $_POST['gymId'] : 0;
@@ -38,27 +25,20 @@ if ( $action === "raid" ) {
     if ( $eggTime > 60 ) {
         $eggTime = 60;
     }
-
     if ( $monTime > 45 ) {
         $monTime = 45;
     }
-
     if ( $eggTime < 0 ) {
         $eggTime = 0;
     }
-
     if ( $monTime < 0 ) {
         $monTime = 45;
     }
-
 // brimful of asha on the:
     $forty_five = 45 * 60;
-
     $hour       = 3600;
-
 //$db->debug();
 // fetch fort_id
-
     $gym         = $db->get( "forts", [ 'id', 'name', 'lat', 'lon' ], [ 'external_id' => $gymId ] );
     $gymId       = $gym['id'];
     $add_seconds = ( $monTime * 60 );
@@ -69,15 +49,11 @@ if ( $action === "raid" ) {
         $level       = (int) substr( $pokemonId, 4, 1 );
         $time_spawn  = time() + $add_seconds;
     }
-
     $time_battle = time() + $add_seconds;
-
     $time_end    = $time_battle + $forty_five;
     $extId       = rand( 0, 65535 ) . rand( 0, 65535 );
-
     $cols = [
         'external_id' => $gymId,
-
         'fort_id'     => $gymId,
         'level'       => $level,
         'time_spawn'  => $time_spawn,
@@ -87,19 +63,16 @@ if ( $action === "raid" ) {
         'pokemon_id'  => 0,
         'move_1'      => 0, // struggle
         'move_2'      => 0
-
     ];
-
     if ( array_key_exists( $pokemonId, $raidBosses ) ) {
         $time_end = time() + $add_seconds;
         // fake the battle start and spawn times cuz rip hashing :(
-
         $time_battle         = $time_end - $forty_five;
         $time_spawn          = $time_battle - $hour;
         $cols['pokemon_id']  = $pokemonId;
-        $cols['move_1']      = 133; // struggle :(
-        $cols['move_2']      = 133;
-        $cols['level']       = $raidBosses[ $pokemonId ]['level']; // struggle :(
+        $cols['move_1']      = null;
+        $cols['move_2']      = null;
+        $cols['level']       = $raidBosses[ $pokemonId ]['level'];
         $cols['cp']          = $raidBosses[ $pokemonId ]['cp'];
         $cols['time_spawn']  = $time_spawn;
         $cols['time_battle'] = $time_battle;
@@ -110,7 +83,6 @@ if ( $action === "raid" ) {
     }
     $db->query( 'DELETE FROM raids WHERE fort_id = :gymId', [ ':gymId' => $gymId ] );
     $db->insert( "raids", $cols );
-
 // also update fort_sightings so PMSF knows the gym has changed
 // todo: put team stuff in here too
     $db->query( "UPDATE fort_sightings SET updated = :updated WHERE fort_id = :gymId", [
@@ -137,11 +109,10 @@ if ( $action === "raid" ) {
         ];
         if ( strpos( $pokemonId, 'egg_' ) !== false ) {
             $webhook['message']['raid_begin'] = $time_spawn;
-
+        }
         foreach ( $webhookUrl as $url ) {
             sendToWebhook( $url, $webhook );
         }
-
     }
 } elseif ( $action === "pokemon" ) {
     if ( $noManualPokemon === true || $noPokemon === true ) {
@@ -163,7 +134,6 @@ if ( $action === "raid" ) {
         ];
         $db->insert( "sightings", $cols );
     }
-
 } elseif ( $action === "gym" ) {
     if ( $noManualGyms === true || $noGyms === true ) {
         http_response_code( 401 );
@@ -300,7 +270,6 @@ if ( $action === "raid" ) {
         ] );
     }
 }
-
 function randomGymId() {
     $alphabet    = 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890';
     $pass        = array(); //remember to declare $pass as an array
@@ -309,10 +278,8 @@ function randomGymId() {
         $n      = rand( 0, $alphaLength );
         $pass[] = $alphabet[ $n ];
     }
-
     return implode( $pass ); //turn the array into a string
 }
-
 function randomNum() {
     $alphabet    = '1234567890';
     $pass        = array(); //remember to declare $pass as an array
@@ -321,9 +288,7 @@ function randomNum() {
         $n      = rand( 0, $alphaLength );
         $pass[] = $alphabet[ $n ];
     }
-
     return implode( $pass ); //turn the array into a string
 }
-
 $jaysson = json_encode( $d );
 echo $jaysson;
