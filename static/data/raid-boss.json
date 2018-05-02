@@ -1,462 +1,284 @@
 {
   "1": {
-    "name": "Bulbasaur",
-    "level": 1,
-    "cp": 3757
+    "name": "1 Charge TM"
   },
   "2": {
-    "name": "Ivysaur",
-    "level": 1,
-    "cp": 5238
+    "name": "1 Max Revive"
+  },
+  "3": {
+    "name": "1 Pinap Berry"
   },
   "4": {
-    "name": "Charmander",
-    "level": 1,
-    "cp": 3380
+    "name": "1 Rare Candy"
   },
   "5": {
-    "name": "Charmeleon",
-    "level": 1,
-    "cp": 5085
+    "name": "1 Ultra Ball"
   },
   "6": {
-    "name": "Charizard",
-    "level": 4,
-    "cp": 28485
+    "name": "10 Nanab Berries"
   },
   "7": {
-    "name": "Squirtle",
-    "level": 1,
-    "cp": 3125
+    "name": "10 Pokeballs"
   },
   "8": {
-    "name": "Wartortle",
-    "level": 1,
-    "cp": 4503
+    "name": "10 Ultra Balls"
+  },
+  "9": {
+    "name": "1000 Stardust"
+  },
+  "10": {
+    "name": "1000 XP"
   },
   "11": {
-    "name": "Metapod",
-    "level": 1,
-    "cp": 1534
+    "name": "1-2 Pinap Berries"
+  },
+  "12": {
+    "name": "1-2 Rare Candy"
+  },
+  "13": {
+    "name": "1-3 Max Revives"
+  },
+  "14": {
+    "name": "1-3 Pinap Berries"
+  },
+  "15": {
+    "name": "1500 Stardust"
+  },
+  "16": {
+    "name": "2 Golden Razzberries"
+  },
+  "17": {
+    "name": "2 Pinap Berries"
+  },
+  "18": {
+    "name": "2 Revives"
+  },
+  "19": {
+    "name": "2 Ultra Balls"
+  },
+  "20": {
+    "name": "200 Stardust"
+  },
+  "21": {
+    "name": "200-500 Stardust"
+  },
+  "22": {
+    "name": "2-3 Rare Candies"
+  },
+  "23": {
+    "name": "2-4 Revives"
+  },
+  "24": {
+    "name": "3 Hyper Potions"
   },
   "25": {
-    "name": "Pikachu",
-    "level": 4,
-    "cp": 11845
+    "name": "3 Max Potions"
+  },
+  "26": {
+    "name": "3 Nanab Berries"
+  },
+  "27": {
+    "name": "3 Pinap Berries"
   },
   "28": {
-    "name": "Sandslash",
-    "level": 2,
-    "cp": 12312
+    "name": "3 Rare Candies"
+  },
+  "29": {
+    "name": "3 Razz Berries"
+  },
+  "30": {
+    "name": "3 Super Potions"
   },
   "31": {
-    "name": "Nidoqueen",
-    "level": 4,
-    "cp": 23216
+    "name": "3-6 Razz Berries"
+  },
+  "32": {
+    "name": "4 Revives"
+  },
+  "33": {
+    "name": "4-6 Razz Berries"
   },
   "34": {
-    "name": "Nidoking",
-    "level": 4,
-    "cp": 24873
+    "name": "5 Great Balls"
+  },
+  "35": {
+    "name": "5 Nanab Berries"
+  },
+  "36": {
+    "name": "5 Pokeballs"
+  },
+  "37": {
+    "name": "5 Potions"
   },
   "38": {
-    "name": "Ninetales",
-    "level": 3,
-    "cp": 14914
+    "name": "5 Razz Berries"
+  },
+  "39": {
+    "name": "5 Ultra Balls"
+  },
+  "40": {
+    "name": "500 Stardust"
+  },
+  "41": {
+    "name": "500 XP"
+  },
+  "42": {
+    "name": "5-10 Pokeballs"
+  },
+  "43": {
+    "name": "5-10 Ultra Balls"
+  },
+  "44": {
+    "name": "6 Nanab Berries"
+  },
+  "45": {
+    "name": "6 Razz Berries"
+  },
+  "46": {
+    "name": "6 Revives"
+  },
+  "47": {
+    "name": "9 Razz Berries"
+  },
+  "48": {
+    "name": "Aerodactyl"
   },
   "49": {
-    "name": "Venomoth",
-    "level": 2,
-    "cp": 10572
+    "name": "Bulbasaur"
+  },
+  "50": {
+    "name": "Chansey"
+  },
+  "51": {
+    "name": "Charmander"
   },
   "52": {
-    "name": "Meowth",
-    "level": 4,
-    "cp": 9079
+    "name": "Charmeleon"
+  },
+  "53": {
+    "name": "Doduo"
+  },
+  "54": {
+    "name": "Dratini"
+  },
+  "55": {
+    "name": "Eevee"
+  },
+  "56": {
+    "name": "Ekans"
+  },
+  "57": {
+    "name": "Electabuzz"
+  },
+  "58": {
+    "name": "Electrike"
+  },
+  "59": {
+    "name": "Electrode"
+  },
+  "60": {
+    "name": "Exeggcute"
+  },
+  "61": {
+    "name": "Exeggutor"
+  },
+  "62": {
+    "name": "Flaafy"
+  },
+  "63": {
+    "name": "Flareon"
+  },
+  "64": {
+    "name": "Gastly"
   },
   "65": {
-    "name": "Alakazam",
-    "level": 3,
-    "cp": 22646
+    "name": "Gligar"
+  },
+  "66": {
+    "name": "Grimer"
+  },
+  "67": {
+    "name": "Growlithe"
   },
   "68": {
-    "name": "Machamp",
-    "level": 3,
-    "cp": 18144
+    "name": "Houndour"
+  },
+  "69": {
+    "name": "Jolteon"
+  },
+  "70": {
+    "name": "Jynx"
   },
   "71": {
-    "name": "Victreebel",
-    "level": 4,
-    "cp": 23780
+    "name": "Larvitar"
+  },
+  "72": {
+    "name": "Machop"
   },
   "73": {
-    "name": "Tentacruel",
-    "level": 2,
-    "cp": 12190
+    "name": "Magcargo"
+  },
+  "74": {
+    "name": "Magikarp"
+  },
+  "75": {
+    "name": "Magmar"
   },
   "76": {
-    "name": "Golem",
-    "level": 4,
-    "cp": 30572
+    "name": "Magneton"
+  },
+  "77": {
+    "name": "Mankey"
+  },
+  "78": {
+    "name": "Minum"
+  },
+  "79": {
+    "name": "Ninetales"
   },
   "80": {
-    "name": "Slowbro",
-    "level": 2,
-    "cp": 11776
+    "name": "Numel"
+  },
+  "81": {
+    "name": "Onix"
   },
   "82": {
-    "name": "Magneton",
-    "level": 2,
-    "cp": 14172
+    "name": "Pikachu"
+  },
+  "83": {
+    "name": "Pinsir"
+  },
+  "84": {
+    "name": "Plusle"
+  },
+  "85": {
+    "name": "Poliwag"
+  },
+  "86": {
+    "name": "Ponyta"
   },
   "87": {
-    "name": "Dewgong",
-    "level": 2,
-    "cp": 9216
+    "name": "Quilava"
+  },
+  "88": {
+    "name": "Squirtle"
   },
   "89": {
-    "name": "Muk",
-    "level": 2,
-    "cp": 12269
+    "name": "Swablu"
+  },
+  "90": {
+    "name": "Tangela"
   },
   "91": {
-    "name": "Cloyster",
-    "level": 2,
-    "cp": 15678
+    "name": "Torchic"
+  },
+  "92": {
+    "name": "Typhlosion"
+  },
+  "93": {
+    "name": "Voltorb"
   },
   "94": {
-    "name": "Gengar",
-    "level": 3,
-    "cp": 19768
-  },
-  "95": {
-    "name": "Onix",
-    "level": 3,
-    "cp": 9534
-  },
-  "103": {
-    "name": "Exeggutor",
-    "level": 2,
-    "cp": 13839
-  },
-  "105": {
-    "name": "Marowak",
-    "level": 2,
-    "cp": 9891
-  },
-  "108": {
-    "name": "Lickitung",
-    "level": 2,
-    "cp": 6433
-  },
-  "110": {
-    "name": "Weezing",
-    "level": 2,
-    "cp": 12318
-  },
-  "112": {
-    "name": "Rhydon",
-    "level": 4,
-    "cp": 30512
-  },
-  "121": {
-    "name": "Starmie",
-    "level": 3,
-    "cp": 17384
-  },
-  "123": {
-    "name": "Scyther",
-    "level": 3,
-    "cp": 17358
-  },
-  "124": {
-    "name": "Jynx",
-    "level": 3,
-    "cp": 18296
-  },
-  "125": {
-    "name": "Electabuzz",
-    "level": 2,
-    "cp": 12390
-  },
-  "127": {
-    "name": "Pinsir",
-    "level": 3,
-    "cp": 20176
-  },
-  "129": {
-    "name": "Magikarp",
-    "level": 1,
-    "cp": 1165
-  },
-  "131": {
-    "name": "Lapras",
-    "level": 4,
-    "cp": 21768
-  },
-  "135": {
-    "name": "Jolteon",
-    "level": 3,
-    "cp": 19883
-  },
-  "137": {
-    "name": "Porygon",
-    "level": 3,
-    "cp": 11419
-  },
-  "139": {
-    "name": "Omastar",
-    "level": 3,
-    "cp": 18915
-  },
-  "141": {
-    "name": "Kabutops",
-    "level": 3,
-    "cp": 19004
-  },
-  "142": {
-    "name": "Aerodactyl",
-    "level": 3,
-    "cp": 17294
-  },
-  "143": {
-    "name": "Snorlax",
-    "level": 4,
-    "cp": 25419
-  },
-  "144": {
-    "name": "Articuno",
-    "level": 5,
-    "cp": 37603
-  },
-  "145": {
-    "name": "Zapdos",
-    "level": 5,
-    "cp": 42691
-  },
-  "146": {
-    "name": "Moltres",
-    "level": 5,
-    "cp": 41953
-  },
-  "149": {
-    "name": "Dragonite",
-    "level": 4,
-    "cp": 35383
-  },
-  "150": {
-    "name": "Mewtwo",
-    "level": 5,
-    "cp": 49430
-  },
-  "151": {
-    "name": "Mew",
-    "level": 5,
-    "cp": 37733
-  },
-  "153": {
-    "name": "Bayleef",
-    "level": 1,
-    "cp": 4375
-  },
-  "156": {
-    "name": "Quilava",
-    "level": 1,
-    "cp": 5085
-  },
-  "159": {
-    "name": "Croconaw",
-    "level": 1,
-    "cp": 5207
-  },
-  "160": {
-    "name": "Feraligatr",
-    "level": 4,
-    "cp": 27740
-  },
-  "184": {
-    "name": "Azumarill",
-    "level": 3,
-    "cp": 8989
-  },
-  "200": {
-    "name": "Misdreavus",
-    "level": 2,
-    "cp": 10417
-  },
-  "202": {
-    "name": "Wobbuffet",
-    "level": 4,
-    "cp": 7144
-  },
-  "210": {
-    "name": "Granbull",
-    "level": 3,
-    "cp": 15328
-  },
-  "215": {
-    "name": "Sneasel",
-    "level": 2,
-    "cp": 11350
-  },
-  "217": {
-    "name": "Ursaring",
-    "level": 4,
-    "cp": 27409
-  },
-  "221": {
-    "name": "Piloswine",
-    "level": 3,
-    "cp": 13663
-  },
-  "229": {
-    "name": "Houndoom",
-    "level": 4,
-    "cp": 27302
-  },
-  "243": {
-    "name": "Raikou",
-    "level": 5,
-    "cp": 42932
-  },
-  "244": {
-    "name": "Entei",
-    "level": 5,
-    "cp": 38628
-  },
-  "245": {
-    "name": "Suicune",
-    "level": 5,
-    "cp": 34471
-  },
-  "248": {
-    "name": "Tyranitar",
-    "level": 4,
-    "cp": 34707
-  },
-  "249": {
-    "name": "Lugia",
-    "level": 5,
-    "cp": 42753
-  },
-  "250": {
-    "name": "Ho-Oh",
-    "level": 5,
-    "cp": 48276
-  },
-  "251": {
-    "name": "Celebi",
-    "level": 5,
-    "cp": 37726
-  },
-  "302": {
-    "name": "Sableye",
-    "level": 2,
-    "cp": 8266
-  },
-  "303": {
-    "name": "Mawile",
-    "level": 2,
-    "cp": 9403
-  },
-  "306": {
-    "name": "Aggron",
-    "level": 4,
-    "cp": 33458
-  },
-  "310": {
-    "name": "Manectric",
-    "level": 2,
-    "cp": 11628
-  },
-  "320": {
-    "name": "Wailmer",
-    "level": 1,
-    "cp": 3369
-  },
-  "333": {
-    "name": "Swablu",
-    "level": 1,
-    "cp": 2766
-  },
-  "344": {
-    "name": "Claydol",
-    "level": 3,
-    "cp": 13450
-  },
-  "353": {
-    "name": "Shuppet",
-    "level": 1,
-    "cp": 3372
-  },
-  "355": {
-    "name": "Duskull",
-    "level": 1,
-    "cp": 2770
-  },
-  "359": {
-    "name": "Absol",
-    "level": 4,
-    "cp": 26262
-  },
-  "361": {
-    "name": "Snorunt",
-    "level": 1,
-    "cp": 2825
-  },
-  "365": {
-    "name": "Walrein",
-    "level": 4,
-    "cp": 23578
-  },
-  "377": {
-    "name": "Regirock",
-    "level": 5,
-    "cp": 41777
-  },
-  "378": {
-    "name": "Regice",
-    "level": 5,
-    "cp": 41777
-  },
-  "379": {
-    "name": "Registeel",
-    "level": 5,
-    "cp": 30596
-  },
-  "380": {
-    "name": "Latias",
-    "level": 5,
-    "cp": 45704
-  },
-  "381": {
-    "name": "Latios",
-    "level": 5,
-    "cp": 49322
-  },
-  "382": {
-    "name": "Kyogre",
-    "level": 5,
-    "cp": 51968
-  },
-  "383": {
-    "name": "Groudon",
-    "level": 5,
-    "cp": 51968
-  },
-  "384": {
-    "name": "Rayquaza",
-    "level": 5,
-    "cp": 45468
-  },
-  "385": {
-    "name": "Jirachi",
-    "level": 5,
-    "cp": 37733
-  },
-  "386": {
-    "name": "Deoxys",
-    "level": 5,
-    "cp": ""
+    "name": "Vulpix"
   }
 }
