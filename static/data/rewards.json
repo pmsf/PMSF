@@ -1,254 +1,284 @@
 {
   "1": {
-    "name": "1 Max Revive"
+    "name": "1 Charge TM"
   },
   "2": {
-    "name": "1 Pinap Berry"
+    "name": "1 Max Revive"
   },
   "3": {
-    "name": "1 Rare Candy"
+    "name": "1 Pinap Berry"
   },
   "4": {
-    "name": "1 Ultra Ball"
+    "name": "1 Rare Candy"
   },
   "5": {
-    "name": "10 Nanab Berries"
+    "name": "1 Ultra Ball"
   },
   "6": {
-    "name": "10 Pokeballs"
+    "name": "10 Nanab Berries"
   },
   "7": {
-    "name": "10 Ultra Balls"
+    "name": "10 Pokeballs"
   },
   "8": {
-    "name": "1000 Stardust"
+    "name": "10 Ultra Balls"
   },
   "9": {
-    "name": "1000 XP"
+    "name": "1000 Stardust"
   },
   "10": {
-    "name": "1-2 Pinap Berries"
+    "name": "1000 XP"
   },
   "11": {
-    "name": "1-2 Rare Candy"
+    "name": "1-2 Pinap Berries"
   },
   "12": {
-    "name": "1-3 Max Revives"
+    "name": "1-2 Rare Candy"
   },
   "13": {
-    "name": "1-3 Pinap Berries"
+    "name": "1-3 Max Revives"
   },
   "14": {
-    "name": "1500 Stardust"
+    "name": "1-3 Pinap Berries"
   },
   "15": {
-    "name": "2 Golden Razzberries"
+    "name": "1500 Stardust"
   },
   "16": {
-    "name": "2 Pinap Berries"
+    "name": "2 Golden Razzberries"
   },
   "17": {
-    "name": "2 Revives"
+    "name": "2 Pinap Berries"
   },
   "18": {
-    "name": "2 Ultra Balls"
+    "name": "2 Revives"
   },
   "19": {
-    "name": "200 Stardust"
+    "name": "2 Ultra Balls"
   },
   "20": {
-    "name": "200-500 Stardust"
+    "name": "200 Stardust"
   },
   "21": {
-    "name": "2-3 Rare Candies"
+    "name": "200-500 Stardust"
   },
   "22": {
-    "name": "2-4 Revives"
+    "name": "2-3 Rare Candies"
   },
   "23": {
-    "name": "3 Hyper Potions"
+    "name": "2-4 Revives"
   },
   "24": {
-    "name": "3 Max Potions"
+    "name": "3 Hyper Potions"
   },
   "25": {
-    "name": "3 Nanab Berries"
+    "name": "3 Max Potions"
   },
   "26": {
-    "name": "3 Pinap Berries"
+    "name": "3 Nanab Berries"
   },
   "27": {
-    "name": "3 Rare Candies"
+    "name": "3 Pinap Berries"
   },
   "28": {
-    "name": "3 Razz Berries"
+    "name": "3 Rare Candies"
   },
   "29": {
-    "name": "3 Super Potions"
+    "name": "3 Razz Berries"
   },
   "30": {
-    "name": "3-6 Razz Berries"
+    "name": "3 Super Potions"
   },
   "31": {
-    "name": "4 Revives"
+    "name": "3-6 Razz Berries"
   },
   "32": {
-    "name": "4-6 Razz Berries"
+    "name": "4 Revives"
   },
   "33": {
-    "name": "5 Great Balls"
+    "name": "4-6 Razz Berries"
   },
   "34": {
-    "name": "5 Nanab Berries"
+    "name": "5 Great Balls"
   },
   "35": {
-    "name": "5 Pokeballs"
+    "name": "5 Nanab Berries"
   },
   "36": {
-    "name": "5 Potions"
+    "name": "5 Pokeballs"
   },
   "37": {
-    "name": "5 Razz Berries"
+    "name": "5 Potions"
   },
   "38": {
-    "name": "5 Ultra Balls"
+    "name": "5 Razz Berries"
   },
   "39": {
-    "name": "500 Stardust"
+    "name": "5 Ultra Balls"
   },
   "40": {
-    "name": "500 XP"
+    "name": "500 Stardust"
   },
   "41": {
-    "name": "5-10 Pokeballs"
+    "name": "500 XP"
   },
   "42": {
-    "name": "5-10 Ultra Balls"
+    "name": "5-10 Pokeballs"
   },
   "43": {
-    "name": "6 Nanab Berries"
+    "name": "5-10 Ultra Balls"
   },
   "44": {
-    "name": "6 Razz Berries"
+    "name": "6 Nanab Berries"
   },
   "45": {
-    "name": "6 Revives"
+    "name": "6 Razz Berries"
   },
   "46": {
-    "name": "9 Razz Berries"
+    "name": "6 Revives"
   },
   "47": {
-    "name": "Bulbasaur"
+    "name": "9 Razz Berries"
   },
   "48": {
-    "name": "Chansey"
+    "name": "Aerodactyl"
   },
   "49": {
-    "name": "Charmander"
+    "name": "Bulbasaur"
   },
   "50": {
-    "name": "Charmeleon"
+    "name": "Chansey"
   },
   "51": {
-    "name": "Doduo"
+    "name": "Charmander"
   },
   "52": {
-    "name": "Dratini"
+    "name": "Charmeleon"
   },
   "53": {
-    "name": "Eevee"
+    "name": "Doduo"
   },
   "54": {
-    "name": "Ekans"
+    "name": "Dratini"
   },
   "55": {
-    "name": "Electabuzz"
+    "name": "Eevee"
   },
   "56": {
-    "name": "Exeggcute"
+    "name": "Ekans"
   },
   "57": {
-    "name": "Exeggutor"
+    "name": "Electabuzz"
   },
   "58": {
-    "name": "Flareon"
+    "name": "Electrike"
   },
   "59": {
-    "name": "Gastly"
+    "name": "Electrode"
   },
   "60": {
-    "name": "Grimer"
+    "name": "Exeggcute"
   },
   "61": {
-    "name": "Growlithe"
+    "name": "Exeggutor"
   },
   "62": {
-    "name": "Houndour"
+    "name": "Flaafy"
   },
   "63": {
-    "name": "Jynx"
+    "name": "Flareon"
   },
   "64": {
-    "name": "Larvitar"
+    "name": "Gastly"
   },
   "65": {
-    "name": "Machop"
+    "name": "Gligar"
   },
   "66": {
-    "name": "Magcargo"
+    "name": "Grimer"
   },
   "67": {
-    "name": "Magikarp"
+    "name": "Growlithe"
   },
   "68": {
-    "name": "Magmar"
+    "name": "Houndour"
   },
   "69": {
-    "name": "Mankey"
+    "name": "Jolteon"
   },
   "70": {
-    "name": "Ninetales"
+    "name": "Jynx"
   },
   "71": {
-    "name": "Numel"
+    "name": "Larvitar"
   },
   "72": {
-    "name": "Onix"
+    "name": "Machop"
   },
   "73": {
-    "name": "Pikachu"
+    "name": "Magcargo"
   },
   "74": {
-    "name": "Pinsir"
+    "name": "Magikarp"
   },
   "75": {
-    "name": "Poliwag"
+    "name": "Magmar"
   },
   "76": {
-    "name": "Ponyta"
+    "name": "Magneton"
   },
   "77": {
-    "name": "Quilava"
+    "name": "Mankey"
   },
   "78": {
-    "name": "Reward"
+    "name": "Minum"
   },
   "79": {
-    "name": "Squirtle"
+    "name": "Ninetales"
   },
   "80": {
-    "name": "Tangela"
+    "name": "Numel"
   },
   "81": {
-    "name": "Torchic"
+    "name": "Onix"
   },
   "82": {
-    "name": "Typhlosion"
+    "name": "Pikachu"
   },
   "83": {
-    "name": "Voltorb"
+    "name": "Pinsir"
   },
   "84": {
+    "name": "Plusle"
+  },
+  "85": {
+    "name": "Poliwag"
+  },
+  "86": {
+    "name": "Ponyta"
+  },
+  "87": {
+    "name": "Quilava"
+  },
+  "88": {
+    "name": "Squirtle"
+  },
+  "89": {
+    "name": "Swablu"
+  },
+  "90": {
+    "name": "Tangela"
+  },
+  "91": {
+    "name": "Torchic"
+  },
+  "92": {
+    "name": "Typhlosion"
+  },
+  "93": {
+    "name": "Voltorb"
+  },
+  "94": {
     "name": "Vulpix"
   }
 }
