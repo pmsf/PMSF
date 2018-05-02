@@ -1300,18 +1300,19 @@ function nestLabel(item) {
     } else {
         str += '<b>' + i8ln('No Pokemon - Assign One Below') + '</b>'
     }
-    str += '<div style="margin-bottom:5px;">' +
+    str += '<div>' +
     'Location: <a href="javascript:void(0)" onclick="javascript:openMapDirections(' + item.lat + ',' + item.lon + ')" title="' + i8ln('View in Maps') + '">' + item.lat.toFixed(6) + ', ' + item.lon.toFixed(7) + '</a>' +
     '</div>'
+    if(item.type === 1){
+        str += '<div style="margin-bottom:5px;">' + i8ln('As found on thesilphroad.com') + '</div>'
+    }
     if (!noDeleteNests) {
         str += '<i class="fa fa-trash-o delete-nest" onclick="deleteNest(event);" data-id="' + item['nest_id'] + '"></i>'
     }
     if (!noManualNests) {
         str += '<i class="fa fa-binoculars submit-nest" onclick="openNestModal(event);" data-id="' + item['nest_id'] + '"></i>'
     }
-    if(item.type === 1){
-        str += '<div>' + i8ln('As found on thesilphroad.com') + '</div>'
-    }
+
     return str
 }
 
