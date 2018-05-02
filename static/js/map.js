@@ -1256,9 +1256,9 @@ function setupNestMarker(item) {
             '<img src="static/images/nest-' + item.pokemon_types[0].type.toLowerCase() + '.png" style="width:36px;height: auto;"/>' +
             '<i class="nest-pokemon-sprite n' + item.pokemon_id + '"></i>' +
             '</div>'
-    }
+}
     else {
-        var str = '<div class="marker-nests">' +
+            '<div class="marker-nests">' +
             '<img src="static/images/nest-empty.png" style="width:36px;height: auto;"/>' +
             '</div>'
     }
@@ -1282,7 +1282,7 @@ function setupNestMarker(item) {
 }
 
 function nestLabel(item) {
-    var str = '<div>';
+    var str = '<div>'
     if (item.pokemon_id > 0) {
         var types = item['pokemon_types']
         var typesDisplay = ''
