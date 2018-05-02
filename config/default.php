@@ -103,6 +103,9 @@ $minLevel = '0';                                                    // "0" for e
 $noBigKarp = false;                                                 // true/false
 $noTinyRat = false;                                                 // true/false
 
+$noNests = false;                                                   // true/false
+$enableNests = 'false';                                             // true/false
+
 $noGyms = false;                                                    // true/false
 $enableGyms = 'false';                                              // true/false
 $noGymSidebar = false;                                              // true/false
@@ -230,6 +233,7 @@ $noDeletePokestops = false;
 
 $raidBosses = [361,355,353,333,129,303,302,215,200,103,221,210,127,124,94,68,365,359,306,248,229,381,150];
 
+
 $sendWebhook = false;
 $webhookUrl = null;                                             //['url-1','url-2']
 
@@ -245,9 +249,18 @@ $manualFiveStar = [
 //-----------------------------------------------------
 
 $noSearch = false;
+
 $noSearchPokestops = false;     //Wont work if noSearch = false
 $noSearchGyms = false;          //Wont work if noSearch = false
 $noSearchManualQuests = false;  //Wont work if noSearch = false
+//-----------------------------------------------
+// Nests
+//-----------------------------------------------------
+$noManualNests = false;
+$noDeleteNests = false;
+$nestCords = array();                                           //$nestCoords = array(array('lat1' => 42.8307723529682, 'lng1' => -88.7527692278689, 'lat2' => 42.1339901128552, 'lng2' => -88.0688703020877),array(    'lat1' => 42.8529250952743,'lng1' => -88.1292951067752,'lat2' => 41.7929306950085,'lng2' => -87.5662457903689));
+
+
 //-----------------------------------------------------
 // Areas
 //-----------------------------------------------------

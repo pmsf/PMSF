@@ -1,0 +1,37 @@
+.nest-pokemon-sprite {
+  background-image: url($spriteLarge);
+  background-image: var(--sprite-large);
+  background-repeat:no-repeat;
+  background-size: 800px;
+  top: 5px;
+  right: 4px;
+  position: absolute;
+  -moz-transform-origin: 0 0;
+  height: 28.57142857142857px;
+  width: 28.57142857142857px;
+
+  @for $i from 1 through $numberOfPokemon {
+    &.n#{$i} {
+      background-position: -#{(($i - 1) % 28) * 28.57142857142857}px -#{floor(($i - 1) / 28) * 28.57142857142857}px
+    }
+  }
+}
+
+.delete-nest{
+  font-size:18px;
+  color:red;
+  margin-right:10px;
+}
+.submit-nest{
+  font-size:18px;
+}
+.nest-widget-popup{
+  .ui-dialog-content.global-nest-modal{
+    padding:0;
+  }
+   .pokemon-list {
+    max-height: 381px;
+    overflow-x: hidden;
+    overflow-y: scroll;
+  }
+}
