@@ -217,7 +217,7 @@ $pokemonToExclude = [];
 $noDeleteGyms = false;
 $noDeletePokestops = false;
 
-$raidBosses = [361,355,353,333,320,129,303,302,256,215,200,103,57,286,221,210,127,124,107,106,94,68,365,359,306,248,229,62,381,150];
+$raidBosses = [361,333,320,129,303,302,256,57,286,107,108,68,359,306,248,62,381,150];
 
 $sendWebhook = false;
 $webhookUrl = null;                                                 //['url-1','url-2']
