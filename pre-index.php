@@ -78,10 +78,11 @@ if ($blockIframe) {
                     echo "<span class='pokemon-number'>" . $k . "</span>";
                 }
                 echo "</span>";
-                if ($i == 27) {
-                    $i = -1;
-                    $z = $z + 48.25;
-                }
+
+            }
+            if ($i == 27) {
+                $i = -1;
+                $z = $z + 48.25;
             }
             $i++;
         }
@@ -921,7 +922,7 @@ if ($blockIframe) {
     <?php if (!$noManualNests) { ?>
     <div class="global-nest-modal" style="display:none;">
         <input type="hidden" name="pokemonID" class="pokemonID"/>
-        <?php pokemonFilterImages($noPokemonNumbers, 'pokemonSubmitFilter(event)'); ?>
+        <?php pokemonFilterImages($noPokemonNumbers, 'pokemonSubmitFilter(event)', $excludeNestMons); ?>
         <div class="button-container">
             <button type="button" onclick="manualNestData(event);" class="submitting-nests"><i
                     class="fa fa-binoculars"
@@ -1034,7 +1035,7 @@ if ($blockIframe) {
         </div>
     <?php } ?>
     <?php
-    if ((!$noPokemon && !$noManualPokemon) || (!$noGyms && !$noManualGyms) || (!$noPokestops && !$noManualPokestops)) {
+    if ((!$noPokemon && !$noManualPokemon) || (!$noGyms && !$noManualGyms) || (!$noPokestops && !$noManualPokestops) || (!$noManualNests && !$noNest)) {
         ?>
         <button class="submit-on-off-button" onclick="$('.submit-on-off-button').toggleClass('on');">
             <i class="fa fa-map-marker submit-to-map" aria-hidden="true"></i>
@@ -1104,7 +1105,7 @@ if ($blockIframe) {
                     ?>
                     <div id="tab-nests">
                         <input type="hidden" name="pokemonID" class="pokemonID"/>
-                        <?php pokemonFilterImages($noPokemonNumbers, 'pokemonSubmitFilter(event)'); ?>
+                        <?php pokemonFilterImages($noPokemonNumbers, 'pokemonSubmitFilter(event)', $excludeNestMons); ?>
                         <div class="button-container">
                             <button type="button" onclick="submitNewNest(event);" class="submitting-nest"><i
                                     class="fa fa-binoculars"
