@@ -221,7 +221,6 @@ if ( $action === "raid" ) {
         die();
     }
     $id = ! empty( $_POST['id'] ) ? $_POST['id'] : 0;
-    var_dump($id);
     if ( ! empty( $lat ) && ! empty( $lng ) && ! empty( $id ) ) {
         $cols = [
             'pokemon_id' => $id,
@@ -232,7 +231,6 @@ if ( $action === "raid" ) {
         ];
         $db->insert( "nests", $cols );
     }
-    var_dump($db->last());
 } elseif ( $action === "delete-gym" ) {
     if ( $noDeleteGyms === true || $noGyms === true ) {
         http_response_code( 401 );

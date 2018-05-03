@@ -1947,7 +1947,7 @@ function deleteNest(event) { // eslint-disable-line no-unused-vars
 }
 
 function submitNewNest(event) { // eslint-disable-line no-unused-vars
-    var cont = $(event.target).parent().parent().parent()
+    var cont = $(event.target).parent().parent()
     var id = cont.find( '.pokemonID' ).val()
     var lat = $('.submit-modal.ui-dialog-content .submitLatitude').val()
     var lng = $('.submit-modal.ui-dialog-content .submitLongitude').val()
@@ -3363,7 +3363,7 @@ function fetchCriesJson() {
 function pokemonSubmitFilter(event) { // eslint-disable-line no-unused-vars
     var img = $(event.target).parent()
     var cont = img.parent().parent().parent()
-    var select = cont.find('input')
+    var select = cont.find('input.pokemonID')
     var id = img.data('value').toString()
     select.val(id)
     cont.find('.pokemon-icon-sprite').removeClass('active')
@@ -3422,9 +3422,9 @@ function generateRaidBossList() {
 function pokemonSpritesFilter() {
     jQuery('.pokemon-list').parent().find('.select2').hide()
     loadDefaultImages()
-    jQuery('.pokemon-list .pokemon-icon-sprite').on('click', function () {
+    jQuery('#nav .pokemon-list .pokemon-icon-sprite').on('click', function () {
         var img = jQuery(this)
-        var select = jQuery(this).parent().parent().find('input')
+        var select = jQuery(this).parent().parent().parent().find('.select2-hidden-accessible')
         var value = select.val().split(',')
         var id = img.data('value').toString()
         if (img.hasClass('active')) {
