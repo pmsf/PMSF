@@ -358,6 +358,13 @@ function initMap() { // eslint-disable-line no-unused-vars
                 },
                 open: function (event, ui) {
                     $('.submit-widget-popup #submit-tabs').tabs()
+                    $('.submit-widget-popup .pokemon-list-cont').each(function(index) {
+                        $(this).attr('id','pokemon-list-cont-6' + index);
+                        var options = {
+                            valueNames: ['name', 'types', 'id']
+                        };
+                        var monList = new List('pokemon-list-cont-6' + index, options);
+                    });
                 }
             })
         }
@@ -2094,6 +2101,15 @@ function openNestModal(event) { // eslint-disable-line no-unused-vars
         buttons: {},
         classes: {
             'ui-dialog': 'ui-dialog nest-widget-popup'
+        },
+        open: function (event, ui) {
+            $('.nest-widget-popup .pokemon-list-cont').each(function(index) {
+                $(this).attr('id','pokemon-list-cont-7' + index);
+                var options = {
+                    valueNames: ['name', 'types', 'id']
+                };
+                var monList = new List('pokemon-list-cont-7' + index, options);
+            });
         }
     })
 }
