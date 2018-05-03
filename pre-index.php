@@ -65,7 +65,7 @@ if ( $blockIframe ) {
             $json = file_get_contents( 'static/dist/data/pokemon.min.json' );
             $mons = json_decode( $json, true );
         }
-        echo '<div class="pokemon-list-cont" id="pokemon-list-cont-' . $num . '"><input type="hidden" class="search-number" value="' . $num . '" /><input class="search search-input" placeholder="' . i8ln("Search Name & Type") . '" /><div class="pokemon-list list">';
+        echo '<div class="pokemon-list-cont" id="pokemon-list-cont-' . $num . '"><input type="hidden" class="search-number" value="' . $num . '" /><input class="search search-input" placeholder="' . i8ln("Search Name, ID & Type") . '" /><div class="pokemon-list list">';
         $i = 0;
         $z = 0;
         foreach ( $mons as $k => $pokemon ) {
