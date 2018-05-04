@@ -140,7 +140,7 @@ class Monocle_Alternate extends Monocle
         return $this->query_active($select, $conds, $params);
     }
 
-    public function get_stops($swLat, $swLng, $neLat, $neLng, $tstamp = 0, $oSwLat = 0, $oSwLng = 0, $oNeLat = 0, $oNeLng = 0, $lured = false)
+    public function get_stops($swLat, $swLng, $neLat, $neLng, $tstamp = 0, $oSwLat = 0, $oSwLng = 0, $oNeLat = 0, $oNeLng = 0, $lured = 0)
     {
         $conds = array();
         $params = array();
@@ -159,9 +159,12 @@ class Monocle_Alternate extends Monocle
             $params[':oneLng'] = $oNeLng;
         }
 
-        if ($lured == "true") {
+        if ($lured == 1) {
             $conds[] = "expires > :time";
             $params[':time'] = time();
+        }
+        elseif( $lured == 2){
+            $conds[] = "quest_id IS NOT NULL";
         }
 
         if ($tstamp > 0) {

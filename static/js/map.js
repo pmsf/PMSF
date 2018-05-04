@@ -1573,7 +1573,7 @@ function loadRawData() {
     var loadNests = Store.get('showNests')
     var loadScanned = Store.get('showScanned')
     var loadSpawnpoints = Store.get('showSpawnpoints')
-    var loadLuredOnly = Boolean(Store.get('showLuredPokestopsOnly'))
+    var loadLuredOnly = Store.get('showLuredPokestopsOnly')
     var loadMinIV = Store.get('remember_text_min_iv')
     var loadMinLevel = Store.get('remember_text_min_level')
     var bigKarp = Boolean(Store.get('showBigKarp'))
@@ -2359,7 +2359,7 @@ function processPokestops(i, item) {
         return false
     }
 
-    if (Store.get('showLuredPokestopsOnly') && !item['lure_expiration']) {
+    if (Store.get('showLuredPokestopsOnly') == 1 && !item['lure_expiration']) {
         return true
     }
 
@@ -2408,9 +2408,25 @@ function updatePokestops() {
     })
 
     // remove unlured stops if show lured only is selected
-    if (Store.get('showLuredPokestopsOnly')) {
+    if (Store.get('showLuredPokestopsOnly') == 1) {
         $.each(mapData.pokestops, function (key, value) {
             if (!value['lure_expiration']) {
+                removeStops.push(key)
+            }
+        })
+        $.each(removeStops, function (key, value) {
+            if (mapData.pokestops[value] && mapData.pokestops[value].marker) {
+                if (mapData.pokestops[value].marker.rangeCircle) {
+                    mapData.pokestops[value].marker.rangeCircle.setMap(null)
+                }
+                mapData.pokestops[value].marker.setMap(null)
+                delete mapData.pokestops[value]
+            }
+        })
+    }
+    if (Store.get('showLuredPokestopsOnly') == 2) {
+        $.each(mapData.pokestops, function (key, value) {
+            if (!value['quest_id']) {
                 removeStops.push(key)
             }
         })

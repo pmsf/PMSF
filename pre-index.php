@@ -499,6 +499,7 @@ if ( $blockIframe ) {
                     <select name = "lured-pokestops-only-switch" id = "lured-pokestops-only-switch">
                         <option value = "0"> ' . i8ln( 'All' ) . '</option>
                         <option value = "1"> ' . i8ln( 'Only Lured' ) . ' </option>
+                        <option value = "2"> ' . i8ln( 'Only Quests' ) . ' </option>
                     </select>
                 </div>';
                 } ?>
@@ -1219,8 +1220,7 @@ if ( $blockIframe ) {
 </script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js"></script>
 <script src="static/dist/js/map.common.min.js"></script>
-<!--<script src="static/dist/js/map.min.js"></script>-->
-<script src="static/js/map.js"></script>
+<script src="static/dist/js/map.min.js"></script>
 <script src="static/dist/js/stats.min.js"></script>
 <script defer
         src="https://maps.googleapis.com/maps/api/js?v=3.31&amp;key=<?= $gmapsKey ?>&amp;callback=initMap&amp;libraries=places,geometry"></script>
