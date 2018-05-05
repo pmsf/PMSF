@@ -200,5 +200,20 @@ if ($enableDebug == true) {
     }
 }
 
+$d['login'] = $noNativeLogin === true && $noDiscordLogin === true ? false : true;
+if ($d['login'] === true) {
+    if (isset($_SESSION['user']->login_timestamp)) {
+        $info = $db->query(
+        "SELECT login_timestamp FROM users WHERE email = :email", [
+            ":email" => $_SESSION['user']->email
+        ]
+        )->fetch();
+
+        $d["expire_timestamp"] = (int)$_SESSION['user']->expire_timestamp;
+    } else {
+        $d["expire_timestamp"] = 0;
+    }
+}
+
 $jaysson = json_encode($d);
 echo $jaysson;
