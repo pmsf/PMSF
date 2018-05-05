@@ -2,6 +2,9 @@
 // Global map.js variables
 //
 
+var login
+var expireTimestamp
+
 var $selectExclude
 var $selectExcludeMinIV
 var $selectPokemonNotify
@@ -600,6 +603,12 @@ function pokemonLabel(item) {
             i8ln('Moves') + ' : ' + pMove1 + ' / ' + pMove2 +
             '</div>'
     }
+    if (login === true && timestamp > expireTimestamp) {
+        details +=
+            '<div>' +
+            '<b>' + i8ln('IV stats is a donator only feature.') + '</b>' +
+            '</div>'
+    }
     if (weatherBoostedCondition !== 0) {
         details +=
             '<div>' +
@@ -658,8 +667,12 @@ function pokemonLabel(item) {
         '</div>' +
         details +
         '<div>' +
-        '<a href="javascript:excludePokemon(' + id + ')">' + i8ln('Exclude') + '</a>&nbsp&nbsp' +
-        '<a href="javascript:notifyAboutPokemon(' + id + ')">' + i8ln('Notify') + '</a>&nbsp&nbsp' +
+        '<a href="javascript:excludePokemon(' + id + ')">' + i8ln('Exclude') + '</a>&nbsp&nbsp'
+
+    if (login === true && timestamp < expireTimestamp) {
+        contentstring += '<a href="javascript:notifyAboutPokemon(' + id + ')">' + i8ln('Notify') + '</a>&nbsp&nbsp'
+    }
+    contentstring +=
         '<a href="javascript:removePokemonMarker(\'' + encounterId + '\')">' + i8ln('Remove') + '</a>&nbsp&nbsp' +
         '<a href="javascript:void(0);" onclick="javascript:toggleOtherPokemon(' + id + ');" title="' + i8ln('Toggle display of other Pokemon') + '">' + i8ln('Toggle Others') + '</a>' +
         '</div>'
@@ -1594,6 +1607,8 @@ function loadRawData() {
         timeout: 300000,
         data: {
             'timestamp': timestamp,
+            'login': login,
+            'expireTimestamp': expireTimestamp,
             'pokemon': loadPokemon,
             'lastpokemon': lastpokemon,
             'pokestops': loadPokestops,
@@ -2688,6 +2703,8 @@ function updateMap() {
         lastslocs = result.lastslocs
         lastspawns = result.lastspawns
         lastnests = result.lastnests
+        login = result.login
+        expireTimestamp = result.expireTimestamp
 
         prevMinIV = result.preMinIV
         prevMinLevel = result.preMinLevel

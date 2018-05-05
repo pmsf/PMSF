@@ -8,7 +8,9 @@
   input[type="password"],
   input[type="email"],
   input[type="tel"],
-  textarea {
+  textarea,
+  .select,
+  .date {
     @include vendor('appearance', 'none');
     background: _palette(border-bg);
     border-radius: _size(border-radius);

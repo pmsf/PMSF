@@ -170,6 +170,41 @@ if ( $blockIframe ) {
             <div id="currentWeather"></div>
             <?php
         } ?>
+        
+        <?php
+        if ($noNativeLogin === false || $noDiscordLogin === false) {
+            if (isset($_COOKIE["LoginCookie"])) {
+                if (validateCookie($_COOKIE["LoginCookie"]) === false) {
+                    header("Location: .");
+                }
+            }
+            if (!empty($_SESSION['user']->id)) {
+                $info = $db->query(
+                    "SELECT expire_timestamp FROM users WHERE id = :id AND login_system = :login_system", [
+                        ":id" => $_SESSION['user']->id,
+                        ":login_system" => $_SESSION['user']->login_system
+                    ]
+                )->fetch();
+
+                $_SESSION['user']->expire_timestamp = $info['expire_timestamp'];
+
+                if (!empty($_SESSION['user']->updatePwd) && $_SESSION['user']->updatePwd === 1) {
+                    header("Location: ./user");
+                    die();
+                }
+                
+                if ($info['expire_timestamp'] > time()) {
+                    $color = "green";
+                } else {
+                    $color = "red";
+                }
+
+                echo "<span style='color: {$color};'>" . substr($_SESSION['user']->user, 0, 3) . "...</span>";
+            } else {
+                echo "<a href='./user'>" . i8ln('Login') . "</a>";
+            }
+        }
+        ?>
         <a href="#stats" id="statsToggle" class="statsNav" style="float: right;"><span
                 class="label"><?php echo i8ln( 'Stats' ) ?></span></a>
     </header>
@@ -880,6 +915,39 @@ if ( $blockIframe ) {
                 </button>
             </center>
         </div>
+        <?php
+        if (($noNativeLogin === false || $noDiscordLogin === false) && !empty($_SESSION['user']->id)) {
+            ?>
+            <div>
+                <center>
+                    <button class="settings"
+                            onclick="document.location.href='user'">
+                        <i class="fa" aria-hidden="true"></i> <?php echo i8ln('Activate Key'); ?>
+                    </button>
+                </center>
+            </div>
+            <div>
+                <center>
+                    <button class="settings"
+                            onclick="document.location.href='logout.php'">
+                        <i class="fa" aria-hidden="true"></i> <?php echo i8ln('Logout'); ?>
+                    </button>
+                </center>
+            </div><br>
+            <div><center><p>
+            <?php
+            $time = date("Y-m-d", $_SESSION['user']->expire_timestamp);
+            
+            echo $_SESSION['user']->user . "<br>";
+            if ($_SESSION['user']->expire_timestamp > time()) {
+                echo "<span style='color: green;'>" . i8ln('Membership expires on') . " {$time}</span>";
+            } else {
+                echo "<span style='color: red;'>" . i8ln('Membership expired on') . " {$time}</span>";
+            } ?>
+            </p></center></div>
+        <?php
+        }
+        ?>
     </nav>
     <nav id="stats">
         <div class="switch-container">
@@ -1217,6 +1285,9 @@ if ( $blockIframe ) {
     var noDeleteNests = <?php echo $noDeleteNests === true ? 'true' : 'false' ?>;
     var noManualNests = <?php echo $noManualNests === true ? 'true' : 'false' ?>;
     var noManualQuests = <?php echo $noManualQuests === true ? 'true' : 'false' ?>;
+    var login = <?php echo $noNativeLogin === false || $noDiscordLogin === false  ? 'true' : 'false' ?>;
+    var expireTimestamp = <?php echo isset($_SESSION['user']->expire_timestamp) ? $_SESSION['user']->expire_timestamp : 0 ?>;
+    var timestamp = <?php echo time() ?>;
 </script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js"></script>
 <script src="static/dist/js/map.common.min.js"></script>
