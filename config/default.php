@@ -77,12 +77,12 @@ $motdTitle = "";
 $motdContent = "";
 
 //-----------------------------------------------------
-// Login
+// Login  - You need to create the two tables referenced in sql.sql
 //-----------------------------------------------------
 
 $noNativeLogin = true;                                              // true/false - This will enable the built in login system.
 $domainName = '';                                                   // If this is empty, reset-password emails will use the domain name taken from the URL.
-                                                                    
+
 $noDiscordLogin = true;                                             // true/false - This will enable login through discord.
                                                                     // 1. Create a discord bot here -> https://discordapp.com/developers/applications/me
                                                                     // 2. Install composer with "apt-get install composer".
