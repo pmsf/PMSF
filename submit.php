@@ -23,7 +23,7 @@ if ( $action === "raid" ) {
         http_response_code( 401 );
         die();
     }
-    $raidBosses = json_decode( file_get_contents( "static/dist/data/raid-boss.min.json" ), true );
+    $raidBosses = json_decode( file_get_contents( "static/dist/data/pokemon.min.json" ), true );
     $pokemonId  = ! empty( $_POST['pokemonId'] ) ? $_POST['pokemonId'] : 0;
     $gymId      = ! empty( $_POST['gymId'] ) ? $_POST['gymId'] : 0;
     $eggTime    = ! empty( $_POST['eggTime'] ) ? $_POST['eggTime'] : 0;
@@ -83,8 +83,8 @@ if ( $action === "raid" ) {
         $cols['pokemon_id']  = $pokemonId;
         $cols['move_1']      = 133; // struggle :(
         $cols['move_2']      = 133;
-        $cols['level']       = $raidBosses[ $pokemonId ]['level']; // struggle :(
-        $cols['cp']          = $raidBosses[ $pokemonId ]['cp'];
+        $cols['level']       = array_key_exists('level',$raidBosses[ $pokemonId ]) ? $raidBosses[ $pokemonId ]['level'] : 1; // struggle :(
+        $cols['cp']          = array_key_exists('cp',$raidBosses[ $pokemonId ]) ? $raidBosses[ $pokemonId ]['cp'] : 1;
         $cols['time_spawn']  = $time_spawn;
         $cols['time_battle'] = $time_battle;
         $cols['time_end']    = $time_end;

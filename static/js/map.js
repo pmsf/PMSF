@@ -60,6 +60,8 @@ var buffer = []
 var reincludedPokemon = []
 var reids = []
 
+var numberOfPokemon = 386
+
 var map
 var rawDataIsLoading = false
 var locationMarker
@@ -93,6 +95,7 @@ var token
 
 var cries
 
+var pokeList = []
 var raidBoss = {}
 var questList = []
 var gymId
@@ -3445,7 +3448,7 @@ function generateRaidBossList() {
         var k = b - 1
         var p = j * 48.25
         var a = k * 48.25
-        data += '<span class="pokemon-icon-sprite" data-value="' + element + '" data-label="' + raidBoss[element].name + '" onclick="pokemonRaidFilter(event);"><span class="' + element + ' inner-bg" style="background-position:-' + a + 'px -' + p + 'px"></span></span>'
+        data += '<span class="pokemon-icon-sprite" data-value="' + element + '" data-label="' + pokeList[element - 1].name + '" onclick="pokemonRaidFilter(event);"><span class="' + element + ' inner-bg" style="background-position:-' + a + 'px -' + p + 'px"></span></span>'
     })
     data += '</div>'
     return data
@@ -3836,61 +3839,9 @@ $(function () {
     $raidNotify = $('#notify-raid')
     $switchTinyRat = $('#tiny-rat-switch')
     $switchBigKarp = $('#big-karp-switch')
-    var numberOfPokemon = 386
-
-    $('.select-all').on('click', function (e) {
-        e.preventDefault()
-        var parent = $(this).parent()
-        parent.find('.pokemon-list .pokemon-icon-sprite').addClass('active')
-        parent.find('input').val(Array.from(Array(numberOfPokemon + 1).keys()).slice(1).join(',')).trigger('change')
-    })
-
-    $('.hide-all').on('click', function (e) {
-        e.preventDefault()
-        var parent = $(this).parent()
-        parent.find('.pokemon-list .pokemon-icon-sprite').removeClass('active')
-        parent.find('input').val('').trigger('change')
-    })
-    $('.area-go-to').on('click', function (e) {
-        e.preventDefault()
-        var lat = $(this).data('lat')
-        var lng = $(this).data('lng')
-        var zoom = $(this).data('zoom')
-        map.setCenter(new google.maps.LatLng(lat, lng))
-        map.setZoom(zoom)
-    })
-
-    $raidNotify.select2({
-        placeholder: 'Minimum raid level',
-        minimumResultsForSearch: Infinity
-    })
-
-    $raidNotify.on('change', function () {
-        Store.set('remember_raid_notify', this.value)
-    })
-    if (manualRaids) {
-        $.getJSON('static/dist/data/raid-boss.min.json').done(function (data) {
-            $.each(data, function (key, value) {
-                if (key > numberOfPokemon) {
-                    return false
-                }
-                raidBoss[key] = {
-                    name: i8ln(value['name']),
-                    level: value['level'],
-                    cp: value['cp']
-                }
-            })
-            $('.global-raid-modal').html(generateRaidModal())
-        })
-    }
-    $('#dialog_edit').on('click', '#closeButtonId', function () {
-        $(this).closest('#dialog_edit').dialog('close')
-    })
 
 
-    // Load pokemon names and populate lists
     $.getJSON('static/dist/data/pokemon.min.json').done(function (data) {
-        var pokeList = []
 
         $.each(data, function (key, value) {
             if (key > numberOfPokemon) {
@@ -3899,7 +3850,10 @@ $(function () {
             var _types = []
             pokeList.push({
                 id: key,
-                text: i8ln(value['name']) + ' - #' + key
+                text: i8ln(value['name']) + ' - #' + key,
+                name: i8ln(value['name']),
+                level: value['level'] != undefined ? value['level'] : 1,
+                cp: value['cp'] != undefined ? value['cp'] : 1
             })
             value['name'] = i8ln(value['name'])
             value['rarity'] = i8ln(value['rarity'])
@@ -4045,6 +3999,44 @@ $(function () {
             $('.select2-search input').prop('readonly', true)
         }
         $('#tabs').tabs()
+        if (manualRaids) {
+            $('.global-raid-modal').html(generateRaidModal())
+        }
+    })
+
+    $('.select-all').on('click', function (e) {
+        e.preventDefault()
+        var parent = $(this).parent()
+        parent.find('.pokemon-list .pokemon-icon-sprite').addClass('active')
+        parent.find('input').val(Array.from(Array(numberOfPokemon + 1).keys()).slice(1).join(',')).trigger('change')
+    })
+
+    $('.hide-all').on('click', function (e) {
+        e.preventDefault()
+        var parent = $(this).parent()
+        parent.find('.pokemon-list .pokemon-icon-sprite').removeClass('active')
+        parent.find('input').val('').trigger('change')
+    })
+    $('.area-go-to').on('click', function (e) {
+        e.preventDefault()
+        var lat = $(this).data('lat')
+        var lng = $(this).data('lng')
+        var zoom = $(this).data('zoom')
+        map.setCenter(new google.maps.LatLng(lat, lng))
+        map.setZoom(zoom)
+    })
+
+    $raidNotify.select2({
+        placeholder: 'Minimum raid level',
+        minimumResultsForSearch: Infinity
+    })
+
+    $raidNotify.on('change', function () {
+        Store.set('remember_raid_notify', this.value)
+    })
+
+    $('#dialog_edit').on('click', '#closeButtonId', function () {
+        $(this).closest('#dialog_edit').dialog('close')
     })
 
     // run interval timers to regularly update map and timediffs
