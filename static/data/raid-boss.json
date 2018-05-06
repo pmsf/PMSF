@@ -488,5 +488,30 @@
     "name": "Deoxys",
     "level": 5,
     "cp": ""
+  },
+  "387": {
+    "name": "Unknown level 1",
+    "level": 1,
+    "cp": ""
+  },
+  "388": {
+    "name": "Unknown level 2",
+    "level": 2,
+    "cp": ""
+  },
+  "389": {
+    "name": "Unknown level 3",
+    "level": 3,
+    "cp": ""
+  },
+  "390": {
+    "name": "Unknown level 4",
+    "level": 4,
+    "cp": ""
+  },
+  "391": {
+    "name": "Unknown level 5",
+    "level": 5,
+    "cp": ""
   }
 }
