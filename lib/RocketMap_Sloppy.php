@@ -26,6 +26,7 @@ class RocketMap_Sloppy extends RocketMap
         global $db;
         $query = "SELECT s2_cell_id, gameplay_weather FROM weather";
         $weathers = $db->query($query)->fetchAll(\PDO::FETCH_ASSOC);
+        $data = array();
         foreach ($weathers as $weather) {
             $weather['s2_cell_id'] = sprintf("%u", $weather['s2_cell_id']);
             $data["weather_" . $weather['s2_cell_id']] = $weather;

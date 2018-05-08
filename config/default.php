@@ -77,31 +77,109 @@ $motdTitle = "";
 $motdContent = "";
 
 //-----------------------------------------------------
+// Login  - You need to create the two tables referenced in sql.sql
+//-----------------------------------------------------
+
+$noNativeLogin = true;                                              // true/false - This will enable the built in login system.
+$domainName = '';                                                   // If this is empty, reset-password emails will use the domain name taken from the URL.
+
+$noDiscordLogin = true;                                             // true/false - This will enable login through discord.
+                                                                    // 1. Create a discord bot here -> https://discordapp.com/developers/applications/me
+                                                                    // 2. Install composer with "apt-get install composer".
+                                                                    // 3. Navigate to your website's root folder and type "composer install" to install the dependencies.
+                                                                    // 4. Add your callback-page as a REDIRECT URI to your discord bot. Should be the same as $discordBotRedirectUri.
+                                                                    // 5. Enter Client ID, Client Secret and Redirect URI below.
+$discordBotClientId = 0;
+$discordBotClientSecret = "";
+$discordBotRedirectUri = "https://example.com/discord-callback.php";
+
+$adminUsers = array('admin@example.com', 'Superadmin#13337');       // You can add multiple admins by adding them to the array.
+$logfile = '../members.log';                                        // Path to log file. Make sure this works as it will be your life saver if your db crashes.
+$daysMembershipPerQuantity = 31;                                    // How many days membership one selly quantity will give.
+$sellyPage = '';                                                    // Link to selly purchase page for membership renewal.
+$sellyWebhookSecret = '';                                           // Add a secret key at https://selly.gg/settings to make sure the payment webhook is sent from selly to prevent fake payments.
+                                                                    // Add the same key to the $sellyWebhookSecret variable.
+
+//-----------------------------------------------------
 // FRONTEND SETTINGS
 //-----------------------------------------------------
+
+if ($noNativeLogin === true && $noDiscordLogin == true ||  (($noNativeLogin === false || $noDiscordLogin === false) && !empty($_SESSION['user']->expire_timestamp) && $_SESSION['user']->expire_timestamp > time())) {
+
+    /*
+        THESE SETTINGS WILL BE APPLIED IF:
+            - LOGIN IS DISABLED
+            - LOGIN IS ENABLED AND THE USER IS LOGGED ON
+    */
+
+    /* Marker Settings */
+    $noExcludeMinIV = false;                                        // true/false
+    $noMinIV = false;                                               // true/false
+    $noMinLevel = false;                                            // true/false
+    $noHighLevelData = false;                                       // true/false
+
+    /* Notification Settings */
+    $noNotifyPokemon = false;                                       // true/false
+    $noNotifyRarity = false;                                        // true/false
+    $noNotifyIv = false;                                            // true/false
+    $noNotifyLevel = false;                                         // true/false
+    $noNotifyRaid = false;                                          // true/false
+    $noNotifySound = false;                                         // true/false
+    $noCriesSound = false;                                          // true/false
+    $noNotifyBounce = false;                                        // true/false
+    $noNotifyNotification = false;                                  // true/false
+
+    /* Style Settings */
+    $iconNotifySizeModifier = 15;                                   // 0, 15, 30, 45
+} else {
+
+    /*
+        THESE SETTINGS WILL BE APPLIED IF:
+            - LOGIN IS ENABLED AND THE USER IS NOT A DONATOR
+    */
+
+    /* Marker Settings */
+    $noExcludeMinIV = true;                                         // true/false
+    $noMinIV = true;                                                // true/false
+    $noMinLevel = true;                                             // true/false
+    $noHighLevelData = true;                                        // true/false
+
+    /* Notification Settings */
+    $noNotifyPokemon = true;                                        // true/false
+    $noNotifyRarity = true;                                         // true/false
+    $noNotifyIv = true;                                             // true/false
+    $noNotifyLevel = true;                                          // true/false
+    $noNotifyRaid = true;                                           // true/false
+    $noNotifySound = true;                                          // true/false
+    $noCriesSound = true;                                           // true/false
+    $noNotifyBounce = true;                                         // true/false
+    $noNotifyNotification = true;                                   // true/false
+
+    /* Style Settings */
+    $iconNotifySizeModifier = 0;                                    // 0, 15, 30, 45
+}
 
 /* Marker Settings */
 
 $noPokemon = false;                                                 // true/false
 $enablePokemon = 'true';                                            // true/false
 $noPokemonNumbers = false;                                          // true/false
-$noHighLevelData = false;                                           // true/false
 $noHidePokemon = false;                                             // true/false
 $hidePokemon = '[10, 13, 16, 19, 21, 29, 32, 41, 46, 48, 50, 52, 56, 74, 77, 96, 111, 133,
                   161, 163, 167, 177, 183, 191, 194, 168]';         // [] for empty
-$hidePokemonCoords = true;                                          // true/false
 
-$noExcludeMinIV = false;                                            // true/false
+$hidePokemonCoords = false;                                         // true/false
+
 $excludeMinIV = '[131, 143, 147, 148, 149, 248]';                   // [] for empty
 
-$noMinIV = false;                                                   // true/false
 $minIV = '0';                                                       // "0" for empty or a number
-
-$noMinLevel = false;                                                // true/false
 $minLevel = '0';                                                    // "0" for empty or a number
 
 $noBigKarp = false;                                                 // true/false
 $noTinyRat = false;                                                 // true/false
+
+$noNests = false;                                                   // true/false
+$enableNests = 'false';                                             // true/false
 
 $noGyms = false;                                                    // true/false
 $enableGyms = 'false';                                              // true/false
@@ -149,31 +227,22 @@ $enableSpawnArea = 'false';                                         // true/fals
 
 /* Notification Settings */
 
-$noNotifyPokemon = false;                                           // true/false
 $notifyPokemon = '[201]';                                           // [] for empty
 
-$noNotifyRarity = false;                                            // true/false
 $notifyRarity = '[]';                                               // "Common", "Uncommon", "Rare", "Very Rare", "Ultra Rare"
 
-$noNotifyIv = false;                                                // true/false
 $notifyIv = '""';                                                   // "" for empty or a number
 
-$noNotifyLevel = false;                                             // true/false
 $notifyLevel = '""';                                                // "" for empty or a number
 
-$noNotifyRaid = false;                                              // true/false
 $notifyRaid = 5;                                                    // O to disable
 
-$noNotifySound = false;                                             // true/false
 $notifySound = 'false';                                             // true/false
 
-$noCriesSound = false;                                              // true/false
 $criesSound = 'false';                                              // true/false
 
-$noNotifyBounce = false;                                            // true/false
 $notifyBounce = 'true';                                             // true/false
 
-$noNotifyNotification = false;                                      // true/false
 $notifyNotification = 'true';                                       // true/false
 
 /* Style Settings */
@@ -190,7 +259,6 @@ $noIconSize = false;                                                // true/fals
 $iconSize = 0;                                                      // -8, 0, 10, 20
 
 $noIconNotifySizeModifier = false;                                  // true/false | Increase size of notified Pokemon
-$iconNotifySizeModifier = 15;                                       // 0, 15, 30, 45
 
 $noGymStyle = false;                                                // true/false
 $gymStyle = 'ingame';                                               // ingame, shield
@@ -228,7 +296,7 @@ $pokemonToExclude = [];
 $noDeleteGyms = false;
 $noDeletePokestops = false;
 
-$raidBosses = [361,355,353,333,129,303,302,215,200,103,221,210,127,124,94,68,365,359,306,248,229,381,150];
+$raidBosses = [361,333,320,129,303,302,256,57,286,103,107,106,68,359,306,248,62,381,150];
 
 $sendWebhook = false;
 $webhookUrl = null;                                             //['url-1','url-2']
@@ -248,6 +316,16 @@ $noSearch = false;
 $noSearchPokestops = false;     //Wont work if noSearch = false
 $noSearchGyms = false;          //Wont work if noSearch = false
 $noSearchManualQuests = false;  //Wont work if noSearch = false
+
+//-----------------------------------------------
+// Nests
+//-----------------------------------------------------
+$noManualNests = false;
+$noDeleteNests = false;
+$excludeNestMons = [2,3,5,6,8,9,11,12,14,15,17,18,20,22,24,26,28,29,30,31,32,33,34,36,38,40,42,44,45,49,51,53,55,57,59,61,62,64,65,67,68,70,71,73,75,76,78,80,82,83,85,87,88,89,91,93,94,97,99,101,103,105,106,107,108,109,110,112,113,114,115,117,119,121,122,128,130,131,132,134,135,136,137,139,142,143,144,145,146,147,148,149,150,151,153,154,156,157,159,160,162,164,166,168,169,171,172,173,174,175,176,178,179,180,181,182,184,185,186,188,189,192,195,196,197,199,201,204,205,207,208,210,212,214,217,219,221,222,224,225,226,227,229,230,231,232,233,234,235,236,237,238,239,240,241,242,243,244,245,246,247,248,249,250,251,253,254,256,257,259,260,262,264,266,267,268,269,270,271,272,274,275,277,279,280,281,282,284,286,287,288,289,290,291,292,294,295,297,298,301,302,303,305,306,308,310,311,312,313,314,317,319,321,323,324,326,327,328,329,330,331,332,334,335,336,337,338,340,342,344,345,346,347,348,349,350,351,352,354,356,357,358,359,360,361,362,364,365,366,367,368,369,371,372,373,374,375,376,377,378,379,380,381,382,383,384,385,386];
+$nestCoords = array();                                           //$nestCoords = array(array('lat1' => 42.8307723529682, 'lng1' => -88.7527692278689, 'lat2' => 42.1339901128552, 'lng2' => -88.0688703020877),array(    'lat1' => 42.8529250952743,'lng1' => -88.1292951067752,'lat2' => 41.7929306950085,'lng2' => -87.5662457903689));
+
+
 //-----------------------------------------------------
 // Areas
 //-----------------------------------------------------

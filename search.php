@@ -19,7 +19,7 @@ if($action === "pokestops") {
 if($dbname !== '') {
     if($action === "reward"){
         if($db->info()['driver'] === 'pgsql') {
-            $data = $db->query("SELECT id,external_id,name,lat,lon,url,quest_id,reward FROM " . $dbname . " WHERE LOWER(name) LIKE :name LIMIT 10",  [':name' => "%" . strtolower($term) . "%"])->fetchAll();
+            $data = $db->query("SELECT id,external_id,name,lat,lon,url,quest_id,reward FROM " . $dbname . " WHERE LOWER(reward) LIKE :name LIMIT 10",  [':name' => "%" . strtolower($term) . "%"])->fetchAll();
         }
         else {
             $data = $db->select("pokestops", ['id', 'external_id', 'name', 'lat', 'lon', 'url','quest_id','reward'], ['reward[~]' => $term, 'LIMIT' => 10]);
