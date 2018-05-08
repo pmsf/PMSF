@@ -15,7 +15,7 @@ if($db->info()['driver'] == 'pgsql'){
 ", [':time_battle'=>time()])->fetchAll(PDO::FETCH_ASSOC);
 }
 else{
-    $eggs1 = $db->query("
+        $eggs1 = $db->query("
     SELECT * FROM raids
     LEFT JOIN forts ON raids.`fort_id` = forts.id
     WHERE time_battle < :time_battle AND time_end > :time_battle AND pokemon_id = 0 AND level = 1
@@ -206,7 +206,7 @@ if (count($eggs5) > 0) {
     foreach ($eggs5 as $egg) {
         // add each fort to the array for updating
         array_push($fort_ids, $egg['fort_id']);
-        $gym = $db->get("forts", ['external_id'], ['id' => $fort_ids]);
+		$gym = $db->get("forts", ['external_id'], ['id' => $fort_ids]);
 
         // do we need to send to webhooks?
         if ($sendWebhook === true) {
