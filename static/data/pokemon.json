@@ -4784,55 +4784,65 @@
     ]
   },
   "387":{
-    "name": "Turtwig",
+    "name": "Level 1 Unknown",
     "rarity":"",
+	"level": 1,
+    "cp": "",
     "types": [
       {
-        "type": "Grass",
+        "type": "Normal",
         "color": "#78c850"
       }
     ]
   },
   "388":{
-    "name": "Grotle",
+    "name": "Level 2 Unknown",
     "rarity":"",
+	"level": 2,
+    "cp": "",
     "types": [
       {
-        "type": "Grass",
+        "type": "Normal",
         "color": "#78c850"
       }
     ]
   },
   "389":{
-    "name": "Torterra",
+    "name": "Level 3 Unknown",
     "rarity":"",
+	"level": 3,
+    "cp": "",
     "types": [
       {
-        "type": "Grass",
+        "type": "Normal",
         "color": "#78c850"
       },
       {
-        "type": "Ground",
+        "type": "Normal",
         "color": "#e0c068"
       }
     ]
   },
   "390":{
-    "name": "Chimchar",
+    "name": "Level 4 Unknown",
     "rarity":"",
+	"level": 4,
+    "cp": "",
     "types": [
       {
-        "type": "Fire",
+        "type": "Normal",
         "color": "#f08030"
       }
     ]
   },
   "391":{
-    "name": "Monferno",
+    "name": "Level 5 Unknown",
     "rarity":"",
+	"level": 5,
+    "cp": "",
     "types": [
       {
-        "type": "Fire",
+        "type": "Normal",
         "color": "#f08030"
       },
       {

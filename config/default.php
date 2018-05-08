@@ -313,6 +313,9 @@ $manualFiveStar = [
 //-----------------------------------------------------
 
 $noSearch = false;
+$noSearchPokestops = false;     //Wont work if noSearch = false
+$noSearchGyms = false;          //Wont work if noSearch = false
+$noSearchManualQuests = false;  //Wont work if noSearch = false
 
 //-----------------------------------------------
 // Nests
