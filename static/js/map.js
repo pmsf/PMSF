@@ -2,6 +2,9 @@
 // Global map.js variables
 //
 
+var login
+var expireTimestamp
+
 var $selectExclude
 var $selectExcludeMinIV
 var $selectPokemonNotify
@@ -57,6 +60,8 @@ var buffer = []
 var reincludedPokemon = []
 var reids = []
 
+var numberOfPokemon = 386
+
 var map
 var rawDataIsLoading = false
 var locationMarker
@@ -75,6 +80,7 @@ var oNeLng
 
 var lastpokestops
 var lastgyms
+var lastnests
 var lastpokemon
 var lastslocs
 var lastspawns
@@ -89,7 +95,8 @@ var token
 
 var cries
 
-var raidBoss = {}
+var pokeList = []
+var raidBoss = {} // eslint-disable-line no-unused-vars
 var questList = []
 var gymId
 
@@ -344,8 +351,6 @@ function initMap() { // eslint-disable-line no-unused-vars
 
     map.addListener('click', function (e) {
         if ($('.submit-on-off-button').hasClass('on')) {
-            console.log(e.latLng.lat())
-            console.log(e.latLng.lng())
             $('.submitLatitude').val(e.latLng.lat())
             $('.submitLongitude').val(e.latLng.lng())
             $('.ui-dialog').remove()
@@ -359,6 +364,13 @@ function initMap() { // eslint-disable-line no-unused-vars
                 },
                 open: function (event, ui) {
                     $('.submit-widget-popup #submit-tabs').tabs()
+                    $('.submit-widget-popup .pokemon-list-cont').each(function (index) {
+                        $(this).attr('id', 'pokemon-list-cont-6' + index)
+                        var options = {
+                            valueNames: ['name', 'types', 'id']
+                        }
+                        var monList = new List('pokemon-list-cont-6' + index, options) // eslint-disable-line no-unused-vars
+                    })
                 }
             })
         }
@@ -413,6 +425,7 @@ function createLocationMarker() {
 
 function initSidebar() {
     $('#gyms-switch').prop('checked', Store.get('showGyms'))
+    $('#nests-switch').prop('checked', Store.get('showNests'))
     $('#gym-sidebar-switch').prop('checked', Store.get('useGymSidebar'))
     $('#ex-eligible-switch').prop('checked', Store.get('exEligible'))
     $('#gym-sidebar-wrapper').toggle(Store.get('showGyms') || Store.get('showRaids'))
@@ -593,6 +606,12 @@ function pokemonLabel(item) {
             i8ln('Moves') + ' : ' + pMove1 + ' / ' + pMove2 +
             '</div>'
     }
+    if (login === true && timestamp > expireTimestamp) {
+        details +=
+            '<div>' +
+            '<b>' + i8ln('IV stats is a donator only feature.') + '</b>' +
+            '</div>'
+    }
     if (weatherBoostedCondition !== 0) {
         details +=
             '<div>' +
@@ -651,8 +670,12 @@ function pokemonLabel(item) {
         '</div>' +
         details +
         '<div>' +
-        '<a href="javascript:excludePokemon(' + id + ')">' + i8ln('Exclude') + '</a>&nbsp&nbsp' +
-        '<a href="javascript:notifyAboutPokemon(' + id + ')">' + i8ln('Notify') + '</a>&nbsp&nbsp' +
+        '<a href="javascript:excludePokemon(' + id + ')">' + i8ln('Exclude') + '</a>&nbsp&nbsp'
+
+    if (login === true && timestamp < expireTimestamp) {
+        contentstring += '<a href="javascript:notifyAboutPokemon(' + id + ')">' + i8ln('Notify') + '</a>&nbsp&nbsp'
+    }
+    contentstring +=
         '<a href="javascript:removePokemonMarker(\'' + encounterId + '\')">' + i8ln('Remove') + '</a>&nbsp&nbsp' +
         '<a href="javascript:void(0);" onclick="javascript:toggleOtherPokemon(' + id + ');" title="' + i8ln('Toggle display of other Pokemon') + '">' + i8ln('Toggle Others') + '</a>' +
         '</div>'
@@ -1250,6 +1273,66 @@ function setupPokestopMarker(item) {
 
     return marker
 }
+function setupNestMarker(item) {
+    if (item.pokemon_id > 0) {
+        var str = '<div class="marker-nests">' +
+            '<img src="static/images/nest-' + item.pokemon_types[0].type.toLowerCase() + '.png" style="width:36px;height: auto;"/>' +
+            '<i class="nest-pokemon-sprite n' + item.pokemon_id + '"></i>' +
+            '</div>'
+    } else {
+        str = '<div class="marker-nests">' +
+            '<img src="static/images/nest-empty.png" style="width:36px;height: auto;"/>' +
+            '</div>'
+    }
+
+    var marker = new RichMarker({
+        position: new google.maps.LatLng(item['lat'], item['lon']),
+        map: map,
+        content: str,
+        flat: true,
+        anchor: RichMarkerPosition.MIDDLE
+    })
+
+    marker.infoWindow = new google.maps.InfoWindow({
+        content: nestLabel(item),
+        disableAutoPan: true,
+        pixelOffset: new google.maps.Size(0, -20)
+    })
+    addListeners(marker)
+
+    return marker
+}
+function nestLabel(item) {
+    var str = '<div>'
+    if (item.pokemon_id > 0) {
+        var types = item['pokemon_types']
+        var typesDisplay = ''
+        $.each(types, function (index, type) {
+            typesDisplay += getTypeSpan(type)
+        })
+        str += '<b>' + item.pokemon_name + '</b>' +
+            '</div>' +
+            '<div>' +
+            typesDisplay +
+            '</div>'
+    } else {
+        str += '<b>' + i8ln('No Pokemon - Assign One Below') + '</b>'
+    }
+    str += '<div>' +
+    'Location: <a href="javascript:void(0)" onclick="javascript:openMapDirections(' + item.lat + ',' + item.lon + ')" title="' + i8ln('View in Maps') + '">' + item.lat.toFixed(6) + ', ' + item.lon.toFixed(7) + '</a>' +
+    '</div>'
+    if (item.type === 1) {
+        str += '<div style="margin-bottom:5px;">' + i8ln('As found on thesilphroad.com') + '</div>'
+    }
+    if (!noDeleteNests) {
+        str += '<i class="fa fa-trash-o delete-nest" onclick="deleteNest(event);" data-id="' + item['nest_id'] + '"></i>'
+    }
+    if (!noManualNests) {
+        str += '<i class="fa fa-binoculars submit-nest" onclick="openNestModal(event);" data-id="' + item['nest_id'] + '"></i>'
+    }
+
+    return str
+}
 
 function getColorByDate(value) {
     // Changes the color from red to green over 15 mins
@@ -1498,9 +1581,10 @@ function loadRawData() {
     var loadPokemon = Store.get('showPokemon')
     var loadGyms = (Store.get('showGyms') || Store.get('showRaids')) ? 'true' : 'false'
     var loadPokestops = Store.get('showPokestops')
+    var loadNests = Store.get('showNests')
     var loadScanned = Store.get('showScanned')
     var loadSpawnpoints = Store.get('showSpawnpoints')
-    var loadLuredOnly = Boolean(Store.get('showLuredPokestopsOnly'))
+    var loadLuredOnly = Store.get('showLuredPokestopsOnly')
     var loadMinIV = Store.get('remember_text_min_iv')
     var loadMinLevel = Store.get('remember_text_min_level')
     var bigKarp = Boolean(Store.get('showBigKarp'))
@@ -1521,9 +1605,13 @@ function loadRawData() {
         timeout: 300000,
         data: {
             'timestamp': timestamp,
+            'login': login,
+            'expireTimestamp': expireTimestamp,
             'pokemon': loadPokemon,
             'lastpokemon': lastpokemon,
             'pokestops': loadPokestops,
+            'nests': loadNests,
+            'lastnests': lastnests,
             'lastpokestops': lastpokestops,
             'luredonly': loadLuredOnly,
             'gyms': loadGyms,
@@ -1752,7 +1840,7 @@ function manualGymData(event) { // eslint-disable-line no-unused-vars
     }
 }
 function manualPokemonData(event) { // eslint-disable-line no-unused-vars
-    var form = $(event.target).parent().parent()
+    var form = $(event.target).parent().parent().parent()
     var id = form.find('.pokemonID').val()
     var lat = $('.submit-modal.ui-dialog-content .submitLatitude').val()
     var lng = $('.submit-modal.ui-dialog-content .submitLongitude').val()
@@ -1842,6 +1930,105 @@ function deletePokestop(event) { // eslint-disable-line no-unused-vars
     }
 }
 
+function deleteNest(event) { // eslint-disable-line no-unused-vars
+    var button = $(event.target)
+    var nestid = button.data('id')
+    if (nestid && nestid !== '') {
+        if (confirm(i8ln('I confirm that I want to delete this nest. This is a permanent deleture'))) {
+            return $.ajax({
+                url: 'submit',
+                type: 'POST',
+                timeout: 300000,
+                dataType: 'json',
+                cache: false,
+                data: {
+                    'action': 'delete-nest',
+                    'nestId': nestid
+                },
+                error: function error() {
+                    // Display error toast
+                    toastr['error'](i8ln('Please check connectivity or reduce marker settings.'), i8ln('Error Deleting nest'))
+                    toastr.options = toastrOptions
+                },
+                complete: function complete() {
+                    jQuery('label[for="nests-switch"]').click()
+                    jQuery('label[for="nests-switch"]').click()
+                }
+            })
+        }
+    }
+}
+
+function submitNewNest(event) { // eslint-disable-line no-unused-vars
+    var cont = $(event.target).parent().parent()
+    var id = cont.find('.pokemonID').val()
+    var lat = $('.submit-modal.ui-dialog-content .submitLatitude').val()
+    var lng = $('.submit-modal.ui-dialog-content .submitLongitude').val()
+    if (lat && lat !== '' && lng && lng !== '') {
+        if (confirm(i8ln('I confirm this is an new nest'))) {
+            return $.ajax({
+                url: 'submit',
+                type: 'POST',
+                timeout: 300000,
+                dataType: 'json',
+                cache: false,
+                data: {
+                    'action': 'new-nest',
+                    'lat': lat,
+                    'lng': lng,
+                    'id': id
+                },
+                error: function error() {
+                    // Display error toast
+                    toastr['error'](i8ln('Please check connectivity or reduce marker settings.'), i8ln('Error Submitting Nest'))
+                    toastr.options = toastrOptions
+                },
+                complete: function complete() {
+                    lastnests = false
+                    updateMap()
+                    jQuery('label[for="nests-switch"]').click()
+                    jQuery('label[for="nests-switch"]').click()
+                    $('.ui-dialog-content').dialog('close')
+                }
+            })
+        }
+    }
+}
+
+function manualNestData(event) { // eslint-disable-line no-unused-vars
+    var cont = $(event.target).parent().parent().parent()
+    var nestId = cont.find('.submitting-nests').data('nest')
+    var pokemonId = cont.find('.pokemonID').val()
+    if (nestId && nestId !== '' && pokemonId && pokemonId !== '') {
+        if (confirm(i8ln('I confirm this is an accurate sighting of a quest'))) {
+            return $.ajax({
+                url: 'submit',
+                type: 'POST',
+                timeout: 300000,
+                dataType: 'json',
+                cache: false,
+                data: {
+                    'action': 'nest',
+                    'nestId': nestId,
+                    'pokemonId': pokemonId
+                },
+                error: function error() {
+                    // Display error toast
+                    toastr['error'](i8ln('Please check connectivity or reduce marker settings.'), i8ln('Error Submitting Nest'))
+                    toastr.options = toastrOptions
+                },
+                complete: function complete() {
+                    lastnests = false
+                    updateMap()
+                    jQuery('label[for="nests-switch"]').click()
+                    jQuery('label[for="nests-switch"]').click()
+                    $('.ui-dialog-content').dialog('close')
+                }
+            })
+        }
+    }
+}
+
 function manualQuestData(event) { // eslint-disable-line no-unused-vars
     var cont = $(event.target).parent().parent()
     var questId = cont.find('.questList').val()
@@ -1916,7 +2103,29 @@ function manualRaidData(event) { // eslint-disable-line no-unused-vars
         }
     }
 }
-
+function openNestModal(event) { // eslint-disable-line no-unused-vars
+    $('.ui-dialog').remove()
+    var val = $(event.target).data('id')
+    $('.submitting-nests').attr('data-nest', val)
+    $('.global-nest-modal').clone().dialog({
+        modal: true,
+        maxHeight: 600,
+        title: i8ln('Submit a Nest'),
+        buttons: {},
+        classes: {
+            'ui-dialog': 'ui-dialog nest-widget-popup'
+        },
+        open: function (event, ui) {
+            $('.nest-widget-popup .pokemon-list-cont').each(function (index) {
+                $(this).attr('id', 'pokemon-list-cont-7' + index)
+                var options = {
+                    valueNames: ['name', 'types', 'id']
+                }
+                var monList = new List('pokemon-list-cont-7' + index, options) // eslint-disable-line no-unused-vars
+            })
+        }
+    })
+}
 function openRaidModal(event) { // eslint-disable-line no-unused-vars
     $('.ui-dialog').remove()
     var val = $(event.target).data('id')
@@ -2133,13 +2342,35 @@ function processPokemons(i, item) {
         }
     }
 }
+function processNests(i, item) {
+    if (!Store.get('showNests')) {
+        return false
+    }
 
+    if (!mapData.nests[item['nest_id']]) {
+        // new pokestop, add marker to map and item to dict
+        if (item.marker && item.marker.rangeCircle) {
+            item.marker.rangeCircle.setMap(null)
+        }
+        if (item.marker) {
+            item.marker.setMap(null)
+        }
+        item.marker = setupNestMarker(item)
+        mapData.nests[item['nest_id']] = item
+    } else {
+        // change existing pokestop marker to unlured/lured
+        var item2 = mapData.nests[item['nest_id']]
+        item2.marker.setMap(null)
+        item.marker = setupNestMarker(item)
+        mapData.nests[item['nest_id']] = item
+    }
+}
 function processPokestops(i, item) {
     if (!Store.get('showPokestops')) {
         return false
     }
 
-    if (Store.get('showLuredPokestopsOnly') && !item['lure_expiration']) {
+    if (Store.get('showLuredPokestopsOnly') === 1 && !item['lure_expiration']) {
         return true
     }
 
@@ -2188,9 +2419,25 @@ function updatePokestops() {
     })
 
     // remove unlured stops if show lured only is selected
-    if (Store.get('showLuredPokestopsOnly')) {
+    if (Store.get('showLuredPokestopsOnly') === 1) {
         $.each(mapData.pokestops, function (key, value) {
             if (!value['lure_expiration']) {
+                removeStops.push(key)
+            }
+        })
+        $.each(removeStops, function (key, value) {
+            if (mapData.pokestops[value] && mapData.pokestops[value].marker) {
+                if (mapData.pokestops[value].marker.rangeCircle) {
+                    mapData.pokestops[value].marker.rangeCircle.setMap(null)
+                }
+                mapData.pokestops[value].marker.setMap(null)
+                delete mapData.pokestops[value]
+            }
+        })
+    }
+    if (Store.get('showLuredPokestopsOnly') === 2) {
+        $.each(mapData.pokestops, function (key, value) {
+            if (!value['quest_id']) {
                 removeStops.push(key)
             }
         })
@@ -2422,6 +2669,7 @@ function updateMap() {
         $.each(result.gyms, processGyms)
         $.each(result.scanned, processScanned)
         $.each(result.spawnpoints, processSpawnpoints)
+        $.each(result.nests, processNests)
         showInBoundsMarkers(mapData.pokemons, 'pokemon')
         showInBoundsMarkers(mapData.lurePokemons, 'pokemon')
         showInBoundsMarkers(mapData.gyms, 'gym')
@@ -2450,6 +2698,9 @@ function updateMap() {
         lastpokemon = result.lastpokemon
         lastslocs = result.lastslocs
         lastspawns = result.lastspawns
+        lastnests = result.lastnests
+        login = result.login
+        expireTimestamp = result.expireTimestamp
 
         prevMinIV = result.preMinIV
         prevMinLevel = result.preMinLevel
@@ -3140,8 +3391,8 @@ function fetchCriesJson() {
 
 function pokemonSubmitFilter(event) { // eslint-disable-line no-unused-vars
     var img = $(event.target).parent()
-    var cont = img.parent().parent()
-    var select = cont.find('input')
+    var cont = img.parent().parent().parent()
+    var select = cont.find('input.pokemonID')
     var id = img.data('value').toString()
     select.val(id)
     cont.find('.pokemon-icon-sprite').removeClass('active')
@@ -3190,7 +3441,7 @@ function generateRaidBossList() {
         var k = b - 1
         var p = j * 48.25
         var a = k * 48.25
-        data += '<span class="pokemon-icon-sprite" data-value="' + element + '" data-label="' + raidBoss[element].name + '" onclick="pokemonRaidFilter(event);"><span class="' + element + ' inner-bg" style="background-position:-' + a + 'px -' + p + 'px"></span></span>'
+        data += '<span class="pokemon-icon-sprite" data-value="' + element + '" data-label="' + pokeList[element - 1].name + '" onclick="pokemonRaidFilter(event);"><span class="' + element + ' inner-bg" style="background-position:-' + a + 'px -' + p + 'px"></span></span>'
     })
     data += '</div>'
     return data
@@ -3200,9 +3451,9 @@ function generateRaidBossList() {
 function pokemonSpritesFilter() {
     jQuery('.pokemon-list').parent().find('.select2').hide()
     loadDefaultImages()
-    jQuery('.pokemon-list .pokemon-icon-sprite').on('click', function () {
+    jQuery('#nav .pokemon-list .pokemon-icon-sprite').on('click', function () {
         var img = jQuery(this)
-        var select = jQuery(this).parent().parent().find('input')
+        var select = jQuery(this).parent().parent().parent().find('.select2-hidden-accessible')
         var value = select.val().split(',')
         var id = img.data('value').toString()
         if (img.hasClass('active')) {
@@ -3581,62 +3832,8 @@ $(function () {
     $raidNotify = $('#notify-raid')
     $switchTinyRat = $('#tiny-rat-switch')
     $switchBigKarp = $('#big-karp-switch')
-    var numberOfPokemon = 386
 
-    $('.select-all').on('click', function (e) {
-        e.preventDefault()
-        var parent = $(this).parent()
-        parent.find('.pokemon-list .pokemon-icon-sprite').addClass('active')
-        parent.find('input').val(Array.from(Array(numberOfPokemon + 1).keys()).slice(1).join(',')).trigger('change')
-    })
-
-    $('.hide-all').on('click', function (e) {
-        e.preventDefault()
-        var parent = $(this).parent()
-        parent.find('.pokemon-list .pokemon-icon-sprite').removeClass('active')
-        parent.find('input').val('').trigger('change')
-    })
-    $('.area-go-to').on('click', function (e) {
-        e.preventDefault()
-        var lat = $(this).data('lat')
-        var lng = $(this).data('lng')
-        var zoom = $(this).data('zoom')
-        map.setCenter(new google.maps.LatLng(lat, lng))
-        map.setZoom(zoom)
-    })
-
-    $raidNotify.select2({
-        placeholder: 'Minimum raid level',
-        minimumResultsForSearch: Infinity
-    })
-
-    $raidNotify.on('change', function () {
-        Store.set('remember_raid_notify', this.value)
-    })
-    if (manualRaids) {
-        $.getJSON('static/dist/data/raid-boss.min.json').done(function (data) {
-            $.each(data, function (key, value) {
-                if (key > numberOfPokemon) {
-                    return false
-                }
-                raidBoss[key] = {
-                    name: i8ln(value['name']),
-                    level: value['level'],
-                    cp: value['cp']
-                }
-            })
-            $('.global-raid-modal').html(generateRaidModal())
-        })
-    }
-    $('#dialog_edit').on('click', '#closeButtonId', function () {
-        $(this).closest('#dialog_edit').dialog('close')
-    })
-
-
-    // Load pokemon names and populate lists
     $.getJSON('static/dist/data/pokemon.min.json').done(function (data) {
-        var pokeList = []
-
         $.each(data, function (key, value) {
             if (key > numberOfPokemon) {
                 return false
@@ -3644,7 +3841,10 @@ $(function () {
             var _types = []
             pokeList.push({
                 id: key,
-                text: i8ln(value['name']) + ' - #' + key
+                text: i8ln(value['name']) + ' - #' + key,
+                name: i8ln(value['name']),
+                level: value['level'] !== undefined ? value['level'] : 1,
+                cp: value['cp'] !== undefined ? value['cp'] : 1
             })
             value['name'] = i8ln(value['name'])
             value['rarity'] = i8ln(value['rarity'])
@@ -3790,6 +3990,44 @@ $(function () {
             $('.select2-search input').prop('readonly', true)
         }
         $('#tabs').tabs()
+        if (manualRaids) {
+            $('.global-raid-modal').html(generateRaidModal())
+        }
+    })
+
+    $('.select-all').on('click', function (e) {
+        e.preventDefault()
+        var parent = $(this).parent()
+        parent.find('.pokemon-list .pokemon-icon-sprite').addClass('active')
+        parent.find('input').val(Array.from(Array(numberOfPokemon + 1).keys()).slice(1).join(',')).trigger('change')
+    })
+
+    $('.hide-all').on('click', function (e) {
+        e.preventDefault()
+        var parent = $(this).parent()
+        parent.find('.pokemon-list .pokemon-icon-sprite').removeClass('active')
+        parent.find('input').val('').trigger('change')
+    })
+    $('.area-go-to').on('click', function (e) {
+        e.preventDefault()
+        var lat = $(this).data('lat')
+        var lng = $(this).data('lng')
+        var zoom = $(this).data('zoom')
+        map.setCenter(new google.maps.LatLng(lat, lng))
+        map.setZoom(zoom)
+    })
+
+    $raidNotify.select2({
+        placeholder: 'Minimum raid level',
+        minimumResultsForSearch: Infinity
+    })
+
+    $raidNotify.on('change', function () {
+        Store.set('remember_raid_notify', this.value)
+    })
+
+    $('#dialog_edit').on('click', '#closeButtonId', function () {
+        $(this).closest('#dialog_edit').dialog('close')
     })
 
     // run interval timers to regularly update map and timediffs
@@ -3887,6 +4125,10 @@ $(function () {
             }
         }
         buildSwitchChangeListener(mapData, ['gyms'], 'showGyms').bind(this)()
+    })
+    $('#nests-switch').change(function () {
+        lastnests = false
+        buildSwitchChangeListener(mapData, ['nests'], 'showNests').bind(this)()
     })
     $('#pokemon-switch').change(function () {
         var options = {
