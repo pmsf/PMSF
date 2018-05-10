@@ -21,7 +21,7 @@ $oSwLat = !empty($_POST['oSwLat']) ? $_POST['oSwLat'] : 0;
 $oSwLng = !empty($_POST['oSwLng']) ? $_POST['oSwLng'] : 0;
 $oNeLat = !empty($_POST['oNeLat']) ? $_POST['oNeLat'] : 0;
 $oNeLng = !empty($_POST['oNeLng']) ? $_POST['oNeLng'] : 0;
-$luredonly = !empty($_POST['luredonly']) ? $_POST['luredonly'] : false;
+$luredonly = !empty($_POST['luredonly']) ? $_POST['luredonly'] : 0;
 $minIv = isset($_POST['minIV']) ? floatval($_POST['minIV']) : false;
 $prevMinIv = !empty($_POST['prevMinIV']) ? $_POST['prevMinIV'] : false;
 $minLevel = isset($_POST['minLevel']) ? intval($_POST['minLevel']) : false;
@@ -34,12 +34,14 @@ $lastgyms = !empty($_POST['lastgyms']) ? $_POST['lastgyms'] : false;
 $lastpokestops = !empty($_POST['lastpokestops']) ? $_POST['lastpokestops'] : false;
 $lastlocs = !empty($_POST['lastslocs']) ? $_POST['lastslocs'] : false;
 $lastspawns = !empty($_POST['lastspawns']) ? $_POST['lastspawns'] : false;
+$lastnests = !empty($_POST['lastnests']) ? $_POST['lastnests'] : false;
 $exEligible = !empty($_POST['exEligible']) ? $_POST['exEligible'] : false;
 $d["lastpokestops"] = !empty($_POST['pokestops']) ? $_POST['pokestops'] : false;
 $d["lastgyms"] = !empty($_POST['gyms']) ? $_POST['gyms'] : false;
 $d["lastslocs"] = !empty($_POST['scanned']) ? $_POST['scanned'] : false;
 $d["lastspawns"] = !empty($_POST['spawnpoints']) ? $_POST['spawnpoints'] : false;
 $d["lastpokemon"] = !empty($_POST['pokemon']) ? $_POST['pokemon'] : false;
+$d["lastnests"] = !empty($_POST['nests']) ? $_POST['nests'] : false;
 if ($minIv < $prevMinIv || $minLevel < $prevMinLevel) {
     $lastpokemon = false;
 }
@@ -159,6 +161,21 @@ if (!$noGyms || !$noRaids) {
 }
 $debug['4_after_gyms'] = microtime(true) - $timing['start'];
 
+global $noNests;
+if (!$noNests ) {
+    if ($d["lastnests"] == "true") {
+        if ($lastnests != "true") {
+            $d["nests"] = $scanner->get_nests($swLat, $swLng, $neLat, $neLng);
+        } else {
+            if ($newarea) {
+                $d["nests"] = $scanner->get_nests($swLat, $swLng, $neLat, $neLng, 0, $oSwLat, $oSwLng, $oNeLat, $oNeLng);
+            } else {
+                $d["nests"] = $scanner->get_nests($swLat, $swLng, $neLat, $neLng, time());
+            }
+        }
+    }
+}
+
 global $noSpawnPoints;
 if (!$noSpawnPoints) {
     if ($d["lastspawns"] == "true") {
@@ -197,6 +214,21 @@ $debug['7_end'] = microtime(true) - $timing['start'];
 if ($enableDebug == true) {
     foreach ($debug as $k => $v) {
         header("X-Debug-Time-" . $k . ": " . $v);
+    }
+}
+
+$d['login'] = $noNativeLogin === true && $noDiscordLogin === true ? false : true;
+if ($d['login'] === true) {
+    if (isset($_SESSION['user']->login_timestamp)) {
+        $info = $db->query(
+        "SELECT login_timestamp FROM users WHERE email = :email", [
+            ":email" => $_SESSION['user']->email
+        ]
+        )->fetch();
+
+        $d["expire_timestamp"] = (int)$_SESSION['user']->expire_timestamp;
+    } else {
+        $d["expire_timestamp"] = 0;
     }
 }
 

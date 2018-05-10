@@ -469,6 +469,7 @@ class Monocle extends Scanner
         }
         $query = str_replace(":conditions", join(" AND ", $conds), $query);
         $weathers = $db->query($query, $params)->fetchAll(\PDO::FETCH_ASSOC);
+        $data = array();
         foreach ($weathers as $weather) {
             $data["weather_" . $weather['s2_cell_id']] = $weather;
         }
