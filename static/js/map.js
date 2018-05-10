@@ -1280,7 +1280,7 @@ function setupNestMarker(item) {
             '<i class="nest-pokemon-sprite n' + item.pokemon_id + '"></i>' +
             '</div>'
     } else {
-            str = '<div class="marker-nests">' +
+        str = '<div class="marker-nests">' +
             '<img src="static/images/nest-empty.png" style="width:36px;height: auto;"/>' +
             '</div>'
     }
