@@ -96,7 +96,7 @@ var token
 var cries
 
 var pokeList = []
-var raidBoss = {}
+var raidBoss = {} // eslint-disable-line no-unused-vars
 var questList = []
 var gymId
 
@@ -364,12 +364,12 @@ function initMap() { // eslint-disable-line no-unused-vars
                 },
                 open: function (event, ui) {
                     $('.submit-widget-popup #submit-tabs').tabs()
-                    $('.submit-widget-popup .pokemon-list-cont').each(function(index) {
+                    $('.submit-widget-popup .pokemon-list-cont').each(function (index) {
                         $(this).attr('id', 'pokemon-list-cont-6' + index)
                         var options = {
                             valueNames: ['name', 'types', 'id']
                         }
-                        var monList = new List('pokemon-list-cont-6' + index, options)
+                        var monList = new List('pokemon-list-cont-6' + index, options) // eslint-disable-line no-unused-vars
                     })
                 }
             })
@@ -1280,7 +1280,7 @@ function setupNestMarker(item) {
             '<i class="nest-pokemon-sprite n' + item.pokemon_id + '"></i>' +
             '</div>'
     } else {
-        var str = '<div class="marker-nests">' +
+            str = '<div class="marker-nests">' +
             '<img src="static/images/nest-empty.png" style="width:36px;height: auto;"/>' +
             '</div>'
     }
@@ -2116,12 +2116,12 @@ function openNestModal(event) { // eslint-disable-line no-unused-vars
             'ui-dialog': 'ui-dialog nest-widget-popup'
         },
         open: function (event, ui) {
-            $('.nest-widget-popup .pokemon-list-cont').each(function(index) {
+            $('.nest-widget-popup .pokemon-list-cont').each(function (index) {
                 $(this).attr('id', 'pokemon-list-cont-7' + index)
                 var options = {
                     valueNames: ['name', 'types', 'id']
                 }
-                var monList = new List('pokemon-list-cont-7' + index, options)
+                var monList = new List('pokemon-list-cont-7' + index, options) // eslint-disable-line no-unused-vars
             })
         }
     })
