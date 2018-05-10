@@ -286,11 +286,35 @@ $raidBosses = [361,333,320,129,303,302,256,57,286,103,107,106,68,359,306,248,62,
 $sendWebhook = false;
 $webhookUrl = null;                                                 //['url-1','url-2']
 
+$manualOneStar = [
+    'pokemon_id' => 387,
+    'cp' => 0,
+    'move_1' => null,
+    'move_2' => null
+];
+$manualTwoStar = [
+    'pokemon_id' => 388,
+    'cp' => 0,
+    'move_1' => null,
+    'move_2' => null
+];
+$manualThreeStar = [
+    'pokemon_id' => 389,
+    'cp' => 0,
+    'move_1' => null,
+    'move_2' => null
+];
+$manualFourStar = [
+    'pokemon_id' => 390,
+    'cp' => 0,
+    'move_1' => null,
+    'move_2' => null
+];
 $manualFiveStar = [
     'pokemon_id' => 381,
-    'cp' => 45704,
-    'move_1' => 133,
-    'move_2' => 133
+    'cp' => 49322,
+    'move_1' => null,
+    'move_2' => null
 ];
 
 //-----------------------------------------------
