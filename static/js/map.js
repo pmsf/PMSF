@@ -96,7 +96,7 @@ var token
 var cries
 
 var pokeList = []
-var raidBoss = {}
+var raidBoss = {} // eslint-disable-line no-unused-vars
 var questList = []
 var gymId
 
@@ -365,12 +365,12 @@ function initMap() { // eslint-disable-line no-unused-vars
                 open: function (event, ui) {
                     $('.submit-widget-popup #submit-tabs').tabs()
                     $('.submit-widget-popup .pokemon-list-cont').each(function (index) {
-                        $(this).attr('id', 'pokemon-list-cont-6' + index);
+                        $(this).attr('id', 'pokemon-list-cont-6' + index)
                         var options = {
                             valueNames: ['name', 'types', 'id']
-                        };
-                        var monList = new List('pokemon-list-cont-6' + index, options);
-                    });
+                        }
+                        var monList = new List('pokemon-list-cont-6' + index, options) // eslint-disable-line no-unused-vars
+                    })
                 }
             })
         }
@@ -854,13 +854,13 @@ function pokestopLabel(expireTime, latitude, longitude, stopName, lureUser, id, 
         str =
             '<center>' + '<div>' +
             '<b>' + stopName + '</b>' +
-            '</div>';
+            '</div>'
         if (!noManualQuests && quest !== null) {
             str += '<div>' +
                 i8ln('Quest:') + ' ' +
                 i8ln(questList[quest]) +
                 '</div>'
-            if (reward !== null && reward !== "NULL") {
+            if (reward !== null && reward !== 'NULL') {
                 str += '<div>' +
                     i8ln('Reward:') + ' ' +
                     i8ln(reward) +
@@ -1279,8 +1279,7 @@ function setupNestMarker(item) {
             '<img src="static/images/nest-' + item.english_pokemon_types[0].type.toLowerCase() + '.png" style="width:36px;height: auto;"/>' +
             '<i class="nest-pokemon-sprite n' + item.pokemon_id + '"></i>' +
             '</div>'
-    }
-    else {
+    } else {
         var str = '<div class="marker-nests">' +
             '<img src="static/images/nest-empty.png" style="width:36px;height: auto;"/>' +
             '</div>'
@@ -1305,8 +1304,7 @@ function setupNestMarker(item) {
 }
 
 function nestLabel(item) {
-
-    var str = '<div>';
+    var str = '<div>'
     if (item.pokemon_id > 0) {
         var types = item['pokemon_types']
         var typesDisplay = ''
@@ -1767,7 +1765,6 @@ function searchAjax(field) { // eslint-disable-line no-unused-vars
         var center = map.getCenter()
         searchForItem(center.lat(), center.lng(), term, type, field)
     })
-
 }
 
 function centerMapOnCoords(event) { // eslint-disable-line no-unused-vars
