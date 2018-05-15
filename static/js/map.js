@@ -1280,7 +1280,7 @@ function setupNestMarker(item) {
             '<i class="nest-pokemon-sprite n' + item.pokemon_id + '"></i>' +
             '</div>'
     } else {
-        var str = '<div class="marker-nests">' +
+        str = '<div class="marker-nests">' +
             '<img src="static/images/nest-empty.png" style="width:36px;height: auto;"/>' +
             '</div>'
     }
@@ -1762,8 +1762,10 @@ function searchAjax(field) { // eslint-disable-line no-unused-vars
     navigator.geolocation.getCurrentPosition(function (position) {
         searchForItem(position.coords.latitude, position.coords.longitude, term, type, field)
     }, function (err) {
-        var center = map.getCenter()
-        searchForItem(center.lat(), center.lng(), term, type, field)
+        if (err) {
+            var center = map.getCenter()
+            searchForItem(center.lat(), center.lng(), term, type, field)
+        }
     })
 }
 
@@ -2136,12 +2138,12 @@ function openNestModal(event) { // eslint-disable-line no-unused-vars
         },
         open: function (event, ui) {
             $('.nest-widget-popup .pokemon-list-cont').each(function (index) {
-                $(this).attr('id', 'pokemon-list-cont-7' + index);
+                $(this).attr('id', 'pokemon-list-cont-7' + index)
                 var options = {
                     valueNames: ['name', 'types', 'id']
-                };
-                var monList = new List('pokemon-list-cont-7' + index, options);
-            });
+                }
+                var monList = new List('pokemon-list-cont-7' + index, options) // eslint-disable-line no-unused-vars
+            })
         }
     })
 }
@@ -2382,7 +2384,6 @@ function processNests(i, item) {
         item2.marker.setMap(null)
         item.marker = setupNestMarker(item)
         mapData.nests[item['nest_id']] = item
-
     }
 }
 function processPokestops(i, item) {
@@ -2390,7 +2391,7 @@ function processPokestops(i, item) {
         return false
     }
 
-    if (Store.get('showLuredPokestopsOnly') == 1 && !item['lure_expiration']) {
+    if (Store.get('showLuredPokestopsOnly') === 1 && !item['lure_expiration']) {
         return true
     }
 
@@ -2439,7 +2440,7 @@ function updatePokestops() {
     })
 
     // remove unlured stops if show lured only is selected
-    if (Store.get('showLuredPokestopsOnly') == 1) {
+    if (Store.get('showLuredPokestopsOnly') === 1) {
         $.each(mapData.pokestops, function (key, value) {
             if (!value['lure_expiration']) {
                 removeStops.push(key)
@@ -2455,7 +2456,7 @@ function updatePokestops() {
             }
         })
     }
-    if (Store.get('showLuredPokestopsOnly') == 2) {
+    if (Store.get('showLuredPokestopsOnly') === 2) {
         $.each(mapData.pokestops, function (key, value) {
             if (!value['quest_id']) {
                 removeStops.push(key)
@@ -3861,8 +3862,8 @@ $(function () {
                 id: key,
                 text: i8ln(value['name']) + ' - #' + key,
                 name: i8ln(value['name']),
-                level: value['level'] != undefined ? value['level'] : 1,
-                cp: value['cp'] != undefined ? value['cp'] : 1
+                level: value['level'] !== undefined ? value['level'] : 1,
+                cp: value['cp'] !== undefined ? value['cp'] : 1
             })
             value['name'] = i8ln(value['name'])
             value['rarity'] = i8ln(value['rarity'])
