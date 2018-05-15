@@ -1,7 +1,11 @@
 <?php
 $timing['start'] = microtime( true );
 include( 'config/config.php' );
+<<<<<<< HEAD
 global $map, $fork, $db, $raidBosses, $webhookUrl, $sendWebhook, $noManualRaids, $noRaids, $noManualPokemon, $noPokemon, $noPokestops, $noManualPokestops, $noGyms, $noManualGyms, $noManualQuests, $noManualNests, $noNests;
+=======
+global $map, $fork, $db, $raidBosses, $webhookUrl, $sendWebhook, $noManualRaids, $noRaids, $noManualPokemon, $noPokemon, $noPokestops, $noManualPokestops, $noGyms, $noManualGyms, $noManualQuests, $noManualNests, $noNests, $noAddNewNests;
+>>>>>>> iroken/manual-develop
 $action = ! empty( $_POST['action'] ) ? $_POST['action'] : '';
 $lat    = ! empty( $_POST['lat'] ) ? $_POST['lat'] : '';
 $lng    = ! empty( $_POST['lng'] ) ? $_POST['lng'] : '';
@@ -47,7 +51,11 @@ if ( $action === "raid" ) {
 
 //$db->debug();
 // fetch fort_id
+<<<<<<< HEAD
     $gym         = $db->get( "forts", [ 'id', 'name', 'lat', 'lon', 'external_id' ], [ 'external_id' => $gymId ] );
+=======
+    $gym         = $db->get( "forts", [ 'id', 'name', 'lat', 'lon' ], [ 'external_id' => $gymId ] );
+>>>>>>> iroken/manual-develop
     $gymId       = $gym['id'];
     $add_seconds = ( $monTime * 60 );
     $time_spawn  = time() - $forty_five;
@@ -81,9 +89,15 @@ if ( $action === "raid" ) {
         $time_battle         = $time_end - $forty_five;
         $time_spawn          = $time_battle - $hour;
         $cols['pokemon_id']  = $pokemonId;
+<<<<<<< HEAD
         $cols['move_1']      = null;
         $cols['move_2']      = null;
         $cols['level']       = array_key_exists('level',$raidBosses[ $pokemonId ]) ? $raidBosses[ $pokemonId ]['level'] : 1;
+=======
+        $cols['move_1']      = 133; // struggle :(
+        $cols['move_2']      = 133;
+        $cols['level']       = array_key_exists('level',$raidBosses[ $pokemonId ]) ? $raidBosses[ $pokemonId ]['level'] : 1; // struggle :(
+>>>>>>> iroken/manual-develop
         $cols['cp']          = array_key_exists('cp',$raidBosses[ $pokemonId ]) ? $raidBosses[ $pokemonId ]['cp'] : 1;
         $cols['time_spawn']  = $time_spawn;
         $cols['time_battle'] = $time_battle;
@@ -216,7 +230,7 @@ if ( $action === "raid" ) {
         $db->insert( "pokestops", $cols );
     }
 } elseif ( $action === "new-nest" ) {
-    if ( $noManualNests === true || $noNests === true ) {
+    if ( $noAddNewNests === true || $noNests === true ) {
         http_response_code( 401 );
         die();
     }
