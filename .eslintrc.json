@@ -129,7 +129,7 @@
     "enableNests": true,
     "noManualNests": true,
     "noDeleteNests": true,
-    "List": true
+    "List": true,
     "defaultUnit": true
   }
 }
