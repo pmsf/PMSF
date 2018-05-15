@@ -15,8 +15,8 @@ foreach ( $nestCoords as $c ) {
         "data[mapFilterValues][mapTypes][]"               => 1,
         "data[mapFilterValues][nestVerificationLevels][]" => 1,
         "data[mapFilterValues][nestTypes][]"              => - 1,
-        "data[center_lat]"                                => 42.237,
-        "data[center_lng]"                                => - 88.26822
+        "data[center_lat]"                                => 51.764428,
+        "data[center_lng]"                                => 5.060553
     );
 
 // use key 'http' even if you send the request to https://...
