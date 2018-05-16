@@ -1,6 +1,6 @@
 <?php
 // This fille is provided for educationAL purposes
-include('config/config.php' );
+include(dirname(__FILE__).'/../config/config.php' );
 global $map, $fork, $db, $nestCoords;
 
 $url = 'https://thesilphroad.com/atlas/getLocalNests.json';

@@ -1,5 +1,5 @@
 <?php
-include('config/config.php');
+include(dirname(__FILE__).'/../config/config.php');
 global $map, $fork, $db, $noManualQuests;
 
 if($noManualQuests === true){
