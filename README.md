@@ -14,7 +14,7 @@ Go to our [Wiki](https://github.com/Glennmen/PMSF/wiki) for more info about inst
 ## Feedback
 * Create an issue if you have any bugs, suggestions or improvements!
 
-* [Discord](https://discord.gg/k2f88B2) channel
+* [Discord](https://discord.gg/yGujp8D) channel
 
 ## Thanks
 
