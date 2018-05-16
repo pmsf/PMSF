@@ -509,10 +509,13 @@ class Monocle_Alternate extends Monocle
             if($nest['pokemon_id'] > 0 ){
                 $nest["pokemon_name"] = i8ln($this->data[$nest["pokemon_id"]]['name']);
                 $types = $this->data[$nest["pokemon_id"]]["types"];
+                $etypes = $this->data[$nest["pokemon_id"]]["types"];
                 foreach ($types as $k => $v) {
                     $types[$k]['type'] = i8ln($v['type']);
+                    $etypes[$k]['type'] = $v['type'];
                 }
                 $nest["pokemon_types"] = $types;
+                $nest["english_pokemon_types"] = $etypes;
             }
             $data[] = $nest;
 

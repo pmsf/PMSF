@@ -20,42 +20,22 @@ module.exports = function (grunt) {
         eslint: {
             src: ['static/js/*.js', '!js/vendor/**/*.js']
         },
+
         babel: {
             options: {
                 sourceMap: true,
                 presets: ['env']
             },
-            dist: {
+            dev: {
                 files: {
-                    'static/dist/js/app.built.js': 'static/js/app.js',
-                    'static/dist/js/map.built.js': 'static/js/map.js',
-                    'static/dist/js/map.common.built.js': 'static/js/map.common.js',
-                    'static/dist/js/mobile.built.js': 'static/js/mobile.js',
-                    'static/dist/js/stats.built.js': 'static/js/stats.js',
-                    'static/dist/js/statistics.built.js': 'static/js/statistics.js',
-                    'static/dist/js/status.built.js': 'static/js/status.js',
-                    'static/dist/js/serviceWorker.built.js': 'static/js/serviceWorker.js'
-                }
-            }
-        },
-        uglify: {
-            options: {
-                banner: '/*\n <%= pkg.name %> <%= grunt.template.today("yyyy-mm-dd") %> \n*/\n',
-                sourceMap: true,
-                compress: {
-                    unused: false
-                }
-            },
-            build: {
-                files: {
-                    'static/dist/js/app.min.js': 'static/dist/js/app.built.js',
-                    'static/dist/js/map.min.js': 'static/dist/js/map.built.js',
-                    'static/dist/js/map.common.min.js': 'static/dist/js/map.common.built.js',
-                    'static/dist/js/mobile.min.js': 'static/dist/js/mobile.built.js',
-                    'static/dist/js/stats.min.js': 'static/dist/js/stats.built.js',
-                    'static/dist/js/statistics.min.js': 'static/dist/js/statistics.built.js',
-                    'static/dist/js/status.min.js': 'static/dist/js/status.built.js',
-                    'static/dist/js/serviceWorker.min.js': 'static/dist/js/serviceWorker.built.js'
+                    'static/dist/js/app.min.js': 'static/js/app.js',
+                    'static/dist/js/map.min.js': 'static/js/map.js',
+                    'static/dist/js/map.common.min.js': 'static/js/map.common.js',
+                    'static/dist/js/mobile.min.js': 'static/js/mobile.js',
+                    'static/dist/js/stats.min.js': 'static/js/stats.js',
+                    'static/dist/js/statistics.min.js': 'static/js/statistics.js',
+                    'static/dist/js/status.min.js': 'static/js/status.js',
+                    'static/dist/js/serviceWorker.min.js': 'static/js/serviceWorker.js'
                 }
             }
         },
@@ -185,7 +165,7 @@ module.exports = function (grunt) {
     });
 
     grunt.registerTask('js-build', ['newer:obfuscator']);
-    grunt.registerTask('js-dev', ['newer:babel', 'newer:uglify']);
+    grunt.registerTask('js-dev', ['babel:dev']);
     grunt.registerTask('css-build', ['newer:sass', 'newer:cssmin']);
     grunt.registerTask('js-lint', ['newer:eslint']);
     grunt.registerTask('json', ['newer:minjson']);

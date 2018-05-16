@@ -1,5 +1,5 @@
 <?php
-include(dirname(__FILE__) . '/config/config.php');
+include(dirname(__FILE__).'/../config/config.php');
 global $map, $fork, $db, $raidBosses, $webhookUrl, $sendWebhook, $manualFiveStar, $noManualRaids, $noRaids;
 
 if($noManualRaids === true || $noRaids === true){
@@ -199,7 +199,7 @@ if (count($eggs4) > 0) {
     // also mark fort_sightings as updated:
     $db->update("fort_sightings", ["updated" => time()], ["fort_id" => $fort_ids]);
 } else {
-    echo "No level 5 egg to update";
+    echo "No level 4 egg to update";
 }
 if (count($eggs5) > 0) {
     $fort_ids = [];
