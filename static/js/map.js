@@ -854,7 +854,7 @@ function pokestopLabel(expireTime, latitude, longitude, stopName, lureUser, id, 
         str =
             '<center>' + '<div>' +
             '<b>' + stopName + '</b>' +
-        '</div>' + '</center>'
+            '</div>'
         if (!noManualQuests && quest !== null) {
             str += '<div>' +
                 i8ln('Quest:') + ' ' +
@@ -1276,7 +1276,7 @@ function setupPokestopMarker(item) {
 function setupNestMarker(item) {
     if (item.pokemon_id > 0) {
         var str = '<div class="marker-nests">' +
-            '<img src="static/images/nest-' + item.pokemon_types[0].type.toLowerCase() + '.png" style="width:36px;height: auto;"/>' +
+            '<img src="static/images/nest-' + item.english_pokemon_types[0].type.toLowerCase() + '.png" style="width:36px;height: auto;"/>' +
             '<i class="nest-pokemon-sprite n' + item.pokemon_id + '"></i>' +
             '</div>'
     } else {
@@ -1302,6 +1302,7 @@ function setupNestMarker(item) {
 
     return marker
 }
+
 function nestLabel(item) {
     var str = '<div>'
     if (item.pokemon_id > 0) {
@@ -1319,8 +1320,8 @@ function nestLabel(item) {
         str += '<b>' + i8ln('No Pokemon - Assign One Below') + '</b>'
     }
     str += '<div>' +
-    'Location: <a href="javascript:void(0)" onclick="javascript:openMapDirections(' + item.lat + ',' + item.lon + ')" title="' + i8ln('View in Maps') + '">' + item.lat.toFixed(6) + ', ' + item.lon.toFixed(7) + '</a>' +
-    '</div>'
+        'Location: <a href="javascript:void(0)" onclick="javascript:openMapDirections(' + item.lat + ',' + item.lon + ')" title="' + i8ln('View in Maps') + '">' + item.lat.toFixed(6) + ', ' + item.lon.toFixed(7) + '</a>' +
+        '</div>'
     if (item.type === 1) {
         str += '<div style="margin-bottom:5px;">' + i8ln('As found on thesilphroad.com') + '</div>'
     }
@@ -1704,10 +1705,8 @@ function loadWeatherCellData(cell) {
         }
     })
 }
-
-function searchAjax(field) { // eslint-disable-line no-unused-vars
-    var term = field.val()
-    var type = field.data('type')
+function searchForItem(lat, lon, term, type, field) {
+    console.log(term)
     if (term !== '') {
         $.ajax({
             url: 'search',
@@ -1717,7 +1716,9 @@ function searchAjax(field) { // eslint-disable-line no-unused-vars
             cache: false,
             data: {
                 'action': type,
-                'term': term
+                'term': term,
+                'lat': lat,
+                'lon': lon
             },
             error: function error() {
                 // Display error toast
@@ -1731,17 +1732,20 @@ function searchAjax(field) { // eslint-disable-line no-unused-vars
                 sr.html('')
                 data.forEach(function (element) {
                     var html = '<li class="search-result ' + type + '" data-lat="' + element.lat + '" data-lon="' + element.lon + '"><div class="left-column" onClick="centerMapOnCoords(event);">'
-                    if (element.url !== '') {
+                    if (sr.hasClass('nest-results')) {
+                        html += '<span class="i-icon"><span class="pokemon-icon n' + element.pokemon_id + '" ></span></span>'
+                    } else if (element.url !== '') {
                         html += '<span style="background:url(' + element.url + ') no-repeat;" class="i-icon" ></span>'
                     }
-                    html += '<div class="cont"><span class="name" >' + element.name + '</span>'
+                    html += '<div class="cont"><span class="name" >' + element.name + '</span>' + '<span class="distance">&nbsp;-&nbsp;' + element.distance + defaultUnit + '</span>'
                     if (sr.hasClass('reward-results')) {
                         html += '<span>&nbsp;-&nbsp;</span> <span class="reward" style="font-weight:bold">' + element.reward + '</span>'
                     }
                     html += '</div></div>'
                     if (sr.hasClass('gym-results') && manualRaids) {
                         html += '<div class="right-column"><i class="fa fa-binoculars submit-raid"  onClick="openRaidModal(event);" data-id="' + element.external_id + '"></i></div>'
-                    } if (sr.hasClass('pokestop-results') && !noManualQuests) {
+                    }
+                    if (sr.hasClass('pokestop-results') && !noManualQuests) {
                         html += '<div class="right-column"><i class="fa fa-binoculars submit-quests"  onClick="openQuestModal(event);" data-id="' + element.external_id + '"></i></div>'
                     }
                     html += '</li>'
@@ -1752,6 +1756,19 @@ function searchAjax(field) { // eslint-disable-line no-unused-vars
     }
 }
 
+function searchAjax(field) { // eslint-disable-line no-unused-vars
+    var term = field.val()
+    var type = field.data('type')
+    navigator.geolocation.getCurrentPosition(function (position) {
+        searchForItem(position.coords.latitude, position.coords.longitude, term, type, field)
+    }, function (err) {
+        if (err) {
+            var center = map.getCenter()
+            searchForItem(center.lat(), center.lng(), term, type, field)
+        }
+    })
+}
+
 function centerMapOnCoords(event) { // eslint-disable-line no-unused-vars
     var point = $(event.target)
     if (point.hasClass('left-column')) {
@@ -1759,6 +1776,10 @@ function centerMapOnCoords(event) { // eslint-disable-line no-unused-vars
     } else if (point.hasClass('cont')) {
         point = point.parent().parent().parent()
     } else if (point.hasClass('name') || point.hasClass('reward')) {
+        point = point.parent().parent().parent()
+    } else if (point.hasClass('pokemon-icon')) {
+        point = point.parent().parent().parent()
+    } else if (point.hasClass('distance')) {
         point = point.parent().parent().parent()
     } else if (!point.hasClass('search-result')) {
         point = point.parent().parent()
@@ -1768,7 +1789,7 @@ function centerMapOnCoords(event) { // eslint-disable-line no-unused-vars
     var lat = point.data('lat')
     var lon = point.data('lon')
     map.setCenter(new google.maps.LatLng(lat, lon))
-    map.setZoom(20)
+    map.setZoom(17)
     $('.ui-dialog-content').dialog('close')
 }
 
@@ -2304,7 +2325,7 @@ function openSearchModal(event) { // eslint-disable-line no-unused-vars
         width: width,
         buttons: {},
         open: function (event, ui) {
-            jQuery('input[name="gym-search"], input[name="pokestop-search"], input[name="reward-search"]').bind('input', function () {
+            jQuery('input[name="gym-search"], input[name="pokestop-search"], input[name="reward-search"], input[name="nest-search"]').bind('input', function () {
                 searchAjax($(this))
             })
             $('.search-widget-popup #search-tabs').tabs()
@@ -2699,8 +2720,6 @@ function updateMap() {
         lastslocs = result.lastslocs
         lastspawns = result.lastspawns
         lastnests = result.lastnests
-        login = result.login
-        expireTimestamp = result.expireTimestamp
 
         prevMinIV = result.preMinIV
         prevMinLevel = result.preMinLevel
