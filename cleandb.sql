@@ -5,11 +5,11 @@
 /*!40101 SET @OLD_SQL_MODE=@@SQL_MODE, SQL_MODE='NO_AUTO_VALUE_ON_ZERO' */;
 
 
--- Dumping database structure for monman
-CREATE DATABASE IF NOT EXISTS `monman` /*!40100 DEFAULT CHARACTER SET latin1 */;
-USE `monman`;
+-- Dumping database structure for monocle_db
+CREATE DATABASE IF NOT EXISTS `monocle_db` /*!40100 DEFAULT CHARACTER SET latin1 */;
+USE `monocle_db`;
 
--- Dumping structure for table monman.common
+-- Dumping structure for table monocle_db.common
 CREATE TABLE IF NOT EXISTS `common` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `key` varchar(32) NOT NULL,
@@ -19,7 +19,7 @@ CREATE TABLE IF NOT EXISTS `common` (
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 -- Data exporting was unselected.
--- Dumping structure for table monman.forts
+-- Dumping structure for table monocle_db.forts
 CREATE TABLE IF NOT EXISTS `forts` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `external_id` varchar(35) DEFAULT NULL,
@@ -37,7 +37,7 @@ CREATE TABLE IF NOT EXISTS `forts` (
 ) ENGINE=InnoDB AUTO_INCREMENT=577 DEFAULT CHARSET=latin1;
 
 -- Data exporting was unselected.
--- Dumping structure for table monman.fort_sightings
+-- Dumping structure for table monocle_db.fort_sightings
 CREATE TABLE IF NOT EXISTS `fort_sightings` (
   `id` bigint(20) NOT NULL AUTO_INCREMENT,
   `fort_id` int(11) DEFAULT NULL,
@@ -54,7 +54,7 @@ CREATE TABLE IF NOT EXISTS `fort_sightings` (
 ) ENGINE=InnoDB AUTO_INCREMENT=512 DEFAULT CHARSET=latin1;
 
 -- Data exporting was unselected.
--- Dumping structure for table monman.gym_defenders
+-- Dumping structure for table monocle_db.gym_defenders
 CREATE TABLE IF NOT EXISTS `gym_defenders` (
   `id` bigint(20) NOT NULL AUTO_INCREMENT,
   `fort_id` int(11) NOT NULL,
@@ -83,7 +83,7 @@ CREATE TABLE IF NOT EXISTS `gym_defenders` (
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 -- Data exporting was unselected.
--- Dumping structure for table monman.mystery_sightings
+-- Dumping structure for table monocle_db.mystery_sightings
 CREATE TABLE IF NOT EXISTS `mystery_sightings` (
   `id` bigint(20) NOT NULL AUTO_INCREMENT,
   `pokemon_id` smallint(6) DEFAULT NULL,
@@ -114,7 +114,7 @@ CREATE TABLE IF NOT EXISTS `mystery_sightings` (
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 -- Data exporting was unselected.
--- Dumping structure for table monman.nests
+-- Dumping structure for table monocle_db.nests
 CREATE TABLE IF NOT EXISTS `nests` (
   `nest_id` bigint(20) NOT NULL AUTO_INCREMENT,
   `lat` double(18,14) DEFAULT NULL,
@@ -126,7 +126,7 @@ CREATE TABLE IF NOT EXISTS `nests` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 -- Data exporting was unselected.
--- Dumping structure for table monman.payments
+-- Dumping structure for table monocle_db.payments
 CREATE TABLE IF NOT EXISTS `payments` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `selly_id` varchar(100) NOT NULL,
@@ -139,7 +139,7 @@ CREATE TABLE IF NOT EXISTS `payments` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 -- Data exporting was unselected.
--- Dumping structure for table monman.pokestops
+-- Dumping structure for table monocle_db.pokestops
 CREATE TABLE IF NOT EXISTS `pokestops` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `external_id` varchar(35) DEFAULT NULL,
@@ -160,7 +160,7 @@ CREATE TABLE IF NOT EXISTS `pokestops` (
 ) ENGINE=InnoDB AUTO_INCREMENT=2048 DEFAULT CHARSET=latin1;
 
 -- Data exporting was unselected.
--- Dumping structure for table monman.raids
+-- Dumping structure for table monocle_db.raids
 CREATE TABLE IF NOT EXISTS `raids` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `external_id` bigint(20) DEFAULT NULL,
@@ -181,7 +181,7 @@ CREATE TABLE IF NOT EXISTS `raids` (
 ) ENGINE=InnoDB AUTO_INCREMENT=76 DEFAULT CHARSET=latin1;
 
 -- Data exporting was unselected.
--- Dumping structure for table monman.sightings
+-- Dumping structure for table monocle_db.sightings
 CREATE TABLE IF NOT EXISTS `sightings` (
   `id` bigint(20) NOT NULL AUTO_INCREMENT,
   `pokemon_id` smallint(6) DEFAULT NULL,
@@ -210,7 +210,7 @@ CREATE TABLE IF NOT EXISTS `sightings` (
 ) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=latin1;
 
 -- Data exporting was unselected.
--- Dumping structure for table monman.spawnpoints
+-- Dumping structure for table monocle_db.spawnpoints
 CREATE TABLE IF NOT EXISTS `spawnpoints` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `spawn_id` bigint(20) DEFAULT NULL,
@@ -228,7 +228,7 @@ CREATE TABLE IF NOT EXISTS `spawnpoints` (
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 -- Data exporting was unselected.
--- Dumping structure for table monman.users
+-- Dumping structure for table monocle_db.users
 CREATE TABLE IF NOT EXISTS `users` (
   `id` bigint(20) NOT NULL AUTO_INCREMENT,
   `user` varchar(250) NOT NULL,
