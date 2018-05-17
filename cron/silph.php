@@ -1,7 +1,7 @@
 <?php
 // This fille is provided for educationAL purposes
 include(dirname(__FILE__).'/../config/config.php' );
-global $map, $fork, $db, $nestCoords;
+global $map, $fork, $db, $nestCoords, $nestVerifyLevel;
 
 $url = 'https://thesilphroad.com/atlas/getLocalNests.json';
 
@@ -13,7 +13,7 @@ foreach ( $nestCoords as $c ) {
         "data[lng2]"                                      => $c['lng2'],
         "data[zoom]"                                      => 1,
         "data[mapFilterValues][mapTypes][]"               => 1,
-        "data[mapFilterValues][nestVerificationLevels][]" => 1,
+        "data[mapFilterValues][nestVerificationLevels][]" => $nestVerifyLevel,
         "data[mapFilterValues][nestTypes][]"              => - 1,
         "data[center_lat]"                                => 55.764428,
         "data[center_lng]"                                => 5.060553
