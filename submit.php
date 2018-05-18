@@ -1,7 +1,7 @@
 <?php
 $timing['start'] = microtime( true );
 include( 'config/config.php' );
-global $map, $fork, $db, $raidBosses, $webhookUrl, $sendWebhook, $noManualRaids, $noRaids, $noManualPokemon, $noPokemon, $noPokestops, $noManualPokestops, $noGyms, $noManualGyms, $noManualQuests, $noManualNests, $noNests, $noAddNewNests;
+global $map, $fork, $db, $raidBosses, $webhookUrl, $sendWebhook, $noManualRaids, $noRaids, $noManualPokemon, $noPokemon, $noPokestops, $noManualPokestops, $noGyms, $noManualGyms, $noManualQuests, $noManualNests, $noNests, $noAddNewNests, $pokemonTimer;
 $action = ! empty( $_POST['action'] ) ? $_POST['action'] : '';
 $lat    = ! empty( $_POST['lat'] ) ? $_POST['lat'] : '';
 $lng    = ! empty( $_POST['lng'] ) ? $_POST['lng'] : '';
@@ -71,7 +71,7 @@ if ( $action === "raid" ) {
         'time_end'    => $time_end,
         'cp'          => 0,
         'pokemon_id'  => 0,
-        'move_1'      => 0, // struggle
+        'move_1'      => 0,
         'move_2'      => 0
 
     ];
@@ -141,7 +141,7 @@ if ( $action === "raid" ) {
             'lon'                       => $lng,
             'lat'                       => $lat,
             'pokemon_id'                => $id,
-            'expire_timestamp'          => time() + 900,
+            'expire_timestamp'          => time() + $pokemonTimer,
             'updated'                   => time(),
             'weather_boosted_condition' => 0
         ];
