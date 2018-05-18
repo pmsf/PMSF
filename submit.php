@@ -141,7 +141,7 @@ if ( $action === "raid" ) {
             'lon'                       => $lng,
             'lat'                       => $lat,
             'pokemon_id'                => $id,
-            'expire_timestamp'          => time() + 1800,
+            'expire_timestamp'          => time() + 900,
             'updated'                   => time(),
             'weather_boosted_condition' => 0
         ];
