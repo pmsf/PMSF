@@ -290,7 +290,7 @@ $pokemonToExclude = [];
 $noDeleteGyms = false;
 $noDeletePokestops = false;
 
-$raidBosses = [129,361,333,353,103,303,200,302,215,68,94,124,221,210,248,306,359,229,380];
+$raidBosses = [129,361,333,355,103,303,200,302,215,68,94,124,221,127,248,306,359,365,381,250];
 
 $sendWebhook = false;
 $webhookUrl = null;                                                 //['url-1','url-2']
@@ -320,8 +320,8 @@ $manualFourStar = [
     'move_2' => null
 ];
 $manualFiveStar = [
-    'pokemon_id' => 381,
-    'cp' => 49322,
+    'pokemon_id' => 391,
+    'cp' => 0,
     'move_1' => null,
     'move_2' => null
 ];
