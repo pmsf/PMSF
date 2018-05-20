@@ -1,6 +1,6 @@
 <?php
 include(dirname(__FILE__).'/../config/config.php');
-global $map, $fork, $db, $raidBosses, $webhookUrl, $sendWebhook, $manualFiveStar, $noManualRaids, $noRaids;
+global $map, $fork, $db, $raidBosses, $webhookUrl, $sendWebhook, $manualOneStar, $manualTwoStar, $manualThreeStar, $manualFourStar, $manualFiveStar, $noManualRaids, $noRaids;
 
 if($noManualRaids === true || $noRaids === true){
     http_response_code(401);
@@ -49,7 +49,7 @@ if (count($eggs1) > 0) {
         $gym = $db->get("forts", ['external_id'], ['id' => $fort_ids]);
 
         // do we need to send to webhooks?
-        if ($sendWebhook === true) {
+        if ($manualOneStar['webhook'] === true) {
             $webhook = [
                 'message' => [
                     'gym_id' => $gym['external_id'],
@@ -89,7 +89,7 @@ if (count($eggs2) > 0) {
         $gym = $db->get("forts", ['external_id'], ['id' => $fort_ids]);
 
         // do we need to send to webhooks?
-        if ($sendWebhook === true) {
+        if ($manualTwoStar['webhook'] === true) {
             $webhook = [
                 'message' => [
                     'gym_id' => $gym['external_id'],
@@ -129,7 +129,7 @@ if (count($eggs3) > 0) {
         $gym = $db->get("forts", ['external_id'], ['id' => $fort_ids]);
 
         // do we need to send to webhooks?
-        if ($sendWebhook === true) {
+        if ($manualThreeStar['webhook'] === true) {
             $webhook = [
                 'message' => [
                     'gym_id' => $gym['external_id'],
@@ -169,7 +169,7 @@ if (count($eggs4) > 0) {
         $gym = $db->get("forts", ['external_id'], ['id' => $fort_ids]);
 
         // do we need to send to webhooks?
-        if ($sendWebhook === true) {
+        if ($manualFourStar['webhook'] === true) {
             $webhook = [
                 'message' => [
                     'gym_id' => $gym['external_id'],
@@ -209,7 +209,7 @@ if (count($eggs5) > 0) {
 		$gym = $db->get("forts", ['external_id'], ['id' => $fort_ids]);
 
         // do we need to send to webhooks?
-        if ($sendWebhook === true) {
+        if ($manualFiveStar['webhook'] === true) {
             $webhook = [
                 'message' => [
                     'gym_id' => $gym['external_id'],

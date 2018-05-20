@@ -303,30 +303,35 @@ $sendWebhook = false;
 $webhookUrl = null;                                             //['url-1','url-2']
 
 $manualOneStar = [
+    'webhook' => true,
     'pokemon_id' => 387,
     'cp' => 0,
     'move_1' => null,
     'move_2' => null
 ];
 $manualTwoStar = [
+    'webhook' => true,
     'pokemon_id' => 388,
     'cp' => 0,
     'move_1' => null,
     'move_2' => null
 ];
 $manualThreeStar = [
+    'webhook' => true,
     'pokemon_id' => 389,
     'cp' => 0,
     'move_1' => null,
     'move_2' => null
 ];
 $manualFourStar = [
+    'webhook' => true,
     'pokemon_id' => 390,
     'cp' => 0,
     'move_1' => null,
     'move_2' => null
 ];
 $manualFiveStar = [
+    'webhook' => true,
     'pokemon_id' => 391,
     'cp' => 0,
     'move_1' => null,
