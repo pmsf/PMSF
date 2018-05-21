@@ -151,7 +151,7 @@ if ( $action === "raid" ) {
 	$webhook = [
 	    'message' => [
 		'cp'                                => null,
-                'cp_multiplier'                     => null,
+        'cp_multiplier'                     => null,
 		'disappear_time'                    => $cols['expire_timestamp'],
 		'encounter_id'                      => $cols['encounter_id'],
 		'form'                              => 0,
