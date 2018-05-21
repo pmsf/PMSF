@@ -1,6 +1,6 @@
 <?php
-include(dirname(__FILE__) . '/config/config.php');
-global $map, $fork, $db, $raidBosses, $webhookUrl, $sendWebhook, $manualFiveStar, $noManualRaids, $noRaids;
+include(dirname(__FILE__).'/../config/config.php');
+global $map, $fork, $db, $raidBosses, $webhookUrl, $sendWebhook, $manualOneStar, $manualTwoStar, $manualThreeStar, $manualFourStar, $manualFiveStar, $noManualRaids, $noRaids;
 
 if($noManualRaids === true || $noRaids === true){
     http_response_code(401);
@@ -49,7 +49,7 @@ if (count($eggs1) > 0) {
         $gym = $db->get("forts", ['external_id'], ['id' => $fort_ids]);
 
         // do we need to send to webhooks?
-        if ($sendWebhook === true) {
+        if ($sendWebhook === true && $manualOneStar['webhook'] === true) {
             $webhook = [
                 'message' => [
                     'gym_id' => $gym['external_id'],
@@ -89,7 +89,7 @@ if (count($eggs2) > 0) {
         $gym = $db->get("forts", ['external_id'], ['id' => $fort_ids]);
 
         // do we need to send to webhooks?
-        if ($sendWebhook === true) {
+        if ($sendWebhook === true && $manualTwoStar['webhook'] === true) {
             $webhook = [
                 'message' => [
                     'gym_id' => $gym['external_id'],
@@ -129,7 +129,7 @@ if (count($eggs3) > 0) {
         $gym = $db->get("forts", ['external_id'], ['id' => $fort_ids]);
 
         // do we need to send to webhooks?
-        if ($sendWebhook === true) {
+        if ($sendWebhook === true && $manualThreeStar['webhook'] === true) {
             $webhook = [
                 'message' => [
                     'gym_id' => $gym['external_id'],
@@ -169,7 +169,7 @@ if (count($eggs4) > 0) {
         $gym = $db->get("forts", ['external_id'], ['id' => $fort_ids]);
 
         // do we need to send to webhooks?
-        if ($sendWebhook === true) {
+        if ($sendWebhook === true && $manualFourStar['webhook'] === true) {
             $webhook = [
                 'message' => [
                     'gym_id' => $gym['external_id'],
@@ -199,7 +199,7 @@ if (count($eggs4) > 0) {
     // also mark fort_sightings as updated:
     $db->update("fort_sightings", ["updated" => time()], ["fort_id" => $fort_ids]);
 } else {
-    echo "No level 5 egg to update";
+    echo "No level 4 egg to update";
 }
 if (count($eggs5) > 0) {
     $fort_ids = [];
@@ -209,7 +209,7 @@ if (count($eggs5) > 0) {
 		$gym = $db->get("forts", ['external_id'], ['id' => $fort_ids]);
 
         // do we need to send to webhooks?
-        if ($sendWebhook === true) {
+        if ($sendWebhook === true && $manualFiveStar['webhook'] === true) {
             $webhook = [
                 'message' => [
                     'gym_id' => $gym['external_id'],

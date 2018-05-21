@@ -1,7 +1,7 @@
 <?php
 $timing['start'] = microtime( true );
 include( 'config/config.php' );
-global $map, $fork, $db, $raidBosses, $webhookUrl, $sendWebhook, $noManualRaids, $noRaids, $noManualPokemon, $noPokemon, $noPokestops, $noManualPokestops, $noGyms, $noManualGyms, $noManualQuests, $noManualNests, $noNests;
+global $map, $fork, $db, $raidBosses, $webhookUrl, $sendWebhook, $noManualRaids, $noRaids, $noManualPokemon, $noPokemon, $noPokestops, $noManualPokestops, $noGyms, $noManualGyms, $noManualQuests, $noManualNests, $noNests, $noAddNewNests, $pokemonTimer;
 $action = ! empty( $_POST['action'] ) ? $_POST['action'] : '';
 $lat    = ! empty( $_POST['lat'] ) ? $_POST['lat'] : '';
 $lng    = ! empty( $_POST['lng'] ) ? $_POST['lng'] : '';
@@ -71,7 +71,7 @@ if ( $action === "raid" ) {
         'time_end'    => $time_end,
         'cp'          => 0,
         'pokemon_id'  => 0,
-        'move_1'      => 0, // struggle
+        'move_1'      => 0,
         'move_2'      => 0
 
     ];
@@ -141,13 +141,42 @@ if ( $action === "raid" ) {
             'lon'                       => $lng,
             'lat'                       => $lat,
             'pokemon_id'                => $id,
-            'expire_timestamp'          => time() + 1800,
+            'expire_timestamp'          => time() + $pokemonTimer,
             'updated'                   => time(),
             'weather_boosted_condition' => 0
         ];
         $db->insert( "sightings", $cols );
     }
-
+    if ( $sendWebhook === true ) {
+	$webhook = [
+	    'message' => [
+		'cp'                                => null,
+        'cp_multiplier'                     => null,
+		'disappear_time'                    => $cols['expire_timestamp'],
+		'encounter_id'                      => $cols['encounter_id'],
+		'form'                              => 0,
+		'gender'                            => null,
+		'height'                            => null,
+		'weight'                            => null,
+		'individual_attack'                 => null,
+		'individual_defense'                => null,
+		'individual_stamina'                => null,
+		'latitude'                          => $cols['lat'],
+		'longitude'                         => $cols['lon'],
+		'move_1'                            => null,
+		'move_2'                            => null,
+		'pokemon_id'                        => $cols['pokemon_id'],
+		'pokemon_level'                     => null,
+		'seconds_until_despawn'             => $pokemonTimer,
+		'verified'                          => true,
+		'weather_boosted_condition'         => $cols['weather_boosted_condition']
+	    ],
+	    'type'    => 'pokemon'
+	];
+	foreach ( $webhookUrl as $url ) {
+            sendToWebhook($url, array($webhook));
+	}
+    }
 } elseif ( $action === "gym" ) {
     if ( $noManualGyms === true || $noGyms === true ) {
         http_response_code( 401 );
@@ -216,7 +245,7 @@ if ( $action === "raid" ) {
         $db->insert( "pokestops", $cols );
     }
 } elseif ( $action === "new-nest" ) {
-    if ( $noManualNests === true || $noNests === true ) {
+    if ( $noAddNewNests === true || $noNests === true ) {
         http_response_code( 401 );
         die();
     }

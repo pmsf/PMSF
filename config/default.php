@@ -286,6 +286,7 @@ $sendRaidData = false;                                              // Send Raid
 
 $noManualRaids = false;
 $noManualPokemon = false;
+$pokemonTimer = 900;                                                // Time in seconds before a submitted Pokémon despawns.
 $noManualGyms = false;
 $noManualPokestops = false;
 $noManualQuests = false;
@@ -296,38 +297,43 @@ $pokemonToExclude = [];
 $noDeleteGyms = false;
 $noDeletePokestops = false;
 
-$raidBosses = [361,333,320,129,303,302,256,57,286,103,107,106,68,359,306,248,62,381,150];
+$raidBosses = [129,361,333,355,103,303,200,302,215,68,94,124,221,127,248,306,359,365,381,250];
 
 $sendWebhook = false;
 $webhookUrl = null;                                             //['url-1','url-2']
 
 $manualOneStar = [
-    'pokemon_id' => 201,
+    'webhook' => true,
+    'pokemon_id' => 387,
     'cp' => 0,
     'move_1' => null,
     'move_2' => null
 ];
 $manualTwoStar = [
-    'pokemon_id' => 201,
+    'webhook' => true,
+    'pokemon_id' => 388,
     'cp' => 0,
     'move_1' => null,
     'move_2' => null
 ];
 $manualThreeStar = [
-    'pokemon_id' => 201,
+    'webhook' => true,
+    'pokemon_id' => 389,
     'cp' => 0,
     'move_1' => null,
     'move_2' => null
 ];
 $manualFourStar = [
-    'pokemon_id' => 201,
+    'webhook' => true,
+    'pokemon_id' => 390,
     'cp' => 0,
     'move_1' => null,
     'move_2' => null
 ];
 $manualFiveStar = [
-    'pokemon_id' => 381,
-    'cp' => 49322,
+    'webhook' => true,
+    'pokemon_id' => 391,
+    'cp' => 0,
     'move_1' => null,
     'move_2' => null
 ];
@@ -340,12 +346,19 @@ $noSearch = false;
 $noSearchPokestops = false;     //Wont work if noSearch = false
 $noSearchGyms = false;          //Wont work if noSearch = false
 $noSearchManualQuests = false;  //Wont work if noSearch = false
+$noSearchNests = false;
+$defaultUnit = "km";                                            // mi/km
 
 //-----------------------------------------------
 // Nests
 //-----------------------------------------------------
+$noNests = false;                                                   // true/false
+$enableNests = 'false';                                             // true/false
 $noManualNests = false;
 $noDeleteNests = false;
+$nestVerifyLevel = 1;						    // 1 = Verified 2 = 1 + Unverified 3 = 1 + 2 + Revoked 4 = Get all nests
+$deleteNestsOlderThan = 42;					    // days after not updated nests are removed from database by nest cron
+$noAddNewNests = false;
 $excludeNestMons = [2,3,5,6,8,9,11,12,14,15,17,18,20,22,24,26,28,29,30,31,32,33,34,36,38,40,42,44,45,49,51,53,55,57,59,61,62,64,65,67,68,70,71,73,75,76,78,80,82,83,85,87,88,89,91,93,94,97,99,101,103,105,106,107,108,109,110,112,113,114,115,117,119,121,122,128,130,131,132,134,135,136,137,139,142,143,144,145,146,147,148,149,150,151,153,154,156,157,159,160,162,164,166,168,169,171,172,173,174,175,176,178,179,180,181,182,184,185,186,188,189,192,195,196,197,199,201,204,205,207,208,210,212,214,217,219,221,222,224,225,226,227,229,230,231,232,233,234,235,236,237,238,239,240,241,242,243,244,245,246,247,248,249,250,251,253,254,256,257,259,260,262,264,266,267,268,269,270,271,272,274,275,277,279,280,281,282,284,286,287,288,289,290,291,292,294,295,297,298,301,302,303,305,306,308,310,311,312,313,314,317,319,321,323,324,326,327,328,329,330,331,332,334,335,336,337,338,340,342,344,345,346,347,348,349,350,351,352,354,356,357,358,359,360,361,362,364,365,366,367,368,369,371,372,373,374,375,376,377,378,379,380,381,382,383,384,385,386];
 $nestCoords = array();                                           //$nestCoords = array(array('lat1' => 42.8307723529682, 'lng1' => -88.7527692278689, 'lat2' => 42.1339901128552, 'lng2' => -88.0688703020877),array(    'lat1' => 42.8529250952743,'lng1' => -88.1292951067752,'lat2' => 41.7929306950085,'lng2' => -87.5662457903689));
 
