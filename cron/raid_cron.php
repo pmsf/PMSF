@@ -49,7 +49,7 @@ if (count($eggs1) > 0) {
         $gym = $db->get("forts", ['external_id'], ['id' => $fort_ids]);
 
         // do we need to send to webhooks?
-        if ($manualOneStar['webhook'] === true) {
+        if ($sendWebhook === true && $manualOneStar['webhook'] === true) {
             $webhook = [
                 'message' => [
                     'gym_id' => $gym['external_id'],
@@ -89,7 +89,7 @@ if (count($eggs2) > 0) {
         $gym = $db->get("forts", ['external_id'], ['id' => $fort_ids]);
 
         // do we need to send to webhooks?
-        if ($manualTwoStar['webhook'] === true) {
+        if ($sendWebhook === true && $manualTwoStar['webhook'] === true) {
             $webhook = [
                 'message' => [
                     'gym_id' => $gym['external_id'],
@@ -129,7 +129,7 @@ if (count($eggs3) > 0) {
         $gym = $db->get("forts", ['external_id'], ['id' => $fort_ids]);
 
         // do we need to send to webhooks?
-        if ($manualThreeStar['webhook'] === true) {
+        if ($sendWebhook === true && $manualThreeStar['webhook'] === true) {
             $webhook = [
                 'message' => [
                     'gym_id' => $gym['external_id'],
@@ -169,7 +169,7 @@ if (count($eggs4) > 0) {
         $gym = $db->get("forts", ['external_id'], ['id' => $fort_ids]);
 
         // do we need to send to webhooks?
-        if ($manualFourStar['webhook'] === true) {
+        if ($sendWebhook === true && $manualFourStar['webhook'] === true) {
             $webhook = [
                 'message' => [
                     'gym_id' => $gym['external_id'],
@@ -209,7 +209,7 @@ if (count($eggs5) > 0) {
 		$gym = $db->get("forts", ['external_id'], ['id' => $fort_ids]);
 
         // do we need to send to webhooks?
-        if ($manualFiveStar['webhook'] === true) {
+        if ($sendWebhook === true && $manualFiveStar['webhook'] === true) {
             $webhook = [
                 'message' => [
                     'gym_id' => $gym['external_id'],
