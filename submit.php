@@ -147,7 +147,36 @@ if ( $action === "raid" ) {
         ];
         $db->insert( "sightings", $cols );
     }
-
+    if ( $sendWebhook === true ) {
+	$webhook = [
+	    'message' => [
+		'cp'                                => null,
+                'cp_multiplier'                     => null,
+		'disappear_time'                    => $cols['expire_timestamp'],
+		'encounter_id'                      => $cols['encounter_id'],
+		'form'                              => 0,
+		'gender'                            => null,
+		'height'                            => null,
+		'weight'                            => null,
+		'individual_attack'                 => null,
+		'individual_defense'                => null,
+		'individual_stamina'                => null,
+		'latitude'                          => $cols['lat'],
+		'longitude'                         => $cols['lon'],
+		'move_1'                            => null,
+		'move_2'                            => null,
+		'pokemon_id'                        => $cols['pokemon_id'],
+		'pokemon_level'                     => null,
+		'seconds_until_despawn'             => $pokemonTimer,
+		'verified'                          => true,
+		'weather_boosted_condition'         => $cols['weather_boosted_condition']
+	    ],
+	    'type'    => 'pokemon'
+	];
+	foreach ( $webhookUrl as $url ) {
+            sendToWebhook($url, array($webhook));
+	}
+    }
 } elseif ( $action === "gym" ) {
     if ( $noManualGyms === true || $noGyms === true ) {
         http_response_code( 401 );
