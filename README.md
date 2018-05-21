@@ -11,6 +11,9 @@ It supports all the common database engines, including MySQL, MariaDB, Postgres,
 ## Get Started
 Go to our [Wiki](https://github.com/Glennmen/PMSF/wiki) for more info about installation.
 
+## Webhooks
+Our fork does convert started raids into new raids with questionmark eggs. A special crafted spritesheet is used and you need to make a small change to the json files for PokeAlarm, PoracleJS or other messages filter relays.
+
 ## Feedback
 * Create an issue if you have any bugs, suggestions or improvements!
 

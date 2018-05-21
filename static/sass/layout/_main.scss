@@ -84,6 +84,16 @@ html, body {
     }
   }
 }
+.search-widget-popup{
+  #search-tabs{
+    li{
+      a{
+        padding:.25em 1em;
+        img{height:32px;}
+      }
+    }
+  }
+}
 .search-results{
   padding:0;
   margin:0;
