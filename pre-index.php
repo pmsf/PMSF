@@ -1020,7 +1020,7 @@ if ( $blockIframe ) {
 		  placeholder="<?php echo i8ln( 'Enter New Pokestop Name' ); ?>" data-type="pokestop"
                   class="search-input">
              <div class="button-container">
-                <button type="button" onclick="renamePokestopData(event);" class="rename-pokestop"><i
+                <button type="button" onclick="renamePokestopData(event);" class="renamepokestopid"><i
                         class="fa fa-edit"
                         style="margin-right:10px; vertical-align: middle; font-size: 1.5em;"></i><?php echo i8ln( 'Rename Pokestop' ); ?>
                 </button>
