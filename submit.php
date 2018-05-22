@@ -244,8 +244,6 @@ if ( $action === "raid" ) {
         ];
 	$db->update( "pokestops", $cols, $where );
     }
-	echo $pokestopName;
-	echo $pokestopId;
  } elseif ( $action === "pokestop" ) {
     if ( $noManualPokestops === true || $noPokestops === true ) {
         http_response_code( 401 );
