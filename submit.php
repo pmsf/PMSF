@@ -227,7 +227,26 @@ if ( $action === "raid" ) {
         ];
         $db->update( "nests", $cols, $where );
     }
-} elseif ( $action === "pokestop" ) {
+} elseif ( $action === "renamepokestop" ) {
+    if ( $noRenamePokestops === true || $noPokestops === true ) {
+        http_response_code( 401 );
+        die();
+    }
+    $pokestopName = ! empty( $_POST['pokestop'] ) ? $_POST['pokestop'] : '';
+    $pokestopId = ! empty( $_POST['pokestopid'] ) ? $_POST['pokestopid'] : '';
+    if ( ! empty( $pokestopName ) && ! empty( $pokestopID ) ) {
+        $cols       = [
+            'name'        => $pokestopName,
+            'updated'     => time()
+        ];
+        $where = [
+            'external_id' => $pokestopId
+        ];
+	$db->update( "pokestops", $cols, $where );
+	echo $pokestopName;
+	echo $pokestopId;
+     }
+ } elseif ( $action === "pokestop" ) {
     if ( $noManualPokestops === true || $noPokestops === true ) {
         http_response_code( 401 );
         die();
