@@ -289,6 +289,7 @@ $noManualPokemon = false;
 $pokemonTimer = 900;                                                // Time in seconds before a submitted Pokémon despawns.
 $noManualGyms = false;
 $noManualPokestops = false;
+$noRenamePokestops = false;
 $noManualQuests = false;
 
 $pokemonReportTime = true;
