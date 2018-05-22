@@ -130,6 +130,7 @@
     "noManualNests": true,
     "noDeleteNests": true,
     "List": true,
-    "defaultUnit": true
+    "defaultUnit": true,
+    "noRenamePokestops": true
   }
 }
