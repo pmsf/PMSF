@@ -874,7 +874,10 @@ function pokestopLabel(expireTime, latitude, longitude, stopName, lureUser, id, 
             str += '<i class="fa fa-trash-o delete-pokestop" onclick="deletePokestop(event);" data-id="' + id + '"></i>'
         }
         if (!noManualQuests) {
-            str += '<center><i class="fa fa-binoculars submit-quest" onclick="openQuestModal(event);" data-id="' + id + '"></i></center>'
+            str += '<center>Add Quest<i class="fa fa-binoculars submit-quest" onclick="openQuestModal(event);" data-id="' + id + '"></i></center>'
+        }
+        if (!noRenamePokestops) {
+            str += '<center>Rename Pokestop <i class="fa fa-edit rename-pokestop" style="margin-right:10px; margin-top: 2px; vertical-align: middle; font-size: 1.5em;" onclick="openRenamePokestopModal(event);" data-id="' + id + '"></i></center>'
         }
     }
     return str
@@ -1950,7 +1953,39 @@ function deletePokestop(event) { // eslint-disable-line no-unused-vars
         }
     }
 }
-
+function renamePokestopData(event) { // eslint-disable-line no-unused-vars
+    var form = $(event.target).parent().parent()
+    var pokestopId = form.find('.renamepokestopid').val()
+    var pokestopName = form.find('[name="pokestop-name"]').val()
+    if (pokestopName && pokestopName !== '') {
+        if (confirm(i8ln('I confirm this is an accurate new name for this pokestop'))) {
+            return $.ajax({
+                url: 'submit',
+                type: 'POST',
+                timeout: 300000,
+                dataType: 'json',
+                cache: false,
+                data: {
+                    'action': 'renamepokestop',
+                    'pokestopid': pokestopId,
+                    'pokestop': pokestopName
+                },
+                error: function error() {
+                    // Display error toast
+                    toastr['error'](i8ln('Please check connectivity or reduce marker settings.'), i8ln('Error changing Pokestop name'))
+                    toastr.options = toastrOptions
+                },
+                complete: function complete() {
+                    jQuery('label[for="pokestops-switch"]').click()
+                    jQuery('label[for="pokestops-switch"]').click()
+                    lastpokestops = false
+                    updateMap()
+                    $('.ui-dialog-content').dialog('close')
+                }
+            })
+        }
+    }
+}
 function deleteNest(event) { // eslint-disable-line no-unused-vars
     var button = $(event.target)
     var nestid = button.data('id')
@@ -2170,6 +2205,21 @@ function openQuestModal(event) { // eslint-disable-line no-unused-vars
         maxHeight: 600,
         buttons: {},
         title: i8ln('Submit a Quest'),
+        classes: {
+            'ui-dialog': 'ui-dialog raid-widget-popup'
+        }
+    })
+}
+
+function openRenamePokestopModal(event) { // eslint-disable-line no-unused-vars
+    $('.ui-dialog').remove()
+    var val = $(event.target).data('id')
+    $('.renamepokestopid').val(val)
+    $('.rename-modal').clone().dialog({
+        modal: true,
+        maxHeight: 600,
+        buttons: {},
+        title: i8ln('Rename Pokéstop'),
         classes: {
             'ui-dialog': 'ui-dialog raid-widget-popup'
         }
