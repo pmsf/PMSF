@@ -1976,9 +1976,9 @@ function renamePokestopData(event) { // eslint-disable-line no-unused-vars
                     toastr.options = toastrOptions
                 },
                 complete: function complete() {
-                   jQuery('label[for="pokestops-switch"]').click()
-                   jQuery('label[for="pokestops-switch"]').click()
-                   lastpokestops = false
+                    jQuery('label[for="pokestops-switch"]').click()
+                    jQuery('label[for="pokestops-switch"]').click()
+                    lastpokestops = false
                     updateMap()
                     $('.ui-dialog-content').dialog('close')
                 }
