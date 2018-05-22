@@ -1014,7 +1014,19 @@ if ( $blockIframe ) {
             </div>
         </div>
     <?php } ?>
-
+    <?php if ( ! $noRenamePokestops ) { ?>
+        <div class="rename-modal" style="display: none;">
+	   <input type="text" id="pokestop-name" name="pokestop-name"
+		  placeholder="<?php echo i8ln( 'Enter New Pokestop Name' ); ?>" data-type="pokestop"
+                  class="search-input">
+             <div class="button-container">
+                <button type="button" onclick="renamePokestopData(event);" class="renamepokestopid"><i
+                        class="fa fa-edit"
+                        style="margin-right:10px; vertical-align: middle; font-size: 1.5em;"></i><?php echo i8ln( 'Rename Pokestop' ); ?>
+                </button>
+            </div>
+        </div>
+    <?php } ?>
     <?php if ( ! $noManualQuests ) { ?>
         <div class="quest-modal" style="display: none;">
             <input type="hidden" value="" name="questPokestop" class="questPokestop"/>
@@ -1305,6 +1317,7 @@ if ( $blockIframe ) {
     var login = <?php echo $noNativeLogin === false || $noDiscordLogin === false  ? 'true' : 'false' ?>;
     var expireTimestamp = <?php echo isset($_SESSION['user']->expire_timestamp) ? $_SESSION['user']->expire_timestamp : 0 ?>;
     var timestamp = <?php echo time() ?>;
+    var noRenamePokestops = <?php echo $noRenamePokestops === true ? 'true' : 'false' ?>;
 </script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js"></script>
 <script src="static/dist/js/map.common.min.js"></script>

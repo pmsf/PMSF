@@ -200,10 +200,10 @@ $noPokestops = false;                                               // true/fals
 $enablePokestops = 'false';                                         // true/false
 $enableLured = 1;                                                   // O: all, 1: lured only
 
-$noScannedLocations = false;                                        // true/false
+$noScannedLocations = true;                                        // true/false
 $enableScannedLocations = 'false';                                  // true/false
 
-$noSpawnPoints = false;                                             // true/false
+$noSpawnPoints = true;                                             // true/false
 $enableSpawnPoints = 'false';                                       // true/false
 
 $noRanges = false;                                                  // true/false
@@ -227,7 +227,7 @@ $enableSpawnArea = 'false';                                         // true/fals
 
 /* Notification Settings */
 
-$notifyPokemon = '[201]';                                           // [] for empty
+$notifyPokemon = '[]';                                           // [] for empty
 
 $notifyRarity = '[]';                                               // "Common", "Uncommon", "Rare", "Very Rare", "Ultra Rare"
 
@@ -289,6 +289,7 @@ $noManualPokemon = false;
 $pokemonTimer = 900;                                                // Time in seconds before a submitted Pokémon despawns.
 $noManualGyms = false;
 $noManualPokestops = false;
+$noRenamePokestops = false;
 $noManualQuests = false;
 
 $pokemonReportTime = true;
