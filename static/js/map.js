@@ -876,8 +876,8 @@ function pokestopLabel(expireTime, latitude, longitude, stopName, lureUser, id, 
         if (!noManualQuests) {
             str += '<center>Add Quest<i class="fa fa-binoculars submit-quest" onclick="openQuestModal(event);" data-id="' + id + '"></i></center>'
         }
-	if (!noRenamePokestops) {
-            str += '<center>Rename Pokestop <i class="fa fa-edit fa-2x rename-pokestop" onclick="openRenamePokestopModal(event);" data-id="' + id + '"></i></center>'
+        if (!noRenamePokestops) {
+            str += '<center>Rename Pokestop <i class="fa fa-edit rename-pokestop" style="margin-right:10px; margin-top: 2px; vertical-align: middle; font-size: 1.5em;" onclick="openRenamePokestopModal(event);" data-id="' + id + '"></i></center>'
         }
     }
     return str
@@ -1968,7 +1968,7 @@ function renamePokestopData(event) { // eslint-disable-line no-unused-vars
                 data: {
                     'action': 'renamepokestop',
                     'pokestopid': pokestopId,
-                    'pokestop': pokestopName,
+                    'pokestop': pokestopName
                 },
                 error: function error() {
                     // Display error toast
@@ -2209,7 +2209,7 @@ function openQuestModal(event) { // eslint-disable-line no-unused-vars
     })
 }
 
-function openRenamePokestopModal (event) { // eslint-disable-line no-unused-vars
+function openRenamePokestopModal(event) { // eslint-disable-line no-unused-vars
     $('.ui-dialog').remove()
     var val = $(event.target).data('id')
     $('.renamepokestopid').val(val)

@@ -1021,8 +1021,8 @@ if ( $blockIframe ) {
                   class="search-input">
              <div class="button-container">
                 <button type="button" onclick="renamePokestopData(event);" class="rename-pokestop"><i
-                        class="fa fa-edit fa-2x"
-                        style="margin-right:10px;"></i><?php echo i8ln( 'Rename Pokestop' ); ?>
+                        class="fa fa-edit"
+                        style="margin-right:10px; vertical-align: middle; font-size: 1.5em;"></i><?php echo i8ln( 'Rename Pokestop' ); ?>
                 </button>
             </div>
         </div>
