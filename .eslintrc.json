@@ -131,8 +131,6 @@
     "noDeleteNests": true,
     "List": true,
     "defaultUnit": true,
-    "noRenamePokestops": true,
-    "latitude": true,
-    "longitude": true
+    "noRenamePokestops": true
   }
 }
