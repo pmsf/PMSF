@@ -175,8 +175,8 @@ $excludeMinIV = '[131, 143, 147, 148, 149, 248]';                   // [] for em
 $minIV = '0';                                                       // "0" for empty or a number
 $minLevel = '0';                                                    // "0" for empty or a number
 
-$noBigKarp = false;                                                 // true/false
-$noTinyRat = false;                                                 // true/false
+$noBigKarp = true;                                                 // true/false
+$noTinyRat = true;                                                 // true/false
 
 $noNests = false;                                                   // true/false
 $enableNests = 'false';                                             // true/false

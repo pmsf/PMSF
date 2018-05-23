@@ -418,19 +418,21 @@ if ( $blockIframe ) {
                         </label>
                     </div>
                 </div>';
-                    } ?>
-                    <div id="gyms-filter-wrapper" style="display:none">
+		    } ?>
+                    <?php
+                    if ( ! $hideIfManual ) {
+                        echo '<div id="gyms-filter-wrapper" style="display:none">
                         <div class="form-control switch-container" id="team-gyms-only-wrapper">
-                            <h3><?php echo i8ln( 'Team' ) ?></h3>
+                            <h3>' . i8ln( 'Team' ) . '</h3>
                             <select name="team-gyms-filter-switch" id="team-gyms-only-switch">
-                                <option value="0"><?php echo i8ln( 'All' ) ?></option>
-                                <option value="1"><?php echo i8ln( 'Mystic' ) ?></option>
-                                <option value="2"><?php echo i8ln( 'Valor' ) ?></option>
-                                <option value="3"><?php echo i8ln( 'Instinct' ) ?></option>
+                                <option value="0">' . i8ln( 'All' ) . '</option>
+                                <option value="1">' . i8ln( 'Mystic' ) . '</option>
+                                <option value="2">' . i8ln( 'Valor' ) . '</option>
+                                <option value="3">' . i8ln( 'Instinct' ) . '</option>
                             </select>
-                        </div>
+			</div>
                         <div class="form-control switch-container" id="open-gyms-only-wrapper">
-                            <h3><?php echo i8ln( 'Open Spot' ) ?></h3>
+                            <h3>' . i8ln( 'Open Spot' ) . '</h3>
                             <div class="onoffswitch">
                                 <input id="open-gyms-only-switch" type="checkbox" name="open-gyms-only-switch"
                                        class="onoffswitch-checkbox" checked>
@@ -441,7 +443,7 @@ if ( $blockIframe ) {
                             </div>
                         </div>
                         <div class="form-control switch-container" id="min-level-gyms-filter-wrapper">
-                            <h3><?php echo i8ln( 'Minimum Free Slots' ) ?></h3>
+                            <h3>' . i8ln( 'Minimum Free Slots' ) . '</h3>
                             <select name="min-level-gyms-filter-switch" id="min-level-gyms-filter-switch">
                                 <option value="0">0</option>
                                 <option value="1">1</option>
@@ -453,7 +455,7 @@ if ( $blockIframe ) {
                             </select>
                         </div>
                         <div class="form-control switch-container" id="max-level-gyms-filter-wrapper">
-                            <h3><?php echo i8ln( 'Maximum Free Slots' ) ?></h3>
+                            <h3>' . i8ln( 'Maximum Free Slots' ) . '</h3>
                             <select name="max-level-gyms-filter-switch" id="max-level-gyms-filter-switch">
                                 <option value="0">0</option>
                                 <option value="1">1</option>
@@ -465,17 +467,19 @@ if ( $blockIframe ) {
                             </select>
                         </div>
                         <div class="form-control switch-container" id="last-update-gyms-wrapper">
-                            <h3><?php echo i8ln( 'Last Scan' ) ?></h3>
+                            <h3>' . i8ln( 'Last Scan' ) . '</h3>
                             <select name="last-update-gyms-switch" id="last-update-gyms-switch">
-                                <option value="0"><?php echo i8ln( 'All' ) ?></option>
-                                <option value="1"><?php echo i8ln( 'Last Hour' ) ?></option>
-                                <option value="6"><?php echo i8ln( 'Last 6 Hours' ) ?></option>
-                                <option value="12"><?php echo i8ln( 'Last 12 Hours' ) ?></option>
-                                <option value="24"><?php echo i8ln( 'Last 24 Hours' ) ?></option>
-                                <option value="168"><?php echo i8ln( 'Last Week' ) ?></option>
+                                <option value="0">' . i8ln( 'All' ) . '</option>
+                                <option value="1">' . i8ln( 'Last Hour' ) . '</option>
+                                <option value="6">' . i8ln( 'Last 6 Hours' ) . '</option>
+                                <option value="12">' . i8ln( 'Last 12 Hours' ) . '</option>
+                                <option value="24">' . i8ln( 'Last 24 Hours' ) . '</option>
+                                <option value="168">' . i8ln( 'Last Week' ) . '</option>
                             </select>
                         </div>
-                    </div>
+		    </div>';
+                    }
+                    ?>
                     <div id="gyms-raid-filter-wrapper" style="display:none">
                         <?php
                         if ( ( $fork === "alternate" || ( $map === "rm" && $fork !== "sloppy" ) ) && ! $noExEligible ) {
