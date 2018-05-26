@@ -283,7 +283,7 @@ $sendRaidData = false;                                              // Send Raid
 //-----------------------------------------------------
 // Manual Submissions
 //-----------------------------------------------------
-
+$hideIfManual = false;
 $noManualRaids = false;
 $noManualPokemon = false;
 $pokemonTimer = 900;                                                // Time in seconds before a submitted Pokémon despawns.
