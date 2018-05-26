@@ -44,3 +44,4 @@ index.php
 static/.DS_Store
 vendor/*^M
 composer.lock
+custom/*

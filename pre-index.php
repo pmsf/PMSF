@@ -31,8 +31,15 @@ if ( $blockIframe ) {
     <meta name="theme-color" content="#3b3b3b">
     <!-- Fav- & Apple-Touch-Icons -->
     <!-- Favicon -->
-    <link rel="shortcut icon" href="static/appicons/favicon.ico"
-          type="image/x-icon">
+    <?php
+    if ( $faviconPath != "" ) {
+       echo '<link rel="shortcut icon" href="' . $faviconPath . '"
+             type="image/x-icon">';
+    } else {
+       echo '<link rel="shortcut icon" href="static/appicons/favicon.ico"
+             type="image/x-icon">';
+    }
+    ?>
     <!-- non-retina iPhone pre iOS 7 -->
     <link rel="apple-touch-icon" href="static/appicons/114x114.png"
           sizes="57x57">
