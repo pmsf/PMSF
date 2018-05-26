@@ -65,6 +65,8 @@ $noMotd = true;
 $motdTitle = "Message of the Day";
 $motdContent = "This is an example MOTD<br>Do whatever you like with it.";
 
+/* Favicon */
+$faviconPath = '';                                                  // Upload favicon.ico to custom folder, leave '' for empty ( $faviconPath = 'custom/favicon.ico'; )
 //-----------------------------------------------------
 // Login
 //-----------------------------------------------------
