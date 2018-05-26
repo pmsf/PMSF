@@ -422,5 +422,9 @@
   "106": {
     "cat": "Event",
     "name": "Hatch 2 Eggs."
+  },
+  "107": {
+    "cat": "Event",
+    "name": "Spin 6 Pokéstops you've never visited befre"
   }
 }
