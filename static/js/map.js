@@ -858,6 +858,31 @@ function pokestopLabel(expireTime, latitude, longitude, stopName, lureUser, id, 
             '<center>' + '<div>' +
             '<b>' + stopName + '</b>' +
             '</div>'
+        if (quest === null) {
+            str =
+                '<div>' +
+                '<center>' +
+                '<div>' +
+                '<b>' + stopName + '</b>' +
+                '</div>' +
+                '<div>' +
+                '<img height="70px" style="padding: 5px;" src="static/forts/Pstop.png">' +
+                '</div>' +
+                '</center>' +
+                '</div>'
+        } else {
+            str =
+                '<div>' +
+                '<center>' +
+                '<div>' +
+                '<b>' + stopName + '</b>' +
+                '</div>' +
+                '<div>' +
+                '<img height="70px" style="padding: 5px;" src="static/forts/Pstop-quest.png">' +
+                '</div>' +
+                '</center>' +
+                '</div>'
+        }
         if (!noManualQuests && quest !== null) {
             str += '<div>' +
                 i8ln('Quest:') + ' ' +
@@ -874,12 +899,12 @@ function pokestopLabel(expireTime, latitude, longitude, stopName, lureUser, id, 
             str += '<i class="fa fa-trash-o delete-pokestop" onclick="deletePokestop(event);" data-id="' + id + '"></i>'
         }
         if (!noManualQuests) {
-            str += '<center>Add Quest<i class="fa fa-binoculars submit-quest" onclick="openQuestModal(event);" data-id="' + id + '"></i></center>'
+            str += '<div align="right">Add Quest<i class="fa fa-binoculars submit-quest" onclick="openQuestModal(event);" data-id="' + id + '"></i></div>'
         }
         if (!noRenamePokestops) {
-            str += '<center>Rename Pokestop <i class="fa fa-edit rename-pokestop" style="margin-right:10px; margin-top: 2px; vertical-align: middle; font-size: 1.5em;" onclick="openRenamePokestopModal(event);" data-id="' + id + '"></i></center>'
+            str += '<div align="right">Rename Pokestop <i class="fa fa-edit rename-pokestop" style="margin-right:10px; margin-top: 2px; vertical-align: middle; font-size: 1.5em;" onclick="openRenamePokestopModal(event);" data-id="' + id + '"></i></div>'
         }
-	str += '<div>' +
+        str += '<div>' +
             i8ln('Location:') + ' ' + '<a href="javascript:void(0)" onclick="javascript:openMapDirections(' + latitude + ',' + longitude + ')" title="' + i8ln('View in Maps') + '">' + latitude.toFixed(6) + ', ' + longitude.toFixed(7) + '</a>' +
             '</div>'
     }
