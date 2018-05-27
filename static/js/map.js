@@ -870,9 +870,6 @@ function pokestopLabel(expireTime, latitude, longitude, stopName, lureUser, id, 
                     '</div>'
             }
         }
-        str += '<div>' +
-            i8ln('Location:') + ' ' + '<a href="javascript:void(0)" onclick="javascript:openMapDirections(' + latitude + ',' + longitude + ')" title="' + i8ln('View in Maps') + '">' + latitude.toFixed(6) + ', ' + longitude.toFixed(7) + '</a>' +
-            '</div>'
         if (!noDeletePokestops) {
             str += '<i class="fa fa-trash-o delete-pokestop" onclick="deletePokestop(event);" data-id="' + id + '"></i>'
         }
@@ -882,6 +879,9 @@ function pokestopLabel(expireTime, latitude, longitude, stopName, lureUser, id, 
         if (!noRenamePokestops) {
             str += '<center>Rename Pokestop <i class="fa fa-edit rename-pokestop" style="margin-right:10px; margin-top: 2px; vertical-align: middle; font-size: 1.5em;" onclick="openRenamePokestopModal(event);" data-id="' + id + '"></i></center>'
         }
+	str += '<div>' +
+            i8ln('Location:') + ' ' + '<a href="javascript:void(0)" onclick="javascript:openMapDirections(' + latitude + ',' + longitude + ')" title="' + i8ln('View in Maps') + '">' + latitude.toFixed(6) + ', ' + longitude.toFixed(7) + '</a>' +
+            '</div>'
     }
     return str
 }
