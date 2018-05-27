@@ -1347,7 +1347,7 @@ function nestLabel(item) {
                 '<center>' +
                 '<div class="marker-nests">' +
                 '<img src="static/images/nest-' + item.english_pokemon_types[0].type.toLowerCase() + '.png" style="width:72px;height: auto;"/>' +
-                '<i class="nest-pokemon-sprite n' + item.pokemon_id + '"></i>' +
+                '<i class="label-nest-pokemon-sprite n' + item.pokemon_id + '"></i>' +
                 '<br>' +
                 '<div>' +
                 typesDisplay +
