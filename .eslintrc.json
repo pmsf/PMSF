@@ -131,7 +131,6 @@
     "noDeleteNests": true,
     "List": true,
     "defaultUnit": true,
-    "noRenamePokestops": true,
-    "copyrightSafe": true
+    "noRenamePokestops": true
   }
 }
