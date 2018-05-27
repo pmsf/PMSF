@@ -16,14 +16,31 @@
     }
   }
 }
-
+.label-nest-type-marker{
+  position: relative;
+  top: 0;
+  left: 0;
+  width: 72px;
+  height: auto;
+}
+.label-nest-pokemon-sprite{
+  position: absolute;
+  top: -60px;
+  left: 18px;
+  width: 144px;
+  height: auto;
+}
 .delete-nest{
-  font-size:18px;
-  color:red;
-  margin-right:10px;
+  position: absolute;
+  top: -8px;
+  left: -14px;
+  font-size: 20px;
+  background: rgb(255, 0, 0);
+  padding: 5px;
+  color: rgb(255, 255, 255);
 }
 .submit-nest{
-  font-size:18px;
+  font-size:20px;
 }
 .nest-widget-popup{
   .ui-dialog-content.global-nest-modal{

@@ -1342,17 +1342,25 @@ function nestLabel(item) {
         $.each(types, function (index, type) {
             typesDisplay += getTypeSpan(type)
         })
-        str += '<b>' + item.pokemon_name + '</b>' +
+        str += '<center><b>' + item.pokemon_name + '</b></center>' +
             '</div>' +
+            '<center>' +
+            '<div align="center" style="position: relative; left: 0; top: 0;">' +
+            '<img src="static/images/nest-' + item.english_pokemon_types[0].type.toLowerCase() + '.png" class="label-nest-type-marker"/>' +
+            '<img src="static/icons-pokemon/' + item.pokemon_id + '.png" class="label-nest-pokemon-sprite"/>' + 
+            '<br>' +
             '<div>' +
             typesDisplay +
+            '</div>' +
+            '</center>' +
             '</div>'
     } else {
-        str += '<b>' + i8ln('No Pokemon - Assign One Below') + '</b>'
+        str += '<div align="center" class="marker-nests">' +
+            '<img src="static/images/nest-empty.png" align"middle" style="width:36px;height: auto;"/>' +
+            '</div>'
+            '<b>' + i8ln('No Pokemon - Assign One Below') + '</b>'
+            
     }
-    str += '<div>' +
-        'Location: <a href="javascript:void(0)" onclick="javascript:openMapDirections(' + item.lat + ',' + item.lon + ')" title="' + i8ln('View in Maps') + '">' + item.lat.toFixed(6) + ', ' + item.lon.toFixed(7) + '</a>' +
-        '</div>'
     if (item.type === 1) {
         str += '<div style="margin-bottom:5px;">' + i8ln('As found on thesilphroad.com') + '</div>'
     }
@@ -1362,7 +1370,9 @@ function nestLabel(item) {
     if (!noManualNests) {
         str += '<i class="fa fa-binoculars submit-nest" onclick="openNestModal(event);" data-id="' + item['nest_id'] + '"></i>'
     }
-
+    str += '<div>' +
+        'Location: <a href="javascript:void(0)" onclick="javascript:openMapDirections(' + item.lat + ',' + item.lon + ')" title="' + i8ln('View in Maps') + '">' + item.lat.toFixed(6) + ', ' + item.lon.toFixed(7) + '</a>' +
+        '</div>'
     return str
 }
 
