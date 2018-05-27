@@ -1342,30 +1342,18 @@ function nestLabel(item) {
         $.each(types, function (index, type) {
             typesDisplay += getTypeSpan(type)
         })
-        if (copyrightSafe === false) {
             str += '<center><b>' + item.pokemon_name + '</b></center>' +
                 '</div>' +
                 '<center>' +
-                '<div align="center" style="position: relative; left: 0; top: 0;">' +
-                '<img src="static/images/nest-' + item.english_pokemon_types[0].type.toLowerCase() + '.png" class="label-nest-type-marker"/>' +
-                '<img src="static/icons-pokemon/' + item.pokemon_id + '.png" class="label-nest-pokemon-sprite"/>' +
+                '<div class="marker-nests">' +
+                '<img src="static/images/nest-' + item.english_pokemon_types[0].type.toLowerCase() + '.png" style="width:72px;height: auto;"/>' +
+                '<i class="nest-pokemon-sprite n' + item.pokemon_id + '"></i>' +
                 '<br>' +
                 '<div>' +
                 typesDisplay +
                 '</div>' +
                 '</center>' +
                 '</div>'
-        } else {
-            str += '<center><b>' + item.pokemon_name + '</b></center>' +
-                '</div>' +
-                '<center>' +
-                '<br>' +
-                '<div>' +
-                typesDisplay +
-                '</div>' +
-                '</center>' +
-                '</div>'
-        }
     } else {
         str += '<div align="center" class="marker-nests">' +
             '<img src="static/images/nest-empty.png" align"middle" style="width:36px;height: auto;"/>' +
