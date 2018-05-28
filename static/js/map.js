@@ -865,7 +865,7 @@ function pokestopLabel(expireTime, latitude, longitude, stopName, lureUser, id, 
                 '<b>' + stopName + '</b>' +
                 '</div>' +
                 '<div>' +
-                '<img height="70px" style="padding: 5px;" src="static/forts/Pstop.png">' +
+                '<img height="70px" style="padding: 5px;" src="static/forts/Pstop-large.png">' +
                 '</div>' +
                 '</center>' +
                 '</div>'
@@ -877,7 +877,7 @@ function pokestopLabel(expireTime, latitude, longitude, stopName, lureUser, id, 
                 '<b>' + stopName + '</b>' +
                 '</div>' +
                 '<div>' +
-                '<img height="70px" style="padding: 5px;" src="static/forts/Pstop-quest.png">' +
+                '<img height="70px" style="padding: 5px;" src="static/forts/Pstop-quest-large.png">' +
                 '</div>' +
                 '</center>' +
                 '</div>'
