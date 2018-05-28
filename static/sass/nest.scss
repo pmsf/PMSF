@@ -21,13 +21,12 @@
   background-image: var(--sprite-large);
   background-repeat:no-repeat;
   background-size: 800px;
-  top: 5px;
-  right: 4px;
+  top: 30px;
+  right: 135px;
   position: absolute;
   -moz-transform-origin: 0 0;
   height: 28.57142857142857px;
   width: 28.57142857142857px;
-  margin: 40px 90px;
 
   @for $i from 1 through $numberOfPokemon {
     &.n#{$i} {
