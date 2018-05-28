@@ -1028,7 +1028,7 @@ if ( $blockIframe ) {
     <?php if ( ! $noRenamePokestops ) { ?>
         <div class="rename-modal" style="display: none;">
 	   <input type="text" id="pokestop-name" name="pokestop-name"
-		  placeholder="<?php echo i8ln( 'Enter New Pokestop Name' ); ?>" data-type="pokestop"
+		  placeholder="<?php echo i8ln( 'Enter New Pokéstop Name' ); ?>" data-type="pokestop"
                   class="search-input">
              <div class="button-container">
                 <button type="button" onclick="renamePokestopData(event);" class="renamepokestopid"><i
