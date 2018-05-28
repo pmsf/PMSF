@@ -1342,7 +1342,7 @@ function nestLabel(item) {
         $.each(types, function (index, type) {
             typesDisplay += getTypeSpan(type)
         })
-            str += '<center><b>' + item.pokemon_name + '</b></center>' +
+        str += '<center><b>' + item.pokemon_name + '</b></center>' +
                 '</div>' +
                 '<center>' +
                 '<div class="marker-nests">' +
