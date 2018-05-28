@@ -771,12 +771,11 @@ function gymLabel(item) {
         str =
             '<div>' +
             '<center>' +
+            nameStr +
             '<div>' +
-            '<b style="color:rgba(' + gymColor[teamId] + ')">' + i8ln(teamName) + '</b><br>' +
             '<img height="70px" style="padding: 5px;" src="static/forts/' + teamName + '_large.png">' +
             raidIcon +
             '</div>' +
-            nameStr +
             raidStr +
             '<div>' +
             park +
@@ -884,15 +883,15 @@ function pokestopLabel(expireTime, latitude, longitude, stopName, lureUser, id, 
                 '</div>'
         }
         if (!noManualQuests && quest !== null) {
-            str += '<div>' +
+            str += '<center><div>' +
                 i8ln('Quest:') + ' ' +
                 i8ln(questList[quest]) +
-                '</div>'
+                '</div></center>'
             if (reward !== null && reward !== 'NULL') {
-                str += '<div>' +
+                str += '<center><div>' +
                     i8ln('Reward:') + ' ' +
                     i8ln(reward) +
-                    '</div>'
+                    '</div></center>'
             }
         }
         if (!noDeletePokestops) {
