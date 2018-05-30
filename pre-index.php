@@ -1028,7 +1028,7 @@ if ( $blockIframe ) {
     <?php if ( ! $noRenamePokestops ) { ?>
         <div class="rename-modal" style="display: none;">
 	   <input type="text" id="pokestop-name" name="pokestop-name"
-		  placeholder="<?php echo i8ln( 'Enter New Pokestop Name' ); ?>" data-type="pokestop"
+		  placeholder="<?php echo i8ln( 'Enter New Pokéstop Name' ); ?>" data-type="pokestop"
                   class="search-input">
              <div class="button-container">
                 <button type="button" onclick="renamePokestopData(event);" class="renamepokestopid"><i
@@ -1114,7 +1114,7 @@ if ( $blockIframe ) {
                             <li><a href="#tab-gym"><img src="static/forts/ingame/Uncontested.png"/></a></li>
                         <?php }
                         if ( ! $noSearchPokestops ) { ?>
-                            <li><a href="#tab-pokestop"><img src="static/forts/Pstop.png"/></a></li>
+                            <li><a href="#tab-pokestop"><img src="static/forts/Pstop-large.png"/></a></li>
                         <?php } ?>
                     </ul>
                     <?php if ( ! $noSearchManualQuests ) { ?>
@@ -1175,7 +1175,7 @@ if ( $blockIframe ) {
                     <?php } ?>
                     <?php if ( ! $noManualPokestops && !$noPokestops) {
                         ?>
-                        <li><a href="#tab-pokestop"><img src="static/forts/Pstop.png"/></a></li>
+                        <li><a href="#tab-pokestop"><img src="static/forts/Pstop-large.png"/></a></li>
                     <?php } ?>
                     <?php if ( ! $noAddNewNests && !$noNests ) {
                         ?>
