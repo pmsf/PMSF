@@ -1,7 +1,7 @@
 <?php
 $timing['start'] = microtime( true );
 include( 'config/config.php' );
-global $map, $fork, $db, $raidBosses, $webhookUrl, $sendWebhook, $noManualRaids, $noRaids, $noManualPokemon, $noPokemon, $noPokestops, $noManualPokestops, $noGyms, $noManualGyms, $noManualQuests, $noManualNests, $noNests, $noAddNewNests, $pokemonTimer;
+global $map, $fork, $db, $raidBosses, $webhookUrl, $sendWebhook, $noManualRaids, $noRaids, $noManualPokemon, $noPokemon, $noPokestops, $noManualPokestops, $noGyms, $noManualGyms, $noManualQuests, $noManualNests, $noNests, $noAddNewNests, $pokemonTimer, $noRenamePokestops;
 $action = ! empty( $_POST['action'] ) ? $_POST['action'] : '';
 $lat    = ! empty( $_POST['lat'] ) ? $_POST['lat'] : '';
 $lng    = ! empty( $_POST['lng'] ) ? $_POST['lng'] : '';
@@ -227,7 +227,24 @@ if ( $action === "raid" ) {
         ];
         $db->update( "nests", $cols, $where );
     }
-} elseif ( $action === "pokestop" ) {
+} elseif ( $action === "renamepokestop" ) {
+    if ( $noRenamePokestops === true || $noPokestops === true ) {
+        http_response_code( 401 );
+        die();
+    }
+    $pokestopName = ! empty( $_POST['pokestop'] ) ? $_POST['pokestop'] : '';
+    $pokestopId   = ! empty( $_POST['pokestopid'] ) ? $_POST['pokestopid'] : '';
+    if ( ! empty( $pokestopName ) && ! empty( $pokestopId ) ) {
+        $cols     = [
+            'name'        => $pokestopName,
+            'updated'     => time()
+        ];
+        $where    = [
+            'external_id' => $pokestopId
+        ];
+	$db->update( "pokestops", $cols, $where );
+    }
+ } elseif ( $action === "pokestop" ) {
     if ( $noManualPokestops === true || $noPokestops === true ) {
         http_response_code( 401 );
         die();

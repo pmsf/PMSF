@@ -175,8 +175,8 @@ $excludeMinIV = '[131, 143, 147, 148, 149, 248]';                   // [] for em
 $minIV = '0';                                                       // "0" for empty or a number
 $minLevel = '0';                                                    // "0" for empty or a number
 
-$noBigKarp = false;                                                 // true/false
-$noTinyRat = false;                                                 // true/false
+$noBigKarp = true;                                                 // true/false
+$noTinyRat = true;                                                 // true/false
 
 $noNests = false;                                                   // true/false
 $enableNests = 'false';                                             // true/false
@@ -200,10 +200,10 @@ $noPokestops = false;                                               // true/fals
 $enablePokestops = 'false';                                         // true/false
 $enableLured = 1;                                                   // O: all, 1: lured only
 
-$noScannedLocations = false;                                        // true/false
+$noScannedLocations = true;                                        // true/false
 $enableScannedLocations = 'false';                                  // true/false
 
-$noSpawnPoints = false;                                             // true/false
+$noSpawnPoints = true;                                             // true/false
 $enableSpawnPoints = 'false';                                       // true/false
 
 $noRanges = false;                                                  // true/false
@@ -227,7 +227,7 @@ $enableSpawnArea = 'false';                                         // true/fals
 
 /* Notification Settings */
 
-$notifyPokemon = '[201]';                                           // [] for empty
+$notifyPokemon = '[]';                                           // [] for empty
 
 $notifyRarity = '[]';                                               // "Common", "Uncommon", "Rare", "Very Rare", "Ultra Rare"
 
@@ -283,12 +283,13 @@ $sendRaidData = false;                                              // Send Raid
 //-----------------------------------------------------
 // Manual Submissions
 //-----------------------------------------------------
-
+$hideIfManual = false;
 $noManualRaids = false;
 $noManualPokemon = false;
 $pokemonTimer = 900;                                                // Time in seconds before a submitted Pokémon despawns.
 $noManualGyms = false;
 $noManualPokestops = false;
+$noRenamePokestops = false;
 $noManualQuests = false;
 
 $pokemonReportTime = true;

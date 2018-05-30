@@ -771,18 +771,17 @@ function gymLabel(item) {
         str =
             '<div>' +
             '<center>' +
+            nameStr +
             '<div>' +
-            '<b style="color:rgba(' + gymColor[teamId] + ')">' + i8ln(teamName) + '</b><br>' +
             '<img height="70px" style="padding: 5px;" src="static/forts/' + teamName + '_large.png">' +
             raidIcon +
             '</div>' +
-            nameStr +
             raidStr +
             '<div>' +
             park +
             '</div>' +
             '<div>' +
-            i8ln('Location') + ': <a href="javascript:void(0);" onclick="javascript:openMapDirections(' + latitude + ',' + longitude + ');" title="' + i8ln('View in Maps') + '">' + latitude.toFixed(6) + ' , ' + longitude.toFixed(7) + '</a>' +
+            i8ln('Location') + ': <a href="javascript:void(0);" onclick="javascript:openMapDirections(' + latitude + ',' + longitude + ');" title="' + i8ln('View in Maps') + '">' + latitude.toFixed(6) + ' , ' + longitude.toFixed(7) + '</a> - <a href="./?lat=' + latitude + '&lon=' + longitude + '&zoom=16">Share link</a>' +
             '</div>' +
             '</center>' +
             '</div>'
@@ -815,7 +814,7 @@ function gymLabel(item) {
             memberStr +
             '</div>' +
             '<div>' +
-            i8ln('Location') + ': <a href="javascript:void(0);" onclick="javascript:openMapDirections(' + latitude + ',' + longitude + ');" title="' + i8ln('View in Maps') + '">' + latitude.toFixed(6) + ' , ' + longitude.toFixed(7) + '</a>' +
+            i8ln('Location') + ': <a href="javascript:void(0);" onclick="javascript:openMapDirections(' + latitude + ',' + longitude + ');" title="' + i8ln('View in Maps') + '">' + latitude.toFixed(6) + ' , ' + longitude.toFixed(7) + '</a> - <a href="./?lat=' + latitude + '&lon=' + longitude + '&zoom=16">Share link</a>' +
             '</div>' +
             '</center>' +
             '</div>'
@@ -850,32 +849,63 @@ function pokestopLabel(expireTime, latitude, longitude, stopName, lureUser, id, 
             '<div>' +
             'Location: <a href="javascript:void(0)" onclick="javascript:openMapDirections(' + latitude + ',' + longitude + ')" title="' + i8ln('View in Maps') + '">' + latitude.toFixed(6) + ', ' + longitude.toFixed(7) + '</a>' +
             '</div>'
+        if (!noRenamePokestops) {
+            str += '<center>Rename Pokéstop <i class="fa fa-edit rename-pokestop" style="margin-right:10px; margin-top: 2px; vertical-align: middle; font-size: 1.5em;" onclick="openRenamePokestopModal(event);" data-id="' + id + '"></i></center>'
+        }
     } else {
         str =
             '<center>' + '<div>' +
             '<b>' + stopName + '</b>' +
             '</div>'
+        if (quest === null) {
+            str =
+                '<div>' +
+                '<center>' +
+                '<div>' +
+                '<b>' + stopName + '</b>' +
+                '</div>' +
+                '<div>' +
+                '<img height="70px" style="padding: 5px;" src="static/forts/Pstop-large.png">' +
+                '</div>' +
+                '</center>' +
+                '</div>'
+        } else {
+            str =
+                '<div>' +
+                '<center>' +
+                '<div>' +
+                '<b>' + stopName + '</b>' +
+                '</div>' +
+                '<div>' +
+                '<img height="70px" style="padding: 5px;" src="static/forts/Pstop-quest-large.png">' +
+                '</div>' +
+                '</center>' +
+                '</div>'
+        }
         if (!noManualQuests && quest !== null) {
-            str += '<div>' +
+            str += '<center><div>' +
                 i8ln('Quest:') + ' ' +
                 i8ln(questList[quest]) +
-                '</div>'
+                '</div></center>'
             if (reward !== null && reward !== 'NULL') {
-                str += '<div>' +
+                str += '<center><div>' +
                     i8ln('Reward:') + ' ' +
                     i8ln(reward) +
-                    '</div>'
+                    '</div></center>'
             }
         }
-        str += '<div>' +
-            i8ln('Location:') + ' ' + '<a href="javascript:void(0)" onclick="javascript:openMapDirections(' + latitude + ',' + longitude + ')" title="' + i8ln('View in Maps') + '">' + latitude.toFixed(6) + ', ' + longitude.toFixed(7) + '</a>' +
-            '</div>'
         if (!noDeletePokestops) {
             str += '<i class="fa fa-trash-o delete-pokestop" onclick="deletePokestop(event);" data-id="' + id + '"></i>'
         }
         if (!noManualQuests) {
-            str += '<center><i class="fa fa-binoculars submit-quest" onclick="openQuestModal(event);" data-id="' + id + '"></i></center>'
+            str += '<center><div>Add Quest<i class="fa fa-binoculars submit-quest" onclick="openQuestModal(event);" data-id="' + id + '"></i></div></center>'
         }
+        if (!noRenamePokestops) {
+            str += '<center><div>Rename Pokestop <i class="fa fa-edit rename-pokestop" style="margin-top: 2px; vertical-align: middle; font-size: 1.5em;" onclick="openRenamePokestopModal(event);" data-id="' + id + '"></i></div></center>'
+        }
+        str += '<div>' +
+            i8ln('Location:') + ' ' + '<a href="javascript:void(0)" onclick="javascript:openMapDirections(' + latitude + ',' + longitude + ')" title="' + i8ln('View in Maps') + '">' + latitude.toFixed(6) + ', ' + longitude.toFixed(7) + '</a> - <a href="./?lat=' + latitude + '&lon=' + longitude + '&zoom=16">Share link</a>' +
+            '</div>'
     }
     return str
 }
@@ -1311,27 +1341,36 @@ function nestLabel(item) {
         $.each(types, function (index, type) {
             typesDisplay += getTypeSpan(type)
         })
-        str += '<b>' + item.pokemon_name + '</b>' +
-            '</div>' +
-            '<div>' +
-            typesDisplay +
-            '</div>'
+        str += '<center><b>' + item.pokemon_name + '</b></center>' +
+                '</div>' +
+                '<center>' +
+                '<div class="marker-nests">' +
+                '<img src="static/images/nest-' + item.english_pokemon_types[0].type.toLowerCase() + '.png"/>' +
+                '<i class="label-nest-pokemon-sprite n' + item.pokemon_id + '"></i>' +
+                '<br>' +
+                '<div>' +
+                typesDisplay +
+                '</div>' +
+                '</center>' +
+                '</div>'
     } else {
-        str += '<b>' + i8ln('No Pokemon - Assign One Below') + '</b>'
+        str += '<div align="center" class="marker-nests">' +
+            '<img src="static/images/nest-empty.png" align"middle" style="width:36px;height: auto;"/>' +
+            '</div>' +
+            '<b>' + i8ln('No Pokemon - Assign One Below') + '</b>'
     }
-    str += '<div>' +
-        'Location: <a href="javascript:void(0)" onclick="javascript:openMapDirections(' + item.lat + ',' + item.lon + ')" title="' + i8ln('View in Maps') + '">' + item.lat.toFixed(6) + ', ' + item.lon.toFixed(7) + '</a>' +
-        '</div>'
     if (item.type === 1) {
-        str += '<div style="margin-bottom:5px;">' + i8ln('As found on thesilphroad.com') + '</div>'
+        str += '<center><div style="margin-bottom:5px; margin-top:5px;">' + i8ln('As found on thesilphroad.com') + '</div></center>'
     }
     if (!noDeleteNests) {
         str += '<i class="fa fa-trash-o delete-nest" onclick="deleteNest(event);" data-id="' + item['nest_id'] + '"></i>'
     }
     if (!noManualNests) {
-        str += '<i class="fa fa-binoculars submit-nest" onclick="openNestModal(event);" data-id="' + item['nest_id'] + '"></i>'
+        str += '<center><div>Add Nest <i class="fa fa-binoculars submit-nest" onclick="openNestModal(event);" data-id="' + item['nest_id'] + '"></i></div></center>'
     }
-
+    str += '<div>' +
+        'Location: <a href="javascript:void(0)" onclick="javascript:openMapDirections(' + item.lat + ',' + item.lon + ')" title="' + i8ln('View in Maps') + '">' + item.lat.toFixed(6) + ', ' + item.lon.toFixed(7) + '</a> - <a href="./?lat=' + item.lat + '&lon=' + item.lon + '&zoom=16">Share link</a>' +
+        '</div>'
     return str
 }
 
@@ -1950,7 +1989,39 @@ function deletePokestop(event) { // eslint-disable-line no-unused-vars
         }
     }
 }
-
+function renamePokestopData(event) { // eslint-disable-line no-unused-vars
+    var form = $(event.target).parent().parent()
+    var pokestopId = form.find('.renamepokestopid').val()
+    var pokestopName = form.find('[name="pokestop-name"]').val()
+    if (pokestopName && pokestopName !== '') {
+        if (confirm(i8ln('I confirm this is an accurate new name for this pokestop'))) {
+            return $.ajax({
+                url: 'submit',
+                type: 'POST',
+                timeout: 300000,
+                dataType: 'json',
+                cache: false,
+                data: {
+                    'action': 'renamepokestop',
+                    'pokestopid': pokestopId,
+                    'pokestop': pokestopName
+                },
+                error: function error() {
+                    // Display error toast
+                    toastr['error'](i8ln('Please check connectivity or reduce marker settings.'), i8ln('Error changing Pokestop name'))
+                    toastr.options = toastrOptions
+                },
+                complete: function complete() {
+                    jQuery('label[for="pokestops-switch"]').click()
+                    jQuery('label[for="pokestops-switch"]').click()
+                    lastpokestops = false
+                    updateMap()
+                    $('.ui-dialog-content').dialog('close')
+                }
+            })
+        }
+    }
+}
 function deleteNest(event) { // eslint-disable-line no-unused-vars
     var button = $(event.target)
     var nestid = button.data('id')
@@ -2170,6 +2241,21 @@ function openQuestModal(event) { // eslint-disable-line no-unused-vars
         maxHeight: 600,
         buttons: {},
         title: i8ln('Submit a Quest'),
+        classes: {
+            'ui-dialog': 'ui-dialog raid-widget-popup'
+        }
+    })
+}
+
+function openRenamePokestopModal(event) { // eslint-disable-line no-unused-vars
+    $('.ui-dialog').remove()
+    var val = $(event.target).data('id')
+    $('.renamepokestopid').val(val)
+    $('.rename-modal').clone().dialog({
+        modal: true,
+        maxHeight: 600,
+        buttons: {},
+        title: i8ln('Rename Pokéstop'),
         classes: {
             'ui-dialog': 'ui-dialog raid-widget-popup'
         }
@@ -3263,7 +3349,7 @@ function showGymDetails(id) { // eslint-disable-line no-unused-vars
             park +
             '</div>' +
             '<div>' +
-            '<a href=\'javascript:void(0)\' onclick=\'javascript:openMapDirections(' + result.latitude + ',' + result.longitude + ')\' title=\'' + i8ln('View in Maps') + '\'>' + i8ln('Get directions') + '</a>' +
+            '<a href=\'javascript:void(0)\' onclick=\'javascript:openMapDirections(' + result.latitude + ',' + result.longitude + ')\' title=\'' + i8ln('View in Maps') + '\'>' + i8ln('Get directions') + '</a> - <a href="./?lat=' + result.latitude + '&lon=' + result.longitude + '&zoom=16">Share link</a>' +
             '</div>' +
             '</center>'
 
