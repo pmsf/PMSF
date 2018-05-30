@@ -65,6 +65,8 @@ $noMotd = true;
 $motdTitle = "Message of the Day";
 $motdContent = "This is an example MOTD<br>Do whatever you like with it.";
 
+/* Favicon */
+$faviconPath = '';                                                  // Upload favicon.ico to custom folder, leave '' for empty ( $faviconPath = 'custom/favicon.ico'; )
 //-----------------------------------------------------
 // Login
 //-----------------------------------------------------
@@ -164,8 +166,8 @@ $excludeMinIV = '[131, 143, 147, 148, 149, 248]';                   // [] for em
 $minIV = '0';                                                       // "0" for empty or a number
 $minLevel = '0';                                                    // "0" for empty or a number
 
-$noBigKarp = false;                                                 // true/false
-$noTinyRat = false;                                                 // true/false
+$noBigKarp = true;                                                 // true/false
+$noTinyRat = true;                                                 // true/false
 
 $noGyms = false;                                                    // true/false
 $enableGyms = 'false';                                              // true/false
@@ -268,8 +270,8 @@ $sendRaidData = false;                                              // Send Raid
 //-----------------------------------------------------
 // Manual Submissions
 //-----------------------------------------------------
+$hideIfManual = false;
 $noManualRaids = false;						    // Enable/Disable ManualRaids permanently ( Comment this line if you want to use the block below )
-
 //$currentTime = (int) date('G');				    // Uncomment this block to deny Raid submissions over night
 //
 //if ($currentTime >= 6 && $currentTime < 23) {                     // noManualRaids = true between 23:00 and 06:00. Adjest hours if needed
@@ -282,6 +284,7 @@ $noManualPokemon = false;
 $pokemonTimer = 900;                                                // Time in seconds before a submitted Pokémon despawns.
 $noManualGyms = false;
 $noManualPokestops = false;
+$noRenamePokestops = false;
 $noManualQuests = false;
 
 $pokemonReportTime = true;

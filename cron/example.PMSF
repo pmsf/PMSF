@@ -1,0 +1,5 @@
+# Adjust this file and move it to your cron.d folder
+# 
+* * * * * /usr/bin/php7.0 /opt/PMSF/cron/raid_cron.php
+0 0 * * * /usr/bin/php7.0 /opt/PMSF/cron/quest_cron.php
+0 * * * * /usr/bin/php7.0 /opt/PMSF/cron/silph.php

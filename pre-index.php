@@ -31,8 +31,15 @@ if ( $blockIframe ) {
     <meta name="theme-color" content="#3b3b3b">
     <!-- Fav- & Apple-Touch-Icons -->
     <!-- Favicon -->
-    <link rel="shortcut icon" href="static/appicons/favicon.ico"
-          type="image/x-icon">
+    <?php
+    if ( $faviconPath != "" ) {
+       echo '<link rel="shortcut icon" href="' . $faviconPath . '"
+             type="image/x-icon">';
+    } else {
+       echo '<link rel="shortcut icon" href="static/appicons/favicon.ico"
+             type="image/x-icon">';
+    }
+    ?>
     <!-- non-retina iPhone pre iOS 7 -->
     <link rel="apple-touch-icon" href="static/appicons/114x114.png"
           sizes="57x57">
@@ -418,19 +425,21 @@ if ( $blockIframe ) {
                         </label>
                     </div>
                 </div>';
-                    } ?>
-                    <div id="gyms-filter-wrapper" style="display:none">
+		    } ?>
+                    <?php
+                    if ( ! $hideIfManual ) {
+                        echo '<div id="gyms-filter-wrapper" style="display:none">
                         <div class="form-control switch-container" id="team-gyms-only-wrapper">
-                            <h3><?php echo i8ln( 'Team' ) ?></h3>
+                            <h3>' . i8ln( 'Team' ) . '</h3>
                             <select name="team-gyms-filter-switch" id="team-gyms-only-switch">
-                                <option value="0"><?php echo i8ln( 'All' ) ?></option>
-                                <option value="1"><?php echo i8ln( 'Mystic' ) ?></option>
-                                <option value="2"><?php echo i8ln( 'Valor' ) ?></option>
-                                <option value="3"><?php echo i8ln( 'Instinct' ) ?></option>
+                                <option value="0">' . i8ln( 'All' ) . '</option>
+                                <option value="1">' . i8ln( 'Mystic' ) . '</option>
+                                <option value="2">' . i8ln( 'Valor' ) . '</option>
+                                <option value="3">' . i8ln( 'Instinct' ) . '</option>
                             </select>
-                        </div>
+			</div>
                         <div class="form-control switch-container" id="open-gyms-only-wrapper">
-                            <h3><?php echo i8ln( 'Open Spot' ) ?></h3>
+                            <h3>' . i8ln( 'Open Spot' ) . '</h3>
                             <div class="onoffswitch">
                                 <input id="open-gyms-only-switch" type="checkbox" name="open-gyms-only-switch"
                                        class="onoffswitch-checkbox" checked>
@@ -441,7 +450,7 @@ if ( $blockIframe ) {
                             </div>
                         </div>
                         <div class="form-control switch-container" id="min-level-gyms-filter-wrapper">
-                            <h3><?php echo i8ln( 'Minimum Free Slots' ) ?></h3>
+                            <h3>' . i8ln( 'Minimum Free Slots' ) . '</h3>
                             <select name="min-level-gyms-filter-switch" id="min-level-gyms-filter-switch">
                                 <option value="0">0</option>
                                 <option value="1">1</option>
@@ -453,7 +462,7 @@ if ( $blockIframe ) {
                             </select>
                         </div>
                         <div class="form-control switch-container" id="max-level-gyms-filter-wrapper">
-                            <h3><?php echo i8ln( 'Maximum Free Slots' ) ?></h3>
+                            <h3>' . i8ln( 'Maximum Free Slots' ) . '</h3>
                             <select name="max-level-gyms-filter-switch" id="max-level-gyms-filter-switch">
                                 <option value="0">0</option>
                                 <option value="1">1</option>
@@ -465,17 +474,19 @@ if ( $blockIframe ) {
                             </select>
                         </div>
                         <div class="form-control switch-container" id="last-update-gyms-wrapper">
-                            <h3><?php echo i8ln( 'Last Scan' ) ?></h3>
+                            <h3>' . i8ln( 'Last Scan' ) . '</h3>
                             <select name="last-update-gyms-switch" id="last-update-gyms-switch">
-                                <option value="0"><?php echo i8ln( 'All' ) ?></option>
-                                <option value="1"><?php echo i8ln( 'Last Hour' ) ?></option>
-                                <option value="6"><?php echo i8ln( 'Last 6 Hours' ) ?></option>
-                                <option value="12"><?php echo i8ln( 'Last 12 Hours' ) ?></option>
-                                <option value="24"><?php echo i8ln( 'Last 24 Hours' ) ?></option>
-                                <option value="168"><?php echo i8ln( 'Last Week' ) ?></option>
+                                <option value="0">' . i8ln( 'All' ) . '</option>
+                                <option value="1">' . i8ln( 'Last Hour' ) . '</option>
+                                <option value="6">' . i8ln( 'Last 6 Hours' ) . '</option>
+                                <option value="12">' . i8ln( 'Last 12 Hours' ) . '</option>
+                                <option value="24">' . i8ln( 'Last 24 Hours' ) . '</option>
+                                <option value="168">' . i8ln( 'Last Week' ) . '</option>
                             </select>
                         </div>
-                    </div>
+		    </div>';
+                    }
+                    ?>
                     <div id="gyms-raid-filter-wrapper" style="display:none">
                         <?php
                         if ( ( $fork === "alternate" || ( $map === "rm" && $fork !== "sloppy" ) ) && ! $noExEligible ) {
@@ -1014,7 +1025,19 @@ if ( $blockIframe ) {
             </div>
         </div>
     <?php } ?>
-
+    <?php if ( ! $noRenamePokestops ) { ?>
+        <div class="rename-modal" style="display: none;">
+	   <input type="text" id="pokestop-name" name="pokestop-name"
+		  placeholder="<?php echo i8ln( 'Enter New Pokéstop Name' ); ?>" data-type="pokestop"
+                  class="search-input">
+             <div class="button-container">
+                <button type="button" onclick="renamePokestopData(event);" class="renamepokestopid"><i
+                        class="fa fa-edit"
+                        style="margin-right:10px; vertical-align: middle; font-size: 1.5em;"></i><?php echo i8ln( 'Rename Pokestop' ); ?>
+                </button>
+            </div>
+        </div>
+    <?php } ?>
     <?php if ( ! $noManualQuests ) { ?>
         <div class="quest-modal" style="display: none;">
             <input type="hidden" value="" name="questPokestop" class="questPokestop"/>
@@ -1091,7 +1114,7 @@ if ( $blockIframe ) {
                             <li><a href="#tab-gym"><img src="static/forts/ingame/Uncontested.png"/></a></li>
                         <?php }
                         if ( ! $noSearchPokestops ) { ?>
-                            <li><a href="#tab-pokestop"><img src="static/forts/Pstop.png"/></a></li>
+                            <li><a href="#tab-pokestop"><img src="static/forts/Pstop-large.png"/></a></li>
                         <?php } ?>
                     </ul>
                     <?php if ( ! $noSearchManualQuests ) { ?>
@@ -1152,7 +1175,7 @@ if ( $blockIframe ) {
                     <?php } ?>
                     <?php if ( ! $noManualPokestops && !$noPokestops) {
                         ?>
-                        <li><a href="#tab-pokestop"><img src="static/forts/Pstop.png"/></a></li>
+                        <li><a href="#tab-pokestop"><img src="static/forts/Pstop-large.png"/></a></li>
                     <?php } ?>
                     <?php if ( ! $noAddNewNests && !$noNests ) {
                         ?>
@@ -1305,6 +1328,7 @@ if ( $blockIframe ) {
     var login = <?php echo $noNativeLogin === false || $noDiscordLogin === false  ? 'true' : 'false' ?>;
     var expireTimestamp = <?php echo isset($_SESSION['user']->expire_timestamp) ? $_SESSION['user']->expire_timestamp : 0 ?>;
     var timestamp = <?php echo time() ?>;
+    var noRenamePokestops = <?php echo $noRenamePokestops === true ? 'true' : 'false' ?>;
 </script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js"></script>
 <script src="static/dist/js/map.common.min.js"></script>
