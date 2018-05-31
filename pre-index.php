@@ -1055,7 +1055,8 @@ if ( $blockIframe ) {
             $json    = file_get_contents( 'static/dist/data/rewards.min.json' );
             $input   = json_decode( $json, true );
             foreach ( $input as $key => $value ) {
-                $rewards[ $key ] = array(
+                $rewards[ $value['cat'] ][] = array(
+                    'id'   => $key,
                     'name' => $value['name']
                 );
             }
@@ -1087,7 +1088,7 @@ if ( $blockIframe ) {
                         <?php
                         foreach ( $value as $t ) {
                             ?>
-                            <option value="<?php echo $value['name']; ?>"><?php echo i8ln( $value['name'] ); ?></option>
+                            <option value="<?php echo $t['id']; ?>"><?php echo i8ln( $t['name'] ); ?></option>
                             <?php
                         }
                         ?>

@@ -1,290 +1,386 @@
 {
   "1": {
+    "cat": "TM",
     "name": "1 Charge TM"
   },
   "2": {
+    "cat": "TM",
     "name": "1 Max Revive"
   },
   "3": {
+    "cat": "TM",
     "name": "1 Pinap Berry"
   },
   "4": {
+    "cat": "TM",
     "name": "1 Rare Candy"
   },
   "5": {
+    "cat": "TM",
     "name": "1 Ultra Ball"
   },
   "6": {
+    "cat": "TM",
     "name": "10 Nanab Berries"
   },
   "7": {
+    "cat": "TM",
     "name": "10 Pokeballs"
   },
   "8": {
+    "cat": "TM",
     "name": "10 Ultra Balls"
   },
   "9": {
+    "cat": "TM",
     "name": "1000 Stardust"
   },
   "10": {
+    "cat": "TM",
     "name": "1000 XP"
   },
   "11": {
+    "cat": "TM",
     "name": "1-2 Pinap Berries"
   },
   "12": {
+    "cat": "TM",
     "name": "1-2 Rare Candy"
   },
   "13": {
+    "cat": "TM",
     "name": "1-3 Max Revives"
   },
   "14": {
+    "cat": "TM",
     "name": "1-3 Pinap Berries"
   },
   "15": {
+    "cat": "TM",
     "name": "1500 Stardust"
   },
   "16": {
+    "cat": "TM",
     "name": "2 Golden Razzberries"
   },
   "17": {
+    "cat": "TM",
     "name": "2 Pinap Berries"
   },
   "18": {
+    "cat": "TM",
     "name": "2 Revives"
   },
   "19": {
+    "cat": "TM",
     "name": "2 Ultra Balls"
   },
   "20": {
+    "cat": "TM",
     "name": "200 Stardust"
   },
   "21": {
+    "cat": "TM",
     "name": "200-500 Stardust"
   },
   "22": {
+    "cat": "TM",
     "name": "2-3 Rare Candies"
   },
   "23": {
+    "cat": "TM",
     "name": "2-4 Revives"
   },
   "24": {
+    "cat": "TM",
     "name": "3 Hyper Potions"
   },
   "25": {
+    "cat": "TM",
     "name": "3 Max Potions"
   },
   "26": {
+    "cat": "TM",
     "name": "3 Nanab Berries"
   },
   "27": {
+    "cat": "TM",
     "name": "3 Pinap Berries"
   },
   "28": {
+    "cat": "TM",
     "name": "3 Rare Candies"
   },
   "29": {
+    "cat": "TM",
     "name": "3 Razz Berries"
   },
   "30": {
+    "cat": "TM",
     "name": "3 Super Potions"
   },
   "31": {
+    "cat": "TM",
     "name": "3-6 Razz Berries"
   },
   "32": {
+    "cat": "TM",
     "name": "4 Revives"
   },
   "33": {
+    "cat": "TM",
     "name": "4-6 Razz Berries"
   },
   "34": {
+    "cat": "TM",
     "name": "5 Great Balls"
   },
   "35": {
+    "cat": "TM",
     "name": "5 Nanab Berries"
   },
   "36": {
+    "cat": "TM",
     "name": "5 Pokeballs"
   },
   "37": {
+    "cat": "TM",
     "name": "5 Potions"
   },
   "38": {
+    "cat": "TM",
     "name": "5 Razz Berries"
   },
   "39": {
+    "cat": "TM",
     "name": "5 Ultra Balls"
   },
   "40": {
+    "cat": "TM",
     "name": "500 Stardust"
   },
   "41": {
+    "cat": "TM",
     "name": "500 XP"
   },
   "42": {
+    "cat": "TM",
     "name": "5-10 Pokeballs"
   },
   "43": {
+    "cat": "TM",
     "name": "5-10 Ultra Balls"
   },
   "44": {
+    "cat": "TM",
     "name": "6 Nanab Berries"
   },
   "45": {
+    "cat": "TM",
     "name": "6 Razz Berries"
   },
   "46": {
+    "cat": "TM",
     "name": "6 Revives"
   },
   "47": {
+    "cat": "TM",
     "name": "9 Razz Berries"
   },
   "48": {
+    "cat": "TM",
     "name": "Aerodactyl"
   },
   "49": {
+    "cat": "TM",
     "name": "Bulbasaur"
   },
   "50": {
+    "cat": "TM",
     "name": "Chansey"
   },
   "51": {
+    "cat": "TM",
     "name": "Charmander"
   },
   "52": {
+    "cat": "TM",
     "name": "Charmeleon"
   },
   "53": {
+    "cat": "TM",
     "name": "Doduo"
   },
   "54": {
+    "cat": "TM",
     "name": "Dratini"
   },
   "55": {
+    "cat": "TM",
     "name": "Eevee"
   },
   "56": {
+    "cat": "TM",
     "name": "Ekans"
   },
   "57": {
+    "cat": "TM",
     "name": "Electabuzz"
   },
   "58": {
+    "cat": "TM",
     "name": "Electrike"
   },
   "59": {
+    "cat": "TM",
     "name": "Electrode"
   },
   "60": {
+    "cat": "TM",
     "name": "Exeggcute"
   },
   "61": {
+    "cat": "TM",
     "name": "Exeggutor"
   },
   "62": {
+    "cat": "TM",
     "name": "Flaafy"
   },
   "63": {
+    "cat": "TM",
     "name": "Flareon"
   },
   "64": {
+    "cat": "TM",
     "name": "Gastly"
   },
   "65": {
+    "cat": "TM",
     "name": "Gligar"
   },
   "66": {
+    "cat": "TM",
     "name": "Grimer"
   },
   "67": {
+    "cat": "TM",
     "name": "Growlithe"
   },
   "68": {
+    "cat": "TM",
     "name": "Houndour"
   },
   "69": {
+    "cat": "TM",
     "name": "Jolteon"
   },
   "70": {
+    "cat": "TM",
     "name": "Jynx"
   },
   "71": {
+    "cat": "TM",
     "name": "Larvitar"
   },
   "72": {
+    "cat": "TM",
     "name": "Machop"
   },
   "73": {
+    "cat": "TM",
     "name": "Magcargo"
   },
   "74": {
+    "cat": "TM",
     "name": "Magikarp"
   },
   "75": {
+    "cat": "TM",
     "name": "Magmar"
   },
   "76": {
+    "cat": "TM",
     "name": "Magneton"
   },
   "77": {
+    "cat": "TM",
     "name": "Mankey"
   },
   "78": {
+    "cat": "TM",
     "name": "Minum"
   },
   "79": {
+    "cat": "TM",
     "name": "Ninetales"
   },
   "80": {
+    "cat": "TM",
     "name": "Numel"
   },
   "81": {
+    "cat": "TM",
     "name": "Onix"
   },
   "82": {
+    "cat": "TM",
     "name": "Pikachu"
   },
   "83": {
+    "cat": "TM",
     "name": "Pinsir"
   },
   "84": {
+    "cat": "TM",
     "name": "Plusle"
   },
   "85": {
+    "cat": "TM",
     "name": "Poliwag"
   },
   "86": {
+    "cat": "TM",
     "name": "Ponyta"
   },
   "87": {
+    "cat": "TM",
     "name": "Quilava"
   },
   "88": {
+    "cat": "TM",
     "name": "Squirtle"
   },
   "89": {
+    "cat": "TM",
     "name": "Swablu"
   },
   "90": {
+    "cat": "TM",
     "name": "Tangela"
   },
   "91": {
+    "cat": "TM",
     "name": "Torchic"
   },
   "92": {
+    "cat": "TM",
     "name": "Typhlosion"
   },
   "93": {
+    "cat": "TM",
     "name": "Voltorb"
   },
   "94": {
+    "cat": "TM",
     "name": "Vulpix"
   },
   "95": {
+    "cat": "TM",
     "name": "Omanyte"
   },
   "96": {
+    "cat": "TM",
     "name": "Kabuto"
   }
 }
