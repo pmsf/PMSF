@@ -32,8 +32,9 @@ $blockIframe = true;                                                // Block you
 
 /* Map Title + Language */
 
-$title = "Raidmap";                                           // Title to display in title bar
+$title = "Raidmap";                                                 // Title to display in title bar
 $locale = "en";                                                     // Display language
+$raidmapLogo = '';                                                  // Upload logo to custom folder, leave '' for empty ( $raidmapLogo = 'custom/logo.png'; )
 
 /* Google Maps Key */
 
