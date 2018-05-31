@@ -1083,7 +1083,15 @@ if ( $blockIframe ) {
                 <?php
                 foreach ( $rewards as $key => $value ) {
                     ?>
-                    <option value="<?php echo $value['name']; ?>"><?php echo i8ln( $value['name'] ); ?></option>
+                    <optgroup label="<?php echo $key; ?>">
+                        <?php
+                        foreach ( $value as $t ) {
+                            ?>
+                            <option value="<?php echo $value['name']; ?>"><?php echo i8ln( $value['name'] ); ?></option>
+                            <?php
+                        }
+                        ?>
+                    </optgroup>
                     <?php
                 }
                 ?>

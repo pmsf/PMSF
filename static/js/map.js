@@ -98,6 +98,7 @@ var cries
 var pokeList = []
 var raidBoss = {} // eslint-disable-line no-unused-vars
 var questList = []
+var rewardList = []
 var gymId
 
 var assetsPath = 'static/sounds/'
@@ -887,10 +888,10 @@ function pokestopLabel(expireTime, latitude, longitude, stopName, lureUser, id, 
                 i8ln('Quest:') + ' ' +
                 i8ln(questList[quest]) +
                 '</div></center>'
-            if (reward !== null && reward !== 'NULL') {
+            if (reward !== null) {
                 str += '<center><div>' +
                     i8ln('Reward:') + ' ' +
-                    i8ln(reward) +
+                    i8ln(rewardList[reward]) +
                     '</div></center>'
             }
         }
@@ -2124,7 +2125,7 @@ function manualNestData(event) { // eslint-disable-line no-unused-vars
 function manualQuestData(event) { // eslint-disable-line no-unused-vars
     var cont = $(event.target).parent().parent()
     var questId = cont.find('.questList').val()
-    var reward = cont.find('.rewardList').val()
+    var rewardId = cont.find('.rewardList').val()
     var pokestopId = cont.find('.questPokestop').val()
     if (pokestopId && pokestopId !== '') {
         if (confirm(i8ln('I confirm this is an accurate sighting of a quest'))) {
@@ -2137,7 +2138,7 @@ function manualQuestData(event) { // eslint-disable-line no-unused-vars
                 data: {
                     'action': 'quest',
                     'questId': questId,
-                    'reward': reward,
+                    'rewardId': rewardId,
                     'pokestopId': pokestopId
                 },
                 error: function error() {
@@ -3923,6 +3924,12 @@ $(function () {
     $.getJSON('static/dist/data/quests.min.json').done(function (data) {
         $.each(data, function (key, value) {
             questList[key] = value['name']
+        })
+    })
+
+    $.getJSON('static/dist/data/rewards.min.json').done(function (data) {
+        $.each(data, function (key, value) {
+            rewardList[key] = value['name']
         })
     })
 
