@@ -1,4 +1,5 @@
 {
+  "Lobby": "Lobby",
   "Raid-Lobby": "Raid-Lobby",
   "Start Time": "Startzeit",
   "Group Size": "Gruppengröße",
@@ -6,6 +7,9 @@
   "Change Start Time": "Startzeit Ändern",
   "Change Group Size": "Gruppengröße Ändern",
   "Leave Lobby": "Leave Verlassen",
+  "Sign up for raid": "Für Raid Anmelden",
+  "Player": "Spieler",
+  "Players": "Spieler",
   "You need a token in order to sign up for this raid!": "Du brauchst ein Token, um dich für diesen Raid anzumelden!",
   "Get your token by typing !gettoken in our Discord!": "Hol dir dein Token, indem du 1gettoken in unserer Discord schreibst!",
   "Save Token": "Token Speichern",

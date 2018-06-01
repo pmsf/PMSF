@@ -651,7 +651,7 @@ function gymLabel(item) {
         raidStr += '<div>' + i8ln('End') + ': <b>' + raidEndStr + '</b> <span class="label-countdown" disappears-at="' + item['raid_end'] + '" end>(00m00s)</span></div>'
 	    if (typeof item.lobby_count !== 'undefined' && item.lobby_count > 0) {
             var playersText
-            if (item.lobby_count === 1) {
+            if (item.lobby_count == 1) {
                 playersText = i8ln('Player')
             } else {
 	            playersText = i8ln('Players')
