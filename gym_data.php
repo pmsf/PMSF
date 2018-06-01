@@ -32,10 +32,10 @@ if (!validateToken($_POST['token'])) {
 
 // init novadb
 global $novabotDb;
-if ($novabotDb !== false){
-	$novabotScanner = new \NovaBot\NovaBot();
+if ($novabotDb !== false) {
+    $novabotScanner = new \NovaBot\NovaBot();
 } else {
-	$novabotScanner = false;
+    $novabotScanner = false;
 }
 
 $id = $_POST['id'];
@@ -45,9 +45,9 @@ $novabotScanner->addLobbies($gyms);
 $p = $gyms[0];
 
 if (!is_null($p['lobby_id'])) {
-	$p['lobby'] = $novabotScanner->getLobbyInfo($p['lobby_id']);
+    $p['lobby'] = $novabotScanner->getLobbyInfo($p['lobby_id']);
 } else {
-	$p['lobby'] = null;
+    $p['lobby'] = null;
 }
 $p['token'] = refreshCsrfToken();
 

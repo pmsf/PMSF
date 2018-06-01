@@ -270,15 +270,15 @@ $db = new Medoo([                                                   // required
 
 /*
 $novabotDb = new Medoo([                                               // enables novabot raid-management integration
-	'database_type' => 'mysql',                                     // mysql/mariadb/pgsql/sybase/oracle/mssql/sqlite
-	'database_name' => 'Novabot',
-	'server' => '127.0.0.1',
-	'username' => 'database_user',
-	'password' => 'database_password',
-	'charset' => 'utf8',
+    'database_type' => 'mysql',                                     // mysql/mariadb/pgsql/sybase/oracle/mssql/sqlite
+    'database_name' => 'Novabot',
+    'server' => '127.0.0.1',
+    'username' => 'database_user',
+    'password' => 'database_password',
+    'charset' => 'utf8',
 
-	// [optional]
-	//'port' => 5432,                                               // Comment out if not needed, just add // in front!
-	//'socket' => /path/to/socket/,
+    // [optional]
+    //'port' => 5432,                                               // Comment out if not needed, just add // in front!
+    //'socket' => /path/to/socket/,
 ]);
 */
