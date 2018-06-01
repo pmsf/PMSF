@@ -17,6 +17,7 @@ $libs[] = "Monocle_Asner.php";
 $libs[] = "Monocle_Alternate.php";
 $libs[] = "RocketMap.php";
 $libs[] = "RocketMap_Sloppy.php";
+$libs[] = "NovaBot.php";
 
 // Include libraries
 foreach ($libs as $file) {
@@ -70,6 +71,10 @@ $discordUrl = "";                                                   // Discord U
 /* Worldopole */
 
 $worldopoleUrl = "";                                                // Link to Worldopole, leave "" for empty
+
+/* NovaBot */
+
+$novabotApiUrl = "";                                                // Link to Novabot API, leave "" for empty
 
 /* MOTD */
 $noMotd = true;
@@ -260,3 +265,5 @@ $enableDebug = false;
 //-----------------------------------------------------
 
 $fork = "default";                                                  // default/asner/sloppy
+
+$novabotDb = false;

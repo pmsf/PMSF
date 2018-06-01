@@ -30,11 +30,25 @@ if (!validateToken($_POST['token'])) {
     die();
 }
 
+// init novadb
+global $novabotDb;
+if ($novabotDb !== false){
+	$novabotScanner = new \NovaBot\NovaBot();
+} else {
+	$novabotScanner = false;
+}
 
 $id = $_POST['id'];
 
-$p = $scanner->get_gym($id);
+$gyms = array($scanner->get_gym($id));
+$novabotScanner->addLobbies($gyms);
+$p = $gyms[0];
 
+if (!is_null($p['lobby_id'])) {
+	$p['lobby'] = $novabotScanner->getLobbyInfo($p['lobby_id']);
+} else {
+	$p['lobby'] = null;
+}
 $p['token'] = refreshCsrfToken();
 
 echo json_encode($p);

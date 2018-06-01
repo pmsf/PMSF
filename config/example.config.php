@@ -60,6 +60,10 @@ $discordUrl = "https://discord.gg/INVITE_LINK";                     // Discord U
 
 $worldopoleUrl = "";                                                // Link to Worldopole, leave "" for empty
 
+/* NovaBot */
+
+$novabotApiUrl = "";                                                // Link to Novabot API, leave "" for empty
+
 /* MOTD */
 $noMotd = true;
 $motdTitle = "Message of the Day";
@@ -251,7 +255,7 @@ $enableDebug = false;
 $map = "monocle";                                                   // monocle/rm
 $fork = "default";                                                  // default/asner/sloppy/alternate
 
-$db = new Medoo([// required
+$db = new Medoo([                                                   // required
     'database_type' => 'mysql',                                     // mysql/mariadb/pgsql/sybase/oracle/mssql/sqlite
     'database_name' => 'Monocle',
     'server' => '127.0.0.1',
@@ -263,3 +267,18 @@ $db = new Medoo([// required
     //'port' => 5432,                                               // Comment out if not needed, just add // in front!
     //'socket' => /path/to/socket/,
 ]);
+
+/*
+$novabotDb = new Medoo([                                               // enables novabot raid-management integration
+	'database_type' => 'mysql',                                     // mysql/mariadb/pgsql/sybase/oracle/mssql/sqlite
+	'database_name' => 'Novabot',
+	'server' => '127.0.0.1',
+	'username' => 'database_user',
+	'password' => 'database_password',
+	'charset' => 'utf8',
+
+	// [optional]
+	//'port' => 5432,                                               // Comment out if not needed, just add // in front!
+	//'socket' => /path/to/socket/,
+]);
+*/
