@@ -149,7 +149,7 @@ CREATE TABLE IF NOT EXISTS `pokestops` (
   `url` varchar(200) DEFAULT NULL,
   `updated` int(11) DEFAULT NULL,
   `quest_id` tinyint(4) DEFAULT NULL,
-  `reward` varchar(40) DEFAULT NULL,
+  `reward_id` tinyint(4) DEFAULT NULL,
   `deployer` varchar(40) DEFAULT NULL,
   `lure_start` varchar(40) DEFAULT NULL,
   `expires` int(11) DEFAULT NULL,
