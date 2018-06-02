@@ -1781,10 +1781,10 @@ function searchForItem(lat, lon, term, type, field) {
                         html += '<span style="background:url(' + element.url + ') no-repeat;" class="i-icon" ></span>'
                     }
                     if (sr.hasClass('reward-results')) {
-                        html += '<div span class="reward" style="font-weight:bold">' + element.reward + '</span></div>'
+                        html += '<div class="cont"><span class="reward" style="font-weight:bold">' + element.reward + '</span>'
                     }
                     html += '<span>&nbsp;-&nbsp;</span><span class="name">' + element.name + '</span>' + '<span class="distance">&nbsp;-&nbsp;' + element.distance + defaultUnit + '</span>'
-                    html += '</div>'
+                    html += '</div></div>'
                     if (sr.hasClass('gym-results') && manualRaids) {
                         html += '<div class="right-column"><i class="fa fa-binoculars submit-raid"  onClick="openRaidModal(event);" data-id="' + element.external_id + '"></i></div>'
                     }
