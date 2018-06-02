@@ -1778,9 +1778,9 @@ function searchForItem(lat, lon, term, type, field) {
                     } else if (element.url !== '') {
                         html += '<span style="background:url(' + element.url + ') no-repeat;" class="i-icon" ></span>'
                     }
-                    html += '<div class="cont"><span class="name" >' + element.name + '</span>' + '<span class="distance">&nbsp;-&nbsp;' + element.distance + defaultUnit + '</span>'
+                    html += '<div class="cont"><span class="name" >' + element.reward + '</span>' + '<span class="distance">&nbsp;-&nbsp;' + element.distance + defaultUnit + '</span>'
                     if (sr.hasClass('reward-results')) {
-                        html += '<span>&nbsp;-&nbsp;</span> <span class="reward" style="font-weight:bold">' + element.reward + '</span>'
+                        html += '<span>&nbsp;-&nbsp;</span> <span class="reward" style="font-weight:bold">' + element.name + '</span>'
                     }
                     html += '</div></div>'
                     if (sr.hasClass('gym-results') && manualRaids) {

@@ -46,7 +46,7 @@ if ( $dbname !== '' ) {
         }
 	$data = $db->query($query,[ ':lat' => $lat, ':lon' => $lon])->fetchAll();
 	foreach($data as $k => $r){
-            $data[$k]['name'] = $rewards[$r['reward_id']]['name'];
+            $data[$k]['reward'] = $rewards[$r['reward_id']]['name'];
             if($defaultUnit === "km"){
                 $data[$k]['distance'] = round($data[$k]['distance'] * 1.60934,2);
             }
