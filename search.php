@@ -27,7 +27,7 @@ if ( $dbname !== '' ) {
         $rewards = json_decode( $json, true );
         $resids = [];
         foreach($rewards as $k => $reward){
-            if( $k > 98){
+            if( $k > 104){
                 break;
             }
             if(strpos($reward['name'], $term) !== false){
