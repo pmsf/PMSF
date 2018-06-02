@@ -32,11 +32,7 @@ if ( $dbname !== '' ) {
             }
             if(strpos($reward['name'], $term) !== false){
                 $resids[] = $k;
-            } else {
-		if(strpos($reward['cat'], $term) !== false){
-                    $resids[] = $k;
-                    break;
-                }
+                break;
             }
         }
         if ( $db->info()['driver'] === 'pgsql' ) {
