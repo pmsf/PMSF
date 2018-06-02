@@ -1780,9 +1780,9 @@ function searchForItem(lat, lon, term, type, field) {
                     } else if (sr.hasClass('gym-results') || ('pokestop-results')) {
                         html += '<span style="background:url(' + element.url + ') no-repeat;" class="i-icon" ></span>'
                     }
-                    html += '<div class="cont"><span class="reward" style="font-weight:bold">' + element.reward + '</span>' + '<span class="distance">&nbsp;-&nbsp;' + element.distance + defaultUnit + '</span>'
+                    html += '<div class="cont"><span class="name" >' + element.name + '</span>' + '<span class="distance">&nbsp;-&nbsp;' + element.distance + defaultUnit + '</span>'
                     if (sr.hasClass('reward-results')) {
-                        html += '<span>&nbsp;-&nbsp;</span> <span class="name">' + element.name + '</span>'
+                        html += '<span>&nbsp;-&nbsp;</span> <span class="reward" style="font-weight:bold">' + element.reward + '</span>'
                     }
                     html += '</div></div>'
                     if (sr.hasClass('gym-results') && manualRaids) {
