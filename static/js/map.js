@@ -1775,12 +1775,14 @@ function searchForItem(lat, lon, term, type, field) {
                     var html = '<li class="search-result ' + type + '" data-lat="' + element.lat + '" data-lon="' + element.lon + '"><div class="left-column" onClick="centerMapOnCoords(event);">'
                     if (sr.hasClass('nest-results')) {
                         html += '<span class="i-icon"><span class="pokemon-icon n' + element.pokemon_id + '" ></span></span>'
-                    } else if (element.url !== '') {
+                    } else if (sr.hasClass('reward-results')) {
+                        html += '<span style="background:url(static/rewards/reward_' + element.reward_id + '.png) no-repeat;" class="i-icon" ></span>'
+                    } else if (sr.hasClass('gym-results') || ('pokestop-results')) {
                         html += '<span style="background:url(' + element.url + ') no-repeat;" class="i-icon" ></span>'
                     }
-                    html += '<div class="cont"><span class="name" >' + element.reward + '</span>' + '<span class="distance">&nbsp;-&nbsp;' + element.distance + defaultUnit + '</span>'
+                    html += '<div class="cont"><span class="reward" style="font-weight:bold">' + element.reward + '</span>' + '<span class="distance">&nbsp;-&nbsp;' + element.distance + defaultUnit + '</span>'
                     if (sr.hasClass('reward-results')) {
-                        html += '<span>&nbsp;-&nbsp;</span> <span class="reward" style="font-weight:bold">' + element.name + '</span>'
+                        html += '<span>&nbsp;-&nbsp;</span> <span class="name">' + element.name + '</span>'
                     }
                     html += '</div></div>'
                     if (sr.hasClass('gym-results') && manualRaids) {
