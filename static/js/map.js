@@ -1782,9 +1782,9 @@ function searchForItem(lat, lon, term, type, field) {
                     }
                     html += '<div class="cont">'
                     if (sr.hasClass('reward-results')) {
-                        html += '<span class="reward" style="font-weight:bold">' + element.reward + '</span><span>&nbsp;-&nbsp;</span>'
+                        html += '<span class="reward" style="font-weight:bold">' + element.reward + '</span><span>&nbsp;-&#32;</span>'
                     }
-                    html += '<span class="name" style="font-weight:bold">' + element.name + '</span>' + '<span class="distance" style="font-weight:bold">&nbsp;-&nbsp;' + element.distance + defaultUnit + '</span>'
+                    html += '<span class="name" style="font-weight:bold">' + element.name + '</span>' + '<span class="distance" style="font-weight:bold">&nbsp;-&#32;' + element.distance + defaultUnit + '</span>'
                     html += '</div></div>'
                     if (sr.hasClass('gym-results') && manualRaids) {
                         html += '<div class="right-column"><i class="fa fa-binoculars submit-raid"  onClick="openRaidModal(event);" data-id="' + element.external_id + '"></i></div>'
