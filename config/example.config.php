@@ -261,6 +261,8 @@ $onlyTriggerGyms = false;                                           // Only show
 $noExGyms = false;                                                  // Do not display EX-Gyms on the map
 $noParkInfo = false;                                                // Do not display Park info on the map
 
+/* Share links */
+$noWhatsappLink = true;
 //-----------------------------------------------
 // Raid API
 //-----------------------------------------------------

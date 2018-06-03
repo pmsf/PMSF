@@ -786,6 +786,13 @@ function gymLabel(item) {
             '</div>' +
             '</center>' +
             '</div>'
+        if ((!noWhatsappLink) && (raidSpawned && item.raid_end > Date.now())) {
+            str += '<center>' +
+                '<div>' +
+                '<a href="whatsapp://send?text=https://pokemongo.gamepress.gg/pokemon/' + item.raid_pokemon_id + '%0A' + item.name + '%0ALevel%20' + item.raid_level + '%20' + item.raid_pokemon_name + '%0ARaid CP%20' + item.raid_pokemon_cp + '%0Ahttps://www.google.com/maps/search/?api=1%26query=' + item.latitude + ',' + item.longitude + '" data-action="share/whatsapp/share">Whatsapp Link</a>' +
+                '</div>' +
+                '</center>'
+        }
     } else {
         var freeSlots = item['slots_available']
         var gymCp = ''
@@ -908,6 +915,13 @@ function pokestopLabel(expireTime, latitude, longitude, stopName, lureUser, id, 
         str += '<div>' +
             i8ln('Location:') + ' ' + '<a href="javascript:void(0)" onclick="javascript:openMapDirections(' + latitude + ',' + longitude + ')" title="' + i8ln('View in Maps') + '">' + latitude.toFixed(6) + ', ' + longitude.toFixed(7) + '</a> - <a href="./?lat=' + latitude + '&lon=' + longitude + '&zoom=16">Share link</a>' +
             '</div>'
+        if ((!noWhatsappLink) && (quest && reward !== null)) {
+            str += '<div>' +
+                '<center>' +
+                '<a href="whatsapp://send?text=' + stopName + '%0AQuest:%20' + i8ln(questList[quest]) + '%0AReward:%20' + i8ln(rewardList[reward]) + '%0Ahttps://www.google.com/maps/search/?api=1%26query=' + latitude + ',' + longitude + '" data-action="share/whatsapp/share">Whatsapp Link</a>' +
+                '</center>' +
+                '</div>'
+        }
     }
     return str
 }
