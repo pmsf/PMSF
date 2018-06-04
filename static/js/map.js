@@ -789,7 +789,13 @@ function gymLabel(item) {
         if (((!noWhatsappLink) && (raidSpawned && item.raid_end > Date.now())) && (item.raid_pokemon_id > 1 && item.raid_pokemon_id < 386)) {
             str += '<center>' +
                 '<div>' +
-                '<a href="whatsapp://send?text=' + item.name + '%0ALevel%20' + item.raid_level + '%20' + item.raid_pokemon_name + '%0ARaid CP%20' + item.raid_pokemon_cp + '%0AStart:%20' + raidStartStr + '%0AEnd:%20' + raidEndStr + '%0AStats:%20https://pokemongo.gamepress.gg/pokemon/' + item.raid_pokemon_id + '%0ADirections:%20https://www.google.com/maps/search/?api=1%26query=' + item.latitude + ',' + item.longitude + '" data-action="share/whatsapp/share">Whatsapp Link</a>' +
+                '<a href="whatsapp://send?text=' + item.name + '%0ALevel%20' + item.raid_level + '%20' + item.raid_pokemon_name + '%0ARaid CP%20' + item.raid_pokemon_cp + '%0A%2AStart:%20' + raidStartStr + '%2A%0A%2AEnd:%20' + raidEndStr + '%2A%0AStats:%0Ahttps://pokemongo.gamepress.gg/pokemon/' + item.raid_pokemon_id + '%0ADirections:%0Ahttps://www.google.com/maps/search/?api=1%26query=' + item.latitude + ',' + item.longitude + '" data-action="share/whatsapp/share">Whatsapp Link</a>' +
+                '</div>' +
+                '</center>'
+        } else if ((!noWhatsappLink) && (raidSpawned && item.raid_end > Date.now())) {
+            str += '<center>' +
+                '<div>' +
+                '<a href="whatsapp://send?text=' + item.name + '%0ALevel%20' + item.raid_level + '%20egg%0A%2AStart:%20' + raidStartStr + '%2A%0A%2AEnd:%20' + raidEndStr + '%2A%0ADirections:%0Ahttps://www.google.com/maps/search/?api=1%26query=' + item.latitude + ',' + item.longitude + '" data-action="share/whatsapp/share">Whatsapp Link</a>' +
                 '</div>' +
                 '</center>'
         }
@@ -918,7 +924,7 @@ function pokestopLabel(expireTime, latitude, longitude, stopName, lureUser, id, 
         if ((!noWhatsappLink) && (quest && reward !== null)) {
             str += '<div>' +
                 '<center>' +
-                '<a href="whatsapp://send?text=' + stopName + '%0AQuest:%20' + i8ln(questList[quest]) + '%0AReward:%20' + i8ln(rewardList[reward]) + '%0Ahttps://www.google.com/maps/search/?api=1%26query=' + latitude + ',' + longitude + '" data-action="share/whatsapp/share">Whatsapp Link</a>' +
+                '<a href="whatsapp://send?text=' + stopName + '%0A%2AQuest:%20' + i8ln(questList[quest]) + '%2A%0A%2AReward:%20' + i8ln(rewardList[reward]) + '%2A%0Ahttps://www.google.com/maps/search/?api=1%26query=' + latitude + ',' + longitude + '" data-action="share/whatsapp/share">Whatsapp Link</a>' +
                 '</center>' +
                 '</div>'
         }
@@ -1387,6 +1393,13 @@ function nestLabel(item) {
     str += '<div>' +
         'Location: <a href="javascript:void(0)" onclick="javascript:openMapDirections(' + item.lat + ',' + item.lon + ')" title="' + i8ln('View in Maps') + '">' + item.lat.toFixed(6) + ', ' + item.lon.toFixed(7) + '</a> - <a href="./?lat=' + item.lat + '&lon=' + item.lon + '&zoom=16">Share link</a>' +
         '</div>'
+    if ((!noWhatsappLink) && (item.pokemon_id > 0)) {
+        str += '<div>' +
+            '<center>' +
+            '<a href="whatsapp://send?text=%2A' + item.pokemon_name + '%2A%20nest has been found.%0A%0ALocation:%20https://www.google.com/maps/search/?api=1%26query=' + item.lat + ',' + item.lon + '" data-action="share/whatsapp/share">Whatsapp Link</a>' +
+            '</center>' +
+            '</div>'
+    }
     return str
 }
 
