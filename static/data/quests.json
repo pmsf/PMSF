@@ -63,343 +63,343 @@
     "cat": "Gym/Raid",
     "name": "Use a supereffective Charged Attack in 7 Gym battles."
   },
-  "17": {
+  "117": {
     "cat": "Catch",
     "name": "Use 5 Berries to help catch Pokémon."
   },
-  "18": {
+  "118": {
     "cat": "Catch",
     "name": "Catch 10 Pokémon."
   },
-  "19": {
+  "119": {
     "cat": "Catch",
     "name": "Catch a Pokémon."
   },
-  "20": {
+  "120": {
     "cat": "Catch",
     "name": "Catch a Ditto."
   },
-  "21": {
+  "121": {
     "cat": "Catch",
     "name": "Catch {0} Ditto."
   },
-  "22": {
+  "122": {
     "cat": "Catch",
     "name": "Catch an Oddish/Bellsprout"
   },
-  "23": {
+  "123": {
     "cat": "Catch",
     "name": "Catch a Swablu"
   },
-  "24": {
+  "124": {
     "cat": "Catch",
     "name": "Catch a Pidgey/ Murkrow"
   },
-  "25": {
+  "125": {
     "cat": "Catch",
     "name": "Catch a Treeko/Mudkip"
   },
-  "26": {
+  "126": {
     "cat": "Catch",
     "name": "Catch a Meowth/Skitty"
   },
-  "27": {
+  "127": {
     "cat": "Catch",
     "name": "Catch 3 Oddish/Bellsprout"
   },
-  "28": {
+  "128": {
     "cat": "Catch",
     "name": "Catch 3 Swablu"
   },
-  "29": {
+  "129": {
     "cat": "Catch",
     "name": "Catch 3 Pidgey/ Murkrow"
   },
-  "30": {
+  "130": {
     "cat": "Catch",
     "name": "Catch 3 Treeko/Mudkip"
   },
-  "31": {
+  "131": {
     "cat": "Catch",
     "name": "Catch 3 Meowth/Skitty"
   },
-  "32": {
+  "132": {
     "cat": "Catch",
     "name": "Catch 3/10 X-type Pokémon."
   },
-  "33": {
+  "133": {
     "cat": "Catch",
     "name": "[Poison-type]"
   },
-  "34": {
+  "134": {
     "cat": "Catch",
     "name": "[Bug-type]"
   },
-  "35": {
+  "135": {
     "cat": "Catch",
     "name": "[Dark-type]"
   },
-  "36": {
+  "136": {
     "cat": "Catch",
     "name": "[Electric-type]"
   },
-  "37": {
+  "137": {
     "cat": "Catch",
     "name": "[Flying-type]"
   },
-  "38": {
+  "138": {
     "cat": "Catch",
     "name": "[Fire-type]"
   },
-  "39": {
+  "139": {
     "cat": "Catch",
     "name": "Catch 5 Fire-type Pokemon"
   },
-  "40": {
+  "140": {
     "cat": "Catch",
     "name": "Catch a Dragon-type Pokemon"
   },
-  "41": {
+  "141": {
     "cat": "Catch",
     "name": "Catch 3 Dragon-type Pokemon"
   },
-  "42": {
+  "142": {
     "cat": "Catch",
     "name": "Catch {0} Electric Pokémon with Nice Throws."
   },
-  "43": {
+  "143": {
     "cat": "Catch",
     "name": "Catch {0} Water-, Electric-, or Bug-Type Pokémon."
   },
-  "44": {
+  "144": {
     "cat": "Catch",
     "name": "Catch a Water-, Electric-, or Bug-Type Pokémon."
   },
-  "45": {
+  "145": {
     "cat": "Catch",
     "name": "Catch {0} Ice- or Steel-Type Pokémon."
   },
-  "46": {
+  "146": {
     "cat": "Catch",
     "name": "Catch an Ice- or Steel-Type Pokémon."
   },
-  "47": {
+  "147": {
     "cat": "Catch",
     "name": "Catch {0} Flying-, Psychic- or Dragon-Type Pokémon."
   },
-  "48": {
+  "148": {
     "cat": "Catch",
     "name": "Catch a Flying-, Psychic- or Dragon-Type Pokémon."
   },
-  "49": {
+  "149": {
     "cat": "Catch",
     "name": "Catch 3 Grass-, Fire-, or Ground-type Pokémon."
   },
-  "50": {
+  "150": {
     "cat": "Catch",
     "name": "Catch a Grass-, Fire-, or Ground-type Pokémon."
   },
-  "51": {
+  "151": {
     "cat": "Catch",
     "name": "Catch a Pokémon with Weather Boost."
   },
-  "52": {
+  "152": {
     "cat": "Catch",
     "name": "Catch 5 Pokémon with Weather Boost."
   },
-  "53": {
+  "153": {
     "cat": "Catch",
     "name": "Catch 10 Pokémon with Weather Boost."
   },
-  "54": {
+  "154": {
     "cat": "Catch",
     "name": "Catch 20 Pokémon with Weather Boost."
   },
-  "55": {
+  "255": {
     "cat": "Evolve",
     "name": "Evolve a Pokémon."
   },
-  "56": {
+  "256": {
     "cat": "Evolve",
     "name": "Evolve {0} Pokémon."
   },
-  "57": {
+  "257": {
     "cat": "Evolve",
     "name": "Evolve {0} Electric-type Pokémon."
   },
-  "58": {
+  "258": {
     "cat": "Evolve",
     "name": "Evolve an Electric-Type Pokémon."
   },
-  "59": {
+  "259": {
     "cat": "Evolve",
     "name": "Evolve 5 Fire-type Pokémon."
   },
-  "60": {
+  "260": {
     "cat": "Evolve",
     "name": "Evolve a Fire-type Pokémon."
   },
-  "61": {
+  "261": {
     "cat": "Evolve",
     "name": "Evolve {0} Flying-Type Pokémon."
   },
-  "62": {
+  "262": {
     "cat": "Evolve",
     "name": "Evolve a Flying-Type Pokémon."
   },
-  "63": {
+  "263": {
     "cat": "Evolve",
     "name": "Evolve {0} Ice-Type Pokémon."
   },
-  "64": {
+  "264": {
     "cat": "Evolve",
     "name": "Evolve an Ice-Type Pokémon."
   },
-  "65": {
+  "265": {
     "cat": "Evolve",
     "name": "Evolve {0} Water-Type Pokémon."
   },
-  "66": {
+  "266": {
     "cat": "Evolve",
     "name": "Evolve a Water-Type Pokémon."
   },
-  "67": {
+  "267": {
     "cat": "Evolve",
     "name": "Evolve a Magikarp."
   },
-  "68": {
+  "368": {
     "cat": "Throw",
     "name": "Make a Nice Throw."
   },
-  "69": {
+  "369": {
     "cat": "Throw",
     "name": "Make 3 Nice Throws."
   },
-  "70": {
+  "370": {
     "cat": "Throw",
     "name": "Make 5 Nice Throws."
   },
-  "71": {
+  "371": {
     "cat": "Throw",
     "name": "Make 2 Nice Throws in a row."
   },
-  "72": {
+  "372": {
     "cat": "Throw",
     "name": "Make 3 Nice Throws in a row."
   },
-  "73": {
+  "373": {
     "cat": "Throw",
     "name": "Make 2 Nice Curveball Throws in a row."
   },
-  "74": {
+  "374": {
     "cat": "Throw",
     "name": "Make 3 Nice Curveball Throws in a row."
   },
-  "75": {
+  "375": {
     "cat": "Throw",
     "name": "Make a Great Throw."
   },
-  "76": {
+  "376": {
     "cat": "Throw",
     "name": "Make 3 Great Throws."
   },
-  "77": {
+  "377": {
     "cat": "Throw",
     "name": "Make 5 Great Throws."
   },
-  "78": {
+  "378": {
     "cat": "Throw",
     "name": "Make 10 Great Throws."
   },
-  "79": {
+  "379": {
     "cat": "Throw",
     "name": "Make 3 Great Throws in a row."
   },
-  "80": {
+  "380": {
     "cat": "Throw",
     "name": "Make 5 Great Throws in a row."
   },
-  "81": {
+  "381": {
     "cat": "Throw",
     "name": "Make a Great Curveball Throw."
   },
-  "82": {
+  "382": {
     "cat": "Throw",
     "name": "Make 3 Great Curveball Throws."
   },
-  "83": {
+  "383": {
     "cat": "Throw",
     "name": "Make 2 Great Curveball Throws in a row."
   },
-  "84": {
+  "384": {
     "cat": "Throw",
     "name": "Make 3 Great Curveball Throws in a row."
   },
-  "85": {
+  "385": {
     "cat": "Throw",
     "name": "Make an Excellent Throw."
   },
-  "86": {
+  "386": {
     "cat": "Throw",
     "name": "Make 3 Excellent Throws."
   },
-  "87": {
+  "387": {
     "cat": "Throw",
     "name": "Make 3 Excellent Throws in a row."
   },
-  "88": {
+  "388": {
     "cat": "Throw",
     "name": "Make an Excellent Curveball Throw."
   },
-  "89": {
+  "389": {
     "cat": "Throw",
     "name": "Make {0} Excellent Curveball Throws."
   },
-  "90": {
+  "390": {
     "cat": "Throw",
     "name": "Make {0} Excellent Curveball Throws in a row."
   },
-  "91": {
+  "391": {
     "cat": "Throw",
     "name": "Make 5 Curveball Throws in a row."
   },
-  "92": {
+  "392": {
     "cat": "Spin",
     "name": "Spin 3 PokéStops you haven't visited before."
   },
-  "93": {
+  "393": {
     "cat": "Spin",
     "name": "Spin a PokéStop you haven't visited before."
   },
-  "94": {
+  "494": {
     "cat": "Spin",
     "name": "Spin 10 PokéStops."
   },
-  "95": {
+  "495": {
     "cat": "Spin",
     "name": "Spin a PokéStop."
   },
-  "96": {
+  "596": {
     "cat": "Miscellaneous",
     "name": "Hatch an Egg."
   },
-  "97": {
+  "597": {
     "cat": "Miscellaneous",
     "name": "Hatch 3 Eggs."
   },
-  "98": {
+  "598": {
     "cat": "Miscellaneous",
     "name": "Hatch 5 Eggs."
   },
-  "99": {
+  "599": {
     "cat": "Miscellaneous",
     "name": "Power up Pokémon 5 times."
   },
-  "100": {
+  "600": {
     "cat": "Miscellaneous",
     "name": "Power up a Pokémon."
   },
-  "101": {
+  "601": {
     "cat": "Miscellaneous",
     "name": "Earn a Candy walking with your buddy."
   }
