@@ -215,6 +215,10 @@
     "cat": "Pokémon",
     "name": "Absol"
   },
+  "999": {
+    "cat": "Pokémon",
+    "name": "?? Encounter"
+  },
   "1000": {
     "cat": "Rare Candies",
     "name": "1 Rare Candy"
@@ -402,9 +406,5 @@
   "1410": {
     "cat": "Potions & Revives",
     "name": "3 Max Potions"
-  },
-  "1048": {
-    "cat": "Pokémon",
-    "name": "?? Encounter"
   }
 }
