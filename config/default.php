@@ -305,6 +305,9 @@ $raidBosses = [129,361,333,355,103,303,200,302,215,68,94,124,221,127,248,306,359
 $sendWebhook = false;
 $webhookUrl = null;                                             //['url-1','url-2']
 
+$sendQuestWebhook = false;                                          // Experimental use only
+$questWebhookUrl = null;                                            // Experimental use only
+
 $manualOneStar = [
     'webhook' => true,
     'pokemon_id' => 387,

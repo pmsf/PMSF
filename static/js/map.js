@@ -2183,7 +2183,7 @@ function manualQuestData(event) { // eslint-disable-line no-unused-vars
                     'action': 'quest',
                     'questId': questId,
                     'rewardId': rewardId,
-                    'pokestopId': pokestopId
+                    'pokestopId': pokestopId,
                 },
                 error: function error() {
                     // Display error toast
