@@ -1299,17 +1299,30 @@ function updateGymIcons() {
     })
 }
 
+function getPokestopMarkerIcon(item) {
+    if (item['lure_expiration'] > Date.now()) {
+        return '<div style="position:relative;">' +
+            '<img src="static/forts/Pstop-Lured.png"/>' +
+            '</div>'
+    } else if (item['quest_id'] !== null) {
+        return '<div style="position:relative;">' +
+            '<img src="static/forts/Pstop-quest-large.png" style="width:50px;height:72;"/>' +
+            '<img src="static/rewards/reward_' + item['reward_id'] + '.png" style="width:30px;height:auto;position:absolute;top:4px;right:12px;"/>' +
+            '</div>'
+    } else {
+        return '<div>' +
+            '<img src="static/forts/Pstop.png"' +
+            '</div>'
+    }
+}
+
 function setupPokestopMarker(item) {
-    var imagename = item['lure_expiration'] ? 'PstopLured' : 'Pstop'
-    imagename = item['quest_id'] > 0 ? 'Pstop-quest' : imagename
-    var marker = new google.maps.Marker({
-        position: {
-            lat: item['latitude'],
-            lng: item['longitude']
-        },
+    var marker = new RichMarker({
+        position: new google.maps.LatLng(item['latitude'], item['longitude']),
         map: map,
-        zIndex: 2,
-        icon: 'static/forts/' + imagename + '.png'
+        content: getPokestopMarkerIcon(item),
+        flat: true,
+        anchor: RichMarkerPosition.MIDDLE
     })
 
     if (!marker.rangeCircle && isRangeActive(map)) {
