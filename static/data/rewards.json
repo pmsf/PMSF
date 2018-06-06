@@ -1,4 +1,220 @@
 {
+  "1": {
+    "cat": "Pokémon",
+    "name": "Bulbasaur"
+  },
+  "4": {
+    "cat": "Pokémon",
+    "name": "Charmander"
+  },
+  "5": {
+    "cat": "Pokémon",
+    "name": "Charmeleon"
+  },
+  "7": {
+    "cat": "Pokémon",
+    "name": "Squirtle"
+  },
+  "23": {
+    "cat": "Pokémon",
+    "name": "Ekans"
+  },
+  "25": {
+    "cat": "Pokémon",
+    "name": "Pikachu"
+  },
+  "37": {
+    "cat": "Pokémon",
+    "name": "Vulpix"
+  },
+  "38": {
+    "cat": "Pokémon",
+    "name": "Ninetales"
+  },
+  "55": {
+    "cat": "Pokémon",
+    "name": "Golduck"
+  },
+  "56": {
+    "cat": "Pokémon",
+    "name": "Mankey"
+  },
+  "58": {
+    "cat": "Pokémon",
+    "name": "Growlithe"
+  },
+  "60": {
+    "cat": "Pokémon",
+    "name": "Poliwag"
+  },
+  "66": {
+    "cat": "Pokémon",
+    "name": "Machop"
+  },
+  "77": {
+    "cat": "Pokémon",
+    "name": "Ponyta"
+  },
+  "79": {
+    "cat": "Pokémon",
+    "name": "Slowpoke"
+  },
+  "82": {
+    "cat": "Pokémon",
+    "name": "Magneton"
+  },
+  "84": {
+    "cat": "Pokémon",
+    "name": "Doduo"
+  },
+  "86": {
+    "cat": "Pokémon",
+    "name": "Seel"
+  },
+  "88": {
+    "cat": "Pokémon",
+    "name": "Grimer"
+  },
+  "92": {
+    "cat": "Pokémon",
+    "name": "Gastly"
+  },
+  "95": {
+    "cat": "Pokémon",
+    "name": "Onix"
+  },
+  "98": {
+    "cat": "Pokémon",
+    "name": "Krabby"
+  },
+  "100": {
+    "cat": "Pokémon",
+    "name": "Voltorb"
+  },
+  "101": {
+    "cat": "Pokémon",
+    "name": "Electrode"
+  },
+  "102": {
+    "cat": "Pokémon",
+    "name": "Exeggcute"
+  },
+  "103": {
+    "cat": "Pokémon",
+    "name": "Exeggutor"
+  },
+  "113": {
+    "cat": "Pokémon",
+    "name": "Chansey"
+  },
+  "114": {
+    "cat": "Pokémon",
+    "name": "Tangela"
+  },
+  "116": {
+    "cat": "Pokémon",
+    "name": "Horsea"
+  },
+  "120": {
+    "cat": "Pokémon",
+    "name": "Staryu"
+  },
+  "124": {
+    "cat": "Pokémon",
+    "name": "Jynx"
+  },
+  "125": {
+    "cat": "Pokémon",
+    "name": "Electabuzz"
+  },
+  "126": {
+    "cat": "Pokémon",
+    "name": "Magmar"
+  },
+  "127": {
+    "cat": "Pokémon",
+    "name": "Pinsir"
+  },
+  "129": {
+    "cat": "Pokémon",
+    "name": "Magikarp"
+  },
+  "133": {
+    "cat": "Pokémon",
+    "name": "Eevee"
+  },
+  "135": {
+    "cat": "Pokémon",
+    "name": "Jolteon"
+  },
+  "136": {
+    "cat": "Pokémon",
+    "name": "Flareon"
+  },
+  "142": {
+    "cat": "Pokémon",
+    "name": "Aerodactyl"
+  },
+  "147": {
+    "cat": "Pokémon",
+    "name": "Dratini"
+  },
+  "156": {
+    "cat": "Pokémon",
+    "name": "Quilava"
+  },
+  "157": {
+    "cat": "Pokémon",
+    "name": "Typhlosion"
+  },
+  "180": {
+    "cat": "Pokémon",
+    "name": "Flaafy"
+  },
+  "207": {
+    "cat": "Pokémon",
+    "name": "Gligar"
+  },
+  "219": {
+    "cat": "Pokémon",
+    "name": "Magcargo"
+  },
+  "228": {
+    "cat": "Pokémon",
+    "name": "Houndour"
+  },
+  "246": {
+    "cat": "Pokémon",
+    "name": "Larvitar"
+  },
+  "255": {
+    "cat": "Pokémon",
+    "name": "Torchic"
+  },
+  "309": {
+    "cat": "Pokémon",
+    "name": "Electrike"
+  },
+  "311": {
+    "cat": "Pokémon",
+    "name": "Plusle"
+  },
+  "312": {
+    "cat": "Pokémon",
+    "name": "Minum"
+  },
+  "322": {
+    "cat": "Pokémon",
+    "name": "Numel"
+  },
+  "333": {
+    "cat": "Pokémon",
+    "name": "Swablu"
+  },
+  "359": {
+    "cat": "Pokémon",
+    "name": "Absol"
+  },
   "1000": {
     "cat": "Rare Candies",
     "name": "1 Rare Candy"
@@ -190,229 +406,5 @@
   "1048": {
     "cat": "Pokémon",
     "name": "?? Encounter"
-  },
-  "359": {
-    "cat": "Pokémon",
-    "name": "Absol"
-  },
-  "142": {
-    "cat": "Pokémon",
-    "name": "Aerodactyl"
-  },
-  "1": {
-    "cat": "Pokémon",
-    "name": "Bulbasaur"
-  },
-  "113": {
-    "cat": "Pokémon",
-    "name": "Chansey"
-  },
-  "4": {
-    "cat": "Pokémon",
-    "name": "Charmander"
-  },
-  "5": {
-    "cat": "Pokémon",
-    "name": "Charmeleon"
-  },
-  "84": {
-    "cat": "Pokémon",
-    "name": "Doduo"
-  },
-  "147": {
-    "cat": "Pokémon",
-    "name": "Dratini"
-  },
-  "133": {
-    "cat": "Pokémon",
-    "name": "Eevee"
-  },
-  "23": {
-    "cat": "Pokémon",
-    "name": "Ekans"
-  },
-  "125": {
-    "cat": "Pokémon",
-    "name": "Electabuzz"
-  },
-  "309": {
-    "cat": "Pokémon",
-    "name": "Electrike"
-  },
-  "101": {
-    "cat": "Pokémon",
-    "name": "Electrode"
-  },
-  "102": {
-    "cat": "Pokémon",
-    "name": "Exeggcute"
-  },
-  "103": {
-    "cat": "Pokémon",
-    "name": "Exeggutor"
-  },
-  "180": {
-    "cat": "Pokémon",
-    "name": "Flaafy"
-  },
-  "136": {
-    "cat": "Pokémon",
-    "name": "Flareon"
-  },
-  "92": {
-    "cat": "Pokémon",
-    "name": "Gastly"
-  },
-  "207": {
-    "cat": "Pokémon",
-    "name": "Gligar"
-  },
-  "55": {
-    "cat": "Pokémon",
-    "name": "Golduck"
-  },
-  "88": {
-    "cat": "Pokémon",
-    "name": "Grimer"
-  },
-  "58": {
-    "cat": "Pokémon",
-    "name": "Growlithe"
-  },
-  "116": {
-    "cat": "Pokémon",
-    "name": "Horsea"
-  },
-  "228": {
-    "cat": "Pokémon",
-    "name": "Houndour"
-  },
-  "135": {
-    "cat": "Pokémon",
-    "name": "Jolteon"
-  },
-  "124": {
-    "cat": "Pokémon",
-    "name": "Jynx"
-  },
-  "140": {
-    "cat": "Pokémon",
-    "name": "Kabuto"
-  },
-  "98": {
-    "cat": "Pokémon",
-    "name": "Krabby"
-  },
-  "246": {
-    "cat": "Pokémon",
-    "name": "Larvitar"
-  },
-  "66": {
-    "cat": "Pokémon",
-    "name": "Machop"
-  },
-  "219": {
-    "cat": "Pokémon",
-    "name": "Magcargo"
-  },
-  "129": {
-    "cat": "Pokémon",
-    "name": "Magikarp"
-  },
-  "126": {
-    "cat": "Pokémon",
-    "name": "Magmar"
-  },
-  "82": {
-    "cat": "Pokémon",
-    "name": "Magneton"
-  },
-  "56": {
-    "cat": "Pokémon",
-    "name": "Mankey"
-  },
-  "312": {
-    "cat": "Pokémon",
-    "name": "Minum"
-  },
-  "38": {
-    "cat": "Pokémon",
-    "name": "Ninetales"
-  },
-  "322": {
-    "cat": "Pokémon",
-    "name": "Numel"
-  },
-  "138": {
-    "cat": "Pokémon",
-    "name": "Omanyte"
-  },
-  "95": {
-    "cat": "Pokémon",
-    "name": "Onix"
-  },
-  "25": {
-    "cat": "Pokémon",
-    "name": "Pikachu"
-  },
-  "127": {
-    "cat": "Pokémon",
-    "name": "Pinsir"
-  },
-  "311": {
-    "cat": "Pokémon",
-    "name": "Plusle"
-  },
-  "60": {
-    "cat": "Pokémon",
-    "name": "Poliwag"
-  },
-  "77": {
-    "cat": "Pokémon",
-    "name": "Ponyta"
-  },
-  "156": {
-    "cat": "Pokémon",
-    "name": "Quilava"
-  },
-  "86": {
-    "cat": "Pokémon",
-    "name": "Seel"
-  },
-  "79": {
-    "cat": "Pokémon",
-    "name": "Slowpoke"
-  },
-  "120": {
-    "cat": "Pokémon",
-    "name": "Staryu"
-  },
-  "7": {
-    "cat": "Pokémon",
-    "name": "Squirtle"
-  },
-  "333": {
-    "cat": "Pokémon",
-    "name": "Swablu"
-  },
-  "114": {
-    "cat": "Pokémon",
-    "name": "Tangela"
-  },
-  "255": {
-    "cat": "Pokémon",
-    "name": "Torchic"
-  },
-  "157": {
-    "cat": "Pokémon",
-    "name": "Typhlosion"
-  },
-  "100": {
-    "cat": "Pokémon",
-    "name": "Voltorb"
-  },
-  "37": {
-    "cat": "Pokémon",
-    "name": "Vulpix"
   }
 }
