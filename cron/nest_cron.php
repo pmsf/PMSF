@@ -1,6 +1,6 @@
 <?php
 include(dirname(__FILE__).'/../config/config.php');
-global $db, $noManualNests, $deleteNestsOlderThan;
+global $db, $noManualNests, $deleteNestsOlderThan, $migrationDay;
 
 if($noManualNests === true){
     http_response_code(401);
@@ -8,8 +8,7 @@ if($noManualNests === true){
 }
 
 $nestMigrationInterval = 14;
-$fiftiethNestMigration = strtotime('5 April 2018');
-$days = floor((time() - $fiftiethNestMigration)/86400) % $nestMigrationInterval;
+$days = floor((time() - $migrationDay)/86400) % $nestMigrationInterval;
 
 if ($days === 0){
     $timeNow = date('U');
