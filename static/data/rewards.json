@@ -75,6 +75,10 @@
     "cat": "Pokémon",
     "name": "Grimer"
   },
+  "90": {
+    "cat": "Pokémon",
+    "name": "Shelder"
+  },
   "92": {
     "cat": "Pokémon",
     "name": "Gastly"
@@ -202,6 +206,10 @@
   "312": {
     "cat": "Pokémon",
     "name": "Minum"
+  },
+  "320": {
+    "cat": "Pokémon",
+    "name": "Wailmer"
   },
   "322": {
     "cat": "Pokémon",

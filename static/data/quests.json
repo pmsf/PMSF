@@ -402,5 +402,25 @@
   "601": {
     "cat": "Miscellaneous",
     "name": "Earn a Candy walking with your buddy."
+  },
+  "700": {
+    "cat": "Event",
+    "name": "Use 3 berries to help catch a Pokémon."
+  },
+  "701": {
+    "cat": "Event",
+    "name": "Use 5 berries to help catch a Pokémon."
+  },
+  "702": {
+    "cat": "Event",
+    "name": "Catch 2 water type Pokémon."
+  },
+  "703": {
+    "cat": "Event",
+    "name": "Hatch a egg."
+  },
+  "704": {
+    "cat": "Event",
+    "name": "Win a raid."
   }
 }
