@@ -422,5 +422,13 @@
   "704": {
     "cat": "Event",
     "name": "Win a raid."
+  },
+  "705": {
+    "cat": "Event",
+    "name": "Battle in a gym."
+  },
+  "706": {
+    "cat": "Event",
+    "name": "Battle in a gym 3 times."
   }
 }
