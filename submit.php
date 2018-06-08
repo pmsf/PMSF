@@ -1,7 +1,7 @@
 <?php
 $timing['start'] = microtime( true );
 include( 'config/config.php' );
-global $map, $fork, $db, $raidBosses, $webhookUrl, $sendWebhook, $noManualRaids, $noRaids, $noManualPokemon, $noPokemon, $noPokestops, $noManualPokestops, $noGyms, $noManualGyms, $noManualQuests, $noManualNests, $noNests, $noAddNewNests, $pokemonTimer, $noRenamePokestops;
+global $map, $fork, $db, $raidBosses, $webhookUrl, $sendWebhook, $sendQuestWebhook, $noManualRaids, $noRaids, $noManualPokemon, $noPokemon, $noPokestops, $noManualPokestops, $noGyms, $noManualGyms, $noManualQuests, $noManualNests, $noNests, $noAddNewNests, $pokemonTimer, $noRenamePokestops;
 $action = ! empty( $_POST['action'] ) ? $_POST['action'] : '';
 $lat    = ! empty( $_POST['lat'] ) ? $_POST['lat'] : '';
 $lng    = ! empty( $_POST['lng'] ) ? $_POST['lng'] : '';
@@ -200,17 +200,35 @@ if ( $action === "raid" ) {
     }
     $pokestopId = ! empty( $_POST['pokestopId'] ) ? $_POST['pokestopId'] : '';
     $questId    = $_POST['questId'] == "NULL" ? 0 : $_POST['questId'];
-    $reward     = $_POST['reward'] == "NULL" ? 0 : $_POST['reward'];
-    if ( ! empty( $pokestopId ) && ! empty( $questId ) && ! empty( $reward ) ) {
+    $rewardId   = $_POST['rewardId'] == "NULL" ? 0 : $_POST['rewardId'];
+    $pokestop         = $db->get( "pokestops", [ 'name', 'lat', 'lon', 'external_id' ], [ 'external_id' => $pokestopId ] );
+    if ( ! empty( $pokestopId ) && ! empty( $questId ) && ! empty( $rewardId ) ) {
         $cols  = [
             'quest_id' => $questId,
-            'reward'   => $reward,
+            'reward_id'   => $rewardId,
         ];
         $where = [
             'external_id' => $pokestopId
         ];
         $db->update( "pokestops", $cols, $where );
     }
+    if ( $sendQuestWebhook === true ) {
+	$questwebhook = [
+	    'message' => [
+		'latitude'                          => $pokestop['lat'],
+		'longitude'                         => $pokestop['lon'],
+		'pokestop_id'                       => $pokestopId,
+		'name'                              => $pokestop['name'],
+		'quest_id'                          => $cols['quest_id'],
+		'reward_id'                         => $cols['reward_id'],
+	    ],
+	    'type'    => 'quest'
+	];
+	foreach ( $questWebhookUrl as $url ) {
+            sendToWebhook($url, array($questwebhook));
+	}
+    }
+
 } elseif ( $action === "nest" ) {
     if ( $noManualNests === true || $noNests === true ) {
         http_response_code( 401 );
