@@ -1055,7 +1055,8 @@ if ( $blockIframe ) {
             $json    = file_get_contents( 'static/dist/data/rewards.min.json' );
             $input   = json_decode( $json, true );
             foreach ( $input as $key => $value ) {
-                $rewards[ $key ] = array(
+                $rewards[ $value['cat'] ][] = array(
+                    'id'   => $key,
                     'name' => $value['name']
                 );
             }
@@ -1083,7 +1084,15 @@ if ( $blockIframe ) {
                 <?php
                 foreach ( $rewards as $key => $value ) {
                     ?>
-                    <option value="<?php echo $value['name']; ?>"><?php echo i8ln( $value['name'] ); ?></option>
+                    <optgroup label="<?php echo $key; ?>">
+                        <?php
+                        foreach ( $value as $t ) {
+                            ?>
+                            <option value="<?php echo $t['id']; ?>"><?php echo i8ln( $t['name'] ); ?></option>
+                            <?php
+                        }
+                        ?>
+                    </optgroup>
                     <?php
                 }
                 ?>
@@ -1329,6 +1338,7 @@ if ( $blockIframe ) {
     var expireTimestamp = <?php echo isset($_SESSION['user']->expire_timestamp) ? $_SESSION['user']->expire_timestamp : 0 ?>;
     var timestamp = <?php echo time() ?>;
     var noRenamePokestops = <?php echo $noRenamePokestops === true ? 'true' : 'false' ?>;
+    var noWhatsappLink = <?php echo $noWhatsappLink === true ? 'true' : 'false' ?>;
 </script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js"></script>
 <script src="static/dist/js/map.common.min.js"></script>

@@ -1116,6 +1116,8 @@
   "90": {
     "name": "Shellder",
     "rarity": "Rare",
+    "level": 1,
+    "cp": 4340,
     "types": [
       {
         "type": "Water",
@@ -3214,6 +3216,8 @@
   "259":{
     "name": "Marshtomp",
     "rarity":"",
+    "level": 2,
+    "cp": 8825,
     "types": [
       {
         "type": "Water",
@@ -3954,6 +3958,8 @@
   "319":{
     "name": "Sharpedo",
     "rarity":"",
+    "level": 3,
+    "cp": 13989,
     "types": [
       {
         "type": "Water",
