@@ -430,5 +430,13 @@
   "706": {
     "cat": "Event",
     "name": "Battle in a gym 3 times."
+  },
+  "707": {
+    "cat": "Event",
+    "name": "Evolve 2 Shellder."
+  },
+  "708": {
+    "cat": "Event",
+    "name": "Catch 5 Magikarp or Wailmer."
   }
 }

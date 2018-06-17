@@ -147,6 +147,10 @@
     "cat": "Pokémon",
     "name": "Magikarp"
   },
+  "131": {
+    "cat": "Pokémon",
+    "name": "Lapras"
+  },
   "133": {
     "cat": "Pokémon",
     "name": "Eevee"
@@ -226,6 +230,10 @@
   "359": {
     "cat": "Pokémon",
     "name": "Absol"
+  },
+  "370": {
+    "cat": "Pokémon",
+    "name": "Luvdisc"
   },
   "999": {
     "cat": "Pokémon",
