@@ -215,6 +215,10 @@
     "cat": "Catch",
     "name": "Catch 20 Pokémon with Weather Boost."
   },
+  "155": {
+    "cat": "Catch",
+    "name": "Catch 2 ice type Pokémon."
+  },
   "255": {
     "cat": "Evolve",
     "name": "Evolve a Pokémon."
@@ -402,6 +406,10 @@
   "601": {
     "cat": "Miscellaneous",
     "name": "Earn a Candy walking with your buddy."
+  },
+  "602": {
+    "cat": "Miscellaneous",
+    "name": "Power up a Pokémon 3 times."
   },
   "700": {
     "cat": "Event",
