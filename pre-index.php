@@ -212,8 +212,12 @@ if ( $blockIframe ) {
             }
         }
         ?>
+        <?php if ( ! $noStatsToggle ) {
+            ?>
         <a href="#stats" id="statsToggle" class="statsNav" style="float: right;"><span
                 class="label"><?php echo i8ln( 'Stats' ) ?></span></a>
+            <?php
+        } ?>
     </header>
     <!-- NAV -->
     <nav id="nav">
