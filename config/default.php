@@ -71,6 +71,9 @@ $discordUrl = "";                                                   // Discord U
 
 $worldopoleUrl = "";                                                // Link to Worldopole, leave "" for empty
 
+/* StatsToggle */
+$noStatsToggle = false;                                             // Enables or disables the stats button in the header.
+
 /* MOTD */
 $noMotd = true;
 $motdTitle = "";
