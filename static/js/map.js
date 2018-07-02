@@ -2504,7 +2504,7 @@ function showGymDetails(id) { // eslint-disable-line no-unused-vars
 
 	    var lobbyStr = ''
 
-        if (result['raid_level'] >= 3) {
+        if (result['raid_level'] >= 3 && item.raid_end > Date.now()) {
 
             var tableBody = ''
             var form = ''
