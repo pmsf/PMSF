@@ -197,7 +197,7 @@
   },
   "150": {
     "cat": "Catch",
-    "name": "Catch a Grass-, Fire-, or Ground-type Pokémon."
+    "name": "Catch a Grass-, Fire-, or Water-type Pokémon."
   },
   "151": {
     "cat": "Catch",
@@ -270,6 +270,14 @@
   "267": {
     "cat": "Evolve",
     "name": "Evolve a Magikarp."
+  },
+  "268": {
+    "cat": "Evolve",
+    "name": "Evolve a Grass-Type Pokémon."
+  },
+  "269": {
+    "cat": "Evolve",
+    "name": "Evolve a Electric, Water or Fire-Type Pokémon"
   },
   "368": {
     "cat": "Throw",
