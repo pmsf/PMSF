@@ -871,7 +871,7 @@ function pokestopLabel(expireTime, latitude, longitude, stopName, lureUser, id, 
             '<center>' + '<div>' +
             '<b>' + stopName + '</b>' +
             '</div>'
-        if (quest === null) {
+        if (noManualQuests === true || quest === null) {
             str =
                 '<div>' +
                 '<center>' +
@@ -1303,6 +1303,10 @@ function getPokestopMarkerIcon(item) {
     if (item['lure_expiration'] > Date.now()) {
         return '<div style="position:relative;">' +
             '<img src="static/forts/Pstop-Lured.png"/>' +
+            '</div>'
+    } else if (noManualQuests === true) {
+        return '<div style="position:relative;">' +
+            '<img src="static/forts/Pstop.png"' +
             '</div>'
     } else if (item['quest_id'] !== null) {
         return '<div style="position:relative;">' +
