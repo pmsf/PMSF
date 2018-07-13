@@ -31,6 +31,7 @@ CREATE TABLE IF NOT EXISTS `forts` (
   `weather_cell_id` bigint(20) unsigned DEFAULT NULL,
   `park` varchar(128) DEFAULT NULL,
   `parkid` bigint(20) DEFAULT NULL,
+  `edited_by` varchar(200) DEFAULT NULL,
   PRIMARY KEY (`id`),
   UNIQUE KEY `external_id` (`external_id`),
   KEY `ix_coords` (`lat`,`lon`)
@@ -153,6 +154,7 @@ CREATE TABLE IF NOT EXISTS `pokestops` (
   `deployer` varchar(40) DEFAULT NULL,
   `lure_start` varchar(40) DEFAULT NULL,
   `expires` int(11) DEFAULT NULL,
+  `edited_by` varchar(200) DEFAULT NULL,
   PRIMARY KEY (`id`),
   UNIQUE KEY `external_id` (`external_id`),
   KEY `ix_pokestops_lon` (`lon`),
