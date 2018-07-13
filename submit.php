@@ -189,7 +189,8 @@ if ( $action === "raid" ) {
             'external_id' => $gymId,
             'lat'         => $lat,
             'lon'         => $lng,
-            'name'        => $gymName
+            'name'        => $gymName,
+            'edited_by'    => $_SESSION['user']->user 
         ];
         $db->insert( "forts", $cols );
     }
@@ -218,7 +219,7 @@ if ( $action === "raid" ) {
 		'latitude'                          => $pokestop['lat'],
 		'longitude'                         => $pokestop['lon'],
 		'pokestop_id'                       => $pokestopId,
-		'name'                              => $pokestop['name'],
+                'name'                              => $pokestop['name'],
 		'quest_id'                          => $cols['quest_id'],
 		'reward_id'                         => $cols['reward_id'],
 	    ],
@@ -255,7 +256,8 @@ if ( $action === "raid" ) {
     if ( ! empty( $pokestopName ) && ! empty( $pokestopId ) ) {
         $cols     = [
             'name'        => $pokestopName,
-            'updated'     => time()
+            'updated'     => time(),
+            'edited_by'    => $_SESSION['user']->user 
         ];
         $where    = [
             'external_id' => $pokestopId
@@ -275,7 +277,8 @@ if ( $action === "raid" ) {
             'lat'         => $lat,
             'lon'         => $lng,
             'name'        => $pokestopName,
-            'updated'     => time()
+            'updated'     => time(),
+            'edited_by'    => $_SESSION['user']->user 
         ];
         $db->insert( "pokestops", $cols );
     }
