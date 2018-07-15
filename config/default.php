@@ -297,6 +297,8 @@ $noManualPokestops = false;
 $noRenamePokestops = false;
 $noManualQuests = false;
 
+$noDiscordSubmitLogChannel = true;                                        // Send webhooks to discord channel upon submission
+
 $pokemonReportTime = true;
 $pokemonToExclude = [];
 

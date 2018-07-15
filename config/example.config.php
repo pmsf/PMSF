@@ -278,6 +278,9 @@ $sendRaidData = false;                                              // Send Raid
 //-----------------------------------------------------
 $hideIfManual = false;
 $noManualRaids = false;						    // Enable/Disable ManualRaids permanently ( Comment this line if you want to use the block below )
+$noDiscordSubmitLogChannel = true;                                        // Send webhooks to discord channel upon submission
+$submitMapUrl = '';
+$discordSubmitLogChannelUrl = 'https://discordapp.com/api/webhooks/<yourCHANNELhere>';
 //$currentTime = (int) date('G');				    // Uncomment this block to deny Raid submissions over night
 //
 //if ($currentTime >= 6 && $currentTime < 23) {                     // noManualRaids = true between 23:00 and 06:00. Adjest hours if needed
