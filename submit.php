@@ -1,7 +1,7 @@
 <?php
 $timing['start'] = microtime( true );
 include( 'config/config.php' );
-global $map, $fork, $db, $raidBosses, $webhookUrl, $sendWebhook, $sendQuestWebhook, $noManualRaids, $noRaids, $noManualPokemon, $noPokemon, $noPokestops, $noManualPokestops, $noGyms, $noManualGyms, $noManualQuests, $noManualNests, $noNests, $noAddNewNests, $pokemonTimer, $noRenamePokestops;
+global $map, $fork, $db, $raidBosses, $webhookUrl, $sendWebhook, $sendQuestWebhook, $noManualRaids, $noRaids, $noManualPokemon, $noPokemon, $noPokestops, $noManualPokestops, $noGyms, $noManualGyms, $noManualQuests, $noManualNests, $noNests, $noAddNewNests, $pokemonTimer, $noRenamePokestops, $noDiscordSubmitLogChannel, $discordSubmitLogChannelUrl;
 $action = ! empty( $_POST['action'] ) ? $_POST['action'] : '';
 $lat    = ! empty( $_POST['lat'] ) ? $_POST['lat'] : '';
 $lng    = ! empty( $_POST['lng'] ) ? $_POST['lng'] : '';
@@ -193,6 +193,14 @@ if ( $action === "raid" ) {
             'edited_by'    => $_SESSION['user']->user 
         ];
         $db->insert( "forts", $cols );
+        if ( $noDiscordSubmitLogChannel === false ) {
+            $data = array("content" => 'Added gym with id `' . $gymId . '` and name: `' . $gymName . '`' . $submitMapUrl . '/?lat=' . $lat . '&lon=' . $lng . '&zoom=18', "username" => $_SESSION['user']->user);
+            $curl = curl_init($discordSubmitLogChannelUrl);
+            curl_setopt($curl, CURLOPT_CUSTOMREQUEST, "POST");
+            curl_setopt($curl, CURLOPT_POSTFIELDS, json_encode($data));
+            curl_setopt($curl, CURLOPT_RETURNTRANSFER, true);
+            curl_exec($curl);
+        }
     }
 } elseif ( $action === "quest" ) {
     if ( $noManualQuests === true || $noPokestops === true ) {
@@ -263,6 +271,14 @@ if ( $action === "raid" ) {
             'external_id' => $pokestopId
         ];
 	$db->update( "pokestops", $cols, $where );
+        if ( $noDiscordSubmitLogChannel === false ) {
+            $data = array("content" => 'Updated pokestop with id `' . $pokestopId . '` and gafe it the new name: `' . $pokestopName . '` . ', "username" => $_SESSION['user']->user);
+            $curl = curl_init($discordSubmitLogChannelUrl);
+            curl_setopt($curl, CURLOPT_CUSTOMREQUEST, "POST");
+            curl_setopt($curl, CURLOPT_POSTFIELDS, json_encode($data));
+            curl_setopt($curl, CURLOPT_RETURNTRANSFER, true);
+            curl_exec($curl);
+        }
     }
  } elseif ( $action === "pokestop" ) {
     if ( $noManualPokestops === true || $noPokestops === true ) {
@@ -281,6 +297,14 @@ if ( $action === "raid" ) {
             'edited_by'    => $_SESSION['user']->user 
         ];
         $db->insert( "pokestops", $cols );
+        if ( $noDiscordSubmitLogChannel === false ) {
+            $data = array("content" => 'Added pokestop with id `' . $pokestopId . '` and gafe it the new name: `' . $pokestopName . '`' . $submitMapUrl . '/?lat=' . $lat . '&lon=' . $lng . '&zoom=18 ', "username" => $_SESSION['user']->user);
+            $curl = curl_init($discordSubmitLogChannelUrl);
+            curl_setopt($curl, CURLOPT_CUSTOMREQUEST, "POST");
+            curl_setopt($curl, CURLOPT_POSTFIELDS, json_encode($data));
+            curl_setopt($curl, CURLOPT_RETURNTRANSFER, true);
+            curl_exec($curl);
+        }
     }
 } elseif ( $action === "new-nest" ) {
     if ( $noAddNewNests === true || $noNests === true ) {
@@ -305,6 +329,7 @@ if ( $action === "raid" ) {
     }
     $gymId = ! empty( $_POST['id'] ) ? $_POST['id'] : '';
     if ( ! empty( $gymId ) ) {
+	$fortName = $db->get( "forts", [ 'name' ], [ 'external_id' => $gymId ] );    
         $fortid = $db->get( "forts", [ 'id' ], [ 'external_id' => $gymId ] );
         if ( $fortid ) {
             $db->delete( 'fort_sightings', [
@@ -322,6 +347,14 @@ if ( $action === "raid" ) {
                     'external_id' => $gymId
                 ]
             ] );
+            if ( $noDiscordSubmitLogChannel === false ) {
+                $data = array("content" => 'Deleted gym with id `' . $gymId . '` and name: `' . $fortName['name'] . '`', "username" => $_SESSION['user']->user);
+                $curl = curl_init($discordSubmitLogChannelUrl);
+                curl_setopt($curl, CURLOPT_CUSTOMREQUEST, "POST");
+                curl_setopt($curl, CURLOPT_POSTFIELDS, json_encode($data));
+                curl_setopt($curl, CURLOPT_RETURNTRANSFER, true);
+                curl_exec($curl);
+            }
         }
     }
 } elseif ( $action === "delete-pokestop" ) {
@@ -330,12 +363,21 @@ if ( $action === "raid" ) {
         die();
     }
     $pokestopId = ! empty( $_POST['id'] ) ? $_POST['id'] : '';
+    $pokestopName = $db->get( "pokestops", [ 'name' ], [ 'external_id' => $pokestopId ] );
     if ( ! empty( $pokestopId ) ) {
         $db->delete( 'pokestops', [
             "AND" => [
                 'external_id' => $pokestopId
             ]
         ] );
+        if ( $noDiscordSubmitLogChannel === false ) {
+            $data = array("content" => 'Deleted pokestop with id `' . $pokestopId . '` and name: `' . $pokestopName['name'] . '`', "username" => $_SESSION['user']->user);
+            $curl = curl_init($discordSubmitLogChannelUrl);
+            curl_setopt($curl, CURLOPT_CUSTOMREQUEST, "POST");
+            curl_setopt($curl, CURLOPT_POSTFIELDS, json_encode($data));
+            curl_setopt($curl, CURLOPT_RETURNTRANSFER, true);
+            curl_exec($curl);
+        }
     }
 } elseif ( $action === "delete-nest" ) {
     if ( $noManualNests === true || $noNests === true ) {
