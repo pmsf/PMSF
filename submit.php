@@ -72,7 +72,8 @@ if ( $action === "raid" ) {
         'cp'          => 0,
         'pokemon_id'  => 0,
         'move_1'      => 0,
-        'move_2'      => 0
+        'move_2'      => 0,
+        'submitted_by'=> $_SESSION['user']->user
 
     ];
     if ( array_key_exists( $pokemonId, $raidBosses ) ) {
@@ -143,7 +144,7 @@ if ( $action === "raid" ) {
             'pokemon_id'                => $id,
             'expire_timestamp'          => time() + $pokemonTimer,
             'updated'                   => time(),
-            'weather_boosted_condition' => 0
+            'weather_boosted_condition' => 0,
         ];
         $db->insert( "sightings", $cols );
     }
@@ -194,7 +195,7 @@ if ( $action === "raid" ) {
         ];
         $db->insert( "forts", $cols );
         if ( $noDiscordSubmitLogChannel === false ) {
-            $data = array("content" => 'Added gym with id `' . $gymId . '` and name: `' . $gymName . '`' . $submitMapUrl . '/?lat=' . $lat . '&lon=' . $lng . '&zoom=18', "username" => $_SESSION['user']->user);
+            $data = array("content" => '```Added gym with id "' . $gymId . '" and name: "' . $gymName . '"```' . $submitMapUrl . '/?lat=' . $lat . '&lon=' . $lng . '&zoom=18', "username" => $_SESSION['user']->user);
             $curl = curl_init($discordSubmitLogChannelUrl);
             curl_setopt($curl, CURLOPT_CUSTOMREQUEST, "POST");
             curl_setopt($curl, CURLOPT_POSTFIELDS, json_encode($data));
@@ -215,6 +216,7 @@ if ( $action === "raid" ) {
         $cols  = [
             'quest_id' => $questId,
             'reward_id'   => $rewardId,
+            'quest_submitted_by'  => $_SESSION['user']->user
         ];
         $where = [
             'external_id' => $pokestopId
@@ -248,6 +250,7 @@ if ( $action === "raid" ) {
     if ( ! empty( $pokemonId ) && ! empty( $nestId ) ) {
         $cols  = [
             'pokemon_id' => $pokemonId,
+            'nest_submitted_by' => $_SESSION['user']->user
         ];
         $where = [
             'nest_id' => $nestId
@@ -272,7 +275,7 @@ if ( $action === "raid" ) {
         ];
 	$db->update( "pokestops", $cols, $where );
         if ( $noDiscordSubmitLogChannel === false ) {
-            $data = array("content" => 'Updated pokestop with id `' . $pokestopId . '` and gafe it the new name: `' . $pokestopName . '` . ', "username" => $_SESSION['user']->user);
+            $data = array("content" => '```Updated pokestop with id "' . $pokestopId . '" and gave it the new name: "' . $pokestopName . '" . ```', "username" => $_SESSION['user']->user);
             $curl = curl_init($discordSubmitLogChannelUrl);
             curl_setopt($curl, CURLOPT_CUSTOMREQUEST, "POST");
             curl_setopt($curl, CURLOPT_POSTFIELDS, json_encode($data));
@@ -298,7 +301,7 @@ if ( $action === "raid" ) {
         ];
         $db->insert( "pokestops", $cols );
         if ( $noDiscordSubmitLogChannel === false ) {
-            $data = array("content" => 'Added pokestop with id `' . $pokestopId . '` and gafe it the new name: `' . $pokestopName . '`' . $submitMapUrl . '/?lat=' . $lat . '&lon=' . $lng . '&zoom=18 ', "username" => $_SESSION['user']->user);
+            $data = array("content" => '```Added pokestop with id "' . $pokestopId . '" and gave it the new name: "' . $pokestopName . '"```' . $submitMapUrl . '/?lat=' . $lat . '&lon=' . $lng . '&zoom=18 ', "username" => $_SESSION['user']->user);
             $curl = curl_init($discordSubmitLogChannelUrl);
             curl_setopt($curl, CURLOPT_CUSTOMREQUEST, "POST");
             curl_setopt($curl, CURLOPT_POSTFIELDS, json_encode($data));
@@ -314,11 +317,12 @@ if ( $action === "raid" ) {
     $id = ! empty( $_POST['id'] ) ? $_POST['id'] : 0;
     if ( ! empty( $lat ) && ! empty( $lng ) && ! empty( $id ) ) {
         $cols = [
-            'pokemon_id' => $id,
-            'lat'        => $lat,
-            'lon'        => $lng,
-            'type'       => 0,
-            'updated'    => time()
+            'pokemon_id' 	=> $id,
+            'lat'        	=> $lat,
+            'lon'        	=> $lng,
+            'type'       	=> 0,
+            'updated'    	=> time(),
+            'nest_submitted_by'	=> $_SESSION['user']->user
         ];
         $db->insert( "nests", $cols );
     }
@@ -348,7 +352,7 @@ if ( $action === "raid" ) {
                 ]
             ] );
             if ( $noDiscordSubmitLogChannel === false ) {
-                $data = array("content" => 'Deleted gym with id `' . $gymId . '` and name: `' . $fortName['name'] . '`', "username" => $_SESSION['user']->user);
+                $data = array("content" => '```Deleted gym with id "' . $gymId . '" and name: "' . $fortName['name'] . '"```', "username" => $_SESSION['user']->user);
                 $curl = curl_init($discordSubmitLogChannelUrl);
                 curl_setopt($curl, CURLOPT_CUSTOMREQUEST, "POST");
                 curl_setopt($curl, CURLOPT_POSTFIELDS, json_encode($data));
@@ -371,7 +375,7 @@ if ( $action === "raid" ) {
             ]
         ] );
         if ( $noDiscordSubmitLogChannel === false ) {
-            $data = array("content" => 'Deleted pokestop with id `' . $pokestopId . '` and name: `' . $pokestopName['name'] . '`', "username" => $_SESSION['user']->user);
+            $data = array("content" => '```Deleted pokestop with id "' . $pokestopId . '" and name: "' . $pokestopName['name'] . '"```', "username" => $_SESSION['user']->user);
             $curl = curl_init($discordSubmitLogChannelUrl);
             curl_setopt($curl, CURLOPT_CUSTOMREQUEST, "POST");
             curl_setopt($curl, CURLOPT_POSTFIELDS, json_encode($data));
