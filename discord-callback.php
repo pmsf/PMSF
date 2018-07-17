@@ -27,7 +27,7 @@ if ($noDiscordLogin === false) {
                 file_put_contents($logfile, $logMsg, FILE_APPEND);
             }
 
-            setcookie("LoginCookie", session_id(), time()+60*60*24*7);
+            setcookie("LoginCookie", session_id(), time()+60*60*2);
 
             $db->update("users", [
                 "session_id" => session_id(),
