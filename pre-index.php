@@ -234,7 +234,21 @@ if ( $blockIframe ) {
                             <span class="switch-handle"></span>
                         </label>
                     </div>
-                </div>'; ?>
+		</div>'; ?>
+                <?php
+                if ( ! $noNests ) {
+                    echo '<div class="form-control switch-container">
+                    <h3>' . i8ln( 'Nests' ) . '</h3>
+                    <div class="onoffswitch">
+                        <input id="nests-switch" type="checkbox" name="nests-switch"
+                               class="onoffswitch-checkbox" checked>
+                        <label class="onoffswitch-label" for="nests-switch">
+                            <span class="switch-label" data-on="On" data-off="Off"></span>
+                            <span class="switch-handle"></span>
+                        </label>
+                    </div>
+                </div>';
+                } ?>
                     <div id="pokemon-filter-wrapper" style="display:none">
                         <?php
                         if ( ! $noTinyRat ) {
@@ -345,6 +359,57 @@ if ( $blockIframe ) {
                     </div>
                 </div>
                 <?php
+            }
+            ?>
+            <?php
+            if ( ! $noPokestops ) {
+                ?>
+                <h3><?php echo i8ln( 'Pokestops' ); ?></h3>
+		<div>
+                <?php
+                if ( ! $noPokestops ) {
+                    echo '<div class="form-control switch-container">
+                    <h3>' . i8ln( 'Pokestops' ) . '</h3>
+                    <div class="onoffswitch">
+                        <input id="pokestops-switch" type="checkbox" name="pokestops-switch"
+                               class="onoffswitch-checkbox" checked>
+                        <label class="onoffswitch-label" for="pokestops-switch">
+                            <span class="switch-label" data-on="On" data-off="Off"></span>
+                            <span class="switch-handle"></span>
+                        </label>
+                    </div>
+                </div>';
+		} ?>
+                <?php
+                if ( ( $map != "monocle" ) || ( $fork == "alternate" ) && ! $hideIfManual ) {
+                    echo '<div class="form-control switch-container" id = "lured-pokestops-only-wrapper" style = "display:none">
+                    <select name = "lured-pokestops-only-switch" id = "lured-pokestops-only-switch">
+                        <option value = "0"> ' . i8ln( 'All' ) . '</option>
+                        <option value = "1"> ' . i8ln( 'Only Lured' ) . ' </option>
+                        <option value = "2"> ' . i8ln( 'Only Quests' ) . ' </option>
+                    </select>
+                </div>';
+		} else {
+                    echo '<div class="form-control switch-container" id = "lured-pokestops-only-wrapper" style = "display:none">
+                    <select name = "lured-pokestops-only-switch" id = "lured-pokestops-only-switch">
+                        <option value = "0"> ' . i8ln( 'All' ) . '</option>
+                        <option value = "2"> ' . i8ln( 'Only Quests' ) . ' </option>
+                    </select>
+                </div>';
+                }
+                ?>
+                </div>
+                <?php
+            }
+            ?>
+            <?php
+            if ( ! $noCommunity ) {
+                ?>
+                <h3><?php echo i8ln( 'Communities' ); ?></h3>
+		<div>
+
+                </div>
+                    <?php
             }
             ?>
             <?php
@@ -511,44 +576,6 @@ if ( $blockIframe ) {
             if ( ! $noSearchLocation || ! $noNests || ! $noStartMe || ! $noStartLast || ! $noFollowMe || ! $noPokestops || ! $noScannedLocations || ! $noSpawnPoints || ! $noRanges || ! $noWeatherOverlay || ! $noSpawnArea ) {
                 echo '<h3>' . i8ln( 'Location &amp; Search' ) . '</h3>
             <div>'; ?>
-                <?php
-                if ( ! $noNests ) {
-                    echo '<div class="form-control switch-container">
-                    <h3>' . i8ln( 'Nests' ) . '</h3>
-                    <div class="onoffswitch">
-                        <input id="nests-switch" type="checkbox" name="nests-switch"
-                               class="onoffswitch-checkbox" checked>
-                        <label class="onoffswitch-label" for="nests-switch">
-                            <span class="switch-label" data-on="On" data-off="Off"></span>
-                            <span class="switch-handle"></span>
-                        </label>
-                    </div>
-                </div>';
-                } ?>
-                <?php
-                if ( ! $noPokestops ) {
-                    echo '<div class="form-control switch-container">
-                    <h3>' . i8ln( 'Pokestops' ) . '</h3>
-                    <div class="onoffswitch">
-                        <input id="pokestops-switch" type="checkbox" name="pokestops-switch"
-                               class="onoffswitch-checkbox" checked>
-                        <label class="onoffswitch-label" for="pokestops-switch">
-                            <span class="switch-label" data-on="On" data-off="Off"></span>
-                            <span class="switch-handle"></span>
-                        </label>
-                    </div>
-                </div>';
-                } ?>
-                <?php
-                if ( ( $map != "monocle" ) || ( $fork == "alternate" ) ) {
-                    echo '<div class="form-control switch-container" id = "lured-pokestops-only-wrapper" style = "display:none">
-                    <select name = "lured-pokestops-only-switch" id = "lured-pokestops-only-switch">
-                        <option value = "0"> ' . i8ln( 'All' ) . '</option>
-                        <option value = "1"> ' . i8ln( 'Only Lured' ) . ' </option>
-                        <option value = "2"> ' . i8ln( 'Only Quests' ) . ' </option>
-                    </select>
-                </div>';
-                } ?>
                 <?php
                 if ( $map != "monocle" && ! $noScannedLocations ) {
                     echo '<div class="form-control switch-container">
