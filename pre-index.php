@@ -1164,7 +1164,7 @@ if ( $blockIframe ) {
         </div>
     <?php } ?>
     <?php
-    if ( ( ! $noPokemon && ! $noManualPokemon ) || ( ! $noGyms && ! $noManualGyms ) || ( ! $noPokestops && ! $noManualPokestops ) || ( ! $noAddNewNests && ! $noNests ) ) {
+    if ( ( ! $noPokemon && ! $noManualPokemon ) || ( ! $noGyms && ! $noManualGyms ) || ( ! $noPokestops && ! $noManualPokestops ) || ( ! $noAddNewNests && ! $noNests ) || ( !$noAddNewCommunity && ! $noCommunity ) ) {
         ?>
         <button class="submit-on-off-button" onclick="$('.submit-on-off-button').toggleClass('on');">
             <i class="fa fa-map-marker submit-to-map" aria-hidden="true"></i>
@@ -1189,6 +1189,10 @@ if ( $blockIframe ) {
                     <?php if ( ! $noAddNewNests && !$noNests ) {
                         ?>
                         <li><a href="#tab-nests"><img src="static/images/nest.png"/></a></li>
+		    <?php } ?>
+                    <?php if ( ! $noAddNewCommunity && !$noCommunity ) {
+                        ?>
+                        <li><a href="#tab-communities"><img src="static/images/community.png"/></a></li>
                     <?php } ?>
                 </ul>
                 <?php if ( ! $noManualPokemon && !$noPokemon  ) {
@@ -1241,6 +1245,26 @@ if ( $blockIframe ) {
                             <button type="button" onclick="submitNewNest(event);" class="submitting-nest"><i
                                     class="fa fa-binoculars"
                                     style="margin-right:10px;"></i><?php echo i8ln( 'Submit Nest' ); ?>
+                            </button>
+                        </div>
+                    </div>
+                <?php } ?>
+                <?php if ( ! $noAddNewCommunity && !$noCommunity ) {
+                    ?>
+                    <div id="tab-communities">
+                        <input type="text" name="community-name" class="community-name"
+                               placeholder="<?php echo i8ln( 'Enter Community Name' ); ?>" data-type="name"
+                               class="search-input">
+                        <input type="text" name="community-description" class="community-description"
+                               placeholder="<?php echo i8ln( 'Enter description' ); ?>" data-type="description"
+			       class="search-input">
+                        <input type="text" name="community-invite" class="community-invite"
+                               placeholder="<?php echo i8ln( 'Enter invite link' ); ?>" data-type="invite"
+                               class="search-input">
+			<div class="button-container">
+                            <button type="button" onclick="submitNewCommunity(event);" class="submitting-community"><i
+                                    class="fa fa-binoculars"
+                                    style="margin-right:10px;"></i><?php echo i8ln( 'Submit Community' ); ?>
                             </button>
                         </div>
                     </div>
