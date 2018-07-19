@@ -407,9 +407,22 @@ if ( $blockIframe ) {
                 ?>
                 <h3><?php echo i8ln( 'Communities' ); ?></h3>
 		<div>
-
+                <?php
+                if ( ! $noCommunity ) {
+                    echo '<div class="form-control switch-container">
+                    <h3>' . i8ln( 'Communities' ) . '</h3>
+                    <div class="onoffswitch">
+                        <input id="communities-switch" type="checkbox" name="communities-switch"
+                               class="onoffswitch-checkbox" checked>
+                        <label class="onoffswitch-label" for="communities-switch">
+                            <span class="switch-label" data-on="On" data-off="Off"></span>
+                            <span class="switch-handle"></span>
+                        </label>
+                    </div>
+                </div>';
+		} ?>
                 </div>
-                    <?php
+                <?php
             }
             ?>
             <?php
@@ -1344,6 +1357,7 @@ if ( $blockIframe ) {
     var maxRaidLevel = <?php echo $maxRaidLevel ?>;
     var enableGyms = <?php echo $noGyms ? 'false' : $enableGyms ?>;
     var enableNests = <?php echo $noNests ? 'false' : $enableNests ?>;
+    var enableCommunities = <?php echo $noCommunity ? 'false' : $enableCommunities ?>;
     var gymSidebar = <?php echo $noGymSidebar ? 'false' : $gymSidebar ?>;
     var enablePokemon = <?php echo $noPokemon ? 'false' : $enablePokemon ?>;
     var enablePokestops = <?php echo $noPokestops ? 'false' : $enablePokestops ?>;
@@ -1385,6 +1399,7 @@ if ( $blockIframe ) {
     var noDeleteNests = <?php echo $noDeleteNests === true ? 'true' : 'false' ?>;
     var noManualNests = <?php echo $noManualNests === true ? 'true' : 'false' ?>;
     var noManualQuests = <?php echo $noManualQuests === true ? 'true' : 'false' ?>;
+    var noAddNewCommunity = <?php echo $noAddNewCommunity === true ? 'true' : 'false' ?>;
     var login = <?php echo $noNativeLogin === false || $noDiscordLogin === false  ? 'true' : 'false' ?>;
     var expireTimestamp = <?php echo isset($_SESSION['user']->expire_timestamp) ? $_SESSION['user']->expire_timestamp : 0 ?>;
     var timestamp = <?php echo time() ?>;

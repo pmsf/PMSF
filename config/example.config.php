@@ -350,6 +350,20 @@ $noSearchGyms = false;          //Wont work if noSearch = false
 $noSearchManualQuests = false;  //Wont work if noSearch = false
 $noSearchNests = false;
 $defaultUnit = "km";                                            // mi/km
+//-----------------------------------------------
+// Nests
+//-----------------------------------------------------
+$noCommunity = false;						// true/false
+$enableCommunities = 'false';					// true/false
+$noAddNewCommunity = false;					// true/false
+
+
+//Example
+//$communityCoords=array(
+//        array('lat1'=>52.00,'lng1'=>3.00,'lat2'=>50.00,'lng2'=>6.00),
+//        array('lat1'=>52.00,'lng1'=>6.00,'lat2'=>50.00,'lng2'=>9.00)
+//		);
+
 
 //-----------------------------------------------
 // Nests

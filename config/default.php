@@ -354,6 +354,12 @@ $noSearchGyms = false;          //Wont work if noSearch = false
 $noSearchManualQuests = false;  //Wont work if noSearch = false
 $noSearchNests = false;
 $defaultUnit = "km";                                            // mi/km
+//-----------------------------------------------
+// Community
+//-----------------------------------------------------
+$noCommunity = false;
+$enableCommunities = 'false';
+$noAddNewCommunity = false;
 
 //-----------------------------------------------
 // Nests

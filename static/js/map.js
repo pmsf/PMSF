@@ -81,6 +81,7 @@ var oNeLng
 var lastpokestops
 var lastgyms
 var lastnests
+var lastcommunities
 var lastpokemon
 var lastslocs
 var lastspawns
@@ -427,6 +428,7 @@ function createLocationMarker() {
 function initSidebar() {
     $('#gyms-switch').prop('checked', Store.get('showGyms'))
     $('#nests-switch').prop('checked', Store.get('showNests'))
+    $('#communities-switch').prop('checked', Store.get('showCommunities'))
     $('#gym-sidebar-switch').prop('checked', Store.get('useGymSidebar'))
     $('#ex-eligible-switch').prop('checked', Store.get('exEligible'))
     $('#gym-sidebar-wrapper').toggle(Store.get('showGyms') || Store.get('showRaids'))
@@ -1417,6 +1419,52 @@ function nestLabel(item) {
     return str
 }
 
+function setupCommunityMarker(item) {
+    var str = '<div class="marker-community">' +
+        '<img src="static/images/marker-' + item.type + '.png" style="width:36px;height: auto;"/>' +
+        '</div>'
+
+    var marker = new RichMarker({
+        position: new google.maps.LatLng(item['latitude'], item['longitude']),
+        map: map,
+        content: str,
+        flat: true,
+        anchor: RichMarkerPosition.MIDDLE
+    })
+
+    marker.infoWindow = new google.maps.InfoWindow({
+        content: communityLabel(item),
+        disableAutoPan: true,
+        pixelOffset: new google.maps.Size(0, -30)
+    })
+    addListeners(marker)
+
+    return marker
+}
+
+function communityLabel(item) {
+    var str = '<div align="center" class="marker-nests">' +
+        '<img src="static/images/marker-' + item.type + '.png" align"middle" style="width:36px;height: auto;"/>' +
+        '</div>'
+    if (item.source === 2) {
+        str += '<center><div style="margin-bottom:5px; margin-top:5px;">' + i8ln('As found on thesilphroad.com') + '</div></center>'
+    }
+    if (!noAddNewCommunity) {
+        str += '<center><div>Add Community <i class="fa fa-binoculars submit-community" onclick="openCommunityModal(event);" data-id="' + item['community_id'] + '"></i></div></center>'
+    }
+    str += '<div>' +
+        'Location: <a href="javascript:void(0)" onclick="javascript:openMapDirections(' + item.latitude + ',' + item.longitude + ')" title="' + i8ln('View in Maps') + '">' + item.latitude.toFixed(6) + ', ' + item.longitude.toFixed(7) + '</a> - <a href="./?lat=' + item.latitude + '&lon=' + item.longitude + '&zoom=16">Share link</a>' +
+        '</div>'
+    if (!noWhatsappLink) {
+        str += '<div>' +
+            '<center>' +
+            '<a href="whatsapp://send?text=%2A' + item.title + '%2A%20.%0A%0ALocation:%20https://www.google.com/maps/search/?api=1%26query=' + item.latitude + ',' + item.longitude + '" data-action="share/whatsapp/share">Whatsapp Link</a>' +
+            '</center>' +
+            '</div>'
+    }
+    return str
+}
+
 function getColorByDate(value) {
     // Changes the color from red to green over 15 mins
     var diff = (Date.now() - value) / 1000 / 60 / 15
@@ -1665,6 +1713,7 @@ function loadRawData() {
     var loadGyms = (Store.get('showGyms') || Store.get('showRaids')) ? 'true' : 'false'
     var loadPokestops = Store.get('showPokestops')
     var loadNests = Store.get('showNests')
+    var loadCommunities = Store.get('showCommunities')
     var loadScanned = Store.get('showScanned')
     var loadSpawnpoints = Store.get('showSpawnpoints')
     var loadLuredOnly = Store.get('showLuredPokestopsOnly')
@@ -1695,6 +1744,8 @@ function loadRawData() {
             'pokestops': loadPokestops,
             'nests': loadNests,
             'lastnests': lastnests,
+            'communities': loadCommunities,
+            'lastcommunities': lastcommunities,
             'lastpokestops': lastpokestops,
             'luredonly': loadLuredOnly,
             'gyms': loadGyms,
@@ -2518,6 +2569,29 @@ function processNests(i, item) {
         mapData.nests[item['nest_id']] = item
     }
 }
+function processCommunities(i, item) {
+    if (!Store.get('showCommunities')) {
+        return false
+    }
+
+    if (!mapData.communities[item['community_id']]) {
+        // new pokestop, add marker to map and item to dict
+        if (item.marker && item.marker.rangeCircle) {
+            item.marker.rangeCircle.setMap(null)
+        }
+        if (item.marker) {
+            item.marker.setMap(null)
+        }
+        item.marker = setupCommunityMarker(item)
+        mapData.nests[item['nest_id']] = item
+    } else {
+        // change existing pokestop marker to unlured/lured
+        var item2 = mapData.communities[item['community_id']]
+        item2.marker.setMap(null)
+        item.marker = setupCommunityMarker(item)
+        mapData.communities[item['community_id']] = item
+    }
+}
 function processPokestops(i, item) {
     if (!Store.get('showPokestops')) {
         return false
@@ -2823,6 +2897,7 @@ function updateMap() {
         $.each(result.scanned, processScanned)
         $.each(result.spawnpoints, processSpawnpoints)
         $.each(result.nests, processNests)
+        $.each(result.communities, processCommunities)
         showInBoundsMarkers(mapData.pokemons, 'pokemon')
         showInBoundsMarkers(mapData.lurePokemons, 'pokemon')
         showInBoundsMarkers(mapData.gyms, 'gym')
@@ -2852,6 +2927,7 @@ function updateMap() {
         lastslocs = result.lastslocs
         lastspawns = result.lastspawns
         lastnests = result.lastnests
+        lastcommunities = result.lastcommunities
 
         prevMinIV = result.preMinIV
         prevMinLevel = result.preMinLevel
@@ -4286,6 +4362,10 @@ $(function () {
     $('#nests-switch').change(function () {
         lastnests = false
         buildSwitchChangeListener(mapData, ['nests'], 'showNests').bind(this)()
+    })
+    $('#community-switch').change(function () {
+        lastcommunities = false
+        buildSwitchChangeListener(mapData, ['community'], 'showCommunities').bind(this)()
     })
     $('#pokemon-switch').change(function () {
         var options = {
