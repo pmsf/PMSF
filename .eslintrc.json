@@ -132,6 +132,8 @@
     "List": true,
     "defaultUnit": true,
     "noRenamePokestops": true,
-    "noWhatsappLink": true
+    "noWhatsappLink": true,
+    "enableCommunities": true,
+    "noAddNewCommunity": false
   }
 }
