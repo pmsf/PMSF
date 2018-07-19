@@ -2583,7 +2583,7 @@ function processCommunities(i, item) {
             item.marker.setMap(null)
         }
         item.marker = setupCommunityMarker(item)
-        mapData.nests[item['nest_id']] = item
+        mapData.communities[item['community_id']] = item
     } else {
         // change existing pokestop marker to unlured/lured
         var item2 = mapData.communities[item['community_id']]
@@ -4363,9 +4363,9 @@ $(function () {
         lastnests = false
         buildSwitchChangeListener(mapData, ['nests'], 'showNests').bind(this)()
     })
-    $('#community-switch').change(function () {
+    $('#communities-switch').change(function () {
         lastcommunities = false
-        buildSwitchChangeListener(mapData, ['community'], 'showCommunities').bind(this)()
+        buildSwitchChangeListener(mapData, ['communities'], 'showCommunities').bind(this)()
     })
     $('#pokemon-switch').change(function () {
         var options = {
