@@ -1444,10 +1444,37 @@ function setupCommunityMarker(item) {
 
 function communityLabel(item) {
     var str = '<div align="center" class="marker-nests">' +
-        '<img src="static/images/marker-' + item.type + '.png" align"middle" style="width:36px;height: auto;"/>' +
-        '</div>'
-    if (item.source === 2) {
-        str += '<center><div style="margin-bottom:5px; margin-top:5px;">' + i8ln('As found on thesilphroad.com') + '</div></center>'
+        '<img src="static/images/marker-' + item.type + '.png" align"middle" style="width:30px;height: auto;"/>' +
+        '<img src="' + item.image_url + '" align"middle" style="width:36px;height: auto;"/>' +
+        '</div>' +
+        '<center><div>' + item.title + '</div></center>' +
+        '<center><div>' + item.description + '</div></center>'
+    if (item.team_instinct === 1 || item.team_mystic === 1 || item.team_valor === 1) {
+        str += '<center><div>Welcome to Teams:<br>'
+        if (item.team_instinct === 1) {
+            str +=
+            '<img src="static/images/communities/instinct.png" align"middle" style="width:18px;height: auto;"/>'
+        }
+        if (item.team_mystic === 1) {
+            str +=
+            '<img src="static/images/communities/mystic.png" align"middle" style="width:18px;height: auto;"/>'
+        }
+        if (item.team_valor === 1) {
+            str +=
+            '<img src="static/images/communities/valor.png" align"middle" style="width:18px;height: auto;"/>'
+        }
+        str += '</center></div>'
+    }
+    if (item.size >= 10) {
+        str +=
+        '<center><div>' + item.size + ' Members</div></center>'
+    }
+    if (item.has_invite_url === 1 && (item.invite_url !== '#' || item.invite_url !== undefined)) {
+        str +=
+        '<center><div class="button-container">' +
+            '<a class="button" href="' + item.invite_url + '">' + i8ln('Join Now   ') + '<i class="fa fa-comments" style="margin-left:10px;"></i>' +
+            '</a>' +
+        '</div></center>'
     }
     if (!noAddNewCommunity) {
         str += '<center><div>Add Community <i class="fa fa-binoculars submit-community" onclick="openCommunityModal(event);" data-id="' + item['community_id'] + '"></i></div></center>'
@@ -1461,6 +1488,9 @@ function communityLabel(item) {
             '<a href="whatsapp://send?text=%2A' + item.title + '%2A%20.%0A%0ALocation:%20https://www.google.com/maps/search/?api=1%26query=' + item.latitude + ',' + item.longitude + '" data-action="share/whatsapp/share">Whatsapp Link</a>' +
             '</center>' +
             '</div>'
+    }
+    if (item.source === 2) {
+        str += '<center><div style="margin-bottom:5px; margin-top:5px;">' + i8ln('As found on thesilphroad.com') + '</div></center>'
     }
     return str
 }
