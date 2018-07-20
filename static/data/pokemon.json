@@ -322,6 +322,8 @@
   "26": {
     "name": "Raichu",
     "rarity": "Ultra Rare",
+    "level": 3,
+    "cp": 16178,
     "types": [
       {
         "type": "Electric",
