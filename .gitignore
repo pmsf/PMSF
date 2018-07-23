@@ -44,7 +44,7 @@ cron/*
 /static/icons-im-1-bigger.png
 /static/icons-pokemon/
 /static/sprites-pokemon/
-/static/rewards/reward_*.png
+/static/rewards/*
 package-lock.json
 index.php
 .DS_Store

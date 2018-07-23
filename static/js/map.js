@@ -164,6 +164,13 @@ var notifyText = 'disappears at <dist> (<udist>)'
 //
 // Functions
 //
+if (location.search.indexOf('map') < 0) {
+    var hash = window.location.hash
+    var loc = window.location.href.replace(hash, '')
+    loc += (loc.indexOf('?') < 0 ? '?' : '&') + 'map'
+    // SET THE ONE TIME AUTOMATIC PAGE RELOAD TIME TO 5000 MILISECONDS (5 SECONDS):
+    setTimeout(function () { window.location.href = loc + hash }, 500)
+}
 
 function excludePokemon(id) { // eslint-disable-line no-unused-vars
     $selectExclude.val(
@@ -873,7 +880,7 @@ function pokestopLabel(expireTime, latitude, longitude, stopName, lureUser, id, 
             '<center>' + '<div>' +
             '<b>' + stopName + '</b>' +
             '</div>'
-        if (quest === null) {
+        if (noManualQuests === true || quest === null) {
             str =
                 '<div>' +
                 '<center>' +
@@ -1305,6 +1312,10 @@ function getPokestopMarkerIcon(item) {
     if (item['lure_expiration'] > Date.now()) {
         return '<div style="position:relative;">' +
             '<img src="static/forts/Pstop-Lured.png"/>' +
+            '</div>'
+    } else if (noManualQuests === true) {
+        return '<div style="position:relative;">' +
+            '<img src="static/forts/Pstop.png"' +
             '</div>'
     } else if (item['quest_id'] !== null) {
         return '<div style="position:relative;">' +
