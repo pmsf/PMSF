@@ -1322,9 +1322,42 @@ if ( $blockIframe ) {
                                placeholder="<?php echo i8ln( 'Enter description' ); ?>" data-type="description"
 			       class="search-input">
                         <input type="text" name="community-invite" class="community-invite"
-                               placeholder="<?php echo i8ln( 'Enter invite link' ); ?>" data-type="invite"
+                               placeholder="<?php echo i8ln( 'Whatsapp, Telegram, Discord Link' ); ?>" data-type="invite-link"
                                class="search-input">
-			<div class="button-container">
+                        <div class="form-control switch-container">
+                        <h3><?php echo i8ln( 'Team Instinct' ); ?></h3>
+                             <div class="onoffswitch">
+                                 <input id="instinct-switch" type="checkbox" name="instinct-switch"
+                                        class="onoffswitch-checkbox" checked>
+                                 <label class="onoffswitch-label" for="instinct-switch">
+                                     <span class="switch-label" data-on="On" data-off="Off"></span>
+                                     <span class="switch-handle"></span>
+                                 </label>
+                             </div>
+                        </div>
+                        <div class="form-control switch-container">
+                        <h3><?php echo i8ln( 'Team Mystic' ); ?></h3>
+                             <div class="onoffswitch">
+                                 <input id="mystic-switch" type="checkbox" name="mystic-switch"
+                                        class="onoffswitch-checkbox" checked>
+                                 <label class="onoffswitch-label" for="mystic-switch">
+                                      <span class="switch-label" data-on="On" data-off="Off"></span>
+                                      <span class="switch-handle"></span>
+                                 </label>
+                             </div>
+                        </div>
+                        <div class="form-control switch-container">
+                        <h3><?php echo i8ln( 'Team Valor' ); ?></h3>
+                             <div class="onoffswitch">
+                                 <input id="valor-switch" type="checkbox" name="valor-switch"
+                                        class="onoffswitch-checkbox" checked>
+                                 <label class="onoffswitch-label" for="valor-switch">
+                                      <span class="switch-label" data-on="On" data-off="Off"></span>
+                                      <span class="switch-handle"></span>
+                                 </label>
+                             </div>
+                        </div>
+                        <div class="button-container">
                             <button type="button" onclick="submitNewCommunity(event);" class="submitting-community"><i
                                     class="fa fa-binoculars"
                                     style="margin-right:10px;"></i><?php echo i8ln( 'Submit Community' ); ?>
