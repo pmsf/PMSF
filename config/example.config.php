@@ -61,6 +61,9 @@ $discordUrl = "https://discord.gg/INVITE_LINK";                     // Discord U
 
 $worldopoleUrl = "";                                                // Link to Worldopole, leave "" for empty
 
+/* StatsToggle */
+$noStatsToggle = false;                                             // Enables or disables the stats button in the header.
+
 /* MOTD */
 $noMotd = true;
 $motdTitle = "Message of the Day";
@@ -275,6 +278,9 @@ $sendRaidData = false;                                              // Send Raid
 //-----------------------------------------------------
 $hideIfManual = false;
 $noManualRaids = false;						    // Enable/Disable ManualRaids permanently ( Comment this line if you want to use the block below )
+$noDiscordSubmitLogChannel = true;                                        // Send webhooks to discord channel upon submission
+$submitMapUrl = '';
+$discordSubmitLogChannelUrl = 'https://discordapp.com/api/webhooks/<yourCHANNELhere>';
 //$currentTime = (int) date('G');				    // Uncomment this block to deny Raid submissions over night
 //
 //if ($currentTime >= 6 && $currentTime < 23) {                     // noManualRaids = true between 23:00 and 06:00. Adjest hours if needed
@@ -296,7 +302,7 @@ $pokemonToExclude = [];
 $noDeleteGyms = false;
 $noDeletePokestops = false;
 
-$raidBosses = [320,138,90,140,129,259,159,73,303,319,121,134,68,365,248,306,359,382];
+$raidBosses = [4, 296, 307, 138, 320, 129, 103, 281, 126, 303, 185, 137, 26, 232, 136, 95, 68, 248, 229, 105, 359, 76, 112, 379];
 
 $sendWebhook = false;
 $webhookUrl = null;                                                 //['url-1','url-2']

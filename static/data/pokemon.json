@@ -322,6 +322,8 @@
   "26": {
     "name": "Raichu",
     "rarity": "Ultra Rare",
+    "level": 3,
+    "cp": 16178,
     "types": [
       {
         "type": "Electric",
@@ -1304,7 +1306,7 @@
   "105": {
     "name": "Marowak",
     "rarity": "Very Rare",
-    "level": 2,
+    "level": 4,
     "cp": 9891,
     "types": [
       {

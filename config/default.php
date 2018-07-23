@@ -71,6 +71,9 @@ $discordUrl = "";                                                   // Discord U
 
 $worldopoleUrl = "";                                                // Link to Worldopole, leave "" for empty
 
+/* StatsToggle */
+$noStatsToggle = false;                                             // Enables or disables the stats button in the header.
+
 /* MOTD */
 $noMotd = true;
 $motdTitle = "";
@@ -294,13 +297,15 @@ $noManualPokestops = false;
 $noRenamePokestops = false;
 $noManualQuests = false;
 
+$noDiscordSubmitLogChannel = true;                                        // Send webhooks to discord channel upon submission
+
 $pokemonReportTime = true;
 $pokemonToExclude = [];
 
 $noDeleteGyms = false;
 $noDeletePokestops = false;
 
-$raidBosses = [129,361,333,355,103,303,200,302,215,68,94,124,221,127,248,306,359,365,381,250];
+$raidBosses = [4, 296, 307, 138, 320, 129, 103, 281, 126, 303, 185, 137, 26, 232, 136, 95, 68, 248, 229, 105, 359, 76, 112, 379];
 
 $sendWebhook = false;
 $webhookUrl = null;                                             //['url-1','url-2']

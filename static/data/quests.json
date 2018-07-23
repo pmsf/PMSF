@@ -197,7 +197,7 @@
   },
   "150": {
     "cat": "Catch",
-    "name": "Catch a Grass-, Fire-, or Ground-type Pokémon."
+    "name": "Catch a Grass-, Fire-, or Water-type Pokémon."
   },
   "151": {
     "cat": "Catch",
@@ -214,6 +214,10 @@
   "154": {
     "cat": "Catch",
     "name": "Catch 20 Pokémon with Weather Boost."
+  },
+  "155": {
+    "cat": "Catch",
+    "name": "Catch 2 ice type Pokémon."
   },
   "255": {
     "cat": "Evolve",
@@ -266,6 +270,14 @@
   "267": {
     "cat": "Evolve",
     "name": "Evolve a Magikarp."
+  },
+  "268": {
+    "cat": "Evolve",
+    "name": "Evolve a Grass-Type Pokémon."
+  },
+  "269": {
+    "cat": "Evolve",
+    "name": "Evolve a Electric, Water or Fire-Type Pokémon"
   },
   "368": {
     "cat": "Throw",
@@ -403,6 +415,10 @@
     "cat": "Miscellaneous",
     "name": "Earn a Candy walking with your buddy."
   },
+  "602": {
+    "cat": "Miscellaneous",
+    "name": "Power up a Pokémon 3 times."
+  },
   "700": {
     "cat": "Event",
     "name": "Use 3 berries to help catch a Pokémon."
@@ -430,5 +446,13 @@
   "706": {
     "cat": "Event",
     "name": "Battle in a gym 3 times."
+  },
+  "707": {
+    "cat": "Event",
+    "name": "Evolve 2 Shellder."
+  },
+  "708": {
+    "cat": "Event",
+    "name": "Catch 5 Magikarp or Wailmer."
   }
 }
