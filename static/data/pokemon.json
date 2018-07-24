@@ -1560,6 +1560,8 @@
   "126": {
     "name": "Magmar",
     "rarity": "Rare",
+    "level": 2,
+    "cp": 11610,
     "types": [
       {
         "type": "Fire",
@@ -2896,6 +2898,8 @@
   "232": {
     "name": "Donphan",
     "rarity": "Very Rare",
+    "level": 3,
+    "cp": 18980,
     "types": [
       {
         "type": "Ground",
@@ -3496,6 +3500,8 @@
   "281":{
     "name": "Kirlia",
     "rarity":"",
+    "level": 2,
+    "cp": 6005,
     "types": [
       {
         "type": "Psychic",
@@ -3680,6 +3686,8 @@
   "296":{
     "name": "Makuhita",
     "rarity":"",
+    "level": 1,
+    "cp": 2319,
     "types": [
       {
         "type": "Fighting",
@@ -3822,6 +3830,8 @@
   "307":{
     "name": "Meditite",
     "rarity":"",
+    "level": 1,
+    "cp": 2516,
     "types": [
       {
         "type": "Fighting",
