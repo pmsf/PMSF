@@ -1455,8 +1455,14 @@ function setupCommunityMarker(item) {
 
 function communityLabel(item) {
     var str = '<div align="center" class="marker-nests">' +
-        '<img src="static/images/marker-' + item.type + '.png" align"middle" style="width:30px;height: auto;"/>' +
-        '<img src="' + item.image_url + '" align"middle" style="width:36px;height: auto;"/>' +
+        '<img src="static/images/marker-' + item.type + '.png" align"middle" style="width:30px;height: auto;"/>'
+    if (item.image_url != null) {
+        str +=
+	'<img src="' + item.image_url + '" align"middle" style="width:36px;height: auto;"/>'
+    } else {
+        str +=
+	'<img src="static/images/community_ball.png" align"middle" style="width:36px;height: auto;"/>'
+    }
         '</div>' +
         '<center><div>' + item.title + '</div></center>' +
         '<center><div>' + item.description + '</div></center>'
@@ -2327,6 +2333,49 @@ function manualRaidData(event) { // eslint-disable-line no-unused-vars
                     if (Store.get('useGymSidebar')) {
                         showGymDetails(form.find('[name="gymId"]').val())
                     }
+                    $('.ui-dialog-content').dialog('close')
+                }
+            })
+        }
+    }
+}
+function submitNewCommunity(event) { // eslint-disable-line no-unused-vars
+    var form = $(event.target).parent().parent()
+    var latitude = $('.submit-modal.ui-dialog-content .submitLatitude').val()
+    var longitude = $('.submit-modal.ui-dialog-content .submitLongitude').val()
+    var communityName = form.find('[name="community-name"]').val()
+    var communityDescription = form.find('[name="community-description"]').val()
+    var communityInvite = form.find('[name="community-invite"]').val()
+    var teamInstinct = form.find('[name="instinct-switch"]').val()
+    var teamMystic = form.find('[name="mystic-switch"]').val()
+    var teamValor = form.find('[name="valor-switch"]').val()
+    if (communityName && communityName !== '' && communityDescription && communityDescription !== '' && communityInvite && communityInvite !== '') {
+        if (confirm(i8ln('I confirm this is an active community'))) {
+            return $.ajax({
+                url: 'submit',
+                type: 'POST',
+                timeout: 300000,
+                dataType: 'json',
+                cache: false,
+                data: {
+                    'action': 'community-add',
+                    'lat': latitude,
+                    'lng': longitude,
+                    'communityName': communityName,
+                    'communityDescription': communityDescription,
+                    'communityInvite': communityInvite,
+                    'teamInstinct': teamInstinct,
+                    'teamMystic': teamMystic,
+                    'teamValor': teamValor
+                },
+                error: function error() {
+                    // Display error toast
+                    toastr['error'](i8ln('Please check connectivity or reduce marker settings.'), i8ln('Error Submitting community'))
+                    toastr.options = toastrOptions
+                },
+                complete: function complete() {
+                    lastcommunities = false
+                    updateMap()
                     $('.ui-dialog-content').dialog('close')
                 }
             })

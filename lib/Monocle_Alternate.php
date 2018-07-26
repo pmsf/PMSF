@@ -596,7 +596,7 @@ class Monocle_Alternate extends Monocle
             $community["latitude"] = floatval($community["latitude"]);
             $community["longitude"] = floatval($community["longitude"]);
             $community["discord_acct_linked"] = intval($community["discord_acct_linked"]);
-            $community["discord_identifier"] = intval($community["discord_identiefier"]);
+            $community["discord_identifier"] = intval($community["discord_identifier"]);
             $community["source"] = intval($community["source"]);
             $data[] = $community;
 

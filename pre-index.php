@@ -1327,34 +1327,23 @@ if ( $blockIframe ) {
                         <div class="form-control switch-container">
                         <h3><?php echo i8ln( 'Team Instinct' ); ?></h3>
                              <div class="onoffswitch">
-                                 <input id="instinct-switch" type="checkbox" name="instinct-switch"
-                                        class="onoffswitch-checkbox" checked>
-                                 <label class="onoffswitch-label" for="instinct-switch">
-                                     <span class="switch-label" data-on="On" data-off="Off"></span>
-                                     <span class="switch-handle"></span>
-                                 </label>
+                                 <input type="radio" name="instinct-switch" value="1" checked onClick=0>
                              </div>
                         </div>
                         <div class="form-control switch-container">
                         <h3><?php echo i8ln( 'Team Mystic' ); ?></h3>
                              <div class="onoffswitch">
-                                 <input id="mystic-switch" type="checkbox" name="mystic-switch"
-                                        class="onoffswitch-checkbox" checked>
+                                 <input id="mystic-switch" type="checkbox" name="mystic-switch" class="onoffswitch-checkbox" checked>
                                  <label class="onoffswitch-label" for="mystic-switch">
-                                      <span class="switch-label" data-on="On" data-off="Off"></span>
-                                      <span class="switch-handle"></span>
+                                     <span class="switch-label" data-on="On" data-off="Off"></span>
+                                     <span class="switch-handle"></span>
                                  </label>
-                             </div>
+                             </div> 
                         </div>
                         <div class="form-control switch-container">
                         <h3><?php echo i8ln( 'Team Valor' ); ?></h3>
                              <div class="onoffswitch">
-                                 <input id="valor-switch" type="checkbox" name="valor-switch"
-                                        class="onoffswitch-checkbox" checked>
-                                 <label class="onoffswitch-label" for="valor-switch">
-                                      <span class="switch-label" data-on="On" data-off="Off"></span>
-                                      <span class="switch-handle"></span>
-                                 </label>
+                                 <input type="radio" name="valor-switch" value="1" checked onClick=0>
                              </div>
                         </div>
                         <div class="button-container">

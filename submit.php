@@ -396,8 +396,42 @@ if ( $action === "raid" ) {
             ]
         ] );
     }
+} elseif ( $action === "community-add" ) {
+    if ( $noCommunity === true || $noAddNewCommunity === true ) {
+	http_response_code( 401 );
+	die();
+    }
+    $communityName = ! empty( $_POST['communityName'] ) ? $_POST['communityName'] : '';
+    $communityDescription = ! empty( $_POST['communityDescription'] ) ? $_POST['communityDescription'] : '';
+    $communityInvite = ! empty( $_POST['communityInvite'] ) ? $_POST['communityInvite'] : '';
+    if ( ! empty( $lat ) && ! empty( $lng ) && ! empty( $communityName ) && ! empty( $communityDescription ) && ! empty( $communityInvite ) ) {
+        $communityId = randomNum();
+        $cols       = [
+            'community_id'        => $communityId,
+            'title'               => $communityName,
+            'description'         => $communityDescription,
+            'type'                => 5,
+            'image_url'           => null,
+            //'team_instict'        => $_POST['teamInstinct'],
+            //'team_mystic'         => $_POST['teamMystic'],
+            //'team_valor'          => $_POST['teamValor'],
+            'invite_url'          => $communityInvite,
+            'latitude'            => $lat,
+            'longitude'           => $lng,
+            'updated'             => time(),
+            'source'              => 1
+        ];
+        $db->insert( "community", $cols );
+        if ( $noDiscordSubmitLogChannel === false ) {
+            $data = array("content" => '```Added community with id "' . $commuityId . '" and gave it the new name: "' . $communityName . '"```' . $submitMapUrl . '/?lat=' . $lat . '&lon=' . $lng . '&zoom=18 ', "username" => $_SESSION['user']->user);
+            $curl = curl_init($discordSubmitLogChannelUrl);
+            curl_setopt($curl, CURLOPT_CUSTOMREQUEST, "POST");
+            curl_setopt($curl, CURLOPT_POSTFIELDS, json_encode($data));
+            curl_setopt($curl, CURLOPT_RETURNTRANSFER, true);
+            curl_exec($curl);
+        }
+    }
 }
-
 function randomGymId() {
     $alphabet    = 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890';
     $pass        = array(); //remember to declare $pass as an array
