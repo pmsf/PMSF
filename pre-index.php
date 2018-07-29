@@ -1344,20 +1344,6 @@ if ( $blockIframe ) {
                                placeholder="<?php echo i8ln( 'Whatsapp, Telegram, Discord Link' ); ?>" data-type="invite-link"
 			       class="search-input">
 			<h6><center><?php echo i8ln( 'Link must be valid and start with https://' ); ?></center></h6>
-			<div class="community-teams">
-                            <label class="container"><?php echo i8ln( 'Team Instinct' ); ?>
-                                <input id="instinct-switch" name="instinct-switch" type="checkbox" checked>
-                                <span class="checkmark"></span>
-                            </label>
-                            <label class="container"><?php echo i8ln( 'Team Mystic' ); ?>
-                                <input id="mystic-switch" name="mystic-switch" type="checkbox" checked>
-                                <span class="checkmark"></span>
-                            </label>
-                            <label class="container"><?php echo i8ln( 'Team Valor' ); ?>
-                                <input id="valor-switch" name="valor-switch" type="checkbox" checked>
-                                <span class="checkmark"></span>
-                            </label>
-                        </div>
                         <div class="button-container">
                             <button type="button" onclick="submitNewCommunity(event);" class="submitting-community"><i
                                     class="fa fa-comments"

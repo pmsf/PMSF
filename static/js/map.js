@@ -1436,7 +1436,7 @@ function setupCommunityMarker(item) {
         '</div>'
 
     var marker = new RichMarker({
-        position: new google.maps.LatLng(item['latitude'], item['longitude']),
+        position: new google.maps.LatLng(item['lat'], item['lon']),
         map: map,
         content: str,
         flat: true,
@@ -2339,26 +2339,11 @@ function manualRaidData(event) { // eslint-disable-line no-unused-vars
 }
 function submitNewCommunity(event) { // eslint-disable-line no-unused-vars
     var form = $(event.target).parent().parent()
-    var latitude = $('.submit-modal.ui-dialog-content .submitLatitude').val()
-    var longitude = $('.submit-modal.ui-dialog-content .submitLongitude').val()
+    var lat = $('.submit-modal.ui-dialog-content .submitLatitude').val()
+    var lon = $('.submit-modal.ui-dialog-content .submitLongitude').val()
     var communityName = form.find('[name="community-name"]').val()
     var communityDescription = form.find('[name="community-description"]').val()
     var communityInvite = form.find('[name="community-invite"]').val()
-    if (document.getElementById('instinct-switch').checked) {
-        var teamInstinct = '1'
-    } else {
-        var teamInstinct = '0'
-    }
-    if (document.getElementById('mystic-switch').checked) {
-        var teamMystic = '1'
-    } else {
-        var teamMystic = '0'
-    }
-    if (document.getElementById('valor-switch').checked) {
-        var teamValor = '1'
-    } else {
-        var teamValor = '0'
-    }
     if (communityName && communityName !== '' && communityDescription && communityDescription !== '' && communityInvite && communityInvite !== '') {
         if (confirm(i8ln('I confirm this is an active community'))) {
             return $.ajax({
@@ -2369,14 +2354,11 @@ function submitNewCommunity(event) { // eslint-disable-line no-unused-vars
                 cache: false,
                 data: {
                     'action': 'community-add',
-                    'lat': latitude,
-                    'lng': longitude,
+                    'lat': lat,
+                    'lng': lon,
                     'communityName': communityName,
                     'communityDescription': communityDescription,
                     'communityInvite': communityInvite,
-                    'teamInstinct': teamInstinct,
-                    'teamMystic': teamMystic,
-                    'teamValor': teamValor
                 },
                 error: function error() {
                     // Display error toast
