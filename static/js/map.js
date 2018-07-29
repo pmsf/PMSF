@@ -1458,14 +1458,15 @@ function communityLabel(item) {
         '<img src="static/images/marker-' + item.type + '.png" align"middle" style="width:30px;height: auto;"/>'
     if (item.image_url != null) {
         str +=
-	'<img src="' + item.image_url + '" align"middle" style="width:36px;height: auto;"/>'
+        '<img src="' + item.image_url + '" align"middle" style="width:36px;height: auto;"/>'
     } else {
         str +=
-	'<img src="static/images/community_ball.png" align"middle" style="width:36px;height: auto;"/>'
+        '<img src="static/images/community_ball.png" align"middle" style="width:36px;height: auto;"/>'
     }
+    str +=
         '</div>' +
-        '<center><div>' + item.title + '</div></center>' +
-        '<center><div>' + item.description + '</div></center>'
+        '<center><h4><div>' + item.title + '</div></h4></center>' +
+        '<center><div>' + item.description.slice(0, 30) + '</div></center>'
     if (item.team_instinct === 1 || item.team_mystic === 1 || item.team_valor === 1) {
         str += '<center><div>Welcome to Teams:<br>'
         if (item.team_instinct === 1) {
@@ -1489,25 +1490,22 @@ function communityLabel(item) {
     if (item.has_invite_url === 1 && (item.invite_url !== '#' || item.invite_url !== undefined)) {
         str +=
         '<center><div class="button-container">' +
-            '<a class="button" href="' + item.invite_url + '">' + i8ln('Join Now   ') + '<i class="fa fa-comments" style="margin-left:10px;"></i>' +
+            '<a class="button" href="' + item.invite_url + '">' + i8ln('Join Now') + '<i class="fa fa-comments" style="margin-left:10px;"></i>' +
             '</a>' +
         '</div></center>'
     }
-    if (!noAddNewCommunity) {
-        str += '<center><div>Add Community <i class="fa fa-binoculars submit-community" onclick="openCommunityModal(event);" data-id="' + item['community_id'] + '"></i></div></center>'
-    }
-    str += '<div>' +
-        'Location: <a href="javascript:void(0)" onclick="javascript:openMapDirections(' + item.latitude + ',' + item.longitude + ')" title="' + i8ln('View in Maps') + '">' + item.latitude.toFixed(6) + ', ' + item.longitude.toFixed(7) + '</a> - <a href="./?lat=' + item.latitude + '&lon=' + item.longitude + '&zoom=16">Share link</a>' +
-        '</div>'
-    if (!noWhatsappLink) {
-        str += '<div>' +
-            '<center>' +
-            '<a href="whatsapp://send?text=%2A' + item.title + '%2A%20.%0A%0ALocation:%20https://www.google.com/maps/search/?api=1%26query=' + item.latitude + ',' + item.longitude + '" data-action="share/whatsapp/share">Whatsapp Link</a>' +
-            '</center>' +
-            '</div>'
+    if (!noEditCommunity) {
+        str +=
+        '<center><div class="button-container">' +
+        '<a class="button" onclick="openEditCommunityModal(event);" data-id="' + item.community_id + '" data-title="' + item.title + '" data-description="' + item.description + '" data-invite="' + item.invite_url + '">' + i8ln('Edit Community') + '<i class="fa fa-edit style="margin-left:10px;"></i></center>' +
+            '</a>' +
+        '</div></center>'
     }
     if (item.source === 2) {
         str += '<center><div style="margin-bottom:5px; margin-top:5px;">' + i8ln('As found on thesilphroad.com') + '</div></center>'
+    }
+    if (!noDeleteCommunity) {
+        str += '<i class="fa fa-trash-o delete-community" onclick="deleteCommunity(event);" data-id="' + item.community_id + '"></i>'
     }
     return str
 }
@@ -2370,11 +2368,76 @@ function submitNewCommunity(event) { // eslint-disable-line no-unused-vars
                 },
                 error: function error() {
                     // Display error toast
-                    toastr['error'](i8ln('Please check connectivity or reduce marker settings.'), i8ln('Error Submitting community'))
+                    toastr['error'](i8ln('Make sure all fields are filled and the invite link is a valid Discord, Telegram or Whatsapp link.'), i8ln('Error Submitting community'))
                     toastr.options = toastrOptions
                 },
                 complete: function complete() {
                     lastcommunities = false
+                    updateMap()
+                    $('.ui-dialog-content').dialog('close')
+                }
+            })
+        }
+    }
+}
+function deleteCommunity(event) { // eslint-disable-line no-unused-vars
+    var button = $(event.target)
+    var communityid = button.data('id')
+    if (communityid && communityid !== '') {
+        if (confirm(i8ln('I confirm that I want to delete this community. This is a permanent deleture'))) {
+            return $.ajax({
+                url: 'submit',
+                type: 'POST',
+                timeout: 300000,
+                dataType: 'json',
+                cache: false,
+                data: {
+                    'action': 'delete-community',
+                    'communityId': communityid
+                },
+                error: function error() {
+                    // Display error toast
+                    toastr['error'](i8ln('Oops something went wrong.'), i8ln('Error Deleting community'))
+                    toastr.options = toastrOptions
+                },
+                complete: function complete() {
+                    jQuery('label[for="communities-switch"]').click()
+                    jQuery('label[for="communities-switch"]').click()
+                }
+            })
+        }
+    }
+}
+function editCommunityData(event) { // eslint-disable-line no-unused-vars
+    var form = $(event.target).parent().parent()
+    var communityId = form.find('.editcommunityid').val()
+    var communityName = form.find('[name="community-name"]').val()
+    var communityDescription = form.find('[name="community-description"]').val()
+    var communityInvite = form.find('[name="community-invite"]').val()
+    if ((communityName && communityName !== '') && (communityDescription && communityDescription !== '') && (communityInvite && communityInvite !== '')) {
+        if (confirm(i8ln('I confirm this new info accurate for this community'))) {
+            return $.ajax({
+                url: 'submit',
+                type: 'POST',
+                timeout: 300000,
+                dataType: 'json',
+                cache: false,
+                data: {
+                    'action': 'editcommunity',
+                    'communityid': communityId,
+                    'communityname': communityName,
+                    'communitydescription': communityDescription,
+                    'communityinvite': communityInvite
+                },
+                error: function error() {
+                    // Display error toast
+                    toastr['error'](i8ln('No fields are filled or an invalid url is found, please check the form.'), i8ln('Error changing community'))
+                    toastr.options = toastrOptions
+                },
+                complete: function complete() {
+                    jQuery('label[for="communities-switch"]').click()
+                    jQuery('label[for="communities-switch"]').click()
+                    lastpokestops = false
                     updateMap()
                     $('.ui-dialog-content').dialog('close')
                 }
@@ -2443,6 +2506,27 @@ function openRenamePokestopModal(event) { // eslint-disable-line no-unused-vars
         maxHeight: 600,
         buttons: {},
         title: i8ln('Rename Pokéstop'),
+        classes: {
+            'ui-dialog': 'ui-dialog raid-widget-popup'
+        }
+    })
+}
+
+function openEditCommunityModal(event) { // eslint-disable-line no-unused-vars
+    $('.ui-dialog').remove()
+    var val = $(event.target).data('id')
+    var title = $(event.target).data('title')
+    var description = $(event.target).data('description')
+    var invite = $(event.target).data('invite')
+    $('.editcommunityid').val(val)
+    $('#community-name').val(title)
+    $('#community-description').val(description)
+    $('#community-invite').val(invite)
+    $('.editcommunity-modal').clone().dialog({
+        modal: true,
+        maxHeight: 600,
+        buttons: {},
+        title: i8ln('Edit Community'),
         classes: {
             'ui-dialog': 'ui-dialog raid-widget-popup'
         }

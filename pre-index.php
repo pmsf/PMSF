@@ -1101,6 +1101,25 @@ if ( $blockIframe ) {
             </div>
         </div>
     <?php } ?>
+    <?php if ( ! $noEditCommunity ) { ?>
+        <div class="editcommunity-modal" style="display: none;">
+	   <input type="text" id="community-name" name="community-name"
+		  placeholder="<?php echo i8ln( 'Enter New community Name' ); ?>" data-type="community-name"
+		  class="search-input">
+	   <input type="text" id="community-description" name="community-description"
+		  placeholder="<?php echo i8ln( 'Enter New community Description' ); ?>" data-type="community-description"
+		  class="search-input">
+	   <input type="text" id="community-invite" name="community-invite"
+		  placeholder="<?php echo i8ln( 'Enter New community Invite link' ); ?>" data-type="community-invite"
+		  class="search-input">
+	     <div class="button-container">
+                <button type="button" onclick="editCommunityData(event);" class="editcommunityid"><i
+                        class="fa fa-edit"
+                        style="margin-right:10px; vertical-align: middle; font-size: 1.5em;"></i><?php echo i8ln( 'Save Changes' ); ?>
+                </button>
+            </div>
+        </div>
+    <?php } ?>
     <?php if ( ! $noManualQuests ) { ?>
         <div class="quest-modal" style="display: none;">
             <input type="hidden" value="" name="questPokestop" class="questPokestop"/>
@@ -1317,25 +1336,32 @@ if ( $blockIframe ) {
                     <div id="tab-communities">
                         <input type="text" name="community-name" class="community-name"
                                placeholder="<?php echo i8ln( 'Enter Community Name' ); ?>" data-type="name"
-                               class="search-input">
+			       class="search-input">
                         <input type="text" name="community-description" class="community-description"
                                placeholder="<?php echo i8ln( 'Enter description' ); ?>" data-type="description"
 			       class="search-input">
                         <input type="text" name="community-invite" class="community-invite"
                                placeholder="<?php echo i8ln( 'Whatsapp, Telegram, Discord Link' ); ?>" data-type="invite-link"
-                               class="search-input">
+			       class="search-input">
+			<h6><center><?php echo i8ln( 'Link must be valid and start with https://' ); ?></center></h6>
                         <div class="form-control switch-container">
                         <h3><?php echo i8ln( 'Team Instinct' ); ?></h3>
-                             <div class="onoffswitch">
-                                 <input type="radio" name="instinct-switch" value="1" checked onClick=0>
+                            <div class="onoffswitch">
+                                <input id="instinct-switch" type="checkbox" name="instinct-switch"
+                                     class="onoffswitch-checkbox" checked>
+                                 <label class="onoffswitch-label" for="instinct-switch">
+                                     <span class="switch-label" data - on="1" data - off="0"></span>
+                                     <span class="switch-handle"></span>
+                                 </label>
                              </div>
                         </div>
                         <div class="form-control switch-container">
                         <h3><?php echo i8ln( 'Team Mystic' ); ?></h3>
                              <div class="onoffswitch">
-                                 <input id="mystic-switch" type="checkbox" name="mystic-switch" class="onoffswitch-checkbox" checked>
+                                 <input id="mystic-switch" type="checkbox" name="mystic-switch"
+                                      class="onoffswitch-checkbox" checked>
                                  <label class="onoffswitch-label" for="mystic-switch">
-                                     <span class="switch-label" data-on="On" data-off="Off"></span>
+                                     <span class="switch-label" data - on="1" data - off="0"></span>
                                      <span class="switch-handle"></span>
                                  </label>
                              </div> 
@@ -1343,12 +1369,17 @@ if ( $blockIframe ) {
                         <div class="form-control switch-container">
                         <h3><?php echo i8ln( 'Team Valor' ); ?></h3>
                              <div class="onoffswitch">
-                                 <input type="radio" name="valor-switch" value="1" checked onClick=0>
-                             </div>
+                                 <input id="valor-switch" type="checkbox" name="valor-switch"
+                                     class="onoffswitch-checkbox" checked>
+                                 <label class="onoffswitch-label" for="valor-switch">
+                                     <span class="switch-label" data - on="1" data - off="0"></span>
+                                     <span class="switch-handle"></span>
+                                 </label>
+                             </div> 
                         </div>
                         <div class="button-container">
                             <button type="button" onclick="submitNewCommunity(event);" class="submitting-community"><i
-                                    class="fa fa-binoculars"
+                                    class="fa fa-comments"
                                     style="margin-right:10px;"></i><?php echo i8ln( 'Submit Community' ); ?>
                             </button>
                         </div>
@@ -1445,6 +1476,8 @@ if ( $blockIframe ) {
     var noManualNests = <?php echo $noManualNests === true ? 'true' : 'false' ?>;
     var noManualQuests = <?php echo $noManualQuests === true ? 'true' : 'false' ?>;
     var noAddNewCommunity = <?php echo $noAddNewCommunity === true ? 'true' : 'false' ?>;
+    var noDeleteCommunity = <?php echo $noDeleteCommunity === true ? 'true' : 'false' ?>;
+    var noEditCommunity = <?php echo $noEditCommunity === true ? 'true' : 'false' ?>;
     var login = <?php echo $noNativeLogin === false || $noDiscordLogin === false  ? 'true' : 'false' ?>;
     var expireTimestamp = <?php echo isset($_SESSION['user']->expire_timestamp) ? $_SESSION['user']->expire_timestamp : 0 ?>;
     var timestamp = <?php echo time() ?>;

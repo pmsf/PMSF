@@ -134,6 +134,8 @@
     "noRenamePokestops": true,
     "noWhatsappLink": true,
     "enableCommunities": true,
-    "noAddNewCommunity": false
+    "noAddNewCommunity": false,
+    "noDeleteCommunity": false,
+    "noEditCommunity": false
   }
 }

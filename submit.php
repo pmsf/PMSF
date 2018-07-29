@@ -404,17 +404,31 @@ if ( $action === "raid" ) {
     $communityName = ! empty( $_POST['communityName'] ) ? $_POST['communityName'] : '';
     $communityDescription = ! empty( $_POST['communityDescription'] ) ? $_POST['communityDescription'] : '';
     $communityInvite = ! empty( $_POST['communityInvite'] ) ? $_POST['communityInvite'] : '';
+    $teamInstinct = (isset($_POST['teamInstinct'])) ? 1 : 0;
+    $teamMystic = (isset($_POST['teamMystic'])) ? 1 : 0;
+    $teamValor = (isset($_POST['teamValor'])) ? 1 : 0;
+    if (strpos($communityInvite, 'https://discord.gg') !== false) {
+	    $communityType = 3;
+    } elseif (strpos($communityInvite, 'https://t.me') !== false) {
+	    $communityType = 4;
+    } elseif (strpos($communityInvite, 'https://chat.whatsapp.com') !== false) {
+	    $communityType = 5;
+    } else {
+        http_response_code( 401 );
+	die();
+    }
     if ( ! empty( $lat ) && ! empty( $lng ) && ! empty( $communityName ) && ! empty( $communityDescription ) && ! empty( $communityInvite ) ) {
         $communityId = randomNum();
         $cols       = [
             'community_id'        => $communityId,
             'title'               => $communityName,
             'description'         => $communityDescription,
-            'type'                => 5,
+            'type'                => $communityType,
             'image_url'           => null,
-            //'team_instict'        => $_POST['teamInstinct'],
-            //'team_mystic'         => $_POST['teamMystic'],
-            //'team_valor'          => $_POST['teamValor'],
+            'team_instinct'       => $teamInstinct,
+            'team_mystic'         => $teamMystic,
+            'team_valor'          => $teamValor,
+            'has_invite_url'      => 1,
             'invite_url'          => $communityInvite,
             'latitude'            => $lat,
             'longitude'           => $lng,
@@ -423,13 +437,66 @@ if ( $action === "raid" ) {
         ];
         $db->insert( "community", $cols );
         if ( $noDiscordSubmitLogChannel === false ) {
-            $data = array("content" => '```Added community with id "' . $commuityId . '" and gave it the new name: "' . $communityName . '"```' . $submitMapUrl . '/?lat=' . $lat . '&lon=' . $lng . '&zoom=18 ', "username" => $_SESSION['user']->user);
+            $data = array("content" => '```Added community with id "' . $communityId . '" and gave it the new name: "' . $communityName . '"```' . $submitMapUrl . '/?lat=' . $lat . '&lon=' . $lng . '&zoom=18 ', "username" => $_SESSION['user']->user);
             $curl = curl_init($discordSubmitLogChannelUrl);
             curl_setopt($curl, CURLOPT_CUSTOMREQUEST, "POST");
             curl_setopt($curl, CURLOPT_POSTFIELDS, json_encode($data));
             curl_setopt($curl, CURLOPT_RETURNTRANSFER, true);
             curl_exec($curl);
         }
+    }
+} elseif ( $action === "editcommunity" ) {
+    if ( $noCommunity === true || $noEditCommunity === true ) {
+        http_response_code( 401 );
+        die();
+    }
+    $communityName = ! empty( $_POST['communityname'] ) ? $_POST['communityname'] : '';
+    $communityDescription = ! empty( $_POST['communitydescription'] ) ? $_POST['communitydescription'] : '';
+    $communityInvite = ! empty( $_POST['communityinvite'] ) ? $_POST['communityinvite'] : '';
+    $communityId   = ! empty( $_POST['communityid'] ) ? $_POST['communityid'] : '';
+    if (strpos($communityInvite, 'https://discord.gg') !== false) {
+	    $communityType = 3;
+    } elseif (strpos($communityInvite, 'https://t.me') !== false) {
+	    $communityType = 4;
+    } elseif (strpos($communityInvite, 'https://chat.whatsapp.com') !== false) {
+	    $communityType = 5;
+    } else {
+        http_response_code( 401 );
+	die();
+    }
+    $cols     = [
+        'title'       => $communityName,
+        'description' => $communityDescription,
+	'invite_url'  => $communityInvite,
+	'type'        => $communityType,
+	'updated'     => time(),
+        'source'      => 1
+    ];
+    $where    = [
+        'community_id' => $communityId
+    ];
+    $db->update( "community", $cols, $where );
+    if ( $noDiscordSubmitLogChannel === false ) {
+        $data = array("content" => '```Updated community with id "' . $communityId . '" and gave it the new name: "' . $communityName . '" . ```', "username" => $_SESSION['user']->user);
+        $curl = curl_init($discordSubmitLogChannelUrl);
+        curl_setopt($curl, CURLOPT_CUSTOMREQUEST, "POST");
+        curl_setopt($curl, CURLOPT_POSTFIELDS, json_encode($data));
+        curl_setopt($curl, CURLOPT_RETURNTRANSFER, true);
+        curl_exec($curl);
+    }
+
+} elseif ( $action === "delete-community" ) {
+    if ( $noCommunity === true || $noDeleteCommunity === true ) {
+        http_response_code( 401 );
+        die();
+    }
+    $communityId = ! empty( $_POST['communityId'] ) ? $_POST['communityId'] : '';
+    if ( ! empty( $communityId ) ) {
+        $db->delete( 'community', [
+            "AND" => [
+                'community_id' => $communityId
+            ]
+        ] );
     }
 }
 function randomGymId() {
