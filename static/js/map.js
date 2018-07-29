@@ -2344,9 +2344,21 @@ function submitNewCommunity(event) { // eslint-disable-line no-unused-vars
     var communityName = form.find('[name="community-name"]').val()
     var communityDescription = form.find('[name="community-description"]').val()
     var communityInvite = form.find('[name="community-invite"]').val()
-    var teamInstinct = form.find('[name="instinct-switch"]').val()
-    var teamMystic = form.find('[name="mystic-switch"]').val()
-    var teamValor = form.find('[name="valor-switch"]').val()
+    if (document.getElementById('instinct-switch').checked) {
+        var teamInstinct = '1'
+    } else {
+        var teamInstinct = '0'
+    }
+    if (document.getElementById('mystic-switch').checked) {
+        var teamMystic = '1'
+    } else {
+        var teamMystic = '0'
+    }
+    if (document.getElementById('valor-switch').checked) {
+        var teamValor = '1'
+    } else {
+        var teamValor = '0'
+    }
     if (communityName && communityName !== '' && communityDescription && communityDescription !== '' && communityInvite && communityInvite !== '') {
         if (confirm(i8ln('I confirm this is an active community'))) {
             return $.ajax({

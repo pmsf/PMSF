@@ -404,9 +404,9 @@ if ( $action === "raid" ) {
     $communityName = ! empty( $_POST['communityName'] ) ? $_POST['communityName'] : '';
     $communityDescription = ! empty( $_POST['communityDescription'] ) ? $_POST['communityDescription'] : '';
     $communityInvite = ! empty( $_POST['communityInvite'] ) ? $_POST['communityInvite'] : '';
-    $teamInstinct = (isset($_POST['teamInstinct'])) ? 1 : 0;
-    $teamMystic = (isset($_POST['teamMystic'])) ? 1 : 0;
-    $teamValor = (isset($_POST['teamValor'])) ? 1 : 0;
+    $teamInstinct = (isset($_POST['teamInstinct'])) ? $_POST['teamInstinct'] : '0';
+    $teamMystic = (isset($_POST['teamMystic'])) ? $_POST['teamMystic'] : '0';
+    $teamValor = (isset($_POST['teamValor'])) ? $_POST['teamValor'] : '0';
     if (strpos($communityInvite, 'https://discord.gg') !== false) {
 	    $communityType = 3;
     } elseif (strpos($communityInvite, 'https://t.me') !== false) {
