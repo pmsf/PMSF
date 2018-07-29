@@ -404,9 +404,6 @@ if ( $action === "raid" ) {
     $communityName = ! empty( $_POST['communityName'] ) ? $_POST['communityName'] : '';
     $communityDescription = ! empty( $_POST['communityDescription'] ) ? $_POST['communityDescription'] : '';
     $communityInvite = ! empty( $_POST['communityInvite'] ) ? $_POST['communityInvite'] : '';
-    $teamInstinct = (isset($_POST['teamInstinct'])) ? $_POST['teamInstinct'] : '0';
-    $teamMystic = (isset($_POST['teamMystic'])) ? $_POST['teamMystic'] : '0';
-    $teamValor = (isset($_POST['teamValor'])) ? $_POST['teamValor'] : '0';
     if (strpos($communityInvite, 'https://discord.gg') !== false) {
 	    $communityType = 3;
     } elseif (strpos($communityInvite, 'https://t.me') !== false) {
@@ -425,17 +422,17 @@ if ( $action === "raid" ) {
             'description'         => $communityDescription,
             'type'                => $communityType,
             'image_url'           => null,
-            'team_instinct'       => $teamInstinct,
-            'team_mystic'         => $teamMystic,
-            'team_valor'          => $teamValor,
+            'team_instinct'       => 1,
+            'team_mystic'         => 1,
+            'team_valor'          => 1,
             'has_invite_url'      => 1,
             'invite_url'          => $communityInvite,
-            'latitude'            => $lat,
-            'longitude'           => $lng,
+            'lat'                 => $lat,
+            'lon'                 => $lng,
             'updated'             => time(),
             'source'              => 1
         ];
-        $db->insert( "community", $cols );
+        $db->insert( "communities", $cols );
         if ( $noDiscordSubmitLogChannel === false ) {
             $data = array("content" => '```Added community with id "' . $communityId . '" and gave it the new name: "' . $communityName . '"```' . $submitMapUrl . '/?lat=' . $lat . '&lon=' . $lng . '&zoom=18 ', "username" => $_SESSION['user']->user);
             $curl = curl_init($discordSubmitLogChannelUrl);
@@ -475,7 +472,7 @@ if ( $action === "raid" ) {
     $where    = [
         'community_id' => $communityId
     ];
-    $db->update( "community", $cols, $where );
+    $db->update( "communities", $cols, $where );
     if ( $noDiscordSubmitLogChannel === false ) {
         $data = array("content" => '```Updated community with id "' . $communityId . '" and gave it the new name: "' . $communityName . '" . ```', "username" => $_SESSION['user']->user);
         $curl = curl_init($discordSubmitLogChannelUrl);
@@ -492,7 +489,7 @@ if ( $action === "raid" ) {
     }
     $communityId = ! empty( $_POST['communityId'] ) ? $_POST['communityId'] : '';
     if ( ! empty( $communityId ) ) {
-        $db->delete( 'community', [
+        $db->delete( 'communities', [
             "AND" => [
                 'community_id' => $communityId
             ]
