@@ -564,15 +564,10 @@ class Monocle_Alternate extends Monocle
         team_instinct,
         team_mystic,
         team_valor,
-        min_player_level,
-        has_scanners,
-        accepting_invite,
         has_invite_url,
         invite_url,
         lat,
         lon,
-        discord_acct_linked,
-        discord_identifier,
         source
         FROM communities
         WHERE :conditions";
@@ -588,15 +583,9 @@ class Monocle_Alternate extends Monocle
             $community["team_instinct"] = intval($community["team_instinct"]);
             $community["team_mystic"] = intval($community["team_mystic"]);
             $community["team_valor"] = intval($community["team_valor"]);
-            $community["team_valor"] = intval($community["team_valor"]);
-            $community["min_player_level"] = intval($community["min_player_level"]);
-            $community["has_scanners"] = intval($community["has_scanners"]);
-            $community["accepting_invite"] = intval($community["accepting_invite"]);
             $community["has_invite_url"] = intval($community["has_invite_url"]);
             $community["lat"] = floatval($community["lat"]);
             $community["lon"] = floatval($community["lon"]);
-            $community["discord_acct_linked"] = intval($community["discord_acct_linked"]);
-            $community["discord_identifier"] = intval($community["discord_identifier"]);
             $community["source"] = intval($community["source"]);
             $data[] = $community;
 

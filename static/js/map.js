@@ -1454,7 +1454,7 @@ function setupCommunityMarker(item) {
 }
 
 function communityLabel(item) {
-    var str = '<div align="center" class="marker-nests">' +
+    var str = '<div align="center" class="marker-community">' +
         '<img src="static/images/marker-' + item.type + '.png" align"middle" style="width:30px;height: auto;"/>'
     if (item.image_url != null) {
         str +=
@@ -1466,7 +1466,7 @@ function communityLabel(item) {
     str +=
         '</div>' +
         '<center><h4><div>' + item.title + '</div></h4></center>' +
-        '<center><div>' + item.description.slice(0, 30) + '</div></center>'
+        '<center><div>' + item.description.slice(0, 40) + '</div></center>'
     if (item.team_instinct === 1 || item.team_mystic === 1 || item.team_valor === 1) {
         str += '<center><div>Welcome to Teams:<br>'
         if (item.team_instinct === 1) {
@@ -1502,7 +1502,7 @@ function communityLabel(item) {
         '</div></center>'
     }
     if (item.source === 2) {
-        str += '<center><div style="margin-bottom:5px; margin-top:5px;">' + i8ln('As found on thesilphroad.com') + '</div></center>'
+        str += '<center><div style="margin-bottom:5px; margin-top:5px;">' + i8ln('Join on  <a href="https://thesilphroad.com/map#18/' + item.lat + '/' + item.lon + '">thesilphroad.com</a>') + '</div></center>'
     }
     if (!noDeleteCommunity) {
         str += '<i class="fa fa-trash-o delete-community" onclick="deleteCommunity(event);" data-id="' + item.community_id + '"></i>'
