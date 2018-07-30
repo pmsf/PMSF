@@ -430,7 +430,8 @@ if ( $action === "raid" ) {
             'lat'                 => $lat,
             'lon'                 => $lng,
             'updated'             => time(),
-            'source'              => 1
+            'source'              => 1,
+            'submitted_by'        => $_SESSION['user']->user 
         ];
         $db->insert( "communities", $cols );
         if ( $noDiscordSubmitLogChannel === false ) {
@@ -462,12 +463,13 @@ if ( $action === "raid" ) {
 	die();
     }
     $cols     = [
-        'title'       => $communityName,
-        'description' => $communityDescription,
-	'invite_url'  => $communityInvite,
-	'type'        => $communityType,
-	'updated'     => time(),
-        'source'      => 1
+        'title'        => $communityName,
+        'description'  => $communityDescription,
+        'invite_url'   => $communityInvite,
+        'type'         => $communityType,
+        'updated'      => time(),
+        'source'       => 1,
+        'submitted_by' => $_SESSION['user']->user 
     ];
     $where    = [
         'community_id' => $communityId
@@ -488,6 +490,7 @@ if ( $action === "raid" ) {
         die();
     }
     $communityId = ! empty( $_POST['communityId'] ) ? $_POST['communityId'] : '';
+    $communityName = $db->get( "communities", [ 'title' ], [ 'community_id' => $communityId ] );
     if ( ! empty( $communityId ) ) {
         $db->delete( 'communities', [
             "AND" => [
@@ -495,6 +498,15 @@ if ( $action === "raid" ) {
             ]
         ] );
     }
+    if ( $noDiscordSubmitLogChannel === false ) {
+        $data = array("content" => '```Deleted community with id "' . $communityId . '" and name: "' . $communityName['title'] . '" . ```', "username" => $_SESSION['user']->user);
+        $curl = curl_init($discordSubmitLogChannelUrl);
+        curl_setopt($curl, CURLOPT_CUSTOMREQUEST, "POST");
+        curl_setopt($curl, CURLOPT_POSTFIELDS, json_encode($data));
+        curl_setopt($curl, CURLOPT_RETURNTRANSFER, true);
+        curl_exec($curl);
+    }
+
 }
 function randomGymId() {
     $alphabet    = 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890';
