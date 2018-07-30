@@ -15,6 +15,26 @@ CREATE TABLE `users` (
   `login_system` varchar(40) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
+CREATE TABLE `communities` (
+  `id` int(11) NOT NULL,
+  `community_id` varchar(35) DEFAULT NULL,
+  `title` varchar(64) DEFAULT NULL,
+  `description` varchar(256) DEFAULT NULL,
+  `type` tinyint(4) DEFAULT NULL,
+  `image_url` varchar(200) DEFAULT NULL,
+  `size` smallint(6) DEFAULT NULL,
+  `team_instinct` tinyint(4) DEFAULT NULL,
+  `team_mystic` tinyint(4) DEFAULT NULL,
+  `team_valor` tinyint(4) DEFAULT NULL,
+  `has_invite_url` varchar(4) DEFAULT NULL,
+  `invite_url` varchar(512) DEFAULT NULL,
+  `lat` double(18,14) DEFAULT NULL,
+  `lon` double(18,14) DEFAULT NULL,
+  `updated` bigint(20) DEFAULT NULL,
+  `source` tinyint(4) DEFAULT NULL,
+  `submitted_by` varchar(200) DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
 ALTER TABLE `users`
   ADD PRIMARY KEY (`id`);
 
