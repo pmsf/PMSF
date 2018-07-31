@@ -184,6 +184,7 @@ if ( $action === "raid" ) {
         die();
     }
     $gymName = ! empty( $_POST['gymName'] ) ? $_POST['gymName'] : '';
+    $loggedUser = ! empty( $_SESSION['user']->user ) ? $_SESSION['user']->user : 'NOLOGIN';
     if ( ! empty( $lat ) && ! empty( $lng ) && ! empty( $gymName ) ) {
         $gymId = randomGymId();
         $cols  = [
@@ -191,7 +192,7 @@ if ( $action === "raid" ) {
             'lat'         => $lat,
             'lon'         => $lng,
             'name'        => $gymName,
-            'edited_by'    => $_SESSION['user']->user 
+            'edited_by'   => $loggedUser
         ];
         $db->insert( "forts", $cols );
         if ( $noDiscordSubmitLogChannel === false ) {
@@ -212,11 +213,12 @@ if ( $action === "raid" ) {
     $questId    = $_POST['questId'] == "NULL" ? 0 : $_POST['questId'];
     $rewardId   = $_POST['rewardId'] == "NULL" ? 0 : $_POST['rewardId'];
     $pokestop         = $db->get( "pokestops", [ 'name', 'lat', 'lon', 'external_id' ], [ 'external_id' => $pokestopId ] );
+    $loggedUser = ! empty( $_SESSION['user']->user ) ? $_SESSION['user']->user : 'NOLOGIN';
     if ( ! empty( $pokestopId ) && ! empty( $questId ) && ! empty( $rewardId ) ) {
         $cols  = [
             'quest_id' => $questId,
             'reward_id'   => $rewardId,
-            'quest_submitted_by'  => $_SESSION['user']->user
+            'quest_submitted_by'  => $loggedUser
         ];
         $where = [
             'external_id' => $pokestopId
@@ -247,10 +249,11 @@ if ( $action === "raid" ) {
     }
     $pokemonId = ! empty( $_POST['pokemonId'] ) ? $_POST['pokemonId'] : '';
     $nestId    = ! empty( $_POST['nestId'] ) ? $_POST['nestId'] : '';
+    $loggedUser = ! empty( $_SESSION['user']->user ) ? $_SESSION['user']->user : 'NOLOGIN';
     if ( ! empty( $pokemonId ) && ! empty( $nestId ) ) {
         $cols  = [
             'pokemon_id' => $pokemonId,
-            'nest_submitted_by' => $_SESSION['user']->user
+            'nest_submitted_by' => $loggedUser
         ];
         $where = [
             'nest_id' => $nestId
@@ -264,11 +267,12 @@ if ( $action === "raid" ) {
     }
     $pokestopName = ! empty( $_POST['pokestop'] ) ? $_POST['pokestop'] : '';
     $pokestopId   = ! empty( $_POST['pokestopid'] ) ? $_POST['pokestopid'] : '';
+    $loggedUser = ! empty( $_SESSION['user']->user ) ? $_SESSION['user']->user : 'NOLOGIN';
     if ( ! empty( $pokestopName ) && ! empty( $pokestopId ) ) {
         $cols     = [
             'name'        => $pokestopName,
             'updated'     => time(),
-            'edited_by'    => $_SESSION['user']->user 
+            'edited_by'    => $loggedUser 
         ];
         $where    = [
             'external_id' => $pokestopId
@@ -289,6 +293,7 @@ if ( $action === "raid" ) {
         die();
     }
     $pokestopName = ! empty( $_POST['pokestop'] ) ? $_POST['pokestop'] : '';
+    $loggedUser = ! empty( $_SESSION['user']->user ) ? $_SESSION['user']->user : 'NOLOGIN';
     if ( ! empty( $lat ) && ! empty( $lng ) && ! empty( $pokestopName ) ) {
         $pokestopId = randomGymId();
         $cols       = [
@@ -297,7 +302,7 @@ if ( $action === "raid" ) {
             'lon'         => $lng,
             'name'        => $pokestopName,
             'updated'     => time(),
-            'edited_by'    => $_SESSION['user']->user 
+            'edited_by'    => $loggedUser 
         ];
         $db->insert( "pokestops", $cols );
         if ( $noDiscordSubmitLogChannel === false ) {
@@ -315,6 +320,7 @@ if ( $action === "raid" ) {
         die();
     }
     $id = ! empty( $_POST['id'] ) ? $_POST['id'] : 0;
+    $loggedUser = ! empty( $_SESSION['user']->user ) ? $_SESSION['user']->user : 'NOLOGIN';
     if ( ! empty( $lat ) && ! empty( $lng ) && ! empty( $id ) ) {
         $cols = [
             'pokemon_id' 	=> $id,
@@ -322,7 +328,7 @@ if ( $action === "raid" ) {
             'lon'        	=> $lng,
             'type'       	=> 0,
             'updated'    	=> time(),
-            'nest_submitted_by'	=> $_SESSION['user']->user
+            'nest_submitted_by'	=> $loggedUser
         ];
         $db->insert( "nests", $cols );
     }
@@ -414,6 +420,7 @@ if ( $action === "raid" ) {
         http_response_code( 401 );
 	die();
     }
+    $loggedUser = ! empty( $_SESSION['user']->user ) ? $_SESSION['user']->user : 'NOLOGIN';
     if ( ! empty( $lat ) && ! empty( $lng ) && ! empty( $communityName ) && ! empty( $communityDescription ) && ! empty( $communityInvite ) ) {
         $communityId = randomNum();
         $cols       = [
@@ -431,7 +438,7 @@ if ( $action === "raid" ) {
             'lon'                 => $lng,
             'updated'             => time(),
             'source'              => 1,
-            'submitted_by'        => $_SESSION['user']->user 
+            'submitted_by'        => $loggedUser 
         ];
         $db->insert( "communities", $cols );
         if ( $noDiscordSubmitLogChannel === false ) {
@@ -462,6 +469,7 @@ if ( $action === "raid" ) {
         http_response_code( 401 );
 	die();
     }
+    $loggedUser = ! empty( $_SESSION['user']->user ) ? $_SESSION['user']->user : 'NOLOGIN';
     $cols     = [
         'title'        => $communityName,
         'description'  => $communityDescription,
@@ -469,7 +477,7 @@ if ( $action === "raid" ) {
         'type'         => $communityType,
         'updated'      => time(),
         'source'       => 1,
-        'submitted_by' => $_SESSION['user']->user 
+        'submitted_by' => $loggedUser 
     ];
     $where    = [
         'community_id' => $communityId
