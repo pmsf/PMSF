@@ -196,7 +196,7 @@ if ( $action === "raid" ) {
         ];
         $db->insert( "forts", $cols );
         if ( $noDiscordSubmitLogChannel === false ) {
-            $data = array("content" => '```Added gym with id "' . $gymId . '" and name: "' . $gymName . '"```' . $submitMapUrl . '/?lat=' . $lat . '&lon=' . $lng . '&zoom=18', "username" => $loggedUser;
+            $data = array("content" => '```Added gym with id "' . $gymId . '" and name: "' . $gymName . '"```' . $submitMapUrl . '/?lat=' . $lat . '&lon=' . $lng . '&zoom=18', "username" => $loggedUser);
             $curl = curl_init($discordSubmitLogChannelUrl);
             curl_setopt($curl, CURLOPT_CUSTOMREQUEST, "POST");
             curl_setopt($curl, CURLOPT_POSTFIELDS, json_encode($data));
