@@ -39,6 +39,10 @@
     "cat": "Pokémon",
     "name": "Voltorb"
   },
+  "102": {
+    "cat": "Pokémon",
+    "name": "Exeggcute"
+  },
   "113": {
     "cat": "Pokémon",
     "name": "Chansey"
@@ -54,7 +58,7 @@
   "126": {
     "cat": "Pokémon",
     "name": "Magmar"
-  },
+  },	
   "129": {
     "cat": "Pokémon",
     "name": "Magikarp"
@@ -116,11 +120,11 @@
     "name": "3 Rare Candies"
   },
   "1104": {
-    "cat": "Stardust / XP / TM",
+    "cat": "Stardust",
     "name": "500 Stardust"
   },
   "1105": {
-    "cat": "Stardust / XP / TM",
+    "cat": "Stardust",
     "name": "1000 Stardust"
   },
   "1204": {
