@@ -7,41 +7,17 @@
     "cat": "Pokémon",
     "name": "Charmander"
   },
-  "5": {
-    "cat": "Pokémon",
-    "name": "Charmeleon"
-  },
   "7": {
     "cat": "Pokémon",
     "name": "Squirtle"
-  },
-  "23": {
-    "cat": "Pokémon",
-    "name": "Ekans"
-  },
-  "25": {
-    "cat": "Pokémon",
-    "name": "Pikachu"
   },
   "37": {
     "cat": "Pokémon",
     "name": "Vulpix"
   },
-  "38": {
-    "cat": "Pokémon",
-    "name": "Ninetales"
-  },
-  "55": {
-    "cat": "Pokémon",
-    "name": "Golduck"
-  },
   "56": {
     "cat": "Pokémon",
     "name": "Mankey"
-  },
-  "58": {
-    "cat": "Pokémon",
-    "name": "Growlithe"
   },
   "60": {
     "cat": "Pokémon",
@@ -51,34 +27,6 @@
     "cat": "Pokémon",
     "name": "Machop"
   },
-  "77": {
-    "cat": "Pokémon",
-    "name": "Ponyta"
-  },
-  "79": {
-    "cat": "Pokémon",
-    "name": "Slowpoke"
-  },
-  "82": {
-    "cat": "Pokémon",
-    "name": "Magneton"
-  },
-  "84": {
-    "cat": "Pokémon",
-    "name": "Doduo"
-  },
-  "86": {
-    "cat": "Pokémon",
-    "name": "Seel"
-  },
-  "88": {
-    "cat": "Pokémon",
-    "name": "Grimer"
-  },
-  "90": {
-    "cat": "Pokémon",
-    "name": "Shellder"
-  },
   "92": {
     "cat": "Pokémon",
     "name": "Gastly"
@@ -87,49 +35,13 @@
     "cat": "Pokémon",
     "name": "Onix"
   },
-  "98": {
-    "cat": "Pokémon",
-    "name": "Krabby"
-  },
-  "99": {
-    "cat": "Pokémon",
-    "name": "Kingler"
-  },
   "100": {
     "cat": "Pokémon",
     "name": "Voltorb"
   },
-  "101": {
-    "cat": "Pokémon",
-    "name": "Electrode"
-  },
-  "102": {
-    "cat": "Pokémon",
-    "name": "Exeggcute"
-  },
-  "103": {
-    "cat": "Pokémon",
-    "name": "Exeggutor"
-  },
-  "108": {
-    "cat": "Pokémon",
-    "name": "Lickitung"
-  },
   "113": {
     "cat": "Pokémon",
     "name": "Chansey"
-  },
-  "114": {
-    "cat": "Pokémon",
-    "name": "Tangela"
-  },
-  "116": {
-    "cat": "Pokémon",
-    "name": "Horsea"
-  },
-  "120": {
-    "cat": "Pokémon",
-    "name": "Staryu"
   },
   "124": {
     "cat": "Pokémon",
@@ -143,61 +55,37 @@
     "cat": "Pokémon",
     "name": "Magmar"
   },
-  "127": {
-    "cat": "Pokémon",
-    "name": "Pinsir"
-  },
   "129": {
     "cat": "Pokémon",
     "name": "Magikarp"
-  },
-  "131": {
-    "cat": "Pokémon",
-    "name": "Lapras"
-  },
-  "132": {
-    "cat": "Pokémon",
-    "name": "Ditto"
   },
   "133": {
     "cat": "Pokémon",
     "name": "Eevee"
   },
-  "135": {
-    "cat": "Pokémon",
-    "name": "Jolteon"
-  },
-  "136": {
-    "cat": "Pokémon",
-    "name": "Flareon"
-  },
-  "142": {
-    "cat": "Pokémon",
-    "name": "Aerodactyl"
-  },
   "147": {
     "cat": "Pokémon",
     "name": "Dratini"
   },
-  "156": {
+  "171": {
     "cat": "Pokémon",
-    "name": "Quilava"
+    "name": "Lanturn"
   },
-  "157": {
+  "179": {
     "cat": "Pokémon",
-    "name": "Typhlosion"
+    "name": "Mareep"
   },
-  "180": {
+  "200": {
     "cat": "Pokémon",
-    "name": "Flaafy"
+    "name": "Misdreavus"
   },
-  "207": {
+  "203": {
     "cat": "Pokémon",
-    "name": "Gligar"
+    "name": "Girafarig"
   },
-  "219": {
+  "209": {
     "cat": "Pokémon",
-    "name": "Magcargo"
+    "name": "Snubbell"
   },
   "228": {
     "cat": "Pokémon",
@@ -207,41 +95,13 @@
     "cat": "Pokémon",
     "name": "Larvitar"
   },
-  "255": {
-    "cat": "Pokémon",
-    "name": "Torchic"
-  },
   "309": {
     "cat": "Pokémon",
     "name": "Electrike"
   },
-  "311": {
+  "327": {
     "cat": "Pokémon",
-    "name": "Plusle"
-  },
-  "312": {
-    "cat": "Pokémon",
-    "name": "Minum"
-  },
-  "320": {
-    "cat": "Pokémon",
-    "name": "Wailmer"
-  },
-  "322": {
-    "cat": "Pokémon",
-    "name": "Numel"
-  },
-  "333": {
-    "cat": "Pokémon",
-    "name": "Swablu"
-  },
-  "359": {
-    "cat": "Pokémon",
-    "name": "Absol"
-  },
-  "370": {
-    "cat": "Pokémon",
-    "name": "Luvdisc"
+    "name": "Spinda"
   },
   "999": {
     "cat": "Pokémon",
@@ -251,29 +111,9 @@
     "cat": "Rare Candies",
     "name": "1 Rare Candy"
   },
-  "1002": {
-    "cat": "Rare Candies",
-    "name": "1-2 Rare Candy"
-  },
-  "1003": {
-    "cat": "Rare Candies",
-    "name": "2-3 Rare Candies"
-  },
   "1004": {
     "cat": "Rare Candies",
     "name": "3 Rare Candies"
-  },
-  "1101": {
-    "cat": "Stardust / XP / TM",
-    "name": "1 Charge TM"
-  },
-  "1102": {
-    "cat": "Stardust / XP / TM",
-    "name": "200 Stardust"
-  },
-  "1103": {
-    "cat": "Stardust / XP / TM",
-    "name": "200-500 Stardust"
   },
   "1104": {
     "cat": "Stardust / XP / TM",
@@ -283,156 +123,36 @@
     "cat": "Stardust / XP / TM",
     "name": "1000 Stardust"
   },
-  "1106": {
-    "cat": "Stardust / XP / TM",
-    "name": "1500 Stardust"
-  },
-  "1107": {
-    "cat": "Stardust / XP / TM",
-    "name": "500 XP"
-  },
-  "1108": {
-    "cat": "Stardust / XP / TM",
-    "name": "1000 XP"
-  },
-  "1201": {
-    "cat": "Pokéballs",
-    "name": "5 Pokéballs"
-  },
-  "1202": {
-    "cat": "Pokéballs",
-    "name": "5-10 Pokéballs"
-  },
-  "1203": {
-    "cat": "Pokéballs",
-    "name": "10 Pokéballs"
-  },
   "1204": {
     "cat": "Pokéballs",
     "name": "5 Great Balls"
-  },
-  "1205": {
-    "cat": "Pokéballs",
-    "name": "1 Ultra Ball"
   },
   "1206": {
     "cat": "Pokéballs",
     "name": "2 Ultra Balls"
   },
-  "1207": {
-    "cat": "Pokéballs",
-    "name": "5 Ultra Balls"
-  },
-  "1208": {
-    "cat": "Pokéballs",
-    "name": "5-10 Ultra Balls"
-  },
-  "1209": {
-    "cat": "Pokéballs",
-    "name": "10 Ultra Balls"
-  },
   "1301": {
     "cat": "Berries",
     "name": "2 Golden Razzberries"
-  },
-  "1302": {
-    "cat": "Berries",
-    "name": "1 Pinap Berry"
-  },
-  "1303": {
-    "cat": "Berries",
-    "name": "1-2 Pinap Berries"
-  },
-  "1304": {
-    "cat": "Berries",
-    "name": "2 Pinap Berries"
-  },
-  "1305": {
-    "cat": "Berries",
-    "name": "1-3 Pinap Berries"
   },
   "1306": {
     "cat": "Berries",
     "name": "3 Pinap Berries"
   },
-  "1307": {
-    "cat": "Berries",
-    "name": "3 Nanab Berries"
-  },
-  "1308": {
-    "cat": "Berries",
-    "name": "5 Nanab Berries"
-  },
-  "1309": {
-    "cat": "Berries",
-    "name": "6 Nanab Berries"
-  },
-  "1310": {
-    "cat": "Berries",
-    "name": "10 Nanab Berries"
-  },
   "1311": {
     "cat": "Berries",
     "name": "3 Razz Berries"
-  },
-  "1312": {
-    "cat": "Berries",
-    "name": "3-6 Razz Berries"
-  },
-  "1313": {
-    "cat": "Berries",
-    "name": "4-6 Razz Berries"
-  },
-  "1314": {
-    "cat": "Berries",
-    "name": "5 Razz Berries"
   },
   "1315": {
     "cat": "Berries",
     "name": "6 Razz Berries"
   },
-  "1316": {
-    "cat": "Berries",
-    "name": "9 Razz Berries"
-  },
   "1401": {
     "cat": "Potions & Revives",
-    "name": "2 Revives"
-  },
-  "1402": {
-    "cat": "Potions & Revives",
-    "name": "2-4 Revives"
-  },
-  "1403": {
-    "cat": "Potions & Revives",
-    "name": "4 Revives"
-  },
-  "1404": {
-    "cat": "Potions & Revives",
-    "name": "6 Revives"
-  },
-  "1405": {
-    "cat": "Potions & Revives",
-    "name": "1 Max Revive"
-  },
-  "1406": {
-    "cat": "Potions & Revives",
-    "name": "1-3 Max Revives"
-  },
-  "1407": {
-    "cat": "Potions & Revives",
-    "name": "5 Potions"
-  },
-  "1408": {
-    "cat": "Potions & Revives",
-    "name": "3 Super Potions"
+    "name": "1 Revive"
   },
   "1409": {
     "cat": "Potions & Revives",
     "name": "3 Hyper Potions"
-  },
-  "1410": {
-    "cat": "Potions & Revives",
-    "name": "3 Max Potions"
   }
 }
