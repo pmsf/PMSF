@@ -119,6 +119,10 @@
     "cat": "Rare Candies",
     "name": "3 Rare Candies"
   },
+  "1103": {
+    "cat": "Stardust",
+    "name": "200 Stardust"
+  },
   "1104": {
     "cat": "Stardust",
     "name": "500 Stardust"
@@ -126,6 +130,18 @@
   "1105": {
     "cat": "Stardust",
     "name": "1000 Stardust"
+  },
+  "1106": {
+    "cat": "Stardust",
+    "name": "1500 Stardust"
+  },
+  "1201": {
+    "cat": "Pokéballs",
+    "name": "5 PokéBalls"
+  },
+  "1202": {
+    "cat": "Pokéballs",
+    "name": "10 PokéBalls"
   },
   "1204": {
     "cat": "Pokéballs",
@@ -139,9 +155,21 @@
     "cat": "Berries",
     "name": "2 Golden Razzberries"
   },
+  "1302": {
+    "cat": "Berries",
+    "name": "1 Pinap Berry"
+  },
+  "1303": {
+    "cat": "Berries",
+    "name": "2 Pinap Berries"
+  },
   "1306": {
     "cat": "Berries",
     "name": "3 Pinap Berries"
+  },
+  "1310": {
+    "cat": "Berries",
+    "name": "10 Nanab Berries"
   },
   "1311": {
     "cat": "Berries",
@@ -154,6 +182,10 @@
   "1401": {
     "cat": "Potions & Revives",
     "name": "1 Revive"
+  },
+  "1402": {
+    "cat": "Potions & Revives",
+    "name": "2 Revives"
   },
   "1409": {
     "cat": "Potions & Revives",

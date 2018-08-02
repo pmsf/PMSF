@@ -11,11 +11,19 @@
     "cat": "Gym/Raid",
     "name": "Win 3 Gym battles."
   },
+  "6": {
+    "cat": "Gym/Raid",
+    "name": "Win 5 Gym battles."
+  },
   "8": {
     "cat": "Gym/Raid",
     "name": "Win a raid."
   },
   "9": {
+    "cat": "Gym/Raid",
+    "name": "Win 3 raids."
+  },
+  "10": {
     "cat": "Gym/Raid",
     "name": "Use a Super effective charge attack 7 times."
   },
@@ -70,6 +78,10 @@
   "370": {
     "cat": "Throw",
     "name": "Make 5 Nice Throws."
+  },
+  "370": {
+    "cat": "Throw",
+    "name": "Make 2 Nice Curveball Throws in a row."
   },
   "376": {
     "cat": "Throw",
