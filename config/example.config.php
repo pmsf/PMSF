@@ -277,11 +277,11 @@ $sendRaidData = false;                                              // Send Raid
 // Manual Submissions
 //-----------------------------------------------------
 $hideIfManual = false;
-$noManualRaids = false;						    // Enable/Disable ManualRaids permanently ( Comment this line if you want to use the block below )
-$noDiscordSubmitLogChannel = true;                                        // Send webhooks to discord channel upon submission
+$noManualRaids = false;						   						// Enable/Disable ManualRaids permanently ( Comment this line if you want to use the block below )
+$noDiscordSubmitLogChannel = true;                                  // Send webhooks to discord channel upon submission
 $submitMapUrl = '';
-$discordSubmitLogChannelUrl = 'https://discordapp.com/api/webhooks/<yourCHANNELhere>';
-//$currentTime = (int) date('G');				    // Uncomment this block to deny Raid submissions over night
+$discordSubmitLogChannelUrl = 'https://discordapp.com/api/webhooks/<yourCHANNELhere>';  // Sends gym/pokestop submit & pokestop rename directly to discord
+//$currentTime = (int) date('G');				   					// Uncomment this block to deny Raid submissions over night
 //
 //if ($currentTime >= 6 && $currentTime < 23) {                     // noManualRaids = true between 23:00 and 06:00. Adjest hours if needed
 //	        $noManualRaids = false;
@@ -304,11 +304,11 @@ $noDeletePokestops = false;
 
 $raidBosses = [4, 296, 307, 138, 320, 129, 103, 281, 126, 303, 185, 137, 26, 232, 136, 95, 68, 248, 229, 105, 359, 76, 112, 379];
 
-$sendWebhook = false;
-$webhookUrl = null;                                                 //['url-1','url-2']
+$sendWebhook = false;							// Sends Raids & Pokémon. Needs a 3th party program like pokealarm.					
+$webhookUrl = null;                             //['url-1','url-2']
 
-$sendQuestWebhook = false;                                          // Experimental use only
-$questWebhookUrl = null;                                            // Experimental use only
+$sendQuestWebhook = false;                      // Experimental use only
+$questWebhookUrl = null;                        // Experimental use only
 
 $manualOneStar = [
     'webhook' => true,						    // If set to false no webhooks will be send on raid_cron.php
@@ -419,11 +419,11 @@ $enableDebug = false;
 // DATABASE CONFIG
 //-----------------------------------------------------
 
-$map = "monocle";                                                   // monocle/rm
-$fork = "alternate";                                                  // default/asner/sloppy/alternate
+$map = "monocle";
+$fork = "alternate";
 
 $db = new Medoo([// required
-    'database_type' => 'mysql',                                     // mysql/mariadb/pgsql/sybase/oracle/mssql/sqlite
+    'database_type' => 'mysql',                                    
     'database_name' => 'Monocle',
     'server' => '127.0.0.1',
     'username' => 'database_user',
