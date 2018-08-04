@@ -2358,7 +2358,7 @@ function submitNewCommunity(event) { // eslint-disable-line no-unused-vars
                     'lng': lon,
                     'communityName': communityName,
                     'communityDescription': communityDescription,
-                    'communityInvite': communityInvite,
+                    'communityInvite': communityInvite
                 },
                 error: function error() {
                     // Display error toast
