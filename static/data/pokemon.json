@@ -1678,6 +1678,7 @@
   "136": {
     "name": "Flareon",
     "rarity": "Ultra Rare",
+    "level": 3,
     "types": [
       {
         "type": "Fire",
