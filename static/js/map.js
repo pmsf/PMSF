@@ -926,7 +926,7 @@ function pokestopLabel(expireTime, latitude, longitude, stopName, lureUser, id, 
         }
         if (!noRenamePokestops) {
             str += '<center><div>Rename Pokestop <i class="fa fa-edit rename-pokestop" style="margin-top: 2px; vertical-align: middle; font-size: 1.5em;" onclick="openRenamePokestopModal(event);" data-id="' + id + '"></i></div></center>'
-	}
+        }
         if (!noConvertPokestops) {
             str += '<center><div>Convert to Gym <i class="fa fa-refresh convert-pokestop" style="margin-top: 2px; vertical-align: middle; font-size: 1.5em;" onclick="openConvertPokestopModal(event);" data-id="' + id + '"></i></div></center>'
         }
@@ -2180,7 +2180,7 @@ function convertPokestopData(event) { // eslint-disable-line no-unused-vars
                 cache: false,
                 data: {
                     'action': 'convertpokestop',
-                    'pokestopid': pokestopId,
+                    'pokestopid': pokestopId
                 },
                 error: function error() {
                     // Display error toast
