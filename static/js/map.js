@@ -98,6 +98,7 @@ var cries
 var pokeList = []
 var raidBoss = {} // eslint-disable-line no-unused-vars
 var questList = []
+var rewardList = []
 var gymId
 
 var assetsPath = 'static/sounds/'
@@ -162,6 +163,13 @@ var notifyText = 'disappears at <dist> (<udist>)'
 //
 // Functions
 //
+if (location.search.indexOf('map') < 0) {
+    var hash = window.location.hash
+    var loc = window.location.href.replace(hash, '')
+    loc += (loc.indexOf('?') < 0 ? '?' : '&') + 'map'
+    // SET THE ONE TIME AUTOMATIC PAGE RELOAD TIME TO 5000 MILISECONDS (5 SECONDS):
+    setTimeout(function () { window.location.href = loc + hash }, 500)
+}
 
 function excludePokemon(id) { // eslint-disable-line no-unused-vars
     $selectExclude.val(
@@ -785,6 +793,19 @@ function gymLabel(item) {
             '</div>' +
             '</center>' +
             '</div>'
+        if (((!noWhatsappLink) && (raidSpawned && item.raid_end > Date.now())) && (item.raid_pokemon_id > 1 && item.raid_pokemon_id < 386)) {
+            str += '<center>' +
+                '<div>' +
+                '<a href="whatsapp://send?text=' + item.name + '%0ALevel%20' + item.raid_level + '%20' + item.raid_pokemon_name + '%0ARaid CP%20' + item.raid_pokemon_cp + '%0A%2AStart:%20' + raidStartStr + '%2A%0A%2AEnd:%20' + raidEndStr + '%2A%0AStats:%0Ahttps://pokemongo.gamepress.gg/pokemon/' + item.raid_pokemon_id + '%0ADirections:%0Ahttps://www.google.com/maps/search/?api=1%26query=' + item.latitude + ',' + item.longitude + '" data-action="share/whatsapp/share">Whatsapp Link</a>' +
+                '</div>' +
+                '</center>'
+        } else if ((!noWhatsappLink) && (raidSpawned && item.raid_end > Date.now())) {
+            str += '<center>' +
+                '<div>' +
+                '<a href="whatsapp://send?text=' + item.name + '%0ALevel%20' + item.raid_level + '%20egg%0A%2AStart:%20' + raidStartStr + '%2A%0A%2AEnd:%20' + raidEndStr + '%2A%0ADirections:%0Ahttps://www.google.com/maps/search/?api=1%26query=' + item.latitude + ',' + item.longitude + '" data-action="share/whatsapp/share">Whatsapp Link</a>' +
+                '</div>' +
+                '</center>'
+        }
     } else {
         var freeSlots = item['slots_available']
         var gymCp = ''
@@ -857,7 +878,7 @@ function pokestopLabel(expireTime, latitude, longitude, stopName, lureUser, id, 
             '<center>' + '<div>' +
             '<b>' + stopName + '</b>' +
             '</div>'
-        if (quest === null) {
+        if (noManualQuests === true || quest === null) {
             str =
                 '<div>' +
                 '<center>' +
@@ -878,6 +899,7 @@ function pokestopLabel(expireTime, latitude, longitude, stopName, lureUser, id, 
                 '</div>' +
                 '<div>' +
                 '<img height="70px" style="padding: 5px;" src="static/forts/Pstop-quest-large.png">' +
+                '<img height="70px" style="padding: 5px;" src="static/rewards/reward_' + reward + '.png"/>' +
                 '</div>' +
                 '</center>' +
                 '</div>'
@@ -887,10 +909,10 @@ function pokestopLabel(expireTime, latitude, longitude, stopName, lureUser, id, 
                 i8ln('Quest:') + ' ' +
                 i8ln(questList[quest]) +
                 '</div></center>'
-            if (reward !== null && reward !== 'NULL') {
+            if (reward !== null) {
                 str += '<center><div>' +
                     i8ln('Reward:') + ' ' +
-                    i8ln(reward) +
+                    i8ln(rewardList[reward]) +
                     '</div></center>'
             }
         }
@@ -906,6 +928,13 @@ function pokestopLabel(expireTime, latitude, longitude, stopName, lureUser, id, 
         str += '<div>' +
             i8ln('Location:') + ' ' + '<a href="javascript:void(0)" onclick="javascript:openMapDirections(' + latitude + ',' + longitude + ')" title="' + i8ln('View in Maps') + '">' + latitude.toFixed(6) + ', ' + longitude.toFixed(7) + '</a> - <a href="./?lat=' + latitude + '&lon=' + longitude + '&zoom=16">Share link</a>' +
             '</div>'
+        if ((!noWhatsappLink) && (quest && reward !== null)) {
+            str += '<div>' +
+                '<center>' +
+                '<a href="whatsapp://send?text=' + stopName + '%0A%2AQuest:%20' + i8ln(questList[quest]) + '%2A%0A%2AReward:%20' + i8ln(rewardList[reward]) + '%2A%0Ahttps://www.google.com/maps/search/?api=1%26query=' + latitude + ',' + longitude + '" data-action="share/whatsapp/share">Whatsapp Link</a>' +
+                '</center>' +
+                '</div>'
+        }
     }
     return str
 }
@@ -1277,17 +1306,34 @@ function updateGymIcons() {
     })
 }
 
+function getPokestopMarkerIcon(item) {
+    if (item['lure_expiration'] > Date.now()) {
+        return '<div style="position:relative;">' +
+            '<img src="static/forts/Pstop-Lured.png"/>' +
+            '</div>'
+    } else if (noManualQuests === true) {
+        return '<div style="position:relative;">' +
+            '<img src="static/forts/Pstop.png"' +
+            '</div>'
+    } else if (item['quest_id'] !== null) {
+        return '<div style="position:relative;">' +
+            '<img src="static/forts/Pstop-quest-large.png" style="width:50px;height:72;"/>' +
+            '<img src="static/rewards/reward_' + item['reward_id'] + '.png" style="width:30px;height:auto;position:absolute;top:4px;right:12px;"/>' +
+            '</div>'
+    } else {
+        return '<div>' +
+            '<img src="static/forts/Pstop.png"' +
+            '</div>'
+    }
+}
+
 function setupPokestopMarker(item) {
-    var imagename = item['lure_expiration'] ? 'PstopLured' : 'Pstop'
-    imagename = item['quest_id'] > 0 ? 'Pstop-quest' : imagename
-    var marker = new google.maps.Marker({
-        position: {
-            lat: item['latitude'],
-            lng: item['longitude']
-        },
+    var marker = new RichMarker({
+        position: new google.maps.LatLng(item['latitude'], item['longitude']),
         map: map,
-        zIndex: 2,
-        icon: 'static/forts/' + imagename + '.png'
+        content: getPokestopMarkerIcon(item),
+        flat: true,
+        anchor: RichMarkerPosition.MIDDLE
     })
 
     if (!marker.rangeCircle && isRangeActive(map)) {
@@ -1295,8 +1341,9 @@ function setupPokestopMarker(item) {
     }
 
     marker.infoWindow = new google.maps.InfoWindow({
-        content: pokestopLabel(item['lure_expiration'], item['latitude'], item['longitude'], item['pokestop_name'], item['lure_user'], item['pokestop_id'], item['quest_id'], item['reward']),
-        disableAutoPan: true
+        content: pokestopLabel(item['lure_expiration'], item['latitude'], item['longitude'], item['pokestop_name'], item['lure_user'], item['pokestop_id'], item['quest_id'], item['reward_id']),
+        disableAutoPan: true,
+        pixelOffset: new google.maps.Size(0, -25)
     })
 
     addListeners(marker)
@@ -1326,7 +1373,7 @@ function setupNestMarker(item) {
     marker.infoWindow = new google.maps.InfoWindow({
         content: nestLabel(item),
         disableAutoPan: true,
-        pixelOffset: new google.maps.Size(0, -20)
+        pixelOffset: new google.maps.Size(0, -30)
     })
     addListeners(marker)
 
@@ -1371,6 +1418,13 @@ function nestLabel(item) {
     str += '<div>' +
         'Location: <a href="javascript:void(0)" onclick="javascript:openMapDirections(' + item.lat + ',' + item.lon + ')" title="' + i8ln('View in Maps') + '">' + item.lat.toFixed(6) + ', ' + item.lon.toFixed(7) + '</a> - <a href="./?lat=' + item.lat + '&lon=' + item.lon + '&zoom=16">Share link</a>' +
         '</div>'
+    if ((!noWhatsappLink) && (item.pokemon_id > 0)) {
+        str += '<div>' +
+            '<center>' +
+            '<a href="whatsapp://send?text=%2A' + item.pokemon_name + '%2A%20nest has been found.%0A%0ALocation:%20https://www.google.com/maps/search/?api=1%26query=' + item.lat + ',' + item.lon + '" data-action="share/whatsapp/share">Whatsapp Link</a>' +
+            '</center>' +
+            '</div>'
+    }
     return str
 }
 
@@ -1773,13 +1827,16 @@ function searchForItem(lat, lon, term, type, field) {
                     var html = '<li class="search-result ' + type + '" data-lat="' + element.lat + '" data-lon="' + element.lon + '"><div class="left-column" onClick="centerMapOnCoords(event);">'
                     if (sr.hasClass('nest-results')) {
                         html += '<span class="i-icon"><span class="pokemon-icon n' + element.pokemon_id + '" ></span></span>'
-                    } else if (element.url !== '') {
+                    } else if (sr.hasClass('reward-results')) {
+                        html += '<span style="background:url(static/rewards/reward_' + element.reward_id + '.png) no-repeat;" class="i-icon" ></span>'
+                    } else if (sr.hasClass('gym-results') || ('pokestop-results')) {
                         html += '<span style="background:url(' + element.url + ') no-repeat;" class="i-icon" ></span>'
                     }
-                    html += '<div class="cont"><span class="name" >' + element.name + '</span>' + '<span class="distance">&nbsp;-&nbsp;' + element.distance + defaultUnit + '</span>'
+                    html += '<div class="cont">'
                     if (sr.hasClass('reward-results')) {
-                        html += '<span>&nbsp;-&nbsp;</span> <span class="reward" style="font-weight:bold">' + element.reward + '</span>'
+                        html += '<span class="reward" style="font-weight:bold">' + element.reward + '</span><span>&nbsp;-&#32;</span>'
                     }
+                    html += '<span class="name" style="font-weight:bold">' + element.name + '</span>' + '<span class="distance" style="font-weight:bold">&nbsp;-&#32;' + element.distance + defaultUnit + '</span>'
                     html += '</div></div>'
                     if (sr.hasClass('gym-results') && manualRaids) {
                         html += '<div class="right-column"><i class="fa fa-binoculars submit-raid"  onClick="openRaidModal(event);" data-id="' + element.external_id + '"></i></div>'
@@ -2124,7 +2181,7 @@ function manualNestData(event) { // eslint-disable-line no-unused-vars
 function manualQuestData(event) { // eslint-disable-line no-unused-vars
     var cont = $(event.target).parent().parent()
     var questId = cont.find('.questList').val()
-    var reward = cont.find('.rewardList').val()
+    var rewardId = cont.find('.rewardList').val()
     var pokestopId = cont.find('.questPokestop').val()
     if (pokestopId && pokestopId !== '') {
         if (confirm(i8ln('I confirm this is an accurate sighting of a quest'))) {
@@ -2137,7 +2194,7 @@ function manualQuestData(event) { // eslint-disable-line no-unused-vars
                 data: {
                     'action': 'quest',
                     'questId': questId,
-                    'reward': reward,
+                    'rewardId': rewardId,
                     'pokestopId': pokestopId
                 },
                 error: function error() {
@@ -3923,6 +3980,12 @@ $(function () {
     $.getJSON('static/dist/data/quests.min.json').done(function (data) {
         $.each(data, function (key, value) {
             questList[key] = value['name']
+        })
+    })
+
+    $.getJSON('static/dist/data/rewards.min.json').done(function (data) {
+        $.each(data, function (key, value) {
+            rewardList[key] = value['name']
         })
     })
 

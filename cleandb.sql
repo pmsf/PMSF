@@ -31,6 +31,7 @@ CREATE TABLE IF NOT EXISTS `forts` (
   `weather_cell_id` bigint(20) unsigned DEFAULT NULL,
   `park` varchar(128) DEFAULT NULL,
   `parkid` bigint(20) DEFAULT NULL,
+  `edited_by` varchar(200) DEFAULT NULL,
   PRIMARY KEY (`id`),
   UNIQUE KEY `external_id` (`external_id`),
   KEY `ix_coords` (`lat`,`lon`)
@@ -52,66 +53,6 @@ CREATE TABLE IF NOT EXISTS `fort_sightings` (
   KEY `ix_fort_sightings_last_modified` (`last_modified`),
   CONSTRAINT `fort_sightings_ibfk_1` FOREIGN KEY (`fort_id`) REFERENCES `forts` (`id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=512 DEFAULT CHARSET=latin1;
-
--- Data exporting was unselected.
--- Dumping structure for table Monocle.gym_defenders
-CREATE TABLE IF NOT EXISTS `gym_defenders` (
-  `id` bigint(20) NOT NULL AUTO_INCREMENT,
-  `fort_id` int(11) NOT NULL,
-  `external_id` bigint(20) unsigned NOT NULL,
-  `pokemon_id` smallint(6) DEFAULT NULL,
-  `team` tinyint(3) unsigned DEFAULT NULL,
-  `owner_name` varchar(128) DEFAULT NULL,
-  `nickname` varchar(128) DEFAULT NULL,
-  `cp` int(11) DEFAULT NULL,
-  `stamina` int(11) DEFAULT NULL,
-  `stamina_max` int(11) DEFAULT NULL,
-  `atk_iv` smallint(6) DEFAULT NULL,
-  `def_iv` smallint(6) DEFAULT NULL,
-  `sta_iv` smallint(6) DEFAULT NULL,
-  `move_1` smallint(6) DEFAULT NULL,
-  `move_2` smallint(6) DEFAULT NULL,
-  `last_modified` int(11) DEFAULT NULL,
-  `battles_attacked` int(11) DEFAULT NULL,
-  `battles_defended` int(11) DEFAULT NULL,
-  `num_upgrades` smallint(6) DEFAULT NULL,
-  `created` int(11) DEFAULT NULL,
-  PRIMARY KEY (`id`),
-  KEY `ix_gym_defenders_fort_id` (`fort_id`),
-  KEY `ix_gym_defenders_created` (`created`),
-  CONSTRAINT `gym_defenders_ibfk_1` FOREIGN KEY (`fort_id`) REFERENCES `forts` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
-
--- Data exporting was unselected.
--- Dumping structure for table Monocle.mystery_sightings
-CREATE TABLE IF NOT EXISTS `mystery_sightings` (
-  `id` bigint(20) NOT NULL AUTO_INCREMENT,
-  `pokemon_id` smallint(6) DEFAULT NULL,
-  `spawn_id` bigint(20) DEFAULT NULL,
-  `encounter_id` bigint(20) unsigned DEFAULT NULL,
-  `lat` double(18,14) DEFAULT NULL,
-  `lon` double(18,14) DEFAULT NULL,
-  `first_seen` int(11) DEFAULT NULL,
-  `first_seconds` smallint(6) DEFAULT NULL,
-  `last_seconds` smallint(6) DEFAULT NULL,
-  `seen_range` smallint(6) DEFAULT NULL,
-  `atk_iv` tinyint(3) unsigned DEFAULT NULL,
-  `def_iv` tinyint(3) unsigned DEFAULT NULL,
-  `sta_iv` tinyint(3) unsigned DEFAULT NULL,
-  `move_1` smallint(6) DEFAULT NULL,
-  `move_2` smallint(6) DEFAULT NULL,
-  `gender` smallint(6) DEFAULT NULL,
-  `form` smallint(6) DEFAULT NULL,
-  `cp` smallint(6) DEFAULT NULL,
-  `level` smallint(6) DEFAULT NULL,
-  `weather_boosted_condition` smallint(6) DEFAULT NULL,
-  `weather_cell_id` bigint(20) unsigned DEFAULT NULL,
-  PRIMARY KEY (`id`),
-  UNIQUE KEY `unique_encounter` (`encounter_id`,`spawn_id`),
-  KEY `ix_mystery_sightings_encounter_id` (`encounter_id`),
-  KEY `ix_mystery_sightings_spawn_id` (`spawn_id`),
-  KEY `ix_mystery_sightings_first_seen` (`first_seen`)
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 -- Data exporting was unselected.
 -- Dumping structure for table Monocle.nests
@@ -148,11 +89,13 @@ CREATE TABLE IF NOT EXISTS `pokestops` (
   `name` varchar(128) DEFAULT NULL,
   `url` varchar(200) DEFAULT NULL,
   `updated` int(11) DEFAULT NULL,
-  `quest_id` tinyint(4) DEFAULT NULL,
-  `reward` varchar(40) DEFAULT NULL,
+  `quest_id` smallint(4) DEFAULT NULL,
+  `reward_id` smallint(4) DEFAULT NULL,
   `deployer` varchar(40) DEFAULT NULL,
   `lure_start` varchar(40) DEFAULT NULL,
   `expires` int(11) DEFAULT NULL,
+  `quest_submitted_by` varchar(200) DEFAULT NULL,
+  `edited_by` varchar(200) DEFAULT NULL,
   PRIMARY KEY (`id`),
   UNIQUE KEY `external_id` (`external_id`),
   KEY `ix_pokestops_lon` (`lon`),
@@ -173,6 +116,7 @@ CREATE TABLE IF NOT EXISTS `raids` (
   `time_battle` int(11) DEFAULT NULL,
   `time_end` int(11) DEFAULT NULL,
   `cp` int(11) DEFAULT NULL,
+  `submitted_by` varchar(200) DEFAULT NULL,
   PRIMARY KEY (`id`),
   UNIQUE KEY `external_id` (`external_id`),
   KEY `fort_id` (`fort_id`),
@@ -208,24 +152,6 @@ CREATE TABLE IF NOT EXISTS `sightings` (
   KEY `ix_sightings_encounter_id` (`encounter_id`),
   KEY `ix_sightings_expire_timestamp` (`expire_timestamp`)
 ) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=latin1;
-
--- Data exporting was unselected.
--- Dumping structure for table Monocle.spawnpoints
-CREATE TABLE IF NOT EXISTS `spawnpoints` (
-  `id` int(11) NOT NULL AUTO_INCREMENT,
-  `spawn_id` bigint(20) DEFAULT NULL,
-  `despawn_time` smallint(6) DEFAULT NULL,
-  `lat` double(18,14) DEFAULT NULL,
-  `lon` double(18,14) DEFAULT NULL,
-  `updated` int(11) DEFAULT NULL,
-  `duration` tinyint(3) unsigned DEFAULT NULL,
-  `failures` tinyint(3) unsigned DEFAULT NULL,
-  PRIMARY KEY (`id`),
-  UNIQUE KEY `ix_spawnpoints_spawn_id` (`spawn_id`),
-  KEY `ix_spawnpoints_updated` (`updated`),
-  KEY `ix_coords_sp` (`lat`,`lon`),
-  KEY `ix_spawnpoints_despawn_time` (`despawn_time`)
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 -- Data exporting was unselected.
 -- Dumping structure for table Monocle.users
