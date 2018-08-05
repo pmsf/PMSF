@@ -1679,6 +1679,7 @@
     "name": "Flareon",
     "rarity": "Ultra Rare",
     "level": 3,
+    "cp": 21155,
     "types": [
       {
         "type": "Fire",
