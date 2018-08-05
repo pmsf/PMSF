@@ -1,290 +1,194 @@
 {
   "1": {
-    "name": "1 Charge TM"
-  },
-  "2": {
-    "name": "1 Max Revive"
-  },
-  "3": {
-    "name": "1 Pinap Berry"
-  },
-  "4": {
-    "name": "1 Rare Candy"
-  },
-  "5": {
-    "name": "1 Ultra Ball"
-  },
-  "6": {
-    "name": "10 Nanab Berries"
-  },
-  "7": {
-    "name": "10 Pokeballs"
-  },
-  "8": {
-    "name": "10 Ultra Balls"
-  },
-  "9": {
-    "name": "1000 Stardust"
-  },
-  "10": {
-    "name": "1000 XP"
-  },
-  "11": {
-    "name": "1-2 Pinap Berries"
-  },
-  "12": {
-    "name": "1-2 Rare Candy"
-  },
-  "13": {
-    "name": "1-3 Max Revives"
-  },
-  "14": {
-    "name": "1-3 Pinap Berries"
-  },
-  "15": {
-    "name": "1500 Stardust"
-  },
-  "16": {
-    "name": "2 Golden Razzberries"
-  },
-  "17": {
-    "name": "2 Pinap Berries"
-  },
-  "18": {
-    "name": "2 Revives"
-  },
-  "19": {
-    "name": "2 Ultra Balls"
-  },
-  "20": {
-    "name": "200 Stardust"
-  },
-  "21": {
-    "name": "200-500 Stardust"
-  },
-  "22": {
-    "name": "2-3 Rare Candies"
-  },
-  "23": {
-    "name": "2-4 Revives"
-  },
-  "24": {
-    "name": "3 Hyper Potions"
-  },
-  "25": {
-    "name": "3 Max Potions"
-  },
-  "26": {
-    "name": "3 Nanab Berries"
-  },
-  "27": {
-    "name": "3 Pinap Berries"
-  },
-  "28": {
-    "name": "3 Rare Candies"
-  },
-  "29": {
-    "name": "3 Razz Berries"
-  },
-  "30": {
-    "name": "3 Super Potions"
-  },
-  "31": {
-    "name": "3-6 Razz Berries"
-  },
-  "32": {
-    "name": "4 Revives"
-  },
-  "33": {
-    "name": "4-6 Razz Berries"
-  },
-  "34": {
-    "name": "5 Great Balls"
-  },
-  "35": {
-    "name": "5 Nanab Berries"
-  },
-  "36": {
-    "name": "5 Pokeballs"
-  },
-  "37": {
-    "name": "5 Potions"
-  },
-  "38": {
-    "name": "5 Razz Berries"
-  },
-  "39": {
-    "name": "5 Ultra Balls"
-  },
-  "40": {
-    "name": "500 Stardust"
-  },
-  "41": {
-    "name": "500 XP"
-  },
-  "42": {
-    "name": "5-10 Pokeballs"
-  },
-  "43": {
-    "name": "5-10 Ultra Balls"
-  },
-  "44": {
-    "name": "6 Nanab Berries"
-  },
-  "45": {
-    "name": "6 Razz Berries"
-  },
-  "46": {
-    "name": "6 Revives"
-  },
-  "47": {
-    "name": "9 Razz Berries"
-  },
-  "48": {
-    "name": "Aerodactyl"
-  },
-  "49": {
+    "cat": "Pokémon",
     "name": "Bulbasaur"
   },
-  "50": {
-    "name": "Chansey"
-  },
-  "51": {
+  "4": {
+    "cat": "Pokémon",
     "name": "Charmander"
   },
-  "52": {
-    "name": "Charmeleon"
-  },
-  "53": {
-    "name": "Doduo"
-  },
-  "54": {
-    "name": "Dratini"
-  },
-  "55": {
-    "name": "Eevee"
-  },
-  "56": {
-    "name": "Ekans"
-  },
-  "57": {
-    "name": "Electabuzz"
-  },
-  "58": {
-    "name": "Electrike"
-  },
-  "59": {
-    "name": "Electrode"
-  },
-  "60": {
-    "name": "Exeggcute"
-  },
-  "61": {
-    "name": "Exeggutor"
-  },
-  "62": {
-    "name": "Flaafy"
-  },
-  "63": {
-    "name": "Flareon"
-  },
-  "64": {
-    "name": "Gastly"
-  },
-  "65": {
-    "name": "Gligar"
-  },
-  "66": {
-    "name": "Grimer"
-  },
-  "67": {
-    "name": "Growlithe"
-  },
-  "68": {
-    "name": "Houndour"
-  },
-  "69": {
-    "name": "Jolteon"
-  },
-  "70": {
-    "name": "Jynx"
-  },
-  "71": {
-    "name": "Larvitar"
-  },
-  "72": {
-    "name": "Machop"
-  },
-  "73": {
-    "name": "Magcargo"
-  },
-  "74": {
-    "name": "Magikarp"
-  },
-  "75": {
-    "name": "Magmar"
-  },
-  "76": {
-    "name": "Magneton"
-  },
-  "77": {
-    "name": "Mankey"
-  },
-  "78": {
-    "name": "Minum"
-  },
-  "79": {
-    "name": "Ninetales"
-  },
-  "80": {
-    "name": "Numel"
-  },
-  "81": {
-    "name": "Onix"
-  },
-  "82": {
-    "name": "Pikachu"
-  },
-  "83": {
-    "name": "Pinsir"
-  },
-  "84": {
-    "name": "Plusle"
-  },
-  "85": {
-    "name": "Poliwag"
-  },
-  "86": {
-    "name": "Ponyta"
-  },
-  "87": {
-    "name": "Quilava"
-  },
-  "88": {
+  "7": {
+    "cat": "Pokémon",
     "name": "Squirtle"
   },
-  "89": {
-    "name": "Swablu"
-  },
-  "90": {
-    "name": "Tangela"
-  },
-  "91": {
-    "name": "Torchic"
-  },
-  "92": {
-    "name": "Typhlosion"
-  },
-  "93": {
-    "name": "Voltorb"
-  },
-  "94": {
+  "37": {
+    "cat": "Pokémon",
     "name": "Vulpix"
   },
-  "95": {
-    "name": "Omanyte"
+  "56": {
+    "cat": "Pokémon",
+    "name": "Mankey"
   },
-  "96": {
-    "name": "Kabuto"
+  "60": {
+    "cat": "Pokémon",
+    "name": "Poliwag"
+  },
+  "66": {
+    "cat": "Pokémon",
+    "name": "Machop"
+  },
+  "92": {
+    "cat": "Pokémon",
+    "name": "Gastly"
+  },
+  "95": {
+    "cat": "Pokémon",
+    "name": "Onix"
+  },
+  "100": {
+    "cat": "Pokémon",
+    "name": "Voltorb"
+  },
+  "102": {
+    "cat": "Pokémon",
+    "name": "Exeggcute"
+  },
+  "113": {
+    "cat": "Pokémon",
+    "name": "Chansey"
+  },
+  "124": {
+    "cat": "Pokémon",
+    "name": "Jynx"
+  },
+  "125": {
+    "cat": "Pokémon",
+    "name": "Electabuzz"
+  },
+  "126": {
+    "cat": "Pokémon",
+    "name": "Magmar"
+  },	
+  "129": {
+    "cat": "Pokémon",
+    "name": "Magikarp"
+  },
+  "133": {
+    "cat": "Pokémon",
+    "name": "Eevee"
+  },
+  "147": {
+    "cat": "Pokémon",
+    "name": "Dratini"
+  },
+  "171": {
+    "cat": "Pokémon",
+    "name": "Lanturn"
+  },
+  "179": {
+    "cat": "Pokémon",
+    "name": "Mareep"
+  },
+  "200": {
+    "cat": "Pokémon",
+    "name": "Misdreavus"
+  },
+  "203": {
+    "cat": "Pokémon",
+    "name": "Girafarig"
+  },
+  "209": {
+    "cat": "Pokémon",
+    "name": "Snubbull"
+  },
+  "228": {
+    "cat": "Pokémon",
+    "name": "Houndour"
+  },
+  "246": {
+    "cat": "Pokémon",
+    "name": "Larvitar"
+  },
+  "309": {
+    "cat": "Pokémon",
+    "name": "Electrike"
+  },
+  "327": {
+    "cat": "Pokémon",
+    "name": "Spinda"
+  },
+  "999": {
+    "cat": "Pokémon",
+    "name": "?? Encounter"
+  },
+  "1000": {
+    "cat": "Rare Candies",
+    "name": "1 Rare Candy"
+  },
+  "1004": {
+    "cat": "Rare Candies",
+    "name": "3 Rare Candies"
+  },
+  "1103": {
+    "cat": "Stardust",
+    "name": "200 Stardust"
+  },
+  "1104": {
+    "cat": "Stardust",
+    "name": "500 Stardust"
+  },
+  "1105": {
+    "cat": "Stardust",
+    "name": "1000 Stardust"
+  },
+  "1106": {
+    "cat": "Stardust",
+    "name": "1500 Stardust"
+  },
+  "1201": {
+    "cat": "Pokéballs",
+    "name": "5 PokéBalls"
+  },
+  "1202": {
+    "cat": "Pokéballs",
+    "name": "10 PokéBalls"
+  },
+  "1204": {
+    "cat": "Pokéballs",
+    "name": "5 Great Balls"
+  },
+  "1206": {
+    "cat": "Pokéballs",
+    "name": "2 Ultra Balls"
+  },
+  "1301": {
+    "cat": "Berries",
+    "name": "2 Golden Razzberries"
+  },
+  "1302": {
+    "cat": "Berries",
+    "name": "1 Pinap Berry"
+  },
+  "1303": {
+    "cat": "Berries",
+    "name": "2 Pinap Berries"
+  },
+  "1306": {
+    "cat": "Berries",
+    "name": "3 Pinap Berries"
+  },
+  "1310": {
+    "cat": "Berries",
+    "name": "10 Nanab Berries"
+  },
+  "1311": {
+    "cat": "Berries",
+    "name": "3 Razz Berries"
+  },
+  "1315": {
+    "cat": "Berries",
+    "name": "6 Razz Berries"
+  },
+  "1401": {
+    "cat": "Potions & Revives",
+    "name": "1 Revive"
+  },
+  "1402": {
+    "cat": "Potions & Revives",
+    "name": "2 Revives"
+  },
+  "1409": {
+    "cat": "Potions & Revives",
+    "name": "3 Hyper Potions"
   }
 }

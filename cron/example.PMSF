@@ -3,3 +3,4 @@
 * * * * * /usr/bin/php7.0 /opt/PMSF/cron/raid_cron.php
 0 0 * * * /usr/bin/php7.0 /opt/PMSF/cron/quest_cron.php
 0 * * * * /usr/bin/php7.0 /opt/PMSF/cron/silph.php
+0 2 * * 4 /usr/bin/php7.0 /opt/PMSF/cron/nest_cron.php

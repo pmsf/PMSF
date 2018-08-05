@@ -322,6 +322,8 @@
   "26": {
     "name": "Raichu",
     "rarity": "Ultra Rare",
+    "level": 3,
+    "cp": 16178,
     "types": [
       {
         "type": "Electric",
@@ -1116,6 +1118,8 @@
   "90": {
     "name": "Shellder",
     "rarity": "Rare",
+    "level": 1,
+    "cp": 4340,
     "types": [
       {
         "type": "Water",
@@ -1302,7 +1306,7 @@
   "105": {
     "name": "Marowak",
     "rarity": "Very Rare",
-    "level": 2,
+    "level": 4,
     "cp": 9891,
     "types": [
       {
@@ -1556,6 +1560,8 @@
   "126": {
     "name": "Magmar",
     "rarity": "Rare",
+    "level": 2,
+    "cp": 11610,
     "types": [
       {
         "type": "Fire",
@@ -2892,6 +2898,8 @@
   "232": {
     "name": "Donphan",
     "rarity": "Very Rare",
+    "level": 3,
+    "cp": 18980,
     "types": [
       {
         "type": "Ground",
@@ -3214,6 +3222,8 @@
   "259":{
     "name": "Marshtomp",
     "rarity":"",
+    "level": 2,
+    "cp": 8825,
     "types": [
       {
         "type": "Water",
@@ -3490,6 +3500,8 @@
   "281":{
     "name": "Kirlia",
     "rarity":"",
+    "level": 2,
+    "cp": 6005,
     "types": [
       {
         "type": "Psychic",
@@ -3674,6 +3686,8 @@
   "296":{
     "name": "Makuhita",
     "rarity":"",
+    "level": 1,
+    "cp": 2319,
     "types": [
       {
         "type": "Fighting",
@@ -3816,6 +3830,8 @@
   "307":{
     "name": "Meditite",
     "rarity":"",
+    "level": 1,
+    "cp": 2516,
     "types": [
       {
         "type": "Fighting",
@@ -3954,6 +3970,8 @@
   "319":{
     "name": "Sharpedo",
     "rarity":"",
+    "level": 3,
+    "cp": 13989,
     "types": [
       {
         "type": "Water",

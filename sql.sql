@@ -54,4 +54,14 @@ CREATE TABLE IF NOT EXISTS `nests` (
 // Required for Quests
 //--------------------------------------
 ALTER TABLE pokestops
-ADD (quest_id TINYINT(4), reward VARCHAR(40));
+ADD (quest_id SMALLINT(4), reward_id SMALLINT(4));
+
+//--------------------------------------
+// Required for Login & Logging
+//--------------------------------------
+ALTER TABLE pokestops
+ADD (quest_submitted_by VARCHAR(200), edited_by VARCHAR(200));
+ALTER TABLE forts
+ADD edited_by VARCHAR(200);
+ALTER TABLE nests
+ADD nest_submitted_by VARCHAR(200);
