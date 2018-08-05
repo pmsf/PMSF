@@ -295,6 +295,7 @@ $pokemonTimer = 900;                                                // Time in s
 $noManualGyms = false;
 $noManualPokestops = false;
 $noRenamePokestops = false;
+$noConvertPokestops = false;
 $noManualQuests = false;
 
 $noDiscordSubmitLogChannel = true;                                        // Send webhooks to discord channel upon submission
