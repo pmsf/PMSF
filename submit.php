@@ -287,6 +287,40 @@ if ( $action === "raid" ) {
             curl_exec($curl);
         }
     }
+} elseif ( $action === "convertpokestop" ) {
+    if ( $noRenamePokestops === true || $noPokestops === true ) {
+        http_response_code( 401 );
+        die();
+    }
+    $pokestopId   = ! empty( $_POST['pokestopid'] ) ? $_POST['pokestopid'] : '';
+    $loggedUser = ! empty( $_SESSION['user']->user ) ? $_SESSION['user']->user : 'NOLOGIN';
+    $gymId = randomGymId();
+    $gymLat = $db->get( "pokestops", [ 'lat' ], [ 'external_id' => $pokestopId ] );
+    $gymLon= $db->get( "pokestops", [ 'lon' ], [ 'external_id' => $pokestopId ] );
+    $gymName = $db->get( "pokestops", [ 'name' ], [ 'external_id' => $pokestopId ] );
+    if ( ! empty( $pokestopId ) ) {
+        $cols     = [
+            'external_id'  => $gymId,
+            'lat'          => $gymLat['lat'],
+            'lon'          => $gymLon['lon'],
+            'name'         => $gymName['name'],
+            'edited_by'    => $loggedUser
+        ];
+	$db->insert( "forts", $cols );
+        $db->delete( 'pokestops', [
+            "AND" => [
+                'external_id' => $pokestopId
+            ]
+        ] );
+        if ( $noDiscordSubmitLogChannel === false ) {
+            $data = array("content" => '```Converted pokestop with id "' . $pokestopId . '." New Gym: "' . $gymName . '" . ```', "username" => $loggedUser);
+            $curl = curl_init($discordSubmitLogChannelUrl);
+            curl_setopt($curl, CURLOPT_CUSTOMREQUEST, "POST");
+            curl_setopt($curl, CURLOPT_POSTFIELDS, json_encode($data));
+            curl_setopt($curl, CURLOPT_RETURNTRANSFER, true);
+            curl_exec($curl);
+        }
+    }
  } elseif ( $action === "pokestop" ) {
     if ( $noManualPokestops === true || $noPokestops === true ) {
         http_response_code( 401 );
