@@ -313,7 +313,7 @@ if ( $action === "raid" ) {
             ]
         ] );
         if ( $noDiscordSubmitLogChannel === false ) {
-            $data = array("content" => '```Converted pokestop with id "' . $pokestopId . '." New Gym: "' . $gymName . '" . ```', "username" => $loggedUser);
+            $data = array("content" => '```Converted pokestop with id "' . $pokestopId . '." New Gym: "' . $gymName['name'] . '". ```', "username" => $loggedUser);
             $curl = curl_init($discordSubmitLogChannelUrl);
             curl_setopt($curl, CURLOPT_CUSTOMREQUEST, "POST");
             curl_setopt($curl, CURLOPT_POSTFIELDS, json_encode($data));
