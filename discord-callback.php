@@ -37,7 +37,7 @@ if ($noDiscordLogin === false) {
                 "login_system" => 'discord'
             ]);
         }
-        header("Location: .");
+        header("Location: .?login=true");
         die();
     } catch (Exception $e) {
         header("Location: ./discord-login");

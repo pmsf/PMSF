@@ -164,14 +164,9 @@ var notifyText = 'disappears at <dist> (<udist>)'
 //
 // Functions
 //
-if (location.search.indexOf('map') < 0) {
-    var hash = window.location.hash
-    var loc = window.location.href.replace(hash, '')
-    loc += (loc.indexOf('?') < 0 ? '?' : '&') + 'map'
-    // SET THE ONE TIME AUTOMATIC PAGE RELOAD TIME TO 5000 MILISECONDS (5 SECONDS):
-    setTimeout(function () { window.location.href = loc + hash }, 500)
+if (location.search.indexOf('login=true') > 0) {
+    setTimeout(function () { window.location = '/' }, 500)
 }
-
 function excludePokemon(id) { // eslint-disable-line no-unused-vars
     $selectExclude.val(
         $selectExclude.val().split(',').concat(id).join(',')
