@@ -375,6 +375,7 @@ if ( $action === "raid" ) {
     if ( ! empty( $gymId ) ) {
 	$fortName = $db->get( "forts", [ 'name' ], [ 'external_id' => $gymId ] );    
         $fortid = $db->get( "forts", [ 'id' ], [ 'external_id' => $gymId ] );
+        $loggedUser = ! empty( $_SESSION['user']->user ) ? $_SESSION['user']->user : 'NOLOGIN';
         if ( $fortid ) {
             $db->delete( 'fort_sightings', [
                 "AND" => [
@@ -408,6 +409,7 @@ if ( $action === "raid" ) {
     }
     $pokestopId = ! empty( $_POST['id'] ) ? $_POST['id'] : '';
     $pokestopName = $db->get( "pokestops", [ 'name' ], [ 'external_id' => $pokestopId ] );
+    $loggedUser = ! empty( $_SESSION['user']->user ) ? $_SESSION['user']->user : 'NOLOGIN';
     if ( ! empty( $pokestopId ) ) {
         $db->delete( 'pokestops', [
             "AND" => [
