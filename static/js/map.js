@@ -843,7 +843,7 @@ function gymLabel(item) {
 
 function pokestopLabel(expireTime, latitude, longitude, stopName, lureUser, id, quest, reward) {
     var str
-    if (stopName === undefined) {
+    if (stopName === null) {
         stopName = 'Pokéstop'
     }
     if (expireTime) {
