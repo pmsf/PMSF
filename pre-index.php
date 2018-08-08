@@ -203,7 +203,7 @@ if ( $blockIframe ) {
                 if ($info['expire_timestamp'] > time()) {
                     $color = "green";
                 } else {
-                    $color = "red";
+                    header('Location: ./logout.php');
                 }
 
                 echo "<span style='color: {$color};'>" . substr($_SESSION['user']->user, 0, 3) . "...</span>";

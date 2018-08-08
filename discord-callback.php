@@ -19,17 +19,15 @@ if ($noDiscordLogin === false) {
                 $db->insert("users", [
                     "id" => $user->{'id'},
                     "user" => $user->{'username'} . "#" . $user->{'discriminator'},
-                    "expire_timestamp" => time(),
+                    "expire_timestamp" => time()+$sessionLifetime,
                     "login_system" => 'discord'
                 ]);
-
-                $logMsg = "INSERT INTO users (id, user, expire_timestamp, login_system) VALUES ('{$user->id}', '{$user->username}" . "#" . "{$user->discriminator}', '" . time() ."', 'discord'); -- " . date('Y-m-d H:i:s') . "\r\n";
-                file_put_contents($logfile, $logMsg, FILE_APPEND);
             }
 
-            setcookie("LoginCookie", session_id(), time()+60*60*2);
+            setcookie("LoginCookie", session_id(), time()+$sessionLifetime);
 
             $db->update("users", [
+                "expire_timestamp" => time()+$sessionLifetime,
                 "session_id" => session_id(),
                 "user" => $user->{'username'} . "#" . $user->{'discriminator'}
             ], [
