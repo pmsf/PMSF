@@ -274,6 +274,7 @@ class Monocle_Alternate extends Monocle
         f.lat AS latitude,
         f.lon AS longitude,
         f.name,
+        f.url,
         f.sponsor,
         f.park,
         fs.team AS team_id,
