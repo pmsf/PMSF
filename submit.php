@@ -298,12 +298,14 @@ if ( $action === "raid" ) {
     $gymLat = $db->get( "pokestops", [ 'lat' ], [ 'external_id' => $pokestopId ] );
     $gymLon= $db->get( "pokestops", [ 'lon' ], [ 'external_id' => $pokestopId ] );
     $gymName = $db->get( "pokestops", [ 'name' ], [ 'external_id' => $pokestopId ] );
+    $gymUrl = $db->get( "pokestops", [ 'url' ], [ 'external_id' => $pokestopId ] );
     if ( ! empty( $pokestopId ) ) {
         $cols     = [
             'external_id'  => $gymId,
             'lat'          => $gymLat['lat'],
             'lon'          => $gymLon['lon'],
             'name'         => $gymName['name'],
+            'url'          => $gymUrl['url'],
             'edited_by'    => $loggedUser
         ];
 	$db->insert( "forts", $cols );
