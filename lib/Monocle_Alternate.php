@@ -182,6 +182,7 @@ class Monocle_Alternate extends Monocle
         expires AS lure_expiration,
         deployer AS lure_user,
         name AS pokestop_name,
+        url,
         lat AS latitude,
         lon AS longitude";
         if (!$noManualQuests) {
