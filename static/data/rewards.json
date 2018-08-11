@@ -119,21 +119,25 @@
     "cat": "Rare Candies",
     "name": "3 Rare Candies"
   },
-  "1103": {
+  "1102": {
     "cat": "Stardust",
     "name": "200 Stardust"
   },
-  "1104": {
+  "1103": {
     "cat": "Stardust",
     "name": "500 Stardust"
   },
-  "1105": {
+  "1104": {
     "cat": "Stardust",
     "name": "1000 Stardust"
   },
-  "1106": {
+  "1105": {
     "cat": "Stardust",
     "name": "1500 Stardust"
+  },
+  "1106": {
+    "cat": "Stardust",
+    "name": "2000 Stardust"
   },
   "1201": {
     "cat": "Pokéballs",
@@ -150,6 +154,10 @@
   "1206": {
     "cat": "Pokéballs",
     "name": "2 Ultra Balls"
+  },
+  "1208": {
+    "cat": "Pokéballs",
+    "name": "5 Ultra Balls"
   },
   "1301": {
     "cat": "Berries",
@@ -186,6 +194,26 @@
   "1402": {
     "cat": "Potions & Revives",
     "name": "2 Revives"
+  },
+  "1403": {
+    "cat": "Potions & Revives",
+    "name": "4 Revives"
+  },
+  "1404": {
+    "cat": "Potions & Revives",
+    "name": "6 Revives"
+  },
+  "1405": {
+    "cat": "Potions & Revives",
+    "name": "1 Max Revive"
+  },
+  "1407": {
+    "cat": "Potions & Revives",
+    "name": "5 Potions"
+  },
+  "1408": {
+    "cat": "Potions & Revives",
+    "name": "3 Super Potions"
   },
   "1409": {
     "cat": "Potions & Revives",
