@@ -52,6 +52,7 @@ if ( $action === "raid" ) {
     $add_seconds = ( $monTime * 60 );
     $time_spawn  = time() - $forty_five;
     $level       = 0;
+    $loggedUser = ! empty( $_SESSION['user']->user ) ? $_SESSION['user']->user : 'NOLOGIN';
     if ( strpos( $pokemonId, 'egg_' ) !== false ) {
         $add_seconds = ( $eggTime * 60 );
         $level       = (int) substr( $pokemonId, 4, 1 );
@@ -73,7 +74,7 @@ if ( $action === "raid" ) {
         'pokemon_id'  => 0,
         'move_1'      => 0,
         'move_2'      => 0,
-        'submitted_by'=> $_SESSION['user']->user
+        'submitted_by'=> $loggedUser
 
     ];
     if ( array_key_exists( $pokemonId, $raidBosses ) ) {
