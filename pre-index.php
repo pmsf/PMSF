@@ -223,11 +223,12 @@ if ( $blockIframe ) {
     <nav id="nav">
         <div id="nav-accordion">
             <?php
-            if ( ! $noPokemon ) {
+            if ( ! $noPokemon || ! $noNests ) {
                 ?>
-                <h3><?php echo i8ln( 'Pokemon' ) ?></h3>
+                <h3><?php echo i8ln( 'Pokemon / Nests' ) ?></h3>
                 <div>
-                    <?php
+                <?php
+                if ( ! $noPokemon ) {
                     echo '<div class=" form-control switch-container" style="float:none;height:35px;margin-bottom:0px;">
                     <h3>' . i8ln( 'Pokemon' ) . '</h3>
                     <div class="onoffswitch">
@@ -238,7 +239,8 @@ if ( $blockIframe ) {
                             <span class="switch-handle"></span>
                         </label>
                     </div>
-		</div>'; ?>
+		</div>';
+                } ?>
                 <?php
                 if ( ! $noNests ) {
                     echo '<div class="form-control switch-container">
@@ -716,7 +718,7 @@ if ( $blockIframe ) {
             }
             ?>
             <?php
-            if ( ! $noNotifyPokemon || ! $noNotifyRarity || ! $noNotifyIv || ! $noNotifyLevel || ! $noNotifySound || ! $noNotifyRaid || ! $noNotifyBounce || ! noNotifyNotification ) {
+            if ( ! $noNotifyPokemon || ! $noNotifyRarity || ! $noNotifyIv || ! $noNotifyLevel || ! $noNotifySound || ! $noNotifyRaid || ! $noNotifyBounce || ! $noNotifyNotification ) {
                 echo '<h3>' . i8ln( 'Notification' ) . '</h3>
             <div>';
             }
