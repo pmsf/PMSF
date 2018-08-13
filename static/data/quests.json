@@ -142,5 +142,9 @@
   "602": {
     "cat": "Miscellaneous",
     "name": "Transfer 10 Pokémon."
+  },
+  "605": {
+    "cat": "Miscellaneous",
+    "name": "Spin 10 stops or gyms."
   }
 }
