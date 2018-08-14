@@ -52,6 +52,7 @@ if ( $action === "raid" ) {
     $add_seconds = ( $monTime * 60 );
     $time_spawn  = time() - $forty_five;
     $level       = 0;
+    $loggedUser = ! empty( $_SESSION['user']->user ) ? $_SESSION['user']->user : 'NOLOGIN';
     if ( strpos( $pokemonId, 'egg_' ) !== false ) {
         $add_seconds = ( $eggTime * 60 );
         $level       = (int) substr( $pokemonId, 4, 1 );
@@ -73,7 +74,7 @@ if ( $action === "raid" ) {
         'pokemon_id'  => 0,
         'move_1'      => 0,
         'move_2'      => 0,
-        'submitted_by'=> $_SESSION['user']->user
+        'submitted_by'=> $loggedUser
 
     ];
     if ( array_key_exists( $pokemonId, $raidBosses ) ) {
@@ -287,6 +288,42 @@ if ( $action === "raid" ) {
             curl_exec($curl);
         }
     }
+} elseif ( $action === "convertpokestop" ) {
+    if ( $noRenamePokestops === true || $noPokestops === true ) {
+        http_response_code( 401 );
+        die();
+    }
+    $pokestopId   = ! empty( $_POST['pokestopid'] ) ? $_POST['pokestopid'] : '';
+    $loggedUser = ! empty( $_SESSION['user']->user ) ? $_SESSION['user']->user : 'NOLOGIN';
+    $gymId = randomGymId();
+    $gymLat = $db->get( "pokestops", [ 'lat' ], [ 'external_id' => $pokestopId ] );
+    $gymLon= $db->get( "pokestops", [ 'lon' ], [ 'external_id' => $pokestopId ] );
+    $gymName = $db->get( "pokestops", [ 'name' ], [ 'external_id' => $pokestopId ] );
+    $gymUrl = $db->get( "pokestops", [ 'url' ], [ 'external_id' => $pokestopId ] );
+    if ( ! empty( $pokestopId ) ) {
+        $cols     = [
+            'external_id'  => $gymId,
+            'lat'          => $gymLat['lat'],
+            'lon'          => $gymLon['lon'],
+            'name'         => $gymName['name'],
+            'url'          => $gymUrl['url'],
+            'edited_by'    => $loggedUser
+        ];
+	$db->insert( "forts", $cols );
+        $db->delete( 'pokestops', [
+            "AND" => [
+                'external_id' => $pokestopId
+            ]
+        ] );
+        if ( $noDiscordSubmitLogChannel === false ) {
+            $data = array("content" => '```Converted pokestop with id "' . $pokestopId . '." New Gym: "' . $gymName['name'] . '". ```', "username" => $loggedUser);
+            $curl = curl_init($discordSubmitLogChannelUrl);
+            curl_setopt($curl, CURLOPT_CUSTOMREQUEST, "POST");
+            curl_setopt($curl, CURLOPT_POSTFIELDS, json_encode($data));
+            curl_setopt($curl, CURLOPT_RETURNTRANSFER, true);
+            curl_exec($curl);
+        }
+    }
  } elseif ( $action === "pokestop" ) {
     if ( $noManualPokestops === true || $noPokestops === true ) {
         http_response_code( 401 );
@@ -341,6 +378,7 @@ if ( $action === "raid" ) {
     if ( ! empty( $gymId ) ) {
 	$fortName = $db->get( "forts", [ 'name' ], [ 'external_id' => $gymId ] );    
         $fortid = $db->get( "forts", [ 'id' ], [ 'external_id' => $gymId ] );
+        $loggedUser = ! empty( $_SESSION['user']->user ) ? $_SESSION['user']->user : 'NOLOGIN';
         if ( $fortid ) {
             $db->delete( 'fort_sightings', [
                 "AND" => [
@@ -374,6 +412,7 @@ if ( $action === "raid" ) {
     }
     $pokestopId = ! empty( $_POST['id'] ) ? $_POST['id'] : '';
     $pokestopName = $db->get( "pokestops", [ 'name' ], [ 'external_id' => $pokestopId ] );
+    $loggedUser = ! empty( $_SESSION['user']->user ) ? $_SESSION['user']->user : 'NOLOGIN';
     if ( ! empty( $pokestopId ) ) {
         $db->delete( 'pokestops', [
             "AND" => [

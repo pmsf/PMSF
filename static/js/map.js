@@ -164,14 +164,9 @@ var notifyText = 'disappears at <dist> (<udist>)'
 //
 // Functions
 //
-if (location.search.indexOf('map') < 0) {
-    var hash = window.location.hash
-    var loc = window.location.href.replace(hash, '')
-    loc += (loc.indexOf('?') < 0 ? '?' : '&') + 'map'
-    // SET THE ONE TIME AUTOMATIC PAGE RELOAD TIME TO 5000 MILISECONDS (5 SECONDS):
-    setTimeout(function () { window.location.href = loc + hash }, 500)
+if (location.search.indexOf('login=true') > 0) {
+    setTimeout(function () { window.location = '/' }, 500)
 }
-
 function excludePokemon(id) { // eslint-disable-line no-unused-vars
     $selectExclude.val(
         $selectExclude.val().split(',').concat(id).join(',')
@@ -698,6 +693,7 @@ function gymLabel(item) {
     var latitude = item['latitude']
     var longitude = item['longitude']
     var name = item['name']
+    var url = item['url']
     var members = item['pokemon']
 
     var raidSpawned = item['raid_level'] != null
@@ -714,13 +710,13 @@ function gymLabel(item) {
         raidStr = '<h3 style="margin-bottom: 0">Raid ' + levelStr
         if (raidStarted) {
             var cpStr = ''
-            if (item.raid_pokemon_cp != null) {
+            if (item.raid_pokemon_cp != null && item.raid_pokemon_cp != 0) {
                 cpStr = ' CP ' + item.raid_pokemon_cp
             }
             raidStr += '<br>' + item.raid_pokemon_name + cpStr
         }
         raidStr += '</h3>'
-        if (raidStarted && item.raid_pokemon_move_1 != null && item.raid_pokemon_move_2 != null) {
+        if (raidStarted && item.raid_pokemon_move_1 != null && item.raid_pokemon_move_1 != 133 && item.raid_pokemon_move_2 != null && item.raid_pokemon_move_2 != 133) {
             var pMove1 = (moves[item['raid_pokemon_move_1']] !== undefined) ? i8ln(moves[item['raid_pokemon_move_1']]['name']) : 'gen/unknown'
             var pMove2 = (moves[item['raid_pokemon_move_2']] !== undefined) ? i8ln(moves[item['raid_pokemon_move_2']]['name']) : 'gen/unknown'
             raidStr += '<div><b>' + pMove1 + ' / ' + pMove2 + '</b></div>'
@@ -785,6 +781,7 @@ function gymLabel(item) {
             '<div>' +
             '<img height="70px" style="padding: 5px;" src="static/forts/' + teamName + '_large.png">' +
             raidIcon +
+            '<img height="70px" style="padding: 5px;" src="' + url + '">' +
             '</div>' +
             raidStr +
             '<div>' +
@@ -825,6 +822,7 @@ function gymLabel(item) {
             '<b style="color:rgba(' + gymColor[teamId] + ')">' + i8ln('Team') + ' ' + i8ln(teamName) + '</b><br>' +
             '<img height="70px" style="padding: 5px;" src="static/forts/' + teamName + '_large.png">' +
             raidIcon +
+            '<img height="70px" style="padding: 5px;" src="' + url + '">' +
             '</div>' +
             nameStr +
             raidStr +
@@ -846,9 +844,9 @@ function gymLabel(item) {
     return str
 }
 
-function pokestopLabel(expireTime, latitude, longitude, stopName, lureUser, id, quest, reward) {
+function pokestopLabel(expireTime, latitude, longitude, stopName, url, lureUser, id, quest, reward) {
     var str
-    if (stopName === undefined) {
+    if (stopName === null) {
         stopName = 'Pokéstop'
     }
     if (expireTime) {
@@ -889,6 +887,7 @@ function pokestopLabel(expireTime, latitude, longitude, stopName, lureUser, id, 
                 '</div>' +
                 '<div>' +
                 '<img height="70px" style="padding: 5px;" src="static/forts/Pstop-large.png">' +
+                '<img height="70px" style="padding: 5px;" src="' + url + '">' +
                 '</div>' +
                 '</center>' +
                 '</div>'
@@ -901,6 +900,7 @@ function pokestopLabel(expireTime, latitude, longitude, stopName, lureUser, id, 
                 '</div>' +
                 '<div>' +
                 '<img height="70px" style="padding: 5px;" src="static/forts/Pstop-quest-large.png">' +
+                '<img height="70px" style="padding: 5px;" src="' + url + '">' +
                 '<img height="70px" style="padding: 5px;" src="static/rewards/reward_' + reward + '.png"/>' +
                 '</div>' +
                 '</center>' +
@@ -926,6 +926,9 @@ function pokestopLabel(expireTime, latitude, longitude, stopName, lureUser, id, 
         }
         if (!noRenamePokestops) {
             str += '<center><div>Rename Pokestop <i class="fa fa-edit rename-pokestop" style="margin-top: 2px; vertical-align: middle; font-size: 1.5em;" onclick="openRenamePokestopModal(event);" data-id="' + id + '"></i></div></center>'
+        }
+        if (!noConvertPokestops) {
+            str += '<center><div>Convert to Gym <i class="fa fa-refresh convert-pokestop" style="margin-top: 2px; vertical-align: middle; font-size: 1.5em;" onclick="openConvertPokestopModal(event);" data-id="' + id + '"></i></div></center>'
         }
         str += '<div>' +
             i8ln('Location:') + ' ' + '<a href="javascript:void(0)" onclick="javascript:openMapDirections(' + latitude + ',' + longitude + ')" title="' + i8ln('View in Maps') + '">' + latitude.toFixed(6) + ', ' + longitude.toFixed(7) + '</a> - <a href="./?lat=' + latitude + '&lon=' + longitude + '&zoom=16">Share link</a>' +
@@ -1343,7 +1346,7 @@ function setupPokestopMarker(item) {
     }
 
     marker.infoWindow = new google.maps.InfoWindow({
-        content: pokestopLabel(item['lure_expiration'], item['latitude'], item['longitude'], item['pokestop_name'], item['lure_user'], item['pokestop_id'], item['quest_id'], item['reward_id']),
+        content: pokestopLabel(item['lure_expiration'], item['latitude'], item['longitude'], item['pokestop_name'], item['url'], item['lure_user'], item['pokestop_id'], item['quest_id'], item['reward_id']),
         disableAutoPan: true,
         pixelOffset: new google.maps.Size(0, -25)
     })
@@ -2164,6 +2167,38 @@ function renamePokestopData(event) { // eslint-disable-line no-unused-vars
         }
     }
 }
+function convertPokestopData(event) { // eslint-disable-line no-unused-vars
+    var form = $(event.target).parent().parent()
+    var pokestopId = form.find('.convertpokestopid').val()
+    if (pokestopId && pokestopId !== '') {
+        if (confirm(i8ln('I confirm this pokestop is now a gym'))) {
+            return $.ajax({
+                url: 'submit',
+                type: 'POST',
+                timeout: 300000,
+                dataType: 'json',
+                cache: false,
+                data: {
+                    'action': 'convertpokestop',
+                    'pokestopid': pokestopId
+                },
+                error: function error() {
+                    // Display error toast
+                    toastr['error'](i8ln('Pokestop ID got lost somewhere.'), i8ln('Error converting Pokestop'))
+                    toastr.options = toastrOptions
+                },
+                complete: function complete() {
+                    lastgyms = false
+                    jQuery('label[for="pokestops-switch"]').click()
+                    jQuery('label[for="pokestops-switch"]').click()
+                    lastpokestops = false
+                    updateMap()
+                    $('.ui-dialog-content').dialog('close')
+                }
+            })
+        }
+    }
+}
 function deleteNest(event) { // eslint-disable-line no-unused-vars
     var button = $(event.target)
     var nestid = button.data('id')
@@ -2500,6 +2535,21 @@ function openRenamePokestopModal(event) { // eslint-disable-line no-unused-vars
         maxHeight: 600,
         buttons: {},
         title: i8ln('Rename Pokéstop'),
+        classes: {
+            'ui-dialog': 'ui-dialog raid-widget-popup'
+        }
+    })
+}
+
+function openConvertPokestopModal(event) { // eslint-disable-line no-unused-vars
+    $('.ui-dialog').remove()
+    var val = $(event.target).data('id')
+    $('.convertpokestopid').val(val)
+    $('.convert-modal').clone().dialog({
+        modal: true,
+        maxHeight: 600,
+        buttons: {},
+        title: i8ln('Convert Pokéstop to Gym'),
         classes: {
             'ui-dialog': 'ui-dialog raid-widget-popup'
         }
@@ -3569,13 +3619,13 @@ function showGymDetails(id) { // eslint-disable-line no-unused-vars
             raidStr = '<h3 style="margin-bottom: 0">Raid ' + levelStr
             if (raidStarted) {
                 var cpStr = ''
-                if (result.raid_pokemon_cp != null) {
+                if (result.raid_pokemon_cp != null && result.raid_pokemon_cp != 0) {
                     cpStr = ' CP ' + result.raid_pokemon_cp
                 }
                 raidStr += '<br>' + result.raid_pokemon_name + cpStr
             }
             raidStr += '</h3>'
-            if (raidStarted && result.raid_pokemon_move_1 != null && result.raid_pokemon_move_2 != null) {
+            if (raidStarted && result.raid_pokemon_move_1 != null && result.raid_pokemon_move_1 != 133 && result.raid_pokemon_move_2 != null && result.raid_pokemon_move_2 != 133 ) {
                 var pMove1 = (moves[result['raid_pokemon_move_1']] !== undefined) ? i8ln(moves[result['raid_pokemon_move_1']]['name']) : 'gen/unknown'
                 var pMove2 = (moves[result['raid_pokemon_move_2']] !== undefined) ? i8ln(moves[result['raid_pokemon_move_2']]['name']) : 'gen/unknown'
                 raidStr += '<div><b>' + pMove1 + ' / ' + pMove2 + '</b></div>'
@@ -3632,6 +3682,7 @@ function showGymDetails(id) { // eslint-disable-line no-unused-vars
             '<div>' +
             '<img height="60px" style="padding: 5px;" src="static/forts/' + gymTypes[result.team_id] + '_large.png">' +
             raidIcon +
+            '<img height="70px" style="padding: 5px;" src="' + result.url + '">' +
             '</div>' +
             raidStr +
             gymLevelStr +
@@ -4724,3 +4775,4 @@ function checkAndCreateSound(pokemonId = 0) {
         }
     }
 }
+//

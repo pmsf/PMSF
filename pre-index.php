@@ -203,7 +203,7 @@ if ( $blockIframe ) {
                 if ($info['expire_timestamp'] > time()) {
                     $color = "green";
                 } else {
-                    $color = "red";
+                    header('Location: ./logout.php');
                 }
 
                 echo "<span style='color: {$color};'>" . substr($_SESSION['user']->user, 0, 3) . "...</span>";
@@ -223,11 +223,12 @@ if ( $blockIframe ) {
     <nav id="nav">
         <div id="nav-accordion">
             <?php
-            if ( ! $noPokemon ) {
+            if ( ! $noPokemon || ! $noNests ) {
                 ?>
-                <h3><?php echo i8ln( 'Pokemon' ) ?></h3>
+                <h3><?php echo i8ln( 'Pokemon / Nests' ) ?></h3>
                 <div>
-                    <?php
+                <?php
+                if ( ! $noPokemon ) {
                     echo '<div class=" form-control switch-container" style="float:none;height:35px;margin-bottom:0px;">
                     <h3>' . i8ln( 'Pokemon' ) . '</h3>
                     <div class="onoffswitch">
@@ -238,7 +239,8 @@ if ( $blockIframe ) {
                             <span class="switch-handle"></span>
                         </label>
                     </div>
-		</div>'; ?>
+		</div>';
+                } ?>
                 <?php
                 if ( ! $noNests ) {
                     echo '<div class="form-control switch-container">
@@ -716,7 +718,7 @@ if ( $blockIframe ) {
             }
             ?>
             <?php
-            if ( ! $noNotifyPokemon || ! $noNotifyRarity || ! $noNotifyIv || ! $noNotifyLevel || ! $noNotifySound || ! $noNotifyRaid || ! $noNotifyBounce || ! noNotifyNotification ) {
+            if ( ! $noNotifyPokemon || ! $noNotifyRarity || ! $noNotifyIv || ! $noNotifyLevel || ! $noNotifySound || ! $noNotifyRaid || ! $noNotifyBounce || ! $noNotifyNotification ) {
                 echo '<h3>' . i8ln( 'Notification' ) . '</h3>
             <div>';
             }
@@ -1101,6 +1103,16 @@ if ( $blockIframe ) {
             </div>
         </div>
     <?php } ?>
+    <?php if ( ! $noRenamePokestops ) { ?>
+        <div class="convert-modal" style="display: none;">
+             <div class="button-container">
+                <button type="button" onclick="convertPokestopData(event);" class="convertpokestopid"><i
+                        class="fa fa-refresh"
+                        style="margin-right:10px; vertical-align: middle; font-size: 1.5em;"></i><?php echo i8ln( 'Convert to gym' ); ?>
+                </button>
+            </div>
+        </div>
+    <?php } ?>
     <?php if ( ! $noEditCommunity ) { ?>
         <div class="editcommunity-modal" style="display: none;">
 	   <input type="text" id="community-name" name="community-name"
@@ -1449,6 +1461,7 @@ if ( $blockIframe ) {
     var expireTimestamp = <?php echo isset($_SESSION['user']->expire_timestamp) ? $_SESSION['user']->expire_timestamp : 0 ?>;
     var timestamp = <?php echo time() ?>;
     var noRenamePokestops = <?php echo $noRenamePokestops === true ? 'true' : 'false' ?>;
+    var noConvertPokestops = <?php echo $noConvertPokestops === true ? 'true' : 'false' ?>;
     var noWhatsappLink = <?php echo $noWhatsappLink === true ? 'true' : 'false' ?>;
 </script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js"></script>
