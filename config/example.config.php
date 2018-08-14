@@ -283,7 +283,8 @@ $submitMapUrl = '';
 $discordSubmitLogChannelUrl = 'https://discordapp.com/api/webhooks/<yourCHANNELhere>';  // Sends gym/pokestop submit & pokestop rename directly to discord
 //$currentTime = (int) date('G');				   					// Uncomment this block to deny Raid submissions over night
 //
-//if ($currentTime >= 6 && $currentTime < 23) {                     // noManualRaids = true between 23:00 and 06:00. Adjest hours if needed
+//if ($currentTime >= 6 && $currentTime < 23) {                     // noManualRaids = true between 23:00 and 06:00. Adjust hours if needed
+//
 //	        $noManualRaids = false;
 //} else {
 //	        $noManualRaids = true;
@@ -294,6 +295,7 @@ $pokemonTimer = 900;                                                // Time in s
 $noManualGyms = false;
 $noManualPokestops = false;
 $noRenamePokestops = false;
+$noConvertPokestops = false;
 $noManualQuests = false;
 
 $pokemonReportTime = true;
@@ -311,35 +313,35 @@ $sendQuestWebhook = false;                      // Experimental use only
 $questWebhookUrl = null;                        // Experimental use only
 
 $manualOneStar = [
-    'webhook' => true,						    // If set to false no webhooks will be send on raid_cron.php
+    'webhook' => false,						    // If set to false no webhooks will be send on raid_cron.php
     'pokemon_id' => 387,
     'cp' => 0,
     'move_1' => null,
     'move_2' => null
 ];
 $manualTwoStar = [
-    'webhook' => true,						    // If set to false no webhooks will be send on raid_cron.php
+    'webhook' => false,						    // If set to false no webhooks will be send on raid_cron.php
     'pokemon_id' => 388,
     'cp' => 0,
     'move_1' => null,
     'move_2' => null
 ];
 $manualThreeStar = [
-    'webhook' => true,						    // If set to false no webhooks will be send on raid_cron.php
+    'webhook' => false,						    // If set to false no webhooks will be send on raid_cron.php
     'pokemon_id' => 389,
     'cp' => 0,
     'move_1' => null,
     'move_2' => null
 ];
 $manualFourStar = [
-    'webhook' => true,						    // If set to false no webhooks will be send on raid_cron.php
+    'webhook' => false,						    // If set to false no webhooks will be send on raid_cron.php
     'pokemon_id' => 390,
     'cp' => 0,
     'move_1' => null,
     'move_2' => null
 ];
 $manualFiveStar = [
-    'webhook' => true,						    // If set to false no webhooks will be send on raid_cron.php
+    'webhook' => false,						    // If set to false no webhooks will be send on raid_cron.php
     'pokemon_id' => 382,
     'cp' => 51968,
     'move_1' => null,
@@ -356,6 +358,14 @@ $noSearchGyms = false;          //Wont work if noSearch = false
 $noSearchManualQuests = false;  //Wont work if noSearch = false
 $noSearchNests = false;
 $defaultUnit = "km";                                            // mi/km
+//-----------------------------------------------
+// Community
+//-----------------------------------------------------
+$noCommunity = false;
+$enableCommunities = 'false';
+$noAddNewCommunity = false;
+$noDeleteCommunity = false;
+$noEditCommunity = false;
 
 //-----------------------------------------------
 // Nests

@@ -63,6 +63,7 @@ CREATE TABLE IF NOT EXISTS `nests` (
   `pokemon_id` int(11) DEFAULT 0,
   `updated` bigint(20) DEFAULT NULL,
   `type` tinyint(1) NOT NULL DEFAULT 0,
+  `nest_submitted_by` varchar(200) DEFAULT NULL,
   PRIMARY KEY (`nest_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
@@ -166,6 +167,27 @@ CREATE TABLE IF NOT EXISTS `users` (
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
+-- Data exporting was unselected.
+-- Dumping structure for tahle Monocle.communities
+CREATE TABLE `communities` (
+  `id` int(11) NOT NULL,
+  `community_id` varchar(35) DEFAULT NULL,
+  `title` varchar(64) DEFAULT NULL,
+  `description` varchar(256) DEFAULT NULL,
+  `type` tinyint(4) DEFAULT NULL,
+  `image_url` varchar(200) DEFAULT NULL,
+  `size` smallint(6) DEFAULT NULL,
+  `team_instinct` tinyint(4) DEFAULT NULL,
+  `team_mystic` tinyint(4) DEFAULT NULL,
+  `team_valor` tinyint(4) DEFAULT NULL,
+  `has_invite_url` varchar(4) DEFAULT NULL,
+  `invite_url` varchar(512) DEFAULT NULL,
+  `lat` double(18,14) DEFAULT NULL,
+  `lon` double(18,14) DEFAULT NULL,
+  `updated` bigint(20) DEFAULT NULL,
+  `source` tinyint(4) DEFAULT NULL,
+  `submitted_by` varchar(200) DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 -- Data exporting was unselected.
 /*!40101 SET SQL_MODE=IFNULL(@OLD_SQL_MODE, '') */;
 /*!40014 SET FOREIGN_KEY_CHECKS=IF(@OLD_FOREIGN_KEY_CHECKS IS NULL, 1, @OLD_FOREIGN_KEY_CHECKS) */;

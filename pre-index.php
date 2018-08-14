@@ -203,7 +203,7 @@ if ( $blockIframe ) {
                 if ($info['expire_timestamp'] > time()) {
                     $color = "green";
                 } else {
-                    $color = "red";
+                    header('Location: ./logout.php');
                 }
 
                 echo "<span style='color: {$color};'>" . substr($_SESSION['user']->user, 0, 3) . "...</span>";
@@ -223,11 +223,12 @@ if ( $blockIframe ) {
     <nav id="nav">
         <div id="nav-accordion">
             <?php
-            if ( ! $noPokemon ) {
+            if ( ! $noPokemon || ! $noNests ) {
                 ?>
-                <h3><?php echo i8ln( 'Pokemon' ) ?></h3>
+                <h3><?php echo i8ln( 'Pokemon / Nests' ) ?></h3>
                 <div>
-                    <?php
+                <?php
+                if ( ! $noPokemon ) {
                     echo '<div class=" form-control switch-container" style="float:none;height:35px;margin-bottom:0px;">
                     <h3>' . i8ln( 'Pokemon' ) . '</h3>
                     <div class="onoffswitch">
@@ -238,7 +239,22 @@ if ( $blockIframe ) {
                             <span class="switch-handle"></span>
                         </label>
                     </div>
-                </div>'; ?>
+		</div>';
+                } ?>
+                <?php
+                if ( ! $noNests ) {
+                    echo '<div class="form-control switch-container">
+                    <h3>' . i8ln( 'Nests' ) . '</h3>
+                    <div class="onoffswitch">
+                        <input id="nests-switch" type="checkbox" name="nests-switch"
+                               class="onoffswitch-checkbox" checked>
+                        <label class="onoffswitch-label" for="nests-switch">
+                            <span class="switch-label" data-on="On" data-off="Off"></span>
+                            <span class="switch-handle"></span>
+                        </label>
+                    </div>
+                </div>';
+                } ?>
                     <div id="pokemon-filter-wrapper" style="display:none">
                         <?php
                         if ( ! $noTinyRat ) {
@@ -347,6 +363,70 @@ if ( $blockIframe ) {
                             } ?>
                         </div>
                     </div>
+                </div>
+                <?php
+            }
+            ?>
+            <?php
+            if ( ! $noPokestops ) {
+                ?>
+                <h3><?php echo i8ln( 'Pokestops' ); ?></h3>
+		<div>
+                <?php
+                if ( ! $noPokestops ) {
+                    echo '<div class="form-control switch-container">
+                    <h3>' . i8ln( 'Pokestops' ) . '</h3>
+                    <div class="onoffswitch">
+                        <input id="pokestops-switch" type="checkbox" name="pokestops-switch"
+                               class="onoffswitch-checkbox" checked>
+                        <label class="onoffswitch-label" for="pokestops-switch">
+                            <span class="switch-label" data-on="On" data-off="Off"></span>
+                            <span class="switch-handle"></span>
+                        </label>
+                    </div>
+                </div>';
+		} ?>
+                <?php
+                if ( ( $map != "monocle" ) || ( $fork == "alternate" ) && ! $hideIfManual ) {
+                    echo '<div class="form-control switch-container" id = "lured-pokestops-only-wrapper" style = "display:none">
+                    <select name = "lured-pokestops-only-switch" id = "lured-pokestops-only-switch">
+                        <option value = "0"> ' . i8ln( 'All' ) . '</option>
+                        <option value = "1"> ' . i8ln( 'Only Lured' ) . ' </option>
+                        <option value = "2"> ' . i8ln( 'Only Quests' ) . ' </option>
+                    </select>
+                </div>';
+		} else {
+                    echo '<div class="form-control switch-container" id = "lured-pokestops-only-wrapper" style = "display:none">
+                    <select name = "lured-pokestops-only-switch" id = "lured-pokestops-only-switch">
+                        <option value = "0"> ' . i8ln( 'All' ) . '</option>
+                        <option value = "2"> ' . i8ln( 'Only Quests' ) . ' </option>
+                    </select>
+                </div>';
+                }
+                ?>
+                </div>
+                <?php
+            }
+            ?>
+            <?php
+            if ( ! $noCommunity ) {
+                ?>
+                <h3><?php echo i8ln( 'Communities' ); ?></h3>
+		<div>
+                <?php
+                if ( ! $noCommunity ) {
+                    echo '<div class="form-control switch-container">
+                    <h3>' . i8ln( 'Communities' ) . '</h3>
+                    <div class="onoffswitch">
+                        <input id="communities-switch" type="checkbox" name="communities-switch"
+                               class="onoffswitch-checkbox" checked>
+                        <label class="onoffswitch-label" for="communities-switch">
+                            <span class="switch-label" data-on="On" data-off="Off"></span>
+                            <span class="switch-handle"></span>
+                        </label>
+                    </div>
+                </div>';
+		} ?>
                 </div>
                 <?php
             }
@@ -516,44 +596,6 @@ if ( $blockIframe ) {
                 echo '<h3>' . i8ln( 'Location &amp; Search' ) . '</h3>
             <div>'; ?>
                 <?php
-                if ( ! $noNests ) {
-                    echo '<div class="form-control switch-container">
-                    <h3>' . i8ln( 'Nests' ) . '</h3>
-                    <div class="onoffswitch">
-                        <input id="nests-switch" type="checkbox" name="nests-switch"
-                               class="onoffswitch-checkbox" checked>
-                        <label class="onoffswitch-label" for="nests-switch">
-                            <span class="switch-label" data-on="On" data-off="Off"></span>
-                            <span class="switch-handle"></span>
-                        </label>
-                    </div>
-                </div>';
-                } ?>
-                <?php
-                if ( ! $noPokestops ) {
-                    echo '<div class="form-control switch-container">
-                    <h3>' . i8ln( 'Pokestops' ) . '</h3>
-                    <div class="onoffswitch">
-                        <input id="pokestops-switch" type="checkbox" name="pokestops-switch"
-                               class="onoffswitch-checkbox" checked>
-                        <label class="onoffswitch-label" for="pokestops-switch">
-                            <span class="switch-label" data-on="On" data-off="Off"></span>
-                            <span class="switch-handle"></span>
-                        </label>
-                    </div>
-                </div>';
-                } ?>
-                <?php
-                if ( ( $map != "monocle" ) || ( $fork == "alternate" ) ) {
-                    echo '<div class="form-control switch-container" id = "lured-pokestops-only-wrapper" style = "display:none">
-                    <select name = "lured-pokestops-only-switch" id = "lured-pokestops-only-switch">
-                        <option value = "0"> ' . i8ln( 'All' ) . '</option>
-                        <option value = "1"> ' . i8ln( 'Only Lured' ) . ' </option>
-                        <option value = "2"> ' . i8ln( 'Only Quests' ) . ' </option>
-                    </select>
-                </div>';
-                } ?>
-                <?php
                 if ( $map != "monocle" && ! $noScannedLocations ) {
                     echo '<div class="form-control switch-container">
                     <h3> ' . i8ln( 'Scanned Locations' ) . ' </h3>
@@ -676,7 +718,7 @@ if ( $blockIframe ) {
             }
             ?>
             <?php
-            if ( ! $noNotifyPokemon || ! $noNotifyRarity || ! $noNotifyIv || ! $noNotifyLevel || ! $noNotifySound || ! $noNotifyRaid || ! $noNotifyBounce || ! noNotifyNotification ) {
+            if ( ! $noNotifyPokemon || ! $noNotifyRarity || ! $noNotifyIv || ! $noNotifyLevel || ! $noNotifySound || ! $noNotifyRaid || ! $noNotifyBounce || ! $noNotifyNotification ) {
                 echo '<h3>' . i8ln( 'Notification' ) . '</h3>
             <div>';
             }
@@ -1061,6 +1103,35 @@ if ( $blockIframe ) {
             </div>
         </div>
     <?php } ?>
+    <?php if ( ! $noRenamePokestops ) { ?>
+        <div class="convert-modal" style="display: none;">
+             <div class="button-container">
+                <button type="button" onclick="convertPokestopData(event);" class="convertpokestopid"><i
+                        class="fa fa-refresh"
+                        style="margin-right:10px; vertical-align: middle; font-size: 1.5em;"></i><?php echo i8ln( 'Convert to gym' ); ?>
+                </button>
+            </div>
+        </div>
+    <?php } ?>
+    <?php if ( ! $noEditCommunity ) { ?>
+        <div class="editcommunity-modal" style="display: none;">
+	   <input type="text" id="community-name" name="community-name"
+		  placeholder="<?php echo i8ln( 'Enter New community Name' ); ?>" data-type="community-name"
+		  class="search-input">
+	   <input type="text" id="community-description" name="community-description"
+		  placeholder="<?php echo i8ln( 'Enter New community Description' ); ?>" data-type="community-description"
+		  class="search-input">
+	   <input type="text" id="community-invite" name="community-invite"
+		  placeholder="<?php echo i8ln( 'Enter New community Invite link' ); ?>" data-type="community-invite"
+		  class="search-input">
+	     <div class="button-container">
+                <button type="button" onclick="editCommunityData(event);" class="editcommunityid"><i
+                        class="fa fa-edit"
+                        style="margin-right:10px; vertical-align: middle; font-size: 1.5em;"></i><?php echo i8ln( 'Save Changes' ); ?>
+                </button>
+            </div>
+        </div>
+    <?php } ?>
     <?php if ( ! $noManualQuests ) { ?>
         <div class="quest-modal" style="display: none;">
             <input type="hidden" value="" name="questPokestop" class="questPokestop"/>
@@ -1187,7 +1258,7 @@ if ( $blockIframe ) {
         </div>
     <?php } ?>
     <?php
-    if ( ( ! $noPokemon && ! $noManualPokemon ) || ( ! $noGyms && ! $noManualGyms ) || ( ! $noPokestops && ! $noManualPokestops ) || ( ! $noAddNewNests && ! $noNests ) ) {
+    if ( ( ! $noPokemon && ! $noManualPokemon ) || ( ! $noGyms && ! $noManualGyms ) || ( ! $noPokestops && ! $noManualPokestops ) || ( ! $noAddNewNests && ! $noNests ) || ( !$noAddNewCommunity && ! $noCommunity ) ) {
         ?>
         <button class="submit-on-off-button" onclick="$('.submit-on-off-button').toggleClass('on');">
             <i class="fa fa-map-marker submit-to-map" aria-hidden="true"></i>
@@ -1212,6 +1283,10 @@ if ( $blockIframe ) {
                     <?php if ( ! $noAddNewNests && !$noNests ) {
                         ?>
                         <li><a href="#tab-nests"><img src="static/images/nest.png"/></a></li>
+		    <?php } ?>
+                    <?php if ( ! $noAddNewCommunity && !$noCommunity ) {
+                        ?>
+                        <li><a href="#tab-communities"><img src="static/images/community.png"/></a></li>
                     <?php } ?>
                 </ul>
                 <?php if ( ! $noManualPokemon && !$noPokemon  ) {
@@ -1268,6 +1343,27 @@ if ( $blockIframe ) {
                         </div>
                     </div>
                 <?php } ?>
+                <?php if ( ! $noAddNewCommunity && !$noCommunity ) {
+                    ?>
+                    <div id="tab-communities">
+                        <input type="text" name="community-name" class="community-name"
+                               placeholder="<?php echo i8ln( 'Enter Community Name' ); ?>" data-type="name"
+			       class="search-input">
+                        <input type="text" name="community-description" class="community-description"
+                               placeholder="<?php echo i8ln( 'Enter description' ); ?>" data-type="description"
+			       class="search-input">
+                        <input type="text" name="community-invite" class="community-invite"
+                               placeholder="<?php echo i8ln( 'Whatsapp, Telegram, Discord Link' ); ?>" data-type="invite-link"
+			       class="search-input">
+			<h6><center><?php echo i8ln( 'Link must be valid and start with https://' ); ?></center></h6>
+                        <div class="button-container">
+                            <button type="button" onclick="submitNewCommunity(event);" class="submitting-community"><i
+                                    class="fa fa-comments"
+                                    style="margin-right:10px;"></i><?php echo i8ln( 'Submit Community' ); ?>
+                            </button>
+                        </div>
+                    </div>
+                <?php } ?>
             </div>
         </div>
         <?php
@@ -1316,6 +1412,7 @@ if ( $blockIframe ) {
     var maxRaidLevel = <?php echo $maxRaidLevel ?>;
     var enableGyms = <?php echo $noGyms ? 'false' : $enableGyms ?>;
     var enableNests = <?php echo $noNests ? 'false' : $enableNests ?>;
+    var enableCommunities = <?php echo $noCommunity ? 'false' : $enableCommunities ?>;
     var gymSidebar = <?php echo $noGymSidebar ? 'false' : $gymSidebar ?>;
     var enablePokemon = <?php echo $noPokemon ? 'false' : $enablePokemon ?>;
     var enablePokestops = <?php echo $noPokestops ? 'false' : $enablePokestops ?>;
@@ -1357,10 +1454,14 @@ if ( $blockIframe ) {
     var noDeleteNests = <?php echo $noDeleteNests === true ? 'true' : 'false' ?>;
     var noManualNests = <?php echo $noManualNests === true ? 'true' : 'false' ?>;
     var noManualQuests = <?php echo $noManualQuests === true ? 'true' : 'false' ?>;
+    var noAddNewCommunity = <?php echo $noAddNewCommunity === true ? 'true' : 'false' ?>;
+    var noDeleteCommunity = <?php echo $noDeleteCommunity === true ? 'true' : 'false' ?>;
+    var noEditCommunity = <?php echo $noEditCommunity === true ? 'true' : 'false' ?>;
     var login = <?php echo $noNativeLogin === false || $noDiscordLogin === false  ? 'true' : 'false' ?>;
     var expireTimestamp = <?php echo isset($_SESSION['user']->expire_timestamp) ? $_SESSION['user']->expire_timestamp : 0 ?>;
     var timestamp = <?php echo time() ?>;
     var noRenamePokestops = <?php echo $noRenamePokestops === true ? 'true' : 'false' ?>;
+    var noConvertPokestops = <?php echo $noConvertPokestops === true ? 'true' : 'false' ?>;
     var noWhatsappLink = <?php echo $noWhatsappLink === true ? 'true' : 'false' ?>;
 </script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js"></script>

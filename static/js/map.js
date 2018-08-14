@@ -81,6 +81,7 @@ var oNeLng
 var lastpokestops
 var lastgyms
 var lastnests
+var lastcommunities
 var lastpokemon
 var lastslocs
 var lastspawns
@@ -163,14 +164,9 @@ var notifyText = 'disappears at <dist> (<udist>)'
 //
 // Functions
 //
-if (location.search.indexOf('map') < 0) {
-    var hash = window.location.hash
-    var loc = window.location.href.replace(hash, '')
-    loc += (loc.indexOf('?') < 0 ? '?' : '&') + 'map'
-    // SET THE ONE TIME AUTOMATIC PAGE RELOAD TIME TO 5000 MILISECONDS (5 SECONDS):
-    setTimeout(function () { window.location.href = loc + hash }, 500)
+if (location.search.indexOf('login=true') > 0) {
+    setTimeout(function () { window.location = '/' }, 500)
 }
-
 function excludePokemon(id) { // eslint-disable-line no-unused-vars
     $selectExclude.val(
         $selectExclude.val().split(',').concat(id).join(',')
@@ -434,6 +430,7 @@ function createLocationMarker() {
 function initSidebar() {
     $('#gyms-switch').prop('checked', Store.get('showGyms'))
     $('#nests-switch').prop('checked', Store.get('showNests'))
+    $('#communities-switch').prop('checked', Store.get('showCommunities'))
     $('#gym-sidebar-switch').prop('checked', Store.get('useGymSidebar'))
     $('#ex-eligible-switch').prop('checked', Store.get('exEligible'))
     $('#gym-sidebar-wrapper').toggle(Store.get('showGyms') || Store.get('showRaids'))
@@ -696,6 +693,7 @@ function gymLabel(item) {
     var latitude = item['latitude']
     var longitude = item['longitude']
     var name = item['name']
+    var url = item['url']
     var members = item['pokemon']
 
     var raidSpawned = item['raid_level'] != null
@@ -712,13 +710,13 @@ function gymLabel(item) {
         raidStr = '<h3 style="margin-bottom: 0">Raid ' + levelStr
         if (raidStarted) {
             var cpStr = ''
-            if (item.raid_pokemon_cp != null) {
+            if (item.raid_pokemon_cp != null && item.raid_pokemon_cp !== 0) {
                 cpStr = ' CP ' + item.raid_pokemon_cp
             }
             raidStr += '<br>' + item.raid_pokemon_name + cpStr
         }
         raidStr += '</h3>'
-        if (raidStarted && item.raid_pokemon_move_1 != null && item.raid_pokemon_move_2 != null) {
+        if (raidStarted && item.raid_pokemon_move_1 != null && item.raid_pokemon_move_1 !== 133 && item.raid_pokemon_move_2 != null && item.raid_pokemon_move_2 !== 133) {
             var pMove1 = (moves[item['raid_pokemon_move_1']] !== undefined) ? i8ln(moves[item['raid_pokemon_move_1']]['name']) : 'gen/unknown'
             var pMove2 = (moves[item['raid_pokemon_move_2']] !== undefined) ? i8ln(moves[item['raid_pokemon_move_2']]['name']) : 'gen/unknown'
             raidStr += '<div><b>' + pMove1 + ' / ' + pMove2 + '</b></div>'
@@ -783,6 +781,7 @@ function gymLabel(item) {
             '<div>' +
             '<img height="70px" style="padding: 5px;" src="static/forts/' + teamName + '_large.png">' +
             raidIcon +
+            '<img height="70px" style="padding: 5px;" src="' + url + '">' +
             '</div>' +
             raidStr +
             '<div>' +
@@ -823,6 +822,7 @@ function gymLabel(item) {
             '<b style="color:rgba(' + gymColor[teamId] + ')">' + i8ln('Team') + ' ' + i8ln(teamName) + '</b><br>' +
             '<img height="70px" style="padding: 5px;" src="static/forts/' + teamName + '_large.png">' +
             raidIcon +
+            '<img height="70px" style="padding: 5px;" src="' + url + '">' +
             '</div>' +
             nameStr +
             raidStr +
@@ -844,9 +844,9 @@ function gymLabel(item) {
     return str
 }
 
-function pokestopLabel(expireTime, latitude, longitude, stopName, lureUser, id, quest, reward) {
+function pokestopLabel(expireTime, latitude, longitude, stopName, url, lureUser, id, quest, reward) {
     var str
-    if (stopName === undefined) {
+    if (stopName === null) {
         stopName = 'Pokéstop'
     }
     if (expireTime) {
@@ -887,6 +887,7 @@ function pokestopLabel(expireTime, latitude, longitude, stopName, lureUser, id, 
                 '</div>' +
                 '<div>' +
                 '<img height="70px" style="padding: 5px;" src="static/forts/Pstop-large.png">' +
+                '<img height="70px" style="padding: 5px;" src="' + url + '">' +
                 '</div>' +
                 '</center>' +
                 '</div>'
@@ -899,6 +900,7 @@ function pokestopLabel(expireTime, latitude, longitude, stopName, lureUser, id, 
                 '</div>' +
                 '<div>' +
                 '<img height="70px" style="padding: 5px;" src="static/forts/Pstop-quest-large.png">' +
+                '<img height="70px" style="padding: 5px;" src="' + url + '">' +
                 '<img height="70px" style="padding: 5px;" src="static/rewards/reward_' + reward + '.png"/>' +
                 '</div>' +
                 '</center>' +
@@ -924,6 +926,9 @@ function pokestopLabel(expireTime, latitude, longitude, stopName, lureUser, id, 
         }
         if (!noRenamePokestops) {
             str += '<center><div>Rename Pokestop <i class="fa fa-edit rename-pokestop" style="margin-top: 2px; vertical-align: middle; font-size: 1.5em;" onclick="openRenamePokestopModal(event);" data-id="' + id + '"></i></div></center>'
+        }
+        if (!noConvertPokestops) {
+            str += '<center><div>Convert to Gym <i class="fa fa-refresh convert-pokestop" style="margin-top: 2px; vertical-align: middle; font-size: 1.5em;" onclick="openConvertPokestopModal(event);" data-id="' + id + '"></i></div></center>'
         }
         str += '<div>' +
             i8ln('Location:') + ' ' + '<a href="javascript:void(0)" onclick="javascript:openMapDirections(' + latitude + ',' + longitude + ')" title="' + i8ln('View in Maps') + '">' + latitude.toFixed(6) + ', ' + longitude.toFixed(7) + '</a> - <a href="./?lat=' + latitude + '&lon=' + longitude + '&zoom=16">Share link</a>' +
@@ -1341,7 +1346,7 @@ function setupPokestopMarker(item) {
     }
 
     marker.infoWindow = new google.maps.InfoWindow({
-        content: pokestopLabel(item['lure_expiration'], item['latitude'], item['longitude'], item['pokestop_name'], item['lure_user'], item['pokestop_id'], item['quest_id'], item['reward_id']),
+        content: pokestopLabel(item['lure_expiration'], item['latitude'], item['longitude'], item['pokestop_name'], item['url'], item['lure_user'], item['pokestop_id'], item['quest_id'], item['reward_id']),
         disableAutoPan: true,
         pixelOffset: new google.maps.Size(0, -25)
     })
@@ -1424,6 +1429,86 @@ function nestLabel(item) {
             '<a href="whatsapp://send?text=%2A' + item.pokemon_name + '%2A%20nest has been found.%0A%0ALocation:%20https://www.google.com/maps/search/?api=1%26query=' + item.lat + ',' + item.lon + '" data-action="share/whatsapp/share">Whatsapp Link</a>' +
             '</center>' +
             '</div>'
+    }
+    return str
+}
+
+function setupCommunityMarker(item) {
+    var str = '<div class="marker-community">' +
+        '<img src="static/images/marker-' + item.type + '.png" style="width:36px;height: auto;"/>' +
+        '</div>'
+
+    var marker = new RichMarker({
+        position: new google.maps.LatLng(item['lat'], item['lon']),
+        map: map,
+        content: str,
+        flat: true,
+        anchor: RichMarkerPosition.MIDDLE
+    })
+
+    marker.infoWindow = new google.maps.InfoWindow({
+        content: communityLabel(item),
+        disableAutoPan: true,
+        pixelOffset: new google.maps.Size(0, -30)
+    })
+    addListeners(marker)
+
+    return marker
+}
+
+function communityLabel(item) {
+    var str = '<div align="center" class="marker-community">' +
+        '<img src="static/images/marker-' + item.type + '.png" align"middle" style="width:30px;height: auto;"/>'
+    if (item.image_url != null) {
+        str +=
+        '<img src="' + item.image_url + '" align"middle" style="width:36px;height: auto;"/>'
+    } else {
+        str +=
+        '<img src="static/images/community_ball.png" align"middle" style="width:36px;height: auto;"/>'
+    }
+    str +=
+        '</div>' +
+        '<center><h4><div>' + item.title + '</div></h4></center>' +
+        '<center><div>' + item.description.slice(0, 40) + '</div></center>'
+    if (item.team_instinct === 1 || item.team_mystic === 1 || item.team_valor === 1) {
+        str += '<center><div>Welcome to Teams:<br>'
+        if (item.team_instinct === 1) {
+            str +=
+            '<img src="static/images/communities/instinct.png" align"middle" style="width:18px;height: auto;"/>'
+        }
+        if (item.team_mystic === 1) {
+            str +=
+            '<img src="static/images/communities/mystic.png" align"middle" style="width:18px;height: auto;"/>'
+        }
+        if (item.team_valor === 1) {
+            str +=
+            '<img src="static/images/communities/valor.png" align"middle" style="width:18px;height: auto;"/>'
+        }
+        str += '</center></div>'
+    }
+    if (item.size >= 10) {
+        str +=
+        '<center><div>' + item.size + ' Members</div></center>'
+    }
+    if (item.has_invite_url === 1 && (item.invite_url !== '#' || item.invite_url !== undefined)) {
+        str +=
+        '<center><div class="button-container">' +
+            '<a class="button" href="' + item.invite_url + '">' + i8ln('Join Now') + '<i class="fa fa-comments" style="margin-left:10px;"></i>' +
+            '</a>' +
+        '</div></center>'
+    }
+    if (!noEditCommunity) {
+        str +=
+        '<center><div class="button-container">' +
+        '<a class="button" onclick="openEditCommunityModal(event);" data-id="' + item.community_id + '" data-title="' + item.title + '" data-description="' + item.description + '" data-invite="' + item.invite_url + '">' + i8ln('Edit Community') + '<i class="fa fa-edit style="margin-left:10px;"></i></center>' +
+            '</a>' +
+        '</div></center>'
+    }
+    if (item.source === 2) {
+        str += '<center><div style="margin-bottom:5px; margin-top:5px;">' + i8ln('Join on  <a href="https://thesilphroad.com/map#18/' + item.lat + '/' + item.lon + '">thesilphroad.com</a>') + '</div></center>'
+    }
+    if (!noDeleteCommunity) {
+        str += '<i class="fa fa-trash-o delete-community" onclick="deleteCommunity(event);" data-id="' + item.community_id + '"></i>'
     }
     return str
 }
@@ -1676,6 +1761,7 @@ function loadRawData() {
     var loadGyms = (Store.get('showGyms') || Store.get('showRaids')) ? 'true' : 'false'
     var loadPokestops = Store.get('showPokestops')
     var loadNests = Store.get('showNests')
+    var loadCommunities = Store.get('showCommunities')
     var loadScanned = Store.get('showScanned')
     var loadSpawnpoints = Store.get('showSpawnpoints')
     var loadLuredOnly = Store.get('showLuredPokestopsOnly')
@@ -1706,6 +1792,8 @@ function loadRawData() {
             'pokestops': loadPokestops,
             'nests': loadNests,
             'lastnests': lastnests,
+            'communities': loadCommunities,
+            'lastcommunities': lastcommunities,
             'lastpokestops': lastpokestops,
             'luredonly': loadLuredOnly,
             'gyms': loadGyms,
@@ -2079,6 +2167,38 @@ function renamePokestopData(event) { // eslint-disable-line no-unused-vars
         }
     }
 }
+function convertPokestopData(event) { // eslint-disable-line no-unused-vars
+    var form = $(event.target).parent().parent()
+    var pokestopId = form.find('.convertpokestopid').val()
+    if (pokestopId && pokestopId !== '') {
+        if (confirm(i8ln('I confirm this pokestop is now a gym'))) {
+            return $.ajax({
+                url: 'submit',
+                type: 'POST',
+                timeout: 300000,
+                dataType: 'json',
+                cache: false,
+                data: {
+                    'action': 'convertpokestop',
+                    'pokestopid': pokestopId
+                },
+                error: function error() {
+                    // Display error toast
+                    toastr['error'](i8ln('Pokestop ID got lost somewhere.'), i8ln('Error converting Pokestop'))
+                    toastr.options = toastrOptions
+                },
+                complete: function complete() {
+                    lastgyms = false
+                    jQuery('label[for="pokestops-switch"]').click()
+                    jQuery('label[for="pokestops-switch"]').click()
+                    lastpokestops = false
+                    updateMap()
+                    $('.ui-dialog-content').dialog('close')
+                }
+            })
+        }
+    }
+}
 function deleteNest(event) { // eslint-disable-line no-unused-vars
     var button = $(event.target)
     var nestid = button.data('id')
@@ -2252,6 +2372,108 @@ function manualRaidData(event) { // eslint-disable-line no-unused-vars
         }
     }
 }
+function submitNewCommunity(event) { // eslint-disable-line no-unused-vars
+    var form = $(event.target).parent().parent()
+    var lat = $('.submit-modal.ui-dialog-content .submitLatitude').val()
+    var lon = $('.submit-modal.ui-dialog-content .submitLongitude').val()
+    var communityName = form.find('[name="community-name"]').val()
+    var communityDescription = form.find('[name="community-description"]').val()
+    var communityInvite = form.find('[name="community-invite"]').val()
+    if (communityName && communityName !== '' && communityDescription && communityDescription !== '' && communityInvite && communityInvite !== '') {
+        if (confirm(i8ln('I confirm this is an active community'))) {
+            return $.ajax({
+                url: 'submit',
+                type: 'POST',
+                timeout: 300000,
+                dataType: 'json',
+                cache: false,
+                data: {
+                    'action': 'community-add',
+                    'lat': lat,
+                    'lng': lon,
+                    'communityName': communityName,
+                    'communityDescription': communityDescription,
+                    'communityInvite': communityInvite
+                },
+                error: function error() {
+                    // Display error toast
+                    toastr['error'](i8ln('Make sure all fields are filled and the invite link is a valid Discord, Telegram or Whatsapp link.'), i8ln('Error Submitting community'))
+                    toastr.options = toastrOptions
+                },
+                complete: function complete() {
+                    lastcommunities = false
+                    updateMap()
+                    $('.ui-dialog-content').dialog('close')
+                }
+            })
+        }
+    }
+}
+function deleteCommunity(event) { // eslint-disable-line no-unused-vars
+    var button = $(event.target)
+    var communityid = button.data('id')
+    if (communityid && communityid !== '') {
+        if (confirm(i8ln('I confirm that I want to delete this community. This is a permanent deleture'))) {
+            return $.ajax({
+                url: 'submit',
+                type: 'POST',
+                timeout: 300000,
+                dataType: 'json',
+                cache: false,
+                data: {
+                    'action': 'delete-community',
+                    'communityId': communityid
+                },
+                error: function error() {
+                    // Display error toast
+                    toastr['error'](i8ln('Oops something went wrong.'), i8ln('Error Deleting community'))
+                    toastr.options = toastrOptions
+                },
+                complete: function complete() {
+                    jQuery('label[for="communities-switch"]').click()
+                    jQuery('label[for="communities-switch"]').click()
+                }
+            })
+        }
+    }
+}
+function editCommunityData(event) { // eslint-disable-line no-unused-vars
+    var form = $(event.target).parent().parent()
+    var communityId = form.find('.editcommunityid').val()
+    var communityName = form.find('[name="community-name"]').val()
+    var communityDescription = form.find('[name="community-description"]').val()
+    var communityInvite = form.find('[name="community-invite"]').val()
+    if ((communityName && communityName !== '') && (communityDescription && communityDescription !== '') && (communityInvite && communityInvite !== '')) {
+        if (confirm(i8ln('I confirm this new info accurate for this community'))) {
+            return $.ajax({
+                url: 'submit',
+                type: 'POST',
+                timeout: 300000,
+                dataType: 'json',
+                cache: false,
+                data: {
+                    'action': 'editcommunity',
+                    'communityid': communityId,
+                    'communityname': communityName,
+                    'communitydescription': communityDescription,
+                    'communityinvite': communityInvite
+                },
+                error: function error() {
+                    // Display error toast
+                    toastr['error'](i8ln('No fields are filled or an invalid url is found, please check the form.'), i8ln('Error changing community'))
+                    toastr.options = toastrOptions
+                },
+                complete: function complete() {
+                    jQuery('label[for="communities-switch"]').click()
+                    jQuery('label[for="communities-switch"]').click()
+                    lastpokestops = false
+                    updateMap()
+                    $('.ui-dialog-content').dialog('close')
+                }
+            })
+        }
+    }
+}
 function openNestModal(event) { // eslint-disable-line no-unused-vars
     $('.ui-dialog').remove()
     var val = $(event.target).data('id')
@@ -2313,6 +2535,42 @@ function openRenamePokestopModal(event) { // eslint-disable-line no-unused-vars
         maxHeight: 600,
         buttons: {},
         title: i8ln('Rename Pokéstop'),
+        classes: {
+            'ui-dialog': 'ui-dialog raid-widget-popup'
+        }
+    })
+}
+
+function openConvertPokestopModal(event) { // eslint-disable-line no-unused-vars
+    $('.ui-dialog').remove()
+    var val = $(event.target).data('id')
+    $('.convertpokestopid').val(val)
+    $('.convert-modal').clone().dialog({
+        modal: true,
+        maxHeight: 600,
+        buttons: {},
+        title: i8ln('Convert Pokéstop to Gym'),
+        classes: {
+            'ui-dialog': 'ui-dialog raid-widget-popup'
+        }
+    })
+}
+
+function openEditCommunityModal(event) { // eslint-disable-line no-unused-vars
+    $('.ui-dialog').remove()
+    var val = $(event.target).data('id')
+    var title = $(event.target).data('title')
+    var description = $(event.target).data('description')
+    var invite = $(event.target).data('invite')
+    $('.editcommunityid').val(val)
+    $('#community-name').val(title)
+    $('#community-description').val(description)
+    $('#community-invite').val(invite)
+    $('.editcommunity-modal').clone().dialog({
+        modal: true,
+        maxHeight: 600,
+        buttons: {},
+        title: i8ln('Edit Community'),
         classes: {
             'ui-dialog': 'ui-dialog raid-widget-popup'
         }
@@ -2527,6 +2785,29 @@ function processNests(i, item) {
         item2.marker.setMap(null)
         item.marker = setupNestMarker(item)
         mapData.nests[item['nest_id']] = item
+    }
+}
+function processCommunities(i, item) {
+    if (!Store.get('showCommunities')) {
+        return false
+    }
+
+    if (!mapData.communities[item['community_id']]) {
+        // new pokestop, add marker to map and item to dict
+        if (item.marker && item.marker.rangeCircle) {
+            item.marker.rangeCircle.setMap(null)
+        }
+        if (item.marker) {
+            item.marker.setMap(null)
+        }
+        item.marker = setupCommunityMarker(item)
+        mapData.communities[item['community_id']] = item
+    } else {
+        // change existing pokestop marker to unlured/lured
+        var item2 = mapData.communities[item['community_id']]
+        item2.marker.setMap(null)
+        item.marker = setupCommunityMarker(item)
+        mapData.communities[item['community_id']] = item
     }
 }
 function processPokestops(i, item) {
@@ -2834,6 +3115,7 @@ function updateMap() {
         $.each(result.scanned, processScanned)
         $.each(result.spawnpoints, processSpawnpoints)
         $.each(result.nests, processNests)
+        $.each(result.communities, processCommunities)
         showInBoundsMarkers(mapData.pokemons, 'pokemon')
         showInBoundsMarkers(mapData.lurePokemons, 'pokemon')
         showInBoundsMarkers(mapData.gyms, 'gym')
@@ -2863,6 +3145,7 @@ function updateMap() {
         lastslocs = result.lastslocs
         lastspawns = result.lastspawns
         lastnests = result.lastnests
+        lastcommunities = result.lastcommunities
 
         prevMinIV = result.preMinIV
         prevMinLevel = result.preMinLevel
@@ -3336,13 +3619,13 @@ function showGymDetails(id) { // eslint-disable-line no-unused-vars
             raidStr = '<h3 style="margin-bottom: 0">Raid ' + levelStr
             if (raidStarted) {
                 var cpStr = ''
-                if (result.raid_pokemon_cp != null) {
+                if (result.raid_pokemon_cp != null && result.raid_pokemon_cp !== 0) {
                     cpStr = ' CP ' + result.raid_pokemon_cp
                 }
                 raidStr += '<br>' + result.raid_pokemon_name + cpStr
             }
             raidStr += '</h3>'
-            if (raidStarted && result.raid_pokemon_move_1 != null && result.raid_pokemon_move_2 != null) {
+            if (raidStarted && result.raid_pokemon_move_1 != null && result.raid_pokemon_move_1 !== 133 && result.raid_pokemon_move_2 != null && result.raid_pokemon_move_2 !== 133) {
                 var pMove1 = (moves[result['raid_pokemon_move_1']] !== undefined) ? i8ln(moves[result['raid_pokemon_move_1']]['name']) : 'gen/unknown'
                 var pMove2 = (moves[result['raid_pokemon_move_2']] !== undefined) ? i8ln(moves[result['raid_pokemon_move_2']]['name']) : 'gen/unknown'
                 raidStr += '<div><b>' + pMove1 + ' / ' + pMove2 + '</b></div>'
@@ -3399,6 +3682,7 @@ function showGymDetails(id) { // eslint-disable-line no-unused-vars
             '<div>' +
             '<img height="60px" style="padding: 5px;" src="static/forts/' + gymTypes[result.team_id] + '_large.png">' +
             raidIcon +
+            '<img height="70px" style="padding: 5px;" src="' + result.url + '">' +
             '</div>' +
             raidStr +
             gymLevelStr +
@@ -4298,6 +4582,10 @@ $(function () {
         lastnests = false
         buildSwitchChangeListener(mapData, ['nests'], 'showNests').bind(this)()
     })
+    $('#communities-switch').change(function () {
+        lastcommunities = false
+        buildSwitchChangeListener(mapData, ['communities'], 'showCommunities').bind(this)()
+    })
     $('#pokemon-switch').change(function () {
         var options = {
             'duration': 500
@@ -4487,3 +4775,4 @@ function checkAndCreateSound(pokemonId = 0) {
         }
     }
 }
+//

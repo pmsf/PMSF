@@ -15,6 +15,10 @@
     "cat": "Gym/Raid",
     "name": "Win 5 Gym battles."
   },
+  "7": {
+    "cat": "Gym/Raid",
+    "name": "Battle in a raid"
+  },
   "8": {
     "cat": "Gym/Raid",
     "name": "Win a raid."
@@ -79,13 +83,21 @@
     "cat": "Throw",
     "name": "Make 5 Nice Throws."
   },
-  "370": {
+  "371": {
     "cat": "Throw",
     "name": "Make 2 Nice Curveball Throws in a row."
+  },
+  "372": {
+    "cat": "Throw",
+    "name": "Make 3 Nice Throws in a row."
   },
   "376": {
     "cat": "Throw",
     "name": "Make 3 Great Throws."
+  },
+  "377": {
+    "cat": "Throw",
+    "name": "Make 3 Great Curveball Throws."
   },
   "379": {
     "cat": "Throw",
@@ -102,6 +114,10 @@
   "391": {
     "cat": "Throw",
     "name": "Land 3 Curveball Throws in a row."
+  },
+  "392": {
+    "cat": "Throw",
+    "name": "Make 5 Curveball Throws in a row."
   },
   "596": {
     "cat": "Miscellaneous",
@@ -126,5 +142,9 @@
   "602": {
     "cat": "Miscellaneous",
     "name": "Transfer 10 Pokémon."
+  },
+  "605": {
+    "cat": "Miscellaneous",
+    "name": "Spin 10 stops or gyms."
   }
 }

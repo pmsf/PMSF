@@ -52,6 +52,7 @@ if ( $action === "raid" ) {
     $add_seconds = ( $monTime * 60 );
     $time_spawn  = time() - $forty_five;
     $level       = 0;
+    $loggedUser = ! empty( $_SESSION['user']->user ) ? $_SESSION['user']->user : 'NOLOGIN';
     if ( strpos( $pokemonId, 'egg_' ) !== false ) {
         $add_seconds = ( $eggTime * 60 );
         $level       = (int) substr( $pokemonId, 4, 1 );
@@ -73,7 +74,7 @@ if ( $action === "raid" ) {
         'pokemon_id'  => 0,
         'move_1'      => 0,
         'move_2'      => 0,
-        'submitted_by'=> $_SESSION['user']->user
+        'submitted_by'=> $loggedUser
 
     ];
     if ( array_key_exists( $pokemonId, $raidBosses ) ) {
@@ -184,6 +185,7 @@ if ( $action === "raid" ) {
         die();
     }
     $gymName = ! empty( $_POST['gymName'] ) ? $_POST['gymName'] : '';
+    $loggedUser = ! empty( $_SESSION['user']->user ) ? $_SESSION['user']->user : 'NOLOGIN';
     if ( ! empty( $lat ) && ! empty( $lng ) && ! empty( $gymName ) ) {
         $gymId = randomGymId();
         $cols  = [
@@ -191,11 +193,11 @@ if ( $action === "raid" ) {
             'lat'         => $lat,
             'lon'         => $lng,
             'name'        => $gymName,
-            'edited_by'    => $_SESSION['user']->user 
+            'edited_by'   => $loggedUser
         ];
         $db->insert( "forts", $cols );
         if ( $noDiscordSubmitLogChannel === false ) {
-            $data = array("content" => '```Added gym with id "' . $gymId . '" and name: "' . $gymName . '"```' . $submitMapUrl . '/?lat=' . $lat . '&lon=' . $lng . '&zoom=18', "username" => $_SESSION['user']->user);
+            $data = array("content" => '```Added gym with id "' . $gymId . '" and name: "' . $gymName . '"```' . $submitMapUrl . '/?lat=' . $lat . '&lon=' . $lng . '&zoom=18', "username" => $loggedUser);
             $curl = curl_init($discordSubmitLogChannelUrl);
             curl_setopt($curl, CURLOPT_CUSTOMREQUEST, "POST");
             curl_setopt($curl, CURLOPT_POSTFIELDS, json_encode($data));
@@ -212,11 +214,12 @@ if ( $action === "raid" ) {
     $questId    = $_POST['questId'] == "NULL" ? 0 : $_POST['questId'];
     $rewardId   = $_POST['rewardId'] == "NULL" ? 0 : $_POST['rewardId'];
     $pokestop         = $db->get( "pokestops", [ 'name', 'lat', 'lon', 'external_id' ], [ 'external_id' => $pokestopId ] );
+    $loggedUser = ! empty( $_SESSION['user']->user ) ? $_SESSION['user']->user : 'NOLOGIN';
     if ( ! empty( $pokestopId ) && ! empty( $questId ) && ! empty( $rewardId ) ) {
         $cols  = [
             'quest_id' => $questId,
             'reward_id'   => $rewardId,
-            'quest_submitted_by'  => $_SESSION['user']->user
+            'quest_submitted_by'  => $loggedUser
         ];
         $where = [
             'external_id' => $pokestopId
@@ -247,10 +250,11 @@ if ( $action === "raid" ) {
     }
     $pokemonId = ! empty( $_POST['pokemonId'] ) ? $_POST['pokemonId'] : '';
     $nestId    = ! empty( $_POST['nestId'] ) ? $_POST['nestId'] : '';
+    $loggedUser = ! empty( $_SESSION['user']->user ) ? $_SESSION['user']->user : 'NOLOGIN';
     if ( ! empty( $pokemonId ) && ! empty( $nestId ) ) {
         $cols  = [
             'pokemon_id' => $pokemonId,
-            'nest_submitted_by' => $_SESSION['user']->user
+            'nest_submitted_by' => $loggedUser
         ];
         $where = [
             'nest_id' => $nestId
@@ -264,18 +268,55 @@ if ( $action === "raid" ) {
     }
     $pokestopName = ! empty( $_POST['pokestop'] ) ? $_POST['pokestop'] : '';
     $pokestopId   = ! empty( $_POST['pokestopid'] ) ? $_POST['pokestopid'] : '';
+    $loggedUser = ! empty( $_SESSION['user']->user ) ? $_SESSION['user']->user : 'NOLOGIN';
     if ( ! empty( $pokestopName ) && ! empty( $pokestopId ) ) {
         $cols     = [
             'name'        => $pokestopName,
             'updated'     => time(),
-            'edited_by'    => $_SESSION['user']->user 
+            'edited_by'    => $loggedUser 
         ];
         $where    = [
             'external_id' => $pokestopId
         ];
 	$db->update( "pokestops", $cols, $where );
         if ( $noDiscordSubmitLogChannel === false ) {
-            $data = array("content" => '```Updated pokestop with id "' . $pokestopId . '" and gave it the new name: "' . $pokestopName . '" . ```', "username" => $_SESSION['user']->user);
+            $data = array("content" => '```Updated pokestop with id "' . $pokestopId . '" and gave it the new name: "' . $pokestopName . '" . ```', "username" => $loggedUser);
+            $curl = curl_init($discordSubmitLogChannelUrl);
+            curl_setopt($curl, CURLOPT_CUSTOMREQUEST, "POST");
+            curl_setopt($curl, CURLOPT_POSTFIELDS, json_encode($data));
+            curl_setopt($curl, CURLOPT_RETURNTRANSFER, true);
+            curl_exec($curl);
+        }
+    }
+} elseif ( $action === "convertpokestop" ) {
+    if ( $noRenamePokestops === true || $noPokestops === true ) {
+        http_response_code( 401 );
+        die();
+    }
+    $pokestopId   = ! empty( $_POST['pokestopid'] ) ? $_POST['pokestopid'] : '';
+    $loggedUser = ! empty( $_SESSION['user']->user ) ? $_SESSION['user']->user : 'NOLOGIN';
+    $gymId = randomGymId();
+    $gymLat = $db->get( "pokestops", [ 'lat' ], [ 'external_id' => $pokestopId ] );
+    $gymLon= $db->get( "pokestops", [ 'lon' ], [ 'external_id' => $pokestopId ] );
+    $gymName = $db->get( "pokestops", [ 'name' ], [ 'external_id' => $pokestopId ] );
+    $gymUrl = $db->get( "pokestops", [ 'url' ], [ 'external_id' => $pokestopId ] );
+    if ( ! empty( $pokestopId ) ) {
+        $cols     = [
+            'external_id'  => $gymId,
+            'lat'          => $gymLat['lat'],
+            'lon'          => $gymLon['lon'],
+            'name'         => $gymName['name'],
+            'url'          => $gymUrl['url'],
+            'edited_by'    => $loggedUser
+        ];
+	$db->insert( "forts", $cols );
+        $db->delete( 'pokestops', [
+            "AND" => [
+                'external_id' => $pokestopId
+            ]
+        ] );
+        if ( $noDiscordSubmitLogChannel === false ) {
+            $data = array("content" => '```Converted pokestop with id "' . $pokestopId . '." New Gym: "' . $gymName['name'] . '". ```', "username" => $loggedUser);
             $curl = curl_init($discordSubmitLogChannelUrl);
             curl_setopt($curl, CURLOPT_CUSTOMREQUEST, "POST");
             curl_setopt($curl, CURLOPT_POSTFIELDS, json_encode($data));
@@ -289,6 +330,7 @@ if ( $action === "raid" ) {
         die();
     }
     $pokestopName = ! empty( $_POST['pokestop'] ) ? $_POST['pokestop'] : '';
+    $loggedUser = ! empty( $_SESSION['user']->user ) ? $_SESSION['user']->user : 'NOLOGIN';
     if ( ! empty( $lat ) && ! empty( $lng ) && ! empty( $pokestopName ) ) {
         $pokestopId = randomGymId();
         $cols       = [
@@ -297,11 +339,11 @@ if ( $action === "raid" ) {
             'lon'         => $lng,
             'name'        => $pokestopName,
             'updated'     => time(),
-            'edited_by'    => $_SESSION['user']->user 
+            'edited_by'    => $loggedUser 
         ];
         $db->insert( "pokestops", $cols );
         if ( $noDiscordSubmitLogChannel === false ) {
-            $data = array("content" => '```Added pokestop with id "' . $pokestopId . '" and gave it the new name: "' . $pokestopName . '"```' . $submitMapUrl . '/?lat=' . $lat . '&lon=' . $lng . '&zoom=18 ', "username" => $_SESSION['user']->user);
+            $data = array("content" => '```Added pokestop with id "' . $pokestopId . '" and gave it the new name: "' . $pokestopName . '"```' . $submitMapUrl . '/?lat=' . $lat . '&lon=' . $lng . '&zoom=18 ', "username" => $loggedUser);
             $curl = curl_init($discordSubmitLogChannelUrl);
             curl_setopt($curl, CURLOPT_CUSTOMREQUEST, "POST");
             curl_setopt($curl, CURLOPT_POSTFIELDS, json_encode($data));
@@ -315,6 +357,7 @@ if ( $action === "raid" ) {
         die();
     }
     $id = ! empty( $_POST['id'] ) ? $_POST['id'] : 0;
+    $loggedUser = ! empty( $_SESSION['user']->user ) ? $_SESSION['user']->user : 'NOLOGIN';
     if ( ! empty( $lat ) && ! empty( $lng ) && ! empty( $id ) ) {
         $cols = [
             'pokemon_id' 	=> $id,
@@ -322,7 +365,7 @@ if ( $action === "raid" ) {
             'lon'        	=> $lng,
             'type'       	=> 0,
             'updated'    	=> time(),
-            'nest_submitted_by'	=> $_SESSION['user']->user
+            'nest_submitted_by'	=> $loggedUser
         ];
         $db->insert( "nests", $cols );
     }
@@ -335,6 +378,7 @@ if ( $action === "raid" ) {
     if ( ! empty( $gymId ) ) {
 	$fortName = $db->get( "forts", [ 'name' ], [ 'external_id' => $gymId ] );    
         $fortid = $db->get( "forts", [ 'id' ], [ 'external_id' => $gymId ] );
+        $loggedUser = ! empty( $_SESSION['user']->user ) ? $_SESSION['user']->user : 'NOLOGIN';
         if ( $fortid ) {
             $db->delete( 'fort_sightings', [
                 "AND" => [
@@ -352,7 +396,7 @@ if ( $action === "raid" ) {
                 ]
             ] );
             if ( $noDiscordSubmitLogChannel === false ) {
-                $data = array("content" => '```Deleted gym with id "' . $gymId . '" and name: "' . $fortName['name'] . '"```', "username" => $_SESSION['user']->user);
+                $data = array("content" => '```Deleted gym with id "' . $gymId . '" and name: "' . $fortName['name'] . '"```', "username" => $loggedUser);
                 $curl = curl_init($discordSubmitLogChannelUrl);
                 curl_setopt($curl, CURLOPT_CUSTOMREQUEST, "POST");
                 curl_setopt($curl, CURLOPT_POSTFIELDS, json_encode($data));
@@ -368,6 +412,7 @@ if ( $action === "raid" ) {
     }
     $pokestopId = ! empty( $_POST['id'] ) ? $_POST['id'] : '';
     $pokestopName = $db->get( "pokestops", [ 'name' ], [ 'external_id' => $pokestopId ] );
+    $loggedUser = ! empty( $_SESSION['user']->user ) ? $_SESSION['user']->user : 'NOLOGIN';
     if ( ! empty( $pokestopId ) ) {
         $db->delete( 'pokestops', [
             "AND" => [
@@ -375,7 +420,7 @@ if ( $action === "raid" ) {
             ]
         ] );
         if ( $noDiscordSubmitLogChannel === false ) {
-            $data = array("content" => '```Deleted pokestop with id "' . $pokestopId . '" and name: "' . $pokestopName['name'] . '"```', "username" => $_SESSION['user']->user);
+            $data = array("content" => '```Deleted pokestop with id "' . $pokestopId . '" and name: "' . $pokestopName['name'] . '"```', "username" => $loggedUser);
             $curl = curl_init($discordSubmitLogChannelUrl);
             curl_setopt($curl, CURLOPT_CUSTOMREQUEST, "POST");
             curl_setopt($curl, CURLOPT_POSTFIELDS, json_encode($data));
@@ -396,8 +441,120 @@ if ( $action === "raid" ) {
             ]
         ] );
     }
-}
+} elseif ( $action === "community-add" ) {
+    if ( $noCommunity === true || $noAddNewCommunity === true ) {
+	http_response_code( 401 );
+	die();
+    }
+    $communityName = ! empty( $_POST['communityName'] ) ? $_POST['communityName'] : '';
+    $communityDescription = ! empty( $_POST['communityDescription'] ) ? $_POST['communityDescription'] : '';
+    $communityInvite = ! empty( $_POST['communityInvite'] ) ? $_POST['communityInvite'] : '';
+    if (strpos($communityInvite, 'https://discord.gg') !== false) {
+	    $communityType = 3;
+    } elseif (strpos($communityInvite, 'https://t.me') !== false) {
+	    $communityType = 4;
+    } elseif (strpos($communityInvite, 'https://chat.whatsapp.com') !== false) {
+	    $communityType = 5;
+    } else {
+        http_response_code( 401 );
+	die();
+    }
+    $loggedUser = ! empty( $_SESSION['user']->user ) ? $_SESSION['user']->user : 'NOLOGIN';
+    if ( ! empty( $lat ) && ! empty( $lng ) && ! empty( $communityName ) && ! empty( $communityDescription ) && ! empty( $communityInvite ) ) {
+        $communityId = randomNum();
+        $cols       = [
+            'community_id'        => $communityId,
+            'title'               => $communityName,
+            'description'         => $communityDescription,
+            'type'                => $communityType,
+            'image_url'           => null,
+            'team_instinct'       => 1,
+            'team_mystic'         => 1,
+            'team_valor'          => 1,
+            'has_invite_url'      => 1,
+            'invite_url'          => $communityInvite,
+            'lat'                 => $lat,
+            'lon'                 => $lng,
+            'updated'             => time(),
+            'source'              => 1,
+            'submitted_by'        => $loggedUser 
+        ];
+        $db->insert( "communities", $cols );
+        if ( $noDiscordSubmitLogChannel === false ) {
+            $data = array("content" => '```Added community with id "' . $communityId . '" and gave it the new name: "' . $communityName . '"```' . $submitMapUrl . '/?lat=' . $lat . '&lon=' . $lng . '&zoom=18 ', "username" => $loggedUser);
+            $curl = curl_init($discordSubmitLogChannelUrl);
+            curl_setopt($curl, CURLOPT_CUSTOMREQUEST, "POST");
+            curl_setopt($curl, CURLOPT_POSTFIELDS, json_encode($data));
+            curl_setopt($curl, CURLOPT_RETURNTRANSFER, true);
+            curl_exec($curl);
+        }
+    }
+} elseif ( $action === "editcommunity" ) {
+    if ( $noCommunity === true || $noEditCommunity === true ) {
+        http_response_code( 401 );
+        die();
+    }
+    $communityName = ! empty( $_POST['communityname'] ) ? $_POST['communityname'] : '';
+    $communityDescription = ! empty( $_POST['communitydescription'] ) ? $_POST['communitydescription'] : '';
+    $communityInvite = ! empty( $_POST['communityinvite'] ) ? $_POST['communityinvite'] : '';
+    $communityId   = ! empty( $_POST['communityid'] ) ? $_POST['communityid'] : '';
+    if (strpos($communityInvite, 'https://discord.gg') !== false) {
+	    $communityType = 3;
+    } elseif (strpos($communityInvite, 'https://t.me') !== false) {
+	    $communityType = 4;
+    } elseif (strpos($communityInvite, 'https://chat.whatsapp.com') !== false) {
+	    $communityType = 5;
+    } else {
+        http_response_code( 401 );
+	die();
+    }
+    $loggedUser = ! empty( $_SESSION['user']->user ) ? $_SESSION['user']->user : 'NOLOGIN';
+    $cols     = [
+        'title'        => $communityName,
+        'description'  => $communityDescription,
+        'invite_url'   => $communityInvite,
+        'type'         => $communityType,
+        'updated'      => time(),
+        'source'       => 1,
+        'submitted_by' => $loggedUser 
+    ];
+    $where    = [
+        'community_id' => $communityId
+    ];
+    $db->update( "communities", $cols, $where );
+    if ( $noDiscordSubmitLogChannel === false ) {
+        $data = array("content" => '```Updated community with id "' . $communityId . '" and gave it the new name: "' . $communityName . '" . ```', "username" => $loggedUser);
+        $curl = curl_init($discordSubmitLogChannelUrl);
+        curl_setopt($curl, CURLOPT_CUSTOMREQUEST, "POST");
+        curl_setopt($curl, CURLOPT_POSTFIELDS, json_encode($data));
+        curl_setopt($curl, CURLOPT_RETURNTRANSFER, true);
+        curl_exec($curl);
+    }
 
+} elseif ( $action === "delete-community" ) {
+    if ( $noCommunity === true || $noDeleteCommunity === true ) {
+        http_response_code( 401 );
+        die();
+    }
+    $communityId = ! empty( $_POST['communityId'] ) ? $_POST['communityId'] : '';
+    $communityName = $db->get( "communities", [ 'title' ], [ 'community_id' => $communityId ] );
+    if ( ! empty( $communityId ) ) {
+        $db->delete( 'communities', [
+            "AND" => [
+                'community_id' => $communityId
+            ]
+        ] );
+    }
+    if ( $noDiscordSubmitLogChannel === false ) {
+        $data = array("content" => '```Deleted community with id "' . $communityId . '" and name: "' . $communityName['title'] . '" . ```', "username" => $loggedUser);
+        $curl = curl_init($discordSubmitLogChannelUrl);
+        curl_setopt($curl, CURLOPT_CUSTOMREQUEST, "POST");
+        curl_setopt($curl, CURLOPT_POSTFIELDS, json_encode($data));
+        curl_setopt($curl, CURLOPT_RETURNTRANSFER, true);
+        curl_exec($curl);
+    }
+
+}
 function randomGymId() {
     $alphabet    = 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890';
     $pass        = array(); //remember to declare $pass as an array
