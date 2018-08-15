@@ -7,6 +7,10 @@
     "cat": "Gym/Raid",
     "name": "Battle in a Gym 5 times"
   },
+  "4": {
+    "cat": "Gym/Raid",
+    "name": "Win a Gym battle."
+  },
   "5": {
     "cat": "Gym/Raid",
     "name": "Win 3 Gym battles."
