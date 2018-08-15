@@ -1103,7 +1103,7 @@ if ( $blockIframe ) {
             </div>
         </div>
     <?php } ?>
-    <?php if ( ! $noRenamePokestops ) { ?>
+    <?php if ( ! $noConvertPokestops ) { ?>
         <div class="convert-modal" style="display: none;">
              <div class="button-container">
                 <button type="button" onclick="convertPokestopData(event);" class="convertpokestopid"><i
