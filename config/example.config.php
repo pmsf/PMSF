@@ -304,7 +304,7 @@ $pokemonToExclude = [];
 $noDeleteGyms = false;
 $noDeletePokestops = false;
 
-$raidBosses = [4, 296, 307, 138, 320, 129, 103, 281, 126, 303, 185, 137, 26, 232, 136, 95, 68, 248, 229, 105, 359, 76, 112, 379];
+$raidBosses = [320, 307, 129, 296, 281, 315, 103, 303, 221, 232, 68, 26, 114, 112, 248, 359, 105, 377];
 
 $sendWebhook = false;							// Sends Raids & Pokémon. Needs a 3th party program like pokealarm.					
 $webhookUrl = null;                             //['url-1','url-2']
@@ -342,8 +342,8 @@ $manualFourStar = [
 ];
 $manualFiveStar = [
     'webhook' => false,						    // If set to false no webhooks will be send on raid_cron.php
-    'pokemon_id' => 382,
-    'cp' => 51968,
+    'pokemon_id' => 377,
+    'cp' => 41777,
     'move_1' => null,
     'move_2' => null
 ];
