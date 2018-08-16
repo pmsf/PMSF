@@ -33,6 +33,10 @@
   },
   "10": {
     "cat": "Gym/Raid",
+    "name": "Use a Super effective charge attack."
+  },
+  "11": {
+    "cat": "Gym/Raid",
     "name": "Use a Super effective charge attack 7 times."
   },
   "12": {
