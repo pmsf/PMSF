@@ -710,13 +710,13 @@ function gymLabel(item) {
         raidStr = '<h3 style="margin-bottom: 0">Raid ' + levelStr
         if (raidStarted) {
             var cpStr = ''
-            if (item.raid_pokemon_cp != null && item.raid_pokemon_cp !== 0) {
+            if (item.raid_pokemon_cp != null && item.raid_pokemon_cp != 0) {
                 cpStr = ' CP ' + item.raid_pokemon_cp
             }
             raidStr += '<br>' + item.raid_pokemon_name + cpStr
         }
         raidStr += '</h3>'
-        if (raidStarted && item.raid_pokemon_move_1 != null && item.raid_pokemon_move_1 !== 133 && item.raid_pokemon_move_2 != null && item.raid_pokemon_move_2 !== 133) {
+        if (raidStarted && item.raid_pokemon_move_1 != null && item.raid_pokemon_move_1 != 133 && item.raid_pokemon_move_2 != null && item.raid_pokemon_move_2 != 133) {
             var pMove1 = (moves[item['raid_pokemon_move_1']] !== undefined) ? i8ln(moves[item['raid_pokemon_move_1']]['name']) : 'gen/unknown'
             var pMove2 = (moves[item['raid_pokemon_move_2']] !== undefined) ? i8ln(moves[item['raid_pokemon_move_2']]['name']) : 'gen/unknown'
             raidStr += '<div><b>' + pMove1 + ' / ' + pMove2 + '</b></div>'
@@ -3619,13 +3619,13 @@ function showGymDetails(id) { // eslint-disable-line no-unused-vars
             raidStr = '<h3 style="margin-bottom: 0">Raid ' + levelStr
             if (raidStarted) {
                 var cpStr = ''
-                if (result.raid_pokemon_cp != null && result.raid_pokemon_cp !== 0) {
+                if (result.raid_pokemon_cp != null && result.raid_pokemon_cp != 0) {
                     cpStr = ' CP ' + result.raid_pokemon_cp
                 }
                 raidStr += '<br>' + result.raid_pokemon_name + cpStr
             }
             raidStr += '</h3>'
-            if (raidStarted && result.raid_pokemon_move_1 != null && result.raid_pokemon_move_1 !== 133 && result.raid_pokemon_move_2 != null && result.raid_pokemon_move_2 !== 133) {
+            if (raidStarted && result.raid_pokemon_move_1 != null && result.raid_pokemon_move_1 != 133 && result.raid_pokemon_move_2 != null && result.raid_pokemon_move_2 != 133) {
                 var pMove1 = (moves[result['raid_pokemon_move_1']] !== undefined) ? i8ln(moves[result['raid_pokemon_move_1']]['name']) : 'gen/unknown'
                 var pMove2 = (moves[result['raid_pokemon_move_2']] !== undefined) ? i8ln(moves[result['raid_pokemon_move_2']]['name']) : 'gen/unknown'
                 raidStr += '<div><b>' + pMove1 + ' / ' + pMove2 + '</b></div>'
