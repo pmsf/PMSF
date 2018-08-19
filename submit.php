@@ -455,6 +455,8 @@ if ( $action === "raid" ) {
 	    $communityType = 4;
     } elseif (strpos($communityInvite, 'https://chat.whatsapp.com') !== false) {
 	    $communityType = 5;
+    } elseif (strpos($communityInvite, 'https://m.me/join') !== false) {
+	    $communityType = 6;
     } else {
         http_response_code( 401 );
 	die();
