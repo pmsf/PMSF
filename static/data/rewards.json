@@ -23,6 +23,10 @@
     "cat": "Pokémon",
     "name": "Poliwag"
   },
+  "61": {
+    "cat": "Pokémon",
+    "name": "Poliwirl"
+  },
   "66": {
     "cat": "Pokémon",
     "name": "Machop"
@@ -47,6 +51,14 @@
     "cat": "Pokémon",
     "name": "Chansey"
   },
+  "117": {
+    "cat": "Pokémon",
+    "name": "Seadra"
+  },
+   "123": {
+    "cat": "Pokémon",
+    "name": "Scyther"
+  },
   "124": {
     "cat": "Pokémon",
     "name": "Jynx"
@@ -66,6 +78,10 @@
   "133": {
     "cat": "Pokémon",
     "name": "Eevee"
+  },
+  "137": {
+    "cat": "Pokémon",
+    "name": "Porygon"
   },
   "147": {
     "cat": "Pokémon",
@@ -87,6 +103,10 @@
     "cat": "Pokémon",
     "name": "Girafarig"
   },
+   "204": {
+    "cat": "Pokémon",
+    "name": "Pineco"
+  },
   "209": {
     "cat": "Pokémon",
     "name": "Snubbull"
@@ -94,6 +114,10 @@
   "228": {
     "cat": "Pokémon",
     "name": "Houndour"
+  },
+  "241": {
+    "cat": "Pokémon",
+    "name": "Miltank"
   },
   "246": {
     "cat": "Pokémon",
@@ -226,5 +250,26 @@
   "1409": {
     "cat": "Potions & Revives",
     "name": "3 Hyper Potions"
+  },
+  "1500": {
+    "cat": "Johto Festival",
+    "name": "Metal coat"
+  },
+  "1501": {
+    "cat": "Johto Festival",
+    "name": "Dragon Scale"
+  },
+  "1502": {
+    "cat": "Johto Festival",
+    "name": "Upgrade"
+  },
+  "1503": {
+    "cat": "Johto Festival",
+    "name": "Sun Stone"
+  },
+  "1504": {
+    "cat": "Johto Festival",
+    "name": "Kings Rock"
+
   }
 }
