@@ -158,5 +158,29 @@
   "605": {
     "cat": "Miscellaneous",
     "name": "Spin 10 stops or gyms."
+  },
+  "701": {
+    "cat": "Miscellaneous",
+    "name": "Evolve {0} Sunkern or Natu."
+  },
+  "702": {
+    "cat": "Johto Festival",
+    "name": "Make {0} Great Curveball Throws in a row."
+  },
+  "703": {
+    "cat": "Johto Festival",
+    "name": "Make {0} Excellent Throws."
+  },
+  "704": {
+    "cat": "Johto Festival",
+    "name": "Catch {0} Water Pokémon."
+  },
+  "705": {
+    "cat": "Johto Festival",
+    "name": "Catch {0} Sunkern."
+  },
+  "706": {
+    "cat": "Johto Festival",
+    "name": "Win a raid."	
   }
 }
