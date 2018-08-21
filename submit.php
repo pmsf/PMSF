@@ -226,7 +226,7 @@ if ( $action === "raid" ) {
         ];
         $db->update( "pokestops", $cols, $where );
     }
-    if ( $sendQuestWebhook === true ) {
+    if ( $sendQuestWebhook === true && $webhookSystem === 'poracle' ) {
 	$questwebhook = [
 	    'message' => [
 		'latitude'                          => $pokestop['lat'],
@@ -235,6 +235,26 @@ if ( $action === "raid" ) {
                 'name'                              => $pokestop['name'],
 		'quest_id'                          => $cols['quest_id'],
 		'reward_id'                         => $cols['reward_id'],
+	    ],
+	    'type'    => 'quest'
+	];
+	foreach ( $questWebhookUrl as $url ) {
+            sendToWebhook($url, array($questwebhook));
+	}
+    }
+    if ( $sendQuestWebhook === true && $webhookSystem === 'pokealarm' ) {
+        $quests = json_decode( file_get_contents( "static/dist/data/quests.min.json" ), true);
+        $rewards = json_decode( file_get_contents( "static/dist/data/rewards.min.json" ), true);
+	$questString = $quests[$questId]['name'];
+        $rewardString = $rewards[$rewardId]['name'];
+	$questwebhook = [
+	    'message' => [
+		'latitude'                          => $pokestop['lat'],
+		'longitude'                         => $pokestop['lon'],
+		'pokestop_id'                       => $pokestopId,
+                'name'                              => $pokestop['name'],
+		'quest'                          => $questString,
+		'reward'                         => $rewardString,
 	    ],
 	    'type'    => 'quest'
 	];
