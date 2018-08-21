@@ -229,12 +229,12 @@ if ( $action === "raid" ) {
     if ( $sendQuestWebhook === true && $webhookSystem === 'poracle' ) {
 	$questwebhook = [
 	    'message' => [
-		'latitude'                          => $pokestop['lat'],
-		'longitude'                         => $pokestop['lon'],
-		'pokestop_id'                       => $pokestopId,
+                'latitude'                          => $pokestop['lat'],
+                'longitude'                         => $pokestop['lon'],
+                'pokestop_id'                       => $pokestopId,
                 'name'                              => $pokestop['name'],
-		'quest_id'                          => $cols['quest_id'],
-		'reward_id'                         => $cols['reward_id'],
+                'quest_id'                          => $cols['quest_id'],
+                'reward_id'                         => $cols['reward_id'],
 	    ],
 	    'type'    => 'quest'
 	];
@@ -251,7 +251,7 @@ if ( $action === "raid" ) {
             'message' => [
                 'latitude'                          => $pokestop['lat'],
                 'longitude'                         => $pokestop['lon'],
-		'pokestop_id'                       => $pokestopId,
+                'pokestop_id'                       => $pokestopId,
                 'url'                               => $pokestop['url'],
                 'name'                              => $pokestop['name'],
                 'quest'                             => $questString,
