@@ -289,7 +289,7 @@ if ( $action === "raid" ) {
         }
     }
 } elseif ( $action === "convertpokestop" ) {
-    if ( $noRenamePokestops === true || $noPokestops === true ) {
+    if ( $noConvertPokestops === true || $noPokestops === true ) {
         http_response_code( 401 );
         die();
     }
