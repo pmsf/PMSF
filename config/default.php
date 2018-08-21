@@ -310,9 +310,12 @@ $raidBosses = [4, 296, 307, 138, 320, 129, 103, 281, 126, 303, 185, 137, 26, 232
 
 $sendWebhook = false;
 $webhookUrl = null;                                             //['url-1','url-2']
-
+//---------------------------------------------------
+// Quest Webhooks
+//---------------------------------------------------
 $sendQuestWebhook = false;                                          // Experimental use only
 $questWebhookUrl = null;                                            // Experimental use only
+$webhookSystem = [''];						    // Supported are either 'pokealarm' or 'poracle'
 
 $manualOneStar = [
     'webhook' => false,
