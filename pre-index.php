@@ -1103,7 +1103,7 @@ if ( $blockIframe ) {
             </div>
         </div>
     <?php } ?>
-    <?php if ( ! $noRenamePokestops ) { ?>
+    <?php if ( ! $noConvertPokestops ) { ?>
         <div class="convert-modal" style="display: none;">
              <div class="button-container">
                 <button type="button" onclick="convertPokestopData(event);" class="convertpokestopid"><i
@@ -1469,7 +1469,7 @@ if ( $blockIframe ) {
 <script src="static/dist/js/map.min.js"></script>
 <script src="static/dist/js/stats.min.js"></script>
 <script defer
-        src="https://maps.googleapis.com/maps/api/js?v=3.31&amp;key=<?= $gmapsKey ?>&amp;callback=initMap&amp;libraries=places,geometry"></script>
+        src="https://maps.googleapis.com/maps/api/js?v=3.32&amp;key=<?= $gmapsKey ?>&amp;callback=initMap&amp;libraries=places,geometry"></script>
 <script defer src="static/js/vendor/richmarker-compiled.js"></script>
 </body>
 </html>

@@ -118,6 +118,7 @@ CREATE TABLE IF NOT EXISTS `raids` (
   `time_end` int(11) DEFAULT NULL,
   `cp` int(11) DEFAULT NULL,
   `submitted_by` varchar(200) DEFAULT NULL,
+  `form` smallint(6) DEFAULT NULL,
   PRIMARY KEY (`id`),
   UNIQUE KEY `external_id` (`external_id`),
   KEY `fort_id` (`fort_id`),
@@ -187,6 +188,34 @@ CREATE TABLE `communities` (
   `updated` bigint(20) DEFAULT NULL,
   `source` tinyint(4) DEFAULT NULL,
   `submitted_by` varchar(200) DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+CREATE TABLE `gym_images` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `fort_id` int(11) DEFAULT NULL,
+  `param_1` int(11) DEFAULT NULL,
+  `param_2` int(11) DEFAULT NULL,
+  `param_3` int(11) DEFAULT NULL,
+  `param_4` int(11) DEFAULT NULL,
+  `param_5` int(11) DEFAULT NULL,
+  `param_6` int(11) DEFAULT NULL,
+  `created` int(11) DEFAULT NULL
+  PRIMARY KEY (`id`);
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+CREATE TABLE `pokemon_images` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `pokemon_id` int(11) DEFAULT NULL,
+  `param_1` int(11) DEFAULT NULL,
+  `param_2` int(11) DEFAULT NULL,
+  `param_3` int(11) DEFAULT NULL,
+  `param_4` int(11) DEFAULT NULL,
+  `param_5` int(11) DEFAULT NULL,
+  `param_6` int(11) DEFAULT NULL,
+  `param_7` int(11) DEFAULT NULL,
+  `created` int(11) DEFAULT NULL,
+  `form` smallint(6) DEFAULT NULL
+  PRIMARY KEY (`id`);
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 -- Data exporting was unselected.
 /*!40101 SET SQL_MODE=IFNULL(@OLD_SQL_MODE, '') */;

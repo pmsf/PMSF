@@ -1416,6 +1416,8 @@
   "114": {
     "name": "Tangela",
     "rarity": "Rare",
+    "level": 3,
+    "cp": 16085,
     "types": [
       {
         "type": "Grass",
@@ -3924,6 +3926,8 @@
   "315":{
     "name": "Roselia",
     "rarity":"",
+    "level": 2,
+    "cp": 10887,
     "types": [
       {
         "type": "Grass",
