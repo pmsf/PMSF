@@ -213,7 +213,7 @@ if ( $action === "raid" ) {
     $pokestopId = ! empty( $_POST['pokestopId'] ) ? $_POST['pokestopId'] : '';
     $questId    = $_POST['questId'] == "NULL" ? 0 : $_POST['questId'];
     $rewardId   = $_POST['rewardId'] == "NULL" ? 0 : $_POST['rewardId'];
-    $pokestop         = $db->get( "pokestops", [ 'name', 'lat', 'lon', 'external_id' ], [ 'external_id' => $pokestopId ] );
+    $pokestop         = $db->get( "pokestops", [ 'name', 'lat', 'lon', 'url', 'external_id' ], [ 'external_id' => $pokestopId ] );
     $loggedUser = ! empty( $_SESSION['user']->user ) ? $_SESSION['user']->user : 'NOLOGIN';
     if ( ! empty( $pokestopId ) && ! empty( $questId ) && ! empty( $rewardId ) ) {
         $cols  = [
@@ -245,20 +245,21 @@ if ( $action === "raid" ) {
     if ( $sendQuestWebhook === true && $webhookSystem === 'pokealarm' ) {
         $quests = json_decode( file_get_contents( "static/dist/data/quests.min.json" ), true);
         $rewards = json_decode( file_get_contents( "static/dist/data/rewards.min.json" ), true);
-	$questString = $quests[$questId]['name'];
+        $questString = $quests[$questId]['name'];
         $rewardString = $rewards[$rewardId]['name'];
-	$questwebhook = [
-	    'message' => [
-		'latitude'                          => $pokestop['lat'],
-		'longitude'                         => $pokestop['lon'],
+        $questwebhook = [
+            'message' => [
+                'latitude'                          => $pokestop['lat'],
+                'longitude'                         => $pokestop['lon'],
 		'pokestop_id'                       => $pokestopId,
+                'url'                               => $pokestop['url'],
                 'name'                              => $pokestop['name'],
-		'quest'                          => $questString,
-		'reward'                         => $rewardString,
-	    ],
-	    'type'    => 'quest'
-	];
-	foreach ( $questWebhookUrl as $url ) {
+                'quest'                             => $questString,
+                'reward'                            => $rewardString,
+            ],
+            'type'    => 'quest'
+        ];
+        foreach ( $questWebhookUrl as $url ) {
             sendToWebhook($url, array($questwebhook));
 	}
     }
