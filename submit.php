@@ -198,11 +198,7 @@ if ( $action === "raid" ) {
         $db->insert( "forts", $cols );
         if ( $noDiscordSubmitLogChannel === false ) {
             $data = array("content" => '```Added gym with id "' . $gymId . '" and name: "' . $gymName . '"```' . $submitMapUrl . '/?lat=' . $lat . '&lon=' . $lng . '&zoom=18', "username" => $loggedUser);
-            $curl = curl_init($discordSubmitLogChannelUrl);
-            curl_setopt($curl, CURLOPT_CUSTOMREQUEST, "POST");
-            curl_setopt($curl, CURLOPT_POSTFIELDS, json_encode($data));
-            curl_setopt($curl, CURLOPT_RETURNTRANSFER, true);
-            curl_exec($curl);
+            sendToWebhook($discordSubmitLogChannelUrl, ($data));
         }
     }
 } elseif ( $action === "quest" ) {
@@ -302,11 +298,7 @@ if ( $action === "raid" ) {
 	$db->update( "pokestops", $cols, $where );
         if ( $noDiscordSubmitLogChannel === false ) {
             $data = array("content" => '```Updated pokestop with id "' . $pokestopId . '" and gave it the new name: "' . $pokestopName . '" . ```', "username" => $loggedUser);
-            $curl = curl_init($discordSubmitLogChannelUrl);
-            curl_setopt($curl, CURLOPT_CUSTOMREQUEST, "POST");
-            curl_setopt($curl, CURLOPT_POSTFIELDS, json_encode($data));
-            curl_setopt($curl, CURLOPT_RETURNTRANSFER, true);
-            curl_exec($curl);
+            sendToWebhook($discordSubmitLogChannelUrl, ($data));
         }
     }
 } elseif ( $action === "convertpokestop" ) {
@@ -338,11 +330,7 @@ if ( $action === "raid" ) {
         ] );
         if ( $noDiscordSubmitLogChannel === false ) {
             $data = array("content" => '```Converted pokestop with id "' . $pokestopId . '." New Gym: "' . $gymName['name'] . '". ```', "username" => $loggedUser);
-            $curl = curl_init($discordSubmitLogChannelUrl);
-            curl_setopt($curl, CURLOPT_CUSTOMREQUEST, "POST");
-            curl_setopt($curl, CURLOPT_POSTFIELDS, json_encode($data));
-            curl_setopt($curl, CURLOPT_RETURNTRANSFER, true);
-            curl_exec($curl);
+            sendToWebhook($discordSubmitLogChannelUrl, ($data));
         }
     }
  } elseif ( $action === "pokestop" ) {
@@ -365,11 +353,7 @@ if ( $action === "raid" ) {
         $db->insert( "pokestops", $cols );
         if ( $noDiscordSubmitLogChannel === false ) {
             $data = array("content" => '```Added pokestop with id "' . $pokestopId . '" and gave it the new name: "' . $pokestopName . '"```' . $submitMapUrl . '/?lat=' . $lat . '&lon=' . $lng . '&zoom=18 ', "username" => $loggedUser);
-            $curl = curl_init($discordSubmitLogChannelUrl);
-            curl_setopt($curl, CURLOPT_CUSTOMREQUEST, "POST");
-            curl_setopt($curl, CURLOPT_POSTFIELDS, json_encode($data));
-            curl_setopt($curl, CURLOPT_RETURNTRANSFER, true);
-            curl_exec($curl);
+            sendToWebhook($discordSubmitLogChannelUrl, ($data));
         }
     }
 } elseif ( $action === "new-nest" ) {
@@ -418,11 +402,7 @@ if ( $action === "raid" ) {
             ] );
             if ( $noDiscordSubmitLogChannel === false ) {
                 $data = array("content" => '```Deleted gym with id "' . $gymId . '" and name: "' . $fortName['name'] . '"```', "username" => $loggedUser);
-                $curl = curl_init($discordSubmitLogChannelUrl);
-                curl_setopt($curl, CURLOPT_CUSTOMREQUEST, "POST");
-                curl_setopt($curl, CURLOPT_POSTFIELDS, json_encode($data));
-                curl_setopt($curl, CURLOPT_RETURNTRANSFER, true);
-                curl_exec($curl);
+                sendToWebhook($discordSubmitLogChannelUrl, ($data));
             }
         }
     }
@@ -442,11 +422,7 @@ if ( $action === "raid" ) {
         ] );
         if ( $noDiscordSubmitLogChannel === false ) {
             $data = array("content" => '```Deleted pokestop with id "' . $pokestopId . '" and name: "' . $pokestopName['name'] . '"```', "username" => $loggedUser);
-            $curl = curl_init($discordSubmitLogChannelUrl);
-            curl_setopt($curl, CURLOPT_CUSTOMREQUEST, "POST");
-            curl_setopt($curl, CURLOPT_POSTFIELDS, json_encode($data));
-            curl_setopt($curl, CURLOPT_RETURNTRANSFER, true);
-            curl_exec($curl);
+            sendToWebhook($discordSubmitLogChannelUrl, ($data));
         }
     }
 } elseif ( $action === "delete-nest" ) {
@@ -507,11 +483,7 @@ if ( $action === "raid" ) {
         $db->insert( "communities", $cols );
         if ( $noDiscordSubmitLogChannel === false ) {
             $data = array("content" => '```Added community with id "' . $communityId . '" and gave it the new name: "' . $communityName . '"```' . $submitMapUrl . '/?lat=' . $lat . '&lon=' . $lng . '&zoom=18 ', "username" => $loggedUser);
-            $curl = curl_init($discordSubmitLogChannelUrl);
-            curl_setopt($curl, CURLOPT_CUSTOMREQUEST, "POST");
-            curl_setopt($curl, CURLOPT_POSTFIELDS, json_encode($data));
-            curl_setopt($curl, CURLOPT_RETURNTRANSFER, true);
-            curl_exec($curl);
+            sendToWebhook($discordSubmitLogChannelUrl, ($data));
         }
     }
 } elseif ( $action === "editcommunity" ) {
@@ -549,11 +521,7 @@ if ( $action === "raid" ) {
     $db->update( "communities", $cols, $where );
     if ( $noDiscordSubmitLogChannel === false ) {
         $data = array("content" => '```Updated community with id "' . $communityId . '" and gave it the new name: "' . $communityName . '" . ```', "username" => $loggedUser);
-        $curl = curl_init($discordSubmitLogChannelUrl);
-        curl_setopt($curl, CURLOPT_CUSTOMREQUEST, "POST");
-        curl_setopt($curl, CURLOPT_POSTFIELDS, json_encode($data));
-        curl_setopt($curl, CURLOPT_RETURNTRANSFER, true);
-        curl_exec($curl);
+        sendToWebhook($discordSubmitLogChannelUrl, ($data));
     }
 
 } elseif ( $action === "delete-community" ) {
@@ -563,6 +531,7 @@ if ( $action === "raid" ) {
     }
     $communityId = ! empty( $_POST['communityId'] ) ? $_POST['communityId'] : '';
     $communityName = $db->get( "communities", [ 'title' ], [ 'community_id' => $communityId ] );
+    $loggedUser = ! empty( $_SESSION['user']->user ) ? $_SESSION['user']->user : 'NOLOGIN';
     if ( ! empty( $communityId ) ) {
         $db->delete( 'communities', [
             "AND" => [
@@ -572,11 +541,7 @@ if ( $action === "raid" ) {
     }
     if ( $noDiscordSubmitLogChannel === false ) {
         $data = array("content" => '```Deleted community with id "' . $communityId . '" and name: "' . $communityName['title'] . '" . ```', "username" => $loggedUser);
-        $curl = curl_init($discordSubmitLogChannelUrl);
-        curl_setopt($curl, CURLOPT_CUSTOMREQUEST, "POST");
-        curl_setopt($curl, CURLOPT_POSTFIELDS, json_encode($data));
-        curl_setopt($curl, CURLOPT_RETURNTRANSFER, true);
-        curl_exec($curl);
+        sendToWebhook($discordSubmitLogChannelUrl, ($data));
     }
 
 }
