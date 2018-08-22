@@ -1904,6 +1904,8 @@
   "152": {
     "name": "Chikorita",
     "rarity": "Uncommon",
+    "level": 1,
+    "cp": 3067,
     "types": [
       {
         "type": "Grass",
@@ -1936,6 +1938,8 @@
   "155": {
     "name": "Cyndaquil",
     "rarity": "Uncommon",
+    "level": 1,
+    "cp": 3380,
     "types": [
       {
         "type": "Fire",
@@ -1968,6 +1972,8 @@
   "158": {
     "name": "Totodile",
     "rarity": "Uncommon",
+    "level": 1,
+    "cp": 3700,
     "types": [
       {
         "type": "Water",
@@ -2378,6 +2384,8 @@
   "191": {
     "name": "Sunkern",
     "rarity": "Common",
+    "level": 1,
+    "cp": 1434,
     "types": [
       {
         "type": "Grass",
@@ -2398,6 +2406,8 @@
   "193": {
     "name": "Yanma",
     "rarity": "Uncommon",
+    "level": 1,
+    "cp": 4321,
     "types": [
       {
         "type": "Bug",
@@ -2536,6 +2546,8 @@
   "204": {
     "name": "Pineco",
     "rarity": "Very Rare",
+    "level": 2,
+    "cp": 6621,
     "types": [
       {
         "type": "Bug",
