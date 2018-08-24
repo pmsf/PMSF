@@ -1,186 +1,326 @@
 {
   "1": {
-    "cat": "Gym/Raid",
-    "name": "Battle in a Gym."
+    "cat": "Popular",
+    "name": "Land 3 curveball throws in a row (Spinda Encounter)"
+  },
+  "2": {
+    "cat": "Popular",
+    "name": "Catch a Skitty or Poochyena (Snubbull Enounter)"
   },
   "3": {
-    "cat": "Gym/Raid",
-    "name": "Battle in a Gym 5 times"
+    "cat": "Popular",
+    "name": "Evolve a Meowth (Houndour Encounter)"
   },
   "4": {
-    "cat": "Gym/Raid",
-    "name": "Win a Gym battle."
+    "cat": "Popular",
+    "name": "Hatch 5 eggs (Chansey Encounter)"
   },
   "5": {
-    "cat": "Gym/Raid",
-    "name": "Win 3 Gym battles."
+    "cat": "Popular",
+    "name": "Make 3 excellent throws in row (Larvitar Encounter)"
   },
   "6": {
-    "cat": "Gym/Raid",
-    "name": "Win 5 Gym battles."
+    "cat": "Popular",
+    "name": "Catch a dragon type (Dratini Encounter)"
   },
   "7": {
-    "cat": "Gym/Raid",
-    "name": "Battle in a raid"
+    "cat": "Popular",
+    "name": "Win a level 3 raid or higher (Dratini Encounter)"
   },
   "8": {
-    "cat": "Gym/Raid",
-    "name": "Win a raid."
+    "cat": "Popular",
+    "name": "Catch 10 Pokemon (Magikarp Enounter)"
   },
   "9": {
-    "cat": "Gym/Raid",
-    "name": "Win 3 raids."
+    "cat": "Popular",
+    "name": "Power up a Pokemon 5 times (Gen 1 Starter Encounter)"
   },
   "10": {
-    "cat": "Gym/Raid",
-    "name": "Use a Super effective charge attack."
+    "cat": "Popular",
+    "name": "Hatch 3 eggs (Magmar Encounter)"
   },
   "11": {
-    "cat": "Gym/Raid",
-    "name": "Use a Super effective charge attack 7 times."
+    "cat": "Popular",
+    "name": "Battle in a gym 5 times (Machop Enounter)"
   },
-  "12": {
-    "cat": "Gym/Raid",
-    "name": "Win a level 3 or higher raid."
+  "102": {
+    "cat": "Event",
+    "name": "Transfer 10 Pokemon (Misdreavus Encounter)"
   },
-  "118": {
-    "cat": "Catch",
-    "name": "Catch 10 Pokémon."
+  "103": {
+    "cat": "Event",
+    "name": "Catch 5 electric-type Pokemon (Mareep Encounter)"
   },
-  "119": {
-    "cat": "Catch",
-    "name": "Catch 5 Pokémon with Weather Boost."
+  "104": {
+    "cat": "Event",
+    "name": "Catch a Meowth or Growlithe (Electrike Enounter)"
   },
-  "120": {
-    "cat": "Catch",
-    "name": "Catch 10 Pokémon with Weather Boost."
+  "199": {
+    "cat": "Event",
+    "name": "Unlisted Event Quest"
   },
-  "121": {
-    "cat": "Catch",
-    "name": "Catch a Ditto."
-  },
-  "122": {
-    "cat": "Catch",
-    "name": "Catch a Dragon-type Pokemon"
-  },
-  "123": {
-    "cat": "Catch",
-    "name": "Catch 5 Electric-type Pokemon"
-  },
-  "124": {
-    "cat": "Catch",
-    "name": "Catch a Meowth or Growlithe"
-  },
-  "125": {
-    "cat": "Catch",
-    "name": "Catch a skitty or poochyena"
-  },
-  "126": {
-    "cat": "Catch",
-    "name": "Use 5 berries to help catch a pokemon"
-  },
-  "255": {
+  "201": {
     "cat": "Evolve",
-    "name": "Evolve a Pokémon."
+    "name": "Evolve {0} Pokémon"
   },
-  "267": {
+  "202": {
     "cat": "Evolve",
-    "name": "Evolve a Meowth."
+    "name": "Evolve {0} Fire-type Pokémon"
   },
-  "370": {
-    "cat": "Throw",
-    "name": "Make 5 Nice Throws."
+  "203": {
+    "cat": "Evolve",
+    "name": "Evolve {0} Electric-type Pokémon"
   },
-  "371": {
-    "cat": "Throw",
-    "name": "Make 2 Nice Curveball Throws in a row."
+  "204": {
+    "cat": "Evolve",
+    "name": "Evolve {0} Flying-type Pokémon"
   },
-  "372": {
-    "cat": "Throw",
-    "name": "Make 3 Nice Throws in a row."
+  "205": {
+    "cat": "Evolve",
+    "name": "Evolve {0} Ice-type Pokémon"
   },
-  "376": {
-    "cat": "Throw",
-    "name": "Make 3 Great Throws."
+  "206": {
+    "cat": "Evolve",
+    "name": "Evolve {0} Water-type Pokémon"
   },
-  "377": {
-    "cat": "Throw",
-    "name": "Make 3 Great Curveball Throws."
+  "207": {
+    "cat": "Evolve",
+    "name": "Evolve {0} Grass-type Pokémon"
   },
-  "378": {
-    "cat": "Throw",
-    "name": "Make 3 Great Curveball Throws in a row."
+  "208": {
+    "cat": "Evolve",
+    "name": "Evolve {0} Electric-, Water-, or Fire-type Pokémon"
   },
-  "379": {
-    "cat": "Throw",
-    "name": "Make 3 Great Throws in a row."
+  "299": {
+    "cat": "Evolve",
+    "name": "Unlisted Evolve Quest"
   },
-  "385": {
-    "cat": "Throw",
-    "name": "Make an Excellent Throw."
-  },
-  "387": {
-    "cat": "Throw",
-    "name": "Make 3 Excellent Throws in a row."
-  },
-  "391": {
-    "cat": "Throw",
-    "name": "Land 3 Curveball Throws in a row."
-  },
-  "392": {
-    "cat": "Throw",
-    "name": "Make 5 Curveball Throws in a row."
-  },
-  "596": {
+  "301": {
     "cat": "Miscellaneous",
-    "name": "Hatch an Egg."
+    "name": "Hatch {0} Eggs"
   },
-  "597": {
+  "302": {
     "cat": "Miscellaneous",
-    "name": "Hatch 3 Eggs."
+    "name": "Power up Pokémon {0} times"
   },
-  "598": {
+  "303": {
     "cat": "Miscellaneous",
-    "name": "Hatch 5 Eggs."
+    "name": "Earn {0} Candies walking with your buddy"
+  },
+  "304": {
+    "cat": "Miscellaneous",
+    "name": "Transfer {0} Pokémon"
+  },
+  "399": {
+    "cat": "Miscellaneous",
+    "name": "Unlisted Quest"
+  },
+  "401": {
+    "cat": "Gym/Raid",
+    "name": "Battle in a Gym {0} times"
+  },
+  "402": {
+    "cat": "Gym/Raid",
+    "name": "Battle in {0} raids"
+  },
+  "403": {
+    "cat": "Gym/Raid",
+    "name": "Use a supereffective Charged Attack in {0} Gym battles"
+  },
+  "404": {
+    "cat": "Gym/Raid",
+    "name": "Win {0} Gym battles"
+  },
+  "405": {
+    "cat": "Gym/Raid",
+    "name": "Win {0} level 3 or higher raids"
+  },
+  "406": {
+    "cat": "Gym/Raid",
+    "name": "Win {0} raids"
+  },
+  "499": {
+    "cat": "Gym/Raid",
+    "name": "Unlisted Gym/Raid Quest"
+  },
+  "501": {
+    "cat": "Catch",
+    "name": "Use {0} Berries to help catch Pokémon"
+  },
+  "502": {
+    "cat": "Catch",
+    "name": "Catch {0} Pokémon"
+  },
+  "503": {
+    "cat": "Catch",
+    "name": "Catch {0} Bug-type Pokémon"
+  },
+  "504": {
+    "cat": "Catch",
+    "name": "Catch {0} Dark-type Pokémon"
+  },
+  "505": {
+    "cat": "Catch",
+    "name": "Catch {0} Dragon-type Pokémon"
+  },
+  "506": {
+    "cat": "Catch",
+    "name": "Catch {0} Electric-type Pokémon"
+  },
+  "507": {
+    "cat": "Catch",
+    "name": "Catch {0} Fairy-type Pokémon"
+  },
+  "508": {
+    "cat": "Catch",
+    "name": "Catch {0} Fighting-type Pokémon"
+  },
+  "509": {
+    "cat": "Catch",
+    "name": "Catch {0} Fire-type Pokémon"
+  },
+  "510": {
+    "cat": "Catch",
+    "name": "Catch {0} Flying-type Pokémon"
+  },
+  "511": {
+    "cat": "Catch",
+    "name": "Catch {0} Ghost-type Pokémon"
+  },
+  "512": {
+    "cat": "Catch",
+    "name": "Catch {0} Grass-type Pokémon"
+  },
+  "513": {
+    "cat": "Catch",
+    "name": "Catch {0} Ground-type Pokémon"
+  },
+  "514": {
+    "cat": "Catch",
+    "name": "Catch {0} Ice-type Pokémon"
+  },
+  "515": {
+    "cat": "Catch",
+    "name": "Catch {0} Normal-type Pokémon"
+  },
+  "516": {
+    "cat": "Catch",
+    "name": "Catch {0} Poison-type Pokémon"
+  },
+  "517": {
+    "cat": "Catch",
+    "name": "Catch {0} Psychic-type Pokémon"
+  },
+  "518": {
+    "cat": "Catch",
+    "name": "Catch {0} Rock-type Pokémon"
+  },
+  "519": {
+    "cat": "Catch",
+    "name": "Catch {0} Steel-type Pokémon"
+  },
+  "520": {
+    "cat": "Catch",
+    "name": "Catch {0} Water-type Pokémon"
+  },
+  "521": {
+    "cat": "Catch",
+    "name": "Catch {0} Grass-, Fire-, or Ground-type Pokémon"
+  },
+  "522": {
+    "cat": "Catch",
+    "name": "Catch {0} Pokémon with Weather Boost"
+  },
+  "523": {
+    "cat": "Catch",
+    "name": "Catch {0} Water-, Electric-, or Bug-type Pokémon"
+  },
+  "524": {
+    "cat": "Catch",
+    "name": "Catch {0} Ice- or Steel-type Pokémon"
+  },
+  "525": {
+    "cat": "Catch",
+    "name": "Catch {0} Flying-, Psychic-, or Dragon-type Pokémon"
+  },
+  "526": {
+    "cat": "Catch",
+    "name": "Catch {0} Grass-, Water-, or Fire-type Pokémon"
   },
   "599": {
-    "cat": "Miscellaneous",
-    "name": "Power up Pokémon 5 times."
+    "cat": "Catch",
+    "name": "Unlisted Catch Quest"
   },
-  "600": {
-    "cat": "Miscellaneous",
-    "name": "Power up a Pokémon."
+  "601": {
+    "cat": "Spin",
+    "name": "Spin {0} PokéStops you haven't visited before"
   },
   "602": {
-    "cat": "Miscellaneous",
-    "name": "Transfer 10 Pokémon."
+    "cat": "Spin",
+    "name": "Spin {0} PokéStops or Gyms"
   },
-  "605": {
-    "cat": "Miscellaneous",
-    "name": "Spin 10 stops or gyms."
+  "699": {
+    "cat": "Spin",
+    "name": "Unlisted Spin Quest"
   },
   "701": {
-    "cat": "Johto Festival",
-    "name": "Evolve 3 Sunkern or Natu."
+    "cat": "Throw",
+    "name": "Make {0} Excellent Throws"
   },
   "702": {
-    "cat": "Johto Festival",
-    "name": "Make 4 Great Curveball Throws in a row."
+    "cat": "Throw",
+    "name": "Make {0} Great Curveball Throws"
   },
   "703": {
-    "cat": "Johto Festival",
-    "name": "Make 3 Excellent Throws."
+    "cat": "Throw",
+    "name": "Make {0} Great Throws"
   },
   "704": {
-    "cat": "Johto Festival",
-    "name": "Catch 5 Water Pokémon."
+    "cat": "Throw",
+    "name": "Make {0} Curveball Throws in a row"
   },
   "705": {
-    "cat": "Johto Festival",
-    "name": "Catch 3 Sunkern."
+    "cat": "Throw",
+    "name": "Make {0} Excellent Curveball Throws in a row"
   },
   "706": {
-    "cat": "Johto Festival",
-    "name": "Win a raid."
+    "cat": "Throw",
+    "name": "Make {0} Great Curveball Throws in a row"
+  },
+  "707": {
+    "cat": "Throw",
+    "name": "Make {0} Great Throws in a row"
+  },
+  "708": {
+    "cat": "Throw",
+    "name": "Make {0} Nice Curveball Throws in a row"
+  },
+  "709": {
+    "cat": "Throw",
+    "name": "Make {0} Nice Throws in a row"
+  },
+  "710": {
+    "cat": "Throw",
+    "name": "Make {0} Nice Throws"
+  },
+  "711": {
+    "cat": "Throw",
+    "name": "Make {0} Excellent Curveball Throws"
+  },
+  "712": {
+    "cat": "Throw",
+    "name": "Make {0} Excellent Throws in a row"
+  },
+  "713": {
+    "cat": "Throw",
+    "name": "Catch {0} Electric-type Pokémon with Nice Throws"
+  },
+  "714": {
+    "cat": "Throw",
+    "name": "Land {0} Nice Curveball Throws"
+  },
+  "799": {
+    "cat": "Throw",
+    "name": "Unlisted Throw Quest"
   }
 }
