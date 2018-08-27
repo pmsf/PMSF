@@ -303,6 +303,7 @@ $noManualQuests = false;
 //-----------------------------------------------------
 $enablePortals = 'false';
 $noPortals = true;
+$noDeletePortals = true;
 
 $noDiscordSubmitLogChannel = true;                                        // Send webhooks to discord channel upon submission
 
