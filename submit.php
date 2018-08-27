@@ -308,14 +308,13 @@ if ( $action === "raid" ) {
     }
     $pokestopId   = ! empty( $_POST['pokestopid'] ) ? $_POST['pokestopid'] : '';
     $loggedUser = ! empty( $_SESSION['user']->user ) ? $_SESSION['user']->user : 'NOLOGIN';
-    $gymId = randomGymId();
     $gymLat = $db->get( "pokestops", [ 'lat' ], [ 'external_id' => $pokestopId ] );
     $gymLon= $db->get( "pokestops", [ 'lon' ], [ 'external_id' => $pokestopId ] );
     $gymName = $db->get( "pokestops", [ 'name' ], [ 'external_id' => $pokestopId ] );
     $gymUrl = $db->get( "pokestops", [ 'url' ], [ 'external_id' => $pokestopId ] );
     if ( ! empty( $pokestopId ) ) {
         $cols     = [
-            'external_id'  => $gymId,
+            'external_id'  => $pokestopId,
             'lat'          => $gymLat['lat'],
             'lon'          => $gymLon['lon'],
             'name'         => $gymName['name'],
@@ -330,6 +329,58 @@ if ( $action === "raid" ) {
         ] );
         if ( $noDiscordSubmitLogChannel === false ) {
             $data = array("content" => '```Converted pokestop with id "' . $pokestopId . '." New Gym: "' . $gymName['name'] . '". ```', "username" => $loggedUser);
+            sendToWebhook($discordSubmitLogChannelUrl, ($data));
+        }
+    }
+} elseif ( $action === "convertportalpokestop" ) {
+    if ( $noPortals === true ) {
+        http_response_code( 401 );
+        die();
+    }
+    $portalId   = ! empty( $_POST['portalid'] ) ? $_POST['portalid'] : '';
+    $loggedUser = ! empty( $_SESSION['user']->user ) ? $_SESSION['user']->user : 'NOLOGIN';
+    $portalLat = $db->get( "ingress_portals", [ 'lat' ], [ 'external_id' => $portalId ] );
+    $portalLon= $db->get( "ingress_portals", [ 'lon' ], [ 'external_id' => $portalId ] );
+    $portalName = $db->get( "ingress_portals", [ 'name' ], [ 'external_id' => $portalId ] );
+    $portalUrl = $db->get( "ingress_portals", [ 'url' ], [ 'external_id' => $portalId ] );
+    if ( ! empty( $portalId ) ) {
+        $cols     = [
+            'external_id'  => $portalId['portalid'],
+            'lat'          => $portalLat['lat'],
+            'lon'          => $portalLon['lon'],
+            'name'         => $portalName['name'],
+            'url'          => $portalUrl['url'],
+            'edited_by'    => $loggedUser
+        ];
+	$db->insert( "pokestops", $cols );
+        if ( $noDiscordSubmitLogChannel === false ) {
+            $data = array("content" => '```Converted portal with id "' . $portalId . '." New Pokestop: "' . $PortalName['name'] . '". ```', "username" => $loggedUser);
+            sendToWebhook($discordSubmitLogChannelUrl, ($data));
+        }
+    }
+} elseif ( $action === "convertportalgym" ) {
+    if ( $noPortals === true ) {
+        http_response_code( 401 );
+        die();
+    }
+    $portalId   = ! empty( $_POST['portalid'] ) ? $_POST['portalid'] : '';
+    $loggedUser = ! empty( $_SESSION['user']->user ) ? $_SESSION['user']->user : 'NOLOGIN';
+    $portalLat = $db->get( "ingress_portals", [ 'lat' ], [ 'external_id' => $portalId ] );
+    $portalLon= $db->get( "ingress_portals", [ 'lon' ], [ 'external_id' => $portalId ] );
+    $portalName = $db->get( "ingress_portals", [ 'name' ], [ 'external_id' => $portalId ] );
+    $portalUrl = $db->get( "ingress_portals", [ 'url' ], [ 'external_id' => $portalId ] );
+    if ( ! empty( $portalId ) ) {
+        $cols     = [
+            'external_id'  => $portalId['portalid'],
+            'lat'          => $portalLat['lat'],
+            'lon'          => $portalLon['lon'],
+            'name'         => $portalName['name'],
+            'url'          => $portalUrl['url'],
+            'edited_by'    => $loggedUser
+        ];
+	$db->insert( "forts", $cols );
+        if ( $noDiscordSubmitLogChannel === false ) {
+            $data = array("content" => '```Converted portal with id "' . $portalId . '." New Gym: "' . $PortalName['name'] . '". ```', "username" => $loggedUser);
             sendToWebhook($discordSubmitLogChannelUrl, ($data));
         }
     }
