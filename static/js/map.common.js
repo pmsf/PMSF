@@ -939,6 +939,11 @@ var StoreOptions = {
             default: enableCommunities,
             type: StoreTypes.Boolean
         },
+    'showPortals':
+        {
+            default: enablePortals,
+            type: StoreTypes.Boolean
+        },
     'useGymSidebar':
         {
             default: gymSidebar,
@@ -1171,7 +1176,8 @@ var mapData = {
     scanned: {},
     spawnpoints: {},
     nests: {},
-    communities: {}
+    communities: {},
+    portals: {}
 }
 
 function getGoogleSprite(index, sprite, displayHeight, weather = 0) {
