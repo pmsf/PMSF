@@ -36,6 +36,7 @@ $lastlocs = !empty($_POST['lastslocs']) ? $_POST['lastslocs'] : false;
 $lastspawns = !empty($_POST['lastspawns']) ? $_POST['lastspawns'] : false;
 $lastnests = !empty($_POST['lastnests']) ? $_POST['lastnests'] : false;
 $lastcommunities = !empty($_POST['lastcommunities']) ? $_POST['lastcommunities'] : false;
+$lastportals = !empty($_POST['lastportals']) ? $_POST['lastportals'] : false;
 $exEligible = !empty($_POST['exEligible']) ? $_POST['exEligible'] : false;
 $d["lastpokestops"] = !empty($_POST['pokestops']) ? $_POST['pokestops'] : false;
 $d["lastgyms"] = !empty($_POST['gyms']) ? $_POST['gyms'] : false;
@@ -44,6 +45,7 @@ $d["lastspawns"] = !empty($_POST['spawnpoints']) ? $_POST['spawnpoints'] : false
 $d["lastpokemon"] = !empty($_POST['pokemon']) ? $_POST['pokemon'] : false;
 $d["lastnests"] = !empty($_POST['nests']) ? $_POST['nests'] : false;
 $d["lastcommunities"] = !empty($_POST['communities']) ? $_POST['communities'] : false;
+$d["lastportals"] = !empty($_POST['portals']) ? $_POST['portals'] : false;
 if ($minIv < $prevMinIv || $minLevel < $prevMinLevel) {
     $lastpokemon = false;
 }
@@ -188,6 +190,21 @@ if (!$noCommunity ) {
                 $d["communities"] = $scanner->get_communities($swLat, $swLng, $neLat, $neLng, 0, $oSwLat, $oSwLng, $oNeLat, $oNeLng);
             } else {
                 $d["communities"] = $scanner->get_communities($swLat, $swLng, $neLat, $neLng, time());
+            }
+        }
+    }
+}
+
+global $noPortals;
+if (!$noPortals ) {
+    if ($d["lastportals"] == "true") {
+        if ($lastportals != "true") {
+            $d["portals"] = $scanner->get_portals($swLat, $swLng, $neLat, $neLng);
+        } else {
+            if ($newarea) {
+                $d["portals"] = $scanner->get_portals($swLat, $swLng, $neLat, $neLng, 0, $oSwLat, $oSwLng, $oNeLat, $oNeLng);
+            } else {
+                $d["portals"] = $scanner->get_portals($swLat, $swLng, $neLat, $neLng, time());
             }
         }
     }

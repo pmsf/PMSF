@@ -298,6 +298,12 @@ $noRenamePokestops = false;
 $noConvertPokestops = false;
 $noManualQuests = false;
 
+//-----------------------------------------------------
+// Ingress portals
+//-----------------------------------------------------
+$enablePortals = 'false';
+$noPortals = true;
+
 $noDiscordSubmitLogChannel = true;                                        // Send webhooks to discord channel upon submission
 
 $pokemonReportTime = true;
