@@ -1155,6 +1155,21 @@ if ( $blockIframe ) {
             </div>
         </div>
     <?php } ?>
+    <?php if ( ! $noPortals ) { ?>
+        <div class="convert-portal-modal" style="display: none;">
+             <div class="button-container">
+                <button type="button" onclick="convertPortalToPokestopData(event);" class="convertportalid"><i
+                        class="fa fa-refresh"
+                        style="margin-right:10px; vertical-align: middle; font-size: 1.5em;"></i><?php echo i8ln( 'Convert to pokestop' ); ?>
+		</button>
+                <button type="button" onclick="convertPortalToGymData(event);" class="convertportalid"><i
+                        class="fa fa-refresh"
+                        style="margin-right:10px; vertical-align: middle; font-size: 1.5em;"></i><?php echo i8ln( 'Convert to gym' ); ?>
+		</button>
+
+            </div>
+        </div>
+    <?php } ?>
     <?php if ( ! $noManualQuests ) { ?>
         <div class="quest-modal" style="display: none;">
             <input type="hidden" value="" name="questPokestop" class="questPokestop"/>
