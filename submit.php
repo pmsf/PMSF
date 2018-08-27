@@ -508,6 +508,8 @@ if ( $action === "raid" ) {
 	    $communityType = 6;
     } elseif (strpos($communityInvite, 'https://facebook.com/groups') !== false) {
 	    $communityType = 7;
+    } elseif (strpos($communityInvite, 'https://groupme.com/join_group') !== false) {
+	    $communityType = 8;
     } else {
         http_response_code( 401 );
 	die();
