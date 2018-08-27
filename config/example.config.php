@@ -303,6 +303,7 @@ $noManualQuests = false;
 //-----------------------------------------------------
 $enablePortals = 'false';
 $noPortals = true;
+$noDeletePortals = true;
 
 $pokemonReportTime = true;
 $pokemonToExclude = [];

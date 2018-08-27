@@ -1542,10 +1542,42 @@ function setupPortalMarker(item) {
 }
 
 function portalLabel(item) {
-    var str = '<img src="' + item.url + '" align"middle" style="width:175px;height: auto;"/>' +
+    var str = '<img src="' + item.url + '" align"middle" style="width:175px;height:auto;margin-left:25px;"/>' +
         '<center><h4><div>' + item.name + '</div></h4></center>' +
         '<center><div>Convert this portal<i class="fa fa-refresh convert-portal" style="margin-top: 2px; margin-left: 5px; vertical-align: middle; font-size: 1.5em;" onclick="openConvertPortalModal(event);" data-id="' + item.external_id + '"></i></div></center>'
+    if (!noDeletePortal) {
+        str += '<i class="fa fa-trash-o delete-portal" onclick="deletePortal(event);" data-id="' + item.external_id + '"></i>'
+    }
     return str
+}
+
+function deletePortal(event) { // eslint-disable-line no-unused-vars
+    var button = $(event.target)
+    var portalid = button.data('id')
+    if (portalid && portalid !== '') {
+        if (confirm(i8ln('I confirm that this portal does not longer exist. This is a permanent deleture'))) {
+            return $.ajax({
+                url: 'submit',
+                type: 'POST',
+                timeout: 300000,
+                dataType: 'json',
+                cache: false,
+                data: {
+                    'action': 'delete-portal',
+                    'portalId': portalid
+                },
+                error: function error() {
+                    // Display error toast
+                    toastr['error'](i8ln('Oops something went wrong.'), i8ln('Error Deleting portal'))
+                    toastr.options = toastrOptions
+                },
+                complete: function complete() {
+                    jQuery('label[for="portals-switch"]').click()
+                    jQuery('label[for="portals-switch"]').click()
+                }
+            })
+        }
+    }
 }
 
 function getColorByDate(value) {

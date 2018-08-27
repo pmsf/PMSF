@@ -358,6 +358,7 @@ if ( $action === "raid" ) {
             sendToWebhook($discordSubmitLogChannelUrl, ($data));
         }
     }
+
 } elseif ( $action === "convertportalgym" ) {
     if ( $noPortals === true ) {
         http_response_code( 401 );
@@ -574,7 +575,24 @@ if ( $action === "raid" ) {
         $data = array("content" => '```Updated community with id "' . $communityId . '" and gave it the new name: "' . $communityName . '" . ```', "username" => $loggedUser);
         sendToWebhook($discordSubmitLogChannelUrl, ($data));
     }
-
+} elseif ( $action === "delete-portal" ) {
+    if ( $noPortals === true || $noDeletePortal === true ) {
+        http_response_code( 401 );
+        die();
+    }
+    $portalId = ! empty( $_POST['portalId'] ) ? $_POST['portalId'] : '';
+    $portalName = $db->get( "ingress_portals", [ 'name' ], [ 'external_id' => $portalId ] );
+    if ( ! empty( $portalId ) ) {
+        $db->delete( 'ingress_portals', [
+            "AND" => [
+                'external_id' => $portalId
+            ]
+        ] );
+    }
+    if ( $noDiscordSubmitLogChannel === false ) {
+        $data = array("content" => '```Deleted portal with id "' . $portalId . '" and name: "' . $portalName['title'] . '" . ```', "username" => $loggedUser);
+        sendToWebhook($discordSubmitLogChannelUrl, ($data));
+    }
 } elseif ( $action === "delete-community" ) {
     if ( $noCommunity === true || $noDeleteCommunity === true ) {
         http_response_code( 401 );
@@ -594,7 +612,6 @@ if ( $action === "raid" ) {
         $data = array("content" => '```Deleted community with id "' . $communityId . '" and name: "' . $communityName['title'] . '" . ```', "username" => $loggedUser);
         sendToWebhook($discordSubmitLogChannelUrl, ($data));
     }
-
 }
 function randomGymId() {
     $alphabet    = 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890';

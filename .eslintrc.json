@@ -139,6 +139,7 @@
     "noEditCommunity": false,
     "noConvertPokestops": false,
     "enablePortals": true,
+    "noDeletePortal": true,
     "noPortals": false
   }
 }
