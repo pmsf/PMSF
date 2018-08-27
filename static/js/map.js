@@ -1516,22 +1516,25 @@ function communityLabel(item) {
 }
 
 function setupPortalMarker(item) {
-    var str = '<div class="marker-portal">' +
-        '<img src="static/icons/hsl-215.png" style="width:18px;height: auto;"/>' +
-        '</div>'
-
-    var marker = new RichMarker({
-        position: new google.maps.LatLng(item['lat'], item['lon']),
+    var circle = {
+        path: google.maps.SymbolPath.CIRCLE,
+        fillColor: 'blue',
+        fillOpacity: 0.4,
+        scale: 15,
+        strokeColor: 'white',
+        strokeWeight: 1
+    }
+    var location = {lat: item['lat'], lng: item['lon']}
+    var marker = new google.maps.Marker({
+        position: location,
         map: map,
-        content: str,
-        flat: true,
-        anchor: RichMarkerPosition.MIDDLE
+        icon: circle
     })
 
     marker.infoWindow = new google.maps.InfoWindow({
         content: portalLabel(item),
         disableAutoPan: true,
-        pixelOffset: new google.maps.Size(0, -30)
+        pixelOffset: new google.maps.Size(0, -10)
     })
     addListeners(marker)
 
@@ -1541,7 +1544,7 @@ function setupPortalMarker(item) {
 function portalLabel(item) {
     var str = '<img src="' + item.url + '" align"middle" style="width:175px;height: auto;"/>' +
         '<center><h4><div>' + item.name + '</div></h4></center>' +
-        '<center><div>Convert this portal<i class="fa fa-refresh convert-portal" style="margin-top: 2px; vertical-align: middle; font-size: 1.5em;" onclick="openConvertPortalModal(event);" data-id="' + item.external_id + '"></i></div></center>'
+        '<center><div>Convert this portal<i class="fa fa-refresh convert-portal" style="margin-top: 2px; margin-left: 5px; vertical-align: middle; font-size: 1.5em;" onclick="openConvertPortalModal(event);" data-id="' + item.external_id + '"></i></div></center>'
     return str
 }
 
