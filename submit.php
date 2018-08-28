@@ -354,7 +354,7 @@ if ( $action === "raid" ) {
         ];
 	$db->insert( "pokestops", $cols );
         if ( $noDiscordSubmitLogChannel === false ) {
-            $data = array("content" => '```Converted portal with id "' . $portalId . '." New Pokestop: "' . $PortalName['name'] . '". ```', "username" => $loggedUser);
+            $data = array("content" => '```Converted portal with id "' . $portalId . '." New Pokestop: "' . $portalName['name'] . '". ```', "username" => $loggedUser);
             sendToWebhook($discordSubmitLogChannelUrl, ($data));
         }
     }
@@ -381,7 +381,7 @@ if ( $action === "raid" ) {
         ];
 	$db->insert( "forts", $cols );
         if ( $noDiscordSubmitLogChannel === false ) {
-            $data = array("content" => '```Converted portal with id "' . $portalId . '." New Gym: "' . $PortalName['name'] . '". ```', "username" => $loggedUser);
+            $data = array("content" => '```Converted portal with id "' . $portalId . '." New Gym: "' . $portalName['name'] . '". ```', "username" => $loggedUser);
             sendToWebhook($discordSubmitLogChannelUrl, ($data));
         }
     }
