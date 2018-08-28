@@ -82,6 +82,7 @@ var lastpokestops
 var lastgyms
 var lastnests
 var lastcommunities
+var lastportals
 var lastpokemon
 var lastslocs
 var lastspawns
@@ -431,6 +432,7 @@ function initSidebar() {
     $('#gyms-switch').prop('checked', Store.get('showGyms'))
     $('#nests-switch').prop('checked', Store.get('showNests'))
     $('#communities-switch').prop('checked', Store.get('showCommunities'))
+    $('#portals-switch').prop('checked', Store.get('showPortals'))
     $('#gym-sidebar-switch').prop('checked', Store.get('useGymSidebar'))
     $('#ex-eligible-switch').prop('checked', Store.get('exEligible'))
     $('#gym-sidebar-wrapper').toggle(Store.get('showGyms') || Store.get('showRaids'))
@@ -1513,6 +1515,71 @@ function communityLabel(item) {
     return str
 }
 
+function setupPortalMarker(item) {
+    var circle = {
+        path: google.maps.SymbolPath.CIRCLE,
+        fillColor: 'blue',
+        fillOpacity: 0.4,
+        scale: 15,
+        strokeColor: 'white',
+        strokeWeight: 1
+    }
+    var location = {lat: item['lat'], lng: item['lon']}
+    var marker = new google.maps.Marker({
+        position: location,
+        map: map,
+        icon: circle
+    })
+
+    marker.infoWindow = new google.maps.InfoWindow({
+        content: portalLabel(item),
+        disableAutoPan: true,
+        pixelOffset: new google.maps.Size(0, -10)
+    })
+    addListeners(marker)
+
+    return marker
+}
+
+function portalLabel(item) {
+    var str = '<img src="' + item.url + '" align"middle" style="width:175px;height:auto;margin-left:25px;"/>' +
+        '<center><h4><div>' + item.name + '</div></h4></center>' +
+        '<center><div>Convert this portal<i class="fa fa-refresh convert-portal" style="margin-top: 2px; margin-left: 5px; vertical-align: middle; font-size: 1.5em;" onclick="openConvertPortalModal(event);" data-id="' + item.external_id + '"></i></div></center>'
+    if (!noDeletePortal) {
+        str += '<i class="fa fa-trash-o delete-portal" onclick="deletePortal(event);" data-id="' + item.external_id + '"></i>'
+    }
+    return str
+}
+
+function deletePortal(event) { // eslint-disable-line no-unused-vars
+    var button = $(event.target)
+    var portalid = button.data('id')
+    if (portalid && portalid !== '') {
+        if (confirm(i8ln('I confirm that this portal does not longer exist. This is a permanent deleture'))) {
+            return $.ajax({
+                url: 'submit',
+                type: 'POST',
+                timeout: 300000,
+                dataType: 'json',
+                cache: false,
+                data: {
+                    'action': 'delete-portal',
+                    'portalId': portalid
+                },
+                error: function error() {
+                    // Display error toast
+                    toastr['error'](i8ln('Oops something went wrong.'), i8ln('Error Deleting portal'))
+                    toastr.options = toastrOptions
+                },
+                complete: function complete() {
+                    jQuery('label[for="portals-switch"]').click()
+                    jQuery('label[for="portals-switch"]').click()
+                }
+            })
+        }
+    }
+}
+
 function getColorByDate(value) {
     // Changes the color from red to green over 15 mins
     var diff = (Date.now() - value) / 1000 / 60 / 15
@@ -1762,6 +1829,7 @@ function loadRawData() {
     var loadPokestops = Store.get('showPokestops')
     var loadNests = Store.get('showNests')
     var loadCommunities = Store.get('showCommunities')
+    var loadPortals = Store.get('showPortals')
     var loadScanned = Store.get('showScanned')
     var loadSpawnpoints = Store.get('showSpawnpoints')
     var loadLuredOnly = Store.get('showLuredPokestopsOnly')
@@ -1794,6 +1862,8 @@ function loadRawData() {
             'lastnests': lastnests,
             'communities': loadCommunities,
             'lastcommunities': lastcommunities,
+            'portals': loadPortals,
+            'lastportals': lastportals,
             'lastpokestops': lastpokestops,
             'luredonly': loadLuredOnly,
             'gyms': loadGyms,
@@ -2199,6 +2269,70 @@ function convertPokestopData(event) { // eslint-disable-line no-unused-vars
         }
     }
 }
+function convertPortalToPokestopData(event) { // eslint-disable-line no-unused-vars
+    var form = $(event.target).parent().parent()
+    var portalId = form.find('.convertportalid').val()
+    if (portalId && portalId !== '') {
+        if (confirm(i8ln('I confirm this portal is a pokestop'))) {
+            return $.ajax({
+                url: 'submit',
+                type: 'POST',
+                timeout: 300000,
+                dataType: 'json',
+                cache: false,
+                data: {
+                    'action': 'convertportalpokestop',
+                    'portalid': portalId
+                },
+                error: function error() {
+                    // Display error toast
+                    toastr['error'](i8ln('Portal ID got lost somewhere.'), i8ln('Error converting to Pokestop'))
+                    toastr.options = toastrOptions
+                },
+                complete: function complete() {
+                    lastgyms = false
+                    jQuery('label[for="pokestops-switch"]').click()
+                    jQuery('label[for="pokestops-switch"]').click()
+                    lastpokestops = false
+                    updateMap()
+                    $('.ui-dialog-content').dialog('close')
+                }
+            })
+        }
+    }
+}
+function convertPortalToGymData(event) { // eslint-disable-line no-unused-vars
+    var form = $(event.target).parent().parent()
+    var portalId = form.find('.convertportalid').val()
+    if (portalId && portalId !== '') {
+        if (confirm(i8ln('I confirm this portal is a gym'))) {
+            return $.ajax({
+                url: 'submit',
+                type: 'POST',
+                timeout: 300000,
+                dataType: 'json',
+                cache: false,
+                data: {
+                    'action': 'convertportalgym',
+                    'portalid': portalId
+                },
+                error: function error() {
+                    // Display error toast
+                    toastr['error'](i8ln('Portal ID got lost somewhere.'), i8ln('Error converting to Gym'))
+                    toastr.options = toastrOptions
+                },
+                complete: function complete() {
+                    lastgyms = false
+                    jQuery('label[for="pokestops-switch"]').click()
+                    jQuery('label[for="pokestops-switch"]').click()
+                    lastpokestops = false
+                    updateMap()
+                    $('.ui-dialog-content').dialog('close')
+                }
+            })
+        }
+    }
+}
 function deleteNest(event) { // eslint-disable-line no-unused-vars
     var button = $(event.target)
     var nestid = button.data('id')
@@ -2556,6 +2690,21 @@ function openConvertPokestopModal(event) { // eslint-disable-line no-unused-vars
     })
 }
 
+function openConvertPortalModal(event) { // eslint-disable-line no-unused-vars
+    $('.ui-dialog').remove()
+    var val = $(event.target).data('id')
+    $('.convertportalid').val(val)
+    $('.convert-portal-modal').clone().dialog({
+        modal: true,
+        maxHeight: 600,
+        buttons: {},
+        title: i8ln('Convert Portal to Pokestop / Gym'),
+        classes: {
+            'ui-dialog': 'ui-dialog raid-widget-popup'
+        }
+    })
+}
+
 function openEditCommunityModal(event) { // eslint-disable-line no-unused-vars
     $('.ui-dialog').remove()
     var val = $(event.target).data('id')
@@ -2808,6 +2957,29 @@ function processCommunities(i, item) {
         item2.marker.setMap(null)
         item.marker = setupCommunityMarker(item)
         mapData.communities[item['community_id']] = item
+    }
+}
+function processPortals(i, item) {
+    if (!Store.get('showPortals')) {
+        return false
+    }
+
+    if (!mapData.portals[item['external_id']]) {
+        // new pokestop, add marker to map and item to dict
+        if (item.marker && item.marker.rangeCircle) {
+            item.marker.rangeCircle.setMap(null)
+        }
+        if (item.marker) {
+            item.marker.setMap(null)
+        }
+        item.marker = setupPortalMarker(item)
+        mapData.portals[item['external_id']] = item
+    } else {
+        // change existing pokestop marker to unlured/lured
+        var item2 = mapData.portals[item['external_id']]
+        item2.marker.setMap(null)
+        item.marker = setupPortalMarker(item)
+        mapData.portals[item['external_id']] = item
     }
 }
 function processPokestops(i, item) {
@@ -3116,6 +3288,7 @@ function updateMap() {
         $.each(result.spawnpoints, processSpawnpoints)
         $.each(result.nests, processNests)
         $.each(result.communities, processCommunities)
+        $.each(result.portals, processPortals)
         showInBoundsMarkers(mapData.pokemons, 'pokemon')
         showInBoundsMarkers(mapData.lurePokemons, 'pokemon')
         showInBoundsMarkers(mapData.gyms, 'gym')
@@ -3146,6 +3319,7 @@ function updateMap() {
         lastspawns = result.lastspawns
         lastnests = result.lastnests
         lastcommunities = result.lastcommunities
+        lastportals = result.lastportals
 
         prevMinIV = result.preMinIV
         prevMinLevel = result.preMinLevel
@@ -4585,6 +4759,10 @@ $(function () {
     $('#communities-switch').change(function () {
         lastcommunities = false
         buildSwitchChangeListener(mapData, ['communities'], 'showCommunities').bind(this)()
+    })
+    $('#portals-switch').change(function () {
+        lastportals = false
+        buildSwitchChangeListener(mapData, ['portals'], 'showPortals').bind(this)()
     })
     $('#pokemon-switch').change(function () {
         var options = {

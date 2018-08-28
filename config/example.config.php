@@ -298,6 +298,13 @@ $noRenamePokestops = false;
 $noConvertPokestops = false;
 $noManualQuests = false;
 
+//-----------------------------------------------------
+// Ingress portals
+//-----------------------------------------------------
+$enablePortals = 'false';
+$noPortals = true;
+$noDeletePortals = true;
+
 $pokemonReportTime = true;
 $pokemonToExclude = [];
 

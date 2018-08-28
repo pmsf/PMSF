@@ -137,6 +137,9 @@
     "noAddNewCommunity": false,
     "noDeleteCommunity": false,
     "noEditCommunity": false,
-    "noConvertPokestops": false
+    "noConvertPokestops": false,
+    "enablePortals": true,
+    "noDeletePortal": true,
+    "noPortals": false
   }
 }

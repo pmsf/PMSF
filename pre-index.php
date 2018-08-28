@@ -592,6 +592,29 @@ if ( $blockIframe ) {
             }
             ?>
             <?php
+            if ( ! $noPortals ) {
+                ?>
+                <h3><?php echo i8ln( 'Ingress' ); ?></h3>
+		<div>
+                <?php
+                if ( ! $noPortals ) {
+                    echo '<div class="form-control switch-container">
+                    <h3>' . i8ln( 'Portals' ) . '</h3>
+                    <div class="onoffswitch">
+                        <input id="portals-switch" type="checkbox" name="portals-switch"
+                               class="onoffswitch-checkbox" checked>
+                        <label class="onoffswitch-label" for="portals-switch">
+                            <span class="switch-label" data-on="On" data-off="Off"></span>
+                            <span class="switch-handle"></span>
+                        </label>
+                    </div>
+                </div>';
+		} ?>
+                </div>
+                <?php
+            }
+            ?>
+            <?php
             if ( ! $noSearchLocation || ! $noNests || ! $noStartMe || ! $noStartLast || ! $noFollowMe || ! $noPokestops || ! $noScannedLocations || ! $noSpawnPoints || ! $noRanges || ! $noWeatherOverlay || ! $noSpawnArea ) {
                 echo '<h3>' . i8ln( 'Location &amp; Search' ) . '</h3>
             <div>'; ?>
@@ -1132,6 +1155,21 @@ if ( $blockIframe ) {
             </div>
         </div>
     <?php } ?>
+    <?php if ( ! $noPortals ) { ?>
+        <div class="convert-portal-modal" style="display: none;">
+             <div class="button-container">
+                <button type="button" onclick="convertPortalToPokestopData(event);" class="convertportalid"><i
+                        class="fa fa-refresh"
+                        style="margin-right:10px; vertical-align: middle; font-size: 1.5em;"></i><?php echo i8ln( 'Convert to pokestop' ); ?>
+		</button>
+                <button type="button" onclick="convertPortalToGymData(event);" class="convertportalid"><i
+                        class="fa fa-refresh"
+                        style="margin-right:10px; vertical-align: middle; font-size: 1.5em;"></i><?php echo i8ln( 'Convert to gym' ); ?>
+		</button>
+
+            </div>
+        </div>
+    <?php } ?>
     <?php if ( ! $noManualQuests ) { ?>
         <div class="quest-modal" style="display: none;">
             <input type="hidden" value="" name="questPokestop" class="questPokestop"/>
@@ -1463,6 +1501,9 @@ if ( $blockIframe ) {
     var noRenamePokestops = <?php echo $noRenamePokestops === true ? 'true' : 'false' ?>;
     var noConvertPokestops = <?php echo $noConvertPokestops === true ? 'true' : 'false' ?>;
     var noWhatsappLink = <?php echo $noWhatsappLink === true ? 'true' : 'false' ?>;
+    var enablePortals = <?php echo $noPortals ? 'false' : $enablePortals ?>;
+    var noPortals = <?php echo $noPortals === true ? 'true' : 'false' ?>;
+    var noDeletePortal = <?php echo $noDeletePortal === true ? 'true' : 'false' ?>;
 </script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js"></script>
 <script src="static/dist/js/map.common.min.js"></script>
