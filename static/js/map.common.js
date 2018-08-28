@@ -1138,6 +1138,11 @@ var StoreOptions = {
         {
             default: exEligible,
             type: StoreTypes.Boolean
+        },
+    'novabotToken':
+        {
+            default: null,
+            type: StoreTypes.String
         }
 }
 
