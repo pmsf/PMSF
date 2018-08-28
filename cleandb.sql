@@ -169,7 +169,7 @@ CREATE TABLE IF NOT EXISTS `users` (
 
 -- Data exporting was unselected.
 -- Dumping structure for tahle Monocle.communities
-CREATE TABLE `communities` (
+CREATE TABLE IF NOT EXISTS `communities` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `community_id` varchar(35) DEFAULT NULL,
   `title` varchar(64) DEFAULT NULL,
@@ -186,9 +186,23 @@ CREATE TABLE `communities` (
   `lon` double(18,14) DEFAULT NULL,
   `updated` bigint(20) DEFAULT NULL,
   `source` tinyint(4) DEFAULT NULL,
-  `submitted_by` varchar(200) DEFAULT NULL
+  `submitted_by` varchar(200) DEFAULT NULL,
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `community_id` (`community_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 -- Data exporting was unselected.
+
+CREATE TABLE IF NOT EXISTS `ingress_portals` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `external_id` varchar(35) DEFAULT NULL,
+  `lat` double(18,14) DEFAULT NULL,
+  `lon` double(18,14) DEFAULT NULL,
+  `name` varchar(128) DEFAULT NULL,
+  `url` varchar(200) DEFAULT NULL,
+  `updated` bigint(11) NOT NULL,
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `external_id` (`external_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 /*!40101 SET SQL_MODE=IFNULL(@OLD_SQL_MODE, '') */;
 /*!40014 SET FOREIGN_KEY_CHECKS=IF(@OLD_FOREIGN_KEY_CHECKS IS NULL, 1, @OLD_FOREIGN_KEY_CHECKS) */;
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;

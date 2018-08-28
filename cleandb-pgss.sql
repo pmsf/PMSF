@@ -170,7 +170,7 @@ CREATE TABLE IF NOT EXISTS `users` (
 
 -- Data exporting was unselected.
 -- Dumping structure for tahle Monocle.communities
-CREATE TABLE `communities` (
+CREATE TABLE IF NOT EXISTS`communities` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `community_id` varchar(35) DEFAULT NULL,
   `title` varchar(64) DEFAULT NULL,
@@ -188,9 +188,23 @@ CREATE TABLE `communities` (
   `updated` bigint(20) DEFAULT NULL,
   `source` tinyint(4) DEFAULT NULL,
   `submitted_by` varchar(200) DEFAULT NULL
+  PRIMARY KEY (`id`)
+  UNIQUE KEY `community_id` (`community_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
-CREATE TABLE `gym_images` (
+CREATE TABLE IF NOT EXISTS `ingress_portals` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `external_id` varchar(35) DEFAULT NULL,
+  `lat` double(18,14) DEFAULT NULL,
+  `lon` double(18,14) DEFAULT NULL,
+  `name` varchar(128) DEFAULT NULL,
+  `url` varchar(200) DEFAULT NULL,
+  `updated` bigint(11) NOT NULL,
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `external_id` (`external_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+CREATE TABLE IF NOT EXISTS `gym_images` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `fort_id` int(11) DEFAULT NULL,
   `param_1` int(11) DEFAULT NULL,
@@ -203,7 +217,7 @@ CREATE TABLE `gym_images` (
   PRIMARY KEY (`id`);
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
-CREATE TABLE `pokemon_images` (
+CREATE TABLE IF NOT EXISTS `pokemon_images` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `pokemon_id` int(11) DEFAULT NULL,
   `param_1` int(11) DEFAULT NULL,
