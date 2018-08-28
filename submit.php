@@ -345,7 +345,7 @@ if ( $action === "raid" ) {
     $portalUrl = $db->get( "ingress_portals", [ 'url' ], [ 'external_id' => $portalId ] );
     if ( ! empty( $portalId ) ) {
         $cols     = [
-            'external_id'  => $portalId['portalid'],
+            'external_id'  => $portalId,
             'lat'          => $portalLat['lat'],
             'lon'          => $portalLon['lon'],
             'name'         => $portalName['name'],
@@ -372,7 +372,7 @@ if ( $action === "raid" ) {
     $portalUrl = $db->get( "ingress_portals", [ 'url' ], [ 'external_id' => $portalId ] );
     if ( ! empty( $portalId ) ) {
         $cols     = [
-            'external_id'  => $portalId['portalid'],
+            'external_id'  => $portalId,
             'lat'          => $portalLat['lat'],
             'lon'          => $portalLon['lon'],
             'name'         => $portalName['name'],
