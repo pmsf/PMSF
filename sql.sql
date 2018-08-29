@@ -85,3 +85,6 @@ ALTER TABLE forts
 ADD edited_by VARCHAR(200);
 ALTER TABLE nests
 ADD nest_submitted_by VARCHAR(200);
+
+ALTER TABLE raids
+ADD form smallint(6) DEFAULT NULL;

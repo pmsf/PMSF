@@ -118,6 +118,7 @@ CREATE TABLE IF NOT EXISTS `raids` (
   `time_end` int(11) DEFAULT NULL,
   `cp` int(11) DEFAULT NULL,
   `submitted_by` varchar(200) DEFAULT NULL,
+  `form` smallint(6) DEFAULT NULL,
   PRIMARY KEY (`id`),
   UNIQUE KEY `external_id` (`external_id`),
   KEY `fort_id` (`fort_id`),
