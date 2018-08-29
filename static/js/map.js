@@ -732,7 +732,7 @@ function gymLabel(item) {
         if (raidStarted && copyrightSafe === false) {
             var raidForm = item['form']
             var formStr = ''
-            if (raidForm <= 11 || raidForm == null) {
+            if (raidForm <= 10 || raidForm == null) {
                 formStr = '00'
             } else {
                 formStr = raidForm
@@ -1169,7 +1169,7 @@ function getGymMarkerIcon(item) {
     var level = item.raid_level
     var raidForm = item['form']
     var formStr = ''
-    if (raidForm <= 11 || raidForm == null) {
+    if (raidForm <= 10 || raidForm == null) {
         formStr = '00'
     } else {
         formStr = raidForm
@@ -1261,7 +1261,7 @@ function setupGymMarker(item) {
         if (raidStarted && copyrightSafe === false) {
             var raidForm = item['form']
             var formStr = ''
-            if (raidForm <= 11 || raidForm == null) {
+            if (raidForm <= 10 || raidForm == null) {
                 formStr = '00'
             } else {
                 formStr = raidForm
@@ -1347,7 +1347,7 @@ function updateGymMarker(item, marker) {
             if (raidStarted && copyrightSafe === false) {
                 var raidForm = item['form']
                 var formStr = ''
-                if (raidForm <= 11 || raidForm == null) {
+                if (raidForm <= 10 || raidForm == null) {
                     formStr = '00'
                 } else {
                     formStr = raidForm
@@ -3891,7 +3891,7 @@ function showGymDetails(id) { // eslint-disable-line no-unused-vars
             if (raidStarted && copyrightSafe === false) {
                 var raidForm = result['form']
                 var formStr = ''
-                if (raidForm <= 11 || raidForm == null) {
+                if (raidForm <= 10 || raidForm == null) {
                     formStr = '00'
                 } else {
                     formStr = raidForm
