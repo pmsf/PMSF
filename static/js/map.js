@@ -649,15 +649,15 @@ function gymLabel(item) {
         var raidEndStr = getTimeStr(item['raid_end'])
         raidStr += '<div>' + i8ln('Start') + ': <b>' + raidStartStr + '</b> <span class="label-countdown" disappears-at="' + item['raid_start'] + '" start>(00m00s)</span></div>'
         raidStr += '<div>' + i8ln('End') + ': <b>' + raidEndStr + '</b> <span class="label-countdown" disappears-at="' + item['raid_end'] + '" end>(00m00s)</span></div>'
-	    if (typeof item.lobby_count !== 'undefined' && item.lobby_count > 0) {
+        if (typeof item.lobby_count !== 'undefined' && item.lobby_count > 0) {
             var playersText
-            if (item.lobby_count == 1) {
+            if (item.lobby_count === 1) {
                 playersText = i8ln('Player')
             } else {
-	            playersText = i8ln('Players')
+                playersText = i8ln('Players')
             }
-		    raidStr += '<div><b>' + i8ln('Lobby') + ': ' + item.lobby_count + ' ' + playersText + '</b></div>'
-	    }
+            raidStr += '<div><b>' + i8ln('Lobby') + ': ' + item.lobby_count + ' ' + playersText + '</b></div>'
+        }
 
         if (raidStarted) {
             raidIcon = '<i class="pokemon-sprite-large n' + item.raid_pokemon_id + '"></i>'
@@ -1013,7 +1013,7 @@ function getGymMarkerIcon(item) {
     var level = item.raid_level
     var team = item.team_id
     var teamStr = ''
-    var lobbyCount =  item['lobby_count']
+    var lobbyCount = item['lobby_count']
     if (team === 0 || level === null) {
         teamStr = gymTypes[item['team_id']]
     } else {
@@ -1025,7 +1025,7 @@ function getGymMarkerIcon(item) {
     }
     var lobbyIcon = ''
     if (lobbyCount > 0) {
-	    lobbyIcon = '<img src="static/images/lobby.png" style="position:absolute;left:25px;bottom:2px;"/>'
+        lobbyIcon = '<img src="static/images/lobby.png" style="position:absolute;left:25px;bottom:2px;"/>'
     }
 
     if (item['raid_pokemon_id'] != null && item.raid_end > Date.now()) {
@@ -1033,7 +1033,7 @@ function getGymMarkerIcon(item) {
             '<img src="static/forts/' + Store.get('gymMarkerStyle') + '/' + teamStr + '.png" style="width:55px;height:auto;"/>' +
             '<i class="pokemon-raid-sprite n' + item.raid_pokemon_id + '"></i>' +
             exIcon +
-	        lobbyIcon +
+            lobbyIcon +
             '</div>'
     } else if (item['raid_level'] !== null && item.raid_end > Date.now()) {
         var raidEgg = ''
@@ -1048,7 +1048,7 @@ function getGymMarkerIcon(item) {
             '<img src="static/forts/' + Store.get('gymMarkerStyle') + '/' + teamStr + '.png" style="width:55px;height:auto;"/>' +
             '<img src="static/raids/egg_' + raidEgg + '.png" style="width:30px;height:auto;position:absolute;top:8px;right:12px;"/>' +
             exIcon +
-	        lobbyIcon +
+            lobbyIcon +
             '</div>'
     } else {
         return '<div>' +
@@ -1110,7 +1110,7 @@ function setupGymMarker(item) {
             var gymSidebar = document.querySelector('#gym-details')
             if (gymSidebar.getAttribute('data-id') === item['gym_id'] && gymSidebar.classList.contains('visible')) {
                 gymSidebar.classList.remove('visible')
-	            selectedGymSidebar = null
+                selectedGymSidebar = null
             } else {
                 gymSidebar.setAttribute('data-id', item['gym_id'])
                 showGymDetails(item['gym_id'])
@@ -2502,13 +2502,12 @@ function showGymDetails(id) { // eslint-disable-line no-unused-vars
 
         var pokemonHtml = ''
 
-	    var lobbyStr = ''
+        var lobbyStr = ''
 
         if (result['raid_level'] >= 3 && result.raid_end > Date.now()) {
-
             var tableBody = ''
             var form = ''
-            if (novabotToken != null && novabotToken != "") {
+            if (novabotToken != null && novabotToken !== '') {
                 tableBody = '<td width="100%" style="text-align: center;"><b>' + i8ln('Loading') + '...</b></td>'
 
                 updateRaidLobby(id, true)
@@ -2529,7 +2528,7 @@ function showGymDetails(id) { // eslint-disable-line no-unused-vars
                     })
                 }
                 form = '<form id="saveToken">' +
-                    '<p>' + i8ln('You need a token in order to sign up for this raid!') + '<br>' + i8ln('Get your token by typing !gettoken in our Discord!') +  '</p>' +
+                    '<p>' + i8ln('You need a token in order to sign up for this raid!') + '<br>' + i8ln('Get your token by typing !gettoken in our Discord!') + '</p>' +
                     '<input name="token"></label>' +
                     '<br>' +
                     '<input type="submit" value="' + i8ln('Save Token') + '">' +
@@ -2539,7 +2538,7 @@ function showGymDetails(id) { // eslint-disable-line no-unused-vars
             lobbyStr =
                 '<br>' +
                 '<div style="color: black; background-color: #f0f0f0; border-style: solid;  border-width: 1px 0px 1px 0px; border-color: lightgrey">' +
-                '<div style="font-size: 1.5em">'+i8ln('Raid-Lobby')+'</div>' +
+                '<div style="font-size: 1.5em">' + i8ln('Raid-Lobby') + '</div>' +
                 '<div>' +
                 '<table id="raidlobbytimes">' +
                 '<tbody>' +
@@ -2576,7 +2575,7 @@ function showGymDetails(id) { // eslint-disable-line no-unused-vars
             '<div>' +
             '<a href=\'javascript:void(0)\' onclick=\'javascript:openMapDirections(' + result.latitude + ',' + result.longitude + ')\' title=\'' + i8ln('View in Maps') + '\'>' + i8ln('Get directions') + '</a>' +
             '</div>' +
-	        lobbyStr +
+            lobbyStr +
             '</center>'
 
         if (pokemon.length) {
@@ -2700,9 +2699,9 @@ function showGymDetails(id) { // eslint-disable-line no-unused-vars
         })
         token = result.token
 
-        var saveTokenForm = document.getElementById("saveToken");
+        var saveTokenForm = document.getElementById('saveToken')
         if (saveTokenForm != null) {
-            saveTokenForm.addEventListener("submit", function (event) {
+            saveTokenForm.addEventListener('submit', function (event) {
                 event.preventDefault()
                 saveToken(saveTokenForm, id)
             })
@@ -2716,8 +2715,8 @@ function toggleGymPokemonDetails(e) { // eslint-disable-line no-unused-vars
     e.nextElementSibling.classList.toggle('visible')
 }
 
-function selectTime(time) {
-    $('#starttime').val(time);
+function selectTime(time) { // eslint-disable-line no-unused-vars
+    $('#starttime').val(time)
 }
 
 function fetchCriesJson() {
@@ -3591,8 +3590,8 @@ function checkAndCreateSound(pokemonId = 0) {
 
 function saveToken(form, id) {
     var data = form.elements
-    var token = data["token"].value.trim()
-    if (token != null && token != "") {
+    var token = data['token'].value.trim()
+    if (token != null && token !== '') {
         novabotToken = token
         Store.set('novabotToken', token)
         showGymDetails(id)
@@ -3600,220 +3599,235 @@ function saveToken(form, id) {
 }
 
 function updateRaidLobby(gymId, repeat) {
-    if (gymId === selectedGymSidebar && novabotToken != "" && novabotToken != null) {
-
+    if (gymId === selectedGymSidebar && novabotToken !== '' && novabotToken != null) {
         var params = '/lobby?gymid=' + gymId + '&token=' + novabotToken
-        $.ajax({url: novabotApiUrl + params, success: function(result){
+        $.ajax({
+            url: novabotApiUrl + params,
+            success: function (result) {
+                if (gymId === selectedGymSidebar) {
+                    var startTimeList = document.querySelector('#starttimelist')
+                    var raidLobbyTimes = document.querySelector('#raidlobbytimes')
 
-            if (gymId === selectedGymSidebar) {
-                var startTimeList = document.querySelector('#starttimelist')
-                var raidLobbyTimes = document.querySelector('#raidlobbytimes')
+                    var members = result.members
+                    var times = {}
+                    var nullCount = null
+                    var count = null
+                    var time = null
 
-                var members = result.members
-                var times = {}
-                var nullCount = null
+                    for (var index in members) {
+                        var member = members[index]
+                        count = member.count
+                        time = member.time
 
-
-                for (var index in members) {
-                    var member = members[index]
-                    var count = member.count
-                    var time = member.time
-
-                    if (time == null) {
-                        if (nullCount == null) {
-                            nullCount = count
+                        if (time == null) {
+                            if (nullCount == null) {
+                                nullCount = count
+                            } else {
+                                nullCount += count
+                            }
                         } else {
-                            nullCount += count
-                        }
-                    } else {
-                        if (times[time] === undefined) {
-                            times[time] = count
-                        } else {
-                            times[time] += count
+                            if (times[time] === undefined) {
+                                times[time] = count
+                            } else {
+                                times[time] += count
+                            }
                         }
                     }
 
-                }
+                    var keys = Object.keys(times)
+                    keys.sort()
 
-                var keys = Object.keys(times)
-                keys.sort();
+                    var startTimeListHtml = ''
+                    var raidLobbyTimesHtml = ''
 
-                var startTimeListHtml = ''
-                var raidLobbyTimesHtml = ''
-
-                for (var i = 0; i <= keys.length; i++) {
-                    var time
-                    var count
-                    if (i == 0) {
-                        if (nullCount == null) {
-                            continue
+                    for (var i = 0; i <= keys.length; i++) {
+                        if (i === 0) {
+                            if (nullCount == null) {
+                                continue
+                            }
+                            time = i8ln('No Time')
+                            count = nullCount
+                        } else {
+                            time = keys[i - 1]
+                            count = times[time]
                         }
-                        time = i8ln('No Time')
-                        count = nullCount
-                    } else {
-                        time = keys[i-1]
-                        count = times[time]
+
+                        if (i === 0) {
+                            if (result.in_lobby === true) {
+                                raidLobbyTimesHtml += '<tr><td width="50%" style="text-align: right;"><b>' + time + ' *</b></td>'
+                            } else {
+                                raidLobbyTimesHtml += '<tr><td width="50%" style="text-align: right;"><b>' + time + '</b></td>'
+                            }
+                        } else {
+                            if (result.in_lobby === time) {
+                                raidLobbyTimesHtml += '<tr><td width="50%" style="text-align: right;"><b>' + time + ' *</b></td>'
+                            } else {
+                                raidLobbyTimesHtml += '<tr><td width="50%" style="text-align: right;"><b><a href="javascript:selectTime(\'' + time + '\');">' + time + '</a></b></td>'
+                                startTimeListHtml += '<option value="' + time + '">'
+                            }
+                        }
+                        raidLobbyTimesHtml += '<td width="50%" style="text-align: left;">' + count + '</td></tr>'
                     }
 
-                    if (i == 0) {
-                        if (result.in_lobby === true) {
-                            raidLobbyTimesHtml += '<tr><td width="50%" style="text-align: right;"><b>' + time + ' *</b></td>'
-                        } else {
-                            raidLobbyTimesHtml += '<tr><td width="50%" style="text-align: right;"><b>' + time + '</b></td>'
-                        }
-                    } else {
-                        if (result.in_lobby === time) {
-                            raidLobbyTimesHtml += '<tr><td width="50%" style="text-align: right;"><b>' + time + ' *</b></td>'
-                        } else {
-                            raidLobbyTimesHtml += '<tr><td width="50%" style="text-align: right;"><b><a href="javascript:selectTime(\'' + time + '\');">' + time + '</a></b></td>'
-                            startTimeListHtml += '<option value="' + time + '">'
-                        }
+                    raidLobbyTimes.innerHTML = raidLobbyTimesHtml
+                    startTimeList.innerHTML = startTimeListHtml
+
+                    var lobbyForm = document.querySelector('#lobbyform')
+                    var lobbyFormJQ = $(lobbyForm)
+                    var lobbyFormStatus = lobbyFormJQ.attr('status')
+
+                    if (result.in_lobby === false && lobbyFormStatus !== '1') {
+                        lobbyForm.innerHTML =
+                            '<label>' + i8ln('Start Time') + ': ' +
+                            '<form id="signupForRaid">' +
+                            '<input list="starttimelist" id="starttime" name="starttime"></label>' +
+                            '<br>' +
+                            '<label>' + i8ln('Group Size') + ': ' +
+                            '<input id="groupsize" type="number" min=1 max=10 value=1></label>' +
+                            '<br>' +
+                            '<input type="submit" value="' + i8ln('Sign up for raid') + '">' +
+                            '</form>'
+
+                        var signupForm = document.querySelector('#signupForRaid')
+                        signupForm.addEventListener('submit', function (event) {
+                            event.preventDefault()
+                            signUpForRaid(signupForm, gymId)
+                        })
+                        lobbyFormJQ.attr('status', '1')
+                    } else if (result.in_lobby !== false && lobbyFormStatus !== '2') {
+                        lobbyForm.innerHTML =
+                            '<form id="changeLobbyTime">' +
+                            '<label>' + i8ln('Start Time') + ': ' +
+                            '<br>' +
+                            '<input list="starttimelist" id="starttime" name="starttime"></label>' +
+                            '<br>' +
+                            '<input type="submit" value="' + i8ln('Change Start Time') + '">' +
+                            '</form>' +
+                            '<form id="changeLobbyCount">' +
+                            '<label>' + i8ln('Group Size') + ': ' +
+                            '<br>' +
+                            '<input id="groupsize" type="number" min=1 max=10 value=1></label>' +
+                            '<br>' +
+                            '<input type="submit" value="' + i8ln('Change Group Size') + '">' +
+                            '</form>' +
+                            '<form id="leavelobby">' +
+                            '<input type="submit" value="' + i8ln('Leave Lobby') + '">' +
+                            '</form>'
+
+                        var changeLobbyTimeForm = document.querySelector('#changeLobbyTime')
+                        changeLobbyTimeForm.addEventListener('submit', function (event) {
+                            event.preventDefault()
+                            changeRaidTime(changeLobbyTimeForm, gymId)
+                        })
+                        var changeLobbyCountForm = document.querySelector('#changeLobbyCount')
+                        changeLobbyCountForm.addEventListener('submit', function (event) {
+                            event.preventDefault()
+                            changeRaidCount(changeLobbyCountForm, gymId)
+                        })
+                        var leaveLobbyForm = document.querySelector('#leavelobby')
+                        leaveLobbyForm.addEventListener('submit', function (event) {
+                            event.preventDefault()
+                            leaveLobby(gymId)
+                        })
+
+                        lobbyFormJQ.attr('status', '2')
                     }
-                    raidLobbyTimesHtml += '<td width="50%" style="text-align: left;">' + count + '</td></tr>'
+                    if (repeat === true) {
+                        window.setTimeout(function () {
+                            updateRaidLobby(gymId, true)
+                        }, 10000)
+                    }
                 }
-
-                raidLobbyTimes.innerHTML = raidLobbyTimesHtml
-                startTimeList.innerHTML = startTimeListHtml
-
-                var lobbyForm = document.querySelector('#lobbyform')
-                var lobbyFormJQ = $(lobbyForm)
-                var lobbyFormStatus = lobbyFormJQ.attr('status')
-
-                if (result.in_lobby === false && lobbyFormStatus !== "1") {
-                    lobbyForm.innerHTML =
-                        '<label>' + i8ln('Start Time') + ': ' +
-                        '<form id="signupForRaid">' +
-                        '<input list="starttimelist" id="starttime" name="starttime"></label>' +
-                        '<br>' +
-                        '<label>' + i8ln('Group Size') + ': ' +
-                        '<input id="groupsize" type="number" min=1 max=10 value=1></label>' +
-                        '<br>' +
-                        '<input type="submit" value="' + i8ln('Sign up for raid') + '">' +
-                        '</form>'
-
-                    var signupForm = document.querySelector('#signupForRaid')
-                    signupForm.addEventListener("submit", function (event) {
-                        event.preventDefault()
-                        signUpForRaid(signupForm, gymId)
-                    })
-                    lobbyFormJQ.attr('status', "1")
-                } else if (result.in_lobby !== false && lobbyFormStatus !== "2") {
-                    lobbyForm.innerHTML =
-                        '<form id="changeLobbyTime">' +
-                        '<label>' + i8ln('Start Time') + ': ' +
-                        '<br>' +
-                        '<input list="starttimelist" id="starttime" name="starttime"></label>' +
-                        '<br>' +
-                        '<input type="submit" value="' + i8ln('Change Start Time') + '">' +
-                        '</form>' +
-                        '<form id="changeLobbyCount">' +
-                        '<label>' + i8ln('Group Size') + ': ' +
-                        '<br>' +
-                        '<input id="groupsize" type="number" min=1 max=10 value=1></label>' +
-                        '<br>' +
-                        '<input type="submit" value="' + i8ln('Change Group Size') + '">' +
-                        '</form>' +
-                        '<form id="leavelobby">' +
-                        '<input type="submit" value="' + i8ln('Leave Lobby') + '">' +
-                        '</form>'
-
-                    var changeLobbyTimeForm = document.querySelector('#changeLobbyTime')
-                    changeLobbyTimeForm.addEventListener("submit", function (event) {
-                        event.preventDefault()
-                        changeRaidTime(changeLobbyTimeForm, gymId)
-
-                    })
-                    var changeLobbyCountForm = document.querySelector('#changeLobbyCount')
-                    changeLobbyCountForm.addEventListener("submit", function (event) {
-                        event.preventDefault()
-                        changeRaidCount(changeLobbyCountForm, gymId)
-                    })
-                    var leaveLobbyForm = document.querySelector('#leavelobby')
-                    leaveLobbyForm.addEventListener("submit", function (event) {
-                        event.preventDefault()
-                        leaveLobby(gymId)
-                    })
-
-                    lobbyFormJQ.attr('status', "2")
-                }
+            },
+            error: function ($xhr) {
+                var result = $xhr.responseJSON
+                apiError(result.error)
                 if (repeat === true) {
                     window.setTimeout(function () {
-                        updateRaidLobby(gymId, true);
-                    }, 10000);
+                        updateRaidLobby(gymId, true)
+                    }, 10000)
                 }
             }
-        },error: function ($xhr) {
-            var result = $xhr.responseJSON;
-            apiError(result.error)
-            if (repeat === true) {
-                window.setTimeout(function () {
-                    updateRaidLobby(gymId, true);
-                }, 10000);
-            }
-        }});
+        })
     }
 }
 
 function signUpForRaid(form, gymId) {
     var data = form.elements
-    var starttime = data["starttime"].value.trim()
-    var groupsize = data["groupsize"].value.trim()
+    var starttime = data['starttime'].value.trim()
+    var groupsize = data['groupsize'].value.trim()
 
     var params = '/lobby?action=signup&gymid=' + gymId + '&token=' + novabotToken + '&count=' + groupsize
 
-    if (starttime != null && starttime != "") {
+    if (starttime != null && starttime !== '') {
         params += '&time=' + starttime
     }
 
-    $.ajax({url: novabotApiUrl + params, success: function(result){
-        updateRaidLobby(gymId, false)
-    },error: function ($xhr) {
-        var result = $xhr.responseJSON;
-        apiError(result.error)
-    }});
+    $.ajax({
+        url: novabotApiUrl + params,
+        success: function (result) {
+            updateRaidLobby(gymId, false)
+        },
+        error: function ($xhr) {
+            var result = $xhr.responseJSON
+            apiError(result.error)
+        }
+    })
 }
 
 function changeRaidTime(form, gymId) {
     var data = form.elements
-    var starttime = data["starttime"].value.trim()
+    var starttime = data['starttime'].value.trim()
 
     var params = '/lobby?action=settime&gymid=' + gymId + '&token=' + novabotToken + '&time=' + starttime
 
-    $.ajax({url: novabotApiUrl + params, success: function(result){
-        updateRaidLobby(gymId, false)
-    },error: function ($xhr) {
-        var result = $xhr.responseJSON;
-        apiError(result.error)
-    }});
+    $.ajax({
+        url: novabotApiUrl + params,
+        success: function (result) {
+            updateRaidLobby(gymId, false)
+        },
+        error: function ($xhr) {
+            var result = $xhr.responseJSON
+            apiError(result.error)
+        }
+    })
 }
 
 function leaveLobby(gymId) {
-    var params = '/lobby?action=leave\&gymid=' + gymId + '&token=' + novabotToken
+    var params = '/lobby?action=leave&gymid=' + gymId + '&token=' + novabotToken
 
-    $.ajax({url: novabotApiUrl + params, success: function(result){
-        updateRaidLobby(gymId, false)
-    },error: function ($xhr) {
-        var result = $xhr.responseJSON;
-        apiError(result.error)
-    }});
+    $.ajax({
+        url: novabotApiUrl + params,
+        success: function (result) {
+            updateRaidLobby(gymId, false)
+        },
+        error: function ($xhr) {
+            var result = $xhr.responseJSON
+            apiError(result.error)
+        }
+    })
 }
 
 function changeRaidCount(form, gymId) {
     var data = form.elements
-    var groupsize = data["groupsize"].value.trim()
+    var groupsize = data['groupsize'].value.trim()
 
     var params = '/lobby?action=setcount&gymid=' + gymId + '&token=' + novabotToken + '&count=' + groupsize
 
-    $.ajax({url: novabotApiUrl + params, success: function(result){
-        updateRaidLobby(gymId, false)
-    },error: function ($xhr) {
-        var result = $xhr.responseJSON;
-        apiError(result.error)
-    }});
+    $.ajax({
+        url: novabotApiUrl + params,
+        success: function (result) {
+            updateRaidLobby(gymId, false)
+        },
+        error: function ($xhr) {
+            var result = $xhr.responseJSON
+            apiError(result.error)
+        }
+    })
 }
 
 function apiError(error) {
-    toastr['error'](i8ln('Something went wrong') +  ': ' + error, i8ln('Novabot API Error'))
+    toastr['error'](i8ln('Something went wrong') + ': ' + error, i8ln('Novabot API Error'))
     toastr.options = {
         'closeButton': true,
         'debug': false,
@@ -3831,9 +3845,9 @@ function apiError(error) {
         'showMethod': 'fadeIn',
         'hideMethod': 'fadeOut'
     }
-    if (error === "invalid_token") {
-        novabotToken = ""
-        Store.set('novabotToken', "")
+    if (error === 'invalid_token') {
+        novabotToken = ''
+        Store.set('novabotToken', '')
         if (selectedGymSidebar != null) {
             showGymDetails(selectedGymSidebar)
         }
