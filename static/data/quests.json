@@ -7,6 +7,10 @@
     "cat": "Gym/Raid",
     "name": "Battle in a Gym 5 times"
   },
+  "4": {
+    "cat": "Gym/Raid",
+    "name": "Win a Gym battle."
+  },
   "5": {
     "cat": "Gym/Raid",
     "name": "Win 3 Gym battles."
@@ -28,6 +32,10 @@
     "name": "Win 3 raids."
   },
   "10": {
+    "cat": "Gym/Raid",
+    "name": "Use a Super effective charge attack."
+  },
+  "11": {
     "cat": "Gym/Raid",
     "name": "Use a Super effective charge attack 7 times."
   },
@@ -99,6 +107,10 @@
     "cat": "Throw",
     "name": "Make 3 Great Curveball Throws."
   },
+  "378": {
+    "cat": "Throw",
+    "name": "Make 3 Great Curveball Throws in a row."
+  },
   "379": {
     "cat": "Throw",
     "name": "Make 3 Great Throws in a row."
@@ -146,5 +158,29 @@
   "605": {
     "cat": "Miscellaneous",
     "name": "Spin 10 stops or gyms."
+  },
+  "701": {
+    "cat": "Johto Festival",
+    "name": "Evolve 3 Sunkern or Natu."
+  },
+  "702": {
+    "cat": "Johto Festival",
+    "name": "Make 4 Great Curveball Throws in a row."
+  },
+  "703": {
+    "cat": "Johto Festival",
+    "name": "Make 3 Excellent Throws."
+  },
+  "704": {
+    "cat": "Johto Festival",
+    "name": "Catch 5 Water Pokémon."
+  },
+  "705": {
+    "cat": "Johto Festival",
+    "name": "Catch 3 Sunkern."
+  },
+  "706": {
+    "cat": "Johto Festival",
+    "name": "Win a raid."
   }
 }
