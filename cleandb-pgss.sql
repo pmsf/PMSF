@@ -170,7 +170,7 @@ CREATE TABLE IF NOT EXISTS `users` (
 
 -- Data exporting was unselected.
 -- Dumping structure for tahle Monocle.communities
-CREATE TABLE IF NOT EXISTS `communities` (
+CREATE TABLE IF NOT EXISTS`communities` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `community_id` varchar(35) DEFAULT NULL,
   `title` varchar(64) DEFAULT NULL,
@@ -187,11 +187,10 @@ CREATE TABLE IF NOT EXISTS `communities` (
   `lon` double(18,14) DEFAULT NULL,
   `updated` bigint(20) DEFAULT NULL,
   `source` tinyint(4) DEFAULT NULL,
-  `submitted_by` varchar(200) DEFAULT NULL,
-  PRIMARY KEY (`id`),
+  `submitted_by` varchar(200) DEFAULT NULL
+  PRIMARY KEY (`id`)
   UNIQUE KEY `community_id` (`community_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
--- Data exporting was unselected.
 
 CREATE TABLE IF NOT EXISTS `ingress_portals` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
@@ -204,6 +203,35 @@ CREATE TABLE IF NOT EXISTS `ingress_portals` (
   PRIMARY KEY (`id`),
   UNIQUE KEY `external_id` (`external_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+CREATE TABLE IF NOT EXISTS `gym_images` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `fort_id` int(11) DEFAULT NULL,
+  `param_1` int(11) DEFAULT NULL,
+  `param_2` int(11) DEFAULT NULL,
+  `param_3` int(11) DEFAULT NULL,
+  `param_4` int(11) DEFAULT NULL,
+  `param_5` int(11) DEFAULT NULL,
+  `param_6` int(11) DEFAULT NULL,
+  `created` int(11) DEFAULT NULL
+  PRIMARY KEY (`id`);
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+CREATE TABLE IF NOT EXISTS `pokemon_images` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `pokemon_id` int(11) DEFAULT NULL,
+  `param_1` int(11) DEFAULT NULL,
+  `param_2` int(11) DEFAULT NULL,
+  `param_3` int(11) DEFAULT NULL,
+  `param_4` int(11) DEFAULT NULL,
+  `param_5` int(11) DEFAULT NULL,
+  `param_6` int(11) DEFAULT NULL,
+  `param_7` int(11) DEFAULT NULL,
+  `created` int(11) DEFAULT NULL,
+  `form` smallint(6) DEFAULT NULL
+  PRIMARY KEY (`id`);
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+-- Data exporting was unselected.
 /*!40101 SET SQL_MODE=IFNULL(@OLD_SQL_MODE, '') */;
 /*!40014 SET FOREIGN_KEY_CHECKS=IF(@OLD_FOREIGN_KEY_CHECKS IS NULL, 1, @OLD_FOREIGN_KEY_CHECKS) */;
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
