@@ -1235,6 +1235,8 @@ function setupGymMarker(item) {
         map: map,
         content: getGymMarkerIcon(item),
         flat: true,
+        optimized: false,
+        zIndex: google.maps.Marker.MAX_ZINDEX + 2,
         anchor: RichMarkerPosition.MIDDLE
     })
 
@@ -1418,6 +1420,8 @@ function setupPokestopMarker(item) {
         map: map,
         content: getPokestopMarkerIcon(item),
         flat: true,
+        optimized: false,
+        zIndex: google.maps.Marker.MAX_ZINDEX + 1,
         anchor: RichMarkerPosition.MIDDLE
     })
 
@@ -1523,6 +1527,8 @@ function setupCommunityMarker(item) {
         map: map,
         content: str,
         flat: true,
+        optimized: false,
+        zIndes: google.maps.Marker.MAX_ZINDEX + 5,
         anchor: RichMarkerPosition.MIDDLE
     })
 
@@ -1606,6 +1612,8 @@ function setupPortalMarker(item) {
     var marker = new google.maps.Marker({
         position: location,
         map: map,
+        optimized: false,
+        zIndex: google.maps.Marker.MAX_ZINDEX - 1,
         icon: circle
     })
 
