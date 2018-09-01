@@ -15,17 +15,21 @@
     "cat": "Pokémon",
     "name": "Vulpix"
   },
+  "38": {
+    "cat": "Pokémon",
+    "name": "Ninetales"
+  },
   "56": {
     "cat": "Pokémon",
     "name": "Mankey"
   },
+  "58": {
+    "cat": "Pokémon",
+    "name": "Growlithe"
+  },
   "60": {
     "cat": "Pokémon",
     "name": "Poliwag"
-  },
-  "61": {
-    "cat": "Pokémon",
-    "name": "Poliwirl"
   },
   "66": {
     "cat": "Pokémon",
@@ -47,17 +51,13 @@
     "cat": "Pokémon",
     "name": "Exeggcute"
   },
+  "109": {
+    "cat": "Pokémon",
+    "name": "Koffing"
+  },
   "113": {
     "cat": "Pokémon",
     "name": "Chansey"
-  },
-  "117": {
-    "cat": "Pokémon",
-    "name": "Seadra"
-  },
-   "123": {
-    "cat": "Pokémon",
-    "name": "Scyther"
   },
   "124": {
     "cat": "Pokémon",
@@ -79,10 +79,6 @@
     "cat": "Pokémon",
     "name": "Eevee"
   },
-  "137": {
-    "cat": "Pokémon",
-    "name": "Porygon"
-  },
   "147": {
     "cat": "Pokémon",
     "name": "Dratini"
@@ -103,10 +99,6 @@
     "cat": "Pokémon",
     "name": "Girafarig"
   },
-   "204": {
-    "cat": "Pokémon",
-    "name": "Pineco"
-  },
   "209": {
     "cat": "Pokémon",
     "name": "Snubbull"
@@ -115,9 +107,9 @@
     "cat": "Pokémon",
     "name": "Houndour"
   },
-  "241": {
+  "231": {
     "cat": "Pokémon",
-    "name": "Miltank"
+    "name": "Phanpy"
   },
   "246": {
     "cat": "Pokémon",
@@ -127,6 +119,14 @@
     "cat": "Pokémon",
     "name": "Electrike"
   },
+  "315": {
+    "cat": "Pokémon",
+    "name": "Roselia"
+  },
+  "322": {
+    "cat": "Pokémon",
+    "name": "Numel"
+  },
   "327": {
     "cat": "Pokémon",
     "name": "Spinda"
@@ -135,140 +135,8 @@
     "cat": "Pokémon",
     "name": "?? Encounter"
   },
-  "1000": {
-    "cat": "Rare Candies",
-    "name": "1 Rare Candy"
-  },
-  "1004": {
-    "cat": "Rare Candies",
-    "name": "3 Rare Candies"
-  },
-  "1102": {
-    "cat": "Stardust",
-    "name": "200 Stardust"
-  },
-  "1103": {
-    "cat": "Stardust",
-    "name": "500 Stardust"
-  },
-  "1104": {
-    "cat": "Stardust",
-    "name": "1000 Stardust"
-  },
-  "1105": {
-    "cat": "Stardust",
-    "name": "1500 Stardust"
-  },
-  "1106": {
-    "cat": "Stardust",
-    "name": "2000 Stardust"
-  },
-  "1201": {
-    "cat": "Pokéballs",
-    "name": "5 PokéBalls"
-  },
-  "1202": {
-    "cat": "Pokéballs",
-    "name": "10 PokéBalls"
-  },
-  "1204": {
-    "cat": "Pokéballs",
-    "name": "5 Great Balls"
-  },
-  "1206": {
-    "cat": "Pokéballs",
-    "name": "2 Ultra Balls"
-  },
-  "1208": {
-    "cat": "Pokéballs",
-    "name": "5 Ultra Balls"
-  },
-  "1301": {
-    "cat": "Berries",
-    "name": "2 Golden Razzberries"
-  },
-  "1302": {
-    "cat": "Berries",
-    "name": "1 Pinap Berry"
-  },
-  "1303": {
-    "cat": "Berries",
-    "name": "2 Pinap Berries"
-  },
-  "1306": {
-    "cat": "Berries",
-    "name": "3 Pinap Berries"
-  },
-  "1309": {
-    "cat": "Berries",
-    "name": "5 Nanab Berries"
-  },
-  "1310": {
-    "cat": "Berries",
-    "name": "10 Nanab Berries"
-  },
-  "1311": {
-    "cat": "Berries",
-    "name": "3 Razz Berries"
-  },
-  "1315": {
-    "cat": "Berries",
-    "name": "6 Razz Berries"
-  },
-  "1316": {
-    "cat": "Berries",
-    "name": "9 Razz Berries"
-  },
-  "1401": {
-    "cat": "Potions & Revives",
-    "name": "1 Revive"
-  },
-  "1402": {
-    "cat": "Potions & Revives",
-    "name": "2 Revives"
-  },
-  "1403": {
-    "cat": "Potions & Revives",
-    "name": "4 Revives"
-  },
-  "1404": {
-    "cat": "Potions & Revives",
-    "name": "6 Revives"
-  },
-  "1405": {
-    "cat": "Potions & Revives",
-    "name": "1 Max Revive"
-  },
-  "1407": {
-    "cat": "Potions & Revives",
-    "name": "5 Potions"
-  },
-  "1408": {
-    "cat": "Potions & Revives",
-    "name": "3 Super Potions"
-  },
-  "1409": {
-    "cat": "Potions & Revives",
-    "name": "3 Hyper Potions"
-  },
-  "1500": {
-    "cat": "Johto Festival",
-    "name": "Metal coat"
-  },
-  "1501": {
-    "cat": "Johto Festival",
-    "name": "Dragon Scale"
-  },
-  "1502": {
-    "cat": "Johto Festival",
-    "name": "Upgrade"
-  },
-  "1503": {
-    "cat": "Johto Festival",
-    "name": "Sun Stone"
-  },
-  "1504": {
-    "cat": "Johto Festival",
-    "name": "Kings Rock"
+  "1300": {
+    "cat": "Items",
+    "name": "Silver Pinap"
   }
 }
