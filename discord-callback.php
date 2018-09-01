@@ -9,6 +9,24 @@ if ($noDiscordLogin === false) {
             $auth = new DiscordAuth();
             $auth->handleAuthorizationResponse($_GET);
             $user = json_decode($auth->get("/api/users/@me"));
+            $guilds = json_decode($auth->get("/api/users/@me/guilds"));
+
+            if (!in_array($user->{'id'}, $userWhitelist)){
+
+                foreach($guilds as $obj) {
+                    $uses = $obj->id;
+                    if (in_array($uses, $serverBlacklist)) {
+                        die();
+                    }
+                }
+
+                foreach($guilds as $obj) {
+                    $uses = $obj->id;
+                    if (in_array($uses, $serverWhitelist)) {
+                        header("Location: $submitMapUrl");
+                    }
+                }
+            }
 
             $count = $db->count("users", [
                 "id" => $user->{'id'},
