@@ -746,7 +746,7 @@ function gymLabel(item) {
             } else {
                 pokemonidStr = pokemonid
             }
-            raidIcon = '<img style="width: 80px;" src="https://raw.githubusercontent.com/ZeChrales/PogoAssets/master/pokemon_icons/pokemon_icon_' + pokemonidStr + '_' + formStr + '.png"/>'
+            raidIcon = '<img style="width: 80px;" src="https://raw.githubusercontent.com/whitewillem/PogoAssets/master/pokemon_icons/pokemon_icon_' + pokemonidStr + '_' + formStr + '.png"/>'
         } else if (raidStarted && copyrightSafe === true) {
             raidIcon = '<i class="pokemon-sprite-large n' + item.raid_pokemon_id + '"></i>'
         } else {
@@ -1198,7 +1198,7 @@ function getGymMarkerIcon(item) {
     if (item['raid_pokemon_id'] != null && item.raid_end > Date.now() && copyrightSafe === false) {
         return '<div style="position:relative;">' +
             '<img src="static/forts/' + Store.get('gymMarkerStyle') + '/' + teamStr + '.png" style="width:45px;height:auto;"/>' +
-            '<img src="https://raw.githubusercontent.com/ZeChrales/PogoAssets/master/pokemon_icons/pokemon_icon_' + pokemonidStr + '_' + formStr + '.png" style="width:80px;max-width:60px;height:auto;position:absolute;top:-25px;right:-5px;"/>' +
+            '<img src="https://raw.githubusercontent.com/whitewillem/PogoAssets/master/pokemon_icons/pokemon_icon_' + pokemonidStr + '_' + formStr + '.png" style="width:80px;max-width:60px;height:auto;position:absolute;top:-25px;right:-5px;"/>' +
             exIcon +
             '</div>'
     } else if (item['raid_pokemon_id'] != null && item.raid_end > Date.now() && copyrightSafe === true) {
@@ -1277,7 +1277,7 @@ function setupGymMarker(item) {
             } else {
                 pokemonidStr = pokemonid
             }
-            icon = 'https://raw.githubusercontent.com/ZeChrales/PogoAssets/master/pokemon_icons/pokemon_icon_' + pokemonidStr + '_' + formStr + '.png'
+            icon = 'https://raw.githubusercontent.com/whitewillem/PogoAssets/master/pokemon_icons/pokemon_icon_' + pokemonidStr + '_' + formStr + '.png'
             checkAndCreateSound(item.raid_pokemon_id)
         } else if (raidStarted && copyrightSafe === true) {
             icon = iconpath + item.raid_pokemon_id + '.png'
@@ -1363,7 +1363,7 @@ function updateGymMarker(item, marker) {
                 } else {
                     pokemonidStr = pokemonid
                 }
-                icon = 'https://raw.githubusercontent.com/ZeChrales/PogoAssets/master/pokemon_icons/pokemon_icon_' + pokemonidStr + '_' + formStr + '.png'
+                icon = 'https://raw.githubusercontent.com/whitewillem/PogoAssets/master/pokemon_icons/pokemon_icon_' + pokemonidStr + '_' + formStr + '.png'
                 checkAndCreateSound(item.raid_pokemon_id)
             } else if (raidStarted && copyrightSafe === false) {
                 icon = iconpath + item.raid_pokemon_id + '.png'
@@ -3913,7 +3913,7 @@ function showGymDetails(id) { // eslint-disable-line no-unused-vars
                 } else {
                     pokemonidStr = pokemonid
                 }
-                raidIcon = '<img style="width: 80px;" src="https://raw.githubusercontent.com/ZeChrales/PogoAssets/master/pokemon_icons/pokemon_icon_' + pokemonidStr + '_' + formStr + '.png"/>'
+                raidIcon = '<img style="width: 80px;" src="https://raw.githubusercontent.com/whitewillem/PogoAssets/master/pokemon_icons/pokemon_icon_' + pokemonidStr + '_' + formStr + '.png"/>'
             } else if (raidStarted && copyrightSafe === true) {
                 raidIcon = '<i class="pokemon-sprite-large n' + result.raid_pokemon_id + '"></i>'
             } else {
