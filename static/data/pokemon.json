@@ -4840,10 +4840,8 @@
     ]
   },
   "387":{
-    "name": "Level 1 Unknown",
+    "name": "Turtwig",
     "rarity":"",
-	"level": 1,
-    "cp": "",
     "types": [
       {
         "type": "Normal",
@@ -4852,10 +4850,8 @@
     ]
   },
   "388":{
-    "name": "Level 2 Unknown",
+    "name": "Grotle",
     "rarity":"",
-	"level": 2,
-    "cp": "",
     "types": [
       {
         "type": "Normal",
@@ -4864,10 +4860,8 @@
     ]
   },
   "389":{
-    "name": "Level 3 Unknown",
+    "name": "Torterra",
     "rarity":"",
-	"level": 3,
-    "cp": "",
     "types": [
       {
         "type": "Normal",
@@ -4880,10 +4874,8 @@
     ]
   },
   "390":{
-    "name": "Level 4 Unknown",
+    "name": "Chimchar",
     "rarity":"",
-	"level": 4,
-    "cp": "",
     "types": [
       {
         "type": "Normal",
@@ -4892,10 +4884,8 @@
     ]
   },
   "391":{
-    "name": "Level 5 Unknown",
+    "name": "Monferno",
     "rarity":"",
-	"level": 5,
-    "cp": "",
     "types": [
       {
         "type": "Normal",

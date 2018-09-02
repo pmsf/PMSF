@@ -746,9 +746,19 @@ function gymLabel(item) {
             } else {
                 pokemonidStr = pokemonid
             }
-            raidIcon = '<img style="width: 80px;" src="https://raw.githubusercontent.com/whitewillem/PogoAssets/master/pokemon_icons/pokemon_icon_' + pokemonidStr + '_' + formStr + '.png"/>'
+            raidIcon = '<img style="width: 80px; -webkit-filter: drop-shadow(5px 5px 5px #222); filter: drop-shadow(5px 5px 5px #222);" src="https://raw.githubusercontent.com/ZeChrales/PogoAssets/master/pokemon_icons/pokemon_icon_' + pokemonidStr + '_' + formStr + '.png"/>'
         } else if (raidStarted && copyrightSafe === true) {
             raidIcon = '<i class="pokemon-sprite-large n' + item.raid_pokemon_id + '"></i>'
+        } else if (item.raid_start <= Date.now()) {
+            var hatchedEgg = ''
+            if (item['raid_level'] <= 2) {
+                hatchedEgg = 'hatched_normal'
+            } else if (item['raid_level'] <= 4) {
+                hatchedEgg = 'hatched_rare'
+            } else {
+                hatchedEgg = 'hatched_legendary'
+            }
+            raidIcon = '<img src="static/raids/egg_' + hatchedEgg + '.png" style="width:60px;height:70">'
         } else {
             var raidEgg = ''
             if (item['raid_level'] <= 2) {
@@ -1198,13 +1208,27 @@ function getGymMarkerIcon(item) {
     if (item['raid_pokemon_id'] != null && item.raid_end > Date.now() && copyrightSafe === false) {
         return '<div style="position:relative;">' +
             '<img src="static/forts/' + Store.get('gymMarkerStyle') + '/' + teamStr + '.png" style="width:45px;height:auto;"/>' +
-            '<img src="https://raw.githubusercontent.com/whitewillem/PogoAssets/master/pokemon_icons/pokemon_icon_' + pokemonidStr + '_' + formStr + '.png" style="width:80px;max-width:60px;height:auto;position:absolute;top:-25px;right:-5px;"/>' +
+            '<img src="https://raw.githubusercontent.com/ZeChrales/PogoAssets/master/pokemon_icons/pokemon_icon_' + pokemonidStr + '_' + formStr + '.png" style="max-width:70px;height:auto;position:absolute;top:-35px;right:-10px; -webkit-filter: drop-shadow(5px 5px 5px #222); filter: drop-shadow(5px 5px 5px #222);"/>' +
             exIcon +
             '</div>'
     } else if (item['raid_pokemon_id'] != null && item.raid_end > Date.now() && copyrightSafe === true) {
         return '<div style="position:relative;">' +
             '<img src="static/forts/' + Store.get('gymMarkerStyle') + '/' + teamStr + '.png" style="width:45px;height:auto;"/>' +
             '<i class="pokemon-raid-sprite n' + item.raid_pokemon_id + '"></i>' +
+            exIcon +
+            '</div>'
+    } else if (item['raid_level'] !== null && item.raid_start <= Date.now() && item.raid_end > Date.now()) {
+        var hatchedEgg = ''
+        if (item['raid_level'] <= 2) {
+            hatchedEgg = 'hatched_normal'
+        } else if (item['raid_level'] <= 4) {
+            hatchedEgg = 'hatched_rare'
+        } else {
+            hatchedEgg = 'hatched_legendary'
+        }
+        return '<div style="position:relative;">' +
+            '<img src="static/forts/' + Store.get('gymMarkerStyle') + '/' + teamStr + '.png" style="width:45px;height:auto;"/>' +
+            '<img src="static/raids/egg_' + hatchedEgg + '.png" style="width:35px;height:auto;position:absolute;top:-10px;right:12px;"/>' +
             exIcon +
             '</div>'
     } else if (item['raid_level'] !== null && item.raid_end > Date.now()) {
@@ -1223,7 +1247,7 @@ function getGymMarkerIcon(item) {
             '</div>'
     } else {
         return '<div>' +
-            '<img src="static/forts/' + Store.get('gymMarkerStyle') + '/' + gymTypes[item['team_id']] + '.png" style="width:32px;height: auto;"/>' +
+            '<img src="static/forts/' + Store.get('gymMarkerStyle') + '/' + gymTypes[item['team_id']] + '.png" style="width:35px;height: auto;"/>' +
             exIcon +
             '</div>'
     }
@@ -1277,10 +1301,20 @@ function setupGymMarker(item) {
             } else {
                 pokemonidStr = pokemonid
             }
-            icon = 'https://raw.githubusercontent.com/whitewillem/PogoAssets/master/pokemon_icons/pokemon_icon_' + pokemonidStr + '_' + formStr + '.png'
+            icon = 'https://raw.githubusercontent.com/ZeChrales/PogoAssets/master/pokemon_icons/pokemon_icon_' + pokemonidStr + '_' + formStr + '.png'
             checkAndCreateSound(item.raid_pokemon_id)
         } else if (raidStarted && copyrightSafe === true) {
             icon = iconpath + item.raid_pokemon_id + '.png'
+        } else if (item.raid_start <= Date.now()) {
+            var hatchedEgg = ''
+            if (item['raid_level'] <= 2) {
+                hatchedEgg = 'hatched_normal'
+            } else if (item['raid_level'] <= 4) {
+                hatchedEgg = 'hatched_rare'
+            } else {
+                hatchedEgg = 'hatched_legendary'
+            }
+            icon = 'static/raids/egg_' + hatchedEgg + '.png'
         } else {
             var raidEgg = ''
             if (item['raid_level'] <= 2) {
@@ -1363,11 +1397,21 @@ function updateGymMarker(item, marker) {
                 } else {
                     pokemonidStr = pokemonid
                 }
-                icon = 'https://raw.githubusercontent.com/whitewillem/PogoAssets/master/pokemon_icons/pokemon_icon_' + pokemonidStr + '_' + formStr + '.png'
+                icon = 'https://raw.githubusercontent.com/ZeChrales/PogoAssets/master/pokemon_icons/pokemon_icon_' + pokemonidStr + '_' + formStr + '.png'
                 checkAndCreateSound(item.raid_pokemon_id)
             } else if (raidStarted && copyrightSafe === false) {
                 icon = iconpath + item.raid_pokemon_id + '.png'
                 checkAndCreateSound(item.raid_pokemon_id)
+            } else if (item.raid_start <= Date.now()) {
+                var hatchedEgg = ''
+                if (item['raid_level'] <= 2) {
+                    hatchedEgg = 'hatched_normal'
+                } else if (item['raid_level'] <= 4) {
+                    hatchedEgg = 'hatched_rare'
+                } else {
+                    hatchedEgg = 'hatched_legendary'
+                }
+                icon = 'static/raids/egg_' + hatchedEgg + '.png'
             } else {
                 checkAndCreateSound()
                 var raidEgg = ''
@@ -3913,9 +3957,19 @@ function showGymDetails(id) { // eslint-disable-line no-unused-vars
                 } else {
                     pokemonidStr = pokemonid
                 }
-                raidIcon = '<img style="width: 80px;" src="https://raw.githubusercontent.com/whitewillem/PogoAssets/master/pokemon_icons/pokemon_icon_' + pokemonidStr + '_' + formStr + '.png"/>'
+                raidIcon = '<img style="width: 80px;" src="https://raw.githubusercontent.com/ZeChrales/PogoAssets/master/pokemon_icons/pokemon_icon_' + pokemonidStr + '_' + formStr + '.png"/>'
             } else if (raidStarted && copyrightSafe === true) {
                 raidIcon = '<i class="pokemon-sprite-large n' + result.raid_pokemon_id + '"></i>'
+            } else if (result.raid_start <= Date.now()) {
+                var hatchedEgg = ''
+                if (result['raid_level'] <= 2) {
+                    hatchedEgg = 'hatched_normal'
+                } else if (result['raid_level'] <= 4) {
+                    hatchedEgg = 'hatched_rare'
+                } else {
+                    hatchedEgg = 'hatched_legendary'
+                }
+                raidIcon = '<img src="static/raids/egg_' + hatchedEgg + '.png" style="width:60px;height:70px;">'
             } else {
                 var raidEgg = ''
                 if (result['raid_level'] <= 2) {
