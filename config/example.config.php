@@ -323,34 +323,6 @@ $sendQuestWebhook = false;                      // Experimental use only
 $questWebhookUrl = null;                        // Experimental use only
 $webhookSystem = [''];				// Supported either 'pokealarm' or 'poracle'
 
-$manualOneStar = [
-    'webhook' => false,						    // If set to false no webhooks will be send on raid_cron.php
-    'pokemon_id' => 387,
-    'cp' => 0,
-    'move_1' => null,
-    'move_2' => null
-];
-$manualTwoStar = [
-    'webhook' => false,						    // If set to false no webhooks will be send on raid_cron.php
-    'pokemon_id' => 388,
-    'cp' => 0,
-    'move_1' => null,
-    'move_2' => null
-];
-$manualThreeStar = [
-    'webhook' => false,						    // If set to false no webhooks will be send on raid_cron.php
-    'pokemon_id' => 389,
-    'cp' => 0,
-    'move_1' => null,
-    'move_2' => null
-];
-$manualFourStar = [
-    'webhook' => false,						    // If set to false no webhooks will be send on raid_cron.php
-    'pokemon_id' => 390,
-    'cp' => 0,
-    'move_1' => null,
-    'move_2' => null
-];
 $manualFiveStar = [
     'webhook' => false,						    // If set to false no webhooks will be send on raid_cron.php
     'pokemon_id' => 377,
