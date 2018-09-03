@@ -632,8 +632,10 @@ class Monocle_Alternate extends Monocle
         lat,
         lon,
         name,
-        url
-	FROM ingress_portals
+        url,
+        updated,
+        checked
+        FROM ingress_portals
         WHERE :conditions";
 
         $query = str_replace(":conditions", join(" AND ", $conds), $query);

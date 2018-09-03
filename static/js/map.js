@@ -168,6 +168,29 @@ var notifyText = 'disappears at <dist> (<udist>)'
 if (location.search.indexOf('login=true') > 0) {
     setTimeout(function () { window.location = '/' }, 500)
 }
+
+function formatDate(date) {
+    var monthNames = [
+        "January", "February", "March",
+        "April", "May", "June", "July",
+        "August", "September", "October",
+        "November", "December"
+    ];
+
+    var day = date.getDate()
+    var monthIndex = date.getMonth()
+    var year = date.getFullYear()
+    var hours = date.getHours()
+    var minutes = date.getMinutes()
+    if (minutes < 10) {
+        minutes = '0' + minutes
+    } else {
+        minutes = minutes + ''
+    }
+
+    return day + ' ' + monthNames[monthIndex] + ' ' + year + ' ' +  hours + ':' + minutes
+}
+
 function excludePokemon(id) { // eslint-disable-line no-unused-vars
     $selectExclude.val(
         $selectExclude.val().split(',').concat(id).join(',')
@@ -1644,13 +1667,24 @@ function communityLabel(item) {
 }
 
 function setupPortalMarker(item) {
-    var circle = {
-        path: google.maps.SymbolPath.CIRCLE,
-        fillColor: 'blue',
-        fillOpacity: 0.4,
-        scale: 15,
-        strokeColor: 'white',
-        strokeWeight: 1
+    if (item.checked === '1') {
+        var circle = {
+            path: google.maps.SymbolPath.CIRCLE,
+            fillColor: 'red',
+            fillOpacity: 0.4,
+            scale: 15,
+            strokeColor: 'white',
+            strokeWeight: 1
+        }
+    } else {
+        circle = {
+            path: google.maps.SymbolPath.CIRCLE,
+            fillColor: 'blue',
+            fillOpacity: 0.4,
+            scale: 15,
+            strokeColor: 'white',
+            strokeWeight: 1
+        }
     }
     var location = {lat: item['lat'], lng: item['lon']}
     var marker = new google.maps.Marker({
@@ -1672,9 +1706,12 @@ function setupPortalMarker(item) {
 }
 
 function portalLabel(item) {
+    var timestamp = new Date(item.updated * 1000)
+    var updated = formatDate(new Date(item.updated * 1000))
     var str = '<img src="' + item.url + '" align"middle" style="width:175px;height:auto;margin-left:25px;"/>' +
         '<center><h4><div>' + item.name + '</div></h4></center>' +
-        '<center><div>Convert this portal<i class="fa fa-refresh convert-portal" style="margin-top: 2px; margin-left: 5px; vertical-align: middle; font-size: 1.5em;" onclick="openConvertPortalModal(event);" data-id="' + item.external_id + '"></i></div></center>'
+        '<center><div>Convert this portal<i class="fa fa-refresh convert-portal" style="margin-top: 2px; margin-left: 5px; vertical-align: middle; font-size: 1.5em;" onclick="openConvertPortalModal(event);" data-id="' + item.external_id + '"></i></div></center>' +
+        '<center><div>Last updated: ' + updated + '</div></center>'
     if (!noDeletePortal) {
         str += '<i class="fa fa-trash-o delete-portal" onclick="deletePortal(event);" data-id="' + item.external_id + '"></i>'
     }
@@ -2456,6 +2493,35 @@ function convertPortalToGymData(event) { // eslint-disable-line no-unused-vars
                     jQuery('label[for="pokestops-switch"]').click()
                     jQuery('label[for="pokestops-switch"]').click()
                     lastpokestops = false
+                    updateMap()
+                    $('.ui-dialog-content').dialog('close')
+                }
+            })
+        }
+    }
+}
+function markPortalChecked(event) { // eslint-disable-line no-unused-vars
+    var form = $(event.target).parent().parent()
+    var portalId = form.find('.convertportalid').val()
+    if (portalId && portalId !== '') {
+        if (confirm(i8ln('I confirm this portal is not a Pokestop or Gym'))) {
+            return $.ajax({
+                url: 'submit',
+                type: 'POST',
+                timeout: 300000,
+                dataType: 'json',
+                cache: false,
+                data: {
+                    'action': 'markportal',
+                    'portalid': portalId
+                },
+                error: function error() {
+                    // Display error toast
+                    toastr['error'](i8ln('Portal ID got lost somewhere.'), i8ln('Error marking portal'))
+                    toastr.options = toastrOptions
+                },
+                complete: function complete() {
+                    lastportals = false
                     updateMap()
                     $('.ui-dialog-content').dialog('close')
                 }

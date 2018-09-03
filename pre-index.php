@@ -1166,7 +1166,10 @@ if ( $blockIframe ) {
                         class="fa fa-refresh"
                         style="margin-right:10px; vertical-align: middle; font-size: 1.5em;"></i><?php echo i8ln( 'Convert to gym' ); ?>
 		</button>
-
+                <button type="button" onclick="markPortalChecked(event);" class="convertportalid"><i
+                        class="fa fa-times"
+                        style="margin-right:10px; vertical-align: middle; font-size: 1.5em;"></i><?php echo i8ln( 'No Pokestop or Gym' ); ?>
+		</button>
             </div>
         </div>
     <?php } ?>
