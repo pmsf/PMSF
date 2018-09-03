@@ -140,6 +140,7 @@
     "noConvertPokestops": false,
     "enablePortals": true,
     "noDeletePortal": true,
-    "noPortals": false
+    "noPortals": false,
+    "copyrightSafe": true
   }
 }
