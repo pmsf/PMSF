@@ -385,6 +385,28 @@ if ( $action === "raid" ) {
             sendToWebhook($discordSubmitLogChannelUrl, ($data));
         }
     }
+} elseif ( $action === "markportal" ) {
+    if ( $noPortals === true ) {
+        http_response_code( 401 );
+        die();
+    }
+    $portalId   = ! empty( $_POST['portalid'] ) ? $_POST['portalid'] : '';
+    $loggedUser = ! empty( $_SESSION['user']->user ) ? $_SESSION['user']->user : 'NOLOGIN';
+    $portalName = $db->get( "ingress_portals", [ 'name' ], [ 'external_id' => $portalId ] );
+    if ( ! empty( $portalId ) ) {
+        $cols     = [
+            'updated'      => time(),
+            'checked'      => 1
+        ];
+        $where    = [
+            'external_id' => $portalId
+        ];
+	$db->update( "ingress_portals", $cols, $where );
+        if ( $noDiscordSubmitLogChannel === false ) {
+            $data = array("content" => '```Marked portal with id "' . $portalId . '." As no Pokestop or Gym. PortalName: "' . $portalName['name'] . '". ```', "username" => $loggedUser);
+            sendToWebhook($discordSubmitLogChannelUrl, ($data));
+        }
+    }
  } elseif ( $action === "pokestop" ) {
     if ( $noManualPokestops === true || $noPokestops === true ) {
         http_response_code( 401 );
