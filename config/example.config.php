@@ -298,6 +298,13 @@ $noRenamePokestops = false;
 $noConvertPokestops = false;
 $noManualQuests = false;
 
+//-----------------------------------------------------
+// Ingress portals
+//-----------------------------------------------------
+$enablePortals = 'false';
+$noPortals = true;
+$noDeletePortal = true;
+
 $pokemonReportTime = true;
 $pokemonToExclude = [];
 
@@ -306,40 +313,16 @@ $noDeletePokestops = false;
 
 $raidBosses = [155, 320, 307, 129, 296, 281, 315, 103, 303, 221, 232, 68, 26, 114, 112, 248, 359, 105, 377];
 
-$sendWebhook = false;							// Sends Raids & Pokémon. Needs a 3th party program like pokealarm.					
+$sendWebhook = false;				// Sends Raids & Pokémon. Needs a 3th party program like pokealarm.
 $webhookUrl = null;                             //['url-1','url-2']
 
+//---------------------------------------------------
+// Quest Webhooks
+//---------------------------------------------------
 $sendQuestWebhook = false;                      // Experimental use only
 $questWebhookUrl = null;                        // Experimental use only
+$webhookSystem = [''];				// Supported either 'pokealarm' or 'poracle'
 
-$manualOneStar = [
-    'webhook' => false,						    // If set to false no webhooks will be send on raid_cron.php
-    'pokemon_id' => 387,
-    'cp' => 0,
-    'move_1' => null,
-    'move_2' => null
-];
-$manualTwoStar = [
-    'webhook' => false,						    // If set to false no webhooks will be send on raid_cron.php
-    'pokemon_id' => 388,
-    'cp' => 0,
-    'move_1' => null,
-    'move_2' => null
-];
-$manualThreeStar = [
-    'webhook' => false,						    // If set to false no webhooks will be send on raid_cron.php
-    'pokemon_id' => 389,
-    'cp' => 0,
-    'move_1' => null,
-    'move_2' => null
-];
-$manualFourStar = [
-    'webhook' => false,						    // If set to false no webhooks will be send on raid_cron.php
-    'pokemon_id' => 390,
-    'cp' => 0,
-    'move_1' => null,
-    'move_2' => null
-];
 $manualFiveStar = [
     'webhook' => false,						    // If set to false no webhooks will be send on raid_cron.php
     'pokemon_id' => 377,

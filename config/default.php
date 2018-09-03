@@ -298,6 +298,13 @@ $noRenamePokestops = false;
 $noConvertPokestops = false;
 $noManualQuests = false;
 
+//-----------------------------------------------------
+// Ingress portals
+//-----------------------------------------------------
+$enablePortals = 'false';
+$noPortals = true;
+$noDeletePortal = true;
+
 $noDiscordSubmitLogChannel = true;                                        // Send webhooks to discord channel upon submission
 
 $pokemonReportTime = true;
@@ -310,38 +317,13 @@ $raidBosses = [4, 296, 307, 138, 320, 129, 103, 281, 126, 303, 185, 137, 26, 232
 
 $sendWebhook = false;
 $webhookUrl = null;                                             //['url-1','url-2']
-
+//---------------------------------------------------
+// Quest Webhooks
+//---------------------------------------------------
 $sendQuestWebhook = false;                                          // Experimental use only
 $questWebhookUrl = null;                                            // Experimental use only
+$webhookSystem = [''];						    // Supported are either 'pokealarm' or 'poracle'
 
-$manualOneStar = [
-    'webhook' => false,
-    'pokemon_id' => 387,
-    'cp' => 0,
-    'move_1' => null,
-    'move_2' => null
-];
-$manualTwoStar = [
-    'webhook' => false,
-    'pokemon_id' => 388,
-    'cp' => 0,
-    'move_1' => null,
-    'move_2' => null
-];
-$manualThreeStar = [
-    'webhook' => false,
-    'pokemon_id' => 389,
-    'cp' => 0,
-    'move_1' => null,
-    'move_2' => null
-];
-$manualFourStar = [
-    'webhook' => false,
-    'pokemon_id' => 390,
-    'cp' => 0,
-    'move_1' => null,
-    'move_2' => null
-];
 $manualFiveStar = [
     'webhook' => false,
     'pokemon_id' => 391,

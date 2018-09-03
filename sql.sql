@@ -82,6 +82,9 @@ ADD (quest_id SMALLINT(4), reward_id SMALLINT(4));
 ALTER TABLE pokestops
 ADD (quest_submitted_by VARCHAR(200), edited_by VARCHAR(200));
 ALTER TABLE forts
-ADD edited_by VARCHAR(200);
+ADD (edited_by VARCHAR(200), submitted_by varchar(200) DEFAULT NULL);
 ALTER TABLE nests
 ADD nest_submitted_by VARCHAR(200);
+
+ALTER TABLE raids
+ADD form smallint(6) DEFAULT NULL;
