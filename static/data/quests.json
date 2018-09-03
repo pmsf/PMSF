@@ -15,7 +15,7 @@
     "cat": "Gym/Raid",
     "name": "Win 3 Gym battles"
   },
-   "": {
+   "6": {
     "cat": "Gym/Raid",
     "name": "Win 5 Gym battles"
   },
@@ -95,7 +95,6 @@
     "cat": "Hatch",
     "name": "Hatch 5 Eggs"
   },
-
   "605": {
     "cat": "Miscellaneous",
     "name": "Transfer 10 Pokémon"
