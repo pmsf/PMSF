@@ -826,6 +826,10 @@ function gymLabel(item) {
 
     var gymColor = ['0, 0, 0, .4', '74, 138, 202, .6', '240, 68, 58, .6', '254, 217, 40, .6']
     var str
+    var gymImage = ''
+    if (url !== null) {
+        gymImage = '<img height="70px" style="padding: 5px;" src="' + url + '">'
+    }
     if (teamId === 0) {
         str =
             '<div>' +
@@ -834,7 +838,7 @@ function gymLabel(item) {
             '<div>' +
             '<img height="70px" style="padding: 5px;" src="static/forts/' + teamName + '_large.png">' +
             raidIcon +
-            '<img height="70px" style="padding: 5px;" src="' + url + '">' +
+            gymImage +
             '</div>' +
             raidStr +
             '<div>' +
@@ -902,6 +906,10 @@ function pokestopLabel(expireTime, latitude, longitude, stopName, url, lureUser,
     if (stopName === null) {
         stopName = 'Pokéstop'
     }
+    var stopImage = ''
+    if (url !== null) {
+        stopImage = '<img height="70px" style="padding: 5px;" src="' + url + '">'
+    }
     if (expireTime) {
         if (lureUser) {
             str =
@@ -940,7 +948,7 @@ function pokestopLabel(expireTime, latitude, longitude, stopName, url, lureUser,
                 '</div>' +
                 '<div>' +
                 '<img height="70px" style="padding: 5px;" src="static/forts/Pstop-large.png">' +
-                '<img height="70px" style="padding: 5px;" src="' + url + '">' +
+                stopImage +
                 '</div>' +
                 '</center>' +
                 '</div>'
@@ -953,7 +961,7 @@ function pokestopLabel(expireTime, latitude, longitude, stopName, url, lureUser,
                 '</div>' +
                 '<div>' +
                 '<img height="70px" style="padding: 5px;" src="static/forts/Pstop-quest-large.png">' +
-                '<img height="70px" style="padding: 5px;" src="' + url + '">' +
+                stopImage +
                 '<img height="70px" style="padding: 5px;" src="static/rewards/reward_' + reward + '.png"/>' +
                 '</div>' +
                 '</center>' +
@@ -4072,15 +4080,19 @@ function showGymDetails(id) { // eslint-disable-line no-unused-vars
 
         var pokemonHtml = ''
 
+        var gymImage = ''
+        if (result.url !== null) {
+            gymImage = '<img height="70px" style="padding: 5px;" src="' + result.url + '">'
+        }
         var headerHtml =
             '<center class="team-' + result.team_id + '-text">' +
             '<div>' +
             '<b class="team-' + result.team_id + '-text">' + (result.name || '') + '</b>' +
             '</div>' +
             '<div>' +
-            '<img height="60px" style="padding: 5px;" src="static/forts/' + gymTypes[result.team_id] + '_large.png">' +
+            gymIcon +
             raidIcon +
-            '<img height="70px" style="padding: 5px;" src="' + result.url + '">' +
+            gymImage +
             '</div>' +
             raidStr +
             gymLevelStr +
