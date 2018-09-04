@@ -15,6 +15,10 @@
     "cat": "Gym/Raid",
     "name": "Win 3 Gym battles"
   },
+  "6": {
+    "cat": "Gym/Raid",
+    "name": "Win 5 Gym battles"
+  },
   "11": {
     "cat": "Gym/Raid",
     "name": "Win a level 3 raid or higher"
