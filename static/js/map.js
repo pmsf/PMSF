@@ -171,11 +171,11 @@ if (location.search.indexOf('login=true') > 0) {
 
 function formatDate(date) {
     var monthNames = [
-        "January", "February", "March",
-        "April", "May", "June", "July",
-        "August", "September", "October",
-        "November", "December"
-    ];
+        'January', 'February', 'March',
+        'April', 'May', 'June', 'July',
+        'August', 'September', 'October',
+        'November', 'December'
+    ]
 
     var day = date.getDate()
     var monthIndex = date.getMonth()
@@ -188,7 +188,7 @@ function formatDate(date) {
         minutes = minutes + ''
     }
 
-    return day + ' ' + monthNames[monthIndex] + ' ' + year + ' ' +  hours + ':' + minutes
+    return day + ' ' + monthNames[monthIndex] + ' ' + year + ' ' + hours + ':' + minutes
 }
 
 function excludePokemon(id) { // eslint-disable-line no-unused-vars
@@ -1723,7 +1723,6 @@ function setupPortalMarker(item) {
 }
 
 function portalLabel(item) {
-    var timestamp = new Date(item.updated * 1000)
     var updated = formatDate(new Date(item.updated * 1000))
     var str = '<img src="' + item.url + '" align"middle" style="width:175px;height:auto;margin-left:25px;"/>' +
         '<center><h4><div>' + item.name + '</div></h4></center>' +
@@ -4095,9 +4094,9 @@ function showGymDetails(id) { // eslint-disable-line no-unused-vars
             gymIcon = '<img height="70px" style="padding: 5px;" src="static/forts/' + gymTypes[result.team_id] + '_large.png">'
         }
         var gymImage = ''
-		if (result.url !== null) {
+        if (result.url !== null) {
             gymImage = '<img height="70px" style="padding: 5px;" src="' + result.url + '">'
-		}
+        }
         var headerHtml =
             '<center class="team-' + result.team_id + '-text">' +
             '<div>' +
