@@ -30,7 +30,7 @@ if ( $dbname !== '' ) {
             if( $k > 1500){
                 break;
             }
-            if(strpos($reward['name'], $term) !== false){
+            if(strpos(strtolower($reward['name']), strtolower($term)) !== false){
                 $resids[] = $k;
                 break;
             }
@@ -56,11 +56,11 @@ if ( $dbname !== '' ) {
             if( $k > 386){
                 break;
             }
-            if(strpos($mon['name'], $term) !== false){
+            if(strpos(strtolower($mon['name']), strtolower($term)) !== false){
                 $resids[] = $k;
             } else{
                 foreach($mon['types'] as $t){
-                    if(strpos($t['type'], $term) !== false){
+                    if(strpos(strtolower($t['type']), strtolower($term)) !== false){
                         $resids[] = $k;
                         break;
                     }
