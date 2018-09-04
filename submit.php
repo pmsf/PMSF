@@ -104,23 +104,45 @@ if ( $action === "raid" ) {
         ':gymId'  => $gymId
     ] );
     if ( $sendWebhook === true ) {
-        $webhook = [
-            'message' => [
-                'gym_id'     => $gym['external_id'],
-                'pokemon_id' => $cols['pokemon_id'],
-                'cp'         => $cols['cp'],
-                'move_1'     => 133,
-                'move_2'     => 133,
-                'level'      => $cols['level'],
-                'latitude'   => $gym['lat'],
-                'longitude'  => $gym['lon'],
-                'start' => $time_battle,
-                'end'   => $time_end,
-                'team_id'       => 0,
-                'name'       => $gym['name']
-            ],
-            'type'    => 'raid'
-        ];
+        if ( $noNativeLogin === true && $noDiscordLogin === true ) {
+            $webhook = [
+                'message' => [
+                    'gym_id'     => $gym['external_id'],
+                    'pokemon_id' => $cols['pokemon_id'],
+                    'cp'         => $cols['cp'],
+                    'move_1'     => 133,
+                    'move_2'     => 133,
+                    'level'      => $cols['level'],
+                    'latitude'   => $gym['lat'],
+                    'longitude'  => $gym['lon'],
+                    'start'      => $time_battle,
+                    'end'        => $time_end,
+                    'team_id'    => 0,
+                    'name'       => $gym['name']
+                ],
+                'type'    => 'raid'
+            ];
+        } else {
+            $webhook = [
+                'message' => [
+                    'gym_id'     => $gym['external_id'],
+                    'pokemon_id' => $cols['pokemon_id'],
+                    'cp'         => $cols['cp'],
+                    'move_1'     => 133,
+                    'move_2'     => 133,
+                    'level'      => $cols['level'],
+                    'latitude'   => $gym['lat'],
+                    'longitude'  => $gym['lon'],
+                    'start'      => $time_battle,
+                    'end'        => $time_end,
+                    'team_id'    => 0,
+                    'name'       => $gym['name'],
+                    'user_id'    => $_SESSION['user']->id,
+                    'user_name'  => $_SESSION['user']->user
+                ],
+                'type'    => 'raid'
+            ];
+        }
         if ( strpos( $pokemonId, 'egg_' ) !== false ) {
             $webhook['message']['raid_begin'] = $time_spawn;
         }
@@ -150,31 +172,61 @@ if ( $action === "raid" ) {
         $db->insert( "sightings", $cols );
     }
     if ( $sendWebhook === true ) {
-	$webhook = [
-	    'message' => [
-		'cp'                                => null,
-		'cp_multiplier'                     => null,
-		'disappear_time'                    => $cols['expire_timestamp'],
-		'encounter_id'                      => $cols['encounter_id'],
-		'form'                              => 0,
-		'gender'                            => null,
-		'height'                            => null,
-		'weight'                            => null,
-		'individual_attack'                 => null,
-		'individual_defense'                => null,
-		'individual_stamina'                => null,
-		'latitude'                          => $cols['lat'],
-		'longitude'                         => $cols['lon'],
-		'move_1'                            => null,
-		'move_2'                            => null,
-		'pokemon_id'                        => $cols['pokemon_id'],
-		'pokemon_level'                     => null,
-		'seconds_until_despawn'             => $pokemonTimer,
-		'verified'                          => true,
-		'weather_boosted_condition'         => $cols['weather_boosted_condition']
-	    ],
-	    'type'    => 'pokemon'
-	];
+        if ( $noNativeLogin === true && $noDiscordLogin === true ) {
+            $webhook = [
+	        'message' => [
+		    'cp'                                => null,
+                    'cp_multiplier'                     => null,
+                    'disappear_time'                    => $cols['expire_timestamp'],
+                    'encounter_id'                      => $cols['encounter_id'],
+                    'form'                              => 0,
+                    'gender'                            => null,
+                    'height'                            => null,
+                    'weight'                            => null,
+                    'individual_attack'                 => null,
+                    'individual_defense'                => null,
+                    'individual_stamina'                => null,
+                    'latitude'                          => $cols['lat'],
+                    'longitude'                         => $cols['lon'],
+                    'move_1'                            => null,
+                    'move_2'                            => null,
+                    'pokemon_id'                        => $cols['pokemon_id'],
+                    'pokemon_level'                     => null,
+                    'seconds_until_despawn'             => $pokemonTimer,
+                    'verified'                          => true,
+                    'weather_boosted_condition'         => $cols['weather_boosted_condition']
+                ],
+	        'type'    => 'pokemon'
+	    ];
+        } else {
+            $webhook = [
+                'message' => [
+                    'cp'                                => null,
+                    'cp_multiplier'                     => null,
+                    'disappear_time'                    => $cols['expire_timestamp'],
+                    'encounter_id'                      => $cols['encounter_id'],
+                    'form'                              => 0,
+                    'gender'                            => null,
+                    'height'                            => null,
+                    'weight'                            => null,
+                    'individual_attack'                 => null,
+                    'individual_defense'                => null,
+                    'individual_stamina'                => null,
+                    'latitude'                          => $cols['lat'],
+                    'longitude'                         => $cols['lon'],
+                    'move_1'                            => null,
+                    'move_2'                            => null,
+                    'pokemon_id'                        => $cols['pokemon_id'],
+                    'pokemon_level'                     => null,
+                    'seconds_until_despawn'             => $pokemonTimer,
+                    'verified'                          => true,
+                    'weather_boosted_condition'         => $cols['weather_boosted_condition'],
+                    'user_id'                           => $_SESSION['user']->id,
+                    'user_name'                         => $_SESSION['user']->user
+                ],
+                'type'    => 'pokemon'
+            ];
+        }
 	foreach ( $webhookUrl as $url ) {
             sendToWebhook($url, array($webhook));
 	}
@@ -243,18 +295,35 @@ if ( $action === "raid" ) {
         $rewards = json_decode( file_get_contents( "static/dist/data/rewards.min.json" ), true);
         $questString = $quests[$questId]['name'];
         $rewardString = $rewards[$rewardId]['name'];
-        $questwebhook = [
-            'message' => [
-                'latitude'                          => $pokestop['lat'],
-                'longitude'                         => $pokestop['lon'],
-                'pokestop_id'                       => $pokestopId,
-                'url'                               => $pokestop['url'],
-                'name'                              => $pokestop['name'],
-                'quest'                             => $questString,
-                'reward'                            => $rewardString,
-            ],
-            'type'    => 'quest'
-        ];
+        if ( $noNativeLogin === true && $noDiscordLogin === true ) {
+            $questwebhook = [
+                'message' => [
+                    'latitude'                          => $pokestop['lat'],
+                    'longitude'                         => $pokestop['lon'],
+                    'pokestop_id'                       => $pokestopId,
+                    'url'                               => $pokestop['url'],
+                    'name'                              => $pokestop['name'],
+                    'quest'                             => $questString,
+                    'reward'                            => $rewardString,
+                ],
+                'type'    => 'quest'
+            ];
+        } else {
+            $questwebhook = [
+                'message' => [
+                    'latitude'                          => $pokestop['lat'],
+                    'longitude'                         => $pokestop['lon'],
+                    'pokestop_id'                       => $pokestopId,
+                    'url'                               => $pokestop['url'],
+                    'name'                              => $pokestop['name'],
+                    'quest'                             => $questString,
+                    'reward'                            => $rewardString,
+                    'user_id'                           => $_SESSION['user']->id,
+                    'user_name'                         => $_SESSION['user']->user
+                ],
+                'type'    => 'quest'
+            ];
+        }
         foreach ( $questWebhookUrl as $url ) {
             sendToWebhook($url, array($questwebhook));
 	}
