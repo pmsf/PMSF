@@ -135,6 +135,14 @@
     "cat": "Pokémon",
     "name": "?? Encounter"
   },
+  "1000": {
+    "cat": "Items",
+    "name": "Rare Candy"
+  },
+  "1002": {
+    "cat": "Items",
+    "name": "3 Rare Candy"
+  },
   "1300": {
     "cat": "Items",
     "name": "Silver Pinap"
