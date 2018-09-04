@@ -75,6 +75,7 @@ $faviconPath = '';                                                  // Upload fa
 // Login
 //-----------------------------------------------------
 
+$webhookUserInfo = false;                                           // true/false - Sends username and id to webhook if using a login system
 $noNativeLogin = true;                                              // true/false - This will enable the built in login system.
 $domainName = '';                                                   // If this is empty, reset-password emails will use the domain name taken from the URL.
 

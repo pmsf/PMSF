@@ -85,6 +85,7 @@ $noWhatsappLink = true;
 // Login  - You need to create the two tables referenced in sql.sql
 //-----------------------------------------------------
 
+$webhookUserInfo = false;
 $noNativeLogin = true;                                              // true/false - This will enable the built in login system.
 $domainName = '';                                                   // If this is empty, reset-password emails will use the domain name taken from the URL.
 

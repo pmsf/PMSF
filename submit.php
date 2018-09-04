@@ -104,7 +104,7 @@ if ( $action === "raid" ) {
         ':gymId'  => $gymId
     ] );
     if ( $sendWebhook === true ) {
-        if ( $noNativeLogin === true && $noDiscordLogin === true ) {
+        if ( $noNativeLogin === true && $noDiscordLogin === true || $webhookUserInfo === false) {
             $webhook = [
                 'message' => [
                     'gym_id'     => $gym['external_id'],
@@ -172,7 +172,7 @@ if ( $action === "raid" ) {
         $db->insert( "sightings", $cols );
     }
     if ( $sendWebhook === true ) {
-        if ( $noNativeLogin === true && $noDiscordLogin === true ) {
+        if ( $noNativeLogin === true && $noDiscordLogin === true || $webhookUserInfo === false) {
             $webhook = [
 	        'message' => [
 		    'cp'                                => null,
@@ -295,7 +295,7 @@ if ( $action === "raid" ) {
         $rewards = json_decode( file_get_contents( "static/dist/data/rewards.min.json" ), true);
         $questString = $quests[$questId]['name'];
         $rewardString = $rewards[$rewardId]['name'];
-        if ( $noNativeLogin === true && $noDiscordLogin === true ) {
+        if ( $noNativeLogin === true && $noDiscordLogin === true || $webhookUserInfo === false) {
             $questwebhook = [
                 'message' => [
                     'latitude'                          => $pokestop['lat'],
