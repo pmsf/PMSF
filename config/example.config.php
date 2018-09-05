@@ -328,7 +328,8 @@ $manualFiveStar = [
     'pokemon_id' => 377,
     'cp' => 41777,
     'move_1' => null,
-    'move_2' => null
+    'move_2' => null,
+	'form' => 0
 ];
 
 //-----------------------------------------------
