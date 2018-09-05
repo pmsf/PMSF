@@ -47,14 +47,6 @@
     "cat": "Catch",
     "name": "Catch 5 Fire-type Pokémon"
   },
-  "125": {
-    "cat": "Catch",
-    "name": "Catch a Meowth or Growlithe"
-  },
-  "126": {
-    "cat": "Catch",
-    "name": "Catch a skitty or poochyena"
-  },
   "127": {
     "cat": "Catch",
     "name": "Catch Rattata or Pikachu"
@@ -71,13 +63,13 @@
     "cat": "Evolve/Power up",
     "name": "Evolve a Pokémon"
   },
-  "267": {
-    "cat": "Evolve/Power up",
-    "name": "Evolve a Meowth"
-  },
   "268": {
     "cat": "Evolve/Power up",
     "name": "Evolve a Fire-Type"
+  },
+  "269": {
+    "cat": "Evolve/Power up",
+    "name": "Evolve 5 Fire-Types"
   },
   "271": {
     "cat": "Evolve/Power up",
