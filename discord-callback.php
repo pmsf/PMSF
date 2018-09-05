@@ -16,8 +16,13 @@ if ($noDiscordLogin === false) {
             } else {
 	        foreach($guilds as $guild) {
                     $uses = $guild->id;
+                    $guildName = $guild->name;
                     if (in_array($uses, $serverBlacklist)) {
-                        $granted = false;
+                        if ($logFailedLogin) {
+                            $logFailure($user->{'username'} . "#" . $user->{'discriminator'} . " has been blocked for being a member of " . $guildName . "\n");
+                        }
+                        header("Location: ./access-denied.php");
+                        die();
                     } else {
                         if (in_array($uses, $serverWhitelist)) {
                             header("Location: .?login=true");
@@ -61,4 +66,9 @@ if ($noDiscordLogin === false) {
     }
 } else {
     header("Location: .");
+}
+
+function logFailure($logFailure){
+    global $logFailedLogin;
+    file_put_contents($logFailedLogin, $logFailure, FILE_APPEND);
 }
