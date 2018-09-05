@@ -1,150 +1,170 @@
 {
   "1": {
-    "cat": "Pokémon",
+    "cat": "Pokémon:",
     "name": "Bulbasaur"
   },
   "4": {
-    "cat": "Pokémon",
+    "cat": "Pokémon:",
     "name": "Charmander"
   },
   "7": {
-    "cat": "Pokémon",
+    "cat": "Pokémon:",
     "name": "Squirtle"
   },
   "37": {
-    "cat": "Pokémon",
+    "cat": "Pokémon:",
     "name": "Vulpix"
   },
   "38": {
-    "cat": "Pokémon",
+    "cat": "Pokémon:",
     "name": "Ninetales"
   },
   "56": {
-    "cat": "Pokémon",
+    "cat": "Pokémon:",
     "name": "Mankey"
   },
   "58": {
-    "cat": "Pokémon",
+    "cat": "Pokémon:",
     "name": "Growlithe"
   },
   "60": {
-    "cat": "Pokémon",
+    "cat": "Pokémon:",
     "name": "Poliwag"
   },
   "66": {
-    "cat": "Pokémon",
+    "cat": "Pokémon:",
     "name": "Machop"
   },
   "92": {
-    "cat": "Pokémon",
+    "cat": "Pokémon:",
     "name": "Gastly"
   },
   "95": {
-    "cat": "Pokémon",
+    "cat": "Pokémon:",
     "name": "Onix"
   },
   "100": {
-    "cat": "Pokémon",
+    "cat": "Pokémon:",
     "name": "Voltorb"
   },
   "102": {
-    "cat": "Pokémon",
+    "cat": "Pokémon:",
     "name": "Exeggcute"
   },
   "109": {
-    "cat": "Pokémon",
+    "cat": "Pokémon:",
     "name": "Koffing"
   },
   "113": {
-    "cat": "Pokémon",
+    "cat": "Pokémon:",
     "name": "Chansey"
   },
   "124": {
-    "cat": "Pokémon",
+    "cat": "Pokémon:",
     "name": "Jynx"
   },
   "125": {
-    "cat": "Pokémon",
+    "cat": "Pokémon:",
     "name": "Electabuzz"
   },
   "126": {
-    "cat": "Pokémon",
+    "cat": "Pokémon:",
     "name": "Magmar"
   },	
   "129": {
-    "cat": "Pokémon",
+    "cat": "Pokémon:",
     "name": "Magikarp"
   },
   "133": {
-    "cat": "Pokémon",
+    "cat": "Pokémon:",
     "name": "Eevee"
   },
   "147": {
-    "cat": "Pokémon",
+    "cat": "Pokémon:",
     "name": "Dratini"
   },
   "171": {
-    "cat": "Pokémon",
+    "cat": "Pokémon:",
     "name": "Lanturn"
   },
   "179": {
-    "cat": "Pokémon",
+    "cat": "Pokémon:",
     "name": "Mareep"
   },
   "200": {
-    "cat": "Pokémon",
+    "cat": "Pokémon:",
     "name": "Misdreavus"
   },
   "203": {
-    "cat": "Pokémon",
+    "cat": "Pokémon:",
     "name": "Girafarig"
   },
   "209": {
-    "cat": "Pokémon",
+    "cat": "Pokémon:",
     "name": "Snubbull"
   },
   "228": {
-    "cat": "Pokémon",
+    "cat": "Pokémon:",
     "name": "Houndour"
   },
   "231": {
-    "cat": "Pokémon",
+    "cat": "Pokémon:",
     "name": "Phanpy"
   },
   "246": {
-    "cat": "Pokémon",
+    "cat": "Pokémon:",
     "name": "Larvitar"
   },
   "309": {
-    "cat": "Pokémon",
+    "cat": "Pokémon:",
     "name": "Electrike"
   },
   "315": {
-    "cat": "Pokémon",
+    "cat": "Pokémon:",
     "name": "Roselia"
   },
   "322": {
-    "cat": "Pokémon",
+    "cat": "Pokémon:",
     "name": "Numel"
   },
   "327": {
-    "cat": "Pokémon",
+    "cat": "Pokémon:",
     "name": "Spinda"
   },
   "999": {
-    "cat": "Pokémon",
+    "cat": "Pokémon:",
     "name": "?? Encounter"
   },
   "1000": {
-    "cat": "Items",
+    "cat": "Items:",
     "name": "Rare Candy"
   },
   "1002": {
-    "cat": "Items",
+    "cat": "Items:",
     "name": "3 Rare Candy"
   },
+  "1102": {
+    "cat": "Items:",
+    "name": "200 Stardust"
+  },
+  "1103": {
+    "cat": "Items:",
+    "name": "500 Stardust"
+  },
+  "1104": {
+    "cat": "Items:",
+    "name": "1000 Stardust"
+  },
+  "1105": {
+    "cat": "Items:",
+    "name": "1500 Stardust"
+  },
+  "1106": {
+    "cat": "Items:",
+    "name": "2000 Stardust"
+  },
   "1300": {
-    "cat": "Items",
+    "cat": "Items:",
     "name": "Silver Pinap"
   }
 }
