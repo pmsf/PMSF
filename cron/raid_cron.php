@@ -46,7 +46,7 @@ if (count($eggs5) > 0) {
     }
 
     // update raids table
-    $db->update("raids", ["pokemon_id" => $manualFiveStar['pokemon_id'], "move_1" => $manualFiveStar['move_1'], "move_2" => $manualFiveStar['move_2'], "cp" => $manualFiveStar['cp']], ["fort_id" => $fort_ids]);
+    $db->update("raids", ["pokemon_id" => $manualFiveStar['pokemon_id'], "move_1" => $manualFiveStar['move_1'], "move_2" => $manualFiveStar['move_2'], "cp" => $manualFiveStar['cp'], "form" => $manualFiveStar['form']], ["fort_id" => $fort_ids]);
 
     // also mark fort_sightings as updated:
     $db->update("fort_sightings", ["updated" => time()], ["fort_id" => $fort_ids]);
