@@ -107,6 +107,7 @@ $sellyWebhookSecret = '';                                           // Add a sec
 /* Blacklist Settings */
 $userWhitelist = [''];                                              // Array of user ID's that's allowed to bypass the server blacklist
 $serverWhitelist = [''];                                            // Array of server ID's. Your users will need to be in at least one of them
+$serverBlacklist = [''];                                            // Array of server ID's. A user that's a member of any of these and not in your user whitelist will be blocked
 
 //-----------------------------------------------------
 // FRONTEND SETTINGS
