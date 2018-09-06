@@ -95,6 +95,7 @@ $sellyPage = '';                                                    // Link to s
 $sellyWebhookSecret = '';                                           // Add a secret key at https://selly.gg/settings to make sure the payment webhook is sent from selly to prevent fake payments.
                                                                     // Add the same key to the $sellyWebhookSecret variable.
 /* Blacklist Settingss - Only available with Discord login */
+$userBlacklist = [''];                                                                // Array of user ID's that are always blocked from accessing the map
 $userWhitelist = [''];                                              // Array of user ID's that's allowed to bypass the server blacklist
 $serverWhitelist = [''];                                            // Array of server ID's. Your users will need to be in at least one of them
 $serverBlacklist = [''];                                            // Array of server ID's. A user that's a member of any of these and not in your user whitelist will be blocked

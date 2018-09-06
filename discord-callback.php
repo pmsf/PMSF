@@ -10,26 +10,31 @@ if ($noDiscordLogin === false) {
             $auth->handleAuthorizationResponse($_GET);
             $user = json_decode($auth->get("/api/users/@me"));
 	    $guilds = json_decode($auth->get("/api/users/@me/guilds"));
-            if (in_array($user->{'id'}, $userWhitelist)) {
-                header("Location: .?login=true");
-                $granted = true;
+            if (in_array($user->{'id'}, $userBlacklist)) {
+                header("Location: ./access-denied.php");
+                $granted = false;
             } else {
-	        foreach($guilds as $guild) {
-                    $uses = $guild->id;
-                    $guildName = $guild->name;
-                    if (in_array($uses, $serverBlacklist)) {
-                        if ($logFailedLogin) {
-                            $logFailure($user->{'username'} . "#" . $user->{'discriminator'} . " has been blocked for being a member of " . $guildName . "\n");
+                if (in_array($user->{'id'}, $userWhitelist)) {
+                    header("Location: .?login=true");
+                    $granted = true;
+                } else {
+	            foreach($guilds as $guild) {
+                        $uses = $guild->id;
+                        $guildName = $guild->name;
+                        if (in_array($uses, $serverBlacklist)) {
+                            if ($logFailedLogin) {
+                                $logFailure($user->{'username'} . "#" . $user->{'discriminator'} . " has been blocked for being a member of " . $guildName . "\n");
+                            }
+                            header("Location: ./access-denied.php");
+                            die();
+                        } else {
+                            if (in_array($uses, $serverWhitelist)) {
+                                header("Location: .?login=true");
+                                $granted = true;
+                            }
                         }
-                        header("Location: ./access-denied.php");
-                        die();
-                    } else {
-                        if (in_array($uses, $serverWhitelist)) {
-                            header("Location: .?login=true");
-                            $granted = true;
-                        }
-                    }
-		}
+		    }
+                }
 	    }
             if ($granted !== true) {
                 header("Location: ./access-denied.php");
