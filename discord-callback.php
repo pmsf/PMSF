@@ -23,7 +23,7 @@ if ($noDiscordLogin === false) {
                         $guildName = $guild->name;
                         if (in_array($uses, $serverBlacklist)) {
                             if ($logFailedLogin) {
-                                $logFailure($user->{'username'} . "#" . $user->{'discriminator'} . " has been blocked for being a member of " . $guildName . "\n");
+                                logFailure($user->{'username'} . "#" . $user->{'discriminator'} . " has been blocked for being a member of " . $guildName . "\n");
                             }
                             header("Location: .?login=false");
                             die();
@@ -77,3 +77,4 @@ function logFailure($logFailure){
     global $logFailedLogin;
     file_put_contents($logFailedLogin, $logFailure, FILE_APPEND);
 }
+
