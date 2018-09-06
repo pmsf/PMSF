@@ -168,7 +168,21 @@ var notifyText = 'disappears at <dist> (<udist>)'
 if (location.search.indexOf('login=true') > 0) {
     setTimeout(function () { window.location = '/' }, 500)
 }
-
+if (location.search.indexOf('login=false') > 0) {
+    openAccessDeniedModal()
+}
+function openAccessDeniedModal(event) { // eslint-disable-line no-unused-vars
+    $('.ui-dialog').remove()
+    $('.accessdenied-modal').clone().dialog({
+        modal: true,
+        maxHeight: 600,
+        buttons: {},
+        title: i8ln('Your access is denied'),
+        classes: {
+            'ui-dialog': 'ui-dialog raid-widget-popup'
+        }
+    })
+}
 function formatDate(date) {
     var monthNames = [
         "January", "February", "March",
