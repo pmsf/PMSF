@@ -25,7 +25,7 @@ if ($noDiscordLogin === false) {
                             if ($logFailedLogin) {
                                 $logFailure($user->{'username'} . "#" . $user->{'discriminator'} . " has been blocked for being a member of " . $guildName . "\n");
                             }
-                            header("Location: ./access-denied.php");
+                            header("Location: .?login=false");
                             die();
                         } else {
                             if (in_array($uses, $serverWhitelist)) {
@@ -37,7 +37,7 @@ if ($noDiscordLogin === false) {
                 }
 	    }
             if ($granted !== true) {
-                header("Location: ./access-denied.php");
+                header("Location: .?login=false");
                 die();
             }
             $count = $db->count("users", [
