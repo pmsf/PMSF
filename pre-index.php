@@ -1174,20 +1174,14 @@ if ( $blockIframe ) {
         </div>
     <?php } ?>
     <?php if ( ! $noDiscordLogin ) { ?>
-        <?php if ( $copyrightSafe === false ) { ?>
-	    <div class="accessdenied-modal" style="display: none;">
-	        <img src="static/images/accessdenied.png" alt="PikaSquad" width="250">
-	        <center><?php echo i8ln( 'Your access has been denied.' ); ?></center>
-	        <br>
-	        <?php echo i8ln('You might not be a member of our Discord or you joined a server which is on our blacklist. Click <a href="' .$discordUrl .'">here</a> to join!'); ?>
-            </div>
-        <?php } else { ?>
-            <div class="accessdenied-modal" style="display: none;">
-                <center><?php echo i8ln( 'Your access has been denied.' ); ?></center>
-                <br>
-                <?php echo i8ln('You might not be a member of our Discord or you joined a server which is on our blacklist. Click <a href="' .$discordUrl .'">here</a> to join!'); ?>
-            </div>
-        <?php } ?>
+        <div class="accessdenied-modal" style="display: none;">
+            <?php if ( $copyrightSafe === false ) { ?>
+                <img src="static/images/accessdenied.png" alt="PikaSquad" width="250">
+            <?php } ?>
+            <center><?php echo i8ln( 'Your access has been denied.' ); ?></center>
+            <br>
+            <?php echo i8ln('You might not be a member of our Discord or you joined a server which is on our blacklist. Click <a href="' .$discordUrl .'">here</a> to join!'); ?>
+        </div>
     <?php } ?>
     <?php if ( ! $noManualQuests ) { ?>
         <div class="quest-modal" style="display: none;">
