@@ -9,7 +9,37 @@ if ($noDiscordLogin === false) {
             $auth = new DiscordAuth();
             $auth->handleAuthorizationResponse($_GET);
             $user = json_decode($auth->get("/api/users/@me"));
-
+	    $guilds = json_decode($auth->get("/api/users/@me/guilds"));
+            if (in_array($user->{'id'}, $userBlacklist)) {
+                header("Location: ./access-denied.php");
+                $granted = false;
+            } else {
+                if (in_array($user->{'id'}, $userWhitelist)) {
+                    header("Location: .?login=true");
+                    $granted = true;
+                } else {
+	            foreach($guilds as $guild) {
+                        $uses = $guild->id;
+                        $guildName = $guild->name;
+                        if (in_array($uses, $serverBlacklist)) {
+                            if ($logFailedLogin) {
+                                logFailure($user->{'username'} . "#" . $user->{'discriminator'} . " has been blocked for being a member of " . $guildName . "\n");
+                            }
+                            header("Location: .?login=false");
+                            die();
+                        } else {
+                            if (in_array($uses, $serverWhitelist)) {
+                                header("Location: .?login=true");
+                                $granted = true;
+                            }
+                        }
+		    }
+                }
+	    }
+            if ($granted !== true) {
+                header("Location: .?login=false");
+                die();
+            }
             $count = $db->count("users", [
                 "id" => $user->{'id'},
                 "login_system" => 'discord'
@@ -34,8 +64,7 @@ if ($noDiscordLogin === false) {
                 "id" => $user->{'id'},
                 "login_system" => 'discord'
             ]);
-        }
-        header("Location: .?login=true");
+	}
         die();
     } catch (Exception $e) {
         header("Location: ./discord-login");
@@ -43,3 +72,9 @@ if ($noDiscordLogin === false) {
 } else {
     header("Location: .");
 }
+
+function logFailure($logFailure){
+    global $logFailedLogin;
+    file_put_contents($logFailedLogin, $logFailure, FILE_APPEND);
+}
+
