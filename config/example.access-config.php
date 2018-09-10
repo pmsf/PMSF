@@ -1,6 +1,7 @@
 <?php
 /* User levels */
 // The part below requires the bot Chuckleslove wrote https://github.com/jepke/PMSF-Discord-AuthBot
+// This bot is included when you pull PMSF so no need to pull it separately
 // IDs must match the bots config
 //
 //THIS PART IS NOT PMSF CONFIG
