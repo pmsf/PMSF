@@ -12,7 +12,8 @@ CREATE TABLE `users` (
   `temp_password` varchar(250) DEFAULT NULL,
   `expire_timestamp` int(11) NOT NULL,
   `session_id` varchar(100) DEFAULT NULL,
-  `login_system` varchar(40) NOT NULL
+  `login_system` varchar(40) NOT NULL,
+  `access_level` tinyint(1) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 CREATE TABLE `communities` (

@@ -105,60 +105,25 @@ $logFailedLogin = '';                                               // File loca
 // FRONTEND SETTINGS
 //-----------------------------------------------------
 
-if ($noNativeLogin === true && $noDiscordLogin == true ||  (($noNativeLogin === false || $noDiscordLogin === false) && !empty($_SESSION['user']->expire_timestamp) && $_SESSION['user']->expire_timestamp > time())) {
+/* Marker Settings */
+$noExcludeMinIV = false;                                        // true/false
+$noMinIV = false;                                               // true/false
+$noMinLevel = false;                                            // true/false
+$noHighLevelData = false;                                       // true/false
 
-    /*
-        THESE SETTINGS WILL BE APPLIED IF:
-            - LOGIN IS DISABLED
-            - LOGIN IS ENABLED AND THE USER IS LOGGED ON
-    */
+/* Notification Settings */
+$noNotifyPokemon = false;                                       // true/false
+$noNotifyRarity = false;                                        // true/false
+$noNotifyIv = false;                                            // true/false
+$noNotifyLevel = false;                                         // true/false
+$noNotifyRaid = false;                                          // true/false
+$noNotifySound = false;                                         // true/false
+$noCriesSound = false;                                          // true/false
+$noNotifyBounce = false;                                        // true/false
+$noNotifyNotification = false;                                  // true/false
 
-    /* Marker Settings */
-    $noExcludeMinIV = false;                                        // true/false
-    $noMinIV = false;                                               // true/false
-    $noMinLevel = false;                                            // true/false
-    $noHighLevelData = false;                                       // true/false
-
-    /* Notification Settings */
-    $noNotifyPokemon = false;                                       // true/false
-    $noNotifyRarity = false;                                        // true/false
-    $noNotifyIv = false;                                            // true/false
-    $noNotifyLevel = false;                                         // true/false
-    $noNotifyRaid = false;                                          // true/false
-    $noNotifySound = false;                                         // true/false
-    $noCriesSound = false;                                          // true/false
-    $noNotifyBounce = false;                                        // true/false
-    $noNotifyNotification = false;                                  // true/false
-
-    /* Style Settings */
-    $iconNotifySizeModifier = 15;                                   // 0, 15, 30, 45
-} else {
-
-    /*
-        THESE SETTINGS WILL BE APPLIED IF:
-            - LOGIN IS ENABLED AND THE USER IS _NOT_ LOGGED ON
-    */
-
-    /* Marker Settings */
-    $noExcludeMinIV = true;                                         // true/false
-    $noMinIV = true;                                                // true/false
-    $noMinLevel = true;                                             // true/false
-    $noHighLevelData = true;                                        // true/false
-
-    /* Notification Settings */
-    $noNotifyPokemon = true;                                        // true/false
-    $noNotifyRarity = true;                                         // true/false
-    $noNotifyIv = true;                                             // true/false
-    $noNotifyLevel = true;                                          // true/false
-    $noNotifyRaid = true;                                           // true/false
-    $noNotifySound = true;                                          // true/false
-    $noCriesSound = true;                                           // true/false
-    $noNotifyBounce = true;                                         // true/false
-    $noNotifyNotification = true;                                   // true/false
-
-    /* Style Settings */
-    $iconNotifySizeModifier = 0;                                    // 0, 15, 30, 45
-}
+/* Style Settings */
+$iconNotifySizeModifier = 15;                                   // 0, 15, 30, 45
 
 /* Marker Settings */
 
@@ -418,9 +383,6 @@ $enableDebug = false;
 // DATABASE CONFIG
 //-----------------------------------------------------
 
-$map = "monocle";
-$fork = "alternate";
-
 $db = new Medoo([// required
     'database_type' => 'mysql',                                    
     'database_name' => 'Monocle',
@@ -433,3 +395,5 @@ $db = new Medoo([// required
     //'port' => 5432,                                               // Comment out if not needed, just add // in front!
     //'socket' => /path/to/socket/,
 ]);
+if(file_exists('config/access-config.php'))
+    include 'config/access-config.php';
