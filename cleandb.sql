@@ -165,6 +165,7 @@ CREATE TABLE IF NOT EXISTS `users` (
   `expire_timestamp` int(11) NOT NULL,
   `session_id` varchar(100) DEFAULT NULL,
   `login_system` varchar(40) NOT NULL,
+  `access_level` tinyint(1) NOT NULL,
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 

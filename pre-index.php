@@ -206,7 +206,7 @@ if ( $blockIframe ) {
                     header('Location: ./logout.php');
                 }
 
-                echo "<span style='color: {$color};'>" . substr($_SESSION['user']->user, 0, 3) . "...</span>";
+                echo "<span style='color: {$color};'>" . substr($_SESSION['user']->user, 0, 30) . "...</span>";
             } else {
                 echo "<a href='./user'>" . i8ln('Login') . "</a>";
             }
@@ -1171,6 +1171,16 @@ if ( $blockIframe ) {
                         style="margin-right:10px; vertical-align: middle; font-size: 1.5em;"></i><?php echo i8ln( 'No Pokestop or Gym' ); ?>
 		</button>
             </div>
+        </div>
+    <?php } ?>
+    <?php if ( ! $noDiscordLogin ) { ?>
+        <div class="accessdenied-modal" style="display: none;">
+            <?php if ( $copyrightSafe === false ) { ?>
+                <img src="static/images/accessdenied.png" alt="PikaSquad" width="250">
+            <?php } ?>
+            <center><?php echo i8ln( 'Your access has been denied.' ); ?></center>
+            <br>
+            <?php echo i8ln('You might not be a member of our Discord or you joined a server which is on our blacklist. Click <a href="' .$discordUrl .'">here</a> to join!'); ?>
         </div>
     <?php } ?>
     <?php if ( ! $noManualQuests ) { ?>
