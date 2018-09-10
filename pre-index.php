@@ -158,7 +158,7 @@ if ( $blockIframe ) {
     <header id="header">
         <a href="#nav"><span class="label"><?php echo i8ln( 'Options' ) ?></span></a>
 
-	<h1><a href="#"><?= $title ?><img src="<?= $raidmapLogo ?>" height="55" width="auto" border="0" style="float: right;"></a></h1>
+        <h1><a href="#"><?= $title ?><img src="<?= $raidmapLogo ?>" height="35" width="auto" border="0" style="float: right; margin-left: 5px; margin-top: 10px;"></a></h1>
         <?php
         if ( $discordUrl != "" ) {
             echo '<a href="' . $discordUrl . '" target="_blank" style="margin-bottom: 5px; vertical-align: middle;padding:0 5px;">
