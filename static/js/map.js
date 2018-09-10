@@ -168,6 +168,29 @@ var notifyText = 'disappears at <dist> (<udist>)'
 if (location.search.indexOf('login=true') > 0) {
     setTimeout(function () { window.location = '/' }, 500)
 }
+
+function formatDate(date) {
+    var monthNames = [
+        'January', 'February', 'March',
+        'April', 'May', 'June', 'July',
+        'August', 'September', 'October',
+        'November', 'December'
+    ]
+
+    var day = date.getDate()
+    var monthIndex = date.getMonth()
+    var year = date.getFullYear()
+    var hours = date.getHours()
+    var minutes = date.getMinutes()
+    if (minutes < 10) {
+        minutes = '0' + minutes
+    } else {
+        minutes = minutes + ''
+    }
+
+    return day + ' ' + monthNames[monthIndex] + ' ' + year + ' ' + hours + ':' + minutes
+}
+
 function excludePokemon(id) { // eslint-disable-line no-unused-vars
     $selectExclude.val(
         $selectExclude.val().split(',').concat(id).join(',')
@@ -712,13 +735,13 @@ function gymLabel(item) {
         raidStr = '<h3 style="margin-bottom: 0">Raid ' + levelStr
         if (raidStarted) {
             var cpStr = ''
-            if (item.raid_pokemon_cp != null && item.raid_pokemon_cp != 0) {
+            if (item.raid_pokemon_cp > 0) {
                 cpStr = ' CP ' + item.raid_pokemon_cp
             }
             raidStr += '<br>' + item.raid_pokemon_name + cpStr
         }
         raidStr += '</h3>'
-        if (raidStarted && item.raid_pokemon_move_1 != null && item.raid_pokemon_move_1 != 133 && item.raid_pokemon_move_2 != null && item.raid_pokemon_move_2 != 133) {
+        if (raidStarted && item.raid_pokemon_move_1 > 0 && item.raid_pokemon_move_1 !== '133' && item.raid_pokemon_move_2 > 0 && item.raid_pokemon_move_2 !== '133') {
             var pMove1 = (moves[item['raid_pokemon_move_1']] !== undefined) ? i8ln(moves[item['raid_pokemon_move_1']]['name']) : 'gen/unknown'
             var pMove2 = (moves[item['raid_pokemon_move_2']] !== undefined) ? i8ln(moves[item['raid_pokemon_move_2']]['name']) : 'gen/unknown'
             raidStr += '<div><b>' + pMove1 + ' / ' + pMove2 + '</b></div>'
@@ -746,9 +769,19 @@ function gymLabel(item) {
             } else {
                 pokemonidStr = pokemonid
             }
-            raidIcon = '<img style="width: 80px;" src="https://raw.githubusercontent.com/ZeChrales/PogoAssets/master/pokemon_icons/pokemon_icon_' + pokemonidStr + '_' + formStr + '.png"/>'
+            raidIcon = '<img style="width: 80px; -webkit-filter: drop-shadow(5px 5px 5px #222); filter: drop-shadow(5px 5px 5px #222);" src="https://raw.githubusercontent.com/ZeChrales/PogoAssets/master/pokemon_icons/pokemon_icon_' + pokemonidStr + '_' + formStr + '.png"/>'
         } else if (raidStarted && copyrightSafe === true) {
             raidIcon = '<i class="pokemon-sprite-large n' + item.raid_pokemon_id + '"></i>'
+        } else if (item.raid_start <= Date.now()) {
+            var hatchedEgg = ''
+            if (item['raid_level'] <= 2) {
+                hatchedEgg = 'hatched_normal'
+            } else if (item['raid_level'] <= 4) {
+                hatchedEgg = 'hatched_rare'
+            } else {
+                hatchedEgg = 'hatched_legendary'
+            }
+            raidIcon = '<img src="static/raids/egg_' + hatchedEgg + '.png" style="width:60px;height:70">'
         } else {
             var raidEgg = ''
             if (item['raid_level'] <= 2) {
@@ -793,15 +826,25 @@ function gymLabel(item) {
 
     var gymColor = ['0, 0, 0, .4', '74, 138, 202, .6', '240, 68, 58, .6', '254, 217, 40, .6']
     var str
+    var gymIcon = ''
+    if ((((park !== 'None' && park !== undefined && onlyTriggerGyms === false && park) || (item['sponsor'] !== undefined && item['sponsor'] > 0) || triggerGyms.includes(item['gym_id'])) && (noExGyms === false))) {
+        gymIcon = '<img height="70px" style="padding: 5px;" src="static/forts/' + teamName + '_large_ex.png">'
+    } else {
+        gymIcon = '<img height="70px" style="padding: 5px;" src="static/forts/' + teamName + '_large.png">'
+    }
+    var gymImage = ''
+    if (url !== null) {
+        gymImage = '<img height="70px" style="padding: 5px;" src="' + url + '">'
+    }
     if (teamId === 0) {
         str =
             '<div>' +
             '<center>' +
             nameStr +
             '<div>' +
-            '<img height="70px" style="padding: 5px;" src="static/forts/' + teamName + '_large.png">' +
+            gymIcon +
             raidIcon +
-            '<img height="70px" style="padding: 5px;" src="' + url + '">' +
+            gymImage +
             '</div>' +
             raidStr +
             '<div>' +
@@ -815,7 +858,7 @@ function gymLabel(item) {
         if (((!noWhatsappLink) && (raidSpawned && item.raid_end > Date.now())) && (item.raid_pokemon_id > 1 && item.raid_pokemon_id < 386)) {
             str += '<center>' +
                 '<div>' +
-                '<a href="whatsapp://send?text=' + item.name + '%0ALevel%20' + item.raid_level + '%20' + item.raid_pokemon_name + '%0ARaid CP%20' + item.raid_pokemon_cp + '%0A%2AStart:%20' + raidStartStr + '%2A%0A%2AEnd:%20' + raidEndStr + '%2A%0AStats:%0Ahttps://pokemongo.gamepress.gg/pokemon/' + item.raid_pokemon_id + '%0ADirections:%0Ahttps://www.google.com/maps/search/?api=1%26query=' + item.latitude + ',' + item.longitude + '" data-action="share/whatsapp/share">Whatsapp Link</a>' +
+                '<a href="whatsapp://send?text=' + item.name + '%0ALevel%20' + item.raid_level + '%20' + item.raid_pokemon_name + '%0A%2AStart:%20' + raidStartStr + '%2A%0A%2AEnd:%20' + raidEndStr + '%2A%0AStats:%0Ahttps://pokemongo.gamepress.gg/pokemon/' + item.raid_pokemon_id + '%0ADirections:%0Ahttps://www.google.com/maps/search/?api=1%26query=' + item.latitude + ',' + item.longitude + '" data-action="share/whatsapp/share">Whatsapp Link</a>' +
                 '</div>' +
                 '</center>'
         } else if ((!noWhatsappLink) && (raidSpawned && item.raid_end > Date.now())) {
@@ -869,6 +912,10 @@ function pokestopLabel(expireTime, latitude, longitude, stopName, url, lureUser,
     if (stopName === null) {
         stopName = 'Pokéstop'
     }
+    var stopImage = ''
+    if (url !== null) {
+        stopImage = '<img height="70px" style="padding: 5px;" src="' + url + '">'
+    }
     if (expireTime) {
         if (lureUser) {
             str =
@@ -907,7 +954,7 @@ function pokestopLabel(expireTime, latitude, longitude, stopName, url, lureUser,
                 '</div>' +
                 '<div>' +
                 '<img height="70px" style="padding: 5px;" src="static/forts/Pstop-large.png">' +
-                '<img height="70px" style="padding: 5px;" src="' + url + '">' +
+                stopImage +
                 '</div>' +
                 '</center>' +
                 '</div>'
@@ -920,7 +967,7 @@ function pokestopLabel(expireTime, latitude, longitude, stopName, url, lureUser,
                 '</div>' +
                 '<div>' +
                 '<img height="70px" style="padding: 5px;" src="static/forts/Pstop-quest-large.png">' +
-                '<img height="70px" style="padding: 5px;" src="' + url + '">' +
+                stopImage +
                 '<img height="70px" style="padding: 5px;" src="static/rewards/reward_' + reward + '.png"/>' +
                 '</div>' +
                 '</center>' +
@@ -1190,22 +1237,41 @@ function getGymMarkerIcon(item) {
     } else {
         teamStr = gymTypes[item['team_id']] + '_' + level
     }
-    var exIcon = ''
+    var gymIcon = ''
     if ((((park !== 'None' && park !== undefined && onlyTriggerGyms === false && park) || (item['sponsor'] !== undefined && item['sponsor'] > 0) || triggerGyms.includes(item['gym_id'])) && (noExGyms === false))) {
-        exIcon = '<img src="static/images/ex.png" style="position:absolute;right:30px;bottom:2px;"/>'
+        gymIcon = '<img src="static/forts/' + Store.get('gymMarkerStyle') + '/' + teamStr + '_ex.png" style="width:50px;height:auto;"/>'
+    } else {
+        gymIcon = '<img src="static/forts/' + Store.get('gymMarkerStyle') + '/' + teamStr + '.png" style="width:50px;height:auto;"/>'
+    }
+    var gymSmallIcon = ''
+    if ((((park !== 'None' && park !== undefined && onlyTriggerGyms === false && park) || (item['sponsor'] !== undefined && item['sponsor'] > 0) || triggerGyms.includes(item['gym_id'])) && (noExGyms === false))) {
+        gymSmallIcon = '<img src="static/forts/' + Store.get('gymMarkerStyle') + '/' + teamStr + '_ex.png" style="width:35px;height:auto;"/>'
+    } else {
+        gymSmallIcon = '<img src="static/forts/' + Store.get('gymMarkerStyle') + '/' + teamStr + '.png" style="width:35px;height:auto;"/>'
     }
 
     if (item['raid_pokemon_id'] != null && item.raid_end > Date.now() && copyrightSafe === false) {
         return '<div style="position:relative;">' +
-            '<img src="static/forts/' + Store.get('gymMarkerStyle') + '/' + teamStr + '.png" style="width:45px;height:auto;"/>' +
-            '<img src="https://raw.githubusercontent.com/ZeChrales/PogoAssets/master/pokemon_icons/pokemon_icon_' + pokemonidStr + '_' + formStr + '.png" style="width:80px;max-width:60px;height:auto;position:absolute;top:-25px;right:-5px;"/>' +
-            exIcon +
+            gymIcon +
+            '<img src="https://raw.githubusercontent.com/ZeChrales/PogoAssets/master/pokemon_icons/pokemon_icon_' + pokemonidStr + '_' + formStr + '.png" style="max-width:70px;height:auto;position:absolute;top:-35px;right:-5px;"/>' +
             '</div>'
     } else if (item['raid_pokemon_id'] != null && item.raid_end > Date.now() && copyrightSafe === true) {
         return '<div style="position:relative;">' +
-            '<img src="static/forts/' + Store.get('gymMarkerStyle') + '/' + teamStr + '.png" style="width:45px;height:auto;"/>' +
+            gymIcon +
             '<i class="pokemon-raid-sprite n' + item.raid_pokemon_id + '"></i>' +
-            exIcon +
+            '</div>'
+    } else if (item['raid_level'] !== null && item.raid_start <= Date.now() && item.raid_end > Date.now()) {
+        var hatchedEgg = ''
+        if (item['raid_level'] <= 2) {
+            hatchedEgg = 'hatched_normal'
+        } else if (item['raid_level'] <= 4) {
+            hatchedEgg = 'hatched_rare'
+        } else {
+            hatchedEgg = 'hatched_legendary'
+        }
+        return '<div style="position:relative;">' +
+            gymIcon +
+            '<img src="static/raids/egg_' + hatchedEgg + '.png" style="width:35px;height:auto;position:absolute;top:-10px;right:12px;"/>' +
             '</div>'
     } else if (item['raid_level'] !== null && item.raid_end > Date.now()) {
         var raidEgg = ''
@@ -1217,14 +1283,12 @@ function getGymMarkerIcon(item) {
             raidEgg = 'legendary'
         }
         return '<div style="position:relative;">' +
-            '<img src="static/forts/' + Store.get('gymMarkerStyle') + '/' + teamStr + '.png" style="width:45px;height:auto;"/>' +
-            '<img src="static/raids/egg_' + raidEgg + '.png" style="width:25px;height:auto;position:absolute;top:8px;right:12px;"/>' +
-            exIcon +
+            gymIcon +
+            '<img src="static/raids/egg_' + raidEgg + '.png" style="width:25px;height:auto;position:absolute;top:6px;right:18px;"/>' +
             '</div>'
     } else {
         return '<div>' +
-            '<img src="static/forts/' + Store.get('gymMarkerStyle') + '/' + gymTypes[item['team_id']] + '.png" style="width:32px;height: auto;"/>' +
-            exIcon +
+            gymSmallIcon +
             '</div>'
     }
 }
@@ -1235,6 +1299,8 @@ function setupGymMarker(item) {
         map: map,
         content: getGymMarkerIcon(item),
         flat: true,
+        optimized: false,
+        zIndex: google.maps.Marker.MAX_ZINDEX + 2,
         anchor: RichMarkerPosition.MIDDLE
     })
 
@@ -1279,6 +1345,16 @@ function setupGymMarker(item) {
             checkAndCreateSound(item.raid_pokemon_id)
         } else if (raidStarted && copyrightSafe === true) {
             icon = iconpath + item.raid_pokemon_id + '.png'
+        } else if (item.raid_start <= Date.now()) {
+            var hatchedEgg = ''
+            if (item['raid_level'] <= 2) {
+                hatchedEgg = 'hatched_normal'
+            } else if (item['raid_level'] <= 4) {
+                hatchedEgg = 'hatched_rare'
+            } else {
+                hatchedEgg = 'hatched_legendary'
+            }
+            icon = 'static/raids/egg_' + hatchedEgg + '.png'
         } else {
             var raidEgg = ''
             if (item['raid_level'] <= 2) {
@@ -1366,6 +1442,16 @@ function updateGymMarker(item, marker) {
             } else if (raidStarted && copyrightSafe === false) {
                 icon = iconpath + item.raid_pokemon_id + '.png'
                 checkAndCreateSound(item.raid_pokemon_id)
+            } else if (item.raid_start <= Date.now()) {
+                var hatchedEgg = ''
+                if (item['raid_level'] <= 2) {
+                    hatchedEgg = 'hatched_normal'
+                } else if (item['raid_level'] <= 4) {
+                    hatchedEgg = 'hatched_rare'
+                } else {
+                    hatchedEgg = 'hatched_legendary'
+                }
+                icon = 'static/raids/egg_' + hatchedEgg + '.png'
             } else {
                 checkAndCreateSound()
                 var raidEgg = ''
@@ -1418,6 +1504,8 @@ function setupPokestopMarker(item) {
         map: map,
         content: getPokestopMarkerIcon(item),
         flat: true,
+        optimized: false,
+        zIndex: google.maps.Marker.MAX_ZINDEX + 1,
         anchor: RichMarkerPosition.MIDDLE
     })
 
@@ -1523,6 +1611,8 @@ function setupCommunityMarker(item) {
         map: map,
         content: str,
         flat: true,
+        optimized: false,
+        zIndes: google.maps.Marker.MAX_ZINDEX + 5,
         anchor: RichMarkerPosition.MIDDLE
     })
 
@@ -1594,18 +1684,31 @@ function communityLabel(item) {
 }
 
 function setupPortalMarker(item) {
-    var circle = {
-        path: google.maps.SymbolPath.CIRCLE,
-        fillColor: 'blue',
-        fillOpacity: 0.4,
-        scale: 15,
-        strokeColor: 'white',
-        strokeWeight: 1
+    if (item.checked === '1') {
+        var circle = {
+            path: google.maps.SymbolPath.CIRCLE,
+            fillColor: 'red',
+            fillOpacity: 0.4,
+            scale: 15,
+            strokeColor: 'white',
+            strokeWeight: 1
+        }
+    } else {
+        circle = {
+            path: google.maps.SymbolPath.CIRCLE,
+            fillColor: 'blue',
+            fillOpacity: 0.4,
+            scale: 15,
+            strokeColor: 'white',
+            strokeWeight: 1
+        }
     }
     var location = {lat: item['lat'], lng: item['lon']}
     var marker = new google.maps.Marker({
         position: location,
         map: map,
+        optimized: false,
+        zIndex: google.maps.Marker.MAX_ZINDEX - 1,
         icon: circle
     })
 
@@ -1620,9 +1723,11 @@ function setupPortalMarker(item) {
 }
 
 function portalLabel(item) {
+    var updated = formatDate(new Date(item.updated * 1000))
     var str = '<img src="' + item.url + '" align"middle" style="width:175px;height:auto;margin-left:25px;"/>' +
         '<center><h4><div>' + item.name + '</div></h4></center>' +
-        '<center><div>Convert this portal<i class="fa fa-refresh convert-portal" style="margin-top: 2px; margin-left: 5px; vertical-align: middle; font-size: 1.5em;" onclick="openConvertPortalModal(event);" data-id="' + item.external_id + '"></i></div></center>'
+        '<center><div>Convert this portal<i class="fa fa-refresh convert-portal" style="margin-top: 2px; margin-left: 5px; vertical-align: middle; font-size: 1.5em;" onclick="openConvertPortalModal(event);" data-id="' + item.external_id + '"></i></div></center>' +
+        '<center><div>Last updated: ' + updated + '</div></center>'
     if (!noDeletePortal) {
         str += '<i class="fa fa-trash-o delete-portal" onclick="deletePortal(event);" data-id="' + item.external_id + '"></i>'
     }
@@ -2404,6 +2509,35 @@ function convertPortalToGymData(event) { // eslint-disable-line no-unused-vars
                     jQuery('label[for="pokestops-switch"]').click()
                     jQuery('label[for="pokestops-switch"]').click()
                     lastpokestops = false
+                    updateMap()
+                    $('.ui-dialog-content').dialog('close')
+                }
+            })
+        }
+    }
+}
+function markPortalChecked(event) { // eslint-disable-line no-unused-vars
+    var form = $(event.target).parent().parent()
+    var portalId = form.find('.convertportalid').val()
+    if (portalId && portalId !== '') {
+        if (confirm(i8ln('I confirm this portal is not a Pokestop or Gym'))) {
+            return $.ajax({
+                url: 'submit',
+                type: 'POST',
+                timeout: 300000,
+                dataType: 'json',
+                cache: false,
+                data: {
+                    'action': 'markportal',
+                    'portalid': portalId
+                },
+                error: function error() {
+                    // Display error toast
+                    toastr['error'](i8ln('Portal ID got lost somewhere.'), i8ln('Error marking portal'))
+                    toastr.options = toastrOptions
+                },
+                complete: function complete() {
+                    lastportals = false
                     updateMap()
                     $('.ui-dialog-content').dialog('close')
                 }
@@ -3871,13 +4005,13 @@ function showGymDetails(id) { // eslint-disable-line no-unused-vars
             raidStr = '<h3 style="margin-bottom: 0">Raid ' + levelStr
             if (raidStarted) {
                 var cpStr = ''
-                if (result.raid_pokemon_cp != null && result.raid_pokemon_cp != 0) {
+                if (result.raid_pokemon_cp > 0) {
                     cpStr = ' CP ' + result.raid_pokemon_cp
                 }
                 raidStr += '<br>' + result.raid_pokemon_name + cpStr
             }
             raidStr += '</h3>'
-            if (raidStarted && result.raid_pokemon_move_1 != null && result.raid_pokemon_move_1 != 133 && result.raid_pokemon_move_2 != null && result.raid_pokemon_move_2 != 133) {
+            if (raidStarted && result.raid_pokemon_move_1 > 0 && result.raid_pokemon_move_1 !== '133' && result.raid_pokemon_move_2 > 0 && result.raid_pokemon_move_2 !== '133') {
                 var pMove1 = (moves[result['raid_pokemon_move_1']] !== undefined) ? i8ln(moves[result['raid_pokemon_move_1']]['name']) : 'gen/unknown'
                 var pMove2 = (moves[result['raid_pokemon_move_2']] !== undefined) ? i8ln(moves[result['raid_pokemon_move_2']]['name']) : 'gen/unknown'
                 raidStr += '<div><b>' + pMove1 + ' / ' + pMove2 + '</b></div>'
@@ -3908,6 +4042,16 @@ function showGymDetails(id) { // eslint-disable-line no-unused-vars
                 raidIcon = '<img style="width: 80px;" src="https://raw.githubusercontent.com/ZeChrales/PogoAssets/master/pokemon_icons/pokemon_icon_' + pokemonidStr + '_' + formStr + '.png"/>'
             } else if (raidStarted && copyrightSafe === true) {
                 raidIcon = '<i class="pokemon-sprite-large n' + result.raid_pokemon_id + '"></i>'
+            } else if (result.raid_start <= Date.now()) {
+                var hatchedEgg = ''
+                if (result['raid_level'] <= 2) {
+                    hatchedEgg = 'hatched_normal'
+                } else if (result['raid_level'] <= 4) {
+                    hatchedEgg = 'hatched_rare'
+                } else {
+                    hatchedEgg = 'hatched_legendary'
+                }
+                raidIcon = '<img src="static/raids/egg_' + hatchedEgg + '.png" style="width:60px;height:70px;">'
             } else {
                 var raidEgg = ''
                 if (result['raid_level'] <= 2) {
@@ -3943,16 +4087,25 @@ function showGymDetails(id) { // eslint-disable-line no-unused-vars
         }
 
         var pokemonHtml = ''
-
+        var gymIcon = ''
+        if ((((park !== 'None' && park !== undefined && onlyTriggerGyms === false && park) || (result['sponsor'] !== undefined && result['sponsor'] > 0) || triggerGyms.includes(result['gym_id'])) && (noExGyms === false))) {
+            gymIcon = '<img height="70px" style="padding: 5px;" src="static/forts/' + gymTypes[result.team_id] + '_large_ex.png">'
+        } else {
+            gymIcon = '<img height="70px" style="padding: 5px;" src="static/forts/' + gymTypes[result.team_id] + '_large.png">'
+        }
+        var gymImage = ''
+        if (result.url !== null) {
+            gymImage = '<img height="70px" style="padding: 5px;" src="' + result.url + '">'
+        }
         var headerHtml =
             '<center class="team-' + result.team_id + '-text">' +
             '<div>' +
             '<b class="team-' + result.team_id + '-text">' + (result.name || '') + '</b>' +
             '</div>' +
             '<div>' +
-            '<img height="60px" style="padding: 5px;" src="static/forts/' + gymTypes[result.team_id] + '_large.png">' +
+            gymIcon +
             raidIcon +
-            '<img height="70px" style="padding: 5px;" src="' + result.url + '">' +
+            gymImage +
             '</div>' +
             raidStr +
             gymLevelStr +
