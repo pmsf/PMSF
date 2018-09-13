@@ -131,6 +131,16 @@
     "noDeleteNests": true,
     "List": true,
     "defaultUnit": true,
-    "noRenamePokestops": true
+    "noRenamePokestops": true,
+    "noWhatsappLink": true,
+    "enableCommunities": true,
+    "noAddNewCommunity": false,
+    "noDeleteCommunity": false,
+    "noEditCommunity": false,
+    "noConvertPokestops": false,
+    "enablePortals": true,
+    "noDeletePortal": true,
+    "noPortals": false,
+    "copyrightSafe": true
   }
 }

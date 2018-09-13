@@ -182,10 +182,11 @@ class Monocle_Alternate extends Monocle
         expires AS lure_expiration,
         deployer AS lure_user,
         name AS pokestop_name,
+        url,
         lat AS latitude,
         lon AS longitude";
         if (!$noManualQuests) {
-            $query .= ",quest_id,reward";
+            $query .= ",quest_id,reward_id";
         }
         $query .= " FROM pokestops
         WHERE :conditions";
@@ -274,6 +275,7 @@ class Monocle_Alternate extends Monocle
         f.lat AS latitude,
         f.lon AS longitude,
         f.name,
+        f.url,
         f.sponsor,
         f.park,
         fs.team AS team_id,
@@ -285,7 +287,8 @@ class Monocle_Alternate extends Monocle
         r.time_end AS raid_end,
         r.cp AS raid_pokemon_cp,
         r.move_1 AS raid_pokemon_move_1,
-        r.move_2 AS raid_pokemon_move_2
+        r.move_2 AS raid_pokemon_move_2,
+        r.form
         FROM forts f
         LEFT JOIN fort_sightings fs ON fs.fort_id = f.id
         LEFT JOIN raids r ON r.fort_id = f.id
@@ -520,6 +523,132 @@ class Monocle_Alternate extends Monocle
             $data[] = $nest;
 
             unset($nests[$i]);
+            $i++;
+        }
+        return $data;
+    }
+
+    public function get_communities($swLat, $swLng, $neLat, $neLng, $tstamp = 0, $oSwLat = 0, $oSwLng = 0, $oNeLat = 0, $oNeLng = 0)
+    {
+        $conds = array();
+        $params = array();
+
+        $conds[] = "lat > :swLat AND lon > :swLng AND lat < :neLat AND lon < :neLng";
+        $params[':swLat'] = $swLat;
+        $params[':swLng'] = $swLng;
+        $params[':neLat'] = $neLat;
+        $params[':neLng'] = $neLng;
+
+        if ($oSwLat != 0) {
+            $conds[] = "NOT (lat > :oswLat AND lon > :oswLng AND lat < :oneLat AND lon < :oneLng)";
+            $params[':oswLat'] = $oSwLat;
+            $params[':oswLng'] = $oSwLng;
+            $params[':oneLat'] = $oNeLat;
+            $params[':oneLng'] = $oNeLng;
+        }
+        if ($tstamp > 0) {
+            $conds[] = "updated > :lastUpdated";
+            $params[':lastUpdated'] = $tstamp;
+        }
+
+        return $this->query_communities($conds, $params);
+    }
+
+    public function query_communities($conds, $params)
+    {
+        global $db;
+
+        $query = "SELECT community_id,
+        title,
+        description,
+        type,
+        image_url,
+        size,
+        team_instinct,
+        team_mystic,
+        team_valor,
+        has_invite_url,
+        invite_url,
+        lat,
+        lon,
+        source
+        FROM communities
+        WHERE :conditions";
+
+        $query = str_replace(":conditions", join(" AND ", $conds), $query);
+        $communities = $db->query($query, $params)->fetchAll(\PDO::FETCH_ASSOC);
+
+        $data = array();
+        $i = 0;
+        foreach ($communities as $community) {
+            $community["type"] = intval($community["type"]);
+            $community["size"] = intval($community["size"]);
+            $community["team_instinct"] = intval($community["team_instinct"]);
+            $community["team_mystic"] = intval($community["team_mystic"]);
+            $community["team_valor"] = intval($community["team_valor"]);
+            $community["has_invite_url"] = intval($community["has_invite_url"]);
+            $community["lat"] = floatval($community["lat"]);
+            $community["lon"] = floatval($community["lon"]);
+            $community["source"] = intval($community["source"]);
+            $data[] = $community;
+
+            unset($communities[$i]);
+            $i++;
+        }
+        return $data;
+    }
+
+    public function get_portals($swLat, $swLng, $neLat, $neLng, $tstamp = 0, $oSwLat = 0, $oSwLng = 0, $oNeLat = 0, $oNeLng = 0)
+    {
+        $conds = array();
+        $params = array();
+
+        $conds[] = "lat > :swLat AND lon > :swLng AND lat < :neLat AND lon < :neLng";
+        $params[':swLat'] = $swLat;
+        $params[':swLng'] = $swLng;
+        $params[':neLat'] = $neLat;
+        $params[':neLng'] = $neLng;
+
+        if ($oSwLat != 0) {
+            $conds[] = "NOT (lat > :oswLat AND lon > :oswLng AND lat < :oneLat AND lon < :oneLng)";
+            $params[':oswLat'] = $oSwLat;
+            $params[':oswLng'] = $oSwLng;
+            $params[':oneLat'] = $oNeLat;
+            $params[':oneLng'] = $oNeLng;
+        }
+        if ($tstamp > 0) {
+            $conds[] = "updated > :lastUpdated";
+            $params[':lastUpdated'] = $tstamp;
+        }
+
+        return $this->query_portals($conds, $params);
+    }
+
+    public function query_portals($conds, $params)
+    {
+        global $db;
+
+        $query = "SELECT external_id,
+        lat,
+        lon,
+        name,
+        url,
+        updated,
+        checked
+        FROM ingress_portals
+        WHERE :conditions";
+
+        $query = str_replace(":conditions", join(" AND ", $conds), $query);
+        $portals = $db->query($query, $params)->fetchAll(\PDO::FETCH_ASSOC);
+
+        $data = array();
+        $i = 0;
+        foreach ($portals as $portal) {
+            $portal["lat"] = floatval($portal["lat"]);
+            $portal["lon"] = floatval($portal["lon"]);
+            $data[] = $portal;
+
+            unset($portals[$i]);
             $i++;
         }
         return $data;

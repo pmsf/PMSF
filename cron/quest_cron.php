@@ -7,5 +7,5 @@ if($noManualQuests === true){
     die();
 }
 
-$db->update('pokestops',['quest_id' => null, 'reward' => null]);
+$db->update('pokestops',['quest_id' => null, 'reward_id' => null]);
 echo 'updated pokestops';

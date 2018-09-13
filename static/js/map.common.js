@@ -934,6 +934,16 @@ var StoreOptions = {
             default: enableNests,
             type: StoreTypes.Boolean
         },
+    'showCommunities':
+        {
+            default: enableCommunities,
+            type: StoreTypes.Boolean
+        },
+    'showPortals':
+        {
+            default: enablePortals,
+            type: StoreTypes.Boolean
+        },
     'useGymSidebar':
         {
             default: gymSidebar,
@@ -1165,7 +1175,9 @@ var mapData = {
     lurePokemons: {},
     scanned: {},
     spawnpoints: {},
-    nests: {}
+    nests: {},
+    communities: {},
+    portals: {}
 }
 
 function getGoogleSprite(index, sprite, displayHeight, weather = 0) {

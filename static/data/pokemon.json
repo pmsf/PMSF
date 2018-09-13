@@ -322,6 +322,8 @@
   "26": {
     "name": "Raichu",
     "rarity": "Ultra Rare",
+    "level": 3,
+    "cp": 16178,
     "types": [
       {
         "type": "Electric",
@@ -1116,6 +1118,8 @@
   "90": {
     "name": "Shellder",
     "rarity": "Rare",
+    "level": 1,
+    "cp": 4340,
     "types": [
       {
         "type": "Water",
@@ -1302,7 +1306,7 @@
   "105": {
     "name": "Marowak",
     "rarity": "Very Rare",
-    "level": 2,
+    "level": 4,
     "cp": 9891,
     "types": [
       {
@@ -1412,6 +1416,8 @@
   "114": {
     "name": "Tangela",
     "rarity": "Rare",
+    "level": 3,
+    "cp": 16085,
     "types": [
       {
         "type": "Grass",
@@ -1556,6 +1562,8 @@
   "126": {
     "name": "Magmar",
     "rarity": "Rare",
+    "level": 2,
+    "cp": 11610,
     "types": [
       {
         "type": "Fire",
@@ -1672,6 +1680,8 @@
   "136": {
     "name": "Flareon",
     "rarity": "Ultra Rare",
+    "level": 3,
+    "cp": 21155,
     "types": [
       {
         "type": "Fire",
@@ -1894,6 +1904,8 @@
   "152": {
     "name": "Chikorita",
     "rarity": "Uncommon",
+    "level": 1,
+    "cp": 3067,
     "types": [
       {
         "type": "Grass",
@@ -1926,6 +1938,8 @@
   "155": {
     "name": "Cyndaquil",
     "rarity": "Uncommon",
+    "level": 1,
+    "cp": 3380,
     "types": [
       {
         "type": "Fire",
@@ -1958,6 +1972,8 @@
   "158": {
     "name": "Totodile",
     "rarity": "Uncommon",
+    "level": 1,
+    "cp": 3700,
     "types": [
       {
         "type": "Water",
@@ -2368,6 +2384,8 @@
   "191": {
     "name": "Sunkern",
     "rarity": "Common",
+    "level": 1,
+    "cp": 1434,
     "types": [
       {
         "type": "Grass",
@@ -2388,6 +2406,8 @@
   "193": {
     "name": "Yanma",
     "rarity": "Uncommon",
+    "level": 1,
+    "cp": 4321,
     "types": [
       {
         "type": "Bug",
@@ -2526,6 +2546,8 @@
   "204": {
     "name": "Pineco",
     "rarity": "Very Rare",
+    "level": 2,
+    "cp": 6621,
     "types": [
       {
         "type": "Bug",
@@ -2892,6 +2914,8 @@
   "232": {
     "name": "Donphan",
     "rarity": "Very Rare",
+    "level": 3,
+    "cp": 18980,
     "types": [
       {
         "type": "Ground",
@@ -3214,6 +3238,8 @@
   "259":{
     "name": "Marshtomp",
     "rarity":"",
+    "level": 2,
+    "cp": 8825,
     "types": [
       {
         "type": "Water",
@@ -3490,6 +3516,8 @@
   "281":{
     "name": "Kirlia",
     "rarity":"",
+    "level": 2,
+    "cp": 6005,
     "types": [
       {
         "type": "Psychic",
@@ -3674,6 +3702,8 @@
   "296":{
     "name": "Makuhita",
     "rarity":"",
+    "level": 1,
+    "cp": 2319,
     "types": [
       {
         "type": "Fighting",
@@ -3816,6 +3846,8 @@
   "307":{
     "name": "Meditite",
     "rarity":"",
+    "level": 1,
+    "cp": 2516,
     "types": [
       {
         "type": "Fighting",
@@ -3906,6 +3938,8 @@
   "315":{
     "name": "Roselia",
     "rarity":"",
+    "level": 2,
+    "cp": 10887,
     "types": [
       {
         "type": "Grass",
@@ -3954,6 +3988,8 @@
   "319":{
     "name": "Sharpedo",
     "rarity":"",
+    "level": 3,
+    "cp": 13989,
     "types": [
       {
         "type": "Water",
@@ -4804,10 +4840,8 @@
     ]
   },
   "387":{
-    "name": "Level 1 Unknown",
+    "name": "Turtwig",
     "rarity":"",
-	"level": 1,
-    "cp": "",
     "types": [
       {
         "type": "Normal",
@@ -4816,10 +4850,8 @@
     ]
   },
   "388":{
-    "name": "Level 2 Unknown",
+    "name": "Grotle",
     "rarity":"",
-	"level": 2,
-    "cp": "",
     "types": [
       {
         "type": "Normal",
@@ -4828,10 +4860,8 @@
     ]
   },
   "389":{
-    "name": "Level 3 Unknown",
+    "name": "Torterra",
     "rarity":"",
-	"level": 3,
-    "cp": "",
     "types": [
       {
         "type": "Normal",
@@ -4844,10 +4874,8 @@
     ]
   },
   "390":{
-    "name": "Level 4 Unknown",
+    "name": "Chimchar",
     "rarity":"",
-	"level": 4,
-    "cp": "",
     "types": [
       {
         "type": "Normal",
@@ -4856,10 +4884,8 @@
     ]
   },
   "391":{
-    "name": "Level 5 Unknown",
+    "name": "Monferno",
     "rarity":"",
-	"level": 5,
-    "cp": "",
     "types": [
       {
         "type": "Normal",

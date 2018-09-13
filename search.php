@@ -22,13 +22,31 @@ if ( $action === "pokestops" ) {
 
 if ( $dbname !== '' ) {
     if ( $action === "reward" ) {
-        if ( $db->info()['driver'] === 'pgsql' ) {
-            $query = "SELECT id,external_id,name,lat,lon,url,quest_id,reward, ROUND(cast( 3959 * acos( cos( radians(:lat) ) * cos( radians( lat ) ) * cos( radians( lon ) - radians(:lon) ) + sin( radians(:lat) ) * sin( radians( lat ) ) ) as numeric),2) AS distance FROM " . $dbname . " WHERE LOWER(reward) LIKE :name ORDER BY distance LIMIT 10";
-        } else {
-            $query = "SELECT id,external_id,name,lat,lon,url,quest_id,reward, ROUND(( 3959 * acos( cos( radians(:lat) ) * cos( radians( lat ) ) * cos( radians( lon ) - radians(:lon) ) + sin( radians(:lat) ) * sin( radians( lat ) ) ) ),2) AS distance FROM " . $dbname . " WHERE reward LIKE :name ORDER BY distance LIMIT 10";
+	    
+        $json = file_get_contents( 'static/dist/data/rewards.min.json' );
+        $rewards = json_decode( $json, true );
+        $resids = [];
+        foreach($rewards as $k => $reward){
+            if( $k > 1500){
+                break;
+            }
+            if(strpos(strtolower($reward['name']), strtolower($term)) !== false){
+                $resids[] = $k;
+                break;
+            }
         }
-        $data = $db->query( $query, [ ':name' => "%" . strtolower( $term ) . "%",  ':lat' => $lat, ':lon' => $lon ] )->fetchAll();
-
+        if ( $db->info()['driver'] === 'pgsql' ) {
+            $query = "SELECT id,external_id,name,lat,lon,url,quest_id,reward_id, ROUND(cast( 3959 * acos( cos( radians(:lat) ) * cos( radians( lat ) ) * cos( radians( lon ) - radians(:lon) ) + sin( radians(:lat) ) * sin( radians( lat ) ) ) as numeric),2) AS distance FROM " . $dbname . " WHERE LOWER(reward) LIKE :name ORDER BY distance LIMIT 10";
+        } else {
+            $query = "SELECT id,external_id,name,lat,lon,url,quest_id,reward_id, ROUND(( 3959 * acos( cos( radians(:lat) ) * cos( radians( lat ) ) * cos( radians( lon ) - radians(:lon) ) + sin( radians(:lat) ) * sin( radians( lat ) ) ) ),2) AS distance FROM pokestops WHERE reward_id IN (" . implode(',',$resids) . ") ORDER BY distance LIMIT 10";
+        }
+	$data = $db->query($query,[ ':lat' => $lat, ':lon' => $lon])->fetchAll();
+	foreach($data as $k => $r){
+            $data[$k]['reward'] = $rewards[$r['reward_id']]['name'];
+            if($defaultUnit === "km"){
+                $data[$k]['distance'] = round($data[$k]['distance'] * 1.60934,2);
+            }
+        }
     } elseif ( $action === "nests" ) {
 
         $json = file_get_contents( 'static/dist/data/pokemon.min.json' );
@@ -38,11 +56,11 @@ if ( $dbname !== '' ) {
             if( $k > 386){
                 break;
             }
-            if(strpos($mon['name'], $term) !== false){
+            if(strpos(strtolower($mon['name']), strtolower($term)) !== false){
                 $resids[] = $k;
             } else{
                 foreach($mon['types'] as $t){
-                    if(strpos($t['type'], $term) !== false){
+                    if(strpos(strtolower($t['type']), strtolower($term)) !== false){
                         $resids[] = $k;
                         break;
                     }

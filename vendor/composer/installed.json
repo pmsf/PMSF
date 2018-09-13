@@ -61,61 +61,6 @@
         ]
     },
     {
-        "name": "symfony/http-foundation",
-        "version": "v3.3.16",
-        "version_normalized": "3.3.16.0",
-        "source": {
-            "type": "git",
-            "url": "https://github.com/symfony/http-foundation.git",
-            "reference": "ea73615f7f4e76b149b73f59daaa677068712d90"
-        },
-        "dist": {
-            "type": "zip",
-            "url": "https://api.github.com/repos/symfony/http-foundation/zipball/ea73615f7f4e76b149b73f59daaa677068712d90",
-            "reference": "ea73615f7f4e76b149b73f59daaa677068712d90",
-            "shasum": ""
-        },
-        "require": {
-            "php": "^5.5.9|>=7.0.8",
-            "symfony/polyfill-mbstring": "~1.1"
-        },
-        "require-dev": {
-            "symfony/expression-language": "~2.8|~3.0"
-        },
-        "time": "2018-01-29 09:02:23",
-        "type": "library",
-        "extra": {
-            "branch-alias": {
-                "dev-master": "3.3-dev"
-            }
-        },
-        "installation-source": "dist",
-        "autoload": {
-            "psr-4": {
-                "Symfony\\Component\\HttpFoundation\\": ""
-            },
-            "exclude-from-classmap": [
-                "/Tests/"
-            ]
-        },
-        "notification-url": "https://packagist.org/downloads/",
-        "license": [
-            "MIT"
-        ],
-        "authors": [
-            {
-                "name": "Fabien Potencier",
-                "email": "fabien@symfony.com"
-            },
-            {
-                "name": "Symfony Community",
-                "homepage": "https://symfony.com/contributors"
-            }
-        ],
-        "description": "Symfony HttpFoundation Component",
-        "homepage": "https://symfony.com"
-    },
-    {
         "name": "guzzlehttp/promises",
         "version": "v1.3.1",
         "version_normalized": "1.3.1.0",
@@ -448,5 +393,60 @@
             }
         ],
         "description": "OAuth2 client for PHP"
+    },
+    {
+        "name": "symfony/http-foundation",
+        "version": "v3.3.17",
+        "version_normalized": "3.3.17.0",
+        "source": {
+            "type": "git",
+            "url": "https://github.com/symfony/http-foundation.git",
+            "reference": "1cdf07e01251ad971ab7bb4943e6f0c6a701985a"
+        },
+        "dist": {
+            "type": "zip",
+            "url": "https://api.github.com/repos/symfony/http-foundation/zipball/1cdf07e01251ad971ab7bb4943e6f0c6a701985a",
+            "reference": "1cdf07e01251ad971ab7bb4943e6f0c6a701985a",
+            "shasum": ""
+        },
+        "require": {
+            "php": "^5.5.9|>=7.0.8",
+            "symfony/polyfill-mbstring": "~1.1"
+        },
+        "require-dev": {
+            "symfony/expression-language": "~2.8|~3.0"
+        },
+        "time": "2018-05-23 13:38:51",
+        "type": "library",
+        "extra": {
+            "branch-alias": {
+                "dev-master": "3.3-dev"
+            }
+        },
+        "installation-source": "dist",
+        "autoload": {
+            "psr-4": {
+                "Symfony\\Component\\HttpFoundation\\": ""
+            },
+            "exclude-from-classmap": [
+                "/Tests/"
+            ]
+        },
+        "notification-url": "https://packagist.org/downloads/",
+        "license": [
+            "MIT"
+        ],
+        "authors": [
+            {
+                "name": "Fabien Potencier",
+                "email": "fabien@symfony.com"
+            },
+            {
+                "name": "Symfony Community",
+                "homepage": "https://symfony.com/contributors"
+            }
+        ],
+        "description": "Symfony HttpFoundation Component",
+        "homepage": "https://symfony.com"
     }
 ]
