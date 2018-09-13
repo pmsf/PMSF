@@ -18,6 +18,8 @@ if ( $action === "pokestops" ) {
     $dbname = "pokestops";
 } elseif ( $action === "nests" ) {
     $dbname = "nests";
+} elseif ( $action === "portals" ) {
+    $dbname = "ingress_portals";
 }
 
 if ( $dbname !== '' ) {
