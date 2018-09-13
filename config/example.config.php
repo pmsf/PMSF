@@ -312,6 +312,7 @@ $noSearchPokestops = false;     //Wont work if noSearch = false
 $noSearchGyms = false;          //Wont work if noSearch = false
 $noSearchManualQuests = false;  //Wont work if noSearch = false
 $noSearchNests = false;
+$noSearchPortals = false;
 $defaultUnit = "km";                                            // mi/km
 //-----------------------------------------------
 // Community

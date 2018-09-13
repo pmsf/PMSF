@@ -1269,7 +1269,10 @@ if ( $blockIframe ) {
                         <?php }
                         if ( ! $noSearchPokestops ) { ?>
                             <li><a href="#tab-pokestop"><img src="static/forts/Pstop-large.png"/></a></li>
-                        <?php } ?>
+                        <?php }
+                        if ( ! $noSearchPortals ) { ?>
+                            <li><a href="#tab-portals"><img src="static/images/portal.png"/></a></li>
+			<?php } ?>
                     </ul>
                     <?php if ( ! $noSearchManualQuests ) { ?>
                         <div id="tab-rewards">
@@ -1294,17 +1297,24 @@ if ( $blockIframe ) {
                                    data-type="forts" class="search-input"/>
                             <ul id="gym-search-results" class="search-results gym-results"></ul>
                         </div>
-                    <?php }
-                    if ( ! $noSearchPokestops ) { ?>
+		    <?php } ?>
+		    <?php if ( ! $noSearchPokestops ) { ?>
                         <div id="tab-pokestop">
                             <input type="search" id="pokestop-search" name="pokestop-search"
                                    placeholder="<?php echo i8ln( 'Enter Pokestop Name' ); ?>" data-type="pokestops"
                                    class="search-input"/>
                             <ul id="pokestop-search-results" class="search-results pokestop-results"></ul>
                         </div>
-                    <?php } ?>
+		    <?php } ?>
+		    <?php if ( ! $noSearchPortals ) { ?>
+                        <div id="tab-portals">
+                            <input type="search" id="portals-search" name="portals-search"
+                                   placeholder="<?php echo i8ln( 'Enter Portal Name' ); ?>" data-type="portals"
+                                   class="search-input"/>
+                            <ul id="portals-search-results" class="search-results portals-results"></ul>
+                        </div>
+		    <?php } ?>
                 </div>
-
             </div>
         </div>
     <?php } ?>
