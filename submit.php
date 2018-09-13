@@ -31,8 +31,8 @@ if ( $action === "raid" ) {
     if ( $eggTime > 15 ) {
         $eggTime = 15;
     }
-    if ( $monTime > 60 ) {
-        $monTime = 60;
+    if ( $monTime > 90 ) {
+        $monTime = 90;
     }
     if ( $eggTime < 0 ) {
         $eggTime = 0;
@@ -42,7 +42,7 @@ if ( $action === "raid" ) {
     }
 
 // brimful of asha on the:
-    $forty_five = 60 * 60;
+    $forty_five = 90 * 60;
     $hour       = 3600;
 
 //$db->debug();
