@@ -38,7 +38,7 @@ if ( $action === "raid" ) {
         $eggTime = 0;
     }
     if ( $monTime < 0 ) {
-        $monTime = 60;
+        $monTime = 90;
     }
 
 // brimful of asha on the:
