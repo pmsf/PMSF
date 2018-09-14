@@ -328,7 +328,7 @@ if ( $action === "raid" ) {
             ]
         ] );
         if ( $noDiscordSubmitLogChannel === false ) {
-            $data = array("content" => '```Converted pokestop with id "' . $pokestopId . '." New Gym: "' . $gymName['name'] . '". ```', "username" => $loggedUser);
+            $data = array("content" => '```Converted pokestop with id "' . $pokestopId . '." New Gym: "' . $gymName['name'] . '". ```' . $submitMapUrl . '/?lat=' . $gymLat['lat'] . '&lon=' . $gymLon['lon'] . '&zoom=18 ', "username" => $loggedUser);
             sendToWebhook($discordSubmitLogChannelUrl, ($data));
         }
     }
@@ -354,7 +354,7 @@ if ( $action === "raid" ) {
         ];
 	$db->insert( "pokestops", $cols );
         if ( $noDiscordSubmitLogChannel === false ) {
-            $data = array("content" => '```Converted portal with id "' . $portalId . '." New Pokestop: "' . $portalName['name'] . '". ```', "username" => $loggedUser);
+            $data = array("content" => '```Converted portal with id "' . $portalId . '." New Pokestop: "' . $portalName['name'] . '". ```' . $submitMapUrl . '/?lat=' . $portalLat['lat'] . '&lon=' . $portalLon['lon'] . '&zoom=18 ', "username" => $loggedUser);
             sendToWebhook($discordSubmitLogChannelUrl, ($data));
         }
     }
@@ -381,7 +381,7 @@ if ( $action === "raid" ) {
         ];
 	$db->insert( "forts", $cols );
         if ( $noDiscordSubmitLogChannel === false ) {
-            $data = array("content" => '```Converted portal with id "' . $portalId . '." New Gym: "' . $portalName['name'] . '". ```', "username" => $loggedUser);
+            $data = array("content" => '```Converted portal with id "' . $portalId . '." New Gym: "' . $portalName['name'] . '". ```' . $submitMapUrl . '/?lat=' . $portalLat['lat'] . '&lon=' . $portalLon['lon'] . '&zoom=18 ', "username" => $loggedUser);
             sendToWebhook($discordSubmitLogChannelUrl, ($data));
         }
     }
@@ -606,6 +606,7 @@ if ( $action === "raid" ) {
     }
     $portalId = ! empty( $_POST['portalId'] ) ? $_POST['portalId'] : '';
     $portalName = $db->get( "ingress_portals", [ 'name' ], [ 'external_id' => $portalId ] );
+    $loggedUser = ! empty( $_SESSION['user']->user ) ? $_SESSION['user']->user : 'NOLOGIN';
     if ( ! empty( $portalId ) ) {
         $db->delete( 'ingress_portals', [
             "AND" => [

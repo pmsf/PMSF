@@ -314,6 +314,7 @@ $noSearchManualQuests = false;  //Wont work if noSearch = false
 $noSearchNests = false;
 $noSearchPortals = false;
 $defaultUnit = "km";                                            // mi/km
+$maxSearchResults = 10;		//Max number of search results
 //-----------------------------------------------
 // Community
 //-----------------------------------------------------
