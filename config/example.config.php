@@ -311,7 +311,7 @@ $pokemonToExclude = [];
 $noDeleteGyms = false;
 $noDeletePokestops = false;
 
-$raidBosses = [320, 307, 129, 296, 281, 315, 103, 303, 221, 232, 68, 26, 114, 112, 248, 359, 105, 377];
+$raidBosses = [1, 4, 7, 129, 138, 140, 147, 82, 108, 125, 126, 185, 303, 65, 68, 95, 106, 107, 123, 135, 142, 76, 112, 131, 143, 248, 359, 144, 145, 146, 377];
 
 $sendWebhook = false;				// Sends Raids & Pokémon. Needs a 3th party program like pokealarm.
 $webhookUrl = null;                             //['url-1','url-2']
