@@ -202,6 +202,7 @@ CREATE TABLE IF NOT EXISTS `ingress_portals` (
   `name` varchar(128) DEFAULT NULL,
   `url` varchar(200) DEFAULT NULL,
   `updated` bigint(11) NOT NULL,
+  `imported` bigint(11) NOT NULL,
   PRIMARY KEY (`id`),
   UNIQUE KEY `external_id` (`external_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
