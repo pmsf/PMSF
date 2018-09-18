@@ -162,7 +162,7 @@ if ($noNativeLogin === true && $noDiscordLogin === true ||  (($noNativeLogin ===
         $motdContent = "This is an example MOTD<br>Do whatever you like with it.";
     } else if ($userAccessLevel['access_level'] == $ownerLevel) {
 // Editting variables
-        $noManualGyms = false                                          // true/false
+        $noManualGyms = false;                                         // true/false
         $noManualPokemon = false;                                      // true/false
         $noManualPokestops = false;                                    // true/false
         $noRenamePokestops = false;                                    // true/false
