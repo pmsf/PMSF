@@ -166,8 +166,8 @@ var notifyText = 'disappears at <dist> (<udist>)'
 // Functions
 //
 if (location.search.indexOf('login=true') > 0) {
-$('#nav').load(window.location.href + '#nav')
-window.location.href = '/'
+    $('#nav').load(window.location.href + '#nav')
+    window.location.href = '/'
 }
 if (location.search.indexOf('login=false') > 0) {
     openAccessDeniedModal()
