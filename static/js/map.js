@@ -1699,10 +1699,21 @@ function communityLabel(item) {
 }
 
 function setupPortalMarker(item) {
+    var ts = Math.round(new Date().getTime() / 1000)
+    var yesterday = ts - (24 * 3600)
     if (item.checked === '1') {
         var circle = {
             path: google.maps.SymbolPath.CIRCLE,
             fillColor: 'red',
+            fillOpacity: 0.4,
+            scale: 15,
+            strokeColor: 'white',
+            strokeWeight: 1
+        }
+    } else if (item.imported > yesterday) {
+        circle = {
+            path: google.maps.SymbolPath.CIRCLE,
+            fillColor: 'green',
             fillOpacity: 0.4,
             scale: 15,
             strokeColor: 'white',
