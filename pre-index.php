@@ -151,6 +151,11 @@ if ( $blockIframe ) {
     <script src="static/js/vendor/modernizr.custom.js"></script>
     <!-- Toastr -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.css">
+    <!-- Leaflet -->
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.3.1/dist/leaflet.css" />
+    <link rel="stylesheet" href="https://leaflet.github.io/Leaflet.markercluster/dist/MarkerCluster.css" />
+    <link rel="stylesheet" href="https://leaflet.github.io/Leaflet.markercluster/dist/MarkerCluster.Default.css" />
+    <link href="https://unpkg.com/leaflet-geosearch@latest/assets/css/leaflet.css" rel="stylesheet" />
 </head>
 <body id="top">
 <div class="wrapper">
@@ -1445,6 +1450,8 @@ if ( $blockIframe ) {
 <script src="static/js/vendor/s2geometry.js"></script>
 <script src="static/dist/js/app.min.js"></script>
 <script src="static/js/vendor/classie.js"></script>
+<script src="https://unpkg.com/leaflet@1.3.1/dist/leaflet.js"></script>
+<script src="https://leaflet.github.io/Leaflet.markercluster/dist/leaflet.markercluster-src.js"></script>
 <script>
     var centerLat = <?= $startingLat; ?>;
     var centerLng = <?= $startingLng; ?>;
@@ -1452,6 +1459,7 @@ if ( $blockIframe ) {
     var motd = <?php echo $noMotd ? 'false' : 'true' ?>;
     var zoom<?php echo $zoom ? " = " . $zoom : null; ?>;
     var encounterId<?php echo $encounterId ? " = '" . $encounterId . "'" : null; ?>;
+    var maxZoom = <?= $maxZoomIn; ?>;
     var minZoom = <?= $maxZoomOut; ?>;
     var maxLatLng = <?= $maxLatLng; ?>;
     var osmTileServer = '<?php echo $osmTileServer; ?>';
@@ -1533,8 +1541,11 @@ if ( $blockIframe ) {
 <script src="static/dist/js/map.common.min.js"></script>
 <script src="static/dist/js/map.min.js"></script>
 <script src="static/dist/js/stats.min.js"></script>
-<script defer
-        src="https://maps.googleapis.com/maps/api/js?v=3.32&amp;key=<?= $gmapsKey ?>&amp;callback=initMap&amp;libraries=places,geometry"></script>
-<script defer src="static/js/vendor/richmarker-compiled.js"></script>
+<script src="https://unpkg.com/leaflet-geosearch@latest/dist/bundle.min.js"></script>
+<script>
+$( document ).ready(function() {
+    initMap()
+})
+</script>
 </body>
 </html>

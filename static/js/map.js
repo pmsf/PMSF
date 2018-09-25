@@ -61,8 +61,11 @@ var reincludedPokemon = []
 var reids = []
 
 var numberOfPokemon = 386
-
+var L
 var map
+var markers
+var markersnotify
+var _oldlayer = 'stylemapnik'
 var rawDataIsLoading = false
 var locationMarker
 var rangeMarkers = ['pokemon', 'pokestop', 'gym']
@@ -87,7 +90,7 @@ var lastpokemon
 var lastslocs
 var lastspawns
 
-var selectedStyle = 'light'
+var selectedStyle = 'stylemapnik'
 
 var updateWorker
 var lastUpdateTime
@@ -239,114 +242,36 @@ function createServiceWorkerReceiver() {
     })
 }
 
-
 function initMap() { // eslint-disable-line no-unused-vars
-    map = new google.maps.Map(document.getElementById('map'), {
-        center: {
-            lat: centerLat,
-            lng: centerLng
-        },
+    map = L.map('map', {
+        center: [centerLat, centerLng],
         zoom: zoom == null ? Store.get('zoomLevel') : zoom,
         minZoom: minZoom,
-        fullscreenControl: true,
-        streetViewControl: false,
-        mapTypeControl: false,
-        clickableIcons: false,
-        mapTypeControlOptions: {
-            style: google.maps.MapTypeControlStyle.DROPDOWN_MENU,
-            position: google.maps.ControlPosition.RIGHT_TOP,
-            mapTypeIds: [
-                google.maps.MapTypeId.ROADMAP,
-                google.maps.MapTypeId.SATELLITE,
-                google.maps.MapTypeId.HYBRID,
-                'nolabels_style',
-                'dark_style',
-                'style_light2',
-                'style_pgo',
-                'dark_style_nl',
-                'style_light2_nl',
-                'style_pgo_nl',
-                'style_pgo_day',
-                'style_pgo_night',
-                'style_pgo_dynamic',
-                'osm'
-            ]
-        }
+        maxZoom: maxZoom,
+        zoomControl: false
     })
 
-    var styleNoLabels = new google.maps.StyledMapType(noLabelsStyle, {
-        name: 'No Labels'
+    //setTileLayer(Store.get('map_style'))
+    L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {attribution: '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>'}).addTo(map)
+    markers = L.markerClusterGroup({
+        disableClusteringAtZoom: 16,
+        spiderfyOnMaxZoom: false,
+        zoomToBoundsOnClick: 13,
+        showCoverageOnHover: false,
+        maxClusterRadius: 5,
+        removeOutsideVisibleBounds: true
     })
-    map.mapTypes.set('nolabels_style', styleNoLabels)
+    L.control.zoom({
+        position: 'bottomright'
+    }).addTo(map)
 
-    var styleDark = new google.maps.StyledMapType(darkStyle, {
-        name: 'Dark'
-    })
-    map.mapTypes.set('dark_style', styleDark)
+    map.addLayer(markers)
 
-    var styleLight2 = new google.maps.StyledMapType(light2Style, {
-        name: 'Light2'
-    })
-    map.mapTypes.set('style_light2', styleLight2)
+    markersnotify = L.layerGroup().addTo(map)
 
-    var stylePgo = new google.maps.StyledMapType(pGoStyle, {
-        name: 'PokemonGo'
-    })
-    map.mapTypes.set('style_pgo', stylePgo)
-
-    var styleDarkNl = new google.maps.StyledMapType(darkStyleNoLabels, {
-        name: 'Dark (No Labels)'
-    })
-    map.mapTypes.set('dark_style_nl', styleDarkNl)
-
-    var styleLight2Nl = new google.maps.StyledMapType(light2StyleNoLabels, {
-        name: 'Light2 (No Labels)'
-    })
-    map.mapTypes.set('style_light2_nl', styleLight2Nl)
-
-    var stylePgoNl = new google.maps.StyledMapType(pGoStyleNoLabels, {
-        name: 'PokemonGo (No Labels)'
-    })
-    map.mapTypes.set('style_pgo_nl', stylePgoNl)
-
-    var stylePgoDay = new google.maps.StyledMapType(pGoStyleDay, {
-        name: 'PokemonGo Day'
-    })
-    map.mapTypes.set('style_pgo_day', stylePgoDay)
-
-    var stylePgoNight = new google.maps.StyledMapType(pGoStyleNight, {
-        name: 'PokemonGo Night'
-    })
-    map.mapTypes.set('style_pgo_night', stylePgoNight)
-
-    // OpenStreetMap support
-    map.mapTypes.set('openstreetmap', new google.maps.ImageMapType({
-        getTileUrl: function (coord, zoom) {
-            return '//' + osmTileServer + '/' + zoom + '/' + coord.x + '/' + coord.y + '.png'
-        },
-        tileSize: new google.maps.Size(256, 256),
-        name: 'OpenStreetMap',
-        maxZoom: 18
-    }))
-
-    // dynamic map style chooses stylePgoDay or stylePgoNight depending on client time
-    var currentDate = new Date()
-    var currentHour = currentDate.getHours()
-    var stylePgoDynamic = currentHour >= 6 && currentHour < 19 ? stylePgoDay : stylePgoNight
-    map.mapTypes.set('style_pgo_dynamic', stylePgoDynamic)
-
-    map.addListener('maptypeid_changed', function (s) {
-        Store.set('map_style', this.mapTypeId)
-    })
-
-    excludedPokemon = Store.get('remember_select_exclude')
-
-    map.setMapTypeId(Store.get('map_style'))
-    map.addListener('idle', updateMap)
-
-    map.addListener('zoom_changed', function () {
+    map.on('zoom', function() {
         if (storeZoom === true) {
-            Store.set('zoomLevel', this.getZoom())
+            Store.set('zoomLevel', map.getZoom())
         } else {
             storeZoom = true
         }
@@ -392,7 +317,7 @@ function initMap() { // eslint-disable-line no-unused-vars
 
     updateWeatherOverlay()
 
-    map.addListener('click', function (e) {
+    map.on('click', function (e) {
         if ($('.submit-on-off-button').hasClass('on')) {
             $('.submitLatitude').val(e.latLng.lat())
             $('.submitLongitude').val(e.latLng.lng())
@@ -420,6 +345,17 @@ function initMap() { // eslint-disable-line no-unused-vars
     })
 }
 
+var stylemapnik = L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {attribution: '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>'})
+var styleblackandwhite = L.tileLayer('https://korona.geog.uni-heidelberg.de/tiles/roadsg/x={x}&y={y}&z={z}', {attribution: 'Imagery from <a href="http://giscience.uni-hd.de/">GIScience Research Group @ University of Heidelberg</a> &mdash; Map data &copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>'})
+var styletopo = L.tileLayer('https://{s}.tile.opentopomap.org/{z}/{x}/{y}.png', {attribution: '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>'})
+var stylesatellite = L.tileLayer('https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}', {attribution: 'Tiles &copy; Esri &mdash; Source: Esri, i-cubed, USDA, USGS, AEX, GeoEye, Getmapping, Aerogrid, IGN, IGP, UPR-EGP, and the GIS User Community'})
+var stylewikipedia = L.tileLayer('https://maps.wikimedia.org/osm-intl/{z}/{x}/{y}{r}.png', {attribution: '<a href="https://wikimediafoundation.org/wiki/Maps_Terms_of_Use">Wikimedia</a>'})
+function setTileLayer(layername) {
+    if (map.hasLayer(window[_oldlayer])) { map.removeLayer(window[_oldlayer]) }
+    map.addLayer(window[layername])
+    _oldlayer = layername
+}
+
 function updateLocationMarker(style) {
     if (style in searchMarkerStyles) {
         locationMarker.setIcon(searchMarkerStyles[style].icon)
@@ -433,29 +369,12 @@ function createLocationMarker() {
     var lat = 'lat' in position ? position.lat : centerLat
     var lng = 'lng' in position ? position.lng : centerLng
 
-    var locationMarker = new google.maps.Marker({
-        map: map,
-        animation: google.maps.Animation.DROP,
-        position: {
-            lat: lat,
-            lng: lng
-        },
-        draggable: false,
-        icon: null,
-        optimized: false,
-        zIndex: google.maps.Marker.MAX_ZINDEX + 2
-    })
+    var locationMarker = L.marker([lat, lng]).addTo(markersnotify).bindPopup('<div><b>My location</b></div>')
+    addListeners(locationMarker)
 
     locationMarker.setIcon(searchMarkerStyles[Store.get('locationMarkerStyle')].icon)
 
-    locationMarker.infoWindow = new google.maps.InfoWindow({
-        content: '<div><b>My Location</b></div>',
-        disableAutoPan: true
-    })
-
-    addListeners(locationMarker)
-
-    google.maps.event.addListener(locationMarker, 'dragend', function () {
+    locationMarker.on('dragend', function () {
         var newLocation = locationMarker.getPosition()
         Store.set('followMyLocationPosition', {
             lat: newLocation.lat(),
@@ -950,7 +869,7 @@ function pokestopLabel(expireTime, latitude, longitude, stopName, url, lureUser,
             '</div>' +
 
             '<div>' +
-            'Location: <a href="javascript:void(0)" onclick="javascript:openMapDirections(' + latitude + ',' + longitude + ')" title="' + i8ln('View in Maps') + '">' + latitude.toFixed(6) + ', ' + longitude.toFixed(7) + '</a>' +
+            'Location: <a href="javascript:void(0)" onclick="javascript:openMapDirections(' + latitude + ',' + longitude + ')" title="' + i8ln('View in Maps') + '">' + latitude + ', ' + longitude + '</a>' +
             '</div>'
         if (!noRenamePokestops) {
             str += '<center>Rename Pokéstop <i class="fa fa-edit rename-pokestop" style="margin-right:10px; margin-top: 2px; vertical-align: middle; font-size: 1.5em;" onclick="openRenamePokestopModal(event);" data-id="' + id + '"></i></center>'
@@ -1013,7 +932,7 @@ function pokestopLabel(expireTime, latitude, longitude, stopName, url, lureUser,
             str += '<center><div>Convert to Gym <i class="fa fa-refresh convert-pokestop" style="margin-top: 2px; vertical-align: middle; font-size: 1.5em;" onclick="openConvertPokestopModal(event);" data-id="' + id + '"></i></div></center>'
         }
         str += '<div>' +
-            i8ln('Location:') + ' ' + '<a href="javascript:void(0)" onclick="javascript:openMapDirections(' + latitude + ',' + longitude + ')" title="' + i8ln('View in Maps') + '">' + latitude.toFixed(6) + ', ' + longitude.toFixed(7) + '</a> - <a href="./?lat=' + latitude + '&lon=' + longitude + '&zoom=16">Share link</a>' +
+            i8ln('Location:') + ' ' + '<a href="javascript:void(0)" onclick="javascript:openMapDirections(' + latitude + ',' + longitude + ')" title="' + i8ln('View in Maps') + '">' + latitude + ', ' + longitude + '</a> - <a href="./?lat=' + latitude + '&lon=' + longitude + '&zoom=16">Share link</a>' +
             '</div>'
         if ((!noWhatsappLink) && (quest && reward !== null)) {
             str += '<div>' +
@@ -1309,25 +1228,14 @@ function getGymMarkerIcon(item) {
 }
 
 function setupGymMarker(item) {
-    var marker = new RichMarker({
-        position: new google.maps.LatLng(item['latitude'], item['longitude']),
-        map: map,
-        content: getGymMarkerIcon(item),
-        flat: true,
-        optimized: false,
-        zIndex: google.maps.Marker.MAX_ZINDEX + 2,
-        anchor: RichMarkerPosition.MIDDLE
-    })
+    var marker = L.marker([item['latitude'], item['longitude']])
+    markers.addLayer(marker)
+    updateGymMarker(item, marker)
 
     if (!marker.rangeCircle && isRangeActive(map)) {
         marker.rangeCircle = addRangeCircle(marker, map, 'gym', item['team_id'])
     }
 
-    marker.infoWindow = new google.maps.InfoWindow({
-        content: gymLabel(item),
-        disableAutoPan: true,
-        pixelOffset: new google.maps.Size(0, -40)
-    })
 
     var raidLevel = item.raid_level
     if (raidLevel >= Store.get('remember_raid_notify') && item.raid_end > Date.now() && Store.get('remember_raid_notify') !== 0) {
@@ -1386,7 +1294,7 @@ function setupGymMarker(item) {
     }
 
     if (Store.get('useGymSidebar')) {
-        marker.addListener('click', function () {
+        marker.on('click', function () {
             var gymSidebar = document.querySelector('#gym-details')
             if (gymSidebar.getAttribute('data-id') === item['gym_id'] && gymSidebar.classList.contains('visible')) {
                 gymSidebar.classList.remove('visible')
@@ -1396,21 +1304,18 @@ function setupGymMarker(item) {
             }
         })
 
-        google.maps.event.addListener(marker.infoWindow, 'closeclick', function () {
-            marker.persist = null
-        })
 
         if (!isMobileDevice() && !isTouchDevice()) {
-            marker.addListener('mouseover', function () {
-                marker.infoWindow.open(map, marker)
+            marker.on('mouseover', function () {
+                marker.openPopup()
                 clearSelection()
                 updateLabelDiffTime()
             })
         }
 
-        marker.addListener('mouseout', function () {
+        marker.on('mouseout', function () {
             if (!marker.persist) {
-                marker.infoWindow.close()
+                marker.closePopup()
             }
         })
     } else {
@@ -1514,25 +1419,16 @@ function getPokestopMarkerIcon(item) {
 }
 
 function setupPokestopMarker(item) {
-    var marker = new RichMarker({
-        position: new google.maps.LatLng(item['latitude'], item['longitude']),
-        map: map,
-        content: getPokestopMarkerIcon(item),
-        flat: true,
-        optimized: false,
-        zIndex: google.maps.Marker.MAX_ZINDEX + 1,
-        anchor: RichMarkerPosition.MIDDLE
-    })
+    var icon = L.icon({
+        iconUrl: 'static/forts/Pstop.png',
+        iconSize: [30, 30],
+        })
+
+    var marker = L.marker([item['latitude'], item['longitude']], {icon: icon}).addTo(map).bindPopup(pokestopLabel(item))
 
     if (!marker.rangeCircle && isRangeActive(map)) {
         marker.rangeCircle = addRangeCircle(marker, map, 'pokestop')
     }
-
-    marker.infoWindow = new google.maps.InfoWindow({
-        content: pokestopLabel(item['lure_expiration'], item['latitude'], item['longitude'], item['pokestop_name'], item['url'], item['lure_user'], item['pokestop_id'], item['quest_id'], item['reward_id']),
-        disableAutoPan: true,
-        pixelOffset: new google.maps.Size(0, -25)
-    })
 
     addListeners(marker)
 
@@ -1919,35 +1815,32 @@ function clearSelection() {
 }
 
 function addListeners(marker) {
-    marker.addListener('click', function () {
+    marker.on('click', function () {
         if (!marker.infoWindowIsOpen) {
-            marker.infoWindow.open(map, marker)
+            marker.openPopup()
             clearSelection()
             updateLabelDiffTime()
             marker.persist = true
             marker.infoWindowIsOpen = true
         } else {
             marker.persist = null
-            marker.infoWindow.close()
+            marker.closePopup()
             marker.infoWindowIsOpen = false
         }
     })
 
-    google.maps.event.addListener(marker.infoWindow, 'closeclick', function () {
-        marker.persist = null
-    })
 
     if (!isMobileDevice() && !isTouchDevice()) {
-        marker.addListener('mouseover', function () {
-            marker.infoWindow.open(map, marker)
+        marker.on('mouseover', function () {
+            marker.openPopup()
             clearSelection()
             updateLabelDiffTime()
         })
     }
 
-    marker.addListener('mouseout', function () {
+    marker.on('mouseout', function () {
         if (!marker.persist) {
-            marker.infoWindow.close()
+            marker.closePopup()
         }
     })
 
@@ -2053,10 +1946,10 @@ function loadRawData() {
     var bounds = map.getBounds()
     var swPoint = bounds.getSouthWest()
     var nePoint = bounds.getNorthEast()
-    var swLat = swPoint.lat()
-    var swLng = swPoint.lng()
-    var neLat = nePoint.lat()
-    var neLng = nePoint.lng()
+    var swLat = swPoint.lat
+    var swLng = swPoint.lng
+    var neLat = nePoint.lat
+    var neLng = nePoint.lng
 
     return $.ajax({
         url: 'raw_data',
@@ -3500,25 +3393,25 @@ function updateSpawnPoints() {
 function updateMap() {
     var position = map.getCenter()
     Store.set('startAtLastLocationPosition', {
-        lat: position.lat(),
-        lng: position.lng()
+        lat: position.lat,
+        lng: position.lng
     })
 
     // lets try and get the s2 cell id in the middle
-    var s2CellCenter = S2.keyToId(S2.latLngToKey(position.lat(), position.lng(), 10))
-    if ((s2CellCenter) && (String(s2CellCenter) !== $('#currentWeather').data('current-cell')) && (map.getZoom() > 13)) {
-        loadWeatherCellData(s2CellCenter).done(function (cellWeather) {
-            var currentWeather = cellWeather.weather
-            var currentCell = $('#currentWeather').data('current-cell')
-            if ((currentWeather) && (currentCell !== currentWeather.s2_cell_id)) {
-                $('#currentWeather').data('current-cell', currentWeather.s2_cell_id)
-                $('#currentWeather').html('<img src="static/weather/' + currentWeather.condition + '.png" alt="">')
-            } else if (!currentWeather) {
-                $('#currentWeather').data('current-cell', '')
-                $('#currentWeather').html('')
-            }
-        })
-    }
+//    var s2CellCenter = S2.keyToId(S2.latLngToKey(position.lat, position.lng, 10))
+//    if ((s2CellCenter) && (String(s2CellCenter) !== $('#currentWeather').data('current-cell')) && (map.getZoom() > 13)) {
+//        loadWeatherCellData(s2CellCenter).done(function (cellWeather) {
+//            var currentWeather = cellWeather.weather
+//            var currentCell = $('#currentWeather').data('current-cell')
+//            if ((currentWeather) && (currentCell !== currentWeather.s2_cell_id)) {
+//                $('#currentWeather').data('current-cell', currentWeather.s2_cell_id)
+//                $('#currentWeather').html('<img src="static/weather/' + currentWeather.condition + '.png" alt="">')
+//            } else if (!currentWeather) {
+//                $('#currentWeather').data('current-cell', '')
+//                $('#currentWeather').html('')
+//            }
+//        })
+//    }
 
     loadRawData().done(function (result) {
         $.each(result.pokemons, processPokemons)
@@ -3798,41 +3691,49 @@ $(function () {
 })
 
 function createMyLocationButton() {
-    var locationContainer = document.createElement('div')
+    var _locationMarker = L.control({position: 'bottomright'})
+    var locationContainer
 
-    var locationButton = document.createElement('button')
-    locationButton.style.backgroundColor = '#fff'
-    locationButton.style.border = 'none'
-    locationButton.style.outline = 'none'
-    locationButton.style.width = '28px'
-    locationButton.style.height = '28px'
-    locationButton.style.borderRadius = '2px'
-    locationButton.style.boxShadow = '0 1px 4px rgba(0,0,0,0.3)'
-    locationButton.style.cursor = 'pointer'
-    locationButton.style.marginRight = '10px'
-    locationButton.style.padding = '0px'
-    locationButton.title = 'My Location'
-    locationContainer.appendChild(locationButton)
+    _locationMarker.onAdd = function(map) {
+        locationContainer = L.DomUtil.create('div', '_locationMarker')
 
-    var locationIcon = document.createElement('div')
-    locationIcon.style.margin = '5px'
-    locationIcon.style.width = '18px'
-    locationIcon.style.height = '18px'
-    locationIcon.style.backgroundImage = 'url(static/mylocation-sprite-1x.png)'
-    locationIcon.style.backgroundSize = '180px 18px'
-    locationIcon.style.backgroundPosition = '0px 0px'
-    locationIcon.style.backgroundRepeat = 'no-repeat'
-    locationIcon.id = 'current-location'
-    locationButton.appendChild(locationIcon)
+        var locationButton = document.createElement('button')
+        locationButton.style.backgroundColor = '#fff'
+        locationButton.style.border = 'none'
+        locationButton.style.outline = 'none'
+        locationButton.style.width = '28px'
+        locationButton.style.height = '28px'
+        locationButton.style.borderRadius = '2px'
+        locationButton.style.boxShadow = '0 1px 4px rgba(0,0,0,0.3)'
+        locationButton.style.cursor = 'pointer'
+        locationButton.style.marginRight = '10px'
+        locationButton.style.padding = '0px'
+        locationButton.title = 'My Location'
+        locationContainer.appendChild(locationButton)
 
-    locationButton.addEventListener('click', function () {
-        centerMapOnLocation()
-    })
+        var locationIcon = document.createElement('div')
+        locationIcon.style.margin = '5px'
+        locationIcon.style.width = '18px'
+        locationIcon.style.height = '18px'
+        locationIcon.style.backgroundImage = 'url(static/mylocation-sprite-1x.png)'
+        locationIcon.style.backgroundSize = '180px 18px'
+        locationIcon.style.backgroundPosition = '0px 0px'
+        locationIcon.style.backgroundRepeat = 'no-repeat'
+        locationIcon.id = 'current-location'
+        locationButton.appendChild(locationIcon)
 
+        locationButton.addEventListener('click', function () {
+            centerMapOnLocation()
+        })
+
+        return locationContainer
+
+    }
+
+    _locationMarker.addTo(map)
     locationContainer.index = 1
-    map.controls[google.maps.ControlPosition.RIGHT_BOTTOM].push(locationContainer)
 
-    google.maps.event.addListener(map, 'dragend', function () {
+    map.on('dragend', function () {
         var currentLocation = document.getElementById('current-location')
         currentLocation.style.backgroundPosition = '0px 0px'
     })
@@ -4442,13 +4343,6 @@ $(function () {
             placeholder: 'Select Style',
             data: styleList,
             minimumResultsForSearch: Infinity
-        })
-
-        // setup the list change behavior
-        $selectStyle.on('change', function (e) {
-            selectedStyle = $selectStyle.val()
-            map.setMapTypeId(selectedStyle)
-            Store.set('map_style', selectedStyle)
         })
 
         // recall saved mapstyle
