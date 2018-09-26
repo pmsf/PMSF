@@ -1230,7 +1230,7 @@ function getGymMarkerIcon(item) {
 function setupGymMarker(item) {
     var marker = L.marker([item['latitude'], item['longitude']])
     markers.addLayer(marker)
-    updateGymMarker(item, marker)
+    //updateGymMarker(item, marker)
 
     if (!marker.rangeCircle && isRangeActive(map)) {
         marker.rangeCircle = addRangeCircle(marker, map, 'gym', item['team_id'])
@@ -1424,7 +1424,8 @@ function setupPokestopMarker(item) {
         iconSize: [30, 30],
         })
 
-    var marker = L.marker([item['latitude'], item['longitude']], {icon: icon}).addTo(map).bindPopup(pokestopLabel(item))
+    var marker = L.marker([item['latitude'], item['longitude']], {icon: icon}).bindPopup(pokestopLabel(item))
+    markers.addLayer(marker)
 
     if (!marker.rangeCircle && isRangeActive(map)) {
         marker.rangeCircle = addRangeCircle(marker, map, 'pokestop')
@@ -1513,25 +1514,13 @@ function nestLabel(item) {
 }
 
 function setupCommunityMarker(item) {
-    var str = '<div class="marker-community">' +
-        '<img src="static/images/marker-' + item.type + '.png" style="width:36px;height: auto;"/>' +
-        '</div>'
-
-    var marker = new RichMarker({
-        position: new google.maps.LatLng(item['lat'], item['lon']),
-        map: map,
-        content: str,
-        flat: true,
-        optimized: false,
-        zIndes: google.maps.Marker.MAX_ZINDEX + 5,
-        anchor: RichMarkerPosition.MIDDLE
+    var icon = L.divIcon({className: 'marker-community',
+        html: '<img src="static/images/marker-' + item.type + '.png" style="width:36px;height: auto;"/>'
     })
 
-    marker.infoWindow = new google.maps.InfoWindow({
-        content: communityLabel(item),
-        disableAutoPan: true,
-        pixelOffset: new google.maps.Size(0, -30)
-    })
+    var marker = L.marker([item['lat'], item['lon']], {icon: icon}).bindPopup(communityLabel(item))
+    markers.addLayer(marker)
+
     addListeners(marker)
 
     return marker
