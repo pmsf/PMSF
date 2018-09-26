@@ -1172,25 +1172,26 @@ function getGymMarkerIcon(item) {
         teamStr = gymTypes[item['team_id']] + '_' + level
     }
     var gymIcon = ''
+    var fortMarker = ''
     if ((((park !== 'None' && park !== undefined && onlyTriggerGyms === false && park) || (item['sponsor'] !== undefined && item['sponsor'] > 0) || triggerGyms.includes(item['gym_id'])) && (noExGyms === false))) {
-        gymIcon = '<img src="static/forts/' + Store.get('gymMarkerStyle') + '/' + teamStr + '_ex.png" style="width:50px;height:auto;"/>'
+        gymIcon = '<img src="static/forts/ingame/Uncontested_ex.png" style="width:50px;height:auto;"/>'
     } else {
-        gymIcon = '<img src="static/forts/' + Store.get('gymMarkerStyle') + '/' + teamStr + '.png" style="width:50px;height:auto;"/>'
+        gymIcon = '<img src="static/forts/ingame/Uncontested.png" style="width:50px;height:auto;"/>'
     }
     var gymSmallIcon = ''
     if ((((park !== 'None' && park !== undefined && onlyTriggerGyms === false && park) || (item['sponsor'] !== undefined && item['sponsor'] > 0) || triggerGyms.includes(item['gym_id'])) && (noExGyms === false))) {
-        gymSmallIcon = '<img src="static/forts/' + Store.get('gymMarkerStyle') + '/' + teamStr + '_ex.png" style="width:35px;height:auto;"/>'
+        gymSmallIcon = '<img src="static/forts/ingame/Uncontested_ex.png" style="width:35px;height:auto;"/>'
     } else {
-        gymSmallIcon = '<img src="static/forts/' + Store.get('gymMarkerStyle') + '/' + teamStr + '.png" style="width:35px;height:auto;"/>'
+        gymSmallIcon = '<img src="static/forts/ingame/Uncontested.png" style="width:35px;height:auto;"/>'
     }
 
     if (item['raid_pokemon_id'] != null && item.raid_end > Date.now() && copyrightSafe === false) {
-        return '<div style="position:relative;">' +
+        fortMarker = '<div style="position:relative;">' +
             gymIcon +
-            '<img src="https://raw.githubusercontent.com/ZeChrales/PogoAssets/master/pokemon_icons/pokemon_icon_' + pokemonidStr + '_' + formStr + '.png" style="max-width:70px;height:auto;position:absolute;top:-35px;right:-5px;"/>' +
+            '<img src="https://raw.githubusercontent.com/ZeChrales/PogoAssets/master/pokemon_icons/pokemon_icon_' + pokemonidStr + '_' + formStr + '.png" style="width:70px;height:auto;position:absolute;top:-35px;right:-40px;"/>' +
             '</div>'
     } else if (item['raid_pokemon_id'] != null && item.raid_end > Date.now() && copyrightSafe === true) {
-        return '<div style="position:relative;">' +
+        fortMarker = '<div style="position:relative;">' +
             gymIcon +
             '<i class="pokemon-raid-sprite n' + item.raid_pokemon_id + '"></i>' +
             '</div>'
@@ -1203,7 +1204,7 @@ function getGymMarkerIcon(item) {
         } else {
             hatchedEgg = 'hatched_legendary'
         }
-        return '<div style="position:relative;">' +
+        fortMarker = '<div style="position:relative;">' +
             gymIcon +
             '<img src="static/raids/egg_' + hatchedEgg + '.png" style="width:35px;height:auto;position:absolute;top:-10px;right:12px;"/>' +
             '</div>'
@@ -1216,19 +1217,24 @@ function getGymMarkerIcon(item) {
         } else {
             raidEgg = 'legendary'
         }
-        return '<div style="position:relative;">' +
+        fortMarker = '<div style="position:relative;">' +
             gymIcon +
             '<img src="static/raids/egg_' + raidEgg + '.png" style="width:25px;height:auto;position:absolute;top:6px;right:18px;"/>' +
             '</div>'
     } else {
-        return '<div>' +
+        fortMarker = '<div>' +
             gymSmallIcon +
             '</div>'
     }
+    return fortMarker
 }
 
 function setupGymMarker(item) {
-    var marker = L.marker([item['latitude'], item['longitude']])
+    var gymMarkerIcon = L.divIcon({
+        className: 'gym-marker',
+        html: getGymMarkerIcon(item)
+    })
+    var marker = L.marker([item['latitude'], item['longitude']], {icon: gymMarkerIcon}).bindPopup(gymLabel(item))
     markers.addLayer(marker)
     //updateGymMarker(item, marker)
 
