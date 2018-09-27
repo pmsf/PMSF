@@ -1194,15 +1194,27 @@ function getGymMarkerIcon(item) {
     }
 
     if (item['raid_pokemon_id'] != null && item.raid_end > Date.now() && copyrightSafe === false) {
-        fortMarker = '<div style="position:relative;">' +
+        var html = '<div style="position:relative;">' +
             gymIcon +
             '<img src="https://raw.githubusercontent.com/ZeChrales/PogoAssets/master/pokemon_icons/pokemon_icon_' + pokemonidStr + '_' + formStr + '.png" style="width:70px;height:auto;position:absolute;top:-35px;right:-40px;"/>' +
             '</div>'
+        fortMarker = L.divIcon({
+            iconAnchor: [17, 30],
+            popupAnchor: [0, -35],
+            className: 'raid-marker',
+            html: html
+        })
     } else if (item['raid_pokemon_id'] != null && item.raid_end > Date.now() && copyrightSafe === true) {
-        fortMarker = '<div style="position:relative;">' +
+        var html = '<div style="position:relative;">' +
             gymIcon +
             '<i class="pokemon-raid-sprite n' + item.raid_pokemon_id + '"></i>' +
             '</div>'
+        fortMarker = L.divIcon({
+            iconAnchor: [17, 30],
+            popupAnchor: [0, -35],
+            className: 'safe-raid-marker',
+            html: html
+        })
     } else if (item['raid_level'] !== null && item.raid_start <= Date.now() && item.raid_end > Date.now()) {
         var hatchedEgg = ''
         if (item['raid_level'] <= 2) {
@@ -1212,10 +1224,16 @@ function getGymMarkerIcon(item) {
         } else {
             hatchedEgg = 'hatched_legendary'
         }
-        fortMarker = '<div style="position:relative;">' +
+        var html = '<div style="position:relative;">' +
             gymIcon +
             '<img src="static/raids/egg_' + hatchedEgg + '.png" style="width:35px;height:auto;position:absolute;top:-11px;right:-25px;"/>' +
             '</div>'
+        fortMarker = L.divIcon({
+            iconAnchor: [17, 30],
+            popupAnchor: [0, -35],
+            className: 'active-egg-marker',
+            html: html
+        })
     } else if (item['raid_level'] !== null && item.raid_end > Date.now()) {
         var raidEgg = ''
         if (item['raid_level'] <= 2) {
@@ -1225,24 +1243,33 @@ function getGymMarkerIcon(item) {
         } else {
             raidEgg = 'legendary'
         }
-        fortMarker = '<div style="position:relative;">' +
+        var html = '<div style="position:relative;">' +
             gymIcon +
             '<img src="static/raids/egg_' + raidEgg + '.png" style="width:25px;height:auto;position:absolute;top:6px;right:-21px;"/>' +
             '</div>'
+        fortMarker = L.divIcon({
+            iconAnchor: [17, 30],
+            popupAnchor: [0, -35],
+            className: 'egg-marker',
+            html: html
+        })
     } else {
-        fortMarker = '<div>' +
+        var html = '<div>' +
             gymSmallIcon +
             '</div>'
+        fortMarker = L.divIcon({
+            iconAnchor: [17, 30],
+            popupAnchor: [0, -35],
+            className: 'egg-marker',
+            html: html
+        })
     }
     return fortMarker
 }
 
 function setupGymMarker(item) {
-    var gymMarkerIcon = L.divIcon({
-        className: 'gym-marker',
-        html: getGymMarkerIcon(item)
-    })
-    var marker = L.marker([item['latitude'], item['longitude']], {icon: gymMarkerIcon}).bindPopup(gymLabel(item))
+
+    var marker = L.marker([item['latitude'], item['longitude']], {icon: getGymMarkerIcon(item)}).bindPopup(gymLabel(item))
     markers.addLayer(marker)
     updateGymMarker(item, marker)
 
@@ -1339,14 +1366,7 @@ function setupGymMarker(item) {
 }
 
 function updateGymMarker(item, marker) {
-    var gymMarkerIcon = L.divIcon({
-        iconAnchor: [17, 30],
-        popupAnchor: [0, -35],
-        className: 'gym-marker',
-        html: getGymMarkerIcon(item)
-    })
-
-    marker.setIcon(gymMarkerIcon)
+    marker.setIcon(getGymMarkerIcon(item))
     marker._popup.setContent(gymLabel(item))
     var zIndexOffSet
     var raidLevel = item.raid_level
@@ -1414,7 +1434,7 @@ function updateGymMarker(item, marker) {
 
 function updateGymIcons() {
     $.each(mapData.gyms, function (key, value) {
-        mapData.gyms[key]['marker'].setContent(getGymMarkerIcon(mapData.gyms[key]))
+        mapData.gyms[key]['marker'].setIcon(getGymMarkerIcon(mapData.gyms[key]))
     })
 }
 
@@ -3205,7 +3225,6 @@ function processGyms(i, item) {
     if (!Store.get('showGyms') && !Store.get('showRaids')) {
         return false // in case the checkbox was unchecked in the meantime.
     }
-
     var gymLevel = item.slots_available
     var raidLevel = item.raid_level
     var removeGymFromMap = function removeGymFromMap(gymid) {
