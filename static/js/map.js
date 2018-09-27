@@ -1269,7 +1269,7 @@ function getGymMarkerIcon(item) {
 
 function setupGymMarker(item) {
 
-    var marker = L.marker([item['latitude'], item['longitude']], {icon: getGymMarkerIcon(item)}).bindPopup(gymLabel(item))
+    var marker = L.marker([item['latitude'], item['longitude']], {icon: getGymMarkerIcon(item)}).bindPopup(gymLabel(item),{autoPan:false})
     markers.addLayer(marker)
     updateGymMarker(item, marker)
 
@@ -1436,7 +1436,6 @@ function updateGymIcons() {
         mapData.gyms[key]['marker'].setIcon(getGymMarkerIcon(mapData.gyms[key]))
     })
 }
-
 function getPokestopMarkerIcon(item) {
     var stopMarker = ''
     if (item['lure_expiration'] > Date.now()) {
@@ -1485,7 +1484,7 @@ function setupPokestopMarker(item) {
 
     var pokestopMarkerIcon = getPokestopMarkerIcon(item)
 
-    var marker = L.marker([item['latitude'], item['longitude']], {icon: pokestopMarkerIcon}).bindPopup(pokestopLabel(item['lure_expiration'], item['latitude'], item['longitude'], item['pokestop_name'], item['url'], item['lure_user'], item['pokestop_id'], item['quest_id'], item['reward_id']))
+    var marker = L.marker([item['latitude'], item['longitude']], {icon: pokestopMarkerIcon}).bindPopup(pokestopLabel(item['lure_expiration'], item['latitude'], item['longitude'], item['pokestop_name'], item['url'], item['lure_user'], item['pokestop_id'], item['quest_id'], item['reward_id'],{autoPan:false}))
     markers.addLayer(marker)
 
     if (!marker.rangeCircle && isRangeActive(map)) {
@@ -1514,7 +1513,7 @@ function setupNestMarker(item) {
         className: 'marker-nests',
         html: getNestMarkerIcon
     })
-    var marker = L.marker([item['lat'], item['lon']], {icon: nestMarkerIcon}).bindPopup(nestLabel(item))
+    var marker = L.marker([item['lat'], item['lon']], {icon: nestMarkerIcon}).bindPopup(nestLabel(item),{autoPan:false})
     markers.addLayer(marker)
     addListeners(marker)
 
@@ -1574,7 +1573,7 @@ function setupCommunityMarker(item) {
         html: '<img src="static/images/marker-' + item.type + '.png" style="width:36px;height: auto;"/>'
     })
 
-    var marker = L.marker([item['lat'], item['lon']], {icon: icon}).bindPopup(communityLabel(item))
+    var marker = L.marker([item['lat'], item['lon']], {icon: icon}).bindPopup(communityLabel(item),{autoPan:false})
     markers.addLayer(marker)
 
     addListeners(marker)
@@ -1667,7 +1666,7 @@ function setupPortalMarker(item) {
             weight: 1
         }
     }
-    var marker = L.circleMarker([item['lat'], item['lon']], {circle}).bindPopup(portalLabel(item))
+    var marker = L.circleMarker([item['lat'], item['lon']], {circle}).bindPopup(portalLabel(item),{autoPan:false})
     markers.addLayer(marker)
 
     addListeners(marker)
@@ -1906,11 +1905,11 @@ function clearStaleMarkers() {
     })
 }
 
-function showInBoundsMarkers(markers, type) {
-    $.each(markers, function (key, value) {
-        var marker = markers[key].marker
+function showInBoundsMarkers(markersInput, type) {
+    $.each(markersInput, function (key, value) {
+        var marker = markersInput[key].marker
         var show = false
-        if (!markers[key].hidden) {
+        if (!markersInput[key].hidden) {
             if (typeof marker.getLatLng === 'function') {
                 if (map.getBounds().contains(marker.getLatLng())) {
                     show = true
@@ -1923,13 +1922,13 @@ function showInBoundsMarkers(markers, type) {
             if (!marker.rangeCircle) {
                 // but only if range is active
                 if (isRangeActive(map)) {
-                    if (type === 'gym') marker.rangeCircle = addRangeCircle(marker, map, type, markers[key].team_id)
+                    if (type === 'gym') marker.rangeCircle = addRangeCircle(marker, map, type, markersInput[key].team_id)
                     else marker.rangeCircle = addRangeCircle(marker, map, type)
                 }
             } else {
                 // there's already a range circle
                 if (isRangeActive(map)) {
-                    markeris.addLayer(marker.rangeCircle)
+                    markers.addLayer(marker.rangeCircle)
                 } else {
                     markers.removeLayer(marker.rangeCircle)
                     markersnotify.removeLayer(marker.rangeCircle)
@@ -4833,7 +4832,7 @@ $(function () {
         var lat = $(this).data('lat')
         var lng = $(this).data('lng')
         var zoom = $(this).data('zoom')
-        map.setCenter(new google.maps.LatLng(lat, lng))
+        map.setCenter(new L.LatLng(lat, lng))
         map.setZoom(zoom)
     })
 
