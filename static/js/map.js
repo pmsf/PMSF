@@ -319,8 +319,8 @@ function initMap() { // eslint-disable-line no-unused-vars
 
     map.on('click', function (e) {
         if ($('.submit-on-off-button').hasClass('on')) {
-            $('.submitLatitude').val(e.latLng.lat())
-            $('.submitLongitude').val(e.latLng.lng())
+            $('.submitLatitude').val(e.latlng.lat)
+            $('.submitLongitude').val(e.latlng.lng)
             $('.ui-dialog').remove()
             $('.submit-modal').clone().dialog({
                 modal: true,
@@ -1214,7 +1214,7 @@ function getGymMarkerIcon(item) {
         }
         fortMarker = '<div style="position:relative;">' +
             gymIcon +
-            '<img src="static/raids/egg_' + hatchedEgg + '.png" style="width:35px;height:auto;position:absolute;top:-10px;right:12px;"/>' +
+            '<img src="static/raids/egg_' + hatchedEgg + '.png" style="width:35px;height:auto;position:absolute;top:-11px;right:-25px;"/>' +
             '</div>'
     } else if (item['raid_level'] !== null && item.raid_end > Date.now()) {
         var raidEgg = ''
@@ -1227,7 +1227,7 @@ function getGymMarkerIcon(item) {
         }
         fortMarker = '<div style="position:relative;">' +
             gymIcon +
-            '<img src="static/raids/egg_' + raidEgg + '.png" style="width:25px;height:auto;position:absolute;top:6px;right:18px;"/>' +
+            '<img src="static/raids/egg_' + raidEgg + '.png" style="width:25px;height:auto;position:absolute;top:6px;right:-21px;"/>' +
             '</div>'
     } else {
         fortMarker = '<div>' +
@@ -1340,6 +1340,8 @@ function setupGymMarker(item) {
 
 function updateGymMarker(item, marker) {
     var gymMarkerIcon = L.divIcon({
+        iconAnchor: [17, 30],
+        popupAnchor: [0, -35],
         className: 'gym-marker',
         html: getGymMarkerIcon(item)
     })
@@ -1419,33 +1421,52 @@ function updateGymIcons() {
 function getPokestopMarkerIcon(item) {
     var stopMarker = ''
     if (item['lure_expiration'] > Date.now()) {
-        stopMarker = '<div style="position:relative;">' +
+        stopMarker = L.divIcon({
+            iconAnchor: [15, 18],
+            popupAnchor: [0, -35],
+            className: 'stop-lured-marker',
+            html: '<div style="position:relative;">' +
             '<img src="static/forts/Pstop-Lured.png"/>' +
             '</div>'
+        })
     } else if (noManualQuests === true) {
-        stopMarker = '<div style="position:relative;">' +
+        stopMarker = L.divIcon({
+            iconAnchor: [15, 18],
+            popupAnchor: [0, -35],
+            className: 'stop-marker',
+            html: '<div style="position:relative;">' +
             '<img src="static/forts/Pstop.png"' +
             '</div>'
+        })
     } else if (item['quest_id'] !== null) {
-        stopMarker =  '<div style="position:relative;">' +
-            '<img src="static/forts/Pstop-quest-large.png" style="width:50px;height:72;"/>' +
-            '<img src="static/rewards/reward_' + item['reward_id'] + '.png" style="width:30px;height:auto;position:absolute;top:4px;right:12px;"/>' +
+        var html = '<div style="position:relative;">' +
+            '<img src="static/forts/Pstop-quest-large.png" style="width:50px;height:72;top:-35px;right:10px;"/>' +
+            '<img src="static/rewards/reward_' + item['reward_id'] + '.png" style="width:30px;height:auto;position:absolute;top:4px;"/>' +
             '</div>'
+        stopMarker =  L.divIcon({
+            iconAnchor: [24, 38],
+            popupAnchor: [0, -35],
+            className: 'stop-quest-marker',
+            html: html
+        })
     } else {
-        stopMarker = '<div>' +
+        stopMarker = L.divIcon({
+            iconAnchor: [15, 28],
+            popupAnchor: [0, -35],
+            className: 'stop-marker',
+            html: '<div>' +
             '<img src="static/forts/Pstop.png"' +
             '</div>'
+        })
     }
     return stopMarker
 }
 
 function setupPokestopMarker(item) {
-    var pokestopMarkerIcon = L.divIcon({
-        className: 'stop-marker',
-        html: getPokestopMarkerIcon(item)
-        })
 
-    var marker = L.marker([item['latitude'], item['longitude']], {icon: pokestopMarkerIcon}).bindPopup(pokestopLabel(item))
+    var pokestopMarkerIcon = getPokestopMarkerIcon(item)
+
+    var marker = L.marker([item['latitude'], item['longitude']], {icon: pokestopMarkerIcon}).bindPopup(pokestopLabel(item['lure_expiration'], item['latitude'], item['longitude'], item['pokestop_name'], item['url'], item['lure_user'], item['pokestop_id'], item['quest_id'], item['reward_id']))
     markers.addLayer(marker)
 
     if (!marker.rangeCircle && isRangeActive(map)) {
@@ -1457,30 +1478,25 @@ function setupPokestopMarker(item) {
     return marker
 }
 function setupNestMarker(item) {
+    var getNestMarkerIcon = ''
     if (item.pokemon_id > 0) {
-        var str = '<div class="marker-nests">' +
+        getNestMarkerIcon = '<div class="marker-nests">' +
             '<img src="static/images/nest-' + item.english_pokemon_types[0].type.toLowerCase() + '.png" style="width:36px;height: auto;"/>' +
             '<i class="nest-pokemon-sprite n' + item.pokemon_id + '"></i>' +
             '</div>'
     } else {
-        str = '<div class="marker-nests">' +
+        getNestMarkerIcon = '<div class="marker-nests">' +
             '<img src="static/images/nest-empty.png" style="width:36px;height: auto;"/>' +
             '</div>'
     }
-
-    var marker = new RichMarker({
-        position: new google.maps.LatLng(item['lat'], item['lon']),
-        map: map,
-        content: str,
-        flat: true,
-        anchor: RichMarkerPosition.MIDDLE
+    var nestMarkerIcon = L.divIcon({
+        iconAnchor: [20, 45],
+        popupAnchor: [0, -45],
+        className: 'marker-nests',
+        html: getNestMarkerIcon
     })
-
-    marker.infoWindow = new google.maps.InfoWindow({
-        content: nestLabel(item),
-        disableAutoPan: true,
-        pixelOffset: new google.maps.Size(0, -30)
-    })
+    var marker = L.marker([item['lat'], item['lon']], {icon: nestMarkerIcon}).bindPopup(nestLabel(item))
+    markers.addLayer(marker)
     addListeners(marker)
 
     return marker
@@ -2039,7 +2055,6 @@ function loadWeatherCellData(cell) {
     })
 }
 function searchForItem(lat, lon, term, type, field) {
-    console.log(term)
     if (term !== '') {
         $.ajax({
             url: 'search',
@@ -2122,10 +2137,9 @@ function centerMapOnCoords(event) { // eslint-disable-line no-unused-vars
     } else {
         point = point.parent().parent().parent()
     }
-    var lat = point.data('lat')
-    var lon = point.data('lon')
-    map.setCenter(new google.maps.LatLng(lat, lon))
-    map.setZoom(17)
+    var latlng = new L.LatLng(point.data('lat'), point.data('lon'))
+    map.panTo(latlng)
+    map.setZoom(18)
     $('.ui-dialog-content').dialog('close')
 }
 
@@ -3761,12 +3775,12 @@ function centerMapOnLocation() {
 }
 
 function changeLocation(lat, lng) {
-    var loc = new google.maps.LatLng(lat, lng)
+    var loc = new L.LatLng(lat, lng)
     map.setCenter(loc)
 }
 
 function centerMap(lat, lng, zoom) {
-    var loc = new google.maps.LatLng(lat, lng)
+    var loc = new L.LatLng(lat, lng)
 
     map.setCenter(loc)
 
@@ -3804,12 +3818,12 @@ function updateGeoLocation() {
         navigator.geolocation.getCurrentPosition(function (position) {
             var lat = position.coords.latitude
             var lng = position.coords.longitude
-            var center = new google.maps.LatLng(lat, lng)
+            var center = new L.LatLng(lat, lng)
 
             if (Store.get('followMyLocation')) {
-                if (typeof locationMarker !== 'undefined' && getPointDistance(locationMarker.getPosition(), center) >= 5) {
+                if (typeof locationMarker !== 'undefined' && getPointDistance(locationMarker.getLatLng(), center) >= 5) {
                     map.panTo(center)
-                    locationMarker.setPosition(center)
+                    locationMarker.setLatLng(center)
                     if (Store.get('spawnArea')) {
                         if (locationMarker.rangeCircle) {
                             locationMarker.rangeCircle.setMap(null)
