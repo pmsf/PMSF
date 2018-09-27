@@ -251,8 +251,7 @@ function initMap() { // eslint-disable-line no-unused-vars
         zoomControl: false
     })
 
-    //setTileLayer(Store.get('map_style'))
-    L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {attribution: '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>'}).addTo(map)
+    setTileLayer(Store.get('map_style'))
     markers = L.markerClusterGroup({
         disableClusteringAtZoom: 16,
         spiderfyOnMaxZoom: false,
@@ -345,6 +344,7 @@ function initMap() { // eslint-disable-line no-unused-vars
     })
 }
 
+var openstreetmap = L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {attribution: '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>'})
 var stylemapnik = L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {attribution: '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>'})
 var styleblackandwhite = L.tileLayer('https://korona.geog.uni-heidelberg.de/tiles/roadsg/x={x}&y={y}&z={z}', {attribution: 'Imagery from <a href="http://giscience.uni-hd.de/">GIScience Research Group @ University of Heidelberg</a> &mdash; Map data &copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>'})
 var styletopo = L.tileLayer('https://{s}.tile.opentopomap.org/{z}/{x}/{y}.png', {attribution: '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>'})
@@ -1368,7 +1368,6 @@ function setupGymMarker(item) {
 function updateGymMarker(item, marker) {
     marker.setIcon(getGymMarkerIcon(item))
     marker._popup.setContent(gymLabel(item))
-    var zIndexOffSet
     var raidLevel = item.raid_level
     if (raidLevel >= Store.get('remember_raid_notify') && item.raid_end > Date.now() && Store.get('remember_raid_notify') !== 0) {
         var raidPokemon = mapData.gyms[item['gym_id']].raid_pokemon_id
@@ -4362,6 +4361,11 @@ $(function () {
             placeholder: 'Select Style',
             data: styleList,
             minimumResultsForSearch: Infinity
+        })
+	$selectStyle.on('change', function (e) {
+            selectedStyle = $selectStyle.val()
+            setTileLayer(selectedStyle)
+            Store.set('map_style', selectedStyle)
         })
 
         // recall saved mapstyle
