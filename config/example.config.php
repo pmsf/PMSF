@@ -26,6 +26,7 @@ $startingLng = 5.121420;                                           // Starting l
 
 $maxLatLng = 1;                                                     // Max latitude and longitude size (1 = ~110km, 0 to disable)
 $maxZoomOut = 11;                                                   // Max zoom out level (11 ~= $maxLatLng = 1, 0 to disable, lower = the further you can zoom out)
+$maxZoomIn = 18;                                                    // Max zoom in level 18
 $enableCsrf = true;                                                 // Don't disable this unless you know why you need to :)
 $sessionLifetime = 43200;                                           // Session lifetime, in seconds
 $blockIframe = true;                                                // Block your map being loaded in an iframe
@@ -212,7 +213,7 @@ $notifyNotification = 'true';                                       // true/fals
 $copyrightSafe = true;
 
 $noMapStyle = false;                                                // true/false
-$mapStyle = 'style_pgo_dynamic';                                    // roadmap, satellite, hybrid, nolabels_style, dark_style, style_light2, style_pgo, dark_style_nl, style_pgo_day, style_pgo_night, style_pgo_dynamic
+$mapStyle = 'openstreetmap';                                        // openstreetmap, darkmatter, styleblackandwhite, styletopo, stylesatellite, stylewikipedia
 
 $noDirectionProvider = false;                                       // true/false
 $directionProvider = 'google';                                      // google, waze, apple, bing, google_pin
