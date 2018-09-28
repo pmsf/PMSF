@@ -365,9 +365,10 @@ function updateLocationMarker(style) {
                 iconUrl: url,
                 iconSize: [24, 24]
             })
+            locationMarker.setIcon(locationIcon)
         } else {
             locationIcon = new L.Icon.Default()
-            locationMarker = setIcon(locationIcon)
+            locationMarker.setIcon(locationIcon)
         }
         Store.set('locationMarkerStyle', style)
     }
