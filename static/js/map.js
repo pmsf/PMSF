@@ -1202,10 +1202,11 @@ function getGymMarkerIcon(item) {
     if (item['raid_pokemon_id'] != null && item.raid_end > Date.now() && copyrightSafe === false) {
         html = '<div style="position:relative;">' +
             gymIcon +
-            '<img src="https://raw.githubusercontent.com/ZeChrales/PogoAssets/master/pokemon_icons/pokemon_icon_' + pokemonidStr + '_' + formStr + '.png" style="width:70px;height:auto;position:absolute;top:-35px;right:-40px;"/>' +
+            '<img src="https://raw.githubusercontent.com/ZeChrales/PogoAssets/master/pokemon_icons/pokemon_icon_' + pokemonidStr + '_' + formStr + '.png" style="width:70px;height:auto;position:absolute;top:-35px;right:-4px;"/>' +
             '</div>'
         fortMarker = L.divIcon({
-            iconAnchor: [17, 30],
+            iconSize: [50, 50],
+            iconAnchor: [25, 45],
             popupAnchor: [0, -35],
             className: 'raid-marker',
             html: html
@@ -1216,7 +1217,8 @@ function getGymMarkerIcon(item) {
             '<i class="pokemon-raid-sprite n' + item.raid_pokemon_id + '"></i>' +
             '</div>'
         fortMarker = L.divIcon({
-            iconAnchor: [17, 30],
+            iconSize: [50, 50],
+            iconAnchor: [25, 45],
             popupAnchor: [0, -35],
             className: 'safe-raid-marker',
             html: html
@@ -1232,10 +1234,11 @@ function getGymMarkerIcon(item) {
         }
         html = '<div style="position:relative;">' +
             gymIcon +
-            '<img src="static/raids/egg_' + hatchedEgg + '.png" style="width:35px;height:auto;position:absolute;top:-11px;right:-25px;"/>' +
+            '<img src="static/raids/egg_' + hatchedEgg + '.png" style="width:35px;height:auto;position:absolute;top:-11px;right:18px;"/>' +
             '</div>'
         fortMarker = L.divIcon({
-            iconAnchor: [17, 30],
+            iconSize: [50, 50],
+            iconAnchor: [25, 45],
             popupAnchor: [0, -35],
             className: 'active-egg-marker',
             html: html
@@ -1251,10 +1254,11 @@ function getGymMarkerIcon(item) {
         }
         html = '<div style="position:relative;">' +
             gymIcon +
-            '<img src="static/raids/egg_' + raidEgg + '.png" style="width:25px;height:auto;position:absolute;top:6px;right:-21px;"/>' +
+            '<img src="static/raids/egg_' + raidEgg + '.png" style="width:25px;height:auto;position:absolute;top:6px;right:18px;"/>' +
             '</div>'
         fortMarker = L.divIcon({
-            iconAnchor: [17, 30],
+            iconSize: [50, 50],
+            iconAnchor: [25, 45],
             popupAnchor: [0, -35],
             className: 'egg-marker',
             html: html
@@ -1264,6 +1268,7 @@ function getGymMarkerIcon(item) {
             gymSmallIcon +
             '</div>'
         fortMarker = L.divIcon({
+            iconSize: [50, 50],
             iconAnchor: [17, 30],
             popupAnchor: [0, -35],
             className: 'egg-marker',
@@ -1444,6 +1449,7 @@ function getPokestopMarkerIcon(item) {
     var stopMarker = ''
     if (item['lure_expiration'] > Date.now()) {
         stopMarker = L.divIcon({
+            iconSize: [31, 31],
             iconAnchor: [15, 18],
             popupAnchor: [0, -35],
             className: 'stop-lured-marker',
@@ -1453,6 +1459,7 @@ function getPokestopMarkerIcon(item) {
         })
     } else if (noManualQuests === true) {
         stopMarker = L.divIcon({
+            iconSize: [31, 31],
             iconAnchor: [15, 18],
             popupAnchor: [0, -35],
             className: 'stop-marker',
@@ -1466,6 +1473,7 @@ function getPokestopMarkerIcon(item) {
             '<img src="static/rewards/reward_' + item['reward_id'] + '.png" style="width:30px;height:auto;position:absolute;top:4px;"/>' +
             '</div>'
         stopMarker = L.divIcon({
+            iconSize: [31, 31],
             iconAnchor: [24, 38],
             popupAnchor: [0, -35],
             className: 'stop-quest-marker',
@@ -1473,6 +1481,7 @@ function getPokestopMarkerIcon(item) {
         })
     } else {
         stopMarker = L.divIcon({
+            iconSize: [31, 31],
             iconAnchor: [15, 28],
             popupAnchor: [0, -35],
             className: 'stop-marker',
@@ -1510,6 +1519,7 @@ function setupNestMarker(item) {
             '</div>'
     }
     var nestMarkerIcon = L.divIcon({
+        iconSize: [36, 48],
         iconAnchor: [20, 45],
         popupAnchor: [0, -45],
         className: 'marker-nests',
@@ -1572,6 +1582,8 @@ function nestLabel(item) {
 
 function setupCommunityMarker(item) {
     var icon = L.divIcon({className: 'marker-community',
+        iconSize: [36, 48],
+        iconAnchor: [36, 48],
         html: '<img src="static/images/marker-' + item.type + '.png" style="width:36px;height: auto;"/>'
     })
 
