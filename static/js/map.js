@@ -2142,7 +2142,7 @@ function searchForItem(lat, lon, term, type, field) {
 function searchAjax(field) { // eslint-disable-line no-unused-vars
     var term = field.val()
     var type = field.data('type')
-    navigator.geolocation.watchPosition(function (position) {
+    navigator.geolocation.getCurrentPosition(function (position) {
         searchForItem(position.coords.latitude, position.coords.longitude, term, type, field)
     }, function (err) {
         if (err) {
@@ -3427,7 +3427,6 @@ function updateMap() {
         lat: position.lat,
         lng: position.lng
     })
-
     // lets try and get the s2 cell id in the middle
     // var s2CellCenter = S2.keyToId(S2.latLngToKey(position.lat, position.lng, 10))
     // if ((s2CellCenter) && (String(s2CellCenter) !== $('#currentWeather').data('current-cell')) && (map.getZoom() > 13)) {
@@ -3797,8 +3796,8 @@ function centerMapOnLocation() {
         }, 500)
     }
     if (navigator.geolocation) {
-        navigator.geolocation.watchPosition(function (position) {
-            var latlng = L.LatLng(position.coords.latitude, position.coords.longitude)
+        navigator.geolocation.getCurrentPosition(function (position) {
+            var latlng = new L.LatLng(position.coords.latitude, position.coords.longitude)
             locationMarker.setLatLng(latlng)
             map.panTo(latlng)
             Store.set('followMyLocationPosition', {
@@ -3859,7 +3858,7 @@ function i8ln(word) {
 
 function updateGeoLocation() {
     if (navigator.geolocation && Store.get('followMyLocation')) {
-        navigator.geolocation.watchPosition(function (position) {
+        navigator.geolocation.getCurrentPosition(function (position) {
             var lat = position.coords.latitude
             var lng = position.coords.longitude
             var center = new L.LatLng(lat, lng)
@@ -4602,7 +4601,7 @@ $(function () {
             var lat = 'lat' in position ? position.lat : centerLat
             var lng = 'lng' in position ? position.lng : centerLng
 
-            var latlng = L.LatLng(lat, lng)
+            var latlng = new L.LatLng(lat, lng)
             locationMarker.setLatLng(latlng)
             map.panTo(latlng)
         }
@@ -5102,7 +5101,7 @@ $(function () {
                 wrapper.hide(options)
             }
         }
-        locationMarker.draggable(!this.checked)
+        //locationMarker.draggable(!this.checked)
     })
 
     $('#spawn-area-switch').change(function () {
