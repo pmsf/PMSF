@@ -47,6 +47,7 @@
     "zoom": true,
     "encounterId": true,
     "minZoom": true,
+    "maxZoom": true,
     "maxLatLng": true,
     "showConfig": true,
     "pageLoaded": true,
