@@ -1207,7 +1207,7 @@ function getGymMarkerIcon(item) {
         fortMarker = L.divIcon({
             iconSize: [50, 50],
             iconAnchor: [25, 45],
-            popupAnchor: [0, -35],
+            popupAnchor: [0, -70],
             className: 'raid-marker',
             html: html
         })
@@ -1239,7 +1239,7 @@ function getGymMarkerIcon(item) {
         fortMarker = L.divIcon({
             iconSize: [50, 50],
             iconAnchor: [25, 45],
-            popupAnchor: [0, -35],
+            popupAnchor: [0, -40],
             className: 'active-egg-marker',
             html: html
         })
@@ -1259,7 +1259,7 @@ function getGymMarkerIcon(item) {
         fortMarker = L.divIcon({
             iconSize: [50, 50],
             iconAnchor: [25, 45],
-            popupAnchor: [0, -35],
+            popupAnchor: [0, -40],
             className: 'egg-marker',
             html: html
         })
