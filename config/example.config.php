@@ -22,11 +22,17 @@ use Medoo\Medoo;
 $startingLat = 52.090737;                                          // Starting latitude
 $startingLng = 5.121420;                                           // Starting longitude
 
-/* Anti scrape Settings */
+/* Zoom and Cluster Settings */
 
 $maxLatLng = 1;                                                     // Max latitude and longitude size (1 = ~110km, 0 to disable)
 $maxZoomOut = 11;                                                   // Max zoom out level (11 ~= $maxLatLng = 1, 0 to disable, lower = the further you can zoom out)
 $maxZoomIn = 18;                                                    // Max zoom in level 18
+$disableClusteringAtZoom = 15;					    // Disable clustering above this value. 0 to disabel
+$zoomToBoundsOnClick = 15;					    // Zoomlevel on clusterClick
+$maxClusterRadius = 30;						    // The maximum radius that a cluster will cover from the central marker (in pixels).
+$spiderfyOnMaxZoom = 'true';					    // Spiderfy cluster markers on click
+
+/* Anti scrape Settings */
 $enableCsrf = true;                                                 // Don't disable this unless you know why you need to :)
 $sessionLifetime = 43200;                                           // Session lifetime, in seconds
 $blockIframe = true;                                                // Block your map being loaded in an iframe
