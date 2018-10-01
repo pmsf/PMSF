@@ -252,11 +252,11 @@ function initMap() { // eslint-disable-line no-unused-vars
 
     setTileLayer(Store.get('map_style'))
     markers = L.markerClusterGroup({
-        disableClusteringAtZoom: 15,
-        spiderfyOnMaxZoom: false,
-        zoomToBoundsOnClick: 16,
+        disableClusteringAtZoom: disableClusteringAtZoom,
+        spiderfyOnMaxZoom: spiderfyOnMaxZoom,
+        zoomToBoundsOnClick: zoomToBoundsOnClick,
         showCoverageOnHover: true,
-        maxClusterRadius: 10,
+        maxClusterRadius: maxClusterRadius,
         removeOutsideVisibleBounds: true
     })
     L.control.zoom({
@@ -1279,7 +1279,7 @@ function getGymMarkerIcon(item) {
 }
 
 function setupGymMarker(item) {
-    var marker = L.marker([item['latitude'], item['longitude']], {icon: getGymMarkerIcon(item)}).bindPopup(gymLabel(item), {autoPan: false})
+    var marker = L.marker([item['latitude'], item['longitude']], {icon: getGymMarkerIcon(item)}).bindPopup(gymLabel(item), {autoPan: false, closeOnClick: false, autoClose: false})
     markers.addLayer(marker)
     updateGymMarker(item, marker)
 
@@ -1495,7 +1495,7 @@ function getPokestopMarkerIcon(item) {
 
 function setupPokestopMarker(item) {
     var pokestopMarkerIcon = getPokestopMarkerIcon(item)
-    var marker = L.marker([item['latitude'], item['longitude']], {icon: pokestopMarkerIcon}).bindPopup(pokestopLabel(item['lure_expiration'], item['latitude'], item['longitude'], item['pokestop_name'], item['url'], item['lure_user'], item['pokestop_id'], item['quest_id'], item['reward_id']), {autoPan: false})
+    var marker = L.marker([item['latitude'], item['longitude']], {icon: pokestopMarkerIcon}).bindPopup(pokestopLabel(item['lure_expiration'], item['latitude'], item['longitude'], item['pokestop_name'], item['url'], item['lure_user'], item['pokestop_id'], item['quest_id'], item['reward_id']), {autoPan: false, closeOnClick: false, autoClose: false})
     markers.addLayer(marker)
 
     if (!marker.rangeCircle && isRangeActive(map)) {
@@ -1525,7 +1525,7 @@ function setupNestMarker(item) {
         className: 'marker-nests',
         html: getNestMarkerIcon
     })
-    var marker = L.marker([item['lat'], item['lon']], {icon: nestMarkerIcon}).bindPopup(nestLabel(item), {autoPan: false})
+    var marker = L.marker([item['lat'], item['lon']], {icon: nestMarkerIcon}).bindPopup(nestLabel(item), {autoPan: false, closeOnClick: false, autoClose: false})
     markers.addLayer(marker)
     addListeners(marker)
 
@@ -1587,7 +1587,7 @@ function setupCommunityMarker(item) {
         html: '<img src="static/images/marker-' + item.type + '.png" style="width:36px;height: auto;"/>'
     })
 
-    var marker = L.marker([item['lat'], item['lon']], {icon: icon}).bindPopup(communityLabel(item), {autoPan: false})
+    var marker = L.marker([item['lat'], item['lon']], {icon: icon}).bindPopup(communityLabel(item), {autoPan: false, closeOnClick: false, autoClose: false})
     markers.addLayer(marker)
 
     addListeners(marker)
@@ -1657,30 +1657,30 @@ function setupPortalMarker(item) {
     var yesterday = ts - (24 * 3600)
     if (item.checked === '1') {
         var circle = {
-            radius: 5,
-            fillColor: 'red',
+            color: 'red',
+            radius: 10,
             fillOpacity: 0.4,
-            color: 'white',
+            fillColor: '#f00',
             weight: 1
         }
     } else if (item.imported > yesterday) {
         circle = {
-            radius: 5,
-            fillColor: 'green',
+            color: 'green',
+            radius: 10,
             fillOpacity: 0.4,
-            color: 'white',
+            fillColor: '#9f3',
             weight: 1
         }
     } else {
         circle = {
-            radius: 5,
-            fillColor: 'blue',
+            color: 'blue',
+            radius: 10,
             fillOpacity: 0.4,
-            color: 'white',
+            fillColor: '#00f',
             weight: 1
         }
     }
-    var marker = L.circleMarker([item['lat'], item['lon']], {circle}).bindPopup(portalLabel(item), {autoPan: false})
+    var marker = L.circleMarker([item['lat'], item['lon']], circle).bindPopup(portalLabel(item), {autoPan: false, closeOnClick: false, autoClose: false})
     markers.addLayer(marker)
 
     addListeners(marker)
@@ -3748,10 +3748,10 @@ function createMyLocationButton() {
         locationButton.style.outline = 'none'
         locationButton.style.width = '28px'
         locationButton.style.height = '28px'
-        locationButton.style.borderRadius = '2px'
+        locationButton.style.borderRadius = '15px'
         locationButton.style.boxShadow = '0 1px 4px rgba(0,0,0,0.3)'
         locationButton.style.cursor = 'pointer'
-        locationButton.style.marginRight = '10px'
+        locationButton.style.marginRight = '3px'
         locationButton.style.padding = '0px'
         locationButton.title = 'My Location'
         locationContainer.appendChild(locationButton)

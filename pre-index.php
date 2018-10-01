@@ -1462,6 +1462,10 @@ if ( $blockIframe ) {
     var maxZoom = <?= $maxZoomIn; ?>;
     var minZoom = <?= $maxZoomOut; ?>;
     var maxLatLng = <?= $maxLatLng; ?>;
+    var disableClusteringAtZoom = <?= $disableClusteringAtZoom; ?>;
+    var zoomToBoundsOnClick = <?= $zoomToBoundsOnClick; ?>;
+    var maxClusterRadius = <?= $maxClusterRadius; ?>;
+    var spiderfyOnMaxZoom = <?= $spiderfyOnMaxZoom; ?>;
     var osmTileServer = '<?php echo $osmTileServer; ?>';
     var mapStyle = '<?php echo $mapStyle ?>';
     var hidePokemon = <?php echo $noHidePokemon ? '[]' : $hidePokemon ?>;
