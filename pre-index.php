@@ -684,6 +684,7 @@ if ( $blockIframe ) {
 		    <h3>' . i8ln( 'Change search location' ) . '</h3>
                     <form id ="search-places">
 		    <input id="next-location" type="text" name="next-location" placeholder="' . i8ln( 'Change search location' ) . '">
+                    <ul id="search-places-results" class="search-results places-results"></ul>
                     </form>
                 </label>
             </div>';

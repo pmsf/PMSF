@@ -164,14 +164,8 @@ var notifyNoIvTitle = '<pkm>'
  */
 var notifyText = 'disappears at <dist> (<udist>)'
 
-var geoSearchControl = window.GeoSearch.GeoSearchControl
 var openStreetMapProvider = window.GeoSearch.OpenStreetMapProvider
 var searchProvider = new openStreetMapProvider()
-var searchControl = new geoSearchControl({
-    provider: searchProvider,
-    showMarker: false,
-    autoClose: true
-})
 //
 // Functions
 //
@@ -272,7 +266,6 @@ function initMap() { // eslint-disable-line no-unused-vars
     }).addTo(map)
 
     map.addLayer(markers)
-    map.addControl(searchControl)
     markersnotify = L.layerGroup().addTo(map)
 
     map.on('zoom', function () {
@@ -457,22 +450,15 @@ function initSidebar() {
         const searchform = document.getElementById('search-places')
         const input = searchform.querySelector('input')
         searchform.addEventListener('input', async (event) => {
+            $('#search-places-results li').remove()
             event.preventDefault()
-            console.log(input.value)
             const results = await searchProvider.search({ query: input.value })
             console.log(results)
+            var items = []
+            $.each(results, function(key, val) {
+                $("#search-places-results").append('<li class="place-result" data-lat="' + val.y + '" data-lon="' + val.x + '"><span class="place-result" onclick="centerMapOnCoords(event);" style="font-weight:bold">' + val.label + '</span></li>')
+            })
         })
-        //var searchBox = new google.maps.places.Autocomplete(document.getElementById('next-location'))
-        //$('#next-location').css('background-color', $('#geoloc-switch').prop('checked') ? '#e0e0e0' : '#ffffff')
-    
-        //searchBox.addListener('place_changed', function () {
-        //   var place = searchBox.getPlace()
-    
-        //    if (!place.geometry) return
-    
-        //    var loc = place.geometry.location
-        //    changeLocation(loc.lat(), loc.lng())
-       //})
     }
 
     $('#pokemon-icon-size').val(Store.get('iconSizeModifier'))
@@ -2170,7 +2156,9 @@ function searchAjax(field) { // eslint-disable-line no-unused-vars
 
 function centerMapOnCoords(event) { // eslint-disable-line no-unused-vars
     var point = $(event.target)
-    if (point.hasClass('left-column')) {
+    if (point.hasClass('place-result')) {
+        point = point.parent()
+    } else if (point.hasClass('left-column')) {
         point = point.parent()
     } else if (point.hasClass('cont')) {
         point = point.parent().parent().parent()
