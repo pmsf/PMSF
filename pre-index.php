@@ -145,6 +145,7 @@ if ( $blockIframe ) {
     <script>
         var token = '<?php echo ( ! empty( $_SESSION['token'] ) ) ? $_SESSION['token'] : ""; ?>';
     </script>
+    <link href="https://unpkg.com/leaflet-geosearch@2.7.0/assets/css/leaflet.css" rel="stylesheet" />
     <link rel="stylesheet" href="static/dist/css/app.min.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jqueryui/1.12.0/jquery-ui.min.css">
     <link rel="stylesheet" href="https://cdn.datatables.net/1.10.12/css/jquery.dataTables.css">
@@ -155,7 +156,6 @@ if ( $blockIframe ) {
     <link rel="stylesheet" href="https://unpkg.com/leaflet@1.3.1/dist/leaflet.css" />
     <link rel="stylesheet" href="https://leaflet.github.io/Leaflet.markercluster/dist/MarkerCluster.css" />
     <link rel="stylesheet" href="https://leaflet.github.io/Leaflet.markercluster/dist/MarkerCluster.Default.css" />
-    <link href="https://unpkg.com/leaflet-geosearch@latest/assets/css/leaflet.css" rel="stylesheet" />
 </head>
 <body id="top">
 <div class="wrapper">
@@ -681,8 +681,10 @@ if ( $blockIframe ) {
                 if ( ! $noSearchLocation ) {
                     echo '<div class="form-control switch-container" style="display:{{is_fixed}}">
                 <label for="next-location">
-                    <h3>' . i8ln( 'Change search location' ) . '</h3>
-                    <input id="next-location" type="text" name="next-location" placeholder="' . i8ln( 'Change search location' ) . '">
+		    <h3>' . i8ln( 'Change search location' ) . '</h3>
+                    <form id ="search-places">
+		    <input id="next-location" type="text" name="next-location" placeholder="' . i8ln( 'Change search location' ) . '">
+                    </form>
                 </label>
             </div>';
                 } ?>
@@ -1447,6 +1449,7 @@ if ( $blockIframe ) {
 <script src="https://code.createjs.com/soundjs-0.6.2.min.js"></script>
 <script src="node_modules/push.js/bin/push.min.js"></script>
 <script src="node_modules/long/src/long.js"></script>
+<script src="https://unpkg.com/leaflet-geosearch@2.7.0/dist/bundle.min.js"></script>
 <script src="static/js/vendor/s2geometry.js"></script>
 <script src="static/dist/js/app.min.js"></script>
 <script src="static/js/vendor/classie.js"></script>

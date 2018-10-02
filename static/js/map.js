@@ -164,6 +164,14 @@ var notifyNoIvTitle = '<pkm>'
  */
 var notifyText = 'disappears at <dist> (<udist>)'
 
+var geoSearchControl = window.GeoSearch.GeoSearchControl
+var openStreetMapProvider = window.GeoSearch.OpenStreetMapProvider
+var searchProvider = new openStreetMapProvider()
+var searchControl = new geoSearchControl({
+    provider: searchProvider,
+    showMarker: false,
+    autoClose: true
+})
 //
 // Functions
 //
@@ -264,7 +272,7 @@ function initMap() { // eslint-disable-line no-unused-vars
     }).addTo(map)
 
     map.addLayer(markers)
-
+    map.addControl(searchControl)
     markersnotify = L.layerGroup().addTo(map)
 
     map.on('zoom', function () {
@@ -445,19 +453,27 @@ function initSidebar() {
     if (Store.get('showGyms') === true || Store.get('showRaids') === true) {
         $('#gyms-raid-filter-wrapper').toggle(true)
     }
-    //    if (document.getElementById('next-location')) {
-    //        var searchBox = new google.maps.places.Autocomplete(document.getElementById('next-location'))
-    //        $('#next-location').css('background-color', $('#geoloc-switch').prop('checked') ? '#e0e0e0' : '#ffffff')
-    //
-    //        searchBox.addListener('place_changed', function () {
-    //            var place = searchBox.getPlace()
-    //
-    //            if (!place.geometry) return
-    //
-    //            var loc = place.geometry.location
-    //            changeLocation(loc.lat(), loc.lng())
-    //       })
-    //    }
+    if (document.getElementById('next-location')) {
+        const searchform = document.getElementById('search-places')
+        const input = searchform.querySelector('input')
+        searchform.addEventListener('input', async (event) => {
+            event.preventDefault()
+            console.log(input.value)
+            const results = await searchProvider.search({ query: input.value })
+            console.log(results)
+        })
+        //var searchBox = new google.maps.places.Autocomplete(document.getElementById('next-location'))
+        //$('#next-location').css('background-color', $('#geoloc-switch').prop('checked') ? '#e0e0e0' : '#ffffff')
+    
+        //searchBox.addListener('place_changed', function () {
+        //   var place = searchBox.getPlace()
+    
+        //    if (!place.geometry) return
+    
+        //    var loc = place.geometry.location
+        //    changeLocation(loc.lat(), loc.lng())
+       //})
+    }
 
     $('#pokemon-icon-size').val(Store.get('iconSizeModifier'))
     $('#pokemon-icon-notify-size').val(Store.get('iconNotifySizeModifier'))
