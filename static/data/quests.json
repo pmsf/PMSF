@@ -19,10 +19,6 @@
     "cat": "Gym/Raid",
     "name": "Win 5 Gym battles"
   },
-  "11": {
-    "cat": "Gym/Raid",
-    "name": "Win a level 3 or higher raid"
-  },
   "12": {
     "cat": "Gym/Raid",
     "name": "Use a Super effective charge attack 7 times"
@@ -39,65 +35,37 @@
     "cat": "Catch",
     "name": "Catch a Dragon-type Pokemon"
   },
-  "123": {
-    "cat": "Catch",
-    "name": "Catch 5 Electric-type Pokemon"
-  },
   "124": {
     "cat": "Catch",
     "name": "Catch 5 Fire-type Pokémon"
   },
-  "127": {
-    "cat": "Catch",
-    "name": "Catch Rattata or Pikachu"
-  },
-  "128": {
-    "cat": "Catch",
-    "name": "Use 5 berries to help catch Pokémon"
-  },
-  "129": {
-    "cat": "Catch",
-    "name": "Use 10 berries to help catch Pokémon"
-  },
   "255": {
-    "cat": "Evolve/Power up",
+    "cat": "Evolve",
     "name": "Evolve a Pokémon"
   },
-  "268": {
-    "cat": "Evolve/Power up",
-    "name": "Evolve a Fire-Type"
-  },
   "269": {
-    "cat": "Evolve/Power up",
-    "name": "Evolve 5 Fire-Types"
+    "cat": "Evolve",
+    "name": "Evolve 10 Water-Types"
   },
-  "271": {
+  "270": {
     "cat": "Evolve/Power up",
-    "name": "Power up Pokémon 3 times"
-  },
-  "282": {
-    "cat": "Evolve/Power up",
-    "name": "Power up Pokémon 5 times"
+    "name": "Power up a Pokémon 5 times"
   },
   "370": {
     "cat": "Throw",
     "name": "Make 5 Nice Throws"
   },
+  "371": {
+    "cat": "Throw",
+    "name": "Make 2 Nice Curveball Throws (in a row)"
+  },
   "376": {
     "cat": "Throw",
     "name": "Make 3 Great Throws"
   },
-  "379": {
-    "cat": "Throw",
-    "name": "Make a Great Curveball Throw"
-  },
   "380": {
     "cat": "Throw",
     "name": "Make 3 Great Throws in a row"
-  },
-  "381": {
-    "cat": "Throw",
-    "name": "Make 3 Great Curveball Throws in a row"
   },
   "387": {
     "cat": "Throw",
@@ -109,22 +77,22 @@
   },
   "597": {
     "cat": "Miscellaneous",
-    "name": "Hatch 3 Eggs"
+    "name": "Hatch 2 Eggs"
   },
   "598": {
+    "cat": "Miscellaneous",
+    "name": "Hatch 3 Eggs"
+  },
+  "599": {
     "cat": "Miscellaneous",
     "name": "Hatch 5 Eggs"
   },
   "605": {
     "cat": "Miscellaneous",
-    "name": "Transfer 10 Pokémon"
+    "name": "Earn a candy walking with your buddy"
   },
   "610": {
     "cat": "Miscellaneous",
-    "name": "Send 5 gifts"
-  },
-  "615": {
-    "cat": "Miscellaneous",
-    "name": "Earn a buddy candy"
+    "name": "Trade a Pokémon"
   }
 }
