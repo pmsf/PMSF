@@ -15,17 +15,9 @@
     "cat": "Pokémon:",
     "name": "Vulpix"
   },
-  "38": {
-    "cat": "Pokémon:",
-    "name": "Ninetales"
-  },
   "56": {
     "cat": "Pokémon:",
     "name": "Mankey"
-  },
-  "58": {
-    "cat": "Pokémon:",
-    "name": "Growlithe"
   },
   "60": {
     "cat": "Pokémon:",
@@ -43,6 +35,10 @@
     "cat": "Pokémon:",
     "name": "Onix"
   },
+  "98": {
+    "cat": "Pokémon:",
+    "name": "Krabby"
+  },
   "100": {
     "cat": "Pokémon:",
     "name": "Voltorb"
@@ -50,10 +46,6 @@
   "102": {
     "cat": "Pokémon:",
     "name": "Exeggcute"
-  },
-  "109": {
-    "cat": "Pokémon:",
-    "name": "Koffing"
   },
   "113": {
     "cat": "Pokémon:",
@@ -83,53 +75,25 @@
     "cat": "Pokémon:",
     "name": "Dratini"
   },
-  "171": {
+  "224": {
     "cat": "Pokémon:",
-    "name": "Lanturn"
-  },
-  "179": {
-    "cat": "Pokémon:",
-    "name": "Mareep"
-  },
-  "200": {
-    "cat": "Pokémon:",
-    "name": "Misdreavus"
-  },
-  "203": {
-    "cat": "Pokémon:",
-    "name": "Girafarig"
-  },
-  "209": {
-    "cat": "Pokémon:",
-    "name": "Snubbull"
-  },
-  "228": {
-    "cat": "Pokémon:",
-    "name": "Houndour"
-  },
-  "231": {
-    "cat": "Pokémon:",
-    "name": "Phanpy"
+    "name": "Octillery"
   },
   "246": {
     "cat": "Pokémon:",
     "name": "Larvitar"
   },
-  "309": {
+  "320": {
     "cat": "Pokémon:",
-    "name": "Electrike"
-  },
-  "315": {
-    "cat": "Pokémon:",
-    "name": "Roselia"
-  },
-  "322": {
-    "cat": "Pokémon:",
-    "name": "Numel"
+    "name": "Wailmer"
   },
   "327": {
     "cat": "Pokémon:",
     "name": "Spinda"
+  },
+  "349": {
+    "cat": "Pokémon:",
+    "name": "Feebas"
   },
   "999": {
     "cat": "Pokémon:",
