@@ -164,8 +164,8 @@ var notifyNoIvTitle = '<pkm>'
  */
 var notifyText = 'disappears at <dist> (<udist>)'
 
-var openStreetMapProvider = window.GeoSearch.OpenStreetMapProvider
-var searchProvider = new openStreetMapProvider()
+var OpenStreetMapProvider = window.GeoSearch.OpenStreetMapProvider
+var searchProvider = new OpenStreetMapProvider()
 //
 // Functions
 //
@@ -454,9 +454,8 @@ function initSidebar() {
             event.preventDefault()
             const results = await searchProvider.search({ query: input.value })
             console.log(results)
-            var items = []
-            $.each(results, function(key, val) {
-                $("#search-places-results").append('<li class="place-result" data-lat="' + val.y + '" data-lon="' + val.x + '"><span class="place-result" onclick="centerMapOnCoords(event);" style="font-weight:bold">' + val.label + '</span></li>')
+            $.each(results, function (key, val) {
+                $('#search-places-results').append('<li class="place-result" data-lat="' + val.y + '" data-lon="' + val.x + '"><span class="place-result" onclick="centerMapOnCoords(event);" style="font-weight:bold">' + val.label + '</span></li>')
             })
         })
     }
@@ -2068,7 +2067,7 @@ function loadWeather() {
     })
 }
 
-function loadWeatherCellData(cell) {
+function loadWeatherCellData(cell) { // eslint-disable-line no-unused-vars
     return $.ajax({
         url: 'weather_data?cell',
         type: 'POST',
@@ -2156,26 +2155,35 @@ function searchAjax(field) { // eslint-disable-line no-unused-vars
 
 function centerMapOnCoords(event) { // eslint-disable-line no-unused-vars
     var point = $(event.target)
+    var zoom
     if (point.hasClass('place-result')) {
         point = point.parent()
+        zoom = 15
     } else if (point.hasClass('left-column')) {
         point = point.parent()
+        zoom = 18
     } else if (point.hasClass('cont')) {
         point = point.parent().parent().parent()
+        zoom = 18
     } else if (point.hasClass('name') || point.hasClass('reward')) {
         point = point.parent().parent().parent()
+        zoom = 16
     } else if (point.hasClass('pokemon-icon')) {
         point = point.parent().parent().parent()
+        zoom = 18
     } else if (point.hasClass('distance')) {
         point = point.parent().parent().parent()
+        zoom = 17
     } else if (!point.hasClass('search-result')) {
         point = point.parent().parent()
+        zoom = 17
     } else {
         point = point.parent().parent().parent()
+        zoom = 17
     }
     var latlng = new L.LatLng(point.data('lat'), point.data('lon'))
     map.panTo(latlng)
-    map.setZoom(18)
+    map.setZoom(zoom)
     $('.ui-dialog-content').dialog('close')
 }
 
@@ -3821,11 +3829,6 @@ function centerMapOnLocation() {
     }
 }
 
-function changeLocation(lat, lng) {
-    var loc = new L.LatLng(lat, lng)
-    map.panTo(loc)
-}
-
 function centerMap(lat, lng, zoom) {
     var loc = new L.LatLng(lat, lng)
 
@@ -5105,7 +5108,6 @@ $(function () {
                 wrapper.hide(options)
             }
         }
-        //locationMarker.draggable(!this.checked)
     })
 
     $('#spawn-area-switch').change(function () {
