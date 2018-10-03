@@ -227,10 +227,12 @@ function notifyAboutPokemon(id) { // eslint-disable-line no-unused-vars
 
 function removePokemonMarker(encounterId) { // eslint-disable-line no-unused-vars
     if (mapData.pokemons[encounterId].marker.rangeCircle) {
-        mapData.pokemons[encounterId].marker.rangeCircle.setMap(null)
+        markers.removeLayer(mapData.pokemons[encounterId].marker.rangeCircle)
+        markersnotify.removeLayer(mapData.pokemons[encounterId].marker.rangeCircle)
         delete mapData.pokemons[encounterId].marker.rangeCircle
     }
-    mapData.pokemons[encounterId].marker.setMap(null)
+    markers.removeLayer(mapData.pokemons[encounterId].marker)
+    markersnotify.removeLayer(mapData.pokemons[encounterId].marker)
     mapData.pokemons[encounterId].hidden = true
 }
 
@@ -1107,8 +1109,14 @@ function getNotifyText(item) {
 }
 
 function customizePokemonMarker(marker, item, skipNotification) {
-    marker.addListener('click', function () {
-        this.setAnimation(null)
+    marker.setBouncingOptions({
+        bounceHeight: 20,   // height of the bouncing
+        bounceSpeed: 80,   // bouncing speed coefficient
+        elastic: false,
+        shadowAngle: null
+    })
+    marker.on('mouseover', function () {
+        this.stopBouncing()
         this.animationDisabled = true
     })
 
@@ -1116,10 +1124,7 @@ function customizePokemonMarker(marker, item, skipNotification) {
         marker.rangeCircle = addRangeCircle(marker, map, 'pokemon')
     }
 
-    marker.infoWindow = new google.maps.InfoWindow({
-        content: pokemonLabel(item),
-        disableAutoPan: true
-    })
+    marker.bindPopup(pokemonLabel(item))
 
     if (notifiedPokemon.indexOf(item['pokemon_id']) > -1 || notifiedRarity.indexOf(item['pokemon_rarity']) > -1) {
         if (!skipNotification) {
@@ -1127,7 +1132,7 @@ function customizePokemonMarker(marker, item, skipNotification) {
             sendNotification(getNotifyText(item).fav_title, getNotifyText(item).fav_text, iconpath + item['pokemon_id'] + '.png', item['latitude'], item['longitude'])
         }
         if (marker.animationDisabled !== true && Store.get('remember_bounce_notify')) {
-            marker.setAnimation(google.maps.Animation.BOUNCE)
+            marker.bounce()
         }
     }
 
@@ -1896,17 +1901,20 @@ function clearStaleMarkers() {
     $.each(mapData.pokemons, function (key, value) {
         if (((mapData.pokemons[key]['disappear_time'] < new Date().getTime() || ((excludedPokemon.indexOf(mapData.pokemons[key]['pokemon_id']) >= 0 || isTemporaryHidden(mapData.pokemons[key]['pokemon_id']) || ((((mapData.pokemons[key]['individual_attack'] + mapData.pokemons[key]['individual_defense'] + mapData.pokemons[key]['individual_stamina']) / 45 * 100 < minIV) || ((mapType === 'monocle' && mapData.pokemons[key]['level'] < minLevel) || (mapType === 'rm' && !isNaN(minLevel) && (mapData.pokemons[key]['cp_multiplier'] < cpMultiplier[minLevel - 1])))) && !excludedMinIV.includes(mapData.pokemons[key]['pokemon_id'])) || (Store.get('showBigKarp') === true && mapData.pokemons[key]['pokemon_id'] === 129 && (mapData.pokemons[key]['weight'] < 13.14 || mapData.pokemons[key]['weight'] === null)) || (Store.get('showTinyRat') === true && mapData.pokemons[key]['pokemon_id'] === 19 && (mapData.pokemons[key]['weight'] > 2.40 || mapData.pokemons[key]['weight'] === null))) && encounterId !== mapData.pokemons[key]['encounter_id'])) || (encounterId && encounterId === mapData.pokemons[key]['encounter_id'] && mapData.pokemons[key]['disappear_time'] < new Date().getTime()))) {
             if (mapData.pokemons[key].marker.rangeCircle) {
-                mapData.pokemons[key].marker.rangeCircle.setMap(null)
+                markers.removeLayer(mapData.pokemons[key].marker.rangeCircle)
+                markersnotify.removeLayer(mapData.pokemons[key].marker.rangeCircle)
                 delete mapData.pokemons[key].marker.rangeCircle
             }
-            mapData.pokemons[key].marker.setMap(null)
+            markers.removeLayer(mapData.pokemons[key].marker)
+            markersnotify.removeLayer(mapData.pokemons[key].marker)
             delete mapData.pokemons[key]
         }
     })
 
     $.each(mapData.lurePokemons, function (key, value) {
         if (mapData.lurePokemons[key]['lure_expiration'] < new Date().getTime() || (excludedPokemon.indexOf(mapData.lurePokemons[key]['pokemon_id']) >= 0 && ((encounterId && encounterId !== mapData.pokemons[key]['encounter_id']) || !encounterId))) {
-            mapData.lurePokemons[key].marker.setMap(null)
+            markers.removeLayer(mapData.lurePokemons[key].marker)
+            markersnotify.removeLayer(mapData.lurePokemons[key].marker)
             delete mapData.lurePokemons[key]
         }
     })
@@ -1914,7 +1922,8 @@ function clearStaleMarkers() {
     $.each(mapData.scanned, function (key, value) {
         // If older than 15mins remove
         if (mapData.scanned[key]['last_modified'] < new Date().getTime() - 15 * 60 * 1000) {
-            mapData.scanned[key].marker.setMap(null)
+            markers.removeLayer(mapData.scanned[key].marker)
+            markersnotify.removeLayer(mapData.scanned[key].marker)
             delete mapData.scanned[key]
         }
     })
@@ -3059,7 +3068,8 @@ function processPokemons(i, item) {
     if (!(item['encounter_id'] in mapData.pokemons) && item['disappear_time'] > Date.now() && ((encounterId && encounterId === item['encounter_id']) || (excludedPokemon.indexOf(item['pokemon_id']) < 0 && !isTemporaryHidden(item['pokemon_id'])))) {
         // add marker to map and item to dict
         if (item.marker) {
-            item.marker.setMap(null)
+            markers.removeLayer(item.marker)
+            markersnotify.removeLayer(item.marker)
         }
         if (!item.hidden) {
             item.marker = setupPokemonMarker(item, map)
@@ -3608,10 +3618,11 @@ function redrawPokemon(pokemonList) {
     $.each(pokemonList, function (key, value) {
         var item = pokemonList[key]
         if (!item.hidden) {
-            if (item.marker.rangeCircle) item.marker.rangeCircle.setMap(null)
+            if (item.marker.rangeCircle) markers.removeLayer(item.marker.rangeCircle)
             var newMarker = setupPokemonMarker(item, map, this.marker.animationDisabled)
             customizePokemonMarker(newMarker, item, skipNotification)
-            item.marker.setMap(null)
+            markers.removeLayer(item.marker)
+            markersnotify.removeLayer(item.marker)
             pokemonList[key].marker = newMarker
         }
     })

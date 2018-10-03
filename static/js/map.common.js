@@ -1180,30 +1180,47 @@ var mapData = {
     portals: {}
 }
 
-function getGoogleSprite(index, sprite, displayHeight, weather = 0) {
+function getPokemonSprite(index, sprite, displayHeight, weather = 0) {
     displayHeight = Math.max(displayHeight, 3)
     var scale = displayHeight / sprite.iconHeight
     // Crop icon just a tiny bit to avoid bleedover from neighbor
-    var scaledIconSize = new google.maps.Size(scale * sprite.iconWidth - 1, scale * sprite.iconHeight - 1)
-    var scaledIconOffset = new google.maps.Point(index % sprite.columns * sprite.iconWidth * scale + 0.5, Math.floor(index / sprite.columns) * sprite.iconHeight * scale + 0.5)
-    var scaledSpriteSize = new google.maps.Size(scale * sprite.spriteWidth, scale * sprite.spriteHeight)
-    var scaledIconCenterOffset = new google.maps.Point(scale * sprite.iconWidth / 2, scale * sprite.iconHeight / 2)
-    var monSpriteUrl
+    var scaledIconSize = (scale * sprite.iconWidth - 1, scale * sprite.iconHeight - 1)
+    var scaledIconOffset = ((index % sprite.columns) * sprite.iconWidth * scale + 0.5, Math.floor(index / sprite.columns) * sprite.iconHeight * scale + 0.5)
+    var scaledSpriteSize = (scale * sprite.spriteWidth, scale * sprite.spriteHeight)
+    var scaledIconCenterOffset = (scale * sprite.iconWidth / 2, scale * sprite.iconHeight / 2)
+    var encounterForm = ''
+    var formStr = ''
+    if (encounterForm <= 10 || encounterForm == null) {
+        formStr = '00'
+    } else {
+        formStr = encounterForm
+    }
+
     var pokemonId = index + 1
+    var pokemonIdStr = ''
+    if (pokemonId <= 9) {
+        pokemonIdStr = '00' + pokemonId
+    } else if (pokemonId <= 99) {
+        pokemonIdStr = '0' + pokemonId
+    } else {
+        pokemonIdStr = pokemonId
+    }
+    var monSpriteUrl = ''
     if (weather === 0) {
-        monSpriteUrl = Store.get('spritefileLarge')
+        monSpriteUrl = 'https://raw.githubusercontent.com/whitewillem/PogoAssets/master/pokemon_icons/pokemon_icon_' + pokemonIdStr + '_' + formStr + '.png' 
     } else if (boostedMons[weather].indexOf(pokemonId) === -1) {
         monSpriteUrl = Store.get('spritefileLarge')
     } else {
         monSpriteUrl = Store.get('weatherSpritesSrc') + weather + '.png'
     }
-    return {
-        url: monSpriteUrl,
-        size: scaledIconSize,
+    var pokemonIcon = L.icon({
+        iconUrl: monSpriteUrl,
+        iconSize: scaledIconSize,
+        iconAnchor: scaledIconCenterOffset,
         scaledSize: scaledSpriteSize,
-        origin: scaledIconOffset,
-        anchor: scaledIconCenterOffset
-    }
+        origin: scaledIconOffset
+    })
+    return pokemonIcon
 }
 
 function setupPokemonMarker(item, map, isBounceDisabled) {
@@ -1213,23 +1230,15 @@ function setupPokemonMarker(item, map, isBounceDisabled) {
         iconSize += Store.get('iconNotifySizeModifier')
     }
     var pokemonIndex = item['pokemon_id'] - 1
-    var icon = getGoogleSprite(pokemonIndex, pokemonSprites, iconSize, item['weather_boosted_condition'])
+    var icon = getPokemonSprite(pokemonIndex, pokemonSprites, iconSize, item['weather_boosted_condition'])
 
     var animationDisabled = false
     if (isBounceDisabled === true) {
         animationDisabled = true
     }
 
-    return new google.maps.Marker({
-        position: {
-            lat: item['latitude'],
-            lng: item['longitude']
-        },
-        zIndex: 9999,
-        map: map,
-        icon: icon,
-        animationDisabled: animationDisabled
-    })
+    var marker = L.marker([item['latitude'], item['longitude']], {icon: icon, zIndexOffset: 9999}).addTo(markers)
+    return marker
 }
 
 function isNotifiedPokemon(item) {
