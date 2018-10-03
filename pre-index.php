@@ -1456,6 +1456,7 @@ if ( $blockIframe ) {
 <script src="static/js/vendor/classie.js"></script>
 <script src="https://unpkg.com/leaflet@1.3.1/dist/leaflet.js"></script>
 <script src="https://leaflet.github.io/Leaflet.markercluster/dist/leaflet.markercluster-src.js"></script>
+<script src="static/js/vendor/smoothmarkerbouncing.js"></script>
 <script>
     var centerLat = <?= $startingLat; ?>;
     var centerLng = <?= $startingLng; ?>;
