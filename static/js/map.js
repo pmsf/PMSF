@@ -1110,8 +1110,8 @@ function getNotifyText(item) {
 
 function customizePokemonMarker(marker, item, skipNotification) {
     marker.setBouncingOptions({
-        bounceHeight: 20,   // height of the bouncing
-        bounceSpeed: 80,   // bouncing speed coefficient
+        bounceHeight: 20, // height of the bouncing
+        bounceSpeed: 80, // bouncing speed coefficient
         elastic: false,
         shadowAngle: null
     })
