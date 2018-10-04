@@ -3174,6 +3174,29 @@ function processPortals(i, item) {
         }
     }
 }
+function updatePortals() {
+    if (!Store.get('showPortals')) {
+        return false
+    }
+
+    var removePortals = []
+    var ts = Math.round(new Date().getTime() / 1000)
+    var diffTime = ts - markPortalsAsNew
+    if (Store.get('showNewPortalsOnly') === 1) {
+        $.each(mapData.portals, function (key, value) {
+            if (value['imported'] < diffTime) {
+                removePortals.push(key)
+            }
+        })
+        $.each(removePortals, function (key, value) {
+            if (mapData.portals[value] && mapData.portals[value].marker) {
+                markers.removeLayer(mapData.portals[value].marker)
+                markersnotify.removeLayer(mapData.portals[value].marker)
+                delete mapData.portals[value]
+            }
+        })
+    }
+}
 function processPokestops(i, item) {
     if (!Store.get('showPokestops')) {
         return false
@@ -3500,6 +3523,7 @@ function updateMap() {
         updateScanned()
         updateSpawnPoints()
         updatePokestops()
+        updatePortals()
 
         if ($('#stats').hasClass('visible')) {
             countMarkers(map)
