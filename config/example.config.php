@@ -43,10 +43,6 @@ $title = "Raidmap";                                                 // Title to 
 $locale = "en";                                                     // Display language
 $raidmapLogo = '';                                                  // Upload logo to custom folder, leave '' for empty ( $raidmapLogo = 'custom/logo.png'; )
 
-/* Google Maps Key */
-
-$gmapsKey = "";                                                     // Google Maps API Key
-
 /* Google Analytics */
 
 $gAnalyticsId = "";                                                 // "" for empty, "UA-XXXXX-Y" add your Google Analytics tracking ID

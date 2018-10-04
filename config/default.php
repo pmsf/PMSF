@@ -50,12 +50,8 @@ $blockIframe = true;                                                // Block you
 
 /* Map Title + Language */
 
-$title = "PMSF Glennmen";                                           // Title to display in title bar
+$title = "PMSF Alt";                                                // Title to display in title bar
 $locale = "en";                                                     // Display language
-
-/* Google Maps Key */
-
-$gmapsKey = "";                                                     // Google Maps API Key
 
 /* Google Analytics */
 
