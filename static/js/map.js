@@ -269,7 +269,6 @@ function initMap() { // eslint-disable-line no-unused-vars
 
     map.addLayer(markers)
     markersnotify = L.layerGroup().addTo(map)
-
     map.on('zoom', function () {
         if (storeZoom === true) {
             Store.set('zoomLevel', map.getZoom())
@@ -346,6 +345,9 @@ function initMap() { // eslint-disable-line no-unused-vars
     })
 }
 
+function toggleFullscreenMap() {
+    map.toggleFullscreen()
+}
 var openstreetmap = L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {attribution: '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>'}) // eslint-disable-line no-unused-vars
 
 var darkmatter = L.tileLayer('https://cartodb-basemaps-{s}.global.ssl.fastly.net/dark_all/{z}/{x}/{y}.png', {attribution: '&copy; <a href="https://carto.com/">Carto</a>'}) // eslint-disable-line no-unused-vars
