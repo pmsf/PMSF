@@ -1595,9 +1595,11 @@ function nestLabel(item) {
 }
 
 function setupCommunityMarker(item) {
-    var icon = L.divIcon({className: 'marker-community',
+    var icon = L.divIcon({
         iconSize: [36, 48],
-        iconAnchor: [36, 48],
+        iconAnchor: [18, 24],
+        popupAnchor: [0, -35],
+        className: 'marker-community',
         html: '<img src="static/images/marker-' + item.type + '.png" style="width:36px;height: auto;"/>'
     })
 
