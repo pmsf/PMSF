@@ -156,6 +156,7 @@ if ( $blockIframe ) {
     <link rel="stylesheet" href="https://unpkg.com/leaflet@1.3.1/dist/leaflet.css" />
     <link rel="stylesheet" href="https://leaflet.github.io/Leaflet.markercluster/dist/MarkerCluster.css" />
     <link rel="stylesheet" href="https://leaflet.github.io/Leaflet.markercluster/dist/MarkerCluster.Default.css" />
+    <link href='https://api.mapbox.com/mapbox.js/plugins/leaflet-fullscreen/v1.0.1/leaflet.fullscreen.css' rel='stylesheet' />
 </head>
 <body id="top">
 <div class="wrapper">
@@ -1258,7 +1259,9 @@ if ( $blockIframe ) {
             </div>
         </div>
     <?php } ?>
-
+    <div class="fullscreen-toggle">
+        <button class="map-toggle-button" onClick="toggleFullscreenMap();"><i class="fa fa-expand" aria-hidden="true"></i></button>
+    </div>
     <?php if ( ( ! $noGyms || ! $noPokestops ) && ! $noSearch ) { ?>
         <div class="search-container">
             <button class="search-modal-button" onClick="openSearchModal(event);"><i class="fa fa-search"
@@ -1456,6 +1459,7 @@ if ( $blockIframe ) {
 <script src="static/js/vendor/classie.js"></script>
 <script src="https://unpkg.com/leaflet@1.3.1/dist/leaflet.js"></script>
 <script src="https://leaflet.github.io/Leaflet.markercluster/dist/leaflet.markercluster-src.js"></script>
+<script src='https://api.mapbox.com/mapbox.js/plugins/leaflet-fullscreen/v1.0.1/Leaflet.fullscreen.min.js'></script>
 <script src="static/js/vendor/smoothmarkerbouncing.js"></script>
 <script>
     var centerLat = <?= $startingLat; ?>;
