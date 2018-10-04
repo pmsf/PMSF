@@ -280,6 +280,7 @@ $noManualQuests = false;
 // Ingress portals
 //-----------------------------------------------------
 $enablePortals = 'false';
+$enableNewPortals = 0;                                                   // O: all, 1: new portals only
 $noPortals = true;
 $noDeletePortal = true;
 

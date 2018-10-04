@@ -598,7 +598,7 @@ class Monocle_Alternate extends Monocle
         return $data;
     }
 
-    public function get_portals($swLat, $swLng, $neLat, $neLng, $tstamp = 0, $oSwLat = 0, $oSwLng = 0, $oNeLat = 0, $oNeLng = 0)
+    public function get_portals($swLat, $swLng, $neLat, $neLng, $tstamp = 0, $oSwLat = 0, $oSwLng = 0, $oNeLat = 0, $oNeLng = 0, $newportals = 0)
     {
         $conds = array();
         $params = array();
@@ -615,7 +615,13 @@ class Monocle_Alternate extends Monocle
             $params[':oswLng'] = $oSwLng;
             $params[':oneLat'] = $oNeLat;
             $params[':oneLng'] = $oNeLng;
-        }
+	}
+
+	if ($newportals == 1) {
+            $conds[] = "imported > :lastImported";
+            $params[':lastImported'] = time() - 86400;
+	}
+
         if ($tstamp > 0) {
             $conds[] = "updated > :lastUpdated";
             $params[':lastUpdated'] = $tstamp;
