@@ -390,6 +390,8 @@ $enableDebug = false;
 //-----------------------------------------------------
 // DATABASE CONFIG
 //-----------------------------------------------------
+$map = "monocle";                                                     // monocle/rdm
+$fork = "alternate";                                                  // default/asner/sloppy
 
 $db = new Medoo([// required
     'database_type' => 'mysql',                                    
