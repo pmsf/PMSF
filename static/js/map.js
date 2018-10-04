@@ -1152,7 +1152,7 @@ function customizePokemonMarker(marker, item, skipNotification) {
                 sendNotification(getNotifyText(item).fav_title, getNotifyText(item).fav_text, iconpath + item['pokemon_id'] + '.png', item['latitude'], item['longitude'])
             }
             if (marker.animationDisabled !== true && Store.get('remember_bounce_notify')) {
-                marker.setAnimation(google.maps.Animation.BOUNCE)
+                marker.bounce()
             }
         }
     }
@@ -1165,7 +1165,7 @@ function customizePokemonMarker(marker, item, skipNotification) {
                 sendNotification(getNotifyText(item).fav_title, getNotifyText(item).fav_text, iconpath + item['pokemon_id'] + '.png', item['latitude'], item['longitude'])
             }
             if (marker.animationDisabled !== true && Store.get('remember_bounce_notify')) {
-                marker.setAnimation(google.maps.Animation.BOUNCE)
+                marker.bounce()
             }
         }
     }
@@ -1780,7 +1780,6 @@ function setupScannedMarker(item) {
 function getColorBySpawnTime(value) {
     var now = new Date()
     var seconds = now.getMinutes() * 60 + now.getSeconds()
-
     // account for hour roll-over
     if (seconds < 900 && value > 2700) {
         seconds += 3600
@@ -1800,70 +1799,81 @@ function getColorBySpawnTime(value) {
 
     hue = Math.round(hue / 5) * 5
 
-    return hue
+    return colourConversion.hsvToHex(hue, 1.0, 1.0)
 }
-
-function changeSpawnIcon(color, zoom) {
-    var urlColor = ''
-    if (color === 275) {
-        urlColor = './static/icons/hsl-275-light.png'
-    } else {
-        urlColor = './static/icons/hsl-' + color + '.png'
+var colourConversion = (function () {
+    var self = {}
+    self.hsvToHex = function (hue, sat, val) {
+        if (hue > 360 || hue < 0 || sat > 1 || sat < 0 || val > 1 || val < 0) {
+            console.log('{colourConverion.hsvToHex} illegal input')
+            return '#000000'
+        }
+        let rgbArray = hsvToRgb(hue, sat, val)
+        return rgbArrayToHexString(rgbArray)
     }
-    var zoomScale = 1.6 // adjust this value to change the size of the spawnpoint icons
-    var minimumSize = 1
-    var newSize = Math.round(zoomScale * (zoom - 10) // this scales the icon based on zoom
-    )
-    if (newSize < minimumSize) {
-        newSize = minimumSize
+    function rgbArrayToHexString(rgbArray) {
+        let hexString = '#'
+        for (var i = 0; i < rgbArray.length; i++) {
+            let hexOfNumber = rgbArray[i].toString(16)
+            if (hexOfNumber.length === 1) {
+                hexOfNumber = '0' + hexOfNumber
+            }
+            hexString += hexOfNumber
+        }
+        if (hexString.length !== 7) {
+            console.log('Hexstring not complete for colours...')
+        }
+        return hexString
     }
-
-    var newIcon = {
-        url: urlColor,
-        scaledSize: new google.maps.Size(newSize, newSize),
-        anchor: new google.maps.Point(newSize / 2, newSize / 2)
+    function hsvToRgb(hue, sat, val) {
+        let hder = Math.floor(hue / 60)
+        let f = hue / 60 - hder
+        let p = val * (1 - sat)
+        let q = val * (1 - sat * f)
+        let t = val * (1 - sat * (1 - f))
+        var rgb
+        if (sat === 0) {
+            rgb = [val, val, val]
+        } else if (hder === 0 || hder === 6) {
+            rgb = [val, t, p]
+        } else if (hder === 1) {
+            rgb = [q, val, p]
+        } else if (hder === 2) {
+            rgb = [p, val, t]
+        } else if (hder === 3) {
+            rgb = [p, q, val]
+        } else if (hder === 4) {
+            rgb = [t, p, val]
+        } else if (hder === 5) {
+            rgb = [val, p, q]
+        } else {
+            console.log('Failed converting HSV to RGB')
+        }
+        for (var i = 0; i < rgb.length; i++) {
+            rgb[i] = Math.round(rgb[i] * 255)
+        }
+        return rgb
     }
-
-    return newIcon
-}
-
-function spawnPointIndex(color) {
-    var newIndex = 1
-    var scale = 0
-    if (color >= 0 && color <= 120) {
-        // high to low over 15 minutes of active spawn
-        scale = color / 120
-        newIndex = 100 + scale * 100
-    } else if (color >= 200 && color <= 250) {
-        // low to high over 5 minutes til spawn
-        scale = (color - 200) / 50
-        newIndex = scale * 100
-    }
-
-    return newIndex
-}
+    return self
+})()
 
 function setupSpawnpointMarker(item) {
-    var circleCenter = new google.maps.LatLng(item['latitude'], item['longitude'])
     var hue = getColorBySpawnTime(item.time)
-    var zoom = map.getZoom()
 
-    var marker = new google.maps.Marker({
-        map: map,
-        position: circleCenter,
-        icon: changeSpawnIcon(hue, zoom),
-        zIndex: spawnPointIndex(hue)
-    })
+    var rangeCircleOpts = {
+        radius: 4,
+        weight: 1,
+        color: hue,
+        opacity: 1,
+        center: [item['latitude'], item['longitude']],
+        fillColor: hue,
+        fillOpacity: 0.4
+    }
+    var circle = L.circle([item['latitude'], item['longitude']], rangeCircleOpts).bindPopup(spawnpointLabel(item), {autoPan: false, closeOnclick: false, autoClose: false})
+    markersnotify.addLayer(circle)
+    addListeners(circle)
 
-    marker.infoWindow = new google.maps.InfoWindow({
-        content: spawnpointLabel(item),
-        disableAutoPan: true,
-        position: circleCenter
-    })
-
-    addListeners(marker)
-
-    return marker
+    return circle
 }
 
 function clearSelection() {
@@ -3458,7 +3468,7 @@ function processSpawnpoints(i, item) {
     if (!(id in mapData.spawnpoints)) {
         // add marker to map and item to dict
         if (item.marker) {
-            item.marker.setMap(null)
+            markersnotify.removeLayer(item.marker)
         }
         item.marker = setupSpawnpointMarker(item)
         mapData.spawnpoints[id] = item
@@ -3470,13 +3480,10 @@ function updateSpawnPoints() {
         return false
     }
 
-    var zoom = map.getZoom()
-
     $.each(mapData.spawnpoints, function (key, value) {
-        if (map.getBounds().contains(value.marker.getPosition())) {
+        if (map.getBounds().contains(value.marker.getLatLng())) {
             var hue = getColorBySpawnTime(value['time'])
-            value.marker.setIcon(changeSpawnIcon(hue, zoom))
-            value.marker.setZIndex(spawnPointIndex(hue))
+            value.marker.setStyle({color: hue, fillColor: hue})
         }
     })
 }
