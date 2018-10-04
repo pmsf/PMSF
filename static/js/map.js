@@ -90,6 +90,8 @@ var lastpokemon
 var lastslocs
 var lastspawns
 
+var markPortalsAsNew
+
 var selectedStyle = 'openstreetmap'
 
 var updateWorker
@@ -1666,7 +1668,7 @@ function communityLabel(item) {
 
 function setupPortalMarker(item) {
     var ts = Math.round(new Date().getTime() / 1000)
-    var yesterday = ts - (24 * 3600)
+    var yesterday = ts - markPortalsAsNew
     if (item.checked === '1') {
         var circle = {
             color: 'red',
