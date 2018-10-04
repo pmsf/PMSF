@@ -1190,9 +1190,9 @@ function getPokemonSprite(index, sprite, displayHeight, weather = 0) {
     displayHeight = Math.max(displayHeight, 3)
     var scale = displayHeight / sprite.iconHeight
     // Crop icon just a tiny bit to avoid bleedover from neighbor
-    var scaledIconSize = (scale * sprite.iconWidth - 1, scale * sprite.iconHeight - 1)
-    var scaledIconWidth = Math.abs(sprite.iconWidth / 2)
-    var scaledIconHeight = Math.abs(sprite.iconHeight / 2)
+    var scaledIconSize = (scale * (sprite.iconWidth + 100), scale * (sprite.iconHeight + 100))
+    var scaledIconWidth = Math.abs((sprite.iconWidth + 100) / 2)
+    var scaledIconHeight = Math.abs((sprite.iconHeight + 100) / 2)
     var encounterForm = ''
     var formStr = ''
     if (encounterForm <= 10 || encounterForm == null) {
