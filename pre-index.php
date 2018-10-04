@@ -614,6 +614,12 @@ if ( $blockIframe ) {
                             <span class="switch-handle"></span>
                         </label>
                     </div>
+		</div>
+                <div class="form-control switch-container" id = "new-portals-only-wrapper" style = "display:none">
+                    <select name = "new-portals-only-switch" id = "new-portals-only-switch">
+                        <option value = "0"> ' . i8ln( 'All' ) . '</option>
+                        <option value = "1"> ' . i8ln( 'Only new' ) . ' </option>
+                    </select>
                 </div>';
 		} ?>
                 </div>
@@ -1499,6 +1505,7 @@ if ( $blockIframe ) {
     var enablePokemon = <?php echo $noPokemon ? 'false' : $enablePokemon ?>;
     var enablePokestops = <?php echo $noPokestops ? 'false' : $enablePokestops ?>;
     var enableLured = <?php echo ( ( $map != "monocle" ) || ( $fork == "alternate" ) ) ? $enableLured : 0 ?>;
+    var enableNewPortals = <?php echo ( ( $map != "monocle" ) || ( $fork == "alternate" ) ) ? $enableNewPortals : 0 ?>;
     var enableWeatherOverlay = <?php echo ! $noWeatherOverlay ? $enableWeatherOverlay : 'false' ?>;
     var enableScannedLocations = <?php echo $map != "monocle" && ! $noScannedLocations ? $enableScannedLocations : 'false' ?>;
     var enableSpawnpoints = <?php echo $noSpawnPoints ? 'false' : $enableSpawnPoints ?>;

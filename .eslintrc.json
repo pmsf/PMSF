@@ -103,6 +103,7 @@
     "enableScannedLocations": true,
     "enableSpawnpoints": true,
     "enableRanges": true,
+    "enableNewPortals": true,
     "notifySound": true,
     "criesSound": true,
     "enableStartMe": true,

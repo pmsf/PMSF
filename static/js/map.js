@@ -26,6 +26,7 @@ var $selectMaxGymLevel
 var $selectMinRaidLevel
 var $selectMaxRaidLevel
 var $selectLuredPokestopsOnly
+var $selectNewPortalsOnly
 var $selectGymMarkerStyle
 var $selectLocationIconMarker
 var $switchGymSidebar
@@ -345,7 +346,7 @@ function initMap() { // eslint-disable-line no-unused-vars
     })
 }
 
-function toggleFullscreenMap() {
+function toggleFullscreenMap() { // eslint-disable-line no-unused-vars
     map.toggleFullscreen()
 }
 var openstreetmap = L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {attribution: '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>'}) // eslint-disable-line no-unused-vars
@@ -409,6 +410,8 @@ function initSidebar() {
     $('#nests-switch').prop('checked', Store.get('showNests'))
     $('#communities-switch').prop('checked', Store.get('showCommunities'))
     $('#portals-switch').prop('checked', Store.get('showPortals'))
+    $('#new-portals-only-switch').val(Store.get('showNewPortalsOnly'))
+    $('#new-portals-only-wrapper').toggle(Store.get('showPortals'))
     $('#gym-sidebar-switch').prop('checked', Store.get('useGymSidebar'))
     $('#ex-eligible-switch').prop('checked', Store.get('exEligible'))
     $('#gym-sidebar-wrapper').toggle(Store.get('showGyms') || Store.get('showRaids'))
@@ -1973,6 +1976,7 @@ function loadRawData() {
     var loadNests = Store.get('showNests')
     var loadCommunities = Store.get('showCommunities')
     var loadPortals = Store.get('showPortals')
+    var loadNewPortalsOnly = Store.get('showNewPortalsOnly')
     var loadScanned = Store.get('showScanned')
     var loadSpawnpoints = Store.get('showSpawnpoints')
     var loadLuredOnly = Store.get('showLuredPokestopsOnly')
@@ -2006,6 +2010,7 @@ function loadRawData() {
             'communities': loadCommunities,
             'lastcommunities': lastcommunities,
             'portals': loadPortals,
+            'newportals': loadNewPortalsOnly,
             'lastportals': lastportals,
             'lastpokestops': lastpokestops,
             'luredonly': loadLuredOnly,
@@ -3146,22 +3151,25 @@ function processPortals(i, item) {
         return false
     }
 
+    if (Store.get('showNewPortalsOnly') === 1 && !item['imported']) {
+        return true
+    }
+
     if (!mapData.portals[item['external_id']]) {
-        // new pokestop, add marker to map and item to dict
-        if (item.marker && item.marker.rangeCircle) {
-            markers.removeLayer(item.marker.rangeCircle)
-        }
+        // new portal, add marker to map and item to dict
         if (item.marker) {
             markers.removeLayer(item.marker)
         }
         item.marker = setupPortalMarker(item)
         mapData.portals[item['external_id']] = item
     } else {
-        // change existing pokestop marker to unlured/lured
+        // change existing portal marker to old/new
         var item2 = mapData.portals[item['external_id']]
-        markers.removeLayer(item2.marker)
-        item.marker = setupPortalMarker(item)
-        mapData.portals[item['external_id']] = item
+        if (!!item['imported'] !== !!item2['imported']) {
+            markers.removeLayer(item2.marker)
+            item.marker = setupPortalMarker(item)
+            mapData.portals[item['external_id']] = item
+        }
     }
 }
 function processPokestops(i, item) {
@@ -4563,6 +4571,20 @@ $(function () {
         lastpokestops = false
         updateMap()
     })
+
+    $selectNewPortalsOnly = $('#new-portals-only-switch')
+
+    $selectNewPortalsOnly.select2({
+        placeholder: 'Only Show New Portals',
+        minimumResultsForSearch: Infinity
+    })
+
+    $selectNewPortalsOnly.on('change', function () {
+        Store.set('showNewPortalsOnly', this.value)
+        lastportals = false
+        updateMap()
+    })
+
     $switchGymSidebar = $('#gym-sidebar-switch')
 
     $switchGymSidebar.on('change', function () {
@@ -4921,6 +4943,8 @@ $(function () {
                     lastgyms = false
                 } else if (storageKey === 'showPokestops') {
                     lastpokestops = false
+                } else if (storageKey === 'showPortals') {
+                    lastportals = false
                 } else if (storageKey === 'showScanned') {
                     lastslocs = false
                 } else if (storageKey === 'showSpawnpoints') {
@@ -5007,8 +5031,18 @@ $(function () {
         buildSwitchChangeListener(mapData, ['communities'], 'showCommunities').bind(this)()
     })
     $('#portals-switch').change(function () {
-        lastportals = false
-        buildSwitchChangeListener(mapData, ['portals'], 'showPortals').bind(this)()
+        var options = {
+            'duration': 500
+        }
+        var wrapper = $('#new-portals-only-wrapper')
+        if (this.checked) {
+            lastportals = false
+            wrapper.show(options)
+        } else {
+            lastportals = false
+            wrapper.hide(options)
+        }
+        return buildSwitchChangeListener(mapData, ['portals'], 'showPortals').bind(this)()
     })
     $('#pokemon-switch').change(function () {
         var options = {

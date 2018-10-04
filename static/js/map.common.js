@@ -945,6 +945,11 @@ var StoreOptions = {
             default: enablePortals,
             type: StoreTypes.Boolean
         },
+    'showNewPortalsOnly':
+        {
+            default: enableNewPortals,
+            type: StoreTypes.Number
+        },
     'useGymSidebar':
         {
             default: gymSidebar,
