@@ -989,8 +989,10 @@ function spawnpointLabel(item) {
 }
 
 function addRangeCircle(marker, map, type, teamId) {
-    var targetmap = null
-    var circleCenter = new google.maps.LatLng(marker.position.lat(), marker.position.lng())
+    var markerPos = marker.getLatLng()
+    var lat = markerPos.lat
+    var lng = markerPos.lng
+    var circleCenter = L.latLng(lat, lng)
     var gymColors = ['#999999', '#0051CF', '#FF260E', '#FECC23'] // 'Uncontested', 'Mystic', 'Valor', 'Instinct']
     var teamColor = gymColors[0]
     if (teamId) teamColor = gymColors[teamId]
@@ -1014,19 +1016,18 @@ function addRangeCircle(marker, map, type, teamId) {
             break
     }
 
-    if (map) targetmap = map
-
     var rangeCircleOpts = {
-        map: targetmap,
+        color: circleColor,
         radius: range, // meters
         strokeWeight: 1,
         strokeColor: circleColor,
         strokeOpacity: 0.9,
         center: circleCenter,
         fillColor: circleColor,
-        fillOpacity: 0.3
+        fillOpacity: 0.4
     }
-    var rangeCircle = new google.maps.Circle(rangeCircleOpts)
+    var rangeCircle = L.circle(circleCenter, rangeCircleOpts)
+    markers.addLayer(rangeCircle)
     return rangeCircle
 }
 
@@ -1929,11 +1930,11 @@ function clearStaleMarkers() {
     })
 }
 
-function showInBoundsMarkers(markers, type) {
-    $.each(markers, function (key, value) {
-        var marker = markers[key].marker
+function showInBoundsMarkers(markersInput, type) {
+    $.each(markersInput, function (key, value) {
+        var marker = markersInput[key].marker
         var show = false
-        if (!markers[key].hidden) {
+        if (!markersInput[key].hidden) {
             if (typeof marker.getLatLng === 'function') {
                 if (map.getBounds().contains(marker.getLatLng())) {
                     show = true
@@ -1946,7 +1947,7 @@ function showInBoundsMarkers(markers, type) {
             if (!marker.rangeCircle) {
                 // but only if range is active
                 if (isRangeActive(map)) {
-                    if (type === 'gym') marker.rangeCircle = addRangeCircle(marker, map, type, markers[key].team_id)
+                    if (type === 'gym') marker.rangeCircle = addRangeCircle(marker, map, type, markersInput[key].team_id)
                     else marker.rangeCircle = addRangeCircle(marker, map, type)
                 }
             } else {
@@ -3887,20 +3888,22 @@ function updateGeoLocation() {
                     locationMarker.setLatLng(center)
                     if (Store.get('spawnArea')) {
                         if (locationMarker.rangeCircle) {
-                            locationMarker.rangeCircle.setMap(null)
+                            markers.removeLayer(locationMarker.rangeCircle)
+                            markers.removeLayer(locationMarker.rangeCircle)
                             delete locationMarker.rangeCircle
                         }
                         var rangeCircleOpts = {
-                            map: map,
+                            color: '#FF9200',
                             radius: 35, // meters
                             strokeWeight: 1,
                             strokeColor: '#FF9200',
                             strokeOpacity: 0.9,
                             center: center,
                             fillColor: '#FF9200',
-                            fillOpacity: 0.3
+                            fillOpacity: 0.4,
+                            weight: 1
                         }
-                        locationMarker.rangeCircle = new google.maps.Circle(rangeCircleOpts)
+                        locationMarker.rangeCircle = L.circle(center, rangeCircleOpts)
                     }
                     Store.set('followMyLocationPosition', {
                         lat: lat,
