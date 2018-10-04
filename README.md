@@ -1,18 +1,21 @@
-# PMSF---PokeMap-Standalone-Frontend
+# PMSF-ALT--PokeMap-Standalone-Frontend
 
-This is the manual raid posting branch I put together a while back and only supports Hydro's Scanner.
+This fork is different is so many ways that its impossible to name them all. Main key features are Manual submissions. 
 
-> Current Version 1.0 - First release!
+> Current Version 1.5 - Second release! with OpenStreetMap engine
 
 PokeMap Standalone Frontend or PMSF for short is a PHP Map Interface for the Monocle Scanner designed to be completely standalone and able to run on any traditional web server
 
-It supports all the common database engines, including MySQL, MariaDB, Postgres, MsSQL, SQLite
+It supports all the common database engines, including MySQL, MariaDB
+A special Database structure based on Hydro Monocle is needed.
 
 ## Get Started
-Go to our [Wiki](https://github.com/Glennmen/PMSF/wiki) for more info about installation.
+Join our [Discord](https://discord.gg/yGujp8D) channel for more info about installation.
 
 ## Webhooks
-Our fork does convert started raids into new raids with questionmark eggs. A special crafted spritesheet is used and you need to make a small change to the json files for PokeAlarm, PoracleJS or other messages filter relays.
+Current tested support for
+* [PokeAlarm](https://github.com/PokeAlarm/PokeAlarm)
+* [PoracleJS](https://github.com/KartulUdus/PoracleJS)
 
 ## Feedback
 * Create an issue if you have any bugs, suggestions or improvements!
@@ -20,6 +23,7 @@ Our fork does convert started raids into new raids with questionmark eggs. A spe
 * [Discord](https://discord.gg/yGujp8D) channel
 
 ## Thanks
+* Thanks [PMSF](https://github.com/Glennmen/PMSF) for the basis for this fork.
 
 * Thanks [MSF](https://github.com/Nuro/MSF) for the great basis for this project.
 
