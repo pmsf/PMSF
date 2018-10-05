@@ -1538,6 +1538,7 @@ if ( $blockIframe ) {
     var manualRaids = <?php echo $noManualRaids === true ? 'false' : 'true' ?>;
     var pokemonReportTime = <?php echo $pokemonReportTime === true ? 'true' : 'false' ?>;
     var noDeleteGyms = <?php echo $noDeleteGyms === true ? 'true' : 'false' ?>;
+    var noToggleExGyms = <?php echo $noToggleExGyms === true ? 'true' : 'false' ?>;
     var defaultUnit = '<?php echo $defaultUnit ?>';
     var noDeletePokestops = <?php echo $noDeletePokestops === true ? 'true' : 'false' ?>;
     var noDeleteNests = <?php echo $noDeleteNests === true ? 'true' : 'false' ?>;

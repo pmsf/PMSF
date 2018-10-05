@@ -146,6 +146,7 @@
     "noConvertPokestops": false,
     "enablePortals": true,
     "noDeletePortal": true,
+    "noToggleExGyms": true,
     "noPortals": false,
     "copyrightSafe": true
   }

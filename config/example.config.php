@@ -285,6 +285,7 @@ $pokemonReportTime = true;
 $pokemonToExclude = [];
 
 $noDeleteGyms = false;
+$noToggleExGyms = false;
 $noDeletePokestops = false;
 
 $raidBosses = [1, 4, 7, 129, 138, 140, 147, 82, 108, 125, 126, 185, 303, 65, 68, 95, 106, 107, 123, 135, 142, 76, 112, 131, 143, 248, 359, 144, 145, 146, 377];
