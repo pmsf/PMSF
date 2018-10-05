@@ -18,6 +18,7 @@ $libs[] = "Monocle_Alternate.php";
 $libs[] = "RocketMap.php";
 $libs[] = "RocketMap_Sloppy.php";
 $libs[] = "RDM.php";
+$libs[] = "NovaBot.php";
 
 // Include libraries
 foreach ($libs as $file) {
@@ -77,6 +78,9 @@ $worldopoleUrl = "";                                                // Link to W
 
 /* StatsToggle */
 $noStatsToggle = false;                                             // Enables or disables the stats button in the header.
+/* NovaBot */
+
+$novabotApiUrl = "";                                                // Link to Novabot API, leave "" for empty
 
 /* MOTD */
 $noMotd = true;
@@ -395,3 +399,4 @@ $enableDebug = false;
 //-----------------------------------------------------
 $map = "monocle";
 $fork = "alternate";                                                  // default/asner/sloppy
+$novabotDb = false;
