@@ -72,7 +72,7 @@ class RDM extends Scanner
         }
         $encSql = '';
         if ($encId != 0) {
-            $encSql = " OR (spawn_id = " . $encId . " AND lat > '" . $swLat . "' AND lon > '" . $swLng . "' AND lat < '" . $neLat . "' AND lon < '" . $neLng . "' AND expire_timestamp > '" . $params[':time'] . "')";
+            $encSql = " OR (id = " . $encId . " AND lat > '" . $swLat . "' AND lon > '" . $swLng . "' AND lat < '" . $neLat . "' AND lon < '" . $neLng . "' AND expire_timestamp > '" . $params[':time'] . "')";
         }
         return $this->query_active($select, $conds, $params, $encSql);
     }
