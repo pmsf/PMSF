@@ -786,12 +786,6 @@ function gymLabel(item) {
 
     var gymColor = ['0, 0, 0, .4', '74, 138, 202, .6', '240, 68, 58, .6', '254, 217, 40, .6']
     var str
-    var gymIcon = ''
-    if ((((park !== 'None' && park !== undefined && onlyTriggerGyms === false && park) || (item['sponsor'] !== undefined && item['sponsor'] > 0) || triggerGyms.includes(item['gym_id'])) && (noExGyms === false))) {
-        gymIcon = '<img height="70px" style="padding: 5px;" src="static/forts/' + teamName + '_large_ex.png">'
-    } else {
-        gymIcon = '<img height="70px" style="padding: 5px;" src="static/forts/' + teamName + '_large.png">'
-    }
     var gymImage = ''
     if (url !== null) {
         gymImage = '<img height="70px" style="padding: 5px;" src="' + url + '">'
@@ -802,7 +796,7 @@ function gymLabel(item) {
             '<center>' +
             nameStr +
             '<div>' +
-            gymIcon +
+            '<img height="70px" style="padding: 5px;" src="static/forts/' + teamName + '_large.png">' +
             raidIcon +
             gymImage +
             '</div>' +
@@ -1201,23 +1195,20 @@ function getGymMarkerIcon(item) {
     } else {
         teamStr = gymTypes[item['team_id']] + '_' + level
     }
-    var gymIcon = ''
+    var exIcon = ''
     var fortMarker = ''
     if ((((park !== 'None' && park !== undefined && onlyTriggerGyms === false && park) || (item['sponsor'] !== undefined && item['sponsor'] > 0) || triggerGyms.includes(item['gym_id'])) && (noExGyms === false))) {
-        gymIcon = '<img src="static/forts/' + Store.get('gymMarkerStyle') + '/' + teamStr + '_ex.png" style="width:50px;height:auto;"/>'
-    } else {
-        gymIcon = '<img src="static/forts/' + Store.get('gymMarkerStyle') + '/' + teamStr + '.png" style="width:50px;height:auto;"/>'
+        exIcon = '<img src="static/images/ex.png" style="position:absolute;right:25px;bottom:2px;"/>'
     }
-    var gymSmallIcon = ''
+    var smallExIcon = ''
     if ((((park !== 'None' && park !== undefined && onlyTriggerGyms === false && park) || (item['sponsor'] !== undefined && item['sponsor'] > 0) || triggerGyms.includes(item['gym_id'])) && (noExGyms === false))) {
-        gymSmallIcon = '<img src="static/forts/' + Store.get('gymMarkerStyle') + '/' + teamStr + '_ex.png" style="width:35px;height:auto;"/>'
-    } else {
-        gymSmallIcon = '<img src="static/forts/' + Store.get('gymMarkerStyle') + '/' + teamStr + '.png" style="width:35px;height:auto;"/>'
+        smallExIcon = '<img src="static/images/ex.png" style="width:26px;position:absolute;right:35px;bottom:13px;"/>'
     }
     var html = ''
     if (item['raid_pokemon_id'] != null && item.raid_end > Date.now() && copyrightSafe === false) {
         html = '<div style="position:relative;">' +
-            gymIcon +
+            '<img src="static/forts/' + Store.get('gymMarkerStyle') + '/' + teamStr + '.png" style="width:50px;height:auto;"/>' +
+            exIcon +
             '<img src="https://raw.githubusercontent.com/whitewillem/PogoAssets/master/pokemon_icons/pokemon_icon_' + pokemonidStr + '_' + formStr + '.png" style="width:70px;height:auto;position:absolute;top:-35px;right:-4px;"/>' +
             '</div>'
         fortMarker = L.divIcon({
@@ -1229,7 +1220,8 @@ function getGymMarkerIcon(item) {
         })
     } else if (item['raid_pokemon_id'] != null && item.raid_end > Date.now() && copyrightSafe === true) {
         html = '<div style="position:relative;">' +
-            gymIcon +
+            '<img src="static/forts/' + Store.get('gymMarkerStyle') + '/' + teamStr + '.png" style="width:50px;height:auto;"/>' +
+            exIcon +
             '<i class="pokemon-raid-sprite n' + item.raid_pokemon_id + '"></i>' +
             '</div>'
         fortMarker = L.divIcon({
@@ -1249,7 +1241,8 @@ function getGymMarkerIcon(item) {
             hatchedEgg = 'hatched_legendary'
         }
         html = '<div style="position:relative;">' +
-            gymIcon +
+            '<img src="static/forts/' + Store.get('gymMarkerStyle') + '/' + teamStr + '.png" style="width:50px;height:auto;"/>' +
+            exIcon +
             '<img src="static/raids/egg_' + hatchedEgg + '.png" style="width:35px;height:auto;position:absolute;top:-11px;right:18px;"/>' +
             '</div>'
         fortMarker = L.divIcon({
@@ -1269,7 +1262,8 @@ function getGymMarkerIcon(item) {
             raidEgg = 'legendary'
         }
         html = '<div style="position:relative;">' +
-            gymIcon +
+            '<img src="static/forts/' + Store.get('gymMarkerStyle') + '/' + teamStr + '.png" style="width:50px;height:auto;"/>' +
+            exIcon +
             '<img src="static/raids/egg_' + raidEgg + '.png" style="width:25px;height:auto;position:absolute;top:6px;right:18px;"/>' +
             '</div>'
         fortMarker = L.divIcon({
@@ -1281,7 +1275,8 @@ function getGymMarkerIcon(item) {
         })
     } else {
         html = '<div>' +
-            gymSmallIcon +
+            '<img src="static/forts/' + Store.get('gymMarkerStyle') + '/' + teamStr + '.png" style="width:35px;height:auto;"/>' +
+            smallExIcon +
             '</div>'
         fortMarker = L.divIcon({
             iconSize: [50, 50],
@@ -4156,12 +4151,6 @@ function showGymDetails(id) { // eslint-disable-line no-unused-vars
         }
 
         var pokemonHtml = ''
-        var gymIcon = ''
-        if ((((park !== 'None' && park !== undefined && onlyTriggerGyms === false && park) || (result['sponsor'] !== undefined && result['sponsor'] > 0) || triggerGyms.includes(result['gym_id'])) && (noExGyms === false))) {
-            gymIcon = '<img height="70px" style="padding: 5px;" src="static/forts/' + gymTypes[result.team_id] + '_large_ex.png">'
-        } else {
-            gymIcon = '<img height="70px" style="padding: 5px;" src="static/forts/' + gymTypes[result.team_id] + '_large.png">'
-        }
         var gymImage = ''
         if (result.url !== null) {
             gymImage = '<img height="70px" style="padding: 5px;" src="' + result.url + '">'
@@ -4172,7 +4161,7 @@ function showGymDetails(id) { // eslint-disable-line no-unused-vars
             '<b class="team-' + result.team_id + '-text">' + (result.name || '') + '</b>' +
             '</div>' +
             '<div>' +
-            gymIcon +
+            '<img height="70px" style="padding: 5px;" src="static/forts/' + gymTypes[result.team_id] + '_large.png">' +
             raidIcon +
             gymImage +
             '</div>' +
