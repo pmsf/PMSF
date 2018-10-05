@@ -464,7 +464,7 @@ function initSidebar() {
             const results = await searchProvider.search({ query: input.value })
             console.log(results)
             $.each(results, function (key, val) {
-                $('#search-places-results').append('<li class="place-result" data-lat="' + val.y + '" data-lon="' + val.x + '"><span class="place-result" onclick="centerMapOnCoords(event);" style="font-weight:bold">' + val.label + '</span></li>')
+                $('#search-places-results').append('<li class="place-result" data-lat="' + val.y + '" data-lon="' + val.x + '"><span class="place-result" onclick="centerMapOnCoords(event);">' + val.label + '</span></li>')
             })
         })
     }
@@ -4135,6 +4135,9 @@ function showGymDetails(id) { // eslint-disable-line no-unused-vars
         }
         if (!noDeleteGyms) {
             raidStr += '<i class="fa fa-trash-o delete-gym" onclick="deleteGym(event);" data-id="' + id + '"></i>'
+        }
+        if (!noToggleExGyms) {
+            raidStr += '<i class="fa fa-trophy toggle-ex-gym" onclick="toggleExGym(event);" data-id="' + id + '"></i>'
         }
         if (manualRaids) {
             raidStr += '<i class="fa fa-binoculars submit-raid" onclick="$(this).toggleClass(\'open\');$(\'.raid-report\').slideToggle()" ></i>'
