@@ -17,6 +17,7 @@ $libs[] = "Monocle_Asner.php";
 $libs[] = "Monocle_Alternate.php";
 $libs[] = "RocketMap.php";
 $libs[] = "RocketMap_Sloppy.php";
+$libs[] = "RDM.php";
 
 // Include libraries
 foreach ($libs as $file) {
