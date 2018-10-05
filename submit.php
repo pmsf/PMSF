@@ -1,7 +1,7 @@
 <?php
 $timing['start'] = microtime( true );
 include( 'config/config.php' );
-global $map, $fork, $db, $raidBosses, $webhookUrl, $sendWebhook, $sendQuestWebhook, $noManualRaids, $noRaids, $noManualPokemon, $noPokemon, $noPokestops, $noManualPokestops, $noGyms, $noManualGyms, $noManualQuests, $noManualNests, $noNests, $noAddNewNests, $pokemonTimer, $noRenamePokestops, $noDiscordSubmitLogChannel, $discordSubmitLogChannelUrl;
+global $map, $fork, $db, $raidBosses, $webhookUrl, $sendWebhook, $sendQuestWebhook, $noManualRaids, $noRaids, $noManualPokemon, $noPokemon, $noPokestops, $noManualPokestops, $noGyms, $noManualGyms, $noManualQuests, $noManualNests, $noNests, $noAddNewNests, $pokemonTimer, $noRenamePokestops, $noDiscordSubmitLogChannel, $discordSubmitLogChannelUrl, $noToggleExGyms;
 $action = ! empty( $_POST['action'] ) ? $_POST['action'] : '';
 $lat    = ! empty( $_POST['lat'] ) ? $_POST['lat'] : '';
 $lng    = ! empty( $_POST['lng'] ) ? $_POST['lng'] : '';
@@ -477,6 +477,46 @@ if ( $action === "raid" ) {
             if ( $noDiscordSubmitLogChannel === false ) {
                 $data = array("content" => '```Deleted gym with id "' . $gymId . '" and name: "' . $fortName['name'] . '"```', "username" => $loggedUser);
                 sendToWebhook($discordSubmitLogChannelUrl, ($data));
+            }
+        }
+    }
+} elseif ( $action === "toggle-ex-gym" ) {
+    if ( $noToggleExGyms === true || $noGyms === true ) {
+        http_response_code( 401 );
+        die();
+    }
+    $gymId = ! empty( $_POST['id'] ) ? $_POST['id'] : '';
+    if ( ! empty( $gymId ) ) {
+	$fortName = $db->get( "forts", [ 'name' ], [ 'external_id' => $gymId ] );
+	$fortid = $db->get( "forts", [ 'id' ], [ 'external_id' => $gymId ] );
+	$park = $db->get( "forts", [ 'park' ], [ 'external_id' => $gymId ] );
+        $loggedUser = ! empty( $_SESSION['user']->user ) ? $_SESSION['user']->user : 'NOLOGIN';
+        file_put_contents('debug.txt', print_r($park, true));
+	if ( $fortid ) {
+            if ( empty($park['park'])) {
+                $cols = [
+                    'park'       => 'Park'
+                ];
+                $where    = [
+                    'external_id' => $gymId
+                ];
+                $db->update( "forts", $cols, $where );
+                if ( $noDiscordSubmitLogChannel === false ) {
+                    $data = array("content" => '```Marked gym with id "' . $gymId . '" and name: "' . $fortName['name'] . '" as EX eligible```', "username" => $loggedUser);
+		    sendToWebhook($discordSubmitLogChannelUrl, ($data));
+                }
+            } else {
+                $cols = [
+                    'park'       => null
+                ];
+                $where    = [
+                    'external_id' => $gymId
+                ];
+                $db->update( "forts", $cols, $where );
+                if ( $noDiscordSubmitLogChannel === false ) {
+                    $data = array("content" => '```Marked gym with id "' . $gymId . '" and name: "' . $fortName['name'] . '" as non EX eligible```', "username" => $loggedUser);
+		    sendToWebhook($discordSubmitLogChannelUrl, ($data));
+                }
             }
         }
     }
