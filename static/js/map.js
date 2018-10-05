@@ -759,7 +759,9 @@ function gymLabel(item) {
     if (!noDeleteGyms) {
         raidStr += '<i class="fa fa-trash-o delete-gym" onclick="deleteGym(event);" data-id="' + item['gym_id'] + '"></i>'
     }
-
+    if (!noToggleExGyms) {
+        raidStr += '<i class="fa fa-trophy toggle-ex-gym" onclick="toggleExGym(event);" data-id="' + item['gym_id'] + '"></i>'
+    }
 
     var park = ''
     if ((item['park'] !== 'None' && item['park'] !== undefined && item['park']) && (noParkInfo === false)) {
@@ -2336,6 +2338,35 @@ function deleteGym(event) { // eslint-disable-line no-unused-vars
                 error: function error() {
                     // Display error toast
                     toastr['error'](i8ln('Please check connectivity or reduce marker settings.'), i8ln('Error Deleting Gym'))
+                    toastr.options = toastrOptions
+                },
+                complete: function complete() {
+                    jQuery('label[for="gyms-switch"]').click()
+                    jQuery('label[for="gyms-switch"]').click()
+                    jQuery('#gym-details').removeClass('visible')
+                }
+            })
+        }
+    }
+}
+function toggleExGym(event) { // eslint-disable-line no-unused-vars
+    var button = $(event.target)
+    var gymId = button.data('id')
+    if (gymId && gymId !== '') {
+        if (confirm(i8ln('I confirm that this gym is EX eligible.'))) {
+            return $.ajax({
+                url: 'submit',
+                type: 'POST',
+                timeout: 300000,
+                dataType: 'json',
+                cache: false,
+                data: {
+                    'action': 'toggle-ex-gym',
+                    'id': gymId
+                },
+                error: function error() {
+                    // Display error toast
+                    toastr['error'](i8ln('Please check connectivity or reduce marker settings.'), i8ln('Error marking as EX Gym'))
                     toastr.options = toastrOptions
                 },
                 complete: function complete() {
