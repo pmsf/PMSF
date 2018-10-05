@@ -311,7 +311,7 @@ class RDM extends Scanner
             $params[':lastUpdated'] = $tstamp;
         }
         if ($exEligible === "true") {
-            $conds[] = "(parkid IS NOT NULL OR sponsor > 0)";
+            $conds[] = "(ex_raid_eligible IS NOT NULL AND ex_raid_eligible != '0')";
         }
 
         return $this->query_gyms($conds, $params);
