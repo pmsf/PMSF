@@ -1558,6 +1558,7 @@ if ( $blockIframe ) {
     var noDeletePortal = <?php echo $noDeletePortal === true ? 'true' : 'false' ?>;
     var markPortalsAsNew = <?php echo $markPortalsAsNew ?>;
     var copyrightSafe = <?php echo $copyrightSafe === true ? 'true' : 'false' ?>;
+    var novabotApiUrl = '<?php echo $novabotApiUrl ?>';
 </script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js"></script>
 <script src="static/dist/js/map.common.min.js"></script>

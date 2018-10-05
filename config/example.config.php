@@ -66,6 +66,9 @@ $worldopoleUrl = "";                                                // Link to W
 
 /* StatsToggle */
 $noStatsToggle = false;                                             // Enables or disables the stats button in the header.
+/* NovaBot */
+
+$novabotApiUrl = "";                                                // Link to Novabot API, leave "" for empty
 
 /* MOTD */
 $noMotd = true;
@@ -394,8 +397,8 @@ $enableDebug = false;
 $map = "monocle";                                                     // monocle/rdm
 $fork = "alternate";                                                  // default/asner/sloppy
 
-$db = new Medoo([// required
-    'database_type' => 'mysql',                                    
+$db = new Medoo([                                                   // required
+    'database_type' => 'mysql',                                     // mysql/mariadb/pgsql/sybase/oracle/mssql/sqlite
     'database_name' => 'Monocle',
     'server' => '127.0.0.1',
     'username' => 'database_user',
@@ -408,3 +411,18 @@ $db = new Medoo([// required
 ]);
 if(file_exists('config/access-config.php'))
     include 'config/access-config.php';
+
+/*
+$novabotDb = new Medoo([                                               // enables novabot raid-management integration
+    'database_type' => 'mysql',                                     // mysql/mariadb/pgsql/sybase/oracle/mssql/sqlite
+    'database_name' => 'Novabot',
+    'server' => '127.0.0.1',
+    'username' => 'database_user',
+    'password' => 'database_password',
+    'charset' => 'utf8',
+
+    // [optional]
+    //'port' => 5432,                                               // Comment out if not needed, just add // in front!
+    //'socket' => /path/to/socket/,
+]);
+*/
