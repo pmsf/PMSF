@@ -90,14 +90,6 @@ if (strtolower($map) === "monocle") {
     }
 }
 
-// init novadb
-global $novabotDb;
-if ($novabotDb !== false) {
-    $novabotScanner = new \NovaBot\NovaBot();
-} else {
-    $novabotScanner = false;
-}
-
 $newarea = false;
 if (($oSwLng < $swLng) && ($oSwLat < $swLat) && ($oNeLat > $neLat) && ($oNeLng > $neLng)) {
     $newarea = false;
@@ -165,20 +157,15 @@ $debug['3_after_pokestops'] = microtime(true) - $timing['start'];
 global $noGyms, $noRaids;
 if (!$noGyms || !$noRaids) {
     if ($d["lastgyms"] == "true") {
-        $gyms;
         if ($lastgyms != "true") {
-            $gyms = $scanner->get_gyms($swLat, $swLng, $neLat, $neLng, $exEligible);
+            $d["gyms"] = $scanner->get_gyms($swLat, $swLng, $neLat, $neLng, $exEligible);
         } else {
             if ($newarea) {
-                $gyms = $scanner->get_gyms($swLat, $swLng, $neLat, $neLng, $exEligible, 0, $oSwLat, $oSwLng, $oNeLat, $oNeLng);
+                $d["gyms"] = $scanner->get_gyms($swLat, $swLng, $neLat, $neLng, $exEligible, 0, $oSwLat, $oSwLng, $oNeLat, $oNeLng);
             } else {
-                $gyms = $scanner->get_gyms($swLat, $swLng, $neLat, $neLng, $exEligible, $timestamp);
+                $d["gyms"] = $scanner->get_gyms($swLat, $swLng, $neLat, $neLng, $exEligible, $timestamp);
             }
         }
-        if ($novabotScanner !== false) {
-            $novabotScanner->addLobbies($gyms);
-        }
-        $d["gyms"] = $gyms;
     }
 }
 $debug['4_after_gyms'] = microtime(true) - $timing['start'];
