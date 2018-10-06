@@ -1290,7 +1290,7 @@ function getGymMarkerIcon(item) {
 }
 
 function setupGymMarker(item) {
-    var marker = L.marker([item['latitude'], item['longitude']], {icon: getGymMarkerIcon(item)}).bindPopup(gymLabel(item), {autoPan: false, closeOnClick: false, autoClose: false})
+    var marker = L.marker([item['latitude'], item['longitude']], {icon: getGymMarkerIcon(item)})
     markers.addLayer(marker)
     updateGymMarker(item, marker)
 
@@ -1368,6 +1368,7 @@ function setupGymMarker(item) {
 
 
         if (!isMobileDevice() && !isTouchDevice()) {
+        marker.bindPopup(gymLabel(item), {autoPan: false, closeOnClick: false, autoClose: false})
             marker.on('mouseover', function () {
                 marker.openPopup()
                 clearSelection()
@@ -1381,6 +1382,7 @@ function setupGymMarker(item) {
             }
         })
     } else {
+        marker.bindPopup(gymLabel(item), {autoPan: false, closeOnClick: false, autoClose: false})
         addListeners(marker)
     }
     return marker
