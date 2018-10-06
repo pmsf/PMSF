@@ -3955,7 +3955,7 @@ function updateGeoLocation() {
             var center = new L.LatLng(lat, lng)
 
             if (Store.get('followMyLocation')) {
-                if (typeof locationMarker !== 'undefined' && getPointDistance(locationMarker.getLatLng(), center) >= 1) {
+                if (typeof locationMarker !== 'undefined') {
                     map.setView(center)
                     locationMarker.setLatLng(center)
                     if (Store.get('spawnArea')) {
