@@ -792,7 +792,7 @@ function gymLabel(item) {
     }
     if (teamId === 0) {
         str =
-            '<div>' +
+            '<div class="gym-label">' +
             '<center>' +
             nameStr +
             '<div>' +
@@ -829,7 +829,7 @@ function gymLabel(item) {
             gymCp = '<div>' + i8ln('Total Gym CP') + ' : <b>' + item.total_gym_cp + '</b></div>'
         }
         str =
-            '<div>' +
+            '<div class="gym-label">' +
             '<center>' +
             '<div style="padding-bottom: 2px">' +
 
@@ -873,12 +873,12 @@ function pokestopLabel(expireTime, latitude, longitude, stopName, url, lureUser,
     if (expireTime) {
         if (lureUser) {
             str =
-                '<div>' +
+                '<div class="pokestop-label">' +
                 '<b>' + stopName + '<br>' + i8ln('Lured by') + ': ' + lureUser + '</b>' +
                 '</div>'
         } else {
             str =
-                '<div>' +
+                '<div class="pokestop-label">' +
                 '<b>' + stopName + ' (' + i8ln('Lured') + ')</b>' +
                 '</div>'
         }
@@ -896,12 +896,12 @@ function pokestopLabel(expireTime, latitude, longitude, stopName, url, lureUser,
         }
     } else {
         str =
-            '<center>' + '<div>' +
+            '<center>' + '<div class="pokestop-label">' +
             '<b>' + stopName + '</b>' +
             '</div>'
         if (noManualQuests === true || quest === null) {
             str =
-                '<div>' +
+                '<div class="pokestop-label">' +
                 '<center>' +
                 '<div>' +
                 '<b>' + stopName + '</b>' +
@@ -914,7 +914,7 @@ function pokestopLabel(expireTime, latitude, longitude, stopName, url, lureUser,
                 '</div>'
         } else {
             str =
-                '<div>' +
+                '<div class="pokestop-label">' +
                 '<center>' +
                 '<div>' +
                 '<b>' + stopName + '</b>' +
