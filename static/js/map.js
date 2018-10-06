@@ -2212,8 +2212,7 @@ function centerMapOnCoords(event) { // eslint-disable-line no-unused-vars
         zoom = 17
     }
     var latlng = new L.LatLng(point.data('lat'), point.data('lon'))
-    map.panTo(latlng)
-    map.setZoom(zoom)
+    map.setView(latlng, zoom)
     $('.ui-dialog-content').dialog('close')
 }
 
@@ -3896,7 +3895,7 @@ function centerMapOnLocation() {
         navigator.geolocation.getCurrentPosition(function (position) {
             var latlng = new L.LatLng(position.coords.latitude, position.coords.longitude)
             locationMarker.setLatLng(latlng)
-            map.panTo(latlng)
+            map.setView(latlng)
             Store.set('followMyLocationPosition', {
                 lat: position.coords.latitude,
                 lng: position.coords.longitude
@@ -3917,7 +3916,7 @@ function centerMapOnLocation() {
 function centerMap(lat, lng, zoom) {
     var loc = new L.LatLng(lat, lng)
 
-    map.panTo(loc)
+    map.setView(loc)
 
     if (zoom) {
         storeZoom = false
@@ -3956,27 +3955,25 @@ function updateGeoLocation() {
             var center = new L.LatLng(lat, lng)
 
             if (Store.get('followMyLocation')) {
-                if (typeof locationMarker !== 'undefined' && getPointDistance(locationMarker.getLatLng(), center) >= 5) {
-                    map.panTo(center)
+                if (typeof locationMarker !== 'undefined' && getPointDistance(locationMarker.getLatLng(), center) >= 1) {
+                    map.setView(center)
                     locationMarker.setLatLng(center)
                     if (Store.get('spawnArea')) {
                         if (locationMarker.rangeCircle) {
                             markers.removeLayer(locationMarker.rangeCircle)
-                            markers.removeLayer(locationMarker.rangeCircle)
+                            markersnotify.removeLayer(locationMarker.rangeCircle)
                             delete locationMarker.rangeCircle
                         }
                         var rangeCircleOpts = {
                             color: '#FF9200',
                             radius: 35, // meters
-                            strokeWeight: 1,
-                            strokeColor: '#FF9200',
-                            strokeOpacity: 0.9,
                             center: center,
                             fillColor: '#FF9200',
                             fillOpacity: 0.4,
                             weight: 1
                         }
-                        locationMarker.rangeCircle = L.circle(center, rangeCircleOpts)
+                        locationMarker.rangeCircle = new L.circle(center, rangeCircleOpts)
+                        markers.addLayer(locationMarker.rangeCircle)
                     }
                     Store.set('followMyLocationPosition', {
                         lat: lat,
@@ -4708,7 +4705,7 @@ $(function () {
 
             var latlng = new L.LatLng(lat, lng)
             locationMarker.setLatLng(latlng)
-            map.panTo(latlng)
+            map.setView(latlng)
         }
 
         $selectLocationIconMarker.select2({
@@ -4963,8 +4960,7 @@ $(function () {
         var lat = $(this).data('lat')
         var lng = $(this).data('lng')
         var zoom = $(this).data('zoom')
-        map.panTo(new L.LatLng(lat, lng))
-        map.setZoom(zoom)
+        map.setView(new L.LatLng(lat, lng), zoom)
     })
 
     $raidNotify.select2({
@@ -5223,7 +5219,8 @@ $(function () {
     $('#spawn-area-switch').change(function () {
         Store.set('spawnArea', this.checked)
         if (locationMarker.rangeCircle) {
-            locationMarker.rangeCircle.setMap(null)
+            markers.removeLayer(locationMarker.rangeCircle)
+            markersnotify.removeLayer(locationMarker.rangeCircle)
             delete locationMarker.rangeCircle
         }
     })
