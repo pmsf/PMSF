@@ -31,6 +31,14 @@
     "cat": "Catch",
     "name": "Catch 5 Pokémon with Weather Boost"
   },
+  "120": {
+    "cat": "Catch",
+    "name": "Catch 10 Psychic-Type Pokémon"
+  },
+  "121": {
+    "cat": "Catch",
+    "name": "Catch 5 Abra or Drowzee"
+  },
   "122": {
     "cat": "Catch",
     "name": "Catch a Dragon-type Pokemon"
@@ -42,6 +50,10 @@
   "255": {
     "cat": "Evolve",
     "name": "Evolve a Pokémon"
+  },
+  "256": {
+    "cat": "Evolve",
+    "name": "Evolve 3 Slowpoke or Exeggute"
   },
   "269": {
     "cat": "Evolve",
