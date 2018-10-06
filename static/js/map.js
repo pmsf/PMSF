@@ -1368,7 +1368,7 @@ function setupGymMarker(item) {
 
 
         if (!isMobileDevice() && !isTouchDevice()) {
-        marker.bindPopup(gymLabel(item), {autoPan: false, closeOnClick: false, autoClose: false})
+            marker.bindPopup(gymLabel(item), {autoPan: false, closeOnClick: false, autoClose: false})
             marker.on('mouseover', function () {
                 marker.openPopup()
                 clearSelection()
@@ -3733,24 +3733,6 @@ var updateLabelDiffTime = function updateLabelDiffTime() {
     })
 }
 
-function getPointDistance(origin, destination) {
-    // return distance in meters
-    var lon1 = toRadian(origin.lng)
-    var lat1 = toRadian(origin.lat)
-    var lon2 = toRadian(destination.lng)
-    var lat2 = toRadian(destination.lat)
-    var deltaLat = lat2 - lat1
-    var deltaLon = lon2 - lon1
-    var a = Math.pow(Math.sin(deltaLat / 2), 2) + Math.cos(lat1) * Math.cos(lat2) * Math.pow(Math.sin(deltaLon / 2), 2)
-    var c = 2 * Math.asin(Math.sqrt(a))
-    var EARTH_RADIUS = 6371
-    return c * EARTH_RADIUS * 1000
-}
-
-function toRadian(degree) {
-    return degree * Math.PI / 180
-}
-
 function sendNotification(title, text, icon, lat, lon) {
     if (Store.get('remember_notification_notify')) {
         var notificationDetails = {
@@ -3972,7 +3954,7 @@ function updateGeoLocation() {
                             fillOpacity: 0.4,
                             weight: 1
                         }
-                        locationMarker.rangeCircle = new L.circle(center, rangeCircleOpts)
+                        locationMarker.rangeCircle = L.circle(center, rangeCircleOpts)
                         markers.addLayer(locationMarker.rangeCircle)
                     }
                     Store.set('followMyLocationPosition', {
