@@ -284,14 +284,14 @@ function initMap() { // eslint-disable-line no-unused-vars
         if (this.getZoom() > 13) {
             // hide weather markers
             $.each(weatherMarkers, function (index, marker) {
-                marker.setVisible(false)
+                markers.removeLayer(marker)
             })
             // show header weather
             $('#currentWeather').fadeIn()
         } else {
             // show weather markers
             $.each(weatherMarkers, function (index, marker) {
-                marker.setVisible(true)
+                markers.addLayer(marker)
             })
             // hide header weather
             $('#currentWeather').fadeOut()
@@ -3522,20 +3522,20 @@ function updateMap() {
         lng: position.lng
     })
     // lets try and get the s2 cell id in the middle
-    // var s2CellCenter = S2.keyToId(S2.latLngToKey(position.lat, position.lng, 10))
-    // if ((s2CellCenter) && (String(s2CellCenter) !== $('#currentWeather').data('current-cell')) && (map.getZoom() > 13)) {
-    //    loadWeatherCellData(s2CellCenter).done(function (cellWeather) {
-    //        var currentWeather = cellWeather.weather
-    //        var currentCell = $('#currentWeather').data('current-cell')
-    //        if ((currentWeather) && (currentCell !== currentWeather.s2_cell_id)) {
-    //            $('#currentWeather').data('current-cell', currentWeather.s2_cell_id)
-    //            $('#currentWeather').html('<img src="static/weather/' + currentWeather.condition + '.png" alt="">')
-    //        } else if (!currentWeather) {
-    //            $('#currentWeather').data('current-cell', '')
-    //            $('#currentWeather').html('')
-    //        }
-    //    })
-    // }
+    var s2CellCenter = S2.keyToId(S2.latLngToKey(position.lat, position.lng, 10))
+    if ((s2CellCenter) && (String(s2CellCenter) !== $('#currentWeather').data('current-cell')) && (map.getZoom() > 13)) {
+        loadWeatherCellData(s2CellCenter).done(function (cellWeather) {
+            var currentWeather = cellWeather.weather
+            var currentCell = $('#currentWeather').data('current-cell')
+            if ((currentWeather) && (currentCell !== currentWeather.s2_cell_id)) {
+                $('#currentWeather').data('current-cell', currentWeather.s2_cell_id)
+                $('#currentWeather').html('<img src="static/weather/' + currentWeather.condition + '.png" alt="">')
+            } else if (!currentWeather) {
+                $('#currentWeather').data('current-cell', '')
+                $('#currentWeather').html('')
+            }
+        })
+    }
 
     loadRawData().done(function (result) {
         $.each(result.pokemons, processPokemons)
@@ -3612,43 +3612,28 @@ function drawWeatherOverlay(weather) {
     if (weather) {
         $.each(weather, function (idx, item) {
             weatherArray.push(S2.idToCornerLatLngs(item.s2_cell_id))
-            var poly = new google.maps.Polygon({
-                id: item.id,
-                paths: weatherArray,
-                strokeColor: weatherColors[item.condition],
-                strokeOpacity: 0.8,
-                strokeWeight: 1,
-                fillColor: weatherColors[item.condition],
-                fillOpacity: 0.35
+            var poly = L.polygon(weatherArray, {
+                color: weatherColors[item.condition],
+                opacity: 1,
+                weight: 1,
+                fillOpacity: 0
             })
-            var bounds = new google.maps.LatLngBounds()
+            var bounds = new L.LatLngBounds()
             var i, center
 
             for (i = 0; i < weatherArray[0].length; i++) {
                 bounds.extend(weatherArray[0][i])
             }
             center = bounds.getCenter()
-
-            var overlayIconSize = new google.maps.Size(30, 30)
-            var scaledIconCenterOffset = new google.maps.Point(15, 15)
-            var image = 'static/weather/i-' + item.condition + '.png'
-            var marker = new google.maps.Marker({
-                position: {
-                    lat: center.lat(),
-                    lng: center.lng()
-                },
-                map: map,
-                icon: {
-                    url: image,
-                    size: overlayIconSize,
-                    scaledSize: overlayIconSize,
-                    origin: new google.maps.Point(0, 0),
-                    anchor: scaledIconCenterOffset
-                }
+            var icon = L.icon({
+                iconSize: [30, 30],
+                iconAnchor: [15, 15],
+                iconUrl: 'static/weather/i-' + item.condition + '.png'
             })
+            var marker = L.marker([center.lat, center.lng], {icon})
             weatherPolys.push(poly)
             weatherMarkers.push(marker)
-            poly.setMap(map)
+            poly.addTo(map)
             weatherArray = []
         })
     }
@@ -3656,10 +3641,10 @@ function drawWeatherOverlay(weather) {
 
 function destroyWeatherOverlay() {
     $.each(weatherPolys, function (idx, poly) {
-        poly.setMap(null)
+        markers.removeLayer(poly)
     })
     $.each(weatherMarkers, function (idx, marker) {
-        marker.setMap(null)
+        markers.removeLayer(marker)
     })
     weatherPolys = []
     weatherMarkers = []
