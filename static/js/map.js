@@ -753,7 +753,7 @@ function gymLabel(item) {
         }
     }
     if (manualRaids) {
-        raidStr += '<div class="raid-container"><i class="fa fa-binoculars submit-raid" onclick="openRaidModal(event);" data-id="' + item['gym_id'] + '"></i>' +
+        raidStr += '<div class="raid-container">' + i8ln('Add raid') + '<i class="fa fa-binoculars submit-raid" onclick="openRaidModal(event);" data-id="' + item['gym_id'] + '"></i>' +
             '</div>'
     }
     if (!noDeleteGyms) {
@@ -792,7 +792,7 @@ function gymLabel(item) {
     }
     if (teamId === 0) {
         str =
-            '<div>' +
+            '<div class="gym-label">' +
             '<center>' +
             nameStr +
             '<div>' +
@@ -829,7 +829,7 @@ function gymLabel(item) {
             gymCp = '<div>' + i8ln('Total Gym CP') + ' : <b>' + item.total_gym_cp + '</b></div>'
         }
         str =
-            '<div>' +
+            '<div class="gym-label">' +
             '<center>' +
             '<div style="padding-bottom: 2px">' +
 
@@ -873,12 +873,12 @@ function pokestopLabel(expireTime, latitude, longitude, stopName, url, lureUser,
     if (expireTime) {
         if (lureUser) {
             str =
-                '<div>' +
+                '<div class="pokestop-label">' +
                 '<b>' + stopName + '<br>' + i8ln('Lured by') + ': ' + lureUser + '</b>' +
                 '</div>'
         } else {
             str =
-                '<div>' +
+                '<div class="pokestop-label">' +
                 '<b>' + stopName + ' (' + i8ln('Lured') + ')</b>' +
                 '</div>'
         }
@@ -896,12 +896,12 @@ function pokestopLabel(expireTime, latitude, longitude, stopName, url, lureUser,
         }
     } else {
         str =
-            '<center>' + '<div>' +
+            '<center>' + '<div class="pokestop-label">' +
             '<b>' + stopName + '</b>' +
             '</div>'
         if (noManualQuests === true || quest === null) {
             str =
-                '<div>' +
+                '<div class="pokestop-label">' +
                 '<center>' +
                 '<div>' +
                 '<b>' + stopName + '</b>' +
@@ -914,7 +914,7 @@ function pokestopLabel(expireTime, latitude, longitude, stopName, url, lureUser,
                 '</div>'
         } else {
             str =
-                '<div>' +
+                '<div class="pokestop-label">' +
                 '<center>' +
                 '<div>' +
                 '<b>' + stopName + '</b>' +
@@ -943,13 +943,13 @@ function pokestopLabel(expireTime, latitude, longitude, stopName, url, lureUser,
             str += '<i class="fa fa-trash-o delete-pokestop" onclick="deletePokestop(event);" data-id="' + id + '"></i>'
         }
         if (!noManualQuests) {
-            str += '<center><div>Add Quest<i class="fa fa-binoculars submit-quest" onclick="openQuestModal(event);" data-id="' + id + '"></i></div></center>'
+            str += '<center><div>' + i8ln('Add Quest') + '<i class="fa fa-binoculars submit-quest" onclick="openQuestModal(event);" data-id="' + id + '"></i></div></center>'
         }
         if (!noRenamePokestops) {
-            str += '<center><div>Rename Pokestop <i class="fa fa-edit rename-pokestop" style="margin-top: 2px; vertical-align: middle; font-size: 1.5em;" onclick="openRenamePokestopModal(event);" data-id="' + id + '"></i></div></center>'
+            str += '<center><div>' + i8ln('Rename Pokestop') + '<i class="fa fa-edit rename-pokestop" style="margin-top: 2px; vertical-align: middle; font-size: 1.5em;" onclick="openRenamePokestopModal(event);" data-id="' + id + '"></i></div></center>'
         }
         if (!noConvertPokestops) {
-            str += '<center><div>Convert to Gym <i class="fa fa-refresh convert-pokestop" style="margin-top: 2px; vertical-align: middle; font-size: 1.5em;" onclick="openConvertPokestopModal(event);" data-id="' + id + '"></i></div></center>'
+            str += '<center><div>' + i8ln('Convert to Gym') + '<i class="fa fa-refresh convert-pokestop" style="margin-top: 2px; vertical-align: middle; font-size: 1.5em;" onclick="openConvertPokestopModal(event);" data-id="' + id + '"></i></div></center>'
         }
         str += '<div>' +
             i8ln('Location:') + ' ' + '<a href="javascript:void(0)" onclick="javascript:openMapDirections(' + latitude + ',' + longitude + ')" title="' + i8ln('View in Maps') + '">' + latitude + ', ' + longitude + '</a> - <a href="./?lat=' + latitude + '&lon=' + longitude + '&zoom=16">Share link</a>' +
@@ -1290,7 +1290,7 @@ function getGymMarkerIcon(item) {
 }
 
 function setupGymMarker(item) {
-    var marker = L.marker([item['latitude'], item['longitude']], {icon: getGymMarkerIcon(item)}).bindPopup(gymLabel(item), {autoPan: false, closeOnClick: false, autoClose: false})
+    var marker = L.marker([item['latitude'], item['longitude']], {icon: getGymMarkerIcon(item)})
     markers.addLayer(marker)
     updateGymMarker(item, marker)
 
@@ -1368,6 +1368,7 @@ function setupGymMarker(item) {
 
 
         if (!isMobileDevice() && !isTouchDevice()) {
+            marker.bindPopup(gymLabel(item), {autoPan: false, closeOnClick: false, autoClose: false})
             marker.on('mouseover', function () {
                 marker.openPopup()
                 clearSelection()
@@ -1381,6 +1382,7 @@ function setupGymMarker(item) {
             }
         })
     } else {
+        marker.bindPopup(gymLabel(item), {autoPan: false, closeOnClick: false, autoClose: false})
         addListeners(marker)
     }
     return marker
@@ -1576,7 +1578,7 @@ function nestLabel(item) {
         str += '<i class="fa fa-trash-o delete-nest" onclick="deleteNest(event);" data-id="' + item['nest_id'] + '"></i>'
     }
     if (!noManualNests) {
-        str += '<center><div>Add Nest <i class="fa fa-binoculars submit-nest" onclick="openNestModal(event);" data-id="' + item['nest_id'] + '"></i></div></center>'
+        str += '<center><div>' + i8ln('Add Nest') + '<i class="fa fa-binoculars submit-nest" onclick="openNestModal(event);" data-id="' + item['nest_id'] + '"></i></div></center>'
     }
     str += '<div>' +
         'Location: <a href="javascript:void(0)" onclick="javascript:openMapDirections(' + item.lat + ',' + item.lon + ')" title="' + i8ln('View in Maps') + '">' + item.lat.toFixed(6) + ', ' + item.lon.toFixed(7) + '</a> - <a href="./?lat=' + item.lat + '&lon=' + item.lon + '&zoom=16">Share link</a>' +
@@ -2210,8 +2212,7 @@ function centerMapOnCoords(event) { // eslint-disable-line no-unused-vars
         zoom = 17
     }
     var latlng = new L.LatLng(point.data('lat'), point.data('lon'))
-    map.panTo(latlng)
-    map.setZoom(zoom)
+    map.setView(latlng, zoom)
     $('.ui-dialog-content').dialog('close')
 }
 
@@ -3732,24 +3733,6 @@ var updateLabelDiffTime = function updateLabelDiffTime() {
     })
 }
 
-function getPointDistance(origin, destination) {
-    // return distance in meters
-    var lon1 = toRadian(origin.lng)
-    var lat1 = toRadian(origin.lat)
-    var lon2 = toRadian(destination.lng)
-    var lat2 = toRadian(destination.lat)
-    var deltaLat = lat2 - lat1
-    var deltaLon = lon2 - lon1
-    var a = Math.pow(Math.sin(deltaLat / 2), 2) + Math.cos(lat1) * Math.cos(lat2) * Math.pow(Math.sin(deltaLon / 2), 2)
-    var c = 2 * Math.asin(Math.sqrt(a))
-    var EARTH_RADIUS = 6371
-    return c * EARTH_RADIUS * 1000
-}
-
-function toRadian(degree) {
-    return degree * Math.PI / 180
-}
-
 function sendNotification(title, text, icon, lat, lon) {
     if (Store.get('remember_notification_notify')) {
         var notificationDetails = {
@@ -3894,7 +3877,7 @@ function centerMapOnLocation() {
         navigator.geolocation.getCurrentPosition(function (position) {
             var latlng = new L.LatLng(position.coords.latitude, position.coords.longitude)
             locationMarker.setLatLng(latlng)
-            map.panTo(latlng)
+            map.setView(latlng)
             Store.set('followMyLocationPosition', {
                 lat: position.coords.latitude,
                 lng: position.coords.longitude
@@ -3915,7 +3898,7 @@ function centerMapOnLocation() {
 function centerMap(lat, lng, zoom) {
     var loc = new L.LatLng(lat, lng)
 
-    map.panTo(loc)
+    map.setView(loc)
 
     if (zoom) {
         storeZoom = false
@@ -3954,27 +3937,25 @@ function updateGeoLocation() {
             var center = new L.LatLng(lat, lng)
 
             if (Store.get('followMyLocation')) {
-                if (typeof locationMarker !== 'undefined' && getPointDistance(locationMarker.getLatLng(), center) >= 5) {
-                    map.panTo(center)
+                if (typeof locationMarker !== 'undefined') {
+                    map.setView(center)
                     locationMarker.setLatLng(center)
                     if (Store.get('spawnArea')) {
                         if (locationMarker.rangeCircle) {
                             markers.removeLayer(locationMarker.rangeCircle)
-                            markers.removeLayer(locationMarker.rangeCircle)
+                            markersnotify.removeLayer(locationMarker.rangeCircle)
                             delete locationMarker.rangeCircle
                         }
                         var rangeCircleOpts = {
                             color: '#FF9200',
                             radius: 35, // meters
-                            strokeWeight: 1,
-                            strokeColor: '#FF9200',
-                            strokeOpacity: 0.9,
                             center: center,
                             fillColor: '#FF9200',
                             fillOpacity: 0.4,
                             weight: 1
                         }
                         locationMarker.rangeCircle = L.circle(center, rangeCircleOpts)
+                        markers.addLayer(locationMarker.rangeCircle)
                     }
                     Store.set('followMyLocationPosition', {
                         lat: lat,
@@ -4706,7 +4687,7 @@ $(function () {
 
             var latlng = new L.LatLng(lat, lng)
             locationMarker.setLatLng(latlng)
-            map.panTo(latlng)
+            map.setView(latlng)
         }
 
         $selectLocationIconMarker.select2({
@@ -4961,8 +4942,7 @@ $(function () {
         var lat = $(this).data('lat')
         var lng = $(this).data('lng')
         var zoom = $(this).data('zoom')
-        map.panTo(new L.LatLng(lat, lng))
-        map.setZoom(zoom)
+        map.setView(new L.LatLng(lat, lng), zoom)
     })
 
     $raidNotify.select2({
@@ -5221,7 +5201,8 @@ $(function () {
     $('#spawn-area-switch').change(function () {
         Store.set('spawnArea', this.checked)
         if (locationMarker.rangeCircle) {
-            locationMarker.rangeCircle.setMap(null)
+            markers.removeLayer(locationMarker.rangeCircle)
+            markersnotify.removeLayer(locationMarker.rangeCircle)
             delete locationMarker.rangeCircle
         }
     })
