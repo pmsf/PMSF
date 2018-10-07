@@ -148,6 +148,12 @@ var weatherMarkers = []
 var weatherColors
 
 var S2
+var level12Cell = []
+var level12CellPolys = []
+var level14Cell = []
+var level14CellPolys = []
+var level17Cell = []
+var level17CellPolys = []
 
 /*
  text place holders:
@@ -412,6 +418,11 @@ function initSidebar() {
     $('#nests-switch').prop('checked', Store.get('showNests'))
     $('#communities-switch').prop('checked', Store.get('showCommunities'))
     $('#portals-switch').prop('checked', Store.get('showPortals'))
+    $('#s2-switch').prop('checked', Store.get('showS2Cells'))
+    $('#s2-switch-wrapper').toggle(Store.get('showS2Cells'))
+    $('#s2-level12-switch').prop('checked', Store.get('showLevel12Cells'))
+    $('#s2-level14-switch').prop('checked', Store.get('showLevel14Cells'))
+    $('#s2-level17-switch').prop('checked', Store.get('showLevel17Cells'))
     $('#new-portals-only-switch').val(Store.get('showNewPortalsOnly'))
     $('#new-portals-only-wrapper').toggle(Store.get('showPortals'))
     $('#gym-sidebar-switch').prop('checked', Store.get('useGymSidebar'))
@@ -462,7 +473,6 @@ function initSidebar() {
             $('#search-places-results li').remove()
             event.preventDefault()
             const results = await searchProvider.search({ query: input.value })
-            console.log(results)
             $.each(results, function (key, val) {
                 $('#search-places-results').append('<li class="place-result" data-lat="' + val.y + '" data-lon="' + val.x + '"><span class="place-result" onclick="centerMapOnCoords(event);">' + val.label + '</span></li>')
             })
@@ -1959,6 +1969,10 @@ function showInBoundsMarkers(markersInput, type) {
                 if (map.getBounds().contains(marker.getLatLng())) {
                     show = true
                 }
+            } else if (type === 's2cells') {
+                if (map.getBounds().intersects(getS2CellBounds(item))) {
+                    show = true
+                }
             }
         }
         // marker has an associated range
@@ -3238,6 +3252,16 @@ function updatePortals() {
         })
     }
 }
+function processS2Cells(item) {
+    if (!Store.get('showS2Cells')) {
+        return false
+    }
+    var s2CellId = item
+    if (!(s2CellId in mapData.s2cells)) {
+        item = setupS2CellPolygon(item)
+        mapData.s2cells[s2CellId] = item
+    }
+}
 function processPokestops(i, item) {
     if (!Store.get('showPokestops')) {
         return false
@@ -3538,6 +3562,7 @@ function updateMap() {
             }
         })
     }
+    drawS2Cells()
 
     loadRawData().done(function (result) {
         $.each(result.pokemons, processPokemons)
@@ -3553,9 +3578,10 @@ function updateMap() {
         showInBoundsMarkers(mapData.gyms, 'gym')
         showInBoundsMarkers(mapData.pokestops, 'pokestop')
         showInBoundsMarkers(mapData.scanned, 'scanned')
-        showInBoundsMarkers(mapData.spawnpoints, 'inbound'
+        showInBoundsMarkers(mapData.spawnpoints, 'inbound')
+        showInBoundsMarkers(mapData.s2cells, 's2cells')
             //      drawScanPath(result.scanned)
-        )
+        
         clearStaleMarkers()
 
         updateScanned()
@@ -3650,6 +3676,65 @@ function destroyWeatherOverlay() {
     })
     weatherPolys = []
     weatherMarkers = []
+}
+
+function setupS2CellPolygon(item) {
+    var corners = S2.idToCornerLatLngs(item)
+    var polygon = L.polygon(corners, {
+        color: 'black',
+        opacity: 1,
+        weight: 1,
+        fillOpacity: 0
+    })
+    markersnotify.addLayer(polygon)
+    return polygon
+}
+
+function getS2Cellbounds(s2Cell) {
+    var bounds = L.LatLngBounds()
+    $.each(s2Cell.corners, function (i, latLng) {
+        bounds.extend(latLng)
+    })
+    return bounds
+}
+
+function drawS2Cells() {
+    var position = map.getCenter()
+    mapData.s2cells = []
+    if (Store.get('showLevel12Cells')) {
+        var center12CellId = S2.keyToId(S2.latLngToKey(position.lat, position.lng, 12))
+        processS2Cells(center12CellId) 
+    }
+    if (Store.get('showLevel14Cells')) {
+        var center14CellId = S2.keyToId(S2.latLngToKey(position.lat, position.lng, 14))
+        processS2Cells(center14CellId)
+    }
+    if (Store.get('showLevel17Cells')) {
+        var center17CellId = S2.keyToId(S2.latLngToKey(position.lat, position.lng, 17))
+        processS2Cells(center17CellId) 
+    }
+    return mapData.s2cells
+}
+
+function destroyS2CellOverlay(level) {
+    if (level === 12) {
+        $.each(level12Cell, function (idx, polygon) {
+            markers.removeLayer(polygon)
+        })
+        level12CellPolys = []
+    }
+    if (level === 14) {
+        $.each(level14Cell, function (idx, polygon) {
+            markers.removeLayer(polygon)
+        })
+        level14CellPolys = []
+    }
+    if (level === 17) {
+        $.each(level12Cell, function (idx, polygon) {
+            markers.removeLayer(polygon)
+        })
+        level17CellPolys = []
+    }
 }
 
 function drawScanPath(points) { // eslint-disable-line no-unused-vars
@@ -5055,6 +5140,7 @@ $(function () {
         lastcommunities = false
         buildSwitchChangeListener(mapData, ['communities'], 'showCommunities').bind(this)()
     })
+
     $('#portals-switch').change(function () {
         var options = {
             'duration': 500
@@ -5069,6 +5155,47 @@ $(function () {
         }
         return buildSwitchChangeListener(mapData, ['portals'], 'showPortals').bind(this)()
     })
+
+    $('#s2-switch').change(function () {
+        var options = {
+            'duration': 500
+        }
+        var wrapper = $('#s2-switch-wrapper')
+        if (this.checked) {
+            wrapper.show(options)
+        } else {
+            wrapper.hide(options)
+        }
+        return buildSwitchChangeListener(mapData, ['s2cells'], 'showS2Cells').bind(this)()
+    })
+
+    $('#s2-level12-switch').change(function () {
+        buildSwitchChangeListener(mapData, ['s2cells'], 'showLevel12Cells').bind(this)()
+        if (this.checked) {
+            drawS2Cells()
+        } else {
+            destroyS2CellOverlay(12)
+        }
+    })
+
+    $('#s2-level14-switch').change(function () {
+        buildSwitchChangeListener(mapData, ['s2cells'], 'showLevel14Cells').bind(this)()
+        if (this.checked) {
+            drawS2Cells()
+        } else {
+            destroyS2CellOverlay(14)
+        }
+    })
+
+    $('#s2-level17-switch').change(function () {
+        buildSwitchChangeListener(mapData, ['s2cells'], 'showLevel17Cells').bind(this)()
+        if (this.checked) {
+            drawS2Cells()
+        } else {
+            destroyS2CellOverlay(17)
+        }
+    })
+
     $('#pokemon-switch').change(function () {
         var options = {
             'duration': 500
