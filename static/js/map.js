@@ -148,11 +148,8 @@ var weatherMarkers = []
 var weatherColors
 
 var S2
-var level12Cell = []
 var level12CellPolys = []
-var level14Cell = []
 var level14CellPolys = []
-var level17Cell = []
 var level17CellPolys = []
 
 /*
@@ -252,6 +249,15 @@ function createServiceWorkerReceiver() {
             centerMap(data.lat, data.lon, 20)
         }
     })
+}
+
+function getS2CellBounds(s2Cell) {
+    s2Cell.corners = S2.idToCornerLatLngs(s2Cell)
+    var bounds = L.LatLngBounds()
+    $.each(s2Cell.corners, function (i, latLng) {
+        bounds.extend(latLng)
+    })
+    return bounds
 }
 
 function initMap() { // eslint-disable-line no-unused-vars
@@ -1965,12 +1971,17 @@ function showInBoundsMarkers(markersInput, type) {
         var marker = markersInput[key].marker
         var show = false
         if (!markersInput[key].hidden) {
-            if (typeof marker.getLatLng === 'function') {
-                if (map.getBounds().contains(marker.getLatLng())) {
+            // if (typeof marker.getLatLng === 'function') {
+            // if (map.getBounds().contains(marker.getLatLng())) {
+            // show = true
+            // }
+            // }
+            if (type === 's2cells') {
+                if (map.getBounds().intersects(getS2CellBounds(marker))) {
                     show = true
                 }
-            } else if (type === 's2cells') {
-                if (map.getBounds().intersects(getS2CellBounds(item))) {
+            } else if (typeof marker.getLatLng === 'function') {
+                if (map.getBounds().contains(marker.getLatLng())) {
                     show = true
                 }
             }
@@ -3256,9 +3267,9 @@ function processS2Cells(item) {
     if (!Store.get('showS2Cells')) {
         return false
     }
-    var s2CellId = item
+    var s2CellId = item.s2_cell_id
     if (!(s2CellId in mapData.s2cells)) {
-        item = setupS2CellPolygon(item)
+        item.marker = setupS2CellPolygon(item)
         mapData.s2cells[s2CellId] = item
     }
 }
@@ -3580,8 +3591,8 @@ function updateMap() {
         showInBoundsMarkers(mapData.scanned, 'scanned')
         showInBoundsMarkers(mapData.spawnpoints, 'inbound')
         showInBoundsMarkers(mapData.s2cells, 's2cells')
-            //      drawScanPath(result.scanned)
-        
+        // drawScanPath(result.scanned)
+
         clearStaleMarkers()
 
         updateScanned()
@@ -3679,7 +3690,7 @@ function destroyWeatherOverlay() {
 }
 
 function setupS2CellPolygon(item) {
-    var corners = S2.idToCornerLatLngs(item)
+    var corners = S2.idToCornerLatLngs(item.s2_cell_id)
     var polygon = L.polygon(corners, {
         color: 'black',
         opacity: 1,
@@ -3690,47 +3701,44 @@ function setupS2CellPolygon(item) {
     return polygon
 }
 
-function getS2Cellbounds(s2Cell) {
-    var bounds = L.LatLngBounds()
-    $.each(s2Cell.corners, function (i, latLng) {
-        bounds.extend(latLng)
-    })
-    return bounds
-}
-
 function drawS2Cells() {
     var position = map.getCenter()
-    mapData.s2cells = []
+    if (mapData.s2cells === undefined) {
+        mapData.s2cells = {}
+    }
     if (Store.get('showLevel12Cells')) {
         var center12CellId = S2.keyToId(S2.latLngToKey(position.lat, position.lng, 12))
-        processS2Cells(center12CellId) 
+        mapData.s2cells.s2_cell_id = center12CellId
+        processS2Cells(mapData.s2cells)
     }
     if (Store.get('showLevel14Cells')) {
         var center14CellId = S2.keyToId(S2.latLngToKey(position.lat, position.lng, 14))
-        processS2Cells(center14CellId)
+        mapData.s2cells.s2_cell_id = center14CellId
+        processS2Cells(mapData.s2cells)
     }
     if (Store.get('showLevel17Cells')) {
         var center17CellId = S2.keyToId(S2.latLngToKey(position.lat, position.lng, 17))
-        processS2Cells(center17CellId) 
+        mapData.s2cells.s2_cell_id = center17CellId
+        processS2Cells(mapData.s2cells)
     }
     return mapData.s2cells
 }
 
 function destroyS2CellOverlay(level) {
     if (level === 12) {
-        $.each(level12Cell, function (idx, polygon) {
+        $.each(level12CellPolys, function (idx, polygon) {
             markers.removeLayer(polygon)
         })
         level12CellPolys = []
     }
     if (level === 14) {
-        $.each(level14Cell, function (idx, polygon) {
+        $.each(level14CellPolys, function (idx, polygon) {
             markers.removeLayer(polygon)
         })
         level14CellPolys = []
     }
     if (level === 17) {
-        $.each(level12Cell, function (idx, polygon) {
+        $.each(level17CellPolys, function (idx, polygon) {
             markers.removeLayer(polygon)
         })
         level17CellPolys = []

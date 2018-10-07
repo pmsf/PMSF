@@ -149,6 +149,7 @@
     "noConvertPortal": true,
     "noToggleExGyms": true,
     "noPortals": false,
+    "enableS2cells": true,
     "copyrightSafe": true
   }
 }
