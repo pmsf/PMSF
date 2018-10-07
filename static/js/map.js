@@ -407,6 +407,34 @@ function createLocationMarker() {
     return locationMarker
 }
 
+function showS2Cells(level, style) {
+    const bounds = map.getBounds()
+    const size = L.CRS.Earth.distance(bounds.getSouthWest(), bounds.getNorthEast()) / 10000 + 1 | 0
+    const count = 2 ** level * size >> 10
+
+    function addPoly(cell) {
+        const vertices = cell.getCornerLatLngs()
+        const poly = L.polygon(vertices,
+            Object.assign({color: 'blue', opacity: 0.3, weight: 2, fillOpacity: 0.0}, style))
+        poly.addTo(map)
+    }
+
+    // add cells spiraling outward
+    let cell = S2.S2Cell.FromLatLng(bounds.getCenter(), level)
+    let steps = 1
+    let direction = 0
+    do {
+        for (let i = 0; i < 2; i++) {
+            for (let i = 0; i < steps; i++) {
+                addPoly(cell)
+                cell = cell.getNeighbors()[direction % 4]
+            }
+            direction++
+        }
+        steps++
+    } while (steps < count)
+}
+
 function initSidebar() {
     $('#gyms-switch').prop('checked', Store.get('showGyms'))
     $('#nests-switch').prop('checked', Store.get('showNests'))
