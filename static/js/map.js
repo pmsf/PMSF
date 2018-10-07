@@ -1707,9 +1707,11 @@ function portalLabel(item) {
     var updated = formatDate(new Date(item.updated * 1000))
     var imported = formatDate(new Date(item.imported * 1000))
     var str = '<img src="' + item.url + '" align"middle" style="width:175px;height:auto;margin-left:25px;"/>' +
-        '<center><h4><div>' + item.name + '</div></h4></center>' +
-        '<center><div>Convert this portal<i class="fa fa-refresh convert-portal" style="margin-top: 2px; margin-left: 5px; vertical-align: middle; font-size: 1.5em;" onclick="openConvertPortalModal(event);" data-id="' + item.external_id + '"></i></div></center>' +
-        '<center><div>Last updated: ' + updated + '</div></center>' +
+        '<center><h4><div>' + item.name + '</div></h4></center>'
+    if (!noConvertPortal) {
+        str += '<center><div>Convert this portal<i class="fa fa-refresh convert-portal" style="margin-top: 2px; margin-left: 5px; vertical-align: middle; font-size: 1.5em;" onclick="openConvertPortalModal(event);" data-id="' + item.external_id + '"></i></div></center>'
+    }
+    str += '<center><div>Last updated: ' + updated + '</div></center>' +
         '<center><div>Date imported: ' + imported + '</div></center>'
     if (!noDeletePortal) {
         str += '<i class="fa fa-trash-o delete-portal" onclick="deletePortal(event);" data-id="' + item.external_id + '"></i>'

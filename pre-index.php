@@ -1556,6 +1556,7 @@ if ( $blockIframe ) {
     var enablePortals = <?php echo $noPortals ? 'false' : $enablePortals ?>;
     var noPortals = <?php echo $noPortals === true ? 'true' : 'false' ?>;
     var noDeletePortal = <?php echo $noDeletePortal === true ? 'true' : 'false' ?>;
+    var noConvertPortal = <?php echo $noConvertPortal === true ? 'true' : 'false' ?>;
     var markPortalsAsNew = <?php echo $markPortalsAsNew ?>;
     var copyrightSafe = <?php echo $copyrightSafe === true ? 'true' : 'false' ?>;
 </script>
