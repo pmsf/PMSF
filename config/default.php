@@ -281,6 +281,8 @@ $enableNewPortals = 0;                                                   // O: a
 $noPortals = true;
 $noDeletePortal = true;
 $noConvertPortal = true;
+$noS2Cells = true;
+$enableS2Cells = 'false';
 $markPortalsAsNew = 86400;                                         // Time in seconds to mark new imported portals as new ( 86400 for 1 day )
 
 $noDiscordSubmitLogChannel = true;                                        // Send webhooks to discord channel upon submission
