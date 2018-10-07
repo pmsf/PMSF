@@ -279,6 +279,7 @@ $enablePortals = 'false';
 $enableNewPortals = 0;                                                   // O: all, 1: new portals only
 $noPortals = true;
 $noDeletePortal = true;
+$noConvertPortal = true;
 $markPortalsAsNew = 86400;                                         // Time in seconds to mark new imported portals as new ( 86400 for 1 day )
 
 $pokemonReportTime = true;
