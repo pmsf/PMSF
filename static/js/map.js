@@ -410,7 +410,7 @@ function createLocationMarker() {
 function showS2Cells(level, style) {
     const bounds = map.getBounds()
     const size = L.CRS.Earth.distance(bounds.getSouthWest(), bounds.getNorthEast()) / 10000 + 1 | 0
-    const count = 2 ** level * size >> 10
+    const count = 2 ** level * size >> 12
 
     function addPoly(cell) {
         const vertices = cell.getCornerLatLngs()
