@@ -639,9 +639,9 @@ if ( $blockIframe ) {
                     <div class="form-control switch-container">
                         <h3>' . i8ln( 'EX trigger Cells' ) . '</h3>
                         <div class="onoffswitch">
-                            <input id="s2-level12-switch" type="checkbox" name="s2-level12-switch"
+                            <input id="s2-level13-switch" type="checkbox" name="s2-level13-switch"
                                    class="onoffswitch-checkbox" checked>
-                            <label class="onoffswitch-label" for="s2-level12-switch">
+                            <label class="onoffswitch-label" for="s2-level13-switch">
                                 <span class="switch-label" data-on="On" data-off="Off"></span>
                                 <span class="switch-handle"></span>
                             </label>
@@ -1509,7 +1509,9 @@ if ( $blockIframe ) {
 <script src="node_modules/push.js/bin/push.min.js"></script>
 <script src="node_modules/long/src/long.js"></script>
 <script src="https://unpkg.com/leaflet-geosearch@2.7.0/dist/bundle.min.js"></script>
-<script src="static/js/vendor/s2geometry.js"></script>
+<script src="https://unpkg.com/s2-geometry@1.2.9/src/s2geometry.js"
+    integrity="sha384-WGDofm6Km+bZIxd/uBU2QJlwIMxX/9H5H7G9glfYtcAAR8vrm0wbzvtpIG54XhOZ"
+    crossorigin=""></script>
 <script src="static/dist/js/app.min.js"></script>
 <script src="static/js/vendor/classie.js"></script>
 <script src="https://unpkg.com/leaflet@1.3.1/dist/leaflet.js"></script>

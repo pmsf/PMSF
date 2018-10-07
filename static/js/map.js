@@ -148,9 +148,6 @@ var weatherMarkers = []
 var weatherColors
 
 var S2
-var level12CellPolys = []
-var level14CellPolys = []
-var level17CellPolys = []
 
 /*
  text place holders:
@@ -249,15 +246,6 @@ function createServiceWorkerReceiver() {
             centerMap(data.lat, data.lon, 20)
         }
     })
-}
-
-function getS2CellBounds(s2Cell) {
-    s2Cell.corners = S2.idToCornerLatLngs(s2Cell)
-    var bounds = L.LatLngBounds()
-    $.each(s2Cell.corners, function (i, latLng) {
-        bounds.extend(latLng)
-    })
-    return bounds
 }
 
 function initMap() { // eslint-disable-line no-unused-vars
@@ -426,7 +414,7 @@ function initSidebar() {
     $('#portals-switch').prop('checked', Store.get('showPortals'))
     $('#s2-switch').prop('checked', Store.get('showS2Cells'))
     $('#s2-switch-wrapper').toggle(Store.get('showS2Cells'))
-    $('#s2-level12-switch').prop('checked', Store.get('showLevel12Cells'))
+    $('#s2-level13-switch').prop('checked', Store.get('showLevel13Cells'))
     $('#s2-level14-switch').prop('checked', Store.get('showLevel14Cells'))
     $('#s2-level17-switch').prop('checked', Store.get('showLevel17Cells'))
     $('#new-portals-only-switch').val(Store.get('showNewPortalsOnly'))
@@ -1971,16 +1959,7 @@ function showInBoundsMarkers(markersInput, type) {
         var marker = markersInput[key].marker
         var show = false
         if (!markersInput[key].hidden) {
-            // if (typeof marker.getLatLng === 'function') {
-            // if (map.getBounds().contains(marker.getLatLng())) {
-            // show = true
-            // }
-            // }
-            if (type === 's2cells') {
-                if (map.getBounds().intersects(getS2CellBounds(marker))) {
-                    show = true
-                }
-            } else if (typeof marker.getLatLng === 'function') {
+            if (typeof marker.getLatLng === 'function') {
                 if (map.getBounds().contains(marker.getLatLng())) {
                     show = true
                 }
@@ -3263,16 +3242,6 @@ function updatePortals() {
         })
     }
 }
-function processS2Cells(item) {
-    if (!Store.get('showS2Cells')) {
-        return false
-    }
-    var s2CellId = item.s2_cell_id
-    if (!(s2CellId in mapData.s2cells)) {
-        item.marker = setupS2CellPolygon(item)
-        mapData.s2cells[s2CellId] = item
-    }
-}
 function processPokestops(i, item) {
     if (!Store.get('showPokestops')) {
         return false
@@ -3573,7 +3542,6 @@ function updateMap() {
             }
         })
     }
-    drawS2Cells()
 
     loadRawData().done(function (result) {
         $.each(result.pokemons, processPokemons)
@@ -3590,7 +3558,6 @@ function updateMap() {
         showInBoundsMarkers(mapData.pokestops, 'pokestop')
         showInBoundsMarkers(mapData.scanned, 'scanned')
         showInBoundsMarkers(mapData.spawnpoints, 'inbound')
-        showInBoundsMarkers(mapData.s2cells, 's2cells')
         // drawScanPath(result.scanned)
 
         clearStaleMarkers()
@@ -3687,62 +3654,6 @@ function destroyWeatherOverlay() {
     })
     weatherPolys = []
     weatherMarkers = []
-}
-
-function setupS2CellPolygon(item) {
-    var corners = S2.idToCornerLatLngs(item.s2_cell_id)
-    var polygon = L.polygon(corners, {
-        color: 'black',
-        opacity: 1,
-        weight: 1,
-        fillOpacity: 0
-    })
-    markersnotify.addLayer(polygon)
-    return polygon
-}
-
-function drawS2Cells() {
-    var position = map.getCenter()
-    if (mapData.s2cells === undefined) {
-        mapData.s2cells = {}
-    }
-    if (Store.get('showLevel12Cells')) {
-        var center12CellId = S2.keyToId(S2.latLngToKey(position.lat, position.lng, 12))
-        mapData.s2cells.s2_cell_id = center12CellId
-        processS2Cells(mapData.s2cells)
-    }
-    if (Store.get('showLevel14Cells')) {
-        var center14CellId = S2.keyToId(S2.latLngToKey(position.lat, position.lng, 14))
-        mapData.s2cells.s2_cell_id = center14CellId
-        processS2Cells(mapData.s2cells)
-    }
-    if (Store.get('showLevel17Cells')) {
-        var center17CellId = S2.keyToId(S2.latLngToKey(position.lat, position.lng, 17))
-        mapData.s2cells.s2_cell_id = center17CellId
-        processS2Cells(mapData.s2cells)
-    }
-    return mapData.s2cells
-}
-
-function destroyS2CellOverlay(level) {
-    if (level === 12) {
-        $.each(level12CellPolys, function (idx, polygon) {
-            markers.removeLayer(polygon)
-        })
-        level12CellPolys = []
-    }
-    if (level === 14) {
-        $.each(level14CellPolys, function (idx, polygon) {
-            markers.removeLayer(polygon)
-        })
-        level14CellPolys = []
-    }
-    if (level === 17) {
-        $.each(level17CellPolys, function (idx, polygon) {
-            markers.removeLayer(polygon)
-        })
-        level17CellPolys = []
-    }
 }
 
 function drawScanPath(points) { // eslint-disable-line no-unused-vars
@@ -5177,30 +5088,30 @@ $(function () {
         return buildSwitchChangeListener(mapData, ['s2cells'], 'showS2Cells').bind(this)()
     })
 
-    $('#s2-level12-switch').change(function () {
-        buildSwitchChangeListener(mapData, ['s2cells'], 'showLevel12Cells').bind(this)()
+    $('#s2-level13-switch').change(function () {
+        buildSwitchChangeListener(mapData, ['s2cells'], 'showLevel13Cells').bind(this)()
         if (this.checked) {
-            drawS2Cells()
+            showS2Cells(13, {color: 'red'})
         } else {
-            destroyS2CellOverlay(12)
+            console.log('Nothing to destroy need to build a function to do that')
         }
     })
 
     $('#s2-level14-switch').change(function () {
         buildSwitchChangeListener(mapData, ['s2cells'], 'showLevel14Cells').bind(this)()
         if (this.checked) {
-            drawS2Cells()
+            showS2Cells(14, {color: 'yellow'})
         } else {
-            destroyS2CellOverlay(14)
+            console.log('Nothing to destroy need to build a function to do that')
         }
     })
 
     $('#s2-level17-switch').change(function () {
         buildSwitchChangeListener(mapData, ['s2cells'], 'showLevel17Cells').bind(this)()
         if (this.checked) {
-            drawS2Cells()
+            showS2Cells(17, {color: 'blue'})
         } else {
-            destroyS2CellOverlay(17)
+            console.log('Nothing to destroy need to build a function to do that')
         }
     })
 

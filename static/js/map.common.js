@@ -955,7 +955,7 @@ var StoreOptions = {
             default: enableS2Cells,
             type: StoreTypes.Boolean
         },
-    'showLevel12Cells':
+    'showLevel13Cells':
         {
             default: false,
             type: StoreTypes.Boolean
