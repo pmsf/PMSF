@@ -699,5 +699,53 @@ class RDM extends Scanner
         }
         return $data;
     }
-}
 
+    public function get_spawnpoints($swLat, $swLng, $neLat, $neLng, $tstamp = 0, $oSwLat = 0, $oSwLng = 0, $oNeLat = 0, $oNeLng = 0)
+    {
+        $conds = array();
+        $params = array();
+        $conds[] = "lat > :swLat AND lon > :swLng AND lat < :neLat AND lon < :neLng";
+        $params[':swLat'] = $swLat;
+        $params[':swLng'] = $swLng;
+        $params[':neLat'] = $neLat;
+        $params[':neLng'] = $neLng;
+        if ($oSwLat != 0) {
+            $conds[] = "NOT (lat > :oswLat AND lon > :oswLng AND lat < :oneLat AND lon < :oneLng)";
+            $params[':oswLat'] = $oSwLat;
+            $params[':oswLng'] = $oSwLng;
+            $params[':oneLat'] = $oNeLat;
+            $params[':oneLng'] = $oNeLng;
+        }
+        if ($tstamp > 0) {
+            $conds[] = "updated > :lastUpdated";
+            $params[':lastUpdated'] = $tstamp;
+        }
+        return $this->query_spawnpoints($conds, $params);
+    }
+
+    private function query_spawnpoints($conds, $params)
+    {
+        global $db;
+        $query = "SELECT lat AS latitude,
+        lon AS longitude,
+        id AS spawnpoint_id
+        FROM spawnpoint
+        WHERE :conditions";
+        $query = str_replace(":conditions", join(" AND ", $conds), $query);
+        $spawnpoints = $db->query($query, $params)->fetchAll(\PDO::FETCH_ASSOC);
+        $data = array();
+        $i = 0;
+        foreach ($spawnpoints as $spawnpoint) {
+            $spawnpoint["latitude"] = floatval($spawnpoint["latitude"]);
+            $spawnpoint["longitude"] = floatval($spawnpoint["longitude"]);
+            //$spawnpoint["time"] = intval($spawnpoint["despawn_time"]);
+            //$spawnpoint["duration"] = intval($spawnpoint["duration"]);
+            $spawnpoint["time"] = !empty($spawnpoint["despawn_time"]) ? $spawnpoint["despawn_time"] : null;
+            $spawnpoint["duration"] = !empty($spawnpoint["duration"]) ? $spawnpoint["duration"] : null;
+            $data[] = $spawnpoint;
+            unset($spawnpoints[$i]);
+            $i++;
+        }
+        return $data;
+    }
+}
