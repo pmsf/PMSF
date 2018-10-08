@@ -149,7 +149,11 @@
     "noConvertPortal": true,
     "noToggleExGyms": true,
     "noPortals": false,
-    "enableS2cells": true,
+    "noS2Cells": true,
+    "enableS2Cells": true,
+    "enableLevel13Cells": true,
+    "enableLevel14Cells": true,
+    "enableLevel17Cells": true,
     "copyrightSafe": true
   }
 }

@@ -440,11 +440,11 @@ function initSidebar() {
     $('#nests-switch').prop('checked', Store.get('showNests'))
     $('#communities-switch').prop('checked', Store.get('showCommunities'))
     $('#portals-switch').prop('checked', Store.get('showPortals'))
-    $('#s2-switch').prop('checked', Store.get('showS2Cells'))
-    $('#s2-switch-wrapper').toggle(Store.get('showS2Cells'))
-    $('#s2-level13-switch').prop('checked', Store.get('showLevel13Cells'))
-    $('#s2-level14-switch').prop('checked', Store.get('showLevel14Cells'))
-    $('#s2-level17-switch').prop('checked', Store.get('showLevel17Cells'))
+    $('#s2-switch').prop('checked', Store.get('showCells'))
+    $('#s2-switch-wrapper').toggle(Store.get('showCells'))
+    $('#s2-level13-switch').prop('checked', Store.get('showExCells'))
+    $('#s2-level14-switch').prop('checked', Store.get('showGymCells'))
+    $('#s2-level17-switch').prop('checked', Store.get('showStopCells'))
     $('#new-portals-only-switch').val(Store.get('showNewPortalsOnly'))
     $('#new-portals-only-wrapper').toggle(Store.get('showPortals'))
     $('#gym-sidebar-switch').prop('checked', Store.get('useGymSidebar'))
@@ -3626,6 +3626,15 @@ function updateMap() {
         timestamp = result.timestamp
         lastUpdateTime = Date.now()
         token = result.token
+        if (Store.get('showExCells')) {
+            showS2Cells(13, {color: 'red'})
+        }
+        if (Store.get('showGymCells')) {
+            showS2Cells(14, {color: 'brown'})
+        }
+        if (Store.get('showStopCells')) {
+            showS2Cells(17, {color: 'blue'})
+        }
     })
 }
 
@@ -5115,11 +5124,11 @@ $(function () {
         } else {
             wrapper.hide(options)
         }
-        return buildSwitchChangeListener(mapData, ['s2cells'], 'showS2Cells').bind(this)()
+        return buildSwitchChangeListener(mapData, ['s2cells'], 'showCells').bind(this)()
     })
 
     $('#s2-level13-switch').change(function () {
-        buildSwitchChangeListener(mapData, ['s2cells'], 'showLevel13Cells').bind(this)()
+        Store.set('showExCells', this.checked)
         if (this.checked) {
             showS2Cells(13, {color: 'red'})
         } else {
@@ -5128,16 +5137,16 @@ $(function () {
     })
 
     $('#s2-level14-switch').change(function () {
-        buildSwitchChangeListener(mapData, ['s2cells'], 'showLevel14Cells').bind(this)()
+        Store.set('showGymCells', this.checked)
         if (this.checked) {
-            showS2Cells(14, {color: 'yellow'})
+            showS2Cells(14, {color: 'brown'})
         } else {
             console.log('Nothing to destroy need to build a function to do that')
         }
     })
 
     $('#s2-level17-switch').change(function () {
-        buildSwitchChangeListener(mapData, ['s2cells'], 'showLevel17Cells').bind(this)()
+        Store.set('showStopCells', this.checked)
         if (this.checked) {
             showS2Cells(17, {color: 'blue'})
         } else {
