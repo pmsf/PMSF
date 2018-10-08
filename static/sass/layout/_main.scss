@@ -83,6 +83,14 @@ html, body {
   width: 26px;
   line-height: 26px;
   height: 26px;
+  background: #f9f5f5;
+  border: 1px solid #b3adad;
+}
+.map-toggle-button:hover{
+  background: white;
+}
+i.fa.fa-expand {
+    color: black;
 }
 #reward-search-results.search-results{
   .search-result{

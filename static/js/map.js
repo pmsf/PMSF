@@ -800,7 +800,7 @@ function gymLabel(item) {
         }
     }
     if (manualRaids) {
-        raidStr += '<div class="raid-container">' + i8ln('Add raid') + '<i class="fa fa-binoculars submit-raid" onclick="openRaidModal(event);" data-id="' + item['gym_id'] + '"></i>' +
+        raidStr += '<div class="raid-container">' + i8ln('Add raid ') + '<i class="fa fa-binoculars submit-raid" onclick="openRaidModal(event);" data-id="' + item['gym_id'] + '"></i>' +
             '</div>'
     }
     if (!noDeleteGyms) {
@@ -811,7 +811,7 @@ function gymLabel(item) {
     }
 
     var park = ''
-    if ((item['park'] !== 'None' && item['park'] !== undefined && item['park']) && (noParkInfo === false)) {
+    if ((item['park'] !== '0' && item['park'] !== 'None' && item['park'] !== undefined && item['park']) && (noParkInfo === false)) {
         if (item['park'] === 1) {
             // RM only stores boolean, so just call it "Park Gym"
             park = i8ln('Park Gym')
@@ -4085,7 +4085,7 @@ function showGymDetails(id) { // eslint-disable-line no-unused-vars
         }
 
         var park = ''
-        if (((result['park'] !== 'None' && result['park'] !== undefined && result['park']) && (noParkInfo === false))) {
+        if (((result['park'] !== '0' && result['park'] !== 'None' && result['park'] !== undefined && result['park']) && (noParkInfo === false))) {
             if (result['park'] === 1) {
                 // RM only stores boolean, so just call it "Park Gym"
                 park = i8ln('Park Gym')
@@ -4318,9 +4318,6 @@ function showGymDetails(id) { // eslint-disable-line no-unused-vars
                 'Gym Leader:<br>' +
                 '<i class="pokemon-sprite-large n' + result.guard_pokemon_id + '"></i><br>' +
                 '<b class="team-' + result.team_id + '-text">' + result.guard_pokemon_name + '</b>' +
-                '<p style="font-size: .75em margin: 5px">' +
-                'No additional gym information is available for this gym. Make sure you are collecting detailed gym info. If you have detailed gym info collection running, this gym\'s Pokemon information may be out of date.' +
-                '</p>' +
                 '</center>'
         }
 
