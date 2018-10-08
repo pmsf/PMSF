@@ -148,7 +148,9 @@ var weatherMarkers = []
 var weatherColors
 
 var S2
-
+var exLayerGroup = new L.LayerGroup()
+var gymLayerGroup = new L.LayerGroup()
+var stopLayerGroup = new L.LayerGroup()
 /*
  text place holders:
  <pkm> - pokemon name
@@ -254,7 +256,8 @@ function initMap() { // eslint-disable-line no-unused-vars
         zoom: zoom == null ? Store.get('zoomLevel') : zoom,
         minZoom: minZoom,
         maxZoom: maxZoom,
-        zoomControl: false
+        zoomControl: false,
+        layers: [exLayerGroup, gymLayerGroup, stopLayerGroup]
     })
 
     setTileLayer(Store.get('map_style'))
@@ -319,6 +322,7 @@ function initMap() { // eslint-disable-line no-unused-vars
     }
 
     updateWeatherOverlay()
+    updateS2Overlay()
 
     map.on('click', function (e) {
         if ($('.submit-on-off-button').hasClass('on')) {
@@ -416,7 +420,13 @@ function showS2Cells(level, style) {
         const vertices = cell.getCornerLatLngs()
         const poly = L.polygon(vertices,
             Object.assign({color: 'blue', opacity: 0.3, weight: 2, fillOpacity: 0.0}, style))
-        poly.addTo(map)
+        if (cell.level === 13) {
+            exLayerGroup.addLayer(poly)
+        } else if (cell.level === 14) {
+            gymLayerGroup.addLayer(poly)
+        } else if (cell.level === 17) {
+            stopLayerGroup.addLayer(poly)
+        }
     }
 
     // add cells spiraling outward
@@ -3626,15 +3636,6 @@ function updateMap() {
         timestamp = result.timestamp
         lastUpdateTime = Date.now()
         token = result.token
-        if (Store.get('showExCells')) {
-            showS2Cells(13, {color: 'red'})
-        }
-        if (Store.get('showGymCells')) {
-            showS2Cells(14, {color: 'brown'})
-        }
-        if (Store.get('showStopCells')) {
-            showS2Cells(17, {color: 'blue'})
-        }
     })
 }
 
@@ -3650,6 +3651,18 @@ function updateWeatherOverlay() {
             }
             lastWeatherUpdateTime = Date.now()
         })
+    }
+}
+
+function updateS2Overlay() {
+    if (Store.get('showExCells')) {
+        showS2Cells(13, {color: 'red'})
+    }
+    if (Store.get('showGymCells')) {
+        showS2Cells(14, {color: 'brown'})
+    }
+    if (Store.get('showStopCells')) {
+        showS2Cells(17, {color: 'blue'})
     }
 }
 
@@ -5132,7 +5145,7 @@ $(function () {
         if (this.checked) {
             showS2Cells(13, {color: 'red'})
         } else {
-            console.log('Nothing to destroy need to build a function to do that')
+            exLayerGroup.clearLayers()
         }
     })
 
@@ -5141,7 +5154,7 @@ $(function () {
         if (this.checked) {
             showS2Cells(14, {color: 'brown'})
         } else {
-            console.log('Nothing to destroy need to build a function to do that')
+            gymLayerGroup.clearLayers()
         }
     })
 
@@ -5150,7 +5163,7 @@ $(function () {
         if (this.checked) {
             showS2Cells(17, {color: 'blue'})
         } else {
-            console.log('Nothing to destroy need to build a function to do that')
+            stopLayerGroup.clearLayers()
         }
     })
 
