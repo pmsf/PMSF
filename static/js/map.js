@@ -142,6 +142,7 @@ var genderType = ['♂', '♀', '⚲']
 var forms = ['unset', 'A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N', 'O', 'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z', '!', '?', i8ln('Normal'), i8ln('Sunny'), i8ln('Rainy'), i8ln('Snowy'), i8ln('Normal'), i8ln('Attack'), i8ln('Defense'), i8ln('Speed')]
 var cpMultiplier = [0.094, 0.16639787, 0.21573247, 0.25572005, 0.29024988, 0.3210876, 0.34921268, 0.37523559, 0.39956728, 0.42250001, 0.44310755, 0.46279839, 0.48168495, 0.49985844, 0.51739395, 0.53435433, 0.55079269, 0.56675452, 0.58227891, 0.59740001, 0.61215729, 0.62656713, 0.64065295, 0.65443563, 0.667934, 0.68116492, 0.69414365, 0.70688421, 0.71939909, 0.7317, 0.73776948, 0.74378943, 0.74976104, 0.75568551, 0.76156384, 0.76739717, 0.7731865, 0.77893275, 0.7846369, 0.79030001]
 
+var weatherLayerGroup = new L.LayerGroup()
 var weatherArray = []
 var weatherPolys = []
 var weatherMarkers = []
@@ -257,7 +258,7 @@ function initMap() { // eslint-disable-line no-unused-vars
         minZoom: minZoom,
         maxZoom: maxZoom,
         zoomControl: false,
-        layers: [exLayerGroup, gymLayerGroup, stopLayerGroup]
+        layers: [weatherLayerGroup, exLayerGroup, gymLayerGroup, stopLayerGroup]
     })
 
     setTileLayer(Store.get('map_style'))
@@ -3691,16 +3692,14 @@ function drawWeatherOverlay(weather) {
             var marker = L.marker([center.lat, center.lng], {icon})
             weatherPolys.push(poly)
             weatherMarkers.push(marker)
-            poly.addTo(map)
+            weatherLayerGroup.addLayer(poly)
             weatherArray = []
         })
     }
 }
 
 function destroyWeatherOverlay() {
-    $.each(weatherPolys, function (idx, poly) {
-        markers.removeLayer(poly)
-    })
+    weatherLayerGroup.clearLayers()
     $.each(weatherMarkers, function (idx, marker) {
         markers.removeLayer(marker)
     })
