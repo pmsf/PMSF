@@ -149,7 +149,7 @@ var weatherMarkers = []
 var weatherColors
 
 var S2
-var s2Cells = []
+var s2Center = []
 var exLayerGroup = new L.LayerGroup()
 var gymLayerGroup = new L.LayerGroup()
 var stopLayerGroup = new L.LayerGroup()
@@ -324,7 +324,7 @@ function initMap() { // eslint-disable-line no-unused-vars
     }
 
     updateWeatherOverlay()
-    updateS2Overlay()
+    setupS2Overlay()
 
     map.on('click', function (e) {
         if ($('.submit-on-off-button').hasClass('on')) {
@@ -3576,7 +3576,7 @@ function updateMap() {
                 var currentCell = $('#currentWeather').data('current-cell')
                 if ((currentWeather) && (currentCell !== currentWeather.s2_cell_id)) {
                     $('#currentWeather').data('current-cell', currentWeather.s2_cell_id)
-                    $('#currentWeather').html('<img src="static/weather/' + currentWeather.condition + '.png" alt="">')
+                    $('#currentWeather').html('<img src="static/weather/' + currentWeather.condition + '.png" alt="" height="55px"">')
                 } else if (!currentWeather) {
                     $('#currentWeather').data('current-cell', '')
                     $('#currentWeather').html('')
@@ -3658,25 +3658,79 @@ function updateWeatherOverlay() {
     }
 }
 
+function getPointDistance(origin, destination) {
+    // return distance in meters
+    var lon1 = toRadian(origin.lng),
+        lat1 = toRadian(origin.lat),
+        lon2 = toRadian(destination.lng),
+        lat2 = toRadian(destination.lat);
+
+    var deltaLat = lat2 - lat1;
+    var deltaLon = lon2 - lon1;
+
+    var a = Math.pow(Math.sin(deltaLat/2), 2) + Math.cos(lat1) * Math.cos(lat2) * Math.pow(Math.sin(deltaLon/2), 2);
+    var c = 2 * Math.asin(Math.sqrt(a));
+    var EARTH_RADIUS = 6371;
+    return c * EARTH_RADIUS * 1000;
+}
+function toRadian(degree) {
+    return degree*Math.PI/180;
+}
+
 function updateS2Overlay() {
-    const bounds = map.getBounds()
-    if (Store.get('showExCells') && (map.getZoom() > 11)) {
-        showS2Cells(13, {color: 'red'}, bounds)
-    } else if (Store.get('showExCells') && (map.getZoom() < 11)) {
-        exLayerGroup.clearLayers()
-        toastr['error'](i8ln('This is to much zoom.'), i8ln('EX cells are currently hidden'))
+    var position = map.getCenter()
+    var center = L.latLng(position.lat, position.lng)
+
+    if (s2Center.center === undefined) {
+        s2Center.center = center
     }
-    if (Store.get('showGymCells') && (map.getZoom() > 13)) {
-        showS2Cells(14, {color: 'brown'}, bounds)
-    } else if (Store.get('showGymCells') && (map.getZoom() < 13)) {
-        gymLayerGroup.clearLayers()
-        toastr['error'](i8ln('This is to much zoom.'), i8ln('Gym cells are currently hidden'))
+
+    var distance = getPointDistance(s2Center.center, center)
+
+    if ((Store.get('showCells')) && distance >= 100 ) {
+        if (Store.get('showExCells') && (map.getZoom() > 12)) {
+            showS2Cells(13, {color: 'red'})
+        } else if (Store.get('showExCells') && (map.getZoom() < 12)) {
+            exLayerGroup.clearLayers()
+            toastr['error'](i8ln('This is to much zoom.'), i8ln('EX cells are currently hidden'))
+        }
+        if (Store.get('showGymCells') && (map.getZoom() > 13)) {
+            showS2Cells(14, {color: 'green'})
+        } else if (Store.get('showGymCells') && (map.getZoom() < 13)) {
+            gymLayerGroup.clearLayers()
+            toastr['error'](i8ln('This is to much zoom.'), i8ln('Gym cells are currently hidden'))
+        }
+        if (Store.get('showStopCells') && (map.getZoom() > 16)) {
+            showS2Cells(17, {color: 'blue'})
+        } else if (Store.get('showStopCells') && (map.getZoom() < 16)) {
+            stopLayerGroup.clearLayers()
+            toastr['error'](i8ln('This is to much zoom.'), i8ln('Pokestop cells are currently hidden'))
+        }
+        s2Center = []
+        s2Center.push(center)
     }
-    if (Store.get('showStopCells') && (map.getZoom() > 16)) {
-        showS2Cells(17, {color: 'blue'}, bounds)
-    } else if (Store.get('showStopCells') && (map.getZoom() < 16)) {
-        stopLayerGroup.clearLayers()
-        toastr['error'](i8ln('This is to much zoom.'), i8ln('Pokestop cells are currently hidden'))
+}
+
+function setupS2Overlay() {
+    if ((Store.get('showCells'))) {
+        if (Store.get('showExCells') && (map.getZoom() > 12)) {
+            showS2Cells(13, {color: 'red'})
+        } else if (Store.get('showExCells') && (map.getZoom() < 12)) {
+            exLayerGroup.clearLayers()
+            toastr['error'](i8ln('This is to much zoom.'), i8ln('EX cells are currently hidden'))
+        }
+        if (Store.get('showGymCells') && (map.getZoom() > 13)) {
+            showS2Cells(14, {color: 'green'})
+        } else if (Store.get('showGymCells') && (map.getZoom() < 13)) {
+            gymLayerGroup.clearLayers()
+            toastr['error'](i8ln('This is to much zoom.'), i8ln('Gym cells are currently hidden'))
+        }
+        if (Store.get('showStopCells') && (map.getZoom() > 16)) {
+            showS2Cells(17, {color: 'blue'})
+        } else if (Store.get('showStopCells') && (map.getZoom() < 16)) {
+            stopLayerGroup.clearLayers()
+            toastr['error'](i8ln('This is to much zoom.'), i8ln('Pokestop cells are currently hidden'))
+        }
     }
 }
 
@@ -5164,7 +5218,7 @@ $(function () {
     $('#s2-level14-switch').change(function () {
         Store.set('showGymCells', this.checked)
         if (this.checked) {
-            showS2Cells(14, {color: 'brown'})
+            showS2Cells(14, {color: 'green'})
         } else {
             gymLayerGroup.clearLayers()
         }
