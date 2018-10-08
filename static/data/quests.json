@@ -47,6 +47,10 @@
     "cat": "Catch",
     "name": "Catch 5 Water-type Pokémon"
   },
+  "125": {
+    "cat": "Catch",
+    "name": "Use 5 Pinap Berries while catching Pokémon"
+  },
   "255": {
     "cat": "Evolve",
     "name": "Evolve a Pokémon"
@@ -74,6 +78,10 @@
   "376": {
     "cat": "Throw",
     "name": "Make 3 Great Throws"
+  },
+  "377": {
+    "cat": "Throw",
+    "name": "Make 3 Great Curveball Throws"
   },
   "380": {
     "cat": "Throw",
