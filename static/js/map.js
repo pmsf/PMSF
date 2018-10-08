@@ -149,6 +149,7 @@ var weatherMarkers = []
 var weatherColors
 
 var S2
+var s2Cells = []
 var exLayerGroup = new L.LayerGroup()
 var gymLayerGroup = new L.LayerGroup()
 var stopLayerGroup = new L.LayerGroup()
@@ -415,7 +416,7 @@ function createLocationMarker() {
 function showS2Cells(level, style) {
     const bounds = map.getBounds()
     const size = L.CRS.Earth.distance(bounds.getSouthWest(), bounds.getNorthEast()) / 10000 + 1 | 0
-    const count = 2 ** level * size >> 12
+    const count = 2 ** level * size >> 11
 
     function addPoly(cell) {
         const vertices = cell.getCornerLatLngs()
@@ -3608,6 +3609,8 @@ function updateMap() {
         updatePokestops()
         updatePortals()
 
+        updateS2Overlay()
+
         if ($('#stats').hasClass('visible')) {
             countMarkers(map)
         }
@@ -3656,14 +3659,24 @@ function updateWeatherOverlay() {
 }
 
 function updateS2Overlay() {
-    if (Store.get('showExCells')) {
-        showS2Cells(13, {color: 'red'})
+    const bounds = map.getBounds()
+    if (Store.get('showExCells') && (map.getZoom() > 11)) {
+        showS2Cells(13, {color: 'red'}, bounds)
+    } else if (Store.get('showExCells') && (map.getZoom() < 11)) {
+        exLayerGroup.clearLayers()
+        toastr['error'](i8ln('This is to much zoom.'), i8ln('EX cells are currently hidden'))
     }
-    if (Store.get('showGymCells')) {
-        showS2Cells(14, {color: 'brown'})
+    if (Store.get('showGymCells') && (map.getZoom() > 13)) {
+        showS2Cells(14, {color: 'brown'}, bounds)
+    } else if (Store.get('showGymCells') && (map.getZoom() < 13)) {
+        gymLayerGroup.clearLayers()
+        toastr['error'](i8ln('This is to much zoom.'), i8ln('Gym cells are currently hidden'))
     }
-    if (Store.get('showStopCells')) {
-        showS2Cells(17, {color: 'blue'})
+    if (Store.get('showStopCells') && (map.getZoom() > 16)) {
+        showS2Cells(17, {color: 'blue'}, bounds)
+    } else if (Store.get('showStopCells') && (map.getZoom() < 16)) {
+        stopLayerGroup.clearLayers()
+        toastr['error'](i8ln('This is to much zoom.'), i8ln('Pokestop cells are currently hidden'))
     }
 }
 
