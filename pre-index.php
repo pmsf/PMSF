@@ -598,9 +598,9 @@ if ( $blockIframe ) {
             }
             ?>
             <?php
-            if ( ! $noPortals ) {
+            if ( ! $noPortals || ! $noS2Cells ) {
                 ?>
-                <h3><?php echo i8ln( 'Ingress' ); ?></h3>
+                <h3><?php echo i8ln( 'Ingress / S2Cell' ); ?></h3>
 		<div>
                 <?php
                 if ( ! $noPortals ) {
