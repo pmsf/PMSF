@@ -950,6 +950,26 @@ var StoreOptions = {
             default: enableNewPortals,
             type: StoreTypes.Number
         },
+    'showCells':
+        {
+            default: enableS2Cells,
+            type: StoreTypes.Boolean
+        },
+    'showExCells':
+        {
+            default: enableLevel13Cells,
+            type: StoreTypes.Boolean
+        },
+    'showGymCells':
+        {
+            default: enableLevel14Cells,
+            type: StoreTypes.Boolean
+        },
+    'showStopCells':
+        {
+            default: enableLevel17Cells,
+            type: StoreTypes.Boolean
+        },
     'useGymSidebar':
         {
             default: gymSidebar,

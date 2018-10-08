@@ -622,6 +622,55 @@ if ( $blockIframe ) {
                     </select>
                 </div>';
 		} ?>
+                <?php
+                if ( ! $noS2Cells ) {
+                    echo '<div class="form-control switch-container">
+                    <h3>' . i8ln( 'Show S2 Cells' ) . '</h3>
+                    <div class="onoffswitch">
+                        <input id="s2-switch" type="checkbox" name="s2-switch"
+                               class="onoffswitch-checkbox" checked>
+                        <label class="onoffswitch-label" for="s2-switch">
+                            <span class="switch-label" data-on="On" data-off="Off"></span>
+                            <span class="switch-handle"></span>
+                        </label>
+                    </div>
+		</div>
+                <div class="form-control switch-container" id = "s2-switch-wrapper" style = "display:none">
+                    <div class="form-control switch-container">
+                        <h3>' . i8ln( 'EX trigger Cells' ) . '</h3>
+                        <div class="onoffswitch">
+                            <input id="s2-level13-switch" type="checkbox" name="s2-level13-switch"
+                                   class="onoffswitch-checkbox" checked>
+                            <label class="onoffswitch-label" for="s2-level13-switch">
+                                <span class="switch-label" data-on="On" data-off="Off"></span>
+                                <span class="switch-handle"></span>
+                            </label>
+			</div>
+                    </div>
+                    <div class="form-control switch-container">
+                        <h3>' . i8ln( 'Gym placement Cells' ) . '</h3>
+                        <div class="onoffswitch">
+                            <input id="s2-level14-switch" type="checkbox" name="s2-level14-switch"
+                                   class="onoffswitch-checkbox" checked>
+                            <label class="onoffswitch-label" for="s2-level14-switch">
+                                <span class="switch-label" data-on="On" data-off="Off"></span>
+                                <span class="switch-handle"></span>
+                            </label>
+                        </div>
+                    </div>
+                    <div class="form-control switch-container">
+                        <h3>' . i8ln( 'Pokestop placement Cells' ) . '</h3>
+                        <div class="onoffswitch">
+                            <input id="s2-level17-switch" type="checkbox" name="s2-level17-switch"
+                                   class="onoffswitch-checkbox" checked>
+                            <label class="onoffswitch-label" for="s2-level17-switch">
+                                <span class="switch-label" data-on="On" data-off="Off"></span>
+                                <span class="switch-handle"></span>
+                            </label>
+                        </div>
+                    </div>
+                </div>';
+		} ?>
                 </div>
                 <?php
             }
@@ -1555,7 +1604,12 @@ if ( $blockIframe ) {
     var noWhatsappLink = <?php echo $noWhatsappLink === true ? 'true' : 'false' ?>;
     var enablePortals = <?php echo $noPortals ? 'false' : $enablePortals ?>;
     var noPortals = <?php echo $noPortals === true ? 'true' : 'false' ?>;
+    var enableS2Cells = <?php echo $noS2Cells ? 'false' : $enableS2Cells ?>;
+    var enableLevel13Cells = <?php echo $noS2Cells ? 'false' : $enableLevel13Cells ?>;
+    var enableLevel14Cells = <?php echo $noS2Cells ? 'false' : $enableLevel14Cells ?>;
+    var enableLevel17Cells = <?php echo $noS2Cells ? 'false' : $enableLevel17Cells ?>;
     var noDeletePortal = <?php echo $noDeletePortal === true ? 'true' : 'false' ?>;
+    var noConvertPortal = <?php echo $noConvertPortal === true ? 'true' : 'false' ?>;
     var markPortalsAsNew = <?php echo $markPortalsAsNew ?>;
     var copyrightSafe = <?php echo $copyrightSafe === true ? 'true' : 'false' ?>;
 </script>

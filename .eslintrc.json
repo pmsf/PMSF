@@ -146,8 +146,14 @@
     "noConvertPokestops": false,
     "enablePortals": true,
     "noDeletePortal": true,
+    "noConvertPortal": true,
     "noToggleExGyms": true,
     "noPortals": false,
+    "noS2Cells": true,
+    "enableS2Cells": true,
+    "enableLevel13Cells": true,
+    "enableLevel14Cells": true,
+    "enableLevel17Cells": true,
     "copyrightSafe": true
   }
 }
