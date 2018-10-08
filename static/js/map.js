@@ -149,7 +149,6 @@ var weatherMarkers = []
 var weatherColors
 
 var S2
-var s2Center = []
 var exLayerGroup = new L.LayerGroup()
 var gymLayerGroup = new L.LayerGroup()
 var stopLayerGroup = new L.LayerGroup()
@@ -326,7 +325,7 @@ function initMap() { // eslint-disable-line no-unused-vars
     updateWeatherOverlay()
     updateS2Overlay()
 
-    map.on('moveend', function() {
+    map.on('moveend', function () {
         updateS2Overlay()
     })
 
@@ -3658,25 +3657,6 @@ function updateWeatherOverlay() {
             lastWeatherUpdateTime = Date.now()
         })
     }
-}
-
-function getPointDistance(origin, destination) {
-    // return distance in meters
-    var lon1 = toRadian(origin.lng),
-        lat1 = toRadian(origin.lat),
-        lon2 = toRadian(destination.lng),
-        lat2 = toRadian(destination.lat);
-
-    var deltaLat = lat2 - lat1;
-    var deltaLon = lon2 - lon1;
-
-    var a = Math.pow(Math.sin(deltaLat/2), 2) + Math.cos(lat1) * Math.cos(lat2) * Math.pow(Math.sin(deltaLon/2), 2);
-    var c = 2 * Math.asin(Math.sqrt(a));
-    var EARTH_RADIUS = 6371;
-    return c * EARTH_RADIUS * 1000;
-}
-function toRadian(degree) {
-    return degree*Math.PI/180;
 }
 
 function updateS2Overlay() {
