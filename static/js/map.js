@@ -302,6 +302,8 @@ function initMap() { // eslint-disable-line no-unused-vars
         }
     })
 
+    map.createPane('portals')
+    map.getPane('portals').style.zIndex = 450;
     createMyLocationButton()
     initSidebar()
 
@@ -1742,7 +1744,8 @@ function setupPortalMarker(item) {
             radius: 10,
             fillOpacity: 0.4,
             fillColor: '#f00',
-            weight: 1
+            weight: 1,
+            pane: 'portals'
         }
     } else if (item.imported > yesterday) {
         circle = {
@@ -1750,7 +1753,8 @@ function setupPortalMarker(item) {
             radius: 10,
             fillOpacity: 0.4,
             fillColor: '#9f3',
-            weight: 1
+            weight: 1,
+            pane: 'portals'
         }
     } else {
         circle = {
@@ -1758,7 +1762,8 @@ function setupPortalMarker(item) {
             radius: 10,
             fillOpacity: 0.4,
             fillColor: '#00f',
-            weight: 1
+            weight: 1,
+            pane: 'portals'
         }
     }
     var marker = L.circleMarker([item['lat'], item['lon']], circle).bindPopup(portalLabel(item), {autoPan: false, closeOnClick: false, autoClose: false})
