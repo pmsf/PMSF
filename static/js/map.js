@@ -5185,8 +5185,20 @@ $(function () {
         var wrapper = $('#s2-switch-wrapper')
         if (this.checked) {
             wrapper.show(options)
+            if (Store.get('showExCells')) {
+                showS2Cells(13, {color: 'red'})
+            }
+            if (Store.get('showGymCells')) {
+                showS2Cells(14, {color: 'green'})
+            }
+            if (Store.get('showStopCells')) {
+                showS2Cells(17, {color: 'blue'})
+            }
         } else {
             wrapper.hide(options)
+            exLayerGroup.clearLayers()
+            gymLayerGroup.clearLayers()
+            stopLayerGroup.clearLayers()
         }
         return buildSwitchChangeListener(mapData, ['s2cells'], 'showCells').bind(this)()
     })
