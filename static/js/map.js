@@ -303,7 +303,7 @@ function initMap() { // eslint-disable-line no-unused-vars
     })
 
     map.createPane('portals')
-    map.getPane('portals').style.zIndex = 450;
+    map.getPane('portals').style.zIndex = 450
     createMyLocationButton()
     initSidebar()
 
@@ -842,7 +842,7 @@ function gymLabel(item) {
     }
 
     var lastModifiedStr = getDateStr(lastModified) + ' ' + getTimeStr(lastModified)
-	
+
     var nameStr = (name ? '<div>' + name + '</div>' : '')
 
     var gymColor = ['0, 0, 0, .4', '74, 138, 202, .6', '240, 68, 58, .6', '254, 217, 40, .6']
@@ -4106,7 +4106,7 @@ function showGymDetails(id) { // eslint-disable-line no-unused-vars
                 i8ln('Last Scanned') + ' : ' + getDateStr(result.last_scanned) + ' ' + getTimeStr(result.last_scanned) +
                 '</div>'
         }
-		
+
         var pokemon = result.pokemon !== undefined ? result.pokemon : []
         var freeSlots = result.slots_available
         var gymLevelStr = ''
