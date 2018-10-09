@@ -722,6 +722,8 @@ function gymLabel(item) {
     var teamId = item['team_id']
     var latitude = item['latitude']
     var longitude = item['longitude']
+    var lastScanned = item['last_scanned']
+    var lastModified = item['last_modified']
     var name = item['name']
     var url = item['url']
     var members = item['pokemon']
@@ -800,7 +802,7 @@ function gymLabel(item) {
         }
     }
     if (manualRaids) {
-        raidStr += '<div class="raid-container">' + i8ln('Add raid') + '<i class="fa fa-binoculars submit-raid" onclick="openRaidModal(event);" data-id="' + item['gym_id'] + '"></i>' +
+        raidStr += '<div class="raid-container">' + i8ln('Add raid ') + '<i class="fa fa-binoculars submit-raid" onclick="openRaidModal(event);" data-id="' + item['gym_id'] + '"></i>' +
             '</div>'
     }
     if (!noDeleteGyms) {
@@ -811,7 +813,7 @@ function gymLabel(item) {
     }
 
     var park = ''
-    if ((item['park'] !== 'None' && item['park'] !== undefined && item['park']) && (noParkInfo === false)) {
+    if ((item['park'] !== '0' && item['park'] !== 'None' && item['park'] !== undefined && item['park']) && (noParkInfo === false)) {
         if (item['park'] === 1) {
             // RM only stores boolean, so just call it "Park Gym"
             park = i8ln('Park Gym')
@@ -829,6 +831,16 @@ function gymLabel(item) {
             '</span>'
     }
 
+    var lastScannedStr = ''
+    if (lastScanned != null) {
+        lastScannedStr =
+            '<div>' +
+            i8ln('Last Scanned') + ' : ' + getDateStr(lastScanned) + ' ' + getTimeStr(lastScanned) +
+            '</div>'
+    }
+
+    var lastModifiedStr = getDateStr(lastModified) + ' ' + getTimeStr(lastModified)
+	
     var nameStr = (name ? '<div>' + name + '</div>' : '')
 
     var gymColor = ['0, 0, 0, .4', '74, 138, 202, .6', '240, 68, 58, .6', '254, 217, 40, .6']
@@ -853,6 +865,13 @@ function gymLabel(item) {
             '</div>' +
             '<div>' +
             i8ln('Location') + ': <a href="javascript:void(0);" onclick="javascript:openMapDirections(' + latitude + ',' + longitude + ');" title="' + i8ln('View in Maps') + '">' + latitude.toFixed(6) + ' , ' + longitude.toFixed(7) + '</a> - <a href="./?lat=' + latitude + '&lon=' + longitude + '&zoom=16">Share link</a>' +
+            '</div>' +
+            '<div>' +
+
+            i8ln('Last Modified') + ' : ' + lastModifiedStr +
+            '</div>' +
+            '<div>' +
+            lastScannedStr +
             '</div>' +
             '</center>' +
             '</div>'
@@ -4074,6 +4093,15 @@ function showGymDetails(id) { // eslint-disable-line no-unused-vars
     })
 
     data.done(function (result) {
+        var lastModifiedStr = getDateStr(result.last_modified) + ' ' + getTimeStr(result.last_modified)
+        var lastScannedStr = ''
+        if (result.last_scanned != null) {
+            lastScannedStr =
+                '<div style="font-size: .7em">' +
+                i8ln('Last Scanned') + ' : ' + getDateStr(result.last_scanned) + ' ' + getTimeStr(result.last_scanned) +
+                '</div>'
+        }
+		
         var pokemon = result.pokemon !== undefined ? result.pokemon : []
         var freeSlots = result.slots_available
         var gymLevelStr = ''
@@ -4085,7 +4113,7 @@ function showGymDetails(id) { // eslint-disable-line no-unused-vars
         }
 
         var park = ''
-        if (((result['park'] !== 'None' && result['park'] !== undefined && result['park']) && (noParkInfo === false))) {
+        if (((result['park'] !== '0' && result['park'] !== 'None' && result['park'] !== undefined && result['park']) && (noParkInfo === false))) {
             if (result['park'] === 1) {
                 // RM only stores boolean, so just call it "Park Gym"
                 park = i8ln('Park Gym')
@@ -4214,6 +4242,10 @@ function showGymDetails(id) { // eslint-disable-line no-unused-vars
             '<div>' +
             park +
             '</div>' +
+            '<div style="font-size: .7em">' +
+            i8ln('Last Modified') + ' : ' + lastModifiedStr +
+            '</div>' +
+            lastScannedStr +
             '<div>' +
             '<a href=\'javascript:void(0)\' onclick=\'javascript:openMapDirections(' + result.latitude + ',' + result.longitude + ')\' title=\'' + i8ln('View in Maps') + '\'>' + i8ln('Get directions') + '</a> - <a href="./?lat=' + result.latitude + '&lon=' + result.longitude + '&zoom=16">Share link</a>' +
             '</div>' +
@@ -4318,9 +4350,6 @@ function showGymDetails(id) { // eslint-disable-line no-unused-vars
                 'Gym Leader:<br>' +
                 '<i class="pokemon-sprite-large n' + result.guard_pokemon_id + '"></i><br>' +
                 '<b class="team-' + result.team_id + '-text">' + result.guard_pokemon_name + '</b>' +
-                '<p style="font-size: .75em margin: 5px">' +
-                'No additional gym information is available for this gym. Make sure you are collecting detailed gym info. If you have detailed gym info collection running, this gym\'s Pokemon information may be out of date.' +
-                '</p>' +
                 '</center>'
         }
 

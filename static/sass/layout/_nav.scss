@@ -351,12 +351,13 @@
   }
 }
 li.place-result {
-  padding: 10px;
-  border: 1px solid #989696;
-  border-radius: 5px;
-  font-size: 13px;
-  cursor: pointer;
-  background-color: #f2f2f2;
+    padding: 5px;
+    border: 1px solid #989696;
+    border-top: none;
+    border-radius: 5px;
+    font-size: 13px;
+    cursor: pointer;
+    background-color: #f1efef;
 }
 form#search-places {
   margin-bottom: 0px;
