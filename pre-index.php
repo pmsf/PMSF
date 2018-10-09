@@ -1,4 +1,5 @@
 <?php
+ob_start();
 if ( ! file_exists( 'config/config.php' ) ) {
     http_response_code( 500 );
     die( "<h1>Config file missing</h1><p>Please ensure you have created your config file (<code>config/config.php</code>).</p>" );
@@ -1508,6 +1509,7 @@ if ( $blockIframe ) {
     var noPortals = <?php echo $noPortals === true ? 'true' : 'false' ?>;
     var noDeletePortal = <?php echo $noDeletePortal === true ? 'true' : 'false' ?>;
     var copyrightSafe = <?php echo $copyrightSafe === true ? 'true' : 'false' ?>;
+    ob_end_flush();
 </script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js"></script>
 <script src="static/dist/js/map.common.min.js"></script>

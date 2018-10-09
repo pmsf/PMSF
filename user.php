@@ -1,4 +1,5 @@
 <?php
+ob_start();
 
 include('config/config.php');
 ?>
@@ -456,6 +457,7 @@ include('config/config.php');
     } else {
         header("Location: .");
     }
+    ob_end_flush();
     ?>
 </div>
 </body>
