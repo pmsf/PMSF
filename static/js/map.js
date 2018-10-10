@@ -1239,7 +1239,7 @@ function customizePokemonMarker(marker, item, skipNotification) {
 
 function getGymMarkerIcon(item) {
     var park = item['park']
-    var level = item.raid_level
+    var level = 6 - item['slots_available']
     var raidForm = item['form']
     var formStr = ''
     if (raidForm <= 10 || raidForm == null) {
