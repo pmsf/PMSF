@@ -1236,7 +1236,9 @@ function customizePokemonMarker(marker, item, skipNotification) {
 
     addListeners(marker)
 }
-
+function getGymLevel(item) {
+    return 6 - item['slots_available']
+}
 function getGymMarkerIcon(item) {
     var park = item['park']
     var level = item.raid_level
@@ -1258,10 +1260,10 @@ function getGymMarkerIcon(item) {
     }
     var team = item.team_id
     var teamStr = ''
-    if (team === 0 || level === null) {
+    if (team === 0) {
         teamStr = gymTypes[item['team_id']]
     } else {
-        teamStr = gymTypes[item['team_id']] + '_' + level
+        teamStr = gymTypes[item['team_id']] + '_' + getGymLevel(item)
     }
     var exIcon = ''
     var fortMarker = ''
