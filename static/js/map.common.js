@@ -1255,7 +1255,7 @@ function getPokemonSprite(index, sprite, displayHeight, weather = 0) {
         iconUrl: monSpriteUrl,
         iconSize: scaledIconSize,
         iconAnchor: [scaledIconWidth, scaledIconHeight],
-        popupAnchor: [0, -40]
+        popupAnchor: [0, -50]
     })
     return pokemonIcon
 }
