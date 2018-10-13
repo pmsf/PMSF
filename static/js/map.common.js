@@ -1210,9 +1210,8 @@ function getPokemonSprite(index, sprite, displayHeight, weather = 0) {
     displayHeight = Math.max(displayHeight, 3)
     var scale = displayHeight / sprite.iconHeight
     // Crop icon just a tiny bit to avoid bleedover from neighbor
-    var scaledIconSize = (scale * (sprite.iconWidth + 50), scale * (sprite.iconHeight + 50))
-    var scaledIconWidth = (scale * (sprite.iconWidth + 50) / 2)
-    var scaledIconHeight = (scale * (sprite.iconHeight + 50))
+    var scaledIconSize = [scale * sprite.iconWidth, scale * sprite.iconHeight]
+    var scaledIconCenterOffset = [scale * sprite.iconWidth / 2, scale * sprite.iconHeight / 2]
     var encounterForm = ''
     var formStr = ''
     if (encounterForm == 0 || encounterForm == null) {
@@ -1220,7 +1219,7 @@ function getPokemonSprite(index, sprite, displayHeight, weather = 0) {
     } else {
         formStr = encounterForm
     }
-
+	
     var pokemonId = index + 1
     var pokemonIdStr = ''
     if (pokemonId <= 9) {
@@ -1254,15 +1253,14 @@ function getPokemonSprite(index, sprite, displayHeight, weather = 0) {
     var pokemonIcon = L.icon({
         iconUrl: monSpriteUrl,
         iconSize: scaledIconSize,
-        iconAnchor: [scaledIconWidth, scaledIconHeight],
-        popupAnchor: [0, -50]
+        iconAnchor: scaledIconCenterOffset,
+        popupAnchor: [0, -40]
     })
     return pokemonIcon
 }
 
 function setupPokemonMarker(item, map, isBounceDisabled) {
-// Scale icon size up with the map exponentially
-    var iconSize = 2 + (map.getZoom() - 3) * (map.getZoom() - 3) * 0.2 + Store.get('iconSizeModifier')
+    var iconSize = (12) * (12) * 0.2 + Store.get('iconSizeModifier')
     if (isNotifiedPokemon(item) === true) {
         iconSize += Store.get('iconNotifySizeModifier')
     }
