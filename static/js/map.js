@@ -697,7 +697,7 @@ function pokemonLabel(item) {
             '</div>'
     } else {
         contentstring += '<div>' +
-            i8ln('Disappears at') + ' ' + getTimeStr(disappearTime) +
+            i8ln('Aprox Despawn Time:') + ' ' + getTimeStr(disappearTime) +
             ' <span class="label-countdown" disappears-at="' + disappearTime + '">(00m00s)</span>' +
             '</div>'
     }
