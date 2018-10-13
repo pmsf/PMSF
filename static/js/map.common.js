@@ -1215,7 +1215,7 @@ function getPokemonSprite(index, sprite, displayHeight, weather = 0) {
     var scaledIconHeight = (scale * (sprite.iconHeight + 70))
     var encounterForm = ''
     var formStr = ''
-    if (encounterForm <= 10 || encounterForm == null) {
+    if (encounterForm == 0 || encounterForm == null) {
         formStr = '00'
     } else {
         formStr = encounterForm
