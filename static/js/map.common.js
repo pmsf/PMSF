@@ -1234,11 +1234,11 @@ function getPokemonSprite(index, sprite, displayHeight, weather = 0) {
     var weatherHtml = ''
     if (copyrightSafe === false) {
         if (weather === 0) {
-            monSpriteUrl = 'https://raw.githubusercontent.com/whitewillem/PogoAssets/master/pokemon_icons/pokemon_icon_' + pokemonIdStr + '_' + formStr + '.png'
+            monSpriteUrl = 'https://raw.githubusercontent.com/whitewillem/PogoAssets/resized/icons_large/pokemon_icon_' + pokemonIdStr + '_' + formStr + '.png'
         } else if (boostedMons[weather].indexOf(pokemonId) === -1) {
-            monSpriteUrl = 'https://raw.githubusercontent.com/whitewillem/PogoAssets/master/pokemon_icons/pokemon_icon_' + pokemonIdStr + '_' + formStr + '.png'
+            monSpriteUrl = 'https://raw.githubusercontent.com/whitewillem/PogoAssets/resized/icons_large/pokemon_icon_' + pokemonIdStr + '_' + formStr + '.png'
         } else {
-            monSpriteUrl = 'https://raw.githubusercontent.com/whitewillem/PogoAssets/master/pokemon_icons/pokemon_icon_' + pokemonIdStr + '_' + formStr + '.png'
+            monSpriteUrl = 'https://raw.githubusercontent.com/whitewillem/PogoAssets/resized/icons_large/pokemon_icon_' + pokemonIdStr + '_' + formStr + '.png'
             weatherHtml = '<img src="static/weather/' + weather + '.png" style="width:35px;height:auto;position:absolute;top:0px;right:0px;"/>'
         }
     } else {
