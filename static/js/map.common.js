@@ -1206,15 +1206,14 @@ var mapData = {
     portals: {}
 }
 
-function getPokemonSprite(index, sprite, displayHeight, weather = 0) {
+function getPokemonSprite(index, sprite, displayHeight, weather = 0, encounterForm = 0) {
     displayHeight = Math.max(displayHeight, 3)
     var scale = displayHeight / sprite.iconHeight
     // Crop icon just a tiny bit to avoid bleedover from neighbor
     var scaledIconSize = [scale * sprite.iconWidth, scale * sprite.iconHeight]
     var scaledIconCenterOffset = [scale * sprite.iconWidth / 2, scale * sprite.iconHeight / 2]
-    var encounterForm = ''
     var formStr = ''
-    if (encounterForm === '0' || encounterForm == null) {
+    if (encounterForm === '0' || encounterForm === null) {
         formStr = '00'
     } else {
         formStr = encounterForm
@@ -1265,7 +1264,7 @@ function setupPokemonMarker(item, map, isBounceDisabled) {
         iconSize += Store.get('iconNotifySizeModifier')
     }
     var pokemonIndex = item['pokemon_id'] - 1
-    var icon = getPokemonSprite(pokemonIndex, pokemonSprites, iconSize, item['weather_boosted_condition'])
+    var icon = getPokemonSprite(pokemonIndex, pokemonSprites, iconSize, item['weather_boosted_condition'], item['form'])
 
     var animationDisabled = false
     if (isBounceDisabled === true) {
