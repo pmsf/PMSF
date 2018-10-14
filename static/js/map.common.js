@@ -1214,12 +1214,12 @@ function getPokemonSprite(index, sprite, displayHeight, weather = 0) {
     var scaledIconCenterOffset = [scale * sprite.iconWidth / 2, scale * sprite.iconHeight / 2]
     var encounterForm = ''
     var formStr = ''
-    if (encounterForm == 0 || encounterForm == null) {
+    if (encounterForm === '0' || encounterForm == null) {
         formStr = '00'
     } else {
         formStr = encounterForm
     }
-	
+
     var pokemonId = index + 1
     var pokemonIdStr = ''
     if (pokemonId <= 9) {
