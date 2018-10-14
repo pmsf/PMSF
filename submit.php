@@ -209,7 +209,7 @@ if ( $action === "raid" ) {
     $pokestopId = ! empty( $_POST['pokestopId'] ) ? $_POST['pokestopId'] : '';
     $questId    = $_POST['questId'] == "NULL" ? 0 : $_POST['questId'];
     $rewardId   = $_POST['rewardId'] == "NULL" ? 0 : $_POST['rewardId'];
-    $pokestop         = $db->get( "pokestops", [ 'name', 'lat', 'lon', 'url', 'external_id' ], [ 'external_id' => $pokestopId ] );
+    $pokestop         = $db->get( "pokestop", [ 'name', 'lat', 'lon', 'url', 'id' ], [ 'id' => $pokestopId ] );
     $loggedUser = ! empty( $_SESSION['user']->user ) ? $_SESSION['user']->user : 'NOLOGIN';
     if ( ! empty( $pokestopId ) && ! empty( $questId ) && ! empty( $rewardId ) ) {
         $cols  = [
@@ -218,9 +218,9 @@ if ( $action === "raid" ) {
             'quest_submitted_by'  => $loggedUser
         ];
         $where = [
-            'external_id' => $pokestopId
+            'id' => $pokestopId
         ];
-        $db->update( "pokestops", $cols, $where );
+        $db->update( "pokestop", $cols, $where );
 
         if ( $sendQuestWebhook === true && $webhookSystem === 'poracle' ) {
 	    $questwebhook = [
@@ -247,7 +247,7 @@ if ( $action === "raid" ) {
                 'message' => [
                     'latitude'                          => $pokestop['lat'],
                     'longitude'                         => $pokestop['lon'],
-                    'pokestop_id'                       => $pokestopId,
+                    'id'                                => $pokestopId,
                     'url'                               => $pokestop['url'],
                     'name'                              => $pokestop['name'],
                     'quest'                             => $questString,
@@ -290,12 +290,11 @@ if ( $action === "raid" ) {
         $cols     = [
             'name'        => $pokestopName,
             'updated'     => time(),
-            'edited_by'    => $loggedUser 
         ];
         $where    = [
-            'external_id' => $pokestopId
+            'id' => $pokestopId
         ];
-	$db->update( "pokestops", $cols, $where );
+	$db->update( "pokestop", $cols, $where );
         if ( $noDiscordSubmitLogChannel === false ) {
             $data = array("content" => '```Updated pokestop with id "' . $pokestopId . '" and gave it the new name: "' . $pokestopName . '" . ```', "username" => $loggedUser);
             sendToWebhook($discordSubmitLogChannelUrl, ($data));
