@@ -247,6 +247,18 @@
         "type": "Normal",
         "color": "#8a8a59"
       }
+    ],
+    "forms": [
+      {
+        "nameform": "normal",
+        "protoform": "45",
+        "assetsform": "00"
+      },
+      {
+        "nameform": "alolan",
+        "protoform": "46",
+        "assetsform": "61"
+      }
     ]
   },
   "20": {
@@ -256,6 +268,18 @@
       {
         "type": "Normal",
         "color": "#8a8a59"
+      }
+    ],
+    "forms": [
+      {
+        "nameform": "normal",
+        "protoform": "47",
+        "assetsform": "00"
+      },
+      {
+        "nameform": "alolan",
+        "protoform": "48",
+        "assetsform": "61"
       }
     ]
   },
@@ -329,6 +353,18 @@
         "type": "Electric",
         "color": "#f8d030"
       }
+    ],
+    "forms": [
+      {
+        "nameform": "normal",
+        "protoform": "49",
+        "assetsform": "00"
+      },
+      {
+        "nameform": "alolan",
+        "protoform": "50",
+        "assetsform": "61"
+      }
     ]
   },
   "27": {
@@ -338,6 +374,18 @@
       {
         "type": "Ground",
         "color": "#e0c068"
+      }
+    ],
+    "forms": [
+      {
+        "nameform": "normal",
+        "protoform": "51",
+        "assetsform": "00"
+      },
+      {
+        "nameform": "alolan",
+        "protoform": "52",
+        "assetsform": "61"
       }
     ]
   },
@@ -350,6 +398,18 @@
       {
         "type": "Ground",
         "color": "#e0c068"
+      }
+    ],
+    "forms": [
+      {
+        "nameform": "normal",
+        "protoform": "53",
+        "assetsform": "00"
+      },
+      {
+        "nameform": "alolan",
+        "protoform": "54",
+        "assetsform": "61"
       }
     ]
   },
@@ -453,6 +513,18 @@
         "type": "Fire",
         "color": "#f08030"
       }
+    ],
+    "forms": [
+      {
+        "nameform": "normal",
+        "protoform": "55",
+        "assetsform": "00"
+      },
+      {
+        "nameform": "alolan",
+        "protoform": "56",
+        "assetsform": "61"
+      }
     ]
   },
   "38": {
@@ -464,6 +536,18 @@
       {
         "type": "Fire",
         "color": "#f08030"
+      }
+    ],
+    "forms": [
+      {
+        "nameform": "normal",
+        "protoform": "57",
+        "assetsform": "00"
+      },
+      {
+        "nameform": "alolan",
+        "protoform": "58",
+        "assetsform": "61"
       }
     ]
   },
@@ -631,6 +715,18 @@
         "type": "Ground",
         "color": "#e0c068"
       }
+    ],
+    "forms": [
+      {
+        "nameform": "normal",
+        "protoform": "59",
+        "assetsform": "00"
+      },
+      {
+        "nameform": "alolan",
+        "protoform": "60",
+        "assetsform": "61"
+      }
     ]
   },
   "51": {
@@ -640,6 +736,18 @@
       {
         "type": "Ground",
         "color": "#e0c068"
+      }
+    ],
+    "forms": [
+      {
+        "nameform": "normal",
+        "protoform": "61",
+        "assetsform": "00"
+      },
+      {
+        "nameform": "alolan",
+        "protoform": "62",
+        "assetsform": "61"
       }
     ]
   },
@@ -653,6 +761,18 @@
         "type": "Normal",
         "color": "#8a8a59"
       }
+    ],
+    "forms": [
+      {
+        "nameform": "normal",
+        "protoform": "63",
+        "assetsform": "00"
+      },
+      {
+        "nameform": "alolan",
+        "protoform": "64",
+        "assetsform": "61"
+      }
     ]
   },
   "53": {
@@ -662,6 +782,18 @@
       {
         "type": "Normal",
         "color": "#8a8a59"
+      }
+    ],
+    "forms": [
+      {
+        "nameform": "normal",
+        "protoform": "65",
+        "assetsform": "00"
+      },
+      {
+        "nameform": "alolan",
+        "protoform": "66",
+        "assetsform": "61"
       }
     ]
   },
@@ -913,6 +1045,18 @@
         "type": "Ground",
         "color": "#e0c068"
       }
+    ],
+    "forms": [
+      {
+        "nameform": "normal",
+        "protoform": "67",
+        "assetsform": "00"
+      },
+      {
+        "nameform": "alolan",
+        "protoform": "68",
+        "assetsform": "61"
+      }
     ]
   },
   "75": {
@@ -926,6 +1070,18 @@
       {
         "type": "Ground",
         "color": "#e0c068"
+      }
+    ],
+    "forms": [
+      {
+        "nameform": "normal",
+        "protoform": "69",
+        "assetsform": "00"
+      },
+      {
+        "nameform": "alolan",
+        "protoform": "70",
+        "assetsform": "61"
       }
     ]
   },
@@ -942,6 +1098,18 @@
       {
         "type": "Ground",
         "color": "#e0c068"
+      }
+    ],
+    "forms": [
+      {
+        "nameform": "normal",
+        "protoform": "71",
+        "assetsform": "00"
+      },
+      {
+        "nameform": "alolan",
+        "protoform": "72",
+        "assetsform": "61"
       }
     ]
   },
@@ -1101,6 +1269,18 @@
         "type": "Poison",
         "color": "#a040a0"
       }
+    ],
+    "forms": [
+      {
+        "nameform": "normal",
+        "protoform": "73",
+        "assetsform": "00"
+      },
+      {
+        "nameform": "alolan",
+        "protoform": "74",
+        "assetsform": "61"
+      }
     ]
   },
   "89": {
@@ -1112,6 +1292,18 @@
       {
         "type": "Poison",
         "color": "#a040a0"
+      }
+    ],
+    "forms": [
+      {
+        "nameform": "normal",
+        "protoform": "75",
+        "assetsform": "00"
+      },
+      {
+        "nameform": "alolan",
+        "protoform": "76",
+        "assetsform": "61"
       }
     ]
   },
@@ -1291,6 +1483,18 @@
         "type": "Psychic",
         "color": "#f85888"
       }
+    ],
+    "forms": [
+      {
+        "nameform": "normal",
+        "protoform": "77",
+        "assetsform": "00"
+      },
+      {
+        "nameform": "alolan",
+        "protoform": "78",
+        "assetsform": "61"
+      }
     ]
   },
   "104": {
@@ -1312,6 +1516,18 @@
       {
         "type": "Ground",
         "color": "#e0c068"
+      }
+    ],
+    "forms": [
+      {
+        "nameform": "normal",
+        "protoform": "79",
+        "assetsform": "00"
+      },
+      {
+        "nameform": "alolan",
+        "protoform": "80",
+        "assetsform": "61"
       }
     ]
   },
@@ -2516,6 +2732,148 @@
       {
         "type": "Psychic",
         "color": "#f85888"
+      }
+    ],
+    "forms": [
+      {
+        "nameform": "a",
+        "protoform": "1",
+        "assetsform": "11"
+      },
+      {
+        "nameform": "b",
+        "protoform": "2",
+        "assetsform": "12"
+      },
+      {
+        "nameform": "c",
+        "protoform": "3",
+        "assetsform": "13"
+      },
+      {
+        "nameform": "d",
+        "protoform": "4",
+        "assetsform": "14"
+      },
+      {
+        "nameform": "e",
+        "protoform": "5",
+        "assetsform": "15"
+      },
+      {
+        "nameform": "f",
+        "protoform": "6",
+        "assetsform": "16"
+      },
+      {
+        "nameform": "g",
+        "protoform": "7",
+        "assetsform": "17"
+      },
+      {
+        "nameform": "h",
+        "protoform": "8",
+        "assetsform": "18"
+      },
+      {
+        "nameform": "i",
+        "protoform": "9",
+        "assetsform": "19"
+      },
+      {
+        "nameform": "j",
+        "protoform": "10",
+        "assetsform": "20"
+      },
+      {
+        "nameform": "k",
+        "protoform": "11",
+        "assetsform": "21"
+      },
+      {
+        "nameform": "l",
+        "protoform": "12",
+        "assetsform": "22"
+      },
+      {
+        "nameform": "m",
+        "protoform": "13",
+        "assetsform": "23"
+      },
+      {
+        "nameform": "n",
+        "protoform": "14",
+        "assetsform": "24"
+      },
+      {
+        "nameform": "o",
+        "protoform": "15",
+        "assetsform": "25"
+      },
+      {
+        "nameform": "p",
+        "protoform": "16",
+        "assetsform": "26"
+      },
+      {
+        "nameform": "q",
+        "protoform": "17",
+        "assetsform": "27"
+      },
+      {
+        "nameform": "r",
+        "protoform": "18",
+        "assetsform": "28"
+      },
+      {
+        "nameform": "s",
+        "protoform": "19",
+        "assetsform": "29"
+      },
+      {
+        "nameform": "t",
+        "protoform": "20",
+        "assetsform": "30"
+      },
+      {
+        "nameform": "u",
+        "protoform": "21",
+        "assetsform": "31"
+      },
+      {
+        "nameform": "v",
+        "protoform": "22",
+        "assetsform": "32"
+      },
+      {
+        "nameform": "w",
+        "protoform": "23",
+        "assetsform": "33"
+      },
+      {
+        "nameform": "x",
+        "protoform": "24",
+        "assetsform": "34"
+      },
+      {
+        "nameform": "y",
+        "protoform": "25",
+        "assetsform": "35"
+      },
+      {
+        "nameform": "z",
+        "protoform": "26",
+        "assetsform": "36"
+      },
+      {
+        "nameform": "!",
+        "protoform": "27",
+        "assetsform": "37"
+      },
+      {
+        "nameform": "?",
+        "protoform": "28",
+        "assetsform": "38"
       }
     ]
   },
@@ -4091,6 +4449,48 @@
         "type": "Normal",
         "color": "#8a8a59"
       }
+    ],
+    "forms": [
+      {
+        "nameform": "1",
+        "protoform": "37",
+        "assetsform": "11"
+      },
+      {
+        "nameform": "2",
+        "protoform": "38",
+        "assetsform": "12"
+      },
+      {
+        "nameform": "3",
+        "protoform": "39",
+        "assetsform": "13"
+      },
+      {
+        "nameform": "4",
+        "protoform": "40",
+        "assetsform": "14"
+      },
+      {
+        "nameform": "5",
+        "protoform": "41",
+        "assetsform": "15"
+      },
+      {
+        "nameform": "6",
+        "protoform": "42",
+        "assetsform": "16"
+      },
+      {
+        "nameform": "7",
+        "protoform": "43",
+        "assetsform": "17"
+      },
+      {
+        "nameform": "8",
+        "protoform": "44",
+        "assetsform": "18"
+      }
     ]
   },
   "328":{
@@ -4406,6 +4806,28 @@
       {
         "type": "Normal",
         "color": "#8a8a59"
+      }
+    ],
+    "forms": [
+      {
+        "nameform": "normal",
+        "protoform": "29",
+        "assetsform": "11"
+      },
+      {
+        "nameform": "sunny",
+        "protoform": "30",
+        "assetsform": "12"
+      },
+      {
+        "nameform": "rainy",
+        "protoform": "31",
+        "assetsform": "13"
+      },
+      {
+        "nameform": "snowy",
+        "protoform": "32",
+        "assetsform": "14"
       }
     ]
   },
@@ -4838,6 +5260,28 @@
       {
         "type": "Psychic",
         "color": "#f85888"
+      }
+    ],
+    "forms": [
+      {
+       "nameform": "normal",
+       "protoform": "33",
+       "assetsform": "11" 
+      },
+      {
+       "nameform": "attack",
+       "protoform": "34",
+       "assetsform": "12" 
+      },
+      {
+       "nameform": "defence",
+       "protoform": "35",
+       "assetsform": "13" 
+      },
+      {
+       "nameform": "speed",
+       "protoform": "36",
+       "assetsform": "14" 
       }
     ]
   },
