@@ -761,26 +761,27 @@ function gymLabel(item) {
         raidStr += '<div>' + i8ln('Start') + ': <b>' + raidStartStr + '</b> <span class="label-countdown" disappears-at="' + item['raid_start'] + '" start>(00m00s)</span></div>'
         raidStr += '<div>' + i8ln('End') + ': <b>' + raidEndStr + '</b> <span class="label-countdown" disappears-at="' + item['raid_end'] + '" end>(00m00s)</span></div>'
 
+        var raidForm = item['form']
+        var formStr = ''
+        if (raidForm <= 10 || raidForm == null) {
+            formStr = '00'
+        } else {
+            formStr = raidForm
+        }
+        var pokemonid = item['raid_pokemon_id']
+        var pokemonidStr = ''
+        if (pokemonid <= 9) {
+            pokemonidStr = '00' + pokemonid
+        } else if (pokemonid <= 99) {
+            pokemonidStr = '0' + pokemonid
+        } else {
+            pokemonidStr = pokemonid
+        }
+
         if (raidStarted && copyrightSafe === false) {
-            var raidForm = item['form']
-            var formStr = ''
-            if (raidForm <= 10 || raidForm == null) {
-                formStr = '00'
-            } else {
-                formStr = raidForm
-            }
-            var pokemonid = item['raid_pokemon_id']
-            var pokemonidStr = ''
-            if (pokemonid <= 9) {
-                pokemonidStr = '00' + pokemonid
-            } else if (pokemonid <= 99) {
-                pokemonidStr = '0' + pokemonid
-            } else {
-                pokemonidStr = pokemonid
-            }
-            raidIcon = '<img style="width: 80px; -webkit-filter: drop-shadow(5px 5px 5px #222); filter: drop-shadow(5px 5px 5px #222);" src="' + iconRepository + 'pokemon_icon_' + pokemonidStr + '_' + formStr + '.png"/>'
+            raidIcon = '<img style="width: 80px; -webkit-filter: drop-shadow(5px 5px 5px #222); filter: drop-shadow(5px 5px 5px #222);" src="' + iconpath + 'pokemon_icon_' + pokemonidStr + '_' + formStr + '.png"/>'
         } else if (raidStarted && copyrightSafe === true) {
-            raidIcon = '<i class="pokemon-sprite-large n' + item.raid_pokemon_id + '"></i>'
+            raidIcon = '<img src="' + iconpath + 'pokemon_icon_' + pokemonidStr + '_00.png"/>'
         } else if (item.raid_start <= Date.now()) {
             var hatchedEgg = ''
             if (item['raid_level'] <= 2) {
@@ -1297,7 +1298,7 @@ function getGymMarkerIcon(item) {
         html = '<div style="position:relative;">' +
             '<img src="static/forts/' + Store.get('gymMarkerStyle') + '/' + teamStr + '.png" style="width:50px;height:auto;"/>' +
             exIcon +
-            '<img src="' + iconRepository + 'pokemon_icon_' + pokemonidStr + '_' + formStr + '.png" style="width:70px;height:auto;position:absolute;top:-35px;right:-4px;"/>' +
+            '<img src="' + iconpath + 'pokemon_icon_' + pokemonidStr + '_' + formStr + '.png" style="width:70px;height:auto;position:absolute;top:-35px;right:-4px;"/>' +
             '</div>'
         fortMarker = L.divIcon({
             iconSize: [50, 50],
@@ -1310,7 +1311,7 @@ function getGymMarkerIcon(item) {
         html = '<div style="position:relative;">' +
             '<img src="static/forts/' + Store.get('gymMarkerStyle') + '/' + teamStr + '.png" style="width:50px;height:auto;"/>' +
             exIcon +
-            '<i class="pokemon-raid-sprite n' + item.raid_pokemon_id + '"></i>' +
+            '<img src="' + iconpath + 'pokemon_icon_' + pokemonidStr + '_00.png" style="width:40px;height:auto;right:12px;position:absolute;"/>' +
             '</div>'
         fortMarker = L.divIcon({
             iconSize: [50, 50],
@@ -1414,7 +1415,7 @@ function setupGymMarker(item) {
             } else {
                 pokemonidStr = pokemonid
             }
-            icon = iconRepository + 'pokemon_icon_' + pokemonidStr + '_' + formStr + '.png'
+            icon = iconpath + 'pokemon_icon_' + pokemonidStr + '_' + formStr + '.png'
             checkAndCreateSound(item.raid_pokemon_id)
         } else if (raidStarted && copyrightSafe === true) {
             icon = iconpath + item.raid_pokemon_id + '.png'
@@ -1507,7 +1508,7 @@ function updateGymMarker(item, marker) {
                 } else {
                     pokemonidStr = pokemonid
                 }
-                icon = iconRepository + 'pokemon_icon_' + pokemonidStr + '_' + formStr + '.png'
+                icon = iconpath + 'pokemon_icon_' + pokemonidStr + '_' + formStr + '.png'
                 checkAndCreateSound(item.raid_pokemon_id)
             } else if (raidStarted && copyrightSafe === false) {
                 icon = iconpath + item.raid_pokemon_id + '.png'
@@ -4197,7 +4198,7 @@ function showGymDetails(id) { // eslint-disable-line no-unused-vars
                 } else {
                     pokemonidStr = pokemonid
                 }
-                raidIcon = '<img style="width: 80px;" src="' + iconRepository + 'pokemon_icon_' + pokemonidStr + '_' + formStr + '.png"/>'
+                raidIcon = '<img style="width: 80px;" src="' + iconpath + 'pokemon_icon_' + pokemonidStr + '_' + formStr + '.png"/>'
             } else if (raidStarted && copyrightSafe === true) {
                 raidIcon = '<i class="pokemon-sprite-large n' + result.raid_pokemon_id + '"></i>'
             } else if (result.raid_start <= Date.now()) {
