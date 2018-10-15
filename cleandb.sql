@@ -165,6 +165,7 @@ CREATE TABLE IF NOT EXISTS `users` (
   `expire_timestamp` int(11) NOT NULL,
   `session_id` varchar(100) DEFAULT NULL,
   `login_system` varchar(40) NOT NULL,
+  `access_level` tinyint(1) NOT NULL,
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
@@ -201,6 +202,8 @@ CREATE TABLE IF NOT EXISTS `ingress_portals` (
   `name` varchar(128) DEFAULT NULL,
   `url` varchar(200) DEFAULT NULL,
   `updated` bigint(11) NOT NULL,
+  `imported` bigint(11) NOT NULL,
+  `checked` tinyint(4) DEFAULT NULL,
   PRIMARY KEY (`id`),
   UNIQUE KEY `external_id` (`external_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;

@@ -634,6 +634,7 @@ class Monocle_Alternate extends Monocle
         name,
         url,
         updated,
+        imported,
         checked
         FROM ingress_portals
         WHERE :conditions";

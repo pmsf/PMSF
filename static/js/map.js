@@ -166,9 +166,24 @@ var notifyText = 'disappears at <dist> (<udist>)'
 // Functions
 //
 if (location.search.indexOf('login=true') > 0) {
-    setTimeout(function () { window.location = '/' }, 500)
+    $('#nav').load(window.location.href + '#nav')
+    window.location.href = '/'
 }
-
+if (location.search.indexOf('login=false') > 0) {
+    openAccessDeniedModal()
+}
+function openAccessDeniedModal(event) { // eslint-disable-line no-unused-vars
+    $('.ui-dialog').remove()
+    $('.accessdenied-modal').clone().dialog({
+        modal: true,
+        maxHeight: 600,
+        buttons: {},
+        title: i8ln('Your access is denied'),
+        classes: {
+            'ui-dialog': 'ui-dialog raid-widget-popup'
+        }
+    })
+}
 function formatDate(date) {
     var monthNames = [
         'January', 'February', 'March',
@@ -1684,10 +1699,21 @@ function communityLabel(item) {
 }
 
 function setupPortalMarker(item) {
+    var ts = Math.round(new Date().getTime() / 1000)
+    var yesterday = ts - (24 * 3600)
     if (item.checked === '1') {
         var circle = {
             path: google.maps.SymbolPath.CIRCLE,
             fillColor: 'red',
+            fillOpacity: 0.4,
+            scale: 15,
+            strokeColor: 'white',
+            strokeWeight: 1
+        }
+    } else if (item.imported > yesterday) {
+        circle = {
+            path: google.maps.SymbolPath.CIRCLE,
+            fillColor: 'green',
             fillOpacity: 0.4,
             scale: 15,
             strokeColor: 'white',
@@ -1724,10 +1750,12 @@ function setupPortalMarker(item) {
 
 function portalLabel(item) {
     var updated = formatDate(new Date(item.updated * 1000))
+    var imported = formatDate(new Date(item.imported * 1000))
     var str = '<img src="' + item.url + '" align"middle" style="width:175px;height:auto;margin-left:25px;"/>' +
         '<center><h4><div>' + item.name + '</div></h4></center>' +
         '<center><div>Convert this portal<i class="fa fa-refresh convert-portal" style="margin-top: 2px; margin-left: 5px; vertical-align: middle; font-size: 1.5em;" onclick="openConvertPortalModal(event);" data-id="' + item.external_id + '"></i></div></center>' +
-        '<center><div>Last updated: ' + updated + '</div></center>'
+        '<center><div>Last updated: ' + updated + '</div></center>' +
+        '<center><div>Date imported: ' + imported + '</div></center>'
     if (!noDeletePortal) {
         str += '<i class="fa fa-trash-o delete-portal" onclick="deletePortal(event);" data-id="' + item.external_id + '"></i>'
     }
@@ -2170,7 +2198,7 @@ function searchForItem(lat, lon, term, type, field) {
                         html += '<span class="i-icon"><span class="pokemon-icon n' + element.pokemon_id + '" ></span></span>'
                     } else if (sr.hasClass('reward-results')) {
                         html += '<span style="background:url(static/rewards/reward_' + element.reward_id + '.png) no-repeat;" class="i-icon" ></span>'
-                    } else if (sr.hasClass('gym-results') || ('pokestop-results')) {
+                    } else if (sr.hasClass('gym-results') || ('pokestop-results') || ('portal-results')) {
                         html += '<span style="background:url(' + element.url + ') no-repeat;" class="i-icon" ></span>'
                     }
                     html += '<div class="cont">'
@@ -3087,7 +3115,7 @@ function openSearchModal(event) { // eslint-disable-line no-unused-vars
         width: width,
         buttons: {},
         open: function (event, ui) {
-            jQuery('input[name="gym-search"], input[name="pokestop-search"], input[name="reward-search"], input[name="nest-search"]').bind('input', function () {
+            jQuery('input[name="gym-search"], input[name="pokestop-search"], input[name="reward-search"], input[name="nest-search"], input[name="portals-search"]').bind('input', function () {
                 searchAjax($(this))
             })
             $('.search-widget-popup #search-tabs').tabs()
