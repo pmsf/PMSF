@@ -12,6 +12,11 @@ A special Database structure based on Hydro Monocle is needed.
 ## Get Started
 Join our [Discord](https://discord.gg/yGujp8D) channel for more info about installation.
 
+## Create your own Sprite Repository
+Image naming convention `pokemon_icon_{XXX}_{YY}.png`
+Where XXX is pokemon id 001 - 807
+Where YY is pokemon form: 00 is normal
+
 ## Webhooks
 Current tested support for
 * [PokeAlarm](https://github.com/PokeAlarm/PokeAlarm)

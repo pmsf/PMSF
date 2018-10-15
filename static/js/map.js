@@ -1192,6 +1192,26 @@ function customizePokemonMarker(marker, item, skipNotification) {
         this.animationDisabled = true
     })
 
+    var pokemonForm = item['form']
+    var formStr = ''
+    if (pokemonForm === '0' || pokemonForm === null) {
+        formStr = '00'
+    } else if (pokemonForm <= 9) {
+        formStr = '0' + pokemonForm
+    } else {
+        formStr = pokemonForm
+    }
+
+    var pokemonId = item['pokemon_id']
+    var pokemonIdStr = ''
+    if (pokemonId <= 9) {
+        pokemonIdStr = '00' + pokemonId
+    } else if (pokemonId <= 99) {
+        pokemonIdStr = '0' + pokemonId
+    } else {
+        pokemonIdStr = pokemonId
+    }
+
     if (!marker.rangeCircle && isRangeActive(map)) {
         marker.rangeCircle = addRangeCircle(marker, map, 'pokemon')
     }
@@ -1201,7 +1221,7 @@ function customizePokemonMarker(marker, item, skipNotification) {
     if (notifiedPokemon.indexOf(item['pokemon_id']) > -1 || notifiedRarity.indexOf(item['pokemon_rarity']) > -1) {
         if (!skipNotification) {
             checkAndCreateSound(item['pokemon_id'])
-            sendNotification(getNotifyText(item).fav_title, getNotifyText(item).fav_text, iconpath + item['pokemon_id'] + '.png', item['latitude'], item['longitude'])
+            sendNotification(getNotifyText(item).fav_title, getNotifyText(item).fav_text, iconpath + 'pokemon_icon_' + pokemonIdStr + '_' + formStr + '.png', item['latitude'], item['longitude'])
         }
         if (marker.animationDisabled !== true && Store.get('remember_bounce_notify')) {
             marker.bounce()
@@ -1213,7 +1233,7 @@ function customizePokemonMarker(marker, item, skipNotification) {
         if (notifiedMinPerfection > 0 && perfection >= notifiedMinPerfection) {
             if (!skipNotification) {
                 checkAndCreateSound(item['pokemon_id'])
-                sendNotification(getNotifyText(item).fav_title, getNotifyText(item).fav_text, iconpath + item['pokemon_id'] + '.png', item['latitude'], item['longitude'])
+                sendNotification(getNotifyText(item).fav_title, getNotifyText(item).fav_text, iconpath + 'pokemon_icon_' + pokemonIdStr + '_' + formStr + '.png', item['latitude'], item['longitude'])
             }
             if (marker.animationDisabled !== true && Store.get('remember_bounce_notify')) {
                 marker.bounce()
@@ -1226,7 +1246,7 @@ function customizePokemonMarker(marker, item, skipNotification) {
         if (notifiedMinLevel > 0 && level >= notifiedMinLevel) {
             if (!skipNotification) {
                 checkAndCreateSound(item['pokemon_id'])
-                sendNotification(getNotifyText(item).fav_title, getNotifyText(item).fav_text, iconpath + item['pokemon_id'] + '.png', item['latitude'], item['longitude'])
+                sendNotification(getNotifyText(item).fav_title, getNotifyText(item).fav_text, iconpath + 'pokemon_icon_' + pokemonIdStr + '_' + formStr + '.png', item['latitude'], item['longitude'])
             }
             if (marker.animationDisabled !== true && Store.get('remember_bounce_notify')) {
                 marker.bounce()
