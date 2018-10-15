@@ -767,7 +767,7 @@ function gymLabel(item) {
             if (raidForm <= 10 || raidForm == null) {
                 formStr = '00'
             } else {
-                formStr = raidForm
+                formStr = 61
             }
             var pokemonid = item['raid_pokemon_id']
             var pokemonidStr = ''
@@ -1245,7 +1245,7 @@ function getGymMarkerIcon(item) {
     if (raidForm <= 10 || raidForm == null) {
         formStr = '00'
     } else {
-        formStr = raidForm
+        formStr = 61
     }
     var pokemonid = item['raid_pokemon_id']
     var pokemonidStr = ''
@@ -1383,7 +1383,7 @@ function setupGymMarker(item) {
             if (raidForm <= 10 || raidForm == null) {
                 formStr = '00'
             } else {
-                formStr = raidForm
+                formStr = 61
             }
             var pokemonid = item.raid_pokemon_id
             var pokemonidStr = ''
@@ -1476,7 +1476,7 @@ function updateGymMarker(item, marker) {
                 if (raidForm <= 10 || raidForm == null) {
                     formStr = '00'
                 } else {
-                    formStr = raidForm
+                    formStr = 61
                 }
                 var pokemonid = item.raid_pokemon_id
                 var pokemonidStr = ''
