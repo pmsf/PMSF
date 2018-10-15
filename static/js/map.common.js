@@ -1232,11 +1232,11 @@ function getPokemonSprite(index, sprite, displayHeight, weather = 0, encounterFo
     var html = ''
     if (copyrightSafe === false) {
         if (weather === 0) {
-            html = '<img src="https://raw.githubusercontent.com/whitewillem/PogoAssets/resized/icons_large/pokemon_icon_' + pokemonIdStr + '_' + formStr + '.png" style="width:' + scaledIconSizeWidth + 'px;height:auto;"/>'
+            html = '<img src="' + iconRepository + 'pokemon_icon_' + pokemonIdStr + '_' + formStr + '.png" style="width:' + scaledIconSizeWidth + 'px;height:auto;"/>'
         } else if (boostedMons[weather].indexOf(pokemonId) === -1) {
-            html = '<img src="https://raw.githubusercontent.com/whitewillem/PogoAssets/resized/icons_large/pokemon_icon_' + pokemonIdStr + '_' + formStr + '.png" style="width:' + scaledIconSizeWidth + 'px;height:auto;"/>'
+            html = '<img src="' + iconRepository + 'pokemon_icon_' + pokemonIdStr + '_' + formStr + '.png" style="width:' + scaledIconSizeWidth + 'px;height:auto;"/>'
         } else {
-            html = '<img src="https://raw.githubusercontent.com/whitewillem/PogoAssets/resized/icons_large/pokemon_icon_' + pokemonIdStr + '_' + formStr + '.png" style="width:' + scaledIconSizeWidth + 'px;height:auto;"/>' +
+            html = '<img src="' + iconRepository + 'pokemon_icon_' + pokemonIdStr + '_' + formStr + '.png" style="width:' + scaledIconSizeWidth + 'px;height:auto;"/>' +
             '<img src="static/weather/i-' + weather + '.png" style="width:' + scaledWeatherIconSizeWidth + 'px;height:auto;position:absolute;top:-' + scaledWeatherIconSizeWidth + 'px;right:0px;"/>'
         }
     } else {
