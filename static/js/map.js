@@ -4458,16 +4458,15 @@ function generateRaidBossList() {
     data += '<span class="pokemon-icon-sprite" data-value="egg_4" data-label="Level 4" onclick="pokemonRaidFilter(event);"><span class="egg_4 inner-bg" style="background: url(\'static/raids/egg_rare.png\');background-size:100%"></span><span class="egg-number">4</span></span>'
     data += '<span class="pokemon-icon-sprite" data-value="egg_5" data-label="Level 5" onclick="pokemonRaidFilter(event);"><span class="egg_5 inner-bg" style="background: url(\'static/raids/egg_legendary.png\');background-size:100%"></span><span class="egg-number">5</span></span>'
     boss.forEach(function (element) {
-        var j = Math.floor(element / 28)
-        var b = element % 28
-        if (b === 0) {
-            b = 28
-            j = j - 1
+        var pokemonIdStr = ''
+        if (element <= 9) {
+            pokemonIdStr = '00' + element
+        } else if (element <= 99) {
+            pokemonIdStr = '0' + element
+        } else {
+            pokemonIdStr = element
         }
-        var k = b - 1
-        var p = j * 48.25
-        var a = k * 48.25
-        data += '<span class="pokemon-icon-sprite" data-value="' + element + '" data-label="' + pokeList[element - 1].name + '" onclick="pokemonRaidFilter(event);"><span class="' + element + ' inner-bg" style="background-position:-' + a + 'px -' + p + 'px"></span></span>'
+        data += '<span class="pokemon-icon-sprite" data-value="' + element + '" data-label="' + pokeList[element - 1].name + '" onclick="pokemonRaidFilter(event);"><img src="' + iconpath + 'pokemon_icon_' + pokemonIdStr + '_00.png" style="width:48px;height:48px;"/></span>'
     })
     data += '</div>'
     return data
