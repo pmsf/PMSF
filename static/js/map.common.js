@@ -1241,11 +1241,11 @@ function getPokemonSprite(index, sprite, displayHeight, weather = 0, encounterFo
         }
     } else {
         if (weather === 0) {
-            html = '<img src="static/icons-safe/' + pokemonId + '.png" style="width:' + scaledIconSizeWidth + 'px;height:auto;"/>'
+            html = '<img src="static/icons-safe/pokemon_icon_' + pokemonIdStr + '_00.png" style="width:' + scaledIconSizeWidth + 'px;height:auto;"/>'
         } else if (boostedMons[weather].indexOf(pokemonId) === -1) {
-            html = '<img src="static/icons-safe/' + pokemonId + '.png" style="width:' + scaledIconSizeWidth + 'px;height:auto;"/>'
+            html = '<img src="static/icons-safe/pokemon_icon_' + pokemonIdStr + '_00.png" style="width:' + scaledIconSizeWidth + 'px;height:auto;"/>'
         } else {
-            html = '<img src="static/icons-safe/' + pokemonId + '.png" style="width:' + scaledIconSizeWidth + 'px;height:auto;"/>' +
+            html = '<img src="static/icons-safe/pokemon_icon_' + pokemonIdStr + '_00.png" style="width:' + scaledIconSizeWidth + 'px;height:auto;"/>' +
             '<img src="static/weather/i-' + weather + '.png" style="width:' + scaledWeatherIconSizeWidth + 'px;height:auto;position:absolute;top:-25px;right:0px;"/>'
         }
     }
