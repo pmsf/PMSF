@@ -158,7 +158,7 @@ if ( $blockIframe ) {
     <header id="header">
         <a href="#nav"><span class="label"><?php echo i8ln( 'Options' ) ?></span></a>
 
-	<h1><a href="#"><?= $title ?><img src="<?= $raidmapLogo ?>" height="55" width="auto" border="0" style="float: right;"></a></h1>
+        <h1><a href="#"><?= $title ?><img src="<?= $raidmapLogo ?>" height="35" width="auto" border="0" style="float: right; margin-left: 5px; margin-top: 10px;"></a></h1>
         <?php
         if ( $discordUrl != "" ) {
             echo '<a href="' . $discordUrl . '" target="_blank" style="margin-bottom: 5px; vertical-align: middle;padding:0 5px;">
@@ -206,7 +206,7 @@ if ( $blockIframe ) {
                     header('Location: ./logout.php');
                 }
 
-                echo "<span style='color: {$color};'>" . substr($_SESSION['user']->user, 0, 3) . "...</span>";
+                echo "<span style='color: {$color};'>" . substr($_SESSION['user']->user, 0, 30) . "...</span>";
             } else {
                 echo "<a href='./user'>" . i8ln('Login') . "</a>";
             }
@@ -1173,6 +1173,16 @@ if ( $blockIframe ) {
             </div>
         </div>
     <?php } ?>
+    <?php if ( ! $noDiscordLogin ) { ?>
+        <div class="accessdenied-modal" style="display: none;">
+            <?php if ( $copyrightSafe === false ) { ?>
+                <img src="static/images/accessdenied.png" alt="PikaSquad" width="250">
+            <?php } ?>
+            <center><?php echo i8ln( 'Your access has been denied.' ); ?></center>
+            <br>
+            <?php echo i8ln('You might not be a member of our Discord or you joined a server which is on our blacklist. Click <a href="' .$discordUrl .'">here</a> to join!'); ?>
+        </div>
+    <?php } ?>
     <?php if ( ! $noManualQuests ) { ?>
         <div class="quest-modal" style="display: none;">
             <input type="hidden" value="" name="questPokestop" class="questPokestop"/>
@@ -1259,7 +1269,10 @@ if ( $blockIframe ) {
                         <?php }
                         if ( ! $noSearchPokestops ) { ?>
                             <li><a href="#tab-pokestop"><img src="static/forts/Pstop-large.png"/></a></li>
-                        <?php } ?>
+                        <?php }
+                        if ( ! $noSearchPortals ) { ?>
+                            <li><a href="#tab-portals"><img src="static/images/portal.png"/></a></li>
+			<?php } ?>
                     </ul>
                     <?php if ( ! $noSearchManualQuests ) { ?>
                         <div id="tab-rewards">
@@ -1284,17 +1297,24 @@ if ( $blockIframe ) {
                                    data-type="forts" class="search-input"/>
                             <ul id="gym-search-results" class="search-results gym-results"></ul>
                         </div>
-                    <?php }
-                    if ( ! $noSearchPokestops ) { ?>
+		    <?php } ?>
+		    <?php if ( ! $noSearchPokestops ) { ?>
                         <div id="tab-pokestop">
                             <input type="search" id="pokestop-search" name="pokestop-search"
                                    placeholder="<?php echo i8ln( 'Enter Pokestop Name' ); ?>" data-type="pokestops"
                                    class="search-input"/>
                             <ul id="pokestop-search-results" class="search-results pokestop-results"></ul>
                         </div>
-                    <?php } ?>
+		    <?php } ?>
+		    <?php if ( ! $noSearchPortals ) { ?>
+                        <div id="tab-portals">
+                            <input type="search" id="portals-search" name="portals-search"
+                                   placeholder="<?php echo i8ln( 'Enter Portal Name' ); ?>" data-type="portals"
+                                   class="search-input"/>
+                            <ul id="portals-search-results" class="search-results portals-results"></ul>
+                        </div>
+		    <?php } ?>
                 </div>
-
             </div>
         </div>
     <?php } ?>

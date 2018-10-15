@@ -94,65 +94,36 @@ $daysMembershipPerQuantity = 31;                                    // How many 
 $sellyPage = '';                                                    // Link to selly purchase page for membership renewal.
 $sellyWebhookSecret = '';                                           // Add a secret key at https://selly.gg/settings to make sure the payment webhook is sent from selly to prevent fake payments.
                                                                     // Add the same key to the $sellyWebhookSecret variable.
+/* Blacklist Settingss - Only available with Discord login */
+$userBlacklist = [''];                                                                // Array of user ID's that are always blocked from accessing the map
+$userWhitelist = [''];                                              // Array of user ID's that's allowed to bypass the server blacklist
+$serverWhitelist = [''];                                            // Array of server ID's. Your users will need to be in at least one of them
+$serverBlacklist = [''];                                            // Array of server ID's. A user that's a member of any of these and not in your user whitelist will be blocked
+$logFailedLogin = '';                                               // File location of where to store a log file of blocked users
 
 //-----------------------------------------------------
 // FRONTEND SETTINGS
 //-----------------------------------------------------
 
-if ($noNativeLogin === true && $noDiscordLogin == true ||  (($noNativeLogin === false || $noDiscordLogin === false) && !empty($_SESSION['user']->expire_timestamp) && $_SESSION['user']->expire_timestamp > time())) {
+/* Marker Settings */
+$noExcludeMinIV = false;                                        // true/false
+$noMinIV = false;                                               // true/false
+$noMinLevel = false;                                            // true/false
+$noHighLevelData = false;                                       // true/false
 
-    /*
-        THESE SETTINGS WILL BE APPLIED IF:
-            - LOGIN IS DISABLED
-            - LOGIN IS ENABLED AND THE USER IS LOGGED ON
-    */
+/* Notification Settings */
+$noNotifyPokemon = false;                                       // true/false
+$noNotifyRarity = false;                                        // true/false
+$noNotifyIv = false;                                            // true/false
+$noNotifyLevel = false;                                         // true/false
+$noNotifyRaid = false;                                          // true/false
+$noNotifySound = false;                                         // true/false
+$noCriesSound = false;                                          // true/false
+$noNotifyBounce = false;                                        // true/false
+$noNotifyNotification = false;                                  // true/false
 
-    /* Marker Settings */
-    $noExcludeMinIV = false;                                        // true/false
-    $noMinIV = false;                                               // true/false
-    $noMinLevel = false;                                            // true/false
-    $noHighLevelData = false;                                       // true/false
-
-    /* Notification Settings */
-    $noNotifyPokemon = false;                                       // true/false
-    $noNotifyRarity = false;                                        // true/false
-    $noNotifyIv = false;                                            // true/false
-    $noNotifyLevel = false;                                         // true/false
-    $noNotifyRaid = false;                                          // true/false
-    $noNotifySound = false;                                         // true/false
-    $noCriesSound = false;                                          // true/false
-    $noNotifyBounce = false;                                        // true/false
-    $noNotifyNotification = false;                                  // true/false
-
-    /* Style Settings */
-    $iconNotifySizeModifier = 15;                                   // 0, 15, 30, 45
-} else {
-
-    /*
-        THESE SETTINGS WILL BE APPLIED IF:
-            - LOGIN IS ENABLED AND THE USER IS _NOT_ LOGGED ON
-    */
-
-    /* Marker Settings */
-    $noExcludeMinIV = true;                                         // true/false
-    $noMinIV = true;                                                // true/false
-    $noMinLevel = true;                                             // true/false
-    $noHighLevelData = true;                                        // true/false
-
-    /* Notification Settings */
-    $noNotifyPokemon = true;                                        // true/false
-    $noNotifyRarity = true;                                         // true/false
-    $noNotifyIv = true;                                             // true/false
-    $noNotifyLevel = true;                                          // true/false
-    $noNotifyRaid = true;                                           // true/false
-    $noNotifySound = true;                                          // true/false
-    $noCriesSound = true;                                           // true/false
-    $noNotifyBounce = true;                                         // true/false
-    $noNotifyNotification = true;                                   // true/false
-
-    /* Style Settings */
-    $iconNotifySizeModifier = 0;                                    // 0, 15, 30, 45
-}
+/* Style Settings */
+$iconNotifySizeModifier = 15;                                   // 0, 15, 30, 45
 
 /* Marker Settings */
 
@@ -189,7 +160,7 @@ $maxRaidLevel = 5;
 
 $noPokestops = false;                                               // true/false
 $enablePokestops = 'false';                                         // true/false
-$enableLured = 1;                                                   // O: all, 1: lured only
+$enableLured = 0;                                                   // O: all, 1: lured only
 
 $noScannedLocations = false;                                        // true/false
 $enableScannedLocations = 'false';                                  // true/false
@@ -341,7 +312,9 @@ $noSearchPokestops = false;     //Wont work if noSearch = false
 $noSearchGyms = false;          //Wont work if noSearch = false
 $noSearchManualQuests = false;  //Wont work if noSearch = false
 $noSearchNests = false;
+$noSearchPortals = false;
 $defaultUnit = "km";                                            // mi/km
+$maxSearchResults = 10;		//Max number of search results
 //-----------------------------------------------
 // Community
 //-----------------------------------------------------
@@ -413,9 +386,6 @@ $enableDebug = false;
 // DATABASE CONFIG
 //-----------------------------------------------------
 
-$map = "monocle";
-$fork = "alternate";
-
 $db = new Medoo([// required
     'database_type' => 'mysql',                                    
     'database_name' => 'Monocle',
@@ -428,3 +398,5 @@ $db = new Medoo([// required
     //'port' => 5432,                                               // Comment out if not needed, just add // in front!
     //'socket' => /path/to/socket/,
 ]);
+if(file_exists('config/access-config.php'))
+    include 'config/access-config.php';

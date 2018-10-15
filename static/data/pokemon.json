@@ -1843,9 +1843,9 @@
   },
   "147": {
     "name": "Dratini",
-    "rarity": "Uncommon",
     "level": 1,
     "cp": 3426,
+    "rarity": "Uncommon",
     "types": [
       {
         "type": "Dragon",
