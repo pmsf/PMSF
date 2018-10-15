@@ -154,6 +154,7 @@
     "enableLevel13Cells": true,
     "enableLevel14Cells": true,
     "enableLevel17Cells": true,
-    "copyrightSafe": true
+    "copyrightSafe": true,
+    "iconpath": true
   }
 }
