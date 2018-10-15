@@ -67,7 +67,7 @@ if ( $blockIframe ) {
     <script src="https://cdnjs.cloudflare.com/ajax/libs/list.js/1.5.0/list.js"></script>
     <?php
     function pokemonFilterImages( $noPokemonNumbers, $onClick = '', $pokemonToExclude = array(), $num = 0 ) {
-        global $mons;
+        global $mons, $copyrightSafe, $iconRepository;
         if ( empty( $mons ) ) {
             $json = file_get_contents( 'static/dist/data/pokemon.min.json' );
             $mons = json_decode( $json, true );
@@ -85,8 +85,19 @@ if ( $blockIframe ) {
             if ( ! in_array( $k, $pokemonToExclude ) ) {
                 if ( $k > 386 ) {
                     break;
+		}
+		if ( $k <= 9 ) {
+                    $id = "00$k";
+                } else if ( $k <= 99 ) {
+                    $id = "0$k";
+                } else {
+                    $id = $k;
+		}
+		if ( ! $copyrightSafe ) {
+                    echo '<span class="pokemon-icon-sprite" data-value="' . $k . '" onclick="' . $onClick . '"><span style="display:none" class="types">' . i8ln( $type ) . '</span><span style="display:none" class="name">' . i8ln( $name ) . '</span><span style="display:none" class="id">$k</span><img src="' . $iconRepository . 'pokemon_icon_' . $id . '_00.png" style="width:48px;height:48px;"/>';
+		} else {
+                    echo '<span class="pokemon-icon-sprite" data-value="' . $k . '" onclick="' . $onClick . '"><span style="display:none" class="types">' . i8ln( $type ) . '</span><span style="display:none" class="name">' . i8ln( $name ) . '</span><span style="display:none" class="id">$k</span><img src="static/icons-safe/pokemon_icon_' . $id . '_00.png" style="width:48px;height:48px;"/>';
                 }
-                echo "<span class='pokemon-icon-sprite' data-value='" . $k . "' onclick='$onClick'><span style='display:none' class='types'>" . i8ln( $type ) . "</span><span style='display:none' class='name'>" . i8ln( $name ) . "</span><span style='display:none' class='id'>$k</span><span class='$k inner-bg' style='background-position:-" . $i * 48.25 . "px -" . $z . "px'></span>";
                 if ( ! $noPokemonNumbers ) {
                     echo "<span class='pokemon-number'>" . $k . "</span>";
                 }
@@ -1571,7 +1582,7 @@ if ( $blockIframe ) {
     var gymStyle = '<?php echo $gymStyle ?>';
     var spriteFileLarge = '<?php echo $copyrightSafe ? 'static/icons-safe-1-bigger.png' : 'static/icons-im-1-bigger.png' ?>';
     var weatherSpritesSrc = '<?php echo $copyrightSafe ? 'static/sprites-safe/' : 'static/sprites-pokemon/' ?>';
-    var icons = '<?php echo $copyrightSafe ? 'static/icons-safe/' : 'static/icons-pokemon/' ?>';
+    var icons = '<?php echo $copyrightSafe ? 'static/icons-safe/' : $iconRepository ?>';
     var weatherColors = <?php echo json_encode( $weatherColors ); ?>;
     var mapType = '<?php echo $map; ?>';
     var triggerGyms = <?php echo $triggerGyms ?>;

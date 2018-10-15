@@ -228,6 +228,7 @@ $notifyNotification = 'true';                                       // true/fals
 /* Style Settings */
 
 $copyrightSafe = true;
+$iconRepository = 'https://raw.githubusercontent.com/whitewillem/PogoAssets/resized/icons_large/';
 
 $noMapStyle = false;                                                // true/false
 $mapStyle = 'openstreetmap';                                        // openstreetmap, darkmatter, styleblackandwhite, styletopo, stylesatellite, stylewikipedia
