@@ -61,7 +61,7 @@ var buffer = []
 var reincludedPokemon = []
 var reids = []
 
-var numberOfPokemon = 386
+var numberOfPokemon = 493
 var L
 var map
 var markers
