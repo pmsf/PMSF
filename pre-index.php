@@ -83,7 +83,7 @@ if ( $blockIframe ) {
             }
 
             if ( ! in_array( $k, $pokemonToExclude ) ) {
-                if ( $k > 386 ) {
+                if ( $k > 493 ) {
                     break;
 		}
 		if ( $k <= 9 ) {
