@@ -3,8 +3,8 @@
     "name": "Hidden",
     "icon": "static/marker_icons/transparent.png"
   },
-  "google": {
-    "name": "Default Google Marker",
+  "osm": {
+    "name": "Default OSM Marker",
     "icon": null
   },
   "red": {

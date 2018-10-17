@@ -4,7 +4,7 @@
   background-repeat:no-repeat;
   background-size: 800px;
   top: 5px;
-  right: 4px;
+  right: 2px;
   position: absolute;
   -moz-transform-origin: 0 0;
   height: 28.57142857142857px;
@@ -21,8 +21,8 @@
   background-image: var(--sprite-large);
   background-repeat:no-repeat;
   background-size: 800px;
-  top: 30px;
-  right: 135px;
+  top: 42px;
+  right: 119px;
   position: absolute;
   -moz-transform-origin: 0 0;
   height: 28.57142857142857px;
@@ -36,9 +36,10 @@
 }
 .delete-nest{
   position: absolute;
-  top: -8px;
-  left: -14px;
+  top: 0px;
+  left: 0px;
   font-size: 20px;
+  border-top-left-radius: 10px;
   background: rgb(255, 0, 0);
   padding: 5px;
   color: rgb(255, 255, 255);

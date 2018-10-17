@@ -2,7 +2,7 @@
 
 namespace Scanner;
 
-class Monocle_Alternate extends Monocle
+class RDM extends Scanner
 {
     public function get_active($eids, $minIv, $minLevel, $exMinIv, $bigKarp, $tinyRat, $swLat, $swLng, $neLat, $neLng, $tstamp = 0, $oSwLat = 0, $oSwLng = 0, $oNeLat = 0, $oNeLng = 0, $encId = 0)
     {
@@ -11,7 +11,7 @@ class Monocle_Alternate extends Monocle
         $params = array();
         $float = $db->info()['driver'] == 'pgsql' ? "::float" : "";
 
-        $select = "pokemon_id, expire_timestamp AS disappear_time, encounter_id, lat AS latitude, lon AS longitude, gender, form, weight, weather_boosted_condition";
+        $select = "pokemon_id, expire_timestamp AS disappear_time, id AS encounter_id, lat AS latitude, lon AS longitude, gender, form, weight, weather AS weather_boosted_condition";
         global $noHighLevelData;
         if (!$noHighLevelData) {
             $select .= ", atk_iv AS individual_attack, def_iv AS individual_defense, sta_iv AS individual_stamina, move_1, move_2, cp, level";
@@ -72,7 +72,7 @@ class Monocle_Alternate extends Monocle
         }
         $encSql = '';
         if ($encId != 0) {
-            $encSql = " OR (encounter_id = " . $encId . " AND lat > '" . $swLat . "' AND lon > '" . $swLng . "' AND lat < '" . $neLat . "' AND lon < '" . $neLng . "' AND expire_timestamp > '" . $params[':time'] . "')";
+            $encSql = " OR (id = " . $encId . " AND lat > '" . $swLat . "' AND lon > '" . $swLng . "' AND lat < '" . $neLat . "' AND lon < '" . $neLng . "' AND expire_timestamp > '" . $params[':time'] . "')";
         }
         return $this->query_active($select, $conds, $params, $encSql);
     }
@@ -84,7 +84,7 @@ class Monocle_Alternate extends Monocle
         $params = array();
         $float = $db->info()['driver'] == 'pgsql' ? "::float" : "";
 
-        $select = "pokemon_id, expire_timestamp AS disappear_time, encounter_id, lat AS latitude, lon AS longitude, gender, form, weight, weather_boosted_condition";
+        $select = "pokemon_id, expire_timestamp AS disappear_time, id AS encounter_id, lat AS latitude, lon AS longitude, gender, form, weight, weather AS weather_boosted_condition";
 
         global $noHighLevelData;
         if (!$noHighLevelData) {
@@ -140,6 +140,49 @@ class Monocle_Alternate extends Monocle
         return $this->query_active($select, $conds, $params);
     }
 
+    public function query_active($select, $conds, $params, $encSql = '')
+    {
+        global $db;
+
+        $query = "SELECT :select
+        FROM pokemon 
+        WHERE :conditions";
+
+        $query = str_replace(":select", $select, $query);
+        $query = str_replace(":conditions", '(' . join(" AND ", $conds) . ')' . $encSql, $query);
+        $pokemons = $db->query($query, $params)->fetchAll(\PDO::FETCH_ASSOC);
+        $data = array();
+        $i = 0;
+
+        foreach ($pokemons as $pokemon) {
+            $pokemon["latitude"] = floatval($pokemon["latitude"]);
+            $pokemon["longitude"] = floatval($pokemon["longitude"]);
+            $pokemon["disappear_time"] = $pokemon["disappear_time"] * 1000;
+
+            $pokemon["weight"] = isset($pokemon["weight"]) ? floatval($pokemon["weight"]) : null;
+
+            $pokemon["individual_attack"] = isset($pokemon["individual_attack"]) ? intval($pokemon["individual_attack"]) : null;
+            $pokemon["individual_defense"] = isset($pokemon["individual_defense"]) ? intval($pokemon["individual_defense"]) : null;
+            $pokemon["individual_stamina"] = isset($pokemon["individual_stamina"]) ? intval($pokemon["individual_stamina"]) : null;
+
+            $pokemon["weather_boosted_condition"] = isset($pokemon["weather_boosted_condition"]) ? intval($pokemon["weather_boosted_condition"]) : 0;
+
+            $pokemon["pokemon_id"] = intval($pokemon["pokemon_id"]);
+            $pokemon["pokemon_name"] = i8ln($this->data[$pokemon["pokemon_id"]]['name']);
+            $pokemon["pokemon_rarity"] = i8ln($this->data[$pokemon["pokemon_id"]]['rarity']);
+            $types = $this->data[$pokemon["pokemon_id"]]["types"];
+            foreach ($types as $k => $v) {
+                $types[$k]['type'] = i8ln($v['type']);
+            }
+            $pokemon["pokemon_types"] = $types;
+            $data[] = $pokemon;
+
+            unset($pokemons[$i]);
+            $i++;
+        }
+        return $data;
+    }
+
     public function get_stops($swLat, $swLng, $neLat, $neLng, $tstamp = 0, $oSwLat = 0, $oSwLng = 0, $oNeLat = 0, $oNeLng = 0, $lured = 0)
     {
         $conds = array();
@@ -160,7 +203,7 @@ class Monocle_Alternate extends Monocle
         }
 
         if ($lured == 1) {
-            $conds[] = "expires > :time";
+            $conds[] = "lure_expire_timestamp > :time";
             $params[':time'] = time();
         }
         elseif( $lured == 2){
@@ -168,7 +211,7 @@ class Monocle_Alternate extends Monocle
         }
 
         if ($tstamp > 0) {
-            $conds[] = "updated > :lastUpdated";
+            $conds[] = "last_modified_timestamp > :lastUpdated";
             $params[':lastUpdated'] = $tstamp;
         }
         return $this->query_stops($conds, $params);
@@ -178,17 +221,16 @@ class Monocle_Alternate extends Monocle
     {
         global $db, $noTrainerName, $noManualQuests;
 
-        $query = "SELECT external_id AS pokestop_id,
-        expires AS lure_expiration,
-        deployer AS lure_user,
+        $query = "SELECT id AS pokestop_id,
+        lat AS latitude,
+        lon AS longitude,
         name AS pokestop_name,
         url,
-        lat AS latitude,
-        lon AS longitude";
+	lure_expire_timestamp AS lure_expiration";
         if (!$noManualQuests) {
             $query .= ",quest_id,reward_id";
         }
-        $query .= " FROM pokestops
+        $query .= " FROM pokestop
         WHERE :conditions";
 
         $query = str_replace(":conditions", join(" AND ", $conds), $query);
@@ -201,6 +243,9 @@ class Monocle_Alternate extends Monocle
             $pokestop["latitude"] = floatval($pokestop["latitude"]);
             $pokestop["longitude"] = floatval($pokestop["longitude"]);
             $pokestop["lure_expiration"] = !empty($pokestop["lure_expiration"]) ? $pokestop["lure_expiration"] * 1000 : null;
+            $pokestop["lure_user"] = !empty($pokestop["lure_user"]) ? $pokestop["lure_user"] : "henk";
+            $pokestop["quest_id"] = !empty($pokestop["quest_id"]) ? $pokestop["quest_id"] : null;
+            $pokestop["reward_id"] = !empty($pokestop["reward_id"]) ? $pokestop["reward_id"] : null;
             if ($noTrainerName === true) {
                 // trainer names hidden, so don't show trainer who lured
                 unset($pokestop["lure_user"]);
@@ -218,21 +263,28 @@ class Monocle_Alternate extends Monocle
         $conds = array();
         $params = array();
 
-        $conds[] = "f.external_id = :gymId";
+        $conds[] = "id = :gymId";
         $params[':gymId'] = $gymId;
 
         $gyms = $this->query_gyms($conds, $params);
         $gym = $gyms[0];
 
-        $select = "gd.pokemon_id, gd.cp AS pokemon_cp, gd.move_1, gd.move_2, gd.nickname, gd.atk_iv AS iv_attack, gd.def_iv AS iv_defense, gd.sta_iv AS iv_stamina, gd.cp AS pokemon_cp";
+        $select = "guarding_pokemon_id";
         global $noTrainerName, $noTrainerLevel;
         if (!$noTrainerName) {
-            $select .= ", gd.owner_name AS trainer_name";
+            $select .= ", owner_name AS trainer_name";
         }
         if (!$noTrainerLevel) {
-            $select .= ", gd.owner_level AS trainer_level";
+            $select .= ", owner_level AS trainer_level";
         }
         $gym["pokemon"] = $this->query_gym_defenders($gymId, $select);
+        $gym["pokemon_cp"] = !empty($gym["pokemon_cp"]) ? $gym["pokemon_cp"] : null;
+        $gym["move_1"] = !empty($gym["move_1"]) ? $gym["move_1"] : null;
+        $gym["move_2"] = !empty($gym["move_2"]) ? $gym["move_2"] : null;
+        $gym["nickname"] = !empty($gym["nickname"]) ? $gym["nickname"] : null;
+        $gym["iv_attack"] = !empty($gym["iv_attack"]) ? $gym["iv_attack"] : null;
+        $gym["iv_defense"] = !empty($gym["iv_defense"]) ? $gym["iv_defense"] : null;
+        $gym["iv_stamina"] = !empty($gym["iv_stamina"]) ? $gym["iv_defense"] : null;
         return $gym;
     }
 
@@ -241,25 +293,25 @@ class Monocle_Alternate extends Monocle
         $conds = array();
         $params = array();
 
-        $conds[] = "f.lat > :swLat AND f.lon > :swLng AND f.lat < :neLat AND f.lon < :neLng";
+        $conds[] = "lat > :swLat AND lon > :swLng AND lat < :neLat AND lon < :neLng";
         $params[':swLat'] = $swLat;
         $params[':swLng'] = $swLng;
         $params[':neLat'] = $neLat;
         $params[':neLng'] = $neLng;
 
         if ($oSwLat != 0) {
-            $conds[] = "NOT (f.lat > :oswLat AND f.lon > :oswLng AND f.lat < :oneLat AND f.lon < :oneLng)";
+            $conds[] = "NOT (lat > :oswLat AND lon > :oswLng AND lat < :oneLat AND lon < :oneLng)";
             $params[':oswLat'] = $oSwLat;
             $params[':oswLng'] = $oSwLng;
             $params[':oneLat'] = $oNeLat;
             $params[':oneLng'] = $oNeLng;
         }
         if ($tstamp > 0) {
-            $conds[] = "updated > :lastUpdated";
+            $conds[] = "last_modified_timestamp > :lastUpdated";
             $params[':lastUpdated'] = $tstamp;
         }
         if ($exEligible === "true") {
-            $conds[] = "(park IS NOT NULL OR sponsor > 0)";
+            $conds[] = "(ex_raid_eligible IS NOT NULL AND ex_raid_eligible != '0')";
         }
 
         return $this->query_gyms($conds, $params);
@@ -269,29 +321,26 @@ class Monocle_Alternate extends Monocle
     {
         global $db;
 
-        $query = "SELECT f.external_id AS gym_id,
-        fs.last_modified AS last_modified,
+        $query = "SELECT id AS gym_id,
+        lat AS latitude,
+        lon AS longitude,
+        name,
+        url,
+        last_modified_timestamp AS last_modified,
+        raid_end_timestamp AS raid_end,
+        raid_battle_timestamp AS raid_start,
         updated AS last_scanned,
-        f.lat AS latitude,
-        f.lon AS longitude,
-        f.name,
-        f.url,
-        f.sponsor,
-        f.park,
-        fs.team AS team_id,
-        fs.guard_pokemon_id,
-        fs.slots_available,
-        r.level AS raid_level,
-        r.pokemon_id AS raid_pokemon_id,
-        r.time_battle AS raid_start,
-        r.time_end AS raid_end,
-        r.cp AS raid_pokemon_cp,
-        r.move_1 AS raid_pokemon_move_1,
-        r.move_2 AS raid_pokemon_move_2,
-        r.form
-        FROM forts f
-        LEFT JOIN fort_sightings fs ON fs.fort_id = f.id
-        LEFT JOIN raids r ON r.fort_id = f.id
+        raid_pokemon_id,
+        guarding_pokemon_id AS guard_pokemon_id,
+        availble_slots AS slots_available,
+        team_id,
+        raid_level,
+        raid_pokemon_move_1,
+        raid_pokemon_move_2,
+        raid_pokemon_form AS form,
+        raid_pokemon_cp,
+        ex_raid_eligible AS park
+        FROM gym
         WHERE :conditions";
 
         $query = str_replace(":conditions", join(" AND ", $conds), $query);
@@ -317,12 +366,13 @@ class Monocle_Alternate extends Monocle
             $gym["raid_pokemon_name"] = empty($raid_pid) ? null : i8ln($this->data[$raid_pid]["name"]);
             $gym["latitude"] = floatval($gym["latitude"]);
             $gym["longitude"] = floatval($gym["longitude"]);
-            $gym["sponsor"] = intval($gym["sponsor"]);
+            //$gym["sponsor"] = intval($gym["sponsor"]);
             $gym["slots_available"] = intval($gym["slots_available"]);
             $gym["last_modified"] = $gym["last_modified"] * 1000;
             $gym["last_scanned"] = $gym["last_scanned"] * 1000;
             $gym["raid_start"] = $gym["raid_start"] * 1000;
             $gym["raid_end"] = $gym["raid_end"] * 1000;
+            $gym["sponsor"] = !empty($gym["sponsor"]) ? $gym["sponsor"] : null;
             $data[] = $gym;
 
             unset($gyms[$i]);
@@ -337,9 +387,8 @@ class Monocle_Alternate extends Monocle
 
 
         $query = "SELECT :select
-      FROM gym_defenders gd
-      LEFT JOIN forts f ON gd.fort_id = f.id
-      WHERE f.external_id = :gymId";
+      FROM gym
+      WHERE id = :gymId";
 
         $query = str_replace(":select", $select, $query);
         $gym_defenders = $db->query($query, [":gymId" => $gymId])->fetchAll(\PDO::FETCH_ASSOC);
@@ -384,7 +433,7 @@ class Monocle_Alternate extends Monocle
         $conds = array();
         $params = array();
 
-        $conds[] = "f.lat > :swLat AND f.lon > :swLng AND f.lat < :neLat AND f.lon < :neLng";
+        $conds[] = "lat > :swLat AND lon > :swLng AND lat < :neLat AND lon < :neLng";
         $params[':swLat'] = $swLat;
         $params[':swLng'] = $swLng;
         $params[':neLat'] = $neLat;
@@ -402,11 +451,11 @@ class Monocle_Alternate extends Monocle
     {
         global $db;
 
-        $query = "SELECT f.external_id AS gym_id,
-        f.lat AS latitude,
-        f.lon AS longitude,
+        $query = "SELECT id AS gym_id,
+        lat AS latitude,
+        lon AS longitude,
         name
-        FROM forts f
+        FROM gym
         WHERE :conditions";
 
         $query = str_replace(":conditions", join(" AND ", $conds), $query);
@@ -430,19 +479,18 @@ class Monocle_Alternate extends Monocle
     {
         global $db;
 
-        $query = "SELECT f.external_id AS gym_id,
-        f.lat AS latitude,
-        f.lon AS longitude,
+        $query = "SELECT id AS gym_id,
+        lat AS latitude,
+        lon AS longitude,
         name,
         level AS raid_level,
         pokemon_id AS raid_pokemon_id,
-        time_battle AS raid_start,
-        time_end AS raid_end,
-        cp AS raid_pokemon_cp,
-        move_1 AS raid_pokemon_move_1,
-        move_2 AS raid_pokemon_move_2
-        FROM forts f
-        LEFT JOIN raids r ON r.fort_id = f.id
+        raid_battle_timestamp AS raid_start,
+        raid_end_timestamp AS raid_end,
+        raid_pokemon_cp,
+        raid_pokemon_move_1,
+        raid_pokemon_move_2
+        FROM gym
         WHERE :conditions";
 
         $query = str_replace(":conditions", join(" AND ", $conds), $query);
@@ -598,9 +646,8 @@ class Monocle_Alternate extends Monocle
         return $data;
     }
 
-    public function get_portals($swLat, $swLng, $neLat, $neLng, $tstamp = 0, $oSwLat = 0, $oSwLng = 0, $oNeLat = 0, $oNeLng = 0, $newportals = 0)
+    public function get_portals($swLat, $swLng, $neLat, $neLng, $tstamp = 0, $oSwLat = 0, $oSwLng = 0, $oNeLat = 0, $oNeLng = 0)
     {
-        global $markPortalsAsNew;
         $conds = array();
         $params = array();
 
@@ -616,13 +663,7 @@ class Monocle_Alternate extends Monocle
             $params[':oswLng'] = $oSwLng;
             $params[':oneLat'] = $oNeLat;
             $params[':oneLng'] = $oNeLng;
-	}
-
-	if ($newportals == 1) {
-            $conds[] = "imported > :lastImported";
-            $params[':lastImported'] = time() - $markPortalsAsNew;
-	}
-
+        }
         if ($tstamp > 0) {
             $conds[] = "updated > :lastUpdated";
             $params[':lastUpdated'] = $tstamp;
@@ -639,10 +680,7 @@ class Monocle_Alternate extends Monocle
         lat,
         lon,
         name,
-        url,
-        updated,
-        imported,
-        checked
+        url
         FROM ingress_portals
         WHERE :conditions";
 
@@ -657,6 +695,55 @@ class Monocle_Alternate extends Monocle
             $data[] = $portal;
 
             unset($portals[$i]);
+            $i++;
+        }
+        return $data;
+    }
+
+    public function get_spawnpoints($swLat, $swLng, $neLat, $neLng, $tstamp = 0, $oSwLat = 0, $oSwLng = 0, $oNeLat = 0, $oNeLng = 0)
+    {
+        $conds = array();
+        $params = array();
+        $conds[] = "lat > :swLat AND lon > :swLng AND lat < :neLat AND lon < :neLng";
+        $params[':swLat'] = $swLat;
+        $params[':swLng'] = $swLng;
+        $params[':neLat'] = $neLat;
+        $params[':neLng'] = $neLng;
+        if ($oSwLat != 0) {
+            $conds[] = "NOT (lat > :oswLat AND lon > :oswLng AND lat < :oneLat AND lon < :oneLng)";
+            $params[':oswLat'] = $oSwLat;
+            $params[':oswLng'] = $oSwLng;
+            $params[':oneLat'] = $oNeLat;
+            $params[':oneLng'] = $oNeLng;
+        }
+        if ($tstamp > 0) {
+            $conds[] = "updated > :lastUpdated";
+            $params[':lastUpdated'] = $tstamp;
+        }
+        return $this->query_spawnpoints($conds, $params);
+    }
+
+    private function query_spawnpoints($conds, $params)
+    {
+        global $db;
+        $query = "SELECT lat AS latitude,
+        lon AS longitude,
+        id AS spawnpoint_id
+        FROM spawnpoint
+        WHERE :conditions";
+        $query = str_replace(":conditions", join(" AND ", $conds), $query);
+        $spawnpoints = $db->query($query, $params)->fetchAll(\PDO::FETCH_ASSOC);
+        $data = array();
+        $i = 0;
+        foreach ($spawnpoints as $spawnpoint) {
+            $spawnpoint["latitude"] = floatval($spawnpoint["latitude"]);
+            $spawnpoint["longitude"] = floatval($spawnpoint["longitude"]);
+            //$spawnpoint["time"] = intval($spawnpoint["despawn_time"]);
+            //$spawnpoint["duration"] = intval($spawnpoint["duration"]);
+            $spawnpoint["time"] = !empty($spawnpoint["despawn_time"]) ? $spawnpoint["despawn_time"] : null;
+            $spawnpoint["duration"] = !empty($spawnpoint["duration"]) ? $spawnpoint["duration"] : null;
+            $data[] = $spawnpoint;
+            unset($spawnpoints[$i]);
             $i++;
         }
         return $data;

@@ -1,7 +1,8 @@
 'use strict'
 
 /* eslint no-unused-vars: "off" */
-
+var L
+var markers
 var noLabelsStyle = [{
     featureType: 'poi',
     elementType: 'labels',
@@ -944,6 +945,31 @@ var StoreOptions = {
             default: enablePortals,
             type: StoreTypes.Boolean
         },
+    'showNewPortalsOnly':
+        {
+            default: enableNewPortals,
+            type: StoreTypes.Number
+        },
+    'showCells':
+        {
+            default: enableS2Cells,
+            type: StoreTypes.Boolean
+        },
+    'showExCells':
+        {
+            default: enableLevel13Cells,
+            type: StoreTypes.Boolean
+        },
+    'showGymCells':
+        {
+            default: enableLevel14Cells,
+            type: StoreTypes.Boolean
+        },
+    'showStopCells':
+        {
+            default: enableLevel17Cells,
+            type: StoreTypes.Boolean
+        },
     'useGymSidebar':
         {
             default: gymSidebar,
@@ -1091,7 +1117,7 @@ var StoreOptions = {
         },
     'searchMarkerStyle':
         {
-            default: 'google',
+            default: 'OSM',
             type: StoreTypes.String
         },
     'locationMarkerStyle':
@@ -1180,56 +1206,87 @@ var mapData = {
     portals: {}
 }
 
-function getGoogleSprite(index, sprite, displayHeight, weather = 0) {
+function getPokemonSprite(index, sprite, displayHeight, weather = 0, encounterForm = 0) {
     displayHeight = Math.max(displayHeight, 3)
     var scale = displayHeight / sprite.iconHeight
     // Crop icon just a tiny bit to avoid bleedover from neighbor
-    var scaledIconSize = new google.maps.Size(scale * sprite.iconWidth - 1, scale * sprite.iconHeight - 1)
-    var scaledIconOffset = new google.maps.Point(index % sprite.columns * sprite.iconWidth * scale + 0.5, Math.floor(index / sprite.columns) * sprite.iconHeight * scale + 0.5)
-    var scaledSpriteSize = new google.maps.Size(scale * sprite.spriteWidth, scale * sprite.spriteHeight)
-    var scaledIconCenterOffset = new google.maps.Point(scale * sprite.iconWidth / 2, scale * sprite.iconHeight / 2)
-    var monSpriteUrl
-    var pokemonId = index + 1
-    if (weather === 0) {
-        monSpriteUrl = Store.get('spritefileLarge')
-    } else if (boostedMons[weather].indexOf(pokemonId) === -1) {
-        monSpriteUrl = Store.get('spritefileLarge')
+    var scaledIconSizeWidth = scale * sprite.iconWidth
+    var scaledWeatherIconSizeWidth = scale * sprite.iconWidth - 10
+    var scaledIconCenterOffset = [scale * sprite.iconWidth / 2, scale * sprite.iconHeight / 2]
+    var formStr = ''
+    if (encounterForm === '0' || encounterForm === null) {
+        formStr = '00'
     } else {
-        monSpriteUrl = Store.get('weatherSpritesSrc') + weather + '.png'
+        formStr = encounterForm
     }
-    return {
-        url: monSpriteUrl,
-        size: scaledIconSize,
-        scaledSize: scaledSpriteSize,
-        origin: scaledIconOffset,
-        anchor: scaledIconCenterOffset
+
+    var pokemonId = index + 1
+    var pokemonIdStr = ''
+    if (pokemonId <= 9) {
+        pokemonIdStr = '00' + pokemonId
+    } else if (pokemonId <= 99) {
+        pokemonIdStr = '0' + pokemonId
+    } else {
+        pokemonIdStr = pokemonId
     }
+    var html = ''
+    if (copyrightSafe === false) {
+        if (weather === 0) {
+            html = '<img src="' + iconpath + 'pokemon_icon_' + pokemonIdStr + '_' + formStr + '.png" style="width:' + scaledIconSizeWidth + 'px;height:auto;"/>'
+        } else if (boostedMons[weather].indexOf(pokemonId) === -1) {
+            html = '<img src="' + iconpath + 'pokemon_icon_' + pokemonIdStr + '_' + formStr + '.png" style="width:' + scaledIconSizeWidth + 'px;height:auto;"/>'
+        } else {
+            html = '<img src="' + iconpath + 'pokemon_icon_' + pokemonIdStr + '_' + formStr + '.png" style="width:' + scaledIconSizeWidth + 'px;height:auto;"/>' +
+            '<img src="static/weather/i-' + weather + '.png" style="width:' + scaledWeatherIconSizeWidth + 'px;height:auto;position:absolute;top:-' + scaledWeatherIconSizeWidth + 'px;right:0px;"/>'
+        }
+    } else {
+        if (weather === 0) {
+            html = '<img src="static/icons-safe/pokemon_icon_' + pokemonIdStr + '_00.png" style="width:' + scaledIconSizeWidth + 'px;height:auto;"/>'
+        } else if (boostedMons[weather].indexOf(pokemonId) === -1) {
+            html = '<img src="static/icons-safe/pokemon_icon_' + pokemonIdStr + '_00.png" style="width:' + scaledIconSizeWidth + 'px;height:auto;"/>'
+        } else {
+            html = '<img src="static/icons-safe/pokemon_icon_' + pokemonIdStr + '_00.png" style="width:' + scaledIconSizeWidth + 'px;height:auto;"/>' +
+            '<img src="static/weather/i-' + weather + '.png" style="width:' + scaledWeatherIconSizeWidth + 'px;height:auto;position:absolute;top:-25px;right:0px;"/>'
+        }
+    }
+    var pokemonIcon = L.divIcon({
+        iconAnchor: scaledIconCenterOffset,
+        popupAnchor: [0, -40],
+        className: 'pokemon-marker',
+        html: html
+    })
+    return pokemonIcon
 }
 
 function setupPokemonMarker(item, map, isBounceDisabled) {
-// Scale icon size up with the map exponentially
-    var iconSize = 2 + (map.getZoom() - 3) * (map.getZoom() - 3) * 0.2 + Store.get('iconSizeModifier')
+    var latOffset = Math.random() * 0.0002 - 0.0001
+    if (latOffset >= 0) {
+        latOffset += 0.00005
+    } else {
+        latOffset -= 0.00005
+    }
+    var lonOffset = Math.random() * 0.0002 - 0.0001
+    if (lonOffset >= 0) {
+        lonOffset += 0.00005
+    } else {
+        lonOffset -= 0.00005
+    }
+    item['latitude'] += latOffset
+    item['longitude'] += lonOffset
+
+    var iconSize = (12) * (12) * 0.2 + Store.get('iconSizeModifier')
     if (isNotifiedPokemon(item) === true) {
         iconSize += Store.get('iconNotifySizeModifier')
     }
     var pokemonIndex = item['pokemon_id'] - 1
-    var icon = getGoogleSprite(pokemonIndex, pokemonSprites, iconSize, item['weather_boosted_condition'])
+    var icon = getPokemonSprite(pokemonIndex, pokemonSprites, iconSize, item['weather_boosted_condition'], item['form'])
 
     var animationDisabled = false
     if (isBounceDisabled === true) {
         animationDisabled = true
     }
-
-    return new google.maps.Marker({
-        position: {
-            lat: item['latitude'],
-            lng: item['longitude']
-        },
-        zIndex: 9999,
-        map: map,
-        icon: icon,
-        animationDisabled: animationDisabled
-    })
+    var marker = L.marker([item['latitude'], item['longitude']], {icon: icon, zIndexOffset: 9999}).addTo(markers)
+    return marker
 }
 
 function isNotifiedPokemon(item) {

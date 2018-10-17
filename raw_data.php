@@ -22,6 +22,7 @@ $oSwLng = !empty($_POST['oSwLng']) ? $_POST['oSwLng'] : 0;
 $oNeLat = !empty($_POST['oNeLat']) ? $_POST['oNeLat'] : 0;
 $oNeLng = !empty($_POST['oNeLng']) ? $_POST['oNeLng'] : 0;
 $luredonly = !empty($_POST['luredonly']) ? $_POST['luredonly'] : 0;
+$newportals = !empty($_POST['newportals']) ? $_POST['newportals'] : 0;
 $minIv = isset($_POST['minIV']) ? floatval($_POST['minIV']) : false;
 $prevMinIv = !empty($_POST['prevMinIV']) ? $_POST['prevMinIV'] : false;
 $minLevel = isset($_POST['minLevel']) ? intval($_POST['minLevel']) : false;
@@ -82,6 +83,10 @@ if (strtolower($map) === "monocle") {
         $scanner = new \Scanner\RocketMap_Sloppy();
     } else {
         $scanner = new \Scanner\RocketMap();
+    }
+} elseif (strtolower($map) === "rdm") {
+    if (strtolower($fork) === "default") {
+        $scanner = new \Scanner\RDM();
     }
 }
 
@@ -199,12 +204,12 @@ global $noPortals;
 if (!$noPortals ) {
     if ($d["lastportals"] == "true") {
         if ($lastportals != "true") {
-            $d["portals"] = $scanner->get_portals($swLat, $swLng, $neLat, $neLng);
+            $d["portals"] = $scanner->get_portals($swLat, $swLng, $neLat, $neLng, 0, 0, 0, 0, 0, $newportals);
         } else {
             if ($newarea) {
-                $d["portals"] = $scanner->get_portals($swLat, $swLng, $neLat, $neLng, 0, $oSwLat, $oSwLng, $oNeLat, $oNeLng);
+                $d["portals"] = $scanner->get_portals($swLat, $swLng, $neLat, $neLng, 0, $oSwLat, $oSwLng, $oNeLat, $oNeLng, $newportals);
             } else {
-                $d["portals"] = $scanner->get_portals($swLat, $swLng, $neLat, $neLng, time());
+                $d["portals"] = $scanner->get_portals($swLat, $swLng, $neLat, $neLng, time(), 0, 0, 0, 0,$newportals);
             }
         }
     }
