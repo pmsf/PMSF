@@ -429,7 +429,7 @@ function showS2Cells(level, style) {
     function addPoly(cell) {
         const vertices = cell.getCornerLatLngs()
         const poly = L.polygon(vertices,
-            Object.assign({color: 'blue', opacity: 0.5, weight: 2, fillOpacity: 0.0}, style))
+            Object.assign({color: 'blue', opacity: 0.5, weight: 2, fillOpacity: 0.0, dashArray: '2 6', dashOffset: '0'}, style))
         if (cell.level === 13) {
             exLayerGroup.addLayer(poly)
         } else if (cell.level === 14) {
@@ -1625,7 +1625,7 @@ function setupNestMarker(item) {
         }
         getNestMarkerIcon = '<div class="marker-nests">' +
             '<img src="static/images/nest-' + item.english_pokemon_types[0].type.toLowerCase() + '.png" style="width:45px;height: auto;"/>' +
-            '<img src="' + iconpath + 'pokemon_icon_' + pokemonIdStr + '_00.png" style="position:absolute;width:48px;height:48px;top:-8px;left:-5px"/>' +
+            '<img src="' + iconpath + 'pokemon_icon_' + pokemonIdStr + '_00.png" style="position:absolute;width:40px;height:40px;top:6px;left:3px"/>' +
             '</div>'
     } else {
         getNestMarkerIcon = '<div class="marker-nests">' +
@@ -1667,7 +1667,7 @@ function nestLabel(item) {
                 '<center>' +
                 '<div class="marker-nests">' +
                 '<img src="static/images/nest-' + item.english_pokemon_types[0].type.toLowerCase() + '.png" style="width:80px;height:auto;"/>' +
-                '<img src="' + iconpath + 'pokemon_icon_' + pokemonIdStr + '_00.png" style="position:absolute;width:48px;height:48px;top:48px;left:112px;"/>' +
+                '<img src="' + iconpath + 'pokemon_icon_' + pokemonIdStr + '_00.png" style="position:absolute;width:65px;height:65px;top:44px;left:103px;"/>' +
                 '<br>' +
                 '<div>' +
                 typesDisplay +
@@ -3728,14 +3728,14 @@ function updateS2Overlay() {
     if ((Store.get('showCells'))) {
         if (Store.get('showExCells') && (map.getZoom() > 12)) {
             exLayerGroup.clearLayers()
-            showS2Cells(13, {color: 'red', weight: 6})
+            showS2Cells(13, {color: 'red', weight: 6, dashOffset: '8'})
         } else if (Store.get('showExCells') && (map.getZoom() <= 12)) {
             exLayerGroup.clearLayers()
             toastr['error'](i8ln('This is to much zoom.'), i8ln('EX cells are currently hidden'))
         }
         if (Store.get('showGymCells') && (map.getZoom() > 13)) {
             gymLayerGroup.clearLayers()
-            showS2Cells(14, {color: 'green', weight: 4})
+            showS2Cells(14, {color: 'green', weight: 4, dashOffset: '4'})
         } else if (Store.get('showGymCells') && (map.getZoom() <= 13)) {
             gymLayerGroup.clearLayers()
             toastr['error'](i8ln('This is to much zoom.'), i8ln('Gym cells are currently hidden'))
@@ -5244,10 +5244,10 @@ $(function () {
         if (this.checked) {
             wrapper.show(options)
             if (Store.get('showExCells')) {
-                showS2Cells(13, {color: 'red', weight: 6})
+                showS2Cells(13, {color: 'red', weight: 6, dashOffset: '8'})
             }
             if (Store.get('showGymCells')) {
-                showS2Cells(14, {color: 'green', weight: 4})
+                showS2Cells(14, {color: 'green', weight: 4, dashOffset: '4'})
             }
             if (Store.get('showStopCells')) {
                 showS2Cells(17, {color: 'blue'})
@@ -5264,7 +5264,7 @@ $(function () {
     $('#s2-level13-switch').change(function () {
         Store.set('showExCells', this.checked)
         if (this.checked) {
-            showS2Cells(13, {color: 'red', weight: 6})
+            showS2Cells(13, {color: 'red', weight: 6, dashOffset: '8'})
         } else {
             exLayerGroup.clearLayers()
         }
@@ -5273,7 +5273,7 @@ $(function () {
     $('#s2-level14-switch').change(function () {
         Store.set('showGymCells', this.checked)
         if (this.checked) {
-            showS2Cells(14, {color: 'green', weight: 4})
+            showS2Cells(14, {color: 'green', weight: 4, dashOffset: '4'})
         } else {
             gymLayerGroup.clearLayers()
         }
