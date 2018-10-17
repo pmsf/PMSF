@@ -1298,6 +1298,7 @@ function getGymMarkerIcon(item) {
     }
     var html = ''
     if (item['raid_pokemon_id'] != null && item.raid_end > Date.now() && copyrightSafe === false) {
+
         html = '<div style="position:relative;">' +
             '<img src="static/forts/' + Store.get('gymMarkerStyle') + '/' + teamStr + '.png" style="width:50px;height:auto;"/>' +
             exIcon +
@@ -1418,6 +1419,7 @@ function setupGymMarker(item) {
             } else {
                 pokemonidStr = pokemonid
             }
+
             icon = iconpath + 'pokemon_icon_' + pokemonidStr + '_' + formStr + '.png'
             checkAndCreateSound(item.raid_pokemon_id)
         } else if (raidStarted && copyrightSafe === true) {
@@ -4217,6 +4219,7 @@ function showGymDetails(id) { // eslint-disable-line no-unused-vars
                 } else {
                     pokemonidStr = pokemonid
                 }
+
                 raidIcon = '<img style="width: 80px;" src="' + iconpath + 'pokemon_icon_' + pokemonidStr + '_' + formStr + '.png"/>'
             } else if (raidStarted && copyrightSafe === true) {
                 raidIcon = '<i class="pokemon-sprite-large n' + result.raid_pokemon_id + '"></i>'
