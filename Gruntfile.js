@@ -48,7 +48,7 @@ module.exports = function (grunt) {
                 compact: true,
                 controlFlowFlattening: true,
                 controlFlowFlatteningThreshold: 1,
-                deadCodeInjection: true,
+                deadCodeInjection: false,
                 deadCodeInjectionThreshold: 0.2,
                 debugProtection: true,
                 debugProtectionInterval: true,
