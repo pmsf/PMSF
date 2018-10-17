@@ -1298,7 +1298,7 @@ function getGymMarkerIcon(item) {
         html = '<div style="position:relative;">' +
             '<img src="static/forts/' + Store.get('gymMarkerStyle') + '/' + teamStr + '.png" style="width:50px;height:auto;"/>' +
             exIcon +
-            '<img src="' + iconpath + 'pokemon_icon_' + pokemonidStr + '_' + formStr + '.png" style="width:70px;height:auto;position:absolute;top:-35px;right:-4px;"/>' +
+            '<img src="' + iconpath + 'pokemon_icon_' + pokemonidStr + '_' + formStr + '.png" style="width:50px;height:auto;position:absolute;top:-15px;right:0px;"/>' +
             '</div>'
         fortMarker = L.divIcon({
             iconSize: [50, 50],
