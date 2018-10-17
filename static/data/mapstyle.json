@@ -4,5 +4,7 @@
   "styleblackandwhite": "Black and White",
   "styletopo": "ToPo Map",
   "stylesatellite": "Satellite",
-  "stylewikipedia": "Wikipedia"
+  "stylewikipedia": "Wikipedia",
+  "googlemapssat": "Google Maps Satellite",
+  "googlemapsroad": "Google Maps Roadmap"
 }
