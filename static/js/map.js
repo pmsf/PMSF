@@ -1611,13 +1611,21 @@ function setupPokestopMarker(item) {
 function setupNestMarker(item) {
     var getNestMarkerIcon = ''
     if (item.pokemon_id > 0) {
+        var pokemonIdStr = ''
+        if (item.pokemon_id <= 9) {
+            pokemonIdStr = '00' + item.pokemon_id
+        } else if (item.pokemon_id <= 99) {
+            pokemonIdStr = '0' + item.pokemon_id
+        } else {
+            pokemonIdStr = item.pokemon_id
+        }
         getNestMarkerIcon = '<div class="marker-nests">' +
-            '<img src="static/images/nest-' + item.english_pokemon_types[0].type.toLowerCase() + '.png" style="width:36px;height: auto;"/>' +
-            '<i class="nest-pokemon-sprite n' + item.pokemon_id + '"></i>' +
+            '<img src="static/images/nest-' + item.english_pokemon_types[0].type.toLowerCase() + '.png" style="width:45px;height: auto;"/>' +
+            '<img src="' + iconpath + 'pokemon_icon_' + pokemonIdStr + '_00.png" style="position:absolute;width:48px;height:48px;top:-8px;left:-5px"/>' +
             '</div>'
     } else {
         getNestMarkerIcon = '<div class="marker-nests">' +
-            '<img src="static/images/nest-empty.png" style="width:36px;height: auto;"/>' +
+            '<img src="static/images/nest-empty.png" style="width:36px;height:auto;"/>' +
             '</div>'
     }
     var nestMarkerIcon = L.divIcon({
@@ -1642,12 +1650,20 @@ function nestLabel(item) {
         $.each(types, function (index, type) {
             typesDisplay += getTypeSpan(type)
         })
+        var pokemonIdStr = ''
+        if (item.pokemon_id <= 9) {
+            pokemonIdStr = '00' + item.pokemon_id
+        } else if (item.pokemon_id <= 99) {
+            pokemonIdStr = '0' + item.pokemon_id
+        } else {
+            pokemonIdStr = item.pokemon_id
+        }
         str += '<center><b>' + item.pokemon_name + '</b></center>' +
                 '</div>' +
                 '<center>' +
                 '<div class="marker-nests">' +
-                '<img src="static/images/nest-' + item.english_pokemon_types[0].type.toLowerCase() + '.png"/>' +
-                '<i class="label-nest-pokemon-sprite n' + item.pokemon_id + '"></i>' +
+                '<img src="static/images/nest-' + item.english_pokemon_types[0].type.toLowerCase() + '.png" style="width:80px;height:auto;"/>' +
+                '<img src="' + iconpath + 'pokemon_icon_' + pokemonIdStr + '_00.png" style="position:absolute;width:48px;height:48px;top:48px;left:112px;"/>' +
                 '<br>' +
                 '<div>' +
                 typesDisplay +
