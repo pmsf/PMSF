@@ -54,6 +54,10 @@ $blockIframe = true;                                                // Block you
 $title = "PMSF Alt";                                                // Title to display in title bar
 $locale = "en";                                                     // Display language
 
+/* Google Maps ONLY USED FOR TILE LAYERS */
+
+$gmapsKey = "";
+
 /* Google Analytics */
 
 $gAnalyticsId = "";                                                 // "" for empty, "UA-XXXXX-Y" add your Google Analytics tracking ID
