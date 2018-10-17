@@ -1201,6 +1201,8 @@ function customizePokemonMarker(marker, item, skipNotification) {
     if (pokemonForm === '0' || pokemonForm === null) {
         formStr = '00'
     } else if (pokemonForm <= 9) {
+        formStr = '00' + pokemonForm
+    } else if (pokemonForm <= 99) {
         formStr = '0' + pokemonForm
     } else {
         formStr = pokemonForm
