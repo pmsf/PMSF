@@ -67,7 +67,7 @@ if ( $blockIframe ) {
     <script src="https://cdnjs.cloudflare.com/ajax/libs/list.js/1.5.0/list.js"></script>
     <?php
     function pokemonFilterImages( $noPokemonNumbers, $onClick = '', $pokemonToExclude = array(), $num = 0 ) {
-        global $mons;
+        global $mons, $copyrightSafe, $iconRepository;
         if ( empty( $mons ) ) {
             $json = file_get_contents( 'static/dist/data/pokemon.min.json' );
             $mons = json_decode( $json, true );
@@ -83,10 +83,21 @@ if ( $blockIframe ) {
             }
 
             if ( ! in_array( $k, $pokemonToExclude ) ) {
-                if ( $k > 386 ) {
+                if ( $k > 493 ) {
                     break;
+		}
+		if ( $k <= 9 ) {
+                    $id = "00$k";
+                } else if ( $k <= 99 ) {
+                    $id = "0$k";
+                } else {
+                    $id = $k;
+		}
+		if ( ! $copyrightSafe ) {
+                    echo '<span class="pokemon-icon-sprite" data-value="' . $k . '" onclick="' . $onClick . '"><span style="display:none" class="types">' . i8ln( $type ) . '</span><span style="display:none" class="name">' . i8ln( $name ) . '</span><span style="display:none" class="id">$k</span><img src="' . $iconRepository . 'pokemon_icon_' . $id . '_00.png" style="width:48px;height:48px;"/>';
+		} else {
+                    echo '<span class="pokemon-icon-sprite" data-value="' . $k . '" onclick="' . $onClick . '"><span style="display:none" class="types">' . i8ln( $type ) . '</span><span style="display:none" class="name">' . i8ln( $name ) . '</span><span style="display:none" class="id">$k</span><img src="static/icons-safe/pokemon_icon_' . $id . '_00.png" style="width:48px;height:48px;"/>';
                 }
-                echo "<span class='pokemon-icon-sprite' data-value='" . $k . "' onclick='$onClick'><span style='display:none' class='types'>" . i8ln( $type ) . "</span><span style='display:none' class='name'>" . i8ln( $name ) . "</span><span style='display:none' class='id'>$k</span><span class='$k inner-bg' style='background-position:-" . $i * 48.25 . "px -" . $z . "px'></span>";
                 if ( ! $noPokemonNumbers ) {
                     echo "<span class='pokemon-number'>" . $k . "</span>";
                 }
@@ -145,12 +156,18 @@ if ( $blockIframe ) {
     <script>
         var token = '<?php echo ( ! empty( $_SESSION['token'] ) ) ? $_SESSION['token'] : ""; ?>';
     </script>
+    <link href="https://unpkg.com/leaflet-geosearch@2.7.0/assets/css/leaflet.css" rel="stylesheet" />
     <link rel="stylesheet" href="static/dist/css/app.min.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jqueryui/1.12.0/jquery-ui.min.css">
     <link rel="stylesheet" href="https://cdn.datatables.net/1.10.12/css/jquery.dataTables.css">
     <script src="static/js/vendor/modernizr.custom.js"></script>
     <!-- Toastr -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.css">
+    <!-- Leaflet -->
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.3.1/dist/leaflet.css" />
+    <link rel="stylesheet" href="https://leaflet.github.io/Leaflet.markercluster/dist/MarkerCluster.css" />
+    <link rel="stylesheet" href="https://leaflet.github.io/Leaflet.markercluster/dist/MarkerCluster.Default.css" />
+    <link href='https://api.mapbox.com/mapbox.js/plugins/leaflet-fullscreen/v1.0.1/leaflet.fullscreen.css' rel='stylesheet' />
 </head>
 <body id="top">
 <div class="wrapper">
@@ -573,7 +590,7 @@ if ( $blockIframe ) {
                     ?>
                     <div id="gyms-raid-filter-wrapper" style="display:none">
                         <?php
-                        if ( ( $fork === "alternate" || ( $map === "rm" && $fork !== "sloppy" ) ) && ! $noExEligible ) {
+                        if ( ( $fork === "alternate" || $map === "rdm" || ( $map === "rm" && $fork !== "sloppy" ) ) && ! $noExEligible ) {
                             echo '<div class="form-control switch-container" id="ex-eligible-wrapper">
                                 <h3>' . i8ln( 'EX Eligible Only' ) . '</h3>
                                 <div class="onoffswitch">
@@ -592,9 +609,9 @@ if ( $blockIframe ) {
             }
             ?>
             <?php
-            if ( ! $noPortals ) {
+            if ( ! $noPortals || ! $noS2Cells ) {
                 ?>
-                <h3><?php echo i8ln( 'Ingress' ); ?></h3>
+                <h3><?php echo i8ln( 'Ingress / S2Cell' ); ?></h3>
 		<div>
                 <?php
                 if ( ! $noPortals ) {
@@ -607,6 +624,61 @@ if ( $blockIframe ) {
                             <span class="switch-label" data-on="On" data-off="Off"></span>
                             <span class="switch-handle"></span>
                         </label>
+                    </div>
+		</div>
+                <div class="form-control switch-container" id = "new-portals-only-wrapper" style = "display:none">
+                    <select name = "new-portals-only-switch" id = "new-portals-only-switch">
+                        <option value = "0"> ' . i8ln( 'All' ) . '</option>
+                        <option value = "1"> ' . i8ln( 'Only new' ) . ' </option>
+                    </select>
+                </div>';
+		} ?>
+                <?php
+                if ( ! $noS2Cells ) {
+                    echo '<div class="form-control switch-container">
+                    <h3>' . i8ln( 'Show S2 Cells' ) . '</h3>
+                    <div class="onoffswitch">
+                        <input id="s2-switch" type="checkbox" name="s2-switch"
+                               class="onoffswitch-checkbox" checked>
+                        <label class="onoffswitch-label" for="s2-switch">
+                            <span class="switch-label" data-on="On" data-off="Off"></span>
+                            <span class="switch-handle"></span>
+                        </label>
+                    </div>
+		</div>
+                <div class="form-control switch-container" id = "s2-switch-wrapper" style = "display:none">
+                    <div class="form-control switch-container">
+                        <h3>' . i8ln( 'EX trigger Cells' ) . '</h3>
+                        <div class="onoffswitch">
+                            <input id="s2-level13-switch" type="checkbox" name="s2-level13-switch"
+                                   class="onoffswitch-checkbox" checked>
+                            <label class="onoffswitch-label" for="s2-level13-switch">
+                                <span class="switch-label" data-on="On" data-off="Off"></span>
+                                <span class="switch-handle"></span>
+                            </label>
+			</div>
+                    </div>
+                    <div class="form-control switch-container">
+                        <h3>' . i8ln( 'Gym placement Cells' ) . '</h3>
+                        <div class="onoffswitch">
+                            <input id="s2-level14-switch" type="checkbox" name="s2-level14-switch"
+                                   class="onoffswitch-checkbox" checked>
+                            <label class="onoffswitch-label" for="s2-level14-switch">
+                                <span class="switch-label" data-on="On" data-off="Off"></span>
+                                <span class="switch-handle"></span>
+                            </label>
+                        </div>
+                    </div>
+                    <div class="form-control switch-container">
+                        <h3>' . i8ln( 'Pokestop placement Cells' ) . '</h3>
+                        <div class="onoffswitch">
+                            <input id="s2-level17-switch" type="checkbox" name="s2-level17-switch"
+                                   class="onoffswitch-checkbox" checked>
+                            <label class="onoffswitch-label" for="s2-level17-switch">
+                                <span class="switch-label" data-on="On" data-off="Off"></span>
+                                <span class="switch-handle"></span>
+                            </label>
+                        </div>
                     </div>
                 </div>';
 		} ?>
@@ -676,8 +748,11 @@ if ( $blockIframe ) {
                 if ( ! $noSearchLocation ) {
                     echo '<div class="form-control switch-container" style="display:{{is_fixed}}">
                 <label for="next-location">
-                    <h3>' . i8ln( 'Change search location' ) . '</h3>
-                    <input id="next-location" type="text" name="next-location" placeholder="' . i8ln( 'Change search location' ) . '">
+		    <h3>' . i8ln( 'Change search location' ) . '</h3>
+                    <form id ="search-places">
+		    <input id="next-location" type="text" name="next-location" placeholder="' . i8ln( 'Change search location' ) . '">
+                    <ul id="search-places-results" class="search-results places-results"></ul>
+                    </form>
                 </label>
             </div>';
                 } ?>
@@ -1250,7 +1325,9 @@ if ( $blockIframe ) {
             </div>
         </div>
     <?php } ?>
-
+    <div class="fullscreen-toggle">
+        <button class="map-toggle-button" onClick="toggleFullscreenMap();"><i class="fa fa-expand" aria-hidden="true"></i></button>
+    </div>
     <?php if ( ( ! $noGyms || ! $noPokestops ) && ! $noSearch ) { ?>
         <div class="search-container">
             <button class="search-modal-button" onClick="openSearchModal(event);"><i class="fa fa-search"
@@ -1442,9 +1519,16 @@ if ( $blockIframe ) {
 <script src="https://code.createjs.com/soundjs-0.6.2.min.js"></script>
 <script src="node_modules/push.js/bin/push.min.js"></script>
 <script src="node_modules/long/src/long.js"></script>
+<script src="https://unpkg.com/leaflet-geosearch@2.7.0/dist/bundle.min.js"></script>
 <script src="static/js/vendor/s2geometry.js"></script>
 <script src="static/dist/js/app.min.js"></script>
 <script src="static/js/vendor/classie.js"></script>
+<script src="https://unpkg.com/leaflet@1.3.1/dist/leaflet.js"></script>
+<script src="https://leaflet.github.io/Leaflet.markercluster/dist/leaflet.markercluster-src.js"></script>
+<script src='https://api.mapbox.com/mapbox.js/plugins/leaflet-fullscreen/v1.0.1/Leaflet.fullscreen.min.js'></script>
+<script src="static/js/vendor/smoothmarkerbouncing.js"></script>
+<script src="https://maps.googleapis.com/maps/api/js?key=<?= $gmapsKey ?>" async defer></script>
+<script src='https://unpkg.com/leaflet.gridlayer.googlemutant@latest/Leaflet.GoogleMutant.js'></script>
 <script>
     var centerLat = <?= $startingLat; ?>;
     var centerLng = <?= $startingLng; ?>;
@@ -1452,8 +1536,13 @@ if ( $blockIframe ) {
     var motd = <?php echo $noMotd ? 'false' : 'true' ?>;
     var zoom<?php echo $zoom ? " = " . $zoom : null; ?>;
     var encounterId<?php echo $encounterId ? " = '" . $encounterId . "'" : null; ?>;
+    var maxZoom = <?= $maxZoomIn; ?>;
     var minZoom = <?= $maxZoomOut; ?>;
     var maxLatLng = <?= $maxLatLng; ?>;
+    var disableClusteringAtZoom = <?= $disableClusteringAtZoom; ?>;
+    var zoomToBoundsOnClick = <?= $zoomToBoundsOnClick; ?>;
+    var maxClusterRadius = <?= $maxClusterRadius; ?>;
+    var spiderfyOnMaxZoom = <?= $spiderfyOnMaxZoom; ?>;
     var osmTileServer = '<?php echo $osmTileServer; ?>';
     var mapStyle = '<?php echo $mapStyle ?>';
     var hidePokemon = <?php echo $noHidePokemon ? '[]' : $hidePokemon ?>;
@@ -1478,6 +1567,7 @@ if ( $blockIframe ) {
     var enablePokemon = <?php echo $noPokemon ? 'false' : $enablePokemon ?>;
     var enablePokestops = <?php echo $noPokestops ? 'false' : $enablePokestops ?>;
     var enableLured = <?php echo ( ( $map != "monocle" ) || ( $fork == "alternate" ) ) ? $enableLured : 0 ?>;
+    var enableNewPortals = <?php echo ( ( $map != "monocle" ) || ( $fork == "alternate" ) ) ? $enableNewPortals : 0 ?>;
     var enableWeatherOverlay = <?php echo ! $noWeatherOverlay ? $enableWeatherOverlay : 'false' ?>;
     var enableScannedLocations = <?php echo $map != "monocle" && ! $noScannedLocations ? $enableScannedLocations : 'false' ?>;
     var enableSpawnpoints = <?php echo $noSpawnPoints ? 'false' : $enableSpawnPoints ?>;
@@ -1494,7 +1584,7 @@ if ( $blockIframe ) {
     var gymStyle = '<?php echo $gymStyle ?>';
     var spriteFileLarge = '<?php echo $copyrightSafe ? 'static/icons-safe-1-bigger.png' : 'static/icons-im-1-bigger.png' ?>';
     var weatherSpritesSrc = '<?php echo $copyrightSafe ? 'static/sprites-safe/' : 'static/sprites-pokemon/' ?>';
-    var icons = '<?php echo $copyrightSafe ? 'static/icons-safe/' : 'static/icons-pokemon/' ?>';
+    var icons = '<?php echo $copyrightSafe ? 'static/icons-safe/' : $iconRepository ?>';
     var weatherColors = <?php echo json_encode( $weatherColors ); ?>;
     var mapType = '<?php echo $map; ?>';
     var triggerGyms = <?php echo $triggerGyms ?>;
@@ -1510,6 +1600,7 @@ if ( $blockIframe ) {
     var manualRaids = <?php echo $noManualRaids === true ? 'false' : 'true' ?>;
     var pokemonReportTime = <?php echo $pokemonReportTime === true ? 'true' : 'false' ?>;
     var noDeleteGyms = <?php echo $noDeleteGyms === true ? 'true' : 'false' ?>;
+    var noToggleExGyms = <?php echo $noToggleExGyms === true ? 'true' : 'false' ?>;
     var defaultUnit = '<?php echo $defaultUnit ?>';
     var noDeletePokestops = <?php echo $noDeletePokestops === true ? 'true' : 'false' ?>;
     var noDeleteNests = <?php echo $noDeleteNests === true ? 'true' : 'false' ?>;
@@ -1526,15 +1617,24 @@ if ( $blockIframe ) {
     var noWhatsappLink = <?php echo $noWhatsappLink === true ? 'true' : 'false' ?>;
     var enablePortals = <?php echo $noPortals ? 'false' : $enablePortals ?>;
     var noPortals = <?php echo $noPortals === true ? 'true' : 'false' ?>;
+    var enableS2Cells = <?php echo $noS2Cells ? 'false' : $enableS2Cells ?>;
+    var enableLevel13Cells = <?php echo $noS2Cells ? 'false' : $enableLevel13Cells ?>;
+    var enableLevel14Cells = <?php echo $noS2Cells ? 'false' : $enableLevel14Cells ?>;
+    var enableLevel17Cells = <?php echo $noS2Cells ? 'false' : $enableLevel17Cells ?>;
     var noDeletePortal = <?php echo $noDeletePortal === true ? 'true' : 'false' ?>;
+    var noConvertPortal = <?php echo $noConvertPortal === true ? 'true' : 'false' ?>;
+    var markPortalsAsNew = <?php echo $markPortalsAsNew ?>;
     var copyrightSafe = <?php echo $copyrightSafe === true ? 'true' : 'false' ?>;
 </script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js"></script>
 <script src="static/dist/js/map.common.min.js"></script>
 <script src="static/dist/js/map.min.js"></script>
 <script src="static/dist/js/stats.min.js"></script>
-<script defer
-        src="https://maps.googleapis.com/maps/api/js?v=3.32&amp;key=<?= $gmapsKey ?>&amp;callback=initMap&amp;libraries=places,geometry"></script>
-<script defer src="static/js/vendor/richmarker-compiled.js"></script>
+<script src="https://unpkg.com/leaflet-geosearch@latest/dist/bundle.min.js"></script>
+<script>
+$( document ).ready(function() {
+    initMap()
+})
+</script>
 </body>
 </html>

@@ -22,10 +22,17 @@ use Medoo\Medoo;
 $startingLat = 52.090737;                                          // Starting latitude
 $startingLng = 5.121420;                                           // Starting longitude
 
-/* Anti scrape Settings */
+/* Zoom and Cluster Settings */
 
 $maxLatLng = 1;                                                     // Max latitude and longitude size (1 = ~110km, 0 to disable)
 $maxZoomOut = 11;                                                   // Max zoom out level (11 ~= $maxLatLng = 1, 0 to disable, lower = the further you can zoom out)
+$maxZoomIn = 18;                                                    // Max zoom in level 18
+$disableClusteringAtZoom = 15;					    // Disable clustering above this value. 0 to disabel
+$zoomToBoundsOnClick = 15;					    // Zoomlevel on clusterClick
+$maxClusterRadius = 30;						    // The maximum radius that a cluster will cover from the central marker (in pixels).
+$spiderfyOnMaxZoom = 'true';					    // Spiderfy cluster markers on click
+
+/* Anti scrape Settings */
 $enableCsrf = true;                                                 // Don't disable this unless you know why you need to :)
 $sessionLifetime = 43200;                                           // Session lifetime, in seconds
 $blockIframe = true;                                                // Block your map being loaded in an iframe
@@ -36,9 +43,9 @@ $title = "Raidmap";                                                 // Title to 
 $locale = "en";                                                     // Display language
 $raidmapLogo = '';                                                  // Upload logo to custom folder, leave '' for empty ( $raidmapLogo = 'custom/logo.png'; )
 
-/* Google Maps Key */
+/* Google Maps ONLY USED FOR TILE LAYERS */
 
-$gmapsKey = "";                                                     // Google Maps API Key
+$gmapsKey = "";
 
 /* Google Analytics */
 
@@ -210,9 +217,10 @@ $notifyNotification = 'true';                                       // true/fals
 /* Style Settings */
 
 $copyrightSafe = true;
+$iconRepository = 'https://raw.githubusercontent.com/whitewillem/PogoAssets/resized/icons_large/';
 
 $noMapStyle = false;                                                // true/false
-$mapStyle = 'style_pgo_dynamic';                                    // roadmap, satellite, hybrid, nolabels_style, dark_style, style_light2, style_pgo, dark_style_nl, style_pgo_day, style_pgo_night, style_pgo_dynamic
+$mapStyle = 'openstreetmap';                                        // openstreetmap, darkmatter, styleblackandwhite, styletopo, stylesatellite, stylewikipedia
 
 $noDirectionProvider = false;                                       // true/false
 $directionProvider = 'google';                                      // google, waze, apple, bing, google_pin
@@ -273,13 +281,22 @@ $noManualQuests = false;
 // Ingress portals
 //-----------------------------------------------------
 $enablePortals = 'false';
+$enableNewPortals = 0;                                                   // O: all, 1: new portals only
 $noPortals = true;
 $noDeletePortal = true;
+$noConvertPortal = true;
+$noS2Cells = true;
+$enableS2Cells = 'false';
+$enableLevel13Cells = 'false';
+$enableLevel14Cells = 'false';
+$enableLevel17Cells = 'false';
+$markPortalsAsNew = 86400;                                         // Time in seconds to mark new imported portals as new ( 86400 for 1 day )
 
 $pokemonReportTime = true;
 $pokemonToExclude = [];
 
 $noDeleteGyms = false;
+$noToggleExGyms = false;
 $noDeletePokestops = false;
 
 $raidBosses = [1, 4, 7, 129, 138, 140, 147, 82, 108, 125, 126, 185, 303, 65, 68, 95, 106, 107, 123, 135, 142, 76, 112, 131, 143, 248, 359, 144, 145, 146, 377];
@@ -385,6 +402,8 @@ $enableDebug = false;
 //-----------------------------------------------------
 // DATABASE CONFIG
 //-----------------------------------------------------
+$map = "monocle";                                                     // monocle/rdm
+$fork = "alternate";                                                  // default/asner/sloppy
 
 $db = new Medoo([// required
     'database_type' => 'mysql',                                    

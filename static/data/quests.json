@@ -31,6 +31,14 @@
     "cat": "Catch",
     "name": "Catch 5 Pokémon with Weather Boost"
   },
+  "120": {
+    "cat": "Catch",
+    "name": "Catch 10 Psychic-Type Pokémon"
+  },
+  "121": {
+    "cat": "Catch",
+    "name": "Catch 5 Abra or Drowzee"
+  },
   "122": {
     "cat": "Catch",
     "name": "Catch a Dragon-type Pokemon"
@@ -39,9 +47,17 @@
     "cat": "Catch",
     "name": "Catch 5 Water-type Pokémon"
   },
+  "125": {
+    "cat": "Catch",
+    "name": "Use 5 Pinap Berries while catching Pokémon"
+  },
   "255": {
     "cat": "Evolve",
     "name": "Evolve a Pokémon"
+  },
+  "256": {
+    "cat": "Evolve",
+    "name": "Evolve 3 Slowpoke or Exeggute"
   },
   "269": {
     "cat": "Evolve",
@@ -62,6 +78,10 @@
   "376": {
     "cat": "Throw",
     "name": "Make 3 Great Throws"
+  },
+  "377": {
+    "cat": "Throw",
+    "name": "Make 3 Great Curveball Throws"
   },
   "380": {
     "cat": "Throw",

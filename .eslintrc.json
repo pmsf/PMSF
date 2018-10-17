@@ -4,7 +4,7 @@
     "ecmaFeatures": {
       "jsx": false
     },
-    "ecmaVersion": 6,
+    "ecmaVersion": 8,
     "sourceType": "module"
   },
   "rules": {
@@ -47,7 +47,12 @@
     "zoom": true,
     "encounterId": true,
     "minZoom": true,
+    "maxZoom": true,
     "maxLatLng": true,
+    "disableClusteringAtZoom": true,
+    "zoomToBoundsOnClick": true,
+    "maxClusterRadius": true,
+    "spiderfyOnMaxZoom": true,
     "showConfig": true,
     "pageLoaded": true,
     "countMarkers": true,
@@ -98,6 +103,7 @@
     "enableScannedLocations": true,
     "enableSpawnpoints": true,
     "enableRanges": true,
+    "enableNewPortals": true,
     "notifySound": true,
     "criesSound": true,
     "enableStartMe": true,
@@ -140,7 +146,15 @@
     "noConvertPokestops": false,
     "enablePortals": true,
     "noDeletePortal": true,
+    "noConvertPortal": true,
+    "noToggleExGyms": true,
     "noPortals": false,
-    "copyrightSafe": true
+    "noS2Cells": true,
+    "enableS2Cells": true,
+    "enableLevel13Cells": true,
+    "enableLevel14Cells": true,
+    "enableLevel17Cells": true,
+    "copyrightSafe": true,
+    "iconpath": true
   }
 }
