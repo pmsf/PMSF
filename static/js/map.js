@@ -2292,7 +2292,7 @@ function searchAjax(field) { // eslint-disable-line no-unused-vars
     }, function (err) {
         if (err) {
             var center = map.getCenter()
-            searchForItem(center.lat(), center.lng(), term, type, field)
+            searchForItem(center.lat, center.lng, term, type, field)
         }
     })
 }
