@@ -1259,21 +1259,6 @@ function getPokemonSprite(index, sprite, displayHeight, weather = 0, encounterFo
 }
 
 function setupPokemonMarker(item, map, isBounceDisabled) {
-    var latOffset = Math.random() * 0.0002 - 0.0001
-    if (latOffset >= 0) {
-        latOffset += 0.00005
-    } else {
-        latOffset -= 0.00005
-    }
-    var lonOffset = Math.random() * 0.0002 - 0.0001
-    if (lonOffset >= 0) {
-        lonOffset += 0.00005
-    } else {
-        lonOffset -= 0.00005
-    }
-    item['latitude'] += latOffset
-    item['longitude'] += lonOffset
-
     var iconSize = (12) * (12) * 0.2 + Store.get('iconSizeModifier')
     if (isNotifiedPokemon(item) === true) {
         iconSize += Store.get('iconNotifySizeModifier')
