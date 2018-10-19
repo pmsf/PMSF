@@ -146,7 +146,7 @@ class RDM extends Scanner
 
         $query = "SELECT :select
         FROM pokemon 
-        WHERE :conditions";
+        WHERE :conditions ORDER BY lat,lon ";
 
         $query = str_replace(":select", $select, $query);
         $query = str_replace(":conditions", '(' . join(" AND ", $conds) . ')' . $encSql, $query);
