@@ -1830,5 +1830,221 @@
     "duration": 1300,
     "energy": 20,
     "dps": 3.8
+  },
+  "292": {
+    "name": "Weather Ball Fire",
+    "type": "Fire",
+    "damage": 60,
+    "duration": 1600,
+    "engergy": 33,
+    "dps": 37.5
+  },
+  "293": {
+    "name": "Weather Ball Ice",
+    "type": "Ice",
+    "damage": 60,
+    "duration": 1600,
+    "engergy": 33,
+    "dps": 37.5
+  },
+  "294": {
+    "name": "Weather Ball Rock",
+    "type": "Rock",
+    "damage": 60,
+    "duration": 1600,
+    "engergy": 33,
+    "dps": 37.5
+  },
+  "295": {
+    "name": "Weather Ball Water",
+    "type": "Water",
+    "damage": 60,
+    "duration": 1600,
+    "engergy": 33,
+    "dps": 37.5
+  },
+  "296": {
+    "name": "Frenzy Plant",
+    "type": "Grass",
+    "damage": 100,
+    "duration": 2600,
+    "engergy": 100,
+    "dps": 38.4
+  },
+  "297": {
+    "name": "Smack Down",
+    "type": "Rock",
+    "damage": 16,
+    "duration": 1200,
+    "engergy": 8,
+    "dps": 13.3
+  },
+  "298": {
+    "name": "Blast Burn",
+    "type": "Fire",
+    "damage": 110,
+    "duration": 3300,
+    "engergy": 100,
+    "dps": 33.3
+  },
+  "299": {
+    "name": "Hydro Cannon",
+    "type": "Water",
+    "damage": 90,
+    "duration": 1900,
+    "engergy": 100,
+    "dps": 47.4
+  },
+  "300": {
+    "name": "Last Resort",
+    "type": "Normal",
+    "damage": 90,
+    "duration": 2700,
+    "engergy": 100,
+    "dps": 31
+  },
+  "301": {
+    "name": "Meteor Mash",
+    "type": "Steel",
+    "damage": 100,
+    "duration": 2600,
+    "engergy": 100,
+    "dps": 38.4
+  },
+  "302": {
+    "name": "Skull Bash",
+    "type": "",
+    "damage": 0,
+    "duration": 0,
+    "engergy": 0,
+    "dps": 0
+  },
+  "303": {
+    "name": "Acid Spray",
+    "type": "",
+    "damage": 0,
+    "duration": 0,
+    "engergy": 0,
+    "dps": 0
+  },
+  "304": {
+    "name": "Earth Power",
+    "type": "",
+    "damage": 0,
+    "duration": 0,
+    "engergy": 0,
+    "dps": 0
+  },
+  "305": {
+    "name": "Crabhammer",
+    "type": "",
+    "damage": 0,
+    "duration": 0,
+    "engergy": 0,
+    "dps": 0
+  },
+  "306": {
+    "name": "Lunge",
+    "type": "",
+    "damage": 0,
+    "duration": 0,
+    "engergy": 0,
+    "dps": 0
+  },
+  "307": {
+    "name": "Crush Claw",
+    "type": "",
+    "damage": 0,
+    "duration": 0,
+    "engergy": 0,
+    "dps": 0
+  },
+  "308": {
+    "name": "Octazooka",
+    "type": "",
+    "damage": 0,
+    "duration": 0,
+    "engergy": 0,
+    "dps": 0
+  },
+  "309": {
+    "name": "Mirror Shot",
+    "type": "",
+    "damage": 0,
+    "duration": 0,
+    "engergy": 0,
+    "dps": 0
+  },
+  "310": {
+    "name": "Super Power",
+    "type": "",
+    "damage": 0,
+    "duration": 0,
+    "engergy": 0,
+    "dps": 0
+  },
+  "311": {
+    "name": "Fell Stinger",
+    "type": "",
+    "damage": 0,
+    "duration": 0,
+    "engergy": 0,
+    "dps": 0
+  },
+  "312": {
+    "name": "Leaf Tornado",
+    "type": "",
+    "damage": 0,
+    "duration": 0,
+    "engergy": 0,
+    "dps": 0
+  },
+  "313": {
+    "name": "Leech Life",
+    "type": "",
+    "damage": 0,
+    "duration": 0,
+    "engergy": 0,
+    "dps": 0
+  },
+  "314": {
+    "name": "Drain Punch",
+    "type": "",
+    "damage": 0,
+    "duration": 0,
+    "engergy": 0,
+    "dps": 0
+  },
+  "315": {
+    "name": "Shadow Bone",
+    "type": "",
+    "damage": 0,
+    "duration": 0,
+    "engergy": 0,
+    "dps": 0
+  },
+  "316": {
+    "name": "Muddy Water",
+    "type": "",
+    "damage": 0,
+    "duration": 0,
+    "engergy": 0,
+    "dps": 0
+  },
+  "317": {
+    "name": "Blaze Kick",
+    "type": "",
+    "damage": 0,
+    "duration": 0,
+    "engergy": 0,
+    "dps": 0
+  },
+  "318": {
+    "name": "Razor Shell",
+    "type": "",
+    "damage": 0,
+    "duration": 0,
+    "engergy": 0,
+    "dps": 0
   }
 }
