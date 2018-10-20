@@ -5593,6 +5593,20 @@
       }
     ]
   },
+  "413":{
+    "name": "Wormadam",
+    "rarity":"",
+    "types": [
+      {
+        "type": "Bug",
+        "color": "#a8b820"
+      },
+      {
+        "type": "Ground",
+        "color": "#e0c068"
+      }
+    ]
+  },
   "414":{
     "name": "Mothim",
     "rarity":"",
@@ -6479,6 +6493,20 @@
       }
     ]
   },
+  "487":{
+    "name": "Giratina",
+    "rarity":"",
+    "types": [
+      {
+        "type": "Ghost",
+        "color": "#705898"
+      },
+      {
+        "type": "Dragon",
+        "color": "#7038f8"
+      }
+    ]
+  },
   "488":{
     "name": "Cresselia",
     "rarity":"",
@@ -6516,6 +6544,20 @@
       {
         "type": "Dark",
         "color": "#707070"
+      }
+    ]
+  },
+  "492":{
+    "name": "Shaymin",
+    "rarity":"",
+    "types": [
+      {
+        "type": "Grass",
+        "color": "#78c850"
+      },
+      {
+        "type": "Flying",
+        "color": "#a890f0"
       }
     ]
   },
