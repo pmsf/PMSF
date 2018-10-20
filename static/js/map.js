@@ -853,7 +853,7 @@ function gymLabel(item) {
     var str
     var gymImage = ''
     if (url !== null) {
-        gymImage = '<img height="70px" style="padding: 5px;" src="https://images.weserv.nl/?url=' + url + '">'
+        gymImage = '<img height="70px" style="padding: 5px;" src="' + url + '">'
     }
     if (teamId === 0) {
         str =
@@ -940,7 +940,7 @@ function pokestopLabel(expireTime, latitude, longitude, stopName, url, lureUser,
     }
     var stopImage = ''
     if (url !== null) {
-        stopImage = '<img height="70px" style="padding: 5px;" src="https://images.weserv.nl/?url=' + url + '">'
+        stopImage = '<img height="70px" style="padding: 5px;" src="' + url + '">'
     }
     if (expireTime) {
         if (lureUser) {
@@ -4272,7 +4272,7 @@ function showGymDetails(id) { // eslint-disable-line no-unused-vars
         var pokemonHtml = ''
         var gymImage = ''
         if (result.url !== null) {
-            gymImage = '<img height="70px" style="padding: 5px;" src="https://images.weserv.nl/?url=' + result.url + '">'
+            gymImage = '<img height="70px" style="padding: 5px;" src="' + result.url + '">'
         }
         var headerHtml =
             '<center class="team-' + result.team_id + '-text">' +
