@@ -1913,138 +1913,138 @@
   },
   "302": {
     "name": "Skull Bash",
-    "type": "",
+    "type": "Normal",
     "damage": 0,
     "duration": 0,
-    "engergy": 0,
+    "energy": 0,
     "dps": 0
   },
   "303": {
     "name": "Acid Spray",
-    "type": "",
+    "type": "Poison",
     "damage": 0,
     "duration": 0,
-    "engergy": 0,
+    "energy": 0,
     "dps": 0
   },
   "304": {
     "name": "Earth Power",
-    "type": "",
+    "type": "Ground",
     "damage": 0,
     "duration": 0,
-    "engergy": 0,
+    "energy": 0,
     "dps": 0
   },
   "305": {
     "name": "Crabhammer",
-    "type": "",
+    "type": "Water",
     "damage": 0,
     "duration": 0,
-    "engergy": 0,
+    "energy": 0,
     "dps": 0
   },
   "306": {
     "name": "Lunge",
-    "type": "",
+    "type": "Bug",
     "damage": 0,
     "duration": 0,
-    "engergy": 0,
+    "energy": 0,
     "dps": 0
   },
   "307": {
     "name": "Crush Claw",
-    "type": "",
+    "type": "Normal",
     "damage": 0,
     "duration": 0,
-    "engergy": 0,
+    "energy": 0,
     "dps": 0
   },
   "308": {
     "name": "Octazooka",
-    "type": "",
+    "type": "Water",
     "damage": 0,
     "duration": 0,
-    "engergy": 0,
+    "energy": 0,
     "dps": 0
   },
   "309": {
     "name": "Mirror Shot",
-    "type": "",
+    "type": "Steel",
     "damage": 0,
     "duration": 0,
-    "engergy": 0,
+    "energy": 0,
     "dps": 0
   },
   "310": {
     "name": "Super Power",
-    "type": "",
+    "type": "Fighting",
     "damage": 0,
     "duration": 0,
-    "engergy": 0,
+    "energy": 0,
     "dps": 0
   },
   "311": {
     "name": "Fell Stinger",
-    "type": "",
+    "type": "Bug",
     "damage": 0,
     "duration": 0,
-    "engergy": 0,
+    "energy": 0,
     "dps": 0
   },
   "312": {
     "name": "Leaf Tornado",
-    "type": "",
+    "type": "Grass",
     "damage": 0,
     "duration": 0,
-    "engergy": 0,
+    "energy": 0,
     "dps": 0
   },
   "313": {
     "name": "Leech Life",
-    "type": "",
+    "type": "Bug",
     "damage": 0,
     "duration": 0,
-    "engergy": 0,
+    "energy": 0,
     "dps": 0
   },
   "314": {
     "name": "Drain Punch",
-    "type": "",
+    "type": "Fighting",
     "damage": 0,
     "duration": 0,
-    "engergy": 0,
+    "energy": 0,
     "dps": 0
   },
   "315": {
     "name": "Shadow Bone",
-    "type": "",
+    "type": "Ghost",
     "damage": 0,
     "duration": 0,
-    "engergy": 0,
+    "energy": 0,
     "dps": 0
   },
   "316": {
     "name": "Muddy Water",
-    "type": "",
+    "type": "Water",
     "damage": 0,
     "duration": 0,
-    "engergy": 0,
+    "energy": 0,
     "dps": 0
   },
   "317": {
     "name": "Blaze Kick",
-    "type": "",
+    "type": "Fire",
     "damage": 0,
     "duration": 0,
-    "engergy": 0,
+    "energy": 0,
     "dps": 0
   },
   "318": {
     "name": "Razor Shell",
-    "type": "",
+    "type": "Water",
     "damage": 0,
     "duration": 0,
-    "engergy": 0,
+    "energy": 0,
     "dps": 0
   }
 }
