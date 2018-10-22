@@ -881,7 +881,7 @@ function gymLabel(item) {
             '</div>' +
             '</center>' +
             '</div>'
-        if (((!noWhatsappLink) && (raidSpawned && item.raid_end > Date.now())) && (item.raid_pokemon_id > 1 && item.raid_pokemon_id < 386)) {
+        if (((!noWhatsappLink) && (raidSpawned && item.raid_end > Date.now())) && (item.raid_pokemon_id > 1 && item.raid_pokemon_id < 493)) {
             str += '<center>' +
                 '<div>' +
                 '<a href="whatsapp://send?text=' + item.name + '%0ALevel%20' + item.raid_level + '%20' + item.raid_pokemon_name + '%0A%2AStart:%20' + raidStartStr + '%2A%0A%2AEnd:%20' + raidEndStr + '%2A%0AStats:%0Ahttps://pokemongo.gamepress.gg/pokemon/' + item.raid_pokemon_id + '%0ADirections:%0Ahttps://www.google.com/maps/search/?api=1%26query=' + item.latitude + ',' + item.longitude + '" data-action="share/whatsapp/share">Whatsapp Link</a>' +
@@ -905,7 +905,7 @@ function gymLabel(item) {
             '<center>' +
             '<div style="padding-bottom: 2px">' +
 
-            i8ln('Gym owned by') + ' : ' +
+            nameStr +
             '</div>' +
             '<div>' +
             '<b style="color:rgba(' + gymColor[teamId] + ')">' + i8ln('Team') + ' ' + i8ln(teamName) + '</b><br>' +
@@ -913,7 +913,6 @@ function gymLabel(item) {
             raidIcon +
             '<img height="70px" style="padding: 5px;" src="' + url + '">' +
             '</div>' +
-            nameStr +
             raidStr +
             '<div><b>' + freeSlots + ' ' + i8ln('Free Slots') + '</b></div>' +
             '<div>' +
@@ -925,6 +924,13 @@ function gymLabel(item) {
             '</div>' +
             '<div>' +
             i8ln('Location') + ': <a href="javascript:void(0);" onclick="javascript:openMapDirections(' + latitude + ',' + longitude + ');" title="' + i8ln('View in Maps') + '">' + latitude.toFixed(6) + ' , ' + longitude.toFixed(7) + '</a> - <a href="./?lat=' + latitude + '&lon=' + longitude + '&zoom=16">Share link</a>' +
+            '</div>' +
+            '<div>' +
+
+            i8ln('Last Modified') + ' : ' + lastModifiedStr +
+            '</div>' +
+            '<div>' +
+            lastScannedStr +
             '</div>' +
             '</center>' +
             '</div>'

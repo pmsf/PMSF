@@ -5436,6 +5436,8 @@
   "399":{
     "name": "Bidoof",
     "rarity":"",
+    "level": 1,
+    "cp": 2182,
     "types": [
       {
         "type": "Normal",
@@ -5460,6 +5462,8 @@
   "401":{
     "name": "Kricketot",
     "rarity":"",
+    "level": 1,
+    "cp": 1386,
     "types": [
       {
         "type": "Bug",
@@ -5480,6 +5484,8 @@
   "403":{
     "name": "Shinx",
     "rarity":"",
+    "level": 1,
+    "cp": 2873,
     "types": [
       {
         "type": "Electric",
@@ -5764,6 +5770,8 @@
   "427":{
     "name": "Buneary",
     "rarity":"",
+    "level": 1,
+    "cp": 3890,
     "types": [
       {
         "type": "Normal",
