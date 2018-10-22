@@ -2301,9 +2301,17 @@ function searchForItem(lat, lon, term, type, field) {
                 var sr = par.find('.search-results')
                 sr.html('')
                 data.forEach(function (element) {
+                    var pokemonIdStr = ''
+                    if (element.pokemon_id <= 9) {
+                        pokemonIdStr = '00' + element.pokemon_id
+                    } else if (element.pokemon_id <= 99) {
+                        pokemonIdStr = '0' + element.pokemon_id
+                    } else {
+                        pokemonIdStr = element.pokemon_id
+                    }
                     var html = '<li class="search-result ' + type + '" data-lat="' + element.lat + '" data-lon="' + element.lon + '"><div class="left-column" onClick="centerMapOnCoords(event);">'
                     if (sr.hasClass('nest-results')) {
-                        html += '<span class="i-icon"><span class="pokemon-icon n' + element.pokemon_id + '" ></span></span>'
+                        html += '<span class="i-icon"><img src="' + iconpath + 'pokemon_icon_' + pokemonIdStr + '_00.png" style="height:48px;left:5px;position:absolute;"/></span>'
                     } else if (sr.hasClass('reward-results')) {
                         html += '<span style="background:url(static/rewards/reward_' + element.reward_id + '.png) no-repeat;" class="i-icon" ></span>'
                     } else if (sr.hasClass('gym-results') || ('pokestop-results') || ('portal-results')) {
