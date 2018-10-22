@@ -1801,7 +1801,7 @@
   },
   "288": {
     "name": "Psycho Boost",
-    "type": "Psy",
+    "type": "Psychic",
     "damage": 70,
     "duration": 4000,
     "energy": 50,
@@ -1836,7 +1836,7 @@
     "type": "Fire",
     "damage": 60,
     "duration": 1600,
-    "engergy": 33,
+    "energy": 33,
     "dps": 37.5
   },
   "293": {
@@ -1844,7 +1844,7 @@
     "type": "Ice",
     "damage": 60,
     "duration": 1600,
-    "engergy": 33,
+    "energy": 33,
     "dps": 37.5
   },
   "294": {
@@ -1852,7 +1852,7 @@
     "type": "Rock",
     "damage": 60,
     "duration": 1600,
-    "engergy": 33,
+    "energy": 33,
     "dps": 37.5
   },
   "295": {
@@ -1860,7 +1860,7 @@
     "type": "Water",
     "damage": 60,
     "duration": 1600,
-    "engergy": 33,
+    "energy": 33,
     "dps": 37.5
   },
   "296": {
@@ -1868,7 +1868,7 @@
     "type": "Grass",
     "damage": 100,
     "duration": 2600,
-    "engergy": 100,
+    "energy": 100,
     "dps": 38.4
   },
   "297": {
@@ -1876,7 +1876,7 @@
     "type": "Rock",
     "damage": 16,
     "duration": 1200,
-    "engergy": 8,
+    "energy": 8,
     "dps": 13.3
   },
   "298": {
@@ -1884,7 +1884,7 @@
     "type": "Fire",
     "damage": 110,
     "duration": 3300,
-    "engergy": 100,
+    "energy": 100,
     "dps": 33.3
   },
   "299": {
@@ -1892,7 +1892,7 @@
     "type": "Water",
     "damage": 90,
     "duration": 1900,
-    "engergy": 100,
+    "energy": 100,
     "dps": 47.4
   },
   "300": {
@@ -1900,7 +1900,7 @@
     "type": "Normal",
     "damage": 90,
     "duration": 2700,
-    "engergy": 100,
+    "energy": 100,
     "dps": 31
   },
   "301": {
@@ -1908,7 +1908,7 @@
     "type": "Steel",
     "damage": 100,
     "duration": 2600,
-    "engergy": 100,
+    "energy": 100,
     "dps": 38.4
   },
   "302": {
