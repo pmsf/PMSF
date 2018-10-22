@@ -11,11 +11,11 @@ $lat = ! empty( $_POST['lat'] ) ? $_POST['lat'] : '';
 $lon = ! empty( $_POST['lon'] ) ? $_POST['lon'] : '';
 $dbname = '';
 if ( $action === "pokestops" ) {
-    $dbname = "pokestops";
+    $dbname = "pokestop";
 } elseif ( $action === "forts" ) {
-    $dbname = "forts";
+    $dbname = "gym";
 } elseif ( $action === "reward" ) {
-    $dbname = "pokestops";
+    $dbname = "pokestop";
 } elseif ( $action === "nests" ) {
     $dbname = "nests";
 } elseif ( $action === "portals" ) {
@@ -38,9 +38,9 @@ if ( $dbname !== '' ) {
             }
         }
         if ( $db->info()['driver'] === 'pgsql' ) {
-            $query = "SELECT id,external_id,name,lat,lon,url,quest_id,reward_id, ROUND(cast( 3959 * acos( cos( radians(:lat) ) * cos( radians( lat ) ) * cos( radians( lon ) - radians(:lon) ) + sin( radians(:lat) ) * sin( radians( lat ) ) ) as numeric),2) AS distance FROM pokestops WHERE reward_id IN (" . implode(',',$resids) . ") ORDER BY distance LIMIT " . $maxSearchResults . "";
+            $query = "SELECT id,name,lat,lon,url,quest_id,reward_id, ROUND(cast( 3959 * acos( cos( radians(:lat) ) * cos( radians( lat ) ) * cos( radians( lon ) - radians(:lon) ) + sin( radians(:lat) ) * sin( radians( lat ) ) ) as numeric),2) AS distance FROM pokestop WHERE reward_id IN (" . implode(',',$resids) . ") ORDER BY distance LIMIT " . $maxSearchResults . "";
         } else {
-            $query = "SELECT id,external_id,name,lat,lon,url,quest_id,reward_id, ROUND(( 3959 * acos( cos( radians(:lat) ) * cos( radians( lat ) ) * cos( radians( lon ) - radians(:lon) ) + sin( radians(:lat) ) * sin( radians( lat ) ) ) ),2) AS distance FROM pokestops WHERE reward_id IN (" . implode(',',$resids) . ") ORDER BY distance LIMIT " . $maxSearchResults . "";
+            $query = "SELECT id,name,lat,lon,url,quest_id,reward_id, ROUND(( 3959 * acos( cos( radians(:lat) ) * cos( radians( lat ) ) * cos( radians( lon ) - radians(:lon) ) + sin( radians(:lat) ) * sin( radians( lat ) ) ) ),2) AS distance FROM pokestop WHERE reward_id IN (" . implode(',',$resids) . ") ORDER BY distance LIMIT " . $maxSearchResults . "";
         }
 	$data = $db->query($query,[ ':lat' => $lat, ':lon' => $lon])->fetchAll();
 	foreach($data as $k => $r){
@@ -84,9 +84,9 @@ if ( $dbname !== '' ) {
     } else {
 
         if ( $db->info()['driver'] === 'pgsql' ) {
-            $query = "SELECT id,external_id,name,lat,lon,url, ROUND(cast( 3959 * acos( cos( radians(:lat) ) * cos( radians( lat ) ) * cos( radians( lon ) - radians(:lon) ) + sin( radians(:lat) ) * sin( radians( lat ) ) ) as numeric),2) AS distance FROM " . $dbname . " WHERE LOWER(name) LIKE :name ORDER BY distance LIMIT " . $maxSearchResults . "";
+            $query = "SELECT id,name,lat,lon,url, ROUND(cast( 3959 * acos( cos( radians(:lat) ) * cos( radians( lat ) ) * cos( radians( lon ) - radians(:lon) ) + sin( radians(:lat) ) * sin( radians( lat ) ) ) as numeric),2) AS distance FROM " . $dbname . " WHERE LOWER(name) LIKE :name ORDER BY distance LIMIT " . $maxSearchResults . "";
         } else {
-            $query = "SELECT id,external_id,name,lat,lon,url, ROUND(( 3959 * acos( cos( radians(:lat) ) * cos( radians( lat ) ) * cos( radians( lon ) - radians(:lon) ) + sin( radians(:lat) ) * sin( radians( lat ) ) ) ),2) AS distance FROM " . $dbname . " WHERE LOWER(name) LIKE :name ORDER BY distance LIMIT " . $maxSearchResults . "";
+            $query = "SELECT id,name,lat,lon,url, ROUND(( 3959 * acos( cos( radians(:lat) ) * cos( radians( lat ) ) * cos( radians( lon ) - radians(:lon) ) + sin( radians(:lat) ) * sin( radians( lat ) ) ) ),2) AS distance FROM " . $dbname . " WHERE LOWER(name) LIKE :name ORDER BY distance LIMIT " . $maxSearchResults . "";
         }
         $data = $db->query( $query, [ ':name' => "%" . strtolower( $term ) . "%",  ':lat' => $lat, ':lon' => $lon ] )->fetchAll();
     }
