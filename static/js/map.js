@@ -530,8 +530,6 @@ function initSidebar() {
     }
     var path = window.location.protocol + '//' + window.location.hostname + port + window.location.pathname
     var r = new RegExp('^(?:[a-z]+:)?//', 'i')
-    var urlSpriteLarge = r.test(Store.get('spritefileLarge')) ? Store.get('spritefileLarge') : path + Store.get('spritefileLarge')
-    document.body.style.setProperty('--sprite-large', 'url(' + urlSpriteLarge + ')')
     iconpath = r.test(Store.get('icons')) ? Store.get('icons') : path + Store.get('icons')
 }
 
