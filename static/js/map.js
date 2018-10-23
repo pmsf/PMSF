@@ -4646,10 +4646,24 @@ $(function () {
         var styleList = []
 
         $.each(data, function (key, value) {
-            styleList.push({
-                id: key,
-                text: i8ln(value)
-            })
+            var googleMaps
+            if (gmapsKey === '') {
+                googleMaps = false
+            } else {
+                googleMaps = true
+            }
+            var googleStyle = value.includes('Google')
+            if (!googleMaps && !googleStyle) {
+                styleList.push({
+                    id: key,
+                    text: i8ln(value)
+                })
+            } else if (googleMaps) {
+                styleList.push({
+                    id: key,
+                    text: i8ln(value)
+                })
+            }
         })
 
         // setup the stylelist

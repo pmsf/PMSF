@@ -1140,16 +1140,6 @@ var StoreOptions = {
             default: 16,
             type: StoreTypes.Number
         },
-    'spritefileLarge':
-        {
-            default: spriteFileLarge,
-            type: StoreTypes.String
-        },
-    'weatherSpritesSrc':
-        {
-            default: weatherSpritesSrc,
-            type: StoreTypes.String
-        },
     'icons':
         {
             default: icons,
