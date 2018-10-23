@@ -37,8 +37,7 @@
   "globals": {
     "toastr": true,
     "google": true,
-    "RichMarker": true,
-    "RichMarkerPosition": true,
+    "gmapsKey": true,
     "mapData": true,
     "Store": true,
     "centerLat": true,
@@ -114,8 +113,6 @@
     "iconNotifySizeModifier": true,
     "locationStyle": true,
     "gymStyle": true,
-    "spriteFileLarge": true,
-    "weatherSpritesSrc": true,
     "icons": true,
     "getIv": true,
     "mapType": true,
