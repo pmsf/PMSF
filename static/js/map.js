@@ -957,13 +957,13 @@ function pokestopLabel(expireTime, latitude, longitude, stopName, url, lureUser,
         if (noManualQuests === true || quest === null) {
             str +=
                 '<div><center>' +
-                '<img height="70px" style="padding: 5px;" src="static/forts/PstopLured.png">' +
+                '<img height="70px" style="padding: 5px;" src="static/forts/LureModule.png">' +
                 stopImage +
                 '</center></div>'
         } else {
             str +=
                 '<div><center>' +
-                '<img height="70px" style="padding: 5px;" src="static/forts/PstopLured.png">' +
+                '<img height="70px" style="padding: 5px;" src="static/forts/LureModule.png">' +
                 stopImage +
                 '<img height="70px" style="padding: 5px;" src="static/rewards/reward_' + reward + '.png"/>' +
                 '</center></div>'
