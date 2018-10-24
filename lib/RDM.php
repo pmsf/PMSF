@@ -223,7 +223,7 @@ class RDM extends Scanner
         }
 
         if ($tstamp > 0) {
-            $conds[] = "last_modified_timestamp > :lastUpdated";
+            $conds[] = "updated > :lastUpdated";
             $params[':lastUpdated'] = $tstamp;
         }
         return $this->query_stops($conds, $params);
