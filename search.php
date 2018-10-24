@@ -92,6 +92,7 @@ if ( $dbname !== '' ) {
     }
 
     foreach($data as $k => $p){
+        $data[$k]['url'] = str_replace("http://", "https://images.weserv.nl/?url=", $data[$k]['url']);
         if($defaultUnit === "km"){
             $data[$k]['distance'] = round($data[$k]['distance'] * 1.60934,2);
         }
