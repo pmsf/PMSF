@@ -114,5 +114,25 @@
   "610": {
     "cat": "Miscellaneous",
     "name": "Trade a Pokémon"
+  },
+  "700": {
+    "cat": "Halloween Event",
+    "name": "Catch 5 Poochyena or Houndour"
+  },
+  "701": {
+    "cat": "Halloween Event",
+    "name": "Catch 5 Dark-type Pokémon"
+  },
+  "702": {
+    "cat": "Halloween Event",
+    "name": "Catch 10 Ghost-type Pokémon"
+  },
+  "703": {
+    "cat": "Halloween Event",
+    "name": "Evolve 3 Duskull or Shuppet"
+  },
+  "704": {
+    "cat": "Halloween Event",
+    "name": "Transfer 10 Pokémon"
   }
 }

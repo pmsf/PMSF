@@ -75,9 +75,17 @@
     "cat": "Pokémon:",
     "name": "Dratini"
   },
+  "200": {
+    "cat": "Pokémon:",
+    "name": "Misdreavus"
+  },
   "203": {
     "cat": "Pokémon:",
     "name": "Girafarig"
+  },
+  "215": {
+    "cat": "Pokémon:",
+    "name": "Sneasel"
   },
   "224": {
     "cat": "Pokémon:",
@@ -86,6 +94,10 @@
   "246": {
     "cat": "Pokémon:",
     "name": "Larvitar"
+  },
+  "302": {
+    "cat": "Pokémon:",
+    "name": "Sableye"
   },
   "320": {
     "cat": "Pokémon:",
