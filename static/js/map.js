@@ -730,6 +730,7 @@ function gymLabel(item) {
     var name = item['name']
     var url = item['url']
     var members = item['pokemon']
+    var form = item['form']
 
     var raidSpawned = item['raid_level'] != null
     var raidStarted = item['raid_pokemon_id'] != null
@@ -748,7 +749,16 @@ function gymLabel(item) {
             if (item.raid_pokemon_cp > 0) {
                 cpStr = ' CP ' + item.raid_pokemon_cp
             }
-            raidStr += '<br>' + item.raid_pokemon_name + cpStr
+            raidStr += '<br>' + item.raid_pokemon_name
+            if (form !== null && form > 0 && forms.length > form) {
+                // todo: check how rocket map handles this (if at all):
+                if (item['raid_pokemon_id'] === 132) {
+                    raidStr += ' (' + idToPokemon[item['form']].name + ')'
+                } else {
+                    raidStr += ' (' + forms[item['form']] + ')'
+                }
+            }
+            raidStr += cpStr
         }
         raidStr += '</h3>'
         if (raidStarted && item.raid_pokemon_move_1 > 0 && item.raid_pokemon_move_1 !== '133' && item.raid_pokemon_move_2 > 0 && item.raid_pokemon_move_2 !== '133') {
@@ -4223,6 +4233,7 @@ function showGymDetails(id) { // eslint-disable-line no-unused-vars
 
         var raidSpawned = result['raid_level'] != null
         var raidStarted = result['raid_pokemon_id'] != null
+        var form = result['form']
 
         var raidStr = ''
         var raidIcon = ''
@@ -4240,7 +4251,16 @@ function showGymDetails(id) { // eslint-disable-line no-unused-vars
                 if (result.raid_pokemon_cp > 0) {
                     cpStr = ' CP ' + result.raid_pokemon_cp
                 }
-                raidStr += '<br>' + result.raid_pokemon_name + cpStr
+                raidStr += '<br>' + result.raid_pokemon_name
+                if (form !== null && form > 0 && forms.length > form) {
+                    // todo: check how rocket map handles this (if at all):
+                    if (result['raid_pokemon_id'] === 132) {
+                        raidStr += ' (' + idToPokemon[result['form']].name + ')'
+                    } else {
+                        raidStr += ' (' + forms[result['form']] + ')'
+                    }
+                }
+                raidStr += cpStr
             }
             raidStr += '</h3>'
             if (raidStarted && result.raid_pokemon_move_1 > 0 && result.raid_pokemon_move_1 !== '133' && result.raid_pokemon_move_2 > 0 && result.raid_pokemon_move_2 !== '133') {
@@ -4272,7 +4292,7 @@ function showGymDetails(id) { // eslint-disable-line no-unused-vars
                     pokemonidStr = pokemonid
                 }
 
-                raidIcon = '<img style="width: 80px;" src="' + iconpath + 'pokemon_icon_' + pokemonidStr + '_' + formStr + '.png"/>'
+                raidIcon = '<img style="width: 80px; -webkit-filter: drop-shadow(5px 5px 5px #222); filter: drop-shadow(5px 5px 5px #222);" src="' + iconpath + 'pokemon_icon_' + pokemonidStr + '_' + formStr + '.png"/>'
             } else if (raidStarted && copyrightSafe === true) {
                 raidIcon = '<img style="width: 80px;" src="' + iconpath + 'pokemon_icon_' + pokemonidStr + '_00.png"/>'
             } else if (result.raid_start <= Date.now()) {
@@ -4284,7 +4304,7 @@ function showGymDetails(id) { // eslint-disable-line no-unused-vars
                 } else {
                     hatchedEgg = 'hatched_legendary'
                 }
-                raidIcon = '<img src="static/raids/egg_' + hatchedEgg + '.png" style="width:60px;height:70px;">'
+                raidIcon = '<img style="width: 80px; -webkit-filter: drop-shadow(5px 5px 5px #222); filter: drop-shadow(5px 5px 5px #222);" src="static/raids/egg_' + hatchedEgg + '.png">'
             } else {
                 var raidEgg = ''
                 if (result['raid_level'] <= 2) {
@@ -4325,7 +4345,7 @@ function showGymDetails(id) { // eslint-disable-line no-unused-vars
         var pokemonHtml = ''
         var gymImage = ''
         if (result.url !== null) {
-            gymImage = '<img height="70px" style="padding: 5px;" src="' + result.url + '">'
+            gymImage = '<img height="140px" style="padding: 5px;" src="' + result.url + '">'
         }
         var headerHtml =
             '<center class="team-' + result.team_id + '-text">' +
@@ -4333,9 +4353,11 @@ function showGymDetails(id) { // eslint-disable-line no-unused-vars
             '<b class="team-' + result.team_id + '-text">' + (result.name || '') + '</b>' +
             '</div>' +
             '<div>' +
+            gymImage +
+            '</div>' +
+            '<div>' +
             '<img height="70px" style="padding: 5px;" src="static/forts/' + gymTypes[result.team_id] + '_large.png">' +
             raidIcon +
-            gymImage +
             '</div>' +
             raidStr +
             gymLevelStr +
