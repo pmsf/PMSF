@@ -258,6 +258,7 @@ class RDM extends Scanner
             $pokestop["lure_user"] = !empty($pokestop["lure_user"]) ? $pokestop["lure_user"] : "henk";
             $pokestop["quest_id"] = !empty($pokestop["quest_id"]) ? $pokestop["quest_id"] : null;
             $pokestop["reward_id"] = !empty($pokestop["reward_id"]) ? $pokestop["reward_id"] : null;
+            $pokestop["url"] = str_replace("http://", "https://images.weserv.nl/?url=", $pokestop["url"]);
             if ($noTrainerName === true) {
                 // trainer names hidden, so don't show trainer who lured
                 unset($pokestop["lure_user"]);
@@ -385,6 +386,7 @@ class RDM extends Scanner
             $gym["raid_start"] = $gym["raid_start"] * 1000;
             $gym["raid_end"] = $gym["raid_end"] * 1000;
             $gym["sponsor"] = !empty($gym["sponsor"]) ? $gym["sponsor"] : null;
+            $gym["url"] = str_replace("http://", "https://images.weserv.nl/?url=", $gym["url"]);
             $data[] = $gym;
 
             unset($gyms[$i]);
@@ -704,6 +706,7 @@ class RDM extends Scanner
         foreach ($portals as $portal) {
             $portal["lat"] = floatval($portal["lat"]);
             $portal["lon"] = floatval($portal["lon"]);
+            $portal["url"] = str_replace("http://", "https://images.weserv.nl/?url=", $portal["url"]);
             $data[] = $portal;
 
             unset($portals[$i]);

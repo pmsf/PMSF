@@ -201,6 +201,7 @@ class Monocle_Alternate extends Monocle
             $pokestop["latitude"] = floatval($pokestop["latitude"]);
             $pokestop["longitude"] = floatval($pokestop["longitude"]);
             $pokestop["lure_expiration"] = !empty($pokestop["lure_expiration"]) ? $pokestop["lure_expiration"] * 1000 : null;
+            $pokestop["url"] = str_replace("http://", "https://images.weserv.nl/?url=", $pokestop["url"]);
             if ($noTrainerName === true) {
                 // trainer names hidden, so don't show trainer who lured
                 unset($pokestop["lure_user"]);
@@ -323,6 +324,7 @@ class Monocle_Alternate extends Monocle
             $gym["last_scanned"] = $gym["last_scanned"] * 1000;
             $gym["raid_start"] = $gym["raid_start"] * 1000;
             $gym["raid_end"] = $gym["raid_end"] * 1000;
+            $gym["url"] = str_replace("http://", "https://images.weserv.nl/?url=", $gym["url"]);
             $data[] = $gym;
 
             unset($gyms[$i]);
@@ -654,6 +656,7 @@ class Monocle_Alternate extends Monocle
         foreach ($portals as $portal) {
             $portal["lat"] = floatval($portal["lat"]);
             $portal["lon"] = floatval($portal["lon"]);
+            $portal["url"] = str_replace("http://", "https://images.weserv.nl/?url=", $portal["url"]);
             $data[] = $portal;
 
             unset($portals[$i]);
