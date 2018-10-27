@@ -320,7 +320,7 @@ class RDM extends Scanner
             $params[':oneLng'] = $oNeLng;
         }
         if ($tstamp > 0) {
-            $conds[] = "last_modified_timestamp > :lastUpdated";
+            $conds[] = "updated > :lastUpdated";
             $params[':lastUpdated'] = $tstamp;
         }
         if ($exEligible === "true") {
