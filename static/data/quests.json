@@ -23,6 +23,10 @@
     "cat": "Gym/Raid",
     "name": "Use a Super effective charge attack 7 times"
   },
+  "117": {
+    "cat": "Catch",
+    "name": "Catch a Ditto"
+  },
   "118": {
     "cat": "Catch",
     "name": "Catch 10 Pokémon"

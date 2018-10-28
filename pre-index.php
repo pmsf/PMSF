@@ -1626,6 +1626,7 @@ if ( $blockIframe ) {
     var noConvertPortal = <?php echo $noConvertPortal === true ? 'true' : 'false' ?>;
     var markPortalsAsNew = <?php echo $markPortalsAsNew ?>;
     var copyrightSafe = <?php echo $copyrightSafe === true ? 'true' : 'false' ?>;
+    var noRarityDisplay = <?php echo $noRarityDisplay === true ? 'true' : 'false' ?>;
 </script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js"></script>
 <script src="static/dist/js/map.common.min.js"></script>
