@@ -104,17 +104,29 @@ class Monocle extends Scanner
 
         $query = "SELECT :select
         FROM sightings 
-        WHERE :conditions";
+        WHERE :conditions ORDER BY lat,lon";
 
         $query = str_replace(":select", $select, $query);
         $query = str_replace(":conditions", '(' . join(" AND ", $conds) . ')' . $encSql, $query);
         $pokemons = $db->query($query, $params)->fetchAll(\PDO::FETCH_ASSOC);
         $data = array();
         $i = 0;
+        $lastlat = 0;
+        $lastlon=0;
+        $lasti = 0;
 
         foreach ($pokemons as $pokemon) {
             $pokemon["latitude"] = floatval($pokemon["latitude"]);
             $pokemon["longitude"] = floatval($pokemon["longitude"]);
+            $lastlat = floatval($pokemon["latitude"]);
+            $lastlon = floatval($pokemon["longitude"]);
+            if (abs($pokemon["latitude"] - $lastlat) < 0.0001 && abs($pokemon["longitude"] - $lastlon) < 0.0001){
+                $lasti = $lasti + 1;
+            } else {
+                $lasti = 0;
+            }
+            $pokemon["latitude"] = $pokemon["latitude"] + 0.0003*cos(deg2rad($lasti*45));
+            $pokemon["longitude"] = $pokemon["longitude"] + 0.0003*sin(deg2rad($lasti*45));
             $pokemon["disappear_time"] = $pokemon["disappear_time"] * 1000;
 
             $pokemon["weight"] = isset($pokemon["weight"]) ? floatval($pokemon["weight"]) : null;

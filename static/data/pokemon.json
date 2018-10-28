@@ -5611,6 +5611,20 @@
         "type": "Ground",
         "color": "#e0c068"
       }
+    ],
+    "forms": [
+      {
+        "nameform": "Plant",
+        "protoform": "87"
+      },
+      {
+        "nameform": "Sandy",
+        "protoform": "88"
+      },
+      {
+        "nameform": "Trash",
+        "protoform": "89"
+      }
     ]
   },
   "414":{
@@ -5703,6 +5717,16 @@
         "type": "Grass",
         "color": "#78c850"
       }
+    ],
+    "forms": [
+      {
+        "nameform": "Overcast",
+        "protoform": "94"
+      },
+      {
+        "nameform": "Sunny",
+        "protoform": "95"
+      }
     ]
   },
   "422":{
@@ -5712,6 +5736,16 @@
       {
         "type": "Water",
         "color": "#6890f0"
+      }
+    ],
+    "forms": [
+      {
+        "nameform": "West Sea",
+        "protoform": "96"
+      },
+      {
+        "nameform": "East Sea",
+        "protoform": "97"
       }
     ]
   },
@@ -5726,6 +5760,16 @@
       {
         "type": "Ground",
         "color": "#e0c068"
+      }
+    ],
+    "forms": [
+      {
+        "nameform": "West Sea",
+        "protoform": "98"
+      },
+      {
+        "nameform": "East Sea",
+        "protoform": "99"
       }
     ]
   },
@@ -6417,6 +6461,32 @@
         "type": "Ghost",
         "color": "#705898"
       }
+    ],
+    "forms": [
+      {
+        "nameform": "Normal",
+        "protoform": "82"
+      },
+      {
+        "nameform": "Frost",
+        "protoform": "83"
+      },
+      {
+        "nameform": "Fan",
+        "protoform": "84"
+      },
+      {
+        "nameform": "Mow",
+        "protoform": "85"
+      },
+      {
+        "nameform": "Wash",
+        "protoform": "86"
+      },
+      {
+        "nameform": "Heat",
+        "protoform": "87"
+      }
     ]
   },
   "480":{
@@ -6513,6 +6583,16 @@
         "type": "Dragon",
         "color": "#7038f8"
       }
+    ],
+    "forms": [
+      {
+        "nameform": "Altered",
+        "protoform": "90"
+      },
+      {
+        "nameform": "Origin",
+        "protoform": "91"
+      }
     ]
   },
   "488":{
@@ -6567,6 +6647,16 @@
         "type": "Flying",
         "color": "#a890f0"
       }
+    ],
+    "forms": [
+      {
+        "nameform": "Sky",
+        "protoform": "92"
+      },
+      {
+        "nameform": "Land",
+        "protoform": "93"
+      }
     ]
   },
   "493":{
@@ -6576,6 +6666,80 @@
       {
         "type": "Normal",
         "color": "#8a8a59"
+      }
+    ],
+    "forms": [
+      {
+        "nameform": "Normal",
+        "protoform": "100"
+      },
+      {
+        "nameform": "Fighting",
+        "protoform": "101"
+      },
+      {
+        "nameform": "Flying",
+        "protoform": "102"
+      },
+      {
+        "nameform": "Poison",
+        "protoform": "103"
+      },
+      {
+        "nameform": "Ground",
+        "protoform": "104"
+      },
+      {
+        "nameform": "Rock",
+        "protoform": "105"
+      },
+      {
+        "nameform": "Bug",
+        "protoform": "106"
+      },
+      {
+        "nameform": "Ghost",
+        "protoform": "107"
+      },
+      {
+        "nameform": "Steel",
+        "protoform": "108"
+      },
+      {
+        "nameform": "Fire",
+        "protoform": "109"
+      },
+      {
+        "nameform": "Water",
+        "protoform": "110"
+      },
+      {
+        "nameform": "Grass",
+        "protoform": "111"
+      },
+      {
+        "nameform": "Electric",
+        "protoform": "112"
+      },
+      {
+        "nameform": "Psychic",
+        "protoform": "113"
+      },
+      {
+        "nameform": "Ice",
+        "protoform": "114"
+      },
+      {
+        "nameform": "Dragon",
+        "protoform": "115"
+      },
+      {
+        "nameform": "Dark",
+        "protoform": "116"
+      },
+      {
+        "nameform": "Fairy",
+        "protoform": "117"
       }
     ]
   },
