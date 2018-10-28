@@ -167,8 +167,8 @@ class RDM extends Scanner
             } else {
                 $lasti = 0;
             }
-            $pokemon["latitude"] = $pokemon["latitude"] + 0.0001*cos(deg2rad($lasti*45));
-            $pokemon["longitude"] = $pokemon["longitude"] + 0.0001*sin(deg2rad($lasti*45));
+            $pokemon["latitude"] = $pokemon["latitude"] + 0.0003*cos(deg2rad($lasti*45));
+            $pokemon["longitude"] = $pokemon["longitude"] + 0.0003*sin(deg2rad($lasti*45));
             $pokemon["disappear_time"] = $pokemon["disappear_time"] * 1000;
 
             $pokemon["weight"] = isset($pokemon["weight"]) ? floatval($pokemon["weight"]) : null;
