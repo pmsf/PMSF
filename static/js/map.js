@@ -614,6 +614,20 @@ function pokemonLabel(item) {
     var cpMultiplier = item['cp_multiplier']
     var weatherBoostedCondition = item['weather_boosted_condition']
     var level = item['level']
+    var formStr = ''
+    if (form === 0 || form === '0' || form == null) {
+        formStr = '00'
+    } else {
+        formStr = form
+    }
+    var pokemonidStr = ''
+    if (id <= 9) {
+        pokemonidStr = '00' + id
+    } else if (id <= 99) {
+        pokemonidStr = '0' + id
+    } else {
+        pokemonidStr = id
+    }
 
     $.each(types, function (index, type) {
         typesDisplay += getTypeSpan(type)
@@ -623,9 +637,9 @@ function pokemonLabel(item) {
     if (atk != null && def != null && sta != null) {
         var iv = getIv(atk, def, sta)
         details =
-            '<div>' +
+            '<div><center>' +
             'IV: ' + iv.toFixed(1) + '% (' + atk + '/' + def + '/' + sta + ')' +
-            '</div>'
+            '</center></div>'
 
         if (cp != null && (cpMultiplier != null || level != null)) {
             var pokemonLevel
@@ -635,30 +649,30 @@ function pokemonLabel(item) {
                 pokemonLevel = getPokemonLevel(cpMultiplier)
             }
             details +=
-                '<div>' +
+                '<div><center>' +
                 i8ln('CP') + ' : ' + cp + ' | ' + i8ln('Level') + ' : ' + pokemonLevel +
-                '</div>'
+                '</center></div>'
         }
         details +=
-            '<div>' +
+            '<div><center>' +
             i8ln('Moves') + ' : ' + pMove1 + ' / ' + pMove2 +
-            '</div>'
+            '</center></div>'
     }
     if (login === true && timestamp > expireTimestamp) {
         details +=
-            '<div>' +
+            '<div><center>' +
             '<b>' + i8ln('IV stats is a donator only feature.') + '</b>' +
-            '</div>'
+            '</center></div>'
     }
     if (weatherBoostedCondition !== 0) {
         details +=
-            '<div>' +
-            i8ln('Weather') + ': ' + i8ln(weather[weatherBoostedCondition]) +
-            '</div>'
+            '<div><center>' +
+            i8ln('Weather Boost') + ': ' + i8ln(weather[weatherBoostedCondition]) +
+            '</center></div>'
     }
     if (gender != null) {
         details +=
-            '<div>' +
+            '<div><center>' +
             i8ln('Gender') + ': ' + genderType[gender - 1]
         if (weight != null) {
             details += ' | ' + i8ln('Weight') + ': ' + weight.toFixed(2) + 'kg'
@@ -667,10 +681,10 @@ function pokemonLabel(item) {
             details += ' | ' + i8ln('Height') + ': ' + height.toFixed(2) + 'm'
         }
         details +=
-            '</div>'
+            '</center></div>'
     }
     var contentstring =
-        '<div>' +
+        '<div><center>' +
         '<b>' + name + '</b>'
     if (form !== null && form > 0 && forms.length > form) {
         // todo: check how rocket map handles this (if at all):
@@ -687,36 +701,35 @@ function pokemonLabel(item) {
     contentstring += '<span> - </span>' +
         '<small>' +
         '<a href="https://pokemon.gameinfo.io/' + languageSite + '/pokemon/' + id + '" target="_blank" title="' + i8ln('View in Pokedex') + '">#' + id + '</a>' +
-        '</small>' +
-        '<span> ' + rarityDisplay + '</span>' +
-        '<span> - </span>' +
+        '</small>'
+    if (noRarityDisplay === false) {
+        contentstring += '<span> ' + rarityDisplay + '</span>'
+    }
+    contentstring += '<span> - </span>' +
         '<small>' + typesDisplay + '</small>' +
-        '</div>'
+        '</center></div>' +
+        '<div><center><img src="' + iconpath + 'pokemon_icon_' + pokemonidStr + '_' + formStr + '.png" style="width:50px;margin-top:10px;"/></center></div>' +
+        details
     if (pokemonReportTime === true) {
-        contentstring += '<div>' +
+        contentstring += '<div><center><b>' +
             i8ln('Reported at') + ' ' + getTimeStr(reportTime) +
-            '</div>'
+            '</b></center></div>'
     } else {
-        contentstring += '<div>' +
+        contentstring += '<div><center><b>' +
             i8ln('Aprox Despawn Time:') + ' ' + getTimeStr(disappearTime) +
             ' <span class="label-countdown" disappears-at="' + disappearTime + '">(00m00s)</span>' +
-            '</div>'
+            '</b></center></div>'
     }
 
-    contentstring += '<div>' +
+    contentstring += '<div><center>' +
         i8ln('Location') + ': <a href="javascript:void(0)" onclick="javascript:openMapDirections(' + latitude + ', ' + longitude + ')" title="' + i8ln('View in Maps') + '">' + coordText + '</a>' +
-        '</div>' +
-        details +
-        '<div>' +
-        '<a href="javascript:excludePokemon(' + id + ')">' + i8ln('Exclude') + '</a>&nbsp&nbsp'
-
-    if (login === true && timestamp < expireTimestamp) {
-        contentstring += '<a href="javascript:notifyAboutPokemon(' + id + ')">' + i8ln('Notify') + '</a>&nbsp&nbsp'
-    }
-    contentstring +=
+        '</center></div>' +
+        '<div><center>' +
+        '<a href="javascript:excludePokemon(' + id + ')">' + i8ln('Exclude') + '</a>&nbsp&nbsp' +
+        '<a href="javascript:notifyAboutPokemon(' + id + ')">' + i8ln('Notify') + '</a>&nbsp&nbsp' +
         '<a href="javascript:removePokemonMarker(\'' + encounterId + '\')">' + i8ln('Remove') + '</a>&nbsp&nbsp' +
         '<a href="javascript:void(0);" onclick="javascript:toggleOtherPokemon(' + id + ');" title="' + i8ln('Toggle display of other Pokemon') + '">' + i8ln('Toggle Others') + '</a>' +
-        '</div>'
+        '</center></div>'
     return contentstring
 }
 
