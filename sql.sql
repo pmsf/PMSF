@@ -89,3 +89,10 @@ ADD nest_submitted_by VARCHAR(200);
 
 ALTER TABLE raids
 ADD form smallint(6) DEFAULT NULL;
+
+ALTER TABLE fort_sightings
+ADD guard_pokemon_form SMALLINT(6) NULL DEFAULT NULL AFTER guard_pokemon_id;
+
+ALTER TABLE gym_defenders
+ADD form SMALLINT(6) NULL DEFAULT NULL AFTER pokemon_id;
+
