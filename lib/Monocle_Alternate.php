@@ -281,6 +281,7 @@ class Monocle_Alternate extends Monocle
         f.park,
         fs.team AS team_id,
         fs.guard_pokemon_id,
+        fs.guard_pokemon_form,
         fs.slots_available,
         r.level AS raid_level,
         r.pokemon_id AS raid_pokemon_id,

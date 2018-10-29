@@ -617,9 +617,12 @@ function pokemonLabel(item) {
     var formStr = ''
     if (form === 0 || form === '0' || form == null) {
         formStr = '00'
+    } else if (form <= 9) {
+        formStr = '0' + form
     } else {
         formStr = form
     }
+
     var pokemonidStr = ''
     if (id <= 9) {
         pokemonidStr = '00' + id
@@ -787,11 +790,14 @@ function gymLabel(item) {
 
         var raidForm = item['form']
         var formStr = ''
-        if (raidForm <= 10 || raidForm == null) {
+        if (raidForm === 0 || raidForm == null || raidForm === '0') {
             formStr = '00'
+        } else if (raidForm <= 9) {
+            formStr = '0' + raidForm
         } else {
             formStr = raidForm
         }
+
         var pokemonid = item['raid_pokemon_id']
         var pokemonidStr = ''
         if (pokemonid <= 9) {
@@ -1332,8 +1338,10 @@ function getGymMarkerIcon(item) {
     var level = 6 - item['slots_available']
     var raidForm = item['form']
     var formStr = ''
-    if (raidForm <= 10 || raidForm == null) {
+    if (raidForm === 0 || raidForm == null || raidForm === '0') {
         formStr = '00'
+    } else if (raidForm <= 9) {
+        formStr = '0' + raidForm
     } else {
         formStr = raidForm
     }
@@ -1457,8 +1465,10 @@ function setupGymMarker(item) {
         if (raidStarted) {
             var raidForm = item['form']
             var formStr = ''
-            if (raidForm <= 10 || raidForm == null) {
+            if (raidForm === 0 || raidForm == null || raidForm === '0') {
                 formStr = '00'
+            } else if (raidForm <= 9) {
+                formStr = '0' + raidForm
             } else {
                 formStr = raidForm
             }
@@ -1549,8 +1559,10 @@ function updateGymMarker(item, marker) {
             if (raidStarted) {
                 var raidForm = item['form']
                 var formStr = ''
-                if (raidForm <= 10 || raidForm == null) {
+                if (raidForm === 0 || raidForm == null || raidForm === '0') {
                     formStr = '00'
+                } else if (raidForm <= 9) {
+                    formStr = '0' + raidForm
                 } else {
                     formStr = raidForm
                 }
@@ -4270,8 +4282,10 @@ function showGymDetails(id) { // eslint-disable-line no-unused-vars
             if (raidStarted) {
                 var raidForm = result['form']
                 var formStr = ''
-                if (raidForm <= 10 || raidForm == null) {
+                if (raidForm === 0 || raidForm == null || raidForm === '0') {
                     formStr = '00'
+                } else if (raidForm <= 9) {
+                    formStr = '0' + raidForm
                 } else {
                     formStr = raidForm
                 }
@@ -4377,11 +4391,18 @@ function showGymDetails(id) { // eslint-disable-line no-unused-vars
                 } else {
                     pokemonIdStr = pokemon.pokemon_id
                 }
-
+                var formStr = ''
+                if (pokemon.form === '0' || pokemon.form === null || pokemon.form === 0 || pokemon.form === undefined) {
+                    formStr = '00'
+                } else if (pokemon.form <= 9) {
+                    formStr = '0' + pokemon.form
+                } else {
+                    formStr = pokemon.form
+                }
                 pokemonHtml +=
                     '<tr onclick=toggleGymPokemonDetails(this)>' +
                     '<td width="30px">' +
-                    '<img src="' + iconpath + 'pokemon_icon_' + pokemonIdStr + '_00.png"/>' +
+                    '<img src="' + iconpath + 'pokemon_icon_' + pokemonIdStr + '_' + formStr + '.png"/>' +
                     '</td>' +
                     '<td class="team-' + result.team_id + '-text">' +
                     '<div style="line-height:1em">' + pokemon.pokemon_name + '</div>' +
@@ -4475,10 +4496,18 @@ function showGymDetails(id) { // eslint-disable-line no-unused-vars
             } else {
                 pokemonIdStr = result.guard_pokemon_id
             }
+            var formStr = ''
+            if (result.guard_pokemon_form === '0' || result.guard_pokemon_form === null || result.guard_pokemon_form === 0 || result.guard_pokemon_form === undefined) {
+                formStr = '00'
+            } else if (result.guard_pokemon_form <= 9) {
+                formStr = '0' + result.guard_pokemon_form
+            } else {
+                formStr = result.guard_pokemon_form
+            }
             pokemonHtml =
                 '<center class="team-' + result.team_id + '-text">' +
                 'Gym Leader:<br>' +
-                '<img src="' + iconpath + 'pokemon_icon_' + pokemonIdStr + '_00.png"/><br>' +
+                '<img src="' + iconpath + 'pokemon_icon_' + pokemonIdStr + '_' + formStr + '.png"/><br>' +
                 '<b class="team-' + result.team_id + '-text">' + result.guard_pokemon_name + '</b>' +
                 '</center>'
         }
