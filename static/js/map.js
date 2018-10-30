@@ -4480,16 +4480,16 @@ function showGymDetails(id) { // eslint-disable-line no-unused-vars
             } else {
                 pokemonIdStr = result.guard_pokemon_id
             }
-            var formStr = ''
+            var guardFormStr = ''
             if (result.guard_pokemon_form === '0' || result.guard_pokemon_form === null || result.guard_pokemon_form === 0 || result.guard_pokemon_form === undefined) {
-                formStr = '00'
+                guardFormStr = '00'
             } else {
-                formStr = result.guard_pokemon_form
+                guardFormStr = result.guard_pokemon_form
             }
             pokemonHtml =
                 '<center class="team-' + result.team_id + '-text">' +
                 'Gym Leader:<br>' +
-                '<img src="' + iconpath + 'pokemon_icon_' + pokemonIdStr + '_' + formStr + '.png"/><br>' +
+                '<img src="' + iconpath + 'pokemon_icon_' + pokemonIdStr + '_' + guardFormStr + '.png"/><br>' +
                 '<b class="team-' + result.team_id + '-text">' + result.guard_pokemon_name + '</b>' +
                 '</center>'
         }
