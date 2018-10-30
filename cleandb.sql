@@ -52,6 +52,7 @@ CREATE TABLE `fort_sightings` (
   `last_modified` int(11) DEFAULT NULL,
   `team` tinyint(3) UNSIGNED DEFAULT NULL,
   `guard_pokemon_id` smallint(6) DEFAULT NULL,
+  `guard_pokemon_form` smallint(6) DEFAULT NULL,
   `slots_available` smallint(6) DEFAULT NULL,
   `is_in_battle` tinyint(1) DEFAULT NULL,
   `updated` int(11) DEFAULT NULL
@@ -62,6 +63,7 @@ CREATE TABLE `gym_defenders` (
   `fort_id` int(11) NOT NULL,
   `external_id` bigint(20) UNSIGNED NOT NULL,
   `pokemon_id` smallint(6) DEFAULT NULL,
+  `form` smallint(6) DEFAULT NULL,
   `team` tinyint(3) UNSIGNED DEFAULT NULL,
   `owner_name` varchar(128) DEFAULT NULL,
   `nickname` varchar(128) DEFAULT NULL,
