@@ -1,0 +1,106 @@
+{
+  "0": {
+    "prototext": "QUEST_UNKNOWN_TYPE",
+    "text": "Unknown quest type"
+  },
+  "1": {
+    "prototext": "QUEST_FIRST_CATCH_OF_THE_DAY",
+    "text": "First catch of the day"
+  },
+  "2": {
+    "prototext": "QUEST_FIRST_POKESTOP_OF_THE_DAY",
+    "text": "First pokéstop of the day"
+  },
+  "3": {
+    "prototext": "QUEST_MULTI_PART",
+    "text": "Multi part"
+  },
+  "4": {
+    "prototext": "QUEST_CATCH_POKEMON",
+    "text": "Catch pokemon"
+  },
+  "5": {
+    "prototext": "QUEST_SPIN_POKESTOP",
+    "text": "Spin pokéstop(s)"
+  },
+  "6": {
+    "prototext": "QUEST_HATCH_EGG",
+    "text": "Hatch egg(s)"
+  },
+  "7": {
+    "prototext": "QUEST_COMPLETE_GYM_BATTLE",
+    "text": "Complete gym battle(s)"
+  },
+  "8": {
+    "prototext": "QUEST_COMPLETE_RAID_BATTLE",
+    "text": "Complete raid battle(s)"
+  },
+  "9": {
+    "prototext": "QUEST_COMPLETE_QUEST",
+    "text": "Complete quest(s)"
+  },
+  "10": {
+    "prototext": "QUEST_TRANSFER_POKEMON",
+    "text": "Transfer pokémon(s)"
+  },
+  "11": {
+    "prototext": "QUEST_FAVORITE_POKEMON",
+    "text": "Favorite pokémon(s)"
+  },
+  "12": {
+    "prototext": "QUEST_AUTOCOMPLETE",
+    "text": "Autocomplete"
+  },
+  "13": {
+    "prototext": "QUEST_USE_BERRY_IN_ENCOUNTER",
+    "text": "Catch pokémon with berrie(s)"
+  },
+  "14": {
+    "prototext": "QUEST_UPGRADE_POKEMON",
+    "text": "Power up pokémon(s)"
+  },
+  "15": {
+    "prototext": "QUEST_EVOLVE_POKEMON",
+    "text": "Evolve pokémon(s)"
+  },
+  "16": {
+    "prototext": "QUEST_LAND_TROW",
+    "text": "Land trow(s)"
+  },
+  "17": {
+    "prototext": "QUEST_GET_BUDDY_CANDY",
+    "text": "Walk your buddy to earn candy"
+  },
+  "18": {
+    "prototext": "QUEST_BADGE_RANK",
+    "text": "Badge rank"
+  },
+  "19": {
+    "prototext": "QUEST_PLAYER_LEVEL",
+    "text": "Become level"
+  },
+  "20": {
+    "prototext": "QUEST_JOIN_RAID",
+    "text": "Join raid"
+  },
+  "21": {
+    "prototext": "QUEST_COMPLETE_BATTLE",
+    "text": "Complete raid battle"
+  },
+  "22": {
+    "prototext": "QUEST_ADD_FRIEND",
+    "text": "Become friends"
+  },
+  "23": {
+    "prototext": "QUEST_TRADE_POKEMON",
+    "text": "Trade pokémon(s)"
+  },
+  "24": {
+    "prototext": "QUEST_SEND_GIFT",
+    "text": "Send gift(s)"
+  },
+  "25": {
+    "prototext": "QUEST_EVOLVE_INTO_POKEMON",
+    "text": "Evolve pokémon(s) into"
+  }
+}
