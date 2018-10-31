@@ -258,6 +258,7 @@ class RDM extends Scanner
         name AS pokestop_name,
         url,
         lure_expire_timestamp AS lure_expiration,
+        quest_type,
         quest_timestamp,
         quest_target,
         quest_conditions,
