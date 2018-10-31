@@ -975,6 +975,7 @@ function gymLabel(item) {
 
 function pokestopLabel(item) {
     var str
+    var reward = JSON.parse(item['quest_rewards'])
     if (item['pokestop_name'] === null) {
         item['pokestop_name'] = 'Pokéstop'
     }
@@ -982,6 +983,9 @@ function pokestopLabel(item) {
     if (item['url'] !== null) {
         stopImage = '<img height="70px" style="padding: 5px;" src="' + item['url'] + '">'
     }
+    var pokemonIdStr = ''
+    var formStr = ''
+    var rewardinfo
     if (item['lure_expiration']) {
         if (item['lure_user']) {
             str =
@@ -994,18 +998,53 @@ function pokestopLabel(item) {
                 '<b>' + item['pokestop_name'] + ' (' + i8ln('Lured') + ')</b>' +
                 '</center></div>'
         }
-        if (noManualQuests === true || item['quest_id'] === null) {
-            str +=
-                '<div><center>' +
-                '<img height="70px" style="padding: 5px;" src="static/forts/LureModule.png">' +
-                stopImage +
-                '</center></div>'
+        if (reward !== null) {
+            rewardinfo = reward[0]['info']
+            if (reward[0]['type'] === 7) {
+                if (rewardinfo['pokemon_id'] <= 9) {
+                    pokemonIdStr = '00' + rewardinfo['pokemon_id']
+                } else if (rewardinfo['pokemon_id'] <= 99) {
+                    pokemonIdStr = '0' + rewardinfo['pokemon_id']
+                } else {
+                    pokemonIdStr = rewardinfo['pokemon_id']
+                }
+                if (rewardinfo['form_id'] === 0) {
+                    formStr = '00'
+                } else {
+                    formStr = rewardinfo['form_id']
+                }
+                str +=
+                    '<div><center>' +
+                    '<img height="70px" style="padding: 5px;" src="static/forts/LureModule.png">' +
+                    stopImage +
+                    '<img height="70px" style="padding: 5px;" src="' + iconpath + 'pokemon_icon_' + pokemonIdStr + '_' + formStr + '.png"/>' +
+                    '</center></div>'
+            } else if (reward[0]['type'] === 3) {
+                str +=
+                    '<div><center>' +
+                    '<img height="70px" style="padding: 5px;" src="static/forts/LureModule.png">' +
+                    stopImage +
+                    '<img height="70px" style="padding: 5px;" src="' + iconpath + 'rewards/reward_stardust.png"/>' +
+                    '</center></div>'
+            } else if (reward[0]['type'] === 2) {
+                str +=
+                    '<div><center>' +
+                    '<img height="70px" style="padding: 5px;" src="static/forts/LureModule.png">' +
+                    stopImage +
+                    '<img height="70px" style="padding: 5px;" src="' + iconpath + 'rewards/reward_' + rewardinfo['item_id'] + '_1.png"/>' +
+                    '</center></div>'
+            } else {
+                str +=
+                    '<div><center>' +
+                    '<img height="70px" style="padding: 5px;" src="static/forts/LureModule.png">' +
+                    stopImage +
+                    '</center></div>'
+            }
         } else {
             str +=
                 '<div><center>' +
                 '<img height="70px" style="padding: 5px;" src="static/forts/LureModule.png">' +
                 stopImage +
-                '<img height="70px" style="padding: 5px;" src="static/rewards/reward_' + item['reward_id'] + '.png"/>' +
                 '</center></div>'
         }
         str +=
@@ -1013,17 +1052,15 @@ function pokestopLabel(item) {
             i8ln('Lure expires at') + ' ' + getTimeStr(item['lure_expiration']) +
             '<span class="label-countdown" disappears-at="' + item['lure_expiration'] + '">(00m00s)</span>' +
             '</center></div>'
-        if (!noManualQuests && item['quest_id'] !== null) {
+        if (reward !== null) {
             str += '<center><div>' +
-                i8ln('Quest:') + ' ' +
-                i8ln(questList[item['quest_id']]) +
-                '</div></center>'
-            if (item['reward_id'] !== null) {
-                str += '<center><div>' +
-                    i8ln('Reward:') + ' ' +
-                    i8ln(rewardList[item['reward_id']]) +
-                    '</div></center>'
-            }
+            i8ln('Quest:') + ' ' +
+            //i8ln(questList[item['quest_id']]) +
+            '</div></center>' +
+            '<center><div>' +
+            i8ln('Reward:') + ' ' +
+            //i8ln(rewardList[item['reward_id']]) +
+            '</div></center>'
         }
         if (!noDeletePokestops) {
             str += '<i class="fa fa-trash-o delete-pokestop" onclick="deletePokestop(event);" data-id="' + item['pokestop_id'] + '"></i>'
@@ -1052,19 +1089,76 @@ function pokestopLabel(item) {
             '<center>' + '<div class="pokestop-label">' +
             '<b>' + item['pokestop_name'] + '</b>' +
             '</div>'
-        if (noManualQuests === true || item['quest_id'] === null) {
-            str =
-                '<div class="pokestop-label">' +
-                '<center>' +
-                '<div>' +
-                '<b>' + item['pokestop_name'] + '</b>' +
-                '</div>' +
-                '<div>' +
-                '<img height="70px" style="padding: 5px;" src="static/forts/Pstop-large.png">' +
-                stopImage +
-                '</div>' +
-                '</center>' +
-                '</div>'
+        if (reward !== null) {
+            rewardinfo = reward[0]['info']
+            if (reward[0]['type'] === 7) {
+                if (rewardinfo['pokemon_id'] <= 9) {
+                    pokemonIdStr = '00' + rewardinfo['pokemon_id']
+                } else if (rewardinfo['pokemon_id'] <= 99) {
+                    pokemonIdStr = '0' + rewardinfo['pokemon_id']
+                } else {
+                    pokemonIdStr = rewardinfo['pokemon_id']
+                }
+                if (rewardinfo['form_id'] === 0) {
+                    formStr = '00'
+                } else {
+                    formStr = rewardinfo['form_id']
+                }
+                str =
+                    '<div class="pokestop-label">' +
+                    '<center>' +
+                    '<div>' +
+                    '<b>' + item['pokestop_name'] + '</b>' +
+                    '</div>' +
+                    '<div>' +
+                    '<img height="70px" style="padding: 5px;" src="static/forts/Pstop-large.png">' +
+                    stopImage +
+                    '<img height="70px" style="padding: 5px;" src="' + iconpath + 'pokemon_icon_' + pokemonIdStr + '_' + formStr + '.png"/>' +
+                    '</div>' +
+                    '</center>' +
+                    '</div>'
+            } else if (reward[0]['type'] === 3) {
+                str =
+                    '<div class="pokestop-label">' +
+                    '<center>' +
+                    '<div>' +
+                    '<b>' + item['pokestop_name'] + '</b>' +
+                    '</div>' +
+                    '<div>' +
+                    '<img height="70px" style="padding: 5px;" src="static/forts/Pstop-large.png">' +
+                    stopImage +
+                    '<img height="70px" style="padding: 5px;" src="' + iconpath + 'rewards/reward_stardust.png"/>' +
+                    '</div>' +
+                    '</center>' +
+                    '</div>'
+            } else if (reward[0]['type'] === 2) {
+                str =
+                    '<div class="pokestop-label">' +
+                    '<center>' +
+                    '<div>' +
+                    '<b>' + item['pokestop_name'] + '</b>' +
+                    '</div>' +
+                    '<div>' +
+                    '<img height="70px" style="padding: 5px;" src="static/forts/Pstop-large.png">' +
+                    stopImage +
+                    '<img height="70px" style="padding: 5px;" src="' + iconpath + 'rewards/reward_' + rewardinfo['item_id'] + '_1.png"/>' +
+                    '</div>' +
+                    '</center>' +
+                    '</div>'
+            } else {
+                str =
+                    '<div class="pokestop-label">' +
+                    '<center>' +
+                    '<div>' +
+                    '<b>' + item['pokestop_name'] + '</b>' +
+                    '</div>' +
+                    '<div>' +
+                    '<img height="70px" style="padding: 5px;" src="static/forts/Pstop-quest-large.png">' +
+                    stopImage +
+                    '</div>' +
+                    '</center>' +
+                    '</div>'
+            }
         } else {
             str =
                 '<div class="pokestop-label">' +
@@ -1075,22 +1169,19 @@ function pokestopLabel(item) {
                 '<div>' +
                 '<img height="70px" style="padding: 5px;" src="static/forts/Pstop-quest-large.png">' +
                 stopImage +
-                '<img height="70px" style="padding: 5px;" src="static/rewards/reward_' + item['reward_id'] + '.png"/>' +
                 '</div>' +
                 '</center>' +
                 '</div>'
         }
-        if (!noManualQuests && item['quest_id'] !== null) {
+        if (reward !== null) {
             str += '<center><div>' +
                 i8ln('Quest:') + ' ' +
-                i8ln(questList[item['quest_id']]) +
+                //i8ln(questList[item['quest_id']]) +
+                '</div></center>' +
+                '<center><div>' +
+                i8ln('Reward:') + ' ' +
+                //i8ln(rewardList[item['reward_id']]) +
                 '</div></center>'
-            if (item['reward_id'] !== null) {
-                str += '<center><div>' +
-                    i8ln('Reward:') + ' ' +
-                    i8ln(rewardList[item['reward_id']]) +
-                    '</div></center>'
-            }
         }
         if (!noDeletePokestops) {
             str += '<i class="fa fa-trash-o delete-pokestop" onclick="deletePokestop(event);" data-id="' + item['pokestop_id'] + '"></i>'
