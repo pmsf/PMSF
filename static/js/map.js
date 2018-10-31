@@ -106,6 +106,9 @@ var pokeList = []
 var raidBoss = {} // eslint-disable-line no-unused-vars
 var questList = []
 var rewardList = []
+var questtypeList = []
+var rewardtypeList = []
+var conditiontypeList = []
 var gymId
 
 var assetsPath = 'static/sounds/'
@@ -976,6 +979,7 @@ function gymLabel(item) {
 function pokestopLabel(item) {
     var str
     var reward = JSON.parse(item['quest_rewards'])
+    var quest = JSON.parse(item['quest_conditions'])
     if (item['pokestop_name'] === null) {
         item['pokestop_name'] = 'Pokéstop'
     }
@@ -1052,15 +1056,25 @@ function pokestopLabel(item) {
             i8ln('Lure expires at') + ' ' + getTimeStr(item['lure_expiration']) +
             '<span class="label-countdown" disappears-at="' + item['lure_expiration'] + '">(00m00s)</span>' +
             '</center></div>'
-        if (reward !== null) {
-            str += '<center><div>' +
-            i8ln('Quest:') + ' ' +
-            //i8ln(questList[item['quest_id']]) +
-            '</div></center>' +
-            '<center><div>' +
-            i8ln('Reward:') + ' ' +
-            //i8ln(rewardList[item['reward_id']]) +
-            '</div></center>'
+        if (reward !== null && quest !== null) {
+            if (item['quest_type'] !== null) {
+                str += '<center><div>' +
+                i8ln('Task:') + ' ' +
+                i8ln(questtypeList[item['quest_type']]) +
+                '</div></center>'
+            }
+            if (typeof quest[0] !== 'undefined') {
+                str += '<center><div>' +
+                i8ln('Condition:') + ' ' +
+                i8ln(questtypeList[quest[0]['type']]) +
+                '</div></center>'
+            }
+            if (rewardinfo['amount'] !== null && rewardinfo['amount'] > 0) {
+                str += '<center><div>' +
+                i8ln('Reward Amount:') + ' ' +
+                rewardinfo['amount'] +
+                '</div></center>'
+            }
         }
         if (!noDeletePokestops) {
             str += '<i class="fa fa-trash-o delete-pokestop" onclick="deletePokestop(event);" data-id="' + item['pokestop_id'] + '"></i>'
@@ -1173,15 +1187,25 @@ function pokestopLabel(item) {
                 '</center>' +
                 '</div>'
         }
-        if (reward !== null) {
-            str += '<center><div>' +
-                i8ln('Quest:') + ' ' +
-                //i8ln(questList[item['quest_id']]) +
-                '</div></center>' +
-                '<center><div>' +
-                i8ln('Reward:') + ' ' +
-                //i8ln(rewardList[item['reward_id']]) +
+        if (reward !== null && quest !== null) {
+            if (item['quest_type'] !== null) {
+                str += '<center><div>' +
+                i8ln('Task:') + ' ' +
+                i8ln(questtypeList[item['quest_type']]) +
                 '</div></center>'
+            }
+            if (typeof quest[0] !== 'undefined') {
+                str += '<center><div>' +
+                i8ln('Condition:') + ' ' +
+                i8ln(questtypeList[quest[0]['type']]) +
+                '</div></center>'
+            }
+            if (rewardinfo['amount'] !== null && rewardinfo['amount'] > 0) {
+                str += '<center><div>' +
+                i8ln('Reward Amount:') + ' ' +
+                rewardinfo['amount'] +
+                '</div></center>'
+            }
         }
         if (!noDeletePokestops) {
             str += '<i class="fa fa-trash-o delete-pokestop" onclick="deletePokestop(event);" data-id="' + item['pokestop_id'] + '"></i>'
@@ -5137,6 +5161,24 @@ $(function () {
     $.getJSON('static/dist/data/rewards.min.json').done(function (data) {
         $.each(data, function (key, value) {
             rewardList[key] = value['name']
+        })
+    })
+
+    $.getJSON('static/dist/data/questtype.min.json').done(function (data) {
+        $.each(data, function (key, value) {
+            questtypeList[key] = value['text']
+        })
+    })
+
+    $.getJSON('static/dist/data/rewardtype.min.json').done(function (data) {
+        $.each(data, function (key, value) {
+            rewardtypeList[key] = value['text']
+        })
+    })
+
+    $.getJSON('static/dist/data/conditiontype.min.json').done(function (data) {
+        $.each(data, function (key, value) {
+            conditiontypeList[key] = value['text']
         })
     })
 
