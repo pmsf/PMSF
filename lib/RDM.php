@@ -257,11 +257,12 @@ class RDM extends Scanner
         lon AS longitude,
         name AS pokestop_name,
         url,
-        lure_expire_timestamp AS lure_expiration";
-        if (!$noManualQuests) {
-            $query .= ",quest_id,reward_id";
-        }
-        $query .= " FROM pokestop
+        lure_expire_timestamp AS lure_expiration,
+        quest_timestamp,
+        quest_target,
+        quest_conditions,
+        quest_rewards
+        FROM pokestop
         WHERE :conditions";
 
         $query = str_replace(":conditions", join(" AND ", $conds), $query);
@@ -274,9 +275,12 @@ class RDM extends Scanner
             $pokestop["latitude"] = floatval($pokestop["latitude"]);
             $pokestop["longitude"] = floatval($pokestop["longitude"]);
             $pokestop["lure_expiration"] = !empty($pokestop["lure_expiration"]) ? $pokestop["lure_expiration"] * 1000 : null;
-            $pokestop["lure_user"] = !empty($pokestop["lure_user"]) ? $pokestop["lure_user"] : "henk";
+            $pokestop["lure_user"] = !empty($pokestop["lure_user"]) ? $pokestop["lure_user"] : null;
+            $pokestop["quest_target"] = intval($pokestop["quest_target"]);
+            // needs to be removed
             $pokestop["quest_id"] = !empty($pokestop["quest_id"]) ? $pokestop["quest_id"] : null;
             $pokestop["reward_id"] = !empty($pokestop["reward_id"]) ? $pokestop["reward_id"] : null;
+            // ^^ needs to be removed
             $pokestop["url"] = str_replace("http://", "https://images.weserv.nl/?url=", $pokestop["url"]);
             if ($noTrainerName === true) {
                 // trainer names hidden, so don't show trainer who lured
