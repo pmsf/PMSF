@@ -1111,7 +1111,7 @@ function pokestopLabel(item) {
                     '<b>' + item['pokestop_name'] + '</b>' +
                     '</div>' +
                     '<div>' +
-                    '<img height="70px" style="padding: 5px;" src="static/forts/Pstop-large.png">' +
+                    '<img height="70px" style="padding: 5px;" src="static/forts/Pstop-quest-large.png">' +
                     stopImage +
                     '<img height="70px" style="padding: 5px;" src="' + iconpath + 'pokemon_icon_' + pokemonIdStr + '_' + formStr + '.png"/>' +
                     '</div>' +
@@ -1125,7 +1125,7 @@ function pokestopLabel(item) {
                     '<b>' + item['pokestop_name'] + '</b>' +
                     '</div>' +
                     '<div>' +
-                    '<img height="70px" style="padding: 5px;" src="static/forts/Pstop-large.png">' +
+                    '<img height="70px" style="padding: 5px;" src="static/forts/Pstop-quest-large.png">' +
                     stopImage +
                     '<img height="70px" style="padding: 5px;" src="' + iconpath + 'rewards/reward_stardust.png"/>' +
                     '</div>' +
@@ -1139,7 +1139,7 @@ function pokestopLabel(item) {
                     '<b>' + item['pokestop_name'] + '</b>' +
                     '</div>' +
                     '<div>' +
-                    '<img height="70px" style="padding: 5px;" src="static/forts/Pstop-large.png">' +
+                    '<img height="70px" style="padding: 5px;" src="static/forts/Pstop-quest-large.png">' +
                     stopImage +
                     '<img height="70px" style="padding: 5px;" src="' + iconpath + 'rewards/reward_' + rewardinfo['item_id'] + '_1.png"/>' +
                     '</div>' +
@@ -1167,7 +1167,7 @@ function pokestopLabel(item) {
                 '<b>' + item['pokestop_name'] + '</b>' +
                 '</div>' +
                 '<div>' +
-                '<img height="70px" style="padding: 5px;" src="static/forts/Pstop-quest-large.png">' +
+                '<img height="70px" style="padding: 5px;" src="static/forts/Pstop-large.png">' +
                 stopImage +
                 '</div>' +
                 '</center>' +
@@ -1735,7 +1735,7 @@ function getPokestopMarkerIcon(item) {
                 formStr = rewardinfo['form_id']
             }
             html = '<div style="position:relative;">' +
-                '<img src="static/forts/Pstop-quest-large.png" style="width:50px;height:72;top:-35px;right:10px;"/>' +
+                '<img src="static/forts/Pstop-quest-small.png" style="width:50px;height:72;top:-35px;right:10px;"/>' +
                 '<img src="' + iconpath + 'pokemon_icon_' + pokemonIdStr + '_' + formStr + '.png" style="width:30px;height:auto;position:absolute;top:4px;"/>' +
                 '</div>'
             stopMarker = L.divIcon({
@@ -1747,7 +1747,7 @@ function getPokestopMarkerIcon(item) {
             })
         } else if (reward[0]['type'] === 3) {
             html = '<div style="position:relative;">' +
-                '<img src="static/forts/Pstop-quest-large.png" style="width:50px;height:72;top:-35px;right:10px;"/>' +
+                '<img src="static/forts/Pstop-quest-small.png" style="width:50px;height:72;top:-35px;right:10px;"/>' +
                 '<img src="' + iconpath + 'rewards/reward_stardust.png" style="width:30px;height:auto;position:absolute;top:4px;"/>' +
                 '</div>'
             stopMarker = L.divIcon({
@@ -1759,7 +1759,7 @@ function getPokestopMarkerIcon(item) {
             })
         } else if (reward[0]['type'] === 2) {
             html = '<div style="position:relative;">' +
-                '<img src="static/forts/Pstop-quest-large.png" style="width:50px;height:72;top:-35px;right:10px;"/>' +
+                '<img src="static/forts/Pstop-quest-small.png" style="width:50px;height:72;top:-35px;right:10px;"/>' +
                 '<img src="' + iconpath + 'rewards/reward_' + rewardinfo['item_id'] + '_1.png" style="width:30px;height:auto;position:absolute;top:4px;"/>' +
                 '</div>'
             stopMarker = L.divIcon({
