@@ -238,7 +238,7 @@ class RDM extends Scanner
             $params[':time'] = time();
         }
         elseif( $lured == 2){
-            $conds[] = "quest_id IS NOT NULL";
+            $conds[] = "quest_type IS NOT NULL";
         }
 
         if ($tstamp > 0) {

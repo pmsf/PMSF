@@ -3653,7 +3653,7 @@ function updatePokestops() {
     }
     if (Store.get('showLuredPokestopsOnly') === 2) {
         $.each(mapData.pokestops, function (key, value) {
-            if (!value['quest_id']) {
+            if (!value['quest_type']) {
                 removeStops.push(key)
             }
         })
