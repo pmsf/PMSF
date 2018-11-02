@@ -106,6 +106,9 @@ var pokeList = []
 var raidBoss = {} // eslint-disable-line no-unused-vars
 var questList = []
 var rewardList = []
+var questtypeList = []
+var rewardtypeList = []
+var conditiontypeList = []
 var gymId
 
 var assetsPath = 'static/sounds/'
@@ -137,11 +140,11 @@ var toastrOptions = {
 
 createjs.Sound.registerSound('static/sounds/ding.mp3', 'ding')
 
-
+var pokemonTypes = [i8ln('Normal'), i8ln('Fighting'), i8ln('Flying'), i8ln('Poison'), i8ln('Ground'), i8ln('Rock'), i8ln('Bug'), i8ln('Ghost'), i8ln('Steel'), i8ln('Fire'), i8ln('Water'), i8ln('Grass'), i8ln('Electric'), i8ln('Psychic'), i8ln('Ice'), i8ln('Dragon'), i8ln('Dark'), i8ln('Fairy')]
 var genderType = ['♂', '♀', '⚲']
 var forms = ['unset', 'A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N', 'O', 'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z', '!', '?', i8ln('Normal'), i8ln('Sunny'), i8ln('Rainy'), i8ln('Snowy'), i8ln('Normal'), i8ln('Attack'), i8ln('Defense'), i8ln('Speed'), i8ln('1'), i8ln('2'), i8ln('3'), i8ln('4'), i8ln('5'), i8ln('6'), i8ln('7'), i8ln('8'), i8ln('Normal'), i8ln('Alola'), i8ln('Normal'), i8ln('Alola'), i8ln('Normal'), i8ln('Alola'), i8ln('Normal'), i8ln('Alola'), i8ln('Normal'), i8ln('Alola'), i8ln('Normal'), i8ln('Alola'), i8ln('Normal'), i8ln('Alola'), i8ln('Normal'), i8ln('Alola'), i8ln('Normal'), i8ln('Alola'), i8ln('Normal'), i8ln('Alola'), i8ln('Normal'), i8ln('Alola'), i8ln('Normal'), i8ln('Alola'), i8ln('Normal'), i8ln('Alola'), i8ln('Normal'), i8ln('Alola'), i8ln('Normal'), i8ln('Alola'), i8ln('Normal'), i8ln('Alola'), i8ln('Normal'), i8ln('Alola'), i8ln('Normal'), i8ln('Alola'), i8ln('Normal'), i8ln('Frost'), i8ln('Fan'), i8ln('Mow'), i8ln('Wash'), i8ln('Heat'), i8ln('Plant'), i8ln('Sandy'), i8ln('Trash'), i8ln('Altered'), i8ln('Origin'), i8ln('Sky'), i8ln('Land'), i8ln('Overcast'), i8ln('Sunny'), i8ln('West sea'), i8ln('East sea'), i8ln('West sea'), i8ln('East sea'), i8ln('Arceus Normal'), i8ln('Archeus Fighting'), i8ln('Archeus Flying'), i8ln('Archeus Poison'), i8ln('Archeus Ground'), i8ln('Archeus Rock'), i8ln('Archeus Bug'), i8ln('Archeus Ghost'), i8ln('Archeus Steel'), i8ln('Archeus Fire'), i8ln('Archeus Water'), i8ln('Archeus Grass'), i8ln('Archeus Electric'), i8ln('Archeus Psychic'), i8ln('Archeus Ice'), i8ln('Archeus Dragon'), i8ln('Archeus Dark'), i8ln('Archeus Fairy')]
 var cpMultiplier = [0.094, 0.16639787, 0.21573247, 0.25572005, 0.29024988, 0.3210876, 0.34921268, 0.37523559, 0.39956728, 0.42250001, 0.44310755, 0.46279839, 0.48168495, 0.49985844, 0.51739395, 0.53435433, 0.55079269, 0.56675452, 0.58227891, 0.59740001, 0.61215729, 0.62656713, 0.64065295, 0.65443563, 0.667934, 0.68116492, 0.69414365, 0.70688421, 0.71939909, 0.7317, 0.73776948, 0.74378943, 0.74976104, 0.75568551, 0.76156384, 0.76739717, 0.7731865, 0.77893275, 0.7846369, 0.79030001]
-
+var throwType = JSON.parse('{"10": "Nice", "11": "Great", "12": "Excellent"}')
 var weatherLayerGroup = new L.LayerGroup()
 var weatherArray = []
 var weatherPolys = []
@@ -976,6 +979,10 @@ function gymLabel(item) {
 function pokestopLabel(item) {
     var str
     var reward = JSON.parse(item['quest_rewards'])
+    var quest = JSON.parse(item['quest_conditions'])
+    var questStr
+    var rewardinfo
+    var raidLevel
     if (item['pokestop_name'] === null) {
         item['pokestop_name'] = 'Pokéstop'
     }
@@ -985,7 +992,6 @@ function pokestopLabel(item) {
     }
     var pokemonIdStr = ''
     var formStr = ''
-    var rewardinfo
     if (item['lure_expiration']) {
         if (item['lure_user']) {
             str =
@@ -1052,15 +1058,95 @@ function pokestopLabel(item) {
             i8ln('Lure expires at') + ' ' + getTimeStr(item['lure_expiration']) +
             '<span class="label-countdown" disappears-at="' + item['lure_expiration'] + '">(00m00s)</span>' +
             '</center></div>'
-        if (reward !== null) {
-            str += '<center><div>' +
-            i8ln('Quest:') + ' ' +
-            //i8ln(questList[item['quest_id']]) +
-            '</div></center>' +
-            '<center><div>' +
-            i8ln('Reward:') + ' ' +
-            //i8ln(rewardList[item['reward_id']]) +
-            '</div></center>'
+        if (reward !== null && quest !== null) {
+            if (typeof quest[0] !== 'undefined') {
+                questStr = i8ln(questtypeList[item['quest_type']])
+                str += '<center><div>' +
+                i8ln('Task:') + ' ' +
+                questStr.replace('{0}', item['quest_target']) +
+                '</div></center>'
+                str += '<center><div>'
+
+                if (quest[0]['type'] === 1) {
+                    str += '<div>' +
+                    i8ln('Type(s):') + ' '
+                    $.each(quest[0]['info']['pokemon_type_ids'], function (index, typeId) {
+                        str += pokemonTypes[typeId]
+                    })
+                    str += '</div>'
+                } else if (quest[0]['type'] === 2) {
+                    str += '<div>' +
+                    i8ln('Pokémon:') + ' '
+                    $.each(quest[0]['info']['pokemon_ids'], function (index, id) {
+                        str += idToPokemon[id].name
+                    })
+                    str += '</div>'
+                } else if (quest[0]['type'] === 3) {
+                    str += '<div>' +
+                    i8ln('Condition:') + ' ' +
+                    i8ln('Weather boosted') +
+                    '</div>'
+                } else if (quest[0]['type'] === 6) {
+                    str += '<div>' +
+                    i8ln('Condition:') + ' ' +
+                    i8ln('Win raid') +
+                    '</div>'
+                } else if (quest[0]['type'] === 7) {
+                    raidLevel = Math.min.apply(null, quest[0]['info']['raid_levels'])
+                    if (raidLevel > 1) {
+                        str += '<div>' +
+                        i8ln('Level') + ' ' +
+                        raidLevel + ' ' +
+                        i8ln('or higher')
+                    }
+                    str += '</div>'
+                } else if (quest[0]['type'] === 8) {
+                    str += '<div>' +
+                    i8ln('Condition:') + ' ' +
+                    i8ln(throwType[quest[0]['info']['throw_type_id']]) + ' ' +
+                    i8ln('throw') +
+                    '</div>'
+                } else if (quest[0]['type'] === 9) {
+                    str += '<div>' +
+                    i8ln('Condition:') + ' ' +
+                    i8ln('Win gym battle') +
+                    '</div>'
+                } else if (quest[0]['type'] === 10) {
+                    str += '<div>' +
+                    i8ln('Condition:') + ' ' +
+                    i8ln('Super Effective Charge') +
+                    '</div>'
+                } else if (quest[0]['type'] === 14 && typeof quest[0]['info']['throw_type_id'] === 'undefined') {
+                    str += '<div>' +
+                    i8ln('Condition:') + ' ' +
+                    i8ln('Throws in a row') +
+                    '</div>'
+                } else if (quest[0]['type'] === 14) {
+                    str += '<div>' +
+                    i8ln('Condition:') + ' ' +
+                    i8ln(throwType[quest[0]['info']['throw_type_id']]) + ' ' +
+                    i8ln('throws in a row') +
+                    '</div>'
+                } else {
+                    console.log('Undefined quest type contact us on Discord' + quest[0])
+                    str += '<div>Undefined condition</div>'
+                }
+
+                str += '</div></center>'
+            } else if (item['quest_type'] !== null) {
+                questStr = i8ln(questtypeList[item['quest_type']])
+                str += '<center><div>' +
+                i8ln('Task:') + ' ' +
+                questStr.replace('{0}', item['quest_target']) +
+                '</div></center>'
+            }
+
+            if (rewardinfo['amount'] !== null && rewardinfo['amount'] > 0) {
+                str += '<center><div>' +
+                i8ln('Reward Amount:') + ' ' +
+                rewardinfo['amount'] +
+                '</div></center>'
+            }
         }
         if (!noDeletePokestops) {
             str += '<i class="fa fa-trash-o delete-pokestop" onclick="deletePokestop(event);" data-id="' + item['pokestop_id'] + '"></i>'
@@ -1111,7 +1197,7 @@ function pokestopLabel(item) {
                     '<b>' + item['pokestop_name'] + '</b>' +
                     '</div>' +
                     '<div>' +
-                    '<img height="70px" style="padding: 5px;" src="static/forts/Pstop-large.png">' +
+                    '<img height="70px" style="padding: 5px;" src="static/forts/Pstop-quest-large.png">' +
                     stopImage +
                     '<img height="70px" style="padding: 5px;" src="' + iconpath + 'pokemon_icon_' + pokemonIdStr + '_' + formStr + '.png"/>' +
                     '</div>' +
@@ -1125,7 +1211,7 @@ function pokestopLabel(item) {
                     '<b>' + item['pokestop_name'] + '</b>' +
                     '</div>' +
                     '<div>' +
-                    '<img height="70px" style="padding: 5px;" src="static/forts/Pstop-large.png">' +
+                    '<img height="70px" style="padding: 5px;" src="static/forts/Pstop-quest-large.png">' +
                     stopImage +
                     '<img height="70px" style="padding: 5px;" src="' + iconpath + 'rewards/reward_stardust.png"/>' +
                     '</div>' +
@@ -1139,7 +1225,7 @@ function pokestopLabel(item) {
                     '<b>' + item['pokestop_name'] + '</b>' +
                     '</div>' +
                     '<div>' +
-                    '<img height="70px" style="padding: 5px;" src="static/forts/Pstop-large.png">' +
+                    '<img height="70px" style="padding: 5px;" src="static/forts/Pstop-quest-large.png">' +
                     stopImage +
                     '<img height="70px" style="padding: 5px;" src="' + iconpath + 'rewards/reward_' + rewardinfo['item_id'] + '_1.png"/>' +
                     '</div>' +
@@ -1167,21 +1253,101 @@ function pokestopLabel(item) {
                 '<b>' + item['pokestop_name'] + '</b>' +
                 '</div>' +
                 '<div>' +
-                '<img height="70px" style="padding: 5px;" src="static/forts/Pstop-quest-large.png">' +
+                '<img height="70px" style="padding: 5px;" src="static/forts/Pstop-large.png">' +
                 stopImage +
                 '</div>' +
                 '</center>' +
                 '</div>'
         }
-        if (reward !== null) {
-            str += '<center><div>' +
-                i8ln('Quest:') + ' ' +
-                //i8ln(questList[item['quest_id']]) +
-                '</div></center>' +
-                '<center><div>' +
-                i8ln('Reward:') + ' ' +
-                //i8ln(rewardList[item['reward_id']]) +
+        if (reward !== null && quest !== null) {
+            if (typeof quest[0] !== 'undefined') {
+                questStr = i8ln(questtypeList[item['quest_type']])
+                str += '<center><div>' +
+                i8ln('Task:') + ' ' +
+                questStr.replace('{0}', item['quest_target']) +
                 '</div></center>'
+                str += '<center><div>'
+
+                if (quest[0]['type'] === 1) {
+                    str += '<div>' +
+                    i8ln('Type(s):') + ' '
+                    $.each(quest[0]['info']['pokemon_type_ids'], function (index, typeId) {
+                        str += pokemonTypes[typeId]
+                    })
+                    str += '</div>'
+                } else if (quest[0]['type'] === 2) {
+                    str += '<div>' +
+                    i8ln('Pokémon:') + ' '
+                    $.each(quest[0]['info']['pokemon_ids'], function (index, id) {
+                        str += idToPokemon[id].name
+                    })
+                    str += '</div>'
+                } else if (quest[0]['type'] === 3) {
+                    str += '<div>' +
+                    i8ln('Condition:') + ' ' +
+                    i8ln('Weather boosted') +
+                    '</div>'
+                } else if (quest[0]['type'] === 6) {
+                    str += '<div>' +
+                    i8ln('Condition:') + ' ' +
+                    i8ln('Win raid') +
+                    '</div>'
+                } else if (quest[0]['type'] === 7) {
+                    raidLevel = Math.min.apply(null, quest[0]['info']['raid_levels'])
+                    if (raidLevel > 1) {
+                        str += '<div>' +
+                        i8ln('Level') + ' ' +
+                        raidLevel + ' ' +
+                        i8ln('or higher')
+                    }
+                    str += '</div>'
+                } else if (quest[0]['type'] === 8) {
+                    str += '<div>' +
+                    i8ln('Condition:') + ' ' +
+                    i8ln(throwType[quest[0]['info']['throw_type_id']]) + ' ' +
+                    i8ln('throw') +
+                    '</div>'
+                } else if (quest[0]['type'] === 9) {
+                    str += '<div>' +
+                    i8ln('Condition:') + ' ' +
+                    i8ln('Win gym battle') +
+                    '</div>'
+                } else if (quest[0]['type'] === 10) {
+                    str += '<div>' +
+                    i8ln('Condition:') + ' ' +
+                    i8ln('Super Effective Charge') +
+                    '</div>'
+                } else if (quest[0]['type'] === 14 && typeof quest[0]['info']['throw_type_id'] === 'undefined') {
+                    str += '<div>' +
+                    i8ln('Condition:') + ' ' +
+                    i8ln('Throws in a row') +
+                    '</div>'
+                } else if (quest[0]['type'] === 14) {
+                    str += '<div>' +
+                    i8ln('Condition:') + ' ' +
+                    i8ln(throwType[quest[0]['info']['throw_type_id']]) + ' ' +
+                    i8ln('throws in a row') +
+                    '</div>'
+                } else {
+                    console.log('Undefined quest type' + quest[0])
+                    str += '<div>Undefined condition</div>'
+                }
+
+                str += '</div></center>'
+            } else if (item['quest_type'] !== null) {
+                questStr = i8ln(questtypeList[item['quest_type']])
+                str += '<center><div>' +
+                i8ln('Task:') + ' ' +
+                questStr.replace('{0}', item['quest_target']) +
+                '</div></center>'
+            }
+
+            if (rewardinfo['amount'] !== null && rewardinfo['amount'] > 0) {
+                str += '<center><div>' +
+                i8ln('Reward Amount:') + ' ' +
+                rewardinfo['amount'] +
+                '</div></center>'
+            }
         }
         if (!noDeletePokestops) {
             str += '<i class="fa fa-trash-o delete-pokestop" onclick="deletePokestop(event);" data-id="' + item['pokestop_id'] + '"></i>'
@@ -1735,7 +1901,7 @@ function getPokestopMarkerIcon(item) {
                 formStr = rewardinfo['form_id']
             }
             html = '<div style="position:relative;">' +
-                '<img src="static/forts/Pstop-quest-large.png" style="width:50px;height:72;top:-35px;right:10px;"/>' +
+                '<img src="static/forts/Pstop-quest-small.png" style="width:50px;height:72;top:-35px;right:10px;"/>' +
                 '<img src="' + iconpath + 'pokemon_icon_' + pokemonIdStr + '_' + formStr + '.png" style="width:30px;height:auto;position:absolute;top:4px;"/>' +
                 '</div>'
             stopMarker = L.divIcon({
@@ -1747,7 +1913,7 @@ function getPokestopMarkerIcon(item) {
             })
         } else if (reward[0]['type'] === 3) {
             html = '<div style="position:relative;">' +
-                '<img src="static/forts/Pstop-quest-large.png" style="width:50px;height:72;top:-35px;right:10px;"/>' +
+                '<img src="static/forts/Pstop-quest-small.png" style="width:50px;height:72;top:-35px;right:10px;"/>' +
                 '<img src="' + iconpath + 'rewards/reward_stardust.png" style="width:30px;height:auto;position:absolute;top:4px;"/>' +
                 '</div>'
             stopMarker = L.divIcon({
@@ -1759,7 +1925,7 @@ function getPokestopMarkerIcon(item) {
             })
         } else if (reward[0]['type'] === 2) {
             html = '<div style="position:relative;">' +
-                '<img src="static/forts/Pstop-quest-large.png" style="width:50px;height:72;top:-35px;right:10px;"/>' +
+                '<img src="static/forts/Pstop-quest-small.png" style="width:50px;height:72;top:-35px;right:10px;"/>' +
                 '<img src="' + iconpath + 'rewards/reward_' + rewardinfo['item_id'] + '_1.png" style="width:30px;height:auto;position:absolute;top:4px;"/>' +
                 '</div>'
             stopMarker = L.divIcon({
@@ -3629,7 +3795,7 @@ function updatePokestops() {
     }
     if (Store.get('showLuredPokestopsOnly') === 2) {
         $.each(mapData.pokestops, function (key, value) {
-            if (!value['quest_id']) {
+            if (!value['quest_type']) {
                 removeStops.push(key)
             }
         })
@@ -5137,6 +5303,24 @@ $(function () {
     $.getJSON('static/dist/data/rewards.min.json').done(function (data) {
         $.each(data, function (key, value) {
             rewardList[key] = value['name']
+        })
+    })
+
+    $.getJSON('static/dist/data/questtype.min.json').done(function (data) {
+        $.each(data, function (key, value) {
+            questtypeList[key] = value['text']
+        })
+    })
+
+    $.getJSON('static/dist/data/rewardtype.min.json').done(function (data) {
+        $.each(data, function (key, value) {
+            rewardtypeList[key] = value['text']
+        })
+    })
+
+    $.getJSON('static/dist/data/conditiontype.min.json').done(function (data) {
+        $.each(data, function (key, value) {
+            conditiontypeList[key] = value['text']
         })
     })
 
