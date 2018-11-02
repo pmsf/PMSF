@@ -238,7 +238,7 @@ class RDM extends Scanner
             $params[':time'] = time();
         }
         elseif( $lured == 2){
-            $conds[] = "quest_id IS NOT NULL";
+            $conds[] = "quest_type IS NOT NULL";
         }
 
         if ($tstamp > 0) {
@@ -258,6 +258,7 @@ class RDM extends Scanner
         name AS pokestop_name,
         url,
         lure_expire_timestamp AS lure_expiration,
+        quest_type,
         quest_timestamp,
         quest_target,
         quest_conditions,
