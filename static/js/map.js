@@ -788,7 +788,7 @@ function gymLabel(item) {
 
         var raidForm = item['form']
         var formStr = ''
-        if (raidForm === 0 || raidForm == null || raidForm === '0') {
+        if (raidForm <= 10 || raidForm == null || raidForm === '0') {
             formStr = '00'
         } else {
             formStr = raidForm
@@ -1345,7 +1345,7 @@ function getGymMarkerIcon(item) {
     var level = 6 - item['slots_available']
     var raidForm = item['form']
     var formStr = ''
-    if (raidForm === 0 || raidForm == null || raidForm === '0') {
+    if (raidForm <= 10 || raidForm == null || raidForm === '0') {
         formStr = '00'
     } else {
         formStr = raidForm
@@ -1470,7 +1470,7 @@ function setupGymMarker(item) {
         if (raidStarted) {
             var raidForm = item['form']
             var formStr = ''
-            if (raidForm === 0 || raidForm == null || raidForm === '0') {
+            if (raidForm <= 10 || raidForm == null || raidForm === '0') {
                 formStr = '00'
             } else {
                 formStr = raidForm
@@ -1562,7 +1562,7 @@ function updateGymMarker(item, marker) {
             if (raidStarted) {
                 var raidForm = item['form']
                 var formStr = ''
-                if (raidForm === 0 || raidForm == null || raidForm === '0') {
+                if (raidForm <= 10 || raidForm == null || raidForm === '0') {
                     formStr = '00'
                 } else {
                     formStr = raidForm
@@ -4283,7 +4283,7 @@ function showGymDetails(id) { // eslint-disable-line no-unused-vars
             if (raidStarted) {
                 var raidForm = result['form']
                 var formStr = ''
-                if (raidForm === 0 || raidForm == null || raidForm === '0') {
+                if (raidForm <= 10 || raidForm == null || raidForm === '0') {
                     formStr = '00'
                 } else {
                     formStr = raidForm
