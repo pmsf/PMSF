@@ -1165,7 +1165,12 @@ function pokestopLabel(item) {
             '<b>' + item['pokestop_name'] + '</b>' +
             '</div>'
         if (reward !== null) {
-            str += getReward(item)
+            str +=
+                '<div><center>' +
+                '<img height="70px" style="padding: 5px;" src="static/forts/LureModule.png">' +
+                stopImage +
+                getReward(item) +
+                '</center></div>'
         } else {
             str =
                 '<div class="pokestop-label">' +
