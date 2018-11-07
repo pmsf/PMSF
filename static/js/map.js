@@ -33,6 +33,8 @@ var $switchTinyRat
 var $switchBigKarp
 var $selectDirectionProvider
 var $switchExEligible
+var $questsExcludePokemon
+var $questsExcludeItems
 
 var language = document.documentElement.lang === '' ? 'en' : document.documentElement.lang
 var languageSite = 'en'
@@ -48,6 +50,7 @@ var excludedPokemon = []
 var excludedMinIV = []
 var notifiedPokemon = []
 var notifiedRarity = []
+var questExcludedPokemon = []
 var notifiedMinPerfection = null
 var notifiedMinLevel = null
 var minIV = null
@@ -58,6 +61,7 @@ var directionProvider
 
 var buffer = []
 var reincludedPokemon = []
+var reincludedQuestsPokemon = []
 var reids = []
 
 var numberOfPokemon = 493
@@ -488,6 +492,9 @@ function initSidebar() {
     $('#big-karp-switch').prop('checked', Store.get('showBigKarp'))
     $('#tiny-rat-switch').prop('checked', Store.get('showTinyRat'))
     $('#pokestops-switch').prop('checked', Store.get('showPokestops'))
+    $('#lures-switch').prop('checked', Store.get('showLures'))
+    $('#quests-switch').prop('checked', Store.get('showQuests'))
+    $('#quests-filter-wrapper').toggle(Store.get('showQuests'))
     $('#start-at-user-location-switch').prop('checked', Store.get('startAtUserLocation'))
     $('#start-at-last-location-switch').prop('checked', Store.get('startAtLastLocation'))
     $('#follow-my-location-switch').prop('checked', Store.get('followMyLocation'))
@@ -5041,6 +5048,8 @@ $(function () {
     $raidNotify = $('#notify-raid')
     $switchTinyRat = $('#tiny-rat-switch')
     $switchBigKarp = $('#big-karp-switch')
+    $questsExcludePokemon = $('#exclude-quests-pokemon')
+    $questsExcludeItems = $('#exclude-quests-items')
 
     $.getJSON('static/dist/data/pokemon.min.json').done(function (data) {
         $.each(data, function (key, value) {
@@ -5092,6 +5101,13 @@ $(function () {
             placeholder: i8ln('Select Pokémon'),
             data: pokeList,
             templateResult: formatState
+        })
+        $questsExcludePokemon.select2({
+            placeholder: i8ln('Select Pokémon'),
+            data: pokeList,
+            templateResult: formatState,
+            multiple: true,
+            maximumSelectionSize: 1
         })
 
         // setup list change behavior now that we have the list to work from
@@ -5183,7 +5199,18 @@ $(function () {
             $textLevelNotify.val(notifiedMinLevel)
             Store.set('remember_text_level_notify', notifiedMinLevel)
         })
-
+        $questsExcludePokemon.on('change', function (e) {
+            buffer = questsExcludedPokemon
+            questsExcludedPokemon = $questsExcludePokemon.val().split(',').map(Number).sort(function (a, b) {
+                return parseInt(a) - parseInt(b)
+            })
+            buffer = buffer.filter(function (e) {
+                return this.indexOf(e) < 0
+            }, questsExcludedPokemon)
+            reincludedQuestsPokemon = reincludedQuestsPokemon.concat(buffer).map(String)
+            clearStaleMarkers()
+            Store.set('remember_quests_exclude_pokemon', questsExcludedPokemon)
+        })
         // recall saved lists
         $selectExclude.val(Store.get('remember_select_exclude')).trigger('change')
         $selectExcludeMinIV.val(Store.get('remember_select_exclude_min_iv')).trigger('change')
@@ -5448,6 +5475,19 @@ $(function () {
 
     $('#pokestops-switch').change(function () {
         buildSwitchChangeListener(mapData, ['pokestops'], 'showPokestops').bind(this)()
+    })
+
+    $('#quests-switch').change(function () {
+        Store.set('showQuests', this.checked)
+        var options = {
+            'duration': 500
+        }
+        var wrapper = $('#quests-filter-wrapper')
+        if (this.checked) {
+            wrapper.show(options)
+        } else {
+            wrapper.hide(options)
+        }
     })
 
     $('#sound-switch').change(function () {

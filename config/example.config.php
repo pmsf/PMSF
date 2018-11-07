@@ -170,7 +170,14 @@ $maxRaidLevel = 5;
 
 $noPokestops = false;                                               // true/false
 $enablePokestops = 'false';                                         // true/false
-$enableLured = 0;                                                   // O: all, 1: lured only
+$noLures = false;
+$enableLured = 'false';                                             // true/false
+$noQuests = false;                                                  // true/false
+$enableQuests = 'false';                                            // true/false
+$noQuestsItems = false;
+$noQuestsPokemon = false;
+$hideQuestsPokemon = '[10, 13, 16, 19, 21, 29, 32, 41, 46, 48, 50, 52, 56, 74, 77, 96, 111, 133]';  // Pokemon ids
+$hideQuestsItems = '[101, 102, 701]';    // Item ids "See protos https://github.com/Furtif/POGOProtos/blob/master/src/POGOProtos/Inventory/Item/ItemId.proto"
 
 $noScannedLocations = false;                                        // true/false
 $enableScannedLocations = 'false';                                  // true/false
