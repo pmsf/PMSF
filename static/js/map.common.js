@@ -905,6 +905,11 @@ var StoreOptions = {
             default: notifyNotification,
             type: StoreTypes.Boolean
         },
+    'remember_remember_quests_exclude_pokemon':
+        {
+            default: hideQuestsPokemon,
+            type: StoreTypes.JSON
+        },
     'showRaids':
         {
             default: enableRaids,
@@ -1018,6 +1023,16 @@ var StoreOptions = {
     'showPokestops':
         {
             default: enablePokestops,
+            type: StoreTypes.Boolean
+        },
+    'showLures':
+        {
+            default: enableLured,
+            type: StoreTypes.Boolean
+        },
+    'showQuests':
+        {
+            default: enableQuests,
             type: StoreTypes.Boolean
         },
     'showWeather':
