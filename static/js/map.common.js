@@ -1020,11 +1020,6 @@ var StoreOptions = {
             default: enablePokestops,
             type: StoreTypes.Boolean
         },
-    'showLuredPokestopsOnly':
-        {
-            default: enableLured,
-            type: StoreTypes.Number
-        },
     'showWeather':
         {
             default: enableWeatherOverlay,
