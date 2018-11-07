@@ -214,7 +214,7 @@ class RDM extends Scanner
         return $data;
     }
 
-    public function get_stops($swLat, $swLng, $neLat, $neLng, $tstamp = 0, $oSwLat = 0, $oSwLng = 0, $oNeLat = 0, $oNeLng = 0, $lured = 0)
+    public function get_stops($swLat, $swLng, $neLat, $neLng, $tstamp = 0, $oSwLat = 0, $oSwLng = 0, $oNeLat = 0, $oNeLng = 0)
     {
         $conds = array();
         $params = array();
@@ -231,14 +231,6 @@ class RDM extends Scanner
             $params[':oswLng'] = $oSwLng;
             $params[':oneLat'] = $oNeLat;
             $params[':oneLng'] = $oNeLng;
-        }
-
-        if ($lured == 1) {
-            $conds[] = "lure_expire_timestamp > :time";
-            $params[':time'] = time();
-        }
-        elseif( $lured == 2){
-            $conds[] = "quest_type IS NOT NULL";
         }
 
         if ($tstamp > 0) {
@@ -275,8 +267,6 @@ class RDM extends Scanner
         foreach ($pokestops as $pokestop) {
             $pokestop["latitude"] = floatval($pokestop["latitude"]);
             $pokestop["longitude"] = floatval($pokestop["longitude"]);
-            $pokestop["lure_expiration"] = !empty($pokestop["lure_expiration"]) ? $pokestop["lure_expiration"] * 1000 : null;
-            $pokestop["lure_user"] = !empty($pokestop["lure_user"]) ? $pokestop["lure_user"] : null;
             $pokestop["quest_target"] = intval($pokestop["quest_target"]);
             // needs to be removed
             $pokestop["quest_id"] = !empty($pokestop["quest_id"]) ? $pokestop["quest_id"] : null;
