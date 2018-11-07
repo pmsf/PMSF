@@ -121,6 +121,34 @@ if ( $blockIframe ) {
         <?php
     }
 
+    function itemFilterImages( $noItemNumbers, $onClick = '', $itemsToExclude = array(), $num = 0 ) {
+        global $items, $copyrightSafe, $iconRepository;
+        if ( empty( $items ) ) {
+            $json = file_get_contents( 'static/dist/data/items.min.json' );
+            $items = json_decode( $json, true );
+        }
+        echo '<div class="item-list-cont" id="item-list-cont-' . $num . '"><input type="hidden" class="search-number" value="' . $num . '" /><input class="search search-input" placeholder="' . i8ln( "Search Name & ID" ) . '" /><div class="item-list list">';
+        $i = 0;
+        $z = 0;
+        foreach ( $items as $k => $item ) {
+            $name = $item['name'];
+
+            if ( ! in_array( $k, $itemsToExclude ) ) {
+		if ( ! $copyrightSafe ) {
+                    echo '<span class="item-icon-sprite" data-value="' . $k . '" onclick="' . $onClick . '"><span style="display:none" class="name">' . i8ln( $name ) . '</span><span style="display:none" class="id">$k</span><img src="' . $iconRepository . 'rewards/reward_' . $k . '_1.png" style="width:48px;height:48px;"/>';
+		} else {
+                    echo '<span class="item-icon-sprite" data-value="' . $k . '" onclick="' . $onClick . '"><span style="display:none" class="name">' . i8ln( $name ) . '</span><span style="display:none" class="id">$k</span><img src="static/icons-safe/rewards/reward_' . $k . '_1.png" style="width:48px;height:48px;"/>';
+                }
+                if ( ! $noItemNumbers ) {
+                    echo "<span class='item-number'>" . $k . "</span>";
+                }
+                echo "</span>";
+
+            }
+        }
+        echo '</div></div>';
+    }
+
     ?>
 
     <?php
@@ -432,7 +460,7 @@ if ( $blockIframe ) {
                 </div>';
 		} ?>
                     <div id="quests-filter-wrapper" style="display:none">
-                        <div id="tabs">
+                        <div id="quests-tabs">
                             <ul>
                                 <?php
                                 if ( ! $noQuestsPokemon ) {
@@ -456,7 +484,7 @@ if ( $blockIframe ) {
                                             <div class="quest-pokemon-container">
                                                 <input id="exclude-quests-pokemon" type="text" readonly="true">
                                                 <?php
-                                                pokemonFilterImages( $noPokemonNumbers, '', [], 2 ); ?>
+                                                pokemonFilterImages( $noPokemonNumbers, '', $hideQuestsPokemon, 8 ); ?>
                                             </div>
                                             <a href="#" class="select-all"><?php echo i8ln( 'All' ) ?>
                                                 <div>
@@ -475,7 +503,7 @@ if ( $blockIframe ) {
                                             <div class="quest-item-container">
                                                 <input id="exclude-quests-items" type="text" readonly="true">
                                                 <?php
-                                                pokemonFilterImages( $noPokemonNumbers, '', [], 2 ); ?>
+                                                itemFilterImages( $noItemNumbers, '', [], 2 ); ?>
                                             </div>
                                             <a href="#" class="select-all"><?php echo i8ln( 'All' ) ?>
                                                 <div>

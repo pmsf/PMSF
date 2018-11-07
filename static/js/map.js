@@ -5109,7 +5109,13 @@ $(function () {
             multiple: true,
             maximumSelectionSize: 1
         })
-
+        $questsExcludeItems.select2({
+            placeholder: i8ln('Select Item'),
+            data: pokeList,
+            templateResult: formatState,
+            multiple: true,
+            maximumSelectionSize: 1
+        })
         // setup list change behavior now that we have the list to work from
         $selectExclude.on('change', function (e) {
             buffer = excludedPokemon
@@ -5226,6 +5232,7 @@ $(function () {
             $('.select2-search input').prop('readonly', true)
         }
         $('#tabs').tabs()
+        $('#quests-tabs').tabs()
         if (manualRaids) {
             $('.global-raid-modal').html(generateRaidModal())
         }
