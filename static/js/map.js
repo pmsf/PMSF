@@ -4651,6 +4651,26 @@ function pokemonSpritesFilter() {
     })
 }
 
+function itemSpritesFilter() {
+    jQuery('.item-list').parent().find('.select2').hide()
+    loadDefaultImages()
+    jQuery('#nav .item-list .item-icon-sprite').on('click', function () {
+        var img = jQuery(this)
+        var select = jQuery(this).parent().parent().parent().find('.select2-hidden-accessible')
+        var value = select.val().split(',')
+        var id = img.data('value').toString()
+        if (img.hasClass('active')) {
+            select.val(value.filter(function (elem) {
+                return elem !== id
+            }).join(',')).trigger('change')
+            img.removeClass('active')
+        } else {
+            select.val((value.concat(id).join(','))).trigger('change')
+            img.addClass('active')
+        }
+    })
+}
+
 function loadDefaultImages() {
     var ep = Store.get('remember_select_exclude')
     var eminiv = Store.get('remember_select_exclude_min_iv')
@@ -4991,6 +5011,7 @@ $(function () {
 
     $selectGymMarkerStyle.val(Store.get('gymMarkerStyle')).trigger('change')
     pokemonSpritesFilter()
+    itemSpritesFilter()
 })
 
 $(function () {
