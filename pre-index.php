@@ -499,11 +499,11 @@ if ( $blockIframe ) {
                                 ?>
                                 <div id="tabs-2">
                                     <div class="form-control hide-select-2">
-                                        <label for="exclude-quests-items">
+                                        <label for="exclude-quests-item">
                                             <div class="quest-item-container">
-                                                <input id="exclude-quests-items" type="text" readonly="true">
+                                                <input id="exclude-quests-item" type="text" readonly="true">
                                                 <?php
-                                                itemFilterImages( $noItemNumbers, '', [], 2 ); ?>
+                                                itemFilterImages( $noItemNumbers, '', $hideQuestsItem, 9 ); ?>
                                             </div>
                                             <a href="#" class="select-all"><?php echo i8ln( 'All' ) ?>
                                                 <div>
@@ -1664,6 +1664,7 @@ if ( $blockIframe ) {
     var enableLured = <?php echo $noLures ? 'false' : $enableLured ?>;
     var enableQuests = <?php echo $noQuests ? 'false' : $enableQuests ?>;
     var hideQuestsPokemon = <?php echo $noQuests ? '[]' : $hideQuestsPokemon ?>;
+    var hideQuestsItem = <?php echo $noQuests ? '[]' : $hideQuestsItem ?>;
     var enableNewPortals = <?php echo ( ( $map != "monocle" ) || ( $fork == "alternate" ) ) ? $enableNewPortals : 0 ?>;
     var enableWeatherOverlay = <?php echo ! $noWeatherOverlay ? $enableWeatherOverlay : 'false' ?>;
     var enableScannedLocations = <?php echo $map != "monocle" && ! $noScannedLocations ? $enableScannedLocations : 'false' ?>;

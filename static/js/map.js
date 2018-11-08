@@ -34,11 +34,12 @@ var $switchBigKarp
 var $selectDirectionProvider
 var $switchExEligible
 var $questsExcludePokemon
-var $questsExcludeItems
+var $questsExcludeItem
 
 var language = document.documentElement.lang === '' ? 'en' : document.documentElement.lang
 var languageSite = 'en'
 var idToPokemon = {}
+var idToItem = {}
 var i8lnDictionary = {}
 var languageLookups = 0
 var languageLookupThreshold = 3
@@ -50,7 +51,8 @@ var excludedPokemon = []
 var excludedMinIV = []
 var notifiedPokemon = []
 var notifiedRarity = []
-var questExcludedPokemon = []
+var questsExcludedPokemon = []
+var questsExcludedItem = []
 var notifiedMinPerfection = null
 var notifiedMinLevel = null
 var minIV = null
@@ -62,6 +64,7 @@ var directionProvider
 var buffer = []
 var reincludedPokemon = []
 var reincludedQuestsPokemon = []
+var reincludedQuestsItem = []
 var reids = []
 
 var numberOfPokemon = 493
@@ -108,6 +111,7 @@ var cries
 var pokeList = []
 var raidBoss = {} // eslint-disable-line no-unused-vars
 var questList = []
+var itemList = []
 var rewardList = []
 var questtypeList = []
 var rewardtypeList = []
@@ -5049,7 +5053,37 @@ $(function () {
     $switchTinyRat = $('#tiny-rat-switch')
     $switchBigKarp = $('#big-karp-switch')
     $questsExcludePokemon = $('#exclude-quests-pokemon')
-    $questsExcludeItems = $('#exclude-quests-items')
+    $questsExcludeItem = $('#exclude-quests-item')
+
+    $.getJSON('static/dist/data/items.min.json').done(function (data) {
+        $.each(data, function (key, value) {
+           itemList.push({
+               id: key,
+               name: i8ln(value['name'])
+           })
+           value['name'] = i8ln(value['name'])
+           idToItem[key] = value
+        })
+        $questsExcludeItem.select2({
+            placeholder: i8ln('Select Item'),
+            data: itemList,
+            templateResult: formatState,
+            multiple: true,
+            maximumSelectionSize: 1
+        })
+        $questsExcludeItem.on('change', function (e) {
+            buffer = questsExcludedItem
+            questsExcludedItem = $questsExcludeItem.val().split(',').map(Number).sort(function (a, b) {
+                return parseInt(a) - parseInt(b)
+            })
+            buffer = buffer.filter(function (e) {
+                return this.indexOf(e) < 0
+            }, questsExcludedItem)
+            reincludedQuestsItem = reincludedQuestsItem.concat(buffer).map(String)
+            clearStaleMarkers()
+            Store.set('remember_quests_exclude_item', questsExcludedItem)
+        })
+    })
 
     $.getJSON('static/dist/data/pokemon.min.json').done(function (data) {
         $.each(data, function (key, value) {
@@ -5104,13 +5138,6 @@ $(function () {
         })
         $questsExcludePokemon.select2({
             placeholder: i8ln('Select Pokémon'),
-            data: pokeList,
-            templateResult: formatState,
-            multiple: true,
-            maximumSelectionSize: 1
-        })
-        $questsExcludeItems.select2({
-            placeholder: i8ln('Select Item'),
             data: pokeList,
             templateResult: formatState,
             multiple: true,

@@ -910,6 +910,11 @@ var StoreOptions = {
             default: hideQuestsPokemon,
             type: StoreTypes.JSON
         },
+    'remember_remember_quests_exclude_item':
+        {
+            default: hideQuestsItem,
+            type: StoreTypes.JSON
+        },
     'showRaids':
         {
             default: enableRaids,
