@@ -19,57 +19,45 @@
     "cat": "Gym/Raid",
     "name": "Win 5 Gym battles"
   },
+  "8": {
+    "cat": "Gym/Raid",
+    "name": "Win a Raid"
+  },
   "12": {
     "cat": "Gym/Raid",
     "name": "Use a Super effective charge attack 7 times"
   },
-  "117": {
-    "cat": "Catch",
-    "name": "Catch a Ditto"
-  },
   "118": {
     "cat": "Catch",
-    "name": "Catch 10 Pokémon"
+    "name": "Catch a Dragon-Type Pokémon"
   },
   "119": {
     "cat": "Catch",
-    "name": "Catch 5 Pokémon with Weather Boost"
+    "name": "Catch 5 Normal=Type Pokémon"
   },
   "120": {
     "cat": "Catch",
-    "name": "Catch 10 Psychic-Type Pokémon"
+    "name": "Catch 5 Bug-Type Pokémon"
   },
   "121": {
     "cat": "Catch",
-    "name": "Catch 5 Abra or Drowzee"
+    "name": "Catch 5 Pokémon with Weather Boost"
   },
   "122": {
     "cat": "Catch",
-    "name": "Catch a Dragon-type Pokemon"
-  },
-  "124": {
-    "cat": "Catch",
-    "name": "Catch 5 Water-type Pokémon"
-  },
-  "125": {
-    "cat": "Catch",
-    "name": "Use 5 Pinap Berries while catching Pokémon"
-  },
-  "255": {
-    "cat": "Evolve",
-    "name": "Evolve a Pokémon"
+    "name": "Catch 10 Pokémon"
   },
   "256": {
-    "cat": "Evolve",
-    "name": "Evolve 3 Slowpoke or Exeggute"
+    "cat": "Evolve/Send",
+    "name": "Evolve a Pokémon"
   },
   "269": {
-    "cat": "Evolve",
-    "name": "Evolve 10 Water-Types"
+    "cat": "Evolve/Send",
+    "name": "Evolve 2 Pidgey"
   },
   "270": {
-    "cat": "Evolve/Power up",
-    "name": "Power up a Pokémon 5 times"
+    "cat": "Evolve/Send",
+    "name": "Send 5 Gifts to friends"
   },
   "370": {
     "cat": "Throw",
@@ -77,19 +65,19 @@
   },
   "371": {
     "cat": "Throw",
-    "name": "Make 2 Nice Curveball Throws (in a row)"
+    "name": "Make 3 Nice Curveball Throws"
   },
   "376": {
     "cat": "Throw",
     "name": "Make 3 Great Throws"
   },
-  "377": {
-    "cat": "Throw",
-    "name": "Make 3 Great Curveball Throws"
-  },
   "380": {
     "cat": "Throw",
     "name": "Make 3 Great Throws in a row"
+  },
+  "381": {
+    "cat": "Throw",
+    "name": "Make 5 Great Throws in a row"
   },
   "387": {
     "cat": "Throw",
@@ -98,10 +86,6 @@
   "596": {
     "cat": "Miscellaneous",
     "name": "Hatch an Egg"
-  },
-  "597": {
-    "cat": "Miscellaneous",
-    "name": "Hatch 2 Eggs"
   },
   "598": {
     "cat": "Miscellaneous",
@@ -114,29 +98,5 @@
   "605": {
     "cat": "Miscellaneous",
     "name": "Earn a candy walking with your buddy"
-  },
-  "610": {
-    "cat": "Miscellaneous",
-    "name": "Trade a Pokémon"
-  },
-  "700": {
-    "cat": "Halloween Event",
-    "name": "Catch 5 Poochyena or Houndour"
-  },
-  "701": {
-    "cat": "Halloween Event",
-    "name": "Catch 5 Dark-type Pokémon"
-  },
-  "702": {
-    "cat": "Halloween Event",
-    "name": "Catch 10 Ghost-type Pokémon"
-  },
-  "703": {
-    "cat": "Halloween Event",
-    "name": "Evolve 3 Duskull or Shuppet"
-  },
-  "704": {
-    "cat": "Halloween Event",
-    "name": "Transfer 10 Pokémon"
   }
 }
