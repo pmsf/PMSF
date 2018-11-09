@@ -68,6 +68,7 @@ var reincludedQuestsItem = []
 var reids = []
 
 var numberOfPokemon = 493
+var numberOfItem = 1405
 var L
 var map
 var markers
@@ -4675,6 +4676,8 @@ function loadDefaultImages() {
     var ep = Store.get('remember_select_exclude')
     var eminiv = Store.get('remember_select_exclude_min_iv')
     var en = Store.get('remember_select_notify')
+    var eqp = Store.get('remember_quests_exclude_pokemon')
+    var eqi = Store.get('remember_quests_exclude_item')
     $('label[for="exclude-pokemon"] .pokemon-icon-sprite').each(function () {
         if (ep.indexOf($(this).data('value')) !== -1) {
             $(this).addClass('active')
@@ -4687,6 +4690,16 @@ function loadDefaultImages() {
     })
     $('label[for="notify-pokemon"] .pokemon-icon-sprite').each(function () {
         if (en.indexOf($(this).data('value')) !== -1) {
+            $(this).addClass('active')
+        }
+    })
+    $('label[for="exclude-quests-pokemon"] .pokemon-icon-sprite').each(function () {
+        if (eqp.indexOf($(this).data('value')) !== -1) {
+            $(this).addClass('active')
+        }
+    })
+    $('label[for="exclude-quests-item"] .item-icon-sprite').each(function () {
+        if (eqi.indexOf($(this).data('value')) !== -1) {
             $(this).addClass('active')
         }
     })
@@ -5297,6 +5310,19 @@ $(function () {
         e.preventDefault()
         var parent = $(this).parent()
         parent.find('.pokemon-list .pokemon-icon-sprite').removeClass('active')
+        parent.find('input').val('').trigger('change')
+    })
+    $('.select-all-item').on('click', function (e) {
+        e.preventDefault()
+        var parent = $(this).parent()
+        parent.find('.item-list .item-icon-sprite').addClass('active')
+        parent.find('input').val(Array.from(Array(numberOfItem + 1).keys()).slice(1).join(',')).trigger('change')
+    })
+
+    $('.hide-all-item').on('click', function (e) {
+        e.preventDefault()
+        var parent = $(this).parent()
+        parent.find('.item-list .item-icon-sprite').removeClass('active')
         parent.find('input').val('').trigger('change')
     })
     $('.area-go-to').on('click', function (e) {

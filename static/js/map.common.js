@@ -905,12 +905,12 @@ var StoreOptions = {
             default: notifyNotification,
             type: StoreTypes.Boolean
         },
-    'remember_remember_quests_exclude_pokemon':
+    'remember_quests_exclude_pokemon':
         {
             default: hideQuestsPokemon,
             type: StoreTypes.JSON
         },
-    'remember_remember_quests_exclude_item':
+    'remember_quests_exclude_item':
         {
             default: hideQuestsItem,
             type: StoreTypes.JSON
