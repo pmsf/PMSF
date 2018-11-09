@@ -5847,7 +5847,7 @@
     "rarity":"",
     "types": [
       {
-        "type": "Normal",
+        "type": "Grass",
         "color": "#78c850"
       }
     ]
@@ -5857,7 +5857,7 @@
     "rarity":"",
     "types": [
       {
-        "type": "Normal",
+        "type": "Grass",
         "color": "#78c850"
       }
     ]
@@ -5867,11 +5867,11 @@
     "rarity":"",
     "types": [
       {
-        "type": "Normal",
+        "type": "Grass",
         "color": "#78c850"
       },
       {
-        "type": "Normal",
+        "type": "Ground",
         "color": "#e0c068"
       }
     ]
@@ -5881,7 +5881,7 @@
     "rarity":"",
     "types": [
       {
-        "type": "Normal",
+        "type": "Fire",
         "color": "#f08030"
       }
     ]
@@ -5891,7 +5891,7 @@
     "rarity":"",
     "types": [
       {
-        "type": "Normal",
+        "type": "Fire",
         "color": "#f08030"
       },
       {
