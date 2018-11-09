@@ -135,13 +135,21 @@ if ( $blockIframe ) {
                     echo '<span class="item-icon-sprite" data-value="' . $k . '" onclick="' . $onClick . '"><span style="display:none" class="name">' . i8ln( $name ) . '</span><span style="display:none" class="id">$k</span><img src="static/icons-safe/rewards/reward_' . $k . '_1.png" style="width:48px;height:48px;"/>';
                 }
                 if ( ! $noItemNumbers ) {
-                    echo "<span class='item-number'>" . $k . "</span>";
+                    echo '<span class="item-number">' . $k . '</span>';
                 }
                 echo "</span>";
 
             }
         }
         echo '</div></div>';
+        ?>
+        <script>
+            var options = {
+                valueNames: ['name', 'id']
+            };
+            var itemList = new List('item-list-cont-<?php echo $num;?>', options);
+        </script>
+        <?php
     }
 
     ?>
@@ -500,9 +508,9 @@ if ( $blockIframe ) {
                                                 <?php
                                                 itemFilterImages( $noItemNumbers, '', $hideQuestsItem, 9 ); ?>
                                             </div>
-                                            <a href="#" class="select-all"><?php echo i8ln( 'All' ) ?>
+                                            <a href="#" class="select-all-item"><?php echo i8ln( 'All' ) ?>
                                                 <div>
-                                            </a><a href="#" class="hide-all"><?php echo i8ln( 'None' ) ?> </a>
+                                            </a><a href="#" class="hide-all-item"><?php echo i8ln( 'None' ) ?> </a>
                                         </label>
                                     </div>
                                 </div>
