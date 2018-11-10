@@ -412,14 +412,16 @@
 
   label[for="exclude-quests-pokemon"]{
     .pokemon-list .active{
-      border: 1px solid #0089ff;
-      background: rgba(0, 114, 255, 0.4);
+      opacity: 0.4;
+      filter: alpha(opacity=40);
+      background: #000;
     }
   }
   label[for="exclude-quests-item"]{
     .item-list .active {
-      border: 1px solid #0089ff;
-      background: rgba(0, 114, 255, 0.4);
+      opacity: 0.4;
+      filter: alpha(opacity=40);
+      background: #000;
     }
   }
   .hide-select-2{
