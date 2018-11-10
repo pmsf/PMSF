@@ -5086,6 +5086,8 @@ $(function () {
     $raidNotify = $('#notify-raid')
     $switchTinyRat = $('#tiny-rat-switch')
     $switchBigKarp = $('#big-karp-switch')
+    $switchLures = $('#lures-switch')
+    $switchQuests = $('#quests-switch')
     $questsExcludePokemon = $('#exclude-quests-pokemon')
     $questsExcludeItem = $('#exclude-quests-item')
 
