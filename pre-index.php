@@ -434,10 +434,11 @@ if ( $blockIframe ) {
                     </div>
                 </div>';
 		} ?>
+                    <div id="pokestops-filter-wrapper" style="display:none">
                 <?php
                 if ( ! $noLures ) {
                     echo '<div class="form-control switch-container" style="float:none;height:35px;margin-bottom:0px;">
-                    <h3>' . i8ln( 'Lures' ) . '</h3>
+                    <h3>' . i8ln( 'Lures only' ) . '</h3>
                     <div class="onoffswitch">
                         <input id="lures-switch" type="checkbox" name="lures-switch"
                                class="onoffswitch-checkbox" checked>
@@ -451,7 +452,7 @@ if ( $blockIframe ) {
                 <?php
                 if ( ! $noQuests ) {
                     echo '<div class="form-control switch-container" style="float:none;height:35px;margin-bottom:0px;">
-                    <h3>' . i8ln( 'Quests' ) . '</h3>
+                    <h3>' . i8ln( 'Quests only' ) . '</h3>
                     <div class="onoffswitch">
                         <input id="quests-switch" type="checkbox" name="quests-switch"
                                class="onoffswitch-checkbox" checked>
@@ -487,7 +488,7 @@ if ( $blockIframe ) {
                                             <div class="quest-pokemon-container">
                                                 <input id="exclude-quests-pokemon" type="text" readonly="true">
                                                 <?php
-                                                pokemonFilterImages( $noPokemonNumbers, '', $hideQuestsPokemon, 8 ); ?>
+                                                pokemonFilterImages( $noPokemonNumbers, '', $excludeQuestsPokemon, 8 ); ?>
                                             </div>
                                             <a href="#" class="select-all"><?php echo i8ln( 'All' ) ?>
                                                 <div>
@@ -506,7 +507,7 @@ if ( $blockIframe ) {
                                             <div class="quest-item-container">
                                                 <input id="exclude-quests-item" type="text" readonly="true">
                                                 <?php
-                                                itemFilterImages( $noItemNumbers, '', $hideQuestsItem, 9 ); ?>
+                                                itemFilterImages( $noItemNumbers, '', $excludeQuestsItem, 9 ); ?>
                                             </div>
                                             <a href="#" class="select-all-item"><?php echo i8ln( 'All' ) ?>
                                                 <div>
@@ -517,6 +518,7 @@ if ( $blockIframe ) {
                                 <?php
                             } ?>
                         </div>
+                    </div>
                     </div>
                 </div>
                 <?php
