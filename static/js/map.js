@@ -497,6 +497,7 @@ function initSidebar() {
     $('#big-karp-switch').prop('checked', Store.get('showBigKarp'))
     $('#tiny-rat-switch').prop('checked', Store.get('showTinyRat'))
     $('#pokestops-switch').prop('checked', Store.get('showPokestops'))
+    $('#pokestops-filter-wrapper').toggle(Store.get('showPokestops'))
     $('#lures-switch').prop('checked', Store.get('showLures'))
     $('#quests-switch').prop('checked', Store.get('showQuests'))
     $('#quests-filter-wrapper').toggle(Store.get('showQuests'))
@@ -2241,6 +2242,8 @@ function loadRawData() {
     var loadPokemon = Store.get('showPokemon')
     var loadGyms = (Store.get('showGyms') || Store.get('showRaids')) ? 'true' : 'false'
     var loadPokestops = Store.get('showPokestops')
+    var loadLures = Store.get('showLures')
+    var loadQuests = Store.get('showQuests')
     var loadNests = Store.get('showNests')
     var loadCommunities = Store.get('showCommunities')
     var loadPortals = Store.get('showPortals')
@@ -2252,7 +2255,6 @@ function loadRawData() {
     var bigKarp = Boolean(Store.get('showBigKarp'))
     var tinyRat = Boolean(Store.get('showTinyRat'))
     var exEligible = Boolean(Store.get('exEligible'))
-
     var bounds = map.getBounds()
     var swPoint = bounds.getSouthWest()
     var nePoint = bounds.getNorthEast()
@@ -2272,6 +2274,8 @@ function loadRawData() {
             'pokemon': loadPokemon,
             'lastpokemon': lastpokemon,
             'pokestops': loadPokestops,
+            'lures': loadLures,
+            'quests': loadQuests,
             'nests': loadNests,
             'lastnests': lastnests,
             'communities': loadCommunities,
@@ -3502,6 +3506,10 @@ function processPokestops(i, item) {
         return false
     }
 
+    if (Store.get('showLures') && !item['lure_expiration']) {
+        return true
+    }
+
     if (!mapData.pokestops[item['pokestop_id']]) {
         // new pokestop, add marker to map and item to dict
         if (item.marker && item.marker.rangeCircle) {
@@ -3515,12 +3523,14 @@ function processPokestops(i, item) {
     } else {
         // change existing pokestop marker to unlured/lured
         var item2 = mapData.pokestops[item['pokestop_id']]
-        if (item2.marker && item2.marker.rangeCircle) {
-            markers.removeLayer(item2.marker.rangeCircle)
+        if (!!item['lure_expiration'] !== !!item2['lure_expiration']) {
+            if (item2.marker && item2.marker.rangeCircle) {
+                markers.removeLayer(item2.marker.rangeCircle)
+            }
+            markers.removeLayer(item2.marker)
+            item.marker = setupPokestopMarker(item)
+            mapData.pokestops[item['pokestop_id']] = item
         }
-        markers.removeLayer(item2.marker)
-        item.marker = setupPokestopMarker(item)
-        mapData.pokestops[item['pokestop_id']] = item
     }
 }
 
@@ -3530,18 +3540,57 @@ function updatePokestops() {
     }
 
     var removeStops = []
-    var currentTime = new Date().getTime()
+    var currentTime = Math.round(new Date().getTime() / 1000)
 
     // change lured pokestop marker to unlured when expired
     $.each(mapData.pokestops, function (key, value) {
-        if (value.marker && value.marker.rangeCircle) {
-            markers.removeLayer(value.marker.rangeCircle)
-            markersnotify.removeLayer(value.marker.rangeCircle)
+        if (value['lure_expiration'] < currentTime) {
+            if (value.marker && value.marker.rangeCircle) {
+                markers.removeLayer(value.marker.rangeCircle)
+                markersnotify.removeLayer(value.marker.rangeCircle)
+            }
+            markers.removeLayer(value.marker)
+            markersnotify.removeLayer(value.marker)
+            value.marker = setupPokestopMarker(value)
         }
-        markers.removeLayer(value.marker.setMap)
-        markersnotify.removeLayer(value.marker.setMap)
-        value.marker = setupPokestopMarker(value)
     })
+    // remove unlured stops if show lured only is selected
+    if (Store.get('showLures')) {
+        $.each(mapData.pokestops, function (key, value) {
+            if (value['lure_expiration'] < currentTime) {
+                removeStops.push(key)
+            }
+        })
+        $.each(removeStops, function (key, value) {
+            if (mapData.pokestops[value] && mapData.pokestops[value].marker) {
+                if (mapData.pokestops[value].marker.rangeCircle) {
+                    markers.removeLayer(mapData.pokestops[value].marker.rangeCircle)
+                    markersnotify.removeLayer(mapData.pokestops[value].marker.rangeCircle)
+                }
+                markers.removeLayer(mapData.pokestops[value].marker)
+                markersnotify.removeLayer(mapData.pokestops[value].marker)
+                delete mapData.pokestops[value]
+            }
+        })
+    }
+    if (Store.get('showQuests')) {
+        $.each(mapData.pokestops, function (key, value) {
+            if (value['quest_type'] === null) {
+                removeStops.push(key)
+            }
+        })
+        $.each(removeStops, function (key, value) {
+            if (mapData.pokestops[value] && mapData.pokestops[value].marker) {
+                if (mapData.pokestops[value].marker.rangeCircle) {
+                    markers.removeLayer(mapData.pokestops[value].marker.rangeCircle)
+                    markersnotify.removeLayer(mapData.pokestops[value].marker.rangeCircle)
+                }
+                markers.removeLayer(mapData.pokestops[value].marker)
+                markersnotify.removeLayer(mapData.pokestops[value].marker)
+                delete mapData.pokestops[value]
+            }
+        })
+    }
 }
 
 function processGyms(i, item) {
@@ -3774,7 +3823,7 @@ function updateMap() {
 
         updateScanned()
         updateSpawnPoints()
-        //updatePokestops()
+        updatePokestops()
         updatePortals()
 
         if ($('#stats').hasClass('visible')) {
@@ -5086,8 +5135,6 @@ $(function () {
     $raidNotify = $('#notify-raid')
     $switchTinyRat = $('#tiny-rat-switch')
     $switchBigKarp = $('#big-karp-switch')
-    $switchLures = $('#lures-switch')
-    $switchQuests = $('#quests-switch')
     $questsExcludePokemon = $('#exclude-quests-pokemon')
     $questsExcludeItem = $('#exclude-quests-item')
 
@@ -5371,6 +5418,10 @@ $(function () {
                     lastgyms = false
                 } else if (storageKey === 'showPokestops') {
                     lastpokestops = false
+                } else if (storageKey === 'showLures') {
+                    lastpokestops = false
+                } else if (storageKey === 'showQuests') {
+                    lastpokestops = false
                 } else if (storageKey === 'showPortals') {
                     lastportals = false
                 } else if (storageKey === 'showScanned') {
@@ -5557,20 +5608,54 @@ $(function () {
     $('#ranges-switch').change(buildSwitchChangeListener(mapData, ['gyms', 'pokemons', 'pokestops'], 'showRanges'))
 
     $('#pokestops-switch').change(function () {
-        buildSwitchChangeListener(mapData, ['pokestops'], 'showPokestops').bind(this)()
-    })
-
-    $('#quests-switch').change(function () {
-        Store.set('showQuests', this.checked)
         var options = {
             'duration': 500
         }
-        var wrapper = $('#quests-filter-wrapper')
+        var wrapper = $('#pokestops-filter-wrapper')
         if (this.checked) {
             wrapper.show(options)
         } else {
             wrapper.hide(options)
         }
+        buildSwitchChangeListener(mapData, ['pokestops'], 'showPokestops').bind(this)()
+    })
+
+    $('#lures-switch').change(function () {
+        Store.set('showLures', this.checked)
+        if (this.checked === true && Store.get('showQuests') === true) {
+            Store.set('showQuests', false)
+            $('#quests-switch').prop('checked', false)
+        }
+        if (this.checked) {
+            lastpokestops = false
+            updateMap()
+        } else {
+            lastpokestops = false
+            updateMap()
+        }
+        return buildSwitchChangeListener(mapData, ['pokestops'], 'showLures').bind(this)()
+    })
+
+    $('#quests-switch').change(function () {
+        Store.set('showQuests', this.checked)
+        if (this.checked === true && Store.get('showLures') === true) {
+            Store.set('showLures', false)
+            $('#lures-switch').prop('checked', false)
+        }
+        var options = {
+            'duration': 500
+        }
+        var wrapper = $('#quests-filter-wrapper')
+        if (this.checked) {
+            lastpokestops = false
+            wrapper.show(options)
+            updateMap()
+        } else {
+            lastpokestops = false
+            wrapper.hide(options)
+            updateMap()
+        }
+        return buildSwitchChangeListener(mapData, ['pokestops'], 'showQuests').bind(this)()
     })
 
     $('#sound-switch').change(function () {

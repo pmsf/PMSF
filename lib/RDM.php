@@ -214,11 +214,10 @@ class RDM extends Scanner
         return $data;
     }
 
-    public function get_stops($swLat, $swLng, $neLat, $neLng, $tstamp = 0, $oSwLat = 0, $oSwLng = 0, $oNeLat = 0, $oNeLng = 0)
+    public function get_stops($swLat, $swLng, $neLat, $neLng, $tstamp = 0, $oSwLat = 0, $oSwLng = 0, $oNeLat = 0, $oNeLng = 0, $lures, $quests)
     {
         $conds = array();
         $params = array();
-
         $conds[] = "lat > :swLat AND lon > :swLng AND lat < :neLat AND lon < :neLng";
         $params[':swLat'] = $swLat;
         $params[':swLng'] = $swLng;
@@ -232,7 +231,13 @@ class RDM extends Scanner
             $params[':oneLat'] = $oNeLat;
             $params[':oneLng'] = $oNeLng;
         }
-
+        if (!empty($lures) && $lures === 'true') {
+            $conds[] = "lure_expire_timestamp > :time";
+            $params[':time'] = time();
+        }
+        if (!empty($quests) && $quests === 'true') {
+            $conds[] = "quest_type IS NOT NULL";
+        }
         if ($tstamp > 0) {
             $conds[] = "updated > :lastUpdated";
             $params[':lastUpdated'] = $tstamp;
