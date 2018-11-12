@@ -214,7 +214,7 @@ class RDM extends Scanner
         return $data;
     }
 
-    public function get_stops($swLat, $swLng, $neLat, $neLng, $tstamp = 0, $oSwLat = 0, $oSwLng = 0, $oNeLat = 0, $oNeLng = 0, $lures, $quests)
+    public function get_stops($qpeids, $qieids, $swLat, $swLng, $neLat, $neLng, $tstamp = 0, $oSwLat = 0, $oSwLng = 0, $oNeLat = 0, $oNeLng = 0, $lures, $quests)
     {
         $conds = array();
         $params = array();
@@ -223,7 +223,49 @@ class RDM extends Scanner
         $params[':swLng'] = $swLng;
         $params[':neLat'] = $neLat;
         $params[':neLng'] = $neLng;
-
+        if (!empty($quests) && $quests === 'true') {
+            if (count($qpeids) && count($qieids)) {
+                $pkmn_in = '';
+                $i = 1;
+                foreach ($qpeids as $qpeid) {
+                    $params[':qry_' . $i . "_"] = $qpeid;
+                    $pkmn_in .= ':qry_' . $i . "_,";
+                    $i++;
+                }
+                $pkmn_in = substr($pkmn_in, 0, -1);
+                $item_in = '';
+                $i = 1;
+                foreach ($qieids as $qieid) {
+                    $params[':qry_' . $i . "_"] = $qieid;
+                    $item_in .= ':qry_' . $i . "_,";
+                    $i++;
+                }
+                $item_in = substr($item_in, 0, -1);
+                $conds[] = "(quest_item_id NOT IN ( $item_in ) OR quest_pokemon_id NOT IN ( $pkmn_in ))";
+	    } else {
+            if (count($qpeids)) {
+                $pkmn_in = '';
+                $i = 1;
+                foreach ($qpeids as $qpeid) {
+                    $params[':qry_' . $i . "_"] = $qpeid;
+                    $pkmn_in .= ':qry_' . $i . "_,";
+                    $i++;
+                }
+                $pkmn_in = substr($pkmn_in, 0, -1);
+                $conds[] = "(quest_pokemon_id NOT IN ( $pkmn_in ))";
+	    } else if (count($qieids)) {
+                $item_in = '';
+                $i = 1;
+                foreach ($qieids as $qieid) {
+                    $params[':qry_' . $i . "_"] = $qieid;
+                    $item_in .= ':qry_' . $i . "_,";
+                    $i++;
+                }
+                $item_in = substr($item_in, 0, -1);
+                $conds[] = "(quest_item_id NOT IN ( $item_in ))";
+	    }
+            }
+        }
         if ($oSwLat != 0) {
             $conds[] = "NOT (lat > :oswLat AND lon > :oswLng AND lat < :oneLat AND lon < :oneLng)";
             $params[':oswLat'] = $oSwLat;
@@ -234,9 +276,6 @@ class RDM extends Scanner
         if (!empty($lures) && $lures === 'true') {
             $conds[] = "lure_expire_timestamp > :time";
             $params[':time'] = time();
-        }
-        if (!empty($quests) && $quests === 'true') {
-            $conds[] = "quest_type IS NOT NULL";
         }
         if ($tstamp > 0) {
             $conds[] = "updated > :lastUpdated";
@@ -259,7 +298,9 @@ class RDM extends Scanner
         quest_timestamp,
         quest_target,
         quest_conditions,
-        quest_rewards
+	quest_rewards,
+        quest_pokemon_id,
+        quest_item_id
         FROM pokestop
         WHERE :conditions";
 

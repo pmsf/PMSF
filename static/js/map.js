@@ -2262,7 +2262,9 @@ function loadRawData() {
     var swLng = swPoint.lng
     var neLat = nePoint.lat
     var neLng = nePoint.lng
-
+console.log(questsExcludedPokemon)
+console.log(excludedPokemon)
+console.log(questsExcludedItem)
     return $.ajax({
         url: 'raw_data',
         type: 'POST',
@@ -2308,6 +2310,10 @@ function loadRawData() {
             'reids': String(reincludedPokemon),
             'eids': String(excludedPokemon),
             'exMinIV': String(excludedMinIV),
+            'qpreids': String(reincludedQuestsPokemon),
+            'qpeids': String(questsExcludedPokemon),
+            'qireids': String(reincludedQuestsItem),
+            'qieids': String(questsExcludedItem),
             'token': token,
             'encId': encounterId
         },
@@ -5192,6 +5198,7 @@ $(function () {
             value['types'] = _types
             idToPokemon[key] = value
         })
+        $questsExcludeItem.val(Store.get('remember_quests_exclude_item')).trigger('change')
 
         // setup the filter lists
         $selectExclude.select2({
@@ -5337,6 +5344,7 @@ $(function () {
         $textMinIV.val(Store.get('remember_text_min_iv')).trigger('change')
         $textMinLevel.val(Store.get('remember_text_min_level')).trigger('change')
         $raidNotify.val(Store.get('remember_raid_notify')).trigger('change')
+        $questsExcludePokemon.val(Store.get('remember_quests_exclude_pokemon')).trigger('change')
 
         if (isTouchDevice() && isMobileDevice()) {
             $('.select2-search input').prop('readonly', true)
