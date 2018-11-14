@@ -224,47 +224,35 @@ class RDM extends Scanner
         $params[':neLat'] = $neLat;
         $params[':neLng'] = $neLng;
         if (!empty($quests) && $quests === 'true') {
-            if (count($qpeids) && count($qieids)) {
+            $pokemonSQL = '';
+	    if (count($qpeids)) {
                 $pkmn_in = '';
-                $i = 1;
+                $p = 1;
                 foreach ($qpeids as $qpeid) {
-                    $params[':qry_' . $i . "_"] = $qpeid;
-                    $pkmn_in .= ':qry_' . $i . "_,";
-                    $i++;
+                    $params[':pqry_' . $p . "_"] = $qpeid;
+                    $pkmn_in .= ':pqry_' . $p . "_,";
+                    $p++;
                 }
                 $pkmn_in = substr($pkmn_in, 0, -1);
-                $item_in = '';
-                $i = 1;
-                foreach ($qieids as $qieid) {
-                    $params[':qry_' . $i . "_"] = $qieid;
-                    $item_in .= ':qry_' . $i . "_,";
-                    $i++;
-                }
-                $item_in = substr($item_in, 0, -1);
-                $conds[] = "(quest_item_id NOT IN ( $item_in ) OR quest_pokemon_id NOT IN ( $pkmn_in ))";
-	    } else {
-            if (count($qpeids)) {
-                $pkmn_in = '';
-                $i = 1;
-                foreach ($qpeids as $qpeid) {
-                    $params[':qry_' . $i . "_"] = $qpeid;
-                    $pkmn_in .= ':qry_' . $i . "_,";
-                    $i++;
-                }
-                $pkmn_in = substr($pkmn_in, 0, -1);
-                $conds[] = "(quest_pokemon_id NOT IN ( $pkmn_in ))";
-	    } else if (count($qieids)) {
-                $item_in = '';
-                $i = 1;
-                foreach ($qieids as $qieid) {
-                    $params[':qry_' . $i . "_"] = $qieid;
-                    $item_in .= ':qry_' . $i . "_,";
-                    $i++;
-                }
-                $item_in = substr($item_in, 0, -1);
-                $conds[] = "(quest_item_id NOT IN ( $item_in ))";
-	    }
+                $pokemonSQL .= "quest_pokemon_id NOT IN ( $pkmn_in )";
+            } else {
+                $pokemonSQL .= "quest_pokemon_id IS NOT NULL";
             }
+            $itemSQL = '';
+            if (count($qieids)) {
+                $item_in = '';
+                $i = 1;
+                foreach ($qieids as $qieid) {
+                    $params[':iqry_' . $i . "_"] = $qieid;
+                    $item_in .= ':iqry_' . $i . "_,";
+                    $i++;
+                }
+                $item_in = substr($item_in, 0, -1);
+                $itemSQL .= "quest_item_id NOT IN ( $item_in )";
+            } else {
+                $itemSQL .= "quest_item_id IS NOT NULL";
+            }
+            $conds[] = "(" . $pokemonSQL . " OR " . $itemSQL . ")";
         }
         if ($oSwLat != 0) {
             $conds[] = "NOT (lat > :oswLat AND lon > :oswLng AND lat < :oneLat AND lon < :oneLng)";
