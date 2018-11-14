@@ -157,26 +157,26 @@ if (!$noPokestops) {
                 $d["pokestops"] = $scanner->get_stops($qpeids, $qieids, $swLat, $swLng, $neLat, $neLng, $timestamp, 0, 0, 0, 0, $lures, $quests);
             }
 	}
-	if (!empty($_POST['qpreids'])) {
-            $qpreids = !empty($_POST['qpreids']) ? array_unique(explode(",", $_POST['qpreids'])) : array();
-
-            $qpreidsDiff = array_diff($qpreids, $qpeids);
-	    if (count($qpreidsDiff)) {
-                $d["pokestops"] = array_merge($d["pokestops"], $scanner->get_stops($qpeids, $qieids, $swLat, $swLng, $neLat, $neLng, 0, $oSwLat, $oSwLng, $oNeLat, $oNeLng, $lures, $quests));
-	    }
-
-	    $d["qpreids"] = $qpreids;
-        }
-	if (!empty($_POST['qireids'])) {
-            $qireids = !empty($_POST['qireids']) ? array_unique(explode(",", $_POST['qireids'])) : array();
-
-            $qireidsDiff = array_diff($qireids, $qieids);
-	    if (count($qireidsDiff)) {
-                $d["pokestops"] = array_merge($d["pokestops"], $scanner->get_stops($qpeids, $qieids, $swLat, $swLng, $neLat, $neLng, 0, $oSwLat, $oSwLng, $oNeLat, $oNeLng, $lures, $quests));
-	    }
-
-	    $d["qireids"] = $qireids;
-        }
+//	if (!empty($_POST['qpreids'])) {
+//            $qpreids = !empty($_POST['qpreids']) ? array_unique(explode(",", $_POST['qpreids'])) : array();
+//
+//            $qpreidsDiff = array_diff($qpreids, $qpeids);
+//	    if (count($qpreidsDiff)) {
+//                $d["pokestops"] = array_merge($d["pokestops"], $scanner->get_stops($qpeids, $qieids, $swLat, $swLng, $neLat, $neLng, 0, $oSwLat, $oSwLng, $oNeLat, $oNeLng, $lures, $quests));
+//	    }
+//
+//	    $d["qpreids"] = $qpreids;
+//        }
+//	if (!empty($_POST['qireids'])) {
+//            $qireids = !empty($_POST['qireids']) ? array_unique(explode(",", $_POST['qireids'])) : array();
+//
+//            $qireidsDiff = array_diff($qireids, $qieids);
+//	    if (count($qireidsDiff)) {
+//                $d["pokestops"] = array_merge($d["pokestops"], $scanner->get_stops($qpeids, $qieids, $swLat, $swLng, $neLat, $neLng, 0, $oSwLat, $oSwLng, $oNeLat, $oNeLng, $lures, $quests));
+//	    }
+//
+//	    $d["qireids"] = $qireids;
+//        }
     }
 }
 $debug['3_after_pokestops'] = microtime(true) - $timing['start'];

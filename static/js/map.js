@@ -2262,9 +2262,6 @@ function loadRawData() {
     var swLng = swPoint.lng
     var neLat = nePoint.lat
     var neLng = nePoint.lng
-console.log(questsExcludedPokemon)
-console.log(excludedPokemon)
-console.log(questsExcludedItem)
     return $.ajax({
         url: 'raw_data',
         type: 'POST',
