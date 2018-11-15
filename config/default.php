@@ -17,6 +17,7 @@ $libs[] = "Monocle_Asner.php";
 $libs[] = "Monocle_Alternate.php";
 $libs[] = "RocketMap.php";
 $libs[] = "RocketMap_Sloppy.php";
+$libs[] = "RDM.php";
 
 // Include libraries
 foreach ($libs as $file) {
@@ -33,22 +34,29 @@ setSessionCsrfToken();
 $startingLat = 37.7749295;                                          // Starting latitude
 $startingLng = -122.4194155;                                        // Starting longitude
 
-/* Anti scrape Settings */
+/* Zoom and Cluster Settings */
 
 $maxLatLng = 1;                                                     // Max latitude and longitude size (1 = ~110km, 0 to disable)
 $maxZoomOut = 0;                                                    // Max zoom out level (11 ~= $maxLatLng = 1, 0 to disable, lower = the further you can zoom out)
+$maxZoomIn = 18;                                                    // Max zoom in level 18 
+$disableClusteringAtZoom = 15;					    // Disable clustering above this value. 0 to disabel
+$zoomToBoundsOnClick = 15;					    // Zoomlevel on clusterClick
+$maxClusterRadius = 30;						    // The maximum radius that a cluster will cover from the central marker (in pixels).
+$spiderfyOnMaxZoom = 'true';					    // Spiderfy cluster markers on click
+
+/* Anti scrape Settings */
 $enableCsrf = true;                                                 // Don't disable this unless you know why you need to :)
 $sessionLifetime = 43200;                                           // Session lifetime, in seconds
 $blockIframe = true;                                                // Block your map being loaded in an iframe
 
 /* Map Title + Language */
 
-$title = "PMSF Glennmen";                                           // Title to display in title bar
+$title = "PMSF Alt";                                                // Title to display in title bar
 $locale = "en";                                                     // Display language
 
-/* Google Maps Key */
+/* Google Maps ONLY USED FOR TILE LAYERS */
 
-$gmapsKey = "";                                                     // Google Maps API Key
+$gmapsKey = "";
 
 /* Google Analytics */
 
@@ -120,6 +128,9 @@ $noExcludeMinIV = true;                                        // true/false
 $noMinIV = true;                                               // true/false
 $noMinLevel = true;                                            // true/false
 $noHighLevelData = true;                                       // true/false
+$noRarityDisplay = false;                                      // true/false
+$noWeatherIcons = true;
+$noWeatherShadow = false;
 
 /* Notification Settings */
 $noNotifyPokemon = false;                                       // true/false
@@ -224,9 +235,10 @@ $notifyNotification = 'true';                                       // true/fals
 /* Style Settings */
 
 $copyrightSafe = true;
+$iconRepository = 'https://raw.githubusercontent.com/whitewillem/PogoAssets/resized/icons_large/';
 
 $noMapStyle = false;                                                // true/false
-$mapStyle = 'style_pgo_dynamic';                                    // roadmap, satellite, hybrid, nolabels_style, dark_style, style_light2, style_pgo, dark_style_nl, style_pgo_day, style_pgo_night, style_pgo_dynamic, openstreetmap
+$mapStyle = 'openstreetmap';                                        // openstreetmap, darkmatter, styleblackandwhite, styletopo, stylesatellite, stylewikipedia
 
 $noDirectionProvider = false;                                       // true/false
 $directionProvider = 'google';                                      // google, waze, apple, bing, google_pin
@@ -273,8 +285,16 @@ $noManualQuests = false;
 // Ingress portals
 //-----------------------------------------------------
 $enablePortals = 'false';
+$enableNewPortals = 0;                                                   // O: all, 1: new portals only
 $noPortals = true;
 $noDeletePortal = true;
+$noConvertPortal = true;
+$noS2Cells = true;
+$enableS2Cells = 'false';
+$enableLevel13Cells = 'false';
+$enableLevel14Cells = 'false';
+$enableLevel17Cells = 'false';
+$markPortalsAsNew = 86400;                                         // Time in seconds to mark new imported portals as new ( 86400 for 1 day )
 
 $noDiscordSubmitLogChannel = true;                                        // Send webhooks to discord channel upon submission
 
@@ -282,6 +302,7 @@ $pokemonReportTime = true;
 $pokemonToExclude = [];
 
 $noDeleteGyms = false;
+$noToggleExGyms = false;
 $noDeletePokestops = false;
 
 $raidBosses = [4, 296, 307, 138, 320, 129, 103, 281, 126, 303, 185, 137, 26, 232, 136, 95, 68, 248, 229, 105, 359, 76, 112, 379];

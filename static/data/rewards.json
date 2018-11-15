@@ -11,9 +11,21 @@
     "cat": "Pokémon:",
     "name": "Squirtle"
   },
+  "10": {
+    "cat": "Pokémon:",
+    "name": "Caterpie"
+  },
+  "36": {
+    "cat": "Pokémon:",
+    "name": "Clefable"
+  },
   "37": {
     "cat": "Pokémon:",
     "name": "Vulpix"
+  },
+  "40": {
+    "cat": "Pokémon:",
+    "name": "WigglyTuff"
   },
   "56": {
     "cat": "Pokémon:",
@@ -34,10 +46,6 @@
   "95": {
     "cat": "Pokémon:",
     "name": "Onix"
-  },
-  "98": {
-    "cat": "Pokémon:",
-    "name": "Krabby"
   },
   "100": {
     "cat": "Pokémon:",
@@ -75,25 +83,21 @@
     "cat": "Pokémon:",
     "name": "Dratini"
   },
-  "224": {
+  "204": {
     "cat": "Pokémon:",
-    "name": "Octillery"
+    "name": "Pineco"
   },
   "246": {
     "cat": "Pokémon:",
     "name": "Larvitar"
   },
-  "320": {
+  "290": {
     "cat": "Pokémon:",
-    "name": "Wailmer"
+    "name": "Nincada"
   },
   "327": {
     "cat": "Pokémon:",
     "name": "Spinda"
-  },
-  "349": {
-    "cat": "Pokémon:",
-    "name": "Feebas"
   },
   "999": {
     "cat": "Pokémon:",
@@ -130,5 +134,9 @@
   "1300": {
     "cat": "Items:",
     "name": "Silver Pinap"
+  },
+  "1301": {
+    "cat": "Items:",
+    "name": "2 Golden Razz"
   }
 }

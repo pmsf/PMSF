@@ -400,6 +400,7 @@
   .delete-gym{
     top: 0;
     left: 0;
+    border-top-left-radius: 0px;
   }
 }
 
@@ -408,12 +409,24 @@
 }
 .delete-gym{
   position: absolute;
-  top: -8px;
-  left: -14px;
+  top: 0px;
+  left: 0px;
   font-size: 20px;
+  border-top-left-radius: 10px;
   background: rgb(255, 0, 0);
   padding: 5px;
   color: rgb(255, 255, 255);
+  cursor: pointer;
+}
+.toggle-ex-gym{
+  position: absolute;
+  top: 30px;
+  left: 0px;
+  font-size: 17px;
+  background: rgb(0, 0, 0);
+  padding: 5px;
+  color: rgb(255, 255, 255);
+  cursor: pointer;
 }
 @media(max-width:768px){
   #gym-details {
@@ -425,4 +438,8 @@
       }
     }
   }
+}
+.gym-label {
+  margin-left: 10px;
+  margin-right: 10px;
 }

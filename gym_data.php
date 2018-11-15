@@ -19,6 +19,10 @@ if (strtolower($map) === "monocle") {
     } else {
         $scanner = new \Scanner\RocketMap();
     }
+} elseif (strtolower($map) === "rdm") {
+    if (strtolower($fork) === "default") {
+        $scanner = new \Scanner\RDM();
+    }
 }
 
 if (empty($_POST['id'])) {
