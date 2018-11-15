@@ -66,6 +66,8 @@ var reincludedPokemon = []
 var reincludedQuestsPokemon = []
 var reincludedQuestsItem = []
 var reids = []
+var qpreids = []
+var qireids = []
 
 var numberOfPokemon = 493
 var numberOfItem = 1405
@@ -3852,10 +3854,22 @@ function updateMap() {
         prevMinIV = result.preMinIV
         prevMinLevel = result.preMinLevel
         reids = result.reids
+        qpreids = result.qpreids
+        qireids = result.qireids
         if (reids instanceof Array) {
             reincludedPokemon = reids.filter(function (e) {
                 return this.indexOf(e) < 0
             }, reincludedPokemon)
+        }
+        if (qpreids instanceof Array) {
+            reincludedQuestsPokemon = qpreids.filter(function (e) {
+                return this.indexOf(e) < 0
+            }, reincludedQuestsPokemon)
+        }
+        if (qireids instanceof Array) {
+            reincludedQuestsItem = qireids.filter(function (e) {
+                return this.indexOf(e) < 0
+            }, reincludedQuestsItem)
         }
         timestamp = result.timestamp
         lastUpdateTime = Date.now()
@@ -5168,7 +5182,7 @@ $(function () {
                 return this.indexOf(e) < 0
             }, questsExcludedItem)
             reincludedQuestsItem = reincludedQuestsItem.concat(buffer).map(String)
-            updatePokestops()
+            updateMap()
             Store.set('remember_quests_exclude_item', questsExcludedItem)
         })
     })
@@ -5330,7 +5344,7 @@ $(function () {
                 return this.indexOf(e) < 0
             }, questsExcludedPokemon)
             reincludedQuestsPokemon = reincludedQuestsPokemon.concat(buffer).map(String)
-            updatePokestops()
+            updateMap()
             Store.set('remember_quests_exclude_pokemon', questsExcludedPokemon)
         })
         // recall saved lists
