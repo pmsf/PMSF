@@ -272,6 +272,49 @@ class RDM extends Scanner
         return $this->query_stops($conds, $params);
     }
 
+
+    public function get_stops_quest($qpreids, $qireids, $swLat, $swLng, $neLat, $neLng, $tstamp = 0, $oSwLat = 0, $oSwLng = 0, $oNeLat = 0, $oNeLng = 0, $lures, $quests)
+    {
+        $conds = array();
+        $params = array();
+        $conds[] = "lat > :swLat AND lon > :swLng AND lat < :neLat AND lon < :neLng";
+        $params[':swLat'] = $swLat;
+        $params[':swLng'] = $swLng;
+        $params[':neLat'] = $neLat;
+        $params[':neLng'] = $neLng;
+        if (!empty($quests) && $quests === 'true') {
+            $tmpSQL = '';
+	    if (count($qpreids)) {
+                $pkmn_in = '';
+                $p = 1;
+                foreach ($qpreids as $qpreid) {
+                    $params[':pqry_' . $p . "_"] = $qpreid;
+                    $pkmn_in .= ':pqry_' . $p . "_,";
+                    $p++;
+                }
+                $pkmn_in = substr($pkmn_in, 0, -1);
+                $tmpSQL .= "quest_pokemon_id IN ( $pkmn_in )";
+            } else {
+                $tmpSQL .= "";
+            }
+            if (count($qireids)) {
+                $item_in = '';
+                $i = 1;
+                foreach ($qireids as $qireid) {
+                    $params[':iqry_' . $i . "_"] = $qireid;
+                    $item_in .= ':iqry_' . $i . "_,";
+                    $i++;
+                }
+                $item_in = substr($item_in, 0, -1);
+                $tmpSQL .= "quest_item_id IN ( $item_in )";
+            } else {
+                $tmpSQL .= "";
+            }
+            $conds[] = $tmpSQL;
+        }
+        return $this->query_stops($conds, $params);
+    }
+
     public function query_stops($conds, $params)
     {
         global $db, $noTrainerName, $noManualQuests;
