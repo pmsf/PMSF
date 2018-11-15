@@ -191,8 +191,9 @@ $noQuests = false;                                                  // true/fals
 $enableQuests = 'false';                                            // true/false
 $noQuestsItems = false;
 $noQuestsPokemon = false;
-$hideQuestsPokemon = [];  // Pokemon ids
-$hideQuestsItem = [301, 401, 402, 403, 404, 501, 602, 603, 604, 702, 704, 708, 801, 901, 902, 903, 1001, 1002, 1401, 1402, 1402, 1403, 1404, 1405];    // Item ids "See protos https://github.com/Furtif/POGOProtos/blob/master/src/POGOProtos/Inventory/Item/ItemId.proto"
+$hideQuestsPokemon = '[]';  // Pokemon ids
+$excludeQuestsPokemon = [];  // Pokemon ids
+$hideQuestsItem = '[301, 401, 402, 403, 404, 501, 602, 603, 604, 702, 704, 708, 801, 901, 902, 903, 1001, 1002, 1401, 1402, 1402, 1403, 1404, 1405]';    // Item ids "See protos https://github.com/Furtif/POGOProtos/blob/master/src/POGOProtos/Inventory/Item/ItemId.proto"
 $excludeQuestsItem = [4, 5, 301, 401, 402, 403, 404, 501, 602, 603, 604, 702, 704, 708, 801, 901, 902, 903, 1001, 1002, 1401, 1402, 1403, 1404, 1405];
 $noItemNumbers = false;                                             // true/false
 
