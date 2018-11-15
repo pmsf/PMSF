@@ -155,6 +155,10 @@
     "protoname": "ITEM_UP_GRADE",
     "name": "Item Upgrade"
   },
+  "1106": {
+    "protoname": "ITEM_GEN4_EVOLUTION_STONE",
+    "name": "Sinnoh Stone"
+  },
   "1201": {
     "protoname": "ITEM_MOVE_REROLL_FAST_ATTACK",
     "name": "Fast TM"

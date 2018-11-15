@@ -3577,10 +3577,12 @@ function updatePokestops() {
         })
     }
     if (Store.get('showQuests')) {
+        var counter = 1
         $.each(mapData.pokestops, function (key, value) {
-            if (value['quest_type'] === null) {
+            if (value['quest_type'] === 0 || ((value['quest_pokemon_id'] > 0 && questsExcludedPokemon.indexOf(value['quest_pokemon_id']) > -1) || (value['quest_item_id'] > 0 && questsExcludedItem.indexOf(value['quest_item_id']) > -1))) {
                 removeStops.push(key)
             }
+        counter++
         })
         $.each(removeStops, function (key, value) {
             if (mapData.pokestops[value] && mapData.pokestops[value].marker) {
@@ -5166,7 +5168,7 @@ $(function () {
                 return this.indexOf(e) < 0
             }, questsExcludedItem)
             reincludedQuestsItem = reincludedQuestsItem.concat(buffer).map(String)
-            clearStaleMarkers()
+            updatePokestops()
             Store.set('remember_quests_exclude_item', questsExcludedItem)
         })
     })
@@ -5328,7 +5330,7 @@ $(function () {
                 return this.indexOf(e) < 0
             }, questsExcludedPokemon)
             reincludedQuestsPokemon = reincludedQuestsPokemon.concat(buffer).map(String)
-            clearStaleMarkers()
+            updatePokestops()
             Store.set('remember_quests_exclude_pokemon', questsExcludedPokemon)
         })
         // recall saved lists

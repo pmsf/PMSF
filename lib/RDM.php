@@ -301,7 +301,10 @@ class RDM extends Scanner
         foreach ($pokestops as $pokestop) {
             $pokestop["latitude"] = floatval($pokestop["latitude"]);
             $pokestop["longitude"] = floatval($pokestop["longitude"]);
+            $pokestop["quest_type"] = intval($pokestop["quest_type"]);
             $pokestop["quest_target"] = intval($pokestop["quest_target"]);
+            $pokestop["quest_pokemon_id"] = intval($pokestop["quest_pokemon_id"]);
+            $pokestop["quest_item_id"] = intval($pokestop["quest_item_id"]);
             // needs to be removed
             $pokestop["quest_id"] = !empty($pokestop["quest_id"]) ? $pokestop["quest_id"] : null;
             $pokestop["reward_id"] = !empty($pokestop["reward_id"]) ? $pokestop["reward_id"] : null;
