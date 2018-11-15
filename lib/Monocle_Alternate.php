@@ -140,7 +140,7 @@ class Monocle_Alternate extends Monocle
         return $this->query_active($select, $conds, $params);
     }
 
-    public function get_stops($swLat, $swLng, $neLat, $neLng, $tstamp = 0, $oSwLat = 0, $oSwLng = 0, $oNeLat = 0, $oNeLng = 0, $lured = 0)
+    public function get_stops($swLat, $swLng, $neLat, $neLng, $tstamp = 0, $oSwLat = 0, $oSwLng = 0, $oNeLat = 0, $oNeLng = 0)
     {
         $conds = array();
         $params = array();
@@ -157,14 +157,6 @@ class Monocle_Alternate extends Monocle
             $params[':oswLng'] = $oSwLng;
             $params[':oneLat'] = $oNeLat;
             $params[':oneLng'] = $oNeLng;
-        }
-
-        if ($lured == 1) {
-            $conds[] = "expires > :time";
-            $params[':time'] = time();
-        }
-        elseif( $lured == 2){
-            $conds[] = "quest_id IS NOT NULL";
         }
 
         if ($tstamp > 0) {
@@ -200,7 +192,6 @@ class Monocle_Alternate extends Monocle
         foreach ($pokestops as $pokestop) {
             $pokestop["latitude"] = floatval($pokestop["latitude"]);
             $pokestop["longitude"] = floatval($pokestop["longitude"]);
-            $pokestop["lure_expiration"] = !empty($pokestop["lure_expiration"]) ? $pokestop["lure_expiration"] * 1000 : null;
             $pokestop["url"] = str_replace("http://", "https://images.weserv.nl/?url=", $pokestop["url"]);
             if ($noTrainerName === true) {
                 // trainer names hidden, so don't show trainer who lured

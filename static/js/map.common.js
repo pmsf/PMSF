@@ -905,6 +905,16 @@ var StoreOptions = {
             default: notifyNotification,
             type: StoreTypes.Boolean
         },
+    'remember_quests_exclude_pokemon':
+        {
+            default: hideQuestsPokemon,
+            type: StoreTypes.JSON
+        },
+    'remember_quests_exclude_item':
+        {
+            default: hideQuestsItem,
+            type: StoreTypes.JSON
+        },
     'showRaids':
         {
             default: enableRaids,
@@ -1020,10 +1030,15 @@ var StoreOptions = {
             default: enablePokestops,
             type: StoreTypes.Boolean
         },
-    'showLuredPokestopsOnly':
+    'showLures':
         {
             default: enableLured,
-            type: StoreTypes.Number
+            type: StoreTypes.Boolean
+        },
+    'showQuests':
+        {
+            default: enableQuests,
+            type: StoreTypes.Boolean
         },
     'showWeather':
         {
