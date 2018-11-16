@@ -1668,8 +1668,8 @@ if ( $blockIframe ) {
     var enablePokestops = <?php echo $noPokestops ? 'false' : $enablePokestops ?>;
     var enableLured = <?php echo $noLures ? 'false' : $enableLured ?>;
     var enableQuests = <?php echo $noQuests ? 'false' : $enableQuests ?>;
-    var hideQuestsPokemon = <?php echo $noQuests ? '[]' : $hideQuestsPokemon ?>;
-    var hideQuestsItem = <?php echo $noQuests ? '[]' : $hideQuestsItem ?>;
+    var hideQuestsPokemon = <?php echo $hideQuestsPokemon ? '[]' : $hideQuestsPokemon ?>;
+    var hideQuestsItem = <?php echo $hideQuestsItem ? '[]' : $hideQuestsItem ?>;
     var enableNewPortals = <?php echo ( ( $map != "monocle" ) || ( $fork == "alternate" ) ) ? $enableNewPortals : 0 ?>;
     var enableWeatherOverlay = <?php echo ! $noWeatherOverlay ? $enableWeatherOverlay : 'false' ?>;
     var enableScannedLocations = <?php echo $map != "monocle" && ! $noScannedLocations ? $enableScannedLocations : 'false' ?>;
