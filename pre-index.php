@@ -104,11 +104,6 @@ if ( $blockIframe ) {
                 echo "</span>";
 
             }
-            if ( $i == 27 ) {
-                $i = - 1;
-                $z = $z + 48.25;
-            }
-            $i ++;
         }
         echo '</div></div>';
         ?>
@@ -117,6 +112,42 @@ if ( $blockIframe ) {
                 valueNames: ['name', 'types', 'id']
             };
             var monList = new List('pokemon-list-cont-<?php echo $num;?>', options);
+        </script>
+        <?php
+    }
+
+    function itemFilterImages( $noItemNumbers, $onClick = '', $itemsToExclude = array(), $num = 0 ) {
+        global $items, $copyrightSafe, $iconRepository;
+        if ( empty( $items ) ) {
+            $json = file_get_contents( 'static/dist/data/items.min.json' );
+            $items = json_decode( $json, true );
+        }
+        echo '<div class="item-list-cont" id="item-list-cont-' . $num . '"><input type="hidden" class="search-number" value="' . $num . '" /><input class="search search-input" placeholder="' . i8ln( "Search Name & ID" ) . '" /><div class="item-list list">';
+        $i = 0;
+        $z = 0;
+        foreach ( $items as $k => $item ) {
+            $name = $item['name'];
+
+            if ( ! in_array( $k, $itemsToExclude ) ) {
+		if ( ! $copyrightSafe ) {
+                    echo '<span class="item-icon-sprite" data-value="' . $k . '" onclick="' . $onClick . '"><span style="display:none" class="name">' . i8ln( $name ) . '</span><span style="display:none" class="id">$k</span><img src="' . $iconRepository . 'rewards/reward_' . $k . '_1.png" style="width:48px;height:48px;"/>';
+		} else {
+                    echo '<span class="item-icon-sprite" data-value="' . $k . '" onclick="' . $onClick . '"><span style="display:none" class="name">' . i8ln( $name ) . '</span><span style="display:none" class="id">$k</span><img src="static/icons-safe/rewards/reward_' . $k . '_1.png" style="width:48px;height:48px;"/>';
+                }
+                if ( ! $noItemNumbers ) {
+                    echo '<span class="item-number">' . $k . '</span>';
+                }
+                echo "</span>";
+
+            }
+        }
+        echo '</div></div>';
+        ?>
+        <script>
+            var options = {
+                valueNames: ['name', 'id']
+            };
+            var itemList = new List('item-list-cont-<?php echo $num;?>', options);
         </script>
         <?php
     }
@@ -242,7 +273,7 @@ if ( $blockIframe ) {
             <?php
             if ( ! $noPokemon || ! $noNests ) {
                 ?>
-                <h3><?php echo i8ln( 'Pokemon / Nests' ) ?></h3>
+                <h3><?php echo i8ln( 'Pokemon &amp; Nests' ) ?></h3>
                 <div>
                 <?php
                 if ( ! $noPokemon ) {
@@ -260,7 +291,7 @@ if ( $blockIframe ) {
                 } ?>
                 <?php
                 if ( ! $noNests ) {
-                    echo '<div class="form-control switch-container">
+                    echo '<div class="form-control switch-container" style="float:none;height:35px;margin-bottom:0px;">
                     <h3>' . i8ln( 'Nests' ) . '</h3>
                     <div class="onoffswitch">
                         <input id="nests-switch" type="checkbox" name="nests-switch"
@@ -387,11 +418,11 @@ if ( $blockIframe ) {
             <?php
             if ( ! $noPokestops ) {
                 ?>
-                <h3><?php echo i8ln( 'Pokestops' ); ?></h3>
+                <h3><?php echo i8ln( 'Pokestops &amp; Quests' ); ?></h3>
 		<div>
                 <?php
                 if ( ! $noPokestops ) {
-                    echo '<div class="form-control switch-container">
+                    echo '<div class="form-control switch-container" style="float:none;height:35px;margin-bottom:0px;">
                     <h3>' . i8ln( 'Pokestops' ) . '</h3>
                     <div class="onoffswitch">
                         <input id="pokestops-switch" type="checkbox" name="pokestops-switch"
@@ -403,24 +434,92 @@ if ( $blockIframe ) {
                     </div>
                 </div>';
 		} ?>
+                    <div id="pokestops-filter-wrapper" style="display:none">
                 <?php
-                if ( ( $map != "monocle" ) || ( $fork == "alternate" ) && ! $hideIfManual ) {
-                    echo '<div class="form-control switch-container" id = "lured-pokestops-only-wrapper" style = "display:none">
-                    <select name = "lured-pokestops-only-switch" id = "lured-pokestops-only-switch">
-                        <option value = "0"> ' . i8ln( 'All' ) . '</option>
-                        <option value = "1"> ' . i8ln( 'Only Lured' ) . ' </option>
-                        <option value = "2"> ' . i8ln( 'Only Quests' ) . ' </option>
-                    </select>
+                if ( ! $noLures ) {
+                    echo '<div class="form-control switch-container" style="float:none;height:35px;margin-bottom:0px;">
+                    <h3>' . i8ln( 'Lures only' ) . '</h3>
+                    <div class="onoffswitch">
+                        <input id="lures-switch" type="checkbox" name="lures-switch"
+                               class="onoffswitch-checkbox" checked>
+                        <label class="onoffswitch-label" for="lures-switch">
+                            <span class="switch-label" data-on="On" data-off="Off"></span>
+                            <span class="switch-handle"></span>
+                        </label>
+                    </div>
                 </div>';
-		} else {
-                    echo '<div class="form-control switch-container" id = "lured-pokestops-only-wrapper" style = "display:none">
-                    <select name = "lured-pokestops-only-switch" id = "lured-pokestops-only-switch">
-                        <option value = "0"> ' . i8ln( 'All' ) . '</option>
-                        <option value = "2"> ' . i8ln( 'Only Quests' ) . ' </option>
-                    </select>
+		} ?>
+                <?php
+                if ( ! $noQuests ) {
+                    echo '<div class="form-control switch-container" style="float:none;height:35px;margin-bottom:0px;">
+                    <h3>' . i8ln( 'Quests only' ) . '</h3>
+                    <div class="onoffswitch">
+                        <input id="quests-switch" type="checkbox" name="quests-switch"
+                               class="onoffswitch-checkbox" checked>
+                        <label class="onoffswitch-label" for="quests-switch">
+                            <span class="switch-label" data-on="On" data-off="Off"></span>
+                            <span class="switch-handle"></span>
+                        </label>
+                    </div>
                 </div>';
-                }
-                ?>
+		} ?>
+                    <div id="quests-filter-wrapper" style="display:none">
+                        <div id="quests-tabs">
+                            <ul>
+                                <?php
+                                if ( ! $noQuestsPokemon ) {
+                                    ?>
+                                    <li><a href="#tabs-1"><?php echo i8ln( 'Hide pokémon' ) ?></a></li>
+                                    <?php
+                                } ?>
+                                <?php
+                                if ( ! $noQuestsItems ) {
+                                    ?>
+                                    <li><a href="#tabs-2"><?php echo i8ln( 'Hide items' ) ?></a></li>
+                                    <?php
+                                } ?>
+	                    </ul>
+                            <?php
+                            if ( ! $noQuestsPokemon ) {
+                                ?>
+                                <div id="tabs-1">
+                                    <div class="form-control hide-select-2">
+                                        <label for="exclude-quests-pokemon">
+                                            <div class="quest-pokemon-container">
+                                                <input id="exclude-quests-pokemon" type="text" readonly="true">
+                                                <?php
+                                                pokemonFilterImages( $noPokemonNumbers, '', $excludeQuestsPokemon, 8 ); ?>
+                                            </div>
+                                            <a href="#" class="select-all"><?php echo i8ln( 'All' ) ?>
+                                                <div>
+                                            </a><a href="#" class="hide-all"><?php echo i8ln( 'None' ) ?> </a>
+                                        </label>
+                                    </div>
+                                </div>
+                                <?php
+                            } ?>
+                            <?php
+                            if ( ! $noQuestsItems ) {
+                                ?>
+                                <div id="tabs-2">
+                                    <div class="form-control hide-select-2">
+                                        <label for="exclude-quests-item">
+                                            <div class="quest-item-container">
+                                                <input id="exclude-quests-item" type="text" readonly="true">
+                                                <?php
+                                                itemFilterImages( $noItemNumbers, '', $excludeQuestsItem, 9 ); ?>
+                                            </div>
+                                            <a href="#" class="select-all-item"><?php echo i8ln( 'All' ) ?>
+                                                <div>
+                                            </a><a href="#" class="hide-all-item"><?php echo i8ln( 'None' ) ?> </a>
+                                        </label>
+                                    </div>
+                                </div>
+                                <?php
+                            } ?>
+                        </div>
+                    </div>
+                    </div>
                 </div>
                 <?php
             }
@@ -451,7 +550,7 @@ if ( $blockIframe ) {
             <?php
             if ( ! $noRaids || ! $noGyms ) {
                 ?>
-                <h3><?php echo i8ln( 'Gym/Raid' ); ?></h3>
+                <h3><?php echo i8ln( 'Gym &amp; Raid' ); ?></h3>
                 <div>
                     <?php
                     if ( ! $noRaids ) {
@@ -1567,7 +1666,10 @@ if ( $blockIframe ) {
     var gymSidebar = <?php echo $noGymSidebar ? 'false' : $gymSidebar ?>;
     var enablePokemon = <?php echo $noPokemon ? 'false' : $enablePokemon ?>;
     var enablePokestops = <?php echo $noPokestops ? 'false' : $enablePokestops ?>;
-    var enableLured = <?php echo ( ( $map != "monocle" ) || ( $fork == "alternate" ) ) ? $enableLured : 0 ?>;
+    var enableLured = <?php echo $noLures ? 'false' : $enableLured ?>;
+    var enableQuests = <?php echo $noQuests ? 'false' : $enableQuests ?>;
+    var hideQuestsPokemon = <?php echo $hideQuestsPokemon ? '[]' : $hideQuestsPokemon ?>;
+    var hideQuestsItem = <?php echo $hideQuestsItem ? '[]' : $hideQuestsItem ?>;
     var enableNewPortals = <?php echo ( ( $map != "monocle" ) || ( $fork == "alternate" ) ) ? $enableNewPortals : 0 ?>;
     var enableWeatherOverlay = <?php echo ! $noWeatherOverlay ? $enableWeatherOverlay : 'false' ?>;
     var enableScannedLocations = <?php echo $map != "monocle" && ! $noScannedLocations ? $enableScannedLocations : 'false' ?>;
