@@ -6,7 +6,7 @@
 
 //======================================================================
 // PMSF - DEFAULT CONFIG FILE
-// https://github.com/Glennmen/PMSF
+// https://github.com/whitewillem/PMSF
 //======================================================================
 session_start();
 require_once(__DIR__ . '/../utils.php');
@@ -31,15 +31,15 @@ setSessionCsrfToken();
 
 /* Location Settings */
 
-$startingLat = 37.7749295;                                          // Starting latitude
-$startingLng = -122.4194155;                                        // Starting longitude
+$startingLat = 52.084992;                                          // Starting latitude
+$startingLng = 5.302366;                                        // Starting longitude
 
 /* Zoom and Cluster Settings */
 
 $maxLatLng = 1;                                                     // Max latitude and longitude size (1 = ~110km, 0 to disable)
 $maxZoomOut = 0;                                                    // Max zoom out level (11 ~= $maxLatLng = 1, 0 to disable, lower = the further you can zoom out)
 $maxZoomIn = 18;                                                    // Max zoom in level 18 
-$disableClusteringAtZoom = 15;					    // Disable clustering above this value. 0 to disabel
+$disableClusteringAtZoom = 15;					    // Disable clustering above this value. 0 to disable
 $zoomToBoundsOnClick = 15;					    // Zoomlevel on clusterClick
 $maxClusterRadius = 30;						    // The maximum radius that a cluster will cover from the central marker (in pixels).
 $spiderfyOnMaxZoom = 'true';					    // Spiderfy cluster markers on click
@@ -154,7 +154,6 @@ $noPokemonNumbers = false;                                          // true/fals
 $noHidePokemon = false;                                             // true/false
 $hidePokemon = '[10, 13, 16, 19, 21, 29, 32, 41, 46, 48, 50, 52, 56, 74, 77, 96, 111, 133,
                   161, 163, 167, 177, 183, 191, 194, 168]';         // [] for empty
-
 $hidePokemonCoords = false;                                         // true/false
 
 $excludeMinIV = '[131, 143, 147, 148, 149, 248]';                   // [] for empty
@@ -164,9 +163,6 @@ $minLevel = '0';                                                    // "0" for e
 
 $noBigKarp = true;                                                 // true/false
 $noTinyRat = true;                                                 // true/false
-
-$noNests = false;                                                   // true/false
-$enableNests = 'false';                                             // true/false
 
 $noGyms = false;                                                    // true/false
 $enableGyms = 'false';                                              // true/false
@@ -191,8 +187,9 @@ $noQuests = false;                                                  // true/fals
 $enableQuests = 'false';                                            // true/false
 $noQuestsItems = false;
 $noQuestsPokemon = false;
-$hideQuestsPokemon = [];  // Pokemon ids
-$hideQuestsItem = [301, 401, 402, 403, 404, 501, 602, 603, 604, 702, 704, 708, 801, 901, 902, 903, 1001, 1002, 1401, 1402, 1402, 1403, 1404, 1405];    // Item ids "See protos https://github.com/Furtif/POGOProtos/blob/master/src/POGOProtos/Inventory/Item/ItemId.proto"
+$hideQuestsPokemon = '[]';  // Pokemon ids
+$excludeQuestsPokemon = [];  // Pokemon ids
+$hideQuestsItem = '[4, 5, 301, 401, 402, 403, 404, 501, 602, 603, 604, 702, 704, 708, 801, 901, 902, 903, 1001, 1002, 1401, 1402, 1403, 1404, 1405]';    // Item ids "See protos https://github.com/Furtif/POGOProtos/blob/master/src/POGOProtos/Inventory/Item/ItemId.proto"
 $excludeQuestsItem = [4, 5, 301, 401, 402, 403, 404, 501, 602, 603, 604, 702, 704, 708, 801, 901, 902, 903, 1001, 1002, 1401, 1402, 1403, 1404, 1405];
 $noItemNumbers = false;                                             // true/false
 
@@ -224,21 +221,13 @@ $enableSpawnArea = 'false';                                         // true/fals
 /* Notification Settings */
 
 $notifyPokemon = '[]';                                           // [] for empty
-
 $notifyRarity = '[]';                                               // "Common", "Uncommon", "Rare", "Very Rare", "Ultra Rare"
-
 $notifyIv = '""';                                                   // "" for empty or a number
-
 $notifyLevel = '""';                                                // "" for empty or a number
-
 $notifyRaid = 5;                                                    // O to disable
-
 $notifySound = 'false';                                             // true/false
-
 $criesSound = 'false';                                              // true/false
-
 $notifyBounce = 'true';                                             // true/false
-
 $notifyNotification = 'true';                                       // true/false
 
 /* Style Settings */
@@ -281,14 +270,14 @@ $sendRaidData = false;                                              // Send Raid
 // Manual Submissions
 //-----------------------------------------------------
 $hideIfManual = false;
-$noManualRaids = false;
-$noManualPokemon = false;
+$noManualRaids = true;
+$noManualPokemon = true;
 $pokemonTimer = 900;                                                // Time in seconds before a submitted Pokémon despawns.
-$noManualGyms = false;
-$noManualPokestops = false;
-$noRenamePokestops = false;
-$noConvertPokestops = false;
-$noManualQuests = false;
+$noManualGyms = true;
+$noManualPokestops = true;
+$noRenamePokestops = true;
+$noConvertPokestops = true;
+$noManualQuests = true;
 
 //-----------------------------------------------------
 // Ingress portals
@@ -307,14 +296,14 @@ $markPortalsAsNew = 86400;                                         // Time in se
 
 $noDiscordSubmitLogChannel = true;                                        // Send webhooks to discord channel upon submission
 
-$pokemonReportTime = true;
+$pokemonReportTime = false;
 $pokemonToExclude = [];
 
-$noDeleteGyms = false;
-$noToggleExGyms = false;
-$noDeletePokestops = false;
+$noDeleteGyms = true;
+$noToggleExGyms = true;
+$noDeletePokestops = true;
 
-$raidBosses = [4, 296, 307, 138, 320, 129, 103, 281, 126, 303, 185, 137, 26, 232, 136, 95, 68, 248, 229, 105, 359, 76, 112, 379];
+$raidBosses = [];
 
 $sendWebhook = false;
 $webhookUrl = null;                                             //['url-1','url-2']
@@ -339,28 +328,28 @@ $manualFiveStar = [
 //-----------------------------------------------------
 
 $noSearch = false;
-$noSearchPokestops = false;     //Wont work if noSearch = false
+$noSearchPokestops = true;     //Wont work if noSearch = false
 $noSearchGyms = false;          //Wont work if noSearch = false
 $noSearchManualQuests = false;  //Wont work if noSearch = false
-$noSearchNests = false;
-$noSearchPortals = false;
+$noSearchNests = true;
+$noSearchPortals = true;
 $defaultUnit = "km";                                            // mi/km
 $maxSearchResults = 10;
 //-----------------------------------------------
 // Community
 //-----------------------------------------------------
-$noCommunity = false;
+$noCommunity = true;
 $enableCommunities = 'false';
-$noAddNewCommunity = false;
-$noDeleteCommunity = false;
-$noEditCommunity = false;
+$noAddNewCommunity = true;
+$noDeleteCommunity = true;
+$noEditCommunity = true;
 //-----------------------------------------------
 // Nests
 //-----------------------------------------------------
-$noNests = false;                                                   // true/false
+$noNests = true;                                                   // true/false
 $enableNests = 'false';                                             // true/false
-$noManualNests = false;
-$noDeleteNests = false;
+$noManualNests = true;
+$noDeleteNests = true;
 $nestVerifyLevel = 1;						    // 1 = Verified 2 = 1 + Unverified 3 = 1 + 2 + Revoked 4 = Get all nests
 $deleteNestsOlderThan = 42;					    // days after not updated nests are removed from database by nest cron
 $migrationDay = strtotime('5 April 2018');                          // Adjust day value after non consitent 14 day migration
@@ -380,7 +369,7 @@ $areas = [];                                                        // [[latitud
 // Weather Config
 //-----------------------------------------------------
 
-$noWeatherOverlay = false;                                          // true/false
+$noWeatherOverlay = true;                                          // true/false
 $enableWeatherOverlay = 'false';                                    // true/false
 
 $weather = [
