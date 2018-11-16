@@ -2,9 +2,9 @@
 
 This fork is different is so many ways that its impossible to name them all. Main key features are Manual submissions. 
 
-> Current Version 1.5 - Second release! with OpenStreetMap engine
+> Current Version 2.0 - Second release! with OpenStreetMap engine
 
-PokeMap Standalone Frontend or PMSF for short is a PHP Map Interface for the Monocle Scanner designed to be completely standalone and able to run on any traditional web server
+PokeMap Standalone Frontend or PMSF for short is a PHP Map Interface for the RDM Scanner designed to be completely standalone and able to run on any traditional web server. Manual submissions are supported on a Monocle Hydro base database with small additions, have a look at the cleandb.sql and sql.sql for changes.
 
 It supports all the common database engines, including MySQL, MariaDB
 A special Database structure based on Hydro Monocle is needed.
@@ -28,6 +28,8 @@ Current tested support for
 * [Discord](https://discord.gg/yGujp8D) channel
 
 ## Thanks
+* Thanks [RDM](https://github.com/123FLO321/RealDeviceMap) for their Real Device scanner.
+
 * Thanks [PMSF](https://github.com/Glennmen/PMSF) for the basis for this fork.
 
 * Thanks [MSF](https://github.com/Nuro/MSF) for the great basis for this project.

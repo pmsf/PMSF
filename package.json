@@ -1,6 +1,6 @@
 {
   "name": "pmsf",
-  "version": "1.0.0",
+  "version": "2.0.0",
   "description": "PMSF (PokeMap Standalone Frontend) is a standalone PHP map interface that is able to run on any traditional web server. It works for both Monocle or Rocketmap database setups.",
   "main": "Gruntfile.js",
   "scripts": {
@@ -12,7 +12,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/Glennmen/PMSF.git"
+    "url": "git+https://github.com/whitewillem/PMSF.git"
   },
   "keywords": [
     "pokemon",
@@ -20,12 +20,12 @@
     "rocketmap",
     "monocle"
   ],
-  "author": "Glennmen",
+  "author": "Whitewillem & Wheel",
   "license": "ISC",
   "bugs": {
-    "url": "https://github.com/Glennmen/PMSF/issues"
+    "url": "https://discord.gg/yGujp8D"
   },
-  "homepage": "https://github.com/Glennmen/PMSF#readme",
+  "homepage": "https://github.com/whitewillem/PMSF#readme",
   "dependencies": {
     "babel-core": "^6.26.3",
     "babel-preset-env": "^1.7.0",
