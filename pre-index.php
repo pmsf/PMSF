@@ -273,7 +273,7 @@ if ( $blockIframe ) {
             <?php
             if ( ! $noPokemon || ! $noNests ) {
                 ?>
-                <h3><?php echo i8ln( 'Pokemon / Nests' ) ?></h3>
+                <h3><?php echo i8ln( 'Pokemon &amp; Nests' ) ?></h3>
                 <div>
                 <?php
                 if ( ! $noPokemon ) {
@@ -418,7 +418,7 @@ if ( $blockIframe ) {
             <?php
             if ( ! $noPokestops ) {
                 ?>
-                <h3><?php echo i8ln( 'Pokestops/Quest' ); ?></h3>
+                <h3><?php echo i8ln( 'Pokestops &amp; Quests' ); ?></h3>
 		<div>
                 <?php
                 if ( ! $noPokestops ) {
@@ -550,7 +550,7 @@ if ( $blockIframe ) {
             <?php
             if ( ! $noRaids || ! $noGyms ) {
                 ?>
-                <h3><?php echo i8ln( 'Gym/Raid' ); ?></h3>
+                <h3><?php echo i8ln( 'Gym &amp; Raid' ); ?></h3>
                 <div>
                     <?php
                     if ( ! $noRaids ) {
