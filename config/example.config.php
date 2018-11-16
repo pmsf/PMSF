@@ -10,7 +10,7 @@ use Medoo\Medoo;
 
 //======================================================================
 // PMSF - CONFIG FILE
-// https://github.com/Glennmen/PMSF
+// https://github.com/whitewillem/PMSF
 //======================================================================
 
 //-----------------------------------------------------
@@ -19,15 +19,15 @@ use Medoo\Medoo;
 
 /* Location Settings */
 
-$startingLat = 52.090737;                                          // Starting latitude
-$startingLng = 5.121420;                                           // Starting longitude
+$startingLat = 52.084992;                                          // Starting latitude
+$startingLng = 5.302366;                                           // Starting longitude
 
 /* Zoom and Cluster Settings */
 
 $maxLatLng = 1;                                                     // Max latitude and longitude size (1 = ~110km, 0 to disable)
 $maxZoomOut = 11;                                                   // Max zoom out level (11 ~= $maxLatLng = 1, 0 to disable, lower = the further you can zoom out)
 $maxZoomIn = 18;                                                    // Max zoom in level 18
-$disableClusteringAtZoom = 15;					    // Disable clustering above this value. 0 to disabel
+$disableClusteringAtZoom = 15;					    // Disable clustering above this value. 0 to disable
 $zoomToBoundsOnClick = 15;					    // Zoomlevel on clusterClick
 $maxClusterRadius = 30;						    // The maximum radius that a cluster will cover from the central marker (in pixels).
 $spiderfyOnMaxZoom = 'true';					    // Spiderfy cluster markers on click
@@ -39,7 +39,7 @@ $blockIframe = true;                                                // Block you
 
 /* Map Title + Language */
 
-$title = "Raidmap";                                                 // Title to display in title bar
+$title = "POGOmap";                                                 // Title to display in title bar
 $locale = "en";                                                     // Display language
 $raidmapLogo = '';                                                  // Upload logo to custom folder, leave '' for empty ( $raidmapLogo = 'custom/logo.png'; )
 
@@ -143,7 +143,6 @@ $noPokemonNumbers = false;                                          // true/fals
 $noHidePokemon = false;                                             // true/false
 $hidePokemon = '[10, 13, 16, 19, 21, 29, 32, 41, 46, 48, 50, 52, 56, 74, 77, 96, 111, 133,
                   161, 163, 167, 177, 183, 191, 194, 168]';         // [] for empty
-
 $hidePokemonCoords = false;                                         // true/false
 
 $excludeMinIV = '[131, 143, 147, 148, 149, 248]';                   // [] for empty
@@ -170,7 +169,17 @@ $maxRaidLevel = 5;
 
 $noPokestops = false;                                               // true/false
 $enablePokestops = 'false';                                         // true/false
-$enableLured = 0;                                                   // O: all, 1: lured only
+$noLures = false;
+$enableLured = 'false';                                             // true/false
+$noQuests = false;                                                  // true/false
+$enableQuests = 'false';                                            // true/false
+$noQuestsItems = false;
+$noQuestsPokemon = false;
+$hideQuestsPokemon = '[]';  					    // Pokemon ids will default be hidden in the menu every user is able to change this personaly
+$hideQuestsItem = '[4, 5, 301, 401, 402, 403, 404, 501, 602, 603, 604, 702, 704, 708, 801, 901, 902, 903, 1001, 1002, 1401, 1402, 1402, 1403, 1404, 1405]';    // Item ids "See protos https://github.com/Furtif/POGOProtos/blob/master/src/POGOProtos/Inventory/Item/ItemId.proto"
+$excludeQuestsPokemon = [];					    // All excluded pokemon wil not be shown in the filter.
+$excludeQuestsItem = [4, 5, 301, 401, 402, 403, 404, 501, 602, 603, 604, 702, 704, 708, 801, 901, 902, 903, 1001, 1002, 1401, 1402, 1402, 1403, 1404, 1405];   // All excluded item wil not be shown in the filter.
+$noItemNumbers = false;                                             // true/false
 
 $noScannedLocations = false;                                        // true/false
 $enableScannedLocations = 'false';                                  // true/false
@@ -220,7 +229,7 @@ $notifyNotification = 'true';                                       // true/fals
 /* Style Settings */
 
 $copyrightSafe = true;
-$iconRepository = 'https://raw.githubusercontent.com/whitewillem/PogoAssets/resized/icons_large/';
+$iconRepository = '';						    // URLs or folder paths are allowed
 
 $noMapStyle = false;                                                // true/false
 $mapStyle = 'openstreetmap';                                        // openstreetmap, darkmatter, styleblackandwhite, styletopo, stylesatellite, stylewikipedia
@@ -259,7 +268,7 @@ $sendRaidData = false;                                              // Send Raid
 // Manual Submissions
 //-----------------------------------------------------
 $hideIfManual = false;
-$noManualRaids = false;						   						// Enable/Disable ManualRaids permanently ( Comment this line if you want to use the block below )
+$noManualRaids = true;						   						// Enable/Disable ManualRaids permanently ( Comment this line if you want to use the block below )
 $noDiscordSubmitLogChannel = true;                                  // Send webhooks to discord channel upon submission
 $submitMapUrl = '';
 $discordSubmitLogChannelUrl = 'https://discordapp.com/api/webhooks/<yourCHANNELhere>';  // Sends gym/pokestop submit & pokestop rename directly to discord
@@ -272,13 +281,13 @@ $discordSubmitLogChannelUrl = 'https://discordapp.com/api/webhooks/<yourCHANNELh
 //	        $noManualRaids = true;
 //}
 
-$noManualPokemon = false;
+$noManualPokemon = true;
 $pokemonTimer = 900;                                                // Time in seconds before a submitted Pokémon despawns.
-$noManualGyms = false;
-$noManualPokestops = false;
-$noRenamePokestops = false;
-$noConvertPokestops = false;
-$noManualQuests = false;
+$noManualGyms = true;
+$noManualPokestops = true;
+$noRenamePokestops = true;
+$noConvertPokestops = true;
+$noManualQuests = true;
 
 //-----------------------------------------------------
 // Ingress portals
@@ -328,33 +337,33 @@ $manualFiveStar = [
 //-----------------------------------------------------
 
 $noSearch = false;
-$noSearchPokestops = false;     //Wont work if noSearch = false
-$noSearchGyms = false;          //Wont work if noSearch = false
+$noSearchPokestops = true;     //Wont work if noSearch = false
+$noSearchGyms = true;          //Wont work if noSearch = false
 $noSearchManualQuests = false;  //Wont work if noSearch = false
-$noSearchNests = false;
-$noSearchPortals = false;
+$noSearchNests = true;
+$noSearchPortals = true;
 $defaultUnit = "km";                                            // mi/km
 $maxSearchResults = 10;		//Max number of search results
 //-----------------------------------------------
 // Community
 //-----------------------------------------------------
-$noCommunity = false;
+$noCommunity = true;
 $enableCommunities = 'false';
-$noAddNewCommunity = false;
-$noDeleteCommunity = false;
-$noEditCommunity = false;
+$noAddNewCommunity = true;
+$noDeleteCommunity = true;
+$noEditCommunity = true;
 
 //-----------------------------------------------
 // Nests
 //-----------------------------------------------------
-$noNests = false;                                                   // true/false
+$noNests = true;                                                   // true/false
 $enableNests = 'false';                                             // true/false
-$noManualNests = false;
-$noDeleteNests = false;
+$noManualNests = true;
+$noDeleteNests = true;
 $nestVerifyLevel = 1;						    // 1 = Verified 2 = 1 + Unverified 3 = 1 + 2 + Revoked 4 = Get all nests
 $deleteNestsOlderThan = 42;					    // days after not updated nests are removed from database by nest cron
 $migrationDay = strtotime('5 April 2018');                          // Adjust day value after non consitent 14 day migration
-$noAddNewNests = false;
+$noAddNewNests = true;
 $excludeNestMons = [2,3,5,6,8,9,11,12,14,15,17,18,20,22,24,26,28,29,30,31,32,33,34,36,38,40,42,44,45,49,51,53,55,57,59,61,62,64,65,67,68,70,71,73,75,76,78,80,82,83,85,87,88,89,91,93,94,97,99,101,103,105,106,107,108,109,110,112,113,114,115,117,119,121,122,128,130,131,132,134,135,136,137,139,142,143,144,145,146,147,148,149,150,151,153,154,156,157,159,160,161,162,163,164,165,166,167,168,169,171,172,173,174,175,176,177,178,179,180,181,182,183,184,186,187,188,189,191,192,194,195,196,197,199,201,204,205,207,208,210,212,214,217,218,219,221,222,223,224,225,228,229,230,232,233,235,236,237,238,239,240,241,242,243,244,245,246,247,248,249,250,251,253,254,256,257,259,260,262,263,264,265,266,267,268,269,270,271,272,274,275,276,277,279,280,281,282,284,286,287,288,289,290,291,292,293,294,295,297,298,301,303,304,305,306,308,310,313,314,316,317,319,321,323,324,326,327,328,329,330,331,332,334,335,336,337,338,339,340,342,344,346,348,349,350,351,352,354,356,357,358,359,360,361,362,363,364,365,366,367,368,369,371,372,373,374,375,376,377,378,379,380,381,382,383,384,385,386];
 $nestCoords = array();                                           //$nestCoords = array(array('lat1' => 42.8307723529682, 'lng1' => -88.7527692278689, 'lat2' => 42.1339901128552, 'lng2' => -88.0688703020877),array(    'lat1' => 42.8529250952743,'lng1' => -88.1292951067752,'lat2' => 41.7929306950085,'lng2' => -87.5662457903689));
 
@@ -370,7 +379,7 @@ $areas = [];                                                        // [[latitud
 // Weather Config
 //-----------------------------------------------------
 
-$noWeatherOverlay = false;                                          // true/false
+$noWeatherOverlay = true;                                          // true/false
 $enableWeatherOverlay = 'false';                                    // true/false
 
 $weatherColors = [
