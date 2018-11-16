@@ -273,7 +273,7 @@ if ( $blockIframe ) {
             <?php
             if ( ! $noPokemon || ! $noNests ) {
                 ?>
-                <h3><?php echo i8ln( 'Pokemon / Nests' ) ?></h3>
+                <h3><?php echo i8ln( 'Pokemon &amp; Nests' ) ?></h3>
                 <div>
                 <?php
                 if ( ! $noPokemon ) {
@@ -418,7 +418,7 @@ if ( $blockIframe ) {
             <?php
             if ( ! $noPokestops ) {
                 ?>
-                <h3><?php echo i8ln( 'Pokestops/Quest' ); ?></h3>
+                <h3><?php echo i8ln( 'Pokestops &amp; Quests' ); ?></h3>
 		<div>
                 <?php
                 if ( ! $noPokestops ) {
@@ -550,7 +550,7 @@ if ( $blockIframe ) {
             <?php
             if ( ! $noRaids || ! $noGyms ) {
                 ?>
-                <h3><?php echo i8ln( 'Gym/Raid' ); ?></h3>
+                <h3><?php echo i8ln( 'Gym &amp; Raid' ); ?></h3>
                 <div>
                     <?php
                     if ( ! $noRaids ) {
@@ -1668,8 +1668,8 @@ if ( $blockIframe ) {
     var enablePokestops = <?php echo $noPokestops ? 'false' : $enablePokestops ?>;
     var enableLured = <?php echo $noLures ? 'false' : $enableLured ?>;
     var enableQuests = <?php echo $noQuests ? 'false' : $enableQuests ?>;
-    var hideQuestsPokemon = <?php echo $noQuests ? '[]' : $hideQuestsPokemon ?>;
-    var hideQuestsItem = <?php echo $noQuests ? '[]' : $hideQuestsItem ?>;
+    var hideQuestsPokemon = <?php echo $hideQuestsPokemon ? '[]' : $hideQuestsPokemon ?>;
+    var hideQuestsItem = <?php echo $hideQuestsItem ? '[]' : $hideQuestsItem ?>;
     var enableNewPortals = <?php echo ( ( $map != "monocle" ) || ( $fork == "alternate" ) ) ? $enableNewPortals : 0 ?>;
     var enableWeatherOverlay = <?php echo ! $noWeatherOverlay ? $enableWeatherOverlay : 'false' ?>;
     var enableScannedLocations = <?php echo $map != "monocle" && ! $noScannedLocations ? $enableScannedLocations : 'false' ?>;
