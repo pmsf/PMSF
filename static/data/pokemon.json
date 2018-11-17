@@ -11255,5 +11255,25 @@
         "color": "#705898"
       }
     ]
+  },
+  "808": {
+    "name": "Meltan",
+    "rarity": "",
+    "types": [
+      {
+        "type": "Steel",
+        "color": "#b8b8d0"
+      }
+    ]
+  },
+  "809": {
+    "name": "Melmetan",
+    "rarity": "",
+    "types": [
+      {
+        "type": "Steel",
+        "color": "#b8b8d0"
+      }
+    ]
   }
 }
