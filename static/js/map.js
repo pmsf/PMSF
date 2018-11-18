@@ -69,7 +69,7 @@ var reids = []
 var qpreids = []
 var qireids = []
 var dustamount
-var reloaddustamount = null
+var reloaddustamount
 
 var numberOfPokemon = 493
 var numberOfItem = 1405
@@ -1091,8 +1091,8 @@ function getQuest(item) {
             i8ln(throwType[questinfo['throw_type_id']]) + ' ' +
             i8ln('throws in a row') +
             '</div>'
-        } else {
-            console.log('Undefined quest type' + item['quest_condition_type'])
+        } else if (item['quest_condition_type'] !== 0 ) {
+            console.log('Undefined quest type ' + item['quest_condition_type'])
             str += '<div>Undefined condition</div>'
         }
         if (item['quest_reward_type'] === 3) {
@@ -3589,7 +3589,7 @@ function updatePokestops() {
     }
     if (Store.get('showQuests')) {
         $.each(mapData.pokestops, function (key, value) {
-            if (value['quest_type'] === 0 || ((value['quest_pokemon_id'] > 0 && questsExcludedPokemon.indexOf(value['quest_pokemon_id']) > -1) || (value['quest_item_id'] > 0 && questsExcludedItem.indexOf(value['quest_item_id']) > -1) || (value['quest_reward_type'] === 3 && value['quest_reward_amount'] < Store.get('showDustAmount')))) {
+            if (value['quest_type'] === 0 || ((value['quest_pokemon_id'] > 0 && questsExcludedPokemon.indexOf(value['quest_pokemon_id']) > -1) || (value['quest_item_id'] > 0 && questsExcludedItem.indexOf(value['quest_item_id']) > -1) || ((value['quest_reward_type'] === 3 && (Number(value['quest_reward_amount']) < Number(Store.get('showDustAmount')))) || Store.get('showDustAmount') === 0))) {
                 removeStops.push(key)
             }
         })
@@ -3878,7 +3878,7 @@ function updateMap() {
                 return this.indexOf(e) < 0
             }, reincludedQuestsItem)
         }
-        reloaddustamount = null
+        reloaddustamount = false
         timestamp = result.timestamp
         lastUpdateTime = Date.now()
         token = result.token
@@ -5682,8 +5682,8 @@ $(function () {
             $('#dustvalue').text('Off')
             setTimeout(function () { updateMap() }, 2000)
         } else {
-            $('#dustvalue').text(dustamount)
-            reloaddustamount = dustamount
+            $('#dustvalue').text(i8ln( 'above' ) + ' ' + dustamount)
+            reloaddustamount = true
             setTimeout(function () { updateMap() }, 2000)
         }
     })
