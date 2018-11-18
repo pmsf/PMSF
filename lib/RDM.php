@@ -254,7 +254,7 @@ class RDM extends Scanner
 	    }
 	    $dustSQL = '';
             if (!empty($dustamount) && !is_nan((float)$dustamount) && $dustamount > 0) {
-                $dustSQL .= "OR (quest_reward_type = 3 AND json_extract(json_extract(`quest_rewards`,'$[*].info.amount'),'$[0]') > :amount)";
+                $dustSQL .= "OR (json_extract(json_extract(`quest_rewards`,'$[*].type'),'$[0]') = 3 AND json_extract(json_extract(`quest_rewards`,'$[*].info.amount'),'$[0]') > :amount)";
                 $params[':amount'] = $dustamount;
             }
             $conds[] = "(" . $pokemonSQL . " OR " . $itemSQL . ")" . $dustSQL . "";
@@ -278,7 +278,7 @@ class RDM extends Scanner
     }
 
 
-    public function get_stops_quest($qpreids, $qireids, $swLat, $swLng, $neLat, $neLng, $tstamp = 0, $oSwLat = 0, $oSwLng = 0, $oNeLat = 0, $oNeLng = 0, $lures, $quests)
+    public function get_stops_quest($qpreids, $qireids, $swLat, $swLng, $neLat, $neLng, $tstamp = 0, $oSwLat = 0, $oSwLng = 0, $oNeLat = 0, $oNeLng = 0, $lures, $quests, $dustamount, $reloaddustamount)
     {
         $conds = array();
         $params = array();
@@ -314,6 +314,11 @@ class RDM extends Scanner
                 $tmpSQL .= "quest_item_id IN ( $item_in )";
             } else {
                 $tmpSQL .= "";
+            }
+file_put_contents('log.txt', print_r($reloaddustamount, true));
+            if ($reloaddustamount == "true") {
+                $conds[] = "(json_extract(json_extract(`quest_rewards`,'$[*].type'),'$[0]') = 3 AND json_extract(json_extract(`quest_rewards`,'$[*].info.amount'),'$[0]') > :amount)";
+                $params[':amount'] = $dustamount;
             }
             $conds[] = $tmpSQL;
         }
