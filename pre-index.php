@@ -518,6 +518,10 @@ if ( $blockIframe ) {
                                 <?php
                             } ?>
                         </div>
+                        <div class="dustslider">
+			    <input type="range" min="0" max="2000" value="500" class="slider" id="dustrange">
+			    <p><?php echo i8ln( 'Show stardust ' ) ?><span id="dustvalue"></span></p>
+                        </div>
                     </div>
                     </div>
                 </div>
@@ -1626,8 +1630,8 @@ if ( $blockIframe ) {
 <script src="https://leaflet.github.io/Leaflet.markercluster/dist/leaflet.markercluster-src.js"></script>
 <script src='https://api.mapbox.com/mapbox.js/plugins/leaflet-fullscreen/v1.0.1/Leaflet.fullscreen.min.js'></script>
 <script src="static/js/vendor/smoothmarkerbouncing.js"></script>
-<script src="https://maps.googleapis.com/maps/api/js?key=<?= $gmapsKey ?>" async defer></script>
-<script src='https://unpkg.com/leaflet.gridlayer.googlemutant@latest/Leaflet.GoogleMutant.js'></script>
+<script src='https://maps.googleapis.com/maps/api/js?key=<?php $gmapsKey ?> ' async defer></script>
+<script src="https://unpkg.com/leaflet.gridlayer.googlemutant@latest/Leaflet.GoogleMutant.js"></script>
 <script>
     var centerLat = <?= $startingLat; ?>;
     var centerLng = <?= $startingLng; ?>;
