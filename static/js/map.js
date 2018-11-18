@@ -68,6 +68,8 @@ var reincludedQuestsItem = []
 var reids = []
 var qpreids = []
 var qireids = []
+var dustamount
+var reloaddustamount = null
 
 var numberOfPokemon = 493
 var numberOfItem = 1405
@@ -503,6 +505,8 @@ function initSidebar() {
     $('#lures-switch').prop('checked', Store.get('showLures'))
     $('#quests-switch').prop('checked', Store.get('showQuests'))
     $('#quests-filter-wrapper').toggle(Store.get('showQuests'))
+    $('#dustvalue').text(Store.get('showDustAmount'))
+    $('#dustrange').val(Store.get('showDustAmount'))
     $('#start-at-user-location-switch').prop('checked', Store.get('startAtUserLocation'))
     $('#start-at-last-location-switch').prop('checked', Store.get('startAtLastLocation'))
     $('#follow-my-location-switch').prop('checked', Store.get('followMyLocation'))
@@ -990,28 +994,27 @@ function gymLabel(item) {
 
 function getReward(item) {
     var rewardImage
-    var reward = JSON.parse(item['quest_rewards'])
-    var rewardinfo = reward[0]['info']
+    var reward = JSON.parse(item['quest_reward_info'])
     var pokemonIdStr = ''
     var formStr = ''
-    if (reward[0]['type'] === 7) {
-        if (rewardinfo['pokemon_id'] <= 9) {
-            pokemonIdStr = '00' + rewardinfo['pokemon_id']
-        } else if (rewardinfo['pokemon_id'] <= 99) {
-            pokemonIdStr = '0' + rewardinfo['pokemon_id']
+    if (item['quest_reward_type'] === 7) {
+        if (reward['pokemon_id'] <= 9) {
+            pokemonIdStr = '00' + reward['pokemon_id']
+        } else if (reward['pokemon_id'] <= 99) {
+            pokemonIdStr = '0' + reward['pokemon_id']
         } else {
-            pokemonIdStr = rewardinfo['pokemon_id']
+            pokemonIdStr = reward['pokemon_id']
         }
-        if (rewardinfo['form_id'] === 0) {
+        if (reward['form_id'] === 0) {
             formStr = '00'
         } else {
-            formStr = rewardinfo['form_id']
+            formStr = reward['form_id']
         }
         rewardImage = '<img height="70px" style="padding: 5px;" src="' + iconpath + 'pokemon_icon_' + pokemonIdStr + '_' + formStr + '.png"/>'
-    } else if (reward[0]['type'] === 3) {
+    } else if (item['quest_reward_type'] === 3) {
         rewardImage = '<img height="70px" style="padding: 5px;" src="' + iconpath + 'rewards/reward_stardust.png"/>'
-    } else if (reward[0]['type'] === 2) {
-        rewardImage = '<img height="70px" style="padding: 5px;" src="' + iconpath + 'rewards/reward_' + rewardinfo['item_id'] + '_1.png"/>'
+    } else if (item['quest_reward_type'] === 2) {
+        rewardImage = '<img height="70px" style="padding: 5px;" src="' + iconpath + 'rewards/reward_' + reward['item_id'] + '_1.png"/>'
     }
     return rewardImage
 }
@@ -1019,41 +1022,41 @@ function getReward(item) {
 function getQuest(item) {
     var str
     var raidLevel
-    var quest = JSON.parse(item['quest_conditions'])
-    if (typeof quest[0] !== 'undefined') {
+    if (item['quest_condition_type'] !== null) {
+        var questinfo = JSON.parse(item['quest_condition_info'])
         var questStr = i8ln(questtypeList[item['quest_type']])
-        str += '<center><div>' +
+        str = '<center><div>' +
         i8ln('Task:') + ' ' +
         questStr.replace('{0}', item['quest_target']) +
-        '</div></center>'
-        str += '<center><div>'
+        '</div></center>' +
+        '<center><div>'
 
-        if (quest[0]['type'] === 1) {
+        if (item['quest_condition_type'] === 1) {
             str += '<div>' +
             i8ln('Type(s):') + ' '
-            $.each(quest[0]['info']['pokemon_type_ids'], function (index, typeId) {
+            $.each(questinfo['pokemon_type_ids'], function (index, typeId) {
                 str += pokemonTypes[typeId]
             })
             str += '</div>'
-        } else if (quest[0]['type'] === 2) {
+        } else if (item['quest_condition_type'] === 2) {
             str += '<div>' +
             i8ln('Pokémon:') + ' '
-            $.each(quest[0]['info']['pokemon_ids'], function (index, id) {
+            $.each(questinfo['pokemon_ids'], function (index, id) {
                 str += idToPokemon[id].name
             })
             str += '</div>'
-        } else if (quest[0]['type'] === 3) {
+        } else if (item['quest_condition_type'] === 3) {
             str += '<div>' +
             i8ln('Condition:') + ' ' +
             i8ln('Weather boosted') +
             '</div>'
-        } else if (quest[0]['type'] === 6) {
+        } else if (item['quest_condition_type'] === 6) {
             str += '<div>' +
             i8ln('Condition:') + ' ' +
             i8ln('Win raid') +
             '</div>'
-        } else if (quest[0]['type'] === 7) {
-            raidLevel = Math.min.apply(null, quest[0]['info']['raid_levels'])
+        } else if (item['quest_condition_type'] === 7) {
+            raidLevel = Math.min.apply(null, questinfo['raid_levels'])
             if (raidLevel > 1) {
                 str += '<div>' +
                 i8ln('Level') + ' ' +
@@ -1061,38 +1064,43 @@ function getQuest(item) {
                 i8ln('or higher')
             }
             str += '</div>'
-        } else if (quest[0]['type'] === 8) {
+        } else if (item['quest_condition_type'] === 8) {
             str += '<div>' +
             i8ln('Condition:') + ' ' +
-            i8ln(throwType[quest[0]['info']['throw_type_id']]) + ' ' +
+            i8ln(throwType[questinfo['throw_type_id']]) + ' ' +
             i8ln('throw') +
             '</div>'
-        } else if (quest[0]['type'] === 9) {
+        } else if (item['quest_condition_type'] === 9) {
             str += '<div>' +
             i8ln('Condition:') + ' ' +
             i8ln('Win gym battle') +
             '</div>'
-        } else if (quest[0]['type'] === 10) {
+        } else if (item['quest_condition_type'] === 10) {
             str += '<div>' +
             i8ln('Condition:') + ' ' +
             i8ln('Super Effective Charge') +
             '</div>'
-        } else if (quest[0]['type'] === 14 && typeof quest[0]['info']['throw_type_id'] === 'undefined') {
+        } else if (item['quest_condition_type'] === 14 && typeof questinfo['throw_type_id'] === 'undefined') {
             str += '<div>' +
             i8ln('Condition:') + ' ' +
             i8ln('Throws in a row') +
             '</div>'
-        } else if (quest[0]['type'] === 14) {
+        } else if (item['quest_condition_type'] === 14) {
             str += '<div>' +
             i8ln('Condition:') + ' ' +
-            i8ln(throwType[quest[0]['info']['throw_type_id']]) + ' ' +
+            i8ln(throwType[questinfo['throw_type_id']]) + ' ' +
             i8ln('throws in a row') +
             '</div>'
         } else {
-            console.log('Undefined quest type' + quest[0])
+            console.log('Undefined quest type' + item['quest_condition_type'])
             str += '<div>Undefined condition</div>'
         }
-
+        if (item['quest_reward_type'] === 3) {
+            str += '<center><div>' +
+            i8ln('Reward Amount:') + ' ' +
+            item['quest_reward_amount'] +
+            '</div></center>'
+        }
         str += '</div></center>'
     } else if (item['quest_type'] !== null) {
         questStr = i8ln(questtypeList[item['quest_type']])
@@ -1106,8 +1114,6 @@ function getQuest(item) {
 
 function pokestopLabel(item) {
     var str
-    var reward = JSON.parse(item['quest_rewards'])
-    var quest = JSON.parse(item['quest_conditions'])
     if (item['pokestop_name'] === null) {
         item['pokestop_name'] = 'Pokéstop'
     }
@@ -1119,7 +1125,7 @@ function pokestopLabel(item) {
         '<center>' + '<div class="pokestop-label">' +
         '<b>' + item['pokestop_name'] + '</b>' +
         '</div>'
-    if (reward !== null) {
+    if (item['quest_type'] !== null) {
         str +=
             '<div><center>' +
             '<img height="70px" style="padding: 5px;" src="static/forts/Pstop-quest-large.png">' +
@@ -1140,7 +1146,7 @@ function pokestopLabel(item) {
             '</center>' +
             '</div>'
     }
-    if (reward !== null && quest !== null) {
+    if (item['quest_type'] !== null) {
         str += getQuest(item)
     }
     if (!noDeletePokestops) {
@@ -2246,6 +2252,7 @@ function loadRawData() {
     var loadPokestops = Store.get('showPokestops')
     var loadLures = Store.get('showLures')
     var loadQuests = Store.get('showQuests')
+    var loadDustamount = Store.get('showDustAmount')
     var loadNests = Store.get('showNests')
     var loadCommunities = Store.get('showCommunities')
     var loadPortals = Store.get('showPortals')
@@ -2277,6 +2284,8 @@ function loadRawData() {
             'pokestops': loadPokestops,
             'lures': loadLures,
             'quests': loadQuests,
+            'dustamount': loadDustamount,
+            'reloaddustamount': reloaddustamount,
             'nests': loadNests,
             'lastnests': lastnests,
             'communities': loadCommunities,
@@ -3580,7 +3589,7 @@ function updatePokestops() {
     }
     if (Store.get('showQuests')) {
         $.each(mapData.pokestops, function (key, value) {
-            if (value['quest_type'] === 0 || ((value['quest_pokemon_id'] > 0 && questsExcludedPokemon.indexOf(value['quest_pokemon_id']) > -1) || (value['quest_item_id'] > 0 && questsExcludedItem.indexOf(value['quest_item_id']) > -1))) {
+            if (value['quest_type'] === 0 || ((value['quest_pokemon_id'] > 0 && questsExcludedPokemon.indexOf(value['quest_pokemon_id']) > -1) || (value['quest_item_id'] > 0 && questsExcludedItem.indexOf(value['quest_item_id']) > -1) || (value['quest_reward_type'] === 3 && value['quest_reward_amount'] < Store.get('showDustAmount')))) {
                 removeStops.push(key)
             }
         })
@@ -3869,6 +3878,7 @@ function updateMap() {
                 return this.indexOf(e) < 0
             }, reincludedQuestsItem)
         }
+        reloaddustamount = null
         timestamp = result.timestamp
         lastUpdateTime = Date.now()
         token = result.token
@@ -5111,18 +5121,6 @@ $(function () {
         boostedMons = data.boosted_mons
     })
 
-    $.getJSON('static/dist/data/quests.min.json').done(function (data) {
-        $.each(data, function (key, value) {
-            questList[key] = value['name']
-        })
-    })
-
-    $.getJSON('static/dist/data/rewards.min.json').done(function (data) {
-        $.each(data, function (key, value) {
-            rewardList[key] = value['name']
-        })
-    })
-
     $.getJSON('static/dist/data/questtype.min.json').done(function (data) {
         $.each(data, function (key, value) {
             questtypeList[key] = value['text']
@@ -5677,6 +5675,18 @@ $(function () {
         return buildSwitchChangeListener(mapData, ['pokestops'], 'showQuests').bind(this)()
     })
 
+    $('#dustrange').on('input', function () {
+        dustamount = $(this).val()
+        Store.set('showDustAmount', dustamount)
+        if (dustamount === '0') {
+            $('#dustvalue').text('Off')
+            setTimeout(function () { updateMap() }, 2000)
+        } else {
+            $('#dustvalue').text(dustamount)
+            reloaddustamount = dustamount
+            setTimeout(function () { updateMap() }, 2000)
+        }
+    })
     $('#sound-switch').change(function () {
         Store.set('playSound', this.checked)
         var options = {
