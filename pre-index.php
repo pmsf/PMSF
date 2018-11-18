@@ -518,6 +518,10 @@ if ( $blockIframe ) {
                                 <?php
                             } ?>
                         </div>
+                        <div class="dustslider">
+			    <input type="range" min="0" max="2000" value="500" class="slider" id="dustrange">
+			    <p><?php echo i8ln( 'Show stardust ' ) ?><span id="dustvalue"></span></p>
+                        </div>
                     </div>
                     </div>
                 </div>
