@@ -255,7 +255,7 @@ class RDM extends Scanner
 	    $dustSQL = '';
             if (!empty($dustamount) && !is_nan((float)$dustamount) && $dustamount > 0) {
                 $dustSQL .= "OR (json_extract(json_extract(`quest_rewards`,'$[*].type'),'$[0]') = 3 AND json_extract(json_extract(`quest_rewards`,'$[*].info.amount'),'$[0]') > :amount)";
-                $params[':amount'] = $dustamount;
+                $params[':amount'] = intval($dustamount);
             }
             $conds[] = "(" . $pokemonSQL . " OR " . $itemSQL . ")" . $dustSQL . "";
         }
@@ -315,10 +315,11 @@ class RDM extends Scanner
             } else {
                 $tmpSQL .= "";
             }
-file_put_contents('log.txt', print_r($reloaddustamount, true));
             if ($reloaddustamount == "true") {
-                $conds[] = "(json_extract(json_extract(`quest_rewards`,'$[*].type'),'$[0]') = 3 AND json_extract(json_extract(`quest_rewards`,'$[*].info.amount'),'$[0]') > :amount)";
-                $params[':amount'] = $dustamount;
+                $tmpSQL .= "(json_extract(json_extract(`quest_rewards`,'$[*].type'),'$[0]') = 3 AND json_extract(json_extract(`quest_rewards`,'$[*].info.amount'),'$[0]') > :amount)";
+                $params[':amount'] = intval($dustamount);
+	    } else {
+                $tmpSQL .= "";
             }
             $conds[] = $tmpSQL;
         }
