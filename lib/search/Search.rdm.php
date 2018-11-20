@@ -8,20 +8,30 @@ class RDM extends Search
     {
         global $db, $defaultUnit, $maxSearchResults;
 
-        $json = file_get_contents( 'static/dist/data/pokemon.min.json' );
-        $rewardsjson = json_decode( $json, true );
-        $resids = [];
-        foreach($rewardsjson as $k => $reward){
-            if( $k > 493){
+        $pjson = file_get_contents( 'static/dist/data/pokemon.min.json' );
+        $prewardsjson = json_decode( $pjson, true );
+        $presids = [];
+        foreach($prewardsjson as $p => $preward){
+            if( $p > 493){
                 break;
             }
-            if(strpos(strtolower($reward['name']), strtolower($term)) !== false){
-                $resids[] = $k;
+            if(strpos(strtolower($preward['name']), strtolower($term)) !== false){
+                $presids[] = $p;
                 break;
             }
         }
 
-        $query = "SELECT id,name,lat,lon,url,quest_type,quest_pokemon_id, ROUND(( 3959 * acos( cos( radians(:lat) ) * cos( radians( lat ) ) * cos( radians( lon ) - radians(:lon) ) + sin( radians(:lat) ) * sin( radians( lat ) ) ) ),2) AS distance FROM pokestop WHERE quest_pokemon_id IN (" . implode(',',$resids) . ") ORDER BY distance LIMIT " . $maxSearchResults . "";
+        $ijson = file_get_contents( 'static/dist/data/items.min.json' );
+        $irewardsjson = json_decode( $ijson, true );
+        $iresids = [];
+        foreach($irewardsjson as $i => $ireward){
+            if(strpos(strtolower($ireward['name']), strtolower($term)) !== false){
+                $iresids[] = $i;
+                break;
+            }
+        }
+
+        $query = "SELECT id,name,lat,lon,url,quest_type,quest_pokemon_id,quest_item_id, ROUND(( 3959 * acos( cos( radians(:lat) ) * cos( radians( lat ) ) * cos( radians( lon ) - radians(:lon) ) + sin( radians(:lat) ) * sin( radians( lat ) ) ) ),2) AS distance FROM pokestop WHERE quest_pokemon_id IN (" . implode(',',$presids) . ") ORDER BY distance LIMIT " . $maxSearchResults . "";
 
 	$rewards = $db->query($query,[ ':lat' => $lat, ':lon' => $lon])->fetchAll(\PDO::FETCH_ASSOC);
 
@@ -29,8 +39,10 @@ class RDM extends Search
 	$i = 0;
 
 	foreach($rewards as $reward){
-            $reward['pokemon_name'] = $rewardsjson[$reward['quest_pokemon_id']]['name'];
+            $reward['pokemon_name'] = $prewardsjson[$reward['quest_pokemon_id']]['name'];
 	    $reward['quest_pokemon_id'] = intval($reward['quest_pokemon_id']);
+            $reward['item_name'] = $irewardsjson[$reward['quest_item_id']]['name'];
+	    $reward['quest_item_id'] = intval($reward['quest_item_id']);
             if($defaultUnit === "km"){
                 $reward[$reward]['distance'] = round($data[$reward]['distance'] * 1.60934,2);
 	    }
