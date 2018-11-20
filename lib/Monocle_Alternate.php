@@ -201,6 +201,7 @@ class Monocle_Alternate extends Monocle
             $pokestop["latitude"] = floatval($pokestop["latitude"]);
             $pokestop["longitude"] = floatval($pokestop["longitude"]);
             $pokestop["lure_expiration"] = !empty($pokestop["lure_expiration"]) ? $pokestop["lure_expiration"] * 1000 : null;
+            $pokestop["url"] = str_replace("http://", "https://images.weserv.nl/?url=", $pokestop["url"]);
             if ($noTrainerName === true) {
                 // trainer names hidden, so don't show trainer who lured
                 unset($pokestop["lure_user"]);
@@ -259,7 +260,7 @@ class Monocle_Alternate extends Monocle
             $params[':lastUpdated'] = $tstamp;
         }
         if ($exEligible === "true") {
-            $conds[] = "(parkid IS NOT NULL OR sponsor > 0)";
+            $conds[] = "(park IS NOT NULL OR sponsor > 0)";
         }
 
         return $this->query_gyms($conds, $params);
@@ -280,6 +281,7 @@ class Monocle_Alternate extends Monocle
         f.park,
         fs.team AS team_id,
         fs.guard_pokemon_id,
+        fs.guard_pokemon_form,
         fs.slots_available,
         r.level AS raid_level,
         r.pokemon_id AS raid_pokemon_id,
@@ -323,6 +325,7 @@ class Monocle_Alternate extends Monocle
             $gym["last_scanned"] = $gym["last_scanned"] * 1000;
             $gym["raid_start"] = $gym["raid_start"] * 1000;
             $gym["raid_end"] = $gym["raid_end"] * 1000;
+            $gym["url"] = str_replace("http://", "https://images.weserv.nl/?url=", $gym["url"]);
             $data[] = $gym;
 
             unset($gyms[$i]);
@@ -598,8 +601,9 @@ class Monocle_Alternate extends Monocle
         return $data;
     }
 
-    public function get_portals($swLat, $swLng, $neLat, $neLng, $tstamp = 0, $oSwLat = 0, $oSwLng = 0, $oNeLat = 0, $oNeLng = 0)
+    public function get_portals($swLat, $swLng, $neLat, $neLng, $tstamp = 0, $oSwLat = 0, $oSwLng = 0, $oNeLat = 0, $oNeLng = 0, $newportals = 0)
     {
+        global $markPortalsAsNew;
         $conds = array();
         $params = array();
 
@@ -615,7 +619,13 @@ class Monocle_Alternate extends Monocle
             $params[':oswLng'] = $oSwLng;
             $params[':oneLat'] = $oNeLat;
             $params[':oneLng'] = $oNeLng;
-        }
+	}
+
+	if ($newportals == 1) {
+            $conds[] = "imported > :lastImported";
+            $params[':lastImported'] = time() - $markPortalsAsNew;
+	}
+
         if ($tstamp > 0) {
             $conds[] = "updated > :lastUpdated";
             $params[':lastUpdated'] = $tstamp;
@@ -634,6 +644,7 @@ class Monocle_Alternate extends Monocle
         name,
         url,
         updated,
+        imported,
         checked
         FROM ingress_portals
         WHERE :conditions";
@@ -646,6 +657,7 @@ class Monocle_Alternate extends Monocle
         foreach ($portals as $portal) {
             $portal["lat"] = floatval($portal["lat"]);
             $portal["lon"] = floatval($portal["lon"]);
+            $portal["url"] = str_replace("http://", "https://images.weserv.nl/?url=", $portal["url"]);
             $data[] = $portal;
 
             unset($portals[$i]);

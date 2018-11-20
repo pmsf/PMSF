@@ -19,9 +19,9 @@
     "cat": "Gym/Raid",
     "name": "Win 5 Gym battles"
   },
-  "11": {
+  "8": {
     "cat": "Gym/Raid",
-    "name": "Win a level 3 or higher raid"
+    "name": "Win a Raid"
   },
   "12": {
     "cat": "Gym/Raid",
@@ -29,67 +29,47 @@
   },
   "118": {
     "cat": "Catch",
-    "name": "Catch 10 Pokémon"
+    "name": "Catch a Dragon-Type Pokémon"
   },
   "119": {
+    "cat": "Catch",
+    "name": "Catch 5 Normal=Type Pokémon"
+  },
+  "120": {
+    "cat": "Catch",
+    "name": "Catch 5 Bug-Type Pokémon"
+  },
+  "121": {
     "cat": "Catch",
     "name": "Catch 5 Pokémon with Weather Boost"
   },
   "122": {
     "cat": "Catch",
-    "name": "Catch a Dragon-type Pokemon"
+    "name": "Catch 10 Pokémon"
   },
-  "123": {
-    "cat": "Catch",
-    "name": "Catch 5 Electric-type Pokemon"
-  },
-  "124": {
-    "cat": "Catch",
-    "name": "Catch 5 Fire-type Pokémon"
-  },
-  "127": {
-    "cat": "Catch",
-    "name": "Catch Rattata or Pikachu"
-  },
-  "128": {
-    "cat": "Catch",
-    "name": "Use 5 berries to help catch Pokémon"
-  },
-  "129": {
-    "cat": "Catch",
-    "name": "Use 10 berries to help catch Pokémon"
-  },
-  "255": {
-    "cat": "Evolve/Power up",
+  "256": {
+    "cat": "Evolve/Send",
     "name": "Evolve a Pokémon"
   },
-  "268": {
-    "cat": "Evolve/Power up",
-    "name": "Evolve a Fire-Type"
-  },
   "269": {
-    "cat": "Evolve/Power up",
-    "name": "Evolve 5 Fire-Types"
+    "cat": "Evolve/Send",
+    "name": "Evolve 2 Pidgey"
   },
-  "271": {
-    "cat": "Evolve/Power up",
-    "name": "Power up Pokémon 3 times"
-  },
-  "282": {
-    "cat": "Evolve/Power up",
-    "name": "Power up Pokémon 5 times"
+  "270": {
+    "cat": "Evolve/Send",
+    "name": "Send 5 Gifts to friends"
   },
   "370": {
     "cat": "Throw",
     "name": "Make 5 Nice Throws"
   },
+  "371": {
+    "cat": "Throw",
+    "name": "Make 3 Nice Curveball Throws"
+  },
   "376": {
     "cat": "Throw",
     "name": "Make 3 Great Throws"
-  },
-  "379": {
-    "cat": "Throw",
-    "name": "Make a Great Curveball Throw"
   },
   "380": {
     "cat": "Throw",
@@ -97,7 +77,7 @@
   },
   "381": {
     "cat": "Throw",
-    "name": "Make 3 Great Curveball Throws in a row"
+    "name": "Make 5 Great Throws in a row"
   },
   "387": {
     "cat": "Throw",
@@ -107,24 +87,16 @@
     "cat": "Miscellaneous",
     "name": "Hatch an Egg"
   },
-  "597": {
+  "598": {
     "cat": "Miscellaneous",
     "name": "Hatch 3 Eggs"
   },
-  "598": {
+  "599": {
     "cat": "Miscellaneous",
     "name": "Hatch 5 Eggs"
   },
   "605": {
     "cat": "Miscellaneous",
-    "name": "Transfer 10 Pokémon"
-  },
-  "610": {
-    "cat": "Miscellaneous",
-    "name": "Send 5 gifts"
-  },
-  "615": {
-    "cat": "Miscellaneous",
-    "name": "Earn a buddy candy"
+    "name": "Earn a candy walking with your buddy"
   }
 }

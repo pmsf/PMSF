@@ -1,7 +1,7 @@
 <?php
 $timing['start'] = microtime( true );
 include( 'config/config.php' );
-global $map, $fork, $db, $raidBosses, $webhookUrl, $sendWebhook, $sendQuestWebhook, $noManualRaids, $noRaids, $noManualPokemon, $noPokemon, $noPokestops, $noManualPokestops, $noGyms, $noManualGyms, $noManualQuests, $noManualNests, $noNests, $noAddNewNests, $pokemonTimer, $noRenamePokestops, $noDiscordSubmitLogChannel, $discordSubmitLogChannelUrl;
+global $map, $fork, $db, $raidBosses, $webhookUrl, $sendWebhook, $sendQuestWebhook, $noManualRaids, $noRaids, $noManualPokemon, $noPokemon, $noPokestops, $noManualPokestops, $noGyms, $noManualGyms, $noManualQuests, $noManualNests, $noNests, $noAddNewNests, $pokemonTimer, $noRenamePokestops, $noDiscordSubmitLogChannel, $discordSubmitLogChannelUrl, $noToggleExGyms;
 $action = ! empty( $_POST['action'] ) ? $_POST['action'] : '';
 $lat    = ! empty( $_POST['lat'] ) ? $_POST['lat'] : '';
 $lng    = ! empty( $_POST['lng'] ) ? $_POST['lng'] : '';
@@ -28,21 +28,21 @@ if ( $action === "raid" ) {
     $gymId      = ! empty( $_POST['gymId'] ) ? $_POST['gymId'] : 0;
     $eggTime    = ! empty( $_POST['eggTime'] ) ? $_POST['eggTime'] : 0;
     $monTime    = ! empty( $_POST['monTime'] ) ? $_POST['monTime'] : 0;
-    if ( $eggTime > 15 ) {
-        $eggTime = 15;
+    if ( $eggTime > 60 ) {
+        $eggTime = 60;
     }
-    if ( $monTime > 90 ) {
-        $monTime = 90;
+    if ( $monTime > 45 ) {
+        $monTime = 45;
     }
     if ( $eggTime < 0 ) {
         $eggTime = 0;
     }
     if ( $monTime < 0 ) {
-        $monTime = 90;
+        $monTime = 45;
     }
 
 // brimful of asha on the:
-    $forty_five = 90 * 60;
+    $forty_five = 45 * 60;
     $hour       = 3600;
 
 //$db->debug();
@@ -221,45 +221,45 @@ if ( $action === "raid" ) {
             'external_id' => $pokestopId
         ];
         $db->update( "pokestops", $cols, $where );
-    }
-    if ( $sendQuestWebhook === true && $webhookSystem === 'poracle' ) {
-	$questwebhook = [
-	    'message' => [
-                'latitude'                          => $pokestop['lat'],
-                'longitude'                         => $pokestop['lon'],
-                'pokestop_id'                       => $pokestopId,
-                'name'                              => $pokestop['name'],
-                'quest_id'                          => $cols['quest_id'],
-                'reward_id'                         => $cols['reward_id'],
-	    ],
-	    'type'    => 'quest'
-	];
-	foreach ( $questWebhookUrl as $url ) {
-            sendToWebhook($url, array($questwebhook));
-	}
-    }
-    if ( $sendQuestWebhook === true && $webhookSystem === 'pokealarm' ) {
-        $quests = json_decode( file_get_contents( "static/dist/data/quests.min.json" ), true);
-        $rewards = json_decode( file_get_contents( "static/dist/data/rewards.min.json" ), true);
-        $questString = $quests[$questId]['name'];
-        $rewardString = $rewards[$rewardId]['name'];
-        $questwebhook = [
-            'message' => [
-                'latitude'                          => $pokestop['lat'],
-                'longitude'                         => $pokestop['lon'],
-                'pokestop_id'                       => $pokestopId,
-                'url'                               => $pokestop['url'],
-                'name'                              => $pokestop['name'],
-                'quest'                             => $questString,
-                'reward'                            => $rewardString,
-            ],
-            'type'    => 'quest'
-        ];
-        foreach ( $questWebhookUrl as $url ) {
-            sendToWebhook($url, array($questwebhook));
-	}
-    }
 
+        if ( $sendQuestWebhook === true && $webhookSystem === 'poracle' ) {
+	    $questwebhook = [
+	        'message' => [
+                    'latitude'                          => $pokestop['lat'],
+                    'longitude'                         => $pokestop['lon'],
+                    'pokestop_id'                       => $pokestopId,
+                    'name'                              => $pokestop['name'],
+                    'quest_id'                          => $cols['quest_id'],
+                    'reward_id'                         => $cols['reward_id'],
+	        ],
+	        'type'    => 'quest'
+	    ];
+	    foreach ( $questWebhookUrl as $url ) {
+                sendToWebhook($url, array($questwebhook));
+	    }
+        }
+        if ( $sendQuestWebhook === true && $webhookSystem === 'pokealarm' ) {
+            $quests = json_decode( file_get_contents( "static/dist/data/quests.min.json" ), true);
+            $rewards = json_decode( file_get_contents( "static/dist/data/rewards.min.json" ), true);
+            $questString = $quests[$questId]['name'];
+            $rewardString = $rewards[$rewardId]['name'];
+            $questwebhook = [
+                'message' => [
+                    'latitude'                          => $pokestop['lat'],
+                    'longitude'                         => $pokestop['lon'],
+                    'pokestop_id'                       => $pokestopId,
+                    'url'                               => $pokestop['url'],
+                    'name'                              => $pokestop['name'],
+                    'quest'                             => $questString,
+                    'reward'                            => $rewardString,
+                ],
+                'type'    => 'quest'
+            ];
+            foreach ( $questWebhookUrl as $url ) {
+                sendToWebhook($url, array($questwebhook));
+	    }
+        }
+    }
 } elseif ( $action === "nest" ) {
     if ( $noManualNests === true || $noNests === true ) {
         http_response_code( 401 );
@@ -328,7 +328,7 @@ if ( $action === "raid" ) {
             ]
         ] );
         if ( $noDiscordSubmitLogChannel === false ) {
-            $data = array("content" => '```Converted pokestop with id "' . $pokestopId . '." New Gym: "' . $gymName['name'] . '". ```', "username" => $loggedUser);
+            $data = array("content" => '```Converted pokestop with id "' . $pokestopId . '." New Gym: "' . $gymName['name'] . '". ```' . $submitMapUrl . '/?lat=' . $gymLat['lat'] . '&lon=' . $gymLon['lon'] . '&zoom=18 ', "username" => $loggedUser);
             sendToWebhook($discordSubmitLogChannelUrl, ($data));
         }
     }
@@ -354,7 +354,7 @@ if ( $action === "raid" ) {
         ];
 	$db->insert( "pokestops", $cols );
         if ( $noDiscordSubmitLogChannel === false ) {
-            $data = array("content" => '```Converted portal with id "' . $portalId . '." New Pokestop: "' . $portalName['name'] . '". ```', "username" => $loggedUser);
+            $data = array("content" => '```Converted portal with id "' . $portalId . '." New Pokestop: "' . $portalName['name'] . '". ```' . $submitMapUrl . '/?lat=' . $portalLat['lat'] . '&lon=' . $portalLon['lon'] . '&zoom=18 ', "username" => $loggedUser);
             sendToWebhook($discordSubmitLogChannelUrl, ($data));
         }
     }
@@ -381,7 +381,7 @@ if ( $action === "raid" ) {
         ];
 	$db->insert( "forts", $cols );
         if ( $noDiscordSubmitLogChannel === false ) {
-            $data = array("content" => '```Converted portal with id "' . $portalId . '." New Gym: "' . $portalName['name'] . '". ```', "username" => $loggedUser);
+            $data = array("content" => '```Converted portal with id "' . $portalId . '." New Gym: "' . $portalName['name'] . '". ```' . $submitMapUrl . '/?lat=' . $portalLat['lat'] . '&lon=' . $portalLon['lon'] . '&zoom=18 ', "username" => $loggedUser);
             sendToWebhook($discordSubmitLogChannelUrl, ($data));
         }
     }
@@ -477,6 +477,46 @@ if ( $action === "raid" ) {
             if ( $noDiscordSubmitLogChannel === false ) {
                 $data = array("content" => '```Deleted gym with id "' . $gymId . '" and name: "' . $fortName['name'] . '"```', "username" => $loggedUser);
                 sendToWebhook($discordSubmitLogChannelUrl, ($data));
+            }
+        }
+    }
+} elseif ( $action === "toggle-ex-gym" ) {
+    if ( $noToggleExGyms === true || $noGyms === true ) {
+        http_response_code( 401 );
+        die();
+    }
+    $gymId = ! empty( $_POST['id'] ) ? $_POST['id'] : '';
+    if ( ! empty( $gymId ) ) {
+	$fortName = $db->get( "forts", [ 'name' ], [ 'external_id' => $gymId ] );
+	$fortid = $db->get( "forts", [ 'id' ], [ 'external_id' => $gymId ] );
+	$park = $db->get( "forts", [ 'park' ], [ 'external_id' => $gymId ] );
+        $loggedUser = ! empty( $_SESSION['user']->user ) ? $_SESSION['user']->user : 'NOLOGIN';
+        file_put_contents('debug.txt', print_r($park, true));
+	if ( $fortid ) {
+            if ( empty($park['park'])) {
+                $cols = [
+                    'park'       => 'Park'
+                ];
+                $where    = [
+                    'external_id' => $gymId
+                ];
+                $db->update( "forts", $cols, $where );
+                if ( $noDiscordSubmitLogChannel === false ) {
+                    $data = array("content" => '```Marked gym with id "' . $gymId . '" and name: "' . $fortName['name'] . '" as EX eligible```', "username" => $loggedUser);
+		    sendToWebhook($discordSubmitLogChannelUrl, ($data));
+                }
+            } else {
+                $cols = [
+                    'park'       => null
+                ];
+                $where    = [
+                    'external_id' => $gymId
+                ];
+                $db->update( "forts", $cols, $where );
+                if ( $noDiscordSubmitLogChannel === false ) {
+                    $data = array("content" => '```Marked gym with id "' . $gymId . '" and name: "' . $fortName['name'] . '" as non EX eligible```', "username" => $loggedUser);
+		    sendToWebhook($discordSubmitLogChannelUrl, ($data));
+                }
             }
         }
     }
@@ -606,6 +646,7 @@ if ( $action === "raid" ) {
     }
     $portalId = ! empty( $_POST['portalId'] ) ? $_POST['portalId'] : '';
     $portalName = $db->get( "ingress_portals", [ 'name' ], [ 'external_id' => $portalId ] );
+    $loggedUser = ! empty( $_SESSION['user']->user ) ? $_SESSION['user']->user : 'NOLOGIN';
     if ( ! empty( $portalId ) ) {
         $db->delete( 'ingress_portals', [
             "AND" => [

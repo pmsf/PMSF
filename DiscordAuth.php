@@ -39,7 +39,7 @@ class DiscordAuth
             $serverConfig
         );
 
-        $scope = new Scope(['identify']);
+        $scope = new Scope(['identify', 'guilds']);
         $this->oauthSession->setScope($scope);
     }
 

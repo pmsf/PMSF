@@ -6,6 +6,7 @@
 # User-specific stuff:
 .idea
 .history
+*.log
 
 ## File-based project format:
 *.iws
@@ -32,6 +33,7 @@ fabric.properties
 /node_modules/
 config/*
 !config/example.config.php
+!config/example.access-config.php
 !config/default.php
 cron/*
 !cron/example.PMSF

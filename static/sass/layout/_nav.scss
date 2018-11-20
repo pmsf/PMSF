@@ -312,7 +312,7 @@
   img {
     width: calc(20% - 10px);
     padding: 2px;
-    margin: 2px 5px;
+    margin: -2px -2px;
     box-sizing: border-box;
   }
   .pokemon-icon-sprite{
@@ -349,4 +349,16 @@
     height: 20px;
     font-size: 13px;
   }
+}
+li.place-result {
+    padding: 5px;
+    border: 1px solid #989696;
+    border-top: none;
+    border-radius: 5px;
+    font-size: 13px;
+    cursor: pointer;
+    background-color: #f1efef;
+}
+form#search-places {
+  margin-bottom: 0px;
 }
