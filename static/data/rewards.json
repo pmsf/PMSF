@@ -59,6 +59,10 @@
     "cat": "Pokémon:",
     "name": "Chansey"
   },
+  "123": {
+    "cat": "Pokémon:",
+    "name": "Scyther"
+  },
   "124": {
     "cat": "Pokémon:",
     "name": "Jynx"
@@ -75,9 +79,17 @@
     "cat": "Pokémon:",
     "name": "Magikarp"
   },
+  "132": {
+    "cat": "Pokémon:",
+    "name": "Ditto"
+  },
   "133": {
     "cat": "Pokémon:",
     "name": "Eevee"
+  },
+  "142": {
+    "cat": "Pokémon:",
+    "name": "Aerodactyl"
   },
   "147": {
     "cat": "Pokémon:",
