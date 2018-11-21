@@ -33,7 +33,7 @@
   },
   "119": {
     "cat": "Catch",
-    "name": "Catch 5 Normal=Type Pokémon"
+    "name": "Catch 5 Normal-Type Pokémon"
   },
   "120": {
     "cat": "Catch",
@@ -98,5 +98,17 @@
   "605": {
     "cat": "Miscellaneous",
     "name": "Earn a candy walking with your buddy"
+  },
+  "606": {
+    "cat": "Let's Go!",
+    "name": "Hatch 2 Eggs"
+  },
+  "607": {
+    "cat": "Let's Go!",
+    "name": "Make an Excellent Throw"
+  },
+  "608": {
+    "cat": "Let's Go!",
+    "name": "Evolve 2 Anorinth"
   }
 }
