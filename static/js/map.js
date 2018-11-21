@@ -2412,7 +2412,6 @@ function searchForItem(lat, lon, term, type, field) {
                 var par = field.parent()
                 var sr = par.find('.search-results')
                 sr.html('')
-console.log(data)
                 $.each(data.reward, function (i, element) {
                     var pokemonIdStr = ''
                     if (element.quest_pokemon_id <= 9) {
@@ -2444,6 +2443,8 @@ console.log(data)
                     html += '</div></div>'
                     if (sr.hasClass('pokestop-results') && !noManualQuests) {
                         html += '<div class="right-column"><i class="fa fa-binoculars submit-quests"  onClick="openQuestModal(event);" data-id="' + element.external_id + '"></i></div>'
+                    } else {
+                        html += '<div class="right-column" onClick="centerMapOnCoords(event);"><span style="background:url(' + element.url + ') no-repeat;" class="i-icon" ></span></div>'
                     }
                     html += '</li>'
                     sr.append(html)
