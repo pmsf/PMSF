@@ -57,19 +57,16 @@ class RDM extends Search
 	$rewards = $db->query($query, $params)->fetchAll(\PDO::FETCH_ASSOC);
 
 	$data = array();
-	$i = 0;
 
 	foreach($rewards as $reward){
-            $reward['pokemon_name'] = $prewardsjson[$reward['quest_pokemon_id']]['name'];
+            $reward['pokemon_name'] = !empty($reward['pokemon_name']) ? $prewardsjson[$reward['quest_pokemon_id']]['name'] : null;
 	    $reward['quest_pokemon_id'] = intval($reward['quest_pokemon_id']);
-            $reward['item_name'] = $irewardsjson[$reward['quest_item_id']]['name'];
+            $reward['item_name'] = !empty($reward['item_name']) ? $irewardsjson[$reward['quest_item_id']]['name'] : null;
 	    $reward['quest_item_id'] = intval($reward['quest_item_id']);
             if($defaultUnit === "km"){
-                $reward[$reward]['distance'] = round($data[$reward]['distance'] * 1.60934,2);
+                $reward['distance'] = round($reward['distance'] * 1.60934,2);
 	    }
 	    $data[] = $reward;
-	    unset($pokestops[$i]);
-	    $i++;
 	}
         return $data;
     }
