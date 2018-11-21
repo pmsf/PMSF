@@ -2412,32 +2412,65 @@ function searchForItem(lat, lon, term, type, field) {
                 var par = field.parent()
                 var sr = par.find('.search-results')
                 sr.html('')
-                data.forEach(function (element) {
+                $.each(data.reward, function (i, element) {
                     var pokemonIdStr = ''
-                    if (element.pokemon_id <= 9) {
-                        pokemonIdStr = '00' + element.pokemon_id
-                    } else if (element.pokemon_id <= 99) {
-                        pokemonIdStr = '0' + element.pokemon_id
+                    if (element.quest_pokemon_id <= 9) {
+                        pokemonIdStr = '00' + element.quest_pokemon_id
+                    } else if (element.quest_pokemon_id <= 99) {
+                        pokemonIdStr = '0' + element.quest_pokemon_id
                     } else {
-                        pokemonIdStr = element.pokemon_id
+                        pokemonIdStr = element.quest_pokemon_id
                     }
                     var html = '<li class="search-result ' + type + '" data-lat="' + element.lat + '" data-lon="' + element.lon + '"><div class="left-column" onClick="centerMapOnCoords(event);">'
-                    if (sr.hasClass('nest-results')) {
-                        html += '<span class="i-icon"><img src="' + iconpath + 'pokemon_icon_' + pokemonIdStr + '_00.png" style="height:48px;left:5px;position:absolute;"/></span>'
-                    } else if (sr.hasClass('reward-results')) {
-                        html += '<span style="background:url(' + iconpath + 'pokemon_icon_' + element.quest_pokemon_id + '_00.png) no-repeat;" class="i-icon" ></span>'
-                    } else if (sr.hasClass('gym-results') || ('pokestop-results') || ('portal-results')) {
-                        html += '<span style="background:url(' + element.url + ') no-repeat;" class="i-icon" ></span>'
+                    if (sr.hasClass('reward-results')) {
+                        if (element.quest_pokemon_id !== 0) {
+                            html += '<span style="background:url(' + iconpath + 'pokemon_icon_' + pokemonIdStr + '_00.png) no-repeat;" class="i-icon" ></span>'
+                        }
+                        if (element.quest_item_id !== 0) {
+                            html += '<span style="background:url(' + iconpath + 'rewards/reward_' + element.quest_item_id + '_1.png) no-repeat;" class="i-icon" ></span>'
+                        }
                     }
                     html += '<div class="cont">'
                     if (sr.hasClass('reward-results')) {
-                        html += '<span class="reward" style="font-weight:bold">' + element.reward + '</span><span>&nbsp;-&#32;</span>'
+                        if (element.pokemon_name !== null) {
+                            html += '<span class="reward" style="font-weight:bold">' + element.pokemon_name + '</span><span>&nbsp;-&#32;</span>'
+                        }
+                        if (element.item_name !== null) {
+                            html += '<span class="reward" style="font-weight:bold">' + element.item_name + '</span><span>&nbsp;-&#32;</span>'
+                        }
                     }
                     html += '<span class="name" style="font-weight:bold">' + element.name + '</span>' + '<span class="distance" style="font-weight:bold">&nbsp;-&#32;' + element.distance + defaultUnit + '</span>'
                     html += '</div></div>'
+                    if (sr.hasClass('pokestop-results') && !noManualQuests) {
+                        html += '<div class="right-column"><i class="fa fa-binoculars submit-quests"  onClick="openQuestModal(event);" data-id="' + element.external_id + '"></i></div>'
+                    } else {
+                        html += '<div class="right-column" onClick="centerMapOnCoords(event);"><span style="background:url(' + element.url + ') no-repeat;" class="i-icon" ></span></div>'
+                    }
+                    html += '</li>'
+                    sr.append(html)
+                })
+                $.each(data.forts, function (i, element) {
+                    var html = '<li class="search-result ' + type + '" data-lat="' + element.lat + '" data-lon="' + element.lon + '"><div class="left-column" onClick="centerMapOnCoords(event);">'
+                    if (sr.hasClass('gym-results') || ('pokestop-results') || ('portal-results')) {
+                        html += '<span style="background:url(' + element.url + ') no-repeat;" class="i-icon" ></span>'
+                    }
+                    html += '<div class="cont">' +
+                    '<span class="name" style="font-weight:bold">' + element.name + '</span>' + '<span class="distance" style="font-weight:bold">&nbsp;-&#32;' + element.distance + defaultUnit + '</span>' +
+                    '</div></div>'
                     if (sr.hasClass('gym-results') && manualRaids) {
                         html += '<div class="right-column"><i class="fa fa-binoculars submit-raid"  onClick="openRaidModal(event);" data-id="' + element.external_id + '"></i></div>'
                     }
+                    html += '</li>'
+                    sr.append(html)
+                })
+                $.each(data.pokestops, function (i, element) {
+                    var html = '<li class="search-result ' + type + '" data-lat="' + element.lat + '" data-lon="' + element.lon + '"><div class="left-column" onClick="centerMapOnCoords(event);">'
+                    if (sr.hasClass('gym-results') || ('pokestop-results') || ('portal-results')) {
+                        html += '<span style="background:url(' + element.url + ') no-repeat;" class="i-icon" ></span>'
+                    }
+                    html += '<div class="cont">' +
+                    '<span class="name" style="font-weight:bold">' + element.name + '</span>' + '<span class="distance" style="font-weight:bold">&nbsp;-&#32;' + element.distance + defaultUnit + '</span>' +
+                    '</div></div>'
                     if (sr.hasClass('pokestop-results') && !noManualQuests) {
                         html += '<div class="right-column"><i class="fa fa-binoculars submit-quests"  onClick="openQuestModal(event);" data-id="' + element.external_id + '"></i></div>'
                     }
