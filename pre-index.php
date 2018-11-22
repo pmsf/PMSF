@@ -272,8 +272,15 @@ if ( $blockIframe ) {
         <div id="nav-accordion">
             <?php
             if ( ! $noPokemon || ! $noNests ) {
+                if ( ! $noNests ) {
                 ?>
                 <h3><?php echo i8ln( 'Pokemon &amp; Nests' ) ?></h3>
+                <?php
+                } else {
+                ?>
+                <h3><?php echo i8ln( 'Pokemon' ) ?></h3>
+                <?php
+                } ?>
                 <div>
                 <?php
                 if ( ! $noPokemon ) {
@@ -417,8 +424,15 @@ if ( $blockIframe ) {
             ?>
             <?php
             if ( ! $noPokestops ) {
+                if ( ! $noQuests ) {
                 ?>
-                <h3><?php echo i8ln( 'Pokestops &amp; Quests' ); ?></h3>
+		<h3><?php echo i8ln( 'Pokestops &amp; Quests' ); ?></h3>
+                <?php
+                } else {
+                ?>
+		<h3><?php echo i8ln( 'Pokestops' ); ?></h3>
+                <?php
+                } ?>
 		<div>
                 <?php
                 if ( ! $noPokestops ) {
@@ -462,7 +476,7 @@ if ( $blockIframe ) {
                         </label>
                     </div>
                 </div>';
-		} ?>
+		?>
                     <div id="quests-filter-wrapper" style="display:none">
                         <div id="quests-tabs">
                             <ul>
@@ -523,6 +537,8 @@ if ( $blockIframe ) {
 			    <p><?php echo i8ln( 'Show stardust ' ) ?><span id="dustvalue"></span></p>
                         </div>
                     </div>
+                <?php
+		} ?>
                     </div>
                 </div>
                 <?php
@@ -791,8 +807,13 @@ if ( $blockIframe ) {
             ?>
             <?php
             if ( ! $noSearchLocation || ! $noNests || ! $noStartMe || ! $noStartLast || ! $noFollowMe || ! $noPokestops || ! $noScannedLocations || ! $noSpawnPoints || ! $noRanges || ! $noWeatherOverlay || ! $noSpawnArea ) {
-                echo '<h3>' . i8ln( 'Location &amp; Search' ) . '</h3>
-            <div>'; ?>
+                if ( ! $noSearchLocation ) {
+                    echo '<h3>' . i8ln( 'Location &amp; Search' ) . '</h3>
+                    <div>';
+                } else {
+                    echo '<h3>' . i8ln( 'Location' ) . '</h3>
+                    <div>';
+		} ?>
                 <?php
                 if ( $map != "monocle" && ! $noScannedLocations ) {
                     echo '<div class="form-control switch-container">
@@ -1438,7 +1459,7 @@ if ( $blockIframe ) {
             <div class="search-modal" style="display:none;">
                 <div id="search-tabs">
                     <ul>
-                        <?php if ( ! $noSearchManualQuests ) { ?>
+                        <?php if ( ! $noQuests && ! $noSearchManualQuests ) { ?>
                             <li><a href="#tab-rewards"><img src="static/images/reward.png"/></a></li>
                         <?php }
                         if ( ! $noSearchNests ) { ?>
@@ -1454,7 +1475,7 @@ if ( $blockIframe ) {
                             <li><a href="#tab-portals"><img src="static/images/portal.png"/></a></li>
 			<?php } ?>
                     </ul>
-                    <?php if ( ! $noSearchManualQuests ) { ?>
+                    <?php if ( ! $noQuests && ! $noSearchManualQuests ) { ?>
                         <div id="tab-rewards">
                             <input type="search" id="reward-search" name="reward-search"
                                    placeholder="<?php echo i8ln( 'Enter Reward Name' ); ?>"
@@ -1671,6 +1692,7 @@ if ( $blockIframe ) {
     var enablePokemon = <?php echo $noPokemon ? 'false' : $enablePokemon ?>;
     var enablePokestops = <?php echo $noPokestops ? 'false' : $enablePokestops ?>;
     var enableLured = <?php echo $noLures ? 'false' : $enableLured ?>;
+    var noQuests = <?php echo $noQuests === true ? 'true' : 'false' ?>;
     var enableQuests = <?php echo $noQuests ? 'false' : $enableQuests ?>;
     var hideQuestsPokemon = <?php echo $hideQuestsPokemon ? '[]' : $hideQuestsPokemon ?>;
     var hideQuestsItem = <?php echo $hideQuestsItem ? '[]' : $hideQuestsItem ?>;
