@@ -3437,17 +3437,16 @@ function processPokemons(i, item) {
             customizePokemonMarker(item.marker, item)
             mapData.pokemons[item['encounter_id']] = item
         }
-
         if (encounterId && encounterId === item['encounter_id']) {
             if (!item.marker.infoWindowIsOpen) {
-                item.marker.infoWindow.open(map, item.marker)
+                item.marker.openPopup()
                 clearSelection()
                 updateLabelDiffTime()
                 item.marker.persist = true
                 item.marker.infoWindowIsOpen = true
             } else {
                 item.marker.persist = null
-                item.marker.infoWindow.close()
+                item.marker.closePopup()
                 item.marker.infoWindowIsOpen = false
             }
         }
