@@ -158,6 +158,7 @@
     "noWeatherShadow": true,
     "hideQuestsPokemon": true,
     "hideQuestsItem": true,
+    "noQuests": true,
     "enableQuests": true
   }
 }

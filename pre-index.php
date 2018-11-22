@@ -462,7 +462,7 @@ if ( $blockIframe ) {
                         </label>
                     </div>
                 </div>';
-		} ?>
+		?>
                     <div id="quests-filter-wrapper" style="display:none">
                         <div id="quests-tabs">
                             <ul>
@@ -523,6 +523,8 @@ if ( $blockIframe ) {
 			    <p><?php echo i8ln( 'Show stardust ' ) ?><span id="dustvalue"></span></p>
                         </div>
                     </div>
+                <?php
+		} ?>
                     </div>
                 </div>
                 <?php
@@ -1438,7 +1440,7 @@ if ( $blockIframe ) {
             <div class="search-modal" style="display:none;">
                 <div id="search-tabs">
                     <ul>
-                        <?php if ( ! $noSearchManualQuests ) { ?>
+                        <?php if ( ! $noQuests && ! $noSearchManualQuests ) { ?>
                             <li><a href="#tab-rewards"><img src="static/images/reward.png"/></a></li>
                         <?php }
                         if ( ! $noSearchNests ) { ?>
@@ -1454,7 +1456,7 @@ if ( $blockIframe ) {
                             <li><a href="#tab-portals"><img src="static/images/portal.png"/></a></li>
 			<?php } ?>
                     </ul>
-                    <?php if ( ! $noSearchManualQuests ) { ?>
+                    <?php if ( ! $noQuests && ! $noSearchManualQuests ) { ?>
                         <div id="tab-rewards">
                             <input type="search" id="reward-search" name="reward-search"
                                    placeholder="<?php echo i8ln( 'Enter Reward Name' ); ?>"
@@ -1671,6 +1673,7 @@ if ( $blockIframe ) {
     var enablePokemon = <?php echo $noPokemon ? 'false' : $enablePokemon ?>;
     var enablePokestops = <?php echo $noPokestops ? 'false' : $enablePokestops ?>;
     var enableLured = <?php echo $noLures ? 'false' : $enableLured ?>;
+    var noQuests = <?php echo $noQuests === true ? 'true' : 'false' ?>;
     var enableQuests = <?php echo $noQuests ? 'false' : $enableQuests ?>;
     var hideQuestsPokemon = <?php echo $hideQuestsPokemon ? '[]' : $hideQuestsPokemon ?>;
     var hideQuestsItem = <?php echo $hideQuestsItem ? '[]' : $hideQuestsItem ?>;
