@@ -1091,7 +1091,7 @@ function getQuest(item) {
             i8ln(throwType[questinfo['throw_type_id']]) + ' ' +
             i8ln('throws in a row') +
             '</div>'
-        } else if (item['quest_condition_type'] !== 0 ) {
+        } else if (item['quest_condition_type'] !== 0) {
             console.log('Undefined quest type ' + item['quest_condition_type'])
             str += '<div>Undefined condition</div>'
         }
@@ -1125,7 +1125,7 @@ function pokestopLabel(item) {
         '<center>' + '<div class="pokestop-label">' +
         '<b>' + item['pokestop_name'] + '</b>' +
         '</div>'
-    if (item['quest_type'] !== null) {
+    if (!noQuests && item['quest_type'] !== null) {
         str +=
             '<div><center>' +
             '<img height="70px" style="padding: 5px;" src="static/forts/Pstop-quest-large.png">' +
@@ -1146,7 +1146,7 @@ function pokestopLabel(item) {
             '</center>' +
             '</div>'
     }
-    if (item['quest_type'] !== null) {
+    if (!noQuests && item['quest_type'] !== null) {
         str += getQuest(item)
     }
     if (!noDeletePokestops) {
@@ -1672,7 +1672,7 @@ function getPokestopMarkerIcon(item) {
     var reward = JSON.parse(item['quest_rewards'])
     var stopMarker = ''
     var html = ''
-    if (reward !== null) {
+    if (!noQuests && reward !== null) {
         var rewardinfo = reward[0]['info']
         if (reward[0]['type'] === 7) {
             var pokemonIdStr = ''
@@ -3437,17 +3437,16 @@ function processPokemons(i, item) {
             customizePokemonMarker(item.marker, item)
             mapData.pokemons[item['encounter_id']] = item
         }
-
         if (encounterId && encounterId === item['encounter_id']) {
             if (!item.marker.infoWindowIsOpen) {
-                item.marker.infoWindow.open(map, item.marker)
+                item.marker.openPopup()
                 clearSelection()
                 updateLabelDiffTime()
                 item.marker.persist = true
                 item.marker.infoWindowIsOpen = true
             } else {
                 item.marker.persist = null
-                item.marker.infoWindow.close()
+                item.marker.closePopup()
                 item.marker.infoWindowIsOpen = false
             }
         }
@@ -5715,7 +5714,7 @@ $(function () {
             $('#dustvalue').text('Off')
             setTimeout(function () { updateMap() }, 2000)
         } else {
-            $('#dustvalue').text(i8ln( 'above' ) + ' ' + dustamount)
+            $('#dustvalue').text(i8ln('above') + ' ' + dustamount)
             reloaddustamount = true
             setTimeout(function () { updateMap() }, 2000)
         }
