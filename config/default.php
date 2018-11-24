@@ -20,6 +20,8 @@ $libs[] = "RocketMap_Sloppy.php";
 $libs[] = "RDM.php";
 $libs[] = "search/Search.php";
 $libs[] = "search/Search.rdm.php";
+$libs[] = "submit/Submit.php";
+$libs[] = "submit/Submit.rdm.php";
 
 // Include libraries
 foreach ($libs as $file) {
@@ -271,6 +273,7 @@ $sendRaidData = false;                                              // Send Raid
 //-----------------------------------------------------
 // Manual Submissions
 //-----------------------------------------------------
+$noSubmit = true;
 $hideIfManual = false;
 $noManualRaids = true;
 $noManualPokemon = true;

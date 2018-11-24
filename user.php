@@ -90,7 +90,7 @@ include('config/config.php');
             }
         }
         if (isset($_POST['submitLoginBtn'])) {
-            $info = $db->query(
+            $info = $manualdb->query(
                 "SELECT id, user, password, expire_timestamp, temp_password FROM users WHERE user = :user AND login_system = 'native'", [
                     ":user" => $_POST['email']
                 ]
@@ -99,7 +99,7 @@ include('config/config.php');
             if (password_verify($_POST['password'], $info['password']) === true || password_verify($_POST['password'], $info['temp_password']) === true) {
                 setcookie("LoginCookie", session_id(), time()+60*60*24*7);
 
-                $db->update("users", [
+                $manualdb->update("users", [
                     "Session_ID" => session_id()
                 ], [
                     "user" => $_POST['email'],
@@ -108,7 +108,7 @@ include('config/config.php');
 
                 if (password_verify($_POST['password'], $info['password']) === true) {
                     if (!empty($info['temp_password'])) {
-                        $db->update("users", [
+                        $manualdb->update("users", [
                             "temp_password" => null
                         ], [
                             "user" => $_POST['email'],
@@ -121,7 +121,7 @@ include('config/config.php');
             }
         }
         if (isset($_POST['submitCreateUserOrResetPasswordBtn'])) {
-            $count = $db->count("users", [
+            $count = $manualdb->count("users", [
                 "user" => $_POST['email'],
                 "login_system" => 'native'
             ]);
@@ -183,7 +183,7 @@ include('config/config.php');
                         $login_system = 'native';
                     }
 
-                    $info = $db->query(
+                    $info = $manualdb->query(
                         "SELECT user, expire_timestamp FROM users WHERE user = :user AND login_system = :login_system", [
                             ":user" => $_POST['email'],
                             ":login_system" => $login_system
@@ -228,7 +228,7 @@ include('config/config.php');
         }
         if (isset($_POST['submitKey'])) {
             $Err = '';
-            $info = $db->query(
+            $info = $manualdb->query(
                 "SELECT selly_id, activated, quantity FROM payments WHERE selly_id = :selly_id", [
                     ":selly_id" => $_POST['key']
                 ]
@@ -297,7 +297,7 @@ include('config/config.php');
                             <select name="email" class='select' required>
                                 <option value='-1'><?php echo i8ln('Select a user...'); ?></option>
                                 <?php
-                                $users = $db->select("users", [
+                                $users = $manualdb->select("users", [
                                     "user"
                                 ], [
                                     "ORDER" => [
@@ -390,7 +390,7 @@ include('config/config.php');
 
                     $_SESSION['user']->expire_timestamp = $newExpireTimestamp;
 
-                    $db->update("payments", [
+                    $manualdb->update("payments", [
                         "activated" => 1
                     ], [
                         "selly_id" => $info['selly_id']
