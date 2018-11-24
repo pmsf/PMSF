@@ -437,7 +437,7 @@ $manualdb = new Medoo([// required
     'server' => '127.0.0.1',
     'username' => 'database_user',
     'password' => 'database_password',
-    'charset' => 'utf8',
+    'charset' => 'utf8mb4',
 
     // [optional]
     //'port' => 5432,                                               // Comment out if not needed, just add // in front!
