@@ -253,7 +253,6 @@ class RDM extends Submit
 					'last_modified_timestamp'	=> time(),
 					'enabled'      			=> 0,
 					'name'        			=> $pokestopName,
-					'first_seen_timestamp'		=> time(),
 					'updated'     			=> time()
 				];
 				$db->insert( "pokestop", $cols );
