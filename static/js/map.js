@@ -1125,7 +1125,7 @@ function pokestopLabel(item) {
         '<center>' + '<div class="pokestop-label">' +
         '<b>' + item['pokestop_name'] + '</b>' +
         '</div>'
-    if (!noQuests && item['quest_type'] !== null) {
+    if (!noQuests && item['quest_type'] !== 0) {
         str +=
             '<div><center>' +
             '<img height="70px" style="padding: 5px;" src="static/forts/Pstop-quest-large.png">' +
@@ -1146,7 +1146,7 @@ function pokestopLabel(item) {
             '</center>' +
             '</div>'
     }
-    if (!noQuests && item['quest_type'] !== null) {
+    if (!noQuests && item['quest_type'] !== 0) {
         str += getQuest(item)
     }
     if (!noDeletePokestops) {
@@ -2532,7 +2532,7 @@ function manualPokestopData(event) { // eslint-disable-line no-unused-vars
     var form = $(event.target).parent().parent()
     var pokestopName = form.find('[name="pokestop-name"]').val()
     var lat = $('.submit-modal.ui-dialog-content .submitLatitude').val()
-    var lng = $('.submit-modal.ui-dialog-content .submitLongitude').val()
+    var lon = $('.submit-modal.ui-dialog-content .submitLongitude').val()
     if (pokestopName && pokestopName !== '') {
         if (confirm(i8ln('I confirm this is an accurate reporting of a new pokestop'))) {
             return $.ajax({
@@ -2543,9 +2543,9 @@ function manualPokestopData(event) { // eslint-disable-line no-unused-vars
                 cache: false,
                 data: {
                     'action': 'pokestop',
-                    'pokestop': pokestopName,
+                    'pokestopName': pokestopName,
                     'lat': lat,
-                    'lng': lng
+                    'lon': lon
                 },
                 error: function error() {
                     // Display error toast
@@ -2566,7 +2566,7 @@ function manualGymData(event) { // eslint-disable-line no-unused-vars
     var form = $(event.target).parent().parent()
     var gymName = form.find('[name="gym-name"]').val()
     var lat = $('.submit-modal.ui-dialog-content .submitLatitude').val()
-    var lng = $('.submit-modal.ui-dialog-content .submitLongitude').val()
+    var lon = $('.submit-modal.ui-dialog-content .submitLongitude').val()
     if (gymName && gymName !== '') {
         if (confirm(i8ln('I confirm this is an accurate reporting of a new gym'))) {
             return $.ajax({
@@ -2579,7 +2579,7 @@ function manualGymData(event) { // eslint-disable-line no-unused-vars
                     'action': 'gym',
                     'gymName': gymName,
                     'lat': lat,
-                    'lng': lng
+                    'lon': lon
                 },
                 error: function error() {
                     // Display error toast
@@ -2597,10 +2597,10 @@ function manualGymData(event) { // eslint-disable-line no-unused-vars
 }
 function manualPokemonData(event) { // eslint-disable-line no-unused-vars
     var form = $(event.target).parent().parent().parent()
-    var id = form.find('.pokemonID').val()
+    var pokemonId = form.find('.pokemonID').val()
     var lat = $('.submit-modal.ui-dialog-content .submitLatitude').val()
-    var lng = $('.submit-modal.ui-dialog-content .submitLongitude').val()
-    if (id && id !== '') {
+    var lon = $('.submit-modal.ui-dialog-content .submitLongitude').val()
+    if (pokemonId && pokemonId !== '') {
         if (confirm(i8ln('I confirm this is an accurate reporting of a new pokemon'))) {
             return $.ajax({
                 url: 'submit',
@@ -2610,9 +2610,9 @@ function manualPokemonData(event) { // eslint-disable-line no-unused-vars
                 cache: false,
                 data: {
                     'action': 'pokemon',
-                    'id': id,
+                    'pokemonId': pokemonId,
                     'lat': lat,
-                    'lng': lng
+                    'lon': lon
                 },
                 error: function error() {
                     // Display error toast
@@ -2641,7 +2641,7 @@ function deleteGym(event) { // eslint-disable-line no-unused-vars
                 cache: false,
                 data: {
                     'action': 'delete-gym',
-                    'id': gymId
+                    'gymId': gymId
                 },
                 error: function error() {
                     // Display error toast
@@ -2670,7 +2670,7 @@ function toggleExGym(event) { // eslint-disable-line no-unused-vars
                 cache: false,
                 data: {
                     'action': 'toggle-ex-gym',
-                    'id': gymId
+                    'gymId': gymId
                 },
                 error: function error() {
                     // Display error toast
@@ -2699,7 +2699,7 @@ function deletePokestop(event) { // eslint-disable-line no-unused-vars
                 cache: false,
                 data: {
                     'action': 'delete-pokestop',
-                    'id': pokestopId
+                    'pokestopId': pokestopId
                 },
                 error: function error() {
                     // Display error toast
@@ -2728,8 +2728,8 @@ function renamePokestopData(event) { // eslint-disable-line no-unused-vars
                 cache: false,
                 data: {
                     'action': 'renamepokestop',
-                    'pokestopid': pokestopId,
-                    'pokestop': pokestopName
+                    'pokestopId': pokestopId,
+                    'pokestopName': pokestopName
                 },
                 error: function error() {
                     // Display error toast
@@ -2760,7 +2760,7 @@ function convertPokestopData(event) { // eslint-disable-line no-unused-vars
                 cache: false,
                 data: {
                     'action': 'convertpokestop',
-                    'pokestopid': pokestopId
+                    'pokestopId': pokestopId
                 },
                 error: function error() {
                     // Display error toast
@@ -2792,7 +2792,7 @@ function convertPortalToPokestopData(event) { // eslint-disable-line no-unused-v
                 cache: false,
                 data: {
                     'action': 'convertportalpokestop',
-                    'portalid': portalId
+                    'portalId': portalId
                 },
                 error: function error() {
                     // Display error toast
@@ -2824,7 +2824,7 @@ function convertPortalToGymData(event) { // eslint-disable-line no-unused-vars
                 cache: false,
                 data: {
                     'action': 'convertportalgym',
-                    'portalid': portalId
+                    'portalId': portalId
                 },
                 error: function error() {
                     // Display error toast
@@ -2856,7 +2856,7 @@ function markPortalChecked(event) { // eslint-disable-line no-unused-vars
                 cache: false,
                 data: {
                     'action': 'markportal',
-                    'portalid': portalId
+                    'portalId': portalId
                 },
                 error: function error() {
                     // Display error toast
@@ -2903,9 +2903,9 @@ function deleteNest(event) { // eslint-disable-line no-unused-vars
 
 function submitNewNest(event) { // eslint-disable-line no-unused-vars
     var cont = $(event.target).parent().parent()
-    var id = cont.find('.pokemonID').val()
+    var pokemonId = cont.find('.pokemonID').val()
     var lat = $('.submit-modal.ui-dialog-content .submitLatitude').val()
-    var lng = $('.submit-modal.ui-dialog-content .submitLongitude').val()
+    var lon = $('.submit-modal.ui-dialog-content .submitLongitude').val()
     if (lat && lat !== '' && lng && lng !== '') {
         if (confirm(i8ln('I confirm this is an new nest'))) {
             return $.ajax({
@@ -2917,8 +2917,8 @@ function submitNewNest(event) { // eslint-disable-line no-unused-vars
                 data: {
                     'action': 'new-nest',
                     'lat': lat,
-                    'lng': lng,
-                    'id': id
+                    'lon': lon,
+                    'pokemonId': pokemonId
                 },
                 error: function error() {
                     // Display error toast
@@ -3063,7 +3063,7 @@ function submitNewCommunity(event) { // eslint-disable-line no-unused-vars
                 data: {
                     'action': 'community-add',
                     'lat': lat,
-                    'lng': lon,
+                    'lon': lon,
                     'communityName': communityName,
                     'communityDescription': communityDescription,
                     'communityInvite': communityInvite
@@ -3126,10 +3126,10 @@ function editCommunityData(event) { // eslint-disable-line no-unused-vars
                 cache: false,
                 data: {
                     'action': 'editcommunity',
-                    'communityid': communityId,
-                    'communityname': communityName,
-                    'communitydescription': communityDescription,
-                    'communityinvite': communityInvite
+                    'communityId': communityId,
+                    'communityName': communityName,
+                    'communityDescription': communityDescription,
+                    'communityInvite': communityInvite
                 },
                 error: function error() {
                     // Display error toast

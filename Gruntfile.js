@@ -85,8 +85,6 @@ module.exports = function (grunt) {
                     'static/dist/data/pokemon.min.json': 'static/data/pokemon.json',
                     'static/dist/data/moves.min.json': 'static/data/moves.json',
                     'static/dist/data/mapstyle.min.json': 'static/data/mapstyle.json',
-                    'static/dist/data/quests.min.json': 'static/data/quests.json',
-                    'static/dist/data/rewards.min.json': 'static/data/rewards.json',
                     'static/dist/data/questtype.min.json': 'static/data/questtype.json',
                     'static/dist/data/rewardtype.min.json': 'static/data/rewardtype.json',
                     'static/dist/data/conditiontype.min.json': 'static/data/conditiontype.json',
