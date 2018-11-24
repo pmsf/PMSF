@@ -660,7 +660,7 @@ class RDM extends Scanner
 
     public function query_nests($conds, $params)
     {
-        global $db;
+        global $manualdb;
 
         $query = "SELECT nest_id,
         lat,
@@ -671,7 +671,7 @@ class RDM extends Scanner
         WHERE :conditions";
 
         $query = str_replace(":conditions", join(" AND ", $conds), $query);
-        $nests = $db->query($query, $params)->fetchAll(\PDO::FETCH_ASSOC);
+        $nests = $manualdb->query($query, $params)->fetchAll(\PDO::FETCH_ASSOC);
 
         $data = array();
         $i = 0;
@@ -726,7 +726,7 @@ class RDM extends Scanner
 
     public function query_communities($conds, $params)
     {
-        global $db;
+        global $manualdb;
 
         $query = "SELECT community_id,
         title,
@@ -746,7 +746,7 @@ class RDM extends Scanner
         WHERE :conditions";
 
         $query = str_replace(":conditions", join(" AND ", $conds), $query);
-        $communities = $db->query($query, $params)->fetchAll(\PDO::FETCH_ASSOC);
+        $communities = $manualdb->query($query, $params)->fetchAll(\PDO::FETCH_ASSOC);
 
         $data = array();
         $i = 0;
@@ -796,7 +796,7 @@ class RDM extends Scanner
 
     public function query_portals($conds, $params)
     {
-        global $db;
+        global $manualdb;
 
         $query = "SELECT external_id,
         lat,
@@ -807,7 +807,7 @@ class RDM extends Scanner
         WHERE :conditions";
 
         $query = str_replace(":conditions", join(" AND ", $conds), $query);
-        $portals = $db->query($query, $params)->fetchAll(\PDO::FETCH_ASSOC);
+        $portals = $manualdb->query($query, $params)->fetchAll(\PDO::FETCH_ASSOC);
 
         $data = array();
         $i = 0;

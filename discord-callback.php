@@ -40,13 +40,13 @@ if ($noDiscordLogin === false) {
                 header("Location: .?login=false");
                 die();
             }
-            $count = $db->count("users", [
+            $count = $manualdb->count("users", [
                 "id" => $user->{'id'},
                 "login_system" => 'discord'
             ]);
 
             if ($count === 0) {
-                $db->insert("users", [
+                $manualdb->insert("users", [
                     "id" => $user->{'id'},
                     "user" => $user->{'username'} . "#" . $user->{'discriminator'},
                     "expire_timestamp" => time()+$sessionLifetime,
@@ -56,7 +56,7 @@ if ($noDiscordLogin === false) {
 
             setcookie("LoginCookie", session_id(), time()+$sessionLifetime);
 
-            $db->update("users", [
+            $manualdb->update("users", [
                 "expire_timestamp" => time()+$sessionLifetime,
                 "session_id" => session_id(),
                 "user" => $user->{'username'} . "#" . $user->{'discriminator'}

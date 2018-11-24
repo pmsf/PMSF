@@ -267,6 +267,7 @@ $sendRaidData = false;                                              // Send Raid
 //-----------------------------------------------------
 // Manual Submissions
 //-----------------------------------------------------
+$noSubmit = true;
 $hideIfManual = false;
 $noManualRaids = true;						   						// Enable/Disable ManualRaids permanently ( Comment this line if you want to use the block below )
 $noDiscordSubmitLogChannel = true;                                  // Send webhooks to discord channel upon submission
@@ -429,5 +430,19 @@ $db = new Medoo([// required
     //'port' => 5432,                                               // Comment out if not needed, just add // in front!
     //'socket' => /path/to/socket/,
 ]);
+
+$manualdb = new Medoo([// required
+    'database_type' => 'mysql',                                    
+    'database_name' => 'Monocle',
+    'server' => '127.0.0.1',
+    'username' => 'database_user',
+    'password' => 'database_password',
+    'charset' => 'utf8',
+
+    // [optional]
+    //'port' => 5432,                                               // Comment out if not needed, just add // in front!
+    //'socket' => /path/to/socket/,
+]);
+
 if(file_exists('config/access-config.php'))
     include 'config/access-config.php';
