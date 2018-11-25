@@ -869,7 +869,7 @@ if ( $blockIframe ) {
                 </div>';
                 } ?>
                 <?php
-                if ( ! $noScannerPolygon ) {
+                if ( ! $noScanPolygon ) {
                     echo '<div class="form-control switch-container">
                     <h3>' . i8ln( 'Scan Areas' ) . '</h3>
                     <div class="onoffswitch">
