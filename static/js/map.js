@@ -167,6 +167,7 @@ var S2
 var exLayerGroup = new L.LayerGroup()
 var gymLayerGroup = new L.LayerGroup()
 var stopLayerGroup = new L.LayerGroup()
+var scanAreaGroup = new L.LayerGroup()
 /*
  text place holders:
  <pkm> - pokemon name
@@ -273,7 +274,7 @@ function initMap() { // eslint-disable-line no-unused-vars
         minZoom: minZoom,
         maxZoom: maxZoom,
         zoomControl: false,
-        layers: [weatherLayerGroup, exLayerGroup, gymLayerGroup, stopLayerGroup]
+        layers: [weatherLayerGroup, exLayerGroup, gymLayerGroup, stopLayerGroup, scanAreaGroup]
     })
 
     setTileLayer(Store.get('map_style'))
@@ -341,6 +342,7 @@ function initMap() { // eslint-disable-line no-unused-vars
 
     updateWeatherOverlay()
     updateS2Overlay()
+    buildScanPolygons()
 
     map.on('moveend', function () {
         updateS2Overlay()
@@ -470,6 +472,21 @@ function showS2Cells(level, style) {
     } while (steps < count)
 }
 
+function buildScanPolygons() {
+    if (!Store.get(['showScanPolygon'])) {
+        return false
+    }
+
+    $.getJSON(geoJSONfile, function (data) {
+        var geoPolys = L.geoJson(data, {
+            onEachFeature: function (features, featureLayer) {
+                featureLayer.bindPopup(features.properties.name)
+            }
+        })
+        scanAreaGroup.addLayer(geoPolys)
+    })
+}
+
 function initSidebar() {
     $('#gyms-switch').prop('checked', Store.get('showGyms'))
     $('#nests-switch').prop('checked', Store.get('showNests'))
@@ -517,6 +534,7 @@ function initSidebar() {
     $('#spawnpoints-switch').prop('checked', Store.get('showSpawnpoints'))
     $('#direction-provider').val(Store.get('directionProvider'))
     $('#ranges-switch').prop('checked', Store.get('showRanges'))
+    $('#scan-area-switch').prop('checked', Store.get('showScanPolygon'))
     $('#sound-switch').prop('checked', Store.get('playSound'))
     $('#cries-switch').prop('checked', Store.get('playCries'))
     $('#cries-switch-wrapper').toggle(Store.get('playSound'))
@@ -2906,7 +2924,7 @@ function submitNewNest(event) { // eslint-disable-line no-unused-vars
     var pokemonId = cont.find('.pokemonID').val()
     var lat = $('.submit-modal.ui-dialog-content .submitLatitude').val()
     var lon = $('.submit-modal.ui-dialog-content .submitLongitude').val()
-    if (lat && lat !== '' && lng && lng !== '') {
+    if (lat && lat !== '' && lon && lon !== '') {
         if (confirm(i8ln('I confirm this is an new nest'))) {
             return $.ajax({
                 url: 'submit',
@@ -5656,6 +5674,14 @@ $(function () {
     })
     $('#ranges-switch').change(buildSwitchChangeListener(mapData, ['gyms', 'pokemons', 'pokestops'], 'showRanges'))
 
+    $('#scan-area-switch').change(function () {
+        Store.set('showScanPolygon', this.checked)
+        if (this.checked) {
+            buildScanPolygons()
+        } else {
+            scanAreaGroup.clearLayers()
+        }
+    })
     $('#pokestops-switch').change(function () {
         var options = {
             'duration': 500

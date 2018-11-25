@@ -1065,6 +1065,11 @@ var StoreOptions = {
             default: enableRanges,
             type: StoreTypes.Boolean
         },
+    'showScanPolygon':
+        {
+            default: enableScanPolygon,
+            type: StoreTypes.Boolean
+        },
     'playSound':
         {
             default: notifySound,

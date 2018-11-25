@@ -159,6 +159,8 @@
     "hideQuestsPokemon": true,
     "hideQuestsItem": true,
     "noQuests": true,
-    "enableQuests": true
+    "enableQuests": true,
+    "enableScanPolygon": true,
+    "geoJSONfile": true
   }
 }
