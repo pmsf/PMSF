@@ -869,6 +869,19 @@ if ( $blockIframe ) {
                 </div>';
                 } ?>
                 <?php
+                if ( ! $noScannerPolygon ) {
+                    echo '<div class="form-control switch-container">
+                    <h3>' . i8ln( 'Scan Areas' ) . '</h3>
+                    <div class="onoffswitch">
+                        <input id="scan-area-switch" type="checkbox" name="scan-area-switch" class="onoffswitch-checkbox">
+                        <label class="onoffswitch-label" for="scan-area-switch">
+                            <span class="switch-label" data-on="On" data-off="Off"></span>
+                            <span class="switch-handle"></span>
+                        </label>
+                    </div>
+                </div>';
+                } ?>
+                <?php
                 if ( ! $noSearchLocation ) {
                     echo '<div class="form-control switch-container" style="display:{{is_fixed}}">
                 <label for="next-location">
@@ -1701,6 +1714,8 @@ if ( $blockIframe ) {
     var enableScannedLocations = <?php echo $map != "monocle" && ! $noScannedLocations ? $enableScannedLocations : 'false' ?>;
     var enableSpawnpoints = <?php echo $noSpawnPoints ? 'false' : $enableSpawnPoints ?>;
     var enableRanges = <?php echo $noRanges ? 'false' : $enableRanges ?>;
+    var enableScanPolygon = <?php echo $noScanPolygon ? 'false' : $enableScanPolygon ?>;
+    var geoJSONfile = '<?php echo $noScanPolygon ? '' : $geoJSONfile ?>';
     var notifySound = <?php echo $noNotifySound ? 'false' : $notifySound ?>;
     var criesSound = <?php echo $noCriesSound ? 'false' : $criesSound ?>;
     var enableStartMe = <?php echo $noStartMe ? 'false' : $enableStartMe ?>;

@@ -190,6 +190,9 @@ $enableSpawnPoints = 'false';                                       // true/fals
 $noRanges = false;                                                  // true/false
 $enableRanges = 'false';                                            // true/false
 
+$noScannerPolygon = true;
+$enableScanPolygon = 'false';
+$geoJSONfile = 'custom/scannerarea.json';			    // path to geoJSON file create your own on http://geojson.io/ adjust filename
 /* Location & Search Settings */
 
 $noSearchLocation = false;                                          // true/false
