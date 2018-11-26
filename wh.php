@@ -15,7 +15,7 @@ if (($noNativeLogin === false || $noDiscordLogin === false) && !empty($id) && !e
     $signature = hash_hmac('sha512', file_get_contents('php://input'), $sellyWebhookSecret);
 
     if (hash_equals($signature, $signatureFromHeader['X-Selly-Signature'])) {
-        $db->insert("payments", [
+        $manualdb->insert("payments", [
             "selly_id" => $id,
             "product_id" => $product_id,
             "email" => $email,
