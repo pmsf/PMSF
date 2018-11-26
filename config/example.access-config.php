@@ -27,7 +27,7 @@ $ownerLevel = 4;
 
 
 if ($noNativeLogin === true && $noDiscordLogin === true ||  (($noNativeLogin === false || $noDiscordLogin === false) && !empty($_SESSION['user']->expire_timestamp) && $_SESSION['user']->expire_timestamp > time()))  {
-    $userAccessLevel = $db->get( "users", [ 'access_level' ], [ 'expire_timestamp' => $_SESSION['user']->expire_timestamp ] );
+    $userAccessLevel = $manualdb->get( "users", [ 'access_level' ], [ 'expire_timestamp' => $_SESSION['user']->expire_timestamp ] );
     if ($userAccessLevel['access_level'] == $userLevel) {
 // Editting variables
         $noManualGyms = true;                                          // true/false
