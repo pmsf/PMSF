@@ -308,7 +308,7 @@ $enableLevel14Cells = 'false';
 $enableLevel17Cells = 'false';
 $markPortalsAsNew = 86400;                                         // Time in seconds to mark new imported portals as new ( 86400 for 1 day )
 
-$pokemonReportTime = true;
+$pokemonReportTime = false;
 $pokemonToExclude = [];
 
 $noDeleteGyms = false;

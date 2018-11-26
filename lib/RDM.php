@@ -11,7 +11,7 @@ class RDM extends Scanner
         $params = array();
         $float = $db->info()['driver'] == 'pgsql' ? "::float" : "";
 
-        $select = "pokemon_id, expire_timestamp AS disappear_time, id AS encounter_id, lat AS latitude, lon AS longitude, gender, form, weight, weather AS weather_boosted_condition";
+        $select = "pokemon_id, expire_timestamp AS disappear_time, id AS encounter_id, spawn_id, lat AS latitude, lon AS longitude, gender, form, weight, weather AS weather_boosted_condition";
         global $noHighLevelData;
         if (!$noHighLevelData) {
             $select .= ", atk_iv AS individual_attack, def_iv AS individual_defense, sta_iv AS individual_stamina, move_1, move_2, cp, level";
@@ -84,7 +84,7 @@ class RDM extends Scanner
         $params = array();
         $float = $db->info()['driver'] == 'pgsql' ? "::float" : "";
 
-        $select = "pokemon_id, expire_timestamp AS disappear_time, id AS encounter_id, lat AS latitude, lon AS longitude, gender, form, weight, weather AS weather_boosted_condition";
+        $select = "pokemon_id, expire_timestamp AS disappear_time, id AS encounter_id, spawn_id, lat AS latitude, lon AS longitude, gender, form, weight, weather AS weather_boosted_condition";
 
         global $noHighLevelData;
         if (!$noHighLevelData) {
@@ -158,17 +158,23 @@ class RDM extends Scanner
         $lasti = 0;
         
         foreach ($pokemons as $pokemon) {
-            $pokemon["latitude"] = floatval($pokemon["latitude"]);
-            $pokemon["longitude"] = floatval($pokemon["longitude"]);
-            $lastlat = floatval($pokemon["latitude"]);
-            $lastlon = floatval($pokemon["longitude"]);
-            if (abs($pokemon["latitude"] - $lastlat) < 0.0001 && abs($pokemon["longitude"] - $lastlon) < 0.0001){
-                $lasti = $lasti + 1;
+            // Jitter pokemon when they have no spawn_id
+            if ( empty($pokemon['spawn_id'])) {
+                $pokemon["latitude"] = floatval($pokemon["latitude"]);
+                $pokemon["longitude"] = floatval($pokemon["longitude"]);
+                $lastlat = floatval($pokemon["latitude"]);
+                $lastlon = floatval($pokemon["longitude"]);
+                if (abs($pokemon["latitude"] - $lastlat) < 0.0001 && abs($pokemon["longitude"] - $lastlon) < 0.0001){
+                    $lasti = $lasti + 1;
+                } else {
+                    $lasti = 0;
+                }
+                $pokemon["latitude"] = $pokemon["latitude"] + 0.0003*cos(deg2rad($lasti*45));
+		$pokemon["longitude"] = $pokemon["longitude"] + 0.0003*sin(deg2rad($lasti*45));
             } else {
-                $lasti = 0;
+                $pokemon["latitude"] = floatval($pokemon["latitude"]);
+		$pokemon["longitude"] = floatval($pokemon["longitude"]);
             }
-            $pokemon["latitude"] = $pokemon["latitude"] + 0.0003*cos(deg2rad($lasti*45));
-            $pokemon["longitude"] = $pokemon["longitude"] + 0.0003*sin(deg2rad($lasti*45));
             $pokemon["disappear_time"] = $pokemon["disappear_time"] * 1000;
 
             $pokemon["weight"] = isset($pokemon["weight"]) ? floatval($pokemon["weight"]) : null;
