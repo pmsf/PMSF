@@ -234,7 +234,7 @@ if ( $blockIframe ) {
                 }
             }
             if (!empty($_SESSION['user']->id)) {
-                $info = $db->query(
+                $info = $manualdb->query(
                     "SELECT expire_timestamp FROM users WHERE id = :id AND login_system = :login_system", [
                         ":id" => $_SESSION['user']->id,
                         ":login_system" => $_SESSION['user']->login_system

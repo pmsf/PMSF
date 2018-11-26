@@ -34,12 +34,12 @@ foreach ( $nestCoords as $c ) {
         if($nest['s'] == "2"){
             $nest['pokemon_id'] = "0";
         }
-        if($db->info()['driver'] === 'pgsql'){
+        if($manualdb->info()['driver'] === 'pgsql'){
             $query = "INSERT INTO nests (nest_id, lat, lon, pokemon_id, updated,type) VALUES (" . $nest['id'] . "," . $nest['lt'] . "," . $nest['ln'] . "," . $nest['pokemon_id'] . "," . time() . ",1) ON CONFLICT (nest_id) DO UPDATE SET pokemon_id=" . $nest['pokemon_id'] . ", updated=" . time() . ", type=1";
         } else{
             $query = "INSERT INTO nests (nest_id, lat, lon, pokemon_id, updated,type) VALUES (" . $nest['id'] . "," . $nest['lt'] . "," . $nest['ln'] . "," . $nest['pokemon_id'] . "," . time() . ",1) ON DUPLICATE KEY UPDATE pokemon_id=" . $nest['pokemon_id'] . ", updated=" . time() . ", type=1";
         }
-        $db->query( $query )->fetchAll();
+        $manualdb->query( $query )->fetchAll();
     }
 }
 echo 'Done Successfully';
