@@ -27,6 +27,10 @@
     "cat": "Gym/Raid",
     "name": "Win a level 3 or higher Raid battle"
   },
+  "10": {
+    "cat": "Gym/Raid",
+    "name": "Win 3 Raid battles"
+  },
   "12": {
     "cat": "Gym/Raid",
     "name": "Use a Super effective charge attack 7 times"
