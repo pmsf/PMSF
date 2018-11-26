@@ -467,9 +467,9 @@ class RDM extends Submit
 				http_response_code( 401 );
 				die();
 			}
-			if ( ! empty( $lat ) && ! empty( $lon ) && ! empty( $id ) ) {
+			if ( ! empty( $lat ) && ! empty( $lon ) && ! empty( $pokemonId ) ) {
 				$cols = [
-					'pokemon_id' 	=> $id,
+					'pokemon_id' 	=> $pokemonId,
 					'lat'        	=> $lat,
 					'lon'        	=> $lon,
 					'type'       	=> 0,
