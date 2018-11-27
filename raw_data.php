@@ -291,7 +291,7 @@ if ($enableDebug == true) {
 $d['login'] = $noNativeLogin === true && $noDiscordLogin === true ? false : true;
 if ($d['login'] === true) {
     if (isset($_SESSION['user']->login_timestamp)) {
-        $info = $db->query(
+        $info = $manualdb->query(
         "SELECT login_timestamp FROM users WHERE email = :email", [
             ":email" => $_SESSION['user']->email
         ]
