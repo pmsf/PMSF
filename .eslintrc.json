@@ -161,6 +161,7 @@
     "noQuests": true,
     "enableQuests": true,
     "enableScanPolygon": true,
+    "turf": true,
     "geoJSONfile": true
   }
 }
