@@ -168,6 +168,7 @@ var exLayerGroup = new L.LayerGroup()
 var gymLayerGroup = new L.LayerGroup()
 var stopLayerGroup = new L.LayerGroup()
 var scanAreaGroup = new L.LayerGroup()
+var scanAreas = []
 /*
  text place holders:
  <pkm> - pokemon name
@@ -865,7 +866,7 @@ function gymLabel(item) {
             raidIcon = '<img src="static/raids/egg_' + raidEgg + '.png">'
         }
     }
-    if (manualRaids) {
+    if (manualRaids && item['scanArea'] === false) {
         raidStr += '<div class="raid-container">' + i8ln('Add raid ') + '<i class="fa fa-binoculars submit-raid" onclick="openRaidModal(event);" data-id="' + item['gym_id'] + '"></i>' +
             '</div>'
     }
@@ -1170,7 +1171,7 @@ function pokestopLabel(item) {
     if (!noDeletePokestops) {
         str += '<i class="fa fa-trash-o delete-pokestop" onclick="deletePokestop(event);" data-id="' + item['pokestop_id'] + '"></i>'
     }
-    if (!noManualQuests) {
+    if (!noManualQuests && item['scanArea'] === false) {
         str += '<center><div>' + i8ln('Add Quest') + '<i class="fa fa-binoculars submit-quest" onclick="openQuestModal(event);" data-id="' + item['pokestop-id'] + '"></i></div></center>'
     }
     if (!noRenamePokestops) {
@@ -2439,6 +2440,15 @@ function searchForItem(lat, lon, term, type, field) {
                     } else {
                         pokemonIdStr = element.quest_pokemon_id
                     }
+                    var scanArea
+                    var latlng = turf.point([element.lon, element.lat])
+                    $.each(scanAreas, function (index, poly) {
+                        var insideScan = turf.booleanPointInPolygon(latlng, poly)
+                        if (insideScan) {
+                            scanArea = insideScan
+                            return false
+                        }
+                    })
                     var html = '<li class="search-result ' + type + '" data-lat="' + element.lat + '" data-lon="' + element.lon + '"><div class="left-column" onClick="centerMapOnCoords(event);">'
                     if (sr.hasClass('reward-results')) {
                         if (element.quest_pokemon_id !== 0) {
@@ -2459,7 +2469,7 @@ function searchForItem(lat, lon, term, type, field) {
                     }
                     html += '<span class="name" style="font-weight:bold">' + element.name + '</span>' + '<span class="distance" style="font-weight:bold">&nbsp;-&#32;' + element.distance + defaultUnit + '</span>'
                     html += '</div></div>'
-                    if (sr.hasClass('pokestop-results') && !noManualQuests) {
+                    if (sr.hasClass('pokestop-results') && !noManualQuests && !scanArea) {
                         html += '<div class="right-column"><i class="fa fa-binoculars submit-quests"  onClick="openQuestModal(event);" data-id="' + element.external_id + '"></i></div>'
                     } else {
                         html += '<div class="right-column" onClick="centerMapOnCoords(event);"><span style="background:url(' + element.url + ') no-repeat;" class="i-icon" ></span></div>'
@@ -2468,6 +2478,15 @@ function searchForItem(lat, lon, term, type, field) {
                     sr.append(html)
                 })
                 $.each(data.forts, function (i, element) {
+                    var scanArea
+                    var latlng = turf.point([element.lon, element.lat])
+                    $.each(scanAreas, function (index, poly) {
+                        var insideScan = turf.booleanPointInPolygon(latlng, poly)
+                        if (insideScan) {
+                            scanArea = insideScan
+                            return false
+                        }
+                    })
                     var html = '<li class="search-result ' + type + '" data-lat="' + element.lat + '" data-lon="' + element.lon + '"><div class="left-column" onClick="centerMapOnCoords(event);">'
                     if (sr.hasClass('gym-results') || ('pokestop-results') || ('portal-results')) {
                         html += '<span style="background:url(' + element.url + ') no-repeat;" class="i-icon" ></span>'
@@ -2475,13 +2494,22 @@ function searchForItem(lat, lon, term, type, field) {
                     html += '<div class="cont">' +
                     '<span class="name" style="font-weight:bold">' + element.name + '</span>' + '<span class="distance" style="font-weight:bold">&nbsp;-&#32;' + element.distance + defaultUnit + '</span>' +
                     '</div></div>'
-                    if (sr.hasClass('gym-results') && manualRaids) {
+                    if (sr.hasClass('gym-results') && manualRaids && !scanArea) {
                         html += '<div class="right-column"><i class="fa fa-binoculars submit-raid"  onClick="openRaidModal(event);" data-id="' + element.external_id + '"></i></div>'
                     }
                     html += '</li>'
                     sr.append(html)
                 })
                 $.each(data.pokestops, function (i, element) {
+                    var scanArea
+                    var latlng = turf.point([element.lon, element.lat])
+                    $.each(scanAreas, function (index, poly) {
+                        var insideScan = turf.booleanPointInPolygon(latlng, poly)
+                        if (insideScan) {
+                            scanArea = insideScan
+                            return false
+                        }
+                    })
                     var html = '<li class="search-result ' + type + '" data-lat="' + element.lat + '" data-lon="' + element.lon + '"><div class="left-column" onClick="centerMapOnCoords(event);">'
                     if (sr.hasClass('gym-results') || ('pokestop-results') || ('portal-results')) {
                         html += '<span style="background:url(' + element.url + ') no-repeat;" class="i-icon" ></span>'
@@ -2489,7 +2517,7 @@ function searchForItem(lat, lon, term, type, field) {
                     html += '<div class="cont">' +
                     '<span class="name" style="font-weight:bold">' + element.name + '</span>' + '<span class="distance" style="font-weight:bold">&nbsp;-&#32;' + element.distance + defaultUnit + '</span>' +
                     '</div></div>'
-                    if (sr.hasClass('pokestop-results') && !noManualQuests) {
+                    if (sr.hasClass('pokestop-results') && !noManualQuests && !scanArea) {
                         html += '<div class="right-column"><i class="fa fa-binoculars submit-quests"  onClick="openQuestModal(event);" data-id="' + element.external_id + '"></i></div>'
                     }
                     html += '</li>'
@@ -2551,7 +2579,16 @@ function manualPokestopData(event) { // eslint-disable-line no-unused-vars
     var pokestopName = form.find('[name="pokestop-name"]').val()
     var lat = $('.submit-modal.ui-dialog-content .submitLatitude').val()
     var lon = $('.submit-modal.ui-dialog-content .submitLongitude').val()
-    if (pokestopName && pokestopName !== '') {
+    var scanArea
+    var latlng = turf.point([lon, lat])
+    $.each(scanAreas, function (index, poly) {
+        var insideScan = turf.booleanPointInPolygon(latlng, poly)
+        if (insideScan) {
+            scanArea = insideScan
+            return false
+        }
+    })
+    if (pokestopName && pokestopName !== '' && !scanArea) {
         if (confirm(i8ln('I confirm this is an accurate reporting of a new pokestop'))) {
             return $.ajax({
                 url: 'submit',
@@ -2577,6 +2614,10 @@ function manualPokestopData(event) { // eslint-disable-line no-unused-vars
                 }
             })
         }
+    } else if (scanArea) {
+        if (confirm(i8ln('Adding a Pokéstop inside the scan area is not allowed'))) {
+            $('.ui-dialog-content').dialog('close')
+        }
     }
 }
 
@@ -2585,7 +2626,16 @@ function manualGymData(event) { // eslint-disable-line no-unused-vars
     var gymName = form.find('[name="gym-name"]').val()
     var lat = $('.submit-modal.ui-dialog-content .submitLatitude').val()
     var lon = $('.submit-modal.ui-dialog-content .submitLongitude').val()
-    if (gymName && gymName !== '') {
+    var scanArea
+    var latlng = turf.point([lon, lat])
+    $.each(scanAreas, function (index, poly) {
+        var insideScan = turf.booleanPointInPolygon(latlng, poly)
+        if (insideScan) {
+            scanArea = insideScan
+            return false
+        }
+    })
+    if (gymName && gymName !== '' && !scanArea) {
         if (confirm(i8ln('I confirm this is an accurate reporting of a new gym'))) {
             return $.ajax({
                 url: 'submit',
@@ -2611,6 +2661,10 @@ function manualGymData(event) { // eslint-disable-line no-unused-vars
                 }
             })
         }
+    } else if (scanArea) {
+        if (confirm(i8ln('Adding a Gym inside the scan area is not allowed'))) {
+            $('.ui-dialog-content').dialog('close')
+        }
     }
 }
 function manualPokemonData(event) { // eslint-disable-line no-unused-vars
@@ -2618,7 +2672,16 @@ function manualPokemonData(event) { // eslint-disable-line no-unused-vars
     var pokemonId = form.find('.pokemonID').val()
     var lat = $('.submit-modal.ui-dialog-content .submitLatitude').val()
     var lon = $('.submit-modal.ui-dialog-content .submitLongitude').val()
-    if (pokemonId && pokemonId !== '') {
+    var scanArea
+    var latlng = turf.point([lon, lat])
+    $.each(scanAreas, function (index, poly) {
+        var insideScan = turf.booleanPointInPolygon(latlng, poly)
+        if (insideScan) {
+            scanArea = insideScan
+            return false
+        }
+    })
+    if (pokemonId && pokemonId !== '' && !scanArea) {
         if (confirm(i8ln('I confirm this is an accurate reporting of a new pokemon'))) {
             return $.ajax({
                 url: 'submit',
@@ -2643,6 +2706,10 @@ function manualPokemonData(event) { // eslint-disable-line no-unused-vars
                     $('.ui-dialog-content').dialog('close')
                 }
             })
+        }
+    } else if (scanArea) {
+        if (confirm(i8ln('Adding a wild spawn inside the scan area is not allowed'))) {
+            $('.ui-dialog-content').dialog('close')
         }
     }
 }
@@ -3573,7 +3640,6 @@ function processPokestops(i, item) {
     if (Store.get('showLures') && !item['lure_expiration']) {
         return true
     }
-
     if (!mapData.pokestops[item['pokestop_id']]) {
         // new pokestop, add marker to map and item to dict
         if (item.marker && item.marker.rangeCircle) {
@@ -3582,6 +3648,16 @@ function processPokestops(i, item) {
         if (item.marker) {
             markers.removeLayer(item.marker)
         }
+        var latlng = turf.point([item['longitude'], item['latitude']])
+        $.each(scanAreas, function (index, poly) {
+            var insideScan = turf.booleanPointInPolygon(latlng, poly)
+            if (insideScan) {
+                item.scanArea = insideScan
+                return false
+            } else {
+                item.scanArea = insideScan
+            }
+        })
         item.marker = setupPokestopMarker(item)
         mapData.pokestops[item['pokestop_id']] = item
     } else {
@@ -3602,7 +3678,6 @@ function updatePokestops() {
     if (!Store.get('showPokestops')) {
         return false
     }
-
     var removeStops = []
     var currentTime = Math.round(new Date().getTime() / 1000)
 
@@ -3661,6 +3736,16 @@ function processGyms(i, item) {
     if (!Store.get('showGyms') && !Store.get('showRaids')) {
         return false // in case the checkbox was unchecked in the meantime.
     }
+    var latlng = turf.point([item['longitude'], item['latitude']])
+    $.each(scanAreas, function (index, poly) {
+        var insideScan = turf.booleanPointInPolygon(latlng, poly)
+        if (insideScan) {
+            item.scanArea = insideScan
+            return false
+        } else {
+            item.scanArea = insideScan
+        }
+    })
     var gymLevel = item.slots_available
     var raidLevel = item.raid_level
     var removeGymFromMap = function removeGymFromMap(gymid) {
@@ -5189,6 +5274,11 @@ $(function () {
         })
     })
 
+    $.getJSON(geoJSONfile).done(function (data) {
+        $.each(data.features, function (key, value) {
+            scanAreas.push(value)
+        })
+    })
     $selectExclude = $('#exclude-pokemon')
     $selectExcludeMinIV = $('#exclude-min-iv')
     $selectPokemonNotify = $('#notify-pokemon')
