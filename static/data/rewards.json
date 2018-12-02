@@ -151,16 +151,16 @@
     "cat": "Items:",
     "name": "2000 Stardust"
   },
-  "1300": {
+  "1401": {
+    "cat": "Items:",
+    "name": "2 Golden Razz"
+  },
+  "1500": {
     "cat": "Items:",
     "name": "Silver Pinap"
   },
-  "1301": {
+  "1501": {
     "cat": "Items:",
     "name": "3 Silver Pinaps"
-  },
-  "1400": {
-    "cat": "Items:",
-    "name": "2 Golden Razz"
   }
 }
