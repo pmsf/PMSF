@@ -1,158 +1,150 @@
 {
-	"1": {
-		"cat": "Pokémon:",
-		"name": "Bulbasaur"
-	},
-	"4": {
-		"cat": "Pokémon:",
-		"name": "Charmander"
-	},
-	"7": {
-		"cat": "Pokémon:",
-		"name": "Squirtle"
-	},
-	"37": {
-		"cat": "Pokémon:",
-		"name": "Vulpix"
-	},
-	"40": {
-		"cat": "Pokémon:",
-		"name": "WigglyTuff"
-	},
-	"42": {
-		"cat": "Pokémon:",
-		"name": "Golbat"
-	},
-	"55": {
-		"cat": "Pokémon:",
-		"name": "Golduck"
-	},
-	"56": {
-		"cat": "Pokémon:",
-		"name": "Mankey"
-	},
-	"60": {
-		"cat": "Pokémon:",
-		"name": "Poliwag"
-	},
-	"66": {
-		"cat": "Pokémon:",
-		"name": "Machop"
-	},
-	"92": {
-		"cat": "Pokémon:",
-		"name": "Gastly"
-	},
-	"95": {
-		"cat": "Pokémon:",
-		"name": "Onix"
-	},
-	"100": {
-		"cat": "Pokémon:",
-		"name": "Voltorb"
-	},
-	"102": {
-		"cat": "Pokémon:",
-		"name": "Exeggcute"
-	},
-	"113": {
-		"cat": "Pokémon:",
-		"name": "Chansey"
-	},
-	"124": {
-		"cat": "Pokémon:",
-		"name": "Jynx"
-	},
-	"125": {
-		"cat": "Pokémon:",
-		"name": "Electabuzz"
-	},
-	"126": {
-		"cat": "Pokémon:",
-		"name": "Magmar"
-	},
-	"129": {
-		"cat": "Pokémon:",
-		"name": "Magikarp"
-	},
-	"133": {
-		"cat": "Pokémon:",
-		"name": "Eevee"
-	},
-	"137": {
-		"cat": "Pokémon:",
-		"name": "Porygon"
-	},
-	"147": {
-		"cat": "Pokémon:",
-		"name": "Dratini"
-	},
-	"171": {
-		"cat": "Pokémon:",
-		"name": "Lanturn"
-	},
-	"200": {
-		"cat": "Pokémon:",
-		"name": "Misdreavus"
-	},
-	"246": {
-		"cat": "Pokémon:",
-		"name": "Larvitar"
-	},
-	"322": {
-		"cat": "Pokémon:",
-		"name": "Numel"
-	},
-	"327": {
-		"cat": "Pokémon:",
-		"name": "Spinda"
-	},
-	"349": {
-		"cat": "Pokémon:",
-		"name": "Feebas"
-	},
-	"999": {
-		"cat": "Pokémon:",
-		"name": "?? Encounter"
-	},
-	"1000": {
-		"cat": "Items:",
-		"name": "Rare Candy"
-	},
-	"1002": {
-		"cat": "Items:",
-		"name": "3 Rare Candy"
-	},
-	"1102": {
-		"cat": "Items:",
-		"name": "200 Stardust"
-	},
-	"1103": {
-		"cat": "Items:",
-		"name": "500 Stardust"
-	},
-	"1104": {
-		"cat": "Items:",
-		"name": "1000 Stardust"
-	},
-	"1105": {
-		"cat": "Items:",
-		"name": "1500 Stardust"
-	},
-	"1106": {
-		"cat": "Items:",
-		"name": "2000 Stardust"
-	},
-	"1401": {
-		"cat": "Items:",
-		"name": "2 Golden Razz"
-	},
-	"1600": {
-		"cat": "Items:",
-		"name": "Silver Pinap"
-	},
-	"1601": {
-		"cat": "Items:",
-		"name": "3 Silver Pinaps"
-	}
+  "1": {
+    "cat": "Pokémon:",
+    "name": "Bulbasaur"
+  },
+  "4": {
+    "cat": "Pokémon:",
+    "name": "Charmander"
+  },
+  "7": {
+    "cat": "Pokémon:",
+    "name": "Squirtle"
+  },
+  "37": {
+    "cat": "Pokémon:",
+    "name": "Vulpix"
+  },
+  "55": {
+    "cat": "Pokémon:",
+    "name": "Golduck"
+  },
+  "56": {
+    "cat": "Pokémon:",
+    "name": "Mankey"
+  },
+  "60": {
+    "cat": "Pokémon:",
+    "name": "Poliwag"
+  },
+  "66": {
+    "cat": "Pokémon:",
+    "name": "Machop"
+  },
+  "92": {
+    "cat": "Pokémon:",
+    "name": "Gastly"
+  },
+  "95": {
+    "cat": "Pokémon:",
+    "name": "Onix"
+  },
+  "100": {
+    "cat": "Pokémon:",
+    "name": "Voltorb"
+  },
+  "102": {
+    "cat": "Pokémon:",
+    "name": "Exeggcute"
+  },
+  "113": {
+    "cat": "Pokémon:",
+    "name": "Chansey"
+  },
+  "124": {
+    "cat": "Pokémon:",
+    "name": "Jynx"
+  },
+  "125": {
+    "cat": "Pokémon:",
+    "name": "Electabuzz"
+  },
+  "126": {
+    "cat": "Pokémon:",
+    "name": "Magmar"
+  },
+  "129": {
+    "cat": "Pokémon:",
+    "name": "Magikarp"
+  },
+  "133": {
+    "cat": "Pokémon:",
+    "name": "Eevee"
+  },
+  "137": {
+    "cat": "Pokémon:",
+    "name": "Porygon"
+  },
+  "147": {
+    "cat": "Pokémon:",
+    "name": "Dratini"
+  },
+  "171": {
+    "cat": "Pokémon:",
+    "name": "Lanturn"
+  },
+  "200": {
+    "cat": "Pokémon:",
+    "name": "Misdreavus"
+  },
+  "246": {
+    "cat": "Pokémon:",
+    "name": "Larvitar"
+  },
+  "322": {
+    "cat": "Pokémon:",
+    "name": "Numel"
+  },
+  "327": {
+    "cat": "Pokémon:",
+    "name": "Spinda"
+  },
+  "349": {
+    "cat": "Pokémon:",
+    "name": "Feebas"
+  },
+  "999": {
+    "cat": "Pokémon:",
+    "name": "?? Encounter"
+  },
+  "1000": {
+    "cat": "Items:",
+    "name": "Rare Candy"
+  },
+  "1002": {
+    "cat": "Items:",
+    "name": "3 Rare Candy"
+  },
+  "1102": {
+    "cat": "Items:",
+    "name": "200 Stardust"
+  },
+  "1103": {
+    "cat": "Items:",
+    "name": "500 Stardust"
+  },
+  "1104": {
+    "cat": "Items:",
+    "name": "1000 Stardust"
+  },
+  "1105": {
+    "cat": "Items:",
+    "name": "1500 Stardust"
+  },
+  "1106": {
+    "cat": "Items:",
+    "name": "2000 Stardust"
+  },
+  "1401": {
+    "cat": "Items:",
+    "name": "2 Golden Razz"
+  },
+  "1600": {
+    "cat": "Items:",
+    "name": "Silver Pinap"
+  },
+  "1601": {
+    "cat": "Items:",
+    "name": "3 Silver Pinaps"
+  }
 }
