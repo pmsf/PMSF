@@ -1,158 +1,154 @@
 {
-  "1": {
-    "cat": "Gym/Raid",
-    "name": "Battle in a Gym"
-  },
-  "3": {
-    "cat": "Gym/Raid",
-    "name": "Battle in a Gym 5 times"
-  },
-  "4": {
-    "cat": "Gym/Raid",
-    "name": "Win a Gym battle"
-  },
-  "5": {
-    "cat": "Gym/Raid",
-    "name": "Win 3 Gym battles"
-  },
-  "6": {
-    "cat": "Gym/Raid",
-    "name": "Win 5 Gym battles"
-  },
-  "7": {
-    "cat": "Gym/Raid",
-    "name": "Battle in a Raid"
-  },
-  "8": {
-    "cat": "Gym/Raid",
-    "name": "Win a Raid"
-  },
-  "9": {
-    "cat": "Gym/Raid",
-    "name": "Win a level 3 or higher Raid battle"
-  },
-  "10": {
-    "cat": "Gym/Raid",
-    "name": "Win 3 Raids"
-  },
-   "11": {
-    "cat": "Gym/Raid",
-    "name": "Use a Super Effective Charged Attack in a Gym battle"
-  },
-  "12": {
-    "cat": "Gym/Raid",
-    "name": "Use a Super Effective Charged Attack in 7 Gym battles"
-  },
-  "110": {
-    "cat": "Catch",
-    "name": "Catch 3 Grass-, Water-, OR Fire-Type Pokémon"
-  },
-  "111": {
-    "cat": "Catch",
-    "name": "Catch 10 Pokémon"
-  },
-  "112": {
-    "cat": "Catch",
-    "name": "Catch 5 Pokémon with Weather Boost"
-  },
-  "113": {
-    "cat": "Catch",
-    "name": "Catch a Dragon-Type Pokémon"
-  },
-  "120": {
-    "cat": "Catch",
-    "name": "Catch 5 Bug-Type Pokémon"
-  },
-  "121": {
-    "cat": "Catch",
-    "name": "Catch a Ditto"
-  },
-  "256": {
-    "cat": "Evolve/Power Up",
-    "name": "Evolve a Pokémon"
-  },
-  "269": {
-    "cat": "Evolve/Power Up",
-    "name": "Power up at Pokémon 5 times"
-  },
-  "270": {
-    "cat": "Evolve/Power Up",
-    "name": "Power up at Pokémon 10 times"
-  },
-  "367": {
-    "cat": "Throw",
-    "name": "Make 3 Curveball Throws in a row"
-  },
-  "368": {
-    "cat": "Throw",
-    "name": "Make 5 Curveball Throws in a row"
-  },
-  "369": {
-    "cat": "Throw",
-    "name": "Make 5 Nice Throws"
-  },
-  "370": {
-    "cat": "Throw",
-    "name": "Make 3 Nice Throws in a row"
-  },
-  "371": {
-    "cat": "Throw",
-    "name": "Make 3 Nice Curveball Throws"
-  },
-  "372": {
-    "cat": "Throw",
-    "name": "Make 2 Nice Curveball Throws in a row"
-  },
-  "373": {
-    "cat": "Throw",
-    "name": "Make a 3 Great Curveball Throws"
-  },
-  "374": {
-    "cat": "Throw",
-    "name": "Make a 3 Great Curveball Throws in a row"
-  },
-  "376": {
-    "cat": "Throw",
-    "name": "Make 3 Great Throws"
-  },
-  "380": {
-    "cat": "Throw",
-    "name": "Make 3 Great Throws in a row"
-  },
-  "381": {
-    "cat": "Throw",
-    "name": "Make 5 Great Throws in a row"
-  },
-  "382": {
-    "cat": "Throw",
-    "name": "Make an Excellent Throw"
-  },
-  "387": {
-    "cat": "Throw",
-    "name": "Make 3 Excellent Throws in a row"
-  },
-  "596": {
-    "cat": "Hatch",
-    "name": "Hatch an Egg"
-  },
-  "598": {
-    "cat": "Hatch",
-    "name": "Hatch 3 Eggs"
-  },
-  "599": {
-    "cat": "Hatch",
-    "name": "Hatch 5 Eggs"
-  },
-  "605": {
-    "cat": "Miscellaneous",
-    "name": "Transfer 10 Pokémon"
-  },
-  "606": {
-    "cat": "Miscellaneous",
-    "name": "Trade a Pokémon"
-  },
-  "607": {
-    "cat": "Miscellaneous",
-    "name": "Spin 10 Pokéstops or Gyms"
-  }
+	"1": {
+		"cat": "Gym/Raid",
+		"name": "Battle in a Gym"
+	},
+	"3": {
+		"cat": "Gym/Raid",
+		"name": "Battle in a Gym 5 times"
+	},
+	"4": {
+		"cat": "Gym/Raid",
+		"name": "Win a Gym battle"
+	},
+	"5": {
+		"cat": "Gym/Raid",
+		"name": "Win 3 Gym battles"
+	},
+	"7": {
+		"cat": "Gym/Raid",
+		"name": "Battle in a Raid"
+	},
+	"8": {
+		"cat": "Gym/Raid",
+		"name": "Win a Raid"
+	},
+	"9": {
+		"cat": "Gym/Raid",
+		"name": "Win a level 3 or higher Raid battle"
+	},
+	"10": {
+		"cat": "Gym/Raid",
+		"name": "Win 3 Raids"
+	},
+	"11": {
+		"cat": "Gym/Raid",
+		"name": "Use a Super Effective Charged Attack in a Gym battle"
+	},
+	"12": {
+		"cat": "Gym/Raid",
+		"name": "Use a Super Effective Charged Attack in 7 Gym battles"
+	},
+	"110": {
+		"cat": "Catch",
+		"name": "Catch 3 Grass-, Water-, OR Fire-Type Pokémon"
+	},
+	"111": {
+		"cat": "Catch",
+		"name": "Catch 10 Pokémon"
+	},
+	"112": {
+		"cat": "Catch",
+		"name": "Catch 5 Pokémon with Weather Boost"
+	},
+	"113": {
+		"cat": "Catch",
+		"name": "Catch 10 Pokémon with Weather Boost"
+	},
+	"120": {
+		"cat": "Catch",
+		"name": "Catch 10 Normal-Type Pokémon"
+	},
+	"121": {
+		"cat": "Catch",
+		"name": "Catch a Dragon-Type Pokémon"
+	},
+	"122": {
+		"cat": "Catch",
+		"name": "Catch a Ditto"
+	},
+	"123": {
+		"cat": "Catch",
+		"name": "Use 5 berries to help catch Pokémon"
+	},
+	"256": {
+		"cat": "Evolve/Power Up",
+		"name": "Evolve a Pokémon"
+	},
+	"269": {
+		"cat": "Evolve/Power Up",
+		"name": "Power up at Pokémon 5 times"
+	},
+	"270": {
+		"cat": "Evolve/Power Up",
+		"name": "Power up at Pokémon 10 times"
+	},
+	"368": {
+		"cat": "Throw",
+		"name": "Make 5 Curveball Throws in a row"
+	},
+	"369": {
+		"cat": "Throw",
+		"name": "Make 5 Nice Throws"
+	},
+	"370": {
+		"cat": "Throw",
+		"name": "Make 3 Nice Throws in a row"
+	},
+	"371": {
+		"cat": "Throw",
+		"name": "Make a Great Curveball Throw"
+	},
+	"372": {
+		"cat": "Throw",
+		"name": "Make a 3 Great Curveball Throws"
+	},
+	"373": {
+		"cat": "Throw",
+		"name": "Make a 3 Great Curveball Throws"
+	},
+	"374": {
+		"cat": "Throw",
+		"name": "Make a 3 Great Curveball Throws in a row"
+	},
+	"376": {
+		"cat": "Throw",
+		"name": "Make 3 Great Throws"
+	},
+	"380": {
+		"cat": "Throw",
+		"name": "Make 3 Great Throws in a row"
+	},
+	"382": {
+		"cat": "Throw",
+		"name": "Make an Excellent Throw"
+	},
+	"387": {
+		"cat": "Throw",
+		"name": "Make 3 Excellent Throws in a row"
+	},
+	"596": {
+		"cat": "Hatch",
+		"name": "Hatch an Egg"
+	},
+	"598": {
+		"cat": "Hatch",
+		"name": "Hatch 3 Eggs"
+	},
+	"599": {
+		"cat": "Hatch",
+		"name": "Hatch 5 Eggs"
+	},
+	"605": {
+		"cat": "Miscellaneous",
+		"name": "Transfer 10 Pokémon"
+	},
+	"606": {
+		"cat": "Miscellaneous",
+		"name": "Trade a Pokémon"
+	},
+	"607": {
+		"cat": "Miscellaneous",
+		"name": "Spin 10 Pokéstops or Gyms"
+	}
 }
