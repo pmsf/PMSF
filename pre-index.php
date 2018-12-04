@@ -1399,61 +1399,155 @@ if ( $blockIframe ) {
         <div class="quest-modal" style="display: none;">
             <input type="hidden" value="" name="questPokestop" class="questPokestop"/>
             <?php
-            $quests = array();
-            $json   = file_get_contents( 'static/dist/data/quests.min.json' );
-            $input  = json_decode( $json, true );
-            foreach ( $input as $key => $value ) {
-                $quests[ $value['cat'] ][] = array(
-                    'id'   => $key,
-                    'name' => $value['name']
-                );
-            }
-            $rewards = array();
-            $json    = file_get_contents( 'static/dist/data/rewards.min.json' );
-            $input   = json_decode( $json, true );
-            foreach ( $input as $key => $value ) {
-                $rewards[ $value['cat'] ][] = array(
-                    'id'   => $key,
-                    'name' => $value['name']
-                );
-            }
+            $json   = file_get_contents( 'static/dist/data/questtype.min.json' );
+            $questtypes  = json_decode( $json, true );
+
+            $json    = file_get_contents( 'static/dist/data/rewardtype.min.json' );
+            $rewardtypes   = json_decode( $json, true );
+
+            $json    = file_get_contents( 'static/dist/data/conditiontype.min.json' );
+            $conditiontypes   = json_decode( $json, true );
+
+	    $json    = file_get_contents( 'static/dist/data/pokemon.min.json' );
+	    $encounters = json_decode( $json, true );
+
+	    $json    = file_get_contents( 'static/dist/data/items.min.json' );
+	    $items = json_decode( $json, true );
             ?>
-            <select name="questList" class="questList">
-                <option value="NULL"><?php echo i8ln( 'Choose a Quest' ); ?></option>
+            <label for="questTypeList"><?php echo i8ln( 'Quest' ); ?>
+            <select id="questTypeList" name="questTypeList" class="questTypeList">
+                <option />
                 <?php
-                foreach ( $quests as $key => $value ) {
+                foreach ( $questtypes as $key => $value ) {
+                    if ( ! in_array( $key, $hideQuestTypes ) ) {
                     ?>
-                    <optgroup label="<?php echo $key; ?>">
-                        <?php
-                        foreach ( $value as $t ) {
-                            ?>
-                            <option value="<?php echo $t['id']; ?>"><?php echo i8ln( $t['name'] ); ?></option>
-                            <?php
-                        }
-                        ?>
-                    </optgroup>
+                        <option value="<?php echo $key; ?>"><?php echo i8ln( $value['text'] ); ?></option>
                     <?php
+                    }
                 }
                 ?>
-            </select>
-            <select name="rewardList" class="rewardList">
-                <option value="NULL"><?php echo i8ln( 'Choose a Reward' ); ?></option>
+	    </select>
+            <select id="questAmountList" name="questAmountList" class="questAmountList">
+                <option />
+                <option value="1">1</option>
+                <option value="2">2</option>
+                <option value="3">3</option>
+                <option value="4">4</option>
+                <option value="5">5</option>
+                <option value="6">6</option>
+                <option value="7">7</option>
+                <option value="8">8</option>
+                <option value="9">9</option>
+                <option value="10">10</option>
+	    </select>
+            </label>
+            <label for="conditionTypeList"><?php echo i8ln( 'Conditions' ); ?>
+            <select id="conditionTypeList" name="conditionTypeList" class="conditionTypeList">
+                <option />
                 <?php
-                foreach ( $rewards as $key => $value ) {
+                foreach ( $conditiontypes as $key => $value ) {
+                    if ( ! in_array( $key, $hideConditionTypes ) ) {
                     ?>
-                    <optgroup label="<?php echo $key; ?>">
-                        <?php
-                        foreach ( $value as $t ) {
-                            ?>
-                            <option value="<?php echo $t['id']; ?>"><?php echo i8ln( $t['name'] ); ?></option>
-                            <?php
-                        }
-                        ?>
-                    </optgroup>
+                        <option value="<?php echo $key; ?>"><?php echo i8ln( $value['text'] ); ?></option>
                     <?php
+                    }
                 }
                 ?>
+	    </select>
+            <select id="pokeCatchList" name="pokeCatchList" class="pokeCatchList" multiple></select>
+	    <select id="typeCatchList" name="typeCatchList" class="typeCatchList" multiple>
+                <option value="1"><?php echo i8ln( 'Normal' ); ?></option>
+                <option value="2"><?php echo i8ln( 'Fighting' ); ?></option>
+                <option value="3"><?php echo i8ln( 'Flying' ); ?></option>
+                <option value="4"><?php echo i8ln( 'Poison' ); ?></option>
+                <option value="5"><?php echo i8ln( 'Ground' ); ?></option>
+                <option value="6"><?php echo i8ln( 'Rock' ); ?></option>
+                <option value="7"><?php echo i8ln( 'Bug' ); ?></option>
+                <option value="8"><?php echo i8ln( 'Ghost' ); ?></option>
+                <option value="9"><?php echo i8ln( 'Steel' ); ?></option>
+                <option value="10"><?php echo i8ln( 'Fire' ); ?></option>
+                <option value="11"><?php echo i8ln( 'Water' ); ?></option>
+                <option value="12"><?php echo i8ln( 'Grass' ); ?></option>
+                <option value="13"><?php echo i8ln( 'Electric' ); ?></option>
+                <option value="14"><?php echo i8ln( 'Psychic' ); ?></option>
+                <option value="15"><?php echo i8ln( 'Ice' ); ?></option>
+                <option value="16"><?php echo i8ln( 'Dragon' ); ?></option>
+                <option value="17"><?php echo i8ln( 'Dark' ); ?></option>
+                <option value="18"><?php echo i8ln( 'Fairy' ); ?></option>
             </select>
+            <select id="raidLevelList" name="raidLevelList" class="raidLevelList">
+                <option value="1">1</option>
+                <option value="2">2</option>
+                <option value="3">3</option>
+                <option value="4">4</option>
+                <option value="5">5</option>
+	    </select>
+	    <select id="throwTypeList" name="throwTypeList" class="throwTypeList" multiple>
+		<option />
+                <option value="10"><?php echo i8ln( 'Nice' ); ?></option>
+                <option value="11"><?php echo i8ln( 'Great' ); ?></option>
+                <option value="12"><?php echo i8ln( 'Excellent' ); ?></option>
+            </select>
+            </label>
+            <label for="rewardTypeList"><?php echo i8ln( 'Reward' ); ?>
+            <select id="rewardTypeList" name="rewardTypeList" class="rewardTypeList">
+                <option />
+                <?php
+                foreach ( $rewardtypes as $key => $value ) {
+                    if ( ! in_array( $key, $hideRewardTypes ) ) {
+                    ?>
+                        <option value="<?php echo $key; ?>"><?php echo i8ln( $value['text'] ); ?></option>
+                    <?php
+                    }
+                }
+                ?>
+	    </select>
+            <select id="pokeQuestList" name="pokeQuestList" class="pokeQuestList">
+                <option />
+                <?php
+                foreach ( $encounters as $key => $value ) {
+                    if ( in_array( $key, $showEncounters ) ) {
+                    ?>
+                        <option value="<?php echo $key; ?>"><?php echo i8ln( $value['name'] ); ?></option>
+                    <?php
+                    }
+                }
+                ?>
+	    </select>
+            <select id="itemQuestList" name="itemQuestList" class="itemQuestList">
+                <option />
+                <?php
+                foreach ( $items as $key => $value ) {
+                    if ( in_array( $key, $showItems ) ) {
+                    ?>
+                        <option value="<?php echo $key; ?>"><?php echo i8ln( $value['name'] ); ?></option>
+                    <?php
+                    }
+                }
+                ?>
+	    </select>
+            <select id="itemAmountList" name="itemAmountList" class="itemAmountList">
+                <option />
+                <option value="1">1</option>
+                <option value="2">2</option>
+                <option value="3">3</option>
+                <option value="4">4</option>
+                <option value="5">5</option>
+                <option value="6">6</option>
+                <option value="7">7</option>
+                <option value="8">8</option>
+                <option value="9">9</option>
+                <option value="10">10</option>
+            </select>
+            <select id="dustQuestList" name="dustQuestList" class="dustQuestList">
+                <option />
+                <option value="200">200</option>
+                <option value="500">500</option>
+                <option value="1000">1000</option>
+                <option value="1500">1500</option>
+                <option value="2000">2000</option>
+	    </select>
+            </label>
             <div class="button-container">
                 <button type="button" onclick="manualQuestData(event);" class="submitting-quest"><i
                         class="fa fa-binoculars"
@@ -1650,7 +1744,7 @@ if ( $blockIframe ) {
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.0/jquery.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jqueryui/1.12.0/jquery-ui.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/skel/3.0.1/skel.min.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.5/js/select2.full.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.6-rc.1/js/select2.full.min.js"></script>
 <script src="https://cdn.datatables.net/1.10.12/js/jquery.dataTables.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.17.1/moment-with-locales.min.js"></script>
 <script src="https://code.createjs.com/soundjs-0.6.2.min.js"></script>

@@ -85,7 +85,7 @@
   },
   "21": {
     "prototext": "QUEST_COMPLETE_BATTLE",
-    "text": "Complete {0} raid battle"
+    "text": "Complete {0} raid battle(s)"
   },
   "22": {
     "prototext": "QUEST_ADD_FRIEND",

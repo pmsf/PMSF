@@ -181,6 +181,14 @@ $excludeQuestsPokemon = [];					    // All excluded pokemon wil not be shown in 
 $excludeQuestsItem = [4, 5, 301, 401, 402, 403, 404, 501, 602, 603, 604, 702, 704, 708, 801, 901, 902, 903, 1001, 1002, 1401, 1402, 1402, 1403, 1404, 1405];   // All excluded item wil not be shown in the filter.
 $noItemNumbers = false;                                             // true/false
 
+// Manual quest hide options
+$hideQuestTypes = [0, 1, 2, 3, 12, 18, 19, 22, 24, 25];
+$hideRewardTypes = [0, 1, 4, 5, 6];
+$hideConditionTypes = [0, 4, 5, 11, 12, 13, 16, 17, 19, 20];
+// Manual quest show options
+$showEncounters = [201];
+$showItems = [1, 2, 3, 101, 102, 103, 104, 201, 202, 701, 703, 705, 706, 707, 1301];
+
 $noScannedLocations = false;                                        // true/false
 $enableScannedLocations = 'false';                                  // true/false
 
