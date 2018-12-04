@@ -335,15 +335,108 @@ class RDM extends Submit
 				}
 			}
 		}
-	public function submit_quest($pokestopId, $questId, $rewardId, $loggedUser)
+	public function submit_quest($pokestopId, $questType, $questTarget, $conditionType, $catchPokemonType, $catchPokemon, $raidLevel, $throwType, $rewardType, $encounter, $item, $itemAmount, $dust, $loggedUser)
 		{
-			global $noManualQuests, $noPokestops, $noDiscordSubmitLogChannel;
+			global $db, $noManualQuests, $noPokestops, $noDiscordSubmitLogChannel;
 			if ( $noManualQuests === true || $noPokestops === true ) {
 				http_response_code( 401 );
 				die();
 			}
-			// Unfinished
-			die();
+			$pokestopName = $db->get( "pokestop", [ 'name', 'lat', 'lon', 'url', 'id' ], [ 'id' => $pokestopId ] );
+file_put_contents('log.txt', print_r($conditionType, true));
+			if ( ! empty( $pokestopId ) && ! empty( $questType ) && ! empty( $rewardType ) ) {
+				if ($conditionType === '1') {
+					$jsonCondition = json_encode(array(
+						'info' => array(
+							'pokemon_type_ids' => $catchPokemonType
+						),
+						'type' => intval($conditionType)
+						)
+					);
+				} else if ($conditionType === '2') {
+					$jsonCondition = json_encode(array(
+						'info' => array(
+							'pokemon_ids' => $catchPokemon
+						),
+						'type' => intval($conditionType)
+						)
+					);
+				} else if ($conditionType === '6' || $conditionType === '7') {
+					$jsonCondition = json_encode(array(
+						'info' => array(
+							'raid_levels' => $raidLevel
+						),
+						'type' => intval($conditionType)
+						)
+					);
+				} else if ($conditionType === '8') {
+					$jsonContition = json_encode(array(
+						'info' => array(
+							'throw_type_id' => $throwType,
+							'hit' => false
+						),
+						'type' => intval($conditionType)
+						)
+					);
+				} else if ($conditionType === '15') {
+					$jsonCondition = json_encode(array(
+						'info' => array(
+							'throw_type_id' => $throwType,
+							'hit' => false
+						),
+						'type' => intval($conditionType)
+						)
+					);
+				} else if ( ! empty( $conditionType ) ) {
+					$jsonCondition = json_encode(array(
+						'type' => intval($conditionType)
+						)
+					);
+				}
+
+				if ($rewardType === '2') {
+					$jsonRewards = json_encode(array(
+						'info' => array(
+							'amount' => intval($itemAmount),
+							'item_id' => intval($item)
+						),
+						'type' => intval($rewardType)
+					));
+				} else if ($rewardType === '3') {
+					$jsonRewards = json_encode(array(
+						'info' => array(
+							'amount' => intval($dust)
+						),
+						'type' => intval($rewardType)
+					));
+				} else if ($rewardType === '7') {
+					$jsonRewards = json_encode(array(
+						'info' => array(
+							'pokemon_id' => intval($encounter),
+							'form_id' => 0,
+							'shiny' => false,
+							'costume_id' => 0,
+							'gender_id' => 0
+						),
+						'type' => intval($rewardType)
+					));
+				}
+file_put_contents('log.txt', print_r($jsonCondition, true));
+				$cols = [
+					'updated'		=> time(),
+					'quest_type'		=> $questType,
+					'quest_timestamp'	=> time(),
+					'quest_target'		=> $questTarget,
+					'quest_conditions'	=> ! empty($jsonCondition) ? '[' . $jsonCondition . ']' : '[]',
+					'quest_rewards'		=> '[' . $jsonRewards . ']',
+					'quest_template'	=> 'manual_added_challenge'
+				];
+				$where = [
+					'id'			=> $pokestopId
+				];
+				$db->update( "pokestop", $cols, $where );
+
+			}
 		}
 	public function convert_portal_pokestop($portalId, $loggedUser)
 		{
