@@ -335,7 +335,7 @@ class RDM extends Submit
 				}
 			}
 		}
-	public function submit_quest($pokestopId, $questType, $questTarget, $conditionType, $catchPokemonType, $catchPokemon, $raidLevel, $throwType, $rewardType, $encounter, $item, $itemAmount, $dust, $loggedUser)
+	public function submit_quest($pokestopId, $questType, $questTarget, $conditionType, $catchPokemonType, $catchPokemon, $raidLevel, $throwType, $curveThrow, $rewardType, $encounter, $item, $itemAmount, $dust, $loggedUser)
 		{
 			global $db, $noManualQuests, $noPokestops, $noDiscordSubmitLogChannel;
 			if ( $noManualQuests === true || $noPokestops === true ) {
@@ -370,23 +370,35 @@ file_put_contents('log.txt', print_r($conditionType, true));
 						)
 					);
 				} else if ($conditionType === '8') {
-					$jsonContition = json_encode(array(
-						'info' => array(
-							'throw_type_id' => $throwType,
-							'hit' => false
-						),
-						'type' => intval($conditionType)
-						)
-					);
-				} else if ($conditionType === '15') {
 					$jsonCondition = json_encode(array(
 						'info' => array(
-							'throw_type_id' => $throwType,
+							'throw_type_id' => intval($throwType),
 							'hit' => false
 						),
 						'type' => intval($conditionType)
 						)
 					);
+					if ($curveThrow === '1') {
+						$jsonCondition .= ',' . json_encode(array(
+							'type' => 15
+							)
+						);
+					}
+				} else if ($conditionType === '14') {
+					$jsonCondition = json_encode(array(
+						'info' => array(
+							'throw_type_id' => intval($throwType),
+							'hit' => false
+						),
+						'type' => intval($conditionType)
+						)
+					);
+					if ($curveThrow === '1') {
+						$jsonCondition .= ',' . json_encode(array(
+							'type' => 15
+							)
+						);
+					}
 				} else if ( ! empty( $conditionType ) ) {
 					$jsonCondition = json_encode(array(
 						'type' => intval($conditionType)
@@ -421,7 +433,6 @@ file_put_contents('log.txt', print_r($conditionType, true));
 						'type' => intval($rewardType)
 					));
 				}
-file_put_contents('log.txt', print_r($jsonCondition, true));
 				$cols = [
 					'updated'		=> time(),
 					'quest_type'		=> $questType,
