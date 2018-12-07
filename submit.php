@@ -31,6 +31,7 @@ $catchPokemon		= ! empty( $_POST['catchPokemon'] ) ? $_POST['catchPokemon'] : ''
 $catchPokemonCategory	= ! empty( $_POST['catchPokemonCategory'] ) ? $_POST['catchPokemonCategory'] : '';
 $raidLevel   		= ! empty( $_POST['raidLevel'] ) ? $_POST['raidLevel'] : '';
 $throwType   		= ! empty( $_POST['throwType'] ) ? $_POST['throwType'] : '';
+$curveThrow   		= ! empty( $_POST['curveThrow'] ) ? $_POST['curveThrow'] : '';
 $rewardType   		= ! empty( $_POST['rewardType'] ) ? $_POST['rewardType'] : '';
 $encounter   		= ! empty( $_POST['encounter'] ) ? $_POST['encounter'] : '';
 $item   		= ! empty( $_POST['item'] ) ? $_POST['item'] : '';
@@ -85,7 +86,7 @@ if ( $action === "convertpokestop" ) {
     $submit->convert_pokestop($pokestopId, $loggedUser);
 }
 if ( $action === "quest" ) {
-    $submit->submit_quest($pokestopId, $questType, $questTarget, $conditionType, $catchPokemonCategory, $catchPokemon, $raidLevel, $throwType, $rewardType, $encounter, $item, $itemAmount, $dust, $loggedUser);
+    $submit->submit_quest($pokestopId, $questType, $questTarget, $conditionType, $catchPokemonCategory, $catchPokemon, $raidLevel, $throwType, $curveThrow, $rewardType, $encounter, $item, $itemAmount, $dust, $loggedUser);
 }
 if ( $action === "convertportalpokestop" ) {
     $submit->convert_portal_pokestop($portalId, $loggedUser);

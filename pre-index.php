@@ -1482,11 +1482,16 @@ if ( $blockIframe ) {
                 <option value="4">4</option>
                 <option value="5">5</option>
 	    </select>
-	    <select id="throwTypeList" name="throwTypeList" class="throwTypeList" multiple>
+	    <select id="throwTypeList" name="throwTypeList" class="throwTypeList">
 		<option />
                 <option value="10"><?php echo i8ln( 'Nice' ); ?></option>
                 <option value="11"><?php echo i8ln( 'Great' ); ?></option>
                 <option value="12"><?php echo i8ln( 'Excellent' ); ?></option>
+            </select>
+            <select id="curveThrow" class="curveThrow" class="curveThrow">
+		<option />
+                <option value="0"><?php echo i8ln( 'Without curve throw' ); ?></option>
+                <option value="1"><?php echo i8ln( 'With curve throw' ); ?></option>
             </select>
             </label>
             <label for="rewardTypeList"><?php echo i8ln( 'Reward' ); ?>
