@@ -1051,67 +1051,58 @@ function getQuest(item) {
         '<center><div>'
 
         if (item['quest_condition_type'] === 1) {
-            str += '<div>' +
-            i8ln('Type(s):') + ' '
-            $.each(questinfo['pokemon_type_ids'], function (index, typeId) {
-                str += pokemonTypes[typeId]
-            })
-            str += '</div>'
+            var tstr
+            if (questinfo['pokemon_type_ids'].length > 1) {
+                $.each(questinfo['pokemon_type_ids'], function (index, typeId) {
+                    tstr += pokemonTypes[typeId]
+                })
+            } else {
+                tstr = pokemonTypes[questinfo['pokemon_type_ids']]
+            }
+            str = str.replace('pokémon', tstr + ' pokémon')
         } else if (item['quest_condition_type'] === 2) {
-            str += '<div>' +
-            i8ln('Pokémon:') + ' '
-            $.each(questinfo['pokemon_ids'], function (index, id) {
-                str += idToPokemon[id].name
-            })
-            str += '</div>'
+            var pstr
+            if (questinfo['pokemon_ids'].length > 1) {
+                $.each(questinfo['pokemon_ids'], function (index, id) {
+                    pstr += idToPokemon[id].name + ' '
+                })
+            } else {
+                pstr = idToPokemon[questinfo['pokemon_ids']].name
+            }
+            str = str.replace('pokémon', pstr)
         } else if (item['quest_condition_type'] === 3) {
-            str += '<div>' +
-            i8ln('Condition:') + ' ' +
-            i8ln('Weather boosted') +
-            '</div>'
+            str = str.replace('pokémon', 'pokémon with weather boost')
         } else if (item['quest_condition_type'] === 6) {
-            str += '<div>' +
-            i8ln('Condition:') + ' ' +
-            i8ln('Win raid') +
-            '</div>'
+            str = str.replace('Complete', 'Win')
         } else if (item['quest_condition_type'] === 7) {
             raidLevel = Math.min.apply(null, questinfo['raid_levels'])
             if (raidLevel > 1) {
-                str += '<div>' +
-                i8ln('Level') + ' ' +
-                raidLevel + ' ' +
-                i8ln('or higher')
+                str = str.replace('raid battle(s)', 'level ' + raidLevel + ' raid or higher')
             }
-            str += '</div>'
+            if (item['quest_condition_type_1'] === 6) {
+                str = str.replace('Complete', 'Win')
+            }
         } else if (item['quest_condition_type'] === 8) {
-            str += '<div>' +
-            i8ln('Condition:') + ' ' +
-            i8ln(throwType[questinfo['throw_type_id']]) + ' ' +
-            i8ln('throw') +
-            '</div>'
+            str = str.replace('throw(s)', i8ln(throwType[questinfo['throw_type_id']] + ' throw(s)'))
+            if (item['quest_condition_type_1'] === 15) {
+                str = str.replace('throw(s)', 'curve throw(s)')
+            }
         } else if (item['quest_condition_type'] === 9) {
-            str += '<div>' +
-            i8ln('Condition:') + ' ' +
-            i8ln('Win gym battle') +
-            '</div>'
+            str = str.replace('Complete', 'Win')
         } else if (item['quest_condition_type'] === 10) {
-            str += '<div>' +
-            i8ln('Condition:') + ' ' +
-            i8ln('Super Effective Charge') +
-            '</div>'
+            str = str.replace('Complete', 'Use a super effective charge move in ')
         } else if (item['quest_condition_type'] === 14 && typeof questinfo['throw_type_id'] === 'undefined') {
-            str += '<div>' +
-            i8ln('Condition:') + ' ' +
-            i8ln('Throws in a row') +
-            '</div>'
+            str = str.replace('throw(s)', 'throw(s) in a row')
+            if (item['quest_condition_type_1'] === 15) {
+                str = str.replace('throw(s)', 'curve throw(s)')
+            }
         } else if (item['quest_condition_type'] === 14) {
-            str += '<div>' +
-            i8ln('Condition:') + ' ' +
-            i8ln(throwType[questinfo['throw_type_id']]) + ' ' +
-            i8ln('throws in a row') +
-            '</div>'
+            str = str.replace('throw(s)', i8ln(throwType[questinfo['throw_type_id']] + ' throw(s) in a row'))
+            if (item['quest_condition_type_1'] === 15) {
+                str = str.replace('throw(s)', 'curve throw(s)')
+            }
         } else if (item['quest_condition_type'] !== 0) {
-            console.log('Undefined quest type ' + item['quest_condition_type'])
+            console.log('Undefined condition type ' + item['quest_condition_type'])
             str += '<div>Undefined condition</div>'
         }
         if (item['quest_reward_type'] === 3) {
@@ -3292,15 +3283,15 @@ function openRaidModal(event) { // eslint-disable-line no-unused-vars
 }
 
 function openQuestModal(event) { // eslint-disable-line no-unused-vars
-    $(function() {
+    $(function () {
         var $questTypeList = $('.quest-modal #questTypeList')
         $questTypeList.select2({
             placeholder: i8ln('Quest type'),
             closeOnSelect: true,
             minimumResultsForSearch: Infinity,
             maximumSelectionSize: 1
-	})
-        $questTypeList.change(function() {
+        })
+        $questTypeList.change(function () {
             var questType = Number($(this).find('option:selected').val())
             if (questType > 0) {
                 $('.quest-modal #questAmountList').show()
@@ -3362,13 +3353,13 @@ function openQuestModal(event) { // eslint-disable-line no-unused-vars
             closeOnSelect: true,
             minimumResultsForSearch: Infinity,
             maximumSelectionSize: 1
-	})
+        })
         $('.quest-modal #pokeCatchList').next('.select2-container').hide()
         $('.quest-modal #typeCatchList').next('.select2-container').hide()
         $('.quest-modal #raidLevelList').next('.select2-container').hide()
         $('.quest-modal #throwTypeList').next('.select2-container').hide()
         $('.quest-modal #curveThrow').next('.select2-container').hide()
-        $conditionTypeList.change(function() {
+        $conditionTypeList.change(function () {
             var conditionType = Number($(this).find('option:selected').val())
             if (conditionType === 1) {
                 $('.quest-modal #pokeCatchList').next('.select2-container').hide()
@@ -3408,7 +3399,7 @@ function openQuestModal(event) { // eslint-disable-line no-unused-vars
             closeOnSelect: true,
             minimumResultsForSearch: Infinity,
             maximumSelectionSize: 1
-	})
+        })
 
         var $itemQuestList = $('.quest-modal #itemQuestList')
         $itemQuestList.select2({
@@ -3416,7 +3407,7 @@ function openQuestModal(event) { // eslint-disable-line no-unused-vars
             closeOnSelect: true,
             minimumResultsForSearch: Infinity,
             maximumSelectionSize: 1
-	})
+        })
 
         var $itemAmountList = $('.quest-modal #itemAmountList')
         $itemAmountList.select2({
@@ -3424,7 +3415,7 @@ function openQuestModal(event) { // eslint-disable-line no-unused-vars
             closeOnSelect: true,
             minimumResultsForSearch: Infinity,
             maximumSelectionSize: 1
-	})
+        })
 
         var $dustQuestList = $('.quest-modal #dustQuestList')
         $dustQuestList.select2({
@@ -3432,20 +3423,20 @@ function openQuestModal(event) { // eslint-disable-line no-unused-vars
             closeOnSelect: true,
             minimumResultsForSearch: Infinity,
             maximumSelectionSize: 1
-	})
+        })
 
         var $pokeQuestList = $('.quest-modal #pokeQuestList')
         $pokeQuestList.select2({
             placeholder: i8ln('Pokemon encounter'),
             closeOnSelect: true,
             maximumSelectionSize: 1
-	})
+        })
         $('.quest-modal #itemQuestList').next('.select2-container').hide()
         $('.quest-modal #itemAmountList').next('.select2-container').hide()
         $('.quest-modal #dustQuestList').next('.select2-container').hide()
         $('.quest-modal #pokeQuestList').next('.select2-container').hide()
 
-        $rewardTypeList.change(function() {
+        $rewardTypeList.change(function () {
             var rewardType = $(this).find('option:selected').val()
             if (rewardType === '2') {
                 $('.quest-modal #itemQuestList').next('.select2-container').show()
