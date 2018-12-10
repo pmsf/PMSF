@@ -56,6 +56,10 @@ if (strtolower($map) === "rdm") {
     if (strtolower($fork) === "default") {
         $submit = new \Submit\RDM();
     }
+} else if (strtolower($map) === "monocle") {
+    if (strtolower($fork) === "alternate") {
+        $submit = new \Submit\Monocle();
+    }
 }
 
 if ( $action === "raid" ) {

@@ -2,7 +2,7 @@
 
 namespace Submit;
 
-class RDM extends Submit
+class Monocle extends Submit
 {
 	public function submit_raid($pokemonId, $gymId, $eggTime, $monTime, $loggedUser)
 		{
@@ -27,7 +27,7 @@ class RDM extends Submit
 			$forty_five = 45 * 60;
 			$hour       = 3600;
 
-			$gym         = $db->get( "gym", [ 'id', 'name', 'lat', 'lon', 'team_id' ], [ 'id' => $gymId ] );
+			$gym         = $db->get( "forts", [ 'id', 'name', 'lat', 'lon' ], [ 'external_id' => $gymId ] );
 			$gymId       = $gym['id'];
 			$add_seconds = ( $monTime * 60 );
 			$time_spawn  = time() - $forty_five;
@@ -40,51 +40,55 @@ class RDM extends Submit
 			$time_battle = time() + $add_seconds;
 			$time_end    = $time_battle + $forty_five;
 			$cols = [
-				'raid_level'       	   => $level,
-				'raid_spawn_timestamp' 	   => $time_spawn,
-				'raid_battle_timestamp'	   => $time_battle,
-				'raid_end_timestamp'   	   => $time_end,
-				'raid_pokemon_cp'  	   => 0,
-				'raid_pokemon_id'  	   => 0,
-				'raid_pokemon_move_1'      => 0,
-				'raid_pokemon_move_2'      => 0,
-			];
-			$where = [
-				'id'	=> $gymId
+				'fort_id'		   => $gymId,
+				'level'		       	   => $level,
+				'time_spawn'	 	   => $time_spawn,
+				'time_battle'		   => $time_battle,
+				'time_end' 	  	   => $time_end,
+				'cp'		  	   => 0,
+				'pokemon_id' 	 	   => 0,
+				'move_1'		   => 0,
+				'move_2'		   => 0,
+				'submitted_by'		   => $loggedUser
 			];
 			if ( array_key_exists( $pokemonId, $raidBosses ) ) {
 				$time_end = time() + $add_seconds;
 				// fake the battle start and spawn times cuz rip hashing :(
-				$time_battle         		= $time_end - $forty_five;
-				$time_spawn         		= $time_battle - $hour;
-				$cols['raid_pokemon_id']  	= $pokemonId;
-				$cols['raid_pokemon_move_1']    = null;
-				$cols['raid_pokemon_move_2']    = null;
-				$cols['raid_level']       	= array_key_exists('level',$raidBosses[ $pokemonId ]) ? $raidBosses[ $pokemonId ]['level'] : 1;
-				$cols['raid_pokemon_cp']        = array_key_exists('cp',$raidBosses[ $pokemonId ]) ? $raidBosses[ $pokemonId ]['cp'] : 1;
-				$cols['raid_spawn_timestamp']  	= $time_spawn;
-				$cols['raid_battle_timestamp'] 	= $time_battle;
-				$cols['raid_end_timestamp']    	= $time_end;
-			} elseif ( $cols['raid_level'] === 0 ) {
+				$time_battle         	= $time_end - $forty_five;
+				$time_spawn         	= $time_battle - $hour;
+				$cols['pokemon_id']  	= $pokemonId;
+				$cols['move_1']    	= null;
+				$cols['move_2']    	= null;
+				$cols['level']       	= array_key_exists('level',$raidBosses[ $pokemonId ]) ? $raidBosses[ $pokemonId ]['level'] : 1;
+				$cols['cp']        	= array_key_exists('cp',$raidBosses[ $pokemonId ]) ? $raidBosses[ $pokemonId ]['cp'] : 1;
+				$cols['time_spawn']  	= $time_spawn;
+				$cols['time_battle'] 	= $time_battle;
+				$cols['time_end']    	= $time_end;
+			} elseif ( $cols['level'] === 0 ) {
 				// no boss or egg matched
 				http_response_code( 500 );
 			}
-			$db->update( 'gym', $cols, $where );
+			$db->query( 'DELETE FROM raids WHERE fort_id = :gymId', [ ':gymId' => $gymId ] );
+			$db->insert( 'raids', $cols );
+			$db->query( "UPDATE fort_sightings SET updated = :updated WHERE fort_id = :gymId", [
+				'updated' => time(),
+				':gymId'  => $gymId
+			] );
 
 			if ( $sendWebhook === true ) {
 				$webhook = [
 					'message' => [
-						'gym_id'     => $gym['id'],
-						'pokemon_id' => $cols['raid_pokemon_id'],
-						'cp'         => $cols['raid_pokemon_cp'],
+						'gym_id'     => $gym['external_id'],
+						'pokemon_id' => $cols['pokemon_id'],
+						'cp'         => $cols['cp'],
 						'move_1'     => 133,
 						'move_2'     => 133,
-						'level'      => $cols['raid_level'],
+						'level'      => $cols['level'],
 						'latitude'   => $gym['lat'],
 						'longitude'  => $gym['lon'],
 						'start'      => $time_battle,
 						'end'        => $time_end,
-						'team_id'    => $gym['team_id'],
+						'team_id'    => 0,
 						'name'       => $gym['name']
 					],
 					'type'    => 'raid'
@@ -107,23 +111,16 @@ class RDM extends Submit
 			if ( ! empty( $lat ) && ! empty( $lon ) && ! empty( $pokemonId ) ) {
 				$spawnID = randomNum();
 				$pokecols    = [
-					'id'                    => $spawnID,
-					'spawn_id'              => $spawnID,
-					'lon'                   => $lon,
-					'lat'                   => $lat,
-					'pokemon_id'            => $pokemonId,
-					'expire_timestamp'      => time() + $pokemonTimer,
-					'updated'               => time(),
-					'weather' 		=> 0,
+					'encounter_id'                  => $spawnID,
+					'spawn_id'              	=> $spawnID,
+					'lon'                   	=> $lon,
+					'lat'                   	=> $lat,
+					'pokemon_id'            	=> $pokemonId,
+					'expire_timestamp'      	=> time() + $pokemonTimer,
+					'updated'               	=> time(),
+					'weather_boosted_condition' 	=> 0,
 				];
-				$pointcols   = [
-					'id'		=> $spawnID,
-					'lat'		=> $lat,
-					'lon'		=> $lon,
-					'updated'	=> time()
-				];
-				$db->insert( "spawnpoint", $pointcols );
-				$db->insert( "pokemon", $pokecols );
+				$db->insert( "sightings", $pokecols );
 			}
 			if ( $sendWebhook === true ) {
 				$webhook = [
@@ -147,7 +144,7 @@ class RDM extends Submit
 						'pokemon_level'                     => null,
 						'seconds_until_despawn'             => $pokemonTimer,
 						'verified'                          => true,
-						'weather_boosted_condition'         => $pokecols['weather']
+						'weather_boosted_condition'         => $pokecols['weather_boosted_condition']
 					],
 					'type'    => 'pokemon'
 				];
@@ -166,12 +163,13 @@ class RDM extends Submit
 			if ( ! empty( $lat ) && ! empty( $lon ) && ! empty( $gymName ) ) {
 				$gymId = randomGymId();
 				$cols  = [
-					'id' 	      => $gymId,
+					'external_id' => $gymId,
 					'lat'         => $lat,
 					'lon'         => $lon,
-					'name'        => $gymName
+					'name'        => $gymName,
+					'edited_by'   => $loggedUser
 				];
-				$db->insert( 'gym', $cols );
+				$db->insert( 'forts', $cols );
 				if ( $noDiscordSubmitLogChannel === false ) {
 					$data = array("content" => '```Added gym with id "' . $gymId . '" and name: "' . $gymName . '"```' . $submitMapUrl . '/?lat=' . $lat . '&lon=' . $lon . '&zoom=18', "username" => $loggedUser);
 					sendToWebhook($discordSubmitLogChannelUrl, ($data));
@@ -186,28 +184,29 @@ class RDM extends Submit
 				die();
 			}
 			if ( ! empty( $gymId ) ) {
-				$fortName = $db->get( "gym", [ 'name' ], [ 'id' => $gymId ] );
-				$park = $db->get( "gym", [ 'ex_raid_eligible' ], [ 'id' => $gymId ] );
-				if ( intval($park['ex_raid_eligible']) === 0 ) {
+				$fortName = $db->get( "forts", [ 'name' ], [ 'external_id' => $gymId ] );
+				$fortid = $db->get( "forts", [ 'id' ], [ 'external_id' => $gymId ] );
+				$park = $db->get( "forts", [ 'park' ], [ 'external_id' => $gymId ] );
+				if ( empty($park['park'])) {
 					$cols = [
-						'ex_raid_eligible'       => 1
+						'park'       => 'Park'
 					];
 					$where    = [
-						'id' => $gymId
+						'external_id' => $gymId
 					];
-					$db->update( "gym", $cols, $where );
+					$db->update( "forts", $cols, $where );
 					if ( $noDiscordSubmitLogChannel === false ) {
 						$data = array("content" => '```Marked gym with id "' . $gymId . '" and name: "' . $fortName['name'] . '" as EX eligible```', "username" => $loggedUser);
 						sendToWebhook($discordSubmitLogChannelUrl, ($data));
 					}
 				} else {
 					$cols = [
-						'ex_raid_eligible'       => 0
+						'park'       => null
 					];
 					$where    = [
-						'id' => $gymId
+						'external_id' => $gymId
 					];
-					$db->update( "gym", $cols, $where );
+					$db->update( "forts", $cols, $where );
 					if ( $noDiscordSubmitLogChannel === false ) {
 						$data = array("content" => '```Marked gym with id "' . $gymId . '" and name: "' . $fortName['name'] . '" as non EX eligible```', "username" => $loggedUser);
 						sendToWebhook($discordSubmitLogChannelUrl, ($data));
@@ -223,15 +222,28 @@ class RDM extends Submit
 				die();
 			}
 			if ( ! empty( $gymId ) ) {
-				$fortName = $db->get( "forts", [ 'name' ], [ 'external_id' => $gymId ] );    
-				$db->delete( 'gym', [
-					"AND" => [
-						'id' => $gymId
-					]
-				] );
-				if ( $noDiscordSubmitLogChannel === false ) {
-					$data = array("content" => '```Deleted gym with id "' . $gymId . '" and name: "' . $fortName['name'] . '"```', "username" => $loggedUser);
-					sendToWebhook($discordSubmitLogChannelUrl, ($data));
+				$fortid = $db->get( "forts", [ 'id' ], [ 'external_id' => $gymId ] );
+				$fortName = $db->get( "forts", [ 'name' ], [ 'external_id' => $gymId ] );
+				if ( $fortid ) {
+					$db->delete( 'fort_sightings', [
+						"AND" => [
+							'fort_id' => $fortid['id']
+						]
+					]);
+					$db->delete( 'raids', [
+						"AND" => [
+							'fort_id' => $fortid['id']
+						]
+					]);
+					$db->delete( 'forts', [
+						"AND" => [
+							'external_id' => $gymId
+						]
+					]);
+					if ( $noDiscordSubmitLogChannel === false ) {
+						$data = array("content" => '```Deleted gym with id "' . $gymId . '" and name: "' . $fortName['name'] . '"```', "username" => $loggedUser);
+						sendToWebhook($discordSubmitLogChannelUrl, ($data));
+					}
 				}
 			}
 		}
@@ -245,16 +257,14 @@ class RDM extends Submit
 			if ( ! empty( $lat ) && ! empty( $lon ) && ! empty( $pokestopName ) ) {
 				$pokestopId = randomGymId();
 				$cols       = [
-					'id'          			=> $pokestopId,
+					'external_id'  			=> $pokestopId,
 					'lat'         			=> $lat,
 					'lon'         			=> $lon,
-					'lure_expire_timestamp'		=> 0,
-					'last_modified_timestamp'	=> time(),
-					'enabled'      			=> 0,
 					'name'        			=> $pokestopName,
-					'updated'     			=> time()
+					'updated'     			=> time(),
+					'edited_by'			=> $loggedUser
 				];
-				$db->insert( "pokestop", $cols );
+				$db->insert( "pokestops", $cols );
 				if ( $noDiscordSubmitLogChannel === false ) {
 					$data = array("content" => '```Added pokestop with id "' . $pokestopId . '" and gave it the new name: "' . $pokestopName . '"```' . $submitMapUrl . '/?lat=' . $lat . '&lon=' . $lon . '&zoom=18 ', "username" => $loggedUser);
 					sendToWebhook($discordSubmitLogChannelUrl, ($data));
@@ -271,12 +281,13 @@ class RDM extends Submit
 			if ( ! empty( $pokestopName ) && ! empty( $pokestopId ) ) {
 				$cols     = [
 					'name'        => $pokestopName,
-					'updated'     => time()
+					'updated'     => time(),
+					'edited_by'   => $loggedUser
 				];
 				$where    = [
-					'id' => $pokestopId
+					'external_id' => $pokestopId
 				];
-				$db->update( "pokestop", $cols, $where );
+				$db->update( "pokestops", $cols, $where );
 				if ( $noDiscordSubmitLogChannel === false ) {
 					$data = array("content" => '```Updated pokestop with id "' . $pokestopId . '" and gave it the new name: "' . $pokestopName . '" . ```', "username" => $loggedUser);
 					sendToWebhook($discordSubmitLogChannelUrl, ($data));
@@ -290,11 +301,11 @@ class RDM extends Submit
 				http_response_code( 401 );
 				die();
 			}
-			$pokestopName = $db->get( "pokestop", [ 'name' ], [ 'id' => $pokestopId ] );
+			$pokestopName = $db->get( "pokestops", [ 'name' ], [ 'external_id' => $pokestopId ] );
 			if ( ! empty( $pokestopId ) ) {
-				$db->delete( 'pokestop', [
+				$db->delete( 'pokestops', [
 					"AND" => [
-						'id' => $pokestopId
+						'external_id' => $pokestopId
 					]
 				] );
 				if ( $noDiscordSubmitLogChannel === false ) {
@@ -310,7 +321,7 @@ class RDM extends Submit
 				http_response_code( 401 );
 				die();
 			}
-			$gym = $db->get( "pokestop", [ 'lat', 'lon', 'name', 'url' ], [ 'id' => $pokestopId ] );
+			$gym = $db->get( "pokestops", [ 'lat', 'lon', 'name', 'url' ], [ 'external_id' => $pokestopId ] );
 			if ( ! empty( $pokestopId ) ) {
 				$cols     = [
 					'id'  => $pokestopId,
@@ -319,10 +330,10 @@ class RDM extends Submit
 					'name'         => $gym['name'],
 					'url'          => $gym['url']
 				];
-				$db->insert( "gym", $cols );
-				$db->delete( 'pokestop', [
+				$db->insert( "forts", $cols );
+				$db->delete( 'pokestops', [
 					"AND" => [
-						'id' => $pokestopId
+						'external_id' => $pokestopId
 					]
 				] );
 				if ( $noDiscordSubmitLogChannel === false ) {
@@ -338,7 +349,7 @@ class RDM extends Submit
 				http_response_code( 401 );
 				die();
 			}
-			$pokestopName = $db->get( "pokestop", [ 'name', 'lat', 'lon', 'url', 'id' ], [ 'id' => $pokestopId ] );
+			$pokestopName = $db->get( "pokestops", [ 'name', 'lat', 'lon', 'url', 'external_id' ], [ 'external_id' => $pokestopId ] );
 			if ( ! empty( $pokestopId ) && ! empty( $questType ) && ! empty( $rewardType ) ) {
 				if ($conditionType === '1') {
 					$jsonCondition = json_encode(array(
@@ -435,12 +446,12 @@ class RDM extends Submit
 					'quest_target'		=> $questTarget,
 					'quest_conditions'	=> ! empty($jsonCondition) ? '[' . $jsonCondition . ']' : '[]',
 					'quest_rewards'		=> '[' . $jsonRewards . ']',
-					'quest_template'	=> 'manual_added_challenge'
+					'quest_submitted_by'	=> $loggedUser
 				];
 				$where = [
-					'id'			=> $pokestopId
+					'external_id'		=> $pokestopId
 				];
-				$db->update( "pokestop", $cols, $where );
+				$db->update( "pokestops", $cols, $where );
 
 			}
 		}
@@ -454,14 +465,14 @@ class RDM extends Submit
 			$portal = $manualdb->get( "ingress_portals", [ 'lat', 'lon', 'name', 'url' ], [ 'external_id' => $portalId ] );
 			if ( ! empty( $portalId ) ) {
 				$cols     = [
-					'id'  	       => $portalId,
+					'external_id'  => $portalId,
 					'lat'          => $portal['lat'],
 					'lon'          => $portal['lon'],
 					'name'         => $portal['name'],
 					'url'          => $portal['url'],
 					'updated'      => time()
 				];
-				$db->insert( "pokestop", $cols );
+				$db->insert( "pokestops", $cols );
 				if ( $noDiscordSubmitLogChannel === false ) {
 					$data = array("content" => '```Converted portal with id "' . $portalId . '." New Pokestop: "' . $portal['name'] . '". ```' . $submitMapUrl . '/?lat=' . $portal['lat'] . '&lon=' . $portal['lon'] . '&zoom=18 ', "username" => $loggedUser);
 					sendToWebhook($discordSubmitLogChannelUrl, ($data));
@@ -478,14 +489,13 @@ class RDM extends Submit
 			$portal = $manualdb->get( "ingress_portals", [ 'lat', 'lon', 'name', 'url' ], [ 'external_id' => $portalId ] );
 			if ( ! empty( $portalId ) ) {
 				$cols     = [
-					'id'  	       => $portalId,
+					'external_id'  => $portalId,
 					'lat'          => $portal['lat'],
 					'lon'          => $portal['lon'],
 					'name'         => $portal['name'],
-					'url'          => $portal['url'],
-					'updated'      => time()
+					'url'          => $portal['url']
 				];
-				$db->insert( "gym", $cols );
+				$db->insert( "forts", $cols );
 				if ( $noDiscordSubmitLogChannel === false ) {
 					$data = array("content" => '```Converted portal with id "' . $portalId . '." New Gym: "' . $portal['name'] . '". ```' . $submitMapUrl . '/?lat=' . $portal['lat'] . '&lon=' . $portal['lon'] . '&zoom=18 ', "username" => $loggedUser);
 					sendToWebhook($discordSubmitLogChannelUrl, ($data));
