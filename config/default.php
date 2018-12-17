@@ -423,5 +423,5 @@ $enableDebug = false;
 //-----------------------------------------------------
 // DATABASE CONFIG
 //-----------------------------------------------------
-$map = "monocle";
-$fork = "alternate";                                                  // default/asner/sloppy
+$map = "rdm";
+$fork = "default";                                                  // default/asner/sloppy

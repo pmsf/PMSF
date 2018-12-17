@@ -427,8 +427,8 @@ $enableDebug = false;
 //-----------------------------------------------------
 // DATABASE CONFIG
 //-----------------------------------------------------
-$map = "monocle";                                                     // monocle/rdm
-$fork = "alternate";                                                  // default/asner/sloppy
+$map = "rdm";                                                     // monocle/rdm
+$fork = "default";                                                  // default/asner/sloppy
 
 $db = new Medoo([// required
     'database_type' => 'mysql',                                    
@@ -443,18 +443,18 @@ $db = new Medoo([// required
     //'socket' => /path/to/socket/,
 ]);
 
-$manualdb = new Medoo([// required
-    'database_type' => 'mysql',                                    
-    'database_name' => 'Monocle',
-    'server' => '127.0.0.1',
-    'username' => 'database_user',
-    'password' => 'database_password',
-    'charset' => 'utf8mb4',
+//$manualdb = new Medoo([// required
+//    'database_type' => 'mysql',
+//    'database_name' => 'Monocle',
+//    'server' => '127.0.0.1',
+//    'username' => 'database_user',
+//    'password' => 'database_password',
+//    'charset' => 'utf8mb4',
 
     // [optional]
     //'port' => 5432,                                               // Comment out if not needed, just add // in front!
     //'socket' => /path/to/socket/,
-]);
+//]);
 
 if(file_exists('config/access-config.php'))
     include 'config/access-config.php';
