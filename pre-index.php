@@ -254,7 +254,7 @@ if ( $blockIframe ) {
                     header('Location: ./logout.php');
                 }
 
-                echo "<span style='color: {$color};'>" . substr($_SESSION['user']->user, 0, 30) . "...</span>";
+                echo "<span style='color: {$color};'>" . substr($_SESSION['user']->user, 0, 3) . "...</span>";
             } else {
                 echo "<a href='./user'>" . i8ln('Login') . "</a>";
             }
