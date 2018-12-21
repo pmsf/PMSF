@@ -1,0 +1,34 @@
+{
+  "0": {
+    "prototext": "UNSET",
+    "text": "Unset"
+  },
+  "1": {
+    "prototext": "EXPERIENCE",
+    "text": "Experience points"
+  },
+  "2": {
+    "prototext": "ITEM",
+    "text": "Items"
+  },
+  "3": {
+    "prototext": "STARDUST",
+    "text": "Stardust"
+  },
+  "4": {
+    "prototext": "CANDY",
+    "text": "Candy"
+  },
+  "5": {
+    "prototext": "AVATAR_CLOTHING",
+    "text": "Avatar clothing"
+  },
+  "6": {
+    "prototext": "QUEST",
+    "text": "Quest"
+  },
+  "7": {
+    "prototext": "POKEMON_ENCOUNTER",
+    "text": "Pokémon encounter"
+  }
+}

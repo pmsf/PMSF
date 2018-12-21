@@ -1,104 +1,56 @@
 <?php
-include( 'config/config.php' );
-global $map, $fork, $db, $noSearch, $noGyms, $noPokestops, $noRaids, $defaultUnit;
-if ( $noSearch === true || ( $noGyms && $noRaids && $noPokestops ) ) {
+include('config/config.php');
+global $map, $fork;
+
+if ( $noSearch === true ) {
     http_response_code( 401 );
     die();
 }
+$useragent = isset($_SERVER['HTTP_USER_AGENT']) ? $_SERVER['HTTP_USER_AGENT'] : '';
+if (preg_match("/curl|libcurl/", $useragent)) {
+    http_response_code(400);
+    die();
+}
+$data = array();
 $term = ! empty( $_POST['term'] ) ? $_POST['term'] : '';
 $action = ! empty( $_POST['action'] ) ? $_POST['action'] : '';
 $lat = ! empty( $_POST['lat'] ) ? $_POST['lat'] : '';
 $lon = ! empty( $_POST['lon'] ) ? $_POST['lon'] : '';
+
 $dbname = '';
-if ( $action === "pokestops" ) {
-    $dbname = "pokestops";
-} elseif ( $action === "forts" ) {
-    $dbname = "forts";
-} elseif ( $action === "reward" ) {
-    $dbname = "pokestops";
-} elseif ( $action === "nests" ) {
-    $dbname = "nests";
-}
-
-if ( $dbname !== '' ) {
-    if ( $action === "reward" ) {
-	    
-        $json = file_get_contents( 'static/dist/data/rewards.min.json' );
-        $rewards = json_decode( $json, true );
-        $resids = [];
-        foreach($rewards as $k => $reward){
-            if( $k > 1500){
-                break;
-            }
-            if(strpos(strtolower($reward['name']), strtolower($term)) !== false){
-                $resids[] = $k;
-                break;
-            }
+if (strtolower($map) === "rdm") {
+    if (strtolower($fork) === "default") {
+	if ( $action === "pokestops" ) {
+	    $dbname = "pokestop";
+	} elseif ( $action === "forts" ) {
+            $dbname = "gym";
         }
-        if ( $db->info()['driver'] === 'pgsql' ) {
-            $query = "SELECT id,external_id,name,lat,lon,url,quest_id,reward_id, ROUND(cast( 3959 * acos( cos( radians(:lat) ) * cos( radians( lat ) ) * cos( radians( lon ) - radians(:lon) ) + sin( radians(:lat) ) * sin( radians( lat ) ) ) as numeric),2) AS distance FROM " . $dbname . " WHERE LOWER(reward) LIKE :name ORDER BY distance LIMIT 10";
-        } else {
-            $query = "SELECT id,external_id,name,lat,lon,url,quest_id,reward_id, ROUND(( 3959 * acos( cos( radians(:lat) ) * cos( radians( lat ) ) * cos( radians( lon ) - radians(:lon) ) + sin( radians(:lat) ) * sin( radians( lat ) ) ) ),2) AS distance FROM pokestops WHERE reward_id IN (" . implode(',',$resids) . ") ORDER BY distance LIMIT 10";
-        }
-	$data = $db->query($query,[ ':lat' => $lat, ':lon' => $lon])->fetchAll();
-	foreach($data as $k => $r){
-            $data[$k]['reward'] = $rewards[$r['reward_id']]['name'];
-            if($defaultUnit === "km"){
-                $data[$k]['distance'] = round($data[$k]['distance'] * 1.60934,2);
-            }
-        }
-    } elseif ( $action === "nests" ) {
-
-        $json = file_get_contents( 'static/dist/data/pokemon.min.json' );
-        $mons = json_decode( $json, true );
-        $resids = [];
-        foreach($mons as $k => $mon){
-            if( $k > 386){
-                break;
-            }
-            if(strpos(strtolower($mon['name']), strtolower($term)) !== false){
-                $resids[] = $k;
-            } else{
-                foreach($mon['types'] as $t){
-                    if(strpos(strtolower($t['type']), strtolower($term)) !== false){
-                        $resids[] = $k;
-                        break;
-                    }
-                }
-            }
-        }
-        if ( $db->info()['driver'] === 'pgsql' ) {
-            $query = "SELECT nest_id,pokemon_id,lat,lon, ROUND(cast( 3959 * acos( cos( radians(:lat) ) * cos( radians( lat ) ) * cos( radians( lon ) - radians(:lon) ) + sin( radians(:lat) ) * sin( radians( lat ) ) ) as numeric),2) AS distance FROM nests WHERE pokemon_id IN (" . implode(',',$resids) . ") ORDER BY distance LIMIT 10";
-        } else{
-            $query = "SELECT nest_id,pokemon_id,lat,lon, ROUND(( 3959 * acos( cos( radians(:lat) ) * cos( radians( lat ) ) * cos( radians( lon ) - radians(:lon) ) + sin( radians(:lat) ) * sin( radians( lat ) ) ) ),2) AS distance FROM nests WHERE pokemon_id IN (" . implode(',',$resids) . ") ORDER BY distance LIMIT 10";
-        }
-        $data = $db->query($query,[ ':lat' => $lat, ':lon' => $lon])->fetchAll();
-        foreach($data as $k => $p){
-            $data[$k]['name'] = $mons[$p['pokemon_id']]['name'];
-            if($defaultUnit === "km"){
-                $data[$k]['distance'] = round($data[$k]['distance'] * 1.60934,2);
-            }
-        }
-    } else {
-
-        if ( $db->info()['driver'] === 'pgsql' ) {
-            $query = "SELECT id,external_id,name,lat,lon,url, ROUND(cast( 3959 * acos( cos( radians(:lat) ) * cos( radians( lat ) ) * cos( radians( lon ) - radians(:lon) ) + sin( radians(:lat) ) * sin( radians( lat ) ) ) as numeric),2) AS distance FROM " . $dbname . " WHERE LOWER(name) LIKE :name ORDER BY distance LIMIT 10";
-        } else {
-            $query = "SELECT id,external_id,name,lat,lon,url, ROUND(( 3959 * acos( cos( radians(:lat) ) * cos( radians( lat ) ) * cos( radians( lon ) - radians(:lon) ) + sin( radians(:lat) ) * sin( radians( lat ) ) ) ),2) AS distance FROM " . $dbname . " WHERE LOWER(name) LIKE :name ORDER BY distance LIMIT 10";
-        }
-        $data = $db->query( $query, [ ':name' => "%" . strtolower( $term ) . "%",  ':lat' => $lat, ':lon' => $lon ] )->fetchAll();
+        $search = new \Search\RDM();
     }
-
-    foreach($data as $k => $p){
-        if($defaultUnit === "km"){
-            $data[$k]['distance'] = round($data[$k]['distance'] * 1.60934,2);
+} else if (strtolower($map) === "monocle") {
+    if (strtolower($fork) === "alternate") {
+	if ( $action === "pokestops" ) {
+	    $dbname = "pokestops";
+	} elseif ( $action === "forts" ) {
+	    $dbname = "forts";
         }
+        $search = new \Search\Monocle();
     }
-    //var_dump($db->last());
-
-    // set content type
-    header( 'Content-Type: application/json' );
-
-    $jaysson = json_encode( $data );
-    echo $jaysson;
 }
+if ($action === "reward") {
+    $data["reward"] = $search->search_reward($lat, $lon, $term);
+}
+if ($action === "nests") {
+    $data["nests"] = $search->search_nests($lat, $lon, $term);
+} 
+if ($action === "portals") {
+    $data["portals"] = $search->search_portals($lat, $lon, $term);
+}
+if ($action === "pokestops") {
+    $data["pokestops"] = $search->search($dbname, $lat, $lon, $term);
+}
+if ($action === "forts") {
+$data["forts"] = $search->search($dbname, $lat, $lon, $term);
+}
+$jaysson = json_encode($data);
+echo $jaysson;

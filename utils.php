@@ -85,15 +85,15 @@ function generateRandomString($length = 8)
 
 function createUserAccount($user, $password, $newExpireTimestamp)
 {
-    global $db, $logfile;
+    global $manualdb, $logfile;
 
-    $count = $db->count("users", [
+    $count = $manualdb->count("users", [
         "user" => $user,
         "login_system" => 'native'
     ]);
 
     if ($count === 0) {
-        $getId = $db->count("users", [
+        $getId = $manualdb->count("users", [
             "login_system" => 'native'
         ]);
 
@@ -101,7 +101,7 @@ function createUserAccount($user, $password, $newExpireTimestamp)
             $getId++;
 
             $hashedPwd = password_hash($password, PASSWORD_DEFAULT);
-            $db->insert("users", [
+            $manualdb->insert("users", [
                 "id" => $getId,
                 "user" => $user,
                 "temp_password" => $hashedPwd,
@@ -123,18 +123,18 @@ function createUserAccount($user, $password, $newExpireTimestamp)
 
 function resetUserPassword($user, $password, $resetType)
 {
-    global $db, $logfile;
+    global $manualdb, $logfile;
     
     $hashedPwd = password_hash($password, PASSWORD_DEFAULT);
     if ($resetType === 0) {
-        $db->update("users", [
+        $manualdb->update("users", [
             "temp_password" => $hashedPwd
         ], [
             "user" => $user,
             "login_system" => 'native'
         ]);
     } elseif ($resetType === 1) {
-        $db->update("users", [
+        $manualdb->update("users", [
             "password" => null,
             "temp_password" => $hashedPwd
         ], [
@@ -142,7 +142,7 @@ function resetUserPassword($user, $password, $resetType)
             "login_system" => 'native'
         ]);
     } else {
-        $db->update("users", [
+        $manualdb->update("users", [
             "password" => $hashedPwd,
             "temp_password" => null
         ], [
@@ -156,9 +156,9 @@ function resetUserPassword($user, $password, $resetType)
 
 function updateExpireTimestamp($user, $login_system, $newExpireTimestamp)
 {
-    global $db, $logfile;
+    global $manualdb, $logfile;
 
-    $db->update("users", [
+    $manualdb->update("users", [
         "expire_timestamp" => $newExpireTimestamp
     ], [
         "user" => $user,
@@ -173,9 +173,9 @@ function updateExpireTimestamp($user, $login_system, $newExpireTimestamp)
 
 function destroyCookiesAndSessions()
 {
-    global $db;
+    global $manualdb;
     
-    $db->update("users", [
+    $manualdb->update("users", [
         "session_id" => null
     ], [
         "id" => $_SESSION['user']->id,
@@ -191,8 +191,8 @@ function destroyCookiesAndSessions()
 
 function validateCookie($cookie)
 {
-    global $db;
-    $info = $db->query(
+    global $manualdb;
+    $info = $manualdb->query(
         "SELECT id, user, password, login_system, expire_timestamp FROM users WHERE session_id = :session_id", [
             ":session_id" => $cookie
         ]
@@ -230,4 +230,24 @@ if (!function_exists('getallheaders'))
         }
         return $headers; 
     }
+}
+function randomGymId() {
+    $alphabet    = 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890';
+    $pass        = array(); //remember to declare $pass as an array
+    $alphaLength = strlen( $alphabet ) - 1; //put the length -1 in cache
+    for ( $i = 0; $i < 12; $i ++ ) {
+        $n      = rand( 0, $alphaLength );
+        $pass[] = $alphabet[ $n ];
+    }
+    return implode( $pass ); //turn the array into a string
+}
+function randomNum() {
+    $alphabet    = '1234567890';
+    $pass        = array(); //remember to declare $pass as an array
+    $alphaLength = strlen( $alphabet ) - 1; //put the length -1 in cache
+    for ( $i = 0; $i < 15; $i ++ ) {
+        $n      = rand( 0, $alphaLength );
+        $pass[] = $alphabet[ $n ];
+    }
+    return implode( $pass ); //turn the array into a string
 }

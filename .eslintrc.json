@@ -4,7 +4,7 @@
     "ecmaFeatures": {
       "jsx": false
     },
-    "ecmaVersion": 6,
+    "ecmaVersion": 8,
     "sourceType": "module"
   },
   "rules": {
@@ -37,8 +37,7 @@
   "globals": {
     "toastr": true,
     "google": true,
-    "RichMarker": true,
-    "RichMarkerPosition": true,
+    "gmapsKey": true,
     "mapData": true,
     "Store": true,
     "centerLat": true,
@@ -47,7 +46,12 @@
     "zoom": true,
     "encounterId": true,
     "minZoom": true,
+    "maxZoom": true,
     "maxLatLng": true,
+    "disableClusteringAtZoom": true,
+    "zoomToBoundsOnClick": true,
+    "maxClusterRadius": true,
+    "spiderfyOnMaxZoom": true,
     "showConfig": true,
     "pageLoaded": true,
     "countMarkers": true,
@@ -98,6 +102,7 @@
     "enableScannedLocations": true,
     "enableSpawnpoints": true,
     "enableRanges": true,
+    "enableNewPortals": true,
     "notifySound": true,
     "criesSound": true,
     "enableStartMe": true,
@@ -108,8 +113,6 @@
     "iconNotifySizeModifier": true,
     "locationStyle": true,
     "gymStyle": true,
-    "spriteFileLarge": true,
-    "weatherSpritesSrc": true,
     "icons": true,
     "getIv": true,
     "mapType": true,
@@ -140,7 +143,25 @@
     "noConvertPokestops": false,
     "enablePortals": true,
     "noDeletePortal": true,
+    "noConvertPortal": true,
+    "noToggleExGyms": true,
     "noPortals": false,
-    "copyrightSafe": true
+    "noS2Cells": true,
+    "enableS2Cells": true,
+    "enableLevel13Cells": true,
+    "enableLevel14Cells": true,
+    "enableLevel17Cells": true,
+    "copyrightSafe": true,
+    "iconpath": true,
+    "noRarityDisplay": true,
+    "noWeatherIcons": true,
+    "noWeatherShadow": true,
+    "hideQuestsPokemon": true,
+    "hideQuestsItem": true,
+    "noQuests": true,
+    "enableQuests": true,
+    "enableScanPolygon": true,
+    "turf": true,
+    "geoJSONfile": true
   }
 }

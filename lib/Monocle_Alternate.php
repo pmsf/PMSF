@@ -140,7 +140,7 @@ class Monocle_Alternate extends Monocle
         return $this->query_active($select, $conds, $params);
     }
 
-    public function get_stops($swLat, $swLng, $neLat, $neLng, $tstamp = 0, $oSwLat = 0, $oSwLng = 0, $oNeLat = 0, $oNeLng = 0, $lured = 0)
+    public function get_stops($qpeids, $qieids, $swLat, $swLng, $neLat, $neLng, $tstamp = 0, $oSwLat = 0, $oSwLng = 0, $oNeLat = 0, $oNeLng = 0, $lures, $quests, $dustamount)
     {
         $conds = array();
         $params = array();
@@ -159,17 +159,57 @@ class Monocle_Alternate extends Monocle
             $params[':oneLng'] = $oNeLng;
         }
 
-        if ($lured == 1) {
-            $conds[] = "expires > :time";
-            $params[':time'] = time();
-        }
-        elseif( $lured == 2){
-            $conds[] = "quest_id IS NOT NULL";
-        }
-
         if ($tstamp > 0) {
             $conds[] = "updated > :lastUpdated";
             $params[':lastUpdated'] = $tstamp;
+        }
+        return $this->query_stops($conds, $params);
+    }
+
+    public function get_stops_quest($qpreids, $qireids, $swLat, $swLng, $neLat, $neLng, $tstamp = 0, $oSwLat = 0, $oSwLng = 0, $oNeLat = 0, $oNeLng = 0, $lures, $quests, $dustamount, $reloaddustamount)
+    {
+        $conds = array();
+        $params = array();
+        $conds[] = "lat > :swLat AND lon > :swLng AND lat < :neLat AND lon < :neLng";
+        $params[':swLat'] = $swLat;
+        $params[':swLng'] = $swLng;
+        $params[':neLat'] = $neLat;
+        $params[':neLng'] = $neLng;
+        if (!empty($quests) && $quests === 'true') {
+            $tmpSQL = '';
+	    if (count($qpreids)) {
+                $pkmn_in = '';
+                $p = 1;
+                foreach ($qpreids as $qpreid) {
+                    $params[':pqry_' . $p . "_"] = $qpreid;
+                    $pkmn_in .= ':pqry_' . $p . "_,";
+                    $p++;
+                }
+                $pkmn_in = substr($pkmn_in, 0, -1);
+                $tmpSQL .= "quest_pokemon_id IN ( $pkmn_in )";
+            } else {
+                $tmpSQL .= "";
+            }
+            if (count($qireids)) {
+                $item_in = '';
+                $i = 1;
+                foreach ($qireids as $qireid) {
+                    $params[':iqry_' . $i . "_"] = $qireid;
+                    $item_in .= ':iqry_' . $i . "_,";
+                    $i++;
+                }
+                $item_in = substr($item_in, 0, -1);
+                $tmpSQL .= "quest_item_id IN ( $item_in )";
+            } else {
+                $tmpSQL .= "";
+            }
+            if ($reloaddustamount == "true") {
+                $tmpSQL .= "(json_extract(json_extract(`quest_rewards`,'$[*].type'),'$[0]') = 3 AND json_extract(json_extract(`quest_rewards`,'$[*].info.amount'),'$[0]') > :amount)";
+                $params[':amount'] = intval($dustamount);
+	    } else {
+                $tmpSQL .= "";
+            }
+            $conds[] = $tmpSQL;
         }
         return $this->query_stops($conds, $params);
     }
@@ -184,11 +224,19 @@ class Monocle_Alternate extends Monocle
         name AS pokestop_name,
         url,
         lat AS latitude,
-        lon AS longitude";
-        if (!$noManualQuests) {
-            $query .= ",quest_id,reward_id";
-        }
-        $query .= " FROM pokestops
+        lon AS longitude,
+        quest_type,
+        quest_timestamp,
+        quest_target,
+        quest_rewards,
+        quest_pokemon_id,
+        quest_item_id,
+        json_extract(json_extract(`quest_conditions`,'$[*].type'),'$[0]') AS quest_condition_type,
+        json_extract(json_extract(`quest_conditions`,'$[*].info'),'$[0]') AS quest_condition_info,
+        json_extract(json_extract(`quest_rewards`,'$[*].type'),'$[0]') AS quest_reward_type,
+        json_extract(json_extract(`quest_rewards`,'$[*].info'),'$[0]') AS quest_reward_info,
+        json_extract(json_extract(`quest_rewards`,'$[*].info.amount'),'$[0]') AS quest_reward_amount
+        FROM pokestops
         WHERE :conditions";
 
         $query = str_replace(":conditions", join(" AND ", $conds), $query);
@@ -200,7 +248,14 @@ class Monocle_Alternate extends Monocle
         foreach ($pokestops as $pokestop) {
             $pokestop["latitude"] = floatval($pokestop["latitude"]);
             $pokestop["longitude"] = floatval($pokestop["longitude"]);
-            $pokestop["lure_expiration"] = !empty($pokestop["lure_expiration"]) ? $pokestop["lure_expiration"] * 1000 : null;
+            $pokestop["url"] = str_replace("http://", "https://images.weserv.nl/?url=", $pokestop["url"]);
+            $pokestop["quest_type"] = intval($pokestop["quest_type"]);
+            $pokestop["quest_condition_type"] = intval($pokestop["quest_condition_type"]);
+            $pokestop["quest_reward_type"] = intval($pokestop["quest_reward_type"]);
+            $pokestop["quest_target"] = intval($pokestop["quest_target"]);
+            $pokestop["quest_pokemon_id"] = intval($pokestop["quest_pokemon_id"]);
+            $pokestop["quest_item_id"] = intval($pokestop["quest_item_id"]);
+            $pokestop["quest_reward_amount"] = intval($pokestop["quest_reward_amount"]);
             if ($noTrainerName === true) {
                 // trainer names hidden, so don't show trainer who lured
                 unset($pokestop["lure_user"]);
@@ -259,7 +314,7 @@ class Monocle_Alternate extends Monocle
             $params[':lastUpdated'] = $tstamp;
         }
         if ($exEligible === "true") {
-            $conds[] = "(parkid IS NOT NULL OR sponsor > 0)";
+            $conds[] = "(park IS NOT NULL OR sponsor > 0)";
         }
 
         return $this->query_gyms($conds, $params);
@@ -280,6 +335,7 @@ class Monocle_Alternate extends Monocle
         f.park,
         fs.team AS team_id,
         fs.guard_pokemon_id,
+        fs.guard_pokemon_form,
         fs.slots_available,
         r.level AS raid_level,
         r.pokemon_id AS raid_pokemon_id,
@@ -323,6 +379,7 @@ class Monocle_Alternate extends Monocle
             $gym["last_scanned"] = $gym["last_scanned"] * 1000;
             $gym["raid_start"] = $gym["raid_start"] * 1000;
             $gym["raid_end"] = $gym["raid_end"] * 1000;
+            $gym["url"] = str_replace("http://", "https://images.weserv.nl/?url=", $gym["url"]);
             $data[] = $gym;
 
             unset($gyms[$i]);
@@ -490,7 +547,7 @@ class Monocle_Alternate extends Monocle
 
     public function query_nests($conds, $params)
     {
-        global $db;
+        global $manualdb;
 
         $query = "SELECT nest_id,
         lat,
@@ -501,7 +558,7 @@ class Monocle_Alternate extends Monocle
         WHERE :conditions";
 
         $query = str_replace(":conditions", join(" AND ", $conds), $query);
-        $nests = $db->query($query, $params)->fetchAll(\PDO::FETCH_ASSOC);
+        $nests = $manualdb->query($query, $params)->fetchAll(\PDO::FETCH_ASSOC);
 
         $data = array();
         $i = 0;
@@ -556,7 +613,7 @@ class Monocle_Alternate extends Monocle
 
     public function query_communities($conds, $params)
     {
-        global $db;
+        global $manualdb;
 
         $query = "SELECT community_id,
         title,
@@ -576,7 +633,7 @@ class Monocle_Alternate extends Monocle
         WHERE :conditions";
 
         $query = str_replace(":conditions", join(" AND ", $conds), $query);
-        $communities = $db->query($query, $params)->fetchAll(\PDO::FETCH_ASSOC);
+        $communities = $manualdb->query($query, $params)->fetchAll(\PDO::FETCH_ASSOC);
 
         $data = array();
         $i = 0;
@@ -598,8 +655,9 @@ class Monocle_Alternate extends Monocle
         return $data;
     }
 
-    public function get_portals($swLat, $swLng, $neLat, $neLng, $tstamp = 0, $oSwLat = 0, $oSwLng = 0, $oNeLat = 0, $oNeLng = 0)
+    public function get_portals($swLat, $swLng, $neLat, $neLng, $tstamp = 0, $oSwLat = 0, $oSwLng = 0, $oNeLat = 0, $oNeLng = 0, $newportals = 0)
     {
+        global $markPortalsAsNew;
         $conds = array();
         $params = array();
 
@@ -615,7 +673,13 @@ class Monocle_Alternate extends Monocle
             $params[':oswLng'] = $oSwLng;
             $params[':oneLat'] = $oNeLat;
             $params[':oneLng'] = $oNeLng;
-        }
+	}
+
+	if ($newportals == 1) {
+            $conds[] = "imported > :lastImported";
+            $params[':lastImported'] = time() - $markPortalsAsNew;
+	}
+
         if ($tstamp > 0) {
             $conds[] = "updated > :lastUpdated";
             $params[':lastUpdated'] = $tstamp;
@@ -626,7 +690,7 @@ class Monocle_Alternate extends Monocle
 
     public function query_portals($conds, $params)
     {
-        global $db;
+        global $manualdb;
 
         $query = "SELECT external_id,
         lat,
@@ -634,18 +698,20 @@ class Monocle_Alternate extends Monocle
         name,
         url,
         updated,
+        imported,
         checked
         FROM ingress_portals
         WHERE :conditions";
 
         $query = str_replace(":conditions", join(" AND ", $conds), $query);
-        $portals = $db->query($query, $params)->fetchAll(\PDO::FETCH_ASSOC);
+        $portals = $manualdb->query($query, $params)->fetchAll(\PDO::FETCH_ASSOC);
 
         $data = array();
         $i = 0;
         foreach ($portals as $portal) {
             $portal["lat"] = floatval($portal["lat"]);
             $portal["lon"] = floatval($portal["lon"]);
+            $portal["url"] = str_replace("http://", "https://images.weserv.nl/?url=", $portal["url"]);
             $data[] = $portal;
 
             unset($portals[$i]);

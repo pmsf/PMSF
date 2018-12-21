@@ -6,7 +6,7 @@
 
 //======================================================================
 // PMSF - DEFAULT CONFIG FILE
-// https://github.com/Glennmen/PMSF
+// https://github.com/whitewillem/PMSF
 //======================================================================
 session_start();
 require_once(__DIR__ . '/../utils.php');
@@ -17,6 +17,13 @@ $libs[] = "Monocle_Asner.php";
 $libs[] = "Monocle_Alternate.php";
 $libs[] = "RocketMap.php";
 $libs[] = "RocketMap_Sloppy.php";
+$libs[] = "RDM.php";
+$libs[] = "search/Search.php";
+$libs[] = "search/Search.rdm.php";
+$libs[] = "search/Search.monocle_alternate.php";
+$libs[] = "submit/Submit.php";
+$libs[] = "submit/Submit.rdm.php";
+$libs[] = "submit/Submit.monocle_alternate.php";
 
 // Include libraries
 foreach ($libs as $file) {
@@ -30,25 +37,32 @@ setSessionCsrfToken();
 
 /* Location Settings */
 
-$startingLat = 37.7749295;                                          // Starting latitude
-$startingLng = -122.4194155;                                        // Starting longitude
+$startingLat = 52.084992;                                          // Starting latitude
+$startingLng = 5.302366;                                        // Starting longitude
 
-/* Anti scrape Settings */
+/* Zoom and Cluster Settings */
 
 $maxLatLng = 1;                                                     // Max latitude and longitude size (1 = ~110km, 0 to disable)
 $maxZoomOut = 0;                                                    // Max zoom out level (11 ~= $maxLatLng = 1, 0 to disable, lower = the further you can zoom out)
+$maxZoomIn = 18;                                                    // Max zoom in level 18 
+$disableClusteringAtZoom = 15;					    // Disable clustering above this value. 0 to disable
+$zoomToBoundsOnClick = 15;					    // Zoomlevel on clusterClick
+$maxClusterRadius = 30;						    // The maximum radius that a cluster will cover from the central marker (in pixels).
+$spiderfyOnMaxZoom = 'true';					    // Spiderfy cluster markers on click
+
+/* Anti scrape Settings */
 $enableCsrf = true;                                                 // Don't disable this unless you know why you need to :)
 $sessionLifetime = 43200;                                           // Session lifetime, in seconds
 $blockIframe = true;                                                // Block your map being loaded in an iframe
 
 /* Map Title + Language */
 
-$title = "PMSF Glennmen";                                           // Title to display in title bar
+$title = "PMSF Alt";                                                // Title to display in title bar
 $locale = "en";                                                     // Display language
 
-/* Google Maps Key */
+/* Google Maps ONLY USED FOR TILE LAYERS */
 
-$gmapsKey = "";                                                     // Google Maps API Key
+$gmapsKey = "";
 
 /* Google Analytics */
 
@@ -104,65 +118,39 @@ $daysMembershipPerQuantity = 31;                                    // How many 
 $sellyPage = '';                                                    // Link to selly purchase page for membership renewal.
 $sellyWebhookSecret = '';                                           // Add a secret key at https://selly.gg/settings to make sure the payment webhook is sent from selly to prevent fake payments.
                                                                     // Add the same key to the $sellyWebhookSecret variable.
+/* Blacklist Settings - Only available with Discord login */
+$userBlacklist = [''];                                                                // Array of user ID's that are always blocked from accessing the map
+$userWhitelist = [''];                                              // Array of user ID's that's allowed to bypass the server blacklist
+$serverWhitelist = [''];                                            // Array of server ID's. Your users will need to be in at least one of them
+$serverBlacklist = [''];                                            // Array of server ID's. A user that's a member of any of these and not in your user whitelist will be blocked
+$logFailedLogin = '';                                               // File location of where to store a log file of blocked users
 
 //-----------------------------------------------------
 // FRONTEND SETTINGS
 //-----------------------------------------------------
 
-if ($noNativeLogin === true && $noDiscordLogin == true ||  (($noNativeLogin === false || $noDiscordLogin === false) && !empty($_SESSION['user']->expire_timestamp) && $_SESSION['user']->expire_timestamp > time())) {
+/* Marker Settings */
+$noExcludeMinIV = true;                                        // true/false
+$noMinIV = true;                                               // true/false
+$noMinLevel = true;                                            // true/false
+$noHighLevelData = true;                                       // true/false
+$noRarityDisplay = false;                                      // true/false
+$noWeatherIcons = true;
+$noWeatherShadow = false;
 
-    /*
-        THESE SETTINGS WILL BE APPLIED IF:
-            - LOGIN IS DISABLED
-            - LOGIN IS ENABLED AND THE USER IS LOGGED ON
-    */
+/* Notification Settings */
+$noNotifyPokemon = false;                                       // true/false
+$noNotifyRarity = false;                                        // true/false
+$noNotifyIv = false;                                            // true/false
+$noNotifyLevel = false;                                         // true/false
+$noNotifyRaid = false;                                          // true/false
+$noNotifySound = false;                                         // true/false
+$noCriesSound = false;                                          // true/false
+$noNotifyBounce = false;                                        // true/false
+$noNotifyNotification = false;                                  // true/false
 
-    /* Marker Settings */
-    $noExcludeMinIV = false;                                        // true/false
-    $noMinIV = false;                                               // true/false
-    $noMinLevel = false;                                            // true/false
-    $noHighLevelData = false;                                       // true/false
-
-    /* Notification Settings */
-    $noNotifyPokemon = false;                                       // true/false
-    $noNotifyRarity = false;                                        // true/false
-    $noNotifyIv = false;                                            // true/false
-    $noNotifyLevel = false;                                         // true/false
-    $noNotifyRaid = false;                                          // true/false
-    $noNotifySound = false;                                         // true/false
-    $noCriesSound = false;                                          // true/false
-    $noNotifyBounce = false;                                        // true/false
-    $noNotifyNotification = false;                                  // true/false
-
-    /* Style Settings */
-    $iconNotifySizeModifier = 15;                                   // 0, 15, 30, 45
-} else {
-
-    /*
-        THESE SETTINGS WILL BE APPLIED IF:
-            - LOGIN IS ENABLED AND THE USER IS NOT A DONATOR
-    */
-
-    /* Marker Settings */
-    $noExcludeMinIV = true;                                         // true/false
-    $noMinIV = true;                                                // true/false
-    $noMinLevel = true;                                             // true/false
-    $noHighLevelData = true;                                        // true/false
-
-    /* Notification Settings */
-    $noNotifyPokemon = true;                                        // true/false
-    $noNotifyRarity = true;                                         // true/false
-    $noNotifyIv = true;                                             // true/false
-    $noNotifyLevel = true;                                          // true/false
-    $noNotifyRaid = true;                                           // true/false
-    $noNotifySound = true;                                          // true/false
-    $noCriesSound = true;                                           // true/false
-    $noNotifyBounce = true;                                         // true/false
-    $noNotifyNotification = true;                                   // true/false
-
-    /* Style Settings */
-    $iconNotifySizeModifier = 0;                                    // 0, 15, 30, 45
-}
+/* Style Settings */
+$iconNotifySizeModifier = 15;                                   // 0, 15, 30, 45
 
 /* Marker Settings */
 
@@ -172,7 +160,6 @@ $noPokemonNumbers = false;                                          // true/fals
 $noHidePokemon = false;                                             // true/false
 $hidePokemon = '[10, 13, 16, 19, 21, 29, 32, 41, 46, 48, 50, 52, 56, 74, 77, 96, 111, 133,
                   161, 163, 167, 177, 183, 191, 194, 168]';         // [] for empty
-
 $hidePokemonCoords = false;                                         // true/false
 
 $excludeMinIV = '[131, 143, 147, 148, 149, 248]';                   // [] for empty
@@ -182,9 +169,6 @@ $minLevel = '0';                                                    // "0" for e
 
 $noBigKarp = true;                                                 // true/false
 $noTinyRat = true;                                                 // true/false
-
-$noNests = false;                                                   // true/false
-$enableNests = 'false';                                             // true/false
 
 $noGyms = false;                                                    // true/false
 $enableGyms = 'false';                                              // true/false
@@ -203,17 +187,38 @@ $maxRaidLevel = 5;
 
 $noPokestops = false;                                               // true/false
 $enablePokestops = 'false';                                         // true/false
-$enableLured = 1;                                                   // O: all, 1: lured only
+$noLures = false;                                                   // true/false
+$enableLured = 'false';                                             // true/false
+$noQuests = false;                                                  // true/false
+$enableQuests = 'false';                                            // true/false
+$noQuestsItems = false;
+$noQuestsPokemon = false;
+$hideQuestsPokemon = '[]';  // Pokemon ids
+$excludeQuestsPokemon = [];  // Pokemon ids
+$hideQuestsItem = '[4, 5, 301, 401, 402, 403, 404, 501, 602, 603, 604, 702, 704, 708, 801, 901, 902, 903, 1001, 1002, 1401, 1402, 1403, 1404, 1405]';    // Item ids "See protos https://github.com/Furtif/POGOProtos/blob/master/src/POGOProtos/Inventory/Item/ItemId.proto"
+$excludeQuestsItem = [4, 5, 301, 401, 402, 403, 404, 501, 602, 603, 604, 702, 704, 708, 801, 901, 902, 903, 1001, 1002, 1401, 1402, 1403, 1404, 1405];
+$noItemNumbers = true;                                             // true/false
 
-$noScannedLocations = true;                                        // true/false
+// Manual quest hide options
+$hideQuestTypes = [0, 1, 2, 3, 12, 18, 19, 22, 24, 25];
+$hideRewardTypes = [0, 1, 4, 5, 6];
+$hideConditionTypes = [0, 4, 5, 11, 12, 13, 16, 17, 19, 20];
+// Manual quest show options
+$showEncounters = [201];
+$showItems = [1, 2, 3, 101, 102, 103, 104, 201, 202, 701, 703, 705, 706, 707, 1301];
+
+$noScannedLocations = true;                                         // true/false
 $enableScannedLocations = 'false';                                  // true/false
 
-$noSpawnPoints = true;                                             // true/false
+$noSpawnPoints = true;                                              // true/false
 $enableSpawnPoints = 'false';                                       // true/false
 
 $noRanges = false;                                                  // true/false
 $enableRanges = 'false';                                            // true/false
 
+$noScanPolygon = true;
+$enableScanPolygon = 'false';
+$geoJSONfile = 'custom/scannerarea.json';			    // path to geoJSON file create your own on http://geojson.io/ adjust filename
 /* Location & Search Settings */
 
 $noSearchLocation = false;                                          // true/false
@@ -233,29 +238,22 @@ $enableSpawnArea = 'false';                                         // true/fals
 /* Notification Settings */
 
 $notifyPokemon = '[]';                                           // [] for empty
-
 $notifyRarity = '[]';                                               // "Common", "Uncommon", "Rare", "Very Rare", "Ultra Rare"
-
 $notifyIv = '""';                                                   // "" for empty or a number
-
 $notifyLevel = '""';                                                // "" for empty or a number
-
 $notifyRaid = 5;                                                    // O to disable
-
 $notifySound = 'false';                                             // true/false
-
 $criesSound = 'false';                                              // true/false
-
 $notifyBounce = 'true';                                             // true/false
-
 $notifyNotification = 'true';                                       // true/false
 
 /* Style Settings */
 
 $copyrightSafe = true;
+$iconRepository = 'https://raw.githubusercontent.com/whitewillem/PogoAssets/resized/icons_large/';
 
 $noMapStyle = false;                                                // true/false
-$mapStyle = 'style_pgo_dynamic';                                    // roadmap, satellite, hybrid, nolabels_style, dark_style, style_light2, style_pgo, dark_style_nl, style_pgo_day, style_pgo_night, style_pgo_dynamic, openstreetmap
+$mapStyle = 'openstreetmap';                                        // openstreetmap, darkmatter, styleblackandwhite, styletopo, stylesatellite, stylewikipedia
 
 $noDirectionProvider = false;                                       // true/false
 $directionProvider = 'google';                                      // google, waze, apple, bing, google_pin
@@ -288,32 +286,42 @@ $sendRaidData = false;                                              // Send Raid
 //-----------------------------------------------------
 // Manual Submissions
 //-----------------------------------------------------
+$noSubmit = true;
 $hideIfManual = false;
-$noManualRaids = false;
-$noManualPokemon = false;
+$noManualRaids = true;
+$noManualPokemon = true;
 $pokemonTimer = 900;                                                // Time in seconds before a submitted Pokémon despawns.
-$noManualGyms = false;
-$noManualPokestops = false;
-$noRenamePokestops = false;
-$noConvertPokestops = false;
-$noManualQuests = false;
+$noManualGyms = true;
+$noManualPokestops = true;
+$noRenamePokestops = true;
+$noConvertPokestops = true;
+$noManualQuests = true;
 
 //-----------------------------------------------------
 // Ingress portals
 //-----------------------------------------------------
 $enablePortals = 'false';
+$enableNewPortals = 0;                                                   // O: all, 1: new portals only
 $noPortals = true;
 $noDeletePortal = true;
+$noConvertPortal = true;
+$noS2Cells = true;
+$enableS2Cells = 'false';
+$enableLevel13Cells = 'false';
+$enableLevel14Cells = 'false';
+$enableLevel17Cells = 'false';
+$markPortalsAsNew = 86400;                                         // Time in seconds to mark new imported portals as new ( 86400 for 1 day )
 
 $noDiscordSubmitLogChannel = true;                                        // Send webhooks to discord channel upon submission
 
-$pokemonReportTime = true;
+$pokemonReportTime = false;
 $pokemonToExclude = [];
 
-$noDeleteGyms = false;
-$noDeletePokestops = false;
+$noDeleteGyms = true;
+$noToggleExGyms = true;
+$noDeletePokestops = true;
 
-$raidBosses = [4, 296, 307, 138, 320, 129, 103, 281, 126, 303, 185, 137, 26, 232, 136, 95, 68, 248, 229, 105, 359, 76, 112, 379];
+$raidBosses = [];
 
 $sendWebhook = false;
 $webhookUrl = null;                                             //['url-1','url-2']
@@ -338,26 +346,28 @@ $manualFiveStar = [
 //-----------------------------------------------------
 
 $noSearch = false;
-$noSearchPokestops = false;     //Wont work if noSearch = false
+$noSearchPokestops = true;     //Wont work if noSearch = false
 $noSearchGyms = false;          //Wont work if noSearch = false
 $noSearchManualQuests = false;  //Wont work if noSearch = false
-$noSearchNests = false;
+$noSearchNests = true;
+$noSearchPortals = true;
 $defaultUnit = "km";                                            // mi/km
+$maxSearchResults = 10;
 //-----------------------------------------------
 // Community
 //-----------------------------------------------------
-$noCommunity = false;
+$noCommunity = true;
 $enableCommunities = 'false';
-$noAddNewCommunity = false;
-$noDeleteCommunity = false;
-$noEditCommunity = false;
+$noAddNewCommunity = true;
+$noDeleteCommunity = true;
+$noEditCommunity = true;
 //-----------------------------------------------
 // Nests
 //-----------------------------------------------------
-$noNests = false;                                                   // true/false
+$noNests = true;                                                   // true/false
 $enableNests = 'false';                                             // true/false
-$noManualNests = false;
-$noDeleteNests = false;
+$noManualNests = true;
+$noDeleteNests = true;
 $nestVerifyLevel = 1;						    // 1 = Verified 2 = 1 + Unverified 3 = 1 + 2 + Revoked 4 = Get all nests
 $deleteNestsOlderThan = 42;					    // days after not updated nests are removed from database by nest cron
 $migrationDay = strtotime('5 April 2018');                          // Adjust day value after non consitent 14 day migration
@@ -377,7 +387,7 @@ $areas = [];                                                        // [[latitud
 // Weather Config
 //-----------------------------------------------------
 
-$noWeatherOverlay = false;                                          // true/false
+$noWeatherOverlay = true;                                          // true/false
 $enableWeatherOverlay = 'false';                                    // true/false
 
 $weather = [
@@ -413,5 +423,5 @@ $enableDebug = false;
 //-----------------------------------------------------
 // DATABASE CONFIG
 //-----------------------------------------------------
-
+$map = "rdm";
 $fork = "default";                                                  // default/asner/sloppy

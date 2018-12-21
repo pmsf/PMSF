@@ -1,0 +1,86 @@
+{
+  "0": {
+    "prototext": "WITH_UNSET",
+    "text": "Unset"
+  },
+  "1": {
+    "prototext": "WITH_POKEMON_TYPE",
+    "text": "Pokémon Type"
+  },
+  "2": {
+    "prototext": "WITH_POKEMON_CATEGORY",
+    "text": "Pokémon"
+  },
+  "3": {
+    "prototext": "WITH_WEATHER_BOOST",
+    "text": "Weatherboosted"
+  },
+  "4": {
+    "prototext": "WITH_DAILY_CAPTURE_BONUS",
+    "text": "Daily capture bonus"
+  },
+  "5": {
+    "prototext": "WITH_DAILY_SPIN_BONUS",
+    "text": "Daily spin bonus"
+  },
+  "6": {
+    "prototext": "WITH_WIN_RAID_STATUS",
+    "text": "Win raid"
+  },
+  "7": {
+    "prototext": "WITH_RAID_LEVEL",
+    "text": "With raid level"
+  },
+  "8": {
+    "prototext": "WITH_TROW_TYPE",
+    "text": "Throw type"
+  },
+  "9": {
+    "prototext": "WITH_WIN_GYM_BATTLE_STATUS",
+    "text": "Win gym battle(s)"
+  },
+  "10": {
+    "prototext": "WITH_SUPER_EFFECTIVE_CHARGE",
+    "text": "Super effective charge move"
+  },
+  "11": {
+    "prototext": "WITH_ITEM",
+    "text": "Item"
+  },
+  "12": {
+    "prototext": "WITH_UNIQUE_POKESTOP",
+    "text": "Unique pokéstop(s)"
+  },
+  "13": {
+    "prototext": "WITH_QUEST_CONTEXT",
+    "text": "Quest context"
+  },
+  "14": {
+    "prototext": "WITH_THROW_TYPE_IN_A_ROW",
+    "text": "Throw type(s) in a row"
+  },
+  "15": {
+    "prototext": "WITH_CURVE_BALL",
+    "text": "Curve ball"
+  },
+  "16": {
+    "prototext": "WITH_BADGE_TYPE",
+    "text": "Badge type"
+  },
+  "17": {
+    "prototext": "WITH_PLAYER_LEVEL",
+    "text": "Player level"
+  },
+  "18": {
+    "prototext": "WITH_WIN_BATTLE_STATUS",
+    "text": "Win battle status"
+  },
+  "19": {
+    "prototext": "WITH_NEW_FRIEND",
+    "text": "New friend"
+  },
+  "20": {
+    "prototext": "WITH_DAYS_IN_A_ROW",
+    "text": "Days in a row"
+  }
+}
