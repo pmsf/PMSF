@@ -28,7 +28,7 @@ Current tested support for
 * [Discord](https://discord.gg/yGujp8D) channel
 
 ## Thanks
-* Thanks [RDM](https://github.com/123FLO321/RealDeviceMap) for their Real Device scanner.
+* Thanks [RDM](https://gitlab.com/realdevicemap) for their Real Device scanner.
 
 * Thanks [PMSF](https://github.com/Glennmen/PMSF) for the basis for this fork.
 
