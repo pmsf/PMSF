@@ -187,18 +187,18 @@ if ( $blockIframe ) {
     <script>
         var token = '<?php echo ( ! empty( $_SESSION['token'] ) ) ? $_SESSION['token'] : ""; ?>';
     </script>
-    <link href="https://unpkg.com/leaflet-geosearch@2.7.0/assets/css/leaflet.css" rel="stylesheet" />
+    <link href="node_modules/leaflet-geosearch/assets/css/leaflet.css" rel="stylesheet" />
     <link rel="stylesheet" href="static/dist/css/app.min.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jqueryui/1.12.0/jquery-ui.min.css">
-    <link rel="stylesheet" href="https://cdn.datatables.net/1.10.12/css/jquery.dataTables.css">
+    <link rel="stylesheet" href="node_modules/datatables/media/css/jquery.dataTables.min.css">
     <script src="static/js/vendor/modernizr.custom.js"></script>
     <!-- Toastr -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.css">
     <!-- Leaflet -->
-    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.3.1/dist/leaflet.css" />
-    <link rel="stylesheet" href="https://leaflet.github.io/Leaflet.markercluster/dist/MarkerCluster.css" />
-    <link rel="stylesheet" href="https://leaflet.github.io/Leaflet.markercluster/dist/MarkerCluster.Default.css" />
-    <link href='https://api.mapbox.com/mapbox.js/plugins/leaflet-fullscreen/v1.0.1/leaflet.fullscreen.css' rel='stylesheet' />
+    <link rel="stylesheet" href="node_modules/leaflet/dist/leaflet.css" />
+    <link rel="stylesheet" href="node_modules/leaflet.markercluster/dist/MarkerCluster.css" />
+    <link rel="stylesheet" href="node_modules/leaflet.markercluster/dist/MarkerCluster.Default.css" />
+    <link href='static/css/leaflet.fullscreen.css' rel='stylesheet' />
 </head>
 <body id="top">
 <div class="wrapper">
@@ -1750,23 +1750,22 @@ if ( $blockIframe ) {
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jqueryui/1.12.0/jquery-ui.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/skel/3.0.1/skel.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.6-rc.1/js/select2.full.min.js"></script>
-<script src="https://cdn.datatables.net/1.10.12/js/jquery.dataTables.min.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.17.1/moment-with-locales.min.js"></script>
+<script src="node_modules/datatables/media/js/jquery.dataTables.min.js"></script>
+<script src="node_modules/moment/min/moment-with-locales.min.js"></script>
 <script src="https://code.createjs.com/soundjs-0.6.2.min.js"></script>
 <script src="node_modules/push.js/bin/push.min.js"></script>
 <script src="node_modules/long/src/long.js"></script>
-<script src="https://unpkg.com/leaflet-geosearch@2.7.0/dist/bundle.min.js"></script>
+<script src="node_modules/leaflet/dist/leaflet.js"></script>
+<script src="node_modules/leaflet-geosearch/dist/bundle.min.js"></script>
 <script src="static/js/vendor/s2geometry.js"></script>
 <script src="static/dist/js/app.min.js"></script>
 <script src="static/js/vendor/classie.js"></script>
-<script src="https://unpkg.com/leaflet@1.3.1/dist/leaflet.js"></script>
-<script src="https://leaflet.github.io/Leaflet.markercluster/dist/leaflet.markercluster-src.js"></script>
-<script src='https://api.mapbox.com/mapbox.js/plugins/leaflet-fullscreen/v1.0.1/Leaflet.fullscreen.min.js'></script>
+<script src="node_modules/leaflet.markercluster/dist/leaflet.markercluster-src.js"></script>
+<script src='static/js/vendor/Leaflet.fullscreen.min.js'></script>
 <script src="static/js/vendor/smoothmarkerbouncing.js"></script>
 <script src='https://maps.googleapis.com/maps/api/js?key=<?php $gmapsKey ?> ' async defer></script>
-<script src="https://unpkg.com/leaflet.gridlayer.googlemutant@latest/Leaflet.GoogleMutant.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/@turf/turf@5/turf.min.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/jcanvas/21.0.1/min/jcanvas.min.js"></script>
+<script src="static/js/vendor/Leaflet.GoogleMutant.js"></script>
+<script src="static/js/vendor/turf.min.js"></script>
 <script>
     var centerLat = <?= $startingLat; ?>;
     var centerLng = <?= $startingLng; ?>;
@@ -1878,7 +1877,6 @@ if ( $blockIframe ) {
 <script src="static/dist/js/map.common.min.js"></script>
 <script src="static/dist/js/map.min.js"></script>
 <script src="static/dist/js/stats.min.js"></script>
-<script src="https://unpkg.com/leaflet-geosearch@latest/dist/bundle.min.js"></script>
 <script>
 $( document ).ready(function() {
     initMap()
