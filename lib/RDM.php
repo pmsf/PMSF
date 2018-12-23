@@ -810,7 +810,9 @@ class RDM extends Scanner
         lat,
         lon,
         name,
-        url
+	url,
+	updated,
+	imported
         FROM ingress_portals
         WHERE :conditions";
 
