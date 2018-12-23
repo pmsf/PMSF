@@ -697,12 +697,6 @@ function pokemonLabel(item) {
             i8ln('Moves') + ' : ' + pMove1 + ' / ' + pMove2 +
             '</center></div>'
     }
-    if (login === true && timestamp > expireTimestamp) {
-        details +=
-            '<div><center>' +
-            '<b>' + i8ln('IV stats is a donator only feature.') + '</b>' +
-            '</center></div>'
-    }
     if (weatherBoostedCondition !== 0) {
         details +=
             '<div><center>' +
