@@ -39,6 +39,7 @@ cron/*
 !cron/example.PMSF
 !cron/nest_cron.php
 !cron/quest_cron.php
+!cron/quest_rdm_cron.php
 !cron/raid_cron.php
 !cron/silph.php
 /static/dist/

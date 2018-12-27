@@ -2,7 +2,7 @@
 
 namespace Search;
 
-class RDM extends Search
+class Monocle extends Search
 {
     public function search_reward($lat, $lon, $term)
     {
@@ -48,7 +48,7 @@ class RDM extends Search
 	json_extract(json_extract(`quest_rewards`,'$[*].info.pokemon_id'),'$[0]') AS quest_pokemon_id,
 	json_extract(json_extract(`quest_rewards`,'$[*].info.item_id'),'$[0]') AS quest_item_id, 
 	ROUND(( 3959 * acos( cos( radians(:lat) ) * cos( radians( lat ) ) * cos( radians( lon ) - radians(:lon) ) + sin( radians(:lat) ) * sin( radians( lat ) ) ) ),2) AS distance 
-	FROM pokestop
+	FROM pokestops
 	WHERE :conditions
 	ORDER BY distance LIMIT " . $maxSearchResults . "";
 
@@ -133,7 +133,6 @@ class RDM extends Search
         }
         return $data;
     }
-
 
     public function search($dbname, $lat, $lon, $term)
     {

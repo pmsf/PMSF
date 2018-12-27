@@ -349,6 +349,7 @@ class RDM extends Scanner
         quest_pokemon_id,
         quest_item_id,
         json_extract(json_extract(`quest_conditions`,'$[*].type'),'$[0]') AS quest_condition_type,
+        json_extract(json_extract(`quest_conditions`,'$[*].type'),'$[1]') AS quest_condition_type_1,
         json_extract(json_extract(`quest_conditions`,'$[*].info'),'$[0]') AS quest_condition_info,
         json_extract(json_extract(`quest_rewards`,'$[*].type'),'$[0]') AS quest_reward_type,
         json_extract(json_extract(`quest_rewards`,'$[*].info'),'$[0]') AS quest_reward_info,
@@ -367,6 +368,7 @@ class RDM extends Scanner
             $pokestop["longitude"] = floatval($pokestop["longitude"]);
             $pokestop["quest_type"] = intval($pokestop["quest_type"]);
             $pokestop["quest_condition_type"] = intval($pokestop["quest_condition_type"]);
+            $pokestop["quest_condition_type_1"] = intval($pokestop["quest_condition_type_1"]);
             $pokestop["quest_reward_type"] = intval($pokestop["quest_reward_type"]);
             $pokestop["quest_target"] = intval($pokestop["quest_target"]);
             $pokestop["quest_pokemon_id"] = intval($pokestop["quest_pokemon_id"]);
@@ -808,7 +810,9 @@ class RDM extends Scanner
         lat,
         lon,
         name,
-        url
+	url,
+	updated,
+	imported
         FROM ingress_portals
         WHERE :conditions";
 

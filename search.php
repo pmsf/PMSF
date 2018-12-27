@@ -23,15 +23,18 @@ if (strtolower($map) === "rdm") {
 	if ( $action === "pokestops" ) {
 	    $dbname = "pokestop";
 	} elseif ( $action === "forts" ) {
-	    $dbname = "gym";
-	} elseif ( $action === "reward" ) {
-	    $dbname = "pokestop";
-	} elseif ( $action === "nests" ) {
-	    $dbname = "nests";
-	} elseif ( $action === "portals" ) {
-	    $dbname = "ingress_portals";
-	}
+            $dbname = "gym";
+        }
         $search = new \Search\RDM();
+    }
+} else if (strtolower($map) === "monocle") {
+    if (strtolower($fork) === "alternate") {
+	if ( $action === "pokestops" ) {
+	    $dbname = "pokestops";
+	} elseif ( $action === "forts" ) {
+	    $dbname = "forts";
+        }
+        $search = new \Search\Monocle();
     }
 }
 if ($action === "reward") {
@@ -41,7 +44,7 @@ if ($action === "nests") {
     $data["nests"] = $search->search_nests($lat, $lon, $term);
 } 
 if ($action === "portals") {
-    $data["portals"] = $search->search($dbname, $lat, $lon, $term);
+    $data["portals"] = $search->search_portals($lat, $lon, $term);
 }
 if ($action === "pokestops") {
     $data["pokestops"] = $search->search($dbname, $lat, $lon, $term);
