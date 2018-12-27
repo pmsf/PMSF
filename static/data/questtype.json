@@ -17,7 +17,7 @@
   },
   "4": {
     "prototext": "QUEST_CATCH_POKEMON",
-    "text": "Catch {0} pokémon(s)"
+    "text": "Catch {0} pokémon"
   },
   "5": {
     "prototext": "QUEST_SPIN_POKESTOP",
@@ -41,11 +41,11 @@
   },
   "10": {
     "prototext": "QUEST_TRANSFER_POKEMON",
-    "text": "Transfer {0} pokémon(s)"
+    "text": "Transfer {0} pokémon"
   },
   "11": {
     "prototext": "QUEST_FAVORITE_POKEMON",
-    "text": "Favorite {0} pokémon(s)"
+    "text": "Favorite {0} pokémon"
   },
   "12": {
     "prototext": "QUEST_AUTOCOMPLETE",
@@ -61,7 +61,7 @@
   },
   "15": {
     "prototext": "QUEST_EVOLVE_POKEMON",
-    "text": "Evolve {0} pokémon(s)"
+    "text": "Evolve {0} pokémon"
   },
   "16": {
     "prototext": "QUEST_LAND_TROW",
@@ -85,7 +85,7 @@
   },
   "21": {
     "prototext": "QUEST_COMPLETE_BATTLE",
-    "text": "Complete {0} raid battle"
+    "text": "Complete {0} raid battle(s)"
   },
   "22": {
     "prototext": "QUEST_ADD_FRIEND",
@@ -93,7 +93,7 @@
   },
   "23": {
     "prototext": "QUEST_TRADE_POKEMON",
-    "text": "Trade {0} pokémon(s)"
+    "text": "Trade {0} pokémon"
   },
   "24": {
     "prototext": "QUEST_SEND_GIFT",
@@ -101,6 +101,6 @@
   },
   "25": {
     "prototext": "QUEST_EVOLVE_INTO_POKEMON",
-    "text": "Evolve {0} pokémon(s) into"
+    "text": "Evolve {0} pokémon into"
   }
 }

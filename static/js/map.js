@@ -697,12 +697,6 @@ function pokemonLabel(item) {
             i8ln('Moves') + ' : ' + pMove1 + ' / ' + pMove2 +
             '</center></div>'
     }
-    if (login === true && timestamp > expireTimestamp) {
-        details +=
-            '<div><center>' +
-            '<b>' + i8ln('IV stats is a donator only feature.') + '</b>' +
-            '</center></div>'
-    }
     if (weatherBoostedCondition !== 0) {
         details +=
             '<div><center>' +
@@ -1051,67 +1045,58 @@ function getQuest(item) {
         '<center><div>'
 
         if (item['quest_condition_type'] === 1) {
-            str += '<div>' +
-            i8ln('Type(s):') + ' '
-            $.each(questinfo['pokemon_type_ids'], function (index, typeId) {
-                str += pokemonTypes[typeId]
-            })
-            str += '</div>'
+            var tstr
+            if (questinfo['pokemon_type_ids'].length > 1) {
+                $.each(questinfo['pokemon_type_ids'], function (index, typeId) {
+                    tstr += pokemonTypes[typeId]
+                })
+            } else {
+                tstr = pokemonTypes[questinfo['pokemon_type_ids']]
+            }
+            str = str.replace('pokémon', tstr + ' pokémon')
         } else if (item['quest_condition_type'] === 2) {
-            str += '<div>' +
-            i8ln('Pokémon:') + ' '
-            $.each(questinfo['pokemon_ids'], function (index, id) {
-                str += idToPokemon[id].name
-            })
-            str += '</div>'
+            var pstr
+            if (questinfo['pokemon_ids'].length > 1) {
+                $.each(questinfo['pokemon_ids'], function (index, id) {
+                    pstr += idToPokemon[id].name + ' '
+                })
+            } else {
+                pstr = idToPokemon[questinfo['pokemon_ids']].name
+            }
+            str = str.replace('pokémon', pstr)
         } else if (item['quest_condition_type'] === 3) {
-            str += '<div>' +
-            i8ln('Condition:') + ' ' +
-            i8ln('Weather boosted') +
-            '</div>'
+            str = str.replace('pokémon', 'pokémon with weather boost')
         } else if (item['quest_condition_type'] === 6) {
-            str += '<div>' +
-            i8ln('Condition:') + ' ' +
-            i8ln('Win raid') +
-            '</div>'
+            str = str.replace('Complete', 'Win')
         } else if (item['quest_condition_type'] === 7) {
             raidLevel = Math.min.apply(null, questinfo['raid_levels'])
             if (raidLevel > 1) {
-                str += '<div>' +
-                i8ln('Level') + ' ' +
-                raidLevel + ' ' +
-                i8ln('or higher')
+                str = str.replace('raid battle(s)', 'level ' + raidLevel + ' raid or higher')
             }
-            str += '</div>'
+            if (item['quest_condition_type_1'] === 6) {
+                str = str.replace('Complete', 'Win')
+            }
         } else if (item['quest_condition_type'] === 8) {
-            str += '<div>' +
-            i8ln('Condition:') + ' ' +
-            i8ln(throwType[questinfo['throw_type_id']]) + ' ' +
-            i8ln('throw') +
-            '</div>'
+            str = str.replace('throw(s)', i8ln(throwType[questinfo['throw_type_id']] + ' throw(s)'))
+            if (item['quest_condition_type_1'] === 15) {
+                str = str.replace('throw(s)', 'curve throw(s)')
+            }
         } else if (item['quest_condition_type'] === 9) {
-            str += '<div>' +
-            i8ln('Condition:') + ' ' +
-            i8ln('Win gym battle') +
-            '</div>'
+            str = str.replace('Complete', 'Win')
         } else if (item['quest_condition_type'] === 10) {
-            str += '<div>' +
-            i8ln('Condition:') + ' ' +
-            i8ln('Super Effective Charge') +
-            '</div>'
+            str = str.replace('Complete', 'Use a super effective charge move in ')
         } else if (item['quest_condition_type'] === 14 && typeof questinfo['throw_type_id'] === 'undefined') {
-            str += '<div>' +
-            i8ln('Condition:') + ' ' +
-            i8ln('Throws in a row') +
-            '</div>'
+            str = str.replace('throw(s)', 'throw(s) in a row')
+            if (item['quest_condition_type_1'] === 15) {
+                str = str.replace('throw(s)', 'curve throw(s)')
+            }
         } else if (item['quest_condition_type'] === 14) {
-            str += '<div>' +
-            i8ln('Condition:') + ' ' +
-            i8ln(throwType[questinfo['throw_type_id']]) + ' ' +
-            i8ln('throws in a row') +
-            '</div>'
+            str = str.replace('throw(s)', i8ln(throwType[questinfo['throw_type_id']] + ' throw(s) in a row'))
+            if (item['quest_condition_type_1'] === 15) {
+                str = str.replace('throw(s)', 'curve throw(s)')
+            }
         } else if (item['quest_condition_type'] !== 0) {
-            console.log('Undefined quest type ' + item['quest_condition_type'])
+            console.log('Undefined condition type ' + item['quest_condition_type'])
             str += '<div>Undefined condition</div>'
         }
         if (item['quest_reward_type'] === 3) {
@@ -1172,7 +1157,7 @@ function pokestopLabel(item) {
         str += '<i class="fa fa-trash-o delete-pokestop" onclick="deletePokestop(event);" data-id="' + item['pokestop_id'] + '"></i>'
     }
     if (!noManualQuests && item['scanArea'] === false) {
-        str += '<center><div>' + i8ln('Add Quest') + '<i class="fa fa-binoculars submit-quest" onclick="openQuestModal(event);" data-id="' + item['pokestop-id'] + '"></i></div></center>'
+        str += '<center><div>' + i8ln('Add Quest') + '<i class="fa fa-binoculars submit-quest" onclick="openQuestModal(event);" data-id="' + item['pokestop_id'] + '"></i></div></center>'
     }
     if (!noRenamePokestops) {
         str += '<center><div>' + i8ln('Rename Pokestop') + '<i class="fa fa-edit rename-pokestop" style="margin-top: 2px; vertical-align: middle; font-size: 1.5em;" onclick="openRenamePokestopModal(event);" data-id="' + item['pokestop_id'] + '"></i></div></center>'
@@ -2488,7 +2473,7 @@ function searchForItem(lat, lon, term, type, field) {
                         }
                     })
                     var html = '<li class="search-result ' + type + '" data-lat="' + element.lat + '" data-lon="' + element.lon + '"><div class="left-column" onClick="centerMapOnCoords(event);">'
-                    if (sr.hasClass('gym-results') || ('pokestop-results') || ('portal-results')) {
+                    if (sr.hasClass('gym-results')) {
                         html += '<span style="background:url(' + element.url + ') no-repeat;" class="i-icon" ></span>'
                     }
                     html += '<div class="cont">' +
@@ -2511,7 +2496,7 @@ function searchForItem(lat, lon, term, type, field) {
                         }
                     })
                     var html = '<li class="search-result ' + type + '" data-lat="' + element.lat + '" data-lon="' + element.lon + '"><div class="left-column" onClick="centerMapOnCoords(event);">'
-                    if (sr.hasClass('gym-results') || ('pokestop-results') || ('portal-results')) {
+                    if (sr.hasClass('pokestop-results')) {
                         html += '<span style="background:url(' + element.url + ') no-repeat;" class="i-icon" ></span>'
                     }
                     html += '<div class="cont">' +
@@ -2521,6 +2506,17 @@ function searchForItem(lat, lon, term, type, field) {
                         html += '<div class="right-column"><i class="fa fa-binoculars submit-quests"  onClick="openQuestModal(event);" data-id="' + element.external_id + '"></i></div>'
                     }
                     html += '</li>'
+                    sr.append(html)
+                })
+                $.each(data.portals, function (i, element) {
+                    var html = '<li class="search-result ' + type + '" data-lat="' + element.lat + '" data-lon="' + element.lon + '"><div class="left-column" onClick="centerMapOnCoords(event);">'
+                    if (sr.hasClass('portals-results')) {
+                        html += '<span style="background:url(' + element.url + ') no-repeat;" class="i-icon" ></span>'
+                    }
+                    html += '<div class="cont">' +
+                    '<span class="name" style="font-weight:bold">' + element.name + '</span>' + '<span class="distance" style="font-weight:bold">&nbsp;-&#32;' + element.distance + defaultUnit + '</span>' +
+                    '</div></div>' +
+                    '</li>'
                     sr.append(html)
                 })
             }
@@ -3058,8 +3054,19 @@ function manualNestData(event) { // eslint-disable-line no-unused-vars
 
 function manualQuestData(event) { // eslint-disable-line no-unused-vars
     var cont = $(event.target).parent().parent()
-    var questId = cont.find('.questList').val()
-    var rewardId = cont.find('.rewardList').val()
+    var questType = cont.find('.questTypeList').val()
+    var questTarget = cont.find('.questAmountList').val()
+    var conditionType = cont.find('.conditionTypeList').val()
+    var catchPokemon = cont.find('.pokeCatchList').val()
+    var catchPokemonCategory = cont.find('.typeCatchList').val()
+    var raidLevel = cont.find('.raidLevelList').val()
+    var throwType = cont.find('.throwTypeList').val()
+    var curveThrow = cont.find('.curveThrow').val()
+    var rewardType = cont.find('.rewardTypeList').val()
+    var encounter = cont.find('.pokeQuestList').val()
+    var item = cont.find('.itemQuestList').val()
+    var itemamount = cont.find('.itemAmountList').val()
+    var dust = cont.find('.dustQuestList').val()
     var pokestopId = cont.find('.questPokestop').val()
     if (pokestopId && pokestopId !== '') {
         if (confirm(i8ln('I confirm this is an accurate sighting of a quest'))) {
@@ -3071,8 +3078,19 @@ function manualQuestData(event) { // eslint-disable-line no-unused-vars
                 cache: false,
                 data: {
                     'action': 'quest',
-                    'questId': questId,
-                    'rewardId': rewardId,
+                    'questType': questType,
+                    'questTarget': questTarget,
+                    'conditionType': conditionType,
+                    'catchPokemon': catchPokemon,
+                    'catchPokemonCategory': catchPokemonCategory,
+                    'raidLevel': raidLevel,
+                    'throwType': throwType,
+                    'curveThrow': curveThrow,
+                    'rewardType': rewardType,
+                    'encounter': encounter,
+                    'item': item,
+                    'itemamount': itemamount,
+                    'dust': dust,
                     'pokestopId': pokestopId
                 },
                 error: function error() {
@@ -3270,6 +3288,184 @@ function openRaidModal(event) { // eslint-disable-line no-unused-vars
 }
 
 function openQuestModal(event) { // eslint-disable-line no-unused-vars
+    $(function () {
+        var $questTypeList = $('.quest-modal #questTypeList')
+        $questTypeList.select2({
+            placeholder: i8ln('Quest type'),
+            closeOnSelect: true,
+            minimumResultsForSearch: Infinity,
+            maximumSelectionSize: 1
+        })
+        $questTypeList.change(function () {
+            var questType = Number($(this).find('option:selected').val())
+            if (questType > 0) {
+                $('.quest-modal #questAmountList').show()
+            } else {
+                $('.quest-modal #questAmountList').hide()
+            }
+        })
+
+        var $questAmountList = $('.quest-modal #questAmountList')
+        $questAmountList.select2({
+            placeholder: i8ln('Quest target amount'),
+            closeOnSelect: true,
+            minimumResultsForSearch: Infinity,
+            maximumSelectionSize: 1
+        })
+
+        var $pokeCatchList = $('.quest-modal #pokeCatchList')
+        $pokeCatchList.select2({
+            placeholder: i8ln('Pokemon'),
+            data: pokeList,
+            multiple: true,
+            maximumSelectionSize: 2
+        })
+
+        var $pokemonTypes = $('.quest-modal #typeCatchList')
+        $pokemonTypes.select2({
+            placeholder: i8ln('Pokemon type'),
+            minimumResultsForSearch: Infinity,
+            multiple: true,
+            maximumSelectionSize: 3
+        })
+
+        var $raidLevelList = $('.quest-modal #raidLevelList')
+        $raidLevelList.select2({
+            placeholder: i8ln('Raid level'),
+            closeOnSelect: true,
+            minimumResultsForSearch: Infinity,
+            multiple: true,
+            maximumSelectionSize: 1
+        })
+
+        var $throwTypes = $('.quest-modal #throwTypeList')
+        $throwTypes.select2({
+            placeholder: i8ln('Throw type'),
+            closeOnSelect: true,
+            minimumResultsForSearch: Infinity,
+            maximumSelectionSize: 1
+        })
+        var $curveThrow = $('.quest-modal #curveThrow')
+        $curveThrow.select2({
+            placeholder: i8ln('Curve throw'),
+            closeOnSelect: true,
+            minimumResultsForSearch: Infinity,
+            maximumSelectionSize: 1
+        })
+        var $conditionTypeList = $('.quest-modal #conditionTypeList')
+        $conditionTypeList.select2({
+            placeholder: i8ln('Condition type'),
+            closeOnSelect: true,
+            minimumResultsForSearch: Infinity,
+            maximumSelectionSize: 1
+        })
+        $('.quest-modal #pokeCatchList').next('.select2-container').hide()
+        $('.quest-modal #typeCatchList').next('.select2-container').hide()
+        $('.quest-modal #raidLevelList').next('.select2-container').hide()
+        $('.quest-modal #throwTypeList').next('.select2-container').hide()
+        $('.quest-modal #curveThrow').next('.select2-container').hide()
+        $conditionTypeList.change(function () {
+            var conditionType = Number($(this).find('option:selected').val())
+            if (conditionType === 1) {
+                $('.quest-modal #pokeCatchList').next('.select2-container').hide()
+                $('.quest-modal #typeCatchList').next('.select2-container').show()
+                $('.quest-modal #raidLevelList').next('.select2-container').hide()
+                $('.quest-modal #throwTypeList').next('.select2-container').hide()
+                $('.quest-modal #curveThrow').next('.select2-container').hide()
+            } else if (conditionType === 2) {
+                $('.quest-modal #pokeCatchList').next('.select2-container').show()
+                $('.quest-modal #typeCatchList').next('.select2-container').hide()
+                $('.quest-modal #raidLevelList').next('.select2-container').hide()
+                $('.quest-modal #throwTypeList').next('.select2-container').hide()
+                $('.quest-modal #curveThrow').next('.select2-container').hide()
+            } else if (conditionType === 7) {
+                $('.quest-modal #pokeCatchList').next('.select2-container').hide()
+                $('.quest-modal #typeCatchList').next('.select2-container').hide()
+                $('.quest-modal #raidLevelList').next('.select2-container').show()
+                $('.quest-modal #throwTypeList').next('.select2-container').hide()
+                $('.quest-modal #curveThrow').next('.select2-container').hide()
+            } else if (conditionType === 8 || conditionType === 14) {
+                $('.quest-modal #pokeCatchList').next('.select2-container').hide()
+                $('.quest-modal #typeCatchList').next('.select2-container').hide()
+                $('.quest-modal #raidLevelList').next('.select2-container').hide()
+                $('.quest-modal #throwTypeList').next('.select2-container').show()
+                $('.quest-modal #curveThrow').next('.select2-container').show()
+            } else {
+                $('.quest-modal #pokeCatchList').next('.select2-container').hide()
+                $('.quest-modal #typeCatchList').next('.select2-container').hide()
+                $('.quest-modal #raidLevelList').next('.select2-container').hide()
+                $('.quest-modal #throwTypeList').next('.select2-container').hide()
+                $('.quest-modal #curveThrow').next('.select2-container').hide()
+            }
+        })
+        var $rewardTypeList = $('.quest-modal #rewardTypeList')
+        $rewardTypeList.select2({
+            placeholder: i8ln('Reward type'),
+            closeOnSelect: true,
+            minimumResultsForSearch: Infinity,
+            maximumSelectionSize: 1
+        })
+
+        var $itemQuestList = $('.quest-modal #itemQuestList')
+        $itemQuestList.select2({
+            placeholder: i8ln('Reward Item'),
+            closeOnSelect: true,
+            minimumResultsForSearch: Infinity,
+            maximumSelectionSize: 1
+        })
+
+        var $itemAmountList = $('.quest-modal #itemAmountList')
+        $itemAmountList.select2({
+            placeholder: i8ln('Reward Amount'),
+            closeOnSelect: true,
+            minimumResultsForSearch: Infinity,
+            maximumSelectionSize: 1
+        })
+
+        var $dustQuestList = $('.quest-modal #dustQuestList')
+        $dustQuestList.select2({
+            placeholder: i8ln('Stardust amount'),
+            closeOnSelect: true,
+            minimumResultsForSearch: Infinity,
+            maximumSelectionSize: 1
+        })
+
+        var $pokeQuestList = $('.quest-modal #pokeQuestList')
+        $pokeQuestList.select2({
+            placeholder: i8ln('Pokemon encounter'),
+            closeOnSelect: true,
+            maximumSelectionSize: 1
+        })
+        $('.quest-modal #itemQuestList').next('.select2-container').hide()
+        $('.quest-modal #itemAmountList').next('.select2-container').hide()
+        $('.quest-modal #dustQuestList').next('.select2-container').hide()
+        $('.quest-modal #pokeQuestList').next('.select2-container').hide()
+
+        $rewardTypeList.change(function () {
+            var rewardType = $(this).find('option:selected').val()
+            if (rewardType === '2') {
+                $('.quest-modal #itemQuestList').next('.select2-container').show()
+                $('.quest-modal #itemAmountList').next('.select2-container').show()
+                $('.quest-modal #dustQuestList').next('.select2-container').hide()
+                $('.quest-modal #pokeQuestList').next('.select2-container').hide()
+            } else if (rewardType === '3') {
+                $('.quest-modal #itemQuestList').next('.select2-container').hide()
+                $('.quest-modal #itemAmountList').next('.select2-container').hide()
+                $('.quest-modal #dustQuestList').next('.select2-container').show()
+                $('.quest-modal #pokeQuestList').next('.select2-container').hide()
+            } else if (rewardType === '7') {
+                $('.quest-modal #itemQuestList').next('.select2-container').hide()
+                $('.quest-modal #itemAmountList').next('.select2-container').hide()
+                $('.quest-modal #dustQuestList').next('.select2-container').hide()
+                $('.quest-modal #pokeQuestList').next('.select2-container').show()
+            } else {
+                $('.quest-modal #itemQuestList').next('.select2-container').hide()
+                $('.quest-modal #itemAmountList').next('.select2-container').hide()
+                $('.quest-modal #dustQuestList').next('.select2-container').hide()
+                $('.quest-modal #pokeQuestList').next('.select2-container').hide()
+            }
+        })
+    })
     $('.ui-dialog').remove()
     var val = $(event.target).data('id')
     $('.questPokestop').val(val)
@@ -5835,6 +6031,7 @@ $(function () {
             setTimeout(function () { updateMap() }, 2000)
         }
     })
+
     $('#sound-switch').change(function () {
         Store.set('playSound', this.checked)
         var options = {

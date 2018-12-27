@@ -24,8 +24,19 @@ $loggedUser 		= ! empty( $_SESSION['user']->user ) ? $_SESSION['user']->user : '
 $gymName    		= ! empty( $_POST['gymName'] ) ? $_POST['gymName'] : '';
 $pokestopId 		= ! empty( $_POST['pokestopId'] ) ? $_POST['pokestopId'] : '';
 $pokestopName 		= ! empty( $_POST['pokestopName'] ) ? $_POST['pokestopName'] : '';
-$questId    		= ! empty( $_POST['questId'] ) ? $_POST['questId'] : 0;
-$rewardId   		= ! empty( $_POST['rewardId'] ) ? $_POST['rewardId'] : 0;
+$questType    		= ! empty( $_POST['questType'] ) ? $_POST['questType'] : '';
+$questTarget   		= ! empty( $_POST['questTarget'] ) ? $_POST['questTarget'] : '';
+$conditionType 		= ! empty( $_POST['conditionType'] ) ? $_POST['conditionType'] : '';
+$catchPokemon		= ! empty( $_POST['catchPokemon'] ) ? $_POST['catchPokemon'] : '';
+$catchPokemonCategory	= ! empty( $_POST['catchPokemonCategory'] ) ? $_POST['catchPokemonCategory'] : '';
+$raidLevel   		= ! empty( $_POST['raidLevel'] ) ? $_POST['raidLevel'] : '';
+$throwType   		= ! empty( $_POST['throwType'] ) ? $_POST['throwType'] : '';
+$curveThrow   		= ! empty( $_POST['curveThrow'] ) ? $_POST['curveThrow'] : '';
+$rewardType   		= ! empty( $_POST['rewardType'] ) ? $_POST['rewardType'] : '';
+$encounter   		= ! empty( $_POST['encounter'] ) ? $_POST['encounter'] : '';
+$item   		= ! empty( $_POST['item'] ) ? $_POST['item'] : '';
+$itemAmount   		= ! empty( $_POST['itemamount'] ) ? $_POST['itemamount'] : '1';
+$dust			= ! empty( $_POST['dust'] ) ? $_POST['dust'] : '';
 $nestId     		= ! empty( $_POST['nestId'] ) ? $_POST['nestId'] : '';
 $portalId   		= ! empty( $_POST['portalId'] ) ? $_POST['portalId'] : '';
 $communityId   		= ! empty( $_POST['communityId'] ) ? $_POST['communityId'] : '';
@@ -44,6 +55,10 @@ $d["timestamp"] = $now->getTimestamp();
 if (strtolower($map) === "rdm") {
     if (strtolower($fork) === "default") {
         $submit = new \Submit\RDM();
+    }
+} else if (strtolower($map) === "monocle") {
+    if (strtolower($fork) === "alternate") {
+        $submit = new \Submit\Monocle();
     }
 }
 
@@ -75,7 +90,7 @@ if ( $action === "convertpokestop" ) {
     $submit->convert_pokestop($pokestopId, $loggedUser);
 }
 if ( $action === "quest" ) {
-    $submit->submit_quest($pokestopId, $questId, $rewardId, $loggedUser);
+    $submit->submit_quest($pokestopId, $questType, $questTarget, $conditionType, $catchPokemonCategory, $catchPokemon, $raidLevel, $throwType, $curveThrow, $rewardType, $encounter, $item, $itemAmount, $dust, $loggedUser);
 }
 if ( $action === "convertportalpokestop" ) {
     $submit->convert_portal_pokestop($portalId, $loggedUser);

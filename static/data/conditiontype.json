@@ -5,11 +5,11 @@
   },
   "1": {
     "prototext": "WITH_POKEMON_TYPE",
-    "text": "Pokémon type"
+    "text": "Pokémon Type"
   },
   "2": {
     "prototext": "WITH_POKEMON_CATEGORY",
-    "text": "Pokémon category"
+    "text": "Pokémon"
   },
   "3": {
     "prototext": "WITH_WEATHER_BOOST",
@@ -25,7 +25,7 @@
   },
   "6": {
     "prototext": "WITH_WIN_RAID_STATUS",
-    "text": "Win raid status"
+    "text": "Win raid"
   },
   "7": {
     "prototext": "WITH_RAID_LEVEL",
@@ -37,7 +37,7 @@
   },
   "9": {
     "prototext": "WITH_WIN_GYM_BATTLE_STATUS",
-    "text": "Win gym battle status"
+    "text": "Win gym battle(s)"
   },
   "10": {
     "prototext": "WITH_SUPER_EFFECTIVE_CHARGE",
