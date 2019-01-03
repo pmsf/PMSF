@@ -1085,6 +1085,10 @@ function getQuest(item) {
             str = str.replace('Complete', 'Win')
         } else if (item['quest_condition_type'] === 10) {
             str = str.replace('Complete', 'Use a super effective charge move in ')
+        } else if (item['quest_condition_type'] === 11 && questinfo !== null) {
+            str = str.replace('berrie(s)', i8ln(idToItem[questinfo['item_id']].name))
+        } else if (item['quest_condition_type'] === 11) {
+            str = str.replace('Evolve', 'Use a evolution item to evolve')
         } else if (item['quest_condition_type'] === 14 && typeof questinfo['throw_type_id'] === 'undefined') {
             str = str.replace('throw(s)', 'throw(s) in a row')
             if (item['quest_condition_type_1'] === 15) {
