@@ -1045,17 +1045,17 @@ function getQuest(item) {
         '<center><div>'
 
         if (item['quest_condition_type'] === 1) {
-            var tstr
+            var tstr = ''
             if (questinfo['pokemon_type_ids'].length > 1) {
                 $.each(questinfo['pokemon_type_ids'], function (index, typeId) {
-                    tstr += pokemonTypes[typeId]
+                    tstr += pokemonTypes[typeId] + ' '
                 })
             } else {
                 tstr = pokemonTypes[questinfo['pokemon_type_ids']]
             }
-            str = str.replace('pokémon', tstr + ' pokémon')
+            str = str.replace('pokémon', tstr + ' type(s)')
         } else if (item['quest_condition_type'] === 2) {
-            var pstr
+            var pstr = ''
             if (questinfo['pokemon_ids'].length > 1) {
                 $.each(questinfo['pokemon_ids'], function (index, id) {
                     pstr += idToPokemon[id].name + ' '
