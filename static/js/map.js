@@ -1010,6 +1010,7 @@ function getReward(item) {
     var reward = JSON.parse(item['quest_reward_info'])
     var pokemonIdStr = ''
     var formStr = ''
+    var shinyStr = ''
     if (item['quest_reward_type'] === 7) {
         if (reward['pokemon_id'] <= 9) {
             pokemonIdStr = '00' + reward['pokemon_id']
@@ -1023,7 +1024,10 @@ function getReward(item) {
         } else {
             formStr = reward['form_id']
         }
-        rewardImage = '<img height="70px" style="padding: 5px;" src="' + iconpath + 'pokemon_icon_' + pokemonIdStr + '_' + formStr + '.png"/>'
+        if (reward['shiny'] === true) {
+            shinyStr = '_shiny'
+        }
+        rewardImage = '<img height="70px" style="padding: 5px;" src="' + iconpath + 'pokemon_icon_' + pokemonIdStr + '_' + formStr + shinyStr + '.png"/>'
     } else if (item['quest_reward_type'] === 3) {
         rewardImage = '<img height="70px" style="padding: 5px;" src="' + iconpath + 'rewards/reward_stardust.png"/>'
     } else if (item['quest_reward_type'] === 2) {
@@ -1697,9 +1701,13 @@ function getPokestopMarkerIcon(item) {
             } else {
                 formStr = rewardinfo['form_id']
             }
+            var shinyStr = ''
+            if (rewardinfo['shiny'] === true) {
+                shinyStr = '_shiny'
+            }
             html = '<div style="position:relative;">' +
                 '<img src="static/forts/Pstop-quest-small.png" style="width:50px;height:72;top:-35px;right:10px;"/>' +
-                '<img src="' + iconpath + 'pokemon_icon_' + pokemonIdStr + '_' + formStr + '.png" style="width:30px;height:auto;position:absolute;top:4px;left:0px;"/>' +
+                '<img src="' + iconpath + 'pokemon_icon_' + pokemonIdStr + '_' + formStr + shinyStr + '.png" style="width:30px;height:auto;position:absolute;top:4px;left:0px;"/>' +
                 '</div>'
             stopMarker = L.divIcon({
                 iconSize: [31, 31],
@@ -1759,7 +1767,18 @@ function getPokestopMarkerIcon(item) {
 
 function setupPokestopMarker(item) {
     var pokestopMarkerIcon = getPokestopMarkerIcon(item)
-    var marker = L.marker([item['latitude'], item['longitude']], {icon: pokestopMarkerIcon, zIndexOffset: 1050}).bindPopup(pokestopLabel(item), {autoPan: false, closeOnClick: false, autoClose: false})
+    var reward = JSON.parse(item['quest_rewards'])
+    var marker
+    if (!noQuests && reward !== null) {
+        var rewardInfo = JSON.parse(item['quest_reward_info'])
+        if (rewardInfo['shiny'] === true) {
+            marker = L.marker([item['latitude'], item['longitude']], {icon: pokestopMarkerIcon, zIndexOffset: 1050}).bindPopup(pokestopLabel(item), {className: 'leaflet-popup-content-wrapper shiny', autoPan: false, closeOnClick: false, autoClose: false})
+        } else {
+            marker = L.marker([item['latitude'], item['longitude']], {icon: pokestopMarkerIcon, zIndexOffset: 1050}).bindPopup(pokestopLabel(item), {className: 'leaflet-popup-content-wrapper normal', autoPan: false, closeOnClick: false, autoClose: false})
+        }
+    } else {
+        marker = L.marker([item['latitude'], item['longitude']], {icon: pokestopMarkerIcon, zIndexOffset: 1050}).bindPopup(pokestopLabel(item), {className: 'leaflet-popup-content-wrapper normal', autoPan: false, closeOnClick: false, autoClose: false})
+    }
     markers.addLayer(marker)
 
     if (!marker.rangeCircle && isRangeActive(map)) {
