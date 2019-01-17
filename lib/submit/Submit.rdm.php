@@ -531,7 +531,7 @@ class RDM extends Submit
 				] );
 			}
 			if ( $noDiscordSubmitLogChannel === false ) {
-				$data = array("content" => '```Deleted portal with id "' . $portalId . '" and name: "' . $portalName['title'] . '" . ```', "username" => $loggedUser);
+				$data = array("content" => '```Deleted portal with id "' . $portalId . '" and name: "' . $portalName['name'] . '" . ```', "username" => $loggedUser);
 				sendToWebhook($discordSubmitLogChannelUrl, ($data));
 			}
 		}
@@ -700,6 +700,98 @@ class RDM extends Submit
 			if ( $noDiscordSubmitLogChannel === false ) {
 				$data = array("content" => '```Deleted community with id "' . $communityId . '" and name: "' . $communityName['title'] . '" . ```', "username" => $loggedUser);
 				sendToWebhook($discordSubmitLogChannelUrl, ($data));
+			}
+		}
+	public function submit_poi($lat, $lon, $poiName, $poiDescription, $loggedUser)
+		{
+			global $manualdb, $noPoi, $noAddPoi, $noDiscordSubmitLogChannel;
+			if ( $noPoi === true || $noAddPoi === true ) {
+				http_response_code( 401 );
+				die();
+			}
+			if ( ! empty( $lat ) && ! empty( $lon ) && ! empty( $poiName ) && ! empty( $poiDescription ) ) {
+				$poiId = randomNum();
+				$cols       = [
+					'poi_id'              => $poiId,
+					'name'                => $poiName,
+					'description'         => $poiDescription,
+					'lat'                 => $lat,
+					'lon'                 => $lon,
+					'status'	      => 1,
+					'updated'             => time(),
+					'submitted_by'        => $loggedUser 
+				];
+				$manualdb->insert( "poi", $cols );
+				if ( $noDiscordSubmitLogChannel === false ) {
+					$data = array("content" => '```Added poi with id "' . $poiId . '" and gave it the new name: "' . $poiName . '".\nDescription: "' . $poiDescription . '".```' . $submitMapUrl . '/?lat=' . $lat . '&lon=' . $lng . '&zoom=18 ', "username" => $loggedUser);
+					sendToWebhook($discordSubmitLogChannelUrl, ($data));
+				}
+			}
+		}
+	public function delete_poi($poiId, $loggedUser)
+		{
+			global $manualdb, $noPoi, $noDeletePoi, $noDiscordSubmitLogChannel;
+			if ( $noPoi === true || $noDeletePoi === true) {
+				http_response_code( 401 );
+				die();
+			}
+			$poiName = $manualdb->get( "poi", [ 'name' ], [ 'poi_id' => $poiId ] );
+			if ( ! empty( $poiId ) ) {
+				$manualdb->delete( 'poi', [
+					"AND" => [
+						'poi_id' => $poiId
+					]
+				] );
+			}
+			if ( $noDiscordSubmitLogChannel === false ) {
+				$data = array("content" => '```Deleted POI with id "' . $poiId . '" and name: "' . $poiName['name'] . '" . ```', "username" => $loggedUser);
+				sendToWebhook($discordSubmitLogChannelUrl, ($data));
+			}
+		}
+	public function mark_poi_submitted($poiId, $loggedUser)
+		{
+			global $manualdb, $noPoi, $noDiscordSubmitLogChannel;
+			if ( $noPoi === true ) {
+				http_response_code( 401 );
+				die();
+			}
+			$poiName = $manualdb->get( "poi", [ 'name' ], [ 'poi_id' => $poiId ] );
+			if ( ! empty( $poiId ) ) {
+				$cols     = [
+					'updated'      => time(),
+					'status'      => 2
+				];
+				$where    = [
+					'poi_id' => $poiId
+				];
+				$manualdb->update( "poi", $cols, $where );
+				if ( $noDiscordSubmitLogChannel === false ) {
+					$data = array("content" => '```Marked poi with id "' . $poiId . '." As submitted. PoiName: "' . $poiName['name'] . '". ```', "username" => $loggedUser);
+					sendToWebhook($discordSubmitLogChannelUrl, ($data));
+				}
+			}
+		}
+	public function mark_poi_declined($poiId, $loggedUser)
+		{
+			global $manualdb, $noPoi, $noDiscordSubmitLogChannel;
+			if ( $noPoi === true ) {
+				http_response_code( 401 );
+				die();
+			}
+			$poiName = $manualdb->get( "poi", [ 'name' ], [ 'poi_id' => $poiId ] );
+			if ( ! empty( $poiId ) ) {
+				$cols     = [
+					'updated'      => time(),
+					'status'      => 3
+				];
+				$where    = [
+					'poi_id' => $poiId
+				];
+				$manualdb->update( "poi", $cols, $where );
+				if ( $noDiscordSubmitLogChannel === false ) {
+					$data = array("content" => '```Marked poi with id "' . $poiId . '." As declined. PoiName: "' . $poiName['name'] . '". ```', "username" => $loggedUser);
+					sendToWebhook($discordSubmitLogChannelUrl, ($data));
+				}
 			}
 		}
 }
