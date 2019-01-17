@@ -97,6 +97,7 @@ var lastgyms
 var lastnests
 var lastcommunities
 var lastportals
+var lastpois
 var lastpokemon
 var lastslocs
 var lastspawns
@@ -493,6 +494,7 @@ function initSidebar() {
     $('#nests-switch').prop('checked', Store.get('showNests'))
     $('#communities-switch').prop('checked', Store.get('showCommunities'))
     $('#portals-switch').prop('checked', Store.get('showPortals'))
+    $('#poi-switch').prop('checked', Store.get('showPoi'))
     $('#s2-switch').prop('checked', Store.get('showCells'))
     $('#s2-switch-wrapper').toggle(Store.get('showCells'))
     $('#s2-level13-switch').prop('checked', Store.get('showExCells'))
@@ -1010,6 +1012,7 @@ function getReward(item) {
     var reward = JSON.parse(item['quest_reward_info'])
     var pokemonIdStr = ''
     var formStr = ''
+    var shinyStr = ''
     if (item['quest_reward_type'] === 7) {
         if (reward['pokemon_id'] <= 9) {
             pokemonIdStr = '00' + reward['pokemon_id']
@@ -1023,7 +1026,10 @@ function getReward(item) {
         } else {
             formStr = reward['form_id']
         }
-        rewardImage = '<img height="70px" style="padding: 5px;" src="' + iconpath + 'pokemon_icon_' + pokemonIdStr + '_' + formStr + '.png"/>'
+        if (reward['shiny'] === true) {
+            shinyStr = '_shiny'
+        }
+        rewardImage = '<img height="70px" style="padding: 5px;" src="' + iconpath + 'pokemon_icon_' + pokemonIdStr + '_' + formStr + shinyStr + '.png"/>'
     } else if (item['quest_reward_type'] === 3) {
         rewardImage = '<img height="70px" style="padding: 5px;" src="' + iconpath + 'rewards/reward_stardust.png"/>'
     } else if (item['quest_reward_type'] === 2) {
@@ -1697,9 +1703,13 @@ function getPokestopMarkerIcon(item) {
             } else {
                 formStr = rewardinfo['form_id']
             }
+            var shinyStr = ''
+            if (rewardinfo['shiny'] === true) {
+                shinyStr = '_shiny'
+            }
             html = '<div style="position:relative;">' +
                 '<img src="static/forts/Pstop-quest-small.png" style="width:50px;height:72;top:-35px;right:10px;"/>' +
-                '<img src="' + iconpath + 'pokemon_icon_' + pokemonIdStr + '_' + formStr + '.png" style="width:30px;height:auto;position:absolute;top:4px;left:0px;"/>' +
+                '<img src="' + iconpath + 'pokemon_icon_' + pokemonIdStr + '_' + formStr + shinyStr + '.png" style="width:30px;height:auto;position:absolute;top:4px;left:0px;"/>' +
                 '</div>'
             stopMarker = L.divIcon({
                 iconSize: [31, 31],
@@ -1759,7 +1769,18 @@ function getPokestopMarkerIcon(item) {
 
 function setupPokestopMarker(item) {
     var pokestopMarkerIcon = getPokestopMarkerIcon(item)
-    var marker = L.marker([item['latitude'], item['longitude']], {icon: pokestopMarkerIcon, zIndexOffset: 1050}).bindPopup(pokestopLabel(item), {autoPan: false, closeOnClick: false, autoClose: false})
+    var reward = JSON.parse(item['quest_rewards'])
+    var marker
+    if (!noQuests && reward !== null) {
+        var rewardInfo = JSON.parse(item['quest_reward_info'])
+        if (rewardInfo['shiny'] === true) {
+            marker = L.marker([item['latitude'], item['longitude']], {icon: pokestopMarkerIcon, zIndexOffset: 1050}).bindPopup(pokestopLabel(item), {className: 'leaflet-popup-content-wrapper shiny', autoPan: false, closeOnClick: false, autoClose: false})
+        } else {
+            marker = L.marker([item['latitude'], item['longitude']], {icon: pokestopMarkerIcon, zIndexOffset: 1050}).bindPopup(pokestopLabel(item), {className: 'leaflet-popup-content-wrapper normal', autoPan: false, closeOnClick: false, autoClose: false})
+        }
+    } else {
+        marker = L.marker([item['latitude'], item['longitude']], {icon: pokestopMarkerIcon, zIndexOffset: 1050}).bindPopup(pokestopLabel(item), {className: 'leaflet-popup-content-wrapper normal', autoPan: false, closeOnClick: false, autoClose: false})
+    }
     markers.addLayer(marker)
 
     if (!marker.rangeCircle && isRangeActive(map)) {
@@ -1973,6 +1994,43 @@ function setupPortalMarker(item) {
     return marker
 }
 
+function setupPoiMarker(item) {
+    if (item.status === '1') {
+        var circle = {
+            color: '#FFA500',
+            radius: 5,
+            fillOpacity: 1,
+            fillColor: '#FFA500',
+            weight: 1,
+            pane: 'portals'
+        }
+    } else if (item.status === '2') {
+        circle = {
+            color: '#0000FF',
+            radius: 5,
+            fillOpacity: 1,
+            fillColor: '#0000FF',
+            weight: 1,
+            pane: 'portals'
+        }
+    } else if (item.status === '3') {
+        circle = {
+            color: '#FF0000',
+            radius: 5,
+            fillOpacity: 1,
+            fillColor: '#FF0000',
+            weight: 1,
+            pane: 'portals'
+        }
+    }
+    var marker = L.circleMarker([item['lat'], item['lon']], circle).bindPopup(poiLabel(item), {autoPan: false, closeOnClick: false, autoClose: false})
+    markers.addLayer(marker)
+
+    addListeners(marker)
+
+    return marker
+}
+
 function portalLabel(item) {
     var updated = formatDate(new Date(item.updated * 1000))
     var imported = formatDate(new Date(item.imported * 1000))
@@ -1985,6 +2043,21 @@ function portalLabel(item) {
         '<center><div>Date imported: ' + imported + '</div></center>'
     if (!noDeletePortal) {
         str += '<i class="fa fa-trash-o delete-portal" onclick="deletePortal(event);" data-id="' + item.external_id + '"></i>'
+    }
+    return str
+}
+
+function poiLabel(item) {
+    var updated = formatDate(new Date(item.updated * 1000))
+    var str = '<center><h3><div>' + item.name + '</div></h3></center>' +
+        '<center><h4><div>' + item.description + '</div></h4></center>' +
+        '<center><div>Added: ' + updated + '</div></center>' +
+        '<center><div>Submitted by: ' + item.submitted_by + '</div></center>'
+    if (!noDeletePoi) {
+        str += '<i class="fa fa-trash-o delete-poi" onclick="deletePoi(event);" data-id="' + item.poi_id + '"></i>'
+    }
+    if (!noMarkPoi) {
+        str += '<center><div>Mark this poi <i class="fa fa-refresh convert-poi" style="margin-top: 2px; margin-left: 5px; vertical-align: middle; font-size: 1.5em;" onclick="openMarkPoiModal(event);" data-id="' + item.poi_id + '"></i></div></center>'
     }
     return str
 }
@@ -2012,6 +2085,35 @@ function deletePortal(event) { // eslint-disable-line no-unused-vars
                 complete: function complete() {
                     jQuery('label[for="portals-switch"]').click()
                     jQuery('label[for="portals-switch"]').click()
+                }
+            })
+        }
+    }
+}
+
+function deletePoi(event) { // eslint-disable-line no-unused-vars
+    var button = $(event.target)
+    var poiid = button.data('id')
+    if (poiid && poiid !== '') {
+        if (confirm(i8ln('I confirm that this poi has been accepted through niantic or is not eligible as POI. This is a permanent deleture'))) {
+            return $.ajax({
+                url: 'submit',
+                type: 'POST',
+                timeout: 300000,
+                dataType: 'json',
+                cache: false,
+                data: {
+                    'action': 'delete-poi',
+                    'poiId': poiid
+                },
+                error: function error() {
+                    // Display error toast
+                    toastr['error'](i8ln('Oops something went wrong.'), i8ln('Error Deleting poi'))
+                    toastr.options = toastrOptions
+                },
+                complete: function complete() {
+                    jQuery('label[for="poi-switch"]').click()
+                    jQuery('label[for="poi-switch"]').click()
                 }
             })
         }
@@ -2264,6 +2366,7 @@ function loadRawData() {
     var loadNests = Store.get('showNests')
     var loadCommunities = Store.get('showCommunities')
     var loadPortals = Store.get('showPortals')
+    var loadPois = Store.get('showPoi')
     var loadNewPortalsOnly = Store.get('showNewPortalsOnly')
     var loadScanned = Store.get('showScanned')
     var loadSpawnpoints = Store.get('showSpawnpoints')
@@ -2299,6 +2402,8 @@ function loadRawData() {
             'communities': loadCommunities,
             'lastcommunities': lastcommunities,
             'portals': loadPortals,
+            'pois': loadPois,
+            'lastpois': lastpois,
             'newportals': loadNewPortalsOnly,
             'lastportals': lastportals,
             'lastpokestops': lastpokestops,
@@ -3254,6 +3359,102 @@ function editCommunityData(event) { // eslint-disable-line no-unused-vars
         }
     }
 }
+function submitPoi(event) { // eslint-disable-line no-unused-vars
+    var form = $(event.target).parent().parent()
+    var lat = $('.submit-modal.ui-dialog-content .submitLatitude').val()
+    var lon = $('.submit-modal.ui-dialog-content .submitLongitude').val()
+    var poiName = form.find('[name="poi-name"]').val()
+    var poiDescription = form.find('[name="poi-description"]').val()
+    if (poiName && poiName !== '' && poiDescription && poiDescription !== '') {
+        if (confirm(i8ln('I confirm this is an eligible POI location'))) {
+            return $.ajax({
+                url: 'submit',
+                type: 'POST',
+                timeout: 300000,
+                dataType: 'json',
+                cache: false,
+                data: {
+                    'action': 'poi-add',
+                    'lat': lat,
+                    'lon': lon,
+                    'poiName': poiName,
+                    'poiDescription': poiDescription
+                },
+                error: function error() {
+                    // Display error toast
+                    toastr['error'](i8ln('Make sure all fields are filled.'), i8ln('Error Submitting poi'))
+                    toastr.options = toastrOptions
+                },
+                complete: function complete() {
+                    lastpois = false
+                    updateMap()
+                    $('.ui-dialog-content').dialog('close')
+                }
+            })
+        }
+    }
+}
+
+function markPoiSubmitted(event) { // eslint-disable-line no-unused-vars
+    var form = $(event.target).parent().parent()
+    var poiId = form.find('.markpoiid').val()
+    if (poiId && poiId !== '') {
+        if (confirm(i8ln('I confirm this POI is submitted to OPR'))) {
+            return $.ajax({
+                url: 'submit',
+                type: 'POST',
+                timeout: 300000,
+                dataType: 'json',
+                cache: false,
+                data: {
+                    'action': 'markpoisubmitted',
+                    'poiId': poiId
+                },
+                error: function error() {
+                    // Display error toast
+                    toastr['error'](i8ln('POI id got lost somewhere.'), i8ln('Error marking portal'))
+                    toastr.options = toastrOptions
+                },
+                complete: function complete() {
+                    lastpois = false
+                    updateMap()
+                    $('.ui-dialog-content').dialog('close')
+                }
+            })
+        }
+    }
+}
+
+function markPoiDeclined(event) { // eslint-disable-line no-unused-vars
+    var form = $(event.target).parent().parent()
+    var poiId = form.find('.markpoiid').val()
+    if (poiId && poiId !== '') {
+        if (confirm(i8ln('I confirm this POI is declined by OPR'))) {
+            return $.ajax({
+                url: 'submit',
+                type: 'POST',
+                timeout: 300000,
+                dataType: 'json',
+                cache: false,
+                data: {
+                    'action': 'markpoideclined',
+                    'poiId': poiId
+                },
+                error: function error() {
+                    // Display error toast
+                    toastr['error'](i8ln('POI id got lost somewhere.'), i8ln('Error marking portal'))
+                    toastr.options = toastrOptions
+                },
+                complete: function complete() {
+                    lastpois = false
+                    updateMap()
+                    $('.ui-dialog-content').dialog('close')
+                }
+            })
+        }
+    }
+}
+
 function openNestModal(event) { // eslint-disable-line no-unused-vars
     $('.ui-dialog').remove()
     var val = $(event.target).data('id')
@@ -3522,7 +3723,22 @@ function openConvertPortalModal(event) { // eslint-disable-line no-unused-vars
         modal: true,
         maxHeight: 600,
         buttons: {},
-        title: i8ln('Convert Portal to Pokestop / Gym'),
+        title: i8ln('Convert to Pokestop/Gym'),
+        classes: {
+            'ui-dialog': 'ui-dialog raid-widget-popup'
+        }
+    })
+}
+
+function openMarkPoiModal(event) { // eslint-disable-line no-unused-vars
+    $('.ui-dialog').remove()
+    var val = $(event.target).data('id')
+    $('.markpoiid').val(val)
+    $('.mark-poi-modal').clone().dialog({
+        modal: true,
+        maxHeight: 600,
+        buttons: {},
+        title: i8ln('Mark POI'),
         classes: {
             'ui-dialog': 'ui-dialog raid-widget-popup'
         }
@@ -3830,6 +4046,27 @@ function updatePortals() {
                 delete mapData.portals[value]
             }
         })
+    }
+}
+function processPois(i, item) {
+    if (!Store.get('showPoi')) {
+        return false
+    }
+    if (!mapData.pois[item['poi_id']]) {
+        if (item.marker && item.marker.rangeCircle) {
+            markers.removeLayer(item.marker.rangeCircle)
+        }
+        if (item.marker) {
+            markers.removeLayer(item.marker)
+        }
+        item.marker = setupPoiMarker(item)
+        mapData.pois[item['poi_id']] = item
+    } else {
+        // change existing pokestop marker to unlured/lured
+        var item2 = mapData.pois[item['poi_id']]
+        markers.removeLayer(item2.marker)
+        item.marker = setupPoiMarker(item)
+        mapData.pois[item['poi_id']] = item
     }
 }
 function processPokestops(i, item) {
@@ -4160,6 +4397,7 @@ function updateMap() {
         $.each(result.nests, processNests)
         $.each(result.communities, processCommunities)
         $.each(result.portals, processPortals)
+        $.each(result.pois, processPois)
         showInBoundsMarkers(mapData.pokemons, 'pokemon')
         showInBoundsMarkers(mapData.lurePokemons, 'pokemon')
         showInBoundsMarkers(mapData.gyms, 'gym')
@@ -4192,6 +4430,7 @@ function updateMap() {
         lastnests = result.lastnests
         lastcommunities = result.lastcommunities
         lastportals = result.lastportals
+        lastpois = result.lastpois
 
         prevMinIV = result.preMinIV
         prevMinLevel = result.preMinLevel
@@ -5866,7 +6105,10 @@ $(function () {
         lastcommunities = false
         buildSwitchChangeListener(mapData, ['communities'], 'showCommunities').bind(this)()
     })
-
+    $('#poi-switch').change(function () {
+        lastpois = false
+        buildSwitchChangeListener(mapData, ['pois'], 'showPoi').bind(this)()
+    })
     $('#portals-switch').change(function () {
         var options = {
             'duration': 500

@@ -188,7 +188,6 @@ if ( $blockIframe ) {
         var token = '<?php echo ( ! empty( $_SESSION['token'] ) ) ? $_SESSION['token'] : ""; ?>';
     </script>
     <link href="node_modules/leaflet-geosearch/assets/css/leaflet.css" rel="stylesheet" />
-    <link rel="stylesheet" href="static/dist/css/app.min.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jqueryui/1.12.0/jquery-ui.min.css">
     <link rel="stylesheet" href="node_modules/datatables/media/css/jquery.dataTables.min.css">
     <script src="static/js/vendor/modernizr.custom.js"></script>
@@ -196,6 +195,7 @@ if ( $blockIframe ) {
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.css">
     <!-- Leaflet -->
     <link rel="stylesheet" href="node_modules/leaflet/dist/leaflet.css" />
+    <link rel="stylesheet" href="static/dist/css/app.min.css">
     <link rel="stylesheet" href="node_modules/leaflet.markercluster/dist/MarkerCluster.css" />
     <link rel="stylesheet" href="node_modules/leaflet.markercluster/dist/MarkerCluster.Default.css" />
     <link href='static/css/leaflet.fullscreen.css' rel='stylesheet' />
@@ -750,6 +750,20 @@ if ( $blockIframe ) {
                         <option value = "0"> ' . i8ln( 'All' ) . '</option>
                         <option value = "1"> ' . i8ln( 'Only new' ) . ' </option>
                     </select>
+                </div>';
+		} ?>
+                <?php
+                if ( ! $noPoi ) {
+                    echo '<div class="form-control switch-container">
+                    <h3>' . i8ln( 'POI' ) . '</h3>
+                    <div class="onoffswitch">
+                        <input id="poi-switch" type="checkbox" name="poi-switch"
+                               class="onoffswitch-checkbox" checked>
+                        <label class="onoffswitch-label" for="poi-switch">
+                            <span class="switch-label" data-on="On" data-off="Off"></span>
+                            <span class="switch-handle"></span>
+                        </label>
+                    </div>
                 </div>';
 		} ?>
                 <?php
@@ -1385,6 +1399,20 @@ if ( $blockIframe ) {
             </div>
         </div>
     <?php } ?>
+    <?php if ( ! $noPoi ) { ?>
+        <div class="mark-poi-modal" style="display: none;">
+             <div class="button-container">
+                <button type="button" onclick="markPoiSubmitted(event);" class="markpoiid"><i
+                        class="fa fa-refresh"
+                        style="margin-right:10px; vertical-align: middle; font-size: 1.5em;"></i><?php echo i8ln( 'Mark as submitted' ); ?>
+		</button>
+                <button type="button" onclick="markPoiDeclined(event);" class="markpoiid"><i
+                        class="fa fa-times"
+                        style="margin-right:10px; vertical-align: middle; font-size: 1.5em;"></i><?php echo i8ln( 'Mark as declined' ); ?>
+		</button>
+            </div>
+        </div>
+    <?php } ?>
     <?php if ( ! $noDiscordLogin ) { ?>
         <div class="accessdenied-modal" style="display: none;">
             <?php if ( $copyrightSafe === false ) { ?>
@@ -1662,6 +1690,10 @@ if ( $blockIframe ) {
                         ?>
                         <li><a href="#tab-communities"><img src="static/images/community.png"/></a></li>
                     <?php } ?>
+                    <?php if ( ! $noAddPoi && !$noPoi ) {
+                        ?>
+                        <li><a href="#tab-poi"><img src="static/images/playground.png"/></a></li>
+                    <?php } ?>
                 </ul>
                 <?php if ( ! $noManualPokemon && !$noPokemon  ) {
                     ?>
@@ -1734,6 +1766,24 @@ if ( $blockIframe ) {
                             <button type="button" onclick="submitNewCommunity(event);" class="submitting-community"><i
                                     class="fa fa-comments"
                                     style="margin-right:10px;"></i><?php echo i8ln( 'Submit Community' ); ?>
+                            </button>
+                        </div>
+                    </div>
+                <?php } ?>
+                <?php if ( ! $noAddPoi && !$noPoi ) {
+                    ?>
+                    <div id="tab-poi">
+                        <input type="text" name="poi-name" class="poi-name"
+                               placeholder="<?php echo i8ln( 'Enter POI Name' ); ?>" data-type="name"
+			       class="search-input">
+                        <input type="text" name="poi-description" class="poi-description"
+                               placeholder="<?php echo i8ln( 'Enter description' ); ?>" data-type="description"
+			       class="search-input">
+                        <div class="button-container">
+			<h6><center><?php echo i8ln( 'If you submit a POI you agree that your discord username will be shown in the marker label' ); ?></center></h6>
+                            <button type="button" onclick="submitPoi(event);" class="submitting-poi"><i
+                                    class="fa fa-comments"
+                                    style="margin-right:10px;"></i><?php echo i8ln( 'Submit POI' ); ?>
                             </button>
                         </div>
                     </div>
@@ -1859,7 +1909,10 @@ if ( $blockIframe ) {
     var noRenamePokestops = <?php echo $noRenamePokestops === true ? 'true' : 'false' ?>;
     var noConvertPokestops = <?php echo $noConvertPokestops === true ? 'true' : 'false' ?>;
     var noWhatsappLink = <?php echo $noWhatsappLink === true ? 'true' : 'false' ?>;
+    var enablePoi = <?php echo $noPoi ? 'false' : $enablePoi ?>;
     var enablePortals = <?php echo $noPortals ? 'false' : $enablePortals ?>;
+    var noDeletePoi = <?php echo $noDeletePoi === true ? 'true' : 'false' ?>;
+    var noMarkPoi = <?php echo $noMarkPoi === true ? 'true' : 'false' ?>;
     var noPortals = <?php echo $noPortals === true ? 'true' : 'false' ?>;
     var enableS2Cells = <?php echo $noS2Cells ? 'false' : $enableS2Cells ?>;
     var enableLevel13Cells = <?php echo $noS2Cells ? 'false' : $enableLevel13Cells ?>;
