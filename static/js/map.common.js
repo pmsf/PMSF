@@ -955,6 +955,11 @@ var StoreOptions = {
             default: enablePortals,
             type: StoreTypes.Boolean
         },
+    'showPoi':
+        {
+            default: enablePoi,
+            type: StoreTypes.Boolean
+        },
     'showNewPortalsOnly':
         {
             default: enableNewPortals,
@@ -1218,7 +1223,8 @@ var mapData = {
     spawnpoints: {},
     nests: {},
     communities: {},
-    portals: {}
+    portals: {},
+    pois: {}
 }
 
 function getPokemonSprite(index, sprite, displayHeight, weather = 0, encounterForm = 0) {
