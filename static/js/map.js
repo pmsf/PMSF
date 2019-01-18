@@ -482,7 +482,7 @@ function buildScanPolygons() {
     $.getJSON(geoJSONfile, function (data) {
         var geoPolys = L.geoJson(data, {
             onEachFeature: function (features, featureLayer) {
-                featureLayer.setStyle({color: features.properties.stroke,fillColor: features.properties.fill}),
+                featureLayer.setStyle({color: features.properties.stroke, fillColor: features.properties.fill})
                 featureLayer.bindPopup(features.properties.name)
             }
         })
