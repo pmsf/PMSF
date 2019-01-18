@@ -158,7 +158,7 @@ class RDM extends Submit
 		}
 	public function submit_gym($lat, $lon, $gymName, $loggedUser)
 		{
-			global $db, $noManualGyms, $noGyms, $noDiscordSubmitLogChannel;
+			global $db, $noManualGyms, $noGyms, $noDiscordSubmitLogChannel, $submitMapUrl;
 			if ( $noManualGyms === true || $noGyms === true ) {
 				http_response_code( 401 );
 				die();
@@ -237,7 +237,7 @@ class RDM extends Submit
 		}
 	public function submit_pokestop($lat, $lon, $pokestopName, $loggedUser)
 		{
-			global $db, $noManualPokestops, $noPokestops, $noDiscordSubmitLogChannel;
+			global $db, $noManualPokestops, $noPokestops, $noDiscordSubmitLogChannel, $submitMapUrl;
 			if ( $noManualPokestops === true || $noPokestops === true ) {
 				http_response_code( 401 );
 				die();
@@ -589,7 +589,7 @@ class RDM extends Submit
 		}
 	public function submit_community($lat, $lon, $communityName, $communityDescription, $communityInvite, $loggedUser)
 		{
-			global $manualdb, $noCommunity, $noAddNewCommunity, $noDiscordSubmitLogChannel;
+			global $manualdb, $noCommunity, $noAddNewCommunity, $noDiscordSubmitLogChannel, $submitMapUrl;
 			if ( $noCommunity === true || $noAddNewCommunity === true ) {
 				http_response_code( 401 );
 				die();
@@ -704,7 +704,7 @@ class RDM extends Submit
 		}
 	public function submit_poi($lat, $lon, $poiName, $poiDescription, $loggedUser)
 		{
-			global $manualdb, $noPoi, $noAddPoi, $noDiscordSubmitLogChannel;
+			global $manualdb, $noPoi, $noAddPoi, $noDiscordSubmitLogChannel, $submitMapUrl;
 			if ( $noPoi === true || $noAddPoi === true ) {
 				http_response_code( 401 );
 				die();
