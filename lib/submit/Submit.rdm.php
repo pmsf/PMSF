@@ -6,7 +6,7 @@ class RDM extends Submit
 {
 	public function submit_raid($pokemonId, $gymId, $eggTime, $monTime, $loggedUser)
 		{
-			global $db, $noManualRaids, $noRaids, $sendWebhook, $noDiscordSubmitLogChannel;
+			global $db, $noManualRaids, $noRaids, $sendWebhook, $noDiscordSubmitLogChannel, $discordSubmitLogChannelUrl;
 			if ( $noManualRaids === true || $noRaids === true ) {
 				http_response_code( 401 );
 				die();
@@ -99,7 +99,7 @@ class RDM extends Submit
 		}
 	public function submit_pokemon($lat, $lon, $pokemonId)
 		{
-			global $db, $noManualPokemon, $noPokemon, $pokemonTimer, $sendWebhook, $noDiscordSubmitLogChannel;
+			global $db, $noManualPokemon, $noPokemon, $pokemonTimer, $sendWebhook, $noDiscordSubmitLogChannel, $discordSubmitLogChannelUrl;
 			if ( $noManualPokemon === true || $noPokemon === true ) {
 				http_response_code( 401 );
 				die();
@@ -158,7 +158,7 @@ class RDM extends Submit
 		}
 	public function submit_gym($lat, $lon, $gymName, $loggedUser)
 		{
-			global $db, $noManualGyms, $noGyms, $noDiscordSubmitLogChannel, $submitMapUrl;
+			global $db, $noManualGyms, $noGyms, $noDiscordSubmitLogChannel, $discordSubmitLogChannelUrl, $submitMapUrl;
 			if ( $noManualGyms === true || $noGyms === true ) {
 				http_response_code( 401 );
 				die();
@@ -180,7 +180,7 @@ class RDM extends Submit
 		}
 	public function toggle_ex($gymId, $loggedUser)
 		{
-			global $db, $noToggleExGyms, $noGyms, $noDiscordSubmitLogChannel;
+			global $db, $noToggleExGyms, $noGyms, $noDiscordSubmitLogChannel, $discordSubmitLogChannelUrl;
 			if ( $noToggleExGyms === true || $noGyms === true ) {
 				http_response_code( 401 );
 				die();
@@ -217,7 +217,7 @@ class RDM extends Submit
 		}
 	public function delete_gym($gymId, $loggedUser)
 		{
-			global $db, $noDeleteGyms, $noGyms, $noDiscordSubmitLogChannel;
+			global $db, $noDeleteGyms, $noGyms, $noDiscordSubmitLogChannel, $discordSubmitLogChannelUrl;
 			if ( $noDeleteGyms === true || $noGyms === true ) {
 				http_response_code( 401 );
 				die();
@@ -237,7 +237,7 @@ class RDM extends Submit
 		}
 	public function submit_pokestop($lat, $lon, $pokestopName, $loggedUser)
 		{
-			global $db, $noManualPokestops, $noPokestops, $noDiscordSubmitLogChannel, $submitMapUrl;
+			global $db, $noManualPokestops, $noPokestops, $noDiscordSubmitLogChannel, $discordSubmitLogChannelUrl, $submitMapUrl;
 			if ( $noManualPokestops === true || $noPokestops === true ) {
 				http_response_code( 401 );
 				die();
@@ -263,7 +263,7 @@ class RDM extends Submit
 		}
 	public function modify_pokestop($pokestopId, $pokestopName, $loggedUser)
 		{
-			global $db, $noRenamePokestops, $noPokestops, $noDiscordSubmitLogChannel;
+			global $db, $noRenamePokestops, $noPokestops, $noDiscordSubmitLogChannel, $discordSubmitLogChannelUrl;
 			if ( $noRenamePokestops === true || $noPokestops === true ) {
 				http_response_code( 401 );
 				die();
@@ -285,7 +285,7 @@ class RDM extends Submit
 		}
 	public function delete_pokestop($pokestopId, $loggedUser)
 		{
-			global $db, $noDeletePokestops, $noPokestops, $noDiscordSubmitLogChannel;
+			global $db, $noDeletePokestops, $noPokestops, $noDiscordSubmitLogChannel, $discordSubmitLogChannelUrl;
 			if ( $noDeletePokestops === true || $noPokestops === true ) {
 				http_response_code( 401 );
 				die();
@@ -305,7 +305,7 @@ class RDM extends Submit
 		}
 	public function convert_pokestop($pokestopId, $loggedUser)
 		{
-			global $db, $noConvertPokestops, $noPokestops, $noDiscordSubmitLogChannel;
+			global $db, $noConvertPokestops, $noPokestops, $noDiscordSubmitLogChannel, $discordSubmitLogChannelUrl;
 			if ( $noConvertPokestops === true || $noPokestops === true ) {
 				http_response_code( 401 );
 				die();
@@ -333,7 +333,7 @@ class RDM extends Submit
 		}
 	public function submit_quest($pokestopId, $questType, $questTarget, $conditionType, $catchPokemonType, $catchPokemon, $raidLevel, $throwType, $curveThrow, $rewardType, $encounter, $item, $itemAmount, $dust, $loggedUser)
 		{
-			global $db, $noManualQuests, $noPokestops, $noDiscordSubmitLogChannel;
+			global $db, $noManualQuests, $noPokestops, $noDiscordSubmitLogChannel, $discordSubmitLogChannelUrl;
 			if ( $noManualQuests === true || $noPokestops === true ) {
 				http_response_code( 401 );
 				die();
@@ -446,7 +446,7 @@ class RDM extends Submit
 		}
 	public function convert_portal_pokestop($portalId, $loggedUser)
 		{
-			global $db, $manualdb, $noPortals, $noDiscordSubmitLogChannel;
+			global $db, $manualdb, $noPortals, $noDiscordSubmitLogChannel, $discordSubmitLogChannelUrl;
 			if ( $noPortals === true ) {
 				http_response_code( 401 );
 				die();
@@ -470,7 +470,7 @@ class RDM extends Submit
 		}
 	public function convert_portal_gym($portalId, $loggedUser)
 		{
-			global $db, $manualdb, $noPortals, $noDiscordSubmitLogChannel;
+			global $db, $manualdb, $noPortals, $noDiscordSubmitLogChannel, $discordSubmitLogChannelUrl;
 			if ( $noPortals === true ) {
 				http_response_code( 401 );
 				die();
@@ -494,7 +494,7 @@ class RDM extends Submit
 		}
 	public function mark_portal($portalId, $loggedUser)
 		{
-			global $manualdb, $noPortals, $noDiscordSubmitLogChannel;
+			global $manualdb, $noPortals, $noDiscordSubmitLogChannel, $discordSubmitLogChannelUrl;
 			if ( $noPortals === true ) {
 				http_response_code( 401 );
 				die();
@@ -517,7 +517,7 @@ class RDM extends Submit
 		}
 	public function delete_portal($portalId, $loggedUser)
 		{
-			global $manualdb, $noPortals, $noDeletePortal, $noDiscordSubmitLogChannel;
+			global $manualdb, $noPortals, $noDeletePortal, $noDiscordSubmitLogChannel, $discordSubmitLogChannelUrl;
 			if ( $noPortals === true || $noDeletePortal === true) {
 				http_response_code( 401 );
 				die();
@@ -537,7 +537,7 @@ class RDM extends Submit
 		}
 	public function modify_nest($nestId, $pokemonId, $loggedUser)
 		{
-			global $manualdb, $noManualNests, $noNests, $noDiscordSubmitLogChannel;
+			global $manualdb, $noManualNests, $noNests, $noDiscordSubmitLogChannel, $discordSubmitLogChannelUrl;
 			if ( $noManualNests === true || $noNests === true ) {
 				http_response_code( 401 );
 				die();
@@ -555,7 +555,7 @@ class RDM extends Submit
 		}
 	public function submit_nest($lat, $lon, $pokemonId, $loggedUser)
 		{
-			global $manualdb, $noAddNewNests, $noNests, $noDiscordSubmitLogChannel;
+			global $manualdb, $noAddNewNests, $noNests, $noDiscordSubmitLogChannel, $discordSubmitLogChannelUrl;
 			if ( $noAddNewNests === true || $noNests === true ) {
 				http_response_code( 401 );
 				die();
@@ -574,7 +574,7 @@ class RDM extends Submit
 		}
 	public function delete_nest($nestId)
 		{
-			global $manualdb, $noDeleteNests, $noNests, $noDiscordSubmitLogChannel;
+			global $manualdb, $noDeleteNests, $noNests, $noDiscordSubmitLogChannel, $discordSubmitLogChannelUrl;
 			if ( $noDeleteNests === true || $noNests === true ) {
 				http_response_code( 401 );
 				die();
@@ -589,7 +589,7 @@ class RDM extends Submit
 		}
 	public function submit_community($lat, $lon, $communityName, $communityDescription, $communityInvite, $loggedUser)
 		{
-			global $manualdb, $noCommunity, $noAddNewCommunity, $noDiscordSubmitLogChannel, $submitMapUrl;
+			global $manualdb, $noCommunity, $noAddNewCommunity, $noDiscordSubmitLogChannel, $discordSubmitLogChannelUrl, $submitMapUrl;
 			if ( $noCommunity === true || $noAddNewCommunity === true ) {
 				http_response_code( 401 );
 				die();
@@ -638,7 +638,7 @@ class RDM extends Submit
 		}
 	public function modify_community($communityId, $communityName, $communityDescription, $communityInvite, $loggedUser)
 		{
-			global $manualdb, $noCommunity, $noEditCommunity, $noDiscordSubmitLogChannel;
+			global $manualdb, $noCommunity, $noEditCommunity, $noDiscordSubmitLogChannel, $discordSubmitLogChannelUrl;
 			if ( $noCommunity === true || $noEditCommunity === true ) {
 				http_response_code( 401 );
 				die();
@@ -685,7 +685,7 @@ class RDM extends Submit
 		}
 	public function delete_community($communityId, $loggedUser)
 		{
-			global $manualdb, $noCommunity, $noDeleteCommunity, $noDiscordSubmitLogChannel;
+			global $manualdb, $noCommunity, $noDeleteCommunity, $noDiscordSubmitLogChannel, $discordSubmitLogChannelUrl;
 			if ( $noCommunity === true || $noDeleteCommunity === true ) {
 				http_response_code( 401 );
 				die();
@@ -704,7 +704,7 @@ class RDM extends Submit
 		}
 	public function submit_poi($lat, $lon, $poiName, $poiDescription, $loggedUser)
 		{
-			global $manualdb, $noPoi, $noAddPoi, $noDiscordSubmitLogChannel, $submitMapUrl;
+			global $manualdb, $noPoi, $noAddPoi, $noDiscordSubmitLogChannel, $discordSubmitLogChannelUrl, $submitMapUrl;
 			if ( $noPoi === true || $noAddPoi === true ) {
 				http_response_code( 401 );
 				die();
@@ -730,7 +730,7 @@ class RDM extends Submit
 		}
 	public function delete_poi($poiId, $loggedUser)
 		{
-			global $manualdb, $noPoi, $noDeletePoi, $noDiscordSubmitLogChannel;
+			global $manualdb, $noPoi, $noDeletePoi, $noDiscordSubmitLogChannel, $discordSubmitLogChannelUrl;
 			if ( $noPoi === true || $noDeletePoi === true) {
 				http_response_code( 401 );
 				die();
@@ -750,7 +750,7 @@ class RDM extends Submit
 		}
 	public function mark_poi_submitted($poiId, $loggedUser)
 		{
-			global $manualdb, $noPoi, $noDiscordSubmitLogChannel;
+			global $manualdb, $noPoi, $noDiscordSubmitLogChannel, $discordSubmitLogChannelUrl;
 			if ( $noPoi === true ) {
 				http_response_code( 401 );
 				die();
@@ -773,7 +773,7 @@ class RDM extends Submit
 		}
 	public function mark_poi_declined($poiId, $loggedUser)
 		{
-			global $manualdb, $noPoi, $noDiscordSubmitLogChannel;
+			global $manualdb, $noPoi, $noDiscordSubmitLogChannel, $discordSubmitLogChannelUrl;
 			if ( $noPoi === true ) {
 				http_response_code( 401 );
 				die();
