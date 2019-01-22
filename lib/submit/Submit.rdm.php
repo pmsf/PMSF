@@ -631,7 +631,7 @@ class RDM extends Submit
 				];
 				$manualdb->insert( "communities", $cols );
 				if ( $noDiscordSubmitLogChannel === false ) {
-					$data = array("content" => '```Added community with id "' . $communityId . '" and gave it the new name: "' . $communityName . '"```' . $submitMapUrl . '/?lat=' . $lat . '&lon=' . $lng . '&zoom=18 ', "username" => $loggedUser);
+					$data = array("content" => '```Added community with id "' . $communityId . '" and gave it the new name: "' . $communityName . '"```' . $submitMapUrl . '/?lat=' . $lat . '&lon=' . $lon . '&zoom=18 ', "username" => $loggedUser);
 					sendToWebhook($discordSubmitLogChannelUrl, ($data));
 				}
 			}
@@ -723,7 +723,7 @@ class RDM extends Submit
 				];
 				$manualdb->insert( "poi", $cols );
 				if ( $noDiscordSubmitLogChannel === false ) {
-					$data = array("content" => '```Added poi with id "' . $poiId . '" and gave it the new name: "' . $poiName . '".\nDescription: "' . $poiDescription . '".```' . $submitMapUrl . '/?lat=' . $lat . '&lon=' . $lng . '&zoom=18 ', "username" => $loggedUser);
+					$data = array("content" => '```Added poi with id "' . $poiId . '" and gave it the new name: "' . $poiName . '".\nDescription: "' . $poiDescription . '".```' . $submitMapUrl . '/?lat=' . $lat . '&lon=' . $lon . '&zoom=18 ', "username" => $loggedUser);
 					sendToWebhook($discordSubmitLogChannelUrl, ($data));
 				}
 			}
