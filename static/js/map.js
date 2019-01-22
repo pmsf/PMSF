@@ -482,6 +482,7 @@ function buildScanPolygons() {
     $.getJSON(geoJSONfile, function (data) {
         var geoPolys = L.geoJson(data, {
             onEachFeature: function (features, featureLayer) {
+                featureLayer.setStyle({color: features.properties.stroke, fillColor: features.properties.fill})
                 featureLayer.bindPopup(features.properties.name)
             }
         })
@@ -2621,6 +2622,25 @@ function searchForItem(lat, lon, term, type, field) {
                     var html = '<li class="search-result ' + type + '" data-lat="' + element.lat + '" data-lon="' + element.lon + '"><div class="left-column" onClick="centerMapOnCoords(event);">'
                     if (sr.hasClass('portals-results')) {
                         html += '<span style="background:url(' + element.url + ') no-repeat;" class="i-icon" ></span>'
+                    }
+                    html += '<div class="cont">' +
+                    '<span class="name" style="font-weight:bold">' + element.name + '</span>' + '<span class="distance" style="font-weight:bold">&nbsp;-&#32;' + element.distance + defaultUnit + '</span>' +
+                    '</div></div>' +
+                    '</li>'
+                    sr.append(html)
+                })
+                $.each(data.nests, function (i, element) {
+                    var pokemonIdStr = ''
+                    if (element.pokemon_id <= 9) {
+                        pokemonIdStr = '00' + element.pokemon_id
+                    } else if (element.pokemon_id <= 99) {
+                        pokemonIdStr = '0' + element.pokemon_id
+                    } else {
+                        pokemonIdStr = element.pokemon_id
+                    }
+                    var html = '<li class="search-result ' + type + '" data-lat="' + element.lat + '" data-lon="' + element.lon + '"><div class="left-column" onClick="centerMapOnCoords(event);">'
+                    if (sr.hasClass('nest-results')) {
+                        html += '<span style="background:url(' + iconpath + 'pokemon_icon_' + pokemonIdStr + '_00.png) no-repeat;" class="i-icon" ></span>'
                     }
                     html += '<div class="cont">' +
                     '<span class="name" style="font-weight:bold">' + element.name + '</span>' + '<span class="distance" style="font-weight:bold">&nbsp;-&#32;' + element.distance + defaultUnit + '</span>' +
