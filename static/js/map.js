@@ -1684,7 +1684,12 @@ function updateGymIcons() {
     })
 }
 function getPokestopMarkerIcon(item) {
-    var reward = JSON.parse(item['quest_rewards'])
+    var reward
+    if (typeof item['quest_rewards'] !== 'undefined') {
+        reward = JSON.parse(item['quest_rewards'])
+    } else {
+        reward = null
+    }
     var stopMarker = ''
     var html = ''
     if (!noQuests && reward !== null) {
@@ -1770,7 +1775,12 @@ function getPokestopMarkerIcon(item) {
 
 function setupPokestopMarker(item) {
     var pokestopMarkerIcon = getPokestopMarkerIcon(item)
-    var reward = JSON.parse(item['quest_rewards'])
+    var reward
+    if (typeof item['quest_rewards'] !== 'undefined') {
+        reward = JSON.parse(item['quest_rewards'])
+    } else {
+        reward = null
+    }
     var marker
     if (!noQuests && reward !== null) {
         var rewardInfo = JSON.parse(item['quest_reward_info'])

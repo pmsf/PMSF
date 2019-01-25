@@ -18,6 +18,7 @@ $libs[] = "Monocle_Alternate.php";
 $libs[] = "RocketMap.php";
 $libs[] = "RocketMap_Sloppy.php";
 $libs[] = "RDM.php";
+$libs[] = "RDM_beta.php";
 $libs[] = "search/Search.php";
 $libs[] = "search/Search.rdm.php";
 $libs[] = "search/Search.monocle_alternate.php";
