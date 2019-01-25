@@ -76,26 +76,20 @@ if (!validateToken($_POST['token'])) {
 
 // init map
 if (strtolower($map) === "monocle") {
-    if (strtolower($fork) === "asner") {
-        $scanner = new \Scanner\Monocle_Asner();
-    } elseif (strtolower($fork) === "default") {
+    if (strtolower($fork) === "default") {
         $scanner = new \Scanner\Monocle();
     } else {
-        $scanner = new \Scanner\Monocle_Alternate();
-    }
-} elseif (strtolower($map) === "rm") {
-    if (strtolower($fork) === "sloppy") {
-        $scanner = new \Scanner\RocketMap_Sloppy();
-    } else {
-        $scanner = new \Scanner\RocketMap();
+        $scanner = new \Scanner\Monocle_PMSF();
     }
 } elseif (strtolower($map) === "rdm") {
-    if (strtolower($fork) === "beta") {
-        $scanner = new \Scanner\RDM_beta();
-    } else {
+    if (strtolower($fork) === "public") {
         $scanner = new \Scanner\RDM();
+    } else {
+        $scanner = new \Scanner\RDM_beta();
     }
 }
+
+$manual = new \Manual\Manual();
 
 $newarea = false;
 if (($oSwLng < $swLng) && ($oSwLat < $swLat) && ($oNeLat > $neLat) && ($oNeLng > $neLng)) {
@@ -212,12 +206,12 @@ global $noNests;
 if (!$noNests ) {
     if ($d["lastnests"] == "true") {
         if ($lastnests != "true") {
-            $d["nests"] = $scanner->get_nests($swLat, $swLng, $neLat, $neLng);
+            $d["nests"] = $manual->get_nests($swLat, $swLng, $neLat, $neLng);
         } else {
             if ($newarea) {
-                $d["nests"] = $scanner->get_nests($swLat, $swLng, $neLat, $neLng, 0, $oSwLat, $oSwLng, $oNeLat, $oNeLng);
+                $d["nests"] = $manual->get_nests($swLat, $swLng, $neLat, $neLng, 0, $oSwLat, $oSwLng, $oNeLat, $oNeLng);
             } else {
-                $d["nests"] = $scanner->get_nests($swLat, $swLng, $neLat, $neLng, time());
+                $d["nests"] = $manual->get_nests($swLat, $swLng, $neLat, $neLng, time());
             }
         }
     }
@@ -227,12 +221,12 @@ global $noCommunity;
 if (!$noCommunity ) {
     if ($d["lastcommunities"] == "true") {
         if ($lastcommunities != "true") {
-            $d["communities"] = $scanner->get_communities($swLat, $swLng, $neLat, $neLng);
+            $d["communities"] = $manual->get_communities($swLat, $swLng, $neLat, $neLng);
         } else {
             if ($newarea) {
-                $d["communities"] = $scanner->get_communities($swLat, $swLng, $neLat, $neLng, 0, $oSwLat, $oSwLng, $oNeLat, $oNeLng);
+                $d["communities"] = $manual->get_communities($swLat, $swLng, $neLat, $neLng, 0, $oSwLat, $oSwLng, $oNeLat, $oNeLng);
             } else {
-                $d["communities"] = $scanner->get_communities($swLat, $swLng, $neLat, $neLng, time());
+                $d["communities"] = $manual->get_communities($swLat, $swLng, $neLat, $neLng, time());
             }
         }
     }
@@ -242,12 +236,12 @@ global $noPortals;
 if (!$noPortals ) {
     if ($d["lastportals"] == "true") {
         if ($lastportals != "true") {
-            $d["portals"] = $scanner->get_portals($swLat, $swLng, $neLat, $neLng, 0, 0, 0, 0, 0, $newportals);
+            $d["portals"] = $manual->get_portals($swLat, $swLng, $neLat, $neLng, 0, 0, 0, 0, 0, $newportals);
         } else {
             if ($newarea) {
-                $d["portals"] = $scanner->get_portals($swLat, $swLng, $neLat, $neLng, 0, $oSwLat, $oSwLng, $oNeLat, $oNeLng, $newportals);
+                $d["portals"] = $manual->get_portals($swLat, $swLng, $neLat, $neLng, 0, $oSwLat, $oSwLng, $oNeLat, $oNeLng, $newportals);
             } else {
-                $d["portals"] = $scanner->get_portals($swLat, $swLng, $neLat, $neLng, time(), 0, 0, 0, 0,$newportals);
+                $d["portals"] = $manual->get_portals($swLat, $swLng, $neLat, $neLng, time(), 0, 0, 0, 0,$newportals);
             }
         }
     }
@@ -257,12 +251,12 @@ global $noPoi;
 if (!$noPoi ) {
     if ($d["lastpois"] == "true") {
         if ($lastpois != "true") {
-            $d["pois"] = $scanner->get_poi($swLat, $swLng, $neLat, $neLng, 0, 0, 0, 0, 0);
+            $d["pois"] = $manual->get_poi($swLat, $swLng, $neLat, $neLng, 0, 0, 0, 0, 0);
         } else {
             if ($newarea) {
-                $d["pois"] = $scanner->get_poi($swLat, $swLng, $neLat, $neLng, 0, $oSwLat, $oSwLng, $oNeLat, $oNeLng);
+                $d["pois"] = $manual->get_poi($swLat, $swLng, $neLat, $neLng, 0, $oSwLat, $oSwLng, $oNeLat, $oNeLng);
             } else {
-                $d["pois"] = $scanner->get_poi($swLat, $swLng, $neLat, $neLng, time(), 0, 0, 0, 0);
+                $d["pois"] = $manual->get_poi($swLat, $swLng, $neLat, $neLng, time(), 0, 0, 0, 0);
             }
         }
     }
