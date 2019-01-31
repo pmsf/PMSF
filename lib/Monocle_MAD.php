@@ -236,7 +236,7 @@ class Monocle_MAD extends Monocle
         json_extract(json_extract(`quest_condition`,'$[*].info'),'$[0]') AS quest_condition_info,
         tq.quest_reward_type,
         json_extract(json_extract(`quest_reward`,'$[*].info'),'$[0]') AS quest_reward_info,
-        tq.quest_item_amount
+        tq.quest_item_amount AS quest_reward_amount
 	FROM pokestops p
 	LEFT JOIN trs_quest tq ON tq.GUID = p.external_id
         WHERE :conditions";
