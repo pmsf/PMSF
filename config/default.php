@@ -14,6 +14,7 @@ require_once(__DIR__ . '/../utils.php');
 $libs[] = "Scanner.php";
 $libs[] = "Monocle.php";
 $libs[] = "Monocle_PMSF.php";
+$libs[] = "Monocle_MAD.php";
 $libs[] = "RDM.php";
 $libs[] = "RDM_beta.php";
 $libs[] = "search/Search.php";
