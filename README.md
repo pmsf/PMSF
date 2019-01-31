@@ -1,6 +1,6 @@
 # PMSF-ALT--PokeMap-Standalone-Frontend
 
-This fork is different is so many ways that its impossible to name them all. Main key features are Manual submissions. 
+This fork is different is so many ways that its impossible to name them all. Main key features are Manual submissions, support for RDM and MAD backends. 
 
 > Current Version 2.0 - Second release! with OpenStreetMap engine
 
@@ -17,6 +17,31 @@ Image naming convention `pokemon_icon_{XXX}_{YY}.png`
 Where XXX is pokemon id 001 - 807
 Where YY is pokemon form: 00 is normal
 
+## Backend settings
+
+* PMSF manual
+```
+$map = "monocle";
+$fork = "pmsf";
+```
+
+* RDM Real device map
+```
+$map = "rdm";
+$fork = "default" OR $fork = "beta";
+```
+
+* MAD Map a Droid 
+```
+Free version:
+$map = "monocle";
+$fork = "pmsf";
+
+Paid version: (with quests)
+$map = "monocle";
+$fork = "mad";
+```
+
 ## Webhooks
 Current tested support for
 * [PokeAlarm](https://github.com/PokeAlarm/PokeAlarm)
@@ -28,7 +53,9 @@ Current tested support for
 * [Discord](https://discord.gg/yGujp8D) channel
 
 ## Thanks
-* Thanks [RDM](https://github.com/123FLO321/RealDeviceMap) for their Real Device scanner.
+* Thanks [MAD](https://github.com/Map-A-Droid/MAD) for their Real android Device scanner.
+
+* Thanks [RDM](https://github.com/123FLO321/RealDeviceMap) for their Real iPhone Device scanner.
 
 * Thanks [PMSF](https://github.com/Glennmen/PMSF) for the basis for this fork.
 
