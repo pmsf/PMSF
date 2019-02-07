@@ -63,6 +63,7 @@ class RDM extends Search
 	    $reward['quest_pokemon_id'] = intval($reward['quest_pokemon_id']);
             $reward['item_name'] = !empty($reward['item_name']) ? $irewardsjson[$reward['quest_item_id']]['name'] : null;
 	    $reward['quest_item_id'] = intval($reward['quest_item_id']);
+	    $reward['url'] = str_replace("http://", "https://images.weserv.nl/?url=", $reward['url']);
             if($defaultUnit === "km"){
                 $reward['distance'] = round($reward['distance'] * 1.60934,2);
 	    }
