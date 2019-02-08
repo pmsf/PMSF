@@ -204,7 +204,7 @@ class Monocle_MAD extends Monocle
                 $tmpSQL .= "";
             }
             if ($reloaddustamount == "true") {
-                $tmpSQL .= "(json_extract(json_extract(`quest_rewards`,'$[*].type'),'$[0]') = 3 AND json_extract(json_extract(`quest_rewards`,'$[*].info.amount'),'$[0]') > :amount)";
+                $tmpSQL .= "quest_stardust > :amount)";
                 $params[':amount'] = intval($dustamount);
 	    } else {
                 $tmpSQL .= "";
@@ -236,7 +236,10 @@ class Monocle_MAD extends Monocle
         json_extract(json_extract(`quest_condition`,'$[*].info'),'$[0]') AS quest_condition_info,
         tq.quest_reward_type,
         json_extract(json_extract(`quest_reward`,'$[*].info'),'$[0]') AS quest_reward_info,
-        tq.quest_item_amount AS quest_reward_amount
+        json_extract(json_extract(`quest_reward`,'$[*].pokemon_encounter.pokemon_display.form_value'),'$[0]') AS quest_pokemon_formid,
+        json_extract(json_extract(`quest_reward`,'$[*].pokemon_encounter.pokemon_display.is_shiny'),'$[0]') AS quest_pokemon_shiny,
+        tq.quest_item_amount AS quest_reward_amount,
+        tq.quest_stardust AS quest_dust_amount
 	FROM pokestops p
 	LEFT JOIN trs_quest tq ON tq.GUID = p.external_id
         WHERE :conditions";
@@ -256,8 +259,10 @@ class Monocle_MAD extends Monocle
             $pokestop["quest_reward_type"] = intval($pokestop["quest_reward_type"]);
             $pokestop["quest_target"] = intval($pokestop["quest_target"]);
             $pokestop["quest_pokemon_id"] = intval($pokestop["quest_pokemon_id"]);
+            $pokestop["quest_pokemon_formid"] = intval($pokestop["quest_pokemon_formid"]);
             $pokestop["quest_item_id"] = intval($pokestop["quest_item_id"]);
             $pokestop["quest_reward_amount"] = intval($pokestop["quest_reward_amount"]);
+            $pokestop["quest_dust_amount"] = intval($pokestop["quest_dust_amount"]);
             if ($noTrainerName === true) {
                 // trainer names hidden, so don't show trainer who lured
                 unset($pokestop["lure_user"]);
@@ -553,7 +558,7 @@ class Monocle_MAD extends Monocle
         $query = "SELECT latitude, 
         longitude, 
         spawnpoint AS spawnpoint_id, 
-        spawndef AS despawn_time,
+        (SUBSTRING_INDEX(SUBSTRING_INDEX(calc_endminsec, ':', 1), ' ', -1)*60) + (SUBSTRING_INDEX(SUBSTRING_INDEX(calc_endminsec, ':', -1), ' ', -1)) AS despawn_time,
         calc_endminsec AS duration
         FROM trs_spawn 
         WHERE :conditions";

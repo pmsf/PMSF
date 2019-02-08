@@ -1010,31 +1010,30 @@ function gymLabel(item) {
 
 function getReward(item) {
     var rewardImage
-    var reward = JSON.parse(item['quest_reward_info'])
     var pokemonIdStr = ''
     var formStr = ''
     var shinyStr = ''
     if (item['quest_reward_type'] === 7) {
-        if (reward['pokemon_id'] <= 9) {
-            pokemonIdStr = '00' + reward['pokemon_id']
-        } else if (reward['pokemon_id'] <= 99) {
-            pokemonIdStr = '0' + reward['pokemon_id']
+        if (item['quest_pokemon_id'] <= 9) {
+            pokemonIdStr = '00' + item['quest_pokemon_id']
+        } else if (item['quest_pokemon_id'] <= 99) {
+            pokemonIdStr = '0' + item['quest_pokemon_id']
         } else {
-            pokemonIdStr = reward['pokemon_id']
+            pokemonIdStr = item['quest_pokemon_id']
         }
-        if (reward['form_id'] === 0) {
+        if (item['quest_pokemon_formid'] === 0) {
             formStr = '00'
         } else {
-            formStr = reward['form_id']
+            formStr = item['quest_pokemon_formid']
         }
-        if (reward['shiny'] === true) {
+        if (item['quest_pokemon_shiny'] === 'true') {
             shinyStr = '_shiny'
         }
         rewardImage = '<img height="70px" style="padding: 5px;" src="' + iconpath + 'pokemon_icon_' + pokemonIdStr + '_' + formStr + shinyStr + '.png"/>'
     } else if (item['quest_reward_type'] === 3) {
         rewardImage = '<img height="70px" style="padding: 5px;" src="' + iconpath + 'rewards/reward_stardust.png"/>'
     } else if (item['quest_reward_type'] === 2) {
-        rewardImage = '<img height="70px" style="padding: 5px;" src="' + iconpath + 'rewards/reward_' + reward['item_id'] + '_1.png"/>'
+        rewardImage = '<img height="70px" style="padding: 5px;" src="' + iconpath + 'rewards/reward_' + item['quest_item_id'] + '_1.png"/>'
     }
     return rewardImage
 }
@@ -1111,6 +1110,12 @@ function getQuest(item) {
             str += '<div>Undefined condition</div>'
         }
         if (item['quest_reward_type'] === 3) {
+            str += '<center><div>' +
+            i8ln('Reward Amount:') + ' ' +
+            item['quest_dust_amount'] +
+            '</div></center>'
+        }
+        if (item['quest_reward_type'] === 2) {
             str += '<center><div>' +
             i8ln('Reward Amount:') + ' ' +
             item['quest_reward_amount'] +
@@ -1684,33 +1689,26 @@ function updateGymIcons() {
     })
 }
 function getPokestopMarkerIcon(item) {
-    var reward
-    if (typeof item['quest_rewards'] !== 'undefined') {
-        reward = JSON.parse(item['quest_rewards'])
-    } else {
-        reward = null
-    }
     var stopMarker = ''
     var html = ''
-    if (!noQuests && reward !== null) {
-        var rewardinfo = reward[0]['info']
-        if (reward[0]['type'] === 7) {
+    if (!noQuests && item['quest_reward_type'] !== null) {
+        if (item['quest_reward_type'] === 7) {
             var pokemonIdStr = ''
-            if (rewardinfo['pokemon_id'] <= 9) {
-                pokemonIdStr = '00' + rewardinfo['pokemon_id']
-            } else if (rewardinfo['pokemon_id'] <= 99) {
-                pokemonIdStr = '0' + rewardinfo['pokemon_id']
+            if (item['quest_pokemon_id'] <= 9) {
+                pokemonIdStr = '00' + item['quest_pokemon_id']
+            } else if (item['quest_pokemon_id'] <= 99) {
+                pokemonIdStr = '0' + item['quest_pokemon_id']
             } else {
-                pokemonIdStr = rewardinfo['pokemon_id']
+                pokemonIdStr = item['quest_pokemon_id']
             }
             var formStr = ''
-            if (rewardinfo['form_id'] === 0) {
+            if (item['quest_pokemon_formid'] === 0) {
                 formStr = '00'
             } else {
-                formStr = rewardinfo['form_id']
+                formStr = item['quest_pokemon_formid']
             }
             var shinyStr = ''
-            if (rewardinfo['shiny'] === true) {
+            if (item['quest_pokemon_shiny'] === 'true') {
                 shinyStr = '_shiny'
             }
             html = '<div style="position:relative;">' +
@@ -1724,7 +1722,7 @@ function getPokestopMarkerIcon(item) {
                 className: 'stop-quest-marker',
                 html: html
             })
-        } else if (reward[0]['type'] === 3) {
+        } else if (item['quest_reward_type'] === 3) {
             html = '<div style="position:relative;">' +
                 '<img src="static/forts/Pstop-quest-small.png" style="width:50px;height:72;top:-35px;right:10px;"/>' +
                 '<img src="' + iconpath + 'rewards/reward_stardust.png" style="width:30px;height:auto;position:absolute;top:4px;left:0px;"/>' +
@@ -1736,10 +1734,10 @@ function getPokestopMarkerIcon(item) {
                 className: 'stop-quest-marker',
                 html: html
             })
-        } else if (reward[0]['type'] === 2) {
+        } else if (item['quest_reward_type'] === 2) {
             html = '<div style="position:relative;">' +
                 '<img src="static/forts/Pstop-quest-small.png" style="width:50px;height:72;top:-35px;right:10px;"/>' +
-                '<img src="' + iconpath + 'rewards/reward_' + rewardinfo['item_id'] + '_1.png" style="width:30px;height:auto;position:absolute;top:4px;left:0px;"/>' +
+                '<img src="' + iconpath + 'rewards/reward_' + item['quest_item_id'] + '_1.png" style="width:30px;height:auto;position:absolute;top:4px;left:0px;"/>' +
                 '</div>'
             stopMarker = L.divIcon({
                 iconSize: [31, 31],
@@ -1775,16 +1773,9 @@ function getPokestopMarkerIcon(item) {
 
 function setupPokestopMarker(item) {
     var pokestopMarkerIcon = getPokestopMarkerIcon(item)
-    var reward
-    if (typeof item['quest_rewards'] !== 'undefined') {
-        reward = JSON.parse(item['quest_rewards'])
-    } else {
-        reward = null
-    }
     var marker
-    if (!noQuests && reward !== null) {
-        var rewardInfo = JSON.parse(item['quest_reward_info'])
-        if (rewardInfo['shiny'] === true) {
+    if (!noQuests && item['quest_reward_type'] !== null) {
+        if (item['quest_pokemon_shiny'] === 'true') {
             marker = L.marker([item['latitude'], item['longitude']], {icon: pokestopMarkerIcon, zIndexOffset: 1050}).bindPopup(pokestopLabel(item), {className: 'leaflet-popup-content-wrapper shiny', autoPan: false, closeOnClick: false, autoClose: false})
         } else {
             marker = L.marker([item['latitude'], item['longitude']], {icon: pokestopMarkerIcon, zIndexOffset: 1050}).bindPopup(pokestopLabel(item), {className: 'leaflet-popup-content-wrapper normal', autoPan: false, closeOnClick: false, autoClose: false})

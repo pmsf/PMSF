@@ -233,9 +233,12 @@ class Monocle_PMSF extends Monocle
         quest_item_id,
         json_extract(json_extract(`quest_conditions`,'$[*].type'),'$[0]') AS quest_condition_type,
         json_extract(json_extract(`quest_conditions`,'$[*].info'),'$[0]') AS quest_condition_info,
-        json_extract(json_extract(`quest_rewards`,'$[*].type'),'$[0]') AS quest_reward_type,
+        quest_reward_type,
         json_extract(json_extract(`quest_rewards`,'$[*].info'),'$[0]') AS quest_reward_info,
-        json_extract(json_extract(`quest_rewards`,'$[*].info.amount'),'$[0]') AS quest_reward_amount
+	json_extract(json_extract(`quest_rewards`,'$[*].info.amount'),'$[0]') AS quest_reward_amount,
+	json_extract(json_extract(`quest_rewards`,'$[*].info.amount'),'$[0]') AS quest_dust_amount,
+        json_extract(json_extract(`quest_rewards`,'$[*].info.form_id'),'$[0]') AS quest_pokemon_formid,
+        json_extract(json_extract(`quest_rewards`,'$[*].info.shiny'),'$[0]') AS quest_pokemon_shiny
         FROM pokestops
         WHERE :conditions";
 
@@ -253,9 +256,11 @@ class Monocle_PMSF extends Monocle
             $pokestop["quest_condition_type"] = intval($pokestop["quest_condition_type"]);
             $pokestop["quest_reward_type"] = intval($pokestop["quest_reward_type"]);
             $pokestop["quest_target"] = intval($pokestop["quest_target"]);
-            $pokestop["quest_pokemon_id"] = intval($pokestop["quest_pokemon_id"]);
+	    $pokestop["quest_pokemon_id"] = intval($pokestop["quest_pokemon_id"]);
+            $pokestop["quest_pokemon_formid"] = intval($pokestop["quest_pokemon_formid"]);
             $pokestop["quest_item_id"] = intval($pokestop["quest_item_id"]);
             $pokestop["quest_reward_amount"] = intval($pokestop["quest_reward_amount"]);
+            $pokestop["quest_dust_amount"] = intval($pokestop["quest_dust_amount"]);
             if ($noTrainerName === true) {
                 // trainer names hidden, so don't show trainer who lured
                 unset($pokestop["lure_user"]);
