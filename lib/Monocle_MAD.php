@@ -186,7 +186,7 @@ class Monocle_MAD extends Monocle
                     $p++;
                 }
                 $pkmn_in = substr($pkmn_in, 0, -1);
-                $tmpSQL .= "quest_pokemon_id IN ( $pkmn_in )";
+                $tmpSQL .= "tq.quest_pokemon_id IN ( $pkmn_in )";
             } else {
                 $tmpSQL .= "";
             }
@@ -199,12 +199,12 @@ class Monocle_MAD extends Monocle
                     $i++;
                 }
                 $item_in = substr($item_in, 0, -1);
-                $tmpSQL .= "quest_item_id IN ( $item_in )";
+                $tmpSQL .= "tq.quest_item_id IN ( $item_in )";
             } else {
                 $tmpSQL .= "";
             }
             if ($reloaddustamount == "true") {
-                $tmpSQL .= "quest_stardust > :amount)";
+                $tmpSQL .= "tq.quest_stardust > :amount";
                 $params[':amount'] = intval($dustamount);
 	    } else {
                 $tmpSQL .= "";
