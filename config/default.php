@@ -13,17 +13,18 @@ require_once(__DIR__ . '/../utils.php');
 
 $libs[] = "Scanner.php";
 $libs[] = "Monocle.php";
-$libs[] = "Monocle_Asner.php";
-$libs[] = "Monocle_Alternate.php";
-$libs[] = "RocketMap.php";
-$libs[] = "RocketMap_Sloppy.php";
+$libs[] = "Monocle_PMSF.php";
+$libs[] = "Monocle_MAD.php";
 $libs[] = "RDM.php";
+$libs[] = "RDM_beta.php";
 $libs[] = "search/Search.php";
 $libs[] = "search/Search.rdm.php";
-$libs[] = "search/Search.monocle_alternate.php";
+$libs[] = "search/Search.monocle_pmsf.php";
+$libs[] = "search/Search.monocle_mad.php";
 $libs[] = "submit/Submit.php";
 $libs[] = "submit/Submit.rdm.php";
 $libs[] = "submit/Submit.monocle_alternate.php";
+$libs[] = "Manual.php";
 
 // Include libraries
 foreach ($libs as $file) {
@@ -189,7 +190,7 @@ $noPokestops = false;                                               // true/fals
 $enablePokestops = 'false';                                         // true/false
 $noLures = false;                                                   // true/false
 $enableLured = 'false';                                             // true/false
-$noQuests = false;                                                  // true/false
+$noQuests = true;                                                  // true/false
 $enableQuests = 'false';                                            // true/false
 $noQuestsItems = false;
 $noQuestsPokemon = false;

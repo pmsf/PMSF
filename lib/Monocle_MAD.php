@@ -2,7 +2,7 @@
 
 namespace Scanner;
 
-class Monocle_Alternate extends Monocle
+class Monocle_MAD extends Monocle
 {
     public function get_active($eids, $minIv, $minLevel, $exMinIv, $bigKarp, $tinyRat, $swLat, $swLng, $neLat, $neLng, $tstamp = 0, $oSwLat = 0, $oSwLng = 0, $oNeLat = 0, $oNeLng = 0, $encId = 0)
     {
@@ -186,7 +186,7 @@ class Monocle_Alternate extends Monocle
                     $p++;
                 }
                 $pkmn_in = substr($pkmn_in, 0, -1);
-                $tmpSQL .= "quest_pokemon_id IN ( $pkmn_in )";
+                $tmpSQL .= "tq.quest_pokemon_id IN ( $pkmn_in )";
             } else {
                 $tmpSQL .= "";
             }
@@ -199,12 +199,12 @@ class Monocle_Alternate extends Monocle
                     $i++;
                 }
                 $item_in = substr($item_in, 0, -1);
-                $tmpSQL .= "quest_item_id IN ( $item_in )";
+                $tmpSQL .= "tq.quest_item_id IN ( $item_in )";
             } else {
                 $tmpSQL .= "";
             }
             if ($reloaddustamount == "true") {
-                $tmpSQL .= "(json_extract(json_extract(`quest_rewards`,'$[*].type'),'$[0]') = 3 AND json_extract(json_extract(`quest_rewards`,'$[*].info.amount'),'$[0]') > :amount)";
+                $tmpSQL .= "tq.quest_stardust > :amount";
                 $params[':amount'] = intval($dustamount);
 	    } else {
                 $tmpSQL .= "";
@@ -218,25 +218,30 @@ class Monocle_Alternate extends Monocle
     {
         global $db, $noTrainerName, $noManualQuests;
 
-        $query = "SELECT external_id AS pokestop_id,
-        expires AS lure_expiration,
-        deployer AS lure_user,
-        name AS pokestop_name,
-        url,
-        lat AS latitude,
-        lon AS longitude,
-        quest_type,
-        quest_timestamp,
-        quest_target,
-        quest_rewards,
-        quest_pokemon_id,
-        quest_item_id,
-        json_extract(json_extract(`quest_conditions`,'$[*].type'),'$[0]') AS quest_condition_type,
-        json_extract(json_extract(`quest_conditions`,'$[*].info'),'$[0]') AS quest_condition_info,
-        json_extract(json_extract(`quest_rewards`,'$[*].type'),'$[0]') AS quest_reward_type,
-        json_extract(json_extract(`quest_rewards`,'$[*].info'),'$[0]') AS quest_reward_info,
-        json_extract(json_extract(`quest_rewards`,'$[*].info.amount'),'$[0]') AS quest_reward_amount
-        FROM pokestops
+        $query = "SELECT p.external_id AS pokestop_id,
+        p.expires AS lure_expiration,
+        p.deployer AS lure_user,
+        p.name AS pokestop_name,
+        p.url,
+        p.lat AS latitude,
+        p.lon AS longitude,
+        tq.quest_type,
+        tq.quest_timestamp,
+        tq.quest_target,
+        tq.quest_reward,
+        tq.quest_pokemon_id,
+        tq.quest_item_id,
+        json_extract(json_extract(`quest_condition`,'$[*].type'),'$[0]') AS quest_condition_type,
+        json_extract(json_extract(`quest_condition`,'$[*].type'),'$[1]') AS quest_condition_type_1,
+        json_extract(json_extract(`quest_condition`,'$[*].info'),'$[0]') AS quest_condition_info,
+        tq.quest_reward_type,
+        json_extract(json_extract(`quest_reward`,'$[*].info'),'$[0]') AS quest_reward_info,
+        json_extract(json_extract(`quest_reward`,'$[*].pokemon_encounter.pokemon_display.form_value'),'$[0]') AS quest_pokemon_formid,
+        json_extract(json_extract(`quest_reward`,'$[*].pokemon_encounter.pokemon_display.is_shiny'),'$[0]') AS quest_pokemon_shiny,
+        tq.quest_item_amount AS quest_reward_amount,
+        tq.quest_stardust AS quest_dust_amount
+	FROM pokestops p
+	LEFT JOIN trs_quest tq ON tq.GUID = p.external_id
         WHERE :conditions";
 
         $query = str_replace(":conditions", join(" AND ", $conds), $query);
@@ -254,8 +259,10 @@ class Monocle_Alternate extends Monocle
             $pokestop["quest_reward_type"] = intval($pokestop["quest_reward_type"]);
             $pokestop["quest_target"] = intval($pokestop["quest_target"]);
             $pokestop["quest_pokemon_id"] = intval($pokestop["quest_pokemon_id"]);
+            $pokestop["quest_pokemon_formid"] = intval($pokestop["quest_pokemon_formid"]);
             $pokestop["quest_item_id"] = intval($pokestop["quest_item_id"]);
             $pokestop["quest_reward_amount"] = intval($pokestop["quest_reward_amount"]);
+            $pokestop["quest_dust_amount"] = intval($pokestop["quest_dust_amount"]);
             if ($noTrainerName === true) {
                 // trainer names hidden, so don't show trainer who lured
                 unset($pokestop["lure_user"]);
@@ -518,205 +525,61 @@ class Monocle_Alternate extends Monocle
         }
         return $data;
     }
-
-    public function get_nests($swLat, $swLng, $neLat, $neLng, $tstamp = 0, $oSwLat = 0, $oSwLng = 0, $oNeLat = 0, $oNeLng = 0)
+    public function get_spawnpoints($swLat, $swLng, $neLat, $neLng, $tstamp = 0, $oSwLat = 0, $oSwLng = 0, $oNeLat = 0, $oNeLng = 0)
     {
         $conds = array();
         $params = array();
 
-        $conds[] = "lat > :swLat AND lon > :swLng AND lat < :neLat AND lon < :neLng";
+        $conds[] = "latitude > :swLat AND longitude > :swLng AND latitude < :neLat AND longitude < :neLng";
         $params[':swLat'] = $swLat;
         $params[':swLng'] = $swLng;
         $params[':neLat'] = $neLat;
         $params[':neLng'] = $neLng;
 
         if ($oSwLat != 0) {
-            $conds[] = "NOT (lat > :oswLat AND lon > :oswLng AND lat < :oneLat AND lon < :oneLng)";
+            $conds[] = "NOT (latitude > :oswLat AND longitude > :oswLng AND latitude < :oneLat AND longitude < :oneLng)";
             $params[':oswLat'] = $oSwLat;
             $params[':oswLng'] = $oSwLng;
             $params[':oneLat'] = $oNeLat;
             $params[':oneLng'] = $oNeLng;
         }
         if ($tstamp > 0) {
-            $conds[] = "updated > :lastUpdated";
+            $conds[] = "last_scanned > from_unixtime(:lastUpdated)";
             $params[':lastUpdated'] = $tstamp;
         }
 
-        return $this->query_nests($conds, $params);
+        return $this->query_spawnpoints($conds, $params);
     }
 
-    public function query_nests($conds, $params)
+    private function query_spawnpoints($conds, $params)
     {
-        global $manualdb;
+        global $db;
 
-        $query = "SELECT nest_id,
-        lat,
-        lon,
-        pokemon_id,
-        type
-        FROM nests
+        $query = "SELECT latitude, 
+        longitude, 
+        spawnpoint AS spawnpoint_id, 
+        (SUBSTRING_INDEX(SUBSTRING_INDEX(calc_endminsec, ':', 1), ' ', -1)*60) + (SUBSTRING_INDEX(SUBSTRING_INDEX(calc_endminsec, ':', -1), ' ', -1)) AS despawn_time,
+        calc_endminsec AS duration
+        FROM trs_spawn 
         WHERE :conditions";
 
         $query = str_replace(":conditions", join(" AND ", $conds), $query);
-        $nests = $manualdb->query($query, $params)->fetchAll(\PDO::FETCH_ASSOC);
+        $spawnpoints = $db->query($query, $params)->fetchAll(\PDO::FETCH_ASSOC);
 
         $data = array();
         $i = 0;
-        foreach ($nests as $nest) {
-            $nest["lat"] = floatval($nest["lat"]);
-            $nest["lon"] = floatval($nest["lon"]);
-            $nest["type"] = intval($nest["type"]);
-            if($nest['pokemon_id'] > 0 ){
-                $nest["pokemon_name"] = i8ln($this->data[$nest["pokemon_id"]]['name']);
-                $types = $this->data[$nest["pokemon_id"]]["types"];
-                $etypes = $this->data[$nest["pokemon_id"]]["types"];
-                foreach ($types as $k => $v) {
-                    $types[$k]['type'] = i8ln($v['type']);
-                    $etypes[$k]['type'] = $v['type'];
-                }
-                $nest["pokemon_types"] = $types;
-                $nest["english_pokemon_types"] = $etypes;
-            }
-            $data[] = $nest;
 
-            unset($nests[$i]);
+        foreach ($spawnpoints as $spawnpoint) {
+            $spawnpoint["latitude"] = floatval($spawnpoint["latitude"]);
+            $spawnpoint["longitude"] = floatval($spawnpoint["longitude"]);
+            $spawnpoint["time"] = intval($spawnpoint["despawn_time"]);
+            $spawnpoint["duration"] = intval($spawnpoint["duration"]);
+            $data[] = $spawnpoint;
+
+            unset($spawnpoints[$i]);
             $i++;
         }
         return $data;
     }
 
-    public function get_communities($swLat, $swLng, $neLat, $neLng, $tstamp = 0, $oSwLat = 0, $oSwLng = 0, $oNeLat = 0, $oNeLng = 0)
-    {
-        $conds = array();
-        $params = array();
-
-        $conds[] = "lat > :swLat AND lon > :swLng AND lat < :neLat AND lon < :neLng";
-        $params[':swLat'] = $swLat;
-        $params[':swLng'] = $swLng;
-        $params[':neLat'] = $neLat;
-        $params[':neLng'] = $neLng;
-
-        if ($oSwLat != 0) {
-            $conds[] = "NOT (lat > :oswLat AND lon > :oswLng AND lat < :oneLat AND lon < :oneLng)";
-            $params[':oswLat'] = $oSwLat;
-            $params[':oswLng'] = $oSwLng;
-            $params[':oneLat'] = $oNeLat;
-            $params[':oneLng'] = $oNeLng;
-        }
-        if ($tstamp > 0) {
-            $conds[] = "updated > :lastUpdated";
-            $params[':lastUpdated'] = $tstamp;
-        }
-
-        return $this->query_communities($conds, $params);
-    }
-
-    public function query_communities($conds, $params)
-    {
-        global $manualdb;
-
-        $query = "SELECT community_id,
-        title,
-        description,
-        type,
-        image_url,
-        size,
-        team_instinct,
-        team_mystic,
-        team_valor,
-        has_invite_url,
-        invite_url,
-        lat,
-        lon,
-        source
-        FROM communities
-        WHERE :conditions";
-
-        $query = str_replace(":conditions", join(" AND ", $conds), $query);
-        $communities = $manualdb->query($query, $params)->fetchAll(\PDO::FETCH_ASSOC);
-
-        $data = array();
-        $i = 0;
-        foreach ($communities as $community) {
-            $community["type"] = intval($community["type"]);
-            $community["size"] = intval($community["size"]);
-            $community["team_instinct"] = intval($community["team_instinct"]);
-            $community["team_mystic"] = intval($community["team_mystic"]);
-            $community["team_valor"] = intval($community["team_valor"]);
-            $community["has_invite_url"] = intval($community["has_invite_url"]);
-            $community["lat"] = floatval($community["lat"]);
-            $community["lon"] = floatval($community["lon"]);
-            $community["source"] = intval($community["source"]);
-            $data[] = $community;
-
-            unset($communities[$i]);
-            $i++;
-        }
-        return $data;
-    }
-
-    public function get_portals($swLat, $swLng, $neLat, $neLng, $tstamp = 0, $oSwLat = 0, $oSwLng = 0, $oNeLat = 0, $oNeLng = 0, $newportals = 0)
-    {
-        global $markPortalsAsNew;
-        $conds = array();
-        $params = array();
-
-        $conds[] = "lat > :swLat AND lon > :swLng AND lat < :neLat AND lon < :neLng";
-        $params[':swLat'] = $swLat;
-        $params[':swLng'] = $swLng;
-        $params[':neLat'] = $neLat;
-        $params[':neLng'] = $neLng;
-
-        if ($oSwLat != 0) {
-            $conds[] = "NOT (lat > :oswLat AND lon > :oswLng AND lat < :oneLat AND lon < :oneLng)";
-            $params[':oswLat'] = $oSwLat;
-            $params[':oswLng'] = $oSwLng;
-            $params[':oneLat'] = $oNeLat;
-            $params[':oneLng'] = $oNeLng;
-	}
-
-	if ($newportals == 1) {
-            $conds[] = "imported > :lastImported";
-            $params[':lastImported'] = time() - $markPortalsAsNew;
-	}
-
-        if ($tstamp > 0) {
-            $conds[] = "updated > :lastUpdated";
-            $params[':lastUpdated'] = $tstamp;
-        }
-
-        return $this->query_portals($conds, $params);
-    }
-
-    public function query_portals($conds, $params)
-    {
-        global $manualdb;
-
-        $query = "SELECT external_id,
-        lat,
-        lon,
-        name,
-        url,
-        updated,
-        imported,
-        checked
-        FROM ingress_portals
-        WHERE :conditions";
-
-        $query = str_replace(":conditions", join(" AND ", $conds), $query);
-        $portals = $manualdb->query($query, $params)->fetchAll(\PDO::FETCH_ASSOC);
-
-        $data = array();
-        $i = 0;
-        foreach ($portals as $portal) {
-            $portal["lat"] = floatval($portal["lat"]);
-            $portal["lon"] = floatval($portal["lon"]);
-            $portal["url"] = str_replace("http://", "https://images.weserv.nl/?url=", $portal["url"]);
-            $data[] = $portal;
-
-            unset($portals[$i]);
-            $i++;
-        }
-        return $data;
-    }
 }

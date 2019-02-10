@@ -2,7 +2,7 @@
 
 namespace Search;
 
-class RDM extends Search
+class Monocle_PMSF extends Search
 {
     public function search_reward($lat, $lon, $term)
     {
@@ -48,7 +48,7 @@ class RDM extends Search
 	json_extract(json_extract(`quest_rewards`,'$[*].info.pokemon_id'),'$[0]') AS quest_pokemon_id,
 	json_extract(json_extract(`quest_rewards`,'$[*].info.item_id'),'$[0]') AS quest_item_id, 
 	ROUND(( 3959 * acos( cos( radians(:lat) ) * cos( radians( lat ) ) * cos( radians( lon ) - radians(:lon) ) + sin( radians(:lat) ) * sin( radians( lat ) ) ) ),2) AS distance 
-	FROM pokestop
+	FROM pokestops
 	WHERE :conditions
 	ORDER BY distance LIMIT " . $maxSearchResults . "";
 
@@ -63,7 +63,6 @@ class RDM extends Search
 	    $reward['quest_pokemon_id'] = intval($reward['quest_pokemon_id']);
             $reward['item_name'] = !empty($reward['item_name']) ? $irewardsjson[$reward['quest_item_id']]['name'] : null;
 	    $reward['quest_item_id'] = intval($reward['quest_item_id']);
-	    $reward['url'] = str_replace("http://", "https://images.weserv.nl/?url=", $reward['url']);
             if($defaultUnit === "km"){
                 $reward['distance'] = round($reward['distance'] * 1.60934,2);
 	    }
@@ -134,7 +133,6 @@ class RDM extends Search
         }
         return $data;
     }
-
 
     public function search($dbname, $lat, $lon, $term)
     {
