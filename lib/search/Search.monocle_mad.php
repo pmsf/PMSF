@@ -2,7 +2,7 @@
 
 namespace Search;
 
-class Monocle extends Search
+class Monocle_MAD extends Search
 {
     public function search_reward($lat, $lon, $term)
     {
@@ -34,21 +34,22 @@ class Monocle extends Search
             }
         }
 	if (!empty($presids)) {
-		$conds[] = "quest_pokemon_id IN (" . implode(',',$presids) . ")";
+		$conds[] = "tq.quest_pokemon_id IN (" . implode(',',$presids) . ")";
 	}
 	if (!empty($iresids)) {
-		$conds[] = "quest_item_id IN (" . implode(',',$iresids) . ")";
+		$conds[] = "tq.quest_item_id IN (" . implode(',',$iresids) . ")";
 	}
-	$query = "SELECT id,
-        name,
-	lat,
-	lon,
-	url,
-	quest_type,
-	json_extract(json_extract(`quest_rewards`,'$[*].info.pokemon_id'),'$[0]') AS quest_pokemon_id,
-	json_extract(json_extract(`quest_rewards`,'$[*].info.item_id'),'$[0]') AS quest_item_id, 
+	$query = "SELECT p.external_id AS id,
+	p.name,
+	p.lat,
+	p.lon,
+	p.url,
+	tq.quest_type,
+	tq.quest_pokemon_id,
+	tq.quest_item_id,
 	ROUND(( 3959 * acos( cos( radians(:lat) ) * cos( radians( lat ) ) * cos( radians( lon ) - radians(:lon) ) + sin( radians(:lat) ) * sin( radians( lat ) ) ) ),2) AS distance 
-	FROM pokestops
+	FROM pokestops p
+	LEFT JOIN trs_quest tq ON tq.GUID = p.external_id
 	WHERE :conditions
 	ORDER BY distance LIMIT " . $maxSearchResults . "";
 

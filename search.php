@@ -19,22 +19,27 @@ $lon = ! empty( $_POST['lon'] ) ? $_POST['lon'] : '';
 
 $dbname = '';
 if (strtolower($map) === "rdm") {
-    if (strtolower($fork) === "default") {
-	if ( $action === "pokestops" ) {
-	    $dbname = "pokestop";
-	} elseif ( $action === "forts" ) {
-            $dbname = "gym";
-        }
-        $search = new \Search\RDM();
+    if ( $action === "pokestops" ) {
+        $dbname = "pokestop";
+    } elseif ( $action === "forts" ) {
+        $dbname = "gym";
     }
+    $search = new \Search\RDM();
 } else if (strtolower($map) === "monocle") {
-    if (strtolower($fork) === "alternate") {
+    if (strtolower($fork) === "pmsf") {
 	if ( $action === "pokestops" ) {
 	    $dbname = "pokestops";
 	} elseif ( $action === "forts" ) {
 	    $dbname = "forts";
         }
-        $search = new \Search\Monocle();
+        $search = new \Search\Monocle_PMSF();
+    } elseif (strtolower($fork) === "mad") {
+	if ( $action === "pokestops" ) {
+	    $dbname = "pokestops";
+	} elseif ( $action === "forts" ) {
+	    $dbname = "forts";
+        }
+        $search = new \Search\Monocle_MAD();
     }
 }
 if ($action === "reward") {
