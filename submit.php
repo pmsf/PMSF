@@ -56,12 +56,14 @@ $d['status'] = "ok";
 $d["timestamp"] = $now->getTimestamp();
 
 if (strtolower($map) === "rdm") {
-    if (strtolower($fork) === "default") {
+    if (strtolower($fork) === "beta") {
         $submit = new \Submit\RDM();
     }
 } else if (strtolower($map) === "monocle") {
-    if (strtolower($fork) === "alternate") {
-        $submit = new \Submit\Monocle();
+    if (strtolower($fork) === "pmsf") {
+        $submit = new \Submit\Monocle_PMSF();
+    } elseif (strtolower($fork) === "mad") {
+        $submit = new \Submit\Monocle_MAD();
     }
 }
 
