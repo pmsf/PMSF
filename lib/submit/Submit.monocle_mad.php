@@ -2,7 +2,7 @@
 
 namespace Submit;
 
-class Monocle extends Submit
+class Monocle_MAD extends Submit
 {
 	public function submit_raid($pokemonId, $gymId, $eggTime, $monTime, $loggedUser)
 		{
@@ -349,7 +349,14 @@ class Monocle extends Submit
 				http_response_code( 401 );
 				die();
 			}
-			$pokestopName = $db->get( "pokestops", [ 'name', 'lat', 'lon', 'url', 'external_id' ], [ 'external_id' => $pokestopId ] );
+			$pokestopName = $db->get( "pokestops", [ 'name', 'lat', 'lon', 'url', 'external_id' ], [ 'GUID' => $pokestopId ] );
+			$pokestopQuest = $db->get( "trs_quest", [ 'GUID' ], [ 'GUID' => $pokestopId ] );
+			if ( empty( $pokestopQuest ) ) {
+				$cols = [
+					'GUID' => $pokestopId
+				];
+				$db->insert( "trs_quest", $cols );
+			}
 			if ( ! empty( $pokestopId ) && ! empty( $questType ) && ! empty( $rewardType ) ) {
 				if ($conditionType === '1') {
 					$jsonCondition = json_encode(array(
@@ -414,44 +421,129 @@ class Monocle extends Submit
 
 				if ($rewardType === '2') {
 					$jsonRewards = json_encode(array(
-						'info' => array(
+						'type' => intval($rewardType),
+						'item' => array(
 							'amount' => intval($itemAmount),
-							'item_id' => intval($item)
+							'item' => intval($item)
 						),
-						'type' => intval($rewardType)
+						'stardust' => intval('0'),
+						'candy' => array(
+							'pokemon_id' => intval('0'),
+							'amount' => intval('0')
+						),
+						'avatar_template_id' => '',
+						'quest_template_id' => '',
+						'pokemon_encounter' => array(
+							'pokemon_id' => intval('0'),
+							'use_quest_pokemon_encounter_distribuition' => 'False',
+							'pokemon_display' => array(
+								'is_shiny' => 'False',
+								'weather_boosted_value' => intval('0'),
+								'weather_boosted_description' => 'NONE',
+								'gender_value' => intval('0'),
+								'form_value' => intval('0'),
+								'costume_value' => intval('0')
+							),
+							'is_hidden_ditto' => 'False',
+							'ditto_display' => array(
+								'is_shiny' => 'False',
+								'weather_boosted_value' => intval('0'),
+								'weather_boosted_description' => 'NONE',
+								'gender_value' => intval('0'),
+								'form_value' => intval('0'),
+								'costume_value' => intval('0')
+							)
+						)
 					));
 				} else if ($rewardType === '3') {
 					$jsonRewards = json_encode(array(
-						'info' => array(
-							'amount' => intval($dust)
+						'type' => intval($rewardType),
+						'item' => array(
+							'amount' => intval('0'),
+							'item' => intval('0')
 						),
-						'type' => intval($rewardType)
+						'stardust' => intval($dust),
+						'candy' => array(
+							'pokemon_id' => intval('0'),
+							'amount' => intval('0')
+						),
+						'avatar_template_id' => '',
+						'quest_template_id' => '',
+						'pokemon_encounter' => array(
+							'pokemon_id' => intval('0'),
+							'use_quest_pokemon_encounter_distribuition' => 'False',
+							'pokemon_display' => array(
+								'is_shiny' => 'False',
+								'weather_boosted_value' => intval('0'),
+								'weather_boosted_description' => 'NONE',
+								'gender_value' => intval('0'),
+								'form_value' => intval('0'),
+								'costume_value' => intval('0')
+							),
+							'is_hidden_ditto' => 'False',
+							'ditto_display' => array(
+								'is_shiny' => 'False',
+								'weather_boosted_value' => intval('0'),
+								'weather_boosted_description' => 'NONE',
+								'gender_value' => intval('0'),
+								'form_value' => intval('0'),
+								'costume_value' => intval('0')
+							)
+						)
 					));
 				} else if ($rewardType === '7') {
 					$jsonRewards = json_encode(array(
-						'info' => array(
-							'pokemon_id' => intval($encounter),
-							'form_id' => 0,
-							'shiny' => false,
-							'costume_id' => 0,
-							'gender_id' => 0
+						'type' => intval($rewardType),
+						'item' => array(
+							'amount' => intval('0'),
+							'item' => intval('0')
 						),
-						'type' => intval($rewardType)
+						'stardust' => intval('0'),
+						'candy' => array(
+							'pokemon_id' => intval('0'),
+							'amount' => intval('0')
+						),
+						'avatar_template_id' => '',
+						'quest_template_id' => '',
+						'pokemon_encounter' => array(
+							'pokemon_id' => intval($encounter),
+							'use_quest_pokemon_encounter_distribuition' => 'False',
+							'pokemon_display' => array(
+								'is_shiny' => 'False',
+								'weather_boosted_value' => intval('0'),
+								'weather_boosted_description' => 'NONE',
+								'gender_value' => intval('0'),
+								'form_value' => intval('0'),
+								'costume_value' => intval('0')
+							),
+							'is_hidden_ditto' => 'False',
+							'ditto_display' => array(
+								'is_shiny' => 'False',
+								'weather_boosted_value' => intval('0'),
+								'weather_boosted_description' => 'NONE',
+								'gender_value' => intval('0'),
+								'form_value' => intval('0'),
+								'costume_value' => intval('0')
+							)
+						)
 					));
 				}
 				$cols = [
-					'updated'		=> time(),
 					'quest_type'		=> $questType,
 					'quest_timestamp'	=> time(),
+					'quest_stardust'	=> ! empty($dust) ? $dust : '0',
+					'quest_pokemon_id'	=> ! empty($encounter) ? $encounter : '0',
+					'quest_reward_type'	=> $rewardType,
+					'quest_item_id'		=> ! empty($item) ? $item : '0',
+					'quest_item_amount'	=> ! empty($itemAmount) ? $itemAmount : '0',
 					'quest_target'		=> $questTarget,
-					'quest_conditions'	=> ! empty($jsonCondition) ? '[' . $jsonCondition . ']' : '[]',
-					'quest_rewards'		=> '[' . $jsonRewards . ']',
-					'quest_submitted_by'	=> $loggedUser
+					'quest_condition'	=> ! empty($jsonCondition) ? '[' . $jsonCondition . ']' : '[]',
+					'quest_reward'		=> '[' . $jsonRewards . ']'
 				];
 				$where = [
-					'external_id'		=> $pokestopId
+					'GUID'		=> $pokestopId
 				];
-				$db->update( "pokestops", $cols, $where );
+				$db->update( "trs_quest", $cols, $where );
 
 			}
 		}
