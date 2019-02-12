@@ -163,7 +163,7 @@ if (!$noPokestops) {
                 $d["pokestops"] = $scanner->get_stops($qpeids, $qieids, $swLat, $swLng, $neLat, $neLng, $timestamp, 0, 0, 0, 0, $lures, $quests, $dustamount);
             }
 	}
-        if ((strtolower($map) === "rdm" && strtolower($fork) === "beta") || (strtolower($map) === "monocle" && strtolower($fork) === "mad")) {
+        if ((strtolower($map) === "rdm" && strtolower($fork) === "beta") || (strtolower($map) === "monocle" && strtolower($fork) === "mad") || (strtolower($map) === "rocketmap" && strtolower($fork) === "mad")) {
             if ($reloaddustamount == "true") {
                 $d["pokestops"] = array_merge($d["pokestops"], $scanner->get_stops_quest($qpreids, $qireids, $swLat, $swLng, $neLat, $neLng, 0, $oSwLat, $oSwLng, $oNeLat, $oNeLng, $lures, $quests, $dustamount, $reloaddustamount));
             }
