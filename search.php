@@ -41,7 +41,15 @@ if (strtolower($map) === "rdm") {
         }
         $search = new \Search\Monocle_MAD();
     }
+} elseif (strtolower($map) === "rocketmap") {
+    if ( $action === "pokestops" ) {
+        $dbname = "pokestop";
+    } elseif ( $action === "forts" ) {
+        $dbname = "gym";
+    }
+    $search = new \Search\RocketMap_MAD();
 }
+
 if ($action === "reward") {
     $data["reward"] = $search->search_reward($lat, $lon, $term);
 }
