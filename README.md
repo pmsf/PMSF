@@ -37,8 +37,11 @@ Free version:
 $map = "monocle";
 $fork = "pmsf";
 
-Paid version: (with quests)
+MITM version:
 $map = "monocle";
+$fork = "mad";
+
+$map = "rocketmap";
 $fork = "mad";
 ```
 

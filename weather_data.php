@@ -11,6 +11,10 @@ if (strtolower($map) === "monocle") {
     } else {
         $scanner = new \Scanner\Monocle_PMSF();
     }
+} else if (strtolower($map) === "rocketmap") {
+    if (strtolower($fork) === "mad") {
+        $scanner = new \Scanner\RocketMap_MAD();
+    }
 }
 if (isset($_POST['cell_id'])) {
     $return_weather = $scanner->get_weather_by_cell_id($_POST['cell_id']);
