@@ -194,10 +194,10 @@ if ( $blockIframe ) {
                 window.cookieconsent.initialise({
                 "palette": {
                     "popup": {
-                    "background": "#000"
+                    "background": "#3b3b3b"
                     },
                     "button": {
-                    "background": "#f1d600"
+                    "background": "#d6d6d6"
                     }
                 }
             })});
