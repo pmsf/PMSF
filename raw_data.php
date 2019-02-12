@@ -89,6 +89,10 @@ if (strtolower($map) === "monocle") {
     } else {
         $scanner = new \Scanner\RDM_beta();
     }
+} elseif (strtolower($map) === "rocketmap") {
+    if (strtolower($fork) === "mad") {
+        $scanner = new \Scanner\RocketMap_MAD();
+    }
 }
 
 $manual = new \Manual\Manual();
