@@ -1146,7 +1146,7 @@ function pokestopLabel(item) {
         '<b>' + item['pokestop_name'] + '</b>' +
         '</div>'
     var d = new Date()
-    var lastMidnight = d.setHours(0,0,0,0) / 1000
+    var lastMidnight = d.setHours(0, 0, 0, 0) / 1000
     if (!noQuests && item['quest_type'] !== null && lastMidnight < Number(item['quest_timestamp'])) {
         str +=
             '<div><center>' +
@@ -1692,7 +1692,7 @@ function getPokestopMarkerIcon(item) {
     var stopMarker = ''
     var html = ''
     var d = new Date()
-    var lastMidnight = d.setHours(0,0,0,0) / 1000
+    var lastMidnight = d.setHours(0, 0, 0, 0) / 1000
     if (!noQuests && item['quest_reward_type'] !== null && lastMidnight < Number(item['quest_timestamp'])) {
         if (item['quest_reward_type'] === 7) {
             var pokemonIdStr = ''
