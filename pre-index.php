@@ -1880,7 +1880,7 @@ if ( $blockIframe ) {
     var weatherSpritesSrc = '<?php echo $copyrightSafe ? 'static/sprites-safe/' : 'static/sprites-pokemon/' ?>';
     var icons = '<?php echo $copyrightSafe ? 'static/icons-safe/' : $iconRepository ?>';
     var weatherColors = <?php echo json_encode( $weatherColors ); ?>;
-    var mapType = '<?php echo $map; ?>';
+    var mapType = '<?php echo strtolower($map); ?>';
     var triggerGyms = <?php echo $triggerGyms ?>;
     var noExGyms = <?php echo $noExGyms === true ? 'true' : 'false' ?>;
     var noParkInfo = <?php echo $noParkInfo === true ? 'true' : 'false' ?>;
