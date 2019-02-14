@@ -1044,8 +1044,8 @@ function getQuest(item) {
     if (item['quest_condition_type'] !== null) {
         var questinfo = JSON.parse(item['quest_condition_info'])
         var questStr = i8ln(questtypeList[item['quest_type']])
-        str = '<center><div>' +
-        i8ln('Task:') + ' ' +
+        str = '<center><div style="font-weight:900;">' +
+        i8ln('Quest:') + ' ' +
         questStr.replace('{0}', item['quest_target']) +
         '</div></center>' +
         '<center><div>'
@@ -1110,13 +1110,13 @@ function getQuest(item) {
             str += '<div>Undefined condition</div>'
         }
         if (item['quest_reward_type'] === 3) {
-            str += '<center><div>' +
+            str += '<center><div style="font-weight:900;">' +
             i8ln('Reward Amount:') + ' ' +
             item['quest_dust_amount'] +
             '</div></center>'
         }
         if (item['quest_reward_type'] === 2) {
-            str += '<center><div>' +
+            str += '<center><div style="font-weight:900;">' +
             i8ln('Reward Amount:') + ' ' +
             item['quest_reward_amount'] +
             '</div></center>'
@@ -1124,8 +1124,8 @@ function getQuest(item) {
         str += '</div></center>'
     } else if (item['quest_type'] !== null) {
         questStr = i8ln(questtypeList[item['quest_type']])
-        str += '<center><div>' +
-        i8ln('Task:') + ' ' +
+        str += '<center><div style="font-weight:900;">' +
+        i8ln('Quest:') + ' ' +
         questStr.replace('{0}', item['quest_target']) +
         '</div></center>'
     }
