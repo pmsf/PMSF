@@ -49,8 +49,8 @@ class RocketMap_MAD extends RocketMap
         Unix_timestamp(Convert_tz(last_modified, '+00:00', @@global.time_zone)) AS last_modified, 
         Unix_timestamp(Convert_tz(gym.last_scanned, '+00:00', @@global.time_zone)) AS last_scanned, 
         team_id, 
-	name,
-	url,
+        name,
+        url,
         level AS raid_level, 
         pokemon_id AS raid_pokemon_id, 
         cp AS raid_pokemon_cp, 
@@ -92,8 +92,8 @@ class RocketMap_MAD extends RocketMap
             $gym["last_scanned"] = $gym["last_scanned"] * 1000;
             $gym["raid_start"] = $gym["raid_start"] * 1000;
             $gym["raid_end"] = $gym["raid_end"] * 1000;
-	    $gym["slots_available"] = intval($gym["slots_available"]);
-	    $gym["url"] = ! empty($gym["url"]) ? str_replace("http://", "https://images.weserv.nl/?url=", $gym["url"]) : null;
+            $gym["slots_available"] = intval($gym["slots_available"]);
+            $gym["url"] = ! empty($gym["url"]) ? str_replace("http://", "https://images.weserv.nl/?url=", $gym["url"]) : null;
             $data[] = $gym;
 
             unset($gyms[$i]);
