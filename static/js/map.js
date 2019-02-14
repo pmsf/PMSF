@@ -1187,9 +1187,9 @@ function pokestopLabel(item) {
     if (!noConvertPokestops) {
         str += '<center><div>' + i8ln('Convert to Gym') + '<i class="fa fa-refresh convert-pokestop" style="margin-top: 2px; vertical-align: middle; font-size: 1.5em;" onclick="openConvertPokestopModal(event);" data-id="' + item['pokestop_id'] + '"></i></div></center>'
     }
-    str += '<div>' +
+    str += '<div><center>' +
         '<a href="javascript:void(0)" class="pokestop-navigate" onclick="javascript:openMapDirections(' + item['latitude'] + ',' + item['longitude'] + ')" title="' + i8ln('View in Maps') + '">' + item['latitude'] + ', ' + item['longitude'] + '</a> - <a href="./?lat=' + item['latitude'] + '&lon=' + item['longitude'] + '&zoom=16">Share link</a>' +
-        '</div>'
+        '</center></div>'
     if ((!noWhatsappLink) && (item['quest_id'] && item['reward_id'] !== null)) {
         str += '<div>' +
             '<center>' +
