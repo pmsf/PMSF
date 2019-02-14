@@ -1154,9 +1154,9 @@ function pokestopLabel(item) {
         stopImage = '<img class="pokestop-image" src="' + item['url'] + '">'
     }
     str =
-        '<center>' + '<div class="pokestop-label">' +
-        stopName
-        '</div>'
+        '<center><div class="pokestop-label">' +
+        stopName +
+        '</div></center>'
     var d = new Date()
     var lastMidnight = d.setHours(0, 0, 0, 0) / 1000
     if (!noQuests && item['quest_type'] !== null && lastMidnight < Number(item['quest_timestamp'])) {
