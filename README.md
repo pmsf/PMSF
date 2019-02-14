@@ -33,12 +33,10 @@ $fork = "default" OR $fork = "beta";
 
 * MAD Map a Droid 
 ```
-Free version:
 $map = "monocle";
-$fork = "pmsf";
+$fork = "mad";
 
-Paid version: (with quests)
-$map = "monocle";
+$map = "rocketmap";
 $fork = "mad";
 ```
 

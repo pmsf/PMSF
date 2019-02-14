@@ -1145,13 +1145,16 @@ function pokestopLabel(item) {
         '<center>' + '<div class="pokestop-label">' +
         '<b>' + item['pokestop_name'] + '</b>' +
         '</div>'
-    if (!noQuests && item['quest_type'] !== 0) {
+    var d = new Date()
+    var lastMidnight = d.setHours(0, 0, 0, 0) / 1000
+    if (!noQuests && item['quest_type'] !== null && lastMidnight < Number(item['quest_timestamp'])) {
         str +=
             '<div><center>' +
             '<img height="70px" style="padding: 5px;" src="static/forts/Pstop-quest-large.png">' +
             stopImage +
             getReward(item) +
-            '</center></div>'
+            '</center></div>' +
+            getQuest(item)
     } else {
         str =
             '<div class="pokestop-label">' +
@@ -1165,9 +1168,6 @@ function pokestopLabel(item) {
             '</div>' +
             '</center>' +
             '</div>'
-    }
-    if (!noQuests && item['quest_type'] !== 0) {
-        str += getQuest(item)
     }
     if (!noDeletePokestops) {
         str += '<i class="fa fa-trash-o delete-pokestop" onclick="deletePokestop(event);" data-id="' + item['pokestop_id'] + '"></i>'
@@ -1691,7 +1691,9 @@ function updateGymIcons() {
 function getPokestopMarkerIcon(item) {
     var stopMarker = ''
     var html = ''
-    if (!noQuests && item['quest_reward_type'] !== null) {
+    var d = new Date()
+    var lastMidnight = d.setHours(0, 0, 0, 0) / 1000
+    if (!noQuests && item['quest_reward_type'] !== null && lastMidnight < Number(item['quest_timestamp'])) {
         if (item['quest_reward_type'] === 7) {
             var pokemonIdStr = ''
             if (item['quest_pokemon_id'] <= 9) {
@@ -1774,12 +1776,8 @@ function getPokestopMarkerIcon(item) {
 function setupPokestopMarker(item) {
     var pokestopMarkerIcon = getPokestopMarkerIcon(item)
     var marker
-    if (!noQuests && item['quest_reward_type'] !== null) {
-        if (item['quest_pokemon_shiny'] === 'true') {
-            marker = L.marker([item['latitude'], item['longitude']], {icon: pokestopMarkerIcon, zIndexOffset: 1050}).bindPopup(pokestopLabel(item), {className: 'leaflet-popup-content-wrapper shiny', autoPan: false, closeOnClick: false, autoClose: false})
-        } else {
-            marker = L.marker([item['latitude'], item['longitude']], {icon: pokestopMarkerIcon, zIndexOffset: 1050}).bindPopup(pokestopLabel(item), {className: 'leaflet-popup-content-wrapper normal', autoPan: false, closeOnClick: false, autoClose: false})
-        }
+    if (item['quest_pokemon_shiny'] === 'true') {
+        marker = L.marker([item['latitude'], item['longitude']], {icon: pokestopMarkerIcon, zIndexOffset: 1050}).bindPopup(pokestopLabel(item), {className: 'leaflet-popup-content-wrapper shiny', autoPan: false, closeOnClick: false, autoClose: false})
     } else {
         marker = L.marker([item['latitude'], item['longitude']], {icon: pokestopMarkerIcon, zIndexOffset: 1050}).bindPopup(pokestopLabel(item), {className: 'leaflet-popup-content-wrapper normal', autoPan: false, closeOnClick: false, autoClose: false})
     }
@@ -4138,6 +4136,8 @@ function updatePokestops() {
     }
     var removeStops = []
     var currentTime = Math.round(new Date().getTime() / 1000)
+    var d = new Date()
+    var lastMidnight = d.setHours(0, 0, 0, 0) / 1000
 
     // change lured pokestop marker to unlured when expired
     $.each(mapData.pokestops, function (key, value) {
@@ -4172,7 +4172,7 @@ function updatePokestops() {
     }
     if (Store.get('showQuests')) {
         $.each(mapData.pokestops, function (key, value) {
-            if (value['quest_type'] === 0 || ((value['quest_pokemon_id'] > 0 && questsExcludedPokemon.indexOf(value['quest_pokemon_id']) > -1) || (value['quest_item_id'] > 0 && questsExcludedItem.indexOf(value['quest_item_id']) > -1) || ((value['quest_reward_type'] === 3 && (Number(value['quest_dust_amount']) < Number(Store.get('showDustAmount')))) || (value['quest_reward_type'] === 3 && Store.get('showDustAmount') === 0)))) {
+            if (value['quest_type'] === 0 || lastMidnight > Number(value['quest_timestamp']) || ((value['quest_pokemon_id'] > 0 && questsExcludedPokemon.indexOf(value['quest_pokemon_id']) > -1) || (value['quest_item_id'] > 0 && questsExcludedItem.indexOf(value['quest_item_id']) > -1) || ((value['quest_reward_type'] === 3 && (Number(value['quest_dust_amount']) < Number(Store.get('showDustAmount')))) || (value['quest_reward_type'] === 3 && Store.get('showDustAmount') === 0)))) {
                 removeStops.push(key)
             }
         })
