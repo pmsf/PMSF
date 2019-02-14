@@ -1031,9 +1031,9 @@ function getReward(item) {
         }
         rewardImage = '<img height="70px" style="padding: 5px;" src="' + iconpath + 'pokemon_icon_' + pokemonIdStr + '_' + formStr + shinyStr + '.png"/>'
     } else if (item['quest_reward_type'] === 3) {
-        rewardImage = '<img height="70px" style="padding: 5px;" src="' + iconpath + 'rewards/reward_stardust.png"/>'
+        rewardImage = '<img height="70px" style="padding: 5px;" src="' + iconpath + 'rewards/reward_stardust_' + item['quest_dust_amount'] + '.png"/>'
     } else if (item['quest_reward_type'] === 2) {
-        rewardImage = '<img height="70px" style="padding: 5px;" src="' + iconpath + 'rewards/reward_' + item['quest_item_id'] + '_1.png"/>'
+        rewardImage = '<img height="70px" style="padding: 5px;" src="' + iconpath + 'rewards/reward_' + item['quest_item_id'] + '_' + item['quest_reward_amount'] + '.png"/>'
     }
     return rewardImage
 }
@@ -1137,20 +1137,31 @@ function pokestopLabel(item) {
     if (item['pokestop_name'] === null) {
         item['pokestop_name'] = 'Pokéstop'
     }
+    var stopName = ''
+    if (!noQuests && item['quest_type'] !== 0) {
+        stopName = '<b class="pokestop-quest-name">' +
+        item['pokestop_name'] +
+        '</b>'
+    } else {
+        stopName = '<b class="pokestop-name">' +
+        item['pokestop_name'] +
+        '</b>'
+    }
     var stopImage = ''
-    if (item['url'] !== null) {
-        stopImage = '<img height="70px" style="padding: 5px;" src="' + item['url'] + '">'
+    if (!noQuests && item['quest_type'] !== 0) {
+        stopImage = '<img class="pokestop-quest-image" src="' + item['url'] + '">'
+    } else if (item['url'] !== null) {
+        stopImage = '<img class="pokestop-image" src="' + item['url'] + '">'
     }
     str =
         '<center>' + '<div class="pokestop-label">' +
-        '<b>' + item['pokestop_name'] + '</b>' +
+        stopName
         '</div>'
     var d = new Date()
     var lastMidnight = d.setHours(0, 0, 0, 0) / 1000
     if (!noQuests && item['quest_type'] !== null && lastMidnight < Number(item['quest_timestamp'])) {
         str +=
             '<div><center>' +
-            '<img height="70px" style="padding: 5px;" src="static/forts/Pstop-quest-large.png">' +
             stopImage +
             getReward(item) +
             '</center></div>' +
@@ -1159,13 +1170,8 @@ function pokestopLabel(item) {
         str =
             '<div class="pokestop-label">' +
             '<center>' +
-            '<div>' +
-            '<b>' + item['pokestop_name'] + '</b>' +
-            '</div>' +
-            '<div>' +
-            '<img height="70px" style="padding: 5px;" src="static/forts/Pstop-large.png">' +
-            stopImage +
-            '</div>' +
+            '<div>' + stopName + '</div>' +
+            '<div>' + stopImage + '</div>' +
             '</center>' +
             '</div>'
     }
@@ -1182,7 +1188,7 @@ function pokestopLabel(item) {
         str += '<center><div>' + i8ln('Convert to Gym') + '<i class="fa fa-refresh convert-pokestop" style="margin-top: 2px; vertical-align: middle; font-size: 1.5em;" onclick="openConvertPokestopModal(event);" data-id="' + item['pokestop_id'] + '"></i></div></center>'
     }
     str += '<div>' +
-        i8ln('Location:') + ' ' + '<a href="javascript:void(0)" onclick="javascript:openMapDirections(' + item['latitude'] + ',' + item['longitude'] + ')" title="' + i8ln('View in Maps') + '">' + item['latitude'] + ', ' + item['longitude'] + '</a> - <a href="./?lat=' + item['latitude'] + '&lon=' + item['longitude'] + '&zoom=16">Share link</a>' +
+        '<a href="javascript:void(0)" class="pokestop-navigate" onclick="javascript:openMapDirections(' + item['latitude'] + ',' + item['longitude'] + ')" title="' + i8ln('View in Maps') + '">' + item['latitude'] + ', ' + item['longitude'] + '</a> - <a href="./?lat=' + item['latitude'] + '&lon=' + item['longitude'] + '&zoom=16">Share link</a>' +
         '</div>'
     if ((!noWhatsappLink) && (item['quest_id'] && item['reward_id'] !== null)) {
         str += '<div>' +
@@ -1727,7 +1733,7 @@ function getPokestopMarkerIcon(item) {
         } else if (item['quest_reward_type'] === 3) {
             html = '<div style="position:relative;">' +
                 '<img src="static/forts/Pstop-quest-small.png" style="width:50px;height:72;top:-35px;right:10px;"/>' +
-                '<img src="' + iconpath + 'rewards/reward_stardust.png" style="width:30px;height:auto;position:absolute;top:4px;left:0px;"/>' +
+                '<img src="' + iconpath + 'rewards/reward_stardust_' + item['quest_dust_amount'] + '.png" style="width:30px;height:auto;position:absolute;top:4px;left:0px;"/>' +
                 '</div>'
             stopMarker = L.divIcon({
                 iconSize: [31, 31],
@@ -1739,7 +1745,7 @@ function getPokestopMarkerIcon(item) {
         } else if (item['quest_reward_type'] === 2) {
             html = '<div style="position:relative;">' +
                 '<img src="static/forts/Pstop-quest-small.png" style="width:50px;height:72;top:-35px;right:10px;"/>' +
-                '<img src="' + iconpath + 'rewards/reward_' + item['quest_item_id'] + '_1.png" style="width:30px;height:auto;position:absolute;top:4px;left:0px;"/>' +
+                '<img src="' + iconpath + 'rewards/reward_' + item['quest_item_id'] + '_' + item['quest_reward_amount'] + '.png" style="width:30px;height:auto;position:absolute;top:4px;left:0px;"/>' +
                 '</div>'
             stopMarker = L.divIcon({
                 iconSize: [31, 31],
