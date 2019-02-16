@@ -1136,8 +1136,10 @@ function pokestopLabel(item) {
     if (item['pokestop_name'] === null) {
         item['pokestop_name'] = 'Pokéstop'
     }
+    var d = new Date()
+    var lastMidnight = d.setHours(0, 0, 0, 0) / 1000
     var stopName = ''
-    if (!noQuests && item['quest_type'] !== 0) {
+    if (!noQuests && item['quest_type'] !== 0 && lastMidnight < Number(item['quest_timestamp'])) {
         stopName = '<b class="pokestop-quest-name">' +
         item['pokestop_name'] +
         '</b>'
@@ -1147,7 +1149,7 @@ function pokestopLabel(item) {
         '</b>'
     }
     var stopImage = ''
-    if (!noQuests && item['quest_type'] !== 0) {
+    if (!noQuests && item['quest_type'] !== 0 && lastMidnight < Number(item['quest_timestamp'])) {
         stopImage = '<img class="pokestop-quest-image" src="' + item['url'] + '">'
     } else if (item['url'] !== null) {
         stopImage = '<img class="pokestop-image" src="' + item['url'] + '">'
@@ -1156,8 +1158,6 @@ function pokestopLabel(item) {
         '<center><div class="pokestop-label">' +
         stopName +
         '</div></center>'
-    var d = new Date()
-    var lastMidnight = d.setHours(0, 0, 0, 0) / 1000
     if (!noQuests && item['quest_type'] !== null && lastMidnight < Number(item['quest_timestamp'])) {
         str +=
             '<div><center>' +
