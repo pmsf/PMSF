@@ -840,7 +840,7 @@ function gymLabel(item) {
         }
 
         if (raidStarted) {
-            raidIcon = '<img style="width: 80px; -webkit-filter: drop-shadow(5px 5px 5px #222); filter: drop-shadow(5px 5px 5px #222);" src="' + iconpath + 'pokemon_icon_' + pokemonidStr + '_' + formStr + '.png"/>'
+            raidIcon = '<img style="width: 70px;" src="' + iconpath + 'pokemon_icon_' + pokemonidStr + '_' + formStr + '.png"/>'
         } else if (item.raid_start <= Date.now()) {
             var hatchedEgg = ''
             if (item['raid_level'] <= 2) {
@@ -876,8 +876,8 @@ function gymLabel(item) {
 
     var park = ''
     if ((item['park'] !== '0' && item['park'] !== 'None' && item['park'] !== undefined && item['park']) && (noParkInfo === false)) {
-        if (item['park'] === 1) {
-            // RM only stores boolean, so just call it "Park Gym"
+        if (item['park'] === 1 || item['park'] === '1') {
+            // RDM & RM only stores boolean, so just call it "Park Gym"
             park = i8ln('Park Gym')
         } else {
             park = i8ln('Park') + ': ' + item['park']
@@ -903,13 +903,13 @@ function gymLabel(item) {
 
     var lastModifiedStr = getDateStr(lastModified) + ' ' + getTimeStr(lastModified)
 
-    var nameStr = (name ? '<div>' + name + '</div>' : '')
+    var nameStr = (name ? '<div style="font-weight:900">' + name + '</div>' : '')
 
-    var gymColor = ['0, 0, 0, .4', '74, 138, 202, .6', '240, 68, 58, .6', '254, 217, 40, .6']
+    var gymColor = ['0, 0, 0, .4', '6, 119, 239', '255, 45, 33', '251, 210, 8']
     var str
     var gymImage = ''
     if (url !== null) {
-        gymImage = '<img height="70px" style="padding: 5px;" src="' + url + '">'
+        gymImage = '<img class="gym-image" style="border:3px solid rgba(' + gymColor[teamId] + ')" src="' + url + '">'
     }
     if (teamId === 0) {
         str =
@@ -917,19 +917,21 @@ function gymLabel(item) {
             '<center>' +
             nameStr +
             '<div>' +
-            '<img height="70px" style="padding: 5px;" src="static/forts/' + teamName + '_large.png">' +
-            raidIcon +
-            gymImage +
+            'Uncontested Gym' +
             '</div>' +
+            '<div>' +
+            gymImage +
+            raidIcon +
+            '</div>' +
+            '<div><b>6 ' + i8ln('Free Slots') + '</b></div>' +
             raidStr +
             '<div>' +
             park +
             '</div>' +
             '<div>' +
-            i8ln('Location') + ': <a href="javascript:void(0);" onclick="javascript:openMapDirections(' + latitude + ',' + longitude + ');" title="' + i8ln('View in Maps') + '">' + latitude.toFixed(6) + ' , ' + longitude.toFixed(7) + '</a> - <a href="./?lat=' + latitude + '&lon=' + longitude + '&zoom=16">Share link</a>' +
+            '<a href="javascript:void(0);" class="gym-navigate" onclick="javascript:openMapDirections(' + latitude + ',' + longitude + ');" title="' + i8ln('View in Maps') + '">' + latitude.toFixed(6) + ' , ' + longitude.toFixed(7) + '</a> - <a href="./?lat=' + latitude + '&lon=' + longitude + '&zoom=16">Share link</a>' +
             '</div>' +
             '<div>' +
-
             i8ln('Last Modified') + ' : ' + lastModifiedStr +
             '</div>' +
             '<div>' +
@@ -960,17 +962,15 @@ function gymLabel(item) {
             '<div class="gym-label">' +
             '<center>' +
             '<div style="padding-bottom: 2px">' +
-
             nameStr +
             '</div>' +
             '<div>' +
             '<b style="color:rgba(' + gymColor[teamId] + ')">' + i8ln('Team') + ' ' + i8ln(teamName) + '</b><br>' +
-            '<img height="70px" style="padding: 5px;" src="static/forts/' + teamName + '_large.png">' +
+            gymImage +
             raidIcon +
-            '<img height="70px" style="padding: 5px;" src="' + url + '">' +
             '</div>' +
-            raidStr +
             '<div><b>' + freeSlots + ' ' + i8ln('Free Slots') + '</b></div>' +
+            raidStr +
             '<div>' +
             park +
             '</div>' +
@@ -979,10 +979,9 @@ function gymLabel(item) {
             memberStr +
             '</div>' +
             '<div>' +
-            i8ln('Location') + ': <a href="javascript:void(0);" onclick="javascript:openMapDirections(' + latitude + ',' + longitude + ');" title="' + i8ln('View in Maps') + '">' + latitude.toFixed(6) + ' , ' + longitude.toFixed(7) + '</a> - <a href="./?lat=' + latitude + '&lon=' + longitude + '&zoom=16">Share link</a>' +
+            '<a href="javascript:void(0);" class="gym-navigate" onclick="javascript:openMapDirections(' + latitude + ',' + longitude + ');" title="' + i8ln('View in Maps') + '">' + latitude.toFixed(6) + ' , ' + longitude.toFixed(7) + '</a> - <a href="./?lat=' + latitude + '&lon=' + longitude + '&zoom=16">Share link</a>' +
             '</div>' +
             '<div>' +
-
             i8ln('Last Modified') + ' : ' + lastModifiedStr +
             '</div>' +
             '<div>' +
