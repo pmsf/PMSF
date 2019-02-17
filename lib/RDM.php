@@ -58,9 +58,9 @@ class RDM extends Scanner
         if (!empty($minIv) && !is_nan((float)$minIv) && $minIv != 0) {
             $minIv = $minIv * .45;
             if (empty($exMinIv)) {
-                $conds[] = '(atk_iv' . $float . ' + def_iv' . $float . ' + sta_iv' . $float . ') >= ' . $minIv;
+                $conds[] = '(iv' . $float . ') >= ' . $minIv;
             } else {
-                $conds[] = '((atk_iv' . $float . ' + def_iv' . $float . ' + sta_iv' . $float . ') >= ' . $minIv . ' OR pokemon_id IN(' . $exMinIv . ') )';
+                $conds[] = '((iv' . $float . ') >= ' . $minIv . ' OR pokemon_id IN(' . $exMinIv . ') )';
             }
         }
         if (!empty($minLevel) && !is_nan((float)$minLevel) && $minLevel != 0) {
@@ -125,9 +125,9 @@ class RDM extends Scanner
         if (!empty($minIv) && !is_nan((float)$minIv) && $minIv != 0) {
             $minIv = $minIv * .45;
             if (empty($exMinIv)) {
-                $conds[] = '(atk_iv' . $float . ' + def_iv' . $float . ' + sta_iv' . $float . ') >= ' . $minIv;
+                $conds[] = '(iv' . $float . ') >= ' . $minIv;
             } else {
-                $conds[] = '((atk_iv' . $float . ' + def_iv' . $float . ' + sta_iv' . $float . ') >= ' . $minIv . ' OR pokemon_id IN(' . $exMinIv . ') )';
+                $conds[] = '((iv' . $float . ') >= ' . $minIv . ' OR pokemon_id IN(' . $exMinIv . ') )';
             }
         }
         if (!empty($minLevel) && !is_nan((float)$minLevel) && $minLevel != 0) {
