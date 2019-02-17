@@ -4936,8 +4936,8 @@ function showGymDetails(id) { // eslint-disable-line no-unused-vars
 
         var park = ''
         if (((result['park'] !== '0' && result['park'] !== 'None' && result['park'] !== undefined && result['park']) && (noParkInfo === false))) {
-            if (result['park'] === 1) {
-                // RM only stores boolean, so just call it "Park Gym"
+            if (result['park'] === 1 || result['park'] === '1') {
+                // RDM & RM only stores boolean, so just call it "Park Gym"
                 park = i8ln('Park Gym')
             } else {
                 park = i8ln('Park') + ': ' + result['park']
