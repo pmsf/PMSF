@@ -1190,15 +1190,14 @@ function pokestopLabel(item) {
             '<center>' +
             '<div>' + stopName + '</div>' +
             '<div>' + stopImage + '</div>'
-            if (item['lure_expiration'] > Date.now() / 1000) {
-                var lureEndStr = getTimeStr(item['lure_expiration'])
-                str +=
-                    '<img style="padding:5px;position:absolute;left:10px;bottom:30px;height:50px;" src="static/forts/LureModule.png"/>' +
-                    '<div style="font-weight:900;">' +
-                    i8ln('Lure expiration') + ': ' + lureEndStr +
-                    ' <span class="label-countdown" disappears-at="' + item['lure_expiration'] + '">(00m00s)</span>' +
-                    '</div>'
-            }
+        if (item['lure_expiration'] > Date.now() / 1000) {
+            str +=
+                '<img style="padding:5px;position:absolute;left:10px;bottom:30px;height:50px;" src="static/forts/LureModule.png"/>' +
+                '<div style="font-weight:900;">' +
+                i8ln('Lure expiration') + ': ' + lureEndStr +
+                ' <span class="label-countdown" disappears-at="' + item['lure_expiration'] + '">(00m00s)</span>' +
+                '</div>'
+        }
         str += '</center>' +
             '</div>'
     }
