@@ -78,6 +78,9 @@ $gAnalyticsId = "";                                                 // "" for em
 $piwikUrl = "";
 $piwikSiteId = "";
 
+/* Cookie Disclamer */
+$noCookie = true;                                                   // Display a Cookie Disclamer
+
 /* PayPal */
 
 $paypalUrl = "";                                                    // PayPal donation URL, leave "" for empty

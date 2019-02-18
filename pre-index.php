@@ -184,6 +184,27 @@ if ( $blockIframe ) {
             <!-- End Piwik Code -->';
     }
     ?>
+    <!-- Cookie Disclamer -->
+    <link rel="stylesheet" type="text/css" href="//cdnjs.cloudflare.com/ajax/libs/cookieconsent2/3.1.0/cookieconsent.min.css" />
+    <script src="//cdnjs.cloudflare.com/ajax/libs/cookieconsent2/3.1.0/cookieconsent.min.js"></script>
+    <?php
+    if ( ! $noCookie ) {
+        echo '<script>
+            window.addEventListener("load", function(){
+                window.cookieconsent.initialise({
+                "palette": {
+                    "popup": {
+                    "background": "#3b3b3b"
+                    },
+                    "button": {
+                    "background": "#d6d6d6"
+                    }
+                }
+            })});
+        </script>';
+        }
+    ?>
+    
     <script>
         var token = '<?php echo ( ! empty( $_SESSION['token'] ) ) ? $_SESSION['token'] : ""; ?>';
     </script>
