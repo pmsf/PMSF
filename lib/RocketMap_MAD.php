@@ -167,6 +167,11 @@ class RocketMap_MAD extends RocketMap
             $params[':oneLat'] = $oNeLat;
             $params[':oneLng'] = $oNeLng;
         }
+
+        if ($lured == "true") {
+            $conds[] = "active_fort_modifier IS NOT NULL";
+        }
+
         if ($tstamp > 0) {
             $date = new \DateTime();
             $date->setTimezone(new \DateTimeZone('UTC'));
