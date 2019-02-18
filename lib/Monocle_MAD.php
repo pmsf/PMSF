@@ -159,6 +159,11 @@ class Monocle_MAD extends Monocle
             $params[':oneLng'] = $oNeLng;
         }
 
+        if (!empty($lures) && $lures === 'true') {
+            $conds[] = "expires > :time";
+            $params[':time'] = time();
+        }
+
         if ($tstamp > 0) {
             $conds[] = "updated > :lastUpdated";
             $params[':lastUpdated'] = $tstamp;
