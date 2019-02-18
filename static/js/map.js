@@ -876,7 +876,7 @@ function gymLabel(item) {
 
     var park = ''
     if ((item['park'] !== '0' && item['park'] !== 'None' && item['park'] !== undefined && item['park']) && (noParkInfo === false)) {
-        if (item['park'] === 1 || item['park'] === '1') {
+        if (item['park'] === 1) {
             // RDM & RM only stores boolean, so just call it "Park Gym"
             park = i8ln('Park Gym')
         } else {
@@ -4969,7 +4969,7 @@ function showGymDetails(id) { // eslint-disable-line no-unused-vars
 
         var park = ''
         if (((result['park'] !== '0' && result['park'] !== 'None' && result['park'] !== undefined && result['park']) && (noParkInfo === false))) {
-            if (result['park'] === 1 || result['park'] === '1') {
+            if (result['park'] === 1) {
                 // RDM & RM only stores boolean, so just call it "Park Gym"
                 park = i8ln('Park Gym')
             } else {
