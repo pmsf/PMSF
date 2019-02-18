@@ -170,10 +170,10 @@ class RDM extends Scanner
                     $lasti = 0;
                 }
                 $pokemon["latitude"] = $pokemon["latitude"] + 0.0003*cos(deg2rad($lasti*45));
-		$pokemon["longitude"] = $pokemon["longitude"] + 0.0003*sin(deg2rad($lasti*45));
+		        $pokemon["longitude"] = $pokemon["longitude"] + 0.0003*sin(deg2rad($lasti*45));
             } else {
                 $pokemon["latitude"] = floatval($pokemon["latitude"]);
-		$pokemon["longitude"] = floatval($pokemon["longitude"]);
+		        $pokemon["longitude"] = floatval($pokemon["longitude"]);
             }
             $pokemon["disappear_time"] = $pokemon["disappear_time"] * 1000;
 
@@ -271,6 +271,7 @@ class RDM extends Scanner
             $pokestop["latitude"] = floatval($pokestop["latitude"]);
             $pokestop["longitude"] = floatval($pokestop["longitude"]);
 			$pokestop["url"] = ! empty($pokestop["url"]) ? str_replace("http://", "https://images.weserv.nl/?url=", $pokestop["url"]) : null;
+			$pokestop["lure_expiration"] = $pokestop["lure_expiration"] * 1000;
             if ($noTrainerName === true) {
                 // trainer names hidden, so don't show trainer who lured
                 unset($pokestop["lure_user"]);
