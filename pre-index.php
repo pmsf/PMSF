@@ -1243,40 +1243,7 @@ if ( $blockIframe ) {
             </center>
         </div>
         <?php
-        if (($noNativeLogin === false) && !empty($_SESSION['user']->id)) {
-            ?>
-            <div>
-                <center>
-                    <button class="settings"
-                            onclick="document.location.href='user'">
-                        <i class="fa" aria-hidden="true"></i> <?php echo i8ln('Activate Key'); ?>
-                    </button>
-                </center>
-            </div>
-            <div>
-                <center>
-                    <button class="settings"
-                            onclick="document.location.href='logout.php'">
-                        <i class="fa" aria-hidden="true"></i> <?php echo i8ln('Logout'); ?>
-                    </button>
-                </center>
-            </div><br>
-            <div><center><p>
-            <?php
-            $time = date("Y-m-d", $_SESSION['user']->expire_timestamp);
-            
-            echo $_SESSION['user']->user . "<br>";
-            if ($_SESSION['user']->expire_timestamp < time()) {
-                echo "<span style='color: green;'>" . i8ln('Membership expires on') . " {$time}</span>";
-            } else {
-                echo "<span style='color: red;'>" . i8ln('Membership expired on') . " {$time}</span>";
-            } ?>
-            </p></center></div>
-        <?php
-        }
-        ?>
-        <?php
-        if (($noDiscordLogin === false) && !empty($_SESSION['user']->id)) {
+        if (( $noNativeLogin === false || $noDiscordLogin === false ) && !empty($_SESSION['user']->id)) {
             ?>
             <div>
                 <center>
@@ -1285,13 +1252,31 @@ if ( $blockIframe ) {
                         <i class="fa" aria-hidden="true"></i> <?php echo i8ln('Logout'); ?>
                     </button>
                 </center>
-            </div><br>
+            <div><br>
             <div><center><p>
             <?php
             echo 'Logged in as: ' . $_SESSION['user']->user . "<br>";
             ?>
 	    </p></center></div>
         <?php
+        }
+        ?>
+        <?php
+        if ( ( $noNativeLogin === false || $noDiscordLogin === false ) && !empty($_SESSION['user']->id ) && $_SESSION['user']->login_system === native) {
+            ?>
+            <div>
+                <center><p>
+                        <?php
+                        $time = date( "Y-m-d", $_SESSION['user']->expire_timestamp );
+
+                        if ( $_SESSION['user']->expire_timestamp > time() ) {
+                            echo "<span style='color: green;'>" . i8ln( 'Membership expires on' ) . " {$time}</span>";
+                        } else {
+                            echo "<span style='color: red;'>" . i8ln( 'Membership expired on' ) . " {$time}</span>";
+                        } ?>
+                    </p></center>
+            </div>
+            <?php
         }
         ?>
     </nav>
