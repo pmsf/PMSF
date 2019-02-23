@@ -1192,7 +1192,7 @@ function pokestopLabel(item) {
             '<div>' + stopName + '</div>' +
             '<div>' + stopImage + '</div>'
         if (item['lure_expiration'] > Date.now()) {
-			lureEndStr = getTimeStr(Math.floor(item['lure_expiration'] / 1000))
+            lureEndStr = getTimeStr(Math.floor(item['lure_expiration'] / 1000))
             str +=
                 '<img style="padding:5px;position:absolute;left:10px;top:15px;height:50px;" src="static/forts/LureModule.png"/>' +
                 '<div style="font-weight:900;">' +
@@ -4175,7 +4175,7 @@ function updatePokestops() {
         return false
     }
     var removeStops = []
-    var currentTime = Math.round(new Date().getTime() / 1000)
+    var currentTime = Math.round(new Date().getTime())
     var d = new Date()
     var lastMidnight = d.setHours(0, 0, 0, 0) / 1000
 
