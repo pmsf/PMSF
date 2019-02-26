@@ -587,7 +587,7 @@ if ( $blockIframe ) {
                 </div>';
                     } ?>
                     <?php
-                    if ( ! $noRaidTimer ) {
+                    if ( ! $noRaidTimer && ! $noRaids ) {
                         echo '<div class="form-control switch-container">
                         <h3>' . i8ln( 'Raids Timer' ) . '</h3>
                         <div class="onoffswitch">
