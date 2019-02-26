@@ -312,7 +312,7 @@ if ( $blockIframe ) {
                 } ?>
                     <div id="pokemon-filter-wrapper" style="display:none">
                         <?php
-                        if ( ! $noTinyRat ) {
+                        if ( ! $noTinyRat && ! $noTinyRatSetting ) {
                             ?>
                             <div class="form-control switch-container">
                                 <h3><?php echo i8ln( 'Tiny Rats' ) ?></h3>
@@ -328,7 +328,7 @@ if ( $blockIframe ) {
                             <?php
                         } ?>
                         <?php
-                        if ( ! $noBigKarp ) {
+                        if ( ! $noBigKarp && ! $noBigKarpSetting  ) {
                             ?>
                             <div class="form-control switch-container">
                                 <h3><?php echo i8ln( 'Big Karp' ) ?></h3>
