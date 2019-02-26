@@ -165,6 +165,8 @@
     "geoJSONfile": true,
     "enablePoi": true,
     "noDeletePoi": true,
-    "noMarkPoi": true
+    "noMarkPoi": true,
+    "enableRaidTimer": true,
+    "noRaidTimer": true
   }
 }
