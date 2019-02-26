@@ -1184,6 +1184,11 @@ var StoreOptions = {
         {
             default: exEligible,
             type: StoreTypes.Boolean
+        },
+    'showRaidTimer':
+        {
+            default: enableRaidTimer,
+            type: StoreTypes.Boolean
         }
 }
 

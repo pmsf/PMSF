@@ -166,6 +166,8 @@ $enableRaids = 'false';                                             // true/fals
 $activeRaids = 'false';                                             // true/false
 $minRaidLevel = 1;
 $maxRaidLevel = 5;
+$noRaidTimer = false;                                               // true/false
+$enableRaidTimer = 'false';                                         // true/false
 
 $noPokestops = false;                                               // true/false
 $enablePokestops = 'false';                                         // true/false
