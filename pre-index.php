@@ -586,6 +586,19 @@ if ( $blockIframe ) {
                     </div>
                 </div>';
                     } ?>
+                    <?php
+                    if ( ! $noRaidTimer ) {
+                        echo '<div class="form-control switch-container">
+                        <h3>' . i8ln( 'Raids Timer' ) . '</h3>
+                        <div class="onoffswitch">
+                        <input id="raid-timer-switch" type="checkbox" name="raid-timer-switch" class="onoffswitch-checkbox" checked>
+                        <label class="onoffswitch-label" for="raid-timer-switch">
+                            <span class="switch-label" data-on="On" data-off="Off"></span>
+                            <span class="switch-handle"></span>
+                        </label>
+                    </div>
+                    </div>';
+                    } ?>
                     <div id="raids-filter-wrapper" style="display:none">
                         <div class="form-control switch-container" id="active-raids-wrapper">
                             <h3><?php echo i8ln( 'Only Active Raids' ) ?></h3>
@@ -1925,6 +1938,8 @@ if ( $blockIframe ) {
     var noRarityDisplay = <?php echo $noRarityDisplay === true ? 'true' : 'false' ?>;
     var noWeatherIcons = <?php echo $noWeatherIcons === true ? 'true' : 'false' ?>;
     var noWeatherShadow = <?php echo $noWeatherShadow === true ? 'true' : 'false' ?>;
+    var noRaidTimer = <?php echo $noRaidTimer === true ? 'true' : 'false' ?>;
+    var enableRaidTimer = <?php echo $noScanPolygon ? 'false' : $enableRaidTimer ?>;
 </script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js"></script>
 <script src="static/dist/js/map.common.min.js"></script>

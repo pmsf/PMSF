@@ -539,6 +539,7 @@ function initSidebar() {
     $('#direction-provider').val(Store.get('directionProvider'))
     $('#ranges-switch').prop('checked', Store.get('showRanges'))
     $('#scan-area-switch').prop('checked', Store.get('showScanPolygon'))
+    $('#raid-timer-switch').prop('checked', Store.get('showRaidTimer'))
     $('#sound-switch').prop('checked', Store.get('playSound'))
     $('#cries-switch').prop('checked', Store.get('playCries'))
     $('#cries-switch-wrapper').toggle(Store.get('playSound'))
@@ -1492,6 +1493,9 @@ function getGymMarkerIcon(item) {
             exIcon +
             '<img src="' + iconpath + 'pokemon_icon_' + pokemonidStr + '_' + formStr + '.png" style="width:50px;height:auto;position:absolute;top:-15px;right:0px;"/>' +
             '</div>'
+        if (noRaidTimer === false && Store.get(['showRaidTimer'])) {
+            html += '<div><span class="label-countdown gym-icon-countdown" disappears-at="' + item['raid_end'] + '" end>(00m00s)</span></div>'
+        }
         fortMarker = L.divIcon({
             iconSize: [50, 50],
             iconAnchor: [25, 45],
@@ -1513,6 +1517,9 @@ function getGymMarkerIcon(item) {
             exIcon +
             '<img src="static/raids/egg_' + hatchedEgg + '.png" style="width:35px;height:auto;position:absolute;top:-11px;right:18px;"/>' +
             '</div>'
+        if (noRaidTimer === false && Store.get(['showRaidTimer'])) {
+            html += '<div><span class="label-countdown gym-icon-countdown" disappears-at="' + item['raid_end'] + '" end>(00m00s)</span></div>'
+        }
         fortMarker = L.divIcon({
             iconSize: [50, 50],
             iconAnchor: [25, 45],
@@ -1534,6 +1541,9 @@ function getGymMarkerIcon(item) {
             exIcon +
             '<img src="static/raids/egg_' + raidEgg + '.png" style="width:25px;height:auto;position:absolute;top:6px;right:18px;"/>' +
             '</div>'
+        if (noRaidTimer === false && Store.get(['showRaidTimer'])) {
+            html += '<div><span class="label-countdown gym-icon-countdown" disappears-at="' + item['raid_start'] + '" end>(00m00s)</span></div>'
+        }
         fortMarker = L.divIcon({
             iconSize: [50, 50],
             iconAnchor: [25, 45],
@@ -4181,7 +4191,7 @@ function updatePokestops() {
 
     // change lured pokestop marker to unlured when expired
     $.each(mapData.pokestops, function (key, value) {
-        if (value['lure_expiration'] !== '0' && value['lure_expiration'] < currentTime) {
+        if (value['lure_expiration'] > 0 && value['lure_expiration'] < currentTime && value['lure_expiration'] > (currentTime - 300000)) {
             if (value.marker && value.marker.rangeCircle) {
                 markers.removeLayer(value.marker.rangeCircle)
                 markersnotify.removeLayer(value.marker.rangeCircle)
@@ -6274,6 +6284,13 @@ $(function () {
             scanAreaGroup.clearLayers()
         }
     })
+
+    $('#raid-timer-switch').change(function () {
+        Store.set('showRaidTimer', this.checked)
+        lastgyms = false
+        buildSwitchChangeListener(mapData, ['gyms'], 'showRaidTimer').bind(this)()
+    })
+
     $('#pokestops-switch').change(function () {
         var options = {
             'duration': 500
