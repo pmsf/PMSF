@@ -169,6 +169,7 @@
     "enableRaidTimer": true,
     "noRaidTimer": true,
     "enableNestPolygon": true,
-    "nestGeoJSONfile": true
+    "nestGeoJSONfile": true,
+    "noCostumeIcons": true
   }
 }
