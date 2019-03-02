@@ -497,7 +497,7 @@ function buildNestPolygons() {
         return false
     }
 
-     $.getJSON(nestGeoJSONfile, function (data) {
+    $.getJSON(nestGeoJSONfile, function (data) {
         var nestGeoPolys = L.geoJson(data, {
             onEachFeature: function (features, featureLayer) {
                 featureLayer.bindPopup(features.properties.name)
