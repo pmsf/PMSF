@@ -310,6 +310,19 @@ if ( $blockIframe ) {
                     </div>
                 </div>';
                 } ?>
+                <?php
+                if ( ! $noNestPolygon && ! $noNests ) {
+                    echo '<div class="form-control switch-container">
+                    <h3>' . i8ln( 'Nest Polygon' ) . '</h3>
+                    <div class="onoffswitch">
+                        <input id="nest-polygon-switch" type="checkbox" name="nest-polygon-switch" class="onoffswitch-checkbox">
+                        <label class="onoffswitch-label" for="nest-polygon-switch">
+                            <span class="switch-label" data-on="On" data-off="Off"></span>
+                            <span class="switch-handle"></span>
+                        </label>
+                    </div>
+                </div>';
+                } ?>
                     <div id="pokemon-filter-wrapper" style="display:none">
                         <?php
                         if ( ! $noTinyRat && ! $noTinyRatSetting ) {
@@ -1940,6 +1953,8 @@ if ( $blockIframe ) {
     var noWeatherShadow = <?php echo $noWeatherShadow === true ? 'true' : 'false' ?>;
     var noRaidTimer = <?php echo $noRaidTimer === true ? 'true' : 'false' ?>;
     var enableRaidTimer = <?php echo $noRaidTimer ? 'false' : $enableRaidTimer ?>;
+    var enableNestPolygon = <?php echo $noNestPolygon ? 'false' : $enableNestPolygon ?>;
+    var nestGeoJSONfile = '<?php echo $noNestPolygon ? '' : $nestGeoJSONfile ?>';
 </script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js"></script>
 <script src="static/dist/js/map.common.min.js"></script>
