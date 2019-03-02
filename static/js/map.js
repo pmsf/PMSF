@@ -170,6 +170,7 @@ var gymLayerGroup = new L.LayerGroup()
 var stopLayerGroup = new L.LayerGroup()
 var scanAreaGroup = new L.LayerGroup()
 var scanAreas = []
+var nestLayerGroup = new L.LayerGroup()
 /*
  text place holders:
  <pkm> - pokemon name
@@ -276,7 +277,7 @@ function initMap() { // eslint-disable-line no-unused-vars
         minZoom: minZoom,
         maxZoom: maxZoom,
         zoomControl: false,
-        layers: [weatherLayerGroup, exLayerGroup, gymLayerGroup, stopLayerGroup, scanAreaGroup]
+        layers: [weatherLayerGroup, exLayerGroup, gymLayerGroup, stopLayerGroup, scanAreaGroup, nestLayerGroup]
     })
 
     setTileLayer(Store.get('map_style'))
@@ -345,6 +346,7 @@ function initMap() { // eslint-disable-line no-unused-vars
     updateWeatherOverlay()
     updateS2Overlay()
     buildScanPolygons()
+    buildNestPolygons()
 
     map.on('moveend', function () {
         updateS2Overlay()
@@ -490,6 +492,21 @@ function buildScanPolygons() {
     })
 }
 
+function buildNestPolygons() {
+    if (!Store.get(['showNestPolygon'])) {
+        return false
+    }
+
+     $.getJSON(nestGeoJSONfile, function (data) {
+        var nestGeoPolys = L.geoJson(data, {
+            onEachFeature: function (features, featureLayer) {
+                featureLayer.bindPopup(features.properties.name)
+            }
+        })
+        nestLayerGroup.addLayer(nestGeoPolys)
+    })
+}
+
 function initSidebar() {
     $('#gyms-switch').prop('checked', Store.get('showGyms'))
     $('#nests-switch').prop('checked', Store.get('showNests'))
@@ -539,6 +556,7 @@ function initSidebar() {
     $('#direction-provider').val(Store.get('directionProvider'))
     $('#ranges-switch').prop('checked', Store.get('showRanges'))
     $('#scan-area-switch').prop('checked', Store.get('showScanPolygon'))
+    $('#nest-polygon-switch').prop('checked', Store.get('showNestPolygon'))
     $('#raid-timer-switch').prop('checked', Store.get('showRaidTimer'))
     $('#sound-switch').prop('checked', Store.get('playSound'))
     $('#cries-switch').prop('checked', Store.get('playCries'))
@@ -6282,6 +6300,15 @@ $(function () {
             buildScanPolygons()
         } else {
             scanAreaGroup.clearLayers()
+        }
+    })
+
+    $('#nest-polygon-switch').change(function () {
+        Store.set('showNestPolygon', this.checked)
+        if (this.checked) {
+            buildNestPolygons()
+        } else {
+            nestLayerGroup.clearLayers()
         }
     })
 

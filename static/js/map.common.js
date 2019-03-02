@@ -1075,6 +1075,11 @@ var StoreOptions = {
             default: enableScanPolygon,
             type: StoreTypes.Boolean
         },
+    'showNestPolygon':
+        {
+            default: enableNestPolygon,
+            type: StoreTypes.Boolean
+        },
     'playSound':
         {
             default: notifySound,

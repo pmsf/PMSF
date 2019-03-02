@@ -14,7 +14,7 @@ if (strtolower($map) === "monocle") {
         $scanner = new \Scanner\Monocle_PMSF();
     }
 } elseif (strtolower($map) === "rdm") {
-    if (strtolower($fork) === "public") {
+    if (strtolower($fork) === "default") {
         $scanner = new \Scanner\RDM();
     } else {
         $scanner = new \Scanner\RDM_beta();
