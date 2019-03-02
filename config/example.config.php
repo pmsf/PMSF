@@ -244,7 +244,8 @@ $notifyNotification = 'true';                                       // true/fals
 /* Style Settings */
 
 $copyrightSafe = true;
-$iconRepository = '';						    // URLs or folder paths are allowed
+$noCostumeIcons = true;                                             // Set to true if you $iconRepository doesnt support costume icons. true/false
+$iconRepository = '';						                        // URLs or folder paths are allowed
 
 $noMapStyle = false;                                                // true/false
 $mapStyle = 'openstreetmap';                                        // openstreetmap, darkmatter, styleblackandwhite, styletopo, stylesatellite, stylewikipedia

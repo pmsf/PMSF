@@ -259,6 +259,7 @@ $notifyNotification = 'true';                                       // true/fals
 /* Style Settings */
 
 $copyrightSafe = true;
+$noCostumeIcons = true;                                            // Set to true if you $iconRepository doesnt support costume icons. true/false
 $iconRepository = 'https://raw.githubusercontent.com/whitewillem/PogoAssets/resized/icons_large/';
 
 $noMapStyle = false;                                                // true/false

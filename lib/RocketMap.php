@@ -19,7 +19,7 @@ class RocketMap extends Scanner
         $params = array();
         $float = $db->info()['driver'] == 'pgsql' ? "::float" : "";
 
-        $select = "pokemon_id, Unix_timestamp(Convert_tz(disappear_time, '+00:00', @@global.time_zone)) AS disappear_time, encounter_id, latitude, longitude, gender, form, weight, height, weather_boosted_condition";
+        $select = "pokemon_id, Unix_timestamp(Convert_tz(disappear_time, '+00:00', @@global.time_zone)) AS disappear_time, encounter_id, latitude, longitude, gender, form, weight, height, weather_boosted_condition, costume";
         global $noHighLevelData;
         if (!$noHighLevelData) {
             $select .= ", individual_attack, individual_defense, individual_stamina, move_1, move_2, cp, cp_multiplier";
@@ -96,7 +96,7 @@ class RocketMap extends Scanner
         $params = array();
         $float = $db->info()['driver'] == 'pgsql' ? "::float" : "";
 
-        $select = "pokemon_id, Unix_timestamp(Convert_tz(disappear_time, '+00:00', @@global.time_zone)) AS disappear_time, encounter_id, latitude, longitude, gender, form, weight, height, weather_boosted_condition";
+        $select = "pokemon_id, Unix_timestamp(Convert_tz(disappear_time, '+00:00', @@global.time_zone)) AS disappear_time, encounter_id, latitude, longitude, gender, form, weight, height, weather_boosted_condition, costume";
         global $noHighLevelData;
         if (!$noHighLevelData) {
             $select .= ", individual_attack, individual_defense, individual_stamina, move_1, move_2, cp, cp_multiplier";

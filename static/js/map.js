@@ -763,8 +763,11 @@ function pokemonLabel(item) {
     contentstring += '<span> - </span>' +
         '<small>' + typesDisplay + '</small>' +
         '</center></div>' +
-        '<div><center><img src="' + iconpath + 'pokemon_icon_' + pokemonidStr + '_' + formStr + '.png" style="width:50px;margin-top:10px;"/></center></div>' +
-        details
+        '<div><center><img src="' + iconpath + 'pokemon_icon_' + pokemonidStr + '_' + formStr
+    if (item['costume'] > 0 && noCostumeIcons === false) {
+        contentstring += '_' + item['costume']
+    }
+    contentstring += '.png" style="width:50px;margin-top:10px;"/></center></div>' + details
     if (pokemonReportTime === true) {
         contentstring += '<div><center><b>' +
             i8ln('Reported at') + ' ' + getTimeStr(reportTime) +
