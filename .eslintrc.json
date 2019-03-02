@@ -167,6 +167,8 @@
     "noDeletePoi": true,
     "noMarkPoi": true,
     "enableRaidTimer": true,
-    "noRaidTimer": true
+    "noRaidTimer": true,
+    "enableNestPolygon": true,
+    "nestGeoJSONfile": true
   }
 }
