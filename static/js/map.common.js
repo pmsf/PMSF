@@ -1277,7 +1277,7 @@ function getPokemonSprite(index, sprite, displayHeight, weather = 0, encounterFo
         html = '<img src="' + iconpath + 'pokemon_icon_' + pokemonIdStr + '_' + formStr + costume + '.png" style="width:' + scaledIconSizeWidth + 'px;height:auto;"/>' +
         '<img src="static/weather/i-' + weather + '.png" style="width:' + scaledWeatherIconSizeWidth + 'px;height:auto;position:absolute;top:-' + scaledWeatherIconSizeWidth + 'px;right:0px;"/>'
     } else {
-        html = '<img src="' + iconpath + 'pokemon_icon_' + pokemonIdStr + '_' + formStr + costume +'.png" style="width:' + scaledIconSizeWidth + 'px;height:auto;-webkit-filter: drop-shadow(10px 10px 10px #4444dd); filter: drop-shadow(10px 10px 10px #4444dd);"/>'
+        html = '<img src="' + iconpath + 'pokemon_icon_' + pokemonIdStr + '_' + formStr + costume + '.png" style="width:' + scaledIconSizeWidth + 'px;height:auto;-webkit-filter: drop-shadow(10px 10px 10px #4444dd); filter: drop-shadow(10px 10px 10px #4444dd);"/>'
     }
     var pokemonIcon = L.divIcon({
         iconAnchor: scaledIconCenterOffset,
