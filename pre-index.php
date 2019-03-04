@@ -599,6 +599,7 @@ if ( $blockIframe ) {
                     </div>
                 </div>';
                     } ?>
+					<div id="raids-filter-wrapper" style="display:none">
                     <?php
                     if ( ! $noRaidTimer && ! $noRaids ) {
                         echo '<div class="form-control switch-container">
@@ -612,7 +613,6 @@ if ( $blockIframe ) {
                     </div>
                     </div>';
                     } ?>
-                    <div id="raids-filter-wrapper" style="display:none">
                         <div class="form-control switch-container" id="active-raids-wrapper">
                             <h3><?php echo i8ln( 'Only Active Raids' ) ?></h3>
                             <div class="onoffswitch">
