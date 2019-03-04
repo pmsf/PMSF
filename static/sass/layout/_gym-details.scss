@@ -22,7 +22,7 @@
   // line-height: 1em;
   h3 {
     font-size: 18px;
-    font-family: 'Quicksand', sans-serif;
+    font-family: 'Lato', sans-serif;
     color: darken(_palette(accent2, bg), 12);
   }
   p {
@@ -122,7 +122,7 @@
       border-radius: 20px;
       font-size: .8em;
       text-align: center;
-      font-family: 'Quicksand', sans-serif;
+      font-family: 'Lato', sans-serif;
 
       &.team-1 {
         background-color: #4A8ACA;
@@ -191,7 +191,7 @@
     }
 
     .value {
-      font-family: 'Quicksand';
+      font-family: 'Lato';
       font-weight: bold;
     }
   }
@@ -231,7 +231,7 @@
         padding: 2px 5px;
         border-radius: 4px;
         color: white;
-        font-family: 'Quicksand', sans-serif;
+        font-family: 'Lato', sans-serif;
         font-weight: 300;
 
         &.fairy {
@@ -327,13 +327,13 @@
     .damage {
       float: right;
       margin-top: 2px;
-      font-family: 'Quicksand';
+      font-family: 'Lato';
     }
   }
 
   .trainer-level {
     font-size: 1.25em;
-    font-family: 'Quicksand';
+    font-family: 'Lato';
     line-height: 1em;
     font-weight: 900;
   }
@@ -368,7 +368,7 @@
     line-height: 1em;
     font-size: .9em;
     font-weight: bold;
-    font-family: 'Quicksand';
+    font-family: 'Lato';
   }
   .submit-raid{
     padding: 5px 20px;
