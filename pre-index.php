@@ -1191,6 +1191,7 @@ if ( $blockIframe ) {
                 <select name="gym-marker-style" id="gym-marker-style">
                     <option value="ingame">' . i8ln( 'In-Game' ) . '</option>
                     <option value="shield">' . i8ln( 'Shield' ) . '</option>
+                    <option value="rocketmap">' . i8ln( 'Rocketmap' ) . '</option>
                 </select>
             </div>';
             }
