@@ -264,6 +264,8 @@ class Monocle_MAD extends Monocle
             $pokestop["quest_reward_amount"] = intval($pokestop["quest_reward_amount"]);
             $pokestop["quest_dust_amount"] = intval($pokestop["quest_dust_amount"]);
             $pokestop["lure_expiration"] = $pokestop["lure_expiration"] * 1000;
+            $pokestop["quest_pokemon_name"] = i8ln($this->data[$pokestop["quest_pokemon_id"]]['name']);
+            $pokestop["quest_item_name"] = i8ln($this->items[$pokestop["quest_item_id"]]['name']);
             if ($noTrainerName === true) {
                 // trainer names hidden, so don't show trainer who lured
                 unset($pokestop["lure_user"]);

@@ -274,6 +274,8 @@ class RocketMap_MAD extends RocketMap
             $pokestop["quest_item_id"] = intval($pokestop["quest_item_id"]);
             $pokestop["quest_reward_amount"] = intval($pokestop["quest_reward_amount"]);
             $pokestop["quest_dust_amount"] = intval($pokestop["quest_dust_amount"]);
+            $pokestop["quest_pokemon_name"] = i8ln($this->data[$pokestop["quest_pokemon_id"]]['name']);
+            $pokestop["quest_item_name"] = i8ln($this->items[$pokestop["quest_item_id"]]['name']);
             $data[] = $pokestop;
             unset($pokestops[$i]);
             $i++;

@@ -256,11 +256,13 @@ class Monocle_PMSF extends Monocle
             $pokestop["quest_condition_type"] = intval($pokestop["quest_condition_type"]);
             $pokestop["quest_reward_type"] = intval($pokestop["quest_reward_type"]);
             $pokestop["quest_target"] = intval($pokestop["quest_target"]);
-	    $pokestop["quest_pokemon_id"] = intval($pokestop["quest_pokemon_id"]);
+            $pokestop["quest_pokemon_id"] = intval($pokestop["quest_pokemon_id"]);
             $pokestop["quest_pokemon_formid"] = intval($pokestop["quest_pokemon_formid"]);
             $pokestop["quest_item_id"] = intval($pokestop["quest_item_id"]);
             $pokestop["quest_reward_amount"] = intval($pokestop["quest_reward_amount"]);
             $pokestop["quest_dust_amount"] = intval($pokestop["quest_dust_amount"]);
+            $pokestop["quest_pokemon_name"] = i8ln($this->data[$pokestop["quest_pokemon_id"]]['name']);
+            $pokestop["quest_item_name"] = i8ln($this->items[$pokestop["quest_item_id"]]['name']);
             if ($noTrainerName === true) {
                 // trainer names hidden, so don't show trainer who lured
                 unset($pokestop["lure_user"]);

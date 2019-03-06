@@ -165,6 +165,8 @@ class RDM_beta extends RDM
             $pokestop["quest_dust_amount"] = intval($pokestop["quest_dust_amount"]);
 			$pokestop["url"] = ! empty($pokestop["url"]) ? str_replace("http://", "https://images.weserv.nl/?url=", $pokestop["url"]) : null;
             $pokestop["lure_expiration"] = $pokestop["lure_expiration"] * 1000;
+            $pokestop["quest_pokemon_name"] = i8ln($this->data[$pokestop["quest_pokemon_id"]]['name']);
+            $pokestop["quest_item_name"] = i8ln($this->items[$pokestop["quest_item_id"]]['name']);
 
             if ($noTrainerName === true) {
                 // trainer names hidden, so don't show trainer who lured
