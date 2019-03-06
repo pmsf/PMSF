@@ -1065,11 +1065,11 @@ function getQuest(item) {
     if (item['quest_condition_type'] !== null) {
         var questinfo = JSON.parse(item['quest_condition_info'])
         var questStr = i8ln(questtypeList[item['quest_type']])
-        str = '<center><div style="font-weight:900;">' +
+        str = '<div><b>' +
         i8ln('Quest:') + ' ' +
         questStr.replace('{0}', item['quest_target']) +
-        '</div></center>' +
-        '<center><div>'
+        '</b></div>' +
+        '<div>'
 
         if (item['quest_condition_type'] === 1) {
             var tstr = ''
@@ -1130,25 +1130,33 @@ function getQuest(item) {
             console.log('Undefined condition type ' + item['quest_condition_type'])
             str += '<div>Undefined condition</div>'
         }
+        if (item['quest_reward_type'] === 7) {
+            str += '<div><b>' +
+            i8ln('Reward') + ': ' +
+            item['quest_pokemon_name'] +
+            '</b></div>'
+        }
         if (item['quest_reward_type'] === 3) {
-            str += '<center><div style="font-weight:900;">' +
-            i8ln('Reward Amount:') + ' ' +
-            item['quest_dust_amount'] +
-            '</div></center>'
+            str += '<div><b>' +
+            i8ln('Reward') + ': ' +
+            item['quest_dust_amount'] + ' ' +
+            i8ln('Stardust') +
+            '</b></div>'
         }
         if (item['quest_reward_type'] === 2) {
-            str += '<center><div style="font-weight:900;">' +
-            i8ln('Reward Amount:') + ' ' +
-            item['quest_reward_amount'] +
-            '</div></center>'
+            str += '<div><b>' +
+            i8ln('Reward') + ': ' +
+            item['quest_reward_amount'] + ' ' +
+            item['quest_item_name'] +
+            '</b></div>'
         }
         str += '</div></center>'
     } else if (item['quest_type'] !== null) {
         questStr = i8ln(questtypeList[item['quest_type']])
-        str += '<center><div style="font-weight:900;">' +
+        str += '<div><b>' +
         i8ln('Quest:') + ' ' +
         questStr.replace('{0}', item['quest_target']) +
-        '</div></center>'
+        '</b></div>'
     }
     return str
 }
@@ -1217,10 +1225,10 @@ function pokestopLabel(item) {
             lureEndStr = getTimeStr(Math.floor(item['lure_expiration'] / 1000))
             str +=
                 '<img style="padding:5px;position:absolute;left:10px;top:15px;height:50px;" src="static/forts/LureModule.png"/>' +
-                '<div style="font-weight:900;">' +
+                '<div><b>' +
                 i8ln('Lure expiration') + ': ' + lureEndStr +
                 ' <span class="label-countdown" disappears-at="' + item['lure_expiration'] + '">(00m00s)</span>' +
-                '</div>'
+                '</b></div>'
         }
         str += '</center>' +
             '</div>'
