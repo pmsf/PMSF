@@ -1266,9 +1266,27 @@ function pokestopLabel(item) {
 }
 
 function formatSpawnTime(seconds) {
-    // the addition and modulo are required here because the db stores when a spawn disappears
-    // the subtraction to get the appearance time will knock seconds under 0 if the spawn happens in the previous hour
-    return ('0' + Math.floor((seconds + 3600) % 3600 / 60)).substr(-2) + ':' + ('0' + seconds % 60).substr(-2)
+    if (mapType !== 'rdm' && mapFork !== 'beta') {
+        return ('0' + Math.floor((seconds + 3600) % 3600 / 60)).substr(-2) + ':' + ('0' + seconds % 60).substr(-2)
+    } else {
+        var results = 0
+        var d = new Date()
+        if (seconds >= 1800 ) {
+            d.setMinutes(d.getMinutes() - 30)
+            d.setMinutes(0)
+            d.setSeconds(0)
+            d.setSeconds(d.getSeconds() + seconds)
+        } else {
+            d.setMinutes(d.getMinutes() + 30)
+            d.setMinutes(0)
+            d.setSeconds(0)
+            d.setSeconds(d.getSeconds() + seconds)
+        }
+        var Min = (d.getMinutes() < 10 ? '0' : '') + d.getMinutes()
+        var Sec = (d.getSeconds() < 10 ? '0' : '') + d.getSeconds()
+        results = Min + ':' + Sec
+    }
+    return results
 }
 
 function spawnpointLabel(item) {
