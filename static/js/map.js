@@ -1930,7 +1930,7 @@ function setupNestMarker(item) {
 }
 
 function nestLabel(item) {
-    var str = '<div>'
+    var str = ''
     if (item.pokemon_id > 0) {
         var types = item['pokemon_types']
         var typesDisplay = ''
@@ -1945,23 +1945,31 @@ function nestLabel(item) {
         } else {
             pokemonIdStr = item.pokemon_id
         }
-        str += '<center><b>' + item.pokemon_name + '</b></center>' +
-                '</div>' +
-                '<center>' +
-                '<div class="marker-nests">' +
-                '<img src="static/images/nest-' + item.english_pokemon_types[0].type.toLowerCase() + '.png" style="width:80px;height:auto;"/>' +
-                '<img src="' + iconpath + 'pokemon_icon_' + pokemonIdStr + '_00.png" style="position:absolute;width:65px;height:65px;top:44px;left:103px;"/>' +
-                '<br>' +
-                '<div>' +
-                typesDisplay +
-                '</div>' +
-                '</center>' +
-                '</div>'
+        var nestName = ''
+        if (item['name'] !== null && item['name'] !== 'Unknown Areaname') {
+            nestName = '<b>' + item['name'] + '</b>'
+        }
+        var pokemon_avg = ''
+        if (item['pokemon_avg'] > 0) {
+            pokemon_avg = '<div>' + i8ln('Nest Pokemon per hour') + ': ' + item['pokemon_avg'] + '</div>'
+        }
+        str += '<center>' +
+            '<div>' +
+            item.pokemon_name + ' - ' +
+            typesDisplay +
+            '</div>' +
+            nestName + '<br />' +
+            '<div>' +
+            '<img src="static/images/nest-' + item.english_pokemon_types[0].type.toLowerCase() + '.png" style="width:70px;height:auto;"/>' +
+            '<img src="' + iconpath + 'pokemon_icon_' + pokemonIdStr + '_00.png" style="position:absolute;width:65px;height:65px;top:53px;left:85px;"/>' +
+            '</div>' +
+            pokemon_avg +
+            '</center>'
     } else {
         str += '<div align="center" class="marker-nests">' +
             '<img src="static/images/nest-empty.png" align"middle" style="width:36px;height: auto;"/>' +
             '</div>' +
-            '<b>' + i8ln('No Pokemon - Assign One Below') + '</b>'
+            '<center><b>' + i8ln('No Pokemon - Assign One Below') + '</b></center>'
     }
     if (item.type === 1) {
         str += '<center><div style="margin-bottom:5px; margin-top:5px;">' + i8ln('As found on thesilphroad.com') + '</div></center>'
@@ -1970,10 +1978,10 @@ function nestLabel(item) {
         str += '<i class="fa fa-trash-o delete-nest" onclick="deleteNest(event);" data-id="' + item['nest_id'] + '"></i>'
     }
     if (!noManualNests) {
-        str += '<center><div>' + i8ln('Add Nest') + '<i class="fa fa-binoculars submit-nest" onclick="openNestModal(event);" data-id="' + item['nest_id'] + '"></i></div></center>'
+        str += '<center><div>' + i8ln('Add Nest') + ' <i class="fa fa-binoculars submit-nest" onclick="openNestModal(event);" data-id="' + item['nest_id'] + '"></i></div></center>'
     }
     str += '<div>' +
-        'Location: <a href="javascript:void(0)" onclick="javascript:openMapDirections(' + item.lat + ',' + item.lon + ')" title="' + i8ln('View in Maps') + '">' + item.lat.toFixed(6) + ', ' + item.lon.toFixed(7) + '</a> - <a href="./?lat=' + item.lat + '&lon=' + item.lon + '&zoom=16">Share link</a>' +
+        '<a href="javascript:void(0)" class="nest-navigate" onclick="javascript:openMapDirections(' + item.lat + ',' + item.lon + ')" title="' + i8ln('View in Maps') + '">' + item.lat.toFixed(6) + ', ' + item.lon.toFixed(7) + '</a> - <a href="./?lat=' + item.lat + '&lon=' + item.lon + '&zoom=16">Share link</a>' +
         '</div>'
     if ((!noWhatsappLink) && (item.pokemon_id > 0)) {
         str += '<div>' +
