@@ -774,7 +774,7 @@ function pokemonLabel(item) {
             '<b>' +
             i8ln('Despawn Time:') + ' ' + getTimeStr(disappearTime) +
             ' <span class="label-countdown" disappears-at="' + disappearTime + '">(00m00s)</span>' +
-            '</b></center></div>'	
+            '</b></center></div>'
     } else if (pokemonReportTime === true) {
         contentstring += '<div><center><b>' +
             i8ln('Reported at') + ' ' + getTimeStr(reportTime) +
@@ -1271,7 +1271,7 @@ function formatSpawnTime(seconds) {
     } else {
         var results = 0
         var d = new Date()
-        if (seconds >= 1800 ) {
+        if (seconds >= 1800) {
             d.setMinutes(d.getMinutes() - 30)
             d.setMinutes(0)
             d.setSeconds(0)
@@ -1949,9 +1949,9 @@ function nestLabel(item) {
         if (item['name'] !== null && item['name'] !== 'Unknown Areaname') {
             nestName = '<b>' + item['name'] + '</b>'
         }
-        var pokemon_avg = ''
+        var pokemonAvg = ''
         if (item['pokemon_avg'] > 0) {
-            pokemon_avg = '<div>' + i8ln('Nest Pokemon per hour') + ': ' + item['pokemon_avg'] + '</div>'
+            pokemonAvg = '<div>' + i8ln('Nest Pokemon per hour') + ': ' + item['pokemon_avg'] + '</div>'
         }
         str += '<center>' +
             '<div>' +
@@ -1963,7 +1963,7 @@ function nestLabel(item) {
             '<img src="static/images/nest-' + item.english_pokemon_types[0].type.toLowerCase() + '.png" style="width:70px;height:auto;"/>' +
             '<img src="' + iconpath + 'pokemon_icon_' + pokemonIdStr + '_00.png" style="position:absolute;width:65px;height:65px;top:53px;left:85px;"/>' +
             '</div>' +
-            pokemon_avg +
+            pokemonAvg +
             '</center>'
     } else {
         str += '<div align="center" class="marker-nests">' +
