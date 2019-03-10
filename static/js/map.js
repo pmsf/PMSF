@@ -768,7 +768,14 @@ function pokemonLabel(item) {
         contentstring += '_' + item['costume']
     }
     contentstring += '.png" style="width:50px;margin-top:10px;"/></center></div>' + details
-    if (pokemonReportTime === true) {
+    if (item['expire_timestamp_verified'] > 0) {
+        contentstring += '<div><center>' +
+            '<img src="static/images/verified.png" style="position:relative;height:15px;top:3px;right:3px;">' +
+            '<b>' +
+            i8ln('Despawn Time:') + ' ' + getTimeStr(disappearTime) +
+            ' <span class="label-countdown" disappears-at="' + disappearTime + '">(00m00s)</span>' +
+            '</b></center></div>'	
+    } else if (pokemonReportTime === true) {
         contentstring += '<div><center><b>' +
             i8ln('Reported at') + ' ' + getTimeStr(reportTime) +
             '</b></center></div>'
