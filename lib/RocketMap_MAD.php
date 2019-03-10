@@ -261,6 +261,16 @@ class RocketMap_MAD extends RocketMap
         $i = 0;
 
         foreach ($pokestops as $pokestop) {
+            $item_pid = $pokestop["quest_item_id"];
+            if ($item_pid == "0") {
+                $item_pid = null;
+                $pokestop["quest_item_id"] = null;
+            }
+			$mon_pid = $pokestop["quest_pokemon_id"];
+            if ($mon_pid == "0") {
+                $mon_pid = null;
+                $pokestop["quest_pokemon_id"] = null;
+            }
             $pokestop["latitude"] = floatval($pokestop["latitude"]);
             $pokestop["longitude"] = floatval($pokestop["longitude"]);
             $pokestop["lure_expiration"] = !empty($pokestop["lure_expiration"]) ? $pokestop["lure_expiration"] * 1000 : null;
@@ -274,8 +284,8 @@ class RocketMap_MAD extends RocketMap
             $pokestop["quest_item_id"] = intval($pokestop["quest_item_id"]);
             $pokestop["quest_reward_amount"] = intval($pokestop["quest_reward_amount"]);
             $pokestop["quest_dust_amount"] = intval($pokestop["quest_dust_amount"]);
-            $pokestop["quest_pokemon_name"] = i8ln($this->data[$pokestop["quest_pokemon_id"]]['name']);
-            $pokestop["quest_item_name"] = i8ln($this->items[$pokestop["quest_item_id"]]['name']);
+            $pokestop["quest_item_name"] = empty($item_pid) ? null : i8ln($this->items[$item_pid]["name"]);
+            $pokestop["quest_pokemon_name"] = empty($mon_pid) ? null : i8ln($this->data[$mon_pid]["name"]);
             $data[] = $pokestop;
             unset($pokestops[$i]);
             $i++;
