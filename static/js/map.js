@@ -1266,10 +1266,10 @@ function pokestopLabel(item) {
 }
 
 function formatSpawnTime(seconds) {
+    var results = 0
     if (mapType !== 'rdm' && mapFork !== 'beta') {
         return ('0' + Math.floor((seconds + 3600) % 3600 / 60)).substr(-2) + ':' + ('0' + seconds % 60).substr(-2)
     } else {
-        var results = 0
         var d = new Date()
         if (seconds >= 1800) {
             d.setMinutes(d.getMinutes() - 30)
