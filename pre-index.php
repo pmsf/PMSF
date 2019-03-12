@@ -331,9 +331,22 @@ if ( $blockIframe ) {
                     </div>
                 </div>';
                 } ?>
+                <?php
+                if ( ! $noNestPolygon && ! $noNests ) {
+                    echo '<div class="form-control switch-container">
+                    <h3>' . i8ln( 'Nest Polygon' ) . '</h3>
+                    <div class="onoffswitch">
+                        <input id="nest-polygon-switch" type="checkbox" name="nest-polygon-switch" class="onoffswitch-checkbox">
+                        <label class="onoffswitch-label" for="nest-polygon-switch">
+                            <span class="switch-label" data-on="On" data-off="Off"></span>
+                            <span class="switch-handle"></span>
+                        </label>
+                    </div>
+                </div>';
+                } ?>
                     <div id="pokemon-filter-wrapper" style="display:none">
                         <?php
-                        if ( ! $noTinyRat ) {
+                        if ( ! $noTinyRat && ! $noTinyRatSetting ) {
                             ?>
                             <div class="form-control switch-container">
                                 <h3><?php echo i8ln( 'Tiny Rats' ) ?></h3>
@@ -349,7 +362,7 @@ if ( $blockIframe ) {
                             <?php
                         } ?>
                         <?php
-                        if ( ! $noBigKarp ) {
+                        if ( ! $noBigKarp && ! $noBigKarpSetting  ) {
                             ?>
                             <div class="form-control switch-container">
                                 <h3><?php echo i8ln( 'Big Karp' ) ?></h3>
@@ -607,7 +620,20 @@ if ( $blockIframe ) {
                     </div>
                 </div>';
                     } ?>
-                    <div id="raids-filter-wrapper" style="display:none">
+					<div id="raids-filter-wrapper" style="display:none">
+                    <?php
+                    if ( ! $noRaidTimer && ! $noRaids ) {
+                        echo '<div class="form-control switch-container">
+                        <h3>' . i8ln( 'Raids Timer' ) . '</h3>
+                        <div class="onoffswitch">
+                        <input id="raid-timer-switch" type="checkbox" name="raid-timer-switch" class="onoffswitch-checkbox" checked>
+                        <label class="onoffswitch-label" for="raid-timer-switch">
+                            <span class="switch-label" data-on="On" data-off="Off"></span>
+                            <span class="switch-handle"></span>
+                        </label>
+                    </div>
+                    </div>';
+                    } ?>
                         <div class="form-control switch-container" id="active-raids-wrapper">
                             <h3><?php echo i8ln( 'Only Active Raids' ) ?></h3>
                             <div class="onoffswitch">
@@ -1186,6 +1212,7 @@ if ( $blockIframe ) {
                 <select name="gym-marker-style" id="gym-marker-style">
                     <option value="ingame">' . i8ln( 'In-Game' ) . '</option>
                     <option value="shield">' . i8ln( 'Shield' ) . '</option>
+                    <option value="rocketmap">' . i8ln( 'Rocketmap' ) . '</option>
                 </select>
             </div>';
             }
@@ -1902,6 +1929,7 @@ if ( $blockIframe ) {
     var icons = '<?php echo $copyrightSafe ? 'static/icons-safe/' : $iconRepository ?>';
     var weatherColors = <?php echo json_encode( $weatherColors ); ?>;
     var mapType = '<?php echo strtolower($map); ?>';
+    var mapfork = '<?php echo strtolower($fork); ?>';
     var triggerGyms = <?php echo $triggerGyms ?>;
     var noExGyms = <?php echo $noExGyms === true ? 'true' : 'false' ?>;
     var noParkInfo = <?php echo $noParkInfo === true ? 'true' : 'false' ?>;
@@ -1946,6 +1974,11 @@ if ( $blockIframe ) {
     var noRarityDisplay = <?php echo $noRarityDisplay === true ? 'true' : 'false' ?>;
     var noWeatherIcons = <?php echo $noWeatherIcons === true ? 'true' : 'false' ?>;
     var noWeatherShadow = <?php echo $noWeatherShadow === true ? 'true' : 'false' ?>;
+    var noRaidTimer = <?php echo $noRaidTimer === true ? 'true' : 'false' ?>;
+    var enableRaidTimer = <?php echo $noRaidTimer ? 'false' : $enableRaidTimer ?>;
+    var enableNestPolygon = <?php echo $noNestPolygon ? 'false' : $enableNestPolygon ?>;
+    var nestGeoJSONfile = '<?php echo $noNestPolygon ? '' : $nestGeoJSONfile ?>';
+    var noCostumeIcons = <?php echo $noCostumeIcons === true ? 'true' : 'false' ?>;
 </script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js"></script>
 <script src="static/dist/js/map.common.min.js"></script>

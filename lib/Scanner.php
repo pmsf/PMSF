@@ -31,5 +31,9 @@ class Scanner
         $json_moves = "static/data/moves.json";
         $json_contents = file_get_contents($json_moves);
         $this->moves = json_decode($json_contents, true);
+
+        $json_items = "static/data/items.json";
+        $json_contents = file_get_contents($json_items);
+        $this->items = json_decode($json_contents, true);
     }
 }

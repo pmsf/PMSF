@@ -56,9 +56,11 @@ public function get_nests($swLat, $swLng, $neLat, $neLng, $tstamp = 0, $oSwLat =
     {
         global $manualdb;
         $query = "SELECT nest_id,
+        name,
         lat,
         lon,
         pokemon_id,
+        pokemon_avg,
         type
         FROM nests
         WHERE :conditions";

@@ -22,7 +22,7 @@
   // line-height: 1em;
   h3 {
     font-size: 18px;
-    font-family: 'Quicksand', sans-serif;
+    font-family: 'Lato', sans-serif;
     color: darken(_palette(accent2, bg), 12);
   }
   p {
@@ -122,7 +122,7 @@
       border-radius: 20px;
       font-size: .8em;
       text-align: center;
-      font-family: 'Quicksand', sans-serif;
+      font-family: 'Lato', sans-serif;
 
       &.team-1 {
         background-color: #4A8ACA;
@@ -191,7 +191,7 @@
     }
 
     .value {
-      font-family: 'Quicksand';
+      font-family: 'Lato';
       font-weight: bold;
     }
   }
@@ -231,7 +231,7 @@
         padding: 2px 5px;
         border-radius: 4px;
         color: white;
-        font-family: 'Quicksand', sans-serif;
+        font-family: 'Lato', sans-serif;
         font-weight: 300;
 
         &.fairy {
@@ -327,13 +327,13 @@
     .damage {
       float: right;
       margin-top: 2px;
-      font-family: 'Quicksand';
+      font-family: 'Lato';
     }
   }
 
   .trainer-level {
     font-size: 1.25em;
-    font-family: 'Quicksand';
+    font-family: 'Lato';
     line-height: 1em;
     font-weight: 900;
   }
@@ -368,7 +368,7 @@
     line-height: 1em;
     font-size: .9em;
     font-weight: bold;
-    font-family: 'Quicksand';
+    font-family: 'Lato';
   }
   .submit-raid{
     padding: 5px 20px;
@@ -442,4 +442,36 @@
 .gym-label {
   margin-left: 10px;
   margin-right: 10px;
+}
+
+.gym-navigate {
+  color: rgb(93,109,126);
+  font-size: 11px;
+  font-weight: 500;
+
+    &.gym-navigate:before {
+      content: '\f018';
+      display: inline-block;
+      font-family: FontAwesome;
+      margin: 5px 3px 0px 0px;
+      height: 16px;
+      width: 16px;
+      -webkit-font-smoothing: antialiased;
+    }
+}
+
+.gym-image {
+  width: 80px;
+  height: 80px;
+  background-size: cover;
+  border-radius: 50px;
+  margin: 6px;
+}
+
+.gym-icon-countdown {
+    background-color: #c7c7c7;
+    color: black;
+    top: 50px;
+    position: absolute;
+    font-weight: 900;
 }

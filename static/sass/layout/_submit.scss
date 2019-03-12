@@ -7,6 +7,12 @@
   width: 26px;
   line-height: 26px;
   height: 26px;
+  background: #a2d696;
+  background: -webkit-linear-gradient(left, #a2d696 1%, #21cca8 99%);
+  background: -o-linear-gradient(left, #a2d696 1%, #21cca8 99%);
+  background: linear-gradient(to right, #a2d696 1%, #21cca8 99%);
+  filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#a2d696', endColorstr='#21cca8', GradientType=1);
+  color: #e3fede;
   &.on{
     background:green;
   }
