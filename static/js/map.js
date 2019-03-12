@@ -376,6 +376,49 @@ function initMap() { // eslint-disable-line no-unused-vars
             })
         }
     })
+
+    $selectLocationIconMarker = $('#locationmarker-style')
+
+    locationMarker = createLocationMarker()
+
+	if (Store.get('startAtUserLocation') && !locationSet) {
+		centerMapOnLocation()
+	}
+
+	if (Store.get('startAtLastLocation') && !locationSet) {
+		var position = Store.get('startAtLastLocationPosition')
+		var lat = 'lat' in position ? position.lat : centerLat
+		var lng = 'lng' in position ? position.lng : centerLng
+
+		var latlng = new L.LatLng(lat, lng)
+		locationMarker.setLatLng(latlng)
+		map.setView(latlng)
+	}
+
+    $.getJSON('static/dist/data/searchmarkerstyle.min.json').done(function (data) {
+        searchMarkerStyles = data
+        var searchMarkerStyleList = []
+
+        $.each(data, function (key, value) {
+            searchMarkerStyleList.push({
+                id: key,
+                text: value.name
+            })
+        })
+
+        $selectLocationIconMarker.select2({
+            placeholder: 'Select Location Marker',
+            data: searchMarkerStyleList,
+            minimumResultsForSearch: Infinity
+        })
+
+        $selectLocationIconMarker.on('change', function (e) {
+            Store.set('locationMarkerStyle', this.value)
+            updateLocationMarker(this.value)
+        })
+
+        $selectLocationIconMarker.val(Store.get('locationMarkerStyle')).trigger('change')
+    })
 }
 
 function toggleFullscreenMap() { // eslint-disable-line no-unused-vars
@@ -5635,49 +5678,6 @@ $(function () {
             mapData[dType] = {}
         })
         updateMap()
-    })
-
-    $selectLocationIconMarker = $('#locationmarker-style')
-
-    $.getJSON('static/dist/data/searchmarkerstyle.min.json').done(function (data) {
-        searchMarkerStyles = data
-        var searchMarkerStyleList = []
-
-        $.each(data, function (key, value) {
-            searchMarkerStyleList.push({
-                id: key,
-                text: value.name
-            })
-        })
-
-        locationMarker = createLocationMarker()
-
-        if (Store.get('startAtUserLocation') && !locationSet) {
-            centerMapOnLocation()
-        }
-
-        if (Store.get('startAtLastLocation') && !locationSet) {
-            var position = Store.get('startAtLastLocationPosition')
-            var lat = 'lat' in position ? position.lat : centerLat
-            var lng = 'lng' in position ? position.lng : centerLng
-
-            var latlng = new L.LatLng(lat, lng)
-            locationMarker.setLatLng(latlng)
-            map.setView(latlng)
-        }
-
-        $selectLocationIconMarker.select2({
-            placeholder: 'Select Location Marker',
-            data: searchMarkerStyleList,
-            minimumResultsForSearch: Infinity
-        })
-
-        $selectLocationIconMarker.on('change', function (e) {
-            Store.set('locationMarkerStyle', this.value)
-            updateLocationMarker(this.value)
-        })
-
-        $selectLocationIconMarker.val(Store.get('locationMarkerStyle')).trigger('change')
     })
 
     $selectGymMarkerStyle = $('#gym-marker-style')
