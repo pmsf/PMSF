@@ -25,6 +25,7 @@ $libs[] = "search/Search.monocle_pmsf.php";
 $libs[] = "search/Search.monocle_mad.php";
 $libs[] = "search/Search.rocketmap_mad.php";
 $libs[] = "submit/Submit.php";
+$libs[] = "submit/Manual.php";
 $libs[] = "submit/Submit.rdm.php";
 $libs[] = "submit/Submit.monocle_pmsf.php";
 $libs[] = "submit/Submit.monocle_mad.php";
