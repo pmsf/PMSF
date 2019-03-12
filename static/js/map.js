@@ -381,19 +381,19 @@ function initMap() { // eslint-disable-line no-unused-vars
 
     locationMarker = createLocationMarker()
 
-	if (Store.get('startAtUserLocation') && !locationSet) {
-		centerMapOnLocation()
-	}
+    if (Store.get('startAtUserLocation') && !locationSet) {
+        centerMapOnLocation()
+    }
 
-	if (Store.get('startAtLastLocation') && !locationSet) {
-		var position = Store.get('startAtLastLocationPosition')
-		var lat = 'lat' in position ? position.lat : centerLat
-		var lng = 'lng' in position ? position.lng : centerLng
+    if (Store.get('startAtLastLocation') && !locationSet) {
+        var position = Store.get('startAtLastLocationPosition')
+        var lat = 'lat' in position ? position.lat : centerLat
+        var lng = 'lng' in position ? position.lng : centerLng
 
-		var latlng = new L.LatLng(lat, lng)
-		locationMarker.setLatLng(latlng)
-		map.setView(latlng)
-	}
+        var latlng = new L.LatLng(lat, lng)
+        locationMarker.setLatLng(latlng)
+        map.setView(latlng)
+    }
 
     $.getJSON('static/dist/data/searchmarkerstyle.min.json').done(function (data) {
         searchMarkerStyles = data
