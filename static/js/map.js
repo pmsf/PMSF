@@ -2109,26 +2109,44 @@ function setupPortalMarker(item) {
 function setupPoiMarker(item) {
     if (item.status === '1') {
         var circle = {
-            color: '#FFA500',
-            radius: 5,
+            color: '#008000',
+            radius: 10,
             fillOpacity: 1,
-            fillColor: '#FFA500',
-            weight: 1,
+            fillColor: '#FFFFFF',
+            weight: 3,
             pane: 'portals'
         }
     } else if (item.status === '2') {
         circle = {
-            color: '#0000FF',
-            radius: 5,
+            color: '#008000',
+            radius: 10,
             fillOpacity: 1,
-            fillColor: '#0000FF',
+            fillColor: '#008000',
             weight: 1,
             pane: 'portals'
         }
     } else if (item.status === '3') {
         circle = {
+            color: '#FFA500',
+            radius: 10,
+            fillOpacity: 1,
+            fillColor: '#FFA500',
+            weight: 1,
+            pane: 'portals'
+        }
+    } else if (item.status === '4') {
+        circle = {
+            color: '#008000',
+            radius: 10,
+            fillOpacity: 1,
+            fillColor: '#FFA500',
+            weight: 3,
+            pane: 'portals'
+        }
+    } else if (item.status === '5') {
+        circle = {
             color: '#FF0000',
-            radius: 5,
+            radius: 10,
             fillOpacity: 1,
             fillColor: '#FF0000',
             weight: 1,
@@ -2165,6 +2183,17 @@ function poiLabel(item) {
         '<center><h4><div>' + item.description + '</div></h4></center>' +
         '<center><div>Added: ' + updated + '</div></center>' +
         '<center><div>Submitted by: ' + item.submitted_by + '</div></center>'
+    if (item.status === '1') {
+        str += '<center><div>Posible Candidate</div></center>'
+    } else if (item.status === '2') {
+        str += '<center><div>Candidate submitted</div></center>'
+    } else if (item.status === '3') {
+        str += '<center><div>Candidate declined</div></center>'
+    } else if (item.status === '4') {
+        str += '<center><div>Candidate eligible for resubmit</div></center>'
+    } else if (item.status === '5') {
+        str += '<center><div>Not a eligible candidate</div></center>'
+    }
     if (!noDeletePoi) {
         str += '<i class="fa fa-trash-o delete-poi" onclick="deletePoi(event);" data-id="' + item.poi_id + '"></i>'
     }
@@ -3530,7 +3559,7 @@ function markPoiSubmitted(event) { // eslint-disable-line no-unused-vars
     var form = $(event.target).parent().parent()
     var poiId = form.find('.markpoiid').val()
     if (poiId && poiId !== '') {
-        if (confirm(i8ln('I confirm this POI is submitted to OPR'))) {
+        if (confirm(i8ln('I confirm this candidate is submitted to OPR'))) {
             return $.ajax({
                 url: 'submit',
                 type: 'POST',
@@ -3543,7 +3572,7 @@ function markPoiSubmitted(event) { // eslint-disable-line no-unused-vars
                 },
                 error: function error() {
                     // Display error toast
-                    toastr['error'](i8ln('POI id got lost somewhere.'), i8ln('Error marking portal'))
+                    toastr['error'](i8ln('Candidate id got lost somewhere.'), i8ln('Error marking candidate'))
                     toastr.options = toastrOptions
                 },
                 complete: function complete() {
@@ -3560,7 +3589,7 @@ function markPoiDeclined(event) { // eslint-disable-line no-unused-vars
     var form = $(event.target).parent().parent()
     var poiId = form.find('.markpoiid').val()
     if (poiId && poiId !== '') {
-        if (confirm(i8ln('I confirm this POI is declined by OPR'))) {
+        if (confirm(i8ln('I confirm this candidate is declined by OPR'))) {
             return $.ajax({
                 url: 'submit',
                 type: 'POST',
@@ -3573,7 +3602,67 @@ function markPoiDeclined(event) { // eslint-disable-line no-unused-vars
                 },
                 error: function error() {
                     // Display error toast
-                    toastr['error'](i8ln('POI id got lost somewhere.'), i8ln('Error marking portal'))
+                    toastr['error'](i8ln('Candidate id got lost somewhere.'), i8ln('Error marking candidate'))
+                    toastr.options = toastrOptions
+                },
+                complete: function complete() {
+                    lastpois = false
+                    updateMap()
+                    $('.ui-dialog-content').dialog('close')
+                }
+            })
+        }
+    }
+}
+
+function markPoiResubmit(event) { // eslint-disable-line no-unused-vars
+    var form = $(event.target).parent().parent()
+    var poiId = form.find('.markpoiid').val()
+    if (poiId && poiId !== '') {
+        if (confirm(i8ln('I confirm this candidate is declined by OPR but can be resubmitted as candidate'))) {
+            return $.ajax({
+                url: 'submit',
+                type: 'POST',
+                timeout: 300000,
+                dataType: 'json',
+                cache: false,
+                data: {
+                    'action': 'markpoiresubmit',
+                    'poiId': poiId
+                },
+                error: function error() {
+                    // Display error toast
+                    toastr['error'](i8ln('Candidate id got lost somewhere.'), i8ln('Error marking candidate'))
+                    toastr.options = toastrOptions
+                },
+                complete: function complete() {
+                    lastpois = false
+                    updateMap()
+                    $('.ui-dialog-content').dialog('close')
+                }
+            })
+        }
+    }
+}
+
+function markNotCandidate(event) { // eslint-disable-line no-unused-vars
+    var form = $(event.target).parent().parent()
+    var poiId = form.find('.markpoiid').val()
+    if (poiId && poiId !== '') {
+        if (confirm(i8ln('I confirm this is not a eligible candidate to submit to OPR'))) {
+            return $.ajax({
+                url: 'submit',
+                type: 'POST',
+                timeout: 300000,
+                dataType: 'json',
+                cache: false,
+                data: {
+                    'action': 'marknotcandidate',
+                    'poiId': poiId
+                },
+                error: function error() {
+                    // Display error toast
+                    toastr['error'](i8ln('Candidate id got lost somewhere.'), i8ln('Error marking candidate'))
                     toastr.options = toastrOptions
                 },
                 complete: function complete() {
