@@ -2179,27 +2179,36 @@ function portalLabel(item) {
 
 function poiLabel(item) {
     var updated = formatDate(new Date(item.updated * 1000))
-    var str = '<center><h3><div>' + item.name + '</div></h3></center>' +
-        '<center><h4><div>' + item.description + '</div></h4></center>' +
-        '<center><div>Added: ' + updated + '</div></center>' +
-        '<center><div>Submitted by: ' + item.submitted_by + '</div></center>'
+    var str = ''
+    var dot = ''
     if (item.status === '1') {
-        str += '<center><div>Posible Candidate</div></center>'
+        dot = 'dot possible-candidate'
+        str += '<center><div style="font-weight:900;margin-bottom:5px;">' + i8ln('Possible Candidate') + '</div></center>'
     } else if (item.status === '2') {
-        str += '<center><div>Candidate submitted</div></center>'
+        dot = 'dot candidate-submitted'
+        str += '<center><div style="font-weight:900;margin-bottom:5px;">' + i8ln('Candidate submitted') + '</div></center>'
     } else if (item.status === '3') {
-        str += '<center><div>Candidate declined</div></center>'
+        dot = 'dot candidate-declined'
+        str += '<center><div style="font-weight:900;margin-bottom:5px;">' + i8ln('Candidate declined') + '</div></center>'
     } else if (item.status === '4') {
-        str += '<center><div>Candidate eligible for resubmit</div></center>'
+        dot = 'dot candidate-resubmit'
+        str += '<center><div style="font-weight:900;margin-bottom:5px;">' + i8ln('Candidate eligible for resubmit') + '</div></center>'
     } else if (item.status === '5') {
-        str += '<center><div>Not a eligible candidate</div></center>'
+        dot = 'dot candidate-not-eligible'
+        str += '<center><div style="font-weight:900;margin-bottom:5px;">' + i8ln('Not a eligible candidate') + '</div></center>'
     }
+    str += '<center><div><b>' + item.name + '</b></div>' +
+        '<div>' + item.description + '</div>' +
+        '<span class="' + dot + '"></span>' +
+        '<div><b>' + i8ln('Submitted at') + ':</b> ' + updated + '</div>' +
+        '<div><b>' + i8ln('Submitted by') + ':</b> ' + item.submitted_by + '</div></center>'
     if (!noDeletePoi) {
         str += '<i class="fa fa-trash-o delete-poi" onclick="deletePoi(event);" data-id="' + item.poi_id + '"></i>'
     }
     if (!noMarkPoi) {
-        str += '<center><div>Mark this poi <i class="fa fa-refresh convert-poi" style="margin-top: 2px; margin-left: 5px; vertical-align: middle; font-size: 1.5em;" onclick="openMarkPoiModal(event);" data-id="' + item.poi_id + '"></i></div></center>'
+        str += '<center><div><button onclick="openMarkPoiModal(event);" data-id="' + item.poi_id + '" class="convertpoi"><i class="fa fa-refresh convert-poi"></i> ' + i8ln('Mark POI') + '</button></div></center>'
     }
+    str += '<center><a href="javascript:void(0);" class="gym-navigate" onclick="javascript:openMapDirections(' + item.lat + ',' + item.lon + ');" title="' + i8ln('View in Maps') + '">' + item.lat.toFixed(5) + ' , ' + item.lon.toFixed(5) + '</a> - <a href="./?lat=' + item.lat + '&lon=' + item.lon + '&zoom=16">Share link</a></center>'
     return str
 }
 
