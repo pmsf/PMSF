@@ -1452,11 +1452,19 @@ if ( $blockIframe ) {
              <div class="button-container">
                 <button type="button" onclick="markPoiSubmitted(event);" class="markpoiid"><i
                         class="fa fa-refresh"
-                        style="margin-right:10px; vertical-align: middle; font-size: 1.5em;"></i><?php echo i8ln( 'Mark as submitted' ); ?>
+                        style="margin-right:10px; vertical-align: middle; font-size: 1.5em;"></i><?php echo i8ln( 'Submitted' ); ?>
 		</button>
                 <button type="button" onclick="markPoiDeclined(event);" class="markpoiid"><i
                         class="fa fa-times"
-                        style="margin-right:10px; vertical-align: middle; font-size: 1.5em;"></i><?php echo i8ln( 'Mark as declined' ); ?>
+                        style="margin-right:10px; vertical-align: middle; font-size: 1.5em;"></i><?php echo i8ln( 'Declined' ); ?>
+		</button>
+                <button type="button" onclick="markPoiResubmit(event);" class="markpoiid"><i
+                        class="fa fa-times"
+                        style="margin-right:10px; vertical-align: middle; font-size: 1.5em;"></i><?php echo i8ln( 'Resubmit' ); ?>
+		</button>
+                <button type="button" onclick="markNotCandidate(event);" class="markpoiid"><i
+                        class="fa fa-times"
+                        style="margin-right:10px; vertical-align: middle; font-size: 1.5em;"></i><?php echo i8ln( 'Not a candidate' ); ?>
 		</button>
             </div>
         </div>
@@ -1822,16 +1830,16 @@ if ( $blockIframe ) {
                     ?>
                     <div id="tab-poi">
                         <input type="text" name="poi-name" class="poi-name"
-                               placeholder="<?php echo i8ln( 'Enter POI Name' ); ?>" data-type="name"
+                               placeholder="<?php echo i8ln( 'Enter candidate Name' ); ?>" data-type="name"
 			       class="search-input">
                         <input type="text" name="poi-description" class="poi-description"
-                               placeholder="<?php echo i8ln( 'Enter description' ); ?>" data-type="description"
+                               placeholder="<?php echo i8ln( 'Enter candidate description' ); ?>" data-type="description"
 			       class="search-input">
                         <div class="button-container">
-			<h6><center><?php echo i8ln( 'If you submit a POI you agree that your discord username will be shown in the marker label' ); ?></center></h6>
+			<h6><center><?php echo i8ln( 'If you submit a POI candidate you agree that your discord username will be shown in the marker label' ); ?></center></h6>
                             <button type="button" onclick="submitPoi(event);" class="submitting-poi"><i
                                     class="fa fa-comments"
-                                    style="margin-right:10px;"></i><?php echo i8ln( 'Submit POI' ); ?>
+                                    style="margin-right:10px;"></i><?php echo i8ln( 'Submit POI candidate' ); ?>
                             </button>
                         </div>
                     </div>
