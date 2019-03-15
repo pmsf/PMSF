@@ -21,7 +21,7 @@ class Monocle_PMSF extends Search
             if( $p > 493){
                 break;
             }
-            if(strpos(strtolower(i8ln($preward['name']_), strtolower($term)) !== false){
+            if(strpos(strtolower(i8ln($preward['name'])), strtolower($term)) !== false){
                 $presids[] = $p;
             }
         }
