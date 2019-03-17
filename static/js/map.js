@@ -378,6 +378,152 @@ function initMap() { // eslint-disable-line no-unused-vars
             })
         }
     })
+    $selectIconSize = $('#pokemon-icon-size')
+
+    $selectIconSize.select2({
+        placeholder: 'Select Icon Size',
+        minimumResultsForSearch: Infinity
+    })
+
+    $selectIconSize.on('change', function () {
+        Store.set('iconSizeModifier', this.value)
+        redrawPokemon(mapData.pokemons)
+        redrawPokemon(mapData.lurePokemons)
+    })
+
+    $selectIconNotifySizeModifier = $('#pokemon-icon-notify-size')
+
+    $selectIconNotifySizeModifier.select2({
+        placeholder: 'Increase Size Of Notified',
+        minimumResultsForSearch: Infinity
+    })
+
+    $selectIconNotifySizeModifier.on('change', function () {
+        Store.set('iconNotifySizeModifier', this.value)
+        redrawPokemon(mapData.pokemons)
+        redrawPokemon(mapData.lurePokemons)
+    })
+
+    $selectTeamGymsOnly = $('#team-gyms-only-switch')
+
+    $selectTeamGymsOnly.select2({
+        placeholder: 'Only Show Gyms For Team',
+        minimumResultsForSearch: Infinity
+    })
+
+    $selectTeamGymsOnly.on('change', function () {
+        Store.set('showTeamGymsOnly', this.value)
+        lastgyms = false
+        updateMap()
+    })
+
+    $selectLastUpdateGymsOnly = $('#last-update-gyms-switch')
+
+    $selectLastUpdateGymsOnly.select2({
+        placeholder: 'Only Show Gyms Last Updated',
+        minimumResultsForSearch: Infinity
+    })
+
+    $selectLastUpdateGymsOnly.on('change', function () {
+        Store.set('showLastUpdatedGymsOnly', this.value)
+        lastgyms = false
+        updateMap()
+    })
+
+    $selectMinGymLevel = $('#min-level-gyms-filter-switch')
+
+    $selectMinGymLevel.select2({
+        placeholder: 'Minimum Gym Level',
+        minimumResultsForSearch: Infinity
+    })
+
+    $selectMinGymLevel.on('change', function () {
+        Store.set('minGymLevel', this.value)
+        lastgyms = false
+        updateMap()
+    })
+
+    $selectMaxGymLevel = $('#max-level-gyms-filter-switch')
+
+    $selectMaxGymLevel.select2({
+        placeholder: 'Maximum Gym Level',
+        minimumResultsForSearch: Infinity
+    })
+
+    $selectMaxGymLevel.on('change', function () {
+        Store.set('maxGymLevel', this.value)
+        lastgyms = false
+        updateMap()
+    })
+
+    $selectMinRaidLevel = $('#min-level-raids-filter-switch')
+
+    $selectMinRaidLevel.select2({
+        placeholder: 'Minimum Raid Level',
+        minimumResultsForSearch: Infinity
+    })
+
+    $selectMinRaidLevel.on('change', function () {
+        Store.set('minRaidLevel', this.value)
+        lastgyms = false
+        updateMap()
+    })
+
+    $selectMaxRaidLevel = $('#max-level-raids-filter-switch')
+
+    $selectMaxRaidLevel.select2({
+        placeholder: 'Maximum Raid Level',
+        minimumResultsForSearch: Infinity
+    })
+
+    $selectMaxRaidLevel.on('change', function () {
+        Store.set('maxRaidLevel', this.value)
+        lastgyms = false
+        updateMap()
+    })
+
+    $selectLocationIconMarker = $('#locationmarker-style')
+
+    locationMarker = createLocationMarker()
+
+    if (Store.get('startAtUserLocation') && !locationSet) {
+        centerMapOnLocation()
+    }
+
+    if (Store.get('startAtLastLocation') && !locationSet) {
+        var position = Store.get('startAtLastLocationPosition')
+        var lat = 'lat' in position ? position.lat : centerLat
+        var lng = 'lng' in position ? position.lng : centerLng
+
+        var latlng = new L.LatLng(lat, lng)
+        locationMarker.setLatLng(latlng)
+        map.setView(latlng)
+    }
+
+    $.getJSON('static/dist/data/searchmarkerstyle.min.json').done(function (data) {
+        searchMarkerStyles = data
+        var searchMarkerStyleList = []
+
+        $.each(data, function (key, value) {
+            searchMarkerStyleList.push({
+                id: key,
+                text: value.name
+            })
+        })
+
+        $selectLocationIconMarker.select2({
+            placeholder: 'Select Location Marker',
+            data: searchMarkerStyleList,
+            minimumResultsForSearch: Infinity
+        })
+
+        $selectLocationIconMarker.on('change', function (e) {
+            Store.set('locationMarkerStyle', this.value)
+            updateLocationMarker(this.value)
+        })
+
+        $selectLocationIconMarker.val(Store.get('locationMarkerStyle')).trigger('change')
+    })
 }
 
 function toggleFullscreenMap() { // eslint-disable-line no-unused-vars
@@ -5677,32 +5823,6 @@ $(function () {
 
     $selectDirectionProvider.val(Store.get('directionProvider')).trigger('change')
 
-    $selectIconSize = $('#pokemon-icon-size')
-
-    $selectIconSize.select2({
-        placeholder: 'Select Icon Size',
-        minimumResultsForSearch: Infinity
-    })
-
-    $selectIconSize.on('change', function () {
-        Store.set('iconSizeModifier', this.value)
-        redrawPokemon(mapData.pokemons)
-        redrawPokemon(mapData.lurePokemons)
-    })
-
-    $selectIconNotifySizeModifier = $('#pokemon-icon-notify-size')
-
-    $selectIconNotifySizeModifier.select2({
-        placeholder: 'Increase Size Of Notified',
-        minimumResultsForSearch: Infinity
-    })
-
-    $selectIconNotifySizeModifier.on('change', function () {
-        Store.set('iconNotifySizeModifier', this.value)
-        redrawPokemon(mapData.pokemons)
-        redrawPokemon(mapData.lurePokemons)
-    })
-
     $switchOpenGymsOnly = $('#open-gyms-only-switch')
 
     $switchOpenGymsOnly.on('change', function () {
@@ -5711,88 +5831,10 @@ $(function () {
         updateMap()
     })
 
-    $selectTeamGymsOnly = $('#team-gyms-only-switch')
-
-    $selectTeamGymsOnly.select2({
-        placeholder: 'Only Show Gyms For Team',
-        minimumResultsForSearch: Infinity
-    })
-
-    $selectTeamGymsOnly.on('change', function () {
-        Store.set('showTeamGymsOnly', this.value)
-        lastgyms = false
-        updateMap()
-    })
-
-    $selectLastUpdateGymsOnly = $('#last-update-gyms-switch')
-
-    $selectLastUpdateGymsOnly.select2({
-        placeholder: 'Only Show Gyms Last Updated',
-        minimumResultsForSearch: Infinity
-    })
-
-    $selectLastUpdateGymsOnly.on('change', function () {
-        Store.set('showLastUpdatedGymsOnly', this.value)
-        lastgyms = false
-        updateMap()
-    })
-
-    $selectMinGymLevel = $('#min-level-gyms-filter-switch')
-
-    $selectMinGymLevel.select2({
-        placeholder: 'Minimum Gym Level',
-        minimumResultsForSearch: Infinity
-    })
-
-    $selectMinGymLevel.on('change', function () {
-        Store.set('minGymLevel', this.value)
-        lastgyms = false
-        updateMap()
-    })
-
-    $selectMaxGymLevel = $('#max-level-gyms-filter-switch')
-
-    $selectMaxGymLevel.select2({
-        placeholder: 'Maximum Gym Level',
-        minimumResultsForSearch: Infinity
-    })
-
-    $selectMaxGymLevel.on('change', function () {
-        Store.set('maxGymLevel', this.value)
-        lastgyms = false
-        updateMap()
-    })
-
     $switchActiveRaids = $('#active-raids-switch')
 
     $switchActiveRaids.on('change', function () {
         Store.set('activeRaids', this.checked)
-        lastgyms = false
-        updateMap()
-    })
-
-    $selectMinRaidLevel = $('#min-level-raids-filter-switch')
-
-    $selectMinRaidLevel.select2({
-        placeholder: 'Minimum Raid Level',
-        minimumResultsForSearch: Infinity
-    })
-
-    $selectMinRaidLevel.on('change', function () {
-        Store.set('minRaidLevel', this.value)
-        lastgyms = false
-        updateMap()
-    })
-
-    $selectMaxRaidLevel = $('#max-level-raids-filter-switch')
-
-    $selectMaxRaidLevel.select2({
-        placeholder: 'Maximum Raid Level',
-        minimumResultsForSearch: Infinity
-    })
-
-    $selectMaxRaidLevel.on('change', function () {
-        Store.set('maxRaidLevel', this.value)
         lastgyms = false
         updateMap()
     })
@@ -5845,49 +5887,6 @@ $(function () {
             mapData[dType] = {}
         })
         updateMap()
-    })
-
-    $selectLocationIconMarker = $('#locationmarker-style')
-
-    $.getJSON('static/dist/data/searchmarkerstyle.min.json').done(function (data) {
-        searchMarkerStyles = data
-        var searchMarkerStyleList = []
-
-        $.each(data, function (key, value) {
-            searchMarkerStyleList.push({
-                id: key,
-                text: value.name
-            })
-        })
-
-        locationMarker = createLocationMarker()
-
-        if (Store.get('startAtUserLocation') && !locationSet) {
-            centerMapOnLocation()
-        }
-
-        if (Store.get('startAtLastLocation') && !locationSet) {
-            var position = Store.get('startAtLastLocationPosition')
-            var lat = 'lat' in position ? position.lat : centerLat
-            var lng = 'lng' in position ? position.lng : centerLng
-
-            var latlng = new L.LatLng(lat, lng)
-            locationMarker.setLatLng(latlng)
-            map.setView(latlng)
-        }
-
-        $selectLocationIconMarker.select2({
-            placeholder: 'Select Location Marker',
-            data: searchMarkerStyleList,
-            minimumResultsForSearch: Infinity
-        })
-
-        $selectLocationIconMarker.on('change', function (e) {
-            Store.set('locationMarkerStyle', this.value)
-            updateLocationMarker(this.value)
-        })
-
-        $selectLocationIconMarker.val(Store.get('locationMarkerStyle')).trigger('change')
     })
 
     $selectGymMarkerStyle = $('#gym-marker-style')
