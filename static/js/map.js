@@ -2097,7 +2097,7 @@ function nestLabel(item) {
         }
         var pokemonAvg = ''
         if (item['pokemon_avg'] > 0) {
-            pokemonAvg = '<div>' + i8ln('Nest Pokemon per hour') + ': ' + item['pokemon_avg'] + '</div>'
+            pokemonAvg = '<div>' + i8ln('Nest Pokemon per hour') + ': ' + item['pokemon_avg'].toFixed(2) + '</div>'
         }
         str += '<center>' +
             '<div>' +

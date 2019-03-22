@@ -72,6 +72,7 @@ public function get_nests($swLat, $swLng, $neLat, $neLng, $tstamp = 0, $oSwLat =
             $nest["lat"] = floatval($nest["lat"]);
             $nest["lon"] = floatval($nest["lon"]);
             $nest["type"] = intval($nest["type"]);
+            $nest["pokemon_avg"] = floatval($nest["pokemon_avg"]);
             if($nest['pokemon_id'] > 0 ){
                 $nest["pokemon_name"] = i8ln($this->data[$nest["pokemon_id"]]['name']);
                 $types = $this->data[$nest["pokemon_id"]]["types"];
