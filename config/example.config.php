@@ -442,8 +442,9 @@ $enableDebug = false;
 //-----------------------------------------------------
 // DATABASE CONFIG
 //-----------------------------------------------------
-$map = "rdm";                                                     // {monocle}/{rdm}
-$fork = "default";                                                  // {default/alternate/mad}/{default/beta}
+$map = "rdm";                                                       // {monocle}/{rdm}/{rocketmap}
+$fork = "default";                                                  // {default/alternate/mad}/{default/beta}/{mad}
+$queryInterval = '5000';                                            // Interval between raw_data requests. Try to lower to increase performance.
 
 $db = new Medoo([// required
     'database_type' => 'mysql',                                    
