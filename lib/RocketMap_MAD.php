@@ -36,6 +36,58 @@ class RocketMap_MAD extends RocketMap
         return $data;
     }
 
+    public function get_gyms($swLat, $swLng, $neLat, $neLng, $exEligible = false, $tstamp = 0, $oSwLat = 0, $oSwLng = 0, $oNeLat = 0, $oNeLng = 0)
+    {
+        $conds = array();
+        $params = array();
+
+        $conds[] = "latitude > :swLat AND longitude > :swLng AND latitude < :neLat AND longitude < :neLng";
+        $params[':swLat'] = $swLat;
+        $params[':swLng'] = $swLng;
+        $params[':neLat'] = $neLat;
+        $params[':neLng'] = $neLng;
+
+        if ($oSwLat != 0) {
+            $conds[] = "NOT (latitude > :oswLat AND longitude > :oswLng AND latitude < :oneLat AND longitude < :oneLng)";
+            $params[':oswLat'] = $oSwLat;
+            $params[':oswLng'] = $oSwLng;
+            $params[':oneLat'] = $oNeLat;
+            $params[':oneLng'] = $oNeLng;
+        }
+        if ($tstamp > 0) {
+            $date = new \DateTime();
+            $date->setTimezone(new \DateTimeZone('UTC'));
+            $date->setTimestamp($tstamp);
+            $conds[] = "gym.last_scanned > :lastUpdated";
+            $params[':lastUpdated'] = date_format($date, 'Y-m-d H:i:s');
+        }
+        if ($exEligible === "true") {
+            $conds[] = "(is_ex_raid_eligible = 1)";
+        }
+
+        return $this->query_gyms($conds, $params);
+    }
+
+    public function get_gym($gymId)
+    {
+        $conds = array();
+        $params = array();
+
+        $conds[] = "gym.gym_id = :gymId";
+        $params[':gymId'] = $gymId;
+
+        $gyms = $this->query_gyms($conds, $params);
+        $gym = $gyms[0];
+
+        $select = "gymmember.gym_id, pokemon_id, cp AS pokemon_cp, move_1, move_2, iv_attack, iv_defense, iv_stamina";
+        global $noTrainerName;
+        if (!$noTrainerName) {
+            $select .= ", trainer_name, level AS trainer_level";
+        }
+        $gym["pokemon"] = $this->query_gym_defenders($gymId, $select);
+        return $gym;
+    }
+
     public function query_gyms($conds, $params)
     {
         global $db;
@@ -51,6 +103,7 @@ class RocketMap_MAD extends RocketMap
         team_id, 
         name,
         url,
+        is_ex_raid_eligible AS park,
         level AS raid_level, 
         pokemon_id AS raid_pokemon_id, 
         cp AS raid_pokemon_cp, 
@@ -94,6 +147,7 @@ class RocketMap_MAD extends RocketMap
             $gym["raid_end"] = $gym["raid_end"] * 1000;
             $gym["slots_available"] = intval($gym["slots_available"]);
             $gym["url"] = ! empty($gym["url"]) ? str_replace("http://", "https://images.weserv.nl/?url=", $gym["url"]) : null;
+            $gym["park"] = intval($gym["park"]);
             $data[] = $gym;
 
             unset($gyms[$i]);

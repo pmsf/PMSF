@@ -339,7 +339,7 @@ class Monocle_MAD extends Monocle
             $params[':lastUpdated'] = $tstamp;
         }
         if ($exEligible === "true") {
-            $conds[] = "(park IS NOT NULL OR sponsor > 0)";
+            $conds[] = "(is_ex_raid_eligible = 1)";
         }
 
         return $this->query_gyms($conds, $params);
@@ -357,7 +357,7 @@ class Monocle_MAD extends Monocle
         f.name,
         f.url,
         f.sponsor,
-        f.park,
+        f.is_ex_raid_eligible AS park,
         fs.team AS team_id,
         fs.guard_pokemon_id,
         fs.guard_pokemon_form,
@@ -405,6 +405,7 @@ class Monocle_MAD extends Monocle
             $gym["raid_start"] = $gym["raid_start"] * 1000;
             $gym["raid_end"] = $gym["raid_end"] * 1000;
             $gym["url"] = ! empty($gym["url"]) ? str_replace("http://", "https://images.weserv.nl/?url=", $gym["url"]) : null;
+            $gym["park"] = intval($gym["park"]);
             $data[] = $gym;
 
             unset($gyms[$i]);
@@ -419,9 +420,9 @@ class Monocle_MAD extends Monocle
 
 
         $query = "SELECT :select
-      FROM gym_defenders gd
-      LEFT JOIN forts f ON gd.fort_id = f.id
-      WHERE f.external_id = :gymId";
+        FROM gym_defenders gd
+        LEFT JOIN forts f ON gd.fort_id = f.id
+        WHERE f.external_id = :gymId";
 
         $query = str_replace(":select", $select, $query);
         $gym_defenders = $db->query($query, [":gymId" => $gymId])->fetchAll(\PDO::FETCH_ASSOC);
