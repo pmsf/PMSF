@@ -357,7 +357,7 @@ class Monocle_MAD extends Monocle
         f.name,
         f.url,
         f.sponsor,
-        f.is_ex_raid_eligible AS park,
+        fs.is_ex_raid_eligible AS park,
         fs.team AS team_id,
         fs.guard_pokemon_id,
         fs.guard_pokemon_form,
