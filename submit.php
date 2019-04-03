@@ -66,6 +66,7 @@ if (strtolower($map) === "rdm") {
         $submit = new \Submit\Monocle_MAD();
     }
 }
+$submitManual = new \Submit\Manual();
 
 if ( $action === "raid" ) {
     $submit->submit_raid($pokemonId, $gymId, $eggTime, $monTime, $loggedUser);
@@ -104,40 +105,46 @@ if ( $action === "convertportalgym" ) {
     $submit->convert_portal_gym($portalId, $loggedUser);
 }
 if ( $action === "markportal" ) {
-    $submit->mark_portal($portalId, $loggedUser);
+    $submitManual->mark_portal($portalId, $loggedUser);
 }
 if ( $action === "delete-portal" ) {
-    $submit->delete_portal($portalId, $loggedUser);
+    $submitManual->delete_portal($portalId, $loggedUser);
 }
 if ( $action === "nest" ) {
-    $submit->modify_nest($nestId, $pokemonId, $loggedUser);
+    $submitManual->modify_nest($nestId, $pokemonId, $loggedUser);
 }
 if ( $action === "new-nest" ) {
-    $submit->submit_nest($lat, $lon, $pokemonId, $loggedUser);
+    $submitManual->submit_nest($lat, $lon, $pokemonId, $loggedUser);
 }
 if ( $action === "delete-nest" ) {
-    $submit->delete_nest($nestId);
+    $submitManual->delete_nest($nestId);
 }
 if ( $action === "community-add" ) {
-    $submit->submit_community($lat, $lon, $communityName, $communityDescription, $communityInvite, $loggedUser);
+    $submitManual->submit_community($lat, $lon, $communityName, $communityDescription, $communityInvite, $loggedUser);
 }
 if ( $action === "editcommunity" ) {
-    $submit->modify_community($communityId, $communityName, $communityDescription, $communityInvite, $loggedUser);
+    $submitManual->modify_community($communityId, $communityName, $communityDescription, $communityInvite, $loggedUser);
 }
 if ( $action === "delete-community" ) {
-    $submit->delete_community($communityId, $loggedUser);
+    $submitManual->delete_community($communityId, $loggedUser);
 }
 if ( $action === "poi-add" ) {
-    $submit->submit_poi($lat, $lon, $poiName, $poiDescription, $loggedUser);
+    $submitManual->submit_poi($lat, $lon, $poiName, $poiDescription, $loggedUser);
 }
 if ( $action === "delete-poi" ) {
-    $submit->delete_poi($poiId, $loggedUser);
+    $submitManual->delete_poi($poiId, $loggedUser);
 }
 if ( $action === "markpoisubmitted" ) {
-    $submit->mark_poi_submitted($poiId, $loggedUser);
+    $submitManual->mark_poi_submitted($poiId, $loggedUser);
 }
 if ( $action === "markpoideclined" ) {
-    $submit->mark_poi_declined($poiId, $loggedUser);
+    $submitManual->mark_poi_declined($poiId, $loggedUser);
+}
+if ( $action === "markpoiresubmit" ) {
+    $submitManual->mark_poi_resubmit($poiId, $loggedUser);
+}
+if ( $action === "marknotcandidate" ) {
+    $submitManual->mark_not_candidate($poiId, $loggedUser);
 }
 $jaysson = json_encode($d);
 echo $jaysson;

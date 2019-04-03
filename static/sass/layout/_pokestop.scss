@@ -6,3 +6,60 @@
   background: #ffffff url('/static/images/stars.svg');
   background-size: 100%;
 }
+
+.pokestop-name {
+  font-weight: 900;
+  color: rgb(54,198,255);
+  padding: 1px;
+}
+.pokestop-quest-name {
+  font-weight: 900;
+  color: #d26600;
+  padding: 1px;
+}
+.pokestop-lure-name {
+  font-weight: 900;
+  color: #db03d1;
+  padding: 1px;
+}
+
+.pokestop-image {
+  width: 80px;
+  height: 80px;
+  background-size: cover;
+  border-radius: 50px;
+  margin: 6px;
+  border: 3px solid rgb(54,198,255);
+}
+.pokestop-quest-image {
+  width: 80px;
+  height: 80px;
+  background-size: cover;
+  border-radius: 50px;
+  margin: 6px;
+  border: 3px solid #d26600;
+}
+.pokestop-lure-image {
+  width: 80px;
+  height: 80px;
+  background-size: cover;
+  border-radius: 50px;
+  margin: 6px;
+  border: 3px solid #db03d1;
+}
+
+.pokestop-navigate {
+  color: rgb(93,109,126);
+  font-size: 11px;
+  font-weight: 500;
+
+    &.pokestop-navigate:before {
+      content: '\f018';
+      display: inline-block;
+      font-family: FontAwesome;
+      margin: 5px 3px 0px 0px;
+      height: 16px;
+      width: 16px;
+      -webkit-font-smoothing: antialiased;
+    }
+  }

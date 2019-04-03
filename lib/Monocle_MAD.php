@@ -11,7 +11,7 @@ class Monocle_MAD extends Monocle
         $params = array();
         $float = $db->info()['driver'] == 'pgsql' ? "::float" : "";
 
-        $select = "pokemon_id, expire_timestamp AS disappear_time, encounter_id, lat AS latitude, lon AS longitude, gender, form, weight, weather_boosted_condition";
+        $select = "pokemon_id, expire_timestamp AS disappear_time, encounter_id, lat AS latitude, lon AS longitude, gender, form, weight, weather_boosted_condition, costume";
         global $noHighLevelData;
         if (!$noHighLevelData) {
             $select .= ", atk_iv AS individual_attack, def_iv AS individual_defense, sta_iv AS individual_stamina, move_1, move_2, cp, level";
@@ -84,7 +84,7 @@ class Monocle_MAD extends Monocle
         $params = array();
         $float = $db->info()['driver'] == 'pgsql' ? "::float" : "";
 
-        $select = "pokemon_id, expire_timestamp AS disappear_time, encounter_id, lat AS latitude, lon AS longitude, gender, form, weight, weather_boosted_condition";
+        $select = "pokemon_id, expire_timestamp AS disappear_time, encounter_id, lat AS latitude, lon AS longitude, gender, form, weight, weather_boosted_condition, costume";
 
         global $noHighLevelData;
         if (!$noHighLevelData) {
@@ -157,6 +157,11 @@ class Monocle_MAD extends Monocle
             $params[':oswLng'] = $oSwLng;
             $params[':oneLat'] = $oNeLat;
             $params[':oneLng'] = $oNeLng;
+        }
+
+        if (!empty($lures) && $lures === 'true') {
+            $conds[] = "expires > :time";
+            $params[':time'] = time();
         }
 
         if ($tstamp > 0) {
@@ -251,9 +256,19 @@ class Monocle_MAD extends Monocle
         $i = 0;
 
         foreach ($pokestops as $pokestop) {
+            $item_pid = $pokestop["quest_item_id"];
+            if ($item_pid == "0") {
+                $item_pid = null;
+                $pokestop["quest_item_id"] = null;
+            }
+			$mon_pid = $pokestop["quest_pokemon_id"];
+            if ($mon_pid == "0") {
+                $mon_pid = null;
+                $pokestop["quest_pokemon_id"] = null;
+            }
             $pokestop["latitude"] = floatval($pokestop["latitude"]);
             $pokestop["longitude"] = floatval($pokestop["longitude"]);
-            $pokestop["url"] = str_replace("http://", "https://images.weserv.nl/?url=", $pokestop["url"]);
+            $pokestop["url"] = ! empty($pokestop["url"]) ? str_replace("http://", "https://images.weserv.nl/?url=", $pokestop["url"]) : null;
             $pokestop["quest_type"] = intval($pokestop["quest_type"]);
             $pokestop["quest_condition_type"] = intval($pokestop["quest_condition_type"]);
             $pokestop["quest_reward_type"] = intval($pokestop["quest_reward_type"]);
@@ -263,6 +278,9 @@ class Monocle_MAD extends Monocle
             $pokestop["quest_item_id"] = intval($pokestop["quest_item_id"]);
             $pokestop["quest_reward_amount"] = intval($pokestop["quest_reward_amount"]);
             $pokestop["quest_dust_amount"] = intval($pokestop["quest_dust_amount"]);
+            $pokestop["lure_expiration"] = $pokestop["lure_expiration"] * 1000;
+            $pokestop["quest_item_name"] = empty($item_pid) ? null : i8ln($this->items[$item_pid]["name"]);
+            $pokestop["quest_pokemon_name"] = empty($mon_pid) ? null : i8ln($this->data[$mon_pid]["name"]);
             if ($noTrainerName === true) {
                 // trainer names hidden, so don't show trainer who lured
                 unset($pokestop["lure_user"]);
@@ -321,7 +339,7 @@ class Monocle_MAD extends Monocle
             $params[':lastUpdated'] = $tstamp;
         }
         if ($exEligible === "true") {
-            $conds[] = "(park IS NOT NULL OR sponsor > 0)";
+            $conds[] = "(is_ex_raid_eligible = 1)";
         }
 
         return $this->query_gyms($conds, $params);
@@ -339,7 +357,7 @@ class Monocle_MAD extends Monocle
         f.name,
         f.url,
         f.sponsor,
-        f.park,
+        fs.is_ex_raid_eligible AS park,
         fs.team AS team_id,
         fs.guard_pokemon_id,
         fs.guard_pokemon_form,
@@ -386,7 +404,8 @@ class Monocle_MAD extends Monocle
             $gym["last_scanned"] = $gym["last_scanned"] * 1000;
             $gym["raid_start"] = $gym["raid_start"] * 1000;
             $gym["raid_end"] = $gym["raid_end"] * 1000;
-            $gym["url"] = str_replace("http://", "https://images.weserv.nl/?url=", $gym["url"]);
+            $gym["url"] = ! empty($gym["url"]) ? str_replace("http://", "https://images.weserv.nl/?url=", $gym["url"]) : null;
+            $gym["park"] = intval($gym["park"]);
             $data[] = $gym;
 
             unset($gyms[$i]);
@@ -401,9 +420,9 @@ class Monocle_MAD extends Monocle
 
 
         $query = "SELECT :select
-      FROM gym_defenders gd
-      LEFT JOIN forts f ON gd.fort_id = f.id
-      WHERE f.external_id = :gymId";
+        FROM gym_defenders gd
+        LEFT JOIN forts f ON gd.fort_id = f.id
+        WHERE f.external_id = :gymId";
 
         $query = str_replace(":select", $select, $query);
         $gym_defenders = $db->query($query, [":gymId" => $gymId])->fetchAll(\PDO::FETCH_ASSOC);

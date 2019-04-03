@@ -184,6 +184,27 @@ if ( $blockIframe ) {
             <!-- End Piwik Code -->';
     }
     ?>
+    <!-- Cookie Disclamer -->
+    <link rel="stylesheet" type="text/css" href="//cdnjs.cloudflare.com/ajax/libs/cookieconsent2/3.1.0/cookieconsent.min.css" />
+    <script src="//cdnjs.cloudflare.com/ajax/libs/cookieconsent2/3.1.0/cookieconsent.min.js"></script>
+    <?php
+    if ( ! $noCookie ) {
+        echo '<script>
+            window.addEventListener("load", function(){
+                window.cookieconsent.initialise({
+                "palette": {
+                    "popup": {
+                    "background": "#3b3b3b"
+                    },
+                    "button": {
+                    "background": "#d6d6d6"
+                    }
+                }
+            })});
+        </script>';
+        }
+    ?>
+    
     <script>
         var token = '<?php echo ( ! empty( $_SESSION['token'] ) ) ? $_SESSION['token'] : ""; ?>';
     </script>
@@ -310,9 +331,22 @@ if ( $blockIframe ) {
                     </div>
                 </div>';
                 } ?>
+                <?php
+                if ( ! $noNestPolygon && ! $noNests ) {
+                    echo '<div class="form-control switch-container">
+                    <h3>' . i8ln( 'Nest Polygon' ) . '</h3>
+                    <div class="onoffswitch">
+                        <input id="nest-polygon-switch" type="checkbox" name="nest-polygon-switch" class="onoffswitch-checkbox">
+                        <label class="onoffswitch-label" for="nest-polygon-switch">
+                            <span class="switch-label" data-on="On" data-off="Off"></span>
+                            <span class="switch-handle"></span>
+                        </label>
+                    </div>
+                </div>';
+                } ?>
                     <div id="pokemon-filter-wrapper" style="display:none">
                         <?php
-                        if ( ! $noTinyRat ) {
+                        if ( ! $noTinyRat && ! $noTinyRatSetting ) {
                             ?>
                             <div class="form-control switch-container">
                                 <h3><?php echo i8ln( 'Tiny Rats' ) ?></h3>
@@ -328,7 +362,7 @@ if ( $blockIframe ) {
                             <?php
                         } ?>
                         <?php
-                        if ( ! $noBigKarp ) {
+                        if ( ! $noBigKarp && ! $noBigKarpSetting  ) {
                             ?>
                             <div class="form-control switch-container">
                                 <h3><?php echo i8ln( 'Big Karp' ) ?></h3>
@@ -586,7 +620,20 @@ if ( $blockIframe ) {
                     </div>
                 </div>';
                     } ?>
-                    <div id="raids-filter-wrapper" style="display:none">
+					<div id="raids-filter-wrapper" style="display:none">
+                    <?php
+                    if ( ! $noRaidTimer && ! $noRaids ) {
+                        echo '<div class="form-control switch-container">
+                        <h3>' . i8ln( 'Raids Timer' ) . '</h3>
+                        <div class="onoffswitch">
+                        <input id="raid-timer-switch" type="checkbox" name="raid-timer-switch" class="onoffswitch-checkbox" checked>
+                        <label class="onoffswitch-label" for="raid-timer-switch">
+                            <span class="switch-label" data-on="On" data-off="Off"></span>
+                            <span class="switch-handle"></span>
+                        </label>
+                    </div>
+                    </div>';
+                    } ?>
                         <div class="form-control switch-container" id="active-raids-wrapper">
                             <h3><?php echo i8ln( 'Only Active Raids' ) ?></h3>
                             <div class="onoffswitch">
@@ -709,7 +756,7 @@ if ( $blockIframe ) {
                     ?>
                     <div id="gyms-raid-filter-wrapper" style="display:none">
                         <?php
-                        if ( ( $fork === "alternate" || $map === "rdm" || ( $map === "rm" && $fork !== "sloppy" ) ) && ! $noExEligible ) {
+                        if ( ( $fork === "alternate" || $map === "rdm" || ( $fork === "mad" && $map === "monocle" || $map === "rocketmap" ) ) && ! $noExEligible ) {
                             echo '<div class="form-control switch-container" id="ex-eligible-wrapper">
                                 <h3>' . i8ln( 'EX Eligible Only' ) . '</h3>
                                 <div class="onoffswitch">
@@ -1165,6 +1212,7 @@ if ( $blockIframe ) {
                 <select name="gym-marker-style" id="gym-marker-style">
                     <option value="ingame">' . i8ln( 'In-Game' ) . '</option>
                     <option value="shield">' . i8ln( 'Shield' ) . '</option>
+                    <option value="rocketmap">' . i8ln( 'Rocketmap' ) . '</option>
                 </select>
             </div>';
             }
@@ -1404,11 +1452,19 @@ if ( $blockIframe ) {
              <div class="button-container">
                 <button type="button" onclick="markPoiSubmitted(event);" class="markpoiid"><i
                         class="fa fa-refresh"
-                        style="margin-right:10px; vertical-align: middle; font-size: 1.5em;"></i><?php echo i8ln( 'Mark as submitted' ); ?>
+                        style="margin-right:10px; vertical-align: middle; font-size: 1.5em;"></i><?php echo i8ln( 'Submitted' ); ?>
 		</button>
                 <button type="button" onclick="markPoiDeclined(event);" class="markpoiid"><i
                         class="fa fa-times"
-                        style="margin-right:10px; vertical-align: middle; font-size: 1.5em;"></i><?php echo i8ln( 'Mark as declined' ); ?>
+                        style="margin-right:10px; vertical-align: middle; font-size: 1.5em;"></i><?php echo i8ln( 'Declined' ); ?>
+		</button>
+                <button type="button" onclick="markPoiResubmit(event);" class="markpoiid"><i
+                        class="fa fa-times"
+                        style="margin-right:10px; vertical-align: middle; font-size: 1.5em;"></i><?php echo i8ln( 'Resubmit' ); ?>
+		</button>
+                <button type="button" onclick="markNotCandidate(event);" class="markpoiid"><i
+                        class="fa fa-times"
+                        style="margin-right:10px; vertical-align: middle; font-size: 1.5em;"></i><?php echo i8ln( 'Not a candidate' ); ?>
 		</button>
             </div>
         </div>
@@ -1774,16 +1830,16 @@ if ( $blockIframe ) {
                     ?>
                     <div id="tab-poi">
                         <input type="text" name="poi-name" class="poi-name"
-                               placeholder="<?php echo i8ln( 'Enter POI Name' ); ?>" data-type="name"
+                               placeholder="<?php echo i8ln( 'Enter candidate Name' ); ?>" data-type="name"
 			       class="search-input">
                         <input type="text" name="poi-description" class="poi-description"
-                               placeholder="<?php echo i8ln( 'Enter description' ); ?>" data-type="description"
+                               placeholder="<?php echo i8ln( 'Enter candidate description' ); ?>" data-type="description"
 			       class="search-input">
                         <div class="button-container">
-			<h6><center><?php echo i8ln( 'If you submit a POI you agree that your discord username will be shown in the marker label' ); ?></center></h6>
+			<h6><center><?php echo i8ln( 'If you submit a POI candidate you agree that your discord username will be shown in the marker label' ); ?></center></h6>
                             <button type="button" onclick="submitPoi(event);" class="submitting-poi"><i
                                     class="fa fa-comments"
-                                    style="margin-right:10px;"></i><?php echo i8ln( 'Submit POI' ); ?>
+                                    style="margin-right:10px;"></i><?php echo i8ln( 'Submit POI candidate' ); ?>
                             </button>
                         </div>
                     </div>
@@ -1880,7 +1936,8 @@ if ( $blockIframe ) {
     var weatherSpritesSrc = '<?php echo $copyrightSafe ? 'static/sprites-safe/' : 'static/sprites-pokemon/' ?>';
     var icons = '<?php echo $copyrightSafe ? 'static/icons-safe/' : $iconRepository ?>';
     var weatherColors = <?php echo json_encode( $weatherColors ); ?>;
-    var mapType = '<?php echo $map; ?>';
+    var mapType = '<?php echo strtolower($map); ?>';
+    var mapFork = '<?php echo strtolower($fork); ?>';
     var triggerGyms = <?php echo $triggerGyms ?>;
     var noExGyms = <?php echo $noExGyms === true ? 'true' : 'false' ?>;
     var noParkInfo = <?php echo $noParkInfo === true ? 'true' : 'false' ?>;
@@ -1925,6 +1982,12 @@ if ( $blockIframe ) {
     var noRarityDisplay = <?php echo $noRarityDisplay === true ? 'true' : 'false' ?>;
     var noWeatherIcons = <?php echo $noWeatherIcons === true ? 'true' : 'false' ?>;
     var noWeatherShadow = <?php echo $noWeatherShadow === true ? 'true' : 'false' ?>;
+    var noRaidTimer = <?php echo $noRaidTimer === true ? 'true' : 'false' ?>;
+    var enableRaidTimer = <?php echo $noRaidTimer ? 'false' : $enableRaidTimer ?>;
+    var enableNestPolygon = <?php echo $noNestPolygon ? 'false' : $enableNestPolygon ?>;
+    var nestGeoJSONfile = '<?php echo $noNestPolygon ? '' : $nestGeoJSONfile ?>';
+    var noCostumeIcons = <?php echo $noCostumeIcons === true ? 'true' : 'false' ?>;
+    var queryInterval = <?php echo $queryInterval ?>;
 </script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js"></script>
 <script src="static/dist/js/map.common.min.js"></script>

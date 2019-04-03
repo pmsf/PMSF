@@ -33,11 +33,6 @@ $fork = "default" OR $fork = "beta";
 
 * MAD Map a Droid 
 ```
-Free version:
-$map = "monocle";
-$fork = "pmsf";
-
-MITM version:
 $map = "monocle";
 $fork = "mad";
 

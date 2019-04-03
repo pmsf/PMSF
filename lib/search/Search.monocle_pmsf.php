@@ -21,7 +21,7 @@ class Monocle_PMSF extends Search
             if( $p > 493){
                 break;
             }
-            if(strpos(strtolower($preward['name']), strtolower($term)) !== false){
+            if(strpos(strtolower(i8ln($preward['name'])), strtolower($term)) !== false){
                 $presids[] = $p;
             }
         }
@@ -29,7 +29,7 @@ class Monocle_PMSF extends Search
         $irewardsjson = json_decode( $ijson, true );
         $iresids = [];
         foreach($irewardsjson as $i => $ireward){
-            if(strpos(strtolower($ireward['name']), strtolower($term)) !== false){
+            if(strpos(strtolower(i8ln($ireward['name'])), strtolower($term)) !== false){
                 $iresids[] = $i;
             }
         }
@@ -82,11 +82,11 @@ class Monocle_PMSF extends Search
             if( $k > 386){
                 break;
             }
-            if(strpos(strtolower($mon['name']), strtolower($term)) !== false){
+            if(strpos(strtolower(i8ln($mon['name'])), strtolower($term)) !== false){
                 $resids[] = $k;
             } else{
                 foreach($mon['types'] as $t){
-                    if(strpos(strtolower($t['type']), strtolower($term)) !== false){
+                    if(strpos(strtolower(i8ln($t['type'])), strtolower($term)) !== false){
                         $resids[] = $k;
                         break;
                     }
