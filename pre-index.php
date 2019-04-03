@@ -1835,6 +1835,9 @@ if ( $blockIframe ) {
                         <input type="text" name="poi-description" class="poi-description"
                                placeholder="<?php echo i8ln( 'Enter candidate description' ); ?>" data-type="description"
 			       class="search-input">
+                        <input type="text" name="poi-notes" class="poi-notes"
+                               placeholder="<?php echo i8ln( 'Enter field notes' ); ?>" data-type="description"
+			       class="search-input">			       
                         <div class="button-container">
 			<h6><center><?php echo i8ln( 'If you submit a POI candidate you agree that your discord username will be shown in the marker label' ); ?></center></h6>
                             <button type="button" onclick="submitPoi(event);" class="submitting-poi"><i
