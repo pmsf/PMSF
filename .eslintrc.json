@@ -116,6 +116,7 @@
     "icons": true,
     "getIv": true,
     "mapType": true,
+    "mapFork": true,
     "triggerGyms": true,
     "i8ln": false,
     "languageSite": true,
@@ -165,6 +166,11 @@
     "geoJSONfile": true,
     "enablePoi": true,
     "noDeletePoi": true,
-    "noMarkPoi": true
+    "noMarkPoi": true,
+    "enableRaidTimer": true,
+    "noRaidTimer": true,
+    "enableNestPolygon": true,
+    "nestGeoJSONfile": true,
+    "noCostumeIcons": true
   }
 }

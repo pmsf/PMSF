@@ -7,6 +7,12 @@
   width: 26px;
   line-height: 26px;
   height: 26px;
+  background: #a2d696;
+  background: -webkit-linear-gradient(left, #a2d696 1%, #21cca8 99%);
+  background: -o-linear-gradient(left, #a2d696 1%, #21cca8 99%);
+  background: linear-gradient(to right, #a2d696 1%, #21cca8 99%);
+  filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#a2d696', endColorstr='#21cca8', GradientType=1);
+  color: #e3fede;
   &.on{
     background:green;
   }
@@ -36,4 +42,131 @@
   .questList{
     width:100%;
   }
+}
+
+button.submitting-poi {
+    background: #a2d696;
+    background: -webkit-linear-gradient(left, #a2d696 1%, #21cca8 99%);
+    background: -o-linear-gradient(left, #a2d696 1%, #21cca8 99%);
+    background: linear-gradient(to right, #a2d696 1%, #21cca8 99%);
+    filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#a2d696', endColorstr='#21cca8', GradientType=1);
+    border-radius: 60px;
+	color: #e3fede;
+}
+
+button.submitting-nest {
+    background: #a2d696;
+    background: -webkit-linear-gradient(left, #a2d696 1%, #21cca8 99%);
+    background: -o-linear-gradient(left, #a2d696 1%, #21cca8 99%);
+    background: linear-gradient(to right, #a2d696 1%, #21cca8 99%);
+    filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#a2d696', endColorstr='#21cca8', GradientType=1);
+    border-radius: 60px;
+	color: #e3fede;
+}
+
+button.submitting-pokemon {
+    background: #a2d696;
+    background: -webkit-linear-gradient(left, #a2d696 1%, #21cca8 99%);
+    background: -o-linear-gradient(left, #a2d696 1%, #21cca8 99%);
+    background: linear-gradient(to right, #a2d696 1%, #21cca8 99%);
+    filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#a2d696', endColorstr='#21cca8', GradientType=1);
+    border-radius: 60px;
+	color: #e3fede;
+}
+
+
+button.submitting-gym {
+    background: #a2d696;
+    background: -webkit-linear-gradient(left, #a2d696 1%, #21cca8 99%);
+    background: -o-linear-gradient(left, #a2d696 1%, #21cca8 99%);
+    background: linear-gradient(to right, #a2d696 1%, #21cca8 99%);
+    filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#a2d696', endColorstr='#21cca8', GradientType=1);
+    border-radius: 60px;
+	color: #e3fede;
+}
+
+button.submitting-pokestop {
+    background: #a2d696;
+    background: -webkit-linear-gradient(left, #a2d696 1%, #21cca8 99%);
+    background: -o-linear-gradient(left, #a2d696 1%, #21cca8 99%);
+    background: linear-gradient(to right, #a2d696 1%, #21cca8 99%);
+    filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#a2d696', endColorstr='#21cca8', GradientType=1);
+    border-radius: 60px;
+	color: #e3fede;
+}
+
+button.submitting-raid {
+    background: #a2d696;
+    background: -webkit-linear-gradient(left, #a2d696 1%, #21cca8 99%);
+    background: -o-linear-gradient(left, #a2d696 1%, #21cca8 99%);
+    background: linear-gradient(to right, #a2d696 1%, #21cca8 99%);
+    filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#a2d696', endColorstr='#21cca8', GradientType=1);
+    border-radius: 60px;
+	color: #e3fede;
+}
+
+button.submitting-quest {
+    background: #a2d696;
+    background: -webkit-linear-gradient(left, #a2d696 1%, #21cca8 99%);
+    background: -o-linear-gradient(left, #a2d696 1%, #21cca8 99%);
+    background: linear-gradient(to right, #a2d696 1%, #21cca8 99%);
+    filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#a2d696', endColorstr='#21cca8', GradientType=1);
+    border-radius: 60px;
+	color: #e3fede;
+}
+
+button.markpoiid {
+    background: #a2d696;
+    background: -webkit-linear-gradient(left, #a2d696 1%, #21cca8 99%);
+    background: -o-linear-gradient(left, #a2d696 1%, #21cca8 99%);
+    background: linear-gradient(to right, #a2d696 1%, #21cca8 99%);
+    filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#a2d696', endColorstr='#21cca8', GradientType=1);
+    border-radius: 60px;
+    color: #e3fede;
+    font-size: 0.7em;
+    margin-bottom: 0px !important
+}
+
+button.convertpoi {
+    background: #a2d696;
+    background: -webkit-linear-gradient(left, #a2d696 1%, #21cca8 99%);
+    background: -o-linear-gradient(left, #a2d696 1%, #21cca8 99%);
+    background: linear-gradient(to right, #a2d696 1%, #21cca8 99%);
+    filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#a2d696', endColorstr='#21cca8', GradientType=1);
+    border-radius: 60px;
+    color: #e3fede;
+}
+
+.dot {
+    height: 25px;
+    width: 25px;
+    border-radius: 50%;
+    display:inline-block;
+    margin: 8px;
+
+    &.possible-candidate {
+        background-color: white;
+        border: 2px solid #008000;
+    }
+
+    &.candidate-submitted {
+        background-color: #008000;
+    }
+
+    &.candidate-declined {
+        background-color: #FFA500;
+    }
+
+    &.candidate-resubmit {
+        background-color: #FFA500;
+        border: 2px solid #008000;
+    }
+
+    &.candidate-not-eligible {
+        background-color: red;
+    }
+}
+
+input#margin.button {
+    border-radius: 50px;
 }
