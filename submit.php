@@ -45,6 +45,7 @@ $communityDescription 	= ! empty( $_POST['communityDescription'] ) ? $_POST['com
 $communityInvite 	= ! empty( $_POST['communityInvite'] ) ? $_POST['communityInvite'] : '';
 $poiName		= ! empty( $_POST['poiName'] ) ? $_POST['poiName'] : '';
 $poiDescription		= ! empty( $_POST['poiDescription'] ) ? $_POST['poiDescription'] : '';
+$poiNotes		= ! empty( $_POST['poiNotes'] ) ? $_POST['poiNotes'] : '';
 $poiId			= ! empty( $_POST['poiId'] ) ? $_POST['poiId'] : '';
 
 // set content type
@@ -129,7 +130,7 @@ if ( $action === "delete-community" ) {
     $submitManual->delete_community($communityId, $loggedUser);
 }
 if ( $action === "poi-add" ) {
-    $submitManual->submit_poi($lat, $lon, $poiName, $poiDescription, $loggedUser);
+    $submitManual->submit_poi($lat, $lon, $poiName, $poiDescription, $poiNotes, $loggedUser);
 }
 if ( $action === "delete-poi" ) {
     $submitManual->delete_poi($poiId, $loggedUser);

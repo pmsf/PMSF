@@ -214,7 +214,7 @@ class Manual extends Submit
 				sendToWebhook($discordSubmitLogChannelUrl, ($data));
 			}
 		}
-	public function submit_poi($lat, $lon, $poiName, $poiDescription, $loggedUser)
+	public function submit_poi($lat, $lon, $poiName, $poiDescription, $poiNotes, $loggedUser)
 		{
 			global $manualdb, $noPoi, $noAddPoi, $noDiscordSubmitLogChannel, $discordSubmitLogChannelUrl, $submitMapUrl;
 			if ( $noPoi === true || $noAddPoi === true ) {
@@ -227,6 +227,7 @@ class Manual extends Submit
 					'poi_id'              => $poiId,
 					'name'                => $poiName,
 					'description'         => $poiDescription,
+					'notes'               => $poiNotes,
 					'lat'                 => $lat,
 					'lon'                 => $lon,
 					'status'	      => 1,

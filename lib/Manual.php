@@ -229,6 +229,7 @@ public function get_nests($swLat, $swLng, $neLat, $neLng, $tstamp = 0, $oSwLat =
         lon,
         name,
 	description,
+	notes,
 	updated,
 	submitted_by,
 	status

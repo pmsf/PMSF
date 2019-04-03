@@ -2344,8 +2344,11 @@ function poiLabel(item) {
         str += '<center><div style="font-weight:900;margin-bottom:5px;">' + i8ln('Not a eligible candidate') + '</div></center>'
     }
     str += '<center><div><b>' + item.name + '</b></div>' +
-        '<div>' + item.description + '</div>' +
-        '<span class="' + dot + '"></span>' +
+        '<div>' + item.description + '</div>'
+    if (item.notes) {
+        str += '<div><b>'+ i8ln('Notes') + ':</b> ' + item.notes + '</div>'
+    }
+    str += '<span class="' + dot + '"></span>' +
         '<div><b>' + i8ln('Submitted at') + ':</b> ' + updated + '</div>' +
         '<div><b>' + i8ln('Submitted by') + ':</b> ' + item.submitted_by + '</div></center>'
     if (!noDeletePoi) {
@@ -3680,6 +3683,7 @@ function submitPoi(event) { // eslint-disable-line no-unused-vars
     var lon = $('.submit-modal.ui-dialog-content .submitLongitude').val()
     var poiName = form.find('[name="poi-name"]').val()
     var poiDescription = form.find('[name="poi-description"]').val()
+    var poiNotes = form.find('[name="poi-notes"]').val()
     if (poiName && poiName !== '' && poiDescription && poiDescription !== '') {
         if (confirm(i8ln('I confirm this is an eligible POI location'))) {
             return $.ajax({
@@ -3693,7 +3697,8 @@ function submitPoi(event) { // eslint-disable-line no-unused-vars
                     'lat': lat,
                     'lon': lon,
                     'poiName': poiName,
-                    'poiDescription': poiDescription
+                    'poiDescription': poiDescription,
+                    'poiNotes': poiNotes
                 },
                 error: function error() {
                     // Display error toast
