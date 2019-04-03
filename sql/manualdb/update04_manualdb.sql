@@ -1,0 +1,3 @@
+ALTER TABLE `poi` 
+ADD COLUMN `notes` VARCHAR(1024) NULL AFTER `description`,
+CHANGE COLUMN `description` `description` VARCHAR(1024) NULL DEFAULT NULL ;
