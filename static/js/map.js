@@ -2346,7 +2346,7 @@ function poiLabel(item) {
     str += '<center><div><b>' + item.name + '</b></div>' +
         '<div>' + item.description + '</div>'
     if (item.notes) {
-        str += '<div><b>'+ i8ln('Notes') + ':</b> ' + item.notes + '</div>'
+        str += '<div><b>' + i8ln('Notes') + ':</b> ' + item.notes + '</div>'
     }
     str += '<span class="' + dot + '"></span>' +
         '<div><b>' + i8ln('Submitted at') + ':</b> ' + updated + '</div>' +
