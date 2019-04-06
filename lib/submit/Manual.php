@@ -241,6 +241,32 @@ class Manual extends Submit
 				}
 			}
 		}
+	public function modify_poi($poiId, $poiName, $poiDescription, $poiNotes, $loggedUser)
+		{
+			global $manualdb, $noPoi, $noAddPoi, $noDiscordSubmitLogChannel, $discordSubmitLogChannelUrl, $submitMapUrl;
+			if ( $noPoi === true || $noEditPoi === true ) {
+				http_response_code( 401 );
+				die();
+			}
+			if ( ! empty( $poiId ) && ! empty( $poiName ) && ! empty( $poiDescription ) ) {
+				$cols       = [
+					'name'                => $poiName,
+					'description'         => $poiDescription,
+					'notes'               => $poiNotes,
+					'status'	      => 1,
+					'updated'             => time(),
+					'edited_by'        => $loggedUser 
+				];
+				$where    = [
+					'poi_id' => $poiId
+				];
+				$manualdb->update( "poi", $cols, $where );
+				if ( $noDiscordSubmitLogChannel === false ) {
+					$data = array("content" => '```Updated poi with id "' . $poiId . '" and gave it the new name: "' . $poiName . '".\nDescription: "' . $poiDescription . '".```' . $submitMapUrl . '&zoom=18 ', "username" => $loggedUser);
+					sendToWebhook($discordSubmitLogChannelUrl, ($data));
+				}
+			}
+		}
 	public function delete_poi($poiId, $loggedUser)
 		{
 			global $manualdb, $noPoi, $noDeletePoi, $noDiscordSubmitLogChannel, $discordSubmitLogChannelUrl;

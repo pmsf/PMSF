@@ -232,6 +232,7 @@ public function get_nests($swLat, $swLng, $neLat, $neLng, $tstamp = 0, $oSwLat =
 	notes,
 	updated,
 	submitted_by,
+    edited_by,
 	status
         FROM poi
         WHERE :conditions";
