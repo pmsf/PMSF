@@ -1429,6 +1429,25 @@ if ( $blockIframe ) {
             </div>
         </div>
     <?php } ?>
+    <?php if ( ! $noEditPoi ) { ?>
+        <div class="editpoi-modal" style="display: none;">
+	   <input type="text" id="poi-name" name="poi-name"
+		  placeholder="<?php echo i8ln( 'Enter New POI Name' ); ?>" data-type="poi-name"
+		  class="search-input">
+	   <input type="text" id="poi-description" name="poi-description"
+		  placeholder="<?php echo i8ln( 'Enter New POI Description' ); ?>" data-type="poi-description"
+		  class="search-input">
+	   <input type="text" id="poi-notes" name="poi-notes"
+		  placeholder="<?php echo i8ln( 'Enter New POI Notes' ); ?>" data-type="poi-notes"
+		  class="search-input">
+	     <div class="button-container">
+                <button type="button" onclick="editPoiData(event);" class="editpoiid"><i
+                        class="fa fa-edit"
+                        style="margin-right:10px; vertical-align: middle; font-size: 1.5em;"></i><?php echo i8ln( 'Save Changes' ); ?>
+                </button>
+            </div>
+        </div>
+    <?php } ?>
     <?php if ( ! $noPortals ) { ?>
         <div class="convert-portal-modal" style="display: none;">
              <div class="button-container">
@@ -1972,6 +1991,7 @@ if ( $blockIframe ) {
     var enablePoi = <?php echo $noPoi ? 'false' : $enablePoi ?>;
     var enablePortals = <?php echo $noPortals ? 'false' : $enablePortals ?>;
     var noDeletePoi = <?php echo $noDeletePoi === true ? 'true' : 'false' ?>;
+    var noEditPoi = <?php echo $noEditPoi === true ? 'true' : 'false' ?>;
     var noMarkPoi = <?php echo $noMarkPoi === true ? 'true' : 'false' ?>;
     var noPortals = <?php echo $noPortals === true ? 'true' : 'false' ?>;
     var enableS2Cells = <?php echo $noS2Cells ? 'false' : $enableS2Cells ?>;
