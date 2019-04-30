@@ -4,6 +4,194 @@ namespace Scanner;
 
 class RocketMap_MAD extends RocketMap
 {
+    public function get_active($eids, $minIv, $minLevel, $exMinIv, $bigKarp, $tinyRat, $swLat, $swLng, $neLat, $neLng, $tstamp = 0, $oSwLat = 0, $oSwLng = 0, $oNeLat = 0, $oNeLng = 0, $encId = 0)
+    {
+        global $db;
+        $conds = array();
+        $params = array();
+        $float = $db->info()['driver'] == 'pgsql' ? "::float" : "";
+
+        $select = "p.pokemon_id, Unix_timestamp(Convert_tz(p.disappear_time, '+00:00', @@global.time_zone)) AS disappear_time, p.encounter_id, p.latitude, p.longitude, p.gender, p.form, p.weight, p.height, p.weather_boosted_condition, p.costume, ts.calc_endminsec AS expire_timestamp_verified";
+        global $noHighLevelData;
+        if (!$noHighLevelData) {
+            $select .= ", p.individual_attack, p.individual_defense, p.individual_stamina, p.move_1, p.move_2, p.cp, p.cp_multiplier";
+        }
+
+        $conds[] = "p.latitude > :swLat AND p.longitude > :swLng AND p.latitude < :neLat AND p.longitude < :neLng AND p.disappear_time > :time";
+        $params[':swLat'] = $swLat;
+        $params[':swLng'] = $swLng;
+        $params[':neLat'] = $neLat;
+        $params[':neLng'] = $neLng;
+        $date = new \DateTime();
+        $date->setTimezone(new \DateTimeZone('UTC'));
+        $date->setTimestamp(time());
+        $params[':time'] = date_format($date, 'Y-m-d H:i:s');
+
+        if ($oSwLat != 0) {
+            $conds[] = "NOT (p.latitude > :oswLat AND p.longitude > :oswLng AND p.latitude < :oneLat AND p.longitude < :oneLng)";
+            $params[':oswLat'] = $oSwLat;
+            $params[':oswLng'] = $oSwLng;
+            $params[':oneLat'] = $oNeLat;
+            $params[':oneLng'] = $oNeLng;
+        }
+        if ($tstamp > 0) {
+            $date->setTimestamp($tstamp);
+            $conds[] = "p.last_modified > :lastUpdated";
+            $params[':lastUpdated'] = date_format($date, 'Y-m-d H:i:s');
+        }
+        $tmpSQL = '';
+        if (!empty($tinyRat) && $tinyRat === 'true' && ($key = array_search("19", $eids)) === false) {
+            $tmpSQL .= ' OR (p.pokemon_id = 19 AND p.weight' . $float . ' < 2.41)';
+            $eids[] = "19";
+        }
+        if (!empty($bigKarp) && $bigKarp === 'true' && ($key = array_search("129", $eids)) === false) {
+            $tmpSQL .= ' OR (p.pokemon_id = 129 AND p.weight' . $float . ' > 13.13)';
+            $eids[] = "129";
+        }
+        if (count($eids)) {
+            $pkmn_in = '';
+            $i = 1;
+            foreach ($eids as $id) {
+                $params[':qry_' . $i . "_"] = $id;
+                $pkmn_in .= ':qry_' . $i . "_,";
+                $i++;
+            }
+            $pkmn_in = substr($pkmn_in, 0, -1);
+            $conds[] = "(pokemon_id NOT IN ( $pkmn_in )" . $tmpSQL . ")";
+        }
+        if (!empty($minIv) && !is_nan((float)$minIv) && $minIv != 0) {
+            $minIv = $minIv * .45;
+            if (empty($exMinIv)) {
+                $conds[] = '(p.individual_attack' . $float . ' + p.individual_defense' . $float . ' + p.individual_stamina' . $float . ') >= ' . $minIv;
+            } else {
+                $conds[] = '((p.individual_attack' . $float . ' + p.individual_defense' . $float . ' + p.individual_stamina' . $float . ') >= ' . $minIv . ' OR p.pokemon_id IN(' . $exMinIv . ') )';
+            }
+        }
+        if (!empty($minLevel) && !is_nan((float)$minLevel) && $minLevel != 0) {
+            if (empty($exMinIv)) {
+                $conds[] = 'p.cp_multiplier >= ' . $this->cpMultiplier[$minLevel];
+            } else {
+                $conds[] = '(p.cp_multiplier >= ' . $this->cpMultiplier[$minLevel] . ' OR p.pokemon_id IN(' . $exMinIv . ') )';
+            }
+        }
+        $encSql = '';
+        if ($encId != 0) {
+            $encSql = " OR (p.encounter_id = " . $encId . " AND p.latitude > '" . $swLat . "' AND p.longitude > '" . $swLng . "' AND p.latitude < '" . $neLat . "' AND p.longitude < '" . $neLng . "' AND disappear_time > '" . $params[':time'] . "')";
+        }
+        return $this->query_active($select, $conds, $params, $encSql);
+    }
+
+    public function get_active_by_id($ids, $minIv, $minLevel, $exMinIv, $bigKarp, $tinyRat, $swLat, $swLng, $neLat, $neLng)
+    {
+        global $db;
+        $conds = array();
+        $params = array();
+        $float = $db->info()['driver'] == 'pgsql' ? "::float" : "";
+
+        $select = "p.pokemon_id, Unix_timestamp(Convert_tz(p.disappear_time, '+00:00', @@global.time_zone)) AS disappear_time, p.encounter_id, p.latitude, p.longitude, p.gender, p.form, p.weight, p.height, p.weather_boosted_condition, costume, ts.calc_endminsec AS expire_timestamp_verified";
+        global $noHighLevelData;
+        if (!$noHighLevelData) {
+            $select .= ", p.individual_attack, p.individual_defense, p.individual_stamina, p.move_1, p.move_2, p.cp, p.cp_multiplier";
+        }
+
+        $conds[] = "p.latitude > :swLat AND p.longitude > :swLng AND p.latitude < :neLat AND p.longitude < :neLng AND disappear_time > :time";
+        $params[':swLat'] = $swLat;
+        $params[':swLng'] = $swLng;
+        $params[':neLat'] = $neLat;
+        $params[':neLng'] = $neLng;
+        $date = new \DateTime();
+        $date->setTimezone(new \DateTimeZone('UTC'));
+        $date->setTimestamp(time());
+        $params[':time'] = date_format($date, 'Y-m-d H:i:s');
+        if (count($ids)) {
+            $tmpSQL = '';
+            if (!empty($tinyRat) && $tinyRat === 'true' && ($key = array_search("19", $ids)) !== false) {
+                $tmpSQL .= ' OR (p.pokemon_id = 19 AND p.weight' . $float . ' < 2.41)';
+                unset($ids[$key]);
+            }
+            if (!empty($bigKarp) && $bigKarp === 'true' && ($key = array_search("129", $ids)) !== false) {
+                $tmpSQL .= ' OR (p.pokemon_id = 129 AND p.weight' . $float . ' > 13.13)';
+                unset($ids[$key]);
+            }
+            $pkmn_in = '';
+            $i = 1;
+            foreach ($ids as $id) {
+                $params[':qry_' . $i . "_"] = $id;
+                $pkmn_in .= ':qry_' . $i . "_,";
+                $i++;
+            }
+            if (count($ids)) {
+                $pkmn_in = substr($pkmn_in, 0, -1);
+                $conds[] = "(p.pokemon_id IN ( $pkmn_in )" . $tmpSQL . ")";
+            } else {
+                $conds[] = str_replace("OR", "", $tmpSQL);
+            }
+        }
+
+        if (!empty($minIv) && !is_nan((float)$minIv) && $minIv != 0) {
+            $minIv = $minIv * .45;
+            if (empty($exMinIv)) {
+                $conds[] = '(p.individual_attack' . $float . ' + p.individual_defense' . $float . ' + p.individual_stamina' . $float . ') >= ' . $minIv;
+            } else {
+                $conds[] = '((p.individual_attack' . $float . ' + p.individual_defense' . $float . ' + p.individual_stamina' . $float . ') >= ' . $minIv . ' OR p.pokemon_id IN(' . $exMinIv . ') )';
+            }
+        }
+        if (!empty($minLevel) && !is_nan((float)$minLevel) && $minLevel != 0) {
+            if (empty($exMinIv)) {
+                $conds[] = 'p.cp_multiplier >= ' . $this->cpMultiplier[$minLevel];
+            } else {
+                $conds[] = '(p.cp_multiplier >= ' . $this->cpMultiplier[$minLevel] . ' OR p.pokemon_id IN(' . $exMinIv . ') )';
+            }
+        }
+        return $this->query_active($select, $conds, $params);
+    }
+
+    public function query_active($select, $conds, $params, $encSql = '')
+    {
+        global $db;
+
+        $query = "SELECT :select
+        FROM pokemon p
+	JOIN trs_spawn ts ON p.spawnpoint_id = ts.spawnpoint
+        WHERE :conditions";
+
+        $query = str_replace(":select", $select, $query);
+        $query = str_replace(":conditions", '(' . join(" AND ", $conds) . ')' . $encSql, $query);
+        $pokemons = $db->query($query, $params)->fetchAll(\PDO::FETCH_ASSOC);
+
+        $data = array();
+        $i = 0;
+
+        foreach ($pokemons as $pokemon) {
+            $pokemon["latitude"] = floatval($pokemon["latitude"]);
+            $pokemon["longitude"] = floatval($pokemon["longitude"]);
+            $pokemon["disappear_time"] = $pokemon["disappear_time"] * 1000;
+
+            $pokemon["weight"] = isset($pokemon["weight"]) ? floatval($pokemon["weight"]) : null;
+            $pokemon["height"] = isset($pokemon["height"]) ? floatval($pokemon["height"]) : null;
+
+            $pokemon["individual_attack"] = isset($pokemon["individual_attack"]) ? intval($pokemon["individual_attack"]) : null;
+            $pokemon["individual_defense"] = isset($pokemon["individual_defense"]) ? intval($pokemon["individual_defense"]) : null;
+            $pokemon["individual_stamina"] = isset($pokemon["individual_stamina"]) ? intval($pokemon["individual_stamina"]) : null;
+            $pokemon['expire_timestamp_verified'] = isset($pokemon['expire_timestamp_verified']) ? floatval($pokemon['expire_timestamp_verified']) : null;
+            $pokemon["weather_boosted_condition"] = intval($pokemon["weather_boosted_condition"]);
+
+            $pokemon["pokemon_id"] = intval($pokemon["pokemon_id"]);
+            $pokemon["pokemon_name"] = i8ln($this->data[$pokemon["pokemon_id"]]['name']);
+            $pokemon["pokemon_rarity"] = i8ln($this->data[$pokemon["pokemon_id"]]['rarity']);
+            $types = $this->data[$pokemon["pokemon_id"]]["types"];
+            foreach ($types as $k => $v) {
+                $types[$k]['type'] = i8ln($v['type']);
+            }
+            $pokemon["pokemon_types"] = $types;
+            $data[] = $pokemon;
+
+            unset($pokemons[$i]);
+            $i++;
+        }
+        return $data;
+    }
+
     // This is based on assumption from the last version I saw
     public function get_weather_by_cell_id($cell_id)
     {
