@@ -521,7 +521,7 @@ class RocketMap extends Scanner
         return $data;
     }
 
-    private function query_gym_defenders($gymId, $select)
+    public function query_gym_defenders($gymId, $select)
     {
         global $db;
 

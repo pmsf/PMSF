@@ -40,7 +40,7 @@ class Monocle_PMSF extends Search
 		$conds[] = "quest_item_id IN (" . implode(',',$iresids) . ")";
 	}
 	$query = "SELECT id,
-        name,
+    name,
 	lat,
 	lon,
 	url,
@@ -59,10 +59,12 @@ class Monocle_PMSF extends Search
 	$data = array();
 
 	foreach($rewards as $reward){
-            $reward['pokemon_name'] = !empty($reward['pokemon_name']) ? $prewardsjson[$reward['quest_pokemon_id']]['name'] : null;
+        $reward['pokemon_name'] = !empty($reward['pokemon_name']) ? $prewardsjson[$reward['quest_pokemon_id']]['name'] : null;
 	    $reward['quest_pokemon_id'] = intval($reward['quest_pokemon_id']);
-            $reward['item_name'] = !empty($reward['item_name']) ? $irewardsjson[$reward['quest_item_id']]['name'] : null;
+        $reward['item_name'] = !empty($reward['item_name']) ? $irewardsjson[$reward['quest_item_id']]['name'] : null;
 	    $reward['quest_item_id'] = intval($reward['quest_item_id']);
+	    $reward['url'] = str_replace("http://", "https://images.weserv.nl/?url=", $reward['url']);
+        $reward['name'] = substr($reward['name'], 0, 19);
             if($defaultUnit === "km"){
                 $reward['distance'] = round($reward['distance'] * 1.60934,2);
 	    }
