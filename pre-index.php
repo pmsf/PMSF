@@ -1860,7 +1860,7 @@ if ( $blockIframe ) {
 <script src="node_modules/moment/min/moment-with-locales.min.js"></script>
 <script src="https://code.createjs.com/soundjs-0.6.2.min.js"></script>
 <script src="node_modules/push.js/bin/push.min.js"></script>
-<script src="node_modules/long/dist/long.min.js"></script>
+<script src="node_modules/long/src/long.js"></script>
 <script src="node_modules/leaflet/dist/leaflet.js"></script>
 <script src="node_modules/leaflet-geosearch/dist/bundle.min.js"></script>
 <script src="static/js/vendor/s2geometry.js"></script>
