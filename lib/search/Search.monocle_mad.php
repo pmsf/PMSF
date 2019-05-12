@@ -50,7 +50,7 @@ class Monocle_MAD extends Search
 	ROUND(( 3959 * acos( cos( radians(:lat) ) * cos( radians( lat ) ) * cos( radians( lon ) - radians(:lon) ) + sin( radians(:lat) ) * sin( radians( lat ) ) ) ),2) AS distance 
 	FROM pokestops p
 	LEFT JOIN trs_quest tq ON tq.GUID = p.external_id
-	WHERE :conditions
+	WHERE (:conditions) AND DATE(FROM_UNIXTIME(tq.quest_timestamp)) = CURDATE()
 	ORDER BY distance LIMIT " . $maxSearchResults . "";
 
 	$query = str_replace(":conditions", join(" OR ", $conds), $query);
@@ -60,10 +60,12 @@ class Monocle_MAD extends Search
 	$data = array();
 
 	foreach($rewards as $reward){
-            $reward['pokemon_name'] = !empty($reward['pokemon_name']) ? $prewardsjson[$reward['quest_pokemon_id']]['name'] : null;
+        $reward['pokemon_name'] = !empty($reward['pokemon_name']) ? $prewardsjson[$reward['quest_pokemon_id']]['name'] : null;
 	    $reward['quest_pokemon_id'] = intval($reward['quest_pokemon_id']);
-            $reward['item_name'] = !empty($reward['item_name']) ? $irewardsjson[$reward['quest_item_id']]['name'] : null;
+        $reward['item_name'] = !empty($reward['item_name']) ? $irewardsjson[$reward['quest_item_id']]['name'] : null;
 	    $reward['quest_item_id'] = intval($reward['quest_item_id']);
+	    $reward['url'] = str_replace("http://", "https://images.weserv.nl/?url=", $reward['url']);
+        $reward['name'] = substr($reward['name'], 0, 19);
             if($defaultUnit === "km"){
                 $reward['distance'] = round($reward['distance'] * 1.60934,2);
 	    }

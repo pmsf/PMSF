@@ -238,7 +238,11 @@ class Monocle_MAD extends Monocle
         tq.quest_item_id,
         json_extract(json_extract(`quest_condition`,'$[*].type'),'$[0]') AS quest_condition_type,
         json_extract(json_extract(`quest_condition`,'$[*].type'),'$[1]') AS quest_condition_type_1,
-        json_extract(json_extract(`quest_condition`,'$[*].info'),'$[0]') AS quest_condition_info,
+        json_extract(json_extract(`quest_condition`,'$[*].with_pokemon_category'),'$[0]') AS quest_condition_pokemon_ids,
+        json_extract(json_extract(`quest_condition`,'$[*].with_throw_type'),'$[0]') AS quest_condition_with_throw_type,
+        json_extract(json_extract(`quest_condition`,'$[*].with_pokemon_type'),'$[0]') AS quest_condition_with_pokemon_type,
+        json_extract(json_extract(`quest_condition`,'$[*].with_raid_level'),'$[0]') AS quest_condition_with_raid_level,
+        json_extract(json_extract(`quest_condition`,'$[*].with_item'),'$[0]') AS quest_condition_with_item,
         tq.quest_reward_type,
         json_extract(json_extract(`quest_reward`,'$[*].info'),'$[0]') AS quest_reward_info,
         json_extract(json_extract(`quest_reward`,'$[*].pokemon_encounter.pokemon_display.form_value'),'$[0]') AS quest_pokemon_formid,
@@ -281,6 +285,19 @@ class Monocle_MAD extends Monocle
             $pokestop["lure_expiration"] = $pokestop["lure_expiration"] * 1000;
             $pokestop["quest_item_name"] = empty($item_pid) ? null : i8ln($this->items[$item_pid]["name"]);
             $pokestop["quest_pokemon_name"] = empty($mon_pid) ? null : i8ln($this->data[$mon_pid]["name"]);
+            if (!empty($pokestop["quest_condition_pokemon_ids"])) {
+                $pokestop["quest_condition_info"] = str_replace('"category_name": "", ',"",$pokestop["quest_condition_pokemon_ids"]);
+            } else if (!empty($pokestop["quest_condition_with_pokemon_type"])) {
+                $pokestop["quest_condition_info"] = str_replace("pokemon_type","pokemon_type_ids",$pokestop["quest_condition_with_pokemon_type"]);
+            } else if (!empty($pokestop["quest_condition_with_throw_type"])) {
+                $pokestop["quest_condition_info"] = str_replace("throw_type","throw_type_id",$pokestop["quest_condition_with_throw_type"]);
+            } else if (!empty($pokestop["quest_condition_with_raid_level"])) {
+                $pokestop["quest_condition_info"] = str_replace("raid_level","raid_levels",$pokestop["quest_condition_with_raid_level"]);
+            } else if (!empty($pokestop["quest_condition_with_item"])) {
+                $pokestop["quest_condition_info"] = str_replace("item","item_id",$pokestop["quest_condition_with_item"]);
+            } else {
+                $pokestop["quest_condition_info"] = null;
+            }
             if ($noTrainerName === true) {
                 // trainer names hidden, so don't show trainer who lured
                 unset($pokestop["lure_user"]);
