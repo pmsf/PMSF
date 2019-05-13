@@ -6,7 +6,7 @@ class Monocle_MAD extends Search
 {
     public function search_reward($lat, $lon, $term)
     {
-        global $db, $defaultUnit, $maxSearchResults;
+        global $db, $defaultUnit, $maxSearchResults, $maxSearchNameLength;
 
 	$conds = array();
 	$params = array();
@@ -65,7 +65,7 @@ class Monocle_MAD extends Search
         $reward['item_name'] = !empty($reward['item_name']) ? $irewardsjson[$reward['quest_item_id']]['name'] : null;
 	    $reward['quest_item_id'] = intval($reward['quest_item_id']);
 	    $reward['url'] = str_replace("http://", "https://images.weserv.nl/?url=", $reward['url']);
-        $reward['name'] = substr($reward['name'], 0, 19);
+	    $reward['name'] = ($maxSearchNameLength > 0) ? htmlspecialchars(substr($reward['name'], 0, $maxSearchNameLength)) : htmlspecialchars($reward['name']);
             if($defaultUnit === "km"){
                 $reward['distance'] = round($reward['distance'] * 1.60934,2);
 	    }
