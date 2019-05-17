@@ -363,7 +363,7 @@ class RDM extends Scanner
         raid_level,
         raid_pokemon_move_1,
         raid_pokemon_move_2,
-        raid_pokemon_form AS raid_pokemon_form,
+        raid_pokemon_form,
         raid_pokemon_cp,
         ex_raid_eligible AS park
         FROM gym
