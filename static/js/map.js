@@ -2831,7 +2831,7 @@ function searchForItem(lat, lon, term, type, field) {
                         pokemonIdStr = element.quest_pokemon_id
                     }
                     var formStr = ''
-                    if (element.quest_pokemon_formid  === 0) {
+                    if (element.quest_pokemon_formid === 0) {
                         formStr = '00'
                     } else {
                         formStr = element.quest_pokemon_formid
