@@ -82,5 +82,25 @@
   "20": {
     "prototext": "WITH_DAYS_IN_A_ROW",
     "text": "Days in a row"
+  },
+  "21": {
+    "prototext": "WITH_UNIQUE_POKEMON",
+    "text": ""
+  },
+  "22": {
+    "prototext": "WITH_NPC_COMBAT",
+    "text": ""
+  },
+  "23": {
+    "prototext": "WITH_PVP_COMBAT",
+    "text": ""
+  },
+  "24": {
+    "prototext": "WITH_LOCATION",
+    "text": ""
+  },
+  "25": {
+    "prototext": "WITH_DISTANCE",
+    "text": ""
   }
 }
