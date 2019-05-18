@@ -370,6 +370,7 @@ $noSearchNests = true;
 $noSearchPortals = true;
 $defaultUnit = "km";                                            // mi/km
 $maxSearchResults = 10;		//Max number of search results
+$maxSearchNameLength = 0;	// 0 = Unlimited. Shorten pokestop names in reward search results if longer than this value to prevent UI layout issues
 //-----------------------------------------------
 // Community
 //-----------------------------------------------------

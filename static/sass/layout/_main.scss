@@ -102,7 +102,7 @@ i.fa.fa-expand {
   .search-result{
     .name{
       max-width: 250px;
-      white-space: nowrap;
+      white-space: normal;
       overflow: hidden;
       text-overflow: ellipsis;
       @media(max-width:768px){
