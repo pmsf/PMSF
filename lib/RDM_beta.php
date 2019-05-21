@@ -342,6 +342,7 @@ class RDM_beta extends RDM
         name AS pokestop_name,
         url,
         lure_expire_timestamp AS lure_expiration,
+        lure_id,
         quest_type,
         quest_timestamp,
         quest_target,
@@ -391,6 +392,7 @@ class RDM_beta extends RDM
             $pokestop["quest_dust_amount"] = intval($pokestop["quest_dust_amount"]);
 			$pokestop["url"] = ! empty($pokestop["url"]) ? str_replace("http://", "https://images.weserv.nl/?url=", $pokestop["url"]) : null;
             $pokestop["lure_expiration"] = $pokestop["lure_expiration"] * 1000;
+            $pokestop["lure_id"] = $pokestop["lure_id"] - 500;
             $pokestop["quest_item_name"] = empty($item_pid) ? null : i8ln($this->items[$item_pid]["name"]);
             $pokestop["quest_pokemon_name"] = empty($mon_pid) ? null : i8ln($this->data[$mon_pid]["name"]);
 
