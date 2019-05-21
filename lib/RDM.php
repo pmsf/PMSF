@@ -272,6 +272,7 @@ class RDM extends Scanner
             $pokestop["longitude"] = floatval($pokestop["longitude"]);
 			$pokestop["url"] = ! empty($pokestop["url"]) ? str_replace("http://", "https://images.weserv.nl/?url=", $pokestop["url"]) : null;
 			$pokestop["lure_expiration"] = $pokestop["lure_expiration"] * 1000;
+            $pokestop["lure_id"] = 1;
             if ($noTrainerName === true) {
                 // trainer names hidden, so don't show trainer who lured
                 unset($pokestop["lure_user"]);
