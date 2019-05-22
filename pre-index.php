@@ -583,7 +583,7 @@ if (($noNativeLogin === false || $noDiscordLogin === false) && $info['expire_tim
                             } ?>
                         </div>
                         <div class="dustslider">
-			    <input type="range" min="0" max="2000" value="500" class="slider" id="dustrange">
+			    <input type="range" min="0" max="2500" value="500" class="slider" id="dustrange">
 			    <p><?php echo i8ln( 'Show stardust ' ) ?><span id="dustvalue"></span></p>
                         </div>
                     </div>
