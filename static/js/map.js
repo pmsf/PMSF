@@ -1358,7 +1358,7 @@ function pokestopLabel(item) {
         str += stopImage +
         getReward(item)
         if (item['lure_expiration'] > Date.now()) {
-            lureEndStr = getTimeStr(Math.floor(item['lure_expiration'] / 1000))
+            lureEndStr = getTimeStr(item['lure_expiration'])
             str +=
             '<div style="font-weight:900;">' +
             i8ln('Lure expiration') + ': ' + lureEndStr +
@@ -1375,7 +1375,7 @@ function pokestopLabel(item) {
             '<div>' + stopName + '</div>' +
             '<div>' + stopImage + '</div>'
         if (item['lure_expiration'] > Date.now()) {
-            lureEndStr = getTimeStr(Math.floor(item['lure_expiration'] / 1000))
+            lureEndStr = getTimeStr(item['lure_expiration'])
             str +=
                 '<img style="padding:5px;position:absolute;left:10px;top:15px;height:50px;" src="static/forts/LureModule_' + item['lure_id'] + '.png"/>' +
                 '<div><b>' +
