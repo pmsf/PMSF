@@ -85,17 +85,17 @@ if ( $blockIframe ) {
             if ( ! in_array( $k, $pokemonToExclude ) ) {
                 if ( $k > 493 ) {
                     break;
-		}
-		if ( $k <= 9 ) {
+        }
+        if ( $k <= 9 ) {
                     $id = "00$k";
                 } else if ( $k <= 99 ) {
                     $id = "0$k";
                 } else {
                     $id = $k;
-		}
-		if ( ! $copyrightSafe ) {
+        }
+        if ( ! $copyrightSafe ) {
                     echo '<span class="pokemon-icon-sprite" data-value="' . $k . '" onclick="' . $onClick . '"><span style="display:none" class="types">' . i8ln( $type ) . '</span><span style="display:none" class="name">' . i8ln( $name ) . '</span><span style="display:none" class="id">' . $k . '</span><img src="' . $iconRepository . 'pokemon_icon_' . $id . '_00.png" style="width:48px;height:48px;"/>';
-		} else {
+        } else {
                     echo '<span class="pokemon-icon-sprite" data-value="' . $k . '" onclick="' . $onClick . '"><span style="display:none" class="types">' . i8ln( $type ) . '</span><span style="display:none" class="name">' . i8ln( $name ) . '</span><span style="display:none" class="id">' . $k . '</span><img src="static/icons-safe/pokemon_icon_' . $id . '_00.png" style="width:48px;height:48px;"/>';
                 }
                 if ( ! $noPokemonNumbers ) {
@@ -129,9 +129,9 @@ if ( $blockIframe ) {
             $name = $item['name'];
 
             if ( ! in_array( $k, $itemsToExclude ) ) {
-		if ( ! $copyrightSafe ) {
+        if ( ! $copyrightSafe ) {
                     echo '<span class="item-icon-sprite" data-value="' . $k . '" onclick="' . $onClick . '"><span style="display:none" class="name">' . i8ln( $name ) . '</span><span style="display:none" class="id">' . $k . '</span><img src="' . $iconRepository . 'rewards/reward_' . $k . '_1.png" style="width:48px;height:48px;"/>';
-		} else {
+        } else {
                     echo '<span class="item-icon-sprite" data-value="' . $k . '" onclick="' . $onClick . '"><span style="display:none" class="name">' . i8ln( $name ) . '</span><span style="display:none" class="id">' . $k . '</span><img src="static/icons-safe/rewards/reward_' . $k . '_1.png" style="width:48px;height:48px;"/>';
                 }
                 if ( ! $noItemNumbers ) {
@@ -264,21 +264,21 @@ if ( $blockIframe ) {
 
                 $_SESSION['user']->expire_timestamp = $info['expire_timestamp'];
                 
-if (($noNativeLogin === false || $noDiscordLogin === false) && $info['expire_timestamp'] > time()) {
-    //If the session variable does not exist, presume that user suffers from a bug and access config is not used.
-    //If you don't like this, help me fix it.
-    if (!isset($_SESSION['already_refreshed'])) {
- 
-        //Number of seconds to refresh the page after.
-        $refreshAfter = 1;
- 
-        //Send a Refresh header.
-        header('Refresh: ' . $refreshAfter);
- 
-        //Set the session variable so that we don't refresh again.
-        $_SESSION['already_refreshed'] = true; 
-    }
-}
+                if (($noNativeLogin === false || $noDiscordLogin === false) && $info['expire_timestamp'] > time()) {
+                    //If the session variable does not exist, presume that user suffers from a bug and access config is not used.
+                    //If you don't like this, help me fix it.
+                    if (!isset($_SESSION['already_refreshed'])) {
+                 
+                        //Number of seconds to refresh the page after.
+                        $refreshAfter = 1;
+                 
+                        //Send a Refresh header.
+                        header('Refresh: ' . $refreshAfter);
+                 
+                        //Set the session variable so that we don't refresh again.
+                        $_SESSION['already_refreshed'] = true; 
+                    }
+                }
 
                 if (!empty($_SESSION['user']->updatePwd) && $_SESSION['user']->updatePwd === 1) {
                     header("Location: ./user");
@@ -331,7 +331,7 @@ if (($noNativeLogin === false || $noDiscordLogin === false) && $info['expire_tim
                             <span class="switch-handle"></span>
                         </label>
                     </div>
-		</div>';
+        </div>';
                 } ?>
                 <?php
                 if ( ! $noNests ) {
@@ -476,14 +476,14 @@ if (($noNativeLogin === false || $noDiscordLogin === false) && $info['expire_tim
             if ( ! $noPokestops ) {
                 if ( ! $noQuests ) {
                 ?>
-		<h3><?php echo i8ln( 'Pokestops &amp; Quests' ); ?></h3>
+        <h3><?php echo i8ln( 'Pokestops &amp; Quests' ); ?></h3>
                 <?php
                 } else {
                 ?>
-		<h3><?php echo i8ln( 'Pokestops' ); ?></h3>
+        <h3><?php echo i8ln( 'Pokestops' ); ?></h3>
                 <?php
                 } ?>
-		<div>
+        <div>
                 <?php
                 if ( ! $noPokestops ) {
                     echo '<div class="form-control switch-container" style="float:none;height:35px;margin-bottom:0px;">
@@ -497,7 +497,7 @@ if (($noNativeLogin === false || $noDiscordLogin === false) && $info['expire_tim
                         </label>
                     </div>
                 </div>';
-		} ?>
+        } ?>
                     <div id="pokestops-filter-wrapper" style="display:none">
                 <?php
                 if ( ! $noLures ) {
@@ -512,7 +512,7 @@ if (($noNativeLogin === false || $noDiscordLogin === false) && $info['expire_tim
                         </label>
                     </div>
                 </div>';
-		} ?>
+        } ?>
                 <?php
                 if ( ! $noQuests ) {
                     echo '<div class="form-control switch-container" style="float:none;height:35px;margin-bottom:0px;">
@@ -526,7 +526,7 @@ if (($noNativeLogin === false || $noDiscordLogin === false) && $info['expire_tim
                         </label>
                     </div>
                 </div>';
-		?>
+        ?>
                     <div id="quests-filter-wrapper" style="display:none">
                         <div id="quests-tabs">
                             <ul>
@@ -542,7 +542,7 @@ if (($noNativeLogin === false || $noDiscordLogin === false) && $info['expire_tim
                                     <li><a href="#tabs-2"><?php echo i8ln( 'Hide items' ) ?></a></li>
                                     <?php
                                 } ?>
-	                    </ul>
+                        </ul>
                             <?php
                             if ( ! $noQuestsPokemon ) {
                                 ?>
@@ -601,12 +601,12 @@ if (($noNativeLogin === false || $noDiscordLogin === false) && $info['expire_tim
                             } ?>
                         </div>
                         <div class="dustslider">
-			    <input type="range" min="0" max="2500" value="500" class="slider" id="dustrange">
-			    <p><?php echo i8ln( 'Show stardust ' ) ?><span id="dustvalue"></span></p>
+                <input type="range" min="0" max="2500" value="500" class="slider" id="dustrange">
+                <p><?php echo i8ln( 'Show stardust ' ) ?><span id="dustvalue"></span></p>
                         </div>
                     </div>
                 <?php
-		} ?>
+        } ?>
                     </div>
                 </div>
                 <?php
@@ -616,7 +616,7 @@ if (($noNativeLogin === false || $noDiscordLogin === false) && $info['expire_tim
             if ( ! $noCommunity ) {
                 ?>
                 <h3><?php echo i8ln( 'Communities' ); ?></h3>
-		<div>
+        <div>
                 <?php
                 if ( ! $noCommunity ) {
                     echo '<div class="form-control switch-container">
@@ -630,7 +630,7 @@ if (($noNativeLogin === false || $noDiscordLogin === false) && $info['expire_tim
                         </label>
                     </div>
                 </div>';
-		} ?>
+        } ?>
                 </div>
                 <?php
             }
@@ -654,7 +654,7 @@ if (($noNativeLogin === false || $noDiscordLogin === false) && $info['expire_tim
                     </div>
                 </div>';
                     } ?>
-					<div id="raids-filter-wrapper" style="display:none">
+                    <div id="raids-filter-wrapper" style="display:none">
                     <?php
                     if ( ! $noRaidTimer && ! $noRaids ) {
                         echo '<div class="form-control switch-container">
@@ -726,7 +726,7 @@ if (($noNativeLogin === false || $noDiscordLogin === false) && $info['expire_tim
                         </label>
                     </div>
                 </div>';
-		    } ?>
+            } ?>
                     <?php
                     if ( ! $hideIfManual ) {
                         echo '<div id="gyms-filter-wrapper" style="display:none">
@@ -738,7 +738,7 @@ if (($noNativeLogin === false || $noDiscordLogin === false) && $info['expire_tim
                                 <option value="2">' . i8ln( 'Valor' ) . '</option>
                                 <option value="3">' . i8ln( 'Instinct' ) . '</option>
                             </select>
-			</div>
+            </div>
                         <div class="form-control switch-container" id="open-gyms-only-wrapper">
                             <h3>' . i8ln( 'Open Spot' ) . '</h3>
                             <div class="onoffswitch">
@@ -785,7 +785,7 @@ if (($noNativeLogin === false || $noDiscordLogin === false) && $info['expire_tim
                                 <option value="168">' . i8ln( 'Last Week' ) . '</option>
                             </select>
                         </div>
-		    </div>';
+            </div>';
                     }
                     ?>
                     <div id="gyms-raid-filter-wrapper" style="display:none">
@@ -812,7 +812,7 @@ if (($noNativeLogin === false || $noDiscordLogin === false) && $info['expire_tim
             if ( ! $noPortals || ! $noS2Cells ) {
                 ?>
                 <h3><?php echo i8ln( 'Ingress / S2Cell' ); ?></h3>
-		<div>
+        <div>
                 <?php
                 if ( ! $noPortals ) {
                     echo '<div class="form-control switch-container">
@@ -825,14 +825,14 @@ if (($noNativeLogin === false || $noDiscordLogin === false) && $info['expire_tim
                             <span class="switch-handle"></span>
                         </label>
                     </div>
-		</div>
+        </div>
                 <div class="form-control switch-container" id = "new-portals-only-wrapper" style = "display:none">
                     <select name = "new-portals-only-switch" id = "new-portals-only-switch">
                         <option value = "0"> ' . i8ln( 'All' ) . '</option>
                         <option value = "1"> ' . i8ln( 'Only new' ) . ' </option>
                     </select>
                 </div>';
-		} ?>
+        } ?>
                 <?php
                 if ( ! $noPoi ) {
                     echo '<div class="form-control switch-container">
@@ -846,7 +846,7 @@ if (($noNativeLogin === false || $noDiscordLogin === false) && $info['expire_tim
                         </label>
                     </div>
                 </div>';
-		} ?>
+        } ?>
                 <?php
                 if ( ! $noS2Cells ) {
                     echo '<div class="form-control switch-container">
@@ -859,7 +859,7 @@ if (($noNativeLogin === false || $noDiscordLogin === false) && $info['expire_tim
                             <span class="switch-handle"></span>
                         </label>
                     </div>
-		</div>
+        </div>
                 <div class="form-control switch-container" id = "s2-switch-wrapper" style = "display:none">
                     <div class="form-control switch-container">
                         <h3>' . i8ln( 'EX trigger Cells' ) . '</h3>
@@ -870,7 +870,7 @@ if (($noNativeLogin === false || $noDiscordLogin === false) && $info['expire_tim
                                 <span class="switch-label" data-on="On" data-off="Off"></span>
                                 <span class="switch-handle"></span>
                             </label>
-			</div>
+            </div>
                     </div>
                     <div class="form-control switch-container">
                         <h3>' . i8ln( 'Gym placement Cells' ) . '</h3>
@@ -895,7 +895,7 @@ if (($noNativeLogin === false || $noDiscordLogin === false) && $info['expire_tim
                         </div>
                     </div>
                 </div>';
-		} ?>
+        } ?>
                 </div>
                 <?php
             }
@@ -908,7 +908,7 @@ if (($noNativeLogin === false || $noDiscordLogin === false) && $info['expire_tim
                 } else {
                     echo '<h3>' . i8ln( 'Location' ) . '</h3>
                     <div>';
-		} ?>
+        } ?>
                 <?php
                 if ( $map != "monocle" && ! $noScannedLocations ) {
                     echo '<div class="form-control switch-container">
@@ -980,9 +980,9 @@ if (($noNativeLogin === false || $noDiscordLogin === false) && $info['expire_tim
                 if ( ! $noSearchLocation ) {
                     echo '<div class="form-control switch-container" style="display:{{is_fixed}}">
                 <label for="next-location">
-		    <h3>' . i8ln( 'Change search location' ) . '</h3>
+            <h3>' . i8ln( 'Change search location' ) . '</h3>
                     <form id ="search-places">
-		    <input id="next-location" type="text" name="next-location" placeholder="' . i8ln( 'Change search location' ) . '">
+            <input id="next-location" type="text" name="next-location" placeholder="' . i8ln( 'Change search location' ) . '">
                     <ul id="search-places-results" class="search-results places-results"></ul>
                     </form>
                 </label>
@@ -1351,7 +1351,7 @@ if (($noNativeLogin === false || $noDiscordLogin === false) && $info['expire_tim
             <?php
             echo 'Logged in as: ' . $_SESSION['user']->user . "<br>";
             ?>
-	    </p></center></div>
+        </p></center></div>
         <?php
         }
         ?>
@@ -1423,8 +1423,8 @@ if (($noNativeLogin === false || $noDiscordLogin === false) && $info['expire_tim
     <?php } ?>
     <?php if ( ! $noRenamePokestops ) { ?>
         <div class="rename-modal" style="display: none;">
-	   <input type="text" id="pokestop-name" name="pokestop-name"
-		  placeholder="<?php echo i8ln( 'Enter New Pokéstop Name' ); ?>" data-type="pokestop"
+       <input type="text" id="pokestop-name" name="pokestop-name"
+          placeholder="<?php echo i8ln( 'Enter New Pokéstop Name' ); ?>" data-type="pokestop"
                   class="search-input">
              <div class="button-container">
                 <button type="button" onclick="renamePokestopData(event);" class="renamepokestopid"><i
@@ -1446,16 +1446,16 @@ if (($noNativeLogin === false || $noDiscordLogin === false) && $info['expire_tim
     <?php } ?>
     <?php if ( ! $noEditCommunity ) { ?>
         <div class="editcommunity-modal" style="display: none;">
-	   <input type="text" id="community-name" name="community-name"
-		  placeholder="<?php echo i8ln( 'Enter New community Name' ); ?>" data-type="community-name"
-		  class="search-input">
-	   <input type="text" id="community-description" name="community-description"
-		  placeholder="<?php echo i8ln( 'Enter New community Description' ); ?>" data-type="community-description"
-		  class="search-input">
-	   <input type="text" id="community-invite" name="community-invite"
-		  placeholder="<?php echo i8ln( 'Enter New community Invite link' ); ?>" data-type="community-invite"
-		  class="search-input">
-	     <div class="button-container">
+       <input type="text" id="community-name" name="community-name"
+          placeholder="<?php echo i8ln( 'Enter New community Name' ); ?>" data-type="community-name"
+          class="search-input">
+       <input type="text" id="community-description" name="community-description"
+          placeholder="<?php echo i8ln( 'Enter New community Description' ); ?>" data-type="community-description"
+          class="search-input">
+       <input type="text" id="community-invite" name="community-invite"
+          placeholder="<?php echo i8ln( 'Enter New community Invite link' ); ?>" data-type="community-invite"
+          class="search-input">
+         <div class="button-container">
                 <button type="button" onclick="editCommunityData(event);" class="editcommunityid"><i
                         class="fa fa-edit"
                         style="margin-right:10px; vertical-align: middle; font-size: 1.5em;"></i><?php echo i8ln( 'Save Changes' ); ?>
@@ -1469,15 +1469,15 @@ if (($noNativeLogin === false || $noDiscordLogin === false) && $info['expire_tim
                 <button type="button" onclick="convertPortalToPokestopData(event);" class="convertportalid"><i
                         class="fa fa-refresh"
                         style="margin-right:10px; vertical-align: middle; font-size: 1.5em;"></i><?php echo i8ln( 'Convert to pokestop' ); ?>
-		</button>
+        </button>
                 <button type="button" onclick="convertPortalToGymData(event);" class="convertportalid"><i
                         class="fa fa-refresh"
                         style="margin-right:10px; vertical-align: middle; font-size: 1.5em;"></i><?php echo i8ln( 'Convert to gym' ); ?>
-		</button>
+        </button>
                 <button type="button" onclick="markPortalChecked(event);" class="convertportalid"><i
                         class="fa fa-times"
                         style="margin-right:10px; vertical-align: middle; font-size: 1.5em;"></i><?php echo i8ln( 'No Pokestop or Gym' ); ?>
-		</button>
+        </button>
             </div>
         </div>
     <?php } ?>
@@ -1487,19 +1487,19 @@ if (($noNativeLogin === false || $noDiscordLogin === false) && $info['expire_tim
                 <button type="button" onclick="markPoiSubmitted(event);" class="markpoiid"><i
                         class="fa fa-refresh"
                         style="margin-right:10px; vertical-align: middle; font-size: 1.5em;"></i><?php echo i8ln( 'Submitted' ); ?>
-		</button>
+        </button>
                 <button type="button" onclick="markPoiDeclined(event);" class="markpoiid"><i
                         class="fa fa-times"
                         style="margin-right:10px; vertical-align: middle; font-size: 1.5em;"></i><?php echo i8ln( 'Declined' ); ?>
-		</button>
+        </button>
                 <button type="button" onclick="markPoiResubmit(event);" class="markpoiid"><i
                         class="fa fa-times"
                         style="margin-right:10px; vertical-align: middle; font-size: 1.5em;"></i><?php echo i8ln( 'Resubmit' ); ?>
-		</button>
+        </button>
                 <button type="button" onclick="markNotCandidate(event);" class="markpoiid"><i
                         class="fa fa-times"
                         style="margin-right:10px; vertical-align: middle; font-size: 1.5em;"></i><?php echo i8ln( 'Not a candidate' ); ?>
-		</button>
+        </button>
             </div>
         </div>
     <?php } ?>
@@ -1526,11 +1526,11 @@ if (($noNativeLogin === false || $noDiscordLogin === false) && $info['expire_tim
             $json    = file_get_contents( 'static/dist/data/conditiontype.min.json' );
             $conditiontypes   = json_decode( $json, true );
 
-	    $json    = file_get_contents( 'static/dist/data/pokemon.min.json' );
-	    $encounters = json_decode( $json, true );
+        $json    = file_get_contents( 'static/dist/data/pokemon.min.json' );
+        $encounters = json_decode( $json, true );
 
-	    $json    = file_get_contents( 'static/dist/data/items.min.json' );
-	    $items = json_decode( $json, true );
+        $json    = file_get_contents( 'static/dist/data/items.min.json' );
+        $items = json_decode( $json, true );
             ?>
             <label for="questTypeList"><?php echo i8ln( 'Quest' ); ?>
             <select id="questTypeList" name="questTypeList" class="questTypeList">
@@ -1544,7 +1544,7 @@ if (($noNativeLogin === false || $noDiscordLogin === false) && $info['expire_tim
                     }
                 }
                 ?>
-	    </select>
+        </select>
             <select id="questAmountList" name="questAmountList" class="questAmountList">
                 <option />
                 <option value="1">1</option>
@@ -1557,7 +1557,7 @@ if (($noNativeLogin === false || $noDiscordLogin === false) && $info['expire_tim
                 <option value="8">8</option>
                 <option value="9">9</option>
                 <option value="10">10</option>
-	    </select>
+        </select>
             </label>
             <label for="conditionTypeList"><?php echo i8ln( 'Conditions' ); ?>
             <select id="conditionTypeList" name="conditionTypeList" class="conditionTypeList">
@@ -1571,9 +1571,9 @@ if (($noNativeLogin === false || $noDiscordLogin === false) && $info['expire_tim
                     }
                 }
                 ?>
-	    </select>
+        </select>
             <select id="pokeCatchList" name="pokeCatchList" class="pokeCatchList" multiple></select>
-	    <select id="typeCatchList" name="typeCatchList" class="typeCatchList" multiple>
+        <select id="typeCatchList" name="typeCatchList" class="typeCatchList" multiple>
                 <option value="1"><?php echo i8ln( 'Normal' ); ?></option>
                 <option value="2"><?php echo i8ln( 'Fighting' ); ?></option>
                 <option value="3"><?php echo i8ln( 'Flying' ); ?></option>
@@ -1599,15 +1599,15 @@ if (($noNativeLogin === false || $noDiscordLogin === false) && $info['expire_tim
                 <option value="3">3</option>
                 <option value="4">4</option>
                 <option value="5">5</option>
-	    </select>
-	    <select id="throwTypeList" name="throwTypeList" class="throwTypeList">
-		<option />
+        </select>
+        <select id="throwTypeList" name="throwTypeList" class="throwTypeList">
+        <option />
                 <option value="10"><?php echo i8ln( 'Nice' ); ?></option>
                 <option value="11"><?php echo i8ln( 'Great' ); ?></option>
                 <option value="12"><?php echo i8ln( 'Excellent' ); ?></option>
             </select>
             <select id="curveThrow" class="curveThrow" class="curveThrow">
-		<option />
+        <option />
                 <option value="0"><?php echo i8ln( 'Without curve throw' ); ?></option>
                 <option value="1"><?php echo i8ln( 'With curve throw' ); ?></option>
             </select>
@@ -1624,7 +1624,7 @@ if (($noNativeLogin === false || $noDiscordLogin === false) && $info['expire_tim
                     }
                 }
                 ?>
-	    </select>
+        </select>
             <select id="pokeQuestList" name="pokeQuestList" class="pokeQuestList">
                 <option />
                 <?php
@@ -1636,7 +1636,7 @@ if (($noNativeLogin === false || $noDiscordLogin === false) && $info['expire_tim
                     }
                 }
                 ?>
-	    </select>
+        </select>
             <select id="itemQuestList" name="itemQuestList" class="itemQuestList">
                 <option />
                 <?php
@@ -1648,7 +1648,7 @@ if (($noNativeLogin === false || $noDiscordLogin === false) && $info['expire_tim
                     }
                 }
                 ?>
-	    </select>
+        </select>
             <select id="itemAmountList" name="itemAmountList" class="itemAmountList">
                 <option />
                 <option value="1">1</option>
@@ -1669,7 +1669,7 @@ if (($noNativeLogin === false || $noDiscordLogin === false) && $info['expire_tim
                 <option value="1000">1000</option>
                 <option value="1500">1500</option>
                 <option value="2000">2000</option>
-	    </select>
+        </select>
             </label>
             <div class="button-container">
                 <button type="button" onclick="manualQuestData(event);" class="submitting-quest"><i
@@ -1703,7 +1703,7 @@ if (($noNativeLogin === false || $noDiscordLogin === false) && $info['expire_tim
                         <?php }
                         if ( ! $noSearchPortals ) { ?>
                             <li><a href="#tab-portals"><img src="static/images/portal.png"/></a></li>
-			<?php } ?>
+            <?php } ?>
                     </ul>
                     <?php if ( ! $noQuests && ! $noSearchManualQuests ) { ?>
                         <div id="tab-rewards">
@@ -1728,23 +1728,23 @@ if (($noNativeLogin === false || $noDiscordLogin === false) && $info['expire_tim
                                    data-type="forts" class="search-input"/>
                             <ul id="gym-search-results" class="search-results gym-results"></ul>
                         </div>
-		    <?php } ?>
-		    <?php if ( ! $noSearchPokestops ) { ?>
+            <?php } ?>
+            <?php if ( ! $noSearchPokestops ) { ?>
                         <div id="tab-pokestop">
                             <input type="search" id="pokestop-search" name="pokestop-search"
                                    placeholder="<?php echo i8ln( 'Enter Pokestop Name' ); ?>" data-type="pokestops"
                                    class="search-input"/>
                             <ul id="pokestop-search-results" class="search-results pokestop-results"></ul>
                         </div>
-		    <?php } ?>
-		    <?php if ( ! $noSearchPortals ) { ?>
+            <?php } ?>
+            <?php if ( ! $noSearchPortals ) { ?>
                         <div id="tab-portals">
                             <input type="search" id="portals-search" name="portals-search"
                                    placeholder="<?php echo i8ln( 'Enter Portal Name' ); ?>" data-type="portals"
                                    class="search-input"/>
                             <ul id="portals-search-results" class="search-results portals-results"></ul>
                         </div>
-		    <?php } ?>
+            <?php } ?>
                 </div>
             </div>
         </div>
@@ -1775,7 +1775,7 @@ if (($noNativeLogin === false || $noDiscordLogin === false) && $info['expire_tim
                     <?php if ( ! $noAddNewNests && !$noNests ) {
                         ?>
                         <li><a href="#tab-nests"><img src="static/images/nest.png"/></a></li>
-		    <?php } ?>
+            <?php } ?>
                     <?php if ( ! $noAddNewCommunity && !$noCommunity ) {
                         ?>
                         <li><a href="#tab-communities"><img src="static/images/community.png"/></a></li>
@@ -1844,14 +1844,14 @@ if (($noNativeLogin === false || $noDiscordLogin === false) && $info['expire_tim
                     <div id="tab-communities">
                         <input type="text" name="community-name" class="community-name"
                                placeholder="<?php echo i8ln( 'Enter Community Name' ); ?>" data-type="name"
-			       class="search-input">
+                   class="search-input">
                         <input type="text" name="community-description" class="community-description"
                                placeholder="<?php echo i8ln( 'Enter description' ); ?>" data-type="description"
-			       class="search-input">
+                   class="search-input">
                         <input type="text" name="community-invite" class="community-invite"
                                placeholder="<?php echo i8ln( 'Whatsapp, Telegram, Discord Link' ); ?>" data-type="invite-link"
-			       class="search-input">
-			<h6><center><?php echo i8ln( 'Link must be valid and start with https://' ); ?></center></h6>
+                   class="search-input">
+            <h6><center><?php echo i8ln( 'Link must be valid and start with https://' ); ?></center></h6>
                         <div class="button-container">
                             <button type="button" onclick="submitNewCommunity(event);" class="submitting-community"><i
                                     class="fa fa-comments"
@@ -1865,12 +1865,12 @@ if (($noNativeLogin === false || $noDiscordLogin === false) && $info['expire_tim
                     <div id="tab-poi">
                         <input type="text" name="poi-name" class="poi-name"
                                placeholder="<?php echo i8ln( 'Enter candidate Name' ); ?>" data-type="name"
-			       class="search-input">
+                   class="search-input">
                         <input type="text" name="poi-description" class="poi-description"
                                placeholder="<?php echo i8ln( 'Enter candidate description' ); ?>" data-type="description"
-			       class="search-input">
+                   class="search-input">
                         <div class="button-container">
-			<h6><center><?php echo i8ln( 'If you submit a POI candidate you agree that your discord username will be shown in the marker label' ); ?></center></h6>
+            <h6><center><?php echo i8ln( 'If you submit a POI candidate you agree that your discord username will be shown in the marker label' ); ?></center></h6>
                             <button type="button" onclick="submitPoi(event);" class="submitting-poi"><i
                                     class="fa fa-comments"
                                     style="margin-right:10px;"></i><?php echo i8ln( 'Submit POI candidate' ); ?>

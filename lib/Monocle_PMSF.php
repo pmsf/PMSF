@@ -177,7 +177,7 @@ class Monocle_PMSF extends Monocle
         $params[':neLng'] = $neLng;
         if (!empty($quests) && $quests === 'true') {
             $tmpSQL = '';
-	    if (count($qpreids)) {
+        if (count($qpreids)) {
                 $pkmn_in = '';
                 $p = 1;
                 foreach ($qpreids as $qpreid) {
@@ -206,7 +206,7 @@ class Monocle_PMSF extends Monocle
             if ($reloaddustamount == "true") {
                 $tmpSQL .= "(json_extract(json_extract(`quest_rewards`,'$[*].type'),'$[0]') = 3 AND json_extract(json_extract(`quest_rewards`,'$[*].info.amount'),'$[0]') > :amount)";
                 $params[':amount'] = intval($dustamount);
-	    } else {
+        } else {
                 $tmpSQL .= "";
             }
             $conds[] = $tmpSQL;
@@ -235,8 +235,8 @@ class Monocle_PMSF extends Monocle
         json_extract(json_extract(`quest_conditions`,'$[*].info'),'$[0]') AS quest_condition_info,
         quest_reward_type,
         json_extract(json_extract(`quest_rewards`,'$[*].info'),'$[0]') AS quest_reward_info,
-	json_extract(json_extract(`quest_rewards`,'$[*].info.amount'),'$[0]') AS quest_reward_amount,
-	json_extract(json_extract(`quest_rewards`,'$[*].info.amount'),'$[0]') AS quest_dust_amount,
+    json_extract(json_extract(`quest_rewards`,'$[*].info.amount'),'$[0]') AS quest_reward_amount,
+    json_extract(json_extract(`quest_rewards`,'$[*].info.amount'),'$[0]') AS quest_dust_amount,
         json_extract(json_extract(`quest_rewards`,'$[*].info.form_id'),'$[0]') AS quest_pokemon_formid,
         json_extract(json_extract(`quest_rewards`,'$[*].info.shiny'),'$[0]') AS quest_pokemon_shiny
         FROM pokestops

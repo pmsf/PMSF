@@ -182,7 +182,7 @@ class Monocle_MAD extends Monocle
         $params[':neLng'] = $neLng;
         if (!empty($quests) && $quests === 'true') {
             $tmpSQL = '';
-	    if (count($qpreids)) {
+        if (count($qpreids)) {
                 $pkmn_in = '';
                 $p = 1;
                 foreach ($qpreids as $qpreid) {
@@ -211,7 +211,7 @@ class Monocle_MAD extends Monocle
             if ($reloaddustamount == "true") {
                 $tmpSQL .= "tq.quest_stardust > :amount";
                 $params[':amount'] = intval($dustamount);
-	    } else {
+        } else {
                 $tmpSQL .= "";
             }
             $conds[] = $tmpSQL;
@@ -249,8 +249,8 @@ class Monocle_MAD extends Monocle
         json_extract(json_extract(`quest_reward`,'$[*].pokemon_encounter.pokemon_display.is_shiny'),'$[0]') AS quest_pokemon_shiny,
         tq.quest_item_amount AS quest_reward_amount,
         tq.quest_stardust AS quest_dust_amount
-	FROM pokestops p
-	LEFT JOIN trs_quest tq ON tq.GUID = p.external_id
+    FROM pokestops p
+    LEFT JOIN trs_quest tq ON tq.GUID = p.external_id
         WHERE :conditions";
 
         $query = str_replace(":conditions", join(" AND ", $conds), $query);
@@ -265,7 +265,7 @@ class Monocle_MAD extends Monocle
                 $item_pid = null;
                 $pokestop["quest_item_id"] = null;
             }
-			$mon_pid = $pokestop["quest_pokemon_id"];
+            $mon_pid = $pokestop["quest_pokemon_id"];
             if ($mon_pid == "0") {
                 $mon_pid = null;
                 $pokestop["quest_pokemon_id"] = null;
