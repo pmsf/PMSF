@@ -953,7 +953,6 @@ function gymLabel(item) {
     var lastModified = item['last_modified']
     var name = item['name']
     var url = item['url']
-    var members = item['pokemon']
     var form = item['form']
 
     var raidSpawned = item['raid_level'] != null
@@ -975,7 +974,6 @@ function gymLabel(item) {
             }
             raidStr += '<br>' + item.raid_pokemon_name
             if (form !== null && form > 0 && forms.length > form) {
-                // todo: check how rocket map handles this (if at all):
                 if (item['raid_pokemon_id'] === 132) {
                     raidStr += ' (' + idToPokemon[item['form']].name + ')'
                 } else {
@@ -1049,25 +1047,6 @@ function gymLabel(item) {
         raidStr += '<i class="fa fa-trophy toggle-ex-gym" onclick="toggleExGym(event);" data-id="' + item['gym_id'] + '"></i>'
     }
 
-    var park = ''
-    if ((item['park'] !== '0' && item['park'] !== 'None' && item['park'] !== undefined && item['park']) && (noParkInfo === false)) {
-        if (item['park'] === 1) {
-            // RDM & RM only stores boolean, so just call it "Park Gym"
-            park = i8ln('Park Gym')
-        } else {
-            park = i8ln('Park') + ': ' + item['park']
-        }
-    }
-
-    var memberStr = ''
-    for (i = 0; i < members.length; i++) {
-        memberStr +=
-            '<span class="gym-member" title="' + members[i].pokemon_name + ' | ' + members[i].trainer_name + ' (Lvl ' + members[i].trainer_level + ')">' +
-            '<i class="pokemon-sprite n' + members[i].pokemon_id + '"></i>' +
-            '<span class="cp team-' + teamId + '">' + members[i].pokemon_cp + '</span>' +
-            '</span>'
-    }
-
     var lastScannedStr = ''
     if (lastScanned != null) {
         lastScannedStr =
@@ -1101,9 +1080,6 @@ function gymLabel(item) {
             '<div><b>6 ' + i8ln('Free Slots') + '</b></div>' +
             raidStr +
             '<div>' +
-            park +
-            '</div>' +
-            '<div>' +
             '<a href="javascript:void(0);" class="gym-navigate" onclick="javascript:openMapDirections(' + latitude + ',' + longitude + ');" title="' + i8ln('View in Maps') + '">' + latitude.toFixed(6) + ' , ' + longitude.toFixed(7) + '</a> - <a href="./?lat=' + latitude + '&lon=' + longitude + '&zoom=16">Share link</a>' +
             '</div>' +
             '<div>' +
@@ -1129,10 +1105,6 @@ function gymLabel(item) {
         }
     } else {
         var freeSlots = item['slots_available']
-        var gymCp = ''
-        if (item['total_gym_cp'] != null) {
-            gymCp = '<div>' + i8ln('Total Gym CP') + ' : <b>' + item.total_gym_cp + '</b></div>'
-        }
         str =
             '<div class="gym-label">' +
             '<center>' +
@@ -1146,13 +1118,6 @@ function gymLabel(item) {
             '</div>' +
             '<div><b>' + freeSlots + ' ' + i8ln('Free Slots') + '</b></div>' +
             raidStr +
-            '<div>' +
-            park +
-            '</div>' +
-            gymCp +
-            '<div>' +
-            memberStr +
-            '</div>' +
             '<div>' +
             '<a href="javascript:void(0);" class="gym-navigate" onclick="javascript:openMapDirections(' + latitude + ',' + longitude + ');" title="' + i8ln('View in Maps') + '">' + latitude.toFixed(6) + ' , ' + longitude.toFixed(7) + '</a> - <a href="./?lat=' + latitude + '&lon=' + longitude + '&zoom=16">Share link</a>' +
             '</div>' +
@@ -1178,7 +1143,6 @@ function gymLabel(item) {
                 '</center>'
         }
     }
-
     return str
 }
 
@@ -5281,7 +5245,6 @@ function showGymDetails(id) { // eslint-disable-line no-unused-vars
                 '</div>'
         }
 
-        var pokemon = result.pokemon !== undefined ? result.pokemon : []
         var freeSlots = result.slots_available
         var gymLevelStr = ''
         if (result.team_id !== 0) {
@@ -5289,16 +5252,6 @@ function showGymDetails(id) { // eslint-disable-line no-unused-vars
                 '<center class="team-' + result.team_id + '-text">' +
                 '<b class="team-' + result.team_id + '-text">' + freeSlots + ' ' + i8ln('Free Slots') + '</b>' +
                 '</center>'
-        }
-
-        var park = ''
-        if (((result['park'] !== '0' && result['park'] !== 'None' && result['park'] !== undefined && result['park']) && (noParkInfo === false))) {
-            if (result['park'] === 1) {
-                // RDM & RM only stores boolean, so just call it "Park Gym"
-                park = i8ln('Park Gym')
-            } else {
-                park = i8ln('Park') + ': ' + result['park']
-            }
         }
 
         var raidSpawned = result['raid_level'] != null
@@ -5428,9 +5381,6 @@ function showGymDetails(id) { // eslint-disable-line no-unused-vars
             '</div>' +
             raidStr +
             gymLevelStr +
-            '<div>' +
-            park +
-            '</div>' +
             '<div style="font-size: .7em">' +
             i8ln('Last Modified') + ' : ' + lastModifiedStr +
             '</div>' +
@@ -5440,112 +5390,7 @@ function showGymDetails(id) { // eslint-disable-line no-unused-vars
             '</div>' +
             '</center>'
 
-        if (pokemon.length) {
-            $.each(pokemon, function (i, pokemon) {
-                var perfectPercent = getIv(pokemon.iv_attack, pokemon.iv_defense, pokemon.iv_stamina)
-                var moveEnergy = Math.round(100 / pokemon.move_2_energy)
-
-                var pokemonIdStr = ''
-                if (pokemon.pokemon_id <= 9) {
-                    pokemonIdStr = '00' + pokemon.pokemon_id
-                } else if (pokemon.pokemon_id <= 99) {
-                    pokemonIdStr = '0' + pokemon.pokemon_id
-                } else {
-                    pokemonIdStr = pokemon.pokemon_id
-                }
-                var formStr = ''
-                if (pokemon.form === '0' || pokemon.form === null || pokemon.form === 0 || pokemon.form === undefined) {
-                    formStr = '00'
-                } else {
-                    formStr = pokemon.form
-                }
-                pokemonHtml +=
-                    '<tr onclick=toggleGymPokemonDetails(this)>' +
-                    '<td width="30px">' +
-                    '<img src="' + iconpath + 'pokemon_icon_' + pokemonIdStr + '_' + formStr + '.png"/>' +
-                    '</td>' +
-                    '<td class="team-' + result.team_id + '-text">' +
-                    '<div style="line-height:1em">' + pokemon.pokemon_name + '</div>' +
-                    '<div class="cp">CP ' + pokemon.pokemon_cp + '</div>' +
-                    '</td>' +
-                    '<td width="190" class="team-' + result.team_id + '-text" align="center">'
-                if (pokemon.trainer_level) {
-                    pokemonHtml +=
-                        '<div class="trainer-level">' + pokemon.trainer_level + '</div>'
-                }
-                if (pokemon.trainer_name) {
-                    pokemonHtml +=
-                        '<div style="line-height: 1em">' + pokemon.trainer_name + '</div>'
-                }
-                pokemonHtml +=
-                    '</td>' +
-                    '<td width="10">' +
-                    '<!--<a href="#" onclick="toggleGymPokemonDetails(this)">-->' +
-                    '<i class="team-' + result.team_id + '-text fa fa-angle-double-down"></i>' +
-                    '<!--</a>-->' +
-                    '</td>' +
-                    '</tr>' +
-                    '<tr class="details">' +
-                    '<td colspan="2">' +
-                    '<div class="ivs">' +
-                    '<div class="iv">' +
-                    '<div class="type">ATK</div>' +
-                    '<div class="value">' +
-                    pokemon.iv_attack +
-                    '</div>' +
-                    '</div>' +
-                    '<div class="iv">' +
-                    '<div class="type">DEF</div>' +
-                    '<div class="value">' +
-                    pokemon.iv_defense +
-                    '</div>' +
-                    '</div>' +
-                    '<div class="iv">' +
-                    '<div class="type">STA</div>' +
-                    '<div class="value">' +
-                    pokemon.iv_stamina +
-                    '</div>' +
-                    '</div>' +
-                    '<div class="iv" style="width: 36px">' +
-                    '<div class="type">PERFECT</div>' +
-                    '<div class="value">' +
-                    perfectPercent.toFixed(0) + '' +
-                    '<span style="font-size: .6em">%</span>' +
-                    '</div>' +
-                    '</div>' +
-                    '</div>' +
-                    '</td>' +
-                    '<td colspan="2">' +
-                    '<div class="moves">' +
-                    '<div class="move">' +
-                    '<div class="name">' +
-                    pokemon.move_1_name +
-                    ' <div class="type ' + pokemon.move_1_type.type_en.toLowerCase() + '">' + pokemon.move_1_type.type + '</div>' +
-                    '</div>' +
-                    '<div class="damage">' +
-                    pokemon.move_1_damage +
-                    '</div>' +
-                    '</div>' +
-                    '<br>' +
-                    '<div class="move">' +
-                    '<div class="name">' +
-                    pokemon.move_2_name +
-                    ' <div class="type ' + pokemon.move_2_type.type_en.toLowerCase() + '">' + pokemon.move_2_type.type + '</div>' +
-                    '<div>' +
-                    '<i class="move-bar-sprite move-bar-sprite-' + moveEnergy + '"></i>' +
-                    '</div>' +
-                    '</div>' +
-                    '<div class="damage">' +
-                    pokemon.move_2_damage +
-                    '</div>' +
-                    '</div>' +
-                    '</div>' +
-                    '</td>' +
-                    '</tr>'
-            })
-
-            pokemonHtml = '<table><tbody>' + pokemonHtml + '</tbody></table>'
-        } else if (result.team_id === 0) {
+        if (result.team_id === 0) {
             pokemonHtml = ''
         } else {
             var pokemonIdStr = ''
@@ -5564,7 +5409,7 @@ function showGymDetails(id) { // eslint-disable-line no-unused-vars
             }
             pokemonHtml =
                 '<center class="team-' + result.team_id + '-text">' +
-                'Gym Leader:<br>' +
+                i8ln('Gym Leader') + ':<br>' +
                 '<img src="' + iconpath + 'pokemon_icon_' + pokemonIdStr + '_' + guardFormStr + '.png"/><br>' +
                 '<b class="team-' + result.team_id + '-text">' + result.guard_pokemon_name + '</b>' +
                 '</center>'
