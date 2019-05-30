@@ -132,7 +132,6 @@ var gymTypes = ['Uncontested', 'Mystic', 'Valor', 'Instinct']
 var triggerGyms = Store.get('triggerGyms')
 var onlyTriggerGyms
 var noExGyms
-var noParkInfo
 var toastrOptions = {
     'closeButton': true,
     'debug': false,

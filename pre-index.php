@@ -1974,7 +1974,6 @@ if ( $blockIframe ) {
     var mapFork = '<?php echo strtolower($fork); ?>';
     var triggerGyms = <?php echo $triggerGyms ?>;
     var noExGyms = <?php echo $noExGyms === true ? 'true' : 'false' ?>;
-    var noParkInfo = <?php echo $noParkInfo === true ? 'true' : 'false' ?>;
     var onlyTriggerGyms = <?php echo $onlyTriggerGyms === true ? 'true' : 'false' ?>;
     var showBigKarp = <?php echo $noBigKarp === true ? 'true' : 'false' ?>;
     var showTinyRat = <?php echo $noTinyRat === true ? 'true' : 'false' ?>;
