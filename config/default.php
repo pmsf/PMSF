@@ -292,13 +292,6 @@ $noExGyms = false;                                                  // Do not di
 $noParkInfo = false;                                                // Do not display Park info on the map
 
 //-----------------------------------------------------
-// Raid API
-//-----------------------------------------------------
-
-$raidApiKey = '';                                                   // Raid API Key, '' to deny access
-$sendRaidData = false;                                              // Send Raid data, false to only send gym data
-
-//-----------------------------------------------------
 // Manual Submissions
 //-----------------------------------------------------
 $noSubmit = true;
