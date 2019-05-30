@@ -290,9 +290,6 @@ class RDM extends Scanner
         $gyms = $this->query_gyms($conds, $params);
         $gym = $gyms[0];
 
-        $select = "guarding_pokemon_id";
-
-        $gym["pokemon"] = $this->query_gym_defenders($gymId, $select);
         return $gym;
     }
 
@@ -386,32 +383,6 @@ class RDM extends Scanner
             $data[] = $gym;
 
             unset($gyms[$i]);
-            $i++;
-        }
-        return $data;
-    }
-
-    private function query_gym_defenders($gymId, $select)
-    {
-        global $db;
-
-        $query = "SELECT :select
-        FROM gym
-        WHERE id = :gymId";
-
-        $query = str_replace(":select", $select, $query);
-        $gym_defenders = $db->query($query, [":gymId" => $gymId])->fetchAll(\PDO::FETCH_ASSOC);
-
-        $data = array();
-        $i = 0;
-
-        foreach ($gym_defenders as $defender) {
-            $pid = $defender["pokemon_id"];
-            $defender["pokemon_name"] = i8ln($this->data[$pid]["name"]);
-
-            $data[] = $defender;
-
-            unset($gym_defenders[$i]);
             $i++;
         }
         return $data;
