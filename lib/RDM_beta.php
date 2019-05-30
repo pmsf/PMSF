@@ -154,7 +154,7 @@ class RDM_beta extends RDM
         $data = array();
         $i = 0;
         $lastlat = 0;
-        $lastlon=0;
+        $lastlon = 0;
         $lasti = 0;
         
         foreach ($pokemons as $pokemon) {
@@ -164,16 +164,16 @@ class RDM_beta extends RDM
                 $pokemon["longitude"] = floatval($pokemon["longitude"]);
                 $lastlat = floatval($pokemon["latitude"]);
                 $lastlon = floatval($pokemon["longitude"]);
-                if (abs($pokemon["latitude"] - $lastlat) < 0.0001 && abs($pokemon["longitude"] - $lastlon) < 0.0001){
+                if (abs($pokemon["latitude"] - $lastlat) < 0.0001 && abs($pokemon["longitude"] - $lastlon) < 0.0001) {
                     $lasti = $lasti + 1;
                 } else {
                     $lasti = 0;
                 }
                 $pokemon["latitude"] = $pokemon["latitude"] + 0.0003*cos(deg2rad($lasti*45));
-		        $pokemon["longitude"] = $pokemon["longitude"] + 0.0003*sin(deg2rad($lasti*45));
+                $pokemon["longitude"] = $pokemon["longitude"] + 0.0003*sin(deg2rad($lasti*45));
             } else {
                 $pokemon["latitude"] = floatval($pokemon["latitude"]);
-		        $pokemon["longitude"] = floatval($pokemon["longitude"]);
+                $pokemon["longitude"] = floatval($pokemon["longitude"]);
             }
             $pokemon["disappear_time"] = $pokemon["disappear_time"] * 1000;
 
@@ -231,7 +231,7 @@ class RDM_beta extends RDM
         $params[':neLng'] = $neLng;
         if (!empty($quests) && $quests === 'true') {
             $pokemonSQL = '';
-	    if (count($qpeids)) {
+        if (count($qpeids)) {
                 $pkmn_in = '';
                 $p = 1;
                 foreach ($qpeids as $qpeid) {
@@ -257,8 +257,8 @@ class RDM_beta extends RDM
                 $itemSQL .= "quest_item_id NOT IN ( $item_in )";
             } else {
                 $itemSQL .= "quest_item_id IS NOT NULL";
-	    }
-	    $dustSQL = '';
+        }
+        $dustSQL = '';
             if (!empty($dustamount) && !is_nan((float)$dustamount) && $dustamount > 0) {
                 $dustSQL .= "OR (json_extract(json_extract(`quest_rewards`,'$[*].type'),'$[0]') = 3 AND json_extract(json_extract(`quest_rewards`,'$[*].info.amount'),'$[0]') > :amount)";
                 $params[':amount'] = intval($dustamount);
@@ -271,7 +271,7 @@ class RDM_beta extends RDM
             $params[':oswLng'] = $oSwLng;
             $params[':oneLat'] = $oNeLat;
             $params[':oneLng'] = $oNeLng;
-	}
+    }
         if (!empty($lures) && $lures === 'true') {
             $conds[] = "lure_expire_timestamp > :time";
             $params[':time'] = time();
@@ -295,7 +295,7 @@ class RDM_beta extends RDM
         $params[':neLng'] = $neLng;
         if (!empty($quests) && $quests === 'true') {
             $tmpSQL = '';
-	    if (count($qpreids)) {
+        if (count($qpreids)) {
                 $pkmn_in = '';
                 $p = 1;
                 foreach ($qpreids as $qpreid) {
@@ -324,7 +324,7 @@ class RDM_beta extends RDM
             if ($reloaddustamount == "true") {
                 $tmpSQL .= "(json_extract(json_extract(`quest_rewards`,'$[*].type'),'$[0]') = 3 AND json_extract(json_extract(`quest_rewards`,'$[*].info.amount'),'$[0]') > :amount)";
                 $params[':amount'] = intval($dustamount);
-	    } else {
+        } else {
                 $tmpSQL .= "";
             }
             $conds[] = $tmpSQL;
@@ -334,7 +334,7 @@ class RDM_beta extends RDM
 
     public function query_stops($conds, $params)
     {
-        global $db, $noTrainerName, $noManualQuests;
+        global $db, $noManualQuests;
 
         $query = "SELECT id AS pokestop_id,
         lat AS latitude,
@@ -373,7 +373,7 @@ class RDM_beta extends RDM
                 $item_pid = null;
                 $pokestop["quest_item_id"] = null;
             }
-			$mon_pid = $pokestop["quest_pokemon_id"];
+            $mon_pid = $pokestop["quest_pokemon_id"];
             if ($mon_pid == "0") {
                 $mon_pid = null;
                 $pokestop["quest_pokemon_id"] = null;
@@ -390,16 +390,12 @@ class RDM_beta extends RDM
             $pokestop["quest_item_id"] = intval($pokestop["quest_item_id"]);
             $pokestop["quest_reward_amount"] = intval($pokestop["quest_reward_amount"]);
             $pokestop["quest_dust_amount"] = intval($pokestop["quest_dust_amount"]);
-			$pokestop["url"] = ! empty($pokestop["url"]) ? str_replace("http://", "https://images.weserv.nl/?url=", $pokestop["url"]) : null;
+            $pokestop["url"] = ! empty($pokestop["url"]) ? str_replace("http://", "https://images.weserv.nl/?url=", $pokestop["url"]) : null;
             $pokestop["lure_expiration"] = $pokestop["lure_expiration"] * 1000;
             $pokestop["lure_id"] = $pokestop["lure_id"] - 500;
             $pokestop["quest_item_name"] = empty($item_pid) ? null : i8ln($this->items[$item_pid]["name"]);
             $pokestop["quest_pokemon_name"] = empty($mon_pid) ? null : i8ln($this->data[$mon_pid]["name"]);
 
-            if ($noTrainerName === true) {
-                // trainer names hidden, so don't show trainer who lured
-                unset($pokestop["lure_user"]);
-            }
             $data[] = $pokestop;
 
             unset($pokestops[$i]);

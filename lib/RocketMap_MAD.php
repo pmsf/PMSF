@@ -249,7 +249,7 @@ class RocketMap_MAD extends RocketMap
         $params[':neLng'] = $neLng;
         if (!empty($quests) && $quests === 'true') {
             $tmpSQL = '';
-	    if (count($qpreids)) {
+        if (count($qpreids)) {
                 $pkmn_in = '';
                 $p = 1;
                 foreach ($qpreids as $qpreid) {
@@ -278,7 +278,7 @@ class RocketMap_MAD extends RocketMap
             if ($reloaddustamount == "true") {
                 $tmpSQL .= "tq.quest_stardust > :amount";
                 $params[':amount'] = intval($dustamount);
-	    } else {
+        } else {
                 $tmpSQL .= "";
             }
             $conds[] = $tmpSQL;
@@ -331,7 +331,7 @@ class RocketMap_MAD extends RocketMap
                 $item_pid = null;
                 $pokestop["quest_item_id"] = null;
             }
-			$mon_pid = $pokestop["quest_pokemon_id"];
+            $mon_pid = $pokestop["quest_pokemon_id"];
             if ($mon_pid == "0") {
                 $mon_pid = null;
                 $pokestop["quest_pokemon_id"] = null;
