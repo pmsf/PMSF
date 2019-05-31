@@ -79,12 +79,6 @@ class RocketMap_MAD extends RocketMap
         $gyms = $this->query_gyms($conds, $params);
         $gym = $gyms[0];
 
-        $select = "gymmember.gym_id, pokemon_id, cp AS pokemon_cp, move_1, move_2, iv_attack, iv_defense, iv_stamina";
-        global $noTrainerName;
-        if (!$noTrainerName) {
-            $select .= ", trainer_name, level AS trainer_level";
-        }
-        $gym["pokemon"] = $this->query_gym_defenders($gymId, $select);
         return $gym;
     }
 
@@ -97,7 +91,6 @@ class RocketMap_MAD extends RocketMap
         longitude, 
         guard_pokemon_id, 
         slots_available, 
-        total_cp, 
         Unix_timestamp(Convert_tz(last_modified, '+00:00', @@global.time_zone)) AS last_modified, 
         Unix_timestamp(Convert_tz(gym.last_scanned, '+00:00', @@global.time_zone)) AS last_scanned, 
         team_id, 
