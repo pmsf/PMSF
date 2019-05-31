@@ -8,11 +8,11 @@ class RDM extends Search
     {
         global $db, $defaultUnit, $maxSearchResults, $maxSearchNameLength;
 
-	$conds = array();
-	$params = array();
+    $conds = array();
+    $params = array();
 
-	$params[':lat'] = $lat;
-	$params[':lon'] = $lon;
+    $params[':lat'] = $lat;
+    $params[':lon'] = $lon;
 
         $pjson = file_get_contents( 'static/dist/data/pokemon.min.json' );
         $prewardsjson = json_decode( $pjson, true );
@@ -33,45 +33,45 @@ class RDM extends Search
                 $iresids[] = $i;
             }
         }
-	if (!empty($presids)) {
-		$conds[] = "quest_pokemon_id IN (" . implode(',',$presids) . ")";
-	}
-	if (!empty($iresids)) {
-		$conds[] = "quest_item_id IN (" . implode(',',$iresids) . ")";
-	}
-	$query = "SELECT id,
+    if (!empty($presids)) {
+        $conds[] = "quest_pokemon_id IN (" . implode(',',$presids) . ")";
+    }
+    if (!empty($iresids)) {
+        $conds[] = "quest_item_id IN (" . implode(',',$iresids) . ")";
+    }
+    $query = "SELECT id,
     name,
-	lat,
-	lon,
-	url,
-	quest_type,
-	json_extract(json_extract(`quest_rewards`,'$[*].info.pokemon_id'),'$[0]') AS quest_pokemon_id,
-	json_extract(json_extract(`quest_rewards`,'$[*].info.item_id'),'$[0]') AS quest_item_id, 
-	json_extract(json_extract(`quest_rewards`,'$[*].info.form_id'),'$[0]') AS quest_pokemon_formid,
-	ROUND(( 3959 * acos( cos( radians(:lat) ) * cos( radians( lat ) ) * cos( radians( lon ) - radians(:lon) ) + sin( radians(:lat) ) * sin( radians( lat ) ) ) ),2) AS distance 
-	FROM pokestop
-	WHERE :conditions
-	ORDER BY distance LIMIT " . $maxSearchResults . "";
+    lat,
+    lon,
+    url,
+    quest_type,
+    quest_pokemon_id,
+    quest_item_id, 
+    json_extract(json_extract(`quest_rewards`,'$[*].info.form_id'),'$[0]') AS quest_pokemon_formid,
+    ROUND(( 3959 * acos( cos( radians(:lat) ) * cos( radians( lat ) ) * cos( radians( lon ) - radians(:lon) ) + sin( radians(:lat) ) * sin( radians( lat ) ) ) ),2) AS distance 
+    FROM pokestop
+    WHERE :conditions
+    ORDER BY distance LIMIT " . $maxSearchResults . "";
 
-	$query = str_replace(":conditions", join(" OR ", $conds), $query);
+    $query = str_replace(":conditions", join(" OR ", $conds), $query);
 
-	$rewards = $db->query($query, $params)->fetchAll(\PDO::FETCH_ASSOC);
+    $rewards = $db->query($query, $params)->fetchAll(\PDO::FETCH_ASSOC);
 
-	$data = array();
+    $data = array();
 
-	foreach($rewards as $reward){
+    foreach($rewards as $reward){
         $reward['pokemon_name'] = !empty($reward['pokemon_name']) ? $prewardsjson[$reward['quest_pokemon_id']]['name'] : null;
-	    $reward['quest_pokemon_id'] = intval($reward['quest_pokemon_id']);
+        $reward['quest_pokemon_id'] = intval($reward['quest_pokemon_id']);
         $reward['quest_pokemon_formid'] = intval($reward['quest_pokemon_formid']);
         $reward['item_name'] = !empty($reward['item_name']) ? $irewardsjson[$reward['quest_item_id']]['name'] : null;
-	    $reward['quest_item_id'] = intval($reward['quest_item_id']);
-	    $reward['url'] = str_replace("http://", "https://images.weserv.nl/?url=", $reward['url']);
-	    $reward['name'] = ($maxSearchNameLength > 0) ? htmlspecialchars(substr($reward['name'], 0, $maxSearchNameLength)) : htmlspecialchars($reward['name']);
-            if($defaultUnit === "km"){
-                $reward['distance'] = round($reward['distance'] * 1.60934,2);
-	    }
-	    $data[] = $reward;
-	}
+        $reward['quest_item_id'] = intval($reward['quest_item_id']);
+        $reward['url'] = str_replace("http://", "https://images.weserv.nl/?url=", $reward['url']);
+        $reward['name'] = ($maxSearchNameLength > 0) ? htmlspecialchars(substr($reward['name'], 0, $maxSearchNameLength)) : htmlspecialchars($reward['name']);
+        if($defaultUnit === "km"){
+            $reward['distance'] = round($reward['distance'] * 1.60934,2);
+        }
+        $data[] = $reward;
+    }
         return $data;
     }
 
@@ -83,7 +83,7 @@ class RDM extends Search
         $mons = json_decode( $json, true );
         $resids = [];
         foreach($mons as $k => $mon){
-            if( $k > 386){
+            if( $k > 493){
                 break;
             }
             if(strpos(strtolower(i8ln($mon['name'])), strtolower($term)) !== false){
@@ -108,7 +108,7 @@ class RDM extends Search
             if($defaultUnit === "km"){
                 $data[$k]['distance'] = round($data[$k]['distance'] * 1.60934,2);
             }
-	}
+    }
         return $data;
     }
 
@@ -123,17 +123,17 @@ class RDM extends Search
         }
         $searches = $manualdb->query( $query, [ ':name' => "%" . strtolower( $term ) . "%",  ':lat' => $lat, ':lon' => $lon ] )->fetchAll();
 
-	$data = array();
-	$i = 0;
+    $data = array();
+    $i = 0;
 
         foreach($searches as $search){
             $search['url'] = str_replace("http://", "https://images.weserv.nl/?url=", $search['url']);
             if($defaultUnit === "km"){
                 $search['distance'] = round($search['distance'] * 1.60934,2);
-	    }
-	    $data[] = $search;
-	    unset($searches[$i]);
-	    $i++;
+        }
+        $data[] = $search;
+        unset($searches[$i]);
+        $i++;
         }
         return $data;
     }
@@ -150,17 +150,17 @@ class RDM extends Search
         }
         $searches = $db->query( $query, [ ':name' => "%" . strtolower( $term ) . "%",  ':lat' => $lat, ':lon' => $lon ] )->fetchAll();
 
-	$data = array();
-	$i = 0;
+    $data = array();
+    $i = 0;
 
         foreach($searches as $search){
             $search['url'] = str_replace("http://", "https://images.weserv.nl/?url=", $search['url']);
             if($defaultUnit === "km"){
                 $search['distance'] = round($search['distance'] * 1.60934,2);
-	    }
-	    $data[] = $search;
-	    unset($searches[$i]);
-	    $i++;
+        }
+        $data[] = $search;
+        unset($searches[$i]);
+        $i++;
         }
         return $data;
     }

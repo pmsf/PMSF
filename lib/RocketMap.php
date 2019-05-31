@@ -446,12 +446,6 @@ class RocketMap extends Scanner
         $gyms = $this->query_gyms($conds, $params);
         $gym = $gyms[0];
 
-        $select = "gymmember.gym_id, pokemon_id, cp AS pokemon_cp, move_1, move_2, iv_attack, iv_defense, iv_stamina";
-        global $noTrainerName;
-        if (!$noTrainerName) {
-            $select .= ", trainer_name, level AS trainer_level";
-        }
-        $gym["pokemon"] = $this->query_gym_defenders($gymId, $select);
         return $gym;
     }
 
@@ -464,7 +458,6 @@ class RocketMap extends Scanner
         longitude, 
         guard_pokemon_id, 
         slots_available, 
-        total_cp, 
         Unix_timestamp(Convert_tz(last_modified, '+00:00', @@global.time_zone)) AS last_modified, 
         Unix_timestamp(Convert_tz(gym.last_scanned, '+00:00', @@global.time_zone)) AS last_scanned, 
         team_id, 
@@ -516,58 +509,6 @@ class RocketMap extends Scanner
             $data[] = $gym;
 
             unset($gyms[$i]);
-            $i++;
-        }
-        return $data;
-    }
-
-    public function query_gym_defenders($gymId, $select)
-    {
-        global $db;
-
-
-        $query = "SELECT :select 
-        FROM gymmember 
-        JOIN gympokemon 
-        ON gymmember.pokemon_uid = gympokemon.pokemon_uid 
-        JOIN trainer 
-        ON gympokemon.trainer_name = trainer.name 
-        JOIN gym 
-        ON gym.gym_id = gymmember.gym_id 
-        WHERE gymmember.last_scanned > gym.last_modified 
-        AND gymmember.gym_id IN ( :gymId ) 
-        GROUP BY name 
-        ORDER BY gympokemon.cp DESC";
-
-        $query = str_replace(":select", $select, $query);
-        $gym_defenders = $db->query($query, [":gymId" => $gymId])->fetchAll(\PDO::FETCH_ASSOC);
-
-        $data = array();
-        $i = 0;
-
-        foreach ($gym_defenders as $defender) {
-            $pid = $defender["pokemon_id"];
-            $defender["pokemon_name"] = i8ln($this->data[$pid]["name"]);
-
-            $defender["iv_attack"] = floatval($defender["iv_attack"]);
-            $defender["iv_defense"] = floatval($defender["iv_defense"]);
-            $defender["iv_stamina"] = floatval($defender["iv_stamina"]);
-
-            $defender['move_1_name'] = i8ln($this->moves[$defender['move_1']]['name']);
-            $defender['move_1_damage'] = $this->moves[$defender['move_1']]['damage'];
-            $defender['move_1_energy'] = $this->moves[$defender['move_1']]['energy'];
-            $defender['move_1_type']['type'] = i8ln($this->moves[$defender['move_1']]['type']);
-            $defender['move_1_type']['type_en'] = $this->moves[$defender['move_1']]['type'];
-
-            $defender['move_2_name'] = i8ln($this->moves[$defender['move_2']]['name']);
-            $defender['move_2_damage'] = $this->moves[$defender['move_2']]['damage'];
-            $defender['move_2_energy'] = $this->moves[$defender['move_2']]['energy'];
-            $defender['move_2_type']['type'] = i8ln($this->moves[$defender['move_2']]['type']);
-            $defender['move_2_type']['type_en'] = $this->moves[$defender['move_2']]['type'];
-
-            $data[] = $defender;
-
-            unset($gym_defenders[$i]);
             $i++;
         }
         return $data;
