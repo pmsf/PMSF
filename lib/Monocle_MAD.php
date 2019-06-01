@@ -365,7 +365,6 @@ class Monocle_MAD extends Monocle
         f.lon AS longitude,
         f.name,
         f.url,
-        f.sponsor,
         fs.is_ex_raid_eligible AS park,
         fs.team AS team_id,
         fs.guard_pokemon_id,
@@ -408,7 +407,6 @@ class Monocle_MAD extends Monocle
             $gym["form"] = intval($gym["raid_pokemon_form"]);
             $gym["latitude"] = floatval($gym["latitude"]);
             $gym["longitude"] = floatval($gym["longitude"]);
-            $gym["sponsor"] = intval($gym["sponsor"]);
             $gym["slots_available"] = intval($gym["slots_available"]);
             $gym["last_modified"] = $gym["last_modified"] * 1000;
             $gym["last_scanned"] = $gym["last_scanned"] * 1000;

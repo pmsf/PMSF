@@ -103,7 +103,7 @@ class Monocle extends Scanner
         global $db;
 
         $query = "SELECT :select
-        FROM sightings 
+        FROM sightings
         WHERE :conditions ORDER BY lat,lon";
 
         $query = str_replace(":select", $select, $query);
@@ -199,9 +199,9 @@ class Monocle extends Scanner
     {
         global $db;
 
-        $query = "SELECT external_id AS pokestop_id, 
-        lat AS latitude, 
-        lon AS longitude 
+        $query = "SELECT external_id AS pokestop_id,
+        lat AS latitude,
+        lon AS longitude
         FROM pokestops
         WHERE :conditions";
 
@@ -252,12 +252,12 @@ class Monocle extends Scanner
     {
         global $db;
 
-        $query = "SELECT lat AS latitude, 
-        lon AS longitude, 
-        spawn_id AS spawnpoint_id, 
+        $query = "SELECT lat AS latitude,
+        lon AS longitude,
+        spawn_id AS spawnpoint_id,
         despawn_time,
         duration
-        FROM   spawnpoints 
+        FROM spawnpoints
         WHERE :conditions";
 
         $query = str_replace(":conditions", join(" AND ", $conds), $query);
@@ -326,26 +326,26 @@ class Monocle extends Scanner
     {
         global $db;
 
-        $query = "SELECT f.external_id AS gym_id, 
-        f.lat AS latitude, 
-        f.lon AS longitude, 
-        fs.last_modified, 
-        fs.team AS team_id, 
-        fs.slots_available, 
+        $query = "SELECT f.external_id AS gym_id,
+        f.lat AS latitude,
+        f.lon AS longitude,
+        fs.last_modified,
+        fs.team AS team_id,
+        fs.slots_available,
         fs.guard_pokemon_id,
-        level AS raid_level, 
-        pokemon_id AS raid_pokemon_id, 
-        move_1 AS raid_pokemon_move_1, 
-        move_2 AS raid_pokemon_move_2, 
-        time_battle AS raid_start, 
-        time_end AS raid_end 
+        level AS raid_level,
+        pokemon_id AS raid_pokemon_id,
+        move_1 AS raid_pokemon_move_1,
+        move_2 AS raid_pokemon_move_2,
+        time_battle AS raid_start,
+        time_end AS raid_end
         FROM (SELECT f.id,
           f.external_id,
           f.lat,
-          f.lon, 
+          f.lon,
           MAX(fs.id) AS fort_sightings_id,
           MAX(r.id)  AS raid_id
-          FROM   forts f
+          FROM forts f
           LEFT JOIN fort_sightings fs ON fs.fort_id = f.id
           LEFT JOIN raids r ON r.fort_id = f.id
           GROUP  BY f.id) f

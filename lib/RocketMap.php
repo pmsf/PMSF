@@ -302,7 +302,7 @@ class RocketMap extends Scanner
         earliest_unseen,
         links,
         kind
-        FROM   spawnpoint
+        FROM spawnpoint
         WHERE :conditions";
 
         $query = str_replace(":conditions", join(" AND ", $conds), $query);
@@ -453,28 +453,28 @@ class RocketMap extends Scanner
     {
         global $db;
 
-        $query = "SELECT gym.gym_id, 
-        latitude, 
-        longitude, 
-        guard_pokemon_id, 
-        slots_available, 
-        Unix_timestamp(Convert_tz(last_modified, '+00:00', @@global.time_zone)) AS last_modified, 
-        Unix_timestamp(Convert_tz(gym.last_scanned, '+00:00', @@global.time_zone)) AS last_scanned, 
-        team_id, 
+        $query = "SELECT gym.gym_id,
+        latitude,
+        longitude,
+        guard_pokemon_id,
+        slots_available,
+        Unix_timestamp(Convert_tz(last_modified, '+00:00', @@global.time_zone)) AS last_modified,
+        Unix_timestamp(Convert_tz(gym.last_scanned, '+00:00', @@global.time_zone)) AS last_scanned,
+        team_id,
         name,
         park,
-        level AS raid_level, 
-        pokemon_id AS raid_pokemon_id, 
-        cp AS raid_pokemon_cp, 
-        move_1 AS raid_pokemon_move_1, 
-        move_2 AS raid_pokemon_move_2, 
-        Unix_timestamp(Convert_tz(start, '+00:00', @@global.time_zone)) AS raid_start, 
-        Unix_timestamp(Convert_tz(end, '+00:00', @@global.time_zone)) AS raid_end 
-        FROM gym 
-        LEFT JOIN gymdetails 
-        ON gym.gym_id = gymdetails.gym_id 
-        LEFT JOIN raid 
-        ON gym.gym_id = raid.gym_id 
+        level AS raid_level,
+        pokemon_id AS raid_pokemon_id,
+        cp AS raid_pokemon_cp,
+        move_1 AS raid_pokemon_move_1,
+        move_2 AS raid_pokemon_move_2,
+        Unix_timestamp(Convert_tz(start, '+00:00', @@global.time_zone)) AS raid_start,
+        Unix_timestamp(Convert_tz(end, '+00:00', @@global.time_zone)) AS raid_end
+        FROM gym
+        LEFT JOIN gymdetails
+        ON gym.gym_id = gymdetails.gym_id
+        LEFT JOIN raid
+        ON gym.gym_id = raid.gym_id
         WHERE :conditions";
 
         $query = str_replace(":conditions", join(" AND ", $conds), $query);

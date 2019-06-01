@@ -844,7 +844,7 @@ function pokemonLabel(item) {
         var iv = getIv(atk, def, sta)
         details =
             '<div><center>' +
-            'IV: ' + iv.toFixed(1) + '% (' + atk + '/' + def + '/' + sta + ')' +
+            i8ln('IV') + ': ' + iv.toFixed(1) + '% (' + atk + '/' + def + '/' + sta + ')' +
             '</center></div>'
 
         if (cp != null && (cpMultiplier != null || level != null)) {
@@ -887,7 +887,6 @@ function pokemonLabel(item) {
         '<div><center>' +
         '<b>' + name + '</b>'
     if (form !== null && form > 0 && forms.length > form) {
-        // todo: check how rocket map handles this (if at all):
         if (id === 132) {
             contentstring += ' (' + idToPokemon[item['form']].name + ')'
         } else {
@@ -917,7 +916,7 @@ function pokemonLabel(item) {
         contentstring += '<div><center>' +
             '<img src="static/images/verified.png" style="position:relative;height:15px;top:3px;right:3px;">' +
             '<b>' +
-            i8ln('Despawn Time:') + ' ' + getTimeStr(disappearTime) +
+            i8ln('Despawn Time') + ': ' + getTimeStr(disappearTime) +
             ' <span class="label-countdown" disappears-at="' + disappearTime + '">(00m00s)</span>' +
             '</b></center></div>'
     } else if (pokemonReportTime === true) {
@@ -926,7 +925,7 @@ function pokemonLabel(item) {
             '</b></center></div>'
     } else {
         contentstring += '<div><center><b>' +
-            i8ln('Aprox Despawn Time:') + ' ' + getTimeStr(disappearTime) +
+            i8ln('Aprox Despawn Time') + ': ' + getTimeStr(disappearTime) +
             ' <span class="label-countdown" disappears-at="' + disappearTime + '">(00m00s)</span>' +
             '</b></center></div>'
     }
@@ -1070,7 +1069,7 @@ function gymLabel(item) {
             '<center>' +
             nameStr +
             '<div>' +
-            'Uncontested Gym' +
+            i8ln('Uncontested Gym') +
             '</div>' +
             '<div>' +
             gymImage +
@@ -1079,7 +1078,7 @@ function gymLabel(item) {
             '<div><b>6 ' + i8ln('Free Slots') + '</b></div>' +
             raidStr +
             '<div>' +
-            '<a href="javascript:void(0);" class="gym-navigate" onclick="javascript:openMapDirections(' + latitude + ',' + longitude + ');" title="' + i8ln('View in Maps') + '">' + latitude.toFixed(6) + ' , ' + longitude.toFixed(7) + '</a> - <a href="./?lat=' + latitude + '&lon=' + longitude + '&zoom=16">Share link</a>' +
+            '<a href="javascript:void(0);" class="gym-navigate" onclick="javascript:openMapDirections(' + latitude + ',' + longitude + ');" title="' + i8ln('View in Maps') + '">' + latitude.toFixed(6) + ' , ' + longitude.toFixed(7) + '</a> - <a href="./?lat=' + latitude + '&lon=' + longitude + '&zoom=16">' + i8ln('Share link') + '</a>' +
             '</div>' +
             '<div>' +
             i8ln('Last Modified') + ' : ' + lastModifiedStr +
@@ -1092,13 +1091,13 @@ function gymLabel(item) {
         if (((!noWhatsappLink) && (raidSpawned && item.raid_end > Date.now())) && (item.raid_pokemon_id > 1 && item.raid_pokemon_id < numberOfPokemon)) {
             str += '<center>' +
                 '<div>' +
-                '<a href="whatsapp://send?text=' + encodeURIComponent(item.name) + '%0ALevel%20' + item.raid_level + '%20' + item.raid_pokemon_name + '%0A%2AStart:%20' + raidStartStr + '%2A%0A%2AEnd:%20' + raidEndStr + '%2A%0AStats:%0Ahttps://pokemongo.gamepress.gg/pokemon/' + item.raid_pokemon_id + '%0ADirections:%0Ahttps://www.google.com/maps/search/?api=1%26query=' + item.latitude + ',' + item.longitude + '" data-action="share/whatsapp/share">Whatsapp Link</a>' +
+                '<a href="whatsapp://send?text=' + encodeURIComponent(item.name) + '%0ALevel%20' + item.raid_level + '%20' + item.raid_pokemon_name + '%0A%2AStart:%20' + raidStartStr + '%2A%0A%2AEnd:%20' + raidEndStr + '%2A%0AStats:%0Ahttps://pokemongo.gamepress.gg/pokemon/' + item.raid_pokemon_id + '%0ADirections:%0Ahttps://www.google.com/maps/search/?api=1%26query=' + item.latitude + ',' + item.longitude + '" data-action="share/whatsapp/share">' + i8ln('Whatsapp Link') + '</a>' +
                 '</div>' +
                 '</center>'
         } else if ((!noWhatsappLink) && (raidSpawned && item.raid_end > Date.now())) {
             str += '<center>' +
                 '<div>' +
-                '<a href="whatsapp://send?text=' + encodeURIComponent(item.name) + '%0ALevel%20' + item.raid_level + '%20egg%0A%2AStart:%20' + raidStartStr + '%2A%0A%2AEnd:%20' + raidEndStr + '%2A%0ADirections:%0Ahttps://www.google.com/maps/search/?api=1%26query=' + item.latitude + ',' + item.longitude + '" data-action="share/whatsapp/share">Whatsapp Link</a>' +
+                '<a href="whatsapp://send?text=' + encodeURIComponent(item.name) + '%0ALevel%20' + item.raid_level + '%20egg%0A%2AStart:%20' + raidStartStr + '%2A%0A%2AEnd:%20' + raidEndStr + '%2A%0ADirections:%0Ahttps://www.google.com/maps/search/?api=1%26query=' + item.latitude + ',' + item.longitude + '" data-action="share/whatsapp/share">' + i8ln('Whatsapp Link') + '</a>' +
                 '</div>' +
                 '</center>'
         }
@@ -1118,7 +1117,7 @@ function gymLabel(item) {
             '<div><b>' + freeSlots + ' ' + i8ln('Free Slots') + '</b></div>' +
             raidStr +
             '<div>' +
-            '<a href="javascript:void(0);" class="gym-navigate" onclick="javascript:openMapDirections(' + latitude + ',' + longitude + ');" title="' + i8ln('View in Maps') + '">' + latitude.toFixed(6) + ' , ' + longitude.toFixed(7) + '</a> - <a href="./?lat=' + latitude + '&lon=' + longitude + '&zoom=16">Share link</a>' +
+            '<a href="javascript:void(0);" class="gym-navigate" onclick="javascript:openMapDirections(' + latitude + ',' + longitude + ');" title="' + i8ln('View in Maps') + '">' + latitude.toFixed(6) + ' , ' + longitude.toFixed(7) + '</a> - <a href="./?lat=' + latitude + '&lon=' + longitude + '&zoom=16">' + i8ln('Share link') + '</a>' +
             '</div>' +
             '<div>' +
             i8ln('Last Modified') + ' : ' + lastModifiedStr +
@@ -1131,13 +1130,13 @@ function gymLabel(item) {
         if (((!noWhatsappLink) && (raidSpawned && item.raid_end > Date.now())) && (item.raid_pokemon_id > 1 && item.raid_pokemon_id < numberOfPokemon)) {
             str += '<center>' +
                 '<div>' +
-                '<a href="whatsapp://send?text=' + encodeURIComponent(item.name) + '%0ALevel%20' + item.raid_level + '%20' + item.raid_pokemon_name + '%0A%2AStart:%20' + raidStartStr + '%2A%0A%2AEnd:%20' + raidEndStr + '%2A%0AStats:%0Ahttps://pokemongo.gamepress.gg/pokemon/' + item.raid_pokemon_id + '%0ADirections:%0Ahttps://www.google.com/maps/search/?api=1%26query=' + item.latitude + ',' + item.longitude + '" data-action="share/whatsapp/share">Whatsapp Link</a>' +
+                '<a href="whatsapp://send?text=' + encodeURIComponent(item.name) + '%0ALevel%20' + item.raid_level + '%20' + item.raid_pokemon_name + '%0A%2AStart:%20' + raidStartStr + '%2A%0A%2AEnd:%20' + raidEndStr + '%2A%0AStats:%0Ahttps://pokemongo.gamepress.gg/pokemon/' + item.raid_pokemon_id + '%0ADirections:%0Ahttps://www.google.com/maps/search/?api=1%26query=' + item.latitude + ',' + item.longitude + '" data-action="share/whatsapp/share">' + i8ln('Whatsapp Link') + '</a>' +
                 '</div>' +
                 '</center>'
         } else if ((!noWhatsappLink) && (raidSpawned && item.raid_end > Date.now())) {
             str += '<center>' +
                 '<div>' +
-                '<a href="whatsapp://send?text=' + encodeURIComponent(item.name) + '%0ALevel%20' + item.raid_level + '%20egg%0A%2AStart:%20' + raidStartStr + '%2A%0A%2AEnd:%20' + raidEndStr + '%2A%0ADirections:%0Ahttps://www.google.com/maps/search/?api=1%26query=' + item.latitude + ',' + item.longitude + '" data-action="share/whatsapp/share">Whatsapp Link</a>' +
+                '<a href="whatsapp://send?text=' + encodeURIComponent(item.name) + '%0ALevel%20' + item.raid_level + '%20egg%0A%2AStart:%20' + raidStartStr + '%2A%0A%2AEnd:%20' + raidEndStr + '%2A%0ADirections:%0Ahttps://www.google.com/maps/search/?api=1%26query=' + item.latitude + ',' + item.longitude + '" data-action="share/whatsapp/share">' + i8ln('Whatsapp Link') + '</a>' +
                 '</div>' +
                 '</center>'
         }
@@ -1182,7 +1181,7 @@ function getQuest(item) {
         var questinfo = JSON.parse(item['quest_condition_info'])
         var questStr = i8ln(questtypeList[item['quest_type']])
         str = '<div><b>' +
-        i8ln('Quest:') + ' ' +
+        i8ln('Quest') + ': ' +
         questStr.replace('{0}', item['quest_target']) +
         '</b></div>' +
         '<div>'
@@ -1244,7 +1243,7 @@ function getQuest(item) {
             }
         } else if (item['quest_condition_type'] !== 0) {
             console.log('Undefined condition type ' + item['quest_condition_type'])
-            str += '<div>Undefined condition</div>'
+            str += '<div>' + i8ln('Undefined condition') +'</div>'
         }
         if (item['quest_reward_type'] === 7) {
             str += '<div><b>' +
@@ -1362,12 +1361,12 @@ function pokestopLabel(item) {
         str += '<center><div>' + i8ln('Convert to Gym') + '<i class="fa fa-refresh convert-pokestop" style="margin-top: 2px; vertical-align: middle; font-size: 1.5em;" onclick="openConvertPokestopModal(event);" data-id="' + item['pokestop_id'] + '"></i></div></center>'
     }
     str += '<div><center>' +
-        '<a href="javascript:void(0)" class="pokestop-navigate" onclick="javascript:openMapDirections(' + item['latitude'] + ',' + item['longitude'] + ')" title="' + i8ln('View in Maps') + '">' + item['latitude'] + ', ' + item['longitude'] + '</a> - <a href="./?lat=' + item['latitude'] + '&lon=' + item['longitude'] + '&zoom=16">Share link</a>' +
+        '<a href="javascript:void(0)" class="pokestop-navigate" onclick="javascript:openMapDirections(' + item['latitude'] + ',' + item['longitude'] + ')" title="' + i8ln('View in Maps') + '">' + item['latitude'] + ', ' + item['longitude'] + '</a> - <a href="./?lat=' + item['latitude'] + '&lon=' + item['longitude'] + '&zoom=16">' + i8ln('Share link') + '</a>' +
         '</center></div>'
     if ((!noWhatsappLink) && (item['quest_id'] && item['reward_id'] !== null)) {
         str += '<div>' +
             '<center>' +
-            '<a href="whatsapp://send?text=' + encodeURIComponent(item['pokestop_name']) + '%0A%2AQuest:%20' + i8ln(questList[item['quest_id']]) + '%2A%0A%2AReward:%20' + i8ln(rewardList[item['reward_id']]) + '%2A%0Ahttps://www.google.com/maps/search/?api=1%26query=' + item['latitude'] + ',' + item['longitude'] + '" data-action="share/whatsapp/share">Whatsapp Link</a>' +
+            '<a href="whatsapp://send?text=' + encodeURIComponent(item['pokestop_name']) + '%0A%2AQuest:%20' + i8ln(questList[item['quest_id']]) + '%2A%0A%2AReward:%20' + i8ln(rewardList[item['reward_id']]) + '%2A%0Ahttps://www.google.com/maps/search/?api=1%26query=' + item['latitude'] + ',' + item['longitude'] + '" data-action="share/whatsapp/share">' + i8ln('Whatsapp Link') + '</a>' +
             '</center>' +
             '</div>'
     }
@@ -1409,7 +1408,7 @@ function spawnpointLabel(item) {
     if (item.duration === 60 || item.kind === 'ssss') {
         str =
             '<div>' +
-            '<b>Spawn Point</b>' +
+            '<b>' + i8ln('Spawn Point') + '</b>' +
             '</div>' +
             '<div>' +
             i8ln('Every hour from') + ' ' + formatSpawnTime(item.time) +
@@ -1642,11 +1641,11 @@ function getGymMarkerIcon(item) {
     }
     var exIcon = ''
     var fortMarker = ''
-    if ((((park !== '0' && park !== 'None' && park !== undefined && onlyTriggerGyms === false && park) || (item['sponsor'] !== undefined && item['sponsor'] > 0) || triggerGyms.includes(item['gym_id'])) && (noExGyms === false))) {
+    if (((park !== '0' && onlyTriggerGyms === false && park) || triggerGyms.includes(item['gym_id'])) && (noExGyms === false)) {
         exIcon = '<img src="static/images/ex.png" style="position:absolute;right:25px;bottom:2px;"/>'
     }
     var smallExIcon = ''
-    if ((((park !== '0' && park !== 'None' && park !== undefined && onlyTriggerGyms === false && park) || (item['sponsor'] !== undefined && item['sponsor'] > 0) || triggerGyms.includes(item['gym_id'])) && (noExGyms === false))) {
+    if (((park !== '0' && onlyTriggerGyms === false && park) || triggerGyms.includes(item['gym_id'])) && (noExGyms === false)) {
         smallExIcon = '<img src="static/images/ex.png" style="width:26px;position:absolute;right:35px;bottom:13px;"/>'
     }
     var html = ''
@@ -1657,7 +1656,7 @@ function getGymMarkerIcon(item) {
             '<img src="' + iconpath + 'pokemon_icon_' + pokemonidStr + '_' + formStr + '.png" style="width:50px;height:auto;position:absolute;top:-15px;right:0px;"/>' +
             '</div>'
         if (noRaidTimer === false && Store.get(['showRaidTimer'])) {
-            html += '<div><span class="label-countdown gym-icon-countdown" disappears-at="' + item['raid_end'] + '" end>(00m00s)</span></div>'
+            html += '<div><span class="raid-countdown gym-icon-countdown" disappears-at="' + item['raid_end'] + '" end>(00m00s)</span></div>'
         }
         fortMarker = L.divIcon({
             iconSize: [50, 50],
@@ -1681,7 +1680,7 @@ function getGymMarkerIcon(item) {
             '<img src="static/raids/egg_' + hatchedEgg + '.png" style="width:35px;height:auto;position:absolute;top:-11px;right:18px;"/>' +
             '</div>'
         if (noRaidTimer === false && Store.get(['showRaidTimer'])) {
-            html += '<div><span class="label-countdown gym-icon-countdown" disappears-at="' + item['raid_end'] + '" end>(00m00s)</span></div>'
+            html += '<div><span class="raid-countdown gym-icon-countdown" disappears-at="' + item['raid_end'] + '" end>(00m00s)</span></div>'
         }
         fortMarker = L.divIcon({
             iconSize: [50, 50],
@@ -1705,7 +1704,7 @@ function getGymMarkerIcon(item) {
             '<img src="static/raids/egg_' + raidEgg + '.png" style="width:25px;height:auto;position:absolute;top:6px;right:18px;"/>' +
             '</div>'
         if (noRaidTimer === false && Store.get(['showRaidTimer'])) {
-            html += '<div><span class="label-countdown gym-icon-countdown" disappears-at="' + item['raid_start'] + '" end>(00m00s)</span></div>'
+            html += '<div><span class="raid-countdown gym-icon-countdown" disappears-at="' + item['raid_start'] + '" end>(00m00s)</span></div>'
         }
         fortMarker = L.divIcon({
             iconSize: [50, 50],
@@ -2090,12 +2089,12 @@ function nestLabel(item) {
         str += '<center><div>' + i8ln('Add Nest') + ' <i class="fa fa-binoculars submit-nest" onclick="openNestModal(event);" data-id="' + item['nest_id'] + '"></i></div></center>'
     }
     str += '<div>' +
-        '<a href="javascript:void(0)" class="nest-navigate" onclick="javascript:openMapDirections(' + item.lat + ',' + item.lon + ')" title="' + i8ln('View in Maps') + '">' + item.lat.toFixed(6) + ', ' + item.lon.toFixed(7) + '</a> - <a href="./?lat=' + item.lat + '&lon=' + item.lon + '&zoom=16">Share link</a>' +
+        '<a href="javascript:void(0)" class="nest-navigate" onclick="javascript:openMapDirections(' + item.lat + ',' + item.lon + ')" title="' + i8ln('View in Maps') + '">' + item.lat.toFixed(6) + ', ' + item.lon.toFixed(7) + '</a> - <a href="./?lat=' + item.lat + '&lon=' + item.lon + '&zoom=16">' + i8ln('Share link') + '</a>' +
         '</div>'
     if ((!noWhatsappLink) && (item.pokemon_id > 0)) {
         str += '<div>' +
             '<center>' +
-            '<a href="whatsapp://send?text=%2A' + encodeURIComponent(item.pokemon_name) + '%2A%20nest has been found.%0A%0ALocation:%20https://www.google.com/maps/search/?api=1%26query=' + item.lat + ',' + item.lon + '" data-action="share/whatsapp/share">Whatsapp Link</a>' +
+            '<a href="whatsapp://send?text=%2A' + encodeURIComponent(item.pokemon_name) + '%2A%20nest has been found.%0A%0ALocation:%20https://www.google.com/maps/search/?api=1%26query=' + item.lat + ',' + item.lon + '" data-action="share/whatsapp/share">' + i8ln('Whatsapp Link') + '</a>' +
             '</center>' +
             '</div>'
     }
@@ -2151,7 +2150,7 @@ function communityLabel(item) {
     }
     if (item.size >= 10) {
         str +=
-        '<center><div>' + item.size + ' Members</div></center>'
+        '<center><div>' + item.size + ' ' + i8ln('Members') + '</div></center>'
     }
     if (item.has_invite_url === 1 && (item.invite_url !== '#' || item.invite_url !== undefined)) {
         str +=
@@ -2276,10 +2275,10 @@ function portalLabel(item) {
     var str = '<img src="' + item.url + '" align"middle" style="width:175px;height:auto;margin-left:25px;"/>' +
         '<center><h4><div>' + item.name + '</div></h4></center>'
     if (!noConvertPortal) {
-        str += '<center><div>Convert this portal<i class="fa fa-refresh convert-portal" style="margin-top: 2px; margin-left: 5px; vertical-align: middle; font-size: 1.5em;" onclick="openConvertPortalModal(event);" data-id="' + item.external_id + '"></i></div></center>'
+        str += '<center><div>' + i8ln('Convert portal') + '<i class="fa fa-refresh convert-portal" style="margin-top: 2px; margin-left: 5px; vertical-align: middle; font-size: 1.5em;" onclick="openConvertPortalModal(event);" data-id="' + item.external_id + '"></i></div></center>'
     }
-    str += '<center><div>Last updated: ' + updated + '</div></center>' +
-        '<center><div>Date imported: ' + imported + '</div></center>'
+    str += '<center><div>' + i8ln('Last updated') + ': ' + updated + '</div></center>' +
+        '<center><div>' + i8ln('Date imported') + ': ' + imported + '</div></center>'
     if (!noDeletePortal) {
         str += '<i class="fa fa-trash-o delete-portal" onclick="deletePortal(event);" data-id="' + item.external_id + '"></i>'
     }
@@ -2317,7 +2316,7 @@ function poiLabel(item) {
     if (!noMarkPoi) {
         str += '<center><div><button onclick="openMarkPoiModal(event);" data-id="' + item.poi_id + '" class="convertpoi"><i class="fa fa-refresh convert-poi"></i> ' + i8ln('Mark POI') + '</button></div></center>'
     }
-    str += '<center><a href="javascript:void(0);" class="gym-navigate" onclick="javascript:openMapDirections(' + item.lat + ',' + item.lon + ');" title="' + i8ln('View in Maps') + '">' + item.lat.toFixed(5) + ' , ' + item.lon.toFixed(5) + '</a> - <a href="./?lat=' + item.lat + '&lon=' + item.lon + '&zoom=16">Share link</a></center>'
+    str += '<center><a href="javascript:void(0);" class="gym-navigate" onclick="javascript:openMapDirections(' + item.lat + ',' + item.lon + ');" title="' + i8ln('View in Maps') + '">' + item.lat.toFixed(5) + ' , ' + item.lon.toFixed(5) + '</a> - <a href="./?lat=' + item.lat + '&lon=' + item.lon + '&zoom=16">' + i8ln('Share link') + '</a></center>'
     return str
 }
 
@@ -4579,7 +4578,7 @@ function processGyms(i, item) {
         return true
     }
 
-    if (Store.get('exEligible') && (item.park === null || item.park === 0) && (item.sponsor === 0 || item.sponsor === undefined)) {
+    if (Store.get('exEligible') && (item.park === null || item.park === 0)) {
         removeGymFromMap(item['gym_id'])
         return true
     }
@@ -4948,6 +4947,35 @@ var updateLabelDiffTime = function updateLabelDiffTime() {
             timestring += lpad(minutes, 2, 0) + 'm'
             timestring += lpad(seconds, 2, 0) + 's'
             timestring += ')'
+        }
+
+        $(element).text(timestring)
+    })
+    $('.raid-countdown').each(function (index, element) {
+        var disappearsAt = getTimeUntil(parseInt(element.getAttribute('disappears-at')))
+
+        var hours = disappearsAt.hour
+        var minutes = disappearsAt.min
+        var seconds = disappearsAt.sec
+        var timestring = ''
+
+        if (disappearsAt.time < disappearsAt.now) {
+            if (element.hasAttribute('start')) {
+                timestring = '\xa0' + i8ln('started') + '\xa0'
+            } else if (element.hasAttribute('end')) {
+                timestring = '\xa0' + i8ln('ended') + '\xa0'
+            } else {
+                timestring = '\xa0' + i8ln('expired') + '\xa0'
+            }
+        } else {
+            timestring = '\xa0'
+            if (hours > 0) {
+                timestring += hours + 'h'
+            }
+
+            timestring += lpad(minutes, 2, 0) + 'm'
+            timestring += lpad(seconds, 2, 0) + 's'
+            timestring += '\xa0'
         }
 
         $(element).text(timestring)
@@ -5385,7 +5413,7 @@ function showGymDetails(id) { // eslint-disable-line no-unused-vars
             '</div>' +
             lastScannedStr +
             '<div>' +
-            '<a href=\'javascript:void(0)\' onclick=\'javascript:openMapDirections(' + result.latitude + ',' + result.longitude + ')\' title=\'' + i8ln('View in Maps') + '\'>' + i8ln('Get directions') + '</a> - <a href="./?lat=' + result.latitude + '&lon=' + result.longitude + '&zoom=16">Share link</a>' +
+            '<a href=\'javascript:void(0)\' onclick=\'javascript:openMapDirections(' + result.latitude + ',' + result.longitude + ')\' title=\'' + i8ln('View in Maps') + '\'>' + i8ln('Get directions') + '</a> - <a href="./?lat=' + result.latitude + '&lon=' + result.longitude + '&zoom=16">' + i8ln('Share link') + '</a>' +
             '</div>' +
             '</center>'
 
