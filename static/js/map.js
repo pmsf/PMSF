@@ -1243,7 +1243,7 @@ function getQuest(item) {
             }
         } else if (item['quest_condition_type'] !== 0) {
             console.log('Undefined condition type ' + item['quest_condition_type'])
-            str += '<div>' + i8ln('Undefined condition') +'</div>'
+            str += '<div>' + i8ln('Undefined condition') + '</div>'
         }
         if (item['quest_reward_type'] === 7) {
             str += '<div><b>' +
