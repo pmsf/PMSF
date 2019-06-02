@@ -1656,7 +1656,7 @@ function getGymMarkerIcon(item) {
             '<img src="' + iconpath + 'pokemon_icon_' + pokemonidStr + '_' + formStr + '.png" style="width:50px;height:auto;position:absolute;top:-15px;right:0px;"/>' +
             '</div>'
         if (noRaidTimer === false && Store.get(['showRaidTimer'])) {
-            html += '<div><span class="raid-countdown gym-icon-countdown" disappears-at="' + item['raid_end'] + '" end>(00m00s)</span></div>'
+            html += '<div><span class="raid-countdown gym-icon-countdown" disappears-at="' + item['raid_end'] + '" end>00m00s</span></div>'
         }
         fortMarker = L.divIcon({
             iconSize: [50, 50],
@@ -1680,7 +1680,7 @@ function getGymMarkerIcon(item) {
             '<img src="static/raids/egg_' + hatchedEgg + '.png" style="width:35px;height:auto;position:absolute;top:-11px;right:18px;"/>' +
             '</div>'
         if (noRaidTimer === false && Store.get(['showRaidTimer'])) {
-            html += '<div><span class="raid-countdown gym-icon-countdown" disappears-at="' + item['raid_end'] + '" end>(00m00s)</span></div>'
+            html += '<div><span class="raid-countdown gym-icon-countdown" disappears-at="' + item['raid_end'] + '" end>00m00s</span></div>'
         }
         fortMarker = L.divIcon({
             iconSize: [50, 50],
@@ -1704,7 +1704,7 @@ function getGymMarkerIcon(item) {
             '<img src="static/raids/egg_' + raidEgg + '.png" style="width:25px;height:auto;position:absolute;top:6px;right:18px;"/>' +
             '</div>'
         if (noRaidTimer === false && Store.get(['showRaidTimer'])) {
-            html += '<div><span class="raid-countdown gym-icon-countdown" disappears-at="' + item['raid_start'] + '" end>(00m00s)</span></div>'
+            html += '<div><span class="raid-countdown gym-icon-countdown" disappears-at="' + item['raid_start'] + '" end>00m00s</span></div>'
         }
         fortMarker = L.divIcon({
             iconSize: [50, 50],
