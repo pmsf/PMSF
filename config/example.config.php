@@ -160,8 +160,6 @@ $noTinyRatSetting = false;                                          // true/fals
 
 $noGyms = false;                                                    // true/false
 $enableGyms = 'false';                                              // true/false
-$noGymSidebar = false;                                              // true/false
-$gymSidebar = 'true';                                               // true/false
 $noExEligible = false;                                              // true/false
 $exEligible = 'false';                                              // true/false
 
@@ -414,16 +412,6 @@ $weatherColors = [
     'white',                                                        // snow
     'black'                                                         // fog
 ];
-
-//-----------------------------------------------------
-// DATA MANAGEMENT
-//-----------------------------------------------------
-
-// Clear pokemon from database this many hours after they disappear (0 to disable)
-// This is recommended unless you wish to store a lot of backdata for statistics etc!
-
-$purgeData = 0;
-
 
 //-----------------------------------------------------
 // DEBUGGING

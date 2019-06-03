@@ -28,7 +28,6 @@ var $selectMaxRaidLevel
 var $selectNewPortalsOnly
 var $selectGymMarkerStyle
 var $selectLocationIconMarker
-var $switchGymSidebar
 var $switchTinyRat
 var $switchBigKarp
 var $selectDirectionProvider
@@ -665,9 +664,7 @@ function initSidebar() {
     $('#s2-level17-switch').prop('checked', Store.get('showStopCells'))
     $('#new-portals-only-switch').val(Store.get('showNewPortalsOnly'))
     $('#new-portals-only-wrapper').toggle(Store.get('showPortals'))
-    $('#gym-sidebar-switch').prop('checked', Store.get('useGymSidebar'))
     $('#ex-eligible-switch').prop('checked', Store.get('exEligible'))
-    $('#gym-sidebar-wrapper').toggle(Store.get('showGyms') || Store.get('showRaids'))
     $('#gyms-filter-wrapper').toggle(Store.get('showGyms'))
     $('#team-gyms-only-switch').val(Store.get('showTeamGymsOnly'))
     $('#open-gyms-only-switch').prop('checked', Store.get('showOpenGymsOnly'))
@@ -1793,37 +1790,8 @@ function setupGymMarker(item) {
         }
         sendNotification(title, text, icon, item['latitude'], item['longitude'])
     }
-
-    if (Store.get('useGymSidebar')) {
-        marker.on('click', function () {
-            var gymSidebar = document.querySelector('#gym-details')
-            if (gymSidebar.getAttribute('data-id') === item['gym_id'] && gymSidebar.classList.contains('visible')) {
-                gymSidebar.classList.remove('visible')
-            } else {
-                gymSidebar.setAttribute('data-id', item['gym_id'])
-                showGymDetails(item['gym_id'])
-            }
-        })
-
-
-        if (!isMobileDevice() && !isTouchDevice()) {
-            marker.bindPopup(gymLabel(item), {autoPan: false, closeOnClick: false, autoClose: false})
-            marker.on('mouseover', function () {
-                marker.openPopup()
-                clearSelection()
-                updateLabelDiffTime()
-            })
-        }
-
-        marker.on('mouseout', function () {
-            if (!marker.persist) {
-                marker.closePopup()
-            }
-        })
-    } else {
-        marker.bindPopup(gymLabel(item), {autoPan: false, closeOnClick: false, autoClose: false})
-        addListeners(marker)
-    }
+    marker.bindPopup(gymLabel(item), {autoPan: false, closeOnClick: false, autoClose: false})
+    addListeners(marker)
     return marker
 }
 
@@ -3531,9 +3499,6 @@ function manualRaidData(event) { // eslint-disable-line no-unused-vars
                 complete: function complete() {
                     lastgyms = false
                     updateMap()
-                    if (Store.get('useGymSidebar')) {
-                        showGymDetails(form.find('[name="gymId"]').val())
-                    }
                     $('.ui-dialog-content').dialog('close')
                 }
             })
@@ -5244,226 +5209,6 @@ function createUpdateWorker() {
     }
 }
 
-function showGymDetails(id) { // eslint-disable-line no-unused-vars
-    var sidebar = document.querySelector('#gym-details')
-    var sidebarClose
-
-    sidebar.classList.add('visible')
-
-    var data = $.ajax({
-        url: 'gym_data',
-        type: 'POST',
-        timeout: 300000,
-        data: {
-            'id': id,
-            'token': token
-        },
-        dataType: 'json',
-        cache: false
-    })
-
-    data.done(function (result) {
-        var lastModifiedStr = getDateStr(result.last_modified) + ' ' + getTimeStr(result.last_modified)
-        var lastScannedStr = ''
-        if (result.last_scanned != null) {
-            lastScannedStr =
-                '<div style="font-size: .7em">' +
-                i8ln('Last Scanned') + ' : ' + getDateStr(result.last_scanned) + ' ' + getTimeStr(result.last_scanned) +
-                '</div>'
-        }
-
-        var freeSlots = result.slots_available
-        var gymLevelStr = ''
-        if (result.team_id !== 0) {
-            gymLevelStr =
-                '<center class="team-' + result.team_id + '-text">' +
-                '<b class="team-' + result.team_id + '-text">' + freeSlots + ' ' + i8ln('Free Slots') + '</b>' +
-                '</center>'
-        }
-
-        var raidSpawned = result['raid_level'] != null
-        var raidStarted = result['raid_pokemon_id'] != null
-        var form = result['form']
-
-        var raidStr = ''
-        var raidIcon = ''
-        if (manualRaids) {
-            var rbList = generateRaidBossList()
-        }
-        if (raidSpawned && result.raid_end > Date.now()) {
-            var levelStr = ''
-            for (var i = 0; i < result['raid_level']; i++) {
-                levelStr += '★'
-            }
-            raidStr = '<h3 style="margin-bottom: 0">Raid ' + levelStr
-            if (raidStarted) {
-                var cpStr = ''
-                if (result.raid_pokemon_cp > 0) {
-                    cpStr = ' CP ' + result.raid_pokemon_cp
-                }
-                raidStr += '<br>' + result.raid_pokemon_name
-                if (form !== null && form > 0 && forms.length > form) {
-                    // todo: check how rocket map handles this (if at all):
-                    if (result['raid_pokemon_id'] === 132) {
-                        raidStr += ' (' + idToPokemon[result['form']].name + ')'
-                    } else {
-                        raidStr += ' (' + forms[result['form']] + ')'
-                    }
-                }
-                raidStr += cpStr
-            }
-            raidStr += '</h3>'
-            if (raidStarted && result.raid_pokemon_move_1 > 0 && result.raid_pokemon_move_1 !== '133' && result.raid_pokemon_move_2 > 0 && result.raid_pokemon_move_2 !== '133') {
-                var pMove1 = (moves[result['raid_pokemon_move_1']] !== undefined) ? i8ln(moves[result['raid_pokemon_move_1']]['name']) : 'gen/unknown'
-                var pMove2 = (moves[result['raid_pokemon_move_2']] !== undefined) ? i8ln(moves[result['raid_pokemon_move_2']]['name']) : 'gen/unknown'
-                raidStr += '<div><b>' + pMove1 + ' / ' + pMove2 + '</b></div>'
-            }
-
-            var raidStartStr = getTimeStr(result['raid_start'])
-            var raidEndStr = getTimeStr(result['raid_end'])
-            raidStr += '<div>' + i8ln('Start') + ': <b>' + raidStartStr + '</b> <span class="label-countdown" disappears-at="' + result['raid_start'] + '" start>(00m00s)</span></div>'
-            raidStr += '<div>' + i8ln('End') + ': <b>' + raidEndStr + '</b> <span class="label-countdown" disappears-at="' + result['raid_end'] + '" end>(00m00s)</span></div>'
-
-            if (raidStarted) {
-                var raidForm = result['form']
-                var formStr = ''
-                if (raidForm <= 10 || raidForm == null || raidForm === '0') {
-                    formStr = '00'
-                } else {
-                    formStr = raidForm
-                }
-                var pokemonid = result['raid_pokemon_id']
-                var pokemonidStr = ''
-                if (pokemonid <= 9) {
-                    pokemonidStr = '00' + pokemonid
-                } else if (pokemonid <= 99) {
-                    pokemonidStr = '0' + pokemonid
-                } else {
-                    pokemonidStr = pokemonid
-                }
-                raidIcon = '<img style="width: 80px; -webkit-filter: drop-shadow(5px 5px 5px #222); filter: drop-shadow(5px 5px 5px #222);" src="' + iconpath + 'pokemon_icon_' + pokemonidStr + '_' + formStr + '.png"/>'
-            } else if (result.raid_start <= Date.now()) {
-                var hatchedEgg = ''
-                if (result['raid_level'] <= 2) {
-                    hatchedEgg = 'hatched_normal'
-                } else if (result['raid_level'] <= 4) {
-                    hatchedEgg = 'hatched_rare'
-                } else {
-                    hatchedEgg = 'hatched_legendary'
-                }
-                raidIcon = '<img style="width: 80px; -webkit-filter: drop-shadow(5px 5px 5px #222); filter: drop-shadow(5px 5px 5px #222);" src="static/raids/egg_' + hatchedEgg + '.png">'
-            } else {
-                var raidEgg = ''
-                if (result['raid_level'] <= 2) {
-                    raidEgg = 'normal'
-                } else if (result['raid_level'] <= 4) {
-                    raidEgg = 'rare'
-                } else {
-                    raidEgg = 'legendary'
-                }
-                raidIcon = '<img src="static/raids/egg_' + raidEgg + '.png">'
-            }
-        }
-        if (!noDeleteGyms) {
-            raidStr += '<i class="fa fa-trash-o delete-gym" onclick="deleteGym(event);" data-id="' + id + '"></i>'
-        }
-        if (!noToggleExGyms) {
-            raidStr += '<i class="fa fa-trophy toggle-ex-gym" onclick="toggleExGym(event);" data-id="' + id + '"></i>'
-        }
-        if (manualRaids) {
-            raidStr += '<i class="fa fa-binoculars submit-raid" onclick="$(this).toggleClass(\'open\');$(\'.raid-report\').slideToggle()" ></i>'
-            raidStr += '<div class="raid-report">'
-            raidStr += '<div style="margin:0px 10px;"><form>'
-            raidStr += '<input type="hidden" value="' + id + '" id="gymId" name="gymId">'
-            raidStr += '<div class=" switch-container">' +
-                rbList +
-                '</div>' +
-                '<div class="mon-name" style="display:none;"></div>' +
-                '<div class="switch-container timer-cont" style="display:none;">' +
-                '<h5 class="timer-name" style="margin-bottom:0;"></h5>' +
-                generateTimerLists() +
-                '</div>' +
-                '<button type="button" onclick="manualRaidData(event);" class="submitting-raid"><i class="fa fa-binoculars" style="margin-right:10px;"></i> ' + i8ln('Submit Raid') + '</button>' +
-                '</form>' +
-                '</div>' +
-                '</div>'
-        }
-
-        var pokemonHtml = ''
-        var gymImage = ''
-        if (result.url !== null) {
-            gymImage = '<img height="140px" style="padding: 5px;" src="' + result.url + '">'
-        }
-        var headerHtml =
-            '<center class="team-' + result.team_id + '-text">' +
-            '<div>' +
-            '<b class="team-' + result.team_id + '-text">' + (result.name || '') + '</b>' +
-            '</div>' +
-            '<div>' +
-            gymImage +
-            '</div>' +
-            '<div>' +
-            '<img height="70px" style="padding: 5px;" src="static/forts/' + gymTypes[result.team_id] + '_large.png">' +
-            raidIcon +
-            '</div>' +
-            raidStr +
-            gymLevelStr +
-            '<div style="font-size: .7em">' +
-            i8ln('Last Modified') + ' : ' + lastModifiedStr +
-            '</div>' +
-            lastScannedStr +
-            '<div>' +
-            '<a href=\'javascript:void(0)\' onclick=\'javascript:openMapDirections(' + result.latitude + ',' + result.longitude + ')\' title=\'' + i8ln('View in Maps') + '\'>' + i8ln('Get directions') + '</a> - <a href="./?lat=' + result.latitude + '&lon=' + result.longitude + '&zoom=16">' + i8ln('Share link') + '</a>' +
-            '</div>' +
-            '</center>'
-
-        if (result.team_id === 0) {
-            pokemonHtml = ''
-        } else {
-            var pokemonIdStr = ''
-            if (result.guard_pokemon_id <= 9) {
-                pokemonIdStr = '00' + result.guard_pokemon_id
-            } else if (result.guard_pokemon_id <= 99) {
-                pokemonIdStr = '0' + result.guard_pokemon_id
-            } else {
-                pokemonIdStr = result.guard_pokemon_id
-            }
-            var guardFormStr = ''
-            if (result.guard_pokemon_form === '0' || result.guard_pokemon_form === null || result.guard_pokemon_form === 0 || result.guard_pokemon_form === undefined) {
-                guardFormStr = '00'
-            } else {
-                guardFormStr = result.guard_pokemon_form
-            }
-            pokemonHtml =
-                '<center class="team-' + result.team_id + '-text">' +
-                i8ln('Gym Leader') + ':<br>' +
-                '<img src="' + iconpath + 'pokemon_icon_' + pokemonIdStr + '_' + guardFormStr + '.png"/><br>' +
-                '<b class="team-' + result.team_id + '-text">' + result.guard_pokemon_name + '</b>' +
-                '</center>'
-        }
-
-        sidebar.innerHTML = headerHtml + pokemonHtml
-
-        sidebarClose = document.createElement('a')
-        sidebarClose.href = '#'
-        sidebarClose.className = 'close'
-        sidebarClose.tabIndex = 0
-        sidebar.appendChild(sidebarClose)
-
-        sidebarClose.addEventListener('click', function (event) {
-            event.preventDefault()
-            event.stopPropagation()
-            sidebar.classList.remove('visible')
-        })
-        token = result.token
-    })
-}
-
-function toggleGymPokemonDetails(e) { // eslint-disable-line no-unused-vars
-    e.lastElementChild.firstElementChild.classList.toggle('fa-angle-double-up')
-    e.lastElementChild.firstElementChild.classList.toggle('fa-angle-double-down')
-    e.nextElementSibling.classList.toggle('visible')
-}
 
 function fetchCriesJson() {
     $.ajax({
@@ -5730,24 +5475,6 @@ $(function () {
         updateMap()
     })
 
-    $switchGymSidebar = $('#gym-sidebar-switch')
-
-    $switchGymSidebar.on('change', function () {
-        Store.set('useGymSidebar', this.checked)
-        lastgyms = false
-        $.each(['gyms'], function (d, dType) {
-            $.each(mapData[dType], function (key, value) {
-                // for any marker you're turning off, you'll want to wipe off the range
-                if (mapData[dType][key].marker.rangeCircle) {
-                    markers.removeLayer(mapData[dType][key].marker.rangeCircle)
-                    delete mapData[dType][key].marker.rangeCircle
-                }
-                markers.removeLayer(mapData[dType][key].marker)
-            })
-            mapData[dType] = {}
-        })
-        updateMap()
-    })
     $switchExEligible = $('#ex-eligible-switch')
 
     $switchExEligible.on('change', function () {
@@ -6162,18 +5889,15 @@ $(function () {
             'duration': 500
         }
         var wrapper = $('#raids-filter-wrapper')
-        var gymSidebarWrapper = $('#gym-sidebar-wrapper')
         var gymRaidsFilterWrapper = $('#gyms-raid-filter-wrapper')
         if (this.checked) {
             lastgyms = false
             wrapper.show(options)
-            gymSidebarWrapper.show(options)
             gymRaidsFilterWrapper.show(options)
         } else {
             lastgyms = false
             wrapper.hide(options)
             if (!Store.get('showGyms')) {
-                gymSidebarWrapper.hide(options)
                 gymRaidsFilterWrapper.hide(options)
             }
         }
@@ -6187,18 +5911,15 @@ $(function () {
             'duration': 500
         }
         var wrapper = $('#gyms-filter-wrapper')
-        var gymSidebarWrapper = $('#gym-sidebar-wrapper')
         var gymRaidsFilterWrapper = $('#gyms-raid-filter-wrapper')
         if (this.checked) {
             lastgyms = false
             wrapper.show(options)
-            gymSidebarWrapper.show(options)
             gymRaidsFilterWrapper.show(options)
         } else {
             lastgyms = false
             wrapper.hide(options)
             if (!Store.get('showRaids')) {
-                gymSidebarWrapper.hide(options)
                 gymRaidsFilterWrapper.hide(options)
             }
         }
