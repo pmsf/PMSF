@@ -196,5 +196,4 @@
             $stats.classList.remove('visible')
         })
     }
-
 })()
