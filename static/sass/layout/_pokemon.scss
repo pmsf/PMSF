@@ -61,27 +61,3 @@
     overflow-y: scroll;
   }
 }
-
-#nest-search-results {
-  .i-icon{
-    position:relative;
-    .pokemon-icon {
-      background-image: url($spriteLarge);
-      background-image: var(--sprite-large);
-      background-repeat: no-repeat;
-      background-size: 1400px;
-      top: 0;
-      right: 0;
-      position: absolute;
-      -moz-transform-origin: 0 0;
-      height: 50px;
-      width: 50px;
-
-      @for $i from 1 through $numberOfPokemon {
-        &.n#{$i} {
-          background-position: -#{(($i - 1) % 28) * 50}px -#{floor(($i - 1) / 28) * 50}px
-        }
-      }
-    }
-  }
-}
