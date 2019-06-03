@@ -1,0 +1,60 @@
+/* Gym-Details */
+
+.gm-style .gm-style-iw{
+  overflow:visible;
+}
+.delete-gym{
+  position: absolute;
+  top: 0px;
+  left: 0px;
+  font-size: 20px;
+  border-top-left-radius: 10px;
+  background: rgb(255, 0, 0);
+  padding: 5px;
+  color: rgb(255, 255, 255);
+  cursor: pointer;
+}
+.toggle-ex-gym{
+  position: absolute;
+  top: 30px;
+  left: 0px;
+  font-size: 17px;
+  background: rgb(0, 0, 0);
+  padding: 5px;
+  color: rgb(255, 255, 255);
+  cursor: pointer;
+}
+.gym-label {
+  margin-left: 10px;
+  margin-right: 10px;
+}
+.gym-navigate {
+  color: rgb(93,109,126);
+  font-size: 11px;
+  font-weight: 500;
+
+    &.gym-navigate:before {
+      content: '\f018';
+      display: inline-block;
+      font-family: FontAwesome;
+      margin: 5px 3px 0px 0px;
+      height: 16px;
+      width: 16px;
+      -webkit-font-smoothing: antialiased;
+    }
+}
+.gym-image {
+  width: 80px;
+  height: 80px;
+  background-size: cover;
+  border-radius: 50px;
+  margin: 6px;
+}
+.gym-icon-countdown {
+    background-color: #c7c7c7;
+    color: black;
+    top: 50px;
+    position: absolute;
+    font-weight: 900;
+    border-radius: 10px;
+}

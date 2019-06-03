@@ -336,7 +336,6 @@ class RDM extends Scanner
         raid_battle_timestamp AS raid_start,
         updated AS last_scanned,
         raid_pokemon_id,
-        guarding_pokemon_id AS guard_pokemon_id,
         availble_slots AS slots_available,
         team_id,
         raid_level,
@@ -355,11 +354,6 @@ class RDM extends Scanner
         $i = 0;
 
         foreach ($gyms as $gym) {
-            $guard_pid = $gym["guard_pokemon_id"];
-            if ($guard_pid == "0") {
-                $guard_pid = null;
-                $gym["guard_pokemon_id"] = null;
-            }
             $raid_pid = $gym["raid_pokemon_id"];
             if ($raid_pid == "0") {
                 $raid_pid = null;
@@ -367,7 +361,6 @@ class RDM extends Scanner
             }
             $gym["team_id"] = intval($gym["team_id"]);
             $gym["pokemon"] = [];
-            $gym["guard_pokemon_name"] = empty($guard_pid) ? null : i8ln($this->data[$guard_pid]["name"]);
             $gym["raid_pokemon_name"] = empty($raid_pid) ? null : i8ln($this->data[$raid_pid]["name"]);
             $gym["form"] = intval($gym["raid_pokemon_form"]);
             $gym["latitude"] = floatval($gym["latitude"]);

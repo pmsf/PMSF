@@ -183,8 +183,6 @@ $noTinyRatSetting = false;                                          // true/fals
 
 $noGyms = false;                                                    // true/false
 $enableGyms = 'false';                                              // true/false
-$noGymSidebar = false;                                              // true/false
-$gymSidebar = 'true';                                               // true/false
 $noExEligible = false;                                              // true/false
 $exEligible = 'false';                                              // true/false
 

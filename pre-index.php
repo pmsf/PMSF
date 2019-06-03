@@ -701,20 +701,6 @@ if ( $blockIframe ) {
                         </div>
                     </div>
                     <?php
-                    if ( ! $noGymSidebar && ( ! $noGyms || ! $noRaids ) ) {
-                        echo '<div id="gym-sidebar-wrapper" class="form-control switch-container">
-                    <h3>' . i8ln( 'Use Gym Sidebar' ) . '</h3>
-                    <div class="onoffswitch">
-                        <input id="gym-sidebar-switch" type="checkbox" name="gym-sidebar-switch"
-                               class="onoffswitch-checkbox" checked>
-                        <label class="onoffswitch-label" for="gym-sidebar-switch">
-                            <span class="switch-label" data-on="On" data-off="Off"></span>
-                            <span class="switch-handle"></span>
-                        </label>
-                    </div>
-                </div>';
-                    } ?>
-                    <?php
                     if ( ! $noGyms ) {
                         echo '<div class="form-control switch-container">
                     <h3>' . i8ln( 'Gyms' ) . '</h3>
@@ -1941,7 +1927,6 @@ if ( $blockIframe ) {
     var enableGyms = <?php echo $noGyms ? 'false' : $enableGyms ?>;
     var enableNests = <?php echo $noNests ? 'false' : $enableNests ?>;
     var enableCommunities = <?php echo $noCommunity ? 'false' : $enableCommunities ?>;
-    var gymSidebar = <?php echo $noGymSidebar ? 'false' : $gymSidebar ?>;
     var enablePokemon = <?php echo $noPokemon ? 'false' : $enablePokemon ?>;
     var enablePokestops = <?php echo $noPokestops ? 'false' : $enablePokestops ?>;
     var enableLured = <?php echo $noLures ? 'false' : $enableLured ?>;
