@@ -985,11 +985,6 @@ var StoreOptions = {
             default: enableLevel17Cells,
             type: StoreTypes.Boolean
         },
-    'useGymSidebar':
-        {
-            default: gymSidebar,
-            type: StoreTypes.Boolean
-        },
     'showOpenGymsOnly':
         {
             default: false,
