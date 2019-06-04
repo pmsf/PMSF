@@ -1064,7 +1064,7 @@ function gymLabel(item) {
     var teamStr = ''
     if (teamId === 0) {
         teamStr = i8ln('Uncontested Gym')
-	} else {
+    } else {
         teamStr = '<b style="color:rgba(' + gymColor[teamId] + ')">' + i8ln('Team') + ' ' + i8ln(teamName) + '</b><br>'
     }
     str =
