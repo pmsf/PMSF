@@ -41,11 +41,8 @@ cron/*
 !cron/raid_cron.php
 !cron/silph.php
 /static/dist/
-/static/icons-im-1.png
-/static/icons-im-1-bigger.png
 /static/icons-pokemon/
 /static/sprites-pokemon/
-/static/rewards/*
 package-lock.json
 index.php
 .DS_Store
