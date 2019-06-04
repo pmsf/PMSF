@@ -210,7 +210,6 @@ class RDM extends Scanner
                 $pokemon["pokemon_types"] = $types;
             }
             $data[] = $pokemon;
-
             unset($pokemons[$i]);
             $i++;
         }
@@ -260,7 +259,6 @@ class RDM extends Scanner
 
         $query = str_replace(":conditions", join(" AND ", $conds), $query);
         $pokestops = $db->query($query, $params)->fetchAll(\PDO::FETCH_ASSOC);
-
         $data = array();
         $i = 0;
 
@@ -272,7 +270,6 @@ class RDM extends Scanner
             $pokestop["lure_id"] = 1;
 
             $data[] = $pokestop;
-
             unset($pokestops[$i]);
             $i++;
         }
@@ -316,7 +313,7 @@ class RDM extends Scanner
             $params[':lastUpdated'] = $tstamp;
         }
         if ($exEligible === "true") {
-            $conds[] = "(ex_raid_eligible IS NOT NULL AND ex_raid_eligible != '0')";
+            $conds[] = "(ex_raid_eligible = 1)";
         }
 
         return $this->query_gyms($conds, $params);
@@ -373,8 +370,8 @@ class RDM extends Scanner
             $gym["sponsor"] = !empty($gym["sponsor"]) ? $gym["sponsor"] : null;
             $gym["url"] = ! empty($gym["url"]) ? str_replace("http://", "https://images.weserv.nl/?url=", $gym["url"]) : null;
             $gym["park"] = intval($gym["park"]);
-            $data[] = $gym;
 
+            $data[] = $gym;
             unset($gyms[$i]);
             $i++;
         }
@@ -421,6 +418,7 @@ class RDM extends Scanner
             $spawnpoint["longitude"] = floatval($spawnpoint["longitude"]);
             $spawnpoint["time"] = !empty($spawnpoint["despawn_time"]) ? $spawnpoint["despawn_time"] : null;
             $spawnpoint["duration"] = !empty($spawnpoint["duration"]) ? $spawnpoint["duration"] : null;
+
             $data[] = $spawnpoint;
             unset($spawnpoints[$i]);
             $i++;

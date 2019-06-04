@@ -30,7 +30,7 @@ class Manual
         $json_contents = file_get_contents($json_moves);
         $this->moves = json_decode($json_contents, true);
     }
-public function get_nests($swLat, $swLng, $neLat, $neLng, $tstamp = 0, $oSwLat = 0, $oSwLng = 0, $oNeLat = 0, $oNeLng = 0)
+    public function get_nests($swLat, $swLng, $neLat, $neLng, $tstamp = 0, $oSwLat = 0, $oSwLng = 0, $oNeLat = 0, $oNeLng = 0)
     {
         $conds = array();
         $params = array();
@@ -180,9 +180,9 @@ public function get_nests($swLat, $swLng, $neLat, $neLng, $tstamp = 0, $oSwLat =
         lat,
         lon,
         name,
-	url,
-	updated,
-	imported
+        url,
+        updated,
+        imported
         FROM ingress_portals
         WHERE :conditions";
         $query = str_replace(":conditions", join(" AND ", $conds), $query);
@@ -228,10 +228,10 @@ public function get_nests($swLat, $swLng, $neLat, $neLng, $tstamp = 0, $oSwLat =
         lat,
         lon,
         name,
-	description,
-	updated,
-	submitted_by,
-	status
+        description,
+        updated,
+        submitted_by,
+        status
         FROM poi
         WHERE :conditions";
         $query = str_replace(":conditions", join(" AND ", $conds), $query);
