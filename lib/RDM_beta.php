@@ -213,7 +213,6 @@ class RDM_beta extends RDM
                 $pokemon["pokemon_types"] = $types;
             }
             $data[] = $pokemon;
-
             unset($pokemons[$i]);
             $i++;
         }
@@ -363,7 +362,6 @@ class RDM_beta extends RDM
 
         $query = str_replace(":conditions", join(" AND ", $conds), $query);
         $pokestops = $db->query($query, $params)->fetchAll(\PDO::FETCH_ASSOC);
-
         $data = array();
         $i = 0;
 
@@ -397,7 +395,6 @@ class RDM_beta extends RDM
             $pokestop["quest_pokemon_name"] = empty($mon_pid) ? null : i8ln($this->data[$mon_pid]["name"]);
 
             $data[] = $pokestop;
-
             unset($pokestops[$i]);
             $i++;
         }
