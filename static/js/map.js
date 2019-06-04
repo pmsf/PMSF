@@ -1205,7 +1205,7 @@ function getQuest(item) {
                 str = str.replace('throw(s)', 'curve throw(s)')
             }
         } else if (item['quest_condition_type'] === 12) {
-            str = str.replace("pokéstop(s)", "pokéstop(s) you haven't visited before")
+            str = str.replace('pokéstop(s)', "pokéstop(s) you haven't visited before")
         } else if (item['quest_condition_type'] !== 0) {
             console.log('Undefined condition type ' + item['quest_condition_type'])
             str += '<div>' + i8ln('Undefined condition') + '</div>'
