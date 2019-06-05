@@ -1153,7 +1153,13 @@ function getQuest(item) {
             var tstr = ''
             if (questinfo['pokemon_type_ids'].length > 1) {
                 $.each(questinfo['pokemon_type_ids'], function (index, typeId) {
-                    tstr += pokemonTypes[typeId] + ' '
+                    if (index === questinfo['pokemon_type_ids'].length - 2) {
+                        tstr += pokemonTypes[typeId] + ' or '
+                    } else if (index === questinfo['pokemon_type_ids'].length - 1) {
+                        tstr += pokemonTypes[typeId]
+                    } else {
+                        tstr += pokemonTypes[typeId] + ', '
+                    }
                 })
             } else {
                 tstr = pokemonTypes[questinfo['pokemon_type_ids']]
@@ -1163,7 +1169,13 @@ function getQuest(item) {
             var pstr = ''
             if (questinfo['pokemon_ids'].length > 1) {
                 $.each(questinfo['pokemon_ids'], function (index, id) {
-                    pstr += idToPokemon[id].name + ' '
+                    if (index === questinfo['pokemon_ids'].length - 2) {
+                        pstr += idToPokemon[id].name + ' or '
+                    } else if (index === questinfo['pokemon_ids'].length - 1) {
+                        pstr += idToPokemon[id].name
+                    } else {
+                        pstr += idToPokemon[id].name + ', '
+                    }
                 })
             } else {
                 pstr = idToPokemon[questinfo['pokemon_ids']].name
