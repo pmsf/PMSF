@@ -1142,11 +1142,13 @@ function getQuest(item) {
     var raidLevel
     var questinfo = JSON.parse(item['quest_condition_info'])
     var questStr = i8ln(questtypeList[item['quest_type']])
+
     str = '<div><b>' +
     i8ln('Quest') + ': ' +
     questStr.replace('{0}', item['quest_target']) +
     '</b></div>' +
     '<div>'
+
     if (item['quest_reward_type'] === 7) {
         str += '<div><b>' +
         i8ln('Reward') + ': ' +
@@ -1167,94 +1169,113 @@ function getQuest(item) {
     }
     str += '</div></center>'
 
-    if (item['quest_condition_type'] === 1) {
-        var tstr = ''
-        if (questinfo['pokemon_type_ids'].length > 1) {
-            $.each(questinfo['pokemon_type_ids'], function (index, typeId) {
-                if (index === questinfo['pokemon_type_ids'].length - 2) {
-                    tstr += pokemonTypes[typeId] + ' or '
-                } else if (index === questinfo['pokemon_type_ids'].length - 1) {
-                    tstr += pokemonTypes[typeId]
+    if (item['quest_condition_type'] > 0) {
+        switch (item['quest_condition_type']) {
+            case 1:
+                var tstr = ''
+                if (questinfo['pokemon_type_ids'].length > 1) {
+                    $.each(questinfo['pokemon_type_ids'], function (index, typeId) {
+                        if (index === questinfo['pokemon_type_ids'].length - 2) {
+                            tstr += pokemonTypes[typeId] + ' or '
+                        } else if (index === questinfo['pokemon_type_ids'].length - 1) {
+                            tstr += pokemonTypes[typeId]
+                        } else {
+                            tstr += pokemonTypes[typeId] + ', '
+                        }
+                    })
                 } else {
-                    tstr += pokemonTypes[typeId] + ', '
+                    tstr = pokemonTypes[questinfo['pokemon_type_ids']]
                 }
-            })
-        } else {
-            tstr = pokemonTypes[questinfo['pokemon_type_ids']]
-        }
-        str = str.replace('pokémon', tstr + ' type Pokémon')
-    } else if (item['quest_condition_type'] === 2) {
-        var pstr = ''
-        if (questinfo['pokemon_ids'].length > 1) {
-            $.each(questinfo['pokemon_ids'], function (index, id) {
-                if (index === questinfo['pokemon_ids'].length - 2) {
-                    pstr += idToPokemon[id].name + ' or '
-                } else if (index === questinfo['pokemon_ids'].length - 1) {
-                    pstr += idToPokemon[id].name
+                str = str.replace('pokémon', tstr + ' type Pokémon')
+                break
+            case 2:
+                var pstr = ''
+                if (questinfo['pokemon_ids'].length > 1) {
+                    $.each(questinfo['pokemon_ids'], function (index, id) {
+                        if (index === questinfo['pokemon_ids'].length - 2) {
+                            pstr += idToPokemon[id].name + ' or '
+                        } else if (index === questinfo['pokemon_ids'].length - 1) {
+                            pstr += idToPokemon[id].name
+                        } else {
+                            pstr += idToPokemon[id].name + ', '
+                        }
+                    })
                 } else {
-                    pstr += idToPokemon[id].name + ', '
+                    pstr = idToPokemon[questinfo['pokemon_ids']].name
                 }
-            })
-        } else {
-            pstr = idToPokemon[questinfo['pokemon_ids']].name
+                str = str.replace('pokémon', pstr)
+                break
+            case 3:
+                str = str.replace('pokémon', 'Pokémon with weather boost')
+                break
+            case 6:
+                str = str.replace('Complete', 'Win')
+                break
+            case 7:
+                raidLevel = Math.min.apply(null, questinfo['raid_levels'])
+                if (raidLevel > 1) {
+                    str = str.replace('raid battle(s)', 'level ' + raidLevel + ' or higher raid')
+                }
+                if (item['quest_condition_type_1'] === 6) {
+                    str = str.replace('Complete', 'Win')
+                }
+                break
+            case 8:
+                str = str.replace('throw(s)', i8ln(throwType[questinfo['throw_type_id']] + ' throw(s)'))
+                if (item['quest_condition_type_1'] === 15) {
+                    str = str.replace('throw(s)', 'curve throw(s)')
+                }
+                break
+            case 9:
+                str = str.replace('Complete', 'Win')
+                break
+            case 10:
+                str = str.replace('Complete', 'Use a super effective charged attack in ')
+                break
+            case 11:
+                if (questinfo !== null) {
+                    str = str.replace('berrie(s)', 'a ' + i8ln(idToItem[questinfo['item_id']].name))
+                }
+                break
+            case 12:
+                str = str.replace('Evolve', 'Use a item to evolve')
+                break
+            case 14:
+                if (typeof questinfo['throw_type_id'] === 'undefined') {
+                    str = str.replace('throw(s)', 'throw(s) in a row')
+                    if (item['quest_condition_type_1'] === 15) {
+                        str = str.replace('throw(s)', 'curve throw(s)')
+                    }
+                } else if (item['quest_condition_type'] === 14) {
+                    str = str.replace('throw(s)', i8ln(throwType[questinfo['throw_type_id']] + ' throw(s) in a row'))
+                }
+                if (item['quest_condition_type_1'] === 15) {
+                    str = str.replace('throw(s)', 'curve throw(s)')
+                }
+                break
         }
-        str = str.replace('pokémon', pstr)
-    } else if (item['quest_condition_type'] === 3) {
-        str = str.replace('pokémon', 'Pokémon with weather boost')
-    } else if (item['quest_condition_type'] === 6) {
-        str = str.replace('Complete', 'Win')
-    } else if (item['quest_condition_type'] === 7) {
-        raidLevel = Math.min.apply(null, questinfo['raid_levels'])
-        if (raidLevel > 1) {
-            str = str.replace('raid battle(s)', 'level ' + raidLevel + ' or higher raid')
+    } else if (item['quest_type'] > 0) {
+        switch (item['quest_type']) {
+            case 7:
+                str = str.replace('Complete', 'Battle in a gym').replace('gym battle(s)', 'times')
+                break
+            case 8:
+                str = str.replace('Complete', 'Battle in a raid').replace('raid battle(s)', 'times')
+                break
+            case 13:
+                str = str.replace('Catch', 'Use').replace('pokémon with berrie(s)', 'berries to help catch Pokémon')
+                break
+            case 17:
+                str = str.replace('Walk your buddy to earn', 'Earn').replace('candy', 'candies walking with your buddy')
+                break
         }
-        if (item['quest_condition_type_1'] === 6) {
-            str = str.replace('Complete', 'Win')
-        }
-    } else if (item['quest_condition_type'] === 8) {
-        str = str.replace('throw(s)', i8ln(throwType[questinfo['throw_type_id']] + ' throw(s)'))
-        if (item['quest_condition_type_1'] === 15) {
-            str = str.replace('throw(s)', 'curve throw(s)')
-        }
-    } else if (item['quest_condition_type'] === 9) {
-        str = str.replace('Complete', 'Win')
-    } else if (item['quest_condition_type'] === 10) {
-        str = str.replace('Complete', 'Use a super effective charged attack in ')
-    } else if (item['quest_condition_type'] === 11 && questinfo !== null) {
-        str = str.replace('berrie(s)', 'a ' + i8ln(idToItem[questinfo['item_id']].name))
-    } else if (item['quest_condition_type'] === 11) {
-        str = str.replace('Evolve', 'Use a item to evolve')
-    } else if (item['quest_condition_type'] === 12) {
-        str = str.replace('pokéstop(s)', "pokéstop(s) you haven't visited before")
-    } else if (item['quest_condition_type'] === 14 && typeof questinfo['throw_type_id'] === 'undefined') {
-        str = str.replace('throw(s)', 'throw(s) in a row')
-        if (item['quest_condition_type_1'] === 15) {
-            str = str.replace('throw(s)', 'curve throw(s)')
-        }
-    } else if (item['quest_condition_type'] === 14) {
-        str = str.replace('throw(s)', i8ln(throwType[questinfo['throw_type_id']] + ' throw(s) in a row'))
-        if (item['quest_condition_type_1'] === 15) {
-            str = str.replace('throw(s)', 'curve throw(s)')
-        }
-    } else if (item['quest_condition_type'] > 0) {
-        console.log('Undefined condition type ' + item['quest_condition_type'])
-        str += '<div>' + i8ln('Undefined quest condition') + '</div>'
-    } else if (item['quest_type'] === 7) {
-        str = str.replace('Complete', 'Battle in a gym').replace('gym battle(s)', 'times')
-    } else if (item['quest_type'] === 8) {
-        str = str.replace('Complete', 'Battle in a raid').replace('raid battle(s)', 'times')
-    } else if (item['quest_type'] === 13) {
-        str = str.replace('Catch', 'Use').replace('pokémon with berrie(s)', 'berries to help catch Pokémon')
-    } else if (item['quest_type'] === 17) {
-        str = str.replace('Walk your buddy to earn', 'Earn').replace('candy', 'candies walking with your buddy')
     }
-
     if (item['quest_target'] === 1) {
         str = str.replace('(s)', '').replace('1', 'a').replace('a times', '')
     } else {
         str = str.replace('(s)', 's')
     }
-
+    str = str.replace('pokémon', 'Pokémon')
     return str
 }
 
