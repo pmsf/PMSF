@@ -1248,9 +1248,9 @@ function getQuest(item) {
                     }
                 } else if (item['quest_condition_type'] === 14) {
                     str = str.replace('throw(s)', i8ln(throwType[questinfo['throw_type_id']] + ' throw(s) in a row'))
-                }
-                if (item['quest_condition_type_1'] === 15) {
-                    str = str.replace('throw(s)', 'curve throw(s)')
+                    if (item['quest_condition_type_1'] === 15) {
+                        str = str.replace('throw(s)', 'curve throw(s)')
+                    }
                 }
                 break
         }
