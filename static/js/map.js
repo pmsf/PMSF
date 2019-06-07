@@ -1235,10 +1235,11 @@ function getQuest(item) {
             case 11:
                 if (questinfo !== null) {
                     str = str.replace('berrie(s)', 'a ' + i8ln(idToItem[questinfo['item_id']].name))
-                }
+                } else {
+                    str = str.replace('Evolve', 'Use a item to evolve')
                 break
             case 12:
-                str = str.replace('Evolve', 'Use a item to evolve')
+                str = str.replace("pokéstop(s)", "pokéstop(s) you haven't visited before")
                 break
             case 14:
                 if (typeof questinfo['throw_type_id'] === 'undefined') {
