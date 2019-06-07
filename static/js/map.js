@@ -1237,6 +1237,7 @@ function getQuest(item) {
                     str = str.replace('berrie(s)', 'a ' + i8ln(idToItem[questinfo['item_id']].name))
                 } else {
                     str = str.replace('Evolve', 'Use a item to evolve')
+                }
                 break
             case 12:
                 str = str.replace("pokéstop(s)", "pokéstop(s) you haven't visited before")
