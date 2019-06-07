@@ -1244,7 +1244,7 @@ function getQuest(item) {
 
                 break
             case 12:
-                str = str.replace("pokéstop(s)", "pokéstop(s) you haven't visited before")
+                str = str.replace('pokéstop(s)', "pokéstop(s) you haven't visited before")
                 break
             case 14:
                 if (typeof questinfo['throw_type_id'] === 'undefined') {
