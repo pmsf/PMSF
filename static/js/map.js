@@ -1186,7 +1186,7 @@ function getQuest(item) {
                 } else {
                     tstr = pokemonTypes[questinfo['pokemon_type_ids']]
                 }
-                str = str.replace('pokémon', tstr + ' type Pokémon')
+                str = str.replace('pokémon', tstr + '-type Pokémon')
                 break
             case 2:
                 var pstr = ''
@@ -1221,9 +1221,10 @@ function getQuest(item) {
                 }
                 break
             case 8:
+                str = str.replace('Land', 'Make')
                 str = str.replace('throw(s)', i8ln(throwType[questinfo['throw_type_id']] + ' throw(s)'))
                 if (item['quest_condition_type_1'] === 15) {
-                    str = str.replace('throw(s)', 'curve throw(s)')
+                    str = str.replace('throw(s)', 'curveball throw(s)')
                 }
                 break
             case 9:
@@ -1247,13 +1248,14 @@ function getQuest(item) {
                 str = str.replace('pokéstop(s)', "pokéstop(s) you haven't visited before")
                 break
             case 14:
+                str = str.replace('Land', 'Make')
                 if (typeof questinfo['throw_type_id'] === 'undefined') {
                     str = str.replace('throw(s)', 'throw(s) in a row')
                 } else {
                     str = str.replace('throw(s)', i8ln(throwType[questinfo['throw_type_id']] + ' throw(s) in a row'))
                 }
                 if (item['quest_condition_type_1'] === 15) {
-                    str = str.replace('throw(s)', 'curve throw(s)')
+                    str = str.replace('throw(s)', 'curveball throw(s)')
                 }
                 break
         }
