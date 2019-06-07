@@ -1149,10 +1149,11 @@ function getQuest(item) {
     '</b></div>' +
     '<div>'
 
-    if (item['quest_reward_type'] === 7) {
+    if (item['quest_reward_type'] === 2) {
         str += '<div><b>' +
         i8ln('Reward') + ': ' +
-        item['quest_pokemon_name'] +
+        item['quest_reward_amount'] + ' ' +
+        item['quest_item_name'] +
         '</b></div>'
     } else if (item['quest_reward_type'] === 3) {
         str += '<div><b>' +
@@ -1160,11 +1161,10 @@ function getQuest(item) {
         item['quest_dust_amount'] + ' ' +
         i8ln('Stardust') +
         '</b></div>'
-    } else if (item['quest_reward_type'] === 2) {
+    } else if (item['quest_reward_type'] === 7) {
         str += '<div><b>' +
         i8ln('Reward') + ': ' +
-        item['quest_reward_amount'] + ' ' +
-        item['quest_item_name'] +
+        item['quest_pokemon_name'] +
         '</b></div>'
     }
     str += '</div></center>'
@@ -1233,11 +1233,15 @@ function getQuest(item) {
                 str = str.replace('Complete', 'Use a super effective charged attack in ')
                 break
             case 11:
+                if (item['quest_type'] === 13) {
+                    str = str.replace('Catch', 'Use').replace('pokémon with berrie(s)', 'berrie(s) to help catch Pokémon')
+                }
                 if (questinfo !== null) {
-                    str = str.replace('berrie(s)', 'a ' + i8ln(idToItem[questinfo['item_id']].name))
+                    str = str.replace('berrie(s)', i8ln(idToItem[questinfo['item_id']].name))
                 } else {
                     str = str.replace('Evolve', 'Use a item to evolve')
                 }
+
                 break
             case 12:
                 str = str.replace("pokéstop(s)", "pokéstop(s) you haven't visited before")
@@ -1245,14 +1249,11 @@ function getQuest(item) {
             case 14:
                 if (typeof questinfo['throw_type_id'] === 'undefined') {
                     str = str.replace('throw(s)', 'throw(s) in a row')
-                    if (item['quest_condition_type_1'] === 15) {
-                        str = str.replace('throw(s)', 'curve throw(s)')
-                    }
-                } else if (item['quest_condition_type'] === 14) {
+                } else {
                     str = str.replace('throw(s)', i8ln(throwType[questinfo['throw_type_id']] + ' throw(s) in a row'))
-                    if (item['quest_condition_type_1'] === 15) {
-                        str = str.replace('throw(s)', 'curve throw(s)')
-                    }
+                }
+                if (item['quest_condition_type_1'] === 15) {
+                    str = str.replace('throw(s)', 'curve throw(s)')
                 }
                 break
         }
@@ -1268,7 +1269,7 @@ function getQuest(item) {
                 str = str.replace('Catch', 'Use').replace('pokémon with berrie(s)', 'berries to help catch Pokémon')
                 break
             case 17:
-                str = str.replace('Walk your buddy to earn', 'Earn').replace('candy', 'candies walking with your buddy')
+                str = str.replace('Walk your buddy to earn', 'Earn').replace('candy', 'candy walking with your buddy')
                 break
         }
     }
