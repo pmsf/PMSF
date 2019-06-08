@@ -243,7 +243,7 @@ class Manual extends Submit
 		}
 	public function modify_poi($poiId, $poiName, $poiDescription, $poiNotes, $loggedUser)
 		{
-			global $manualdb, $noPoi, $noAddPoi, $noDiscordSubmitLogChannel, $discordSubmitLogChannelUrl, $submitMapUrl;
+			global $manualdb, $noPoi, $noEditPoi, $noDiscordSubmitLogChannel, $discordSubmitLogChannelUrl, $submitMapUrl;
 			if ( $noPoi === true || $noEditPoi === true ) {
 				http_response_code( 401 );
 				die();
