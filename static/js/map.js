@@ -3706,7 +3706,7 @@ function editPoiData(event) { // eslint-disable-line no-unused-vars
                 },
                 error: function error() {
                     // Display error toast
-                    toastr['error'](i8ln('Make sure all fields are filled.'), i8ln('Error Submitting poi'))
+                    toastr['error'](i8ln('Unable to update poi'), i8ln('Error Updating poi'))
                     toastr.options = toastrOptions
                 },
                 complete: function complete() {
