@@ -1262,7 +1262,7 @@ function getQuest(item) {
     } else if (item['quest_type'] > 0) {
         switch (item['quest_type']) {
             case 7:
-                str = str.replace('Complete', 'Battle in a gym').replace('Gym battle(s)', 'times')
+                str = str.replace('Complete', 'Battle in a gym').replace('gym battle(s)', 'times')
                 break
             case 8:
                 str = str.replace('Complete', 'Battle in a raid').replace('raid battle(s)', 'times')
