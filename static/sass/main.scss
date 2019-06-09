@@ -43,7 +43,6 @@
 @import 'components/table';
 @import 'components/button';
 @import 'components/grid-demo';
-@import 'components/gym-member';
 // @import 'components/overlay';
 
 // Layout.
@@ -51,7 +50,7 @@
 @import 'layout/header';
 @import 'layout/nav';
 @import 'layout/stats';
-@import 'layout/gym-details';
+@import 'layout/gyms';
 @import 'layout/banner';
 @import 'layout/main';
 @import 'layout/footer';
@@ -64,7 +63,4 @@
 @import 'layout/pokestop';
 @import 'layout/poi';
 
-@import 'pokemon-sprite';
-@import 'pokemon-raid-sprite';
-@import 'move-bar-sprite.scss';
 @import 'nest';

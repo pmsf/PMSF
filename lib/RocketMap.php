@@ -19,10 +19,10 @@ class RocketMap extends Scanner
         $params = array();
         $float = $db->info()['driver'] == 'pgsql' ? "::float" : "";
 
-        $select = "pokemon_id, Unix_timestamp(Convert_tz(disappear_time, '+00:00', @@global.time_zone)) AS disappear_time, encounter_id, latitude, longitude, gender, form, weight, height, weather_boosted_condition, costume";
+        $select = "pokemon_id, Unix_timestamp(Convert_tz(disappear_time, '+00:00', @@global.time_zone)) AS disappear_time, encounter_id, latitude, longitude, gender, form, weather_boosted_condition, costume";
         global $noHighLevelData;
         if (!$noHighLevelData) {
-            $select .= ", individual_attack, individual_defense, individual_stamina, move_1, move_2, cp, cp_multiplier";
+            $select .= ", weight, height, individual_attack, individual_defense, individual_stamina, move_1, move_2, cp, cp_multiplier";
         }
 
         $conds[] = "latitude > :swLat AND longitude > :swLng AND latitude < :neLat AND longitude < :neLng AND disappear_time > :time";
@@ -96,10 +96,10 @@ class RocketMap extends Scanner
         $params = array();
         $float = $db->info()['driver'] == 'pgsql' ? "::float" : "";
 
-        $select = "pokemon_id, Unix_timestamp(Convert_tz(disappear_time, '+00:00', @@global.time_zone)) AS disappear_time, encounter_id, latitude, longitude, gender, form, weight, height, weather_boosted_condition, costume";
+        $select = "pokemon_id, Unix_timestamp(Convert_tz(disappear_time, '+00:00', @@global.time_zone)) AS disappear_time, encounter_id, latitude, longitude, gender, form, weather_boosted_condition, costume";
         global $noHighLevelData;
         if (!$noHighLevelData) {
-            $select .= ", individual_attack, individual_defense, individual_stamina, move_1, move_2, cp, cp_multiplier";
+            $select .= ", weight, height, individual_attack, individual_defense, individual_stamina, move_1, move_2, cp, cp_multiplier";
         }
 
         $conds[] = "latitude > :swLat AND longitude > :swLng AND latitude < :neLat AND longitude < :neLng AND disappear_time > :time";
@@ -302,7 +302,7 @@ class RocketMap extends Scanner
         earliest_unseen,
         links,
         kind
-        FROM   spawnpoint
+        FROM spawnpoint
         WHERE :conditions";
 
         $query = str_replace(":conditions", join(" AND ", $conds), $query);
@@ -446,12 +446,6 @@ class RocketMap extends Scanner
         $gyms = $this->query_gyms($conds, $params);
         $gym = $gyms[0];
 
-        $select = "gymmember.gym_id, pokemon_id, cp AS pokemon_cp, move_1, move_2, iv_attack, iv_defense, iv_stamina";
-        global $noTrainerName;
-        if (!$noTrainerName) {
-            $select .= ", trainer_name, level AS trainer_level";
-        }
-        $gym["pokemon"] = $this->query_gym_defenders($gymId, $select);
         return $gym;
     }
 
@@ -459,188 +453,26 @@ class RocketMap extends Scanner
     {
         global $db;
 
-        $query = "SELECT gym.gym_id, 
-        latitude, 
-        longitude, 
-        guard_pokemon_id, 
-        slots_available, 
-        total_cp, 
-        Unix_timestamp(Convert_tz(last_modified, '+00:00', @@global.time_zone)) AS last_modified, 
-        Unix_timestamp(Convert_tz(gym.last_scanned, '+00:00', @@global.time_zone)) AS last_scanned, 
-        team_id, 
+        $query = "SELECT gym.gym_id,
+        latitude,
+        longitude,
+        slots_available,
+        Unix_timestamp(Convert_tz(last_modified, '+00:00', @@global.time_zone)) AS last_modified,
+        Unix_timestamp(Convert_tz(gym.last_scanned, '+00:00', @@global.time_zone)) AS last_scanned,
+        team_id,
         name,
         park,
-        level AS raid_level, 
-        pokemon_id AS raid_pokemon_id, 
-        cp AS raid_pokemon_cp, 
-        move_1 AS raid_pokemon_move_1, 
-        move_2 AS raid_pokemon_move_2, 
-        Unix_timestamp(Convert_tz(start, '+00:00', @@global.time_zone)) AS raid_start, 
-        Unix_timestamp(Convert_tz(end, '+00:00', @@global.time_zone)) AS raid_end 
-        FROM gym 
-        LEFT JOIN gymdetails 
-        ON gym.gym_id = gymdetails.gym_id 
-        LEFT JOIN raid 
-        ON gym.gym_id = raid.gym_id 
-        WHERE :conditions";
-
-        $query = str_replace(":conditions", join(" AND ", $conds), $query);
-        $gyms = $db->query($query, $params)->fetchAll(\PDO::FETCH_ASSOC);
-
-        $data = array();
-        $i = 0;
-
-        foreach ($gyms as $gym) {
-            $guard_pid = $gym["guard_pokemon_id"];
-            if ($guard_pid == "0") {
-                $guard_pid = null;
-                $gym["guard_pokemon_id"] = null;
-            }
-            $raid_pid = $gym["raid_pokemon_id"];
-            if ($raid_pid == "0") {
-                $raid_pid = null;
-                $gym["raid_pokemon_id"] = null;
-            }
-            $gym["park"] = intval($gym["park"]);
-            $gym["team_id"] = intval($gym["team_id"]);
-            $gym["pokemon"] = [];
-            $gym["guard_pokemon_name"] = empty($guard_pid) ? null : i8ln($this->data[$guard_pid]["name"]);
-            $gym["raid_pokemon_name"] = empty($raid_pid) ? null : i8ln($this->data[$raid_pid]["name"]);
-            $gym["latitude"] = floatval($gym["latitude"]);
-            $gym["longitude"] = floatval($gym["longitude"]);
-            $gym["last_modified"] = $gym["last_modified"] * 1000;
-            $gym["last_scanned"] = $gym["last_scanned"] * 1000;
-            $gym["raid_start"] = $gym["raid_start"] * 1000;
-            $gym["raid_end"] = $gym["raid_end"] * 1000;
-            $gym["slots_available"] = intval($gym["slots_available"]);
-            $data[] = $gym;
-
-            unset($gyms[$i]);
-            $i++;
-        }
-        return $data;
-    }
-
-    private function query_gym_defenders($gymId, $select)
-    {
-        global $db;
-
-
-        $query = "SELECT :select 
-        FROM gymmember 
-        JOIN gympokemon 
-        ON gymmember.pokemon_uid = gympokemon.pokemon_uid 
-        JOIN trainer 
-        ON gympokemon.trainer_name = trainer.name 
-        JOIN gym 
-        ON gym.gym_id = gymmember.gym_id 
-        WHERE gymmember.last_scanned > gym.last_modified 
-        AND gymmember.gym_id IN ( :gymId ) 
-        GROUP BY name 
-        ORDER BY gympokemon.cp DESC";
-
-        $query = str_replace(":select", $select, $query);
-        $gym_defenders = $db->query($query, [":gymId" => $gymId])->fetchAll(\PDO::FETCH_ASSOC);
-
-        $data = array();
-        $i = 0;
-
-        foreach ($gym_defenders as $defender) {
-            $pid = $defender["pokemon_id"];
-            $defender["pokemon_name"] = i8ln($this->data[$pid]["name"]);
-
-            $defender["iv_attack"] = floatval($defender["iv_attack"]);
-            $defender["iv_defense"] = floatval($defender["iv_defense"]);
-            $defender["iv_stamina"] = floatval($defender["iv_stamina"]);
-
-            $defender['move_1_name'] = i8ln($this->moves[$defender['move_1']]['name']);
-            $defender['move_1_damage'] = $this->moves[$defender['move_1']]['damage'];
-            $defender['move_1_energy'] = $this->moves[$defender['move_1']]['energy'];
-            $defender['move_1_type']['type'] = i8ln($this->moves[$defender['move_1']]['type']);
-            $defender['move_1_type']['type_en'] = $this->moves[$defender['move_1']]['type'];
-
-            $defender['move_2_name'] = i8ln($this->moves[$defender['move_2']]['name']);
-            $defender['move_2_damage'] = $this->moves[$defender['move_2']]['damage'];
-            $defender['move_2_energy'] = $this->moves[$defender['move_2']]['energy'];
-            $defender['move_2_type']['type'] = i8ln($this->moves[$defender['move_2']]['type']);
-            $defender['move_2_type']['type_en'] = $this->moves[$defender['move_2']]['type'];
-
-            $data[] = $defender;
-
-            unset($gym_defenders[$i]);
-            $i++;
-        }
-        return $data;
-    }
-
-    public function get_gyms_api($swLat, $swLng, $neLat, $neLng)
-    {
-        $conds = array();
-        $params = array();
-
-        $conds[] = "latitude > :swLat AND longitude > :swLng AND latitude < :neLat AND longitude < :neLng";
-        $params[':swLat'] = $swLat;
-        $params[':swLng'] = $swLng;
-        $params[':neLat'] = $neLat;
-        $params[':neLng'] = $neLng;
-
-        global $sendRaidData;
-        if (!$sendRaidData) {
-            return $this->query_gyms_api($conds, $params);
-        } else {
-            return $this->query_raids_api($conds, $params);
-        }
-    }
-
-    public function query_gyms_api($conds, $params)
-    {
-        global $db;
-
-        $query = "SELECT gym.gym_id, 
-        latitude, 
-        longitude,
-        name
-        FROM gym
-        LEFT JOIN gymdetails
-        ON gym.gym_id = gymdetails.gym_id
-        WHERE :conditions";
-
-        $query = str_replace(":conditions", join(" AND ", $conds), $query);
-        $gyms = $db->query($query, $params)->fetchAll(\PDO::FETCH_ASSOC);
-
-        $data = array();
-        $i = 0;
-
-        foreach ($gyms as $gym) {
-            $gym["latitude"] = floatval($gym["latitude"]);
-            $gym["longitude"] = floatval($gym["longitude"]);
-            $data[] = $gym;
-
-            unset($gyms[$i]);
-            $i++;
-        }
-        return $data;
-    }
-
-    public function query_raids_api($conds, $params)
-    {
-        global $db;
-
-        $query = "SELECT gym.gym_id, 
-        latitude, 
-        longitude,
-        name,
-        level AS raid_level, 
-        pokemon_id AS raid_pokemon_id, 
-        cp AS raid_pokemon_cp, 
-        move_1 AS raid_pokemon_move_1, 
-        move_2 AS raid_pokemon_move_2, 
-        Unix_timestamp(Convert_tz(start, '+00:00', @@global.time_zone)) AS raid_start, 
+        level AS raid_level,
+        pokemon_id AS raid_pokemon_id,
+        cp AS raid_pokemon_cp,
+        move_1 AS raid_pokemon_move_1,
+        move_2 AS raid_pokemon_move_2,
+        Unix_timestamp(Convert_tz(start, '+00:00', @@global.time_zone)) AS raid_start,
         Unix_timestamp(Convert_tz(end, '+00:00', @@global.time_zone)) AS raid_end
         FROM gym
         LEFT JOIN gymdetails
         ON gym.gym_id = gymdetails.gym_id
-        LEFT JOIN raid 
+        LEFT JOIN raid
         ON gym.gym_id = raid.gym_id
         WHERE :conditions";
 
@@ -651,8 +483,22 @@ class RocketMap extends Scanner
         $i = 0;
 
         foreach ($gyms as $gym) {
+            $raid_pid = $gym["raid_pokemon_id"];
+            if ($raid_pid == "0") {
+                $raid_pid = null;
+                $gym["raid_pokemon_id"] = null;
+            }
+            $gym["park"] = intval($gym["park"]);
+            $gym["team_id"] = intval($gym["team_id"]);
+            $gym["pokemon"] = [];
+            $gym["raid_pokemon_name"] = empty($raid_pid) ? null : i8ln($this->data[$raid_pid]["name"]);
             $gym["latitude"] = floatval($gym["latitude"]);
             $gym["longitude"] = floatval($gym["longitude"]);
+            $gym["last_modified"] = $gym["last_modified"] * 1000;
+            $gym["last_scanned"] = $gym["last_scanned"] * 1000;
+            $gym["raid_start"] = $gym["raid_start"] * 1000;
+            $gym["raid_end"] = $gym["raid_end"] * 1000;
+            $gym["slots_available"] = intval($gym["slots_available"]);
             $data[] = $gym;
 
             unset($gyms[$i]);

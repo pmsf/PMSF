@@ -160,9 +160,6 @@ $noTinyRatSetting = false;                                          // true/fals
 
 $noGyms = false;                                                    // true/false
 $enableGyms = 'false';                                              // true/false
-$noGymSidebar = false;                                              // true/false
-$gymSidebar = 'true';                                               // true/false
-$noTrainerName = false;                                             // true/false
 $noExEligible = false;                                              // true/false
 $exEligible = 'false';                                              // true/false
 
@@ -182,9 +179,10 @@ $noQuests = false;                                                  // true/fals
 $enableQuests = 'false';                                            // true/false
 $noQuestsItems = false;
 $noQuestsPokemon = false;
-$hideQuestsPokemon = '[]';  					    // Pokemon ids will default be hidden in the menu every user is able to change this personaly
+$hideQuestsPokemon = '[]';  					                    // Pokemon ids will default be hidden in the menu every user is able to change this personaly
+$generateExcludeQuestsPokemon = true;                               // Generate $excludeQuestsPokemon based on active quests in database
+$excludeQuestsPokemon = [];					                        // All Pokémon in this array will not be shown in the filter.
 $hideQuestsItem = '[4, 5, 301, 401, 402, 403, 404, 501, 602, 603, 604, 702, 704, 707, 801, 901, 902, 903, 1001, 1002, 1401, 1402, 1402, 1403, 1404, 1405]';    // Item ids "See protos https://github.com/Furtif/POGOProtos/blob/master/src/POGOProtos/Inventory/Item/ItemId.proto"
-$excludeQuestsPokemon = [];					    // All excluded pokemon wil not be shown in the filter.
 $excludeQuestsItem = [4, 5, 301, 401, 402, 403, 404, 501, 602, 603, 604, 702, 704, 707, 801, 901, 902, 903, 1001, 1002, 1401, 1402, 1402, 1403, 1404, 1405];   // All excluded item wil not be shown in the filter.
 $noItemNumbers = false;                                             // true/false
 
@@ -272,16 +270,9 @@ $osmTileServer = 'tile.openstreetmap.org';                          // osm tile 
 $triggerGyms = '[]';                                                // Add Gyms that the OSM-Query doesn't take care of like '["gym_id", "gym_id"]'
 $onlyTriggerGyms = false;                                           // Only show EX-Gyms that are defined in $triggerGyms
 $noExGyms = false;                                                  // Do not display EX-Gyms on the map
-$noParkInfo = false;                                                // Do not display Park info on the map
 
 /* Share links */
 $noWhatsappLink = true;
-//-----------------------------------------------
-// Raid API
-//-----------------------------------------------------
-
-$raidApiKey = '';                                                   // Raid API Key, '' to deny access
-$sendRaidData = false;                                              // Send Raid data, false to only send gym data
 
 //-----------------------------------------------------
 // Manual Submissions
@@ -371,6 +362,7 @@ $noSearchNests = true;
 $noSearchPortals = true;
 $defaultUnit = "km";                                            // mi/km
 $maxSearchResults = 10;		//Max number of search results
+$maxSearchNameLength = 0;	// 0 = Unlimited. Shorten pokestop names in reward search results if longer than this value to prevent UI layout issues
 //-----------------------------------------------
 // Community
 //-----------------------------------------------------
@@ -421,16 +413,6 @@ $weatherColors = [
     'white',                                                        // snow
     'black'                                                         // fog
 ];
-
-//-----------------------------------------------------
-// DATA MANAGEMENT
-//-----------------------------------------------------
-
-// Clear pokemon from database this many hours after they disappear (0 to disable)
-// This is recommended unless you wish to store a lot of backdata for statistics etc!
-
-$purgeData = 0;
-
 
 //-----------------------------------------------------
 // DEBUGGING
