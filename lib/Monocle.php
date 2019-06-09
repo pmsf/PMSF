@@ -103,7 +103,7 @@ class Monocle extends Scanner
         global $db;
 
         $query = "SELECT :select
-        FROM sightings 
+        FROM sightings
         WHERE :conditions ORDER BY lat,lon";
 
         $query = str_replace(":select", $select, $query);
@@ -199,9 +199,9 @@ class Monocle extends Scanner
     {
         global $db;
 
-        $query = "SELECT external_id AS pokestop_id, 
-        lat AS latitude, 
-        lon AS longitude 
+        $query = "SELECT external_id AS pokestop_id,
+        lat AS latitude,
+        lon AS longitude
         FROM pokestops
         WHERE :conditions";
 
@@ -252,12 +252,12 @@ class Monocle extends Scanner
     {
         global $db;
 
-        $query = "SELECT lat AS latitude, 
-        lon AS longitude, 
-        spawn_id AS spawnpoint_id, 
+        $query = "SELECT lat AS latitude,
+        lon AS longitude,
+        spawn_id AS spawnpoint_id,
         despawn_time,
         duration
-        FROM   spawnpoints 
+        FROM spawnpoints
         WHERE :conditions";
 
         $query = str_replace(":conditions", join(" AND ", $conds), $query);
@@ -326,26 +326,25 @@ class Monocle extends Scanner
     {
         global $db;
 
-        $query = "SELECT f.external_id AS gym_id, 
-        f.lat AS latitude, 
-        f.lon AS longitude, 
-        fs.last_modified, 
-        fs.team AS team_id, 
-        fs.slots_available, 
-        fs.guard_pokemon_id,
-        level AS raid_level, 
-        pokemon_id AS raid_pokemon_id, 
-        move_1 AS raid_pokemon_move_1, 
-        move_2 AS raid_pokemon_move_2, 
-        time_battle AS raid_start, 
-        time_end AS raid_end 
+        $query = "SELECT f.external_id AS gym_id,
+        f.lat AS latitude,
+        f.lon AS longitude,
+        fs.last_modified,
+        fs.team AS team_id,
+        fs.slots_available,
+        level AS raid_level,
+        pokemon_id AS raid_pokemon_id,
+        move_1 AS raid_pokemon_move_1,
+        move_2 AS raid_pokemon_move_2,
+        time_battle AS raid_start,
+        time_end AS raid_end
         FROM (SELECT f.id,
           f.external_id,
           f.lat,
-          f.lon, 
+          f.lon,
           MAX(fs.id) AS fort_sightings_id,
           MAX(r.id)  AS raid_id
-          FROM   forts f
+          FROM forts f
           LEFT JOIN fort_sightings fs ON fs.fort_id = f.id
           LEFT JOIN raids r ON r.fort_id = f.id
           GROUP  BY f.id) f
@@ -360,11 +359,6 @@ class Monocle extends Scanner
         $i = 0;
 
         foreach ($gyms as $gym) {
-            $guard_pid = $gym["guard_pokemon_id"];
-            if ($guard_pid == "0") {
-                $guard_pid = null;
-                $gym["guard_pokemon_id"] = null;
-            }
             $raid_pid = $gym["raid_pokemon_id"];
             if ($raid_pid == "0") {
                 $raid_pid = null;
@@ -372,7 +366,6 @@ class Monocle extends Scanner
             }
             $gym["team_id"] = intval($gym["team_id"]);
             $gym["pokemon"] = [];
-            $gym["guard_pokemon_name"] = empty($guard_pid) ? null : i8ln($this->data[$guard_pid]["name"]);
             $gym["raid_pokemon_name"] = empty($raid_pid) ? null : i8ln($this->data[$raid_pid]["name"]);
             $gym["latitude"] = floatval($gym["latitude"]);
             $gym["longitude"] = floatval($gym["longitude"]);
@@ -380,93 +373,6 @@ class Monocle extends Scanner
             $gym["last_modified"] = $gym["last_modified"] * 1000;
             $gym["raid_start"] = $gym["raid_start"] * 1000;
             $gym["raid_end"] = $gym["raid_end"] * 1000;
-            $data[] = $gym;
-
-            unset($gyms[$i]);
-            $i++;
-        }
-        return $data;
-    }
-
-    public function get_gyms_api($swLat, $swLng, $neLat, $neLng)
-    {
-        $conds = array();
-        $params = array();
-
-        $conds[] = "f.lat > :swLat AND f.lon > :swLng AND f.lat < :neLat AND f.lon < :neLng";
-        $params[':swLat'] = $swLat;
-        $params[':swLng'] = $swLng;
-        $params[':neLat'] = $neLat;
-        $params[':neLng'] = $neLng;
-
-        global $sendRaidData;
-        if (!$sendRaidData) {
-            return $this->query_gyms_api($conds, $params);
-        } else {
-            return $this->query_raids_api($conds, $params);
-        }
-    }
-
-    public function query_gyms_api($conds, $params)
-    {
-        global $db;
-
-        $query = "SELECT f.external_id AS gym_id, 
-        f.lat AS latitude, 
-        f.lon AS longitude
-        FROM forts f
-        WHERE :conditions";
-
-        $query = str_replace(":conditions", join(" AND ", $conds), $query);
-        $gyms = $db->query($query, $params)->fetchAll(\PDO::FETCH_ASSOC);
-
-        $data = array();
-        $i = 0;
-
-        foreach ($gyms as $gym) {
-            $gym["latitude"] = floatval($gym["latitude"]);
-            $gym["longitude"] = floatval($gym["longitude"]);
-            $data[] = $gym;
-
-            unset($gyms[$i]);
-            $i++;
-        }
-        return $data;
-    }
-
-    public function query_raids_api($conds, $params)
-    {
-        global $db;
-
-        $query = "SELECT f.external_id AS gym_id, 
-        f.lat AS latitude, 
-        f.lon AS longitude,
-        level AS raid_level,
-        pokemon_id AS raid_pokemon_id,
-        time_battle AS raid_start,
-        time_end AS raid_end,
-        move_1 AS raid_pokemon_move_1,
-        move_2 AS raid_pokemon_move_2
-        FROM (SELECT f.id,
-          f.external_id,
-          f.lat,
-          f.lon,
-          MAX(r.id) AS raid_id
-          FROM   forts f
-          LEFT JOIN raids r ON r.fort_id = f.id
-          GROUP  BY f.id) f
-        LEFT JOIN raids r ON r.id = f.raid_id
-        WHERE :conditions";
-
-        $query = str_replace(":conditions", join(" AND ", $conds), $query);
-        $gyms = $db->query($query, $params)->fetchAll(\PDO::FETCH_ASSOC);
-
-        $data = array();
-        $i = 0;
-
-        foreach ($gyms as $gym) {
-            $gym["latitude"] = floatval($gym["latitude"]);
-            $gym["longitude"] = floatval($gym["longitude"]);
             $data[] = $gym;
 
             unset($gyms[$i]);

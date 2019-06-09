@@ -6154,6 +6154,53 @@
         "type": "Bug",
         "color": "#a8b820"
       }
+    ],
+    "forms": [
+      {
+        "nameform": "Plant",
+        "protoform": "118",
+        "assetsform": "11",
+        "formtypes": [
+          {
+            "type": "Bug",
+            "color": "#a8b820"
+          },
+          {
+            "type": "Grass",
+            "color": "#78c850"
+          }
+        ]
+      },
+      {
+        "nameform": "Sandy",
+        "protoform": "119",
+        "assetsform": "12",
+        "formtypes": [
+          {
+            "type": "Bug",
+            "color": "#a8b820"
+          },
+          {
+            "type": "Ground",
+            "color": "#e0c068"
+          }
+        ]
+      },
+      {
+        "nameform": "Trash",
+        "protoform": "120",
+        "assetsform": "13",
+        "formtypes": [
+          {
+            "type": "Bug",
+            "color": "#a8b820"
+          },
+          {
+            "type": "Steel",
+            "color": "#b8b8d0"
+          }
+        ]
+      }
     ]
   },
   "413":{
@@ -6173,6 +6220,7 @@
       {
         "nameform": "Plant",
         "protoform": "87",
+        "assetsform": "11",
         "formtypes": [
           {
             "type": "Bug",
@@ -6187,6 +6235,7 @@
       {
         "nameform": "Sandy",
         "protoform": "88",
+        "assetsform": "12",
         "formtypes": [
           {
             "type": "Bug",
@@ -6201,6 +6250,7 @@
       {
         "nameform": "Trash",
         "protoform": "89",
+        "assetsform": "13",
         "formtypes": [
           {
             "type": "Bug",
@@ -6309,6 +6359,7 @@
       {
         "nameform": "Overcast",
         "protoform": "94",
+        "assetsform": "11",
         "formtypes": [
           {
             "type": "Grass",
@@ -6319,6 +6370,7 @@
       {
         "nameform": "Sunny",
         "protoform": "95",
+        "assetsform": "12",
         "formtypes": [
           {
             "type": "Grass",
@@ -6341,6 +6393,7 @@
       {
         "nameform": "West Sea",
         "protoform": "96",
+        "assetsform": "11",
         "formtypes": [
           {
             "type": "Water",
@@ -6351,6 +6404,7 @@
       {
         "nameform": "East Sea",
         "protoform": "97",
+        "assetsform": "12",
         "formtypes": [
           {
             "type": "Water",

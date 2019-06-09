@@ -11,10 +11,10 @@ class RDM extends Scanner
         $params = array();
         $float = $db->info()['driver'] == 'pgsql' ? "::float" : "";
 
-        $select = "pokemon_id, expire_timestamp AS disappear_time, id AS encounter_id, spawn_id, lat AS latitude, lon AS longitude, gender, form, weight, weather AS weather_boosted_condition, costume";
+        $select = "pokemon_id, expire_timestamp AS disappear_time, id AS encounter_id, spawn_id, lat AS latitude, lon AS longitude, gender, form, weather AS weather_boosted_condition, costume";
         global $noHighLevelData;
         if (!$noHighLevelData) {
-            $select .= ", atk_iv AS individual_attack, def_iv AS individual_defense, sta_iv AS individual_stamina, move_1, move_2, cp, level";
+            $select .= ", weight, atk_iv AS individual_attack, def_iv AS individual_defense, sta_iv AS individual_stamina, move_1, move_2, cp, level";
         }
 
         $conds[] = "lat > :swLat AND lon > :swLng AND lat < :neLat AND lon < :neLng AND expire_timestamp > :time";
@@ -84,11 +84,11 @@ class RDM extends Scanner
         $params = array();
         $float = $db->info()['driver'] == 'pgsql' ? "::float" : "";
 
-        $select = "pokemon_id, expire_timestamp AS disappear_time, id AS encounter_id, spawn_id, lat AS latitude, lon AS longitude, gender, form, weight, weather AS weather_boosted_condition, costume";
+        $select = "pokemon_id, expire_timestamp AS disappear_time, id AS encounter_id, spawn_id, lat AS latitude, lon AS longitude, gender, form, weather AS weather_boosted_condition, costume";
 
         global $noHighLevelData;
         if (!$noHighLevelData) {
-            $select .= ", atk_iv AS individual_attack, def_iv AS individual_defense, sta_iv AS individual_stamina, move_1, move_2, cp, level";
+            $select .= ", weight, atk_iv AS individual_attack, def_iv AS individual_defense, sta_iv AS individual_stamina, move_1, move_2, cp, level";
         }
 
         $conds[] = "lat > :swLat AND lon > :swLng AND lat < :neLat AND lon < :neLng AND expire_timestamp > :time";
@@ -164,27 +164,24 @@ class RDM extends Scanner
                 $pokemon["longitude"] = floatval($pokemon["longitude"]);
                 $lastlat = floatval($pokemon["latitude"]);
                 $lastlon = floatval($pokemon["longitude"]);
-                if (abs($pokemon["latitude"] - $lastlat) < 0.0001 && abs($pokemon["longitude"] - $lastlon) < 0.0001){
+                if (abs($pokemon["latitude"] - $lastlat) < 0.0001 && abs($pokemon["longitude"] - $lastlon) < 0.0001) {
                     $lasti = $lasti + 1;
                 } else {
                     $lasti = 0;
                 }
                 $pokemon["latitude"] = $pokemon["latitude"] + 0.0003*cos(deg2rad($lasti*45));
-		        $pokemon["longitude"] = $pokemon["longitude"] + 0.0003*sin(deg2rad($lasti*45));
+                $pokemon["longitude"] = $pokemon["longitude"] + 0.0003*sin(deg2rad($lasti*45));
             } else {
                 $pokemon["latitude"] = floatval($pokemon["latitude"]);
-		        $pokemon["longitude"] = floatval($pokemon["longitude"]);
+                $pokemon["longitude"] = floatval($pokemon["longitude"]);
             }
             $pokemon["disappear_time"] = $pokemon["disappear_time"] * 1000;
-
             $pokemon["weight"] = isset($pokemon["weight"]) ? floatval($pokemon["weight"]) : null;
-
             $pokemon["individual_attack"] = isset($pokemon["individual_attack"]) ? intval($pokemon["individual_attack"]) : null;
             $pokemon["individual_defense"] = isset($pokemon["individual_defense"]) ? intval($pokemon["individual_defense"]) : null;
             $pokemon["individual_stamina"] = isset($pokemon["individual_stamina"]) ? intval($pokemon["individual_stamina"]) : null;
             $pokemon['expire_timestamp_verified'] = null;
             $pokemon["weather_boosted_condition"] = isset($pokemon["weather_boosted_condition"]) ? intval($pokemon["weather_boosted_condition"]) : 0;
-
             $pokemon["pokemon_id"] = intval($pokemon["pokemon_id"]);
             $pokemon["pokemon_name"] = i8ln($this->data[$pokemon["pokemon_id"]]['name']);
             $pokemon["pokemon_rarity"] = i8ln($this->data[$pokemon["pokemon_id"]]['rarity']);
@@ -213,7 +210,6 @@ class RDM extends Scanner
                 $pokemon["pokemon_types"] = $types;
             }
             $data[] = $pokemon;
-
             unset($pokemons[$i]);
             $i++;
         }
@@ -236,7 +232,7 @@ class RDM extends Scanner
             $params[':oswLng'] = $oSwLng;
             $params[':oneLat'] = $oNeLat;
             $params[':oneLng'] = $oNeLng;
-	}
+    }
         if (!empty($lures) && $lures === 'true') {
             $conds[] = "lure_expire_timestamp > :time";
             $params[':time'] = time();
@@ -250,7 +246,7 @@ class RDM extends Scanner
 
     public function query_stops($conds, $params)
     {
-        global $db, $noTrainerName, $noManualQuests;
+        global $db, $noManualQuests;
 
         $query = "SELECT id AS pokestop_id,
         lat AS latitude,
@@ -263,21 +259,17 @@ class RDM extends Scanner
 
         $query = str_replace(":conditions", join(" AND ", $conds), $query);
         $pokestops = $db->query($query, $params)->fetchAll(\PDO::FETCH_ASSOC);
-
         $data = array();
         $i = 0;
 
         foreach ($pokestops as $pokestop) {
             $pokestop["latitude"] = floatval($pokestop["latitude"]);
             $pokestop["longitude"] = floatval($pokestop["longitude"]);
-			$pokestop["url"] = ! empty($pokestop["url"]) ? str_replace("http://", "https://images.weserv.nl/?url=", $pokestop["url"]) : null;
-			$pokestop["lure_expiration"] = $pokestop["lure_expiration"] * 1000;
-            if ($noTrainerName === true) {
-                // trainer names hidden, so don't show trainer who lured
-                unset($pokestop["lure_user"]);
-            }
-            $data[] = $pokestop;
+            $pokestop["url"] = ! empty($pokestop["url"]) ? str_replace("http://", "https://images.weserv.nl/?url=", $pokestop["url"]) : null;
+            $pokestop["lure_expiration"] = $pokestop["lure_expiration"] * 1000;
+            $pokestop["lure_id"] = 1;
 
+            $data[] = $pokestop;
             unset($pokestops[$i]);
             $i++;
         }
@@ -295,22 +287,6 @@ class RDM extends Scanner
         $gyms = $this->query_gyms($conds, $params);
         $gym = $gyms[0];
 
-        $select = "guarding_pokemon_id";
-        global $noTrainerName, $noTrainerLevel;
-        if (!$noTrainerName) {
-            $select .= ", owner_name AS trainer_name";
-        }
-        if (!$noTrainerLevel) {
-            $select .= ", owner_level AS trainer_level";
-        }
-        $gym["pokemon"] = $this->query_gym_defenders($gymId, $select);
-        $gym["pokemon_cp"] = !empty($gym["pokemon_cp"]) ? $gym["pokemon_cp"] : null;
-        $gym["move_1"] = !empty($gym["move_1"]) ? $gym["move_1"] : null;
-        $gym["move_2"] = !empty($gym["move_2"]) ? $gym["move_2"] : null;
-        $gym["nickname"] = !empty($gym["nickname"]) ? $gym["nickname"] : null;
-        $gym["iv_attack"] = !empty($gym["iv_attack"]) ? $gym["iv_attack"] : null;
-        $gym["iv_defense"] = !empty($gym["iv_defense"]) ? $gym["iv_defense"] : null;
-        $gym["iv_stamina"] = !empty($gym["iv_stamina"]) ? $gym["iv_defense"] : null;
         return $gym;
     }
 
@@ -337,7 +313,7 @@ class RDM extends Scanner
             $params[':lastUpdated'] = $tstamp;
         }
         if ($exEligible === "true") {
-            $conds[] = "(ex_raid_eligible IS NOT NULL AND ex_raid_eligible != '0')";
+            $conds[] = "(ex_raid_eligible = 1)";
         }
 
         return $this->query_gyms($conds, $params);
@@ -357,13 +333,12 @@ class RDM extends Scanner
         raid_battle_timestamp AS raid_start,
         updated AS last_scanned,
         raid_pokemon_id,
-        guarding_pokemon_id AS guard_pokemon_id,
         availble_slots AS slots_available,
         team_id,
         raid_level,
         raid_pokemon_move_1,
         raid_pokemon_move_2,
-        raid_pokemon_form AS form,
+        raid_pokemon_form,
         raid_pokemon_cp,
         ex_raid_eligible AS park
         FROM gym
@@ -376,11 +351,6 @@ class RDM extends Scanner
         $i = 0;
 
         foreach ($gyms as $gym) {
-            $guard_pid = $gym["guard_pokemon_id"];
-            if ($guard_pid == "0") {
-                $guard_pid = null;
-                $gym["guard_pokemon_id"] = null;
-            }
             $raid_pid = $gym["raid_pokemon_id"];
             if ($raid_pid == "0") {
                 $raid_pid = null;
@@ -388,11 +358,10 @@ class RDM extends Scanner
             }
             $gym["team_id"] = intval($gym["team_id"]);
             $gym["pokemon"] = [];
-            $gym["guard_pokemon_name"] = empty($guard_pid) ? null : i8ln($this->data[$guard_pid]["name"]);
             $gym["raid_pokemon_name"] = empty($raid_pid) ? null : i8ln($this->data[$raid_pid]["name"]);
+            $gym["form"] = intval($gym["raid_pokemon_form"]);
             $gym["latitude"] = floatval($gym["latitude"]);
             $gym["longitude"] = floatval($gym["longitude"]);
-            //$gym["sponsor"] = intval($gym["sponsor"]);
             $gym["slots_available"] = intval($gym["slots_available"]);
             $gym["last_modified"] = $gym["last_modified"] * 1000;
             $gym["last_scanned"] = $gym["last_scanned"] * 1000;
@@ -401,137 +370,8 @@ class RDM extends Scanner
             $gym["sponsor"] = !empty($gym["sponsor"]) ? $gym["sponsor"] : null;
             $gym["url"] = ! empty($gym["url"]) ? str_replace("http://", "https://images.weserv.nl/?url=", $gym["url"]) : null;
             $gym["park"] = intval($gym["park"]);
+
             $data[] = $gym;
-
-            unset($gyms[$i]);
-            $i++;
-        }
-        return $data;
-    }
-
-    private function query_gym_defenders($gymId, $select)
-    {
-        global $db;
-
-
-        $query = "SELECT :select
-      FROM gym
-      WHERE id = :gymId";
-
-        $query = str_replace(":select", $select, $query);
-        $gym_defenders = $db->query($query, [":gymId" => $gymId])->fetchAll(\PDO::FETCH_ASSOC);
-
-        $data = array();
-        $i = 0;
-
-        foreach ($gym_defenders as $defender) {
-            $pid = $defender["pokemon_id"];
-            if ($defender['nickname']) {
-                // If defender has nickname, eg Pippa, put it alongside poke
-                $defender["pokemon_name"] = i8ln($this->data[$pid]["name"]) . "<br><small style='font-size: 70%;'>(" . $defender['nickname'] . ")</small>";
-            } else {
-                $defender["pokemon_name"] = i8ln($this->data[$pid]["name"]);
-            }
-            $defender["iv_attack"] = floatval($defender["iv_attack"]);
-            $defender["iv_defense"] = floatval($defender["iv_defense"]);
-            $defender["iv_stamina"] = floatval($defender["iv_stamina"]);
-
-            $defender['move_1_name'] = i8ln($this->moves[$defender['move_1']]['name']);
-            $defender['move_1_damage'] = $this->moves[$defender['move_1']]['damage'];
-            $defender['move_1_energy'] = $this->moves[$defender['move_1']]['energy'];
-            $defender['move_1_type']['type'] = i8ln($this->moves[$defender['move_1']]['type']);
-            $defender['move_1_type']['type_en'] = $this->moves[$defender['move_1']]['type'];
-
-            $defender['move_2_name'] = i8ln($this->moves[$defender['move_2']]['name']);
-            $defender['move_2_damage'] = $this->moves[$defender['move_2']]['damage'];
-            $defender['move_2_energy'] = $this->moves[$defender['move_2']]['energy'];
-            $defender['move_2_type']['type'] = i8ln($this->moves[$defender['move_2']]['type']);
-            $defender['move_2_type']['type_en'] = $this->moves[$defender['move_2']]['type'];
-
-            $data[] = $defender;
-
-            unset($gym_defenders[$i]);
-            $i++;
-        }
-        return $data;
-    }
-
-    public function get_gyms_api($swLat, $swLng, $neLat, $neLng)
-    {
-        $conds = array();
-        $params = array();
-
-        $conds[] = "lat > :swLat AND lon > :swLng AND lat < :neLat AND lon < :neLng";
-        $params[':swLat'] = $swLat;
-        $params[':swLng'] = $swLng;
-        $params[':neLat'] = $neLat;
-        $params[':neLng'] = $neLng;
-
-        global $sendRaidData;
-        if (!$sendRaidData) {
-            return $this->query_gyms_api($conds, $params);
-        } else {
-            return $this->query_raids_api($conds, $params);
-        }
-    }
-
-    public function query_gyms_api($conds, $params)
-    {
-        global $db;
-
-        $query = "SELECT id AS gym_id,
-        lat AS latitude,
-        lon AS longitude,
-        name
-        FROM gym
-        WHERE :conditions";
-
-        $query = str_replace(":conditions", join(" AND ", $conds), $query);
-        $gyms = $db->query($query, $params)->fetchAll(\PDO::FETCH_ASSOC);
-
-        $data = array();
-        $i = 0;
-
-        foreach ($gyms as $gym) {
-            $gym["latitude"] = floatval($gym["latitude"]);
-            $gym["longitude"] = floatval($gym["longitude"]);
-            $data[] = $gym;
-
-            unset($gyms[$i]);
-            $i++;
-        }
-        return $data;
-    }
-
-    public function query_raids_api($conds, $params)
-    {
-        global $db;
-
-        $query = "SELECT id AS gym_id,
-        lat AS latitude,
-        lon AS longitude,
-        name,
-        level AS raid_level,
-        pokemon_id AS raid_pokemon_id,
-        raid_battle_timestamp AS raid_start,
-        raid_end_timestamp AS raid_end,
-        raid_pokemon_cp,
-        raid_pokemon_move_1,
-        raid_pokemon_move_2
-        FROM gym
-        WHERE :conditions";
-
-        $query = str_replace(":conditions", join(" AND ", $conds), $query);
-        $gyms = $db->query($query, $params)->fetchAll(\PDO::FETCH_ASSOC);
-
-        $data = array();
-        $i = 0;
-
-        foreach ($gyms as $gym) {
-            $gym["latitude"] = floatval($gym["latitude"]);
-            $gym["longitude"] = floatval($gym["longitude"]);
-            $data[] = $gym;
-
             unset($gyms[$i]);
             $i++;
         }
@@ -576,10 +416,9 @@ class RDM extends Scanner
         foreach ($spawnpoints as $spawnpoint) {
             $spawnpoint["latitude"] = floatval($spawnpoint["latitude"]);
             $spawnpoint["longitude"] = floatval($spawnpoint["longitude"]);
-            //$spawnpoint["time"] = intval($spawnpoint["despawn_time"]);
-            //$spawnpoint["duration"] = intval($spawnpoint["duration"]);
             $spawnpoint["time"] = !empty($spawnpoint["despawn_time"]) ? $spawnpoint["despawn_time"] : null;
             $spawnpoint["duration"] = !empty($spawnpoint["duration"]) ? $spawnpoint["duration"] : null;
+
             $data[] = $spawnpoint;
             unset($spawnpoints[$i]);
             $i++;

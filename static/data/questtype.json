@@ -102,5 +102,13 @@
   "25": {
     "prototext": "QUEST_EVOLVE_INTO_POKEMON",
     "text": "Evolve {0} pokémon into"
+  },
+  "26": {
+    "prototext": "QUEST_COMPLETE_COMBAT",
+    "text": "Win {0} pvp battle(s)"
+  },
+  "27": {
+    "prototext": "QUEST_TAKE_SNAPSHOT",
+    "text": "Take {0} Snapshot photo(s)"
   }
 }
