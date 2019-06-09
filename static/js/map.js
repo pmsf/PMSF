@@ -1167,7 +1167,7 @@ function getQuest(item) {
         item['quest_pokemon_name'] +
         '</b></div>'
     }
-    str += '</div></center>'
+    str += '</div>'
 
     if (item['quest_condition_type'] > 0) {
         switch (item['quest_condition_type']) {
@@ -1222,9 +1222,9 @@ function getQuest(item) {
                 break
             case 8:
                 str = str.replace('Land', 'Make')
-                str = str.replace('throw(s)', i8ln(throwType[questinfo['throw_type_id']] + ' throw(s)'))
+                str = str.replace('throw(s)', i8ln(throwType[questinfo['throw_type_id']] + ' Throw(s)'))
                 if (item['quest_condition_type_1'] === 15) {
-                    str = str.replace('throw(s)', 'curveball throw(s)')
+                    str = str.replace('Throw(s)', 'Curveball Throw(s)')
                 }
                 break
             case 9:
@@ -1250,19 +1250,19 @@ function getQuest(item) {
             case 14:
                 str = str.replace('Land', 'Make')
                 if (typeof questinfo['throw_type_id'] === 'undefined') {
-                    str = str.replace('throw(s)', 'throw(s) in a row')
+                    str = str.replace('throw(s)', 'Throw(s) in a row')
                 } else {
-                    str = str.replace('throw(s)', i8ln(throwType[questinfo['throw_type_id']] + ' throw(s) in a row'))
+                    str = str.replace('throw(s)', i8ln(throwType[questinfo['throw_type_id']] + ' Throw(s) in a row'))
                 }
                 if (item['quest_condition_type_1'] === 15) {
-                    str = str.replace('throw(s)', 'curveball throw(s)')
+                    str = str.replace('Throw(s)', 'Curveball Throw(s)')
                 }
                 break
         }
     } else if (item['quest_type'] > 0) {
         switch (item['quest_type']) {
             case 7:
-                str = str.replace('Complete', 'Battle in a gym').replace('gym battle(s)', 'times')
+                str = str.replace('Complete', 'Battle in a gym').replace('Gym battle(s)', 'times')
                 break
             case 8:
                 str = str.replace('Complete', 'Battle in a raid').replace('raid battle(s)', 'times')
@@ -1314,48 +1314,39 @@ function pokestopLabel(item) {
     } else if (item['url'] !== null) {
         stopImage = '<img class="pokestop-image" src="' + item['url'] + '">'
     }
+
     str =
-        '<center><div class="pokestop-label">' +
-        stopName +
-        '</div></center>'
+        '<div class="pokestop-label">' +
+        '<center>' +
+        '<div>' + stopName + '</div>' +
+        '<div>' + stopImage
+
     if (!noQuests && item['quest_type'] !== null && lastMidnight < Number(item['quest_timestamp'])) {
         str +=
-            '<div><center>'
-        if (item['lure_expiration'] > Date.now()) {
-            str +=
-                '<img style="padding:5px;position:absolute;left:0px;top:15px;height:50px;" src="static/forts/LureModule_' + item['lure_id'] + '.png"/>'
-        }
-        str += stopImage +
-        getReward(item)
-        if (item['lure_expiration'] > Date.now()) {
-            lureEndStr = getTimeStr(item['lure_expiration'])
-            str +=
-            '<div style="font-weight:900;">' +
-            i8ln('Lure expiration') + ': ' + lureEndStr +
-            ' <span class="label-countdown" disappears-at="' + item['lure_expiration'] + '">(00m00s)</span>' +
-            '</div>'
-        }
-        str +=
-            getQuest(item) +
-            '</center></div>'
+            getReward(item) + '</div>' +
+            getQuest(item)
     } else {
-        str =
-            '<div class="pokestop-label">' +
-            '<center>' +
-            '<div>' + stopName + '</div>' +
-            '<div>' + stopImage + '</div>'
-        if (item['lure_expiration'] > Date.now()) {
-            lureEndStr = getTimeStr(item['lure_expiration'])
-            str +=
-                '<img style="padding:5px;position:absolute;left:10px;top:15px;height:50px;" src="static/forts/LureModule_' + item['lure_id'] + '.png"/>' +
-                '<div><b>' +
-                i8ln('Lure expiration') + ': ' + lureEndStr +
-                ' <span class="label-countdown" disappears-at="' + item['lure_expiration'] + '">(00m00s)</span>' +
-                '</b></div>'
-        }
-        str += '</center>' +
-            '</div>'
+        str += '</div>'
     }
+    if (item['lure_expiration'] > Date.now()) {
+        var lureType = '<img style="padding:5px;position:relative;left:0px;top:12px;height:40px;" src="static/forts/LureModule_' + item['lure_id'] + '.png"/>'
+        if (item['lure_id'] === 1) {
+            lureType += i8ln('Normal')
+        } else if (item['lure_id'] === 2) {
+            lureType += i8ln('Glacial')
+        } else if (item['lure_id'] === 3) {
+            lureType += i8ln('Mossy')
+        } else if (item['lure_id'] === 4) {
+            lureType += i8ln('Magnetic')
+        }
+        lureEndStr = getTimeStr(item['lure_expiration'])
+        str +=
+        '<div><b>' + i8ln('Lure Type') + ': ' + lureType + '</b></div>' +
+        '<div><b>' + i8ln('Lure expiration') + ': ' + lureEndStr +
+        ' <span class="label-countdown" disappears-at="' + item['lure_expiration'] + '">(00m00s)</span>' +
+        '</b></div>'
+    }
+    str += '</center></div>'
     if (!noDeletePokestops) {
         str += '<i class="fa fa-trash-o delete-pokestop" onclick="deletePokestop(event);" data-id="' + item['pokestop_id'] + '"></i>'
     }
