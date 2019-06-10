@@ -1866,16 +1866,14 @@ function updateGymIcons() {
 }
 function getPokestopMarkerIcon(item) {
     var stopMarker = ''
-    var stopIcon = 'Pstop.png'
-    var stopQuestIcon = 'Pstop-quest-small.png'
     var html = ''
     var d = new Date()
     var lastMidnight = d.setHours(0, 0, 0, 0) / 1000
-    if (item['lure_expiration'] > Date.now()) {
-        stopIcon = 'PstopLured_' + item['lure_id'] + '.png'
-        stopQuestIcon = 'PstopLured_' + item['lure_id'] + '.png'
-    }
     if (!noQuests && item['quest_reward_type'] !== null && lastMidnight < Number(item['quest_timestamp'])) {
+        var stopQuestIcon = 'Pstop-quest-small.png'
+        if (item['lure_expiration'] > Date.now()) {
+            stopQuestIcon = 'PstopLured_' + item['lure_id'] + '.png'
+        }
         if (item['quest_reward_type'] === 7) {
             var pokemonIdStr = ''
             if (item['quest_pokemon_id'] <= 9) {
@@ -1930,26 +1928,23 @@ function getPokestopMarkerIcon(item) {
                 className: 'stop-quest-marker',
                 html: html
             })
-        } else {
-            stopMarker = L.divIcon({
-                iconSize: [31, 31],
-                iconAnchor: [15, 28],
-                popupAnchor: [0, -35],
-                className: 'stop-marker',
-                html: '<div>' +
-                '<img src="static/forts/' + stopIcon + '"' +
-                '</div>'
-            })
         }
+    } else if (item['lure_expiration'] > Date.now()) {
+        html = '<div><img src="static/forts/PstopLured_' + item['lure_id'] + '.png" style="width:50px;height:72;top:-35px;right:10px;"/><div>'
+        stopMarker = L.divIcon({
+            iconSize: [31, 31],
+            iconAnchor: [24, 38],
+            popupAnchor: [0, -35],
+            className: 'stop-lured-marker',
+            html: html
+        })
     } else {
         stopMarker = L.divIcon({
             iconSize: [31, 31],
             iconAnchor: [15, 28],
             popupAnchor: [0, -35],
             className: 'stop-marker',
-            html: '<div>' +
-            '<img src="static/forts/' + stopIcon + '"' +
-            '</div>'
+            html: '<div><img src="static/forts/Pstop.png"></div>'
         })
     }
     return stopMarker
