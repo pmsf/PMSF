@@ -4,7 +4,7 @@ namespace Scanner;
 
 class Scanner
 {
-    // Common functions for both RM and Monocle
+    // Common functions for both RDM and MAD
     /**
      * $data
      * Used for Pokemon data
