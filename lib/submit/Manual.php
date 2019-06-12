@@ -123,6 +123,8 @@ class Manual extends Submit
             $communityType = 7;
         } elseif (strpos($communityInvite, 'https://groupme.com/join_group') !== false) {
             $communityType = 8;
+        } else if (strpos($communityInvite, 'https://silph.gg/t') !== false) {
+            $communityType = 9;
         } else {
             http_response_code( 401 );
             die();
@@ -173,6 +175,8 @@ class Manual extends Submit
             $communityType = 7;
         } elseif (strpos($communityInvite, 'https://groupme.com/join_group') !== false) {
             $communityType = 8;
+        } else if (strpos($communityInvite, 'https://silph.gg/t') !== false) {
+            $communityType = 9;
         } else {
             http_response_code( 401 );
             die();
