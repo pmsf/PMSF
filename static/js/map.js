@@ -1293,17 +1293,11 @@ function pokestopLabel(item) {
     var lastMidnight = d.setHours(0, 0, 0, 0) / 1000
     var stopName = ''
     if (!noQuests && item['quest_type'] !== 0 && lastMidnight < Number(item['quest_timestamp'])) {
-        stopName = '<b class="pokestop-quest-name">' +
-        item['pokestop_name'] +
-        '</b>'
+        stopName = '<b class="pokestop-quest-name">' + item['pokestop_name'] + '</b>'
     } else if (item['lure_expiration'] > Date.now()) {
-        stopName = '<b class="pokestop-lure-name">' +
-        item['pokestop_name'] +
-        '</b>'
+        stopName = '<b class="pokestop-lure-name">' + item['pokestop_name'] + '</b>'
     } else {
-        stopName = '<b class="pokestop-name">' +
-        item['pokestop_name'] +
-        '</b>'
+        stopName = '<b class="pokestop-name">' + item['pokestop_name'] + '</b>'
     }
     var stopImage = ''
     var lureEndStr = ''
@@ -1870,7 +1864,7 @@ function getPokestopMarkerIcon(item) {
     var d = new Date()
     var lastMidnight = d.setHours(0, 0, 0, 0) / 1000
     if (!noQuests && item['quest_reward_type'] !== null && lastMidnight < Number(item['quest_timestamp'])) {
-        var stopQuestIcon = 'Pstop-quest-small.png'
+        var stopQuestIcon = 'PstopQuest.png'
         if (item['lure_expiration'] > Date.now()) {
             stopQuestIcon = 'PstopLured_' + item['lure_id'] + '.png'
         }
