@@ -229,8 +229,10 @@ class Manual
         lon,
         name,
         description,
+        notes,
         updated,
         submitted_by,
+        edited_by,
         status
         FROM poi
         WHERE :conditions";

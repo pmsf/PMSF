@@ -319,6 +319,7 @@ $noPoi = true;					   // Allow users to view POI markers
 $noAddPoi = true;				   // Allow to add POI markers (locations eligible for submitting Pokestops/Ingress portals)
 $enablePoi = 'false';
 $noDeletePoi = true;
+$noEditPoi = true;
 $noMarkPoi = true;
 
 $pokemonReportTime = false;
