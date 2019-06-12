@@ -318,6 +318,7 @@ $noPoi = true;
 $noAddPoi = true;
 $enablePoi = 'false';
 $noDeletePoi = true;
+$noEditPoi = true;
 $noMarkPoi = true;
 
 $noDiscordSubmitLogChannel = true;                                        // Send webhooks to discord channel upon submission

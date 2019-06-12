@@ -2265,12 +2265,21 @@ function poiLabel(item) {
         str += '<center><div style="font-weight:900;margin-bottom:5px;">' + i8ln('Not a eligible candidate') + '</div></center>'
     }
     str += '<center><div><b>' + item.name + '</b></div>' +
-        '<div>' + item.description + '</div>' +
-        '<span class="' + dot + '"></span>' +
-        '<div><b>' + i8ln('Submitted at') + ':</b> ' + updated + '</div>' +
-        '<div><b>' + i8ln('Submitted by') + ':</b> ' + item.submitted_by + '</div></center>'
+        '<div>' + item.description + '</div>'
+    if (item.notes) {
+        str += '<div><b>' + i8ln('Notes') + ':</b> ' + item.notes + '</div>'
+    }
+    str += '<span class="' + dot + '"></span>' +
+        '<div><b>' + i8ln('Submitted by') + ':</b> ' + item.submitted_by + '</div>'
+    if (item.edited_by) {
+        str += '<div><b>' + i8ln('Last Edited by') + ':</b> ' + item.edited_by + '</div>'
+    }
+    str += '<div><b>' + i8ln('Updated at') + ':</b> ' + updated + '</div></center>'
     if (!noDeletePoi) {
         str += '<i class="fa fa-trash-o delete-poi" onclick="deletePoi(event);" data-id="' + item.poi_id + '"></i>'
+    }
+    if (!noEditPoi) {
+        str += '<center><div><button onclick="openEditPoiModal(event);" data-id="' + item.poi_id + '" data-name="' + item.name + '" data-description="' + item.description + '" data-notes="' + item.notes + '" class="convertpoi"><i class="fa fa-edit edit-poi"></i> ' + i8ln('Edit POI') + '</button></div></center>'
     }
     if (!noMarkPoi) {
         str += '<center><div><button onclick="openMarkPoiModal(event);" data-id="' + item.poi_id + '" class="convertpoi"><i class="fa fa-refresh convert-poi"></i> ' + i8ln('Mark POI') + '</button></div></center>'
@@ -3598,12 +3607,48 @@ function editCommunityData(event) { // eslint-disable-line no-unused-vars
         }
     }
 }
+function editPoiData(event) { // eslint-disable-line no-unused-vars
+    var form = $(event.target).parent().parent()
+    var poiId = form.find('.editpoiid').val()
+    var poiName = form.find('[name="poi-name"]').val()
+    var poiDescription = form.find('[name="poi-description"]').val()
+    var poiNotes = form.find('[name="poi-notes"]').val()
+    if (poiName && poiName !== '' && poiDescription && poiDescription !== '') {
+        if (confirm(i8ln('I confirm this is an eligible POI location'))) {
+            return $.ajax({
+                url: 'submit',
+                type: 'POST',
+                timeout: 300000,
+                dataType: 'json',
+                cache: false,
+                data: {
+                    'action': 'edit-poi',
+                    'poiId': poiId,
+                    'poiName': poiName,
+                    'poiDescription': poiDescription,
+                    'poiNotes': poiNotes
+                },
+                error: function error() {
+                    // Display error toast
+                    toastr['error'](i8ln('Unable to update poi'), i8ln('Error Updating poi'))
+                    toastr.options = toastrOptions
+                },
+                complete: function complete() {
+                    lastpois = false
+                    updateMap()
+                    $('.ui-dialog-content').dialog('close')
+                }
+            })
+        }
+    }
+}
 function submitPoi(event) { // eslint-disable-line no-unused-vars
     var form = $(event.target).parent().parent()
     var lat = $('.submit-modal.ui-dialog-content .submitLatitude').val()
     var lon = $('.submit-modal.ui-dialog-content .submitLongitude').val()
     var poiName = form.find('[name="poi-name"]').val()
     var poiDescription = form.find('[name="poi-description"]').val()
+    var poiNotes = form.find('[name="poi-notes"]').val()
     if (poiName && poiName !== '' && poiDescription && poiDescription !== '') {
         if (confirm(i8ln('I confirm this is an eligible POI location'))) {
             return $.ajax({
@@ -3617,7 +3662,8 @@ function submitPoi(event) { // eslint-disable-line no-unused-vars
                     'lat': lat,
                     'lon': lon,
                     'poiName': poiName,
-                    'poiDescription': poiDescription
+                    'poiDescription': poiDescription,
+                    'poiNotes': poiNotes
                 },
                 error: function error() {
                     // Display error toast
@@ -4059,6 +4105,27 @@ function openEditCommunityModal(event) { // eslint-disable-line no-unused-vars
         maxHeight: 600,
         buttons: {},
         title: i8ln('Edit Community'),
+        classes: {
+            'ui-dialog': 'ui-dialog raid-widget-popup'
+        }
+    })
+}
+
+function openEditPoiModal(event) { // eslint-disable-line no-unused-vars
+    $('.ui-dialog').remove()
+    var val = $(event.target).data('id')
+    var name = $(event.target).data('name')
+    var description = $(event.target).data('description')
+    var notes = $(event.target).data('notes')
+    $('.editpoiid').val(val)
+    $('#poi-name').val(name)
+    $('#poi-description').val(description)
+    $('#poi-notes').val(notes)
+    $('.editpoi-modal').clone().dialog({
+        modal: true,
+        maxHeight: 600,
+        buttons: {},
+        title: i8ln('Edit POI'),
         classes: {
             'ui-dialog': 'ui-dialog raid-widget-popup'
         }
