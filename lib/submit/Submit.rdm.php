@@ -168,7 +168,7 @@ class RDM extends Submit
         if ( ! empty( $lat ) && ! empty( $lon ) && ! empty( $gymName ) ) {
             $gymId = randomGymId();
             $cols  = [
-                'id'           => $gymId,
+                'id'          => $gymId,
                 'lat'         => $lat,
                 'lon'         => $lon,
                 'name'        => $gymName
@@ -193,7 +193,7 @@ class RDM extends Submit
             $park = $db->get( "gym", [ 'ex_raid_eligible' ], [ 'id' => $gymId ] );
             if ( intval($park['ex_raid_eligible']) === 0 ) {
                 $cols = [
-                    'ex_raid_eligible'       => 1
+                    'ex_raid_eligible' => 1
                 ];
                 $where    = [
                     'id' => $gymId
@@ -205,7 +205,7 @@ class RDM extends Submit
                 }
             } else {
                 $cols = [
-                    'ex_raid_eligible'       => 0
+                    'ex_raid_eligible' => 0
                 ];
                 $where    = [
                     'id' => $gymId
@@ -250,14 +250,14 @@ class RDM extends Submit
         if ( ! empty( $lat ) && ! empty( $lon ) && ! empty( $pokestopName ) ) {
             $pokestopId = randomGymId();
             $cols       = [
-                'id'                      => $pokestopId,
-                'lat'                     => $lat,
-                'lon'                     => $lon,
-                'lure_expire_timestamp'        => 0,
-                'last_modified_timestamp'    => time(),
+                'id'                       => $pokestopId,
+                'lat'                      => $lat,
+                'lon'                      => $lon,
+                'lure_expire_timestamp'    => 0,
+                'last_modified_timestamp'  => time(),
                 'enabled'                  => 0,
-                'name'                    => $pokestopName,
-                'updated'                 => time()
+                'name'                     => $pokestopName,
+                'updated'                  => time()
             ];
             $db->insert( "pokestop", $cols );
             if ( $noDiscordSubmitLogChannel === false ) {
@@ -321,7 +321,7 @@ class RDM extends Submit
         $gym = $db->get( "pokestop", [ 'lat', 'lon', 'name', 'url' ], [ 'id' => $pokestopId ] );
         if ( ! empty( $pokestopId ) ) {
             $cols     = [
-                'id'  => $pokestopId,
+                'id'           => $pokestopId,
                 'lat'          => $gym['lat'],
                 'lon'          => $gym['lon'],
                 'name'         => $gym['name'],
@@ -429,21 +429,21 @@ class RDM extends Submit
                 $jsonRewards = json_encode(array(
                     'info' => array(
                         'pokemon_id' => intval($encounter),
-                        'form_id' => 0,
-                        'shiny' => false,
+                        'form_id'    => 0,
+                        'shiny'      => false,
                         'costume_id' => 0,
-                        'gender_id' => 0
+                        'gender_id'  => 0
                     ),
                     'type' => intval($rewardType)
                 ));
             }
             $cols = [
-                'updated'        => time(),
+                'updated'           => time(),
                 'quest_type'        => $questType,
-                'quest_timestamp'    => time(),
-                'quest_target'        => $questTarget,
-                'quest_conditions'    => ! empty($jsonCondition) ? '[' . $jsonCondition . ']' : '[]',
-                'quest_rewards'        => '[' . $jsonRewards . ']',
+                'quest_timestamp'   => time(),
+                'quest_target'      => $questTarget,
+                'quest_conditions'  => ! empty($jsonCondition) ? '[' . $jsonCondition . ']' : '[]',
+                'quest_rewards'     => '[' . $jsonRewards . ']',
                 'quest_template'    => 'manual_added_challenge'
             ];
             $where = [
@@ -464,12 +464,12 @@ class RDM extends Submit
         $portal = $manualdb->get( "ingress_portals", [ 'lat', 'lon', 'name', 'url' ], [ 'external_id' => $portalId ] );
         if ( ! empty( $portalId ) ) {
             $cols     = [
-                'id'             => $portalId,
-                'lat'          => $portal['lat'],
-                'lon'          => $portal['lon'],
-                'name'         => $portal['name'],
-                'url'          => $portal['url'],
-                'updated'      => time()
+                'id'       => $portalId,
+                'lat'      => $portal['lat'],
+                'lon'      => $portal['lon'],
+                'name'     => $portal['name'],
+                'url'      => $portal['url'],
+                'updated'  => time()
             ];
             $db->insert( "pokestop", $cols );
             if ( $noDiscordSubmitLogChannel === false ) {
@@ -489,12 +489,12 @@ class RDM extends Submit
         $portal = $manualdb->get( "ingress_portals", [ 'lat', 'lon', 'name', 'url' ], [ 'external_id' => $portalId ] );
         if ( ! empty( $portalId ) ) {
             $cols     = [
-                'id'             => $portalId,
-                'lat'          => $portal['lat'],
-                'lon'          => $portal['lon'],
-                'name'         => $portal['name'],
-                'url'          => $portal['url'],
-                'updated'      => time()
+                'id'       => $portalId,
+                'lat'      => $portal['lat'],
+                'lon'      => $portal['lon'],
+                'name'     => $portal['name'],
+                'url'      => $portal['url'],
+                'updated'  => time()
             ];
             $db->insert( "gym", $cols );
             if ( $noDiscordSubmitLogChannel === false ) {

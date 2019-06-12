@@ -140,6 +140,7 @@ function countMarkers(map) { // eslint-disable-line no-unused-vars
                 pokestopTotal++
             }
         })
+        // TODO: Add lure types and quests
         var pokestopListString = '<table><th>' + i8ln('Icon') + '</th><th>' + i8ln('Status') + '</th><th>' + i8ln('Count') + '</th><th>%</th><tr><td></td><td>' + i8ln('Total') + '</td><td>' + pokestopTotal + '</td></tr>'
         for (i = 0; i < pokestopCount.length; i++) {
             if (pokestopCount[i] > 0) {

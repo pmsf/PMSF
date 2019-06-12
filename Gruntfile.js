@@ -15,9 +15,7 @@ module.exports = function (grunt) {
             dist: {
                 files: {
                     'static/dist/css/app.built.css': 'static/sass/main.scss',
-                    'static/dist/css/mobile.built.css': 'static/sass/mobile.scss',
-                    'static/dist/css/statistics.built.css': 'static/css/statistics.css',
-                    'static/dist/css/status.built.css': 'static/sass/status.scss'
+                    'static/dist/css/mobile.built.css': 'static/sass/mobile.scss'
                 }
             }
         },
@@ -37,8 +35,6 @@ module.exports = function (grunt) {
                     'static/dist/js/map.common.min.js': 'static/js/map.common.js',
                     'static/dist/js/mobile.min.js': 'static/js/mobile.js',
                     'static/dist/js/stats.min.js': 'static/js/stats.js',
-                    'static/dist/js/statistics.min.js': 'static/js/statistics.js',
-                    'static/dist/js/status.min.js': 'static/js/status.js',
                     'static/dist/js/serviceWorker.min.js': 'static/js/serviceWorker.js'
                 }
             }
@@ -71,8 +67,6 @@ module.exports = function (grunt) {
                     'static/dist/js/map.common.min.js' : 'static/js/map.common.js',
                     'static/dist/js/mobile.min.js':'static/js/mobile.js',
                     'static/dist/js/stats.min.js':'static/js/stats.js',
-                    'static/dist/js/statistics.min.js':'static/js/statistics.js',
-                    'static/dist/js/status.min.js':'static/js/status.js',
                     'static/dist/js/serviceWorker.min.js':'static/js/serviceWorker.js'
                 }
             }
@@ -138,9 +132,7 @@ module.exports = function (grunt) {
             build: {
                 files: {
                     'static/dist/css/app.min.css': 'static/dist/css/app.built.css',
-                    'static/dist/css/mobile.min.css': 'static/dist/css/mobile.built.css',
-                    'static/dist/css/statistics.min.css': 'static/dist/css/statistics.built.css',
-                    'static/dist/css/status.min.css': 'static/dist/css/status.built.css'
+                    'static/dist/css/mobile.min.css': 'static/dist/css/mobile.built.css'
                 }
             }
         },
