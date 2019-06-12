@@ -426,7 +426,7 @@ $enableDebug = false;
 //-----------------------------------------------------
 $map = "rdm";                                                       // {monocle}/{rdm}/{rocketmap}
 $fork = "default";                                                  // {default/alternate/mad}/{default/beta}/{mad}
-$queryInterval = '5000';                                            // Interval between raw_data requests. Try to lower to increase performance.
+$queryInterval = '2500';                                            // Interval between raw_data requests. Try to lower to increase performance.
 
 $db = new Medoo([// required
     'database_type' => 'mysql',                                    
@@ -452,7 +452,7 @@ $db = new Medoo([// required
     // [optional]
     //'port' => 5432,                                               // Comment out if not needed, just add // in front!
     //'socket' => /path/to/socket/,
-//]);
+//]);                                                               // Dont forget to uncomment this line to use $manualdb :)
 
 if(file_exists('config/access-config.php'))
     include 'config/access-config.php';
