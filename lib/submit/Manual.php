@@ -226,7 +226,7 @@ class Manual extends Submit
         }
     }
 
-    public function submit_poi($lat, $lon, $poiName, $poiDescription, $loggedUser)
+    public function submit_poi($lat, $lon, $poiName, $poiDescription, $poiNotes, $loggedUser)
     {
         global $manualdb, $noPoi, $noAddPoi, $noDiscordSubmitLogChannel, $discordSubmitLogChannelUrl, $submitMapUrl;
         if ( $noPoi === true || $noAddPoi === true ) {
@@ -239,9 +239,10 @@ class Manual extends Submit
                 'poi_id'              => $poiId,
                 'name'                => $poiName,
                 'description'         => $poiDescription,
+                'notes'               => $poiNotes,
                 'lat'                 => $lat,
                 'lon'                 => $lon,
-                'status'          => 1,
+                'status'              => 1,
                 'updated'             => time(),
                 'submitted_by'        => $loggedUser 
             ];
@@ -265,9 +266,9 @@ class Manual extends Submit
 					      'name'                => $poiName,
 					      'description'         => $poiDescription,
 					      'notes'               => $poiNotes,
-					      'status'	      => 1,
+					      'status'	            => 1,
 					      'updated'             => time(),
-					      'edited_by'        => $loggedUser 
+					      'edited_by'           => $loggedUser 
 				    ];
 				    $where    = [
 					      'poi_id' => $poiId
@@ -312,7 +313,7 @@ class Manual extends Submit
         if ( ! empty( $poiId ) ) {
             $cols     = [
                 'updated'      => time(),
-                'status'      => 2
+                'status'       => 2
             ];
             $where    = [
                 'poi_id' => $poiId
@@ -336,7 +337,7 @@ class Manual extends Submit
         if ( ! empty( $poiId ) ) {
             $cols     = [
                 'updated'      => time(),
-                'status'      => 3
+                'status'       => 3
             ];
             $where    = [
                 'poi_id' => $poiId
@@ -360,7 +361,7 @@ class Manual extends Submit
         if ( ! empty( $poiId ) ) {
             $cols     = [
                 'updated'      => time(),
-                'status'      => 4
+                'status'       => 4
             ];
             $where    = [
                 'poi_id' => $poiId
@@ -384,7 +385,7 @@ class Manual extends Submit
         if ( ! empty( $poiId ) ) {
             $cols     = [
                 'updated'      => time(),
-                'status'      => 5
+                'status'       => 5
             ];
             $where    = [
                 'poi_id' => $poiId
