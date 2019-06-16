@@ -299,8 +299,7 @@ if ( $blockIframe ) {
         ?>
         <?php if ( ! $noStatsToggle ) {
             ?>
-        <a href="#stats" id="statsToggle" class="statsNav" style="float: right;"><span
-                class="label"><?php echo i8ln( 'Stats' ) ?></span></a>
+        <a href="#stats" id="statsToggle" class="statsNav" style="float: right;"><span class="label"><?php echo i8ln( 'Stats' ) ?></span></a>
             <?php
         } ?>
     </header>
@@ -1269,7 +1268,7 @@ if ( $blockIframe ) {
             <center>
                 <button class="settings"
                         onclick="confirm('Are you sure you want to reset settings to default values?') ? (localStorage.clear(), window.location.reload()) : false">
-                    <i class="fa fa-refresh" aria-hidden="true"></i> <?php echo i8ln( 'Reset Settings' ) ?>
+                    <i class="fas fa-sync-alt" aria-hidden="true"></i> <?php echo i8ln( 'Reset Settings' ) ?>
                 </button>
             </center>
         </div>
@@ -1277,7 +1276,7 @@ if ( $blockIframe ) {
             <center>
                 <button class="settings"
                         onclick="download('<?= addslashes( $title ) ?>', JSON.stringify(JSON.stringify(localStorage)))">
-                    <i class="fa fa-upload" aria-hidden="true"></i> <?php echo i8ln( 'Export Settings' ) ?>
+                    <i class="fas fa-upload" aria-hidden="true"></i> <?php echo i8ln( 'Export Settings' ) ?>
                 </button>
             </center>
         </div>
@@ -1286,7 +1285,7 @@ if ( $blockIframe ) {
                 <input id="fileInput" type="file" style="display:none;" onchange="openFile(event)"/>
                 <button class="settings"
                         onclick="document.getElementById('fileInput').click()">
-                    <i class="fa fa-download" aria-hidden="true"></i> <?php echo i8ln( 'Import Settings' ) ?>
+                    <i class="fas fa-download" aria-hidden="true"></i> <?php echo i8ln( 'Import Settings' ) ?>
                 </button>
             </center>
         </div>
@@ -1297,7 +1296,7 @@ if ( $blockIframe ) {
                 <center>
                     <button class="settings"
                             onclick="document.location.href='user'">
-                        <i class="fa" aria-hidden="true"></i> <?php echo i8ln('Activate Key'); ?>
+                        <i class="fas fa-sign-out-alt" aria-hidden="true"></i> <?php echo i8ln('Activate Key'); ?>
                     </button>
                 </center>
             </div>
@@ -1305,7 +1304,7 @@ if ( $blockIframe ) {
                 <center>
                     <button class="settings"
                             onclick="document.location.href='logout.php'">
-                        <i class="fa" aria-hidden="true"></i> <?php echo i8ln('Logout'); ?>
+                        <i class="fas fa-key" aria-hidden="true"></i> <?php echo i8ln('Logout'); ?>
                     </button>
                 </center>
             </div><br>
@@ -1401,111 +1400,69 @@ if ( $blockIframe ) {
             <input type="hidden" name="pokemonID" class="pokemonID"/>
             <?php pokemonFilterImages( $noPokemonNumbers, 'pokemonSubmitFilter(event)', $excludeNestMons, 5 ); ?>
             <div class="button-container">
-                <button type="button" onclick="manualNestData(event);" class="submitting-nests"><i
-                        class="fa fa-binoculars"
-                        style="margin-right:10px;"></i><?php echo i8ln( 'Submit Nest' ); ?>
+                <button class="button" onclick="manualNestData(event);" class="submitting-nests"><i
+                        class="fa fa-binoculars"></i> <?php echo i8ln( 'Submit Nest' ); ?>
                 </button>
             </div>
         </div>
     <?php } ?>
     <?php if ( ! $noRenamePokestops ) { ?>
         <div class="rename-modal" style="display: none;">
-       <input type="text" id="pokestop-name" name="pokestop-name"
-          placeholder="<?php echo i8ln( 'Enter New Pokéstop Name' ); ?>" data-type="pokestop"
-                  class="search-input">
-             <div class="button-container">
-                <button type="button" onclick="renamePokestopData(event);" class="renamepokestopid"><i
-                        class="fa fa-edit"
-                        style="margin-right:10px; vertical-align: middle; font-size: 1.5em;"></i><?php echo i8ln( 'Rename Pokestop' ); ?>
-                </button>
+            <input type="text" id="pokestop-name" name="pokestop-name" 
+                placeholder="<?php echo i8ln( 'Enter New Pokéstop Name' ); ?>" data-type="pokestop" class="search-input">
+            <div class="button-container">
+                <button type="button" onclick="renamePokestopData(event);" class="renamepokestopid"><i class="fa fa-edit"></i> <?php echo i8ln( 'Rename Pokestop' ); ?></button>
             </div>
         </div>
     <?php } ?>
     <?php if ( ! $noConvertPokestops ) { ?>
         <div class="convert-modal" style="display: none;">
              <div class="button-container">
-                <button type="button" onclick="convertPokestopData(event);" class="convertpokestopid"><i
-                        class="fa fa-refresh"
-                        style="margin-right:10px; vertical-align: middle; font-size: 1.5em;"></i><?php echo i8ln( 'Convert to gym' ); ?>
-                </button>
+                <button type="class" onclick="convertPokestopData(event);" class="convertpokestopid"><i class="fa fa-sync-alt"></i> <?php echo i8ln( 'Convert to gym' ); ?></button>
             </div>
         </div>
     <?php } ?>
     <?php if ( ! $noEditCommunity ) { ?>
         <div class="editcommunity-modal" style="display: none;">
-       <input type="text" id="community-name" name="community-name"
-          placeholder="<?php echo i8ln( 'Enter New community Name' ); ?>" data-type="community-name"
-          class="search-input">
-       <input type="text" id="community-description" name="community-description"
-          placeholder="<?php echo i8ln( 'Enter New community Description' ); ?>" data-type="community-description"
-          class="search-input">
-       <input type="text" id="community-invite" name="community-invite"
-          placeholder="<?php echo i8ln( 'Enter New community Invite link' ); ?>" data-type="community-invite"
-          class="search-input">
-         <div class="button-container">
-                <button type="button" onclick="editCommunityData(event);" class="editcommunityid"><i
-                        class="fa fa-edit"
-                        style="margin-right:10px; vertical-align: middle; font-size: 1.5em;"></i><?php echo i8ln( 'Save Changes' ); ?>
+            <input type="text" id="community-name" name="community-name" placeholder="<?php echo i8ln( 'Enter New community Name' ); ?>" data-type="community-name" class="search-input">
+            <input type="text" id="community-description" name="community-description" placeholder="<?php echo i8ln( 'Enter New community Description' ); ?>" data-type="community-description" class="search-input">
+            <input type="text" id="community-invite" name="community-invite" placeholder="<?php echo i8ln( 'Enter New community Invite link' ); ?>" data-type="community-invite" class="search-input">
+            <div class="button-container">
+                <button class="button" onclick="editCommunityData(event);" class="editcommunityid">
+                    <i class="fa fa-edit"></i> <?php echo i8ln( 'Save Changes' ); ?>
                 </button>
             </div>
         </div>
     <?php } ?>
     <?php if ( ! $noEditPoi ) { ?>
         <div class="editpoi-modal" style="display: none;">
-	   <input type="text" id="poi-name" name="poi-name"
-		  placeholder="<?php echo i8ln( 'Enter New POI Name' ); ?>" data-type="poi-name"
-		  class="search-input">
-	   <input type="text" id="poi-description" name="poi-description"
-		  placeholder="<?php echo i8ln( 'Enter New POI Description' ); ?>" data-type="poi-description"
-		  class="search-input">
-	   <input type="text" id="poi-notes" name="poi-notes"
-		  placeholder="<?php echo i8ln( 'Enter New POI Notes' ); ?>" data-type="poi-notes"
-		  class="search-input">
-	     <div class="button-container">
-                <button type="button" onclick="editPoiData(event);" class="editpoiid"><i
-                        class="fa fa-edit"
-                        style="margin-right:10px; vertical-align: middle; font-size: 1.5em;"></i><?php echo i8ln( 'Save Changes' ); ?>
-                </button>
+	        <input type="text" id="poi-name" name="poi-name" placeholder="<?php echo i8ln( 'Enter New POI Name' ); ?>" data-type="poi-name" class="search-input">
+	        <input type="text" id="poi-description" name="poi-description" placeholder="<?php echo i8ln( 'Enter New POI Description' ); ?>" data-type="poi-description" class="search-input">
+	        <input type="text" id="poi-notes" name="poi-notes"placeholder="<?php echo i8ln( 'Enter New POI Notes' ); ?>" data-type="poi-notes" class="search-input">
+	        <div class="button-container">
+                <button class="button" onclick="editPoiData(event);" class="editpoiid"><i class="fa fa-edit"></i> <?php echo i8ln( 'Save Changes' ); ?></button>
             </div>
         </div>
     <?php } ?>
     <?php if ( ! $noPortals ) { ?>
         <div class="convert-portal-modal" style="display: none;">
-             <div class="button-container">
-                <button type="button" onclick="convertPortalToPokestopData(event);" class="convertportalid"><i
-                        class="fa fa-refresh"
-                        style="margin-right:10px; vertical-align: middle; font-size: 1.5em;"></i><?php echo i8ln( 'Convert to pokestop' ); ?>
-        </button>
-                <button type="button" onclick="convertPortalToGymData(event);" class="convertportalid"><i
-                        class="fa fa-refresh"
-                        style="margin-right:10px; vertical-align: middle; font-size: 1.5em;"></i><?php echo i8ln( 'Convert to gym' ); ?>
-        </button>
-                <button type="button" onclick="markPortalChecked(event);" class="convertportalid"><i
-                        class="fa fa-times"
-                        style="margin-right:10px; vertical-align: middle; font-size: 1.5em;"></i><?php echo i8ln( 'No Pokestop or Gym' ); ?>
-        </button>
+            <div class="button-container">
+                <button class="button" onclick="convertPortalToPokestopData(event);" class="convertportalid">
+                    <i class="fas fa-sync-alt"></i> <?php echo i8ln( 'Convert to pokestop' ); ?></button>
+                <button class="button" onclick="convertPortalToGymData(event);" class="convertportalid">
+                    <i class="fas fa-sync-alt"></i> <?php echo i8ln( 'Convert to gym' ); ?></button>
+                <button class="button" onclick="markPortalChecked(event);" class="convertportalid">
+                    <i class="fa fa-times"></i> <?php echo i8ln( 'No Pokestop or Gym' ); ?></button>
             </div>
         </div>
     <?php } ?>
     <?php if ( ! $noPoi ) { ?>
         <div class="mark-poi-modal" style="display: none;">
-             <div class="button-container">
-                <button type="button" onclick="markPoiSubmitted(event);" class="markpoiid"><i
-                        class="fa fa-refresh"
-                        style="margin-right:10px; vertical-align: middle; font-size: 1.5em;"></i><?php echo i8ln( 'Submitted' ); ?>
-        </button>
-                <button type="button" onclick="markPoiDeclined(event);" class="markpoiid"><i
-                        class="fa fa-times"
-                        style="margin-right:10px; vertical-align: middle; font-size: 1.5em;"></i><?php echo i8ln( 'Declined' ); ?>
-        </button>
-                <button type="button" onclick="markPoiResubmit(event);" class="markpoiid"><i
-                        class="fa fa-times"
-                        style="margin-right:10px; vertical-align: middle; font-size: 1.5em;"></i><?php echo i8ln( 'Resubmit' ); ?>
-        </button>
-                <button type="button" onclick="markNotCandidate(event);" class="markpoiid"><i
-                        class="fa fa-times"
-                        style="margin-right:10px; vertical-align: middle; font-size: 1.5em;"></i><?php echo i8ln( 'Not a candidate' ); ?>
-        </button>
+            <div class="button-container">
+                <button class="button" onclick="markPoiSubmitted(event);" class="markpoiid"><i class="fa fa-sync-alt"></i> <?php echo i8ln( 'Submitted' ); ?></button>
+                <button class="button" onclick="markPoiDeclined(event);" class="markpoiid"><i class="fa fa-times"></i> <?php echo i8ln( 'Declined' ); ?></button>
+                <button class="button" onclick="markPoiResubmit(event);" class="markpoiid"><i class="fa fa-times"></i> <?php echo i8ln( 'Resubmit' ); ?></button>
+                <button class="button" onclick="markNotCandidate(event);" class="markpoiid"><i class="fa fa-times"></i> <?php echo i8ln( 'Not a candidate' ); ?></button>
             </div>
         </div>
     <?php } ?>
@@ -1523,20 +1480,20 @@ if ( $blockIframe ) {
         <div class="quest-modal" style="display: none;">
             <input type="hidden" value="" name="questPokestop" class="questPokestop"/>
             <?php
-            $json   = file_get_contents( 'static/dist/data/questtype.min.json' );
-            $questtypes  = json_decode( $json, true );
-
-            $json    = file_get_contents( 'static/dist/data/rewardtype.min.json' );
-            $rewardtypes   = json_decode( $json, true );
-
-            $json    = file_get_contents( 'static/dist/data/conditiontype.min.json' );
-            $conditiontypes   = json_decode( $json, true );
-
-        $json    = file_get_contents( 'static/dist/data/pokemon.min.json' );
-        $encounters = json_decode( $json, true );
-
-        $json    = file_get_contents( 'static/dist/data/items.min.json' );
-        $items = json_decode( $json, true );
+                $json   = file_get_contents( 'static/dist/data/questtype.min.json' );
+                $questtypes  = json_decode( $json, true );
+                
+                $json    = file_get_contents( 'static/dist/data/rewardtype.min.json' );
+                $rewardtypes   = json_decode( $json, true );
+                
+                $json    = file_get_contents( 'static/dist/data/conditiontype.min.json' );
+                $conditiontypes   = json_decode( $json, true );
+                
+                $json    = file_get_contents( 'static/dist/data/pokemon.min.json' );
+                $encounters = json_decode( $json, true );
+                
+                $json    = file_get_contents( 'static/dist/data/items.min.json' );
+                $items = json_decode( $json, true );
             ?>
             <label for="questTypeList"><?php echo i8ln( 'Quest' ); ?>
             <select id="questTypeList" name="questTypeList" class="questTypeList">
@@ -1678,9 +1635,8 @@ if ( $blockIframe ) {
         </select>
             </label>
             <div class="button-container">
-                <button type="button" onclick="manualQuestData(event);" class="submitting-quest"><i
-                        class="fa fa-binoculars"
-                        style="margin-right:10px;"></i><?php echo i8ln( 'Submit Quest' ); ?>
+                <button class="button" onclick="manualQuestData(event);" class="submitting-quest"><i
+                        class="fa fa-binoculars"></i> <?php echo i8ln( 'Submit Quest' ); ?>
                 </button>
             </div>
         </div>
@@ -1759,7 +1715,7 @@ if ( $blockIframe ) {
     if ( ( ! $noPokemon && ! $noManualPokemon ) || ( ! $noGyms && ! $noManualGyms ) || ( ! $noPokestops && ! $noManualPokestops ) || ( ! $noAddNewNests && ! $noNests ) || ( !$noAddNewCommunity && ! $noCommunity ) || ( !$noAddPoi && ! $noPoi ) ) {
         ?>
         <button class="submit-on-off-button" onclick="$('.submit-on-off-button').toggleClass('on');">
-            <i class="fa fa-map-marker submit-to-map" aria-hidden="true"></i>
+            <i class="fas fa-map-marker-alt submit-to-map" aria-hidden="true"></i>
         </button>
         <div class="submit-modal" style="display:none;">
             <input type="hidden" value="" name="submitLatitude" class="submitLatitude"/>
@@ -1797,9 +1753,8 @@ if ( $blockIframe ) {
                         <input type="hidden" name="pokemonID" class="pokemonID"/>
                         <?php pokemonFilterImages( $noPokemonNumbers, 'pokemonSubmitFilter(event)', $pokemonToExclude, 6 ); ?>
                         <div class="button-container">
-                            <button type="button" onclick="manualPokemonData(event);" class="submitting-pokemon"><i
-                                    class="fa fa-binoculars"
-                                    style="margin-right:10px;"></i><?php echo i8ln( 'Submit Pokemon' ); ?>
+                            <button class="button" onclick="manualPokemonData(event);" class="submitting-pokemon">
+                                <i class="fa fa-binoculars"></i> <?php echo i8ln( 'Submit Pokemon' ); ?>
                             </button>
                         </div>
                     </div>
@@ -1811,9 +1766,8 @@ if ( $blockIframe ) {
                                placeholder="<?php echo i8ln( 'Enter Gym Name' ); ?>" data-type="forts"
                                class="search-input">
                         <div class="button-container">
-                            <button type="button" onclick="manualGymData(event);" class="submitting-gym"><i
-                                    class="fa fa-binoculars"
-                                    style="margin-right:10px;"></i><?php echo i8ln( 'Submit Gym' ); ?>
+                            <button class="button" onclick="manualGymData(event);" class="submitting-gym"><i
+                                    class="fa fa-binoculars"></i> <?php echo i8ln( 'Submit Gym' ); ?>
                             </button>
                         </div>
                     </div>
@@ -1825,9 +1779,8 @@ if ( $blockIframe ) {
                                placeholder="<?php echo i8ln( 'Enter Pokestop Name' ); ?>" data-type="pokestop"
                                class="search-input">
                         <div class="button-container">
-                            <button type="button" onclick="manualPokestopData(event);" class="submitting-pokestop"><i
-                                    class="fa fa-binoculars"
-                                    style="margin-right:10px;"></i><?php echo i8ln( 'Submit Pokestop' ); ?>
+                            <button class="button" onclick="manualPokestopData(event);" class="submitting-pokestop"><i
+                                    class="fa fa-binoculars"></i> <?php echo i8ln( 'Submit Pokestop' ); ?>
                             </button>
                         </div>
                     </div>
@@ -1838,9 +1791,8 @@ if ( $blockIframe ) {
                         <input type="hidden" name="pokemonID" class="pokemonID"/>
                         <?php pokemonFilterImages( $noPokemonNumbers, 'pokemonSubmitFilter(event)', $excludeNestMons, 7 ); ?>
                         <div class="button-container">
-                            <button type="button" onclick="submitNewNest(event);" class="submitting-nest"><i
-                                    class="fa fa-binoculars"
-                                    style="margin-right:10px;"></i><?php echo i8ln( 'Submit Nest' ); ?>
+                            <button class="button" onclick="submitNewNest(event);" class="submitting-nest"><i
+                                    class="fa fa-binoculars"></i> <?php echo i8ln( 'Submit Nest' ); ?>
                             </button>
                         </div>
                     </div>
@@ -1859,9 +1811,8 @@ if ( $blockIframe ) {
                    class="search-input">
             <h6><center><?php echo i8ln( 'Link must be valid and start with https://' ); ?></center></h6>
                         <div class="button-container">
-                            <button type="button" onclick="submitNewCommunity(event);" class="submitting-community"><i
-                                    class="fa fa-comments"
-                                    style="margin-right:10px;"></i><?php echo i8ln( 'Submit Community' ); ?>
+                            <button class="button" onclick="submitNewCommunity(event);" class="submitting-community">
+                                <i class="fa fa-comments"></i> <?php echo i8ln( 'Submit Community' ); ?>
                             </button>
                         </div>
                     </div>
@@ -1869,21 +1820,12 @@ if ( $blockIframe ) {
                 <?php if ( ! $noAddPoi && !$noPoi ) {
                     ?>
                     <div id="tab-poi">
-                        <input type="text" name="poi-name" class="poi-name"
-                               placeholder="<?php echo i8ln( 'Enter candidate Name' ); ?>" data-type="name"
-                   class="search-input">
-                        <input type="text" name="poi-description" class="poi-description"
-                               placeholder="<?php echo i8ln( 'Enter candidate description' ); ?>" data-type="description"
-                   class="search-input">
-                         <input type="text" name="poi-notes" class="poi-notes"
-                               placeholder="<?php echo i8ln( 'Enter field notes' ); ?>" data-type="description"
-                   class="search-input">
+                        <input type="text" name="poi-name" class="poi-name"placeholder="<?php echo i8ln( 'Enter candidate Name' ); ?>" data-type="name" class="search-input">
+                        <input type="text" name="poi-description" class="poi-description" placeholder="<?php echo i8ln( 'Enter candidate description' ); ?>" data-type="description" class="search-input">
+                        <input type="text" name="poi-notes" class="poi-notes" placeholder="<?php echo i8ln( 'Enter field notes' ); ?>" data-type="description" class="search-input">
                         <div class="button-container">
-            <h6><center><?php echo i8ln( 'If you submit a POI candidate you agree that your discord username will be shown in the marker label' ); ?></center></h6>
-                            <button type="button" onclick="submitPoi(event);" class="submitting-poi"><i
-                                    class="fa fa-comments"
-                                    style="margin-right:10px;"></i><?php echo i8ln( 'Submit POI candidate' ); ?>
-                            </button>
+                            <h6><center><?php echo i8ln( 'If you submit a POI candidate you agree that your discord username will be shown in the marker label' ); ?></center></h6>
+                            <button class="button" onclick="submitPoi(event);" class="submitting-poi"><i class="fa fa-comments"></i> <?php echo i8ln( 'Submit POI candidate' ); ?></button>
                         </div>
                     </div>
                 <?php } ?>

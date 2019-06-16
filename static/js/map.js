@@ -928,7 +928,7 @@ function pokemonLabel(item) {
     }
 
     contentstring += '<div><center>' +
-        i8ln('Location') + ': <a href="javascript:void(0)" onclick="javascript:openMapDirections(' + latitude + ', ' + longitude + ')" title="' + i8ln('View in Maps') + '">' + coordText + '</a>' +
+        '<a href="javascript:void(0)" onclick="javascript:openMapDirections(' + latitude + ', ' + longitude + ')" title="' + i8ln('View in Maps') + '"><i class="fas fa-road"></i> ' + coordText + '</a> - <a href="./?lat=' + latitude + '&lon=' + longitude + '&zoom=16"><i class="fa fa-share-alt-square" aria-hidden="true" style="position:relative;top:3px;left:0px;color:green;margin-bottom:10px;font-size:18px;"></i></a>' +
         '</center></div>' +
         '<div><center>' +
         '<a href="javascript:excludePokemon(' + id + ')">' + i8ln('Exclude') + '</a>&nbsp&nbsp' +
@@ -1037,7 +1037,7 @@ function gymLabel(item) {
             '</div>'
     }
     if (!noDeleteGyms) {
-        raidStr += '<i class="fa fa-trash-o delete-gym" onclick="deleteGym(event);" data-id="' + item['gym_id'] + '"></i>'
+        raidStr += '<i class="fas fa-trash-alt delete-gym" onclick="deleteGym(event);" data-id="' + item['gym_id'] + '"></i>'
     }
     if (!noToggleExGyms) {
         raidStr += '<i class="fa fa-trophy toggle-ex-gym" onclick="toggleExGym(event);" data-id="' + item['gym_id'] + '"></i>'
@@ -1081,7 +1081,7 @@ function gymLabel(item) {
         '<div><b>' + freeSlots + ' ' + i8ln('Free Slots') + '</b></div>' +
         raidStr +
         '<div>' +
-        '<a href="javascript:void(0);" class="gym-navigate" onclick="javascript:openMapDirections(' + latitude + ',' + longitude + ');" title="' + i8ln('View in Maps') + '">' + latitude.toFixed(6) + ' , ' + longitude.toFixed(7) + '</a> - <a href="./?lat=' + latitude + '&lon=' + longitude + '&zoom=16">' + i8ln('Share link') + '</a>' +
+        '<a href="javascript:void(0);" onclick="javascript:openMapDirections(' + latitude + ',' + longitude + ');" title="' + i8ln('View in Maps') + '"><i class="fas fa-road"></i> ' + latitude.toFixed(6) + ' , ' + longitude.toFixed(7) + '</a> - <a href="./?lat=' + latitude + '&lon=' + longitude + '&zoom=16"><i class="fa fa-share-alt-square" aria-hidden="true" style="position:relative;top:3px;left:0px;color:green;font-size:20px;"></i></a>' +
         '</div>' +
         '<div>' +
         i8ln('Last Modified') + ' : ' + lastModifiedStr +
@@ -1342,7 +1342,7 @@ function pokestopLabel(item) {
     }
     str += '</center></div>'
     if (!noDeletePokestops) {
-        str += '<i class="fa fa-trash-o delete-pokestop" onclick="deletePokestop(event);" data-id="' + item['pokestop_id'] + '"></i>'
+        str += '<i class="fas fa-trash-alt delete-pokestop" onclick="deletePokestop(event);" data-id="' + item['pokestop_id'] + '"></i>'
     }
     if (!noManualQuests && item['scanArea'] === false) {
         str += '<center><div>' + i8ln('Add Quest') + '<i class="fa fa-binoculars submit-quest" onclick="openQuestModal(event);" data-id="' + item['pokestop_id'] + '"></i></div></center>'
@@ -1354,7 +1354,7 @@ function pokestopLabel(item) {
         str += '<center><div>' + i8ln('Convert to Gym') + '<i class="fa fa-refresh convert-pokestop" style="margin-top: 2px; vertical-align: middle; font-size: 1.5em;" onclick="openConvertPokestopModal(event);" data-id="' + item['pokestop_id'] + '"></i></div></center>'
     }
     str += '<div><center>' +
-        '<a href="javascript:void(0)" class="pokestop-navigate" onclick="javascript:openMapDirections(' + item['latitude'] + ',' + item['longitude'] + ')" title="' + i8ln('View in Maps') + '">' + item['latitude'] + ', ' + item['longitude'] + '</a> - <a href="./?lat=' + item['latitude'] + '&lon=' + item['longitude'] + '&zoom=16">' + i8ln('Share link') + '</a>' +
+        '<a href="javascript:void(0)" onclick="javascript:openMapDirections(' + item['latitude'] + ',' + item['longitude'] + ')" title="' + i8ln('View in Maps') + '"><i class="fas fa-road"></i> ' + item['latitude'] + ', ' + item['longitude'] + '</a> - <a href="./?lat=' + item['latitude'] + '&lon=' + item['longitude'] + '&zoom=16"><i class="fa fa-share-alt-square" aria-hidden="true" style="position:relative;top:3px;left:0px;color:green;font-size:20px;"></i></a>' +
         '</center></div>'
     if ((!noWhatsappLink) && (item['quest_id'] && item['reward_id'] !== null)) {
         str += '<div>' +
@@ -2042,13 +2042,13 @@ function nestLabel(item) {
         str += '<center><div style="margin-bottom:5px; margin-top:5px;">' + i8ln('As found on thesilphroad.com') + '</div></center>'
     }
     if (!noDeleteNests) {
-        str += '<i class="fa fa-trash-o delete-nest" onclick="deleteNest(event);" data-id="' + item['nest_id'] + '"></i>'
+        str += '<i class="fas fa-trash-alt delete-nest" onclick="deleteNest(event);" data-id="' + item['nest_id'] + '"></i>'
     }
     if (!noManualNests) {
         str += '<center><div>' + i8ln('Add Nest') + ' <i class="fa fa-binoculars submit-nest" onclick="openNestModal(event);" data-id="' + item['nest_id'] + '"></i></div></center>'
     }
     str += '<div>' +
-        '<a href="javascript:void(0)" class="nest-navigate" onclick="javascript:openMapDirections(' + item.lat + ',' + item.lon + ')" title="' + i8ln('View in Maps') + '">' + item.lat.toFixed(6) + ', ' + item.lon.toFixed(7) + '</a> - <a href="./?lat=' + item.lat + '&lon=' + item.lon + '&zoom=16">' + i8ln('Share link') + '</a>' +
+        '<a href="javascript:void(0)" onclick="javascript:openMapDirections(' + item.lat + ',' + item.lon + ')" title="' + i8ln('View in Maps') + '"><i class="fas fa-road"></i> ' + item.lat.toFixed(6) + ', ' + item.lon.toFixed(7) + '</a> - <a href="./?lat=' + item.lat + '&lon=' + item.lon + '&zoom=16"><i class="fa fa-share-alt-square" aria-hidden="true" style="position:relative;top:3px;left:0px;color:green;font-size:20px;"></i></a>' +
         '</div>'
     if ((!noWhatsappLink) && (item.pokemon_id > 0)) {
         str += '<div>' +
@@ -2129,7 +2129,7 @@ function communityLabel(item) {
         str += '<center><div style="margin-bottom:5px; margin-top:5px;">' + i8ln('Join on  <a href="https://thesilphroad.com/map#18/' + item.lat + '/' + item.lon + '">thesilphroad.com</a>') + '</div></center>'
     }
     if (!noDeleteCommunity) {
-        str += '<i class="fa fa-trash-o delete-community" onclick="deleteCommunity(event);" data-id="' + item.community_id + '"></i>'
+        str += '<i class="fas fa-trash-alt delete-community" onclick="deleteCommunity(event);" data-id="' + item.community_id + '"></i>'
     }
     return str
 }
@@ -2231,15 +2231,19 @@ function setupPoiMarker(item) {
 function portalLabel(item) {
     var updated = formatDate(new Date(item.updated * 1000))
     var imported = formatDate(new Date(item.imported * 1000))
-    var str = '<img src="' + item.url + '" align"middle" style="width:175px;height:auto;margin-left:25px;"/>' +
-        '<center><h4><div>' + item.name + '</div></h4></center>'
+    var str = '<center><div style="font-weight:900;font-size:12px;margin-left:1px;">' + item.name + '</div></center>' +
+        '<center><img src="' + item.url + '" align"middle" style="width:175px;height:auto;"/></center>'
     if (!noConvertPortal) {
-        str += '<center><div>' + i8ln('Convert portal') + '<i class="fa fa-refresh convert-portal" style="margin-top: 2px; margin-left: 5px; vertical-align: middle; font-size: 1.5em;" onclick="openConvertPortalModal(event);" data-id="' + item.external_id + '"></i></div></center>'
+        str += '<center><div><a class="button" style="margin-top:0px;margin-bottom:3px;" onclick="openConvertPortalModal(event);" data-id="' + item.external_id + '"><i class="fas fa-sync-alt convert-portal"></i>' + ' ' + i8ln('Convert portal') + '</a></div></center>'
     }
     str += '<center><div>' + i8ln('Last updated') + ': ' + updated + '</div></center>' +
-        '<center><div>' + i8ln('Date imported') + ': ' + imported + '</div></center>'
+        '<center><div>' + i8ln('Date imported') + ': ' + imported + '</div></center>' +
+        '<center>' + 
+		 '<a href="javascript:void(0);" onclick="javascript:openMapDirections(' + item['lat'] + ',' + item['lon'] + ');" title="' + i8ln('View in Maps') + '">' +
+		 '<i class="fas fa-road"></i> ' + item['lat'].toFixed(6) + ' , ' + item['lon'].toFixed(7) + '</a> - ' +
+		 '<a href="./?lat=' + item['lat'] + '&lon=' + item['lon'] + '&zoom=16"><i class="fa fa-share-alt-square" aria-hidden="true" style="position:relative;top:3px;left:0px;color:green;font-size:20px;"></i></a></center>'
     if (!noDeletePortal) {
-        str += '<i class="fa fa-trash-o delete-portal" onclick="deletePortal(event);" data-id="' + item.external_id + '"></i>'
+        str += '<i class="fas fa-trash-alt delete-portal" onclick="deletePortal(event);" data-id="' + item.external_id + '"></i>'
     }
     return str
 }
@@ -2276,7 +2280,7 @@ function poiLabel(item) {
     }
     str += '<div><b>' + i8ln('Updated at') + ':</b> ' + updated + '</div></center>'
     if (!noDeletePoi) {
-        str += '<i class="fa fa-trash-o delete-poi" onclick="deletePoi(event);" data-id="' + item.poi_id + '"></i>'
+        str += '<i class="fas fa-trash-alt delete-poi" onclick="deletePoi(event);" data-id="' + item.poi_id + '"></i>'
     }
     if (!noEditPoi) {
         str += '<center><div><button onclick="openEditPoiModal(event);" data-id="' + item.poi_id + '" data-name="' + item.name + '" data-description="' + item.description + '" data-notes="' + item.notes + '" class="convertpoi"><i class="fa fa-edit edit-poi"></i> ' + i8ln('Edit POI') + '</button></div></center>'
@@ -2284,7 +2288,7 @@ function poiLabel(item) {
     if (!noMarkPoi) {
         str += '<center><div><button onclick="openMarkPoiModal(event);" data-id="' + item.poi_id + '" class="convertpoi"><i class="fa fa-refresh convert-poi"></i> ' + i8ln('Mark POI') + '</button></div></center>'
     }
-    str += '<center><a href="javascript:void(0);" class="gym-navigate" onclick="javascript:openMapDirections(' + item.lat + ',' + item.lon + ');" title="' + i8ln('View in Maps') + '">' + item.lat.toFixed(5) + ' , ' + item.lon.toFixed(5) + '</a> - <a href="./?lat=' + item.lat + '&lon=' + item.lon + '&zoom=16">' + i8ln('Share link') + '</a></center>'
+    str += '<center><a href="javascript:void(0);" class="gym-navigate" onclick="javascript:openMapDirections(' + item.lat + ',' + item.lon + ');" title="' + i8ln('View in Maps') + '">' + item.lat.toFixed(5) + ' , ' + item.lon.toFixed(5) + '</a> - <a href="./?lat=' + item.lat + '&lon=' + item.lon + '&zoom=16"><i class="fa fa-share-alt-square" aria-hidden="true" style="position:relative;top:3px;left:0px;color:green;font-size:20px;"></i></a></center>'
     return str
 }
 
