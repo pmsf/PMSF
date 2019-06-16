@@ -107,7 +107,8 @@ $noWhatsappLink = true;
 //-----------------------------------------------------
 // Login  - You need to create the two tables referenced in sql.sql
 //-----------------------------------------------------
-
+$noSelly = true;
+$forcedDiscordLogin = false;
 $noNativeLogin = true;                                              // true/false - This will enable the built in login system.
 $domainName = '';                                                   // If this is empty, reset-password emails will use the domain name taken from the URL.
 
@@ -279,8 +280,6 @@ $gymStyle = 'ingame';                                               // ingame, s
 
 $noLocationStyle = false;                                           // true/false
 $locationStyle = 'none';                                            // none, google, red, red_animated, blue, blue_animated, yellow, yellow_animated, pokesition, pokeball
-
-$osmTileServer = 'tile.openstreetmap.org';                          // osm tile server (no trailing slash)
 
 $triggerGyms = '[]';                                                // Add Gyms that the OSM-Query doesn't take care of like '["gym_id", "gym_id"]'
 $onlyTriggerGyms = false;                                           // Only show EX-Gyms that are defined in $triggerGyms

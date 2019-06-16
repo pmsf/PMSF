@@ -84,10 +84,15 @@ $faviconPath = '';                                                  // Upload fa
 //-----------------------------------------------------
 // Login
 //-----------------------------------------------------
-
-$noNativeLogin = true;                                              // true/false - This will enable the built in login system.
-$domainName = '';                                                   // If this is empty, reset-password emails will use the domain name taken from the URL.
-
+$noSelly = true;                                                    // Enable/Disable Selly Payment system. (WIP, use at own risk)
+$adminUsers = array('admin@example.com', 'Superadmin#13337');       // You can add multiple admins by adding them to the array.
+$logfile = 'logs/members.log';                                      // Path to log file. Make sure this works as it will be your life saver if your db crashes.
+$daysMembershipPerQuantity = 31;                                    // How many days membership one selly quantity will give.
+$sellyPage = '';                                                    // Link to selly purchase page for membership renewal.
+$sellyWebhookSecret = '';                                           // Add a secret key at https://selly.gg/settings to make sure the payment webhook is sent from selly to prevent fake payments.
+                                                                    // Add the same key to the $sellyWebhookSecret variable.
+/* Discord Auth */
+$forcedDiscordLogin = false;                                        // Force users to login with discord before they can see map
 $noDiscordLogin = true;                                             // true/false - This will enable login through discord.
                                                                     // 1. Create a discord bot here -> https://discordapp.com/developers/applications/me
                                                                     // 2. Install composer with "apt-get install composer".
@@ -98,19 +103,15 @@ $discordBotClientId = 0;
 $discordBotClientSecret = "";
 $discordBotRedirectUri = "https://example.com/discord-callback.php";
 
-$adminUsers = array('admin@example.com', 'Superadmin#13337');       // You can add multiple admins by adding them to the array.
-$logfile = '../members.log';                                        // Path to log file. Make sure this works as it will be your life saver if your db crashes.
-$daysMembershipPerQuantity = 31;                                    // How many days membership one selly quantity will give.
-$sellyPage = '';                                                    // Link to selly purchase page for membership renewal.
-$sellyWebhookSecret = '';                                           // Add a secret key at https://selly.gg/settings to make sure the payment webhook is sent from selly to prevent fake payments.
-                                                                    // Add the same key to the $sellyWebhookSecret variable.
-/* Blacklist Settingss - Only available with Discord login */
-$userBlacklist = [''];                                                                // Array of user ID's that are always blocked from accessing the map
+$userBlacklist = [''];                                              // Array of user ID's that are always blocked from accessing the map
 $userWhitelist = [''];                                              // Array of user ID's that's allowed to bypass the server blacklist
 $serverWhitelist = [''];                                            // Array of server ID's. Your users will need to be in at least one of them
 $serverBlacklist = [''];                                            // Array of server ID's. A user that's a member of any of these and not in your user whitelist will be blocked
-$logFailedLogin = '';                                               // File location of where to store a log file of blocked users
+$logFailedLogin = 'logs/failed_login.log';                          // File location of where to store a log file of blocked users
 
+/* Native Auth */
+$noNativeLogin = true;                                              // true/false - This will enable the built in login system.
+$domainName = '';                                                   // If this is empty, reset-password emails will use the domain name taken from the URL.
 //-----------------------------------------------------
 // FRONTEND SETTINGS
 //-----------------------------------------------------
@@ -264,8 +265,6 @@ $gymStyle = 'ingame';                                               // ingame, s
 
 $noLocationStyle = false;                                           // true/false
 $locationStyle = 'none';                                            // none, google, red, red_animated, blue, blue_animated, yellow, yellow_animated, pokesition, pokeball
-
-$osmTileServer = 'tile.openstreetmap.org';                          // osm tile server (no trailing slash)
 
 $triggerGyms = '[]';                                                // Add Gyms that the OSM-Query doesn't take care of like '["gym_id", "gym_id"]'
 $onlyTriggerGyms = false;                                           // Only show EX-Gyms that are defined in $triggerGyms

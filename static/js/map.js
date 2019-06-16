@@ -2,9 +2,6 @@
 // Global map.js variables
 //
 
-var login
-var expireTimestamp
-
 var $selectExclude
 var $selectExcludeMinIV
 var $selectPokemonNotify
@@ -2231,17 +2228,18 @@ function setupPoiMarker(item) {
 function portalLabel(item) {
     var updated = formatDate(new Date(item.updated * 1000))
     var imported = formatDate(new Date(item.imported * 1000))
-    var str = '<center><div style="font-weight:900;font-size:12px;margin-left:1px;">' + item.name + '</div></center>' +
+    var str = '<center><div style="font-weight:900;font-size:12px;margin-left:10px;">' + item.name + '</div></center>' +
         '<center><img src="' + item.url + '" align"middle" style="width:175px;height:auto;"/></center>'
     if (!noConvertPortal) {
         str += '<center><div><a class="button" style="margin-top:0px;margin-bottom:3px;" onclick="openConvertPortalModal(event);" data-id="' + item.external_id + '"><i class="fas fa-sync-alt convert-portal"></i>' + ' ' + i8ln('Convert portal') + '</a></div></center>'
     }
     str += '<center><div>' + i8ln('Last updated') + ': ' + updated + '</div></center>' +
         '<center><div>' + i8ln('Date imported') + ': ' + imported + '</div></center>' +
-        '<center>' + 
-		 '<a href="javascript:void(0);" onclick="javascript:openMapDirections(' + item['lat'] + ',' + item['lon'] + ');" title="' + i8ln('View in Maps') + '">' +
-		 '<i class="fas fa-road"></i> ' + item['lat'].toFixed(6) + ' , ' + item['lon'].toFixed(7) + '</a> - ' +
-		 '<a href="./?lat=' + item['lat'] + '&lon=' + item['lon'] + '&zoom=16"><i class="fa fa-share-alt-square" aria-hidden="true" style="position:relative;top:3px;left:0px;color:green;font-size:20px;"></i></a></center>'
+        '<center>' +
+        '<a href="javascript:void(0);" onclick="javascript:openMapDirections(' + item['lat'] + ',' + item['lon'] + ');" title="' + i8ln('View in Maps') + '">' +
+        '<i class="fas fa-road"></i> ' + item['lat'].toFixed(6) + ' , ' + item['lon'].toFixed(7) + '</a> - ' +
+        '<a href="./?lat=' + item['lat'] + '&lon=' + item['lon'] + '&zoom=16"><i class="fa fa-share-alt-square" aria-hidden="true" style="position:relative;top:3px;left:0px;color:green;font-size:20px;"></i></a>' +
+        '</center>'
     if (!noDeletePortal) {
         str += '<i class="fas fa-trash-alt delete-portal" onclick="deletePortal(event);" data-id="' + item.external_id + '"></i>'
     }
@@ -2286,9 +2284,9 @@ function poiLabel(item) {
         str += '<center><div><button onclick="openEditPoiModal(event);" data-id="' + item.poi_id + '" data-name="' + item.name + '" data-description="' + item.description + '" data-notes="' + item.notes + '" class="convertpoi"><i class="fa fa-edit edit-poi"></i> ' + i8ln('Edit POI') + '</button></div></center>'
     }
     if (!noMarkPoi) {
-        str += '<center><div><button onclick="openMarkPoiModal(event);" data-id="' + item.poi_id + '" class="convertpoi"><i class="fa fa-refresh convert-poi"></i> ' + i8ln('Mark POI') + '</button></div></center>'
+        str += '<center><div><button onclick="openMarkPoiModal(event);" data-id="' + item.poi_id + '" class="convertpoi"><i class="fas fa-sync-alt convert-poi"></i> ' + i8ln('Mark POI') + '</button></div></center>'
     }
-    str += '<center><a href="javascript:void(0);" class="gym-navigate" onclick="javascript:openMapDirections(' + item.lat + ',' + item.lon + ');" title="' + i8ln('View in Maps') + '">' + item.lat.toFixed(5) + ' , ' + item.lon.toFixed(5) + '</a> - <a href="./?lat=' + item.lat + '&lon=' + item.lon + '&zoom=16"><i class="fa fa-share-alt-square" aria-hidden="true" style="position:relative;top:3px;left:0px;color:green;font-size:20px;"></i></a></center>'
+    str += '<center><a href="javascript:void(0);" onclick="javascript:openMapDirections(' + item.lat + ',' + item.lon + ');" title="' + i8ln('View in Maps') + '"><i class="fas fa-road"></i> ' + item.lat.toFixed(5) + ' , ' + item.lon.toFixed(5) + '</a> - <a href="./?lat=' + item.lat + '&lon=' + item.lon + '&zoom=16"><i class="fa fa-share-alt-square" aria-hidden="true" style="position:relative;top:3px;left:0px;color:green;font-size:20px;"></i></a></center>'
     return str
 }
 
@@ -2618,8 +2616,6 @@ function loadRawData() {
         timeout: 300000,
         data: {
             'timestamp': timestamp,
-            'login': login,
-            'expireTimestamp': expireTimestamp,
             'pokemon': loadPokemon,
             'lastpokemon': lastpokemon,
             'pokestops': loadPokestops,

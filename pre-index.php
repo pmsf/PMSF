@@ -256,11 +256,16 @@ if ( $blockIframe ) {
             }
             if (!empty($_SESSION['user']->id)) {
                 $info = $manualdb->query(
-                    "SELECT expire_timestamp FROM users WHERE id = :id AND login_system = :login_system", [
+                    "SELECT expire_timestamp, access_level FROM users WHERE id = :id AND login_system = :login_system", [
                         ":id" => $_SESSION['user']->id,
                         ":login_system" => $_SESSION['user']->login_system
                     ]
                 )->fetch();
+
+                if ( ! $noSelly && $info['expire_timestamp'] < time() && $info['access_level'] > 0) {
+                    $manualdb->update("users", ["access_level" => 0, "session_id" => null], ["id" => $_SESSION['user']->id]);
+                    header('Refresh: ');
+                }
 
                 $_SESSION['user']->expire_timestamp = $info['expire_timestamp'];
                 
@@ -285,13 +290,15 @@ if ( $blockIframe ) {
                     die();
                 }
                 
-                if ($info['expire_timestamp'] > time()) {
+                if ($noSelly || $info['expire_timestamp'] > time()) {
                     $color = "green";
                 } else {
-                    header('Location: ./logout.php');
+                    $color = "red";
                 }
 
                 echo "<span style='color: {$color};'>" . substr($_SESSION['user']->user, 0, 3) . "...</span>";
+            } else if ($forcedDiscordLogin === true) {
+                header("Location: ./discord-login");
             } else {
                 echo "<a href='./user'>" . i8ln('Login') . "</a>";
             }
@@ -1290,16 +1297,18 @@ if ( $blockIframe ) {
             </center>
         </div>
         <?php
-        if (($noNativeLogin === false) && !empty($_SESSION['user']->id)) {
+        if (($noNativeLogin === false || $noDiscordLogin === false) && !empty($_SESSION['user']->id)) {
+            if ( ! $noSelly) {
             ?>
-            <div>
-                <center>
-                    <button class="settings"
-                            onclick="document.location.href='user'">
-                        <i class="fas fa-sign-out-alt" aria-hidden="true"></i> <?php echo i8ln('Activate Key'); ?>
-                    </button>
-                </center>
-            </div>
+                <div>
+                    <center>
+                        <button class="settings"
+                                onclick="document.location.href='user'">
+                            <i class="fas fa-sign-out-alt" aria-hidden="true"></i> <?php echo i8ln('Activate Key'); ?>
+                        </button>
+                    </center>
+                </div>
+            <?php } ?>
             <div>
                 <center>
                     <button class="settings"
@@ -1307,37 +1316,24 @@ if ( $blockIframe ) {
                         <i class="fas fa-key" aria-hidden="true"></i> <?php echo i8ln('Logout'); ?>
                     </button>
                 </center>
-            </div><br>
+            </div>
             <div><center><p>
-            <?php
-            $time = date("Y-m-d", $_SESSION['user']->expire_timestamp);
-            
-            echo $_SESSION['user']->user . "<br>";
-            if ($_SESSION['user']->expire_timestamp < time()) {
-                echo "<span style='color: green;'>" . i8ln('Membership expires on') . " {$time}</span>";
-            } else {
-                echo "<span style='color: red;'>" . i8ln('Membership expired on') . " {$time}</span>";
-            } ?>
+                <?php
+                if ( ! $noSelly) {
+                    $time = date("Y-m-d", $_SESSION['user']->expire_timestamp);
+                
+                    if ($_SESSION['user']->expire_timestamp < time()) {
+                        echo "<span style='color: green;'>" . i8ln('Membership expires on') . " {$time}</span>";
+                    } else {
+                        echo "<span style='color: red;'>" . i8ln('Membership expired on') . " {$time}</span>";
+                    } 
+			    } ?>
             </p></center></div>
-        <?php
-        }
-        ?>
-        <?php
-        if (($noDiscordLogin === false) && !empty($_SESSION['user']->id)) {
-            ?>
-            <div>
-                <center>
-                    <button class="settings"
-                            onclick="document.location.href='logout.php'">
-                        <i class="fa" aria-hidden="true"></i> <?php echo i8ln('Logout'); ?>
-                    </button>
-                </center>
-            </div><br>
             <div><center><p>
             <?php
             echo 'Logged in as: ' . $_SESSION['user']->user . "<br>";
             ?>
-        </p></center></div>
+            </p></center></div>
         <?php
         }
         ?>
@@ -1871,7 +1867,6 @@ if ( $blockIframe ) {
     var zoomToBoundsOnClick = <?= $zoomToBoundsOnClick; ?>;
     var maxClusterRadius = <?= $maxClusterRadius; ?>;
     var spiderfyOnMaxZoom = <?= $spiderfyOnMaxZoom; ?>;
-    var osmTileServer = '<?php echo $osmTileServer; ?>';
     var mapStyle = '<?php echo $mapStyle ?>';
     var gmapsKey = '<?php echo $gmapsKey ?>';
     var hidePokemon = <?php echo $noHidePokemon ? '[]' : $hidePokemon ?>;
