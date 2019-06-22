@@ -84,13 +84,6 @@ $faviconPath = '';                                                  // Upload fa
 //-----------------------------------------------------
 // Login
 //-----------------------------------------------------
-$noSelly = true;                                                    // Enable/Disable Selly Payment system. (WIP, use at own risk)
-$adminUsers = array('admin@example.com', 'Superadmin#13337');       // You can add multiple admins by adding them to the array.
-$logfile = 'logs/members.log';                                      // Path to log file. Make sure this works as it will be your life saver if your db crashes.
-$daysMembershipPerQuantity = 31;                                    // How many days membership one selly quantity will give.
-$sellyPage = '';                                                    // Link to selly purchase page for membership renewal.
-$sellyWebhookSecret = '';                                           // Add a secret key at https://selly.gg/settings to make sure the payment webhook is sent from selly to prevent fake payments.
-                                                                    // Add the same key to the $sellyWebhookSecret variable.
 /* Discord Auth */
 $forcedDiscordLogin = false;                                        // Force users to login with discord before they can see map
 $noDiscordLogin = true;                                             // true/false - This will enable login through discord.
@@ -112,6 +105,14 @@ $logFailedLogin = 'logs/failed_login.log';                          // File loca
 /* Native Auth */
 $noNativeLogin = true;                                              // true/false - This will enable the built in login system.
 $domainName = '';                                                   // If this is empty, reset-password emails will use the domain name taken from the URL.
+
+$noSelly = true;                                                    // Enable/Disable Selly Payment system. (WIP, USE AT OWN RISK!)
+$logfile = 'logs/members.log';                                      // Path to log file. Make sure this works as it will be your life saver if your db crashes.
+$daysMembershipPerQuantity = 31;                                    // How many days membership one selly quantity will give.
+$sellyPage = '';                                                    // Link to selly purchase page for membership renewal.
+$sellyWebhookSecret = '';                                           // Add a secret key at https://selly.gg/settings to make sure the payment webhook is sent from selly to prevent fake payments.
+                                                                    // Add the same key to the $sellyWebhookSecret variable.
+$adminUsers = ['admin@example.com', 'admin2@example.com'];          // You can add multiple admins by adding them to the array.
 //-----------------------------------------------------
 // FRONTEND SETTINGS
 //-----------------------------------------------------
@@ -454,5 +455,9 @@ $db = new Medoo([// required
     //'socket' => /path/to/socket/,
 //]);                                                               // Dont forget to uncomment this line to use $manualdb :)
 
-if(file_exists('config/access-config.php'))
-    include 'config/access-config.php';
+// DONT EDIT THE CODE BELOW
+if (($noNativeLogin === false || $noDiscordLogin === false) && !empty($_SESSION['user']->user)) {
+    if (file_exists('config/access-config.php')) {
+        include 'config/access-config.php';
+    }
+}

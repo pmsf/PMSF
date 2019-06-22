@@ -231,14 +231,13 @@ if ( $blockIframe ) {
         <?php
         if ( $discordUrl != "" ) {
             echo '<a href="' . $discordUrl . '" target="_blank" style="margin-bottom: 5px; vertical-align: middle;padding:0 5px;">
-            <img src="static/images/discord.png" border="0" style="float: right;">
-        </a>';
+                 <i class="fab fa-discord fa-2x" style="float:right;color:white;"></i>
+                 </a>';
         }
         if ( $paypalUrl != "" ) {
             echo '<a href="' . $paypalUrl . '" target="_blank" style="margin-bottom: 5px; vertical-align: middle; padding:0 5px;">
-            <img src="https://www.paypalobjects.com/webstatic/en_US/i/btn/png/btn_donate_74x21.png" border="0" name="submit"
-                 title="PayPal - The safer, easier way to pay online!" alt="Donate" style="float: right;">
-        </a>';
+                 <i class="fab fa-paypal fa-2x" style="float:right;color:white;margin-left:10px;"></i>
+                 </a>';
         }
         ?>
         <?php if ( ! $noWeatherOverlay ) {
@@ -1304,7 +1303,7 @@ if ( $blockIframe ) {
                     <center>
                         <button class="settings"
                                 onclick="document.location.href='user'">
-                            <i class="fas fa-sign-out-alt" aria-hidden="true"></i> <?php echo i8ln('Activate Key'); ?>
+                            <i class="fas fa-key" aria-hidden="true"></i> <?php echo i8ln('Activate Key'); ?>
                         </button>
                     </center>
                 </div>
@@ -1313,7 +1312,7 @@ if ( $blockIframe ) {
                 <center>
                     <button class="settings"
                             onclick="document.location.href='logout.php'">
-                        <i class="fas fa-key" aria-hidden="true"></i> <?php echo i8ln('Logout'); ?>
+                        <i class="fas fa-sign-out-alt" aria-hidden="true"></i> <?php echo i8ln('Logout'); ?>
                     </button>
                 </center>
             </div>
@@ -1345,7 +1344,7 @@ if ( $blockIframe ) {
                 ?>
                 <div class="switch-container">
                     <div>
-                        <center><a href="<?= $worldopoleUrl ?>">Full Stats</a></center>
+                        <center><a class="button" href="<?= $worldopoleUrl ?>"><i class="far fa-chart-bar"></i> Full Stats</a></center>
                     </div>
                 </div>
                 <?php

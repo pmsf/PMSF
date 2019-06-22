@@ -830,16 +830,16 @@ function pokemonLabel(item) {
     }
 
     $.each(types, function (index, type) {
-        typesDisplay += getTypeSpan(type)
+        typesDisplay += '<div>' + getTypeSpan(type) + '</div>'
     })
 
     var details = ''
     if (atk != null && def != null && sta != null) {
         var iv = getIv(atk, def, sta)
-        details =
-            '<div><center>' +
-            i8ln('IV') + ': ' + iv.toFixed(1) + '% (' + atk + '/' + def + '/' + sta + ')' +
-            '</center></div>'
+        details +=
+            '<div style="position:absolute;top:90px;left:80px;"><div>' +
+            i8ln('IV') + ': <b>' + iv.toFixed(1) + '%</b> (<b>' + atk + '</b>/<b>' + def + '</b>/<b>' + sta + '</b>)' +
+            '</div>'
 
         if (cp != null && (cpMultiplier != null || level != null)) {
             var pokemonLevel
@@ -849,34 +849,49 @@ function pokemonLabel(item) {
                 pokemonLevel = getPokemonLevel(cpMultiplier)
             }
             details +=
-                '<div><center>' +
-                i8ln('CP') + ' : ' + cp + ' | ' + i8ln('Level') + ' : ' + pokemonLevel +
-                '</center></div>'
+                '<div>' +
+                i8ln('CP') + ' : <b>' + cp + '</b> | ' + i8ln('Level') + ' : <b>' + pokemonLevel +
+                '</b></div></div><br>'
         }
         details +=
-            '<div><center>' +
-            i8ln('Moves') + ' : ' + pMove1 + ' / ' + pMove2 +
-            '</center></div>'
+            '<div style="position:absolute;top:135px;"><div>' +
+            i8ln('Moves') + ' : <b>' + pMove1 + '</b> / <b>' + pMove2 +
+            '</b></div>'
+    } else {
+        details +=
+            '<div style="position:absolute;top:90px;left:80px;"><div>' +
+            i8ln('IV') + ': <b>??%</b> (<b>?</b>/<b>?</b>/<b>?</b>)' +
+            '</div>'
+        details +=
+            '<div>' +
+            i8ln('CP') + ' : <b>??</b> | ' + i8ln('Level') + ' : <b>??' +
+            '</b></div></div><br>'
+        details +=
+            '<div style="position:absolute;top:135px;"><div>' +
+            i8ln('Moves') + ' : <b>?</b> / <b>?</b></div>'
     }
+
     if (weatherBoostedCondition !== 0) {
         details +=
-            '<div><center>' +
-            i8ln('Weather Boost') + ': ' + i8ln(weather[weatherBoostedCondition]) +
-            '</center></div>'
-    }
-    if (gender != null) {
+            '<div>' + i8ln('Weather Boost') + ': <b>' + i8ln(weather[weatherBoostedCondition]) + '</b>' +
+            ' <img style="height:30px;position:absolute;top:-110px;left:-20px;" src="static/weather/i-' + weatherBoostedCondition + '.png" style="height:15px;"></div>'
+    } else {
         details +=
-            '<div><center>' +
-            i8ln('Gender') + ': ' + genderType[gender - 1]
-        if (weight != null) {
-            details += ' | ' + i8ln('Weight') + ': ' + weight.toFixed(2) + 'kg'
-        }
-        if (height != null) {
-            details += ' | ' + i8ln('Height') + ': ' + height.toFixed(2) + 'm'
-        }
-        details +=
-            '</center></div>'
+            '<div>' + i8ln('Weather Boost') + ': <b>None</b></div>'
     }
+
+    if (weight != null && height != null) {
+        details += '<div>' +
+            i8ln('Weight') + ': <b>' + weight.toFixed(2) + 'kg</b>' +
+            ' | ' + i8ln('Height') + ': <b>' + height.toFixed(2) + 'm</b>' +
+            '</div></div>'
+    } else {
+        details += '<div>' +
+            i8ln('Weight') + ': <b>?kg</b>' +
+            ' | ' + i8ln('Height') + ': <b>?m</b>' +
+            '</div></div>'
+    }
+
     var contentstring =
         '<div><center>' +
         '<b>' + name + '</b>'
@@ -887,6 +902,10 @@ function pokemonLabel(item) {
             contentstring += ' (' + forms[item['form']] + ')'
         }
     }
+    if (gender != null) {
+        contentstring += ' ' + genderType[gender - 1]
+    }
+
     var coordText = latitude.toFixed(6) + ', ' + longitude.toFixed(7)
     if (hidePokemonCoords === true) {
         coordText = i8ln('Directions')
@@ -898,41 +917,44 @@ function pokemonLabel(item) {
     if (noRarityDisplay === false) {
         contentstring += '<span> ' + rarityDisplay + '</span>'
     }
-    contentstring += '<span> - </span>' +
-        '<small>' + typesDisplay + '</small>' +
+    contentstring +=
         '</center></div>' +
-        '<div><center><img src="' + iconpath + 'pokemon_icon_' + pokemonidStr + '_' + formStr
+        '<div><img src="' + iconpath + 'pokemon_icon_' + pokemonidStr + '_' + formStr
     if (item['costume'] > 0 && noCostumeIcons === false) {
         contentstring += '_' + item['costume']
     }
-    contentstring += '.png" style="width:50px;margin-top:10px;"/></center></div>' + details
+    contentstring += '.png" style="width:50px;margin-top:10px;"/>'
     if (item['expire_timestamp_verified'] > 0) {
-        contentstring += '<div><center>' +
-            '<img src="static/images/verified.png" style="position:relative;height:15px;top:3px;right:3px;">' +
-            '<b>' +
-            i8ln('Despawn Time') + ': ' + getTimeStr(disappearTime) +
+        contentstring += '<b style="top:-20px;position:relative;">' +
+            ' <i class="fas fa-check-square" style="color:#28b728;"></i> ' +
+            '<i class="far fa-clock"></i>' + ' ' + getTimeStr(disappearTime) +
             ' <span class="label-countdown" disappears-at="' + disappearTime + '">(00m00s)</span>' +
-            '</b></center></div>'
+            '</b></div>'
     } else if (pokemonReportTime === true) {
-        contentstring += '<div><center><b>' +
-            i8ln('Reported at') + ' ' + getTimeStr(reportTime) +
-            '</b></center></div>'
+        contentstring += '<b style="top:-20px;position:relative;">' +
+            ' <i class="far fa-clock"></i>' + ' ' + getTimeStr(reportTime) +
+            '</b></div>'
     } else {
-        contentstring += '<div><center><b>' +
-            i8ln('Aprox Despawn Time') + ': ' + getTimeStr(disappearTime) +
+        contentstring += '<b style="top:-20px;position:relative;">' +
+            ' <i class="far fa-clock"></i>' + ' ' + getTimeStr(disappearTime) +
             ' <span class="label-countdown" disappears-at="' + disappearTime + '">(00m00s)</span>' +
-            '</b></center></div>'
+            '</b></div>'
     }
 
-    contentstring += '<div><center>' +
-        '<a href="javascript:void(0)" onclick="javascript:openMapDirections(' + latitude + ', ' + longitude + ')" title="' + i8ln('View in Maps') + '"><i class="fas fa-road"></i> ' + coordText + '</a> - <a href="./?lat=' + latitude + '&lon=' + longitude + '&zoom=16"><i class="fa fa-share-alt-square" aria-hidden="true" style="position:relative;top:3px;left:0px;color:green;margin-bottom:10px;font-size:18px;"></i></a>' +
-        '</center></div>' +
-        '<div><center>' +
-        '<a href="javascript:excludePokemon(' + id + ')">' + i8ln('Exclude') + '</a>&nbsp&nbsp' +
-        '<a href="javascript:notifyAboutPokemon(' + id + ')">' + i8ln('Notify') + '</a>&nbsp&nbsp' +
-        '<a href="javascript:removePokemonMarker(\'' + encounterId + '\')">' + i8ln('Remove') + '</a>&nbsp&nbsp' +
-        '<a href="javascript:void(0);" onclick="javascript:toggleOtherPokemon(' + id + ');" title="' + i8ln('Toggle display of other Pokemon') + '">' + i8ln('Toggle Others') + '</a>' +
-        '</center></div>'
+    contentstring += '<small>' + typesDisplay + '</small>' + '<br>' +
+        details +
+        '<center><div style="position:relative;top:45px;">' +
+        '<i class="far fa-eye-slash"></i> <a href="javascript:excludePokemon(' + id + ')">' + i8ln('Exclude') + '</a>' +
+        ' | <i class="far fa-bell"></i> <a href="javascript:notifyAboutPokemon(' + id + ')">' + i8ln('Notify') + '</a>' +
+        ' | <i class="far fa-trash-alt"></i> <a href="javascript:removePokemonMarker(\'' + encounterId + '\')">' + i8ln('Remove') + '</a>' +
+        '</div></center>' +
+        '<div style="position:relative;top:45px;"><center>' +
+        '<a href="javascript:void(0)" onclick="javascript:openMapDirections(' + latitude + ', ' + longitude + ')" title="' + i8ln('View in Maps') + '">' +
+        '<i class="fas fa-road"></i> ' + coordText + '</a> - ' +
+        '<a href="./?lat=' + latitude + '&lon=' + longitude + '&zoom=16">' +
+        '<i class="far fa-share-square" aria-hidden="true" style="position:relative;top:3px;left:0px;color:#26c300;margin-bottom:10px;font-size:18px;"></i>' +
+        '</a></center></div><br><br>'
+
     return contentstring
 }
 
@@ -1078,7 +1100,7 @@ function gymLabel(item) {
         '<div><b>' + freeSlots + ' ' + i8ln('Free Slots') + '</b></div>' +
         raidStr +
         '<div>' +
-        '<a href="javascript:void(0);" onclick="javascript:openMapDirections(' + latitude + ',' + longitude + ');" title="' + i8ln('View in Maps') + '"><i class="fas fa-road"></i> ' + latitude.toFixed(6) + ' , ' + longitude.toFixed(7) + '</a> - <a href="./?lat=' + latitude + '&lon=' + longitude + '&zoom=16"><i class="fa fa-share-alt-square" aria-hidden="true" style="position:relative;top:3px;left:0px;color:green;font-size:20px;"></i></a>' +
+        '<a href="javascript:void(0);" onclick="javascript:openMapDirections(' + latitude + ',' + longitude + ');" title="' + i8ln('View in Maps') + '"><i class="fas fa-road"></i> ' + latitude.toFixed(6) + ' , ' + longitude.toFixed(7) + '</a> - <a href="./?lat=' + latitude + '&lon=' + longitude + '&zoom=16"><i class="far fa-share-square" aria-hidden="true" style="position:relative;top:3px;left:0px;color:#26c300;font-size:20px;"></i></a>' +
         '</div>' +
         '<div>' +
         i8ln('Last Modified') + ' : ' + lastModifiedStr +
@@ -1351,7 +1373,7 @@ function pokestopLabel(item) {
         str += '<center><div>' + i8ln('Convert to Gym') + '<i class="fa fa-refresh convert-pokestop" style="margin-top: 2px; vertical-align: middle; font-size: 1.5em;" onclick="openConvertPokestopModal(event);" data-id="' + item['pokestop_id'] + '"></i></div></center>'
     }
     str += '<div><center>' +
-        '<a href="javascript:void(0)" onclick="javascript:openMapDirections(' + item['latitude'] + ',' + item['longitude'] + ')" title="' + i8ln('View in Maps') + '"><i class="fas fa-road"></i> ' + item['latitude'] + ', ' + item['longitude'] + '</a> - <a href="./?lat=' + item['latitude'] + '&lon=' + item['longitude'] + '&zoom=16"><i class="fa fa-share-alt-square" aria-hidden="true" style="position:relative;top:3px;left:0px;color:green;font-size:20px;"></i></a>' +
+        '<a href="javascript:void(0)" onclick="javascript:openMapDirections(' + item['latitude'] + ',' + item['longitude'] + ')" title="' + i8ln('View in Maps') + '"><i class="fas fa-road"></i> ' + item['latitude'] + ', ' + item['longitude'] + '</a> - <a href="./?lat=' + item['latitude'] + '&lon=' + item['longitude'] + '&zoom=16"><i class="fa fa-share-square" aria-hidden="true" style="position:relative;top:3px;left:0px;color:#26c300;font-size:20px;"></i></a>' +
         '</center></div>'
     if ((!noWhatsappLink) && (item['quest_id'] && item['reward_id'] !== null)) {
         str += '<div>' +
@@ -2045,7 +2067,7 @@ function nestLabel(item) {
         str += '<center><div>' + i8ln('Add Nest') + ' <i class="fa fa-binoculars submit-nest" onclick="openNestModal(event);" data-id="' + item['nest_id'] + '"></i></div></center>'
     }
     str += '<div>' +
-        '<a href="javascript:void(0)" onclick="javascript:openMapDirections(' + item.lat + ',' + item.lon + ')" title="' + i8ln('View in Maps') + '"><i class="fas fa-road"></i> ' + item.lat.toFixed(6) + ', ' + item.lon.toFixed(7) + '</a> - <a href="./?lat=' + item.lat + '&lon=' + item.lon + '&zoom=16"><i class="fa fa-share-alt-square" aria-hidden="true" style="position:relative;top:3px;left:0px;color:green;font-size:20px;"></i></a>' +
+        '<a href="javascript:void(0)" onclick="javascript:openMapDirections(' + item.lat + ',' + item.lon + ')" title="' + i8ln('View in Maps') + '"><i class="fas fa-road"></i> ' + item.lat.toFixed(6) + ', ' + item.lon.toFixed(7) + '</a> - <a href="./?lat=' + item.lat + '&lon=' + item.lon + '&zoom=16"><i class="far fa-share-square" aria-hidden="true" style="position:relative;top:3px;left:0px;color:#26c300;font-size:20px;"></i></a>' +
         '</div>'
     if ((!noWhatsappLink) && (item.pokemon_id > 0)) {
         str += '<div>' +
@@ -2238,7 +2260,7 @@ function portalLabel(item) {
         '<center>' +
         '<a href="javascript:void(0);" onclick="javascript:openMapDirections(' + item['lat'] + ',' + item['lon'] + ');" title="' + i8ln('View in Maps') + '">' +
         '<i class="fas fa-road"></i> ' + item['lat'].toFixed(6) + ' , ' + item['lon'].toFixed(7) + '</a> - ' +
-        '<a href="./?lat=' + item['lat'] + '&lon=' + item['lon'] + '&zoom=16"><i class="fa fa-share-alt-square" aria-hidden="true" style="position:relative;top:3px;left:0px;color:green;font-size:20px;"></i></a>' +
+        '<a href="./?lat=' + item['lat'] + '&lon=' + item['lon'] + '&zoom=16"><i class="far fa-share-square" aria-hidden="true" style="position:relative;top:3px;left:0px;color:#26c300;font-size:20px;"></i></a>' +
         '</center>'
     if (!noDeletePortal) {
         str += '<i class="fas fa-trash-alt delete-portal" onclick="deletePortal(event);" data-id="' + item.external_id + '"></i>'
@@ -2286,7 +2308,7 @@ function poiLabel(item) {
     if (!noMarkPoi) {
         str += '<center><div><button onclick="openMarkPoiModal(event);" data-id="' + item.poi_id + '" class="convertpoi"><i class="fas fa-sync-alt convert-poi"></i> ' + i8ln('Mark POI') + '</button></div></center>'
     }
-    str += '<center><a href="javascript:void(0);" onclick="javascript:openMapDirections(' + item.lat + ',' + item.lon + ');" title="' + i8ln('View in Maps') + '"><i class="fas fa-road"></i> ' + item.lat.toFixed(5) + ' , ' + item.lon.toFixed(5) + '</a> - <a href="./?lat=' + item.lat + '&lon=' + item.lon + '&zoom=16"><i class="fa fa-share-alt-square" aria-hidden="true" style="position:relative;top:3px;left:0px;color:green;font-size:20px;"></i></a></center>'
+    str += '<center><a href="javascript:void(0);" onclick="javascript:openMapDirections(' + item.lat + ',' + item.lon + ');" title="' + i8ln('View in Maps') + '"><i class="fas fa-road"></i> ' + item.lat.toFixed(5) + ' , ' + item.lon.toFixed(5) + '</a> - <a href="./?lat=' + item.lat + '&lon=' + item.lon + '&zoom=16"><i class="far fa-share-square" aria-hidden="true" style="position:relative;top:3px;left:0px;color:#26c300;font-size:20px;"></i></a></center>'
     return str
 }
 

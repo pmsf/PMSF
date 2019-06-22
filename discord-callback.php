@@ -49,7 +49,7 @@ if ($noDiscordLogin === false) {
                 $manualdb->insert("users", [
                     "id" => $user->{'id'},
                     "user" => $user->{'username'} . "#" . $user->{'discriminator'},
-                    "expire_timestamp" => time(),
+                    "expire_timestamp" => time() + 60 * 60 * 24 * 7,
                     "login_system" => 'discord'
                 ]);
             }
@@ -58,6 +58,7 @@ if ($noDiscordLogin === false) {
 
             $manualdb->update("users", [
                 "session_id" => session_id(),
+                "expire_timestamp" => time() + 60 * 60 * 24 * 7,
                 "user" => $user->{'username'} . "#" . $user->{'discriminator'}
             ], [
                 "id" => $user->{'id'},
