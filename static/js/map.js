@@ -1052,14 +1052,14 @@ function gymLabel(item) {
         }
     }
     if (manualRaids && item['scanArea'] === false) {
-        raidStr += '<div class="raid-container">' + i8ln('Add raid ') + '<i class="fa fa-binoculars submit-raid" onclick="openRaidModal(event);" data-id="' + item['gym_id'] + '"></i>' +
+        raidStr += '<div class="raid-container">' + i8ln('Add raid ') + '<i class="fas fa-binoculars submit-raid" onclick="openRaidModal(event);" data-id="' + item['gym_id'] + '"></i>' +
             '</div>'
     }
     if (!noDeleteGyms) {
         raidStr += '<i class="fas fa-trash-alt delete-gym" onclick="deleteGym(event);" data-id="' + item['gym_id'] + '"></i>'
     }
     if (!noToggleExGyms) {
-        raidStr += '<i class="fa fa-trophy toggle-ex-gym" onclick="toggleExGym(event);" data-id="' + item['gym_id'] + '"></i>'
+        raidStr += '<i class="fas fa-trophy toggle-ex-gym" onclick="toggleExGym(event);" data-id="' + item['gym_id'] + '"></i>'
     }
 
     var lastScannedStr = ''
@@ -1364,16 +1364,16 @@ function pokestopLabel(item) {
         str += '<i class="fas fa-trash-alt delete-pokestop" onclick="deletePokestop(event);" data-id="' + item['pokestop_id'] + '"></i>'
     }
     if (!noManualQuests && item['scanArea'] === false) {
-        str += '<center><div>' + i8ln('Add Quest') + '<i class="fa fa-binoculars submit-quest" onclick="openQuestModal(event);" data-id="' + item['pokestop_id'] + '"></i></div></center>'
+        str += '<center><div>' + i8ln('Add Quest') + '<i class="fas fa-binoculars submit-quest" onclick="openQuestModal(event);" data-id="' + item['pokestop_id'] + '"></i></div></center>'
     }
     if (!noRenamePokestops) {
-        str += '<center><div>' + i8ln('Rename Pokestop') + '<i class="fa fa-edit rename-pokestop" style="margin-top: 2px; vertical-align: middle; font-size: 1.5em;" onclick="openRenamePokestopModal(event);" data-id="' + item['pokestop_id'] + '"></i></div></center>'
+        str += '<center><div>' + i8ln('Rename Pokestop') + '<i class="fas fa-edit rename-pokestop" style="margin-top: 2px; vertical-align: middle; font-size: 1.5em;" onclick="openRenamePokestopModal(event);" data-id="' + item['pokestop_id'] + '"></i></div></center>'
     }
     if (!noConvertPokestops) {
-        str += '<center><div>' + i8ln('Convert to Gym') + '<i class="fa fa-refresh convert-pokestop" style="margin-top: 2px; vertical-align: middle; font-size: 1.5em;" onclick="openConvertPokestopModal(event);" data-id="' + item['pokestop_id'] + '"></i></div></center>'
+        str += '<center><div>' + i8ln('Convert to Gym') + '<i class="fas fa-refresh convert-pokestop" style="margin-top: 2px; vertical-align: middle; font-size: 1.5em;" onclick="openConvertPokestopModal(event);" data-id="' + item['pokestop_id'] + '"></i></div></center>'
     }
     str += '<div><center>' +
-        '<a href="javascript:void(0)" onclick="javascript:openMapDirections(' + item['latitude'] + ',' + item['longitude'] + ')" title="' + i8ln('View in Maps') + '"><i class="fas fa-road"></i> ' + item['latitude'] + ', ' + item['longitude'] + '</a> - <a href="./?lat=' + item['latitude'] + '&lon=' + item['longitude'] + '&zoom=16"><i class="fa fa-share-square" aria-hidden="true" style="position:relative;top:3px;left:0px;color:#26c300;font-size:20px;"></i></a>' +
+        '<a href="javascript:void(0)" onclick="javascript:openMapDirections(' + item['latitude'] + ',' + item['longitude'] + ')" title="' + i8ln('View in Maps') + '"><i class="fas fa-road"></i> ' + item['latitude'] + ', ' + item['longitude'] + '</a> - <a href="./?lat=' + item['latitude'] + '&lon=' + item['longitude'] + '&zoom=16"><i class="fas fa-share-square" aria-hidden="true" style="position:relative;top:3px;left:0px;color:#26c300;font-size:20px;"></i></a>' +
         '</center></div>'
     if ((!noWhatsappLink) && (item['quest_id'] && item['reward_id'] !== null)) {
         str += '<div>' +
@@ -2064,7 +2064,7 @@ function nestLabel(item) {
         str += '<i class="fas fa-trash-alt delete-nest" onclick="deleteNest(event);" data-id="' + item['nest_id'] + '"></i>'
     }
     if (!noManualNests) {
-        str += '<center><div>' + i8ln('Add Nest') + ' <i class="fa fa-binoculars submit-nest" onclick="openNestModal(event);" data-id="' + item['nest_id'] + '"></i></div></center>'
+        str += '<center><div>' + i8ln('Add Nest') + ' <i class="fas fa-binoculars submit-nest" onclick="openNestModal(event);" data-id="' + item['nest_id'] + '"></i></div></center>'
     }
     str += '<div>' +
         '<a href="javascript:void(0)" onclick="javascript:openMapDirections(' + item.lat + ',' + item.lon + ')" title="' + i8ln('View in Maps') + '"><i class="fas fa-road"></i> ' + item.lat.toFixed(6) + ', ' + item.lon.toFixed(7) + '</a> - <a href="./?lat=' + item.lat + '&lon=' + item.lon + '&zoom=16"><i class="far fa-share-square" aria-hidden="true" style="position:relative;top:3px;left:0px;color:#26c300;font-size:20px;"></i></a>' +
@@ -2133,14 +2133,14 @@ function communityLabel(item) {
     if (item.has_invite_url === 1 && (item.invite_url !== '#' || item.invite_url !== undefined)) {
         str +=
         '<center><div class="button-container">' +
-            '<a class="button" href="' + item.invite_url + '">' + i8ln('Join Now') + '<i class="fa fa-comments" style="margin-left:10px;"></i>' +
+            '<a class="button" href="' + item.invite_url + '">' + i8ln('Join Now') + '<i class="fas fa-comments" style="margin-left:10px;"></i>' +
             '</a>' +
         '</div></center>'
     }
     if (!noEditCommunity) {
         str +=
         '<center><div class="button-container">' +
-        '<a class="button" onclick="openEditCommunityModal(event);" data-id="' + item.community_id + '" data-title="' + item.title + '" data-description="' + item.description + '" data-invite="' + item.invite_url + '">' + i8ln('Edit Community') + '<i class="fa fa-edit style="margin-left:10px;"></i></center>' +
+        '<a class="button" onclick="openEditCommunityModal(event);" data-id="' + item.community_id + '" data-title="' + item.title + '" data-description="' + item.description + '" data-invite="' + item.invite_url + '">' + i8ln('Edit Community') + '<i class="fas fa-edit style="margin-left:10px;"></i></center>' +
             '</a>' +
         '</div></center>'
     }
@@ -2303,7 +2303,7 @@ function poiLabel(item) {
         str += '<i class="fas fa-trash-alt delete-poi" onclick="deletePoi(event);" data-id="' + item.poi_id + '"></i>'
     }
     if (!noEditPoi) {
-        str += '<center><div><button onclick="openEditPoiModal(event);" data-id="' + item.poi_id + '" data-name="' + item.name + '" data-description="' + item.description + '" data-notes="' + item.notes + '" class="convertpoi"><i class="fa fa-edit edit-poi"></i> ' + i8ln('Edit POI') + '</button></div></center>'
+        str += '<center><div><button onclick="openEditPoiModal(event);" data-id="' + item.poi_id + '" data-name="' + item.name + '" data-description="' + item.description + '" data-notes="' + item.notes + '" class="convertpoi"><i class="fas fa-edit edit-poi"></i> ' + i8ln('Edit POI') + '</button></div></center>'
     }
     if (!noMarkPoi) {
         str += '<center><div><button onclick="openMarkPoiModal(event);" data-id="' + item.poi_id + '" class="convertpoi"><i class="fas fa-sync-alt convert-poi"></i> ' + i8ln('Mark POI') + '</button></div></center>'
@@ -2818,7 +2818,7 @@ function searchForItem(lat, lon, term, type, field) {
                     html += '<span class="name" style="font-weight:bold">' + element.name + '</span>' + '<span class="distance" style="font-weight:bold">&nbsp;-&#32;' + element.distance + defaultUnit + '</span>'
                     html += '</div></div>'
                     if (sr.hasClass('pokestop-results') && !noManualQuests && !scanArea) {
-                        html += '<div class="right-column"><i class="fa fa-binoculars submit-quests"  onClick="openQuestModal(event);" data-id="' + element.external_id + '"></i></div>'
+                        html += '<div class="right-column"><i class="fas fa-binoculars submit-quests"  onClick="openQuestModal(event);" data-id="' + element.external_id + '"></i></div>'
                     } else {
                         html += '<div class="right-column" onClick="centerMapOnCoords(event);"><span style="background:url(' + element.url + ') no-repeat;" class="i-icon" ></span></div>'
                     }
@@ -2843,7 +2843,7 @@ function searchForItem(lat, lon, term, type, field) {
                     '<span class="name" style="font-weight:bold">' + element.name + '</span>' + '<span class="distance" style="font-weight:bold">&nbsp;-&#32;' + element.distance + defaultUnit + '</span>' +
                     '</div></div>'
                     if (sr.hasClass('gym-results') && manualRaids && !scanArea) {
-                        html += '<div class="right-column"><i class="fa fa-binoculars submit-raid"  onClick="openRaidModal(event);" data-id="' + element.external_id + '"></i></div>'
+                        html += '<div class="right-column"><i class="fas fa-binoculars submit-raid"  onClick="openRaidModal(event);" data-id="' + element.external_id + '"></i></div>'
                     }
                     html += '</li>'
                     sr.append(html)
@@ -2866,7 +2866,7 @@ function searchForItem(lat, lon, term, type, field) {
                     '<span class="name" style="font-weight:bold">' + element.name + '</span>' + '<span class="distance" style="font-weight:bold">&nbsp;-&#32;' + element.distance + defaultUnit + '</span>' +
                     '</div></div>'
                     if (sr.hasClass('pokestop-results') && !noManualQuests && !scanArea) {
-                        html += '<div class="right-column"><i class="fa fa-binoculars submit-quests"  onClick="openQuestModal(event);" data-id="' + element.external_id + '"></i></div>'
+                        html += '<div class="right-column"><i class="fas fa-binoculars submit-quests"  onClick="openQuestModal(event);" data-id="' + element.external_id + '"></i></div>'
                     }
                     html += '</li>'
                     sr.append(html)
@@ -4165,8 +4165,8 @@ function generateRaidModal() {
         '<h5 class="timer-name" style="margin-bottom:0;"></h5>' +
         generateTimerLists() +
         '</div>' +
-        '<button type="button" onclick="manualRaidData(event);" class="submitting-raid"><i class="fa fa-binoculars" style="margin-right:10px;"></i>' + i8ln('Submit Raid') + '</button>' +
-        '<button type="button" onclick="$(\'.ui-dialog-content\').dialog(\'close\');" class="close-modal"><i class="fa fa-times" aria-hidden="true"></i></button>' +
+        '<button type="button" onclick="manualRaidData(event);" class="submitting-raid"><i class="fas fa-binoculars" style="margin-right:10px;"></i>' + i8ln('Submit Raid') + '</button>' +
+        '<button type="button" onclick="$(\'.ui-dialog-content\').dialog(\'close\');" class="close-modal"><i class="fas fa-times" aria-hidden="true"></i></button>' +
         '</form>'
     return raidStr
 }
