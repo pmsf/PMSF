@@ -333,7 +333,7 @@ class RDM_beta extends RDM
 
     public function query_stops($conds, $params)
     {
-        global $db, $noManualQuests;
+        global $db;
 
         $query = "SELECT id AS pokestop_id,
         lat AS latitude,
