@@ -854,6 +854,34 @@ if ( $blockIframe ) {
                 </div>';
                 } ?>
                 <?php
+                if ( ! $noFortress ) {
+                    echo '<div class="form-control switch-container">
+                    <h3>' . i8ln( 'Fortress' ) . '</h3>
+                    <div class="onoffswitch">
+                        <input id="fortresses-switch" type="checkbox" name="fortresses-switch"
+                               class="onoffswitch-checkbox" checked>
+                        <label class="onoffswitch-label" for="fortresses-switch">
+                            <span class="switch-label" data-on="On" data-off="Off"></span>
+                            <span class="switch-handle"></span>
+                        </label>
+                    </div>
+                </div>';
+                } ?>
+                <?php
+                if ( ! $noGreenhouse ) {
+                    echo '<div class="form-control switch-container">
+                    <h3>' . i8ln( 'Greenhouse' ) . '</h3>
+                    <div class="onoffswitch">
+                        <input id="greenhouses-switch" type="checkbox" name="greenhouses-switch"
+                               class="onoffswitch-checkbox" checked>
+                        <label class="onoffswitch-label" for="greenhouses-switch">
+                            <span class="switch-label" data-on="On" data-off="Off"></span>
+                            <span class="switch-handle"></span>
+                        </label>
+                    </div>
+                </div>';
+                } ?>
+                <?php
                 if ( ! $noS2Cells ) {
                     echo '<div class="form-control switch-container">
                     <h3>' . i8ln( 'Show S2 Cells' ) . '</h3>
@@ -1988,6 +2016,10 @@ if ( $blockIframe ) {
     var queryInterval = <?php echo $queryInterval ?>;
     var enableInns = <?php echo $noInn ? 'false' : $enableInn ?>;
     var noInns = <?php echo $noInn === true ? 'true' : 'false' ?>;
+    var enableFortresses = <?php echo $noFortress ? 'false' : $enableFortress ?>;
+    var noFortresses = <?php echo $noFortress === true ? 'true' : 'false' ?>;
+    var enableGreenhouses = <?php echo $noGreenhouse ? 'false' : $enableGreenhouse ?>;
+    var noGreenhouses = <?php echo $noGreenhouse === true ? 'true' : 'false' ?>;
 </script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js"></script>
 <script src="static/dist/js/map.common.min.js"></script>
