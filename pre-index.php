@@ -2014,9 +2014,9 @@ if ( $blockIframe ) {
     var nestGeoJSONfile = '<?php echo $noNestPolygon ? '' : $nestGeoJSONfile ?>';
     var noCostumeIcons = <?php echo $noCostumeIcons === true ? 'true' : 'false' ?>;
     var queryInterval = <?php echo $queryInterval ?>;
-    var enableInns = <?php echo $noInn ? 'false' : $enableInn ?>;
-    var enableFortresses = <?php echo $noFortress ? 'false' : $enableFortress ?>;
-    var enableGreenhouses = <?php echo $noGreenhouse ? 'false' : $enableGreenhouse ?>;
+    var enableInn = <?php echo $noInn ? 'false' : $enableInn ?>;
+    var enableFortress = <?php echo $noFortress ? 'false' : $enableFortress ?>;
+    var enableGreenhouse = <?php echo $noGreenhouse ? 'false' : $enableGreenhouse ?>;
 </script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js"></script>
 <script src="static/dist/js/map.common.min.js"></script>
