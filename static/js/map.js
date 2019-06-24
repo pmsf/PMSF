@@ -93,6 +93,7 @@ var lastgyms
 var lastnests
 var lastcommunities
 var lastportals
+var lastinns
 var lastpois
 var lastpokemon
 var lastslocs
@@ -653,6 +654,7 @@ function initSidebar() {
     $('#nests-switch').prop('checked', Store.get('showNests'))
     $('#communities-switch').prop('checked', Store.get('showCommunities'))
     $('#portals-switch').prop('checked', Store.get('showPortals'))
+    $('#inns-switch').prop('checked', Store.get('showInns'))
     $('#poi-switch').prop('checked', Store.get('showPoi'))
     $('#s2-switch').prop('checked', Store.get('showCells'))
     $('#s2-switch-wrapper').toggle(Store.get('showCells'))
@@ -2187,6 +2189,23 @@ function setupPortalMarker(item) {
     return marker
 }
 
+function setupInnMarker(item) {{
+    var circle = {
+        color: 'red',
+        radius: 10,
+        fillOpacity: 0.4,
+        fillColor: '#f00',
+        weight: 1,
+        pane: 'portals'
+    }
+    var marker = L.circleMarker([item['lat'], item['lon']], circle).bindPopup(innLabel(item), {autoPan: false, closeOnClick: false, autoClose: false})
+    markers.addLayer(marker)
+
+    addListeners(marker)
+
+    return marker
+}
+
 function setupPoiMarker(item) {
     if (item.status === '1') {
         var circle = {
@@ -2260,6 +2279,16 @@ function portalLabel(item) {
     if (!noDeletePortal) {
         str += '<i class="fas fa-trash-alt delete-portal" onclick="deletePortal(event);" data-id="' + item.external_id + '"></i>'
     }
+    return str
+}
+
+function innLabel(item) {
+    var updated = formatDate(new Date(item.updated * 1000))
+    var str = '<center>' +
+        '<a href="javascript:void(0);" onclick="javascript:openMapDirections(' + item['lat'] + ',' + item['lon'] + ');" title="' + i8ln('View in Maps') + '">' +
+        '<i class="fas fa-road"></i> ' + item['lat'].toFixed(6) + ' , ' + item['lon'].toFixed(7) + '</a> - ' +
+        '<a href="./?lat=' + item['lat'] + '&lon=' + item['lon'] + '&zoom=16"><i class="far fa-share-square" aria-hidden="true" style="position:relative;top:3px;left:0px;color:#26c300;font-size:20px;"></i></a>' +
+        '</center>'
     return str
 }
 
@@ -2611,6 +2640,7 @@ function loadRawData() {
     var loadNests = Store.get('showNests')
     var loadCommunities = Store.get('showCommunities')
     var loadPortals = Store.get('showPortals')
+    var loadInns = Store.get('showInns')
     var loadPois = Store.get('showPoi')
     var loadNewPortalsOnly = Store.get('showNewPortalsOnly')
     var loadScanned = Store.get('showScanned')
@@ -2649,6 +2679,8 @@ function loadRawData() {
             'lastpois': lastpois,
             'newportals': loadNewPortalsOnly,
             'lastportals': lastportals,
+            'inns': loadInns,
+            'lastinns': lastinns,
             'lastpokestops': lastpokestops,
             'gyms': loadGyms,
             'lastgyms': lastgyms,
@@ -4489,6 +4521,29 @@ function processPortals(i, item) {
         }
     }
 }
+function processInns(i, item) {
+    if (!Store.get('showInns')) {
+        return false
+    }
+
+     if (!mapData.inns[item['external_id']]) {
+        // new pokestop, add marker to map and item to dict
+        if (item.marker && item.marker.rangeCircle) {
+            item.marker.rangeCircle.setMap(null)
+        }
+        if (item.marker) {
+            item.marker.setMap(null)
+        }
+        item.marker = setupPortalMarker(item)
+        mapData.inns[item['id']] = item
+    } else {
+        // change existing pokestop marker to unlured/lured
+        var item2 = mapData.inns[item['id']]
+        item2.marker.setMap(null)
+        item.marker = setupPortalMarker(item)
+        mapData.inns[item['id']] = item
+    }
+}
 function updatePortals() {
     if (!Store.get('showPortals')) {
         return false
@@ -4864,6 +4919,7 @@ function updateMap() {
         $.each(result.nests, processNests)
         $.each(result.communities, processCommunities)
         $.each(result.portals, processPortals)
+        $.each(result.inns, processInns)
         $.each(result.pois, processPois)
         showInBoundsMarkers(mapData.pokemons, 'pokemon')
         showInBoundsMarkers(mapData.lurePokemons, 'pokemon')
@@ -4897,6 +4953,7 @@ function updateMap() {
         lastnests = result.lastnests
         lastcommunities = result.lastcommunities
         lastportals = result.lastportals
+        lastinns = result.lastinns
         lastpois = result.lastpois
 
         prevMinIV = result.preMinIV
@@ -6109,6 +6166,10 @@ $(function () {
             wrapper.hide(options)
         }
         return buildSwitchChangeListener(mapData, ['portals'], 'showPortals').bind(this)()
+    })
+    $('#inns-switch').change(function () {
+        lastinns = false
+        buildSwitchChangeListener(mapData, ['inns'], 'showInns').bind(this)()
     })
 
     $('#s2-switch').change(function () {

@@ -164,6 +164,11 @@ var StoreOptions = {
             default: enablePortals,
             type: StoreTypes.Boolean
         },
+    'showInns':
+        {
+            default: enableInns,
+            type: StoreTypes.Boolean
+        },
     'showPoi':
         {
             default: enablePoi,
@@ -438,7 +443,8 @@ var mapData = {
     nests: {},
     communities: {},
     portals: {},
-    pois: {}
+    pois: {},
+    inns: {}
 }
 
 function getPokemonSprite(index, sprite, displayHeight, weather = 0, encounterForm = 0, pokemonCostume = 0) {

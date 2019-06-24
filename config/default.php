@@ -387,6 +387,10 @@ $nestCoords = array();                                           //$nestCoords =
 $noNestPolygon = true;
 $enableNestPolygon = 'false';
 $nestGeoJSONfile = 'custom/nest.json';			    // path to geoJSON file provided by https://github.com/M4d40/PMSFnestScript
+//-----------------------------------------------
+// HPWU
+//-----------------------------------------------------
+$noInn = false;
 //-----------------------------------------------------
 // Areas
 //-----------------------------------------------------
