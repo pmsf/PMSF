@@ -94,6 +94,9 @@ var lastnests
 var lastcommunities
 var lastportals
 var lastpois
+var lastinns
+var lastfortresses
+var lastgreenhouses
 var lastpokemon
 var lastslocs
 var lastspawns
@@ -654,6 +657,9 @@ function initSidebar() {
     $('#communities-switch').prop('checked', Store.get('showCommunities'))
     $('#portals-switch').prop('checked', Store.get('showPortals'))
     $('#poi-switch').prop('checked', Store.get('showPoi'))
+    $('#inn-switch').prop('checked', Store.get('showInn'))
+    $('#fortress-switch').prop('checked', Store.get('showFortress'))
+    $('#greenhouse-switch').prop('checked', Store.get('showGreenhouse'))
     $('#s2-switch').prop('checked', Store.get('showCells'))
     $('#s2-switch-wrapper').toggle(Store.get('showCells'))
     $('#s2-level13-switch').prop('checked', Store.get('showExCells'))
@@ -2242,6 +2248,97 @@ function setupPoiMarker(item) {
     return marker
 }
 
+function setupInnMarker(item) {
+    if (item.type === '1') {
+        var circle = {
+            color: '#008000',
+            radius: 10,
+            fillOpacity: 1,
+            fillColor: '#FFFFFF',
+            weight: 3,
+            pane: 'portals'
+        }
+    } else if (item.type === '2') {
+        circle = {
+            color: '#008000',
+            radius: 10,
+            fillOpacity: 1,
+            fillColor: '#008000',
+            weight: 1,
+            pane: 'portals'
+        }
+    } else if (item.type === '3') {
+        circle = {
+            color: '#FFA500',
+            radius: 10,
+            fillOpacity: 1,
+            fillColor: '#FFA500',
+            weight: 1,
+            pane: 'portals'
+        }
+    } else if (item.type === '4') {
+        circle = {
+            color: '#008000',
+            radius: 10,
+            fillOpacity: 1,
+            fillColor: '#FFA500',
+            weight: 3,
+            pane: 'portals'
+        }
+    } else if (item.type === '5') {
+        circle = {
+            color: '#FF0000',
+            radius: 10,
+            fillOpacity: 1,
+            fillColor: '#FF0000',
+            weight: 1,
+            pane: 'portals'
+        }
+    }
+    var marker = L.circleMarker([item['lat'], item['lon']], circle).bindPopup(innLabel(item), {autoPan: false, closeOnClick: false, autoClose: false})
+    markers.addLayer(marker)
+
+    addListeners(marker)
+
+    return marker
+}
+
+function setupFortressMarker(item) {
+        var circle = {
+            color: '#008000',
+            radius: 10,
+            fillOpacity: 1,
+            fillColor: '#FFFFFF',
+            weight: 3,
+            pane: 'portals'
+        }
+    }
+    var marker = L.circleMarker([item['lat'], item['lon']], circle).bindPopup(FortressLabel(item), {autoPan: false, closeOnClick: false, autoClose: false})
+    markers.addLayer(marker)
+
+    addListeners(marker)
+
+    return marker
+}
+
+function setupGreenhouseMarker(item) {
+        var circle = {
+            color: '#008000',
+            radius: 10,
+            fillOpacity: 1,
+            fillColor: '#FFFFFF',
+            weight: 3,
+            pane: 'portals'
+        }
+    }
+    var marker = L.circleMarker([item['lat'], item['lon']], circle).bindPopup(GreenhouseLabel(item), {autoPan: false, closeOnClick: false, autoClose: false})
+    markers.addLayer(marker)
+
+    addListeners(marker)
+
+    return marker
+}
+
 function portalLabel(item) {
     var updated = formatDate(new Date(item.updated * 1000))
     var imported = formatDate(new Date(item.imported * 1000))
@@ -2304,6 +2401,42 @@ function poiLabel(item) {
         str += '<center><div><button onclick="openMarkPoiModal(event);" data-id="' + item.poi_id + '" class="convertpoi"><i class="fas fa-sync-alt convert-poi"></i> ' + i8ln('Mark POI') + '</button></div></center>'
     }
     str += '<center><a href="javascript:void(0);" onclick="javascript:openMapDirections(' + item.lat + ',' + item.lon + ');" title="' + i8ln('View in Maps') + '"><i class="fas fa-road"></i> ' + item.lat.toFixed(5) + ' , ' + item.lon.toFixed(5) + '</a> - <a href="./?lat=' + item.lat + '&lon=' + item.lon + '&zoom=16"><i class="far fa-share-square" aria-hidden="true" style="position:relative;top:3px;left:0px;color:#26c300;font-size:20px;"></i></a></center>'
+    return str
+}
+
+function innLabel(item) {
+    var updated = formatDate(new Date(item.updated * 1000))
+    var str = ''
+    str += 
+        '<center><div style="font-weight:900;margin-bottom:5px;">' + i8ln('Inn') + '</div></center>'
+        '<center><div><b>' + item.name + '</b></div>' +
+        '<div><b>' + i8ln('Submitted by') + ':</b> ' + item.submitted_by + '</div>'
+        '<div><b>' + i8ln('Updated at') + ':</b> ' + updated + '</div></center>'
+        '<center><a href="javascript:void(0);" onclick="javascript:openMapDirections(' + item.lat + ',' + item.lon + ');" title="' + i8ln('View in Maps') + '"><i class="fas fa-road"></i> ' + item.lat.toFixed(5) + ' , ' + item.lon.toFixed(5) + '</a> - <a href="./?lat=' + item.lat + '&lon=' + item.lon + '&zoom=16"><i class="far fa-share-square" aria-hidden="true" style="position:relative;top:3px;left:0px;color:#26c300;font-size:20px;"></i></a></center>'
+    return str
+}
+
+function fortressLabel(item) {
+    var updated = formatDate(new Date(item.updated * 1000))
+    var str = ''
+    str +=
+        '<center><div style="font-weight:900;margin-bottom:5px;">' + i8ln('Fortress') + '</div></center>' +
+        '<center><div><b>' + item.name + '</b></div>' +
+        '<div><b>' + i8ln('Submitted by') + ':</b> ' + item.submitted_by + '</div>' +
+        '<div><b>' + i8ln('Updated at') + ':</b> ' + updated + '</div></center>' +
+        '<center><a href="javascript:void(0);" onclick="javascript:openMapDirections(' + item.lat + ',' + item.lon + ');" title="' + i8ln('View in Maps') + '"><i class="fas fa-road"></i> ' + item.lat.toFixed(5) + ' , ' + item.lon.toFixed(5) + '</a> - <a href="./?lat=' + item.lat + '&lon=' + item.lon + '&zoom=16"><i class="far fa-share-square" aria-hidden="true" style="position:relative;top:3px;left:0px;color:#26c300;font-size:20px;"></i></a></center>'
+    return str
+}
+
+function greenhouseLabel(item) {
+    var updated = formatDate(new Date(item.updated * 1000))
+    var str = ''
+    str += 
+        '<center><div style="font-weight:900;margin-bottom:5px;">' + i8ln('Greenhouse') + '</div></center>' +
+        '<center><div><b>' + item.name + '</b></div>' +
+        '<div><b>' + i8ln('Submitted by') + ':</b> ' + item.submitted_by + '</div>' +
+        '<div><b>' + i8ln('Updated at') + ':</b> ' + updated + '</div></center>' +
+        '<center><a href="javascript:void(0);" onclick="javascript:openMapDirections(' + item.lat + ',' + item.lon + ');" title="' + i8ln('View in Maps') + '"><i class="fas fa-road"></i> ' + item.lat.toFixed(5) + ' , ' + item.lon.toFixed(5) + '</a> - <a href="./?lat=' + item.lat + '&lon=' + item.lon + '&zoom=16"><i class="far fa-share-square" aria-hidden="true" style="position:relative;top:3px;left:0px;color:#26c300;font-size:20px;"></i></a></center>'
     return str
 }
 
@@ -2612,6 +2745,9 @@ function loadRawData() {
     var loadCommunities = Store.get('showCommunities')
     var loadPortals = Store.get('showPortals')
     var loadPois = Store.get('showPoi')
+    var loadPois = Store.get('showInn')
+    var loadPois = Store.get('showFortress')
+    var loadPois = Store.get('showGreenhouse')
     var loadNewPortalsOnly = Store.get('showNewPortalsOnly')
     var loadScanned = Store.get('showScanned')
     var loadSpawnpoints = Store.get('showSpawnpoints')
@@ -2647,6 +2783,12 @@ function loadRawData() {
             'portals': loadPortals,
             'pois': loadPois,
             'lastpois': lastpois,
+            'inns': loadInns,
+            'lastinns': lastinns,
+            'fortresses': loadFortresses,
+            'lastfortress': lastfortresses,
+            'greenhouses': loadGreenhouses,
+            'lastgreenhouses': lastgreenhouses,
             'newportals': loadNewPortalsOnly,
             'lastportals': lastportals,
             'lastpokestops': lastpokestops,
@@ -4533,6 +4675,69 @@ function processPois(i, item) {
         mapData.pois[item['poi_id']] = item
     }
 }
+function processInns(i, item) {
+    if (!Store.get('showInn')) {
+        return false
+    }
+    if (!mapData.inns[item['id']]) {
+        if (item.marker && item.marker.rangeCircle) {
+            markers.removeLayer(item.marker.rangeCircle)
+        }
+        if (item.marker) {
+            markers.removeLayer(item.marker)
+        }
+        item.marker = setupInnMarker(item)
+        mapData.inns[item['id']] = item
+    } else {
+        // change existing pokestop marker to unlured/lured
+        var item2 = mapData.inns[item['id']]
+        markers.removeLayer(item2.marker)
+        item.marker = setupInnMarker(item)
+        mapData.inns[item['id']] = item
+    }
+}
+function processFortresses(i, item) {
+    if (!Store.get('showFortress')) {
+        return false
+    }
+    if (!mapData.fortresses[item['id']]) {
+        if (item.marker && item.marker.rangeCircle) {
+            markers.removeLayer(item.marker.rangeCircle)
+        }
+        if (item.marker) {
+            markers.removeLayer(item.marker)
+        }
+        item.marker = setupFortressMarker(item)
+        mapData.fortresses[item['id']] = item
+    } else {
+        // change existing pokestop marker to unlured/lured
+        var item2 = mapData.fortresses[item['id']]
+        markers.removeLayer(item2.marker)
+        item.marker = setupFortressMarker(item)
+        mapData.fortress[item['id']] = item
+    }
+}
+function processGreenhouses(i, item) {
+    if (!Store.get('showGreenhouse')) {
+        return false
+    }
+    if (!mapData.greenhouses[item['id']]) {
+        if (item.marker && item.marker.rangeCircle) {
+            markers.removeLayer(item.marker.rangeCircle)
+        }
+        if (item.marker) {
+            markers.removeLayer(item.marker)
+        }
+        item.marker = setupGreenhouseMarker(item)
+        mapData.greenhouses[item['id']] = item
+    } else {
+        // change existing pokestop marker to unlured/lured
+        var item2 = mapData.greenhouses[item['id']]
+        markers.removeLayer(item2.marker)
+        item.marker = setupGreenhouseMarker(item)
+        mapData.greenhouses[item['id']] = item
+    }
+}
 function processPokestops(i, item) {
     if (!Store.get('showPokestops')) {
         return false
@@ -4864,6 +5069,9 @@ function updateMap() {
         $.each(result.communities, processCommunities)
         $.each(result.portals, processPortals)
         $.each(result.pois, processPois)
+        $.each(result.inns, processInns)
+        $.each(result.fortresses, processFortresses)
+        $.each(result.greenhouses, processGreenhouses)
         showInBoundsMarkers(mapData.pokemons, 'pokemon')
         showInBoundsMarkers(mapData.lurePokemons, 'pokemon')
         showInBoundsMarkers(mapData.gyms, 'gym')
@@ -4897,6 +5105,9 @@ function updateMap() {
         lastcommunities = result.lastcommunities
         lastportals = result.lastportals
         lastpois = result.lastpois
+        lastinns = result.lastinns
+        lastfortresses = result.lastfortresses
+        lastgreenhouses = result.lastgreenhouses
 
         prevMinIV = result.preMinIV
         prevMinLevel = result.preMinLevel
@@ -6094,6 +6305,18 @@ $(function () {
     $('#poi-switch').change(function () {
         lastpois = false
         buildSwitchChangeListener(mapData, ['pois'], 'showPoi').bind(this)()
+    })
+    $('#inn-switch').change(function () {
+        lastinns = false
+        buildSwitchChangeListener(mapData, ['inns'], 'showInn').bind(this)()
+    })
+    $('#fortress-switch').change(function () {
+        lastfortresses = false
+        buildSwitchChangeListener(mapData, ['fortresses'], 'showFortress').bind(this)()
+    })
+    $('#greenhouse-switch').change(function () {
+        lastgreenhouse = false
+        buildSwitchChangeListener(mapData, ['greenhouses'], 'showGreenhouse').bind(this)()
     })
     $('#portals-switch').change(function () {
         var options = {
