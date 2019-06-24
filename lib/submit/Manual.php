@@ -408,11 +408,13 @@ class Manual extends Submit
         $portal = $manualdb->get( "ingress_portals", [ 'lat', 'lon', 'name', 'url' ], [ 'external_id' => $portalId ] );
         if ( ! empty( $portalId ) ) {
             $cols     = [
-                'id'       => $portalId,
-                'lat'      => $portal['lat'],
-                'lon'      => $portal['lon'],
-                'name'     => $portal['name'],
-                'url'      => $portal['url']
+                'id'           => $portalId,
+                'lat'          => $portal['lat'],
+                'lon'          => $portal['lon'],
+                'name'         => $portal['name'],
+                'url'          => $portal['url'],
+                'updated'      => time(),
+                'submitted_by' => $loggedUser
             ];
             $manualdb->insert( "inn", $cols );
             if ( $noDiscordSubmitLogChannel === false ) {
@@ -432,11 +434,13 @@ class Manual extends Submit
         $portal = $manualdb->get( "ingress_portals", [ 'lat', 'lon', 'name', 'url' ], [ 'external_id' => $portalId ] );
         if ( ! empty( $portalId ) ) {
             $cols     = [
-                'id'       => $portalId,
-                'lat'      => $portal['lat'],
-                'lon'      => $portal['lon'],
-                'name'     => $portal['name'],
-                'url'      => $portal['url']
+                'id'           => $portalId,
+                'lat'          => $portal['lat'],
+                'lon'          => $portal['lon'],
+                'name'         => $portal['name'],
+                'url'          => $portal['url'],
+                'updated'      => time(),
+                'submitted_by' => $loggedUser
             ];
             $manualdb->insert( "fortress", $cols );
             if ( $noDiscordSubmitLogChannel === false ) {
@@ -456,11 +460,13 @@ class Manual extends Submit
         $portal = $manualdb->get( "ingress_portals", [ 'lat', 'lon', 'name', 'url' ], [ 'external_id' => $portalId ] );
         if ( ! empty( $portalId ) ) {
             $cols     = [
-                'id'       => $portalId,
-                'lat'      => $portal['lat'],
-                'lon'      => $portal['lon'],
-                'name'     => $portal['name'],
-                'url'      => $portal['url']
+                'id'           => $portalId,
+                'lat'          => $portal['lat'],
+                'lon'          => $portal['lon'],
+                'name'         => $portal['name'],
+                'url'          => $portal['url'],
+                'updated'      => time(),
+                'submitted_by' => $loggedUser
             ];
             $manualdb->insert( "greenhouse", $cols );
             if ( $noDiscordSubmitLogChannel === false ) {
