@@ -2312,7 +2312,6 @@ function setupFortressMarker(item) {
             weight: 3,
             pane: 'portals'
         }
-    }
     var marker = L.circleMarker([item['lat'], item['lon']], circle).bindPopup(FortressLabel(item), {autoPan: false, closeOnClick: false, autoClose: false})
     markers.addLayer(marker)
 
@@ -2330,7 +2329,6 @@ function setupGreenhouseMarker(item) {
             weight: 3,
             pane: 'portals'
         }
-    }
     var marker = L.circleMarker([item['lat'], item['lon']], circle).bindPopup(GreenhouseLabel(item), {autoPan: false, closeOnClick: false, autoClose: false})
     markers.addLayer(marker)
 
