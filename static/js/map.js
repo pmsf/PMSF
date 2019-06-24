@@ -2408,8 +2408,8 @@ function innLabel(item) {
     str +=
         '<center><div style="font-weight:900;margin-bottom:5px;">' + i8ln('Inn') + '</div></center>' +
         '<center><div><b>' + item.name + '</b></div>' +
-        '<div><b>' + i8ln('Submitted by') + ':</b> ' + item.submitted_by + '</div>'
-        '<div><b>' + i8ln('Updated at') + ':</b> ' + updated + '</div></center>'
+        '<div><b>' + i8ln('Submitted by') + ':</b> ' + item.submitted_by + '</div>' +
+        '<div><b>' + i8ln('Updated at') + ':</b> ' + updated + '</div></center>' +
         '<center><a href="javascript:void(0);" onclick="javascript:openMapDirections(' + item.lat + ',' + item.lon + ');" title="' + i8ln('View in Maps') + '"><i class="fas fa-road"></i> ' + item.lat.toFixed(5) + ' , ' + item.lon.toFixed(5) + '</a> - <a href="./?lat=' + item.lat + '&lon=' + item.lon + '&zoom=16"><i class="far fa-share-square" aria-hidden="true" style="position:relative;top:3px;left:0px;color:#26c300;font-size:20px;"></i></a></center>'
     return str
 }
@@ -2429,7 +2429,7 @@ function fortressLabel(item) {
 function greenhouseLabel(item) {
     var updated = formatDate(new Date(item.updated * 1000))
     var str = ''
-    str += 
+    str +=
         '<center><div style="font-weight:900;margin-bottom:5px;">' + i8ln('Greenhouse') + '</div></center>' +
         '<center><div><b>' + item.name + '</b></div>' +
         '<div><b>' + i8ln('Submitted by') + ':</b> ' + item.submitted_by + '</div>' +
@@ -6313,7 +6313,7 @@ $(function () {
         buildSwitchChangeListener(mapData, ['fortresses'], 'showFortress').bind(this)()
     })
     $('#greenhouse-switch').change(function () {
-        lastgreenhouse = false
+        lastgreenhouses = false
         buildSwitchChangeListener(mapData, ['greenhouses'], 'showGreenhouse').bind(this)()
     })
     $('#portals-switch').change(function () {
