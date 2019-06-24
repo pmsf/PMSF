@@ -840,6 +840,20 @@ if ( $blockIframe ) {
                 </div>';
                 } ?>
                 <?php
+                if ( ! $noInn ) {
+                    echo '<div class="form-control switch-container">
+                    <h3>' . i8ln( 'Inn' ) . '</h3>
+                    <div class="onoffswitch">
+                        <input id="inns-switch" type="checkbox" name="inns-switch"
+                               class="onoffswitch-checkbox" checked>
+                        <label class="onoffswitch-label" for="inns-switch">
+                            <span class="switch-label" data-on="On" data-off="Off"></span>
+                            <span class="switch-handle"></span>
+                        </label>
+                    </div>
+                </div>';
+                } ?>
+                <?php
                 if ( ! $noS2Cells ) {
                     echo '<div class="form-control switch-container">
                     <h3>' . i8ln( 'Show S2 Cells' ) . '</h3>
@@ -1972,6 +1986,8 @@ if ( $blockIframe ) {
     var nestGeoJSONfile = '<?php echo $noNestPolygon ? '' : $nestGeoJSONfile ?>';
     var noCostumeIcons = <?php echo $noCostumeIcons === true ? 'true' : 'false' ?>;
     var queryInterval = <?php echo $queryInterval ?>;
+    var enableInns = <?php echo $noInn ? 'false' : $enableInn ?>;
+    var noInns = <?php echo $noInn === true ? 'true' : 'false' ?>;
 </script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js"></script>
 <script src="static/dist/js/map.common.min.js"></script>
