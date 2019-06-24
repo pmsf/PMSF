@@ -2195,10 +2195,10 @@ function setupPortalMarker(item) {
 
 function setupInnMarker(item) {
     var circle = {
-        color: 'red',
+        color: 'purple',
         radius: 10,
         fillOpacity: 0.4,
-        fillColor: 'red',
+        fillColor: 'purple',
         weight: 1,
         pane: 'portals'
     }
@@ -2212,10 +2212,10 @@ function setupInnMarker(item) {
 
 function setupFortressMarker(item) {
     var circle = {
-        color: 'blue',
+        color: 'red',
         radius: 10,
         fillOpacity: 0.4,
-        fillColor: 'blue',
+        fillColor: 'red',
         weight: 1,
         pane: 'portals'
     }
@@ -3430,7 +3430,7 @@ function convertPortalToInnData(event) { // eslint-disable-line no-unused-vars
                     toastr.options = toastrOptions
                 },
                 complete: function complete() {
-                    lastinns
+                    lastinns = false
                     jQuery('label[for="inns-switch"]').click()
                     jQuery('label[for="inns-switch"]').click()
                     updateMap()
@@ -3461,7 +3461,7 @@ function convertPortalToFortressData(event) { // eslint-disable-line no-unused-v
                     toastr.options = toastrOptions
                 },
                 complete: function complete() {
-                    lastfortresses
+                    lastfortresses = false
                     jQuery('label[for="fortresses-switch"]').click()
                     jQuery('label[for="fortresses-switch"]').click()
                     updateMap()
@@ -3492,7 +3492,7 @@ function convertPortalToGreenhouseData(event) { // eslint-disable-line no-unused
                     toastr.options = toastrOptions
                 },
                 complete: function complete() {
-                    lastgreenhouses
+                    lastgreenhouses = false
                     jQuery('label[for="greenhouses-switch"]').click()
                     jQuery('label[for="greenhouses-switch"]').click()
                     updateMap()
