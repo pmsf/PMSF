@@ -2198,7 +2198,7 @@ function setupInnMarker(item) {
         color: 'red',
         radius: 10,
         fillOpacity: 0.4,
-        fillColor: '#f00',
+        fillColor: 'red',
         weight: 1,
         pane: 'portals'
     }
@@ -2215,7 +2215,7 @@ function setupFortressMarker(item) {
         color: 'blue',
         radius: 10,
         fillOpacity: 0.4,
-        fillColor: '#f00',
+        fillColor: 'blue',
         weight: 1,
         pane: 'portals'
     }
@@ -2232,7 +2232,7 @@ function setupGreenhouseMarker(item) {
         color: 'green',
         radius: 10,
         fillOpacity: 0.4,
-        fillColor: '#f00',
+        fillColor: 'green',
         weight: 1,
         pane: 'portals'
     }
