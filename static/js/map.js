@@ -656,7 +656,7 @@ function initSidebar() {
     $('#nests-switch').prop('checked', Store.get('showNests'))
     $('#communities-switch').prop('checked', Store.get('showCommunities'))
     $('#portals-switch').prop('checked', Store.get('showPortals'))
-    $('#inns-switch').prop('checked', Store.get('showInns'))\
+    $('#inns-switch').prop('checked', Store.get('showInns'))
     $('#fortresses-switch').prop('checked', Store.get('showFortresses'))
     $('#greenhouses-switch').prop('checked', Store.get('showGreenhouses'))
     $('#poi-switch').prop('checked', Store.get('showPoi'))
