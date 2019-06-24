@@ -840,48 +840,6 @@ if ( $blockIframe ) {
                 </div>';
                 } ?>
                 <?php
-                if ( ! $noInn ) {
-                    echo '<div class="form-control switch-container">
-                        <h3>' . i8ln( 'Inn' ) . '</h3>
-                        <div class="onoffswitch">
-                            <input id="inn-switch" type="checkbox" name="inn-switch"
-                                   class="onoffswitch-checkbox" checked>
-                            <label class="onoffswitch-label" for="inn-switch">
-                                <span class="switch-label" data-on="On" data-off="Off"></span>
-                                <span class="switch-handle"></span>
-                            </label>
-                        </div>
-                    </div>';
-                } ?>
-                <?php
-                if ( ! $noFortress ) {
-                    echo '<div class="form-control switch-container">
-                        <h3>' . i8ln( 'Fortress' ) . '</h3>
-                        <div class="onoffswitch">
-                            <input id="fortress-switch" type="checkbox" name="fortress-switch"
-                                   class="onoffswitch-checkbox" checked>
-                            <label class="onoffswitch-label" for="fortress-switch">
-                                <span class="switch-label" data-on="On" data-off="Off"></span>
-                                <span class="switch-handle"></span>
-                            </label>
-                        </div>
-                    </div>';
-                } ?>
-                <?php
-                if ( ! $noGreenhouse ) {
-                    echo '<div class="form-control switch-container">
-                        <h3>' . i8ln( 'Greenhouse' ) . '</h3>
-                        <div class="onoffswitch">
-                            <input id="greenhouse-switch" type="checkbox" name="greenhouse-switch"
-                                   class="onoffswitch-checkbox" checked>
-                            <label class="onoffswitch-label" for="greenhouse-switch">
-                                <span class="switch-label" data-on="On" data-off="Off"></span>
-                                <span class="switch-handle"></span>
-                            </label>
-                        </div>
-                    </div>';
-                } ?>
-                <?php
                 if ( ! $noS2Cells ) {
                     echo '<div class="form-control switch-container">
                     <h3>' . i8ln( 'Show S2 Cells' ) . '</h3>
@@ -2014,9 +1972,6 @@ if ( $blockIframe ) {
     var nestGeoJSONfile = '<?php echo $noNestPolygon ? '' : $nestGeoJSONfile ?>';
     var noCostumeIcons = <?php echo $noCostumeIcons === true ? 'true' : 'false' ?>;
     var queryInterval = <?php echo $queryInterval ?>;
-    var enableInn = <?php echo $noInn ? 'false' : $enableInn ?>;
-    var enableFortress = <?php echo $noFortress ? 'false' : $enableFortress ?>;
-    var enableGreenhouse = <?php echo $noGreenhouse ? 'false' : $enableGreenhouse ?>;
 </script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js"></script>
 <script src="static/dist/js/map.common.min.js"></script>
