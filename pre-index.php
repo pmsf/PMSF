@@ -804,7 +804,7 @@ if ( $blockIframe ) {
             if ( ! $noPortals || ! $noS2Cells ) {
                 ?>
                 <h3><?php echo i8ln( 'Ingress / S2Cell' ); ?></h3>
-        <div>
+                <div>
                 <?php
                 if ( ! $noPortals ) {
                     echo '<div class="form-control switch-container">
@@ -817,14 +817,14 @@ if ( $blockIframe ) {
                             <span class="switch-handle"></span>
                         </label>
                     </div>
-        </div>
+                </div>
                 <div class="form-control switch-container" id = "new-portals-only-wrapper" style = "display:none">
                     <select name = "new-portals-only-switch" id = "new-portals-only-switch">
                         <option value = "0"> ' . i8ln( 'All' ) . '</option>
                         <option value = "1"> ' . i8ln( 'Only new' ) . ' </option>
                     </select>
                 </div>';
-        } ?>
+                } ?>
                 <?php
                 if ( ! $noPoi ) {
                     echo '<div class="form-control switch-container">
@@ -838,7 +838,49 @@ if ( $blockIframe ) {
                         </label>
                     </div>
                 </div>';
-        } ?>
+                } ?>
+                <?php
+                if ( ! $noInn ) {
+                    echo '<div class="form-control switch-container">
+                        <h3>' . i8ln( 'Inn' ) . '</h3>
+                        <div class="onoffswitch">
+                            <input id="inn-switch" type="checkbox" name="inn-switch"
+                                   class="onoffswitch-checkbox" checked>
+                            <label class="onoffswitch-label" for="inn-switch">
+                                <span class="switch-label" data-on="On" data-off="Off"></span>
+                                <span class="switch-handle"></span>
+                            </label>
+                        </div>
+                    </div>';
+                } ?>
+                <?php
+                if ( ! $noFortress ) {
+                    echo '<div class="form-control switch-container">
+                        <h3>' . i8ln( 'Fortress' ) . '</h3>
+                        <div class="onoffswitch">
+                            <input id="fortress-switch" type="checkbox" name="fortress-switch"
+                                   class="onoffswitch-checkbox" checked>
+                            <label class="onoffswitch-label" for="fortress-switch">
+                                <span class="switch-label" data-on="On" data-off="Off"></span>
+                                <span class="switch-handle"></span>
+                            </label>
+                        </div>
+                    </div>';
+                } ?>
+                <?php
+                if ( ! $noGreenhouse ) {
+                    echo '<div class="form-control switch-container">
+                        <h3>' . i8ln( 'Greenhouse' ) . '</h3>
+                        <div class="onoffswitch">
+                            <input id="greenhouse-switch" type="checkbox" name="greenhouse-switch"
+                                   class="onoffswitch-checkbox" checked>
+                            <label class="onoffswitch-label" for="greenhouse-switch">
+                                <span class="switch-label" data-on="On" data-off="Off"></span>
+                                <span class="switch-handle"></span>
+                            </label>
+                        </div>
+                    </div>';
+                } ?>
                 <?php
                 if ( ! $noS2Cells ) {
                     echo '<div class="form-control switch-container">
@@ -1972,6 +2014,9 @@ if ( $blockIframe ) {
     var nestGeoJSONfile = '<?php echo $noNestPolygon ? '' : $nestGeoJSONfile ?>';
     var noCostumeIcons = <?php echo $noCostumeIcons === true ? 'true' : 'false' ?>;
     var queryInterval = <?php echo $queryInterval ?>;
+    var enableInns = <?php echo $noInn ? 'false' : $enableInn ?>;
+    var enableFortresses = <?php echo $noFortress ? 'false' : $enableFortress ?>;
+    var enableGreenhouses = <?php echo $noGreenhouse ? 'false' : $enableGreenhouse ?>;
 </script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js"></script>
 <script src="static/dist/js/map.common.min.js"></script>

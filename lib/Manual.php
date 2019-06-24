@@ -249,4 +249,146 @@ class Manual
         }
         return $data;
     }
+    public function get_inns($swLat, $swLng, $neLat, $neLng, $tstamp = 0, $oSwLat = 0, $oSwLng = 0, $oNeLat = 0, $oNeLng = 0)
+    {
+        $conds = array();
+        $params = array();
+        $conds[] = "lat > :swLat AND lon > :swLng AND lat < :neLat AND lon < :neLng";
+        $params[':swLat'] = $swLat;
+        $params[':swLng'] = $swLng;
+        $params[':neLat'] = $neLat;
+        $params[':neLng'] = $neLng;
+        if ($oSwLat != 0) {
+            $conds[] = "NOT (lat > :oswLat AND lon > :oswLng AND lat < :oneLat AND lon < :oneLng)";
+            $params[':oswLat'] = $oSwLat;
+            $params[':oswLng'] = $oSwLng;
+            $params[':oneLat'] = $oNeLat;
+            $params[':oneLng'] = $oNeLng;
+        }
+        if ($tstamp > 0) {
+            $conds[] = "updated > :lastUpdated";
+            $params[':lastUpdated'] = $tstamp;
+        }
+        return $this->query_inns($conds, $params);
+    }
+    public function query_inns($conds, $params)
+    {
+        global $manualdb;
+        $query = "SELECT id,
+        lat,
+        lon,
+        name,
+        url,
+        updated,
+        submitted_by,
+        type
+        FROM inn
+        WHERE :conditions";
+        $query = str_replace(":conditions", join(" AND ", $conds), $query);
+        $inns = $manualdb->query($query, $params)->fetchAll(\PDO::FETCH_ASSOC);
+        $data = array();
+        $i = 0;
+        foreach ($inns as $inn) {
+            $inn["lat"] = floatval($inn["lat"]);
+            $inn["lon"] = floatval($inn["lon"]);
+            $data[] = $inn;
+            unset($inns[$i]);
+            $i++;
+        }
+        return $data;
+    }
+    public function get_fortresses($swLat, $swLng, $neLat, $neLng, $tstamp = 0, $oSwLat = 0, $oSwLng = 0, $oNeLat = 0, $oNeLng = 0)
+    {
+        $conds = array();
+        $params = array();
+        $conds[] = "lat > :swLat AND lon > :swLng AND lat < :neLat AND lon < :neLng";
+        $params[':swLat'] = $swLat;
+        $params[':swLng'] = $swLng;
+        $params[':neLat'] = $neLat;
+        $params[':neLng'] = $neLng;
+        if ($oSwLat != 0) {
+            $conds[] = "NOT (lat > :oswLat AND lon > :oswLng AND lat < :oneLat AND lon < :oneLng)";
+            $params[':oswLat'] = $oSwLat;
+            $params[':oswLng'] = $oSwLng;
+            $params[':oneLat'] = $oNeLat;
+            $params[':oneLng'] = $oNeLng;
+        }
+        if ($tstamp > 0) {
+            $conds[] = "updated > :lastUpdated";
+            $params[':lastUpdated'] = $tstamp;
+        }
+        return $this->query_fortresses($conds, $params);
+    }
+    public function query_fortresses($conds, $params)
+    {
+        global $manualdb;
+        $query = "SELECT id,
+        lat,
+        lon,
+        name,
+        url,
+        updated,
+        submitted_by
+        FROM fortress
+        WHERE :conditions";
+        $query = str_replace(":conditions", join(" AND ", $conds), $query);
+        $fortresses = $manualdb->query($query, $params)->fetchAll(\PDO::FETCH_ASSOC);
+        $data = array();
+        $i = 0;
+        foreach ($fortresses as $fortress) {
+            $fortress["lat"] = floatval($fortress["lat"]);
+            $fortress["lon"] = floatval($fortress["lon"]);
+            $data[] = $fortress;
+            unset($fortresses[$i]);
+            $i++;
+        }
+        return $data;
+    }
+    public function get_greenhouses($swLat, $swLng, $neLat, $neLng, $tstamp = 0, $oSwLat = 0, $oSwLng = 0, $oNeLat = 0, $oNeLng = 0)
+    {
+        $conds = array();
+        $params = array();
+        $conds[] = "lat > :swLat AND lon > :swLng AND lat < :neLat AND lon < :neLng";
+        $params[':swLat'] = $swLat;
+        $params[':swLng'] = $swLng;
+        $params[':neLat'] = $neLat;
+        $params[':neLng'] = $neLng;
+        if ($oSwLat != 0) {
+            $conds[] = "NOT (lat > :oswLat AND lon > :oswLng AND lat < :oneLat AND lon < :oneLng)";
+            $params[':oswLat'] = $oSwLat;
+            $params[':oswLng'] = $oSwLng;
+            $params[':oneLat'] = $oNeLat;
+            $params[':oneLng'] = $oNeLng;
+        }
+        if ($tstamp > 0) {
+            $conds[] = "updated > :lastUpdated";
+            $params[':lastUpdated'] = $tstamp;
+        }
+        return $this->query_greenhouses($conds, $params);
+    }
+    public function query_greenhouses($conds, $params)
+    {
+        global $manualdb;
+        $query = "SELECT id,
+        lat,
+        lon,
+        name,
+        url,
+        updated,
+        submitted_by
+        FROM greenhouse
+        WHERE :conditions";
+        $query = str_replace(":conditions", join(" AND ", $conds), $query);
+        $greenhouses = $manualdb->query($query, $params)->fetchAll(\PDO::FETCH_ASSOC);
+        $data = array();
+        $i = 0;
+        foreach ($greenhouses as $greenhouse) {
+            $greenhouse["lat"] = floatval($greenhouse["lat"]);
+            $greenhouse["lon"] = floatval($greenhouse["lon"]);
+            $data[] = $greenhouse;
+            unset($greenhouses[$i]);
+            $i++;
+        }
+        return $data;
+    }
 }
