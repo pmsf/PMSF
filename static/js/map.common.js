@@ -169,21 +169,6 @@ var StoreOptions = {
             default: enablePoi,
             type: StoreTypes.Boolean
         },
-    'showInn':
-        {
-            default: enableInn,
-            type: StoreTypes.Boolean
-        },
-    'showFortress':
-        {
-            default: enableFortress,
-            type: StoreTypes.Boolean
-        },
-    'showGreenhouse':
-        {
-            default: enableGreenhouse,
-            type: StoreTypes.Boolean
-        },
     'showNewPortalsOnly':
         {
             default: enableNewPortals,
