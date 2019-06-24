@@ -278,12 +278,12 @@ global $noInn;
 if (!$noInn) {
     if ($d["lastinn"] == "true") {
         if ($lastinn != "true") {
-            $d["inns"] = $scanner->get_inns($swLat, $swLng, $neLat, $neLng);
+            $d["inns"] = $manual->get_inns($swLat, $swLng, $neLat, $neLng);
         } else {
             if ($newarea) {
-                $d["inns"] = $scanner->get_inns($swLat, $swLng, $neLat, $neLng, 0, $oSwLat, $oSwLng, $oNeLat, $oNeLng);
+                $d["inns"] = $manual->get_inns($swLat, $swLng, $neLat, $neLng, 0, $oSwLat, $oSwLng, $oNeLat, $oNeLng);
             } else {
-                $d["inns"] = $scanner->get_inns($swLat, $swLng, $neLat, $neLng, $timestamp);
+                $d["inns"] = $manual->get_inns($swLat, $swLng, $neLat, $neLng, $timestamp);
             }
         }
     }
@@ -293,12 +293,12 @@ global $noFortress;
 if (!$noFortress) {
     if ($d["lastfortress"] == "true") {
         if ($lastfortress != "true") {
-            $d["fortresses"] = $scanner->get_fortresses($swLat, $swLng, $neLat, $neLng);
+            $d["fortresses"] = $manual->get_fortresses($swLat, $swLng, $neLat, $neLng);
         } else {
             if ($newarea) {
-                $d["fortresses"] = $scanner->get_fortresses($swLat, $swLng, $neLat, $neLng, 0, $oSwLat, $oSwLng, $oNeLat, $oNeLng);
+                $d["fortresses"] = $manual->get_fortresses($swLat, $swLng, $neLat, $neLng, 0, $oSwLat, $oSwLng, $oNeLat, $oNeLng);
             } else {
-                $d["fortresses"] = $scanner->get_fortresses($swLat, $swLng, $neLat, $neLng, $timestamp);
+                $d["fortresses"] = $manual->get_fortresses($swLat, $swLng, $neLat, $neLng, $timestamp);
             }
         }
     }
@@ -308,12 +308,12 @@ global $noGreenhouse;
 if (!$noGreenhouse) {
     if ($d["lastgreenhouse"] == "true") {
         if ($lastgreenhouse != "true") {
-            $d["greenhouses"] = $scanner->get_greenhouses($swLat, $swLng, $neLat, $neLng);
+            $d["greenhouses"] = $manual->get_greenhouses($swLat, $swLng, $neLat, $neLng);
         } else {
             if ($newarea) {
-                $d["greenhouses"] = $scanner->get_greenhouses($swLat, $swLng, $neLat, $neLng, 0, $oSwLat, $oSwLng, $oNeLat, $oNeLng);
+                $d["greenhouses"] = $manual->get_greenhouses($swLat, $swLng, $neLat, $neLng, 0, $oSwLat, $oSwLng, $oNeLat, $oNeLng);
             } else {
-                $d["greenhouses"] = $scanner->get_greenhouses($swLat, $swLng, $neLat, $neLng, $timestamp);
+                $d["greenhouses"] = $manual->get_greenhouses($swLat, $swLng, $neLat, $neLng, $timestamp);
             }
         }
     }
