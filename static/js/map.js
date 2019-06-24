@@ -2304,15 +2304,15 @@ function setupInnMarker(item) {
 }
 
 function setupFortressMarker(item) {
-        var circle = {
-            color: '#008000',
-            radius: 10,
-            fillOpacity: 1,
-            fillColor: '#FFFFFF',
-            weight: 3,
-            pane: 'portals'
-        }
-    var marker = L.circleMarker([item['lat'], item['lon']], circle).bindPopup(FortressLabel(item), {autoPan: false, closeOnClick: false, autoClose: false})
+    var circle = {
+        color: '#008000',
+        radius: 10,
+        fillOpacity: 1,
+        fillColor: '#FFFFFF',
+        weight: 3,
+        pane: 'portals'
+    }
+    var marker = L.circleMarker([item['lat'], item['lon']], circle).bindPopup(fortressLabel(item), {autoPan: false, closeOnClick: false, autoClose: false})
     markers.addLayer(marker)
 
     addListeners(marker)
@@ -2321,15 +2321,15 @@ function setupFortressMarker(item) {
 }
 
 function setupGreenhouseMarker(item) {
-        var circle = {
-            color: '#008000',
-            radius: 10,
-            fillOpacity: 1,
-            fillColor: '#FFFFFF',
-            weight: 3,
-            pane: 'portals'
-        }
-    var marker = L.circleMarker([item['lat'], item['lon']], circle).bindPopup(GreenhouseLabel(item), {autoPan: false, closeOnClick: false, autoClose: false})
+    var circle = {
+        color: '#008000',
+        radius: 10,
+        fillOpacity: 1,
+        fillColor: '#FFFFFF',
+        weight: 3,
+        pane: 'portals'
+    }
+    var marker = L.circleMarker([item['lat'], item['lon']], circle).bindPopup(greenhouseLabel(item), {autoPan: false, closeOnClick: false, autoClose: false})
     markers.addLayer(marker)
 
     addListeners(marker)
@@ -2405,8 +2405,8 @@ function poiLabel(item) {
 function innLabel(item) {
     var updated = formatDate(new Date(item.updated * 1000))
     var str = ''
-    str += 
-        '<center><div style="font-weight:900;margin-bottom:5px;">' + i8ln('Inn') + '</div></center>'
+    str +=
+        '<center><div style="font-weight:900;margin-bottom:5px;">' + i8ln('Inn') + '</div></center>' +
         '<center><div><b>' + item.name + '</b></div>' +
         '<div><b>' + i8ln('Submitted by') + ':</b> ' + item.submitted_by + '</div>'
         '<div><b>' + i8ln('Updated at') + ':</b> ' + updated + '</div></center>'
@@ -2743,9 +2743,9 @@ function loadRawData() {
     var loadCommunities = Store.get('showCommunities')
     var loadPortals = Store.get('showPortals')
     var loadPois = Store.get('showPoi')
-    var loadPois = Store.get('showInn')
-    var loadPois = Store.get('showFortress')
-    var loadPois = Store.get('showGreenhouse')
+    var loadInns = Store.get('showInn')
+    var loadFortresses = Store.get('showFortress')
+    var loadGreenhouses = Store.get('showGreenhouse')
     var loadNewPortalsOnly = Store.get('showNewPortalsOnly')
     var loadScanned = Store.get('showScanned')
     var loadSpawnpoints = Store.get('showSpawnpoints')
