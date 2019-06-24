@@ -105,6 +105,15 @@ if ( $action === "convertportalpokestop" ) {
 if ( $action === "convertportalgym" ) {
     $submit->convert_portal_gym($portalId, $loggedUser);
 }
+if ( $action === "convertportalinn" ) {
+    $submitManual->convert_portal_inn($portalId, $loggedUser);
+}
+if ( $action === "convertportalfortress" ) {
+    $submitManual->convert_portal_fortress($portalId, $loggedUser);
+}
+if ( $action === "convertportalgreenhouse" ) {
+    $submitManual->convert_portal_greenhouse($portalId, $loggedUser);
+}
 if ( $action === "markportal" ) {
     $submitManual->mark_portal($portalId, $loggedUser);
 }

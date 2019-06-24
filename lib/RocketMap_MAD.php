@@ -68,20 +68,6 @@ class RocketMap_MAD extends RocketMap
         return $this->query_gyms($conds, $params);
     }
 
-    public function get_gym($gymId)
-    {
-        $conds = array();
-        $params = array();
-
-        $conds[] = "gym.gym_id = :gymId";
-        $params[':gymId'] = $gymId;
-
-        $gyms = $this->query_gyms($conds, $params);
-        $gym = $gyms[0];
-
-        return $gym;
-    }
-
     public function query_gyms($conds, $params)
     {
         global $db;

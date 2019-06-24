@@ -397,4 +397,76 @@ class Manual extends Submit
             }
         }
     }
+
+    public function convert_portal_inn($portalId, $loggedUser)
+    {
+        global $db, $manualdb, $noPortals, $noDiscordSubmitLogChannel, $discordSubmitLogChannelUrl;
+        if ( $noPortals === true ) {
+            http_response_code( 401 );
+            die();
+        }
+        $portal = $manualdb->get( "ingress_portals", [ 'lat', 'lon', 'name', 'url' ], [ 'external_id' => $portalId ] );
+        if ( ! empty( $portalId ) ) {
+            $cols     = [
+                'id'       => $portalId,
+                'lat'      => $portal['lat'],
+                'lon'      => $portal['lon'],
+                'name'     => $portal['name'],
+                'url'      => $portal['url']
+            ];
+            $manualdb->insert( "inn", $cols );
+            if ( $noDiscordSubmitLogChannel === false ) {
+                $data = array("content" => '```Converted portal with id "' . $portalId . '." New Inn: "' . $portal['name'] . '". ```' . $submitMapUrl . '/?lat=' . $portal['lat'] . '&lon=' . $portal['lon'] . '&zoom=18 ', "username" => $loggedUser);
+                sendToWebhook($discordSubmitLogChannelUrl, ($data));
+            }
+        }
+    }
+
+    public function convert_portal_fortress($portalId, $loggedUser)
+    {
+        global $db, $manualdb, $noPortals, $noDiscordSubmitLogChannel, $discordSubmitLogChannelUrl;
+        if ( $noPortals === true ) {
+            http_response_code( 401 );
+            die();
+        }
+        $portal = $manualdb->get( "ingress_portals", [ 'lat', 'lon', 'name', 'url' ], [ 'external_id' => $portalId ] );
+        if ( ! empty( $portalId ) ) {
+            $cols     = [
+                'id'       => $portalId,
+                'lat'      => $portal['lat'],
+                'lon'      => $portal['lon'],
+                'name'     => $portal['name'],
+                'url'      => $portal['url']
+            ];
+            $manualdb->insert( "fortress", $cols );
+            if ( $noDiscordSubmitLogChannel === false ) {
+                $data = array("content" => '```Converted portal with id "' . $portalId . '." New Fortress: "' . $portal['name'] . '". ```' . $submitMapUrl . '/?lat=' . $portal['lat'] . '&lon=' . $portal['lon'] . '&zoom=18 ', "username" => $loggedUser);
+                sendToWebhook($discordSubmitLogChannelUrl, ($data));
+            }
+        }
+    }
+
+    public function convert_portal_greenhouse($portalId, $loggedUser)
+    {
+        global $db, $manualdb, $noPortals, $noDiscordSubmitLogChannel, $discordSubmitLogChannelUrl;
+        if ( $noPortals === true ) {
+            http_response_code( 401 );
+            die();
+        }
+        $portal = $manualdb->get( "ingress_portals", [ 'lat', 'lon', 'name', 'url' ], [ 'external_id' => $portalId ] );
+        if ( ! empty( $portalId ) ) {
+            $cols     = [
+                'id'       => $portalId,
+                'lat'      => $portal['lat'],
+                'lon'      => $portal['lon'],
+                'name'     => $portal['name'],
+                'url'      => $portal['url']
+            ];
+            $manualdb->insert( "greenhouse", $cols );
+            if ( $noDiscordSubmitLogChannel === false ) {
+                $data = array("content" => '```Converted portal with id "' . $portalId . '." New Greenhouse: "' . $portal['name'] . '". ```' . $submitMapUrl . '/?lat=' . $portal['lat'] . '&lon=' . $portal['lon'] . '&zoom=18 ', "username" => $loggedUser);
+                sendToWebhook($discordSubmitLogChannelUrl, ($data));
+            }
+        }
+    }
 }

@@ -22,7 +22,7 @@ if ($userAccessLevel['access_level'] == $userLevel) {
     $noMotd = false;
     $motdTitle = "Welcome " . $_SESSION['user']->user . "!";
     $patreonUrl = 'https://yourPatreonURL.com';
-    $motdContent = "<center>You can get access to raids, quests, Pok&eacute;mon and iv if you make a pledge to our Patreon.<br>
+    $motdContent = "<center>You can get access to Raids, Quests, Pok&eacute;mon and IV if you make a pledge to our Patreon.<br>
                     <a class='button' style='outline:none;' href='" . $patreonUrl . "'><i class='fab fa-patreon'></i> Pledge</a>
                     </center>";
 } else if ($userAccessLevel['access_level'] == $raidLevel) {
