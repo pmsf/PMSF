@@ -3430,6 +3430,10 @@ function convertPortalToInnData(event) { // eslint-disable-line no-unused-vars
                     toastr.options = toastrOptions
                 },
                 complete: function complete() {
+                    lastinns
+                    jQuery('label[for="inns-switch"]').click()
+                    jQuery('label[for="inns-switch"]').click()
+                    updateMap()
                     $('.ui-dialog-content').dialog('close')
                 }
             })
@@ -3457,6 +3461,10 @@ function convertPortalToFortressData(event) { // eslint-disable-line no-unused-v
                     toastr.options = toastrOptions
                 },
                 complete: function complete() {
+                    lastfortresses
+                    jQuery('label[for="fortresses-switch"]').click()
+                    jQuery('label[for="fortresses-switch"]').click()
+                    updateMap()
                     $('.ui-dialog-content').dialog('close')
                 }
             })
@@ -3484,6 +3492,10 @@ function convertPortalToGreenhouseData(event) { // eslint-disable-line no-unused
                     toastr.options = toastrOptions
                 },
                 complete: function complete() {
+                    lastgreenhouses
+                    jQuery('label[for="greenhouses-switch"]').click()
+                    jQuery('label[for="greenhouses-switch"]').click()
+                    updateMap()
                     $('.ui-dialog-content').dialog('close')
                 }
             })
