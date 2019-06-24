@@ -94,6 +94,8 @@ var lastnests
 var lastcommunities
 var lastportals
 var lastinns
+var lastfortresses
+var lastgreenhouses
 var lastpois
 var lastpokemon
 var lastslocs
@@ -654,7 +656,9 @@ function initSidebar() {
     $('#nests-switch').prop('checked', Store.get('showNests'))
     $('#communities-switch').prop('checked', Store.get('showCommunities'))
     $('#portals-switch').prop('checked', Store.get('showPortals'))
-    $('#inns-switch').prop('checked', Store.get('showInns'))
+    $('#inns-switch').prop('checked', Store.get('showInns'))\
+    $('#fortresses-switch').prop('checked', Store.get('showFortresses'))
+    $('#greenhouses-switch').prop('checked', Store.get('showGreenhouses'))
     $('#poi-switch').prop('checked', Store.get('showPoi'))
     $('#s2-switch').prop('checked', Store.get('showCells'))
     $('#s2-switch-wrapper').toggle(Store.get('showCells'))
@@ -2206,6 +2210,40 @@ function setupInnMarker(item) {
     return marker
 }
 
+function setupFortressMarker(item) {
+    var circle = {
+        color: 'blue',
+        radius: 10,
+        fillOpacity: 0.4,
+        fillColor: '#f00',
+        weight: 1,
+        pane: 'portals'
+    }
+    var marker = L.circleMarker([item['lat'], item['lon']], circle).bindPopup(fortressLabel(item), {autoPan: false, closeOnClick: false, autoClose: false})
+    markers.addLayer(marker)
+
+    addListeners(marker)
+
+    return marker
+}
+
+function setupGreenhouseMarker(item) {
+    var circle = {
+        color: 'green',
+        radius: 10,
+        fillOpacity: 0.4,
+        fillColor: '#f00',
+        weight: 1,
+        pane: 'portals'
+    }
+    var marker = L.circleMarker([item['lat'], item['lon']], circle).bindPopup(greenhouseLabel(item), {autoPan: false, closeOnClick: false, autoClose: false})
+    markers.addLayer(marker)
+
+    addListeners(marker)
+
+    return marker
+}
+
 function setupPoiMarker(item) {
     if (item.status === '1') {
         var circle = {
@@ -2285,6 +2323,38 @@ function portalLabel(item) {
 function innLabel(item) {
     var updated = formatDate(new Date(item.updated * 1000))
     var str = '<center>' +
+        '<div><b>' + i8ln('Inn') + ': ' + item['name'] + '</b></div>' +
+        '<div><img src="' + item.url + '" style="width:175px;height:auto;"/></div>' +
+        '<div><b>' + i8ln('Submitted by') + ': ' + item['submitted_by'] + '</b></div>' +
+        '<div><b>' + i8ln('Submitted at') + ': ' + updated + '</b></div>' +
+        '<a href="javascript:void(0);" onclick="javascript:openMapDirections(' + item['lat'] + ',' + item['lon'] + ');" title="' + i8ln('View in Maps') + '">' +
+        '<i class="fas fa-road"></i> ' + item['lat'].toFixed(6) + ' , ' + item['lon'].toFixed(7) + '</a> - ' +
+        '<a href="./?lat=' + item['lat'] + '&lon=' + item['lon'] + '&zoom=16"><i class="far fa-share-square" aria-hidden="true" style="position:relative;top:3px;left:0px;color:#26c300;font-size:20px;"></i></a>' +
+        '</center>'
+    return str
+}
+
+function fortressLabel(item) {
+    var updated = formatDate(new Date(item.updated * 1000))
+    var str = '<center>' +
+        '<div><b>' + i8ln('Fortress') + ': ' + item['name'] + '</b></div>' +
+        '<div><img src="' + item.url + '" style="width:175px;height:auto;"/></div>' +
+        '<div><b>' + i8ln('Submitted by') + ': ' + item['submitted_by'] + '</b></div>' +
+        '<div><b>' + i8ln('Submitted at') + ': ' + updated + '</b></div>' +
+        '<a href="javascript:void(0);" onclick="javascript:openMapDirections(' + item['lat'] + ',' + item['lon'] + ');" title="' + i8ln('View in Maps') + '">' +
+        '<i class="fas fa-road"></i> ' + item['lat'].toFixed(6) + ' , ' + item['lon'].toFixed(7) + '</a> - ' +
+        '<a href="./?lat=' + item['lat'] + '&lon=' + item['lon'] + '&zoom=16"><i class="far fa-share-square" aria-hidden="true" style="position:relative;top:3px;left:0px;color:#26c300;font-size:20px;"></i></a>' +
+        '</center>'
+    return str
+}
+
+function greenhouseLabel(item) {
+    var updated = formatDate(new Date(item.updated * 1000))
+    var str = '<center>' +
+        '<div><b>' + i8ln('Greenhouse') + ': ' + item['name'] + '</b></div>' +
+        '<div><img src="' + item.url + '" style="width:175px;height:auto;"/></div>' +
+        '<div><b>' + i8ln('Submitted by') + ': ' + item['submitted_by'] + '</b></div>' +
+        '<div><b>' + i8ln('Submitted at') + ': ' + updated + '</b></div>' +
         '<a href="javascript:void(0);" onclick="javascript:openMapDirections(' + item['lat'] + ',' + item['lon'] + ');" title="' + i8ln('View in Maps') + '">' +
         '<i class="fas fa-road"></i> ' + item['lat'].toFixed(6) + ' , ' + item['lon'].toFixed(7) + '</a> - ' +
         '<a href="./?lat=' + item['lat'] + '&lon=' + item['lon'] + '&zoom=16"><i class="far fa-share-square" aria-hidden="true" style="position:relative;top:3px;left:0px;color:#26c300;font-size:20px;"></i></a>' +
@@ -2641,6 +2711,8 @@ function loadRawData() {
     var loadCommunities = Store.get('showCommunities')
     var loadPortals = Store.get('showPortals')
     var loadInns = Store.get('showInns')
+    var loadFortresses = Store.get('showFortresses')
+    var loadGreenhouses = Store.get('showGreenhouses')
     var loadPois = Store.get('showPoi')
     var loadNewPortalsOnly = Store.get('showNewPortalsOnly')
     var loadScanned = Store.get('showScanned')
@@ -2681,6 +2753,10 @@ function loadRawData() {
             'lastportals': lastportals,
             'inns': loadInns,
             'lastinns': lastinns,
+            'fortresses': loadFortresses,
+            'lastfortresses': lastfortresses,
+            'greenhouses': loadGreenhouses,
+            'lastgreenhouses': lastgreenhouses,
             'lastpokestops': lastpokestops,
             'gyms': loadGyms,
             'lastgyms': lastgyms,
@@ -4521,29 +4597,6 @@ function processPortals(i, item) {
         }
     }
 }
-function processInns(i, item) {
-    if (!Store.get('showInns')) {
-        return false
-    }
-
-     if (!mapData.inns[item['id']]) {
-        // new pokestop, add marker to map and item to dict
-        if (item.marker && item.marker.rangeCircle) {
-            item.marker.rangeCircle.setMap(null)
-        }
-        if (item.marker) {
-            item.marker.setMap(null)
-        }
-        item.marker = setupInnsMarker(item)
-        mapData.inns[item['id']] = item
-    } else {
-        // change existing pokestop marker to unlured/lured
-        var item2 = mapData.inns[item['id']]
-        item2.marker.setMap(null)
-        item.marker = setupInnsMarker(item)
-        mapData.inns[item['id']] = item
-    }
-}
 function updatePortals() {
     if (!Store.get('showPortals')) {
         return false
@@ -4565,6 +4618,75 @@ function updatePortals() {
                 delete mapData.portals[value]
             }
         })
+    }
+}
+function processInns(i, item) {
+    if (!Store.get('showInns')) {
+        return false
+    }
+
+    if (!mapData.inns[item['id']]) {
+        // new pokestop, add marker to map and item to dict
+        if (item.marker && item.marker.rangeCircle) {
+            item.marker.rangeCircle.setMap(null)
+        }
+        if (item.marker) {
+            item.marker.setMap(null)
+        }
+        item.marker = setupInnMarker(item)
+        mapData.inns[item['id']] = item
+    } else {
+        // change existing pokestop marker to unlured/lured
+        var item2 = mapData.inns[item['id']]
+        item2.marker.setMap(null)
+        item.marker = setupInnMarker(item)
+        mapData.inns[item['id']] = item
+    }
+}
+function processFortresses(i, item) {
+    if (!Store.get('showFortresses')) {
+        return false
+    }
+
+    if (!mapData.fortresses[item['id']]) {
+        // new pokestop, add marker to map and item to dict
+        if (item.marker && item.marker.rangeCircle) {
+            item.marker.rangeCircle.setMap(null)
+        }
+        if (item.marker) {
+            item.marker.setMap(null)
+        }
+        item.marker = setupFortressMarker(item)
+        mapData.fortresses[item['id']] = item
+    } else {
+        // change existing pokestop marker to unlured/lured
+        var item2 = mapData.fortresses[item['id']]
+        item2.marker.setMap(null)
+        item.marker = setupFortressMarker(item)
+        mapData.fortresses[item['id']] = item
+    }
+}
+function processGreenhouses(i, item) {
+    if (!Store.get('showGreenhouses')) {
+        return false
+    }
+
+    if (!mapData.greenhouses[item['id']]) {
+        // new pokestop, add marker to map and item to dict
+        if (item.marker && item.marker.rangeCircle) {
+            item.marker.rangeCircle.setMap(null)
+        }
+        if (item.marker) {
+            item.marker.setMap(null)
+        }
+        item.marker = setupGreenhouseMarker(item)
+        mapData.greenhouses[item['id']] = item
+    } else {
+        // change existing pokestop marker to unlured/lured
+        var item2 = mapData.greenhouses[item['id']]
+        item2.marker.setMap(null)
+        item.marker = setupGreenhouseMarker(item)
+        mapData.greenhouses[item['id']] = item
     }
 }
 function processPois(i, item) {
@@ -4920,6 +5042,8 @@ function updateMap() {
         $.each(result.communities, processCommunities)
         $.each(result.portals, processPortals)
         $.each(result.inns, processInns)
+        $.each(result.fortresses, processFortresses)
+        $.each(result.greenhouses, processGreenhouses)
         $.each(result.pois, processPois)
         showInBoundsMarkers(mapData.pokemons, 'pokemon')
         showInBoundsMarkers(mapData.lurePokemons, 'pokemon')
@@ -4954,6 +5078,8 @@ function updateMap() {
         lastcommunities = result.lastcommunities
         lastportals = result.lastportals
         lastinns = result.lastinns
+        lastfortresses = result.lastfortresses
+        lastgreenhouses = result.lastgreenhouses
         lastpois = result.lastpois
 
         prevMinIV = result.preMinIV
@@ -6170,6 +6296,14 @@ $(function () {
     $('#inns-switch').change(function () {
         lastinns = false
         buildSwitchChangeListener(mapData, ['inns'], 'showInns').bind(this)()
+    })
+    $('#fortresses-switch').change(function () {
+        lastfortresses = false
+        buildSwitchChangeListener(mapData, ['fortresses'], 'showFortresses').bind(this)()
+    })
+    $('#greenhouses-switch').change(function () {
+        lastgreenhouses = false
+        buildSwitchChangeListener(mapData, ['greenhouses'], 'showGreenhouses').bind(this)()
     })
 
     $('#s2-switch').change(function () {

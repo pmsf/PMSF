@@ -169,6 +169,16 @@ var StoreOptions = {
             default: enableInns,
             type: StoreTypes.Boolean
         },
+    'showFortresses':
+        {
+            default: enableFortresses,
+            type: StoreTypes.Boolean
+        },
+    'showGreenhouses':
+        {
+            default: enableGreenhouses,
+            type: StoreTypes.Boolean
+        },
     'showPoi':
         {
             default: enablePoi,
@@ -444,7 +454,9 @@ var mapData = {
     communities: {},
     portals: {},
     pois: {},
-    inns: {}
+    inns: {},
+    fortresses: {},
+    greenhouses: {}
 }
 
 function getPokemonSprite(index, sprite, displayHeight, weather = 0, encounterForm = 0, pokemonCostume = 0) {

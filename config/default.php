@@ -392,6 +392,12 @@ $nestGeoJSONfile = 'custom/nest.json';			    // path to geoJSON file provided by
 //-----------------------------------------------------
 $noInn = true;
 $enableInn = 'false';
+
+$noFortress = true;
+$enableFortress = 'false';
+
+$noGreenhouse = true;
+$enableGreenhouse = 'false';
 //-----------------------------------------------------
 // Areas
 //-----------------------------------------------------
