@@ -2189,7 +2189,7 @@ function setupPortalMarker(item) {
     return marker
 }
 
-function setupInnMarker(item) {{
+function setupInnMarker(item) {
     var circle = {
         color: 'red',
         radius: 10,
@@ -4526,7 +4526,7 @@ function processInns(i, item) {
         return false
     }
 
-     if (!mapData.inns[item['external_id']]) {
+     if (!mapData.inns[item['id']]) {
         // new pokestop, add marker to map and item to dict
         if (item.marker && item.marker.rangeCircle) {
             item.marker.rangeCircle.setMap(null)
@@ -4534,13 +4534,13 @@ function processInns(i, item) {
         if (item.marker) {
             item.marker.setMap(null)
         }
-        item.marker = setupPortalMarker(item)
+        item.marker = setupInnsMarker(item)
         mapData.inns[item['id']] = item
     } else {
         // change existing pokestop marker to unlured/lured
         var item2 = mapData.inns[item['id']]
         item2.marker.setMap(null)
-        item.marker = setupPortalMarker(item)
+        item.marker = setupInnsMarker(item)
         mapData.inns[item['id']] = item
     }
 }
