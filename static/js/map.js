@@ -1086,6 +1086,12 @@ function gymLabel(item) {
     } else {
         teamStr = '<b style="color:rgba(' + gymColor[teamId] + ')">' + i8ln('Team') + ' ' + i8ln(teamName) + '</b><br>'
     }
+    var whatsappLink = ''
+    if (((!noWhatsappLink) && (raidSpawned && item.raid_end > Date.now())) && (item.raid_pokemon_id > 1 && item.raid_pokemon_id < numberOfPokemon)) {
+        whatsappLink = '<a href="whatsapp://send?text=' + encodeURIComponent(item.name) + '%0ALevel%20' + item.raid_level + '%20' + item.raid_pokemon_name + '%0A%2AStart:%20' + raidStartStr + '%2A%0A%2AEnd:%20' + raidEndStr + '%2A%0AStats:%0Ahttps://pokemongo.gamepress.gg/pokemon/' + item.raid_pokemon_id + '%0ADirections:%0Ahttps://www.google.com/maps/search/?api=1%26query=' + item.latitude + ',' + item.longitude + '" data-action="share/whatsapp/share"><i class="fab fa-whatsapp" style="position:relative;top:3px;left:5px;color:#26c300;font-size:20px;"></i></a>'
+    } else if ((!noWhatsappLink) && (raidSpawned && item.raid_end > Date.now())) {
+        whatsappLink = '<a href="whatsapp://send?text=' + encodeURIComponent(item.name) + '%0ALevel%20' + item.raid_level + '%20egg%0A%2AStart:%20' + raidStartStr + '%2A%0A%2AEnd:%20' + raidEndStr + '%2A%0ADirections:%0Ahttps://www.google.com/maps/search/?api=1%26query=' + item.latitude + ',' + item.longitude + '" data-action="share/whatsapp/share"><i class="fab fa-whatsapp" style="position:relative;top:3px;left:5px;color:#26c300;font-size:20px;"></i></a>'
+    }
     str =
         '<div class="gym-label">' +
         '<center>' +
@@ -1101,6 +1107,7 @@ function gymLabel(item) {
         raidStr +
         '<div>' +
         '<a href="javascript:void(0);" onclick="javascript:openMapDirections(' + latitude + ',' + longitude + ');" title="' + i8ln('View in Maps') + '"><i class="fas fa-road"></i> ' + latitude.toFixed(6) + ' , ' + longitude.toFixed(7) + '</a> - <a href="./?lat=' + latitude + '&lon=' + longitude + '&zoom=16"><i class="far fa-share-square" aria-hidden="true" style="position:relative;top:3px;left:0px;color:#26c300;font-size:20px;"></i></a>' +
+        whatsappLink +
         '</div>' +
         '<div>' +
         i8ln('Last Modified') + ' : ' + lastModifiedStr +
@@ -1110,19 +1117,7 @@ function gymLabel(item) {
         '</div>' +
         '</center>' +
         '</div>'
-    if (((!noWhatsappLink) && (raidSpawned && item.raid_end > Date.now())) && (item.raid_pokemon_id > 1 && item.raid_pokemon_id < numberOfPokemon)) {
-        str += '<center>' +
-            '<div>' +
-            '<a href="whatsapp://send?text=' + encodeURIComponent(item.name) + '%0ALevel%20' + item.raid_level + '%20' + item.raid_pokemon_name + '%0A%2AStart:%20' + raidStartStr + '%2A%0A%2AEnd:%20' + raidEndStr + '%2A%0AStats:%0Ahttps://pokemongo.gamepress.gg/pokemon/' + item.raid_pokemon_id + '%0ADirections:%0Ahttps://www.google.com/maps/search/?api=1%26query=' + item.latitude + ',' + item.longitude + '" data-action="share/whatsapp/share">' + i8ln('Whatsapp Link') + '</a>' +
-            '</div>' +
-            '</center>'
-    } else if ((!noWhatsappLink) && (raidSpawned && item.raid_end > Date.now())) {
-        str += '<center>' +
-            '<div>' +
-            '<a href="whatsapp://send?text=' + encodeURIComponent(item.name) + '%0ALevel%20' + item.raid_level + '%20egg%0A%2AStart:%20' + raidStartStr + '%2A%0A%2AEnd:%20' + raidEndStr + '%2A%0ADirections:%0Ahttps://www.google.com/maps/search/?api=1%26query=' + item.latitude + ',' + item.longitude + '" data-action="share/whatsapp/share">' + i8ln('Whatsapp Link') + '</a>' +
-            '</div>' +
-            '</center>'
-    }
+
     return str
 }
 
@@ -1373,7 +1368,7 @@ function pokestopLabel(item) {
         str += '<center><div>' + i8ln('Convert to Gym') + '<i class="fas fa-refresh convert-pokestop" style="margin-top: 2px; vertical-align: middle; font-size: 1.5em;" onclick="openConvertPokestopModal(event);" data-id="' + item['pokestop_id'] + '"></i></div></center>'
     }
     str += '<div><center>' +
-        '<a href="javascript:void(0)" onclick="javascript:openMapDirections(' + item['latitude'] + ',' + item['longitude'] + ')" title="' + i8ln('View in Maps') + '"><i class="fas fa-road"></i> ' + item['latitude'] + ', ' + item['longitude'] + '</a> - <a href="./?lat=' + item['latitude'] + '&lon=' + item['longitude'] + '&zoom=16"><i class="fas fa-share-square" aria-hidden="true" style="position:relative;top:3px;left:0px;color:#26c300;font-size:20px;"></i></a>' +
+        '<a href="javascript:void(0)" onclick="javascript:openMapDirections(' + item['latitude'] + ',' + item['longitude'] + ')" title="' + i8ln('View in Maps') + '"><i class="fas fa-road"></i> ' + item['latitude'] + ', ' + item['longitude'] + '</a> - <a href="./?lat=' + item['latitude'] + '&lon=' + item['longitude'] + '&zoom=16"><i class="far fa-share-square" aria-hidden="true" style="position:relative;top:3px;left:0px;color:#26c300;font-size:20px;"></i></a>' +
         '</center></div>'
     if ((!noWhatsappLink) && (item['quest_id'] && item['reward_id'] !== null)) {
         str += '<div>' +
@@ -2133,14 +2128,14 @@ function communityLabel(item) {
     if (item.has_invite_url === 1 && (item.invite_url !== '#' || item.invite_url !== undefined)) {
         str +=
         '<center><div class="button-container">' +
-            '<a class="button" href="' + item.invite_url + '">' + i8ln('Join Now') + '<i class="fas fa-comments" style="margin-left:10px;"></i>' +
+            '<a class="button" href="' + item.invite_url + '"><i class="fas fa-comments"></i> ' + i8ln('Join Now') +
             '</a>' +
         '</div></center>'
     }
     if (!noEditCommunity) {
         str +=
         '<center><div class="button-container">' +
-        '<a class="button" onclick="openEditCommunityModal(event);" data-id="' + item.community_id + '" data-title="' + item.title + '" data-description="' + item.description + '" data-invite="' + item.invite_url + '">' + i8ln('Edit Community') + '<i class="fas fa-edit style="margin-left:10px;"></i></center>' +
+        '<a class="button" onclick="openEditCommunityModal(event);" data-id="' + item.community_id + '" data-title="' + item.title + '" data-description="' + item.description + '" data-invite="' + item.invite_url + '"><i class="fas fa-edit"></i> ' + i8ln('Edit Community') + '</center>' +
             '</a>' +
         '</div></center>'
     }
@@ -3300,6 +3295,87 @@ function convertPortalToGymData(event) { // eslint-disable-line no-unused-vars
                     jQuery('label[for="pokestops-switch"]').click()
                     lastpokestops = false
                     updateMap()
+                    $('.ui-dialog-content').dialog('close')
+                }
+            })
+        }
+    }
+}
+function convertPortalToInnData(event) { // eslint-disable-line no-unused-vars
+    var form = $(event.target).parent().parent()
+    var portalId = form.find('.convertportalid').val()
+    if (portalId && portalId !== '') {
+        if (confirm(i8ln('I confirm this portal is a Inn'))) {
+            return $.ajax({
+                url: 'submit',
+                type: 'POST',
+                timeout: 300000,
+                dataType: 'json',
+                cache: false,
+                data: {
+                    'action': 'convertportalinn',
+                    'portalId': portalId
+                },
+                error: function error() {
+                    // Display error toast
+                    toastr['error'](i8ln('Portal ID got lost somewhere.'), i8ln('Error converting to Inn'))
+                    toastr.options = toastrOptions
+                },
+                complete: function complete() {
+                    $('.ui-dialog-content').dialog('close')
+                }
+            })
+        }
+    }
+}
+function convertPortalToFortressData(event) { // eslint-disable-line no-unused-vars
+    var form = $(event.target).parent().parent()
+    var portalId = form.find('.convertportalid').val()
+    if (portalId && portalId !== '') {
+        if (confirm(i8ln('I confirm this portal is a Fortress'))) {
+            return $.ajax({
+                url: 'submit',
+                type: 'POST',
+                timeout: 300000,
+                dataType: 'json',
+                cache: false,
+                data: {
+                    'action': 'convertportalfortress',
+                    'portalId': portalId
+                },
+                error: function error() {
+                    // Display error toast
+                    toastr['error'](i8ln('Portal ID got lost somewhere.'), i8ln('Error converting to Fortress'))
+                    toastr.options = toastrOptions
+                },
+                complete: function complete() {
+                    $('.ui-dialog-content').dialog('close')
+                }
+            })
+        }
+    }
+}
+function convertPortalToGreenhouseData(event) { // eslint-disable-line no-unused-vars
+    var form = $(event.target).parent().parent()
+    var portalId = form.find('.convertportalid').val()
+    if (portalId && portalId !== '') {
+        if (confirm(i8ln('I confirm this portal is a Greenhouse'))) {
+            return $.ajax({
+                url: 'submit',
+                type: 'POST',
+                timeout: 300000,
+                dataType: 'json',
+                cache: false,
+                data: {
+                    'action': 'convertportalgreenhouse',
+                    'portalId': portalId
+                },
+                error: function error() {
+                    // Display error toast
+                    toastr['error'](i8ln('Portal ID got lost somewhere.'), i8ln('Error converting to Greenhouse'))
+                    toastr.options = toastrOptions
+                },
+                complete: function complete() {
                     $('.ui-dialog-content').dialog('close')
                 }
             })
@@ -5122,7 +5198,6 @@ function createMyLocationButton() {
         locationButton.style.outline = 'none'
         locationButton.style.width = '28px'
         locationButton.style.height = '28px'
-        locationButton.style.borderRadius = '15px'
         locationButton.style.boxShadow = '0 1px 4px rgba(0,0,0,0.3)'
         locationButton.style.cursor = 'pointer'
         locationButton.style.marginRight = '3px'
