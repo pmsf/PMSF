@@ -39,6 +39,9 @@ $itemAmount   		= ! empty( $_POST['itemamount'] ) ? $_POST['itemamount'] : '1';
 $dust			= ! empty( $_POST['dust'] ) ? $_POST['dust'] : '';
 $nestId     		= ! empty( $_POST['nestId'] ) ? $_POST['nestId'] : '';
 $portalId   		= ! empty( $_POST['portalId'] ) ? $_POST['portalId'] : '';
+$innId   		= ! empty( $_POST['portalId'] ) ? $_POST['innId'] : '';
+$fortressId   		= ! empty( $_POST['fortressId'] ) ? $_POST['fortressId'] : '';
+$greenhouseId   		= ! empty( $_POST['greenhouseId'] ) ? $_POST['greenhouseId'] : '';
 $communityId   		= ! empty( $_POST['communityId'] ) ? $_POST['communityId'] : '';
 $communityName 		= ! empty( $_POST['communityName'] ) ? $_POST['communityName'] : '';
 $communityDescription 	= ! empty( $_POST['communityDescription'] ) ? $_POST['communityDescription'] : '';
@@ -119,6 +122,15 @@ if ( $action === "markportal" ) {
 }
 if ( $action === "delete-portal" ) {
     $submitManual->delete_portal($portalId, $loggedUser);
+}
+if ( $action === "delete-inn" ) {
+    $submitManual->delete_inn($innId, $loggedUser);
+}
+if ( $action === "delete-fortress" ) {
+    $submitManual->delete_fortress($fortressId, $loggedUser);
+}
+if ( $action === "delete-greenhouse" ) {
+    $submitManual->delete_greenhouse($greenhouseId, $loggedUser);
 }
 if ( $action === "nest" ) {
     $submitManual->modify_nest($nestId, $pokemonId, $loggedUser);
