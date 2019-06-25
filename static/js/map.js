@@ -2320,7 +2320,7 @@ function portalLabel(item) {
 function innLabel(item) {
     var updated = formatDate(new Date(item.updated * 1000))
     var str = '<center>' +
-        '<div><b>' + i8ln('Inn') + ': ' + item['name'] + '</b></div>' +
+        '<div><b>' + item['name'] + '</b></div>' +
         '<div><img src="' + item.url + '" style="width:175px;height:auto;"/></div>' +
         '<div><b>' + i8ln('Submitted by') + ': ' + item['submitted_by'] + '</b></div>' +
         '<div><b>' + i8ln('Submitted at') + ': ' + updated + '</b></div>' +
@@ -2329,7 +2329,7 @@ function innLabel(item) {
         '<a href="./?lat=' + item['lat'] + '&lon=' + item['lon'] + '&zoom=16"><i class="far fa-share-square" aria-hidden="true" style="position:relative;top:3px;left:0px;color:#26c300;font-size:20px;"></i></a>' +
         '</center>'
     if (!noDeleteInn) {
-        str += '<i class="fa fa-trash delete-portal" onclick="deleteInn(event);" data-id="' + item['id'] + '"></i>'
+        str += '<i class="fas fa-trash-alt delete-portal" onclick="deleteInn(event);" data-id="' + item['id'] + '"></i>'
     }
     return str
 }
@@ -2337,7 +2337,7 @@ function innLabel(item) {
 function fortressLabel(item) {
     var updated = formatDate(new Date(item.updated * 1000))
     var str = '<center>' +
-        '<div><b>' + i8ln('Fortress') + ': ' + item['name'] + '</b></div>' +
+        '<div><b>' + item['name'] + '</b></div>' +
         '<div><img src="' + item.url + '" style="width:175px;height:auto;"/></div>' +
         '<div><b>' + i8ln('Submitted by') + ': ' + item['submitted_by'] + '</b></div>' +
         '<div><b>' + i8ln('Submitted at') + ': ' + updated + '</b></div>' +
@@ -2346,7 +2346,7 @@ function fortressLabel(item) {
         '<a href="./?lat=' + item['lat'] + '&lon=' + item['lon'] + '&zoom=16"><i class="far fa-share-square" aria-hidden="true" style="position:relative;top:3px;left:0px;color:#26c300;font-size:20px;"></i></a>' +
         '</center>'
     if (!noDeleteFortress) {
-        str += '<i class="fa fa-trash delete-portal" onclick="deleteFortress(event);" data-id="' + item['id'] + '"></i>'
+        str += '<i class="fas fa-trash-alt delete-portal" onclick="deleteFortress(event);" data-id="' + item['id'] + '"></i>'
     }
     return str
 }
@@ -2354,7 +2354,7 @@ function fortressLabel(item) {
 function greenhouseLabel(item) {
     var updated = formatDate(new Date(item.updated * 1000))
     var str = '<center>' +
-        '<div><b>' + i8ln('Greenhouse') + ': ' + item['name'] + '</b></div>' +
+        '<div><b>' + item['name'] + '</b></div>' +
         '<div><img src="' + item.url + '" style="width:175px;height:auto;"/></div>' +
         '<div><b>' + i8ln('Submitted by') + ': ' + item['submitted_by'] + '</b></div>' +
         '<div><b>' + i8ln('Submitted at') + ': ' + updated + '</b></div>' +
@@ -2363,7 +2363,7 @@ function greenhouseLabel(item) {
         '<a href="./?lat=' + item['lat'] + '&lon=' + item['lon'] + '&zoom=16"><i class="far fa-share-square" aria-hidden="true" style="position:relative;top:3px;left:0px;color:#26c300;font-size:20px;"></i></a>' +
         '</center>'
     if (!noDeleteGreenhouse) {
-        str += '<i class="fa fa-trash delete-portal" onclick="deleteGreenhouse(event);" data-id="' + item['id'] + '"></i>'
+        str += '<i class="fas fa-trash-alt delete-portal" onclick="deleteGreenhouse(event);" data-id="' + item['id'] + '"></i>'
     }
     return str
 }

@@ -392,17 +392,17 @@ $nestGeoJSONfile = 'custom/nest.json';			    // path to geoJSON file provided by
 //-----------------------------------------------
 // HPWU
 //-----------------------------------------------------
-$noInn = true;
-$enableInn = 'false';
-$noDeleteInn = true;
+$noInn = true;               // Enable/Disable the option to see inns 
+$enableInn = 'false';        // Enable/Disable inns by default. A user can edit this.
+$noDeleteInn = true;         // Enable/Disable option do delete a inn
 
-$noFortress = true;
-$enableFortress = 'false';
-$noDeleteFortress = true;
+$noFortress = true;          // Enable/Disable the option to see fortresses
+$enableFortress = 'false';   // Enable/Disable fortresses by default. A user can edit this
+$noDeleteFortress = true;    // Enable/Disable option do delete a fortress
 
-$noGreenhouse = true;
-$enableGreenhouse = 'false';
-$noDeleteGreenhouse = true;
+$noGreenhouse = true;        // Enable/Disable the option to see greenhouses
+$enableGreenhouse = 'false'; // Enable/Disable greenhouses by default. A user can edit this
+$noDeleteGreenhouse = true;  // Enable/Disable option do delete a greenhouse
 //-----------------------------------------------------
 // Areas
 //-----------------------------------------------------
