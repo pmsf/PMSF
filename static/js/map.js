@@ -2329,7 +2329,7 @@ function innLabel(item) {
         '<a href="./?lat=' + item['lat'] + '&lon=' + item['lon'] + '&zoom=16"><i class="far fa-share-square" aria-hidden="true" style="position:relative;top:3px;left:0px;color:#26c300;font-size:20px;"></i></a>' +
         '</center>'
     if (!noDeleteInn) {
-        str += '<i class="fa fa-trash-o delete-portal" onclick="deleteInn(event);" data-id="' + item.id + '"></i>'
+        str += '<i class="fa fa-trash delete-portal" onclick="deleteInn(event);" data-id="' + item['id'] + '"></i>'
     }
     return str
 }
@@ -2346,7 +2346,7 @@ function fortressLabel(item) {
         '<a href="./?lat=' + item['lat'] + '&lon=' + item['lon'] + '&zoom=16"><i class="far fa-share-square" aria-hidden="true" style="position:relative;top:3px;left:0px;color:#26c300;font-size:20px;"></i></a>' +
         '</center>'
     if (!noDeleteFortress) {
-        str += '<i class="fa fa-trash-o delete-portal" onclick="deleteFortress(event);" data-id="' + item.id + '"></i>'
+        str += '<i class="fa fa-trash delete-portal" onclick="deleteFortress(event);" data-id="' + item['id'] + '"></i>'
     }
     return str
 }
@@ -2363,7 +2363,7 @@ function greenhouseLabel(item) {
         '<a href="./?lat=' + item['lat'] + '&lon=' + item['lon'] + '&zoom=16"><i class="far fa-share-square" aria-hidden="true" style="position:relative;top:3px;left:0px;color:#26c300;font-size:20px;"></i></a>' +
         '</center>'
     if (!noDeleteGreenhouse) {
-        str += '<i class="fa fa-trash-o delete-portal" onclick="deleteGreenhouse(event);" data-id="' + item.id + '"></i>'
+        str += '<i class="fa fa-trash delete-portal" onclick="deleteGreenhouse(event);" data-id="' + item['id'] + '"></i>'
     }
     return str
 }
