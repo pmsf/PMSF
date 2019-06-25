@@ -2194,51 +2194,48 @@ function setupPortalMarker(item) {
 }
 
 function setupInnMarker(item) {
-    var circle = {
-        color: 'purple',
-        radius: 10,
-        fillOpacity: 0.4,
-        fillColor: 'purple',
-        weight: 1,
-        pane: 'portals'
-    }
-    var marker = L.circleMarker([item['lat'], item['lon']], circle).bindPopup(innLabel(item), {autoPan: false, closeOnClick: false, autoClose: false})
+    var html = '<div><img src="static/forts/hpwu/inn5.png" style="width:33px;height:49px;top:-35px;right:10px;"/><div>'
+    var innMarkerIcon = L.divIcon({
+        iconSize: [36, 48],
+        iconAnchor: [20, 45],
+        popupAnchor: [0, -45],
+        className: 'marker-inns',
+        html: html
+    })
+    var marker = L.marker([item['lat'], item['lon']], {icon: innMarkerIcon, zIndexOffset: 1020}).bindPopup(innLabel(item), {autoPan: false, closeOnClick: false, autoClose: false})
     markers.addLayer(marker)
-
     addListeners(marker)
 
     return marker
 }
 
 function setupFortressMarker(item) {
-    var circle = {
-        color: 'red',
-        radius: 10,
-        fillOpacity: 0.4,
-        fillColor: 'red',
-        weight: 1,
-        pane: 'portals'
-    }
-    var marker = L.circleMarker([item['lat'], item['lon']], circle).bindPopup(fortressLabel(item), {autoPan: false, closeOnClick: false, autoClose: false})
+    var html = '<div><img src="static/forts/hpwu/fortress.png" style="width:33px;height:75px;top:-35px;right:10px;"/><div>'
+    var fortressMarkerIcon = L.divIcon({
+        iconSize: [36, 48],
+        iconAnchor: [18, 68],
+        popupAnchor: [0, -45],
+        className: 'marker-fortresses',
+        html: html
+    })
+    var marker = L.marker([item['lat'], item['lon']], {icon: fortressMarkerIcon, zIndexOffset: 1020}).bindPopup(fortressLabel(item), {autoPan: false, closeOnClick: false, autoClose: false})
     markers.addLayer(marker)
-
     addListeners(marker)
 
     return marker
 }
 
 function setupGreenhouseMarker(item) {
-    var circle = {
-        color: 'green',
-        radius: 10,
-        fillOpacity: 0.4,
-        fillColor: 'green',
-        weight: 1,
-        pane: 'portals'
-    }
-    var marker = L.circleMarker([item['lat'], item['lon']], circle).bindPopup(greenhouseLabel(item), {autoPan: false, closeOnClick: false, autoClose: false})
+    var html = '<div><img src="static/forts/hpwu/greenhouse.png" style="width:40px;height:40px;top:-35px;right:10px;"/><div>'
+    var greenhouseMarkerIcon = L.divIcon({
+        iconSize: [36, 48],
+        iconAnchor: [20, 33],
+        popupAnchor: [0, -45],
+        className: 'marker-greenhouses',
+        html: html
+    })
+    var marker = L.marker([item['lat'], item['lon']], {icon: greenhouseMarkerIcon, zIndexOffset: 1020}).bindPopup(greenhouseLabel(item), {autoPan: false, closeOnClick: false, autoClose: false})
     markers.addLayer(marker)
-
     addListeners(marker)
 
     return marker
@@ -4638,19 +4635,12 @@ function processInns(i, item) {
     }
 
     if (!mapData.inns[item['id']]) {
-        // new pokestop, add marker to map and item to dict
         if (item.marker && item.marker.rangeCircle) {
             item.marker.rangeCircle.setMap(null)
         }
         if (item.marker) {
             item.marker.setMap(null)
         }
-        item.marker = setupInnMarker(item)
-        mapData.inns[item['id']] = item
-    } else {
-        // change existing pokestop marker to unlured/lured
-        var item2 = mapData.inns[item['id']]
-        item2.marker.setMap(null)
         item.marker = setupInnMarker(item)
         mapData.inns[item['id']] = item
     }
@@ -4661,19 +4651,12 @@ function processFortresses(i, item) {
     }
 
     if (!mapData.fortresses[item['id']]) {
-        // new pokestop, add marker to map and item to dict
         if (item.marker && item.marker.rangeCircle) {
             item.marker.rangeCircle.setMap(null)
         }
         if (item.marker) {
             item.marker.setMap(null)
         }
-        item.marker = setupFortressMarker(item)
-        mapData.fortresses[item['id']] = item
-    } else {
-        // change existing pokestop marker to unlured/lured
-        var item2 = mapData.fortresses[item['id']]
-        item2.marker.setMap(null)
         item.marker = setupFortressMarker(item)
         mapData.fortresses[item['id']] = item
     }
@@ -4684,19 +4667,12 @@ function processGreenhouses(i, item) {
     }
 
     if (!mapData.greenhouses[item['id']]) {
-        // new pokestop, add marker to map and item to dict
         if (item.marker && item.marker.rangeCircle) {
             item.marker.rangeCircle.setMap(null)
         }
         if (item.marker) {
             item.marker.setMap(null)
         }
-        item.marker = setupGreenhouseMarker(item)
-        mapData.greenhouses[item['id']] = item
-    } else {
-        // change existing pokestop marker to unlured/lured
-        var item2 = mapData.greenhouses[item['id']]
-        item2.marker.setMap(null)
         item.marker = setupGreenhouseMarker(item)
         mapData.greenhouses[item['id']] = item
     }
