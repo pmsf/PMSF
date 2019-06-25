@@ -2328,6 +2328,9 @@ function innLabel(item) {
         '<i class="fas fa-road"></i> ' + item['lat'].toFixed(6) + ' , ' + item['lon'].toFixed(7) + '</a> - ' +
         '<a href="./?lat=' + item['lat'] + '&lon=' + item['lon'] + '&zoom=16"><i class="far fa-share-square" aria-hidden="true" style="position:relative;top:3px;left:0px;color:#26c300;font-size:20px;"></i></a>' +
         '</center>'
+    if (!noDeleteInn) {
+        str += '<i class="fa fa-trash-o delete-portal" onclick="deleteInn(event);" data-id="' + item.id + '"></i>'
+    }
     return str
 }
 
@@ -2342,6 +2345,9 @@ function fortressLabel(item) {
         '<i class="fas fa-road"></i> ' + item['lat'].toFixed(6) + ' , ' + item['lon'].toFixed(7) + '</a> - ' +
         '<a href="./?lat=' + item['lat'] + '&lon=' + item['lon'] + '&zoom=16"><i class="far fa-share-square" aria-hidden="true" style="position:relative;top:3px;left:0px;color:#26c300;font-size:20px;"></i></a>' +
         '</center>'
+    if (!noDeleteFortress) {
+        str += '<i class="fa fa-trash-o delete-portal" onclick="deleteFortress(event);" data-id="' + item.id + '"></i>'
+    }
     return str
 }
 
@@ -2356,6 +2362,9 @@ function greenhouseLabel(item) {
         '<i class="fas fa-road"></i> ' + item['lat'].toFixed(6) + ' , ' + item['lon'].toFixed(7) + '</a> - ' +
         '<a href="./?lat=' + item['lat'] + '&lon=' + item['lon'] + '&zoom=16"><i class="far fa-share-square" aria-hidden="true" style="position:relative;top:3px;left:0px;color:#26c300;font-size:20px;"></i></a>' +
         '</center>'
+    if (!noDeleteGreenhouse) {
+        str += '<i class="fa fa-trash-o delete-portal" onclick="deleteGreenhouse(event);" data-id="' + item.id + '"></i>'
+    }
     return str
 }
 
@@ -2426,6 +2435,93 @@ function deletePortal(event) { // eslint-disable-line no-unused-vars
                 complete: function complete() {
                     jQuery('label[for="portals-switch"]').click()
                     jQuery('label[for="portals-switch"]').click()
+                }
+            })
+        }
+    }
+}
+
+function deleteInn(event) { // eslint-disable-line no-unused-vars
+    var button = $(event.target)
+    var innid = button.data('id')
+    if (innid && innid !== '') {
+        if (confirm(i8ln('I confirm that this inn does not longer exist. This is a permanent deleture'))) {
+            return $.ajax({
+                url: 'submit',
+                type: 'POST',
+                timeout: 300000,
+                dataType: 'json',
+                cache: false,
+                data: {
+                    'action': 'delete-inn',
+                    'innId': innid
+                },
+                error: function error() {
+                    // Display error toast
+                    toastr['error'](i8ln('Oops something went wrong.'), i8ln('Error Deleting inn'))
+                    toastr.options = toastrOptions
+                },
+                complete: function complete() {
+                    jQuery('label[for="inns-switch"]').click()
+                    jQuery('label[for="inns-switch"]').click()
+                }
+            })
+        }
+    }
+}
+
+function deleteFortress(event) { // eslint-disable-line no-unused-vars
+    var button = $(event.target)
+    var fortressid = button.data('id')
+    if (fortressid && fortressid !== '') {
+        if (confirm(i8ln('I confirm that this fortress does not longer exist. This is a permanent deleture'))) {
+            return $.ajax({
+                url: 'submit',
+                type: 'POST',
+                timeout: 300000,
+                dataType: 'json',
+                cache: false,
+                data: {
+                    'action': 'delete-fortress',
+                    'fortressId': fortressid
+                },
+                error: function error() {
+                    // Display error toast
+                    toastr['error'](i8ln('Oops something went wrong.'), i8ln('Error Deleting fortress'))
+                    toastr.options = toastrOptions
+                },
+                complete: function complete() {
+                    jQuery('label[for="fortresses-switch"]').click()
+                    jQuery('label[for="fortresses-switch"]').click()
+                }
+            })
+        }
+    }
+}
+
+function deleteGreenhouse(event) { // eslint-disable-line no-unused-vars
+    var button = $(event.target)
+    var greenhouseid = button.data('id')
+    if (greenhouseid && greenhouseid !== '') {
+        if (confirm(i8ln('I confirm that this greenhouse does not longer exist. This is a permanent deleture'))) {
+            return $.ajax({
+                url: 'submit',
+                type: 'POST',
+                timeout: 300000,
+                dataType: 'json',
+                cache: false,
+                data: {
+                    'action': 'delete-greenhouse',
+                    'greenhouseId': greenhouseid
+                },
+                error: function error() {
+                    // Display error toast
+                    toastr['error'](i8ln('Oops something went wrong.'), i8ln('Error Deleting greenhouse'))
+                    toastr.options = toastrOptions
+                },
+                complete: function complete() {
+                    jQuery('label[for="greenhouses-switch"]').click()
+                    jQuery('label[for="greenhouses-switch"]').click()
                 }
             })
         }

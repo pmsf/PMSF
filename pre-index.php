@@ -2020,6 +2020,9 @@ if ( $blockIframe ) {
     var noFortresses = <?php echo $noFortress === true ? 'true' : 'false' ?>;
     var enableGreenhouses = <?php echo $noGreenhouse ? 'false' : $enableGreenhouse ?>;
     var noGreenhouses = <?php echo $noGreenhouse === true ? 'true' : 'false' ?>;
+    var noDeleteInn = <?php echo $noDeleteInn === true ? 'true' : 'false' ?>;
+    var noDeleteFortress = <?php echo $noDeleteFortress === true ? 'true' : 'false' ?>;
+    var noDeleteFortress = <?php echo $noDeleteGreenhouse === true ? 'true' : 'false' ?>;
 </script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js"></script>
 <script src="static/dist/js/map.common.min.js"></script>

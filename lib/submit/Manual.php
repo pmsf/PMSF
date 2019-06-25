@@ -475,4 +475,67 @@ class Manual extends Submit
             }
         }
     }
+
+    public function delete_inn($innId, $loggedUser)
+    {
+        global $manualdb, $noInn, $noDeleteInn, $noDiscordSubmitLogChannel, $discordSubmitLogChannelUrl;
+        if ( $noInn === true || $noDeleteInn === true) {
+            http_response_code( 401 );
+            die();
+        }
+        $innName = $manualdb->get( "inn", [ 'name' ], [ 'id' => $innId ] );
+        if ( ! empty( $innId ) ) {
+            $manualdb->delete( 'inn', [
+                "AND" => [
+                    'id' => $innId
+                ]
+            ] );
+        }
+        if ( $noDiscordSubmitLogChannel === false ) {
+            $data = array("content" => '```Deleted inn with id "' . $innId . '" and name: "' . $innName['name'] . '" . ```', "username" => $loggedUser);
+            sendToWebhook($discordSubmitLogChannelUrl, ($data));
+        }
+    }
+
+    public function delete_fortress($fortressId, $loggedUser)
+    {
+        global $manualdb, $noFortress, $noDeleteFortress, $noDiscordSubmitLogChannel, $discordSubmitLogChannelUrl;
+        if ( $noFortress === true || $noDeleteFortress === true) {
+            http_response_code( 401 );
+            die();
+        }
+        $fortressName = $manualdb->get( "fortress", [ 'name' ], [ 'id' => $fortressId ] );
+        if ( ! empty( $fortressId ) ) {
+            $manualdb->delete( 'fortress', [
+                "AND" => [
+                    'id' => $fortressId
+                ]
+            ] );
+        }
+        if ( $noDiscordSubmitLogChannel === false ) {
+            $data = array("content" => '```Deleted fortress with id "' . $fortressId . '" and name: "' . $fortressName['name'] . '" . ```', "username" => $loggedUser);
+            sendToWebhook($discordSubmitLogChannelUrl, ($data));
+        }
+    }
+
+    public function delete_greenhouse($greenhouseId, $loggedUser)
+    {
+        global $manualdb, $noGreenhouse, $noDeleteGreenhouse, $noDiscordSubmitLogChannel, $discordSubmitLogChannelUrl;
+        if ( $noGreenhouse === true || $noDeleteGreenhouse === true) {
+            http_response_code( 401 );
+            die();
+        }
+        $innName = $manualdb->get( "greenhouse", [ 'name' ], [ 'id' => $greenhouseId ] );
+        if ( ! empty( $greenhouseId ) ) {
+            $manualdb->delete( 'greenhouse', [
+                "AND" => [
+                    'id' => $greenhouseId
+                ]
+            ] );
+        }
+        if ( $noDiscordSubmitLogChannel === false ) {
+            $data = array("content" => '```Deleted greenhouse with id "' . $greenhouseId . '" and name: "' . $greenhouseName['name'] . '" . ```', "username" => $loggedUser);
+            sendToWebhook($discordSubmitLogChannelUrl, ($data));
+        }
+    }
 }

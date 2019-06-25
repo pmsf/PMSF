@@ -178,6 +178,9 @@
     "enableFortresses": true,
     "noFortresses": false,
     "enableGreenhouses": true,
-    "noGreenhouses": false
+    "noGreenhouses": false,
+    "noDeleteInn": true,
+    "noDeleteFortress": true,
+    "noDeleteGreenhouse": true
   }
 }
