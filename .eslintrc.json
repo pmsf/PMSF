@@ -159,6 +159,7 @@
     "hideQuestsPokemon": true,
     "hideQuestsItem": true,
     "noQuests": true,
+    "noLures": true,
     "enableQuests": true,
     "enableScanPolygon": true,
     "turf": true,
