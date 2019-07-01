@@ -268,20 +268,17 @@ if ( $blockIframe ) {
 
                 $_SESSION['user']->expire_timestamp = $info['expire_timestamp'];
                 
-                if ($info['expire_timestamp'] > time()) {
-                    //If the session variable does not exist, presume that user suffers from a bug and access config is not used.
-                    //If you don't like this, help me fix it.
-                    if (!isset($_SESSION['already_refreshed'])) {
-                 
-                        //Number of seconds to refresh the page after.
-                        $refreshAfter = 1;
-                 
-                        //Send a Refresh header.
-                        header('Refresh: ' . $refreshAfter);
-                 
-                        //Set the session variable so that we don't refresh again.
-                        $_SESSION['already_refreshed'] = true; 
-                    }
+                //If the session variable does not exist, presume that user suffers from a bug and access config is not used.
+                //If you don't like this, help me fix it.
+                if (!isset($_SESSION['already_refreshed'])) {
+                    //Number of seconds to refresh the page after.
+                    $refreshAfter = 1;
+
+                    //Send a Refresh header.
+                    header('Refresh: ' . $refreshAfter);
+
+                    //Set the session variable so that we don't refresh again.
+                    $_SESSION['already_refreshed'] = true; 
                 }
 
                 if (!empty($_SESSION['user']->updatePwd) && $_SESSION['user']->updatePwd === 1) {
@@ -1455,7 +1452,7 @@ if ( $blockIframe ) {
     <?php if ( ! $noConvertPokestops ) { ?>
         <div class="convert-modal" style="display: none;">
              <div class="button-container">
-                <button type="class" onclick="convertPokestopData(event);" class="convertpokestopid"><i class="fas fa-sync-alt"></i> <?php echo i8ln( 'Convert to gym' ); ?></button>
+                <button type="button" onclick="convertPokestopData(event);" class="convertpokestopid"><i class="fas fa-sync-alt"></i> <?php echo i8ln( 'Convert to gym' ); ?></button>
             </div>
         </div>
     <?php } ?>
@@ -1938,6 +1935,7 @@ if ( $blockIframe ) {
     var enablePokestops = <?php echo $noPokestops ? 'false' : $enablePokestops ?>;
     var enableLured = <?php echo $noLures ? 'false' : $enableLured ?>;
     var noQuests = <?php echo $noQuests === true ? 'true' : 'false' ?>;
+    var noLures = <?php echo $noLures === true ? 'true' : 'false' ?>;
     var enableQuests = <?php echo $noQuests ? 'false' : $enableQuests ?>;
     var hideQuestsPokemon = <?php echo $noQuestsPokemon ? '[]' : $hideQuestsPokemon ?>;
     var hideQuestsItem = <?php echo $noQuestsItems ? '[]' : $hideQuestsItem ?>;

@@ -27,10 +27,10 @@ $startingLng = 5.302366;                                           // Starting l
 $maxLatLng = 1;                                                     // Max latitude and longitude size (1 = ~110km, 0 to disable)
 $maxZoomOut = 11;                                                   // Max zoom out level (11 ~= $maxLatLng = 1, 0 to disable, lower = the further you can zoom out)
 $maxZoomIn = 18;                                                    // Max zoom in level 18
-$disableClusteringAtZoom = 15;					    // Disable clustering above this value. 0 to disable
-$zoomToBoundsOnClick = 15;					    // Zoomlevel on clusterClick
-$maxClusterRadius = 30;						    // The maximum radius that a cluster will cover from the central marker (in pixels).
-$spiderfyOnMaxZoom = 'true';					    // Spiderfy cluster markers on click
+$disableClusteringAtZoom = 15;                                      // Disable clustering above this value. 0 to disable
+$zoomToBoundsOnClick = 15;                                          // Zoomlevel on clusterClick
+$maxClusterRadius = 30;                                             // The maximum radius that a cluster will cover from the central marker (in pixels).
+$spiderfyOnMaxZoom = 'true';                                        // Spiderfy cluster markers on click
 
 /* Anti scrape Settings */
 $enableCsrf = true;                                                 // Don't disable this unless you know why you need to :)
@@ -86,7 +86,7 @@ $faviconPath = '';                                                  // Upload fa
 //-----------------------------------------------------
 /* Discord Auth */
 $forcedDiscordLogin = false;                                        // Force users to login with discord before they can see map
-$noDiscordLogin = true;                                             // true/false - This will enable login through discord.
+$noDiscordLogin = true;                                             // This will enable login through discord.
                                                                     // 1. Create a discord bot here -> https://discordapp.com/developers/applications/me
                                                                     // 2. Install composer with "apt-get install composer".
                                                                     // 3. Navigate to your website's root folder and type "composer install" to install the dependencies.
@@ -103,7 +103,7 @@ $serverBlacklist = [''];                                            // Array of 
 $logFailedLogin = 'logs/failed_login.log';                          // File location of where to store a log file of blocked users
 
 /* Native Auth */
-$noNativeLogin = true;                                              // true/false - This will enable the built in login system.
+$noNativeLogin = true;                                              // This will enable the built in login system.
 $domainName = '';                                                   // If this is empty, reset-password emails will use the domain name taken from the URL.
 
 $noSelly = true;                                                    // Enable/Disable Selly Payment system. (WIP, USE AT OWN RISK!)
@@ -118,67 +118,66 @@ $adminUsers = ['admin@example.com', 'admin2@example.com'];          // You can a
 //-----------------------------------------------------
 
 /* Marker Settings */
-$noExcludeMinIV = false;                                        // true/false
-$noMinIV = false;                                               // true/false
-$noMinLevel = false;                                            // true/false
-$noHighLevelData = false;                                       // true/false
-$noRarityDisplay = false;                                       // true/false
+$noExcludeMinIV = false;
+$noMinIV = false;
+$noMinLevel = false;
+$noHighLevelData = false;
+$noRarityDisplay = false;
 $noWeatherIcons = true;
 $noWeatherShadow = false;
 
 /* Notification Settings */
-$noNotifyPokemon = false;                                       // true/false
-$noNotifyRarity = false;                                        // true/false
-$noNotifyIv = false;                                            // true/false
-$noNotifyLevel = false;                                         // true/false
-$noNotifyRaid = false;                                          // true/false
-$noNotifySound = false;                                         // true/false
-$noCriesSound = false;                                          // true/false
-$noNotifyBounce = false;                                        // true/false
-$noNotifyNotification = false;                                  // true/false
+$noNotifyPokemon = false;
+$noNotifyRarity = false;
+$noNotifyIv = false;
+$noNotifyLevel = false;
+$noNotifyRaid = false;
+$noNotifySound = false;
+$noCriesSound = false;
+$noNotifyBounce = false;
+$noNotifyNotification = false;
 
 /* Style Settings */
-$iconNotifySizeModifier = 15;                                   // 0, 15, 30, 45
+$iconNotifySizeModifier = 15;                                       // 0, 15, 30, 45
 
 /* Marker Settings */
 
-$noPokemon = false;                                                 // true/false
-$enablePokemon = 'true';                                            // true/false
-$noPokemonNumbers = false;                                          // true/false
-$noHidePokemon = false;                                             // true/false
-$hidePokemon = '[10, 13, 16, 19, 21, 29, 32, 41, 46, 48, 50, 52, 56, 74, 77, 96, 111, 133,
-                  161, 163, 167, 177, 183, 191, 194, 168]';         // [] for empty
-$hidePokemonCoords = false;                                         // true/false
+$noPokemon = false;
+$enablePokemon = 'true';
+$noPokemonNumbers = false;
+$noHidePokemon = false;
+$hidePokemon = '[10, 13, 16, 19, 21, 29, 32, 41, 46, 48, 50, 52, 56, 74, 77, 96, 111, 133, 161, 163, 167, 177, 183, 191, 194, 168]'; // [] for empty
+$hidePokemonCoords = false;
 
 $excludeMinIV = '[131, 143, 147, 148, 149, 248]';                   // [] for empty
 
 $minIV = '0';                                                       // "0" for empty or a number
 $minLevel = '0';                                                    // "0" for empty or a number
 
-$noBigKarp = false;                                                 // BUGGED: Hides ALL Magikarp && the menu setting. true/false
-$noBigKarpSetting = false;                                          // true/false
-$noTinyRat = false;                                                 // BUGGED: Hides ALL Rattata && the menu setting. true/false
-$noTinyRatSetting = false;                                          // true/false
+$noBigKarp = false;                                                 // BUGGED: Hides ALL Magikarp && the menu setting.
+$noBigKarpSetting = false;
+$noTinyRat = false;                                                 // BUGGED: Hides ALL Rattata && the menu setting.
+$noTinyRatSetting = false;
 
-$noGyms = false;                                                    // true/false
-$enableGyms = 'false';                                              // true/false
-$noExEligible = false;                                              // true/false
-$exEligible = 'false';                                              // true/false
+$noGyms = false;
+$enableGyms = 'false';
+$noExEligible = false;
+$exEligible = 'false';
 
-$noRaids = false;                                                   // true/false
-$enableRaids = 'false';                                             // true/false
-$activeRaids = 'false';                                             // true/false
+$noRaids = false;
+$enableRaids = 'false';
+$activeRaids = 'false';
 $minRaidLevel = 1;
 $maxRaidLevel = 5;
-$noRaidTimer = false;                                               // true/false
-$enableRaidTimer = 'false';                                         // true/false
+$noRaidTimer = false;
+$enableRaidTimer = 'false';
 
-$noPokestops = false;                                               // true/false
-$enablePokestops = 'false';                                         // true/false
+$noPokestops = false;
+$enablePokestops = 'false';
 $noLures = false;
-$enableLured = 'false';                                             // true/false
-$noQuests = false;                                                  // true/false
-$enableQuests = 'false';                                            // true/false
+$enableLured = 'false';
+$noQuests = false;
+$enableQuests = 'false';
 $noQuestsItems = false;
 $noQuestsPokemon = false;
 $hideQuestsPokemon = '[]';  					                    // Pokemon ids will default be hidden in the menu every user is able to change this personaly
@@ -186,7 +185,7 @@ $generateExcludeQuestsPokemon = true;                               // Generate 
 $excludeQuestsPokemon = [];					                        // All Pokémon in this array will not be shown in the filter.
 $hideQuestsItem = '[4, 5, 301, 401, 402, 403, 404, 501, 602, 603, 604, 702, 704, 707, 801, 901, 902, 903, 1001, 1002, 1401, 1402, 1402, 1403, 1404, 1405]';    // Item ids "See protos https://github.com/Furtif/POGOProtos/blob/master/src/POGOProtos/Inventory/Item/ItemId.proto"
 $excludeQuestsItem = [4, 5, 301, 401, 402, 403, 404, 501, 602, 603, 604, 702, 704, 707, 801, 901, 902, 903, 1001, 1002, 1401, 1402, 1402, 1403, 1404, 1405];   // All excluded item wil not be shown in the filter.
-$noItemNumbers = false;                                             // true/false
+$noItemNumbers = false;
 
 // Manual quest hide options
 $hideQuestTypes = [0, 1, 2, 3, 12, 18, 19, 22, 24, 25];
@@ -196,33 +195,33 @@ $hideConditionTypes = [0, 4, 5, 11, 12, 13, 16, 17, 19, 20];
 $showEncounters = [201];
 $showItems = [1, 2, 3, 101, 102, 103, 104, 201, 202, 701, 703, 705, 706, 707, 1301];
 
-$noScannedLocations = false;                                        // true/false
-$enableScannedLocations = 'false';                                  // true/false
+$noScannedLocations = false;
+$enableScannedLocations = 'false';
 
-$noSpawnPoints = false;                                             // true/false
-$enableSpawnPoints = 'false';                                       // true/false
+$noSpawnPoints = false;
+$enableSpawnPoints = 'false';
 
-$noRanges = false;                                                  // true/false
-$enableRanges = 'false';                                            // true/false
+$noRanges = false;
+$enableRanges = 'false';
 
 $noScanPolygon = true;
 $enableScanPolygon = 'false';
-$geoJSONfile = 'custom/scannerarea.json';			    // path to geoJSON file create your own on http://geojson.io/ adjust filename
+$geoJSONfile = 'custom/scannerarea.json';			                // path to geoJSON file create your own on http://geojson.io/ adjust filename
 /* Location & Search Settings */
 
-$noSearchLocation = false;                                          // true/false
+$noSearchLocation = false;
 
-$noStartMe = false;                                                 // true/false
-$enableStartMe = 'false';                                           // true/false
+$noStartMe = false;
+$enableStartMe = 'false';
 
-$noStartLast = false;                                               // true/false
-$enableStartLast = 'false';                                         // true/false
+$noStartLast = false;
+$enableStartLast = 'false';
 
-$noFollowMe = false;                                                // true/false
-$enableFollowMe = 'false';                                          // true/false
+$noFollowMe = false;
+$enableFollowMe = 'false';
 
-$noSpawnArea = false;                                               // true/false
-$enableSpawnArea = 'false';                                         // true/false
+$noSpawnArea = false;
+$enableSpawnArea = 'false';
 
 /* Notification Settings */
 
@@ -234,37 +233,37 @@ $notifyIv = '""';                                                   // "" for em
 
 $notifyLevel = '""';                                                // "" for empty or a number
 
-$notifyRaid = 5;                                                    // O to disable
+$notifyRaid = 5;                                                    // 1,2,3,4 or 5, 0 to disable
 
-$notifySound = 'false';                                             // true/false
+$notifySound = 'false';
 
-$criesSound = 'false';                                              // true/false
+$criesSound = 'false';
 
-$notifyBounce = 'true';                                             // true/false
+$notifyBounce = 'true';
 
-$notifyNotification = 'true';                                       // true/false
+$notifyNotification = 'true';
 
 /* Style Settings */
 
 $copyrightSafe = true;
-$noCostumeIcons = true;                                             // Set to true if you $iconRepository doesnt support costume icons. true/false
+$noCostumeIcons = true;                                             // Set to true if you $iconRepository doesnt support costume icons.
 $iconRepository = '';						                        // URLs or folder paths are allowed
 
-$noMapStyle = false;                                                // true/false
+$noMapStyle = false;
 $mapStyle = 'openstreetmap';                                        // openstreetmap, darkmatter, styleblackandwhite, styletopo, stylesatellite, stylewikipedia
 
-$noDirectionProvider = false;                                       // true/false
+$noDirectionProvider = false;
 $directionProvider = 'google';                                      // google, waze, apple, bing, google_pin
 
-$noIconSize = false;                                                // true/false
+$noIconSize = false;
 $iconSize = 0;                                                      // -8, 0, 10, 20
 
-$noIconNotifySizeModifier = false;                                  // true/false | Increase size of notified Pokemon
+$noIconNotifySizeModifier = false;                                  // Increase size of notified Pokemon
 
-$noGymStyle = false;                                                // true/false
+$noGymStyle = false;
 $gymStyle = 'ingame';                                               // ingame, shield, rocketmap
 
-$noLocationStyle = false;                                           // true/false
+$noLocationStyle = false;
 $locationStyle = 'none';                                            // none, google, red, red_animated, blue, blue_animated, yellow, yellow_animated, pokesition, pokeball
 
 $triggerGyms = '[]';                                                // Add Gyms that the OSM-Query doesn't take care of like '["gym_id", "gym_id"]'
@@ -280,21 +279,13 @@ $noWhatsappLink = true;
 //-----------------------------------------------------
 $noSubmit = true;
 $hideIfManual = false;
-$noManualRaids = true;						 			// Enable/Disable ManualRaids permanently ( Comment this line if you want to use the block below )
-$noDiscordSubmitLogChannel = true;                                  			// Send webhooks to discord channel upon submission
+$noManualRaids = true;						 			                                // Enable/Disable ManualRaids permanently ( Comment this line if you want to use the block below )
+$noDiscordSubmitLogChannel = true;                                  			        // Send webhooks to discord channel upon submission
 $submitMapUrl = '';
 $discordSubmitLogChannelUrl = 'https://discordapp.com/api/webhooks/<yourCHANNELhere>';  // Sends gym/pokestop submit & pokestop rename directly to discord
-//$currentTime = (int) date('G');				   			/ Uncomment this block to deny Raid submissions over night
-//
-//if ($currentTime >= 6 && $currentTime < 23) {                     			// noManualRaids = true between 23:00 and 06:00. Adjust hours if needed
-//
-//	        $noManualRaids = false;
-//} else {
-//	        $noManualRaids = true;
-//}
 
 $noManualPokemon = true;
-$pokemonTimer = 900;                               // Time in seconds before a submitted Pokémon despawns.
+$pokemonTimer = 900;                                                                    // Time in seconds before a submitted Pokémon despawns. (not used atm)
 $noManualGyms = true;
 $noManualPokestops = true;
 $noRenamePokestops = true;
@@ -315,8 +306,8 @@ $enableLevel13Cells = 'false';
 $enableLevel14Cells = 'false';
 $enableLevel17Cells = 'false';
 $markPortalsAsNew = 86400;                         // Time in seconds to mark new imported portals as new ( 86400 for 1 day )
-$noPoi = true;					   // Allow users to view POI markers 
-$noAddPoi = true;				   // Allow to add POI markers (locations eligible for submitting Pokestops/Ingress portals)
+$noPoi = true;					                   // Allow users to view POI markers 
+$noAddPoi = true;				                   // Allow to add POI markers (locations eligible for submitting Pokestops/Ingress portals)
 $enablePoi = 'false';
 $noDeletePoi = true;
 $noEditPoi = true;
@@ -331,7 +322,7 @@ $noDeletePokestops = false;
 
 $raidBosses = [1, 4, 7, 129, 138, 140, 147, 82, 108, 125, 126, 185, 303, 65, 68, 95, 106, 107, 123, 135, 142, 76, 112, 131, 143, 248, 359, 144, 145, 146, 377];
 
-$sendWebhook = false;				// Sends Raids & Pokémon. Needs a 3th party program like pokealarm.
+$sendWebhook = false;				            // Sends Raids & Pokémon. Needs a 3th party program like pokealarm.
 $webhookUrl = null;                             //['url-1','url-2']
 
 //---------------------------------------------------
@@ -339,7 +330,7 @@ $webhookUrl = null;                             //['url-1','url-2']
 //---------------------------------------------------
 $sendQuestWebhook = false;                      // Experimental use only
 $questWebhookUrl = null;                        // Experimental use only
-$webhookSystem = [''];				// Supported either 'pokealarm' or 'poracle'
+$webhookSystem = [''];			            	// Supported either 'pokealarm' or 'poracle'
 
 $manualFiveStar = [
     'webhook' => false,						    // If set to false no webhooks will be send on raid_cron.php
@@ -353,16 +344,16 @@ $manualFiveStar = [
 //-----------------------------------------------
 // Search
 //-----------------------------------------------------
-
 $noSearch = false;
-$noSearchPokestops = true;     //Wont work if noSearch = false
-$noSearchGyms = true;          //Wont work if noSearch = false
-$noSearchManualQuests = false;  //Wont work if noSearch = false
+$noSearchPokestops = true;
+$noSearchGyms = true;
+$noSearchManualQuests = false;
 $noSearchNests = true;
 $noSearchPortals = true;
-$defaultUnit = "km";                                            // mi/km
+$defaultUnit = "km";        // mi/km
 $maxSearchResults = 10;		//Max number of search results
 $maxSearchNameLength = 0;	// 0 = Unlimited. Shorten pokestop names in reward search results if longer than this value to prevent UI layout issues
+
 //-----------------------------------------------
 // Community
 //-----------------------------------------------------
@@ -375,16 +366,14 @@ $noEditCommunity = true;
 //-----------------------------------------------
 // Nests
 //-----------------------------------------------------
-$noNests = true;                                                   // true/false
-$enableNests = 'false';                                             // true/false
+$noNests = true;
+$enableNests = 'false';
 $noManualNests = true;
 $noDeleteNests = true;
-$nestVerifyLevel = 1;						    // 1 = Verified 2 = 1 + Unverified 3 = 1 + 2 + Revoked 4 = Get all nests
-$deleteNestsOlderThan = 42;					    // days after not updated nests are removed from database by nest cron
-$migrationDay = strtotime('5 April 2018');                          // Adjust day value after non consitent 14 day migration
+$deleteNestsOlderThan = 42;					                       // days after not updated nests are removed from database by nest cron
+$migrationDay = strtotime('5 April 2018');                         // Adjust day value after non consitent 14 day migration
 $noAddNewNests = true;
 $excludeNestMons = [2,3,5,6,8,9,11,12,14,15,17,18,20,22,24,26,28,29,30,31,32,33,34,36,38,40,42,44,45,49,51,53,55,57,59,61,62,64,65,67,68,70,71,73,75,76,78,80,82,83,85,87,88,89,91,93,94,97,99,101,103,105,106,107,108,109,110,112,113,114,115,117,119,121,122,128,130,131,132,134,135,136,137,139,142,143,144,145,146,147,148,149,150,151,153,154,156,157,159,160,161,162,163,164,165,166,167,168,169,171,172,173,174,175,176,177,178,179,180,181,182,183,184,186,187,188,189,191,192,194,195,196,197,199,201,204,205,207,208,210,212,214,217,218,219,221,222,223,224,225,228,229,230,232,233,235,236,237,238,239,240,241,242,243,244,245,246,247,248,249,250,251,253,254,256,257,259,260,262,263,264,265,266,267,268,269,270,271,272,274,275,276,277,279,280,281,282,284,286,287,288,289,290,291,292,293,294,295,297,298,301,303,304,305,306,308,310,313,314,316,317,319,321,323,324,326,327,328,329,330,331,332,334,335,336,337,338,339,340,342,344,346,348,349,350,351,352,354,356,357,358,359,360,361,362,363,364,365,366,367,368,369,371,372,373,374,375,376,377,378,379,380,381,382,383,384,385,386];
-$nestCoords = array();                                           //$nestCoords = array(array('lat1' => 42.8307723529682, 'lng1' => -88.7527692278689, 'lat2' => 42.1339901128552, 'lng2' => -88.0688703020877),array(    'lat1' => 42.8529250952743,'lng1' => -88.1292951067752,'lat2' => 41.7929306950085,'lng2' => -87.5662457903689));
 
 $noNestPolygon = true;
 $enableNestPolygon = 'false';
@@ -406,34 +395,30 @@ $noDeleteGreenhouse = true;  // Enable/Disable option do delete a greenhouse
 //-----------------------------------------------------
 // Areas
 //-----------------------------------------------------
-
 $noAreas = true;
-$areas = [];                                                        // [[latitude,longitude,zoom,"name"],[latitude,longitude,zoom,"name"]]
+$areas = [];      // [[latitude,longitude,zoom,"name"],[latitude,longitude,zoom,"name"]]
 
 //-----------------------------------------------------
 // Weather Config
 //-----------------------------------------------------
-
-$noWeatherOverlay = true;                                          // true/false
-$enableWeatherOverlay = 'false';                                    // true/false
+$noWeatherOverlay = true;
+$enableWeatherOverlay = 'false';
 
 $weatherColors = [
-    'grey',                                                         // no weather
-    '#fdfd96',                                                      // clear
-    'darkblue',                                                     // rain
-    'grey',                                                         // partly cloudy
-    'darkgrey',                                                     // cloudy
-    'purple',                                                       // windy
-    'white',                                                        // snow
-    'black'                                                         // fog
+    'grey',         // no weather
+    '#fdfd96',      // clear
+    'darkblue',     // rain
+    'grey',         // partly cloudy
+    'darkgrey',     // cloudy
+    'purple',       // windy
+    'white',        // snow
+    'black'         // fog
 ];
 
 //-----------------------------------------------------
 // DEBUGGING
 //-----------------------------------------------------
-
 // Do not enable unless requested
-
 $enableDebug = false;
 
 //-----------------------------------------------------
