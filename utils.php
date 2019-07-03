@@ -106,7 +106,8 @@ function createUserAccount($user, $password, $newExpireTimestamp)
                 "user" => $user,
                 "temp_password" => $hashedPwd,
                 "expire_timestamp" => $newExpireTimestamp,
-                "login_system" => 'native'
+                "login_system" => 'native',
+                "access_level" => '0'
             ]);
             
             $logMsg = "INSERT INTO users (id, user, expire_timestamp, login_system) VALUES ('{$getId}', '{$user}', '{$newExpireTimestamp}', 'native'); -- " . date('Y-m-d H:i:s') . "\r\n";

@@ -159,6 +159,7 @@
     "hideQuestsPokemon": true,
     "hideQuestsItem": true,
     "noQuests": true,
+    "noLures": true,
     "enableQuests": true,
     "enableScanPolygon": true,
     "turf": true,
@@ -172,6 +173,15 @@
     "enableNestPolygon": true,
     "nestGeoJSONfile": true,
     "noCostumeIcons": true,
-    "queryInterval": true
+    "queryInterval": true,
+    "enableInns": true,
+    "noInns": false,
+    "enableFortresses": true,
+    "noFortresses": false,
+    "enableGreenhouses": true,
+    "noGreenhouses": false,
+    "noDeleteInn": true,
+    "noDeleteFortress": true,
+    "noDeleteGreenhouse": true
   }
 }

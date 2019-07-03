@@ -231,14 +231,13 @@ if ( $blockIframe ) {
         <?php
         if ( $discordUrl != "" ) {
             echo '<a href="' . $discordUrl . '" target="_blank" style="margin-bottom: 5px; vertical-align: middle;padding:0 5px;">
-            <img src="static/images/discord.png" border="0" style="float: right;">
-        </a>';
+                 <i class="fab fa-discord fa-2x" style="float:right;color:white;"></i>
+                 </a>';
         }
         if ( $paypalUrl != "" ) {
             echo '<a href="' . $paypalUrl . '" target="_blank" style="margin-bottom: 5px; vertical-align: middle; padding:0 5px;">
-            <img src="https://www.paypalobjects.com/webstatic/en_US/i/btn/png/btn_donate_74x21.png" border="0" name="submit"
-                 title="PayPal - The safer, easier way to pay online!" alt="Donate" style="float: right;">
-        </a>';
+                 <i class="fab fa-paypal fa-2x" style="float:right;color:white;margin-left:10px;"></i>
+                 </a>';
         }
         ?>
         <?php if ( ! $noWeatherOverlay ) {
@@ -256,28 +255,30 @@ if ( $blockIframe ) {
             }
             if (!empty($_SESSION['user']->id)) {
                 $info = $manualdb->query(
-                    "SELECT expire_timestamp FROM users WHERE id = :id AND login_system = :login_system", [
+                    "SELECT expire_timestamp, access_level FROM users WHERE id = :id AND login_system = :login_system", [
                         ":id" => $_SESSION['user']->id,
                         ":login_system" => $_SESSION['user']->login_system
                     ]
                 )->fetch();
 
+                if ( ! $noSelly && $info['expire_timestamp'] < time() && $info['access_level'] > 0) {
+                    $manualdb->update("users", ["access_level" => 0, "session_id" => null], ["id" => $_SESSION['user']->id]);
+                    header('Refresh: ');
+                }
+
                 $_SESSION['user']->expire_timestamp = $info['expire_timestamp'];
                 
-                if ($info['expire_timestamp'] > time()) {
-                    //If the session variable does not exist, presume that user suffers from a bug and access config is not used.
-                    //If you don't like this, help me fix it.
-                    if (!isset($_SESSION['already_refreshed'])) {
-                 
-                        //Number of seconds to refresh the page after.
-                        $refreshAfter = 1;
-                 
-                        //Send a Refresh header.
-                        header('Refresh: ' . $refreshAfter);
-                 
-                        //Set the session variable so that we don't refresh again.
-                        $_SESSION['already_refreshed'] = true; 
-                    }
+                //If the session variable does not exist, presume that user suffers from a bug and access config is not used.
+                //If you don't like this, help me fix it.
+                if (!isset($_SESSION['already_refreshed'])) {
+                    //Number of seconds to refresh the page after.
+                    $refreshAfter = 1;
+
+                    //Send a Refresh header.
+                    header('Refresh: ' . $refreshAfter);
+
+                    //Set the session variable so that we don't refresh again.
+                    $_SESSION['already_refreshed'] = true; 
                 }
 
                 if (!empty($_SESSION['user']->updatePwd) && $_SESSION['user']->updatePwd === 1) {
@@ -285,13 +286,15 @@ if ( $blockIframe ) {
                     die();
                 }
                 
-                if ($info['expire_timestamp'] > time()) {
+                if ($noSelly || $info['expire_timestamp'] > time()) {
                     $color = "green";
                 } else {
-                    header('Location: ./logout.php');
+                    $color = "red";
                 }
 
                 echo "<span style='color: {$color};'>" . substr($_SESSION['user']->user, 0, 3) . "...</span>";
+            } else if ($forcedDiscordLogin === true) {
+                header("Location: ./discord-login");
             } else {
                 echo "<a href='./user'>" . i8ln('Login') . "</a>";
             }
@@ -299,8 +302,7 @@ if ( $blockIframe ) {
         ?>
         <?php if ( ! $noStatsToggle ) {
             ?>
-        <a href="#stats" id="statsToggle" class="statsNav" style="float: right;"><span
-                class="label"><?php echo i8ln( 'Stats' ) ?></span></a>
+        <a href="#stats" id="statsToggle" class="statsNav" style="float: right;"><span class="label"><?php echo i8ln( 'Stats' ) ?></span></a>
             <?php
         } ?>
     </header>
@@ -799,7 +801,7 @@ if ( $blockIframe ) {
             if ( ! $noPortals || ! $noS2Cells ) {
                 ?>
                 <h3><?php echo i8ln( 'Ingress / S2Cell' ); ?></h3>
-        <div>
+                <div>
                 <?php
                 if ( ! $noPortals ) {
                     echo '<div class="form-control switch-container">
@@ -812,14 +814,14 @@ if ( $blockIframe ) {
                             <span class="switch-handle"></span>
                         </label>
                     </div>
-        </div>
+                </div>
                 <div class="form-control switch-container" id = "new-portals-only-wrapper" style = "display:none">
                     <select name = "new-portals-only-switch" id = "new-portals-only-switch">
                         <option value = "0"> ' . i8ln( 'All' ) . '</option>
                         <option value = "1"> ' . i8ln( 'Only new' ) . ' </option>
                     </select>
                 </div>';
-        } ?>
+                } ?>
                 <?php
                 if ( ! $noPoi ) {
                     echo '<div class="form-control switch-container">
@@ -833,7 +835,49 @@ if ( $blockIframe ) {
                         </label>
                     </div>
                 </div>';
-        } ?>
+                } ?>
+                <?php
+                if ( ! $noInn ) {
+                    echo '<div class="form-control switch-container">
+                    <h3>' . i8ln( 'Inn' ) . '</h3>
+                    <div class="onoffswitch">
+                        <input id="inns-switch" type="checkbox" name="inns-switch"
+                               class="onoffswitch-checkbox" checked>
+                        <label class="onoffswitch-label" for="inns-switch">
+                            <span class="switch-label" data-on="On" data-off="Off"></span>
+                            <span class="switch-handle"></span>
+                        </label>
+                    </div>
+                </div>';
+                } ?>
+                <?php
+                if ( ! $noFortress ) {
+                    echo '<div class="form-control switch-container">
+                    <h3>' . i8ln( 'Fortress' ) . '</h3>
+                    <div class="onoffswitch">
+                        <input id="fortresses-switch" type="checkbox" name="fortresses-switch"
+                               class="onoffswitch-checkbox" checked>
+                        <label class="onoffswitch-label" for="fortresses-switch">
+                            <span class="switch-label" data-on="On" data-off="Off"></span>
+                            <span class="switch-handle"></span>
+                        </label>
+                    </div>
+                </div>';
+                } ?>
+                <?php
+                if ( ! $noGreenhouse ) {
+                    echo '<div class="form-control switch-container">
+                    <h3>' . i8ln( 'Greenhouse' ) . '</h3>
+                    <div class="onoffswitch">
+                        <input id="greenhouses-switch" type="checkbox" name="greenhouses-switch"
+                               class="onoffswitch-checkbox" checked>
+                        <label class="onoffswitch-label" for="greenhouses-switch">
+                            <span class="switch-label" data-on="On" data-off="Off"></span>
+                            <span class="switch-handle"></span>
+                        </label>
+                    </div>
+                </div>';
+                } ?>
                 <?php
                 if ( ! $noS2Cells ) {
                     echo '<div class="form-control switch-container">
@@ -1269,7 +1313,7 @@ if ( $blockIframe ) {
             <center>
                 <button class="settings"
                         onclick="confirm('Are you sure you want to reset settings to default values?') ? (localStorage.clear(), window.location.reload()) : false">
-                    <i class="fa fa-refresh" aria-hidden="true"></i> <?php echo i8ln( 'Reset Settings' ) ?>
+                    <i class="fas fa-sync-alt" aria-hidden="true"></i> <?php echo i8ln( 'Reset Settings' ) ?>
                 </button>
             </center>
         </div>
@@ -1277,7 +1321,7 @@ if ( $blockIframe ) {
             <center>
                 <button class="settings"
                         onclick="download('<?= addslashes( $title ) ?>', JSON.stringify(JSON.stringify(localStorage)))">
-                    <i class="fa fa-upload" aria-hidden="true"></i> <?php echo i8ln( 'Export Settings' ) ?>
+                    <i class="fas fa-upload" aria-hidden="true"></i> <?php echo i8ln( 'Export Settings' ) ?>
                 </button>
             </center>
         </div>
@@ -1286,59 +1330,48 @@ if ( $blockIframe ) {
                 <input id="fileInput" type="file" style="display:none;" onchange="openFile(event)"/>
                 <button class="settings"
                         onclick="document.getElementById('fileInput').click()">
-                    <i class="fa fa-download" aria-hidden="true"></i> <?php echo i8ln( 'Import Settings' ) ?>
+                    <i class="fas fa-download" aria-hidden="true"></i> <?php echo i8ln( 'Import Settings' ) ?>
                 </button>
             </center>
         </div>
         <?php
-        if (($noNativeLogin === false) && !empty($_SESSION['user']->id)) {
+        if (($noNativeLogin === false || $noDiscordLogin === false) && !empty($_SESSION['user']->id)) {
+            if ( ! $noSelly) {
             ?>
+                <div>
+                    <center>
+                        <button class="settings"
+                                onclick="document.location.href='user'">
+                            <i class="fas fa-key" aria-hidden="true"></i> <?php echo i8ln('Activate Key'); ?>
+                        </button>
+                    </center>
+                </div>
+            <?php } ?>
             <div>
                 <center>
                     <button class="settings"
-                            onclick="document.location.href='user'">
-                        <i class="fa" aria-hidden="true"></i> <?php echo i8ln('Activate Key'); ?>
+                            onclick="document.location.href='logout.php'">
+                        <i class="fas fa-sign-out-alt" aria-hidden="true"></i> <?php echo i8ln('Logout'); ?>
                     </button>
                 </center>
             </div>
-            <div>
-                <center>
-                    <button class="settings"
-                            onclick="document.location.href='logout.php'">
-                        <i class="fa" aria-hidden="true"></i> <?php echo i8ln('Logout'); ?>
-                    </button>
-                </center>
-            </div><br>
             <div><center><p>
-            <?php
-            $time = date("Y-m-d", $_SESSION['user']->expire_timestamp);
-            
-            echo $_SESSION['user']->user . "<br>";
-            if ($_SESSION['user']->expire_timestamp < time()) {
-                echo "<span style='color: green;'>" . i8ln('Membership expires on') . " {$time}</span>";
-            } else {
-                echo "<span style='color: red;'>" . i8ln('Membership expired on') . " {$time}</span>";
-            } ?>
+                <?php
+                if ( ! $noSelly) {
+                    $time = date("Y-m-d", $_SESSION['user']->expire_timestamp);
+                
+                    if ($_SESSION['user']->expire_timestamp > time()) {
+                        echo "<span style='color: green;'>" . i8ln('Membership expires on') . " {$time}</span>";
+                    } else {
+                        echo "<span style='color: red;'>" . i8ln('Membership expired on') . " {$time}</span>";
+                    } 
+			    } ?>
             </p></center></div>
-        <?php
-        }
-        ?>
-        <?php
-        if (($noDiscordLogin === false) && !empty($_SESSION['user']->id)) {
-            ?>
-            <div>
-                <center>
-                    <button class="settings"
-                            onclick="document.location.href='logout.php'">
-                        <i class="fa" aria-hidden="true"></i> <?php echo i8ln('Logout'); ?>
-                    </button>
-                </center>
-            </div><br>
             <div><center><p>
             <?php
             echo 'Logged in as: ' . $_SESSION['user']->user . "<br>";
             ?>
-        </p></center></div>
+            </p></center></div>
         <?php
         }
         ?>
@@ -1350,7 +1383,7 @@ if ( $blockIframe ) {
                 ?>
                 <div class="switch-container">
                     <div>
-                        <center><a href="<?= $worldopoleUrl ?>">Full Stats</a></center>
+                        <center><a class="button" href="<?= $worldopoleUrl ?>"><i class="far fa-chart-bar"></i> Full Stats</a></center>
                     </div>
                 </div>
                 <?php
@@ -1402,110 +1435,74 @@ if ( $blockIframe ) {
             <?php pokemonFilterImages( $noPokemonNumbers, 'pokemonSubmitFilter(event)', $excludeNestMons, 5 ); ?>
             <div class="button-container">
                 <button type="button" onclick="manualNestData(event);" class="submitting-nests"><i
-                        class="fa fa-binoculars"
-                        style="margin-right:10px;"></i><?php echo i8ln( 'Submit Nest' ); ?>
+                        class="fas fa-binoculars"></i> <?php echo i8ln( 'Submit Nest' ); ?>
                 </button>
             </div>
         </div>
     <?php } ?>
     <?php if ( ! $noRenamePokestops ) { ?>
         <div class="rename-modal" style="display: none;">
-       <input type="text" id="pokestop-name" name="pokestop-name"
-          placeholder="<?php echo i8ln( 'Enter New Pokéstop Name' ); ?>" data-type="pokestop"
-                  class="search-input">
-             <div class="button-container">
-                <button type="button" onclick="renamePokestopData(event);" class="renamepokestopid"><i
-                        class="fa fa-edit"
-                        style="margin-right:10px; vertical-align: middle; font-size: 1.5em;"></i><?php echo i8ln( 'Rename Pokestop' ); ?>
-                </button>
+            <input type="text" id="pokestop-name" name="pokestop-name" 
+                placeholder="<?php echo i8ln( 'Enter New Pokéstop Name' ); ?>" data-type="pokestop" class="search-input">
+            <div class="button-container">
+                <button type="button" onclick="renamePokestopData(event);" class="renamepokestopid"><i class="fas fa-edit"></i> <?php echo i8ln( 'Rename Pokestop' ); ?></button>
             </div>
         </div>
     <?php } ?>
     <?php if ( ! $noConvertPokestops ) { ?>
         <div class="convert-modal" style="display: none;">
              <div class="button-container">
-                <button type="button" onclick="convertPokestopData(event);" class="convertpokestopid"><i
-                        class="fa fa-refresh"
-                        style="margin-right:10px; vertical-align: middle; font-size: 1.5em;"></i><?php echo i8ln( 'Convert to gym' ); ?>
-                </button>
+                <button type="button" onclick="convertPokestopData(event);" class="convertpokestopid"><i class="fas fa-sync-alt"></i> <?php echo i8ln( 'Convert to gym' ); ?></button>
             </div>
         </div>
     <?php } ?>
     <?php if ( ! $noEditCommunity ) { ?>
         <div class="editcommunity-modal" style="display: none;">
-       <input type="text" id="community-name" name="community-name"
-          placeholder="<?php echo i8ln( 'Enter New community Name' ); ?>" data-type="community-name"
-          class="search-input">
-       <input type="text" id="community-description" name="community-description"
-          placeholder="<?php echo i8ln( 'Enter New community Description' ); ?>" data-type="community-description"
-          class="search-input">
-       <input type="text" id="community-invite" name="community-invite"
-          placeholder="<?php echo i8ln( 'Enter New community Invite link' ); ?>" data-type="community-invite"
-          class="search-input">
-         <div class="button-container">
-                <button type="button" onclick="editCommunityData(event);" class="editcommunityid"><i
-                        class="fa fa-edit"
-                        style="margin-right:10px; vertical-align: middle; font-size: 1.5em;"></i><?php echo i8ln( 'Save Changes' ); ?>
+            <input type="text" id="community-name" name="community-name" placeholder="<?php echo i8ln( 'Enter New community Name' ); ?>" data-type="community-name" class="search-input">
+            <input type="text" id="community-description" name="community-description" placeholder="<?php echo i8ln( 'Enter New community Description' ); ?>" data-type="community-description" class="search-input">
+            <input type="text" id="community-invite" name="community-invite" placeholder="<?php echo i8ln( 'Enter New community Invite link' ); ?>" data-type="community-invite" class="search-input">
+            <div class="button-container">
+                <button type="button" onclick="editCommunityData(event);" class="editcommunityid">
+                    <i class="fas fa-edit"></i> <?php echo i8ln( 'Save Changes' ); ?>
                 </button>
             </div>
         </div>
     <?php } ?>
     <?php if ( ! $noEditPoi ) { ?>
         <div class="editpoi-modal" style="display: none;">
-	   <input type="text" id="poi-name" name="poi-name"
-		  placeholder="<?php echo i8ln( 'Enter New POI Name' ); ?>" data-type="poi-name"
-		  class="search-input">
-	   <input type="text" id="poi-description" name="poi-description"
-		  placeholder="<?php echo i8ln( 'Enter New POI Description' ); ?>" data-type="poi-description"
-		  class="search-input">
-	   <input type="text" id="poi-notes" name="poi-notes"
-		  placeholder="<?php echo i8ln( 'Enter New POI Notes' ); ?>" data-type="poi-notes"
-		  class="search-input">
-	     <div class="button-container">
-                <button type="button" onclick="editPoiData(event);" class="editpoiid"><i
-                        class="fa fa-edit"
-                        style="margin-right:10px; vertical-align: middle; font-size: 1.5em;"></i><?php echo i8ln( 'Save Changes' ); ?>
-                </button>
+	        <input type="text" id="poi-name" name="poi-name" placeholder="<?php echo i8ln( 'Enter New POI Name' ); ?>" data-type="poi-name" class="search-input">
+	        <input type="text" id="poi-description" name="poi-description" placeholder="<?php echo i8ln( 'Enter New POI Description' ); ?>" data-type="poi-description" class="search-input">
+	        <input type="text" id="poi-notes" name="poi-notes"placeholder="<?php echo i8ln( 'Enter New POI Notes' ); ?>" data-type="poi-notes" class="search-input">
+	        <div class="button-container">
+                <button type="button" onclick="editPoiData(event);" class="editpoiid"><i class="fas fa-edit"></i> <?php echo i8ln( 'Save Changes' ); ?></button>
             </div>
         </div>
     <?php } ?>
     <?php if ( ! $noPortals ) { ?>
         <div class="convert-portal-modal" style="display: none;">
-             <div class="button-container">
-                <button type="button" onclick="convertPortalToPokestopData(event);" class="convertportalid"><i
-                        class="fa fa-refresh"
-                        style="margin-right:10px; vertical-align: middle; font-size: 1.5em;"></i><?php echo i8ln( 'Convert to pokestop' ); ?>
-        </button>
-                <button type="button" onclick="convertPortalToGymData(event);" class="convertportalid"><i
-                        class="fa fa-refresh"
-                        style="margin-right:10px; vertical-align: middle; font-size: 1.5em;"></i><?php echo i8ln( 'Convert to gym' ); ?>
-        </button>
-                <button type="button" onclick="markPortalChecked(event);" class="convertportalid"><i
-                        class="fa fa-times"
-                        style="margin-right:10px; vertical-align: middle; font-size: 1.5em;"></i><?php echo i8ln( 'No Pokestop or Gym' ); ?>
-        </button>
+            <div class="button-container">
+                <button type="button" onclick="convertPortalToPokestopData(event);" class="convertportalid">
+                    <i class="fas fa-sync-alt"></i> <?php echo i8ln( 'Convert to pokestop' ); ?></button>
+                <button type="button" onclick="convertPortalToGymData(event);" class="convertportalid">
+                    <i class="fas fa-sync-alt"></i> <?php echo i8ln( 'Convert to gym' ); ?></button>
+                <button type="button" onclick="convertPortalToInnData(event);" class="convertportalid">
+                    <i class="fas fa-sync-alt"></i> <?php echo i8ln( 'Convert to inn' ); ?></button>
+                <button type="button" onclick="convertPortalToFortressData(event);" class="convertportalid">
+                    <i class="fas fa-sync-alt"></i> <?php echo i8ln( 'Convert to fortress' ); ?></button>
+                <button type="button" onclick="convertPortalToGreenhouseData(event);" class="convertportalid">
+                    <i class="fas fa-sync-alt"></i> <?php echo i8ln( 'Convert to greenhouse' ); ?></button>
+                <button type="button" onclick="markPortalChecked(event);" class="convertportalid">
+                    <i class="fas fa-times"></i> <?php echo i8ln( 'No Pokestop or Gym' ); ?></button>
             </div>
         </div>
     <?php } ?>
     <?php if ( ! $noPoi ) { ?>
         <div class="mark-poi-modal" style="display: none;">
-             <div class="button-container">
-                <button type="button" onclick="markPoiSubmitted(event);" class="markpoiid"><i
-                        class="fa fa-refresh"
-                        style="margin-right:10px; vertical-align: middle; font-size: 1.5em;"></i><?php echo i8ln( 'Submitted' ); ?>
-        </button>
-                <button type="button" onclick="markPoiDeclined(event);" class="markpoiid"><i
-                        class="fa fa-times"
-                        style="margin-right:10px; vertical-align: middle; font-size: 1.5em;"></i><?php echo i8ln( 'Declined' ); ?>
-        </button>
-                <button type="button" onclick="markPoiResubmit(event);" class="markpoiid"><i
-                        class="fa fa-times"
-                        style="margin-right:10px; vertical-align: middle; font-size: 1.5em;"></i><?php echo i8ln( 'Resubmit' ); ?>
-        </button>
-                <button type="button" onclick="markNotCandidate(event);" class="markpoiid"><i
-                        class="fa fa-times"
-                        style="margin-right:10px; vertical-align: middle; font-size: 1.5em;"></i><?php echo i8ln( 'Not a candidate' ); ?>
-        </button>
+            <div class="button-container">
+                <button type="button" onclick="markPoiSubmitted(event);" class="markpoiid"><i class="fas fa-sync-alt"></i> <?php echo i8ln( 'Submitted' ); ?></button>
+                <button type="button" onclick="markPoiDeclined(event);" class="markpoiid"><i class="fas fa-times"></i> <?php echo i8ln( 'Declined' ); ?></button>
+                <button type="button" onclick="markPoiResubmit(event);" class="markpoiid"><i class="fas fa-times"></i> <?php echo i8ln( 'Resubmit' ); ?></button>
+                <button type="button" onclick="markNotCandidate(event);" class="markpoiid"><i class="fas fa-times"></i> <?php echo i8ln( 'Not a candidate' ); ?></button>
             </div>
         </div>
     <?php } ?>
@@ -1523,20 +1520,20 @@ if ( $blockIframe ) {
         <div class="quest-modal" style="display: none;">
             <input type="hidden" value="" name="questPokestop" class="questPokestop"/>
             <?php
-            $json   = file_get_contents( 'static/dist/data/questtype.min.json' );
-            $questtypes  = json_decode( $json, true );
-
-            $json    = file_get_contents( 'static/dist/data/rewardtype.min.json' );
-            $rewardtypes   = json_decode( $json, true );
-
-            $json    = file_get_contents( 'static/dist/data/conditiontype.min.json' );
-            $conditiontypes   = json_decode( $json, true );
-
-        $json    = file_get_contents( 'static/dist/data/pokemon.min.json' );
-        $encounters = json_decode( $json, true );
-
-        $json    = file_get_contents( 'static/dist/data/items.min.json' );
-        $items = json_decode( $json, true );
+                $json   = file_get_contents( 'static/dist/data/questtype.min.json' );
+                $questtypes  = json_decode( $json, true );
+                
+                $json    = file_get_contents( 'static/dist/data/rewardtype.min.json' );
+                $rewardtypes   = json_decode( $json, true );
+                
+                $json    = file_get_contents( 'static/dist/data/conditiontype.min.json' );
+                $conditiontypes   = json_decode( $json, true );
+                
+                $json    = file_get_contents( 'static/dist/data/pokemon.min.json' );
+                $encounters = json_decode( $json, true );
+                
+                $json    = file_get_contents( 'static/dist/data/items.min.json' );
+                $items = json_decode( $json, true );
             ?>
             <label for="questTypeList"><?php echo i8ln( 'Quest' ); ?>
             <select id="questTypeList" name="questTypeList" class="questTypeList">
@@ -1679,8 +1676,7 @@ if ( $blockIframe ) {
             </label>
             <div class="button-container">
                 <button type="button" onclick="manualQuestData(event);" class="submitting-quest"><i
-                        class="fa fa-binoculars"
-                        style="margin-right:10px;"></i><?php echo i8ln( 'Submit Quest' ); ?>
+                        class="fas fa-binoculars"></i> <?php echo i8ln( 'Submit Quest' ); ?>
                 </button>
             </div>
         </div>
@@ -1690,7 +1686,7 @@ if ( $blockIframe ) {
     </div>
     <?php if ( ( ! $noGyms || ! $noPokestops ) && ! $noSearch ) { ?>
         <div class="search-container">
-            <button class="search-modal-button" onClick="openSearchModal(event);"><i class="fa fa-search"
+            <button class="search-modal-button" onClick="openSearchModal(event);"><i class="fas fa-search"
                                                                                      aria-hidden="true"></i></button>
             <div class="search-modal" style="display:none;">
                 <div id="search-tabs">
@@ -1759,7 +1755,7 @@ if ( $blockIframe ) {
     if ( ( ! $noPokemon && ! $noManualPokemon ) || ( ! $noGyms && ! $noManualGyms ) || ( ! $noPokestops && ! $noManualPokestops ) || ( ! $noAddNewNests && ! $noNests ) || ( !$noAddNewCommunity && ! $noCommunity ) || ( !$noAddPoi && ! $noPoi ) ) {
         ?>
         <button class="submit-on-off-button" onclick="$('.submit-on-off-button').toggleClass('on');">
-            <i class="fa fa-map-marker submit-to-map" aria-hidden="true"></i>
+            <i class="fas fa-map-marker-alt submit-to-map" aria-hidden="true"></i>
         </button>
         <div class="submit-modal" style="display:none;">
             <input type="hidden" value="" name="submitLatitude" class="submitLatitude"/>
@@ -1797,9 +1793,8 @@ if ( $blockIframe ) {
                         <input type="hidden" name="pokemonID" class="pokemonID"/>
                         <?php pokemonFilterImages( $noPokemonNumbers, 'pokemonSubmitFilter(event)', $pokemonToExclude, 6 ); ?>
                         <div class="button-container">
-                            <button type="button" onclick="manualPokemonData(event);" class="submitting-pokemon"><i
-                                    class="fa fa-binoculars"
-                                    style="margin-right:10px;"></i><?php echo i8ln( 'Submit Pokemon' ); ?>
+                            <button type="button" onclick="manualPokemonData(event);" class="submitting-pokemon">
+                                <i class="fas fa-binoculars"></i> <?php echo i8ln( 'Submit Pokemon' ); ?>
                             </button>
                         </div>
                     </div>
@@ -1812,8 +1807,7 @@ if ( $blockIframe ) {
                                class="search-input">
                         <div class="button-container">
                             <button type="button" onclick="manualGymData(event);" class="submitting-gym"><i
-                                    class="fa fa-binoculars"
-                                    style="margin-right:10px;"></i><?php echo i8ln( 'Submit Gym' ); ?>
+                                    class="fas fa-binoculars"></i> <?php echo i8ln( 'Submit Gym' ); ?>
                             </button>
                         </div>
                     </div>
@@ -1826,8 +1820,7 @@ if ( $blockIframe ) {
                                class="search-input">
                         <div class="button-container">
                             <button type="button" onclick="manualPokestopData(event);" class="submitting-pokestop"><i
-                                    class="fa fa-binoculars"
-                                    style="margin-right:10px;"></i><?php echo i8ln( 'Submit Pokestop' ); ?>
+                                    class="fas fa-binoculars"></i> <?php echo i8ln( 'Submit Pokestop' ); ?>
                             </button>
                         </div>
                     </div>
@@ -1839,8 +1832,7 @@ if ( $blockIframe ) {
                         <?php pokemonFilterImages( $noPokemonNumbers, 'pokemonSubmitFilter(event)', $excludeNestMons, 7 ); ?>
                         <div class="button-container">
                             <button type="button" onclick="submitNewNest(event);" class="submitting-nest"><i
-                                    class="fa fa-binoculars"
-                                    style="margin-right:10px;"></i><?php echo i8ln( 'Submit Nest' ); ?>
+                                    class="fas fa-binoculars"></i> <?php echo i8ln( 'Submit Nest' ); ?>
                             </button>
                         </div>
                     </div>
@@ -1859,9 +1851,8 @@ if ( $blockIframe ) {
                    class="search-input">
             <h6><center><?php echo i8ln( 'Link must be valid and start with https://' ); ?></center></h6>
                         <div class="button-container">
-                            <button type="button" onclick="submitNewCommunity(event);" class="submitting-community"><i
-                                    class="fa fa-comments"
-                                    style="margin-right:10px;"></i><?php echo i8ln( 'Submit Community' ); ?>
+                            <button type="button" onclick="submitNewCommunity(event);" class="submitting-community">
+                                <i class="fas fa-comments"></i> <?php echo i8ln( 'Submit Community' ); ?>
                             </button>
                         </div>
                     </div>
@@ -1869,21 +1860,12 @@ if ( $blockIframe ) {
                 <?php if ( ! $noAddPoi && !$noPoi ) {
                     ?>
                     <div id="tab-poi">
-                        <input type="text" name="poi-name" class="poi-name"
-                               placeholder="<?php echo i8ln( 'Enter candidate Name' ); ?>" data-type="name"
-                   class="search-input">
-                        <input type="text" name="poi-description" class="poi-description"
-                               placeholder="<?php echo i8ln( 'Enter candidate description' ); ?>" data-type="description"
-                   class="search-input">
-                         <input type="text" name="poi-notes" class="poi-notes"
-                               placeholder="<?php echo i8ln( 'Enter field notes' ); ?>" data-type="description"
-                   class="search-input">
+                        <input type="text" name="poi-name" class="poi-name"placeholder="<?php echo i8ln( 'Enter candidate Name' ); ?>" data-type="name" class="search-input">
+                        <input type="text" name="poi-description" class="poi-description" placeholder="<?php echo i8ln( 'Enter candidate description' ); ?>" data-type="description" class="search-input">
+                        <input type="text" name="poi-notes" class="poi-notes" placeholder="<?php echo i8ln( 'Enter field notes' ); ?>" data-type="description" class="search-input">
                         <div class="button-container">
-            <h6><center><?php echo i8ln( 'If you submit a POI candidate you agree that your discord username will be shown in the marker label' ); ?></center></h6>
-                            <button type="button" onclick="submitPoi(event);" class="submitting-poi"><i
-                                    class="fa fa-comments"
-                                    style="margin-right:10px;"></i><?php echo i8ln( 'Submit POI candidate' ); ?>
-                            </button>
+                            <h6><center><?php echo i8ln( 'If you submit a POI candidate you agree that your discord username will be shown in the marker label' ); ?></center></h6>
+                            <button type="button" onclick="submitPoi(event);" class="submitting-poi"><i class="fas fa-comments"></i> <?php echo i8ln( 'Submit POI candidate' ); ?></button>
                         </div>
                     </div>
                 <?php } ?>
@@ -1929,7 +1911,6 @@ if ( $blockIframe ) {
     var zoomToBoundsOnClick = <?= $zoomToBoundsOnClick; ?>;
     var maxClusterRadius = <?= $maxClusterRadius; ?>;
     var spiderfyOnMaxZoom = <?= $spiderfyOnMaxZoom; ?>;
-    var osmTileServer = '<?php echo $osmTileServer; ?>';
     var mapStyle = '<?php echo $mapStyle ?>';
     var gmapsKey = '<?php echo $gmapsKey ?>';
     var hidePokemon = <?php echo $noHidePokemon ? '[]' : $hidePokemon ?>;
@@ -1954,6 +1935,7 @@ if ( $blockIframe ) {
     var enablePokestops = <?php echo $noPokestops ? 'false' : $enablePokestops ?>;
     var enableLured = <?php echo $noLures ? 'false' : $enableLured ?>;
     var noQuests = <?php echo $noQuests === true ? 'true' : 'false' ?>;
+    var noLures = <?php echo $noLures === true ? 'true' : 'false' ?>;
     var enableQuests = <?php echo $noQuests ? 'false' : $enableQuests ?>;
     var hideQuestsPokemon = <?php echo $noQuestsPokemon ? '[]' : $hideQuestsPokemon ?>;
     var hideQuestsItem = <?php echo $noQuestsItems ? '[]' : $hideQuestsItem ?>;
@@ -2030,6 +2012,15 @@ if ( $blockIframe ) {
     var nestGeoJSONfile = '<?php echo $noNestPolygon ? '' : $nestGeoJSONfile ?>';
     var noCostumeIcons = <?php echo $noCostumeIcons === true ? 'true' : 'false' ?>;
     var queryInterval = <?php echo $queryInterval ?>;
+    var enableInns = <?php echo $noInn ? 'false' : $enableInn ?>;
+    var noInns = <?php echo $noInn === true ? 'true' : 'false' ?>;
+    var enableFortresses = <?php echo $noFortress ? 'false' : $enableFortress ?>;
+    var noFortresses = <?php echo $noFortress === true ? 'true' : 'false' ?>;
+    var enableGreenhouses = <?php echo $noGreenhouse ? 'false' : $enableGreenhouse ?>;
+    var noGreenhouses = <?php echo $noGreenhouse === true ? 'true' : 'false' ?>;
+    var noDeleteInn = <?php echo $noDeleteInn === true ? 'true' : 'false' ?>;
+    var noDeleteFortress = <?php echo $noDeleteFortress === true ? 'true' : 'false' ?>;
+    var noDeleteGreenhouse = <?php echo $noDeleteGreenhouse === true ? 'true' : 'false' ?>;
 </script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js"></script>
 <script src="static/dist/js/map.common.min.js"></script>
