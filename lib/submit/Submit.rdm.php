@@ -469,7 +469,8 @@ class RDM extends Submit
                 'lon'      => $portal['lon'],
                 'name'     => $portal['name'],
                 'url'      => $portal['url'],
-                'updated'  => time()
+                'updated'  => time(),
+                'enabled'  => 1
             ];
             $db->insert( "pokestop", $cols );
             if ( $noDiscordSubmitLogChannel === false ) {

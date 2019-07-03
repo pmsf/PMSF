@@ -1,10 +1,3 @@
-$numberOfPokemon: 392;
-$spriteLarge: "/static/icons-safe-1-bigger.png";
-// Root.
-:root {
-  --sprite-large: url($spriteLarge);
-}
-
 // Misc.
 $misc: (
         z-index-base: 10000

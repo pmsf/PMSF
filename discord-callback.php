@@ -9,7 +9,7 @@ if ($noDiscordLogin === false) {
             $auth = new DiscordAuth();
             $auth->handleAuthorizationResponse($_GET);
             $user = json_decode($auth->get("/api/users/@me"));
-	    $guilds = json_decode($auth->get("/api/users/@me/guilds"));
+            $guilds = json_decode($auth->get("/api/users/@me/guilds"));
             if (in_array($user->{'id'}, $userBlacklist)) {
                 header("Location: ./access-denied.php");
                 $granted = false;
@@ -18,7 +18,7 @@ if ($noDiscordLogin === false) {
                     header("Location: .?login=true");
                     $granted = true;
                 } else {
-	            foreach($guilds as $guild) {
+                    foreach($guilds as $guild) {
                         $uses = $guild->id;
                         $guildName = $guild->name;
                         if (in_array($uses, $serverBlacklist)) {
@@ -33,9 +33,9 @@ if ($noDiscordLogin === false) {
                                 $granted = true;
                             }
                         }
-		    }
+                    }
                 }
-	    }
+            }
             if ($granted !== true) {
                 header("Location: .?login=false");
                 die();
@@ -49,22 +49,22 @@ if ($noDiscordLogin === false) {
                 $manualdb->insert("users", [
                     "id" => $user->{'id'},
                     "user" => $user->{'username'} . "#" . $user->{'discriminator'},
-                    "expire_timestamp" => time()+$sessionLifetime,
+                    "expire_timestamp" => time() + 60 * 60 * 24 * 7,
                     "login_system" => 'discord'
                 ]);
             }
 
-            setcookie("LoginCookie", session_id(), time()+$sessionLifetime);
+            setcookie("LoginCookie", session_id(), time() + 60 * 60 * 24 * 7);
 
             $manualdb->update("users", [
-                "expire_timestamp" => time()+$sessionLifetime,
                 "session_id" => session_id(),
+                "expire_timestamp" => time() + 60 * 60 * 24 * 7,
                 "user" => $user->{'username'} . "#" . $user->{'discriminator'}
             ], [
                 "id" => $user->{'id'},
                 "login_system" => 'discord'
             ]);
-	}
+        }
         die();
     } catch (Exception $e) {
         header("Location: ./discord-login");

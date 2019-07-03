@@ -311,20 +311,6 @@ class Monocle_MAD extends Monocle
         return $data;
     }
 
-    public function get_gym($gymId)
-    {
-        $conds = array();
-        $params = array();
-
-        $conds[] = "f.external_id = :gymId";
-        $params[':gymId'] = $gymId;
-
-        $gyms = $this->query_gyms($conds, $params);
-        $gym = $gyms[0];
-
-        return $gym;
-    }
-
     public function get_gyms($swLat, $swLng, $neLat, $neLng, $exEligible = false, $tstamp = 0, $oSwLat = 0, $oSwLng = 0, $oNeLat = 0, $oNeLng = 0)
     {
         $conds = array();

@@ -309,19 +309,6 @@ class Monocle extends Scanner
         return $this->query_gyms($conds, $params);
     }
 
-    public function get_gym($gymId)
-    {
-        $conds = array();
-        $params = array();
-
-        $conds[] = "f.external_id = :gymId";
-        $params[':gymId'] = $gymId;
-
-        $gyms = $this->query_gyms($conds, $params);
-        $gym = $gyms[0];
-        return $gym;
-    }
-
     public function query_gyms($conds, $params)
     {
         global $db;
