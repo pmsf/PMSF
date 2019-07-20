@@ -1863,6 +1863,16 @@ if ( $blockIframe ) {
                         <input type="text" name="poi-name" class="poi-name"placeholder="<?php echo i8ln( 'Enter candidate Name' ); ?>" data-type="name" class="search-input">
                         <input type="text" name="poi-description" class="poi-description" placeholder="<?php echo i8ln( 'Enter candidate description' ); ?>" data-type="description" class="search-input">
                         <input type="text" name="poi-notes" class="poi-notes" placeholder="<?php echo i8ln( 'Enter field notes' ); ?>" data-type="description" class="search-input">
+                        <label for="poi-image" class="poi-upload">
+                            <i class="fa fa-camera"></i> POI image
+                        </label>
+                        <input type="file" id="poi-image" name="poi-image" accept="image/*" capture="environment" class="poi-image" placeholder="<?php echo i8ln( 'Select POI image' ); ?>" data-type="poi-image" class="search-input" onchange='previewPoiImage(event)' style='display:none'>
+                        <img name='preview-poi-image' width="100%" height="auto" style='display:none'>
+                        <label for="poi-surrounding" class="poi-upload">
+                            <i class="fa fa-camera"></i> POI surrounding
+                        </label>
+			<input type="file" id="poi-surrounding" name="poi-surrounding" accept="image/*" capture="environment" class="poi-surrounding" placeholder="<?php echo i8ln( 'Select POI surrounding' ); ?>" data-type="poi-surrounding" class="search-input" onchange='previewPoiSurrounding(event)' style='display:none'>
+                        <img name='preview-poi-surrounding' width="100%" height="auto" style='display:none'>
                         <div class="button-container">
                             <h6><center><?php echo i8ln( 'If you submit a POI candidate you agree that your discord username will be shown in the marker label' ); ?></center></h6>
                             <button type="button" onclick="submitPoi(event);" class="submitting-poi"><i class="fas fa-comments"></i> <?php echo i8ln( 'Submit POI candidate' ); ?></button>
