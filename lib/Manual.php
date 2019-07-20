@@ -230,6 +230,8 @@ class Manual
         name,
         description,
         notes,
+        poiimageurl,
+        poisurroundingurl,
         updated,
         submitted_by,
         edited_by,
