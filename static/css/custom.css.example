@@ -1,0 +1,152 @@
+ /* ==========================================================================
+Custom CSS Example
+========================================================================== */
+#nav {
+  background: #a2d69647;
+}
+
+#header {
+  background: #a2d696;
+  background: -webkit-linear-gradient(left, #a2d696 1%, #21cca8 99%);
+  background: -o-linear-gradient(left, #a2d696 1%, #21cca8 99%);
+  background: linear-gradient(to right, #a2d696 1%, #21cca8 99%);
+  filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#a2d696', endColorstr='#21cca8', GradientType=1);
+  color: #e3fede;
+}
+
+.button {
+  background: #a2d696;
+  background: -webkit-linear-gradient(left, #a2d696 1%, #21cca8 99%);
+  background: -o-linear-gradient(left, #a2d696 1%, #21cca8 99%);
+  background: linear-gradient(to right, #a2d696 1%, #21cca8 99%);
+  filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#a2d696', endColorstr='#21cca8', GradientType=1);
+  border-radius: 60px;
+  color: #e3fede;
+}
+
+.settings {
+  color: #e3fede;
+  background: #a2d696;
+  background: -webkit-linear-gradient(left, #a2d696 1%, #21cca8 99%);
+  background: -o-linear-gradient(left, #a2d696 1%, #21cca8 99%);
+  background: linear-gradient(to right, #a2d696 1%, #21cca8 99%);
+  filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#a2d696', endColorstr='#21cca8', GradientType=1);
+  border-radius: 60px;
+}
+
+button.submitting-raid {
+  background: #a2d696;
+  background: -webkit-linear-gradient(left, #a2d696 1%, #21cca8 99%);
+  background: -o-linear-gradient(left, #a2d696 1%, #21cca8 99%);
+  background: linear-gradient(to right, #a2d696 1%, #21cca8 99%);
+  filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#a2d696', endColorstr='#21cca8', GradientType=1);
+}
+
+.submit-on-off-button {
+  background: #a2d696;
+  background: -webkit-linear-gradient(left, #a2d696 1%, #21cca8 99%);
+  background: -o-linear-gradient(left, #a2d696 1%, #21cca8 99%);
+  background: linear-gradient(to right, #a2d696 1%, #21cca8 99%);
+  filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#a2d696', endColorstr='#21cca8', GradientType=1);
+  color: #e3fede;
+}
+
+button.submitting-poi {
+  background: #a2d696;
+  background: -webkit-linear-gradient(left, #a2d696 1%, #21cca8 99%);
+  background: -o-linear-gradient(left, #a2d696 1%, #21cca8 99%);
+  background: linear-gradient(to right, #a2d696 1%, #21cca8 99%);
+  filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#a2d696', endColorstr='#21cca8', GradientType=1);
+  border-radius: 60px;
+  color: #e3fede;
+}
+
+button.submitting-nest {
+  background: #a2d696;
+  background: -webkit-linear-gradient(left, #a2d696 1%, #21cca8 99%);
+  background: -o-linear-gradient(left, #a2d696 1%, #21cca8 99%);
+  background: linear-gradient(to right, #a2d696 1%, #21cca8 99%);
+  filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#a2d696', endColorstr='#21cca8', GradientType=1);
+  border-radius: 60px;
+  color: #e3fede;
+}
+
+button.submitting-pokemon {
+  background: #a2d696;
+  background: -webkit-linear-gradient(left, #a2d696 1%, #21cca8 99%);
+  background: -o-linear-gradient(left, #a2d696 1%, #21cca8 99%);
+  background: linear-gradient(to right, #a2d696 1%, #21cca8 99%);
+  filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#a2d696', endColorstr='#21cca8', GradientType=1);
+  border-radius: 60px;
+  color: #e3fede;
+}
+
+
+button.submitting-gym {
+  background: #a2d696;
+  background: -webkit-linear-gradient(left, #a2d696 1%, #21cca8 99%);
+  background: -o-linear-gradient(left, #a2d696 1%, #21cca8 99%);
+  background: linear-gradient(to right, #a2d696 1%, #21cca8 99%);
+  filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#a2d696', endColorstr='#21cca8', GradientType=1);
+  border-radius: 60px;
+  color: #e3fede;
+}
+
+button.submitting-pokestop {
+  background: #a2d696;
+  background: -webkit-linear-gradient(left, #a2d696 1%, #21cca8 99%);
+  background: -o-linear-gradient(left, #a2d696 1%, #21cca8 99%);
+  background: linear-gradient(to right, #a2d696 1%, #21cca8 99%);
+  filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#a2d696', endColorstr='#21cca8', GradientType=1);
+  border-radius: 60px;
+  color: #e3fede;
+}
+
+button.submitting-raid {
+  background: #a2d696;
+  background: -webkit-linear-gradient(left, #a2d696 1%, #21cca8 99%);
+  background: -o-linear-gradient(left, #a2d696 1%, #21cca8 99%);
+  background: linear-gradient(to right, #a2d696 1%, #21cca8 99%);
+  filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#a2d696', endColorstr='#21cca8', GradientType=1);
+  border-radius: 60px;
+  color: #e3fede;
+}
+
+button.submitting-quest {
+  background: #a2d696;
+  background: -webkit-linear-gradient(left, #a2d696 1%, #21cca8 99%);
+  background: -o-linear-gradient(left, #a2d696 1%, #21cca8 99%);
+  background: linear-gradient(to right, #a2d696 1%, #21cca8 99%);
+  filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#a2d696', endColorstr='#21cca8', GradientType=1);
+  border-radius: 60px;
+  color: #e3fede;
+}
+
+button.markpoiid {
+  background: #a2d696;
+  background: -webkit-linear-gradient(left, #a2d696 1%, #21cca8 99%);
+  background: -o-linear-gradient(left, #a2d696 1%, #21cca8 99%);
+  background: linear-gradient(to right, #a2d696 1%, #21cca8 99%);
+  filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#a2d696', endColorstr='#21cca8', GradientType=1);
+  border-radius: 60px;
+  color: #e3fede;
+}
+
+button.convertpoi {
+  background: #a2d696;
+  background: -webkit-linear-gradient(left, #a2d696 1%, #21cca8 99%);
+  background: -o-linear-gradient(left, #a2d696 1%, #21cca8 99%);
+  background: linear-gradient(to right, #a2d696 1%, #21cca8 99%);
+  filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#a2d696', endColorstr='#21cca8', GradientType=1);
+  border-radius: 60px;
+  color: #e3fede;
+}
+
+.search-modal-button{
+  background: #a2d696;
+  background: -webkit-linear-gradient(left, #a2d696 1%, #21cca8 99%);
+  background: -o-linear-gradient(left, #a2d696 1%, #21cca8 99%);
+  background: linear-gradient(to right, #a2d696 1%, #21cca8 99%);
+  filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#a2d696', endColorstr='#21cca8', GradientType=1);
+  color: #e3fede;
+}
