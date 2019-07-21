@@ -6406,6 +6406,15 @@ $(function () {
         buildSwitchChangeListener(mapData, ['gyms'], 'showGyms').bind(this)()
     })
     $('#nests-switch').change(function () {
+        var options = {
+            'duration': 500
+        }
+        var wrapper = $('#nest-filter-wrapper')
+        if (this.checked) {
+            wrapper.show(options)
+        } else {
+            wrapper.hide(options)
+        }
         lastnests = false
         buildSwitchChangeListener(mapData, ['nests'], 'showNests').bind(this)()
     })
