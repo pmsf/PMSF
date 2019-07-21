@@ -1520,9 +1520,9 @@ if ( $blockIframe ) {
             <?php echo i8ln('You might not be a member of our Discord or you joined a server which is on our blacklist. Click <a href="' .$discordUrl .'">here</a> to join!'); ?>
         </div>
     <?php } ?>
-    <div id="myModal" class="modal">
+    <div id="fullscreenModal" class="modal">
         <span class="close" onclick="closeFullscreenModal();">&times;</span>
-        <img class="modal-content" id="img01">
+        <img class="modal-content" id="fullscreenimg">
     </div>
     <?php if ( ! $noManualQuests ) { ?>
         <div class="quest-modal" style="display: none;">
