@@ -352,19 +352,21 @@ if ( $blockIframe ) {
                     </div>
                 </div>';
                 } ?>
-                <?php
-                if ( ! $noNestPolygon && ! $noNests ) {
-                    echo '<div class="form-control switch-container">
-                    <h3>' . i8ln( 'Nest Polygon' ) . '</h3>
-                    <div class="onoffswitch">
-                        <input id="nest-polygon-switch" type="checkbox" name="nest-polygon-switch" class="onoffswitch-checkbox">
-                        <label class="onoffswitch-label" for="nest-polygon-switch">
-                            <span class="switch-label" data-on="On" data-off="Off"></span>
-                            <span class="switch-handle"></span>
-                        </label>
-                    </div>
-                </div>';
-                } ?>
+                <div id="nest-filter-wrapper" style="display:none">
+                    <?php
+                    if ( ! $noNestPolygon && ! $noNests ) {
+                        echo '<div class="form-control switch-container">
+                        <h3>' . i8ln( 'Nest Polygon' ) . '</h3>
+                        <div class="onoffswitch">
+                            <input id="nest-polygon-switch" type="checkbox" name="nest-polygon-switch" class="onoffswitch-checkbox">
+                            <label class="onoffswitch-label" for="nest-polygon-switch">
+                                <span class="switch-label" data-on="On" data-off="Off"></span>
+                                <span class="switch-handle"></span>
+                            </label>
+                        </div>
+                    </div>';
+                    } ?>
+                </div>
                     <div id="pokemon-filter-wrapper" style="display:none">
                         <?php
                         if ( ! $noTinyRat && ! $noTinyRatSetting ) {
