@@ -1473,6 +1473,10 @@ if ( $blockIframe ) {
 	        <input type="text" id="poi-name" name="poi-name" placeholder="<?php echo i8ln( 'Enter New POI Name' ); ?>" data-type="poi-name" class="search-input">
 	        <input type="text" id="poi-description" name="poi-description" placeholder="<?php echo i8ln( 'Enter New POI Description' ); ?>" data-type="poi-description" class="search-input">
 	        <input type="text" id="poi-notes" name="poi-notes"placeholder="<?php echo i8ln( 'Enter New POI Notes' ); ?>" data-type="poi-notes" class="search-input">
+                <input type="file" id="poi-image" name="poi-image" accept="image/*" capture="environment" class="poi-image" data-type="poi-image" class="search-input" onchange='previewPoiImage(event)' >
+                <img name='preview-poi-image' width="100%" height="auto" style='display:none'>
+                <input type="file" id="poi-surrounding" name="poi-surrounding" accept="image/*" capture="environment" class="poi-surrounding" data-type="poi-surrounding" class="search-input" onchange='previewPoiSurrounding(event)'>
+                <img name='preview-poi-surrounding' width="100%" height="auto" style='display:none'>
 	        <div class="button-container">
                 <button type="button" onclick="editPoiData(event);" class="editpoiid"><i class="fas fa-edit"></i> <?php echo i8ln( 'Save Changes' ); ?></button>
             </div>
@@ -1516,6 +1520,10 @@ if ( $blockIframe ) {
             <?php echo i8ln('You might not be a member of our Discord or you joined a server which is on our blacklist. Click <a href="' .$discordUrl .'">here</a> to join!'); ?>
         </div>
     <?php } ?>
+    <div id="myModal" class="modal">
+        <span class="close" onclick="closeFullscreenModal();">&times;</span>
+        <img class="modal-content" id="img01">
+    </div>
     <?php if ( ! $noManualQuests ) { ?>
         <div class="quest-modal" style="display: none;">
             <input type="hidden" value="" name="questPokestop" class="questPokestop"/>
@@ -1864,14 +1872,14 @@ if ( $blockIframe ) {
                         <input type="text" name="poi-description" class="poi-description" placeholder="<?php echo i8ln( 'Enter candidate description' ); ?>" data-type="description" class="search-input">
                         <input type="text" name="poi-notes" class="poi-notes" placeholder="<?php echo i8ln( 'Enter field notes' ); ?>" data-type="description" class="search-input">
                         <label for="poi-image" class="poi-upload">
-                            <i class="fa fa-camera"></i> POI image
+                            <i class="fa fa-camera"></i> <?php echo i8ln( 'Select POI image' ); ?>
                         </label>
-                        <input type="file" id="poi-image" name="poi-image" accept="image/*" capture="environment" class="poi-image" placeholder="<?php echo i8ln( 'Select POI image' ); ?>" data-type="poi-image" class="search-input" onchange='previewPoiImage(event)' style='display:none'>
+                        <input type="file" id="poi-image" name="poi-image" accept="image/*" capture="environment" class="poi-image" data-type="poi-image" class="search-input" onchange='previewPoiImage(event)' style='display:none'>
                         <img name='preview-poi-image' width="100%" height="auto" style='display:none'>
                         <label for="poi-surrounding" class="poi-upload">
-                            <i class="fa fa-camera"></i> POI surrounding
+                            <i class="fa fa-camera"></i> <?php echo i8ln( 'Select POI surrounding' ); ?>
                         </label>
-			<input type="file" id="poi-surrounding" name="poi-surrounding" accept="image/*" capture="environment" class="poi-surrounding" placeholder="<?php echo i8ln( 'Select POI surrounding' ); ?>" data-type="poi-surrounding" class="search-input" onchange='previewPoiSurrounding(event)' style='display:none'>
+			<input type="file" id="poi-surrounding" name="poi-surrounding" accept="image/*" capture="environment" class="poi-surrounding" data-type="poi-surrounding" class="search-input" onchange='previewPoiSurrounding(event)' style='display:none'>
                         <img name='preview-poi-surrounding' width="100%" height="auto" style='display:none'>
                         <div class="button-container">
                             <h6><center><?php echo i8ln( 'If you submit a POI candidate you agree that your discord username will be shown in the marker label' ); ?></center></h6>
