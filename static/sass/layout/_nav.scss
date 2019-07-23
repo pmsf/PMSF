@@ -4,7 +4,7 @@
   @include vendor('transform', 'translateX(-20.50em)');
   @include vendor('transition', ('transform #{_duration(nav)} ease', 'box-shadow #{_duration(nav)} ease', 'visibility #{_duration(nav)}'));
   -webkit-overflow-scrolling: touch;
-  background: #a2d69647;
+  background: #F8F8F8;
   box-shadow: none;
   color: _palette(accent2, fg-bold);
   height: -webkit-calc(100% - 3.5em);
@@ -657,13 +657,6 @@ form#search-places {
     font-family: 'Lato', sans-serif;
     font-size: 11px;
     line-height: 0.5em;
-    color: #e3fede;
     text-decoration: none;
     padding: 10px 30px;
-    background: #a2d696;
-    background: -webkit-linear-gradient(left, #a2d696 1%, #21cca8 99%);
-    background: -o-linear-gradient(left, #a2d696 1%, #21cca8 99%);
-    background: linear-gradient(to right, #a2d696 1%, #21cca8 99%);
-    filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#a2d696', endColorstr='#21cca8', GradientType=1);
-    border-radius: 60px;
 } 

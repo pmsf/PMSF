@@ -559,7 +559,7 @@ class Monocle_MAD extends Submit
 
     public function convert_portal_pokestop($portalId, $loggedUser)
     {
-        global $db, $manualdb, $noPortals, $noDiscordSubmitLogChannel;
+        global $db, $manualdb, $noPortals, $noDiscordSubmitLogChannel, $submitMapUrl;
         if ( $noPortals === true ) {
             http_response_code( 401 );
             die();
@@ -584,7 +584,7 @@ class Monocle_MAD extends Submit
 
     public function convert_portal_gym($portalId, $loggedUser)
     {
-        global $db, $manualdb, $noPortals, $noDiscordSubmitLogChannel;
+        global $db, $manualdb, $noPortals, $noDiscordSubmitLogChannel, $submitMapUrl;
         if ( $noPortals === true ) {
             http_response_code( 401 );
             die();
