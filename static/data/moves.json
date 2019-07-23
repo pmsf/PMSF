@@ -2054,5 +2054,21 @@
     "duration": 0,
     "energy": 0,
     "dps": 0
+  },
+  "320": {
+    "name": "Charm Fast",
+    "type": "Fairy",
+    "damage": 0,
+    "duration": 0,
+    "energy": 0,
+    "dps": 0
+  },
+  "321": {
+    "name": "Giga impact",
+    "type": "Normal",
+    "damage": 0,
+    "duration": 0,
+    "energy": 0,
+    "dps": 0
   }
 }
