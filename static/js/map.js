@@ -2018,13 +2018,22 @@ function getPokestopMarkerIcon(item) {
             className: 'stop-lured-marker',
             html: html
         })
+    } else if (!noTeamRocket && item['incident_expiration'] > Date.now()) {
+        html = '<div><img src="static/forts/Pstop_rocket.png" style="width:50px;height:72;top:-35px;right:10px;"/><div>'
+        stopMarker = L.divIcon({
+            iconSize: [31, 31],
+            iconAnchor: [24, 38],
+            popupAnchor: [0, -35],
+            className: 'stop-rocket-marker',
+            html: html
+        })
     } else {
         stopMarker = L.divIcon({
             iconSize: [31, 31],
             iconAnchor: [15, 28],
             popupAnchor: [0, -35],
             className: 'stop-marker',
-            html: '<div><img src="static/forts/Pstop' + teamRocket + '.png"></div>'
+            html: '<div><img src="static/forts/Pstop.png"></div>'
         })
     }
     return stopMarker
