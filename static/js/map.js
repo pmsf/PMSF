@@ -735,6 +735,7 @@ function initSidebar() {
     $('#pokestops-switch').prop('checked', Store.get('showPokestops'))
     $('#pokestops-filter-wrapper').toggle(Store.get('showPokestops'))
     $('#lures-switch').prop('checked', Store.get('showLures'))
+    $('#rocket-switch').prop('checked', Store.get('showRocket'))
     $('#quests-switch').prop('checked', Store.get('showQuests'))
     $('#quests-filter-wrapper').toggle(Store.get('showQuests'))
     $('#dustvalue').text(Store.get('showDustAmount'))
@@ -1365,15 +1366,20 @@ function pokestopLabel(item) {
         stopName = '<b class="pokestop-quest-name">' + item['pokestop_name'] + '</b>'
     } else if (!noLures && item['lure_expiration'] > Date.now()) {
         stopName = '<b class="pokestop-lure-name">' + item['pokestop_name'] + '</b>'
+    } else if (!noTeamRocket && item['incident_expiration'] > Date.now()) {
+        stopName = '<b class="pokestop-rocket-name">' + item['pokestop_name'] + '</b>'
     } else {
         stopName = '<b class="pokestop-name">' + item['pokestop_name'] + '</b>'
     }
     var stopImage = ''
     var lureEndStr = ''
+    var incidentEndStr = ''
     if (!noQuests && item['quest_type'] !== 0 && lastMidnight < Number(item['quest_timestamp']) && item['url'] !== null) {
         stopImage = '<img class="pokestop-quest-image" src="' + item['url'] + '">'
     } else if (!noLures && item['lure_expiration'] > Date.now() && item['url'] !== null) {
         stopImage = '<img class="pokestop-lure-image" src="' + item['url'] + '">'
+    } else if (!noTeamRocket && item['incident_expiration'] > Date.now() && item['url'] !== null) {
+        stopImage = '<img class="pokestop-rocket-image" src="' + item['url'] + '">'
     } else if (item['url'] !== null) {
         stopImage = '<img class="pokestop-image" src="' + item['url'] + '">'
     }
@@ -1407,6 +1413,13 @@ function pokestopLabel(item) {
         '<div><b>' + i8ln('Lure Type') + ': ' + lureType + '</b></div>' +
         '<div><b>' + i8ln('Lure expiration') + ': ' + lureEndStr +
         ' <span class="label-countdown" disappears-at="' + item['lure_expiration'] + '">(00m00s)</span>' +
+        '</b></div>'
+    }
+    if (item['incident_expiration'] > Date.now()) {
+        incidentEndStr = getTimeStr(item['incident_expiration'])
+        str +=
+        '<div><b>' + i8ln('Incident Expiration') + ': ' + incidentEndStr +
+        ' <span class="label-countdown" disappears-at="' + item['incident_expiration'] + '">(00m00s)</span>' +
         '</b></div>'
     }
     str += '</center></div>'
@@ -1932,10 +1945,14 @@ function getPokestopMarkerIcon(item) {
     var html = ''
     var d = new Date()
     var lastMidnight = d.setHours(0, 0, 0, 0) / 1000
+    var teamRocket = ''
+    if (!noTeamRocket && item['incident_expiration'] > Date.now) {
+        teamRocket = '_rocket'
+    }
     if (!noQuests && item['quest_reward_type'] !== null && lastMidnight < Number(item['quest_timestamp'])) {
         var stopQuestIcon = 'PstopQuest.png'
         if (!noLures && item['lure_expiration'] > Date.now()) {
-            stopQuestIcon = 'PstopLured_' + item['lure_id'] + '.png'
+            stopQuestIcon = 'PstopLured_' + item['lure_id'] + teamRocket + '.png'
         }
         if (item['quest_reward_type'] === 7) {
             var pokemonIdStr = ''
@@ -1993,7 +2010,7 @@ function getPokestopMarkerIcon(item) {
             })
         }
     } else if (!noLures && item['lure_expiration'] > Date.now()) {
-        html = '<div><img src="static/forts/PstopLured_' + item['lure_id'] + '.png" style="width:50px;height:72;top:-35px;right:10px;"/><div>'
+        html = '<div><img src="static/forts/PstopLured_' + item['lure_id'] + teamRocket + '.png" style="width:50px;height:72;top:-35px;right:10px;"/><div>'
         stopMarker = L.divIcon({
             iconSize: [31, 31],
             iconAnchor: [24, 38],
@@ -2007,7 +2024,7 @@ function getPokestopMarkerIcon(item) {
             iconAnchor: [15, 28],
             popupAnchor: [0, -35],
             className: 'stop-marker',
-            html: '<div><img src="static/forts/Pstop.png"></div>'
+            html: '<div><img src="static/forts/Pstop' + teamRocket + '.png"></div>'
         })
     }
     return stopMarker
@@ -2852,6 +2869,7 @@ function loadRawData() {
     var loadGyms = (Store.get('showGyms') || Store.get('showRaids')) ? 'true' : 'false'
     var loadPokestops = Store.get('showPokestops')
     var loadLures = Store.get('showLures')
+    var loadRocket = Store.get('showRocket')
     var loadQuests = Store.get('showQuests')
     var loadDustamount = Store.get('showDustAmount')
     var loadNests = Store.get('showNests')
@@ -2886,6 +2904,7 @@ function loadRawData() {
             'lastpokemon': lastpokemon,
             'pokestops': loadPokestops,
             'lures': loadLures,
+            'rocket': loadRocket,
             'quests': loadQuests,
             'dustamount': loadDustamount,
             'reloaddustamount': reloaddustamount,
@@ -4857,6 +4876,10 @@ function processPokestops(i, item) {
     if (Store.get('showLures') && !item['lure_expiration']) {
         return true
     }
+
+    if (Store.get('showRocket') && !item['incident_expiration']) {
+        return true
+    }
     if (!mapData.pokestops[item['pokestop_id']]) {
         // new pokestop, add marker to map and item to dict
         if (item.marker && item.marker.rangeCircle) {
@@ -4888,6 +4911,14 @@ function processPokestops(i, item) {
             item.marker = setupPokestopMarker(item)
             mapData.pokestops[item['pokestop_id']] = item
         }
+        if (!!item['incident_expiration'] !== !!item2['incident_expiration']) {
+            if (item2.marker && item2.marker.rangeCircle) {
+                markers.removeLayer(item2.marker.rangeCircle)
+            }
+            markers.removeLayer(item2.marker)
+            item.marker = setupPokestopMarker(item)
+            mapData.pokestops[item['pokestop_id']] = item
+        }
     }
 }
 
@@ -4911,11 +4942,38 @@ function updatePokestops() {
             markersnotify.removeLayer(value.marker)
             value.marker = setupPokestopMarker(value)
         }
+        if (value['incident_expiration'] > 0 && value['incident_expiration'] < currentTime && value['incident_expiration'] > (currentTime - 300000)) {
+            if (value.marker && value.marker.rangeCircle) {
+                markers.removeLayer(value.marker.rangeCircle)
+                markersnotify.removeLayer(value.marker.rangeCircle)
+            }
+            markers.removeLayer(value.marker)
+            markersnotify.removeLayer(value.marker)
+            value.marker = setupPokestopMarker(value)
+        }
     })
     // remove unlured stops if show lured only is selected
     if (Store.get('showLures')) {
         $.each(mapData.pokestops, function (key, value) {
             if (value['lure_expiration'] < currentTime) {
+                removeStops.push(key)
+            }
+        })
+        $.each(removeStops, function (key, value) {
+            if (mapData.pokestops[value] && mapData.pokestops[value].marker) {
+                if (mapData.pokestops[value].marker.rangeCircle) {
+                    markers.removeLayer(mapData.pokestops[value].marker.rangeCircle)
+                    markersnotify.removeLayer(mapData.pokestops[value].marker.rangeCircle)
+                }
+                markers.removeLayer(mapData.pokestops[value].marker)
+                markersnotify.removeLayer(mapData.pokestops[value].marker)
+                delete mapData.pokestops[value]
+            }
+        })
+    }
+    if (Store.get('showRocket')) {
+        $.each(mapData.pokestops, function (key, value) {
+            if (value['incident_expiration'] < currentTime) {
                 removeStops.push(key)
             }
         })
@@ -6330,6 +6388,8 @@ $(function () {
                     lastpokestops = false
                 } else if (storageKey === 'showLures') {
                     lastpokestops = false
+                } else if (storageKey === 'showRocket') {
+                    lastpokestops = false
                 } else if (storageKey === 'showQuests') {
                     lastpokestops = false
                 } else if (storageKey === 'showPortals') {
@@ -6577,6 +6637,30 @@ $(function () {
         if (this.checked === true && Store.get('showQuests') === true) {
             Store.set('showQuests', false)
             $('#quests-switch').prop('checked', false)
+        }
+        if (this.checked === true && Store.get('showRocket') === true) {
+            Store.set('showRocket', false)
+            $('#rocket-switch').prop('checked', false)
+        }
+        if (this.checked) {
+            lastpokestops = false
+            updateMap()
+        } else {
+            lastpokestops = false
+            updateMap()
+        }
+        return buildSwitchChangeListener(mapData, ['pokestops'], 'showLures').bind(this)()
+    })
+
+    $('#rocket-switch').change(function () {
+        Store.set('showR', this.checked)
+        if (this.checked === true && Store.get('showQuests') === true) {
+            Store.set('showQuests', false)
+            $('#quests-switch').prop('checked', false)
+        }
+        if (this.checked === true && Store.get('showLures') === true) {
+            Store.set('showLures', false)
+            $('#lures-switch').prop('checked', false)
         }
         if (this.checked) {
             lastpokestops = false

@@ -259,6 +259,11 @@ var StoreOptions = {
             default: enableLured,
             type: StoreTypes.Boolean
         },
+    'showRocket':
+        {
+            default: enableRocket,
+            type: StoreTypes.Boolean
+        },
     'showQuests':
         {
             default: enableQuests,
