@@ -6669,7 +6669,7 @@ $(function () {
             lastpokestops = false
             updateMap()
         }
-        return buildSwitchChangeListener(mapData, ['pokestops'], 'showLures').bind(this)()
+        return buildSwitchChangeListener(mapData, ['pokestops'], 'showRocket').bind(this)()
     })
 
     $('#quests-switch').change(function () {
