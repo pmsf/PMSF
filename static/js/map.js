@@ -6653,7 +6653,7 @@ $(function () {
     })
 
     $('#rocket-switch').change(function () {
-        Store.set('showR', this.checked)
+        Store.set('showRocket', this.checked)
         if (this.checked === true && Store.get('showQuests') === true) {
             Store.set('showQuests', false)
             $('#quests-switch').prop('checked', false)
@@ -6677,6 +6677,10 @@ $(function () {
         if (this.checked === true && Store.get('showLures') === true) {
             Store.set('showLures', false)
             $('#lures-switch').prop('checked', false)
+        }
+        if (this.checked === true && Store.get('showRocket') === true) {
+            Store.set('showRocket', false)
+            $('#rocket-switch').prop('checked', false)
         }
         var options = {
             'duration': 500
