@@ -504,7 +504,7 @@ if ( $blockIframe ) {
                         </label>
                     </div>
                 </div>';
-        } ?>
+                } ?>
                     <div id="pokestops-filter-wrapper" style="display:none">
                 <?php
                 if ( ! $noLures ) {
@@ -519,7 +519,21 @@ if ( $blockIframe ) {
                         </label>
                     </div>
                 </div>';
-        } ?>
+                } ?>
+                <?php
+                if ( ! $noTeamRocket ) {
+                    echo '<div class="form-control switch-container" style="float:none;height:35px;margin-bottom:0px;">
+                    <h3>' . i8ln( 'Team Rocket only' ) . '</h3>
+                    <div class="onoffswitch">
+                        <input id="rocket-switch" type="checkbox" name="rocket-switch"
+                               class="onoffswitch-checkbox" checked>
+                        <label class="onoffswitch-label" for="rocket-switch">
+                            <span class="switch-label" data-on="On" data-off="Off"></span>
+                            <span class="switch-handle"></span>
+                        </label>
+                    </div>
+                </div>';
+                } ?>
                 <?php
                 if ( ! $noQuests ) {
                     echo '<div class="form-control switch-container" style="float:none;height:35px;margin-bottom:0px;">
@@ -533,7 +547,7 @@ if ( $blockIframe ) {
                         </label>
                     </div>
                 </div>';
-        ?>
+                ?>
                     <div id="quests-filter-wrapper" style="display:none">
                         <div id="quests-tabs">
                             <ul>
@@ -1939,8 +1953,10 @@ if ( $blockIframe ) {
     var enablePokemon = <?php echo $noPokemon ? 'false' : $enablePokemon ?>;
     var enablePokestops = <?php echo $noPokestops ? 'false' : $enablePokestops ?>;
     var enableLured = <?php echo $noLures ? 'false' : $enableLured ?>;
+    var enableRocket = <?php echo $noTeamRocket ? 'false' : $enableTeamRocket ?>;
     var noQuests = <?php echo $noQuests === true ? 'true' : 'false' ?>;
     var noLures = <?php echo $noLures === true ? 'true' : 'false' ?>;
+    var noTeamRocket = <?php echo $noTeamRocket === true ? 'true' : 'false' ?>;
     var enableQuests = <?php echo $noQuests ? 'false' : $enableQuests ?>;
     var hideQuestsPokemon = <?php echo $noQuestsPokemon ? '[]' : $hideQuestsPokemon ?>;
     var hideQuestsItem = <?php echo $noQuestsItems ? '[]' : $hideQuestsItem ?>;

@@ -216,7 +216,7 @@ class Monocle_MAD extends Monocle
         return $data;
     }
 
-    public function get_stops($qpeids, $qieids, $swLat, $swLng, $neLat, $neLng, $tstamp = 0, $oSwLat = 0, $oSwLng = 0, $oNeLat = 0, $oNeLng = 0, $lures, $quests, $dustamount)
+    public function get_stops($qpeids, $qieids, $swLat, $swLng, $neLat, $neLng, $tstamp = 0, $oSwLat = 0, $oSwLng = 0, $oNeLat = 0, $oNeLng = 0, $lures, $rocket, $quests, $dustamount)
     {
         $conds = array();
         $params = array();
@@ -239,6 +239,10 @@ class Monocle_MAD extends Monocle
             $conds[] = "expires > :time";
             $params[':time'] = time();
         }
+        if (!empty($rocket) && $rocket === 'true') {
+            $conds[] = "incident_expiration > :time";
+            $params[':time'] = time();
+        }
 
         if ($tstamp > 0) {
             $conds[] = "updated > :lastUpdated";
@@ -247,7 +251,7 @@ class Monocle_MAD extends Monocle
         return $this->query_stops($conds, $params);
     }
 
-    public function get_stops_quest($qpreids, $qireids, $swLat, $swLng, $neLat, $neLng, $tstamp = 0, $oSwLat = 0, $oSwLng = 0, $oNeLat = 0, $oNeLng = 0, $lures, $quests, $dustamount, $reloaddustamount)
+    public function get_stops_quest($qpreids, $qireids, $swLat, $swLng, $neLat, $neLng, $tstamp = 0, $oSwLat = 0, $oSwLng = 0, $oNeLat = 0, $oNeLng = 0, $lures, $rocket, $quests, $dustamount, $reloaddustamount)
     {
         $conds = array();
         $params = array();
@@ -301,7 +305,7 @@ class Monocle_MAD extends Monocle
 
         $query = "SELECT p.external_id AS pokestop_id,
         p.expires AS lure_expiration,
-        p.deployer AS lure_user,
+        p.incident_expiration,
         p.name AS pokestop_name,
         p.url,
         p.lat AS latitude,
@@ -325,8 +329,8 @@ class Monocle_MAD extends Monocle
         json_extract(json_extract(`quest_reward`,'$[*].pokemon_encounter.pokemon_display.is_shiny'),'$[0]') AS quest_pokemon_shiny,
         tq.quest_item_amount AS quest_reward_amount,
         tq.quest_stardust AS quest_dust_amount
-    FROM pokestops p
-    LEFT JOIN trs_quest tq ON tq.GUID = p.external_id
+        FROM pokestops p
+        LEFT JOIN trs_quest tq ON tq.GUID = p.external_id
         WHERE :conditions";
 
         $query = str_replace(":conditions", join(" AND ", $conds), $query);
@@ -359,6 +363,7 @@ class Monocle_MAD extends Monocle
             $pokestop["quest_reward_amount"] = intval($pokestop["quest_reward_amount"]);
             $pokestop["quest_dust_amount"] = intval($pokestop["quest_dust_amount"]);
             $pokestop["lure_expiration"] = $pokestop["lure_expiration"] * 1000;
+            $pokestop["incident_expiration"] = $pokestop["incident_expiration"] * 1000;
             $pokestop["lure_id"] = 1;
             $pokestop["quest_item_name"] = empty($item_pid) ? null : i8ln($this->items[$item_pid]["name"]);
             $pokestop["quest_pokemon_name"] = empty($mon_pid) ? null : i8ln($this->data[$mon_pid]["name"]);
