@@ -1946,7 +1946,7 @@ function getPokestopMarkerIcon(item) {
     var d = new Date()
     var lastMidnight = d.setHours(0, 0, 0, 0) / 1000
     var teamRocket = ''
-    if (!noTeamRocket && item['incident_expiration'] > Date.now) {
+    if (!noTeamRocket && item['incident_expiration'] > Date.now()) {
         teamRocket = '_rocket'
     }
     if (!noQuests && item['quest_reward_type'] !== null && lastMidnight < Number(item['quest_timestamp'])) {
