@@ -1362,24 +1362,24 @@ function pokestopLabel(item) {
     var d = new Date()
     var lastMidnight = d.setHours(0, 0, 0, 0) / 1000
     var stopName = ''
-    if (!noQuests && item['quest_type'] !== 0 && lastMidnight < Number(item['quest_timestamp'])) {
+    if (!noTeamRocket && item['incident_expiration'] > Date.now()) {
+        stopName = '<b class="pokestop-rocket-name">' + item['pokestop_name'] + '</b>'
+    } else if (!noQuests && item['quest_type'] !== 0 && lastMidnight < Number(item['quest_timestamp'])) {
         stopName = '<b class="pokestop-quest-name">' + item['pokestop_name'] + '</b>'
     } else if (!noLures && item['lure_expiration'] > Date.now()) {
         stopName = '<b class="pokestop-lure-name">' + item['pokestop_name'] + '</b>'
-    } else if (!noTeamRocket && item['incident_expiration'] > Date.now()) {
-        stopName = '<b class="pokestop-rocket-name">' + item['pokestop_name'] + '</b>'
     } else {
         stopName = '<b class="pokestop-name">' + item['pokestop_name'] + '</b>'
     }
     var stopImage = ''
     var lureEndStr = ''
     var incidentEndStr = ''
-    if (!noQuests && item['quest_type'] !== 0 && lastMidnight < Number(item['quest_timestamp']) && item['url'] !== null) {
+    if (!noTeamRocket && item['incident_expiration'] > Date.now() && item['url'] !== null) {
+        stopImage = '<img class="pokestop-rocket-image" src="' + item['url'] + '">'
+    } else if (!noQuests && item['quest_type'] !== 0 && lastMidnight < Number(item['quest_timestamp']) && item['url'] !== null) {
         stopImage = '<img class="pokestop-quest-image" src="' + item['url'] + '">'
     } else if (!noLures && item['lure_expiration'] > Date.now() && item['url'] !== null) {
         stopImage = '<img class="pokestop-lure-image" src="' + item['url'] + '">'
-    } else if (!noTeamRocket && item['incident_expiration'] > Date.now() && item['url'] !== null) {
-        stopImage = '<img class="pokestop-rocket-image" src="' + item['url'] + '">'
     } else if (item['url'] !== null) {
         stopImage = '<img class="pokestop-image" src="' + item['url'] + '">'
     }
@@ -1950,7 +1950,7 @@ function getPokestopMarkerIcon(item) {
         teamRocket = '_rocket'
     }
     if (!noQuests && item['quest_reward_type'] !== null && lastMidnight < Number(item['quest_timestamp'])) {
-        var stopQuestIcon = 'PstopQuest.png'
+        var stopQuestIcon = 'PstopQuest' + teamRocket + '.png'
         if (!noLures && item['lure_expiration'] > Date.now()) {
             stopQuestIcon = 'PstopLured_' + item['lure_id'] + teamRocket + '.png'
         }
