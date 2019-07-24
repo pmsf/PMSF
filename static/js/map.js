@@ -6651,8 +6651,13 @@ $(function () {
             Store.set('showRocket', false)
             $('#rocket-switch').prop('checked', false)
         }
+        var options = {
+            'duration': 500
+        }
+        var wrapper = $('#quests-filter-wrapper')
         if (this.checked) {
             lastpokestops = false
+            wrapper.hide(options)
             updateMap()
         } else {
             lastpokestops = false
@@ -6671,8 +6676,13 @@ $(function () {
             Store.set('showLures', false)
             $('#lures-switch').prop('checked', false)
         }
+        var options = {
+            'duration': 500
+        }
+        var wrapper = $('#quests-filter-wrapper')
         if (this.checked) {
             lastpokestops = false
+            wrapper.hide(options)
             updateMap()
         } else {
             lastpokestops = false
