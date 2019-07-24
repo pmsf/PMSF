@@ -1415,7 +1415,7 @@ function pokestopLabel(item) {
         ' <span class="label-countdown" disappears-at="' + item['lure_expiration'] + '">(00m00s)</span>' +
         '</b></div>'
     }
-    if (item['incident_expiration'] > Date.now()) {
+    if (!noTeamRocket && item['incident_expiration'] > Date.now()) {
         incidentEndStr = getTimeStr(item['incident_expiration'])
         str +=
         '<div><b>' + i8ln('Incident Expiration') + ': ' + incidentEndStr +
