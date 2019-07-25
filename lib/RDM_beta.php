@@ -219,7 +219,7 @@ class RDM_beta extends RDM
         return $data;
     }
 
-    public function get_stops($qpeids, $qieids, $swLat, $swLng, $neLat, $neLng, $tstamp = 0, $oSwLat = 0, $oSwLng = 0, $oNeLat = 0, $oNeLng = 0, $lures, $quests, $dustamount)
+    public function get_stops($qpeids, $qieids, $swLat, $swLng, $neLat, $neLng, $tstamp = 0, $oSwLat = 0, $oSwLng = 0, $oNeLat = 0, $oNeLng = 0, $lures, $rocket, $quests, $dustamount)
     {
         $conds = array();
         $params = array();
@@ -275,6 +275,10 @@ class RDM_beta extends RDM
             $conds[] = "lure_expire_timestamp > :time";
             $params[':time'] = time();
         }
+        if (!empty($rocket) && $rocket === 'true') {
+            $conds[] = "incident_expire_timestamp > :time";
+            $params[':time'] = time();
+        }
         if ($tstamp > 0) {
             $conds[] = "updated > :lastUpdated";
             $params[':lastUpdated'] = $tstamp;
@@ -283,7 +287,7 @@ class RDM_beta extends RDM
     }
 
 
-    public function get_stops_quest($qpreids, $qireids, $swLat, $swLng, $neLat, $neLng, $tstamp = 0, $oSwLat = 0, $oSwLng = 0, $oNeLat = 0, $oNeLng = 0, $lures, $quests, $dustamount, $reloaddustamount)
+    public function get_stops_quest($qpreids, $qireids, $swLat, $swLng, $neLat, $neLng, $tstamp = 0, $oSwLat = 0, $oSwLng = 0, $oNeLat = 0, $oNeLng = 0, $lures, $rocket, $quests, $dustamount, $reloaddustamount)
     {
         $conds = array();
         $params = array();
@@ -341,6 +345,7 @@ class RDM_beta extends RDM
         name AS pokestop_name,
         url,
         lure_expire_timestamp AS lure_expiration,
+        incident_expire_timestamp AS incident_expiration,
         lure_id,
         quest_type,
         quest_timestamp,
@@ -390,6 +395,7 @@ class RDM_beta extends RDM
             $pokestop["quest_dust_amount"] = intval($pokestop["quest_dust_amount"]);
             $pokestop["url"] = ! empty($pokestop["url"]) ? str_replace("http://", "https://images.weserv.nl/?url=", $pokestop["url"]) : null;
             $pokestop["lure_expiration"] = $pokestop["lure_expiration"] * 1000;
+            $pokestop["incident_expiration"] = $pokestop["incident_expiration"] * 1000;
             $pokestop["lure_id"] = $pokestop["lure_id"] - 500;
             $pokestop["quest_item_name"] = empty($item_pid) ? null : i8ln($this->items[$item_pid]["name"]);
             $pokestop["quest_pokemon_name"] = empty($mon_pid) ? null : i8ln($this->data[$mon_pid]["name"]);
