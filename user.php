@@ -163,7 +163,7 @@ include('config/config.php');
             !empty($domainName) ? $domainName = $domainName : $domainName = $_SERVER['SERVER_NAME'];
             $headers = "From: no-reply@{$domainName}" . "\r\n" .
                 "Reply-To: no-reply@{$domainName}" . "\r\n" .
-                'Content-Type: text/html; charset=ISO-8859-1' . "\r\n" .
+                'Content-Type: text/html; charset=utf-8' . "\r\n" .
                 'X-Mailer: PHP/' . phpversion();
 
             $sendMail = mail($_POST['email'], $subject, $message, $headers);
