@@ -268,6 +268,7 @@ class RDM extends Scanner
             $pokestop["url"] = ! empty($pokestop["url"]) ? str_replace("http://", "https://images.weserv.nl/?url=", $pokestop["url"]) : null;
             $pokestop["lure_expiration"] = $pokestop["lure_expiration"] * 1000;
             $pokestop["lure_id"] = 1;
+            $pokestop["grunt_type"] = 0;
 
             $data[] = $pokestop;
             unset($pokestops[$i]);
