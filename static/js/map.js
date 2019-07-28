@@ -1945,14 +1945,28 @@ function getPokestopMarkerIcon(item) {
     var html = ''
     var d = new Date()
     var lastMidnight = d.setHours(0, 0, 0, 0) / 1000
-    var teamRocket = ''
     if (!noTeamRocket && item['incident_expiration'] > Date.now()) {
-        teamRocket = '_rocket'
-    }
-    if (!noQuests && item['quest_reward_type'] !== null && lastMidnight < Number(item['quest_timestamp'])) {
-        var stopQuestIcon = 'PstopQuest' + teamRocket + '.png'
+        var lureStr = ''
+		if (!noLures && item['lure_expiration'] > Date.now()) {
+            lureStr = = 'Lured_' + item['lure_id']
+        }
+        html = '<div style="position:relative;"><img src="static/forts/Pstop' + lureStr + '_rocket.png" style="width:50px;height:72;top:-35px;right:10px;"/>'
+        if (item['grunt_type'] > 0) {
+            html += '<img src="static/grunttype/' + item['grunt_type'] + '.png" style="width:30px;height:auto;position:absolute;top:4px;left:0px;"/></div>'
+        } else {
+            html += '</div>'
+        }
+        stopMarker = L.divIcon({
+            iconSize: [31, 31],
+            iconAnchor: [24, 38],
+            popupAnchor: [0, -35],
+            className: 'stop-rocket-marker',
+            html: html
+        })
+    } else if (!noQuests && item['quest_reward_type'] !== null && lastMidnight < Number(item['quest_timestamp'])) {
+        var stopQuestIcon = 'PstopQuest.png'
         if (!noLures && item['lure_expiration'] > Date.now()) {
-            stopQuestIcon = 'PstopLured_' + item['lure_id'] + teamRocket + '.png'
+            stopQuestIcon = 'PstopLured_' + item['lure_id'] + '.png'
         }
         if (item['quest_reward_type'] === 7) {
             var pokemonIdStr = ''
@@ -2010,21 +2024,12 @@ function getPokestopMarkerIcon(item) {
             })
         }
     } else if (!noLures && item['lure_expiration'] > Date.now()) {
-        html = '<div><img src="static/forts/PstopLured_' + item['lure_id'] + teamRocket + '.png" style="width:50px;height:72;top:-35px;right:10px;"/><div>'
+        html = '<div><img src="static/forts/PstopLured_' + item['lure_id'] + '.png" style="width:50px;height:72;top:-35px;right:10px;"/><div>'
         stopMarker = L.divIcon({
             iconSize: [31, 31],
             iconAnchor: [24, 38],
             popupAnchor: [0, -35],
             className: 'stop-lured-marker',
-            html: html
-        })
-    } else if (!noTeamRocket && item['incident_expiration'] > Date.now()) {
-        html = '<div><img src="static/forts/Pstop_rocket.png" style="width:50px;height:72;top:-35px;right:10px;"/><div>'
-        stopMarker = L.divIcon({
-            iconSize: [31, 31],
-            iconAnchor: [24, 38],
-            popupAnchor: [0, -35],
-            className: 'stop-rocket-marker',
             html: html
         })
     } else {

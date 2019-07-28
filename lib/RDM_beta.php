@@ -347,6 +347,7 @@ class RDM_beta extends RDM
         lure_expire_timestamp AS lure_expiration,
         incident_expire_timestamp AS incident_expiration,
         lure_id,
+        grunt_type,
         quest_type,
         quest_timestamp,
         quest_target,
