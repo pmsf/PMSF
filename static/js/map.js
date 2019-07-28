@@ -1948,7 +1948,7 @@ function getPokestopMarkerIcon(item) {
     if (!noTeamRocket && item['incident_expiration'] > Date.now()) {
         var lureStr = ''
 		if (!noLures && item['lure_expiration'] > Date.now()) {
-            lureStr = = 'Lured_' + item['lure_id']
+            lureStr = 'Lured_' + item['lure_id']
         }
         html = '<div style="position:relative;"><img src="static/forts/Pstop' + lureStr + '_rocket.png" style="width:50px;height:72;top:-35px;right:10px;"/>'
         if (item['grunt_type'] > 0) {
