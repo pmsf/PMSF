@@ -28,11 +28,11 @@
     "grunt": "Male Grunt"
   },
   "8": {
-    "type": "Darkness",
+    "type": "Ghost",
     "grunt": "Female Grunt"
   },
   "9": {
-    "type": "Darkness",
+    "type": "Ghost",
     "grunt": "Male Grunt"
   },
   "10": {
@@ -126,7 +126,6 @@
   "32": {
     "type": "Poison",
     "grunt": "Female Grunt"
-
   },
   "33": {
     "type": "Poison",
