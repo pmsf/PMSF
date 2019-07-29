@@ -6644,7 +6644,7 @@ $(function () {
     })
 
     $('#rocket-timer-switch').change(function () {
-        Store.set('showRaidTimer', this.checked)
+        Store.set('showRocketTimer', this.checked)
         lastpokestops = false
         buildSwitchChangeListener(mapData, ['pokestops'], 'showRocketTimer').bind(this)()
     })
