@@ -418,6 +418,11 @@ var StoreOptions = {
         {
             default: enableRaidTimer,
             type: StoreTypes.Boolean
+        },
+    'showRocketTimer':
+        {
+            default: enableRocketTimer,
+            type: StoreTypes.Boolean
         }
 }
 
