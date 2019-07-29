@@ -269,6 +269,8 @@ class RDM extends Scanner
             $pokestop["lure_expiration"] = $pokestop["lure_expiration"] * 1000;
             $pokestop["lure_id"] = 1;
             $pokestop["grunt_type"] = 0;
+            $pokestop["grunt_type_name"] = null;
+            $pokestop["grunt_type_gender"] = null;
 
             $data[] = $pokestop;
             unset($pokestops[$i]);

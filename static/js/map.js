@@ -1416,9 +1416,15 @@ function pokestopLabel(item) {
         '</b></div>'
     }
     if (!noTeamRocket && item['incident_expiration'] > Date.now()) {
+        str += '<br><div><b>' + i8ln('Team Rocket') + ':</b></div>'
+        if (item['grunt_type'] > 0) {
+            if (item['grunt_type_name'] !== '') {
+                str += '<div><b>' + i8ln('Grunt-Type') + ': ' + item['grunt_type_name'] + '</b></div>'
+            }
+            str += '<div><b>' + i8ln('Grunt-Gender') + ': ' + item['grunt_type_gender'] + '</b></div>'
+        }
         incidentEndStr = getTimeStr(item['incident_expiration'])
-        str +=
-        '<div><b>' + i8ln('Incident Expiration') + ': ' + incidentEndStr +
+        str += '<div><b>' + i8ln('Expiration Time') + ': ' + incidentEndStr +
         ' <span class="label-countdown" disappears-at="' + item['incident_expiration'] + '">(00m00s)</span>' +
         '</b></div>'
     }
@@ -1947,7 +1953,7 @@ function getPokestopMarkerIcon(item) {
     var lastMidnight = d.setHours(0, 0, 0, 0) / 1000
     if (!noTeamRocket && item['incident_expiration'] > Date.now()) {
         var lureStr = ''
-		if (!noLures && item['lure_expiration'] > Date.now()) {
+        if (!noLures && item['lure_expiration'] > Date.now()) {
             lureStr = 'Lured_' + item['lure_id']
         }
         html = '<div style="position:relative;"><img src="static/forts/Pstop' + lureStr + '_rocket.png" style="width:50px;height:72;top:-35px;right:10px;"/>'
