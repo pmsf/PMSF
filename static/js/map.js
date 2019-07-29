@@ -1965,7 +1965,7 @@ function getPokestopMarkerIcon(item) {
             html += '</div>'
         }
         if (noRocketTimer === false && Store.get(['showRocketTimer'])) {
-            html += '<div><span class="raid-countdown gym-icon-countdown" disappears-at="' + item['incident_expiration'] + '">00m00s</span></div>'
+            html += '<div><span class="raid-countdown gym-icon-countdown" disappears-at="' + item['incident_expiration'] + '"> </span></div>'
         }
         stopMarker = L.divIcon({
             iconSize: [31, 31],
@@ -4957,16 +4957,6 @@ function updatePokestops() {
     var lastMidnight = d.setHours(0, 0, 0, 0) / 1000
 
     $.each(mapData.pokestops, function (key, value) {
-        // Reload pokestops when Team Rocket timers get enabled.
-        if (Store.get('showRocketTimer')) {
-            if (value.marker && value.marker.rangeCircle) {
-                markers.removeLayer(value.marker.rangeCircle)
-                markersnotify.removeLayer(value.marker.rangeCircle)
-            }
-            markers.removeLayer(value.marker)
-            markersnotify.removeLayer(value.marker)
-            value.marker = setupPokestopMarker(value)
-        }
         // change lured pokestop marker to unlured when expired.
         if (value['lure_expiration'] > 0 && value['lure_expiration'] < currentTime && value['lure_expiration'] > (currentTime - 300000)) {
             if (value.marker && value.marker.rangeCircle) {
@@ -6658,7 +6648,8 @@ $(function () {
     $('#rocket-timer-switch').change(function () {
         Store.set('showRocketTimer', this.checked)
         lastpokestops = false
-        updateMap()
+        jQuery('label[for="rocket-switch"]').click()
+        jQuery('label[for="rocket-switch"]').click()
         buildSwitchChangeListener(mapData, ['pokestops'], 'showRocketTimer').bind(this)()
     })
 
