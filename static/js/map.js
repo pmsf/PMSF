@@ -753,6 +753,7 @@ function initSidebar() {
     $('#scan-area-switch').prop('checked', Store.get('showScanPolygon'))
     $('#nest-polygon-switch').prop('checked', Store.get('showNestPolygon'))
     $('#raid-timer-switch').prop('checked', Store.get('showRaidTimer'))
+    $('#rocket-timer-switch').prop('checked', Store.get('showRocketTimer'))
     $('#sound-switch').prop('checked', Store.get('playSound'))
     $('#cries-switch').prop('checked', Store.get('playCries'))
     $('#cries-switch-wrapper').toggle(Store.get('playSound'))
@@ -1961,6 +1962,9 @@ function getPokestopMarkerIcon(item) {
             html += '<img src="static/grunttype/' + item['grunt_type'] + '.png" style="width:30px;height:auto;position:absolute;top:4px;left:0px;"/></div>'
         } else {
             html += '</div>'
+        }
+        if (noRocketTimer === false && Store.get(['showRocketTimer'])) {
+            html += '<div><span class="raid-countdown gym-icon-countdown" disappears-at="' + item['incident_expiration'] + '">00m00s</span></div>'
         }
         stopMarker = L.divIcon({
             iconSize: [31, 31],
@@ -6639,6 +6643,12 @@ $(function () {
         buildSwitchChangeListener(mapData, ['gyms'], 'showRaidTimer').bind(this)()
     })
 
+    $('#rocket-timer-switch').change(function () {
+        Store.set('showRaidTimer', this.checked)
+        lastpokestops = false
+        buildSwitchChangeListener(mapData, ['pokestops'], 'showRocketTimer').bind(this)()
+    })
+
     $('#pokestops-switch').change(function () {
         var options = {
             'duration': 500
@@ -6691,12 +6701,15 @@ $(function () {
             'duration': 500
         }
         var wrapper = $('#quests-filter-wrapper')
+        var rocketWrapper = $('#rocket-wrapper')
         if (this.checked) {
             lastpokestops = false
             wrapper.hide(options)
+            rocketWrapper.show(options)
             updateMap()
         } else {
             lastpokestops = false
+            rocketWrapper.hide(options)
             updateMap()
         }
         return buildSwitchChangeListener(mapData, ['pokestops'], 'showRocket').bind(this)()
