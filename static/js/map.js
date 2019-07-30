@@ -6674,7 +6674,7 @@ $(function () {
         }
         if (this.checked === true && Store.get('showRocket') === true) {
             Store.set('showRocket', false)
-            $('#rocket-switch').prop('checked', false)
+            jQuery('label[for="rocket-switch"]').click()
         }
         var options = {
             'duration': 500
@@ -6727,10 +6727,10 @@ $(function () {
         }
         if (this.checked === true && Store.get('showRocket') === true) {
             Store.set('showRocket', false)
-            $('#rocket-switch').prop('checked', false)
+            jQuery('label[for="rocket-switch"]').click()
         }
         var options = {
-            'duration': 500
+            'duration': 1000
         }
         var wrapper = $('#quests-filter-wrapper')
         if (this.checked) {
