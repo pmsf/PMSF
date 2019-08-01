@@ -534,6 +534,21 @@ if ( $blockIframe ) {
                     </div>
                 </div>';
                 } ?>
+                <div id="rocket-wrapper" style="display:none">
+                    <?php
+                    if ( ! $noTeamRocketTimer && ! $noTeamRocket ) {
+                        echo '<div class="form-control switch-container">
+                        <h3>' . i8ln( 'Team Rocket Timer' ) . '</h3>
+                        <div class="onoffswitch">
+                        <input id="rocket-timer-switch" type="checkbox" name="rocket-timer-switch" class="onoffswitch-checkbox" checked>
+                        <label class="onoffswitch-label" for="rocket-timer-switch">
+                            <span class="switch-label" data-on="On" data-off="Off"></span>
+                            <span class="switch-handle"></span>
+                        </label>
+                    </div>
+                    </div>';
+                    } ?>
+                </div>
                 <?php
                 if ( ! $noQuests ) {
                     echo '<div class="form-control switch-container" style="float:none;height:35px;margin-bottom:0px;">
@@ -2029,6 +2044,8 @@ if ( $blockIframe ) {
     var noWeatherShadow = <?php echo $noWeatherShadow === true ? 'true' : 'false' ?>;
     var noRaidTimer = <?php echo $noRaidTimer === true ? 'true' : 'false' ?>;
     var enableRaidTimer = <?php echo $noRaidTimer ? 'false' : $enableRaidTimer ?>;
+    var noRocketTimer = <?php echo $noTeamRocketTimer === true ? 'true' : 'false' ?>;
+    var enableRocketTimer = <?php echo $noTeamRocketTimer ? 'false' : $enableTeamRocketTimer ?>;
     var enableNestPolygon = <?php echo $noNestPolygon ? 'false' : $enableNestPolygon ?>;
     var nestGeoJSONfile = '<?php echo $noNestPolygon ? '' : $nestGeoJSONfile ?>';
     var noCostumeIcons = <?php echo $noCostumeIcons === true ? 'true' : 'false' ?>;

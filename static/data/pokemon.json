@@ -824,7 +824,7 @@
         "formtypes": [
           {
             "type": "Normal",
-	    "color": "#8a8a59"
+            "color": "#8a8a59"
           }
         ]
       },
@@ -835,11 +835,11 @@
         "formtypes": [
           {
             "type": "Dark",
-	    "color": "#707070"
+            "color": "#707070"
           },
-	  {
+          {
             "type": "Normal",
-	    "color": "#8a8a59"
+            "color": "#8a8a59"
           }
         ]
       },
@@ -848,9 +848,9 @@
         "protoform": "153",
         "assetsform": "00",
         "formtypes": [
-	  {
+          {
             "type": "Normal",
-	    "color": "#8a8a59"
+            "color": "#8a8a59"
           }
         ]
       },
@@ -859,9 +859,9 @@
         "protoform": "154",
         "assetsform": "00",
         "formtypes": [
-	  {
+          {
             "type": "Normal",
-	    "color": "#8a8a59"
+            "color": "#8a8a59"
           }
         ]
       }
@@ -881,10 +881,10 @@
         "nameform": "Normal",
         "protoform": "47",
         "assetsform": "00",
-	"formtypes": [
+        "formtypes": [
           {
             "type": "Normal",
-	    "color": "#8a8a59"
+            "color": "#8a8a59"
           }
         ]
       },
@@ -892,14 +892,14 @@
         "nameform": "Alolan",
         "protoform": "48",
         "assetsform": "61",
-	"formtypes": [
+        "formtypes": [
           {
             "type": "Dark",
-	    "color": "#707070"
+            "color": "#707070"
           },
-	  {
+          {
             "type": "Normal",
-	    "color": "#8a8a59"
+            "color": "#8a8a59"
           }
         ]
       },
@@ -907,10 +907,10 @@
         "nameform": "Shadow",
         "protoform": "155",
         "assetsform": "00",
-	"formtypes": [
+        "formtypes": [
           {
             "type": "Normal",
-	    "color": "#8a8a59"
+            "color": "#8a8a59"
           }
         ]
       },
@@ -918,10 +918,10 @@
         "nameform": "Purified",
         "protoform": "156",
         "assetsform": "00",
-	"formtypes": [
+        "formtypes": [
           {
             "type": "Normal",
-	    "color": "#8a8a59"
+            "color": "#8a8a59"
           }
         ]
       },
@@ -932,7 +932,7 @@
         "formtypes": [
           {
             "type": "Normal",
-	    "color": "#8a8a59"
+            "color": "#8a8a59"
           }
         ]
       }
@@ -1124,7 +1124,7 @@
             "type": "Electric",
             "color": "#f8d030"
           },
-	  {
+          {
             "type": "Psychic",
             "color": "#f85888"
           }
@@ -1609,7 +1609,7 @@
             "type": "Ice",
             "color": "#98d8d8"
           },
-	  {
+          {
             "type": "Fairy",
             "color": "#e898e8"
           }
@@ -1705,7 +1705,7 @@
             "type": "Poison",
             "color": "#a040a0"
           },
-	  {
+          {
             "type": "Flying",
             "color": "#a890f0"
           }
@@ -1720,7 +1720,7 @@
             "type": "Poison",
             "color": "#a040a0"
           },
-	  {
+          {
             "type": "Flying",
             "color": "#a890f0"
           }
@@ -1766,7 +1766,7 @@
             "type": "Poison",
             "color": "#a040a0"
           },
-	  {
+          {
             "type": "Flying",
             "color": "#a890f0"
           }
@@ -1781,7 +1781,7 @@
             "type": "Poison",
             "color": "#a040a0"
           },
-	  {
+          {
             "type": "Flying",
             "color": "#a890f0"
           }
@@ -4907,7 +4907,7 @@
         "formtypes": [
           {
             "type": "Normal",
-	    "color": "#8a8a59"
+            "color": "#8a8a59"
           }
         ]
       },
@@ -4916,9 +4916,9 @@
         "protoform": "678",
         "assetsform": "00",
         "formtypes": [
-	  {
+          {
             "type": "Normal",
-	    "color": "#8a8a59"
+            "color": "#8a8a59"
           }
         ]
       },
@@ -4927,9 +4927,9 @@
         "protoform": "679",
         "assetsform": "00",
         "formtypes": [
-	  {
+          {
             "type": "Normal",
-	    "color": "#8a8a59"
+            "color": "#8a8a59"
           }
         ]
       }
@@ -5128,7 +5128,7 @@
         "formtypes": [
           {
             "type": "Normal",
-	    "color": "#8a8a59"
+            "color": "#8a8a59"
           }
         ]
       },
@@ -5137,9 +5137,9 @@
         "protoform": "200",
         "assetsform": "00",
         "formtypes": [
-	  {
+          {
             "type": "Normal",
-	    "color": "#8a8a59"
+            "color": "#8a8a59"
           }
         ]
       },
@@ -5148,9 +5148,9 @@
         "protoform": "201",
         "assetsform": "00",
         "formtypes": [
-	  {
+          {
             "type": "Normal",
-	    "color": "#8a8a59"
+            "color": "#8a8a59"
           }
         ]
       }
@@ -5770,7 +5770,7 @@
             "type": "Poison",
             "color": "#a040a0"
           },
-	  {
+          {
             "type": "Flying",
             "color": "#a890f0"
           }
@@ -5785,7 +5785,7 @@
             "type": "Poison",
             "color": "#a040a0"
           },
-	  {
+          {
             "type": "Flying",
             "color": "#a890f0"
           }
@@ -6857,7 +6857,7 @@
             "type": "Flying",
             "color": "#a890f0"
           }
-	]
+        ]
       },
       {
         "nameform": "Purified",
@@ -6872,7 +6872,7 @@
             "type": "Flying",
             "color": "#a890f0"
           }
-	]
+        ]
       }
     ]
   },
@@ -7461,7 +7461,7 @@
         "formtypes": [
           {
             "type": "Normal",
-	    "color": "#8a8a59"
+            "color": "#8a8a59"
           }
         ]
       },
@@ -7470,9 +7470,9 @@
         "protoform": "681",
         "assetsform": "00",
         "formtypes": [
-	  {
+          {
             "type": "Normal",
-	    "color": "#8a8a59"
+            "color": "#8a8a59"
           }
         ]
       },
@@ -7481,9 +7481,9 @@
         "protoform": "682",
         "assetsform": "00",
         "formtypes": [
-	  {
+          {
             "type": "Normal",
-	    "color": "#8a8a59"
+            "color": "#8a8a59"
           }
         ]
       }
@@ -9621,34 +9621,34 @@
     "forms": [
       {
         "nameform": "Normal",
-        "protoform": "612",
+        "protoform": "610",
         "assetsform": "00",
-	"formtypes": [
+        "formtypes": [
           {
             "type": "Grass",
-	    "color": "#78c850"
+            "color": "#78c850"
           }
         ]
       },
       {
         "nameform": "Shadow",
-        "protoform": "613",
+        "protoform": "611",
         "assetsform": "00",
-	"formtypes": [
+        "formtypes": [
           {
             "type": "Grass",
-	    "color": "#78c850"
+            "color": "#78c850"
           }
         ]
       },
       {
         "nameform": "Purified",
-        "protoform": "614",
+        "protoform": "612",
         "assetsform": "00",
-	"formtypes": [
+        "formtypes": [
           {
             "type": "Grass",
-	    "color": "#78c850"
+            "color": "#78c850"
           }
         ]
       }
@@ -9672,10 +9672,10 @@
         "nameform": "Normal",
         "protoform": "613",
         "assetsform": "00",
-	"formtypes": [
+        "formtypes": [
           {
             "type": "Grass",
-	    "color": "#78c850"
+            "color": "#78c850"
           },
           {
             "type": "Dark",
@@ -9687,10 +9687,10 @@
         "nameform": "Shadow",
         "protoform": "614",
         "assetsform": "00",
-	"formtypes": [
+        "formtypes": [
           {
             "type": "Grass",
-	    "color": "#78c850"
+            "color": "#78c850"
           },
           {
             "type": "Dark",
@@ -9702,10 +9702,10 @@
         "nameform": "Purified",
         "protoform": "615",
         "assetsform": "00",
-	"formtypes": [
+        "formtypes": [
           {
             "type": "Grass",
-	    "color": "#78c850"
+            "color": "#78c850"
           },
           {
             "type": "Dark",
@@ -12571,7 +12571,7 @@
             "type": "Flying",
             "color": "#a890f0"
           }
-	]
+        ]
       },
       {
         "nameform": "Purified",
@@ -12586,7 +12586,7 @@
             "type": "Flying",
             "color": "#a890f0"
           }
-	]
+        ]
       }
     ]
   },
@@ -12621,7 +12621,7 @@
         "formtypes": [
           {
             "type": "Normal",
-	    "color": "#8a8a59"
+            "color": "#8a8a59"
           }
         ]
       },
@@ -12630,9 +12630,9 @@
         "protoform": "684",
         "assetsform": "00",
         "formtypes": [
-	  {
+          {
             "type": "Normal",
-	    "color": "#8a8a59"
+            "color": "#8a8a59"
           }
         ]
       },
@@ -12641,9 +12641,9 @@
         "protoform": "685",
         "assetsform": "00",
         "formtypes": [
-	  {
+      {
             "type": "Normal",
-	    "color": "#8a8a59"
+            "color": "#8a8a59"
           }
         ]
       }

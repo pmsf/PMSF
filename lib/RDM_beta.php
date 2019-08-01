@@ -347,6 +347,7 @@ class RDM_beta extends RDM
         lure_expire_timestamp AS lure_expiration,
         incident_expire_timestamp AS incident_expiration,
         lure_id,
+        grunt_type,
         quest_type,
         quest_timestamp,
         quest_target,
@@ -381,6 +382,11 @@ class RDM_beta extends RDM
                 $mon_pid = null;
                 $pokestop["quest_pokemon_id"] = null;
             }
+            $grunttype_pid = $pokestop["grunt_type"];
+            if ($grunttype_pid == "0") {
+                $grunttype_pid = null;
+                $pokestop["grunt_type"] = null;
+            }
             $pokestop["latitude"] = floatval($pokestop["latitude"]);
             $pokestop["longitude"] = floatval($pokestop["longitude"]);
             $pokestop["quest_type"] = intval($pokestop["quest_type"]);
@@ -399,6 +405,8 @@ class RDM_beta extends RDM
             $pokestop["lure_id"] = $pokestop["lure_id"] - 500;
             $pokestop["quest_item_name"] = empty($item_pid) ? null : i8ln($this->items[$item_pid]["name"]);
             $pokestop["quest_pokemon_name"] = empty($mon_pid) ? null : i8ln($this->data[$mon_pid]["name"]);
+            $pokestop["grunt_type_name"] = empty($grunttype_pid) ? null : i8ln($this->grunttype[$grunttype_pid]["type"]);
+            $pokestop["grunt_type_gender"] = empty($grunttype_pid) ? null : i8ln($this->grunttype[$grunttype_pid]["grunt"]);
 
             $data[] = $pokestop;
             unset($pokestops[$i]);
