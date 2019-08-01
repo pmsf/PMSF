@@ -172,6 +172,8 @@
     "noMarkPoi": true,
     "enableRaidTimer": true,
     "noRaidTimer": true,
+    "enableRocketTimer": true,
+    "noRocketTimer": true,
     "enableNestPolygon": true,
     "nestGeoJSONfile": true,
     "noCostumeIcons": true,

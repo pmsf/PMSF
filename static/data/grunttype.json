@@ -1,0 +1,162 @@
+{
+  "1": {
+    "type": "",
+    "grunt": "Blanche"
+  },
+  "2": {
+    "type": "",
+    "grunt": "Candela"
+  },
+  "3": {
+    "type": "",
+    "grunt": "Spark"
+  },
+  "4": {
+    "type": "",
+    "grunt": "Male Grunt"
+  },
+  "5": {
+    "type": "",
+    "grunt": "Female Grunt"
+  },
+  "6": {
+    "type": "Bug",
+    "grunt": "Female Grunt"
+  },
+  "7": {
+    "type": "Bug",
+    "grunt": "Male Grunt"
+  },
+  "8": {
+    "type": "Ghost",
+    "grunt": "Female Grunt"
+  },
+  "9": {
+    "type": "Ghost",
+    "grunt": "Male Grunt"
+  },
+  "10": {
+    "type": "Dark",
+    "grunt": "Female Grunt"
+  },
+  "11": {
+    "type": "Dark",
+    "grunt": "Male Grunt"
+  },
+  "12": {
+    "type": "Dragon",
+    "grunt": "Female Grunt"
+  },
+  "13": {
+    "type": "Dragon",
+    "grunt": "Male Grunt"
+  },
+  "14": {
+    "type": "Fairy",
+    "grunt": "Female Grunt"
+  },
+  "15": {
+    "type": "Fairy",
+    "grunt": "Male Grunt"
+  },
+  "16": {
+    "type": "Fighting",
+    "grunt": "Female Grunt"
+  },
+  "17": {
+    "type": "Fighting",
+    "grunt": "Male Grunt"
+  },
+  "18": {
+    "type": "Fire",
+    "grunt": "Female Grunt"
+  },
+  "19": {
+    "type": "Fire",
+    "grunt": "Male Grunt"
+  },
+  "20": {
+    "type": "Flying",
+    "grunt": "Female Grunt"
+  },
+  "21": {
+    "type": "Flying",
+    "grunt": "Male Grunt"
+  },
+  "22": {
+    "type": "Grass",
+    "grunt": "Female Grunt"
+  },
+  "23": {
+    "type": "Grass",
+    "grunt": "Male Grunt"
+  },
+  "24": {
+    "type": "Ground",
+    "grunt": "Female Grunt"
+  },
+  "25": {
+    "type": "Ground",
+    "grunt": "Male Grunt"
+  },
+  "26": {
+    "type": "Ice",
+    "grunt": "Female Grunt"
+  },
+  "27": {
+    "type": "Ice",
+    "grunt": "Male Grunt"
+  },
+  "28": {
+    "type": "Metal",
+    "grunt": "Female Grunt"
+  },
+  "29": {
+    "type": "Metal",
+    "grunt": "Male Grunt"
+  },
+  "30": {
+    "type": "Normal",
+    "grunt": "Female Grunt"
+  },
+  "31": {
+    "type": "Normal",
+    "grunt": "Male Grunt"
+  },
+  "32": {
+    "type": "Poison",
+    "grunt": "Female Grunt"
+  },
+  "33": {
+    "type": "Poison",
+    "grunt": "Male Grunt"
+  },
+  "34": {
+    "type": "Psychic",
+    "grunt": "Female Grunt"
+  },
+  "35": {
+    "type": "Psychic",
+    "grunt": "Male Grunt"
+  },
+  "36": {
+    "type": "Rock",
+    "grunt": "Female Grunt"
+  },
+  "37": {
+    "type": "Rock",
+    "grunt": "Male Grunt"
+  },
+  "38": {
+    "type": "Water",
+    "grunt": "Female Grunt"
+  },
+  "39": {
+    "type": "Water",
+    "grunt": "Male Grunt"
+  },
+  "40": {
+    "type": "",
+    "grunt": "Player Team Leader"
+  }
+}

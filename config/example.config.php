@@ -174,10 +174,15 @@ $enableRaidTimer = 'false';
 
 $noPokestops = false;
 $enablePokestops = 'false';
+
 $noLures = false;
 $enableLured = 'false';
+
 $noTeamRocket = false;
 $enableTeamRocket = 'false';
+$noTeamRocketTimer = false;
+$enableTeamRocketTimer = 'false';
+
 $noQuests = false;
 $enableQuests = 'false';
 $noQuestsItems = false;

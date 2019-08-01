@@ -722,6 +722,7 @@ function initSidebar() {
     $('#open-gyms-only-switch').prop('checked', Store.get('showOpenGymsOnly'))
     $('#raids-switch').prop('checked', Store.get('showRaids'))
     $('#raids-filter-wrapper').toggle(Store.get('showRaids'))
+    $('#rocket-wrapper').toggle(Store.get('showRocket'))
     $('#active-raids-switch').prop('checked', Store.get('activeRaids'))
     $('#min-level-gyms-filter-switch').val(Store.get('minGymLevel'))
     $('#max-level-gyms-filter-switch').val(Store.get('maxGymLevel'))
@@ -753,6 +754,7 @@ function initSidebar() {
     $('#scan-area-switch').prop('checked', Store.get('showScanPolygon'))
     $('#nest-polygon-switch').prop('checked', Store.get('showNestPolygon'))
     $('#raid-timer-switch').prop('checked', Store.get('showRaidTimer'))
+    $('#rocket-timer-switch').prop('checked', Store.get('showRocketTimer'))
     $('#sound-switch').prop('checked', Store.get('playSound'))
     $('#cries-switch').prop('checked', Store.get('playCries'))
     $('#cries-switch-wrapper').toggle(Store.get('playSound'))
@@ -1416,9 +1418,15 @@ function pokestopLabel(item) {
         '</b></div>'
     }
     if (!noTeamRocket && item['incident_expiration'] > Date.now()) {
+        str += '<br><div><b>' + i8ln('Team Rocket') + ':</b></div>'
+        if (item['grunt_type'] > 0) {
+            if (item['grunt_type_name'] !== '') {
+                str += '<div><b>' + i8ln('Grunt-Type') + ': ' + item['grunt_type_name'] + '</b></div>'
+            }
+            str += '<div><b>' + i8ln('Grunt-Gender') + ': ' + item['grunt_type_gender'] + '</b></div>'
+        }
         incidentEndStr = getTimeStr(item['incident_expiration'])
-        str +=
-        '<div><b>' + i8ln('Incident Expiration') + ': ' + incidentEndStr +
+        str += '<div><b>' + i8ln('Expiration Time') + ': ' + incidentEndStr +
         ' <span class="label-countdown" disappears-at="' + item['incident_expiration'] + '">(00m00s)</span>' +
         '</b></div>'
     }
@@ -1945,14 +1953,31 @@ function getPokestopMarkerIcon(item) {
     var html = ''
     var d = new Date()
     var lastMidnight = d.setHours(0, 0, 0, 0) / 1000
-    var teamRocket = ''
     if (!noTeamRocket && item['incident_expiration'] > Date.now()) {
-        teamRocket = '_rocket'
-    }
-    if (!noQuests && item['quest_reward_type'] !== null && lastMidnight < Number(item['quest_timestamp'])) {
-        var stopQuestIcon = 'PstopQuest' + teamRocket + '.png'
+        var lureStr = ''
         if (!noLures && item['lure_expiration'] > Date.now()) {
-            stopQuestIcon = 'PstopLured_' + item['lure_id'] + teamRocket + '.png'
+            lureStr = 'Lured_' + item['lure_id']
+        }
+        html = '<div style="position:relative;"><img src="static/forts/Pstop' + lureStr + '_rocket.png" style="width:50px;height:72;top:-35px;right:10px;"/>'
+        if (item['grunt_type'] > 0) {
+            html += '<img src="static/grunttype/' + item['grunt_type'] + '.png" style="width:30px;height:auto;position:absolute;top:4px;left:0px;"/></div>'
+        } else {
+            html += '</div>'
+        }
+        if (noRocketTimer === false && Store.get(['showRocketTimer'])) {
+            html += '<div><span class="raid-countdown gym-icon-countdown" disappears-at="' + item['incident_expiration'] + '"> </span></div>'
+        }
+        stopMarker = L.divIcon({
+            iconSize: [31, 31],
+            iconAnchor: [24, 38],
+            popupAnchor: [0, -35],
+            className: 'stop-rocket-marker',
+            html: html
+        })
+    } else if (!noQuests && item['quest_reward_type'] !== null && lastMidnight < Number(item['quest_timestamp'])) {
+        var stopQuestIcon = 'PstopQuest.png'
+        if (!noLures && item['lure_expiration'] > Date.now()) {
+            stopQuestIcon = 'PstopLured_' + item['lure_id'] + '.png'
         }
         if (item['quest_reward_type'] === 7) {
             var pokemonIdStr = ''
@@ -2010,21 +2035,12 @@ function getPokestopMarkerIcon(item) {
             })
         }
     } else if (!noLures && item['lure_expiration'] > Date.now()) {
-        html = '<div><img src="static/forts/PstopLured_' + item['lure_id'] + teamRocket + '.png" style="width:50px;height:72;top:-35px;right:10px;"/><div>'
+        html = '<div><img src="static/forts/PstopLured_' + item['lure_id'] + '.png" style="width:50px;height:72;top:-35px;right:10px;"/><div>'
         stopMarker = L.divIcon({
             iconSize: [31, 31],
             iconAnchor: [24, 38],
             popupAnchor: [0, -35],
             className: 'stop-lured-marker',
-            html: html
-        })
-    } else if (!noTeamRocket && item['incident_expiration'] > Date.now()) {
-        html = '<div><img src="static/forts/Pstop_rocket.png" style="width:50px;height:72;top:-35px;right:10px;"/><div>'
-        stopMarker = L.divIcon({
-            iconSize: [31, 31],
-            iconAnchor: [24, 38],
-            popupAnchor: [0, -35],
-            className: 'stop-rocket-marker',
             html: html
         })
     } else {
@@ -4940,8 +4956,8 @@ function updatePokestops() {
     var d = new Date()
     var lastMidnight = d.setHours(0, 0, 0, 0) / 1000
 
-    // change lured pokestop marker to unlured when expired
     $.each(mapData.pokestops, function (key, value) {
+        // change lured pokestop marker to unlured when expired.
         if (value['lure_expiration'] > 0 && value['lure_expiration'] < currentTime && value['lure_expiration'] > (currentTime - 300000)) {
             if (value.marker && value.marker.rangeCircle) {
                 markers.removeLayer(value.marker.rangeCircle)
@@ -4951,6 +4967,7 @@ function updatePokestops() {
             markersnotify.removeLayer(value.marker)
             value.marker = setupPokestopMarker(value)
         }
+        // change Team Rocket pokestop marker to normal when expired.
         if (value['incident_expiration'] > 0 && value['incident_expiration'] < currentTime && value['incident_expiration'] > (currentTime - 300000)) {
             if (value.marker && value.marker.rangeCircle) {
                 markers.removeLayer(value.marker.rangeCircle)
@@ -6628,6 +6645,14 @@ $(function () {
         buildSwitchChangeListener(mapData, ['gyms'], 'showRaidTimer').bind(this)()
     })
 
+    $('#rocket-timer-switch').change(function () {
+        Store.set('showRocketTimer', this.checked)
+        lastpokestops = false
+        jQuery('label[for="rocket-switch"]').click()
+        jQuery('label[for="rocket-switch"]').click()
+        buildSwitchChangeListener(mapData, ['pokestops'], 'showRocketTimer').bind(this)()
+    })
+
     $('#pokestops-switch').change(function () {
         var options = {
             'duration': 500
@@ -6649,7 +6674,7 @@ $(function () {
         }
         if (this.checked === true && Store.get('showRocket') === true) {
             Store.set('showRocket', false)
-            $('#rocket-switch').prop('checked', false)
+            jQuery('label[for="rocket-switch"]').click()
         }
         var options = {
             'duration': 500
@@ -6680,12 +6705,15 @@ $(function () {
             'duration': 500
         }
         var wrapper = $('#quests-filter-wrapper')
+        var rocketWrapper = $('#rocket-wrapper')
         if (this.checked) {
             lastpokestops = false
             wrapper.hide(options)
+            rocketWrapper.show(options)
             updateMap()
         } else {
             lastpokestops = false
+            rocketWrapper.hide(options)
             updateMap()
         }
         return buildSwitchChangeListener(mapData, ['pokestops'], 'showRocket').bind(this)()
@@ -6699,10 +6727,10 @@ $(function () {
         }
         if (this.checked === true && Store.get('showRocket') === true) {
             Store.set('showRocket', false)
-            $('#rocket-switch').prop('checked', false)
+            jQuery('label[for="rocket-switch"]').click()
         }
         var options = {
-            'duration': 500
+            'duration': 1000
         }
         var wrapper = $('#quests-filter-wrapper')
         if (this.checked) {
