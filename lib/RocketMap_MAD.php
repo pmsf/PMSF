@@ -38,7 +38,7 @@ class RocketMap_MAD extends RocketMap
 
     public function get_gyms($swLat, $swLng, $neLat, $neLng, $exEligible = false, $tstamp = 0, $oSwLat = 0, $oSwLng = 0, $oNeLat = 0, $oNeLng = 0)
     {
-        global $southWestLat, $southWestLon, $northEastLat, $northEastLon;
+        global $noBoundaries, $southWestLat, $southWestLon, $northEastLat, $northEastLon;
         if (! $noBoundaries) {
             if ($swLat < $southWestLat) {
                 $swLat = $southWestLat;
@@ -147,7 +147,7 @@ class RocketMap_MAD extends RocketMap
 
     public function get_spawnpoints($swLat, $swLng, $neLat, $neLng, $tstamp = 0, $oSwLat = 0, $oSwLng = 0, $oNeLat = 0, $oNeLng = 0)
     {
-        global $southWestLat, $southWestLon, $northEastLat, $northEastLon;
+        global $noBoundaries, $southWestLat, $southWestLon, $northEastLat, $northEastLon;
         if (! $noBoundaries) {
             if ($swLat < $southWestLat) {
                 $swLat = $southWestLat;
@@ -211,7 +211,7 @@ class RocketMap_MAD extends RocketMap
 
     public function get_stops($qpeids, $qieids, $swLat, $swLng, $neLat, $neLng, $tstamp = 0, $oSwLat = 0, $oSwLng = 0, $oNeLat = 0, $oNeLng = 0, $lured = false, $rocket = false, $quests, $dustamount)
     {
-        global $southWestLat, $southWestLon, $northEastLat, $northEastLon;
+        global $noBoundaries, $southWestLat, $southWestLon, $northEastLat, $northEastLon;
         if (! $noBoundaries) {
             if ($swLat < $southWestLat) {
                 $swLat = $southWestLat;
@@ -260,7 +260,7 @@ class RocketMap_MAD extends RocketMap
 
     public function get_stops_quest($qpreids, $qireids, $swLat, $swLng, $neLat, $neLng, $tstamp = 0, $oSwLat = 0, $oSwLng = 0, $oNeLat = 0, $oNeLng = 0, $lures, $rocket, $quests, $dustamount, $reloaddustamount)
     {
-        global $southWestLat, $southWestLon, $northEastLat, $northEastLon;
+        global $noBoundaries, $southWestLat, $southWestLon, $northEastLat, $northEastLon;
         if (! $noBoundaries) {
             if ($swLat < $southWestLat) {
                 $swLat = $southWestLat;

@@ -6,7 +6,7 @@ class RDM_beta extends RDM
 {
     public function get_active($eids, $minIv, $minLevel, $exMinIv, $bigKarp, $tinyRat, $swLat, $swLng, $neLat, $neLng, $tstamp = 0, $oSwLat = 0, $oSwLng = 0, $oNeLat = 0, $oNeLng = 0, $encId = 0)
     {
-        global $db, $southWestLat, $southWestLon, $northEastLat, $northEastLon;
+        global $db, $noBoundaries, $southWestLat, $southWestLon, $northEastLat, $northEastLon;
         if (! $noBoundaries) {
             if ($swLat < $southWestLat) {
                 $swLat = $southWestLat;
@@ -93,7 +93,7 @@ class RDM_beta extends RDM
 
     public function get_active_by_id($ids, $minIv, $minLevel, $exMinIv, $bigKarp, $tinyRat, $swLat, $swLng, $neLat, $neLng)
     {
-        global $db, $southWestLat, $southWestLon, $northEastLat, $northEastLon;
+        global $db, $noBoundaries, $southWestLat, $southWestLon, $northEastLat, $northEastLon;
         if (! $noBoundaries) {
             if ($swLat < $southWestLat) {
                 $swLat = $southWestLat;
@@ -249,7 +249,7 @@ class RDM_beta extends RDM
 
     public function get_stops($qpeids, $qieids, $swLat, $swLng, $neLat, $neLng, $tstamp = 0, $oSwLat = 0, $oSwLng = 0, $oNeLat = 0, $oNeLng = 0, $lures, $rocket, $quests, $dustamount)
     {
-        global $southWestLat, $southWestLon, $northEastLat, $northEastLon;
+        global $noBoundaries, $southWestLat, $southWestLon, $northEastLat, $northEastLon;
         if (! $noBoundaries) {
             if ($swLat < $southWestLat) {
                 $swLat = $southWestLat;
@@ -302,8 +302,14 @@ class RDM_beta extends RDM
             }
             $dustSQL = '';
             if (!empty($dustamount) && !is_nan((float)$dustamount) && $dustamount > 0) {
-                $dustSQL .= "OR (json_extract(json_extract(`quest_rewards`,'$[*].type'),'$[0]') = 3 AND json_extract(json_extract(`quest_rewards`,'$[*].info.amount'),'$[0]') > :amount)";
+                $dustSQL .= "OR (json_extract(json_extract(`quest_rewards`,'$[*].type'),'$[0]') = 3 
+                AND json_extract(json_extract(`quest_rewards`,'$[*].info.amount'),'$[0]') > :amount)
+                AND lat > :swLat AND lon > :swLng AND lat < :neLat AND lon < :neLng";
                 $params[':amount'] = intval($dustamount);
+                $params[':swLat'] = $swLat;
+                $params[':swLng'] = $swLng;
+                $params[':neLat'] = $neLat;
+                $params[':neLng'] = $neLng;
             }
             $conds[] = "(" . $pokemonSQL . " OR " . $itemSQL . ")" . $dustSQL . "";
         }
@@ -332,7 +338,7 @@ class RDM_beta extends RDM
 
     public function get_stops_quest($qpreids, $qireids, $swLat, $swLng, $neLat, $neLng, $tstamp = 0, $oSwLat = 0, $oSwLng = 0, $oNeLat = 0, $oNeLng = 0, $lures, $rocket, $quests, $dustamount, $reloaddustamount)
     {
-        global $southWestLat, $southWestLon, $northEastLat, $northEastLon;
+        global $noBoundaries, $southWestLat, $southWestLon, $northEastLat, $northEastLon;
         if (! $noBoundaries) {
             if ($swLat < $southWestLat) {
                 $swLat = $southWestLat;
@@ -474,7 +480,7 @@ class RDM_beta extends RDM
     }
     public function get_spawnpoints($swLat, $swLng, $neLat, $neLng, $tstamp = 0, $oSwLat = 0, $oSwLng = 0, $oNeLat = 0, $oNeLng = 0)
     {
-        global $southWestLat, $southWestLon, $northEastLat, $northEastLon;
+        global $noBoundaries, $southWestLat, $southWestLon, $northEastLat, $northEastLon;
         if (! $noBoundaries) {
             if ($swLat < $southWestLat) {
                 $swLat = $southWestLat;
