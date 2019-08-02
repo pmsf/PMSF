@@ -1150,6 +1150,10 @@ function gymLabel(item) {
     } else if ((!noWhatsappLink) && (raidSpawned && item.raid_end > Date.now())) {
         whatsappLink = '<a href="whatsapp://send?text=' + encodeURIComponent(item.name) + '%0ALevel%20' + item.raid_level + '%20egg%0A%2AStart:%20' + raidStartStr + '%2A%0A%2AEnd:%20' + raidEndStr + '%2A%0ADirections:%0Ahttps://www.google.com/maps/search/?api=1%26query=' + item.latitude + ',' + item.longitude + '" data-action="share/whatsapp/share"><i class="fab fa-whatsapp" style="position:relative;top:3px;left:5px;color:#26c300;font-size:20px;"></i></a>'
     }
+    var coordText = latitude.toFixed(6) + ', ' + longitude.toFixed(7)
+    if (hideGymCoords === true) {
+        coordText = i8ln('Directions')
+    }
     str =
         '<div class="gym-label">' +
         '<center>' +
@@ -1164,7 +1168,7 @@ function gymLabel(item) {
         '<div><b>' + freeSlots + ' ' + i8ln('Free Slots') + '</b></div>' +
         raidStr +
         '<div>' +
-        '<a href="javascript:void(0);" onclick="javascript:openMapDirections(' + latitude + ',' + longitude + ');" title="' + i8ln('View in Maps') + '"><i class="fas fa-road"></i> ' + latitude.toFixed(6) + ' , ' + longitude.toFixed(7) + '</a> - <a href="./?lat=' + latitude + '&lon=' + longitude + '&zoom=16"><i class="far fa-share-square" aria-hidden="true" style="position:relative;top:3px;left:0px;color:#26c300;font-size:20px;"></i></a>' +
+        '<a href="javascript:void(0);" onclick="javascript:openMapDirections(' + latitude + ',' + longitude + ');" title="' + i8ln('View in Maps') + '"><i class="fas fa-road"></i> ' + coordText + '</a> - <a href="./?lat=' + latitude + '&lon=' + longitude + '&zoom=16"><i class="far fa-share-square" aria-hidden="true" style="position:relative;top:3px;left:0px;color:#26c300;font-size:20px;"></i></a>' +
         whatsappLink +
         '</div>' +
         '<div>' +
@@ -1443,8 +1447,12 @@ function pokestopLabel(item) {
     if (!noConvertPokestops) {
         str += '<center><div><i class="fas fa-sync-alt convert-pokestop" onclick="openConvertPokestopModal(event);" data-id="' + item['pokestop_id'] + '">' + i8ln('Convert to Gym') + '</i></div></center>'
     }
+    var coordText = item['latitude'] + ', ' + item['longitude']
+    if (hidePokestopCoords === true) {
+        coordText = i8ln('Directions')
+    }
     str += '<div><center>' +
-        '<a href="javascript:void(0)" onclick="javascript:openMapDirections(' + item['latitude'] + ',' + item['longitude'] + ')" title="' + i8ln('View in Maps') + '"><i class="fas fa-road"></i> ' + item['latitude'] + ', ' + item['longitude'] + '</a> - <a href="./?lat=' + item['latitude'] + '&lon=' + item['longitude'] + '&zoom=16"><i class="far fa-share-square" aria-hidden="true" style="position:relative;top:3px;left:0px;color:#26c300;font-size:20px;"></i></a>' +
+        '<a href="javascript:void(0)" onclick="javascript:openMapDirections(' + item['latitude'] + ',' + item['longitude'] + ')" title="' + i8ln('View in Maps') + '"><i class="fas fa-road"></i> ' + coordText + '</a> - <a href="./?lat=' + item['latitude'] + '&lon=' + item['longitude'] + '&zoom=16"><i class="far fa-share-square" aria-hidden="true" style="position:relative;top:3px;left:0px;color:#26c300;font-size:20px;"></i></a>' +
         '</center></div>'
     if ((!noWhatsappLink) && (item['quest_id'] && item['reward_id'] !== null)) {
         str += '<div>' +

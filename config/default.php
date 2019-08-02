@@ -192,6 +192,7 @@ $noTinyRatSetting = false;                                          // true/fals
 
 $noGyms = false;                                                    // true/false
 $enableGyms = 'false';                                              // true/false
+$hideGymCoords = false;
 $noExEligible = false;                                              // true/false
 $exEligible = 'false';                                              // true/false
 
@@ -205,6 +206,7 @@ $enableRaidTimer = 'false';                                         // true/fals
 
 $noPokestops = false;                                               // true/false
 $enablePokestops = 'false';                                         // true/false
+$hidePokestopCoords = false;
 $noLures = false;                                                   // true/false
 $enableLured = 'false';                                             // true/false
 $noTeamRocket = false;
