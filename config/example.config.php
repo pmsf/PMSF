@@ -35,10 +35,10 @@ $spiderfyOnMaxZoom = 'true';                                        // Spiderfy 
 /* Boundaries */
 $noBoundaries = true;                                               // Enable/Disable boundaries to pull data from. Requires $southWestLat, $southWestLon, $northEastLat and $northEastLon to be set.
                                                                   
-$southWestLat = 51.851344;                                          // Bottom-left latitude. All data outside this area will be excludes from map.
-$southWestLon = 5.372427;                                           // Bottom-left longitude. All data outside this area will be excludes from map.
-$northEastLat = 51.925297;                                          // top-right latitude. All data outside this area will be excludes from map.
-$northEastLon = 5.470232;                                           // bottom-right longitude. All data outside this area will be excludes from map.
+$southWestLat = 51.xxxxxx;                                          // Bottom-left latitude. All data outside this area will be excluded from map.
+$southWestLon = 5.xxxxxx;                                           // Bottom-left longitude. All data outside this area will be excluded from map.
+$northEastLat = 51.xxxxxx;                                          // top-right latitude. All data outside this area will be excluded from map.
+$northEastLon = 5.xxxxxx;                                           // bottom-right longitude. All data outside this area will be excluded from map.
 
 /* Anti scrape Settings */
 $enableCsrf = true;                                                 // Don't disable this unless you know why you need to :)
