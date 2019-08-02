@@ -51,10 +51,18 @@ $startingLng = 5.302366;                                        // Starting long
 $maxLatLng = 1;                                                     // Max latitude and longitude size (1 = ~110km, 0 to disable)
 $maxZoomOut = 0;                                                    // Max zoom out level (11 ~= $maxLatLng = 1, 0 to disable, lower = the further you can zoom out)
 $maxZoomIn = 18;                                                    // Max zoom in level 18 
-$disableClusteringAtZoom = 15;					    // Disable clustering above this value. 0 to disable
-$zoomToBoundsOnClick = 15;					    // Zoomlevel on clusterClick
-$maxClusterRadius = 30;						    // The maximum radius that a cluster will cover from the central marker (in pixels).
-$spiderfyOnMaxZoom = 'true';					    // Spiderfy cluster markers on click
+$disableClusteringAtZoom = 15;					                    // Disable clustering above this value. 0 to disable
+$zoomToBoundsOnClick = 15;					                        // Zoomlevel on clusterClick
+$maxClusterRadius = 30;						                        // The maximum radius that a cluster will cover from the central marker (in pixels).
+$spiderfyOnMaxZoom = 'true';				                   	    // Spiderfy cluster markers on click
+
+/* Boundaries */
+$noBoundaries = true;                                               // Enable/Disable boundaries to pull data from. Requires $southWestLat, $southWestLon, $northEastLat and $northEastLon to be set.
+
+$southWestLat = 51.851344;                                          // Bottom-left latitude. All data outside this area will be excludes from map.
+$southWestLon = 5.372427;                                           // Bottom-left longitude. All data outside this area will be excludes from map.
+$northEastLat = 51.925297;                                          // top-right latitude. All data outside this area will be excludes from map.
+$northEastLon = 5.470232;                                           // bottom-right longitude. All data outside this area will be excludes from map.
 
 /* Anti scrape Settings */
 $enableCsrf = true;                                                 // Don't disable this unless you know why you need to :)
