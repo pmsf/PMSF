@@ -6,7 +6,7 @@ class Monocle_PMSF extends Monocle
 {
     public function get_active($eids, $minIv, $minLevel, $exMinIv, $bigKarp, $tinyRat, $swLat, $swLng, $neLat, $neLng, $tstamp = 0, $oSwLat = 0, $oSwLng = 0, $oNeLat = 0, $oNeLng = 0, $encId = 0)
     {
-        global $db, $southWestLat, $southWestLon, $northEastLat, $northEastLon;
+        global $db, $noBoundaries, $southWestLat, $southWestLon, $northEastLat, $northEastLon;
         if (! $noBoundaries) {
             if ($swLat < $southWestLat) {
                 $swLat = $southWestLat;
@@ -93,7 +93,7 @@ class Monocle_PMSF extends Monocle
 
     public function get_active_by_id($ids, $minIv, $minLevel, $exMinIv, $bigKarp, $tinyRat, $swLat, $swLng, $neLat, $neLng)
     {
-        global $db, $southWestLat, $southWestLon, $northEastLat, $northEastLon;
+        global $db, $noBoundaries, $southWestLat, $southWestLon, $northEastLat, $northEastLon;
         if (! $noBoundaries) {
             if ($swLat < $southWestLat) {
                 $swLat = $southWestLat;
@@ -170,7 +170,7 @@ class Monocle_PMSF extends Monocle
 
     public function get_stops($qpeids, $qieids, $swLat, $swLng, $neLat, $neLng, $tstamp = 0, $oSwLat = 0, $oSwLng = 0, $oNeLat = 0, $oNeLng = 0, $lures, $rocket, $quests, $dustamount)
     {
-        global $southWestLat, $southWestLon, $northEastLat, $northEastLon;
+        global $noBoundaries, $southWestLat, $southWestLon, $northEastLat, $northEastLon;
         if (! $noBoundaries) {
             if ($swLat < $southWestLat) {
                 $swLat = $southWestLat;
@@ -211,7 +211,7 @@ class Monocle_PMSF extends Monocle
 
     public function get_stops_quest($qpreids, $qireids, $swLat, $swLng, $neLat, $neLng, $tstamp = 0, $oSwLat = 0, $oSwLng = 0, $oNeLat = 0, $oNeLng = 0, $lures, $quests, $dustamount, $reloaddustamount)
     {
-        global $southWestLat, $southWestLon, $northEastLat, $northEastLon;
+        global $noBoundaries, $southWestLat, $southWestLon, $northEastLat, $northEastLon;
         if (! $noBoundaries) {
             if ($swLat < $southWestLat) {
                 $swLat = $southWestLat;
@@ -332,7 +332,7 @@ class Monocle_PMSF extends Monocle
 
     public function get_gyms($swLat, $swLng, $neLat, $neLng, $exEligible = false, $tstamp = 0, $oSwLat = 0, $oSwLng = 0, $oNeLat = 0, $oNeLng = 0)
     {
-        global $southWestLat, $southWestLon, $northEastLat, $northEastLon;
+        global $noBoundaries, $southWestLat, $southWestLon, $northEastLat, $northEastLon;
         if (! $noBoundaries) {
             if ($swLat < $southWestLat) {
                 $swLat = $southWestLat;

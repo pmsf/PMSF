@@ -32,7 +32,7 @@ class Manual
     }
     public function get_nests($swLat, $swLng, $neLat, $neLng, $tstamp = 0, $oSwLat = 0, $oSwLng = 0, $oNeLat = 0, $oNeLng = 0)
     {
-        global $southWestLat, $southWestLon, $northEastLat, $northEastLon;
+        global $noBoundaries, $southWestLat, $southWestLon, $northEastLat, $northEastLon;
         if (! $noBoundaries) {
             if ($swLat < $southWestLat) {
                 $swLat = $southWestLat;
@@ -107,7 +107,7 @@ class Manual
     }
     public function get_communities($swLat, $swLng, $neLat, $neLng, $tstamp = 0, $oSwLat = 0, $oSwLng = 0, $oNeLat = 0, $oNeLng = 0)
     {
-        global $southWestLat, $southWestLon, $northEastLat, $northEastLon;
+        global $noBoundaries, $southWestLat, $southWestLon, $northEastLat, $northEastLon;
         if (! $noBoundaries) {
             if ($swLat < $southWestLat) {
                 $swLat = $southWestLat;
@@ -183,7 +183,7 @@ class Manual
     }
     public function get_portals($swLat, $swLng, $neLat, $neLng, $tstamp = 0, $oSwLat = 0, $oSwLng = 0, $oNeLat = 0, $oNeLng = 0)
     {
-        global $southWestLat, $southWestLon, $northEastLat, $northEastLon;
+        global $noBoundaries, $southWestLat, $southWestLon, $northEastLat, $northEastLon;
         if (! $noBoundaries) {
             if ($swLat < $southWestLat) {
                 $swLat = $southWestLat;
@@ -246,7 +246,7 @@ class Manual
     }
     public function get_poi($swLat, $swLng, $neLat, $neLng, $tstamp = 0, $oSwLat = 0, $oSwLng = 0, $oNeLat = 0, $oNeLng = 0)
     {
-        global $southWestLat, $southWestLon, $northEastLat, $northEastLon;
+        global $noBoundaries, $southWestLat, $southWestLon, $northEastLat, $northEastLon;
         if (! $noBoundaries) {
             if ($swLat < $southWestLat) {
                 $swLat = $southWestLat;
@@ -311,7 +311,7 @@ class Manual
     }
     public function get_inns($swLat, $swLng, $neLat, $neLng, $tstamp = 0, $oSwLat = 0, $oSwLng = 0, $oNeLat = 0, $oNeLng = 0)
     {
-        global $southWestLat, $southWestLon, $northEastLat, $northEastLon;
+        global $noBoundaries, $southWestLat, $southWestLon, $northEastLat, $northEastLon;
         if (! $noBoundaries) {
             if ($swLat < $southWestLat) {
                 $swLat = $southWestLat;
@@ -375,7 +375,7 @@ class Manual
     }
     public function get_fortresses($swLat, $swLng, $neLat, $neLng, $tstamp = 0, $oSwLat = 0, $oSwLng = 0, $oNeLat = 0, $oNeLng = 0)
     {
-        global $southWestLat, $southWestLon, $northEastLat, $northEastLon;
+        global $noBoundaries, $southWestLat, $southWestLon, $northEastLat, $northEastLon;
         if (! $noBoundaries) {
             if ($swLat < $southWestLat) {
                 $swLat = $southWestLat;
@@ -438,7 +438,7 @@ class Manual
     }
     public function get_greenhouses($swLat, $swLng, $neLat, $neLng, $tstamp = 0, $oSwLat = 0, $oSwLng = 0, $oNeLat = 0, $oNeLng = 0)
     {
-        global $southWestLat, $southWestLon, $northEastLat, $northEastLon;
+        global $noBoundaries, $southWestLat, $southWestLon, $northEastLat, $northEastLon;
         if (! $noBoundaries) {
             if ($swLat < $southWestLat) {
                 $swLat = $southWestLat;
