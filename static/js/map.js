@@ -637,8 +637,12 @@ function createLocationMarker() {
 
 function showS2Cells(level, style) {
     const bounds = map.getBounds()
-    const size = L.CRS.Earth.distance(bounds.getSouthWest(), bounds.getNorthEast()) / 10000 + 1 | 0
-    const count = 2 ** level * size >> 11
+    const swPoint = bounds.getSouthWest()
+    const nePoint = bounds.getNorthEast()
+    const swLat = swPoint.lat
+    const swLng = swPoint.lng
+    const neLat = nePoint.lat
+    const neLng = nePoint.lng
 
     function addPoly(cell) {
         const vertices = cell.getCornerLatLngs()
@@ -653,20 +657,35 @@ function showS2Cells(level, style) {
         }
     }
 
-    // add cells spiraling outward
-    let cell = S2.S2Cell.FromLatLng(bounds.getCenter(), level)
-    let steps = 1
-    let direction = 0
-    do {
-        for (let i = 0; i < 2; i++) {
-            for (let i = 0; i < steps; i++) {
-                addPoly(cell)
-                cell = cell.getNeighbors()[direction % 4]
+
+    let processedCells = {}
+    let stack = []
+
+    const centerCell = S2.S2Cell.FromLatLng(bounds.getCenter(), level)
+    processedCells[centerCell.toString()] = true
+    stack.push(centerCell)
+    addPoly(centerCell)
+
+    // Find all cells within view with a slighty modified version of the BFS algorithm.
+    while (stack.length > 0) {
+        const cell = stack.pop()
+        const neighbors = cell.getNeighbors()
+        neighbors.forEach(function (ncell, index) {
+            if (processedCells[ncell.toString()] != true) {
+                const cornerLatLngs = ncell.getCornerLatLngs()
+                for (let i = 0 ; i < 4; i++) {
+                    const item = cornerLatLngs[i]
+                    if (item.lat >= swLat && item.lng >= swLng &&
+                            item.lat <= neLat && item.lng <= neLng) {
+                        processedCells[ncell.toString()] = true
+                        stack.push(ncell)
+                        addPoly(ncell)
+                        break
+                    }
+                }
             }
-            direction++
-        }
-        steps++
-    } while (steps < count)
+        })
+    }
 }
 
 function buildScanPolygons() {
@@ -5356,28 +5375,28 @@ function updateWeatherOverlay() {
 
 function updateS2Overlay() {
     if ((Store.get('showCells'))) {
-        if (Store.get('showExCells') && (map.getZoom() > 12)) {
+        if (Store.get('showExCells') && (map.getZoom() > 10)) {
             exLayerGroup.clearLayers()
             showS2Cells(13, {color: 'red', weight: 6, dashOffset: '8'})
-        } else if (Store.get('showExCells') && (map.getZoom() <= 12)) {
+        } else if (Store.get('showExCells') && (map.getZoom() <= 10)) {
             exLayerGroup.clearLayers()
-            toastr['error'](i8ln('This is to much zoom.'), i8ln('EX cells are currently hidden'))
+            toastr['error'](i8ln('Zoom in more to show them.'), i8ln('EX trigger cells are currently hidden'))
             toastr.options = toastrOptions
         }
-        if (Store.get('showGymCells') && (map.getZoom() > 13)) {
+        if (Store.get('showGymCells') && (map.getZoom() > 11)) {
             gymLayerGroup.clearLayers()
             showS2Cells(14, {color: 'green', weight: 4, dashOffset: '4'})
-        } else if (Store.get('showGymCells') && (map.getZoom() <= 13)) {
+        } else if (Store.get('showGymCells') && (map.getZoom() <= 11)) {
             gymLayerGroup.clearLayers()
-            toastr['error'](i8ln('This is to much zoom.'), i8ln('Gym cells are currently hidden'))
+            toastr['error'](i8ln('Zoom in more to show them.'), i8ln('Gym cells are currently hidden'))
             toastr.options = toastrOptions
         }
-        if (Store.get('showStopCells') && (map.getZoom() > 16)) {
+        if (Store.get('showStopCells') && (map.getZoom() > 14)) {
             stopLayerGroup.clearLayers()
             showS2Cells(17, {color: 'blue'})
-        } else if (Store.get('showStopCells') && (map.getZoom() <= 16)) {
+        } else if (Store.get('showStopCells') && (map.getZoom() <= 14)) {
             stopLayerGroup.clearLayers()
-            toastr['error'](i8ln('This is to much zoom.'), i8ln('Pokestop cells are currently hidden'))
+            toastr['error'](i8ln('Zoom in more to show them.'), i8ln('Pokestop cells are currently hidden'))
             toastr.options = toastrOptions
         }
     }
