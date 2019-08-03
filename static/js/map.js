@@ -671,9 +671,9 @@ function showS2Cells(level, style) {
         const cell = stack.pop()
         const neighbors = cell.getNeighbors()
         neighbors.forEach(function (ncell, index) {
-            if (processedCells[ncell.toString()] != true) {
+            if (processedCells[ncell.toString()] !== true) {
                 const cornerLatLngs = ncell.getCornerLatLngs()
-                for (let i = 0 ; i < 4; i++) {
+                for (let i = 0; i < 4; i++) {
                     const item = cornerLatLngs[i]
                     if (item.lat >= swLat && item.lng >= swLng &&
                             item.lat <= neLat && item.lng <= neLng) {
