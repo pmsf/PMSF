@@ -14,21 +14,7 @@ class RocketMap extends Scanner
 
     public function get_active($eids, $minIv, $minLevel, $exMinIv, $bigKarp, $tinyRat, $swLat, $swLng, $neLat, $neLng, $tstamp = 0, $oSwLat = 0, $oSwLng = 0, $oNeLat = 0, $oNeLng = 0, $encId = 0)
     {
-        global $db, $noBoundaries, $southWestLat, $southWestLon, $northEastLat, $northEastLon;
-        if (! $noBoundaries) {
-            if ($swLat < $southWestLat) {
-                $swLat = $southWestLat;
-            }
-            if ($swLng < $southWestLon) {
-                $swLng = $southWestLon;
-            }
-            if ($neLat > $northEastLat) {
-                $neLat = $northEastLat;
-            }
-            if ($neLng > $northEastLon) {
-                $neLng = $northEastLon;
-            }
-        }
+        global $db;
         $conds = array();
         $params = array();
         $float = $db->info()['driver'] == 'pgsql' ? "::float" : "";
@@ -55,6 +41,10 @@ class RocketMap extends Scanner
             $params[':oswLng'] = $oSwLng;
             $params[':oneLat'] = $oNeLat;
             $params[':oneLng'] = $oNeLng;
+        }
+        global $noBoundaries, $boundaries;
+        if (!$noBoundaries) {
+            $conds[] = "(ST_WITHIN(point(latitude,longitude),ST_GEOMFROMTEXT('POLYGON(( " . $boundaries . " ))')))";
         }
         if ($tstamp > 0) {
             $date->setTimestamp($tstamp);
@@ -105,21 +95,7 @@ class RocketMap extends Scanner
 
     public function get_active_by_id($ids, $minIv, $minLevel, $exMinIv, $bigKarp, $tinyRat, $swLat, $swLng, $neLat, $neLng)
     {
-        global $db, $noBoundaries, $southWestLat, $southWestLon, $northEastLat, $northEastLon;
-        if (! $noBoundaries) {
-            if ($swLat < $southWestLat) {
-                $swLat = $southWestLat;
-            }
-            if ($swLng < $southWestLon) {
-                $swLng = $southWestLon;
-            }
-            if ($neLat > $northEastLat) {
-                $neLat = $northEastLat;
-            }
-            if ($neLng > $northEastLon) {
-                $neLng = $northEastLon;
-            }
-        }
+        global $db;
         $conds = array();
         $params = array();
         $float = $db->info()['driver'] == 'pgsql' ? "::float" : "";
@@ -139,6 +115,12 @@ class RocketMap extends Scanner
         $date->setTimezone(new \DateTimeZone('UTC'));
         $date->setTimestamp(time());
         $params[':time'] = date_format($date, 'Y-m-d H:i:s');
+
+        global $noBoundaries, $boundaries;
+        if (!$noBoundaries) {
+            $conds[] = "(ST_WITHIN(point(latitude,longitude),ST_GEOMFROMTEXT('POLYGON(( " . $boundaries . " ))')))";
+        }
+
         if (count($ids)) {
             $tmpSQL = '';
             if (!empty($tinyRat) && $tinyRat === 'true' && ($key = array_search("19", $ids)) !== false) {
@@ -229,21 +211,6 @@ class RocketMap extends Scanner
 
     public function get_stops($qpeids, $qieids, $swLat, $swLng, $neLat, $neLng, $tstamp = 0, $oSwLat = 0, $oSwLng = 0, $oNeLat = 0, $oNeLng = 0, $lured = false, $rocket = false, $quests, $dustamount)
     {
-        global $noBoundaries, $southWestLat, $southWestLon, $northEastLat, $northEastLon;
-        if (! $noBoundaries) {
-            if ($swLat < $southWestLat) {
-                $swLat = $southWestLat;
-            }
-            if ($swLng < $southWestLon) {
-                $swLng = $southWestLon;
-            }
-            if ($neLat > $northEastLat) {
-                $neLat = $northEastLat;
-            }
-            if ($neLng > $northEastLon) {
-                $neLng = $northEastLon;
-            }
-        }
         $conds = array();
         $params = array();
 
@@ -259,6 +226,11 @@ class RocketMap extends Scanner
             $params[':oswLng'] = $oSwLng;
             $params[':oneLat'] = $oNeLat;
             $params[':oneLng'] = $oNeLng;
+        }
+
+        global $noBoundaries, $boundaries;
+        if (!$noBoundaries) {
+            $conds[] = "(ST_WITHIN(point(latitude,longitude),ST_GEOMFROMTEXT('POLYGON(( " . $boundaries . " ))')))";
         }
 
         if ($lured == "true") {
@@ -307,21 +279,6 @@ class RocketMap extends Scanner
 
     public function get_spawnpoints($swLat, $swLng, $neLat, $neLng, $tstamp = 0, $oSwLat = 0, $oSwLng = 0, $oNeLat = 0, $oNeLng = 0)
     {
-        global $noBoundaries, $southWestLat, $southWestLon, $northEastLat, $northEastLon;
-        if (! $noBoundaries) {
-            if ($swLat < $southWestLat) {
-                $swLat = $southWestLat;
-            }
-            if ($swLng < $southWestLon) {
-                $swLng = $southWestLon;
-            }
-            if ($neLat > $northEastLat) {
-                $neLat = $northEastLat;
-            }
-            if ($neLng > $northEastLon) {
-                $neLng = $northEastLon;
-            }
-        }
         $conds = array();
         $params = array();
 
@@ -344,6 +301,11 @@ class RocketMap extends Scanner
             $date->setTimestamp($tstamp);
             $conds[] = "last_scanned > :lastUpdated";
             $params[':lastUpdated'] = date_format($date, 'Y-m-d H:i:s');
+        }
+
+        global $noBoundaries, $boundaries;
+        if (!$noBoundaries) {
+            $conds[] = "(ST_WITHIN(point(latitude,longitude),ST_GEOMFROMTEXT('POLYGON(( " . $boundaries . " ))')))";
         }
 
         return $this->query_spawnpoints($conds, $params);
@@ -403,21 +365,6 @@ class RocketMap extends Scanner
 
     public function get_recent($swLat, $swLng, $neLat, $neLng, $tstamp = 0, $oSwLat = 0, $oSwLng = 0, $oNeLat = 0, $oNeLng = 0)
     {
-        global $noBoundaries, $southWestLat, $southWestLon, $northEastLat, $northEastLon;
-        if (! $noBoundaries) {
-            if ($swLat < $southWestLat) {
-                $swLat = $southWestLat;
-            }
-            if ($swLng < $southWestLon) {
-                $swLng = $southWestLon;
-            }
-            if ($neLat > $northEastLat) {
-                $neLat = $northEastLat;
-            }
-            if ($neLng > $northEastLon) {
-                $neLng = $northEastLon;
-            }
-        }
         $conds = array();
         $params = array();
 
@@ -437,6 +384,12 @@ class RocketMap extends Scanner
         $date = new \DateTime();
         $date->setTimezone(new \DateTimeZone('UTC'));
         $conds[] = "last_modified > :lastUpdated";
+
+        global $noBoundaries, $boundaries;
+        if (!$noBoundaries) {
+            $conds[] = "(ST_WITHIN(point(latitude,longitude),ST_GEOMFROMTEXT('POLYGON(( " . $boundaries . " ))')))";
+        }
+
         if ($tstamp > 0) {
             $date->setTimestamp($tstamp);
             $params[':lastUpdated'] = date_format($date, 'Y-m-d H:i:s');
@@ -478,21 +431,6 @@ class RocketMap extends Scanner
 
     public function get_gyms($swLat, $swLng, $neLat, $neLng, $exEligible = false, $tstamp = 0, $oSwLat = 0, $oSwLng = 0, $oNeLat = 0, $oNeLng = 0)
     {
-        global $noBoundaries, $southWestLat, $southWestLon, $northEastLat, $northEastLon;
-        if (! $noBoundaries) {
-            if ($swLat < $southWestLat) {
-                $swLat = $southWestLat;
-            }
-            if ($swLng < $southWestLon) {
-                $swLng = $southWestLon;
-            }
-            if ($neLat > $northEastLat) {
-                $neLat = $northEastLat;
-            }
-            if ($neLng > $northEastLon) {
-                $neLng = $northEastLon;
-            }
-        }
         $conds = array();
         $params = array();
 
@@ -515,6 +453,10 @@ class RocketMap extends Scanner
             $date->setTimestamp($tstamp);
             $conds[] = "gym.last_scanned > :lastUpdated";
             $params[':lastUpdated'] = date_format($date, 'Y-m-d H:i:s');
+        }
+        global $noBoundaries, $boundaries;
+        if (!$noBoundaries) {
+            $conds[] = "(ST_WITHIN(point(latitude,longitude),ST_GEOMFROMTEXT('POLYGON(( " . $boundaries . " ))')))";
         }
         if ($exEligible === "true") {
             $conds[] = "(park = 1)";
