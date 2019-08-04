@@ -1928,7 +1928,7 @@ if ( $blockIframe ) {
 <script src="node_modules/leaflet.markercluster/dist/leaflet.markercluster.js"></script>
 <script src='static/js/vendor/Leaflet.fullscreen.min.js'></script>
 <script src="static/js/vendor/smoothmarkerbouncing.js"></script>
-<script src='https://maps.googleapis.com/maps/api/js?key=<?php $gmapsKey ?> ' async defer></script>
+<script src='https://maps.googleapis.com/maps/api/js?key=<?= $gmapsKey ?> ' async defer></script>
 <script src="static/js/vendor/Leaflet.GoogleMutant.js"></script>
 <script src="static/js/vendor/turf.min.js"></script>
 <script>
