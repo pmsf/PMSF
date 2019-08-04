@@ -6,21 +6,7 @@ class RDM extends Scanner
 {
     public function get_active($eids, $minIv, $minLevel, $exMinIv, $bigKarp, $tinyRat, $swLat, $swLng, $neLat, $neLng, $tstamp = 0, $oSwLat = 0, $oSwLng = 0, $oNeLat = 0, $oNeLng = 0, $encId = 0)
     {
-        global $db, $noBoundaries, $southWestLat, $southWestLon, $northEastLat, $northEastLon;
-        if (! $noBoundaries) {
-            if ($swLat < $southWestLat) {
-                $swLat = $southWestLat;
-            }
-            if ($swLng < $southWestLon) {
-                $swLng = $southWestLon;
-            }
-            if ($neLat > $northEastLat) {
-                $neLat = $northEastLat;
-            }
-            if ($neLng > $northEastLon) {
-                $neLng = $northEastLon;
-            }
-        }
+        global $db;
         $conds = array();
         $params = array();
         $float = $db->info()['driver'] == 'pgsql' ? "::float" : "";
@@ -44,6 +30,10 @@ class RDM extends Scanner
             $params[':oswLng'] = $oSwLng;
             $params[':oneLat'] = $oNeLat;
             $params[':oneLng'] = $oNeLng;
+        }
+        global $noBoundaries, $boundaries;
+        if (!$noBoundaries) {
+            $conds[] = "(ST_WITHIN(point(lat,lon),ST_GEOMFROMTEXT('POLYGON(( " . $boundaries . " ))')))";
         }
         if ($tstamp > 0) {
             $conds[] = "updated > :lastUpdated";
@@ -93,21 +83,7 @@ class RDM extends Scanner
 
     public function get_active_by_id($ids, $minIv, $minLevel, $exMinIv, $bigKarp, $tinyRat, $swLat, $swLng, $neLat, $neLng)
     {
-        global $db, $noBoundaries, $southWestLat, $southWestLon, $northEastLat, $northEastLon;
-        if (! $noBoundaries) {
-            if ($swLat < $southWestLat) {
-                $swLat = $southWestLat;
-            }
-            if ($swLng < $southWestLon) {
-                $swLng = $southWestLon;
-            }
-            if ($neLat > $northEastLat) {
-                $neLat = $northEastLat;
-            }
-            if ($neLng > $northEastLon) {
-                $neLng = $northEastLon;
-            }
-        }
+        global $db;
         $conds = array();
         $params = array();
         $float = $db->info()['driver'] == 'pgsql' ? "::float" : "";
@@ -125,6 +101,11 @@ class RDM extends Scanner
         $params[':neLat'] = $neLat;
         $params[':neLng'] = $neLng;
         $params[':time'] = time();
+
+        global $noBoundaries, $boundaries;
+        if (!$noBoundaries) {
+            $conds[] = "(ST_WITHIN(point(lat,lon),ST_GEOMFROMTEXT('POLYGON(( " . $boundaries . " ))')))";
+        }
         if (count($ids)) {
             $tmpSQL = '';
             if (!empty($tinyRat) && $tinyRat === 'true' && ($key = array_search("19", $ids)) !== false) {
@@ -246,21 +227,6 @@ class RDM extends Scanner
 
     public function get_stops($qpeids, $qieids, $swLat, $swLng, $neLat, $neLng, $tstamp = 0, $oSwLat = 0, $oSwLng = 0, $oNeLat = 0, $oNeLng = 0, $lures, $rocket, $quests, $dustamount)
     {
-        global $noBoundaries, $southWestLat, $southWestLon, $northEastLat, $northEastLon;
-        if (! $noBoundaries) {
-            if ($swLat < $southWestLat) {
-                $swLat = $southWestLat;
-            }
-            if ($swLng < $southWestLon) {
-                $swLng = $southWestLon;
-            }
-            if ($neLat > $northEastLat) {
-                $neLat = $northEastLat;
-            }
-            if ($neLng > $northEastLon) {
-                $neLng = $northEastLon;
-            }
-        }
         $conds = array();
         $params = array();
         $conds[] = "lat > :swLat AND lon > :swLng AND lat < :neLat AND lon < :neLng";
@@ -275,7 +241,11 @@ class RDM extends Scanner
             $params[':oswLng'] = $oSwLng;
             $params[':oneLat'] = $oNeLat;
             $params[':oneLng'] = $oNeLng;
-    }
+        }
+        global $noBoundaries, $boundaries;
+        if (!$noBoundaries) {
+            $conds[] = "(ST_WITHIN(point(lat,lon),ST_GEOMFROMTEXT('POLYGON(( " . $boundaries . " ))')))";
+        }
         if (!empty($lures) && $lures === 'true') {
             $conds[] = "lure_expire_timestamp > :time";
             $params[':time'] = time();
@@ -324,21 +294,6 @@ class RDM extends Scanner
 
     public function get_gyms($swLat, $swLng, $neLat, $neLng, $exEligible = false, $tstamp = 0, $oSwLat = 0, $oSwLng = 0, $oNeLat = 0, $oNeLng = 0)
     {
-        global $noBoundaries, $southWestLat, $southWestLon, $northEastLat, $northEastLon;
-        if (! $noBoundaries) {
-            if ($swLat < $southWestLat) {
-                $swLat = $southWestLat;
-            }
-            if ($swLng < $southWestLon) {
-                $swLng = $southWestLon;
-            }
-            if ($neLat > $northEastLat) {
-                $neLat = $northEastLat;
-            }
-            if ($neLng > $northEastLon) {
-                $neLng = $northEastLon;
-            }
-        }
         $conds = array();
         $params = array();
 
@@ -354,6 +309,10 @@ class RDM extends Scanner
             $params[':oswLng'] = $oSwLng;
             $params[':oneLat'] = $oNeLat;
             $params[':oneLng'] = $oNeLng;
+        }
+        global $noBoundaries, $boundaries;
+        if (!$noBoundaries) {
+            $conds[] = "(ST_WITHIN(point(lat,lon),ST_GEOMFROMTEXT('POLYGON(( " . $boundaries . " ))')))";
         }
         if ($tstamp > 0) {
             $conds[] = "updated > :lastUpdated";
@@ -427,21 +386,6 @@ class RDM extends Scanner
 
     public function get_spawnpoints($swLat, $swLng, $neLat, $neLng, $tstamp = 0, $oSwLat = 0, $oSwLng = 0, $oNeLat = 0, $oNeLng = 0)
     {
-        global $noBoundaries, $southWestLat, $southWestLon, $northEastLat, $northEastLon;
-        if (! $noBoundaries) {
-            if ($swLat < $southWestLat) {
-                $swLat = $southWestLat;
-            }
-            if ($swLng < $southWestLon) {
-                $swLng = $southWestLon;
-            }
-            if ($neLat > $northEastLat) {
-                $neLat = $northEastLat;
-            }
-            if ($neLng > $northEastLon) {
-                $neLng = $northEastLon;
-            }
-        }
         $conds = array();
         $params = array();
         $conds[] = "lat > :swLat AND lon > :swLng AND lat < :neLat AND lon < :neLng";
@@ -455,6 +399,10 @@ class RDM extends Scanner
             $params[':oswLng'] = $oSwLng;
             $params[':oneLat'] = $oNeLat;
             $params[':oneLng'] = $oNeLng;
+        }
+        global $noBoundaries, $boundaries;
+        if (!$noBoundaries) {
+            $conds[] = "(ST_WITHIN(point(lat,lon),ST_GEOMFROMTEXT('POLYGON(( " . $boundaries . " ))')))";
         }
         if ($tstamp > 0) {
             $conds[] = "updated > :lastUpdated";

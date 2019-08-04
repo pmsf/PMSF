@@ -6,21 +6,7 @@ class Monocle_MAD extends Monocle
 {
     public function get_active($eids, $minIv, $minLevel, $exMinIv, $bigKarp, $tinyRat, $swLat, $swLng, $neLat, $neLng, $tstamp = 0, $oSwLat = 0, $oSwLng = 0, $oNeLat = 0, $oNeLng = 0, $encId = 0)
     {
-        global $db, $noBoundaries, $southWestLat, $southWestLon, $northEastLat, $northEastLon;
-        if (! $noBoundaries) {
-            if ($swLat < $southWestLat) {
-                $swLat = $southWestLat;
-            }
-            if ($swLng < $southWestLon) {
-                $swLng = $southWestLon;
-            }
-            if ($neLat > $northEastLat) {
-                $neLat = $northEastLat;
-            }
-            if ($neLng > $northEastLon) {
-                $neLng = $northEastLon;
-            }
-        }
+        global $db;
         $conds = array();
         $params = array();
         $float = $db->info()['driver'] == 'pgsql' ? "::float" : "";
@@ -44,6 +30,10 @@ class Monocle_MAD extends Monocle
             $params[':oswLng'] = $oSwLng;
             $params[':oneLat'] = $oNeLat;
             $params[':oneLng'] = $oNeLng;
+        }
+        global $noBoundaries, $boundaries;
+        if (!$noBoundaries) {
+            $conds[] = "(ST_WITHIN(point(lat,lon),ST_GEOMFROMTEXT('POLYGON(( " . $boundaries . " ))')))";
         }
         if ($tstamp > 0) {
             $conds[] = "updated > :lastUpdated";
@@ -93,21 +83,7 @@ class Monocle_MAD extends Monocle
 
     public function get_active_by_id($ids, $minIv, $minLevel, $exMinIv, $bigKarp, $tinyRat, $swLat, $swLng, $neLat, $neLng)
     {
-        global $db, $noBoundaries, $southWestLat, $southWestLon, $northEastLat, $northEastLon;
-        if (! $noBoundaries) {
-            if ($swLat < $southWestLat) {
-                $swLat = $southWestLat;
-            }
-            if ($swLng < $southWestLon) {
-                $swLng = $southWestLon;
-            }
-            if ($neLat > $northEastLat) {
-                $neLat = $northEastLat;
-            }
-            if ($neLng > $northEastLon) {
-                $neLng = $northEastLon;
-            }
-        }
+        global $db;
         $conds = array();
         $params = array();
         $float = $db->info()['driver'] == 'pgsql' ? "::float" : "";
@@ -125,6 +101,11 @@ class Monocle_MAD extends Monocle
         $params[':neLat'] = $neLat;
         $params[':neLng'] = $neLng;
         $params[':time'] = time();
+
+        global $noBoundaries, $boundaries;
+        if (!$noBoundaries) {
+            $conds[] = "(ST_WITHIN(point(lat,lon),ST_GEOMFROMTEXT('POLYGON(( " . $boundaries . " ))')))";
+        }
         if (count($ids)) {
             $tmpSQL = '';
             if (!empty($tinyRat) && $tinyRat === 'true' && ($key = array_search("19", $ids)) !== false) {
@@ -246,21 +227,6 @@ class Monocle_MAD extends Monocle
 
     public function get_stops($qpeids, $qieids, $swLat, $swLng, $neLat, $neLng, $tstamp = 0, $oSwLat = 0, $oSwLng = 0, $oNeLat = 0, $oNeLng = 0, $lures, $rocket, $quests, $dustamount)
     {
-        global $noBoundaries, $southWestLat, $southWestLon, $northEastLat, $northEastLon;
-        if (! $noBoundaries) {
-            if ($swLat < $southWestLat) {
-                $swLat = $southWestLat;
-            }
-            if ($swLng < $southWestLon) {
-                $swLng = $southWestLon;
-            }
-            if ($neLat > $northEastLat) {
-                $neLat = $northEastLat;
-            }
-            if ($neLng > $northEastLon) {
-                $neLng = $northEastLon;
-            }
-        }
         $conds = array();
         $params = array();
 
@@ -276,6 +242,11 @@ class Monocle_MAD extends Monocle
             $params[':oswLng'] = $oSwLng;
             $params[':oneLat'] = $oNeLat;
             $params[':oneLng'] = $oNeLng;
+        }
+
+        global $noBoundaries, $boundaries;
+        if (!$noBoundaries) {
+            $conds[] = "(ST_WITHIN(point(lat,lon),ST_GEOMFROMTEXT('POLYGON(( " . $boundaries . " ))')))";
         }
 
         if (!empty($lures) && $lures === 'true') {
@@ -296,21 +267,6 @@ class Monocle_MAD extends Monocle
 
     public function get_stops_quest($qpreids, $qireids, $swLat, $swLng, $neLat, $neLng, $tstamp = 0, $oSwLat = 0, $oSwLng = 0, $oNeLat = 0, $oNeLng = 0, $lures, $rocket, $quests, $dustamount, $reloaddustamount)
     {
-        global $noBoundaries, $southWestLat, $southWestLon, $northEastLat, $northEastLon;
-        if (! $noBoundaries) {
-            if ($swLat < $southWestLat) {
-                $swLat = $southWestLat;
-            }
-            if ($swLng < $southWestLon) {
-                $swLng = $southWestLon;
-            }
-            if ($neLat > $northEastLat) {
-                $neLat = $northEastLat;
-            }
-            if ($neLng > $northEastLon) {
-                $neLng = $northEastLon;
-            }
-        }
         $conds = array();
         $params = array();
         $conds[] = "lat > :swLat AND lon > :swLng AND lat < :neLat AND lon < :neLng";
@@ -318,6 +274,11 @@ class Monocle_MAD extends Monocle
         $params[':swLng'] = $swLng;
         $params[':neLat'] = $neLat;
         $params[':neLng'] = $neLng;
+
+        global $noBoundaries, $boundaries;
+        if (!$noBoundaries) {
+            $conds[] = "(ST_WITHIN(point(lat,lon),ST_GEOMFROMTEXT('POLYGON(( " . $boundaries . " ))')))";
+        }
         if (!empty($quests) && $quests === 'true') {
             $tmpSQL = '';
         if (count($qpreids)) {
@@ -460,21 +421,6 @@ class Monocle_MAD extends Monocle
 
     public function get_gyms($swLat, $swLng, $neLat, $neLng, $exEligible = false, $tstamp = 0, $oSwLat = 0, $oSwLng = 0, $oNeLat = 0, $oNeLng = 0)
     {
-        global $noBoundaries, $southWestLat, $southWestLon, $northEastLat, $northEastLon;
-        if (! $noBoundaries) {
-            if ($swLat < $southWestLat) {
-                $swLat = $southWestLat;
-            }
-            if ($swLng < $southWestLon) {
-                $swLng = $southWestLon;
-            }
-            if ($neLat > $northEastLat) {
-                $neLat = $northEastLat;
-            }
-            if ($neLng > $northEastLon) {
-                $neLng = $northEastLon;
-            }
-        }
         $conds = array();
         $params = array();
 
@@ -491,6 +437,12 @@ class Monocle_MAD extends Monocle
             $params[':oneLat'] = $oNeLat;
             $params[':oneLng'] = $oNeLng;
         }
+
+        global $noBoundaries, $boundaries;
+        if (!$noBoundaries) {
+            $conds[] = "(ST_WITHIN(point(f.lat,f.lon),ST_GEOMFROMTEXT('POLYGON(( " . $boundaries . " ))')))";
+        }
+
         if ($tstamp > 0) {
             $conds[] = "updated > :lastUpdated";
             $params[':lastUpdated'] = $tstamp;
@@ -564,21 +516,6 @@ class Monocle_MAD extends Monocle
 
     public function get_spawnpoints($swLat, $swLng, $neLat, $neLng, $tstamp = 0, $oSwLat = 0, $oSwLng = 0, $oNeLat = 0, $oNeLng = 0)
     {
-        global $noBoundaries, $southWestLat, $southWestLon, $northEastLat, $northEastLon;
-        if (! $noBoundaries) {
-            if ($swLat < $southWestLat) {
-                $swLat = $southWestLat;
-            }
-            if ($swLng < $southWestLon) {
-                $swLng = $southWestLon;
-            }
-            if ($neLat > $northEastLat) {
-                $neLat = $northEastLat;
-            }
-            if ($neLng > $northEastLon) {
-                $neLng = $northEastLon;
-            }
-        }
         $conds = array();
         $params = array();
 
@@ -595,6 +532,12 @@ class Monocle_MAD extends Monocle
             $params[':oneLat'] = $oNeLat;
             $params[':oneLng'] = $oNeLng;
         }
+
+        global $noBoundaries, $boundaries;
+        if (!$noBoundaries) {
+            $conds[] = "(ST_WITHIN(point(latitude,longitude),ST_GEOMFROMTEXT('POLYGON(( " . $boundaries . " ))')))";
+        }
+
         if ($tstamp > 0) {
             $conds[] = "last_scanned > from_unixtime(:lastUpdated)";
             $params[':lastUpdated'] = $tstamp;

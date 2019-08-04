@@ -57,12 +57,17 @@ $maxClusterRadius = 30;						                        // The maximum radius that 
 $spiderfyOnMaxZoom = 'true';				                   	    // Spiderfy cluster markers on click
 
 /* Boundaries */
-$noBoundaries = true;                                               // Enable/Disable boundaries to pull data from. Requires $southWestLat, $southWestLon, $northEastLat and $northEastLon to be set.
-
-$southWestLat = 51.000000;                                          // Bottom-left latitude. All data outside this area will be excluded from map.
-$southWestLon = 5.000000;                                           // Bottom-left longitude. All data outside this area will be excluded from map.
-$northEastLat = 51.000000;                                          // top-right latitude. All data outside this area will be excluded from map.
-$northEastLon = 5.000000;                                           // bottom-right longitude. All data outside this area will be excluded from map.
+$noBoundaries = true;                                               // Enable/Disable boundaries to pull data from. Requires $boundaries to be set.
+$boundaries = '51.9258236369112 5.4520494625403,
+               51.8982915107015 5.4808885738685,
+               51.8715904160174 5.4630357906653,
+               51.8525084938523 5.4211504146888,
+               51.8427523855973 5.3504259273841,
+               51.8448734585841 5.2645952389075,
+               51.8635345916882 5.1952440426185,
+               51.9033756353006 5.2254564449622,
+               51.9304812498708 5.4032976314857,
+               51.9258236369112 5.4520494625403';
 
 /* Anti scrape Settings */
 $enableCsrf = true;                                                 // Don't disable this unless you know why you need to :)
