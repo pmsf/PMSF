@@ -336,24 +336,8 @@ if (!$noSpawnPoints) {
 }
 $debug['5_after_spawnpoints'] = microtime(true) - $timing['start'];
 
-global $noScannedLocations;
-if (!$noScannedLocations) {
-    if ($d["lastslocs"] == "true") {
-        if ($lastlocs != "true") {
-            $d["scanned"] = $scanner->get_recent($swLat, $swLng, $neLat, $neLng);
-        } else {
-            if ($newarea) {
-                $d["scanned"] = $scanner->get_recent($swLat, $swLng, $neLat, $neLng, 0, $oSwLat, $oSwLng, $oNeLat, $oNeLng);
-            } else {
-                $d["scanned"] = $scanner->get_recent($swLat, $swLng, $neLat, $neLng, $timestamp);
-            }
-        }
-    }
-}
-$debug['6_after_recent'] = microtime(true) - $timing['start'];
-
 $d['token'] = refreshCsrfToken();
-$debug['7_end'] = microtime(true) - $timing['start'];
+$debug['6_end'] = microtime(true) - $timing['start'];
 
 if ($enableDebug == true) {
     foreach ($debug as $k => $v) {
