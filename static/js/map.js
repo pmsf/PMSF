@@ -6073,15 +6073,14 @@ $(function () {
 
     $selectGymMarkerStyle.val(Store.get('gymMarkerStyle')).trigger('change')
 	
-	//Icon Styling
-    $selectIconStyle = $('#icon-style')
+	$selectIconStyle = $('#icon-style')
 
-    $selectIconStyle.select2({
-        placeholder: 'Select Style',
-        minimumResultsForSearch: Infinity
-    })
-    $selectIconStyle.on('change', function (e) {
-        Store.set('icons', this.value)
+	$selectIconStyle.select2({
+		placeholder: 'Select Style',
+		minimumResultsForSearch: Infinity
+	})
+	$selectIconStyle.on('change', function (e) {
+		Store.set('icons', this.value)
 		var port = ''
 		if (window.location.port.length > 0) {
 			port = ':' + window.location.port
@@ -6090,12 +6089,12 @@ $(function () {
 		var r = new RegExp('^(?:[a-z]+:)?//', 'i')
 		iconpath = r.test(Store.get('icons')) ? Store.get('icons') : path + Store.get('icons')
 
-        redrawPokemon(mapData.pokemons)
-        redrawPokemon(mapData.lurePokemons)
-    })
-    $selectIconStyle.val(Store.get('icons')).trigger('change')
-    pokemonSpritesFilter()
-    itemSpritesFilter()
+		redrawPokemon(mapData.pokemons)
+		redrawPokemon(mapData.lurePokemons)
+	})
+	$selectIconStyle.val(Store.get('icons')).trigger('change')
+	pokemonSpritesFilter()
+	itemSpritesFilter()
 })
 
 $(function () {
