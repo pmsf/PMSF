@@ -78,9 +78,8 @@ var rawDataIsLoading = false
 var locationMarker
 var rangeMarkers = ['pokemon', 'pokestop', 'gym']
 var storeZoom = true
-var scanPath
 var moves
-var weather
+var weather // eslint-disable-line no-unused-vars
 var boostedMons // eslint-disable-line no-unused-vars
 
 var oSwLat
@@ -765,7 +764,6 @@ function initSidebar() {
     $('#follow-my-location-switch').prop('checked', Store.get('followMyLocation'))
     $('#spawn-area-switch').prop('checked', Store.get('spawnArea'))
     $('#spawn-area-wrapper').toggle(Store.get('followMyLocation'))
-    $('#scanned-switch').prop('checked', Store.get('showScanned'))
     $('#weather-switch').prop('checked', Store.get('showWeather'))
     $('#spawnpoints-switch').prop('checked', Store.get('showSpawnpoints'))
     $('#direction-provider').val(Store.get('directionProvider'))
@@ -907,7 +905,7 @@ function pokemonLabel(item) {
     }
 
     $.each(types, function (index, type) {
-        typesDisplay += '<div>' + getTypeSpan(type) + '</div>'
+        typesDisplay += '<img src="static/types/' + type['type'] + '.png" style="height:20px;">'
     })
 
     var details = ''
@@ -927,46 +925,24 @@ function pokemonLabel(item) {
             }
             details +=
                 '<div>' +
-                i8ln('CP') + ' : <b>' + cp + '</b> | ' + i8ln('Level') + ' : <b>' + pokemonLevel +
+                i8ln('CP') + ': <b>' + cp + '</b> | ' + i8ln('Level') + ': <b>' + pokemonLevel +
                 '</b></div></div><br>'
         }
         details +=
-            '<div style="position:absolute;top:135px;"><div>' +
-            i8ln('Moves') + ' : <b>' + pMove1 + '</b> / <b>' + pMove2 +
-            '</b></div>'
-    } else {
-        details +=
-            '<div style="position:absolute;top:90px;left:80px;"><div>' +
-            i8ln('IV') + ': <b>??%</b> (<b>?</b>/<b>?</b>/<b>?</b>)' +
-            '</div>'
-        details +=
-            '<div>' +
-            i8ln('CP') + ' : <b>??</b> | ' + i8ln('Level') + ' : <b>??' +
-            '</b></div></div><br>'
-        details +=
-            '<div style="position:absolute;top:135px;"><div>' +
-            i8ln('Moves') + ' : <b>?</b> / <b>?</b></div>'
+            '<div style="position:absolute;top:135px;">' +
+            '<div>' + i8ln('Quick') + ': <b>' + pMove1 + '</b></div>' +
+            '<div>' + i8ln('Charge') + ': <b>' + pMove2 + '</b></div>'
     }
-
-    if (weatherBoostedCondition !== 0) {
-        details +=
-            '<div>' + i8ln('Weather Boost') + ': <b>' + i8ln(weather[weatherBoostedCondition]) + '</b>' +
-            ' <img style="height:30px;position:absolute;top:-110px;left:-20px;" src="static/weather/i-' + weatherBoostedCondition + '.png" style="height:15px;"></div>'
-    } else {
-        details +=
-            '<div>' + i8ln('Weather Boost') + ': <b>None</b></div>'
-    }
-
     if (weight != null && height != null) {
         details += '<div>' +
             i8ln('Weight') + ': <b>' + weight.toFixed(2) + 'kg</b>' +
             ' | ' + i8ln('Height') + ': <b>' + height.toFixed(2) + 'm</b>' +
             '</div></div>'
-    } else {
-        details += '<div>' +
-            i8ln('Weight') + ': <b>?kg</b>' +
-            ' | ' + i8ln('Height') + ': <b>?m</b>' +
-            '</div></div>'
+    }
+
+    if (weatherBoostedCondition !== 0) {
+        details +=
+            '<img style="height:30px;position:absolute;top:25px;left:0px;" src="static/weather/i-' + weatherBoostedCondition + '.png" style="height:15px;"></div>'
     }
 
     var contentstring =
@@ -1018,19 +994,27 @@ function pokemonLabel(item) {
             '</b></div>'
     }
 
-    contentstring += '<small>' + typesDisplay + '</small>' + '<br>' +
-        details +
-        '<center><div style="position:relative;top:45px;">' +
-        '<i class="far fa-eye-slash"></i> <a href="javascript:excludePokemon(' + id + ')">' + i8ln('Exclude') + '</a>' +
-        ' | <i class="far fa-bell"></i> <a href="javascript:notifyAboutPokemon(' + id + ')">' + i8ln('Notify') + '</a>' +
-        ' | <i class="far fa-trash-alt"></i> <a href="javascript:removePokemonMarker(\'' + encounterId + '\')">' + i8ln('Remove') + '</a>' +
-        '</div></center>' +
-        '<div style="position:relative;top:45px;"><center>' +
-        '<a href="javascript:void(0)" onclick="javascript:openMapDirections(' + latitude + ', ' + longitude + ')" title="' + i8ln('View in Maps') + '">' +
-        '<i class="fas fa-road"></i> ' + coordText + '</a> - ' +
-        '<a href="./?lat=' + latitude + '&lon=' + longitude + '&zoom=16">' +
-        '<i class="far fa-share-square" aria-hidden="true" style="position:relative;top:3px;left:0px;color:#26c300;margin-bottom:10px;font-size:18px;"></i>' +
-        '</a></center></div><br><br>'
+    contentstring += '<small>' + typesDisplay + '</small>' + '<br>' + details
+    if (atk != null && def != null && sta != null) {
+        contentstring += '<center><div style="position:relative;top:55px;">'
+    } else {
+        contentstring += '<center><div style="position:absolute;top:125px;left:40px">'
+    }
+    contentstring += '<a href="javascript:excludePokemon(' + id + ')">' + i8ln('Exclude') + '</a>' +
+    ' | <a href="javascript:notifyAboutPokemon(' + id + ')">' + i8ln('Notify') + '</a>' +
+    ' | <a href="javascript:removePokemonMarker(\'' + encounterId + '\')">' + i8ln('Remove') + '</a>' +
+    '</div></center>'
+    if (atk != null && def != null && sta != null) {
+        contentstring += '<div style="position:relative;top:55px;"><center>'
+    } else {
+        contentstring += '<div style="position:absolute;top:145px;left:40px;"><center>'
+    }
+    contentstring +=
+    '<a href="javascript:void(0)" onclick="javascript:openMapDirections(' + latitude + ', ' + longitude + ')" title="' + i8ln('View in Maps') + '">' +
+    '<i class="fas fa-road"></i> ' + coordText + '</a> - ' +
+    '<a href="./?lat=' + latitude + '&lon=' + longitude + '&zoom=16">' +
+    '<i class="far fa-share-square" aria-hidden="true" style="position:relative;top:3px;left:0px;color:#26c300;margin-bottom:10px;font-size:18px;"></i>' +
+    '</a></center></div><br><br><br>'
 
     return contentstring
 }
@@ -2680,36 +2664,6 @@ function deletePoi(event) { // eslint-disable-line no-unused-vars
     }
 }
 
-function getColorByDate(value) {
-    // Changes the color from red to green over 15 mins
-    var diff = (Date.now() - value) / 1000 / 60 / 15
-
-    if (diff > 1) {
-        diff = 1
-    }
-
-    // value from 0 to 1 - Green to Red
-    var hue = ((1 - diff) * 120).toString(10)
-    return ['hsl(', hue, ',100%,50%)'].join('')
-}
-
-function setupScannedMarker(item) {
-    var circleCenter = new google.maps.LatLng(item['latitude'], item['longitude'])
-
-    var marker = new google.maps.Circle({
-        map: map,
-        clickable: false,
-        center: circleCenter,
-        radius: 70, // metres
-        fillColor: getColorByDate(item['last_modified']),
-        fillOpacity: 0.1,
-        strokeWeight: 1,
-        strokeOpacity: 0.5
-    })
-
-    return marker
-}
-
 function getColorBySpawnTime(value) {
     var now = new Date()
     var seconds = now.getMinutes() * 60 + now.getSeconds()
@@ -2871,15 +2825,6 @@ function clearStaleMarkers() {
             delete mapData.lurePokemons[key]
         }
     })
-
-    $.each(mapData.scanned, function (key, value) {
-        // If older than 15mins remove
-        if (mapData.scanned[key]['last_modified'] < new Date().getTime() - 15 * 60 * 1000) {
-            markers.removeLayer(mapData.scanned[key].marker)
-            markersnotify.removeLayer(mapData.scanned[key].marker)
-            delete mapData.scanned[key]
-        }
-    })
 }
 
 function showInBoundsMarkers(markersInput, type) {
@@ -2932,7 +2877,6 @@ function loadRawData() {
     var loadGreenhouses = Store.get('showGreenhouses')
     var loadPois = Store.get('showPoi')
     var loadNewPortalsOnly = Store.get('showNewPortalsOnly')
-    var loadScanned = Store.get('showScanned')
     var loadSpawnpoints = Store.get('showSpawnpoints')
     var loadMinIV = Store.get('remember_text_min_iv')
     var loadMinLevel = Store.get('remember_text_min_level')
@@ -2979,7 +2923,6 @@ function loadRawData() {
             'gyms': loadGyms,
             'lastgyms': lastgyms,
             'exEligible': exEligible,
-            'scanned': loadScanned,
             'lastslocs': lastslocs,
             'spawnpoints': loadSpawnpoints,
             'lastspawns': lastspawns,
@@ -5194,39 +5137,6 @@ function setTimeOut(id, item, time) {
     }, time + 1000)
 }
 
-function processScanned(i, item) {
-    if (!Store.get('showScanned')) {
-        return false
-    }
-
-    var scanId = item['latitude'] + '|' + item['longitude']
-
-    if (!(scanId in mapData.scanned)) {
-        // add marker to map and item to dict
-        if (item.marker) {
-            item.marker.setMap(null)
-        }
-        item.marker = setupScannedMarker(item)
-        mapData.scanned[scanId] = item
-    } else {
-        mapData.scanned[scanId].last_modified = item['last_modified']
-    }
-}
-
-function updateScanned() {
-    if (!Store.get('showScanned')) {
-        return false
-    }
-
-    $.each(mapData.scanned, function (key, value) {
-        if (map.getBounds().intersects(value.marker.getBounds())) {
-            value.marker.setOptions({
-                fillColor: getColorByDate(value['last_modified'])
-            })
-        }
-    })
-}
-
 function processSpawnpoints(i, item) {
     if (!Store.get('showSpawnpoints')) {
         return false
@@ -5285,7 +5195,6 @@ function updateMap() {
         $.each(result.pokemons, processPokemons)
         $.each(result.pokestops, processPokestops)
         $.each(result.gyms, processGyms)
-        $.each(result.scanned, processScanned)
         $.each(result.spawnpoints, processSpawnpoints)
         $.each(result.nests, processNests)
         $.each(result.communities, processCommunities)
@@ -5298,13 +5207,10 @@ function updateMap() {
         showInBoundsMarkers(mapData.lurePokemons, 'pokemon')
         showInBoundsMarkers(mapData.gyms, 'gym')
         showInBoundsMarkers(mapData.pokestops, 'pokestop')
-        showInBoundsMarkers(mapData.scanned, 'scanned')
         showInBoundsMarkers(mapData.spawnpoints, 'inbound')
-        // drawScanPath(result.scanned)
 
         clearStaleMarkers()
 
-        updateScanned()
         updateSpawnPoints()
         updatePokestops()
         updatePortals()
@@ -5440,27 +5346,6 @@ function destroyWeatherOverlay() {
     })
     weatherPolys = []
     weatherMarkers = []
-}
-
-function drawScanPath(points) { // eslint-disable-line no-unused-vars
-    var scanPathPoints = []
-    $.each(points, function (idx, point) {
-        scanPathPoints.push({
-            lat: point['latitude'],
-            lng: point['longitude']
-        })
-    })
-    if (scanPath) {
-        scanPath.setMap(null)
-    }
-    scanPath = new google.maps.Polyline({
-        path: scanPathPoints,
-        geodesic: true,
-        strokeColor: '#FF0000',
-        strokeOpacity: 1.0,
-        strokeWeight: 2,
-        map: map
-    })
 }
 
 function redrawPokemon(pokemonList) {
@@ -6447,8 +6332,6 @@ $(function () {
                     lastpokestops = false
                 } else if (storageKey === 'showPortals') {
                     lastportals = false
-                } else if (storageKey === 'showScanned') {
-                    lastslocs = false
                 } else if (storageKey === 'showSpawnpoints') {
                     lastspawns = false
                 }
@@ -6629,9 +6512,6 @@ $(function () {
             wrapper.hide(options)
         }
         buildSwitchChangeListener(mapData, ['pokemons'], 'showPokemon').bind(this)()
-    })
-    $('#scanned-switch').change(function () {
-        buildSwitchChangeListener(mapData, ['scanned'], 'showScanned').bind(this)()
     })
 
     $('#weather-switch').change(function () {

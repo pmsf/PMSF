@@ -966,26 +966,13 @@ if ( $blockIframe ) {
             }
             ?>
             <?php
-            if ( ! $noSearchLocation || ! $noNests || ! $noStartMe || ! $noStartLast || ! $noFollowMe || ! $noPokestops || ! $noScannedLocations || ! $noSpawnPoints || ! $noRanges || ! $noWeatherOverlay || ! $noSpawnArea ) {
+            if ( ! $noSearchLocation || ! $noNests || ! $noStartMe || ! $noStartLast || ! $noFollowMe || ! $noPokestops || ! $noSpawnPoints || ! $noRanges || ! $noWeatherOverlay || ! $noSpawnArea ) {
                 if ( ! $noSearchLocation ) {
                     echo '<h3>' . i8ln( 'Location &amp; Search' ) . '</h3>
                     <div>';
                 } else {
                     echo '<h3>' . i8ln( 'Location' ) . '</h3>
                     <div>';
-        } ?>
-                <?php
-                if ( $map != "monocle" && ! $noScannedLocations ) {
-                    echo '<div class="form-control switch-container">
-                    <h3> ' . i8ln( 'Scanned Locations' ) . ' </h3>
-                    <div class="onoffswitch">
-                        <input id = "scanned-switch" type = "checkbox" name = "scanned-switch" class="onoffswitch-checkbox">
-                        <label class="onoffswitch-label" for="scanned-switch">
-                            <span class="switch-label" data - on = "On" data - off = "Off"></span>
-                            <span class="switch-handle"></span>
-                        </label>
-                    </div>
-                </div>';
                 } ?>
                 <?php
                 if ( ! $noWeatherOverlay ) {
@@ -1977,7 +1964,6 @@ if ( $blockIframe ) {
     var hideQuestsItem = <?php echo $noQuestsItems ? '[]' : $hideQuestsItem ?>;
     var enableNewPortals = <?php echo ( ( $map != "monocle" ) || ( $fork == "alternate" ) ) ? $enableNewPortals : 0 ?>;
     var enableWeatherOverlay = <?php echo ! $noWeatherOverlay ? $enableWeatherOverlay : 'false' ?>;
-    var enableScannedLocations = <?php echo $map != "monocle" && ! $noScannedLocations ? $enableScannedLocations : 'false' ?>;
     var enableSpawnpoints = <?php echo $noSpawnPoints ? 'false' : $enableSpawnPoints ?>;
     var enableRanges = <?php echo $noRanges ? 'false' : $enableRanges ?>;
     var enableScanPolygon = <?php echo $noScanPolygon ? 'false' : $enableScanPolygon ?>;

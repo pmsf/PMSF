@@ -237,9 +237,6 @@ $hideConditionTypes = [0, 4, 5, 11, 12, 13, 16, 17, 19, 20];
 $showEncounters = [201];
 $showItems = [1, 2, 3, 101, 102, 103, 104, 201, 202, 701, 703, 705, 706, 707, 1301];
 
-$noScannedLocations = true;                                         // true/false
-$enableScannedLocations = 'false';                                  // true/false
-
 $noSpawnPoints = true;                                              // true/false
 $enableSpawnPoints = 'false';                                       // true/false
 
