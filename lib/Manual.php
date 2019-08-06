@@ -46,6 +46,10 @@ class Manual
             $params[':oneLat'] = $oNeLat;
             $params[':oneLng'] = $oNeLng;
         }
+        global $noBoundaries, $boundaries;
+        if (!$noBoundaries) {
+            $conds[] = "(ST_WITHIN(point(lat,lon),ST_GEOMFROMTEXT('POLYGON(( " . $boundaries . " ))')))";
+        }
         if ($tstamp > 0) {
             $conds[] = "updated > :lastUpdated";
             $params[':lastUpdated'] = $tstamp;
@@ -105,6 +109,10 @@ class Manual
             $params[':oswLng'] = $oSwLng;
             $params[':oneLat'] = $oNeLat;
             $params[':oneLng'] = $oNeLng;
+        }
+        global $noBoundaries, $boundaries;
+        if (!$noBoundaries) {
+            $conds[] = "(ST_WITHIN(point(lat,lon),ST_GEOMFROMTEXT('POLYGON(( " . $boundaries . " ))')))";
         }
         if ($tstamp > 0) {
             $conds[] = "updated > :lastUpdated";
@@ -167,6 +175,10 @@ class Manual
             $params[':oneLat'] = $oNeLat;
             $params[':oneLng'] = $oNeLng;
         }
+        global $noBoundaries, $boundaries;
+        if (!$noBoundaries) {
+            $conds[] = "(ST_WITHIN(point(lat,lon),ST_GEOMFROMTEXT('POLYGON(( " . $boundaries . " ))')))";
+        }
         if ($tstamp > 0) {
             $conds[] = "updated > :lastUpdated";
             $params[':lastUpdated'] = $tstamp;
@@ -214,6 +226,10 @@ class Manual
             $params[':oswLng'] = $oSwLng;
             $params[':oneLat'] = $oNeLat;
             $params[':oneLng'] = $oNeLng;
+        }
+        global $noBoundaries, $boundaries;
+        if (!$noBoundaries) {
+            $conds[] = "(ST_WITHIN(point(lat,lon),ST_GEOMFROMTEXT('POLYGON(( " . $boundaries . " ))')))";
         }
         if ($tstamp > 0) {
             $conds[] = "updated > :lastUpdated";
@@ -265,6 +281,10 @@ class Manual
             $params[':oneLat'] = $oNeLat;
             $params[':oneLng'] = $oNeLng;
         }
+        global $noBoundaries, $boundaries;
+        if (!$noBoundaries) {
+            $conds[] = "(ST_WITHIN(point(lat,lon),ST_GEOMFROMTEXT('POLYGON(( " . $boundaries . " ))')))";
+        }
         if ($tstamp > 0) {
             $conds[] = "updated > :lastUpdated";
             $params[':lastUpdated'] = $tstamp;
@@ -314,6 +334,10 @@ class Manual
             $params[':oneLat'] = $oNeLat;
             $params[':oneLng'] = $oNeLng;
         }
+        global $noBoundaries, $boundaries;
+        if (!$noBoundaries) {
+            $conds[] = "(ST_WITHIN(point(lat,lon),ST_GEOMFROMTEXT('POLYGON(( " . $boundaries . " ))')))";
+        }
         if ($tstamp > 0) {
             $conds[] = "updated > :lastUpdated";
             $params[':lastUpdated'] = $tstamp;
@@ -361,6 +385,10 @@ class Manual
             $params[':oswLng'] = $oSwLng;
             $params[':oneLat'] = $oNeLat;
             $params[':oneLng'] = $oNeLng;
+        }
+        global $noBoundaries, $boundaries;
+        if (!$noBoundaries) {
+            $conds[] = "(ST_WITHIN(point(lat,lon),ST_GEOMFROMTEXT('POLYGON(( " . $boundaries . " ))')))";
         }
         if ($tstamp > 0) {
             $conds[] = "updated > :lastUpdated";
