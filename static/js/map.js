@@ -952,7 +952,7 @@ function pokemonLabel(item) {
     if (form !== null && form > 0 && forms.length > form) {
         if (id === 132) {
             contentstring += ' (' + idToPokemon[item['form']].name + ')'
-        } else {
+        } else if (forms[item['form']] !== '') {
             contentstring += ' (' + forms[item['form']] + ')'
         }
     }
