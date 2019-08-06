@@ -32,6 +32,19 @@ $zoomToBoundsOnClick = 15;                                          // Zoomlevel
 $maxClusterRadius = 30;                                             // The maximum radius that a cluster will cover from the central marker (in pixels).
 $spiderfyOnMaxZoom = 'true';                                        // Spiderfy cluster markers on click
 
+/* Boundaries */
+$noBoundaries = true;                                               // Enable/Disable boundaries to pull data from. Requires $boundaries to be set.
+$boundaries = '51.9258236369112 5.4520494625403,
+               51.8982915107015 5.4808885738685,
+               51.8715904160174 5.4630357906653,
+               51.8525084938523 5.4211504146888,
+               51.8427523855973 5.3504259273841,
+               51.8448734585841 5.2645952389075,
+               51.8635345916882 5.1952440426185,
+               51.9033756353006 5.2254564449622,
+               51.9304812498708 5.4032976314857,
+               51.9258236369112 5.4520494625403';                   // First and last coords have to be the same!
+
 /* Anti scrape Settings */
 $enableCsrf = true;                                                 // Don't disable this unless you know why you need to :)
 $sessionLifetime = 43200;                                           // Session lifetime, in seconds
@@ -161,6 +174,7 @@ $noTinyRatSetting = false;
 
 $noGyms = false;
 $enableGyms = 'false';
+$hideGymCoords = false;
 $noExEligible = false;
 $exEligible = 'false';
 
@@ -174,6 +188,7 @@ $enableRaidTimer = 'false';
 
 $noPokestops = false;
 $enablePokestops = 'false';
+$hidePokestopCoords = false;
 
 $noLures = false;
 $enableLured = 'false';
@@ -201,9 +216,6 @@ $hideConditionTypes = [0, 4, 5, 11, 12, 13, 16, 17, 19, 20];
 // Manual quest show options
 $showEncounters = [201];
 $showItems = [1, 2, 3, 101, 102, 103, 104, 201, 202, 701, 703, 705, 706, 707, 1301];
-
-$noScannedLocations = false;
-$enableScannedLocations = 'false';
 
 $noSpawnPoints = false;
 $enableSpawnPoints = 'false';

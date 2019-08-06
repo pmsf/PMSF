@@ -966,26 +966,13 @@ if ( $blockIframe ) {
             }
             ?>
             <?php
-            if ( ! $noSearchLocation || ! $noNests || ! $noStartMe || ! $noStartLast || ! $noFollowMe || ! $noPokestops || ! $noScannedLocations || ! $noSpawnPoints || ! $noRanges || ! $noWeatherOverlay || ! $noSpawnArea ) {
+            if ( ! $noSearchLocation || ! $noNests || ! $noStartMe || ! $noStartLast || ! $noFollowMe || ! $noPokestops || ! $noSpawnPoints || ! $noRanges || ! $noWeatherOverlay || ! $noSpawnArea ) {
                 if ( ! $noSearchLocation ) {
                     echo '<h3>' . i8ln( 'Location &amp; Search' ) . '</h3>
                     <div>';
                 } else {
                     echo '<h3>' . i8ln( 'Location' ) . '</h3>
                     <div>';
-        } ?>
-                <?php
-                if ( $map != "monocle" && ! $noScannedLocations ) {
-                    echo '<div class="form-control switch-container">
-                    <h3> ' . i8ln( 'Scanned Locations' ) . ' </h3>
-                    <div class="onoffswitch">
-                        <input id = "scanned-switch" type = "checkbox" name = "scanned-switch" class="onoffswitch-checkbox">
-                        <label class="onoffswitch-label" for="scanned-switch">
-                            <span class="switch-label" data - on = "On" data - off = "Off"></span>
-                            <span class="switch-handle"></span>
-                        </label>
-                    </div>
-                </div>';
                 } ?>
                 <?php
                 if ( ! $noWeatherOverlay ) {
@@ -1122,7 +1109,7 @@ if ( $blockIframe ) {
             if ( ! $noNotifyPokemon ) {
                 echo '<div class="form-control hide-select-2">
                     <label for="notify-pokemon">
-                        <h3>' . i8ln( 'Notify of Pokemon' ) . '</h3><a href="#" class="select-all">All</a>/<a href="#" class="hide-all">None</a>
+                        <h3>' . i8ln( 'Notify of Pokemon' ) . '</h3><a href="#" class="select-all">' . i8ln( 'All' ) . '</a>/<a href="#" class="hide-all">' . i8ln( 'None' ) . '</a>
                         <div style="max-height:165px;overflow-y:auto;">
                             <input id="notify-pokemon" type="text" readonly="true"/>';
                 pokemonFilterImages( $noPokemonNumbers, '', [], 4 );
@@ -1928,7 +1915,7 @@ if ( $blockIframe ) {
 <script src="node_modules/leaflet.markercluster/dist/leaflet.markercluster.js"></script>
 <script src='static/js/vendor/Leaflet.fullscreen.min.js'></script>
 <script src="static/js/vendor/smoothmarkerbouncing.js"></script>
-<script src='https://maps.googleapis.com/maps/api/js?key=<?php $gmapsKey ?> ' async defer></script>
+<script src='https://maps.googleapis.com/maps/api/js?key=<?= $gmapsKey ?> ' async defer></script>
 <script src="static/js/vendor/Leaflet.GoogleMutant.js"></script>
 <script src="static/js/vendor/turf.min.js"></script>
 <script>
@@ -1977,7 +1964,6 @@ if ( $blockIframe ) {
     var hideQuestsItem = <?php echo $noQuestsItems ? '[]' : $hideQuestsItem ?>;
     var enableNewPortals = <?php echo ( ( $map != "monocle" ) || ( $fork == "alternate" ) ) ? $enableNewPortals : 0 ?>;
     var enableWeatherOverlay = <?php echo ! $noWeatherOverlay ? $enableWeatherOverlay : 'false' ?>;
-    var enableScannedLocations = <?php echo $map != "monocle" && ! $noScannedLocations ? $enableScannedLocations : 'false' ?>;
     var enableSpawnpoints = <?php echo $noSpawnPoints ? 'false' : $enableSpawnPoints ?>;
     var enableRanges = <?php echo $noRanges ? 'false' : $enableRanges ?>;
     var enableScanPolygon = <?php echo $noScanPolygon ? 'false' : $enableScanPolygon ?>;
@@ -2004,6 +1990,8 @@ if ( $blockIframe ) {
     var showBigKarp = <?php echo $noBigKarp === true ? 'true' : 'false' ?>;
     var showTinyRat = <?php echo $noTinyRat === true ? 'true' : 'false' ?>;
     var hidePokemonCoords = <?php echo $hidePokemonCoords === true ? 'true' : 'false' ?>;
+    var hidePokestopCoords = <?php echo $hidePokestopCoords === true ? 'true' : 'false' ?>;
+    var hideGymCoords = <?php echo $hideGymCoords === true ? 'true' : 'false' ?>;
     var directionProvider = '<?php echo $noDirectionProvider === true ? $directionProvider : 'google' ?>';
     var exEligible = <?php echo $noExEligible === true ? 'false' : $exEligible  ?>;
     var raidBossActive = <?php echo json_encode( $raidBosses ); ?>;

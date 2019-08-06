@@ -42,6 +42,10 @@ class RocketMap extends Scanner
             $params[':oneLat'] = $oNeLat;
             $params[':oneLng'] = $oNeLng;
         }
+        global $noBoundaries, $boundaries;
+        if (!$noBoundaries) {
+            $conds[] = "(ST_WITHIN(point(latitude,longitude),ST_GEOMFROMTEXT('POLYGON(( " . $boundaries . " ))')))";
+        }
         if ($tstamp > 0) {
             $date->setTimestamp($tstamp);
             $conds[] = "last_modified > :lastUpdated";
@@ -111,6 +115,12 @@ class RocketMap extends Scanner
         $date->setTimezone(new \DateTimeZone('UTC'));
         $date->setTimestamp(time());
         $params[':time'] = date_format($date, 'Y-m-d H:i:s');
+
+        global $noBoundaries, $boundaries;
+        if (!$noBoundaries) {
+            $conds[] = "(ST_WITHIN(point(latitude,longitude),ST_GEOMFROMTEXT('POLYGON(( " . $boundaries . " ))')))";
+        }
+
         if (count($ids)) {
             $tmpSQL = '';
             if (!empty($tinyRat) && $tinyRat === 'true' && ($key = array_search("19", $ids)) !== false) {
@@ -218,6 +228,11 @@ class RocketMap extends Scanner
             $params[':oneLng'] = $oNeLng;
         }
 
+        global $noBoundaries, $boundaries;
+        if (!$noBoundaries) {
+            $conds[] = "(ST_WITHIN(point(latitude,longitude),ST_GEOMFROMTEXT('POLYGON(( " . $boundaries . " ))')))";
+        }
+
         if ($lured == "true") {
             $conds[] = "active_fort_modifier IS NOT NULL";
         }
@@ -288,6 +303,11 @@ class RocketMap extends Scanner
             $params[':lastUpdated'] = date_format($date, 'Y-m-d H:i:s');
         }
 
+        global $noBoundaries, $boundaries;
+        if (!$noBoundaries) {
+            $conds[] = "(ST_WITHIN(point(latitude,longitude),ST_GEOMFROMTEXT('POLYGON(( " . $boundaries . " ))')))";
+        }
+
         return $this->query_spawnpoints($conds, $params);
     }
 
@@ -343,66 +363,6 @@ class RocketMap extends Scanner
         return $end % 3600;
     }
 
-    public function get_recent($swLat, $swLng, $neLat, $neLng, $tstamp = 0, $oSwLat = 0, $oSwLng = 0, $oNeLat = 0, $oNeLng = 0)
-    {
-        $conds = array();
-        $params = array();
-
-        $conds[] = "latitude > :swLat AND longitude > :swLng AND latitude < :neLat AND longitude < :neLng";
-        $params[':swLat'] = $swLat;
-        $params[':swLng'] = $swLng;
-        $params[':neLat'] = $neLat;
-        $params[':neLng'] = $neLng;
-
-        if ($oSwLat != 0) {
-            $conds[] = "NOT (latitude > :oswLat AND longitude > :oswLng AND latitude < :oneLat AND longitude < :oneLng)";
-            $params[':oswLat'] = $oSwLat;
-            $params[':oswLng'] = $oSwLng;
-            $params[':oneLat'] = $oNeLat;
-            $params[':oneLng'] = $oNeLng;
-        }
-        $date = new \DateTime();
-        $date->setTimezone(new \DateTimeZone('UTC'));
-        $conds[] = "last_modified > :lastUpdated";
-        if ($tstamp > 0) {
-            $date->setTimestamp($tstamp);
-            $params[':lastUpdated'] = date_format($date, 'Y-m-d H:i:s');
-        } else {
-            $date->sub(new \DateInterval('PT15M'));
-            $params[':lastUpdated'] = date_format($date, 'Y-m-d H:i:s');
-        }
-
-        return $this->query_recents($conds, $params);
-    }
-
-    private function query_recents($conds, $params)
-    {
-        global $db;
-
-        $query = "SELECT latitude, 
-        longitude, 
-        Unix_timestamp(Convert_tz(last_modified, '+00:00', @@global.time_zone)) AS last_modified 
-        FROM scannedlocation 
-        WHERE :conditions";
-
-        $query = str_replace(":conditions", join(" AND ", $conds), $query);
-        $recents = $db->query($query, $params)->fetchAll(\PDO::FETCH_ASSOC);
-
-        $data = array();
-        $i = 0;
-
-        foreach ($recents as $recent) {
-            $recent["latitude"] = floatval($recent["latitude"]);
-            $recent["longitude"] = floatval($recent["longitude"]);
-            $recent["last_modified"] = $recent["last_modified"] * 1000;
-            $data[] = $recent;
-
-            unset($recents[$i]);
-            $i++;
-        }
-        return $data;
-    }
-
     public function get_gyms($swLat, $swLng, $neLat, $neLng, $exEligible = false, $tstamp = 0, $oSwLat = 0, $oSwLng = 0, $oNeLat = 0, $oNeLng = 0)
     {
         $conds = array();
@@ -427,6 +387,10 @@ class RocketMap extends Scanner
             $date->setTimestamp($tstamp);
             $conds[] = "gym.last_scanned > :lastUpdated";
             $params[':lastUpdated'] = date_format($date, 'Y-m-d H:i:s');
+        }
+        global $noBoundaries, $boundaries;
+        if (!$noBoundaries) {
+            $conds[] = "(ST_WITHIN(point(latitude,longitude),ST_GEOMFROMTEXT('POLYGON(( " . $boundaries . " ))')))";
         }
         if ($exEligible === "true") {
             $conds[] = "(park = 1)";

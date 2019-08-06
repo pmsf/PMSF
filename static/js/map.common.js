@@ -279,11 +279,6 @@ var StoreOptions = {
             default: enableWeatherOverlay,
             type: StoreTypes.Boolean
         },
-    'showScanned':
-        {
-            default: enableScannedLocations,
-            type: StoreTypes.Boolean
-        },
     'showSpawnpoints':
         {
             default: enableSpawnpoints,
@@ -458,7 +453,6 @@ var mapData = {
     gyms: {},
     pokestops: {},
     lurePokemons: {},
-    scanned: {},
     spawnpoints: {},
     nests: {},
     communities: {},

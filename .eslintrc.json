@@ -81,6 +81,8 @@
     "showBigKarp": true,
     "showTinyRat": true,
     "hidePokemonCoords": true,
+    "hidePokestopCoords": true,
+    "hideGymCoords": true,
     "notifyPokemon": true,
     "notifyRarity": true,
     "notifyIv": true,
