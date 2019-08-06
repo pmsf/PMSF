@@ -6003,6 +6003,10 @@ $(function () {
 
         redrawPokemon(mapData.pokemons)
         redrawPokemon(mapData.lurePokemons)
+        jQuery('label[for="pokestops-switch"]').click()
+        jQuery('label[for="pokestops-switch"]').click()
+        jQuery('label[for="raids-switch"]').click()
+        jQuery('label[for="raids-switch"]').click()
     })
     $selectIconStyle.val(Store.get('icons')).trigger('change')
     pokemonSpritesFilter()
