@@ -999,7 +999,7 @@ function pokemonLabel(item) {
     if (atk != null && def != null && sta != null) {
         contentstring += '<center><div style="position:relative;top:55px;">'
     } else {
-        contentstring += '<center><div style="position:absolute;top:125px;left:40px">'
+        contentstring += '<center><div style="position:relative;">'
     }
     contentstring += '<a href="javascript:excludePokemon(' + id + ')">' + i8ln('Exclude') + '</a>' +
     ' | <a href="javascript:notifyAboutPokemon(' + id + ')">' + i8ln('Notify') + '</a>' +
@@ -1008,15 +1008,17 @@ function pokemonLabel(item) {
     if (atk != null && def != null && sta != null) {
         contentstring += '<div style="position:relative;top:55px;"><center>'
     } else {
-        contentstring += '<div style="position:absolute;top:145px;left:40px;"><center>'
+        contentstring += '<div style="position:relative;"><center>'
     }
     contentstring +=
     '<a href="javascript:void(0)" onclick="javascript:openMapDirections(' + latitude + ', ' + longitude + ')" title="' + i8ln('View in Maps') + '">' +
     '<i class="fas fa-road"></i> ' + coordText + '</a> - ' +
     '<a href="./?lat=' + latitude + '&lon=' + longitude + '&zoom=16">' +
     '<i class="far fa-share-square" aria-hidden="true" style="position:relative;top:3px;left:0px;color:#26c300;margin-bottom:10px;font-size:18px;"></i>' +
-    '</a></center></div><br><br><br>'
-
+    '</a></center></div>'
+    if (atk != null && def != null && sta != null) {
+        contentstring += '<br><br><br>'
+    }
     return contentstring
 }
 
