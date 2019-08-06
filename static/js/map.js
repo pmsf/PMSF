@@ -1053,7 +1053,7 @@ function gymLabel(item) {
             if (form !== null && form > 0 && forms.length > form) {
                 if (item['raid_pokemon_id'] === 132) {
                     raidStr += ' (' + idToPokemon[item['form']].name + ')'
-                } else {
+                } else if (forms[item['form']] !== '') {
                     raidStr += ' (' + forms[item['form']] + ')'
                 }
             }

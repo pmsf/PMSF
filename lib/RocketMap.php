@@ -198,7 +198,7 @@ class RocketMap extends Scanner
             $pokemon["pokemon_rarity"] = i8ln($this->data[$pokemon["pokemon_id"]]['rarity']);
             $types = $this->data[$pokemon["pokemon_id"]]["types"];
             foreach ($types as $k => $v) {
-                $types[$k]['type'] = i8ln($v['type']);
+                $types[$k]['type'] = $v['type'];
             }
             $pokemon["pokemon_types"] = $types;
             $data[] = $pokemon;
