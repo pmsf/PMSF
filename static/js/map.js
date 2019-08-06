@@ -31,6 +31,7 @@ var $selectDirectionProvider
 var $switchExEligible
 var $questsExcludePokemon
 var $questsExcludeItem
+var $selectIconStyle
 
 var language = document.documentElement.lang === '' ? 'en' : document.documentElement.lang
 var languageSite = 'en'
@@ -5983,6 +5984,27 @@ $(function () {
     })
 
     $selectGymMarkerStyle.val(Store.get('gymMarkerStyle')).trigger('change')
+
+    $selectIconStyle = $('#icon-style')
+
+    $selectIconStyle.select2({
+        placeholder: 'Select Style',
+        minimumResultsForSearch: Infinity
+    })
+    $selectIconStyle.on('change', function (e) {
+        Store.set('icons', this.value)
+        var port = ''
+        if (window.location.port.length > 0) {
+            port = ':' + window.location.port
+        }
+        var path = window.location.protocol + '//' + window.location.hostname + port + window.location.pathname
+        var r = new RegExp('^(?:[a-z]+:)?//', 'i')
+        iconpath = r.test(Store.get('icons')) ? Store.get('icons') : path + Store.get('icons')
+
+        redrawPokemon(mapData.pokemons)
+        redrawPokemon(mapData.lurePokemons)
+    })
+    $selectIconStyle.val(Store.get('icons')).trigger('change')
     pokemonSpritesFilter()
     itemSpritesFilter()
 })
