@@ -64,6 +64,8 @@ include('config/config.php');
         }
         if ($noNativeLogin === true && $noDiscordLogin === false && empty($_SESSION['user']->id)) {
             header("Location: ./discord-login");
+        } else if ($noNativeLogin === true && $noDiscordLogin === false && !empty($_SESSION['user']->id)) {
+            header("Location: .");
         }
 
         if (isset($_POST['submitUpdatePwdBtn'])) {
