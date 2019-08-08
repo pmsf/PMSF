@@ -336,7 +336,7 @@ function initMap() { // eslint-disable-line no-unused-vars
     })
     latlngs = L.rectangle(bounds).getLatLngs()
     L.polyline(latlngs[0].concat(latlngs[0][0])).addTo(map) // add boundary to map
-    map.setMaxBounds(bounds)	// Should not enter infinite recursion
+    map.setMaxBounds(bounds) // Should not enter infinite recursion
 
     setTileLayer(Store.get('map_style'))
     markers = L.markerClusterGroup({
