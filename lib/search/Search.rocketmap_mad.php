@@ -39,6 +39,10 @@ class RocketMap_MAD extends Search
         if (!empty($iresids)) {
             $conds[] = "tq.quest_item_id IN (" . implode(',',$iresids) . ")";
         }
+        global $noBoundaries, $boundaries;
+        if (!$noBoundaries) {
+            $conds[] = "(ST_WITHIN(point(p.latitude,p.longitude),ST_GEOMFROMTEXT('POLYGON(( " . $boundaries . " ))')))";
+        }
         $query = "SELECT p.pokestop_id AS id,
         p.name,
         p.latitude AS lat,

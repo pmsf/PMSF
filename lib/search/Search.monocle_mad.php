@@ -39,6 +39,10 @@ class Monocle_MAD extends Search
         if (!empty($iresids)) {
             $conds[] = "tq.quest_item_id IN (" . implode(',',$iresids) . ")";
         }
+        global $noBoundaries, $boundaries;
+        if (!$noBoundaries) {
+            $conds[] = "(ST_WITHIN(point(p.lat,p.lon),ST_GEOMFROMTEXT('POLYGON(( " . $boundaries . " ))')))";
+        }
         $query = "SELECT p.external_id AS id,
         p.name,
         p.lat,

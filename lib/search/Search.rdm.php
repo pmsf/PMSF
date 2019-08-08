@@ -39,6 +39,10 @@ class RDM extends Search
         if (!empty($iresids)) {
             $conds[] = "quest_item_id IN (" . implode(',',$iresids) . ")";
         }
+        global $noBoundaries, $boundaries;
+        if (!$noBoundaries) {
+            $conds[] = "(ST_WITHIN(point(lat,lon),ST_GEOMFROMTEXT('POLYGON(( " . $boundaries . " ))')))";
+        }
         $query = "SELECT id,
         name,
         lat,
