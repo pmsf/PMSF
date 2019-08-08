@@ -22,6 +22,17 @@ use Medoo\Medoo;
 $startingLat = 52.084992;                                          // Starting latitude
 $startingLng = 5.302366;                                           // Starting longitude
 
+/* Map Boundary settings */
+/* Set NW lat, lng (top left corner) and SE lat, lng (bottom right corner) of viewable map area. */
+/* Notheast -90,-180 Southwest 90,180 = full boundary of planet or no boundaries */
+/* fixes max zoom out leaving grey border in browser and multiple tiling of planet */
+
+$boundslatNW = -90; //default -90 = no bounds
+$boundslngNW = -180; //default -180 = no bounds
+$boundslatSE = 90; //default 90 = no bounds
+$boundslngSE = 180; //default 180 = no bounds
+
+
 /* Zoom and Cluster Settings */
 
 $maxLatLng = 1;                                                     // Max latitude and longitude size (1 = ~110km, 0 to disable)

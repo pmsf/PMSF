@@ -69,6 +69,8 @@ var reloaddustamount
 
 var numberOfPokemon = 493
 var numberOfItem = 1405
+var bounds
+var latlngs
 var L
 var map
 var markers
@@ -317,6 +319,7 @@ function createServiceWorkerReceiver() {
 }
 
 function initMap() { // eslint-disable-line no-unused-vars
+    bounds = new L.LatLngBounds(new L.LatLng(boundslatNW, boundslngNW), new L.LatLng(boundslatSE, boundslngSE)); //create boundary
     map = L.map('map', {
         center: [centerLat, centerLng],
         zoom: zoom == null ? Store.get('zoomLevel') : zoom,
@@ -324,9 +327,13 @@ function initMap() { // eslint-disable-line no-unused-vars
         maxZoom: maxZoom,
         zoomControl: false,
         preferCanvas: true,
-        layers: [weatherLayerGroup, exLayerGroup, gymLayerGroup, stopLayerGroup, scanAreaGroup, nestLayerGroup]
+        layers: [weatherLayerGroup, exLayerGroup, gymLayerGroup, stopLayerGroup, scanAreaGroup, nestLayerGroup],
+        maxBounds: bounds //set boudary after layers defined 
     })
-
+    latlngs = L.rectangle(bounds).getLatLngs();
+		L.polyline(latlngs[0].concat(latlngs[0][0])).addTo(map); //add boundary to map
+		map.setMaxBounds(bounds);	// Should not enter infinite recursion //add
+    
     setTileLayer(Store.get('map_style'))
     markers = L.markerClusterGroup({
         disableClusteringAtZoom: disableClusteringAtZoom,

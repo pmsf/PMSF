@@ -218,7 +218,7 @@ if ( $blockIframe ) {
     <link rel="stylesheet" href="node_modules/leaflet/dist/leaflet.css" />
     <link rel="stylesheet" href="static/dist/css/app.min.css">
     <?php if ( file_exists( 'static/css/custom.css' ) ) {
-        echo '<link rel="stylesheet" href="static/css/custom.css">';
+        echo '<link rel="stylesheet" href="static/css/custom.css?' . time() . '">';
     } ?>
     <link rel="stylesheet" href="node_modules/leaflet.markercluster/dist/MarkerCluster.css" />
     <link rel="stylesheet" href="node_modules/leaflet.markercluster/dist/MarkerCluster.Default.css" />
@@ -1934,6 +1934,10 @@ if ( $blockIframe ) {
 <script>
     var centerLat = <?= $startingLat; ?>;
     var centerLng = <?= $startingLng; ?>;
+    var boundslatNW = <?= $boundslatNW; ?>;
+    var boundslngNW = <?= $boundslngNW; ?>;
+    var boundslatSE = <?= $boundslatSE; ?>;
+    var boundslngSE = <?= $boundslngSE; ?>;
     var locationSet = <?= $locationSet; ?>;
     var motd = <?php echo $noMotd ? 'false' : 'true' ?>;
     var zoom<?php echo $zoom ? " = " . $zoom : null; ?>;
