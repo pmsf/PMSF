@@ -71,6 +71,10 @@ var numberOfPokemon = 493
 var numberOfItem = 1405
 var bounds
 var latlngs
+var boundslatNW
+var boundslngNW
+var boundslatSE
+var boundslngSE
 var L
 var map
 var markers
@@ -331,8 +335,8 @@ function initMap() { // eslint-disable-line no-unused-vars
         maxBounds: bounds // set boudary after layers defined
     })
     latlngs = L.rectangle(bounds).getLatLngs()
-        L.polyline(latlngs[0].concat(latlngs[0][0])).addTo(map) // add boundary to map
-        map.setMaxBounds(bounds)	// Should not enter infinite recursion
+    L.polyline(latlngs[0].concat(latlngs[0][0])).addTo(map) // add boundary to map
+    map.setMaxBounds(bounds)	// Should not enter infinite recursion
 
     setTileLayer(Store.get('map_style'))
     markers = L.markerClusterGroup({
