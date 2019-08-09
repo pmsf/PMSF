@@ -217,6 +217,9 @@ if ( $blockIframe ) {
     <!-- Leaflet -->
     <link rel="stylesheet" href="node_modules/leaflet/dist/leaflet.css" />
     <link rel="stylesheet" href="static/dist/css/app.min.css">
+    <?php if ( file_exists( 'static/css/custom.css' ) ) {
+        echo '<link rel="stylesheet" href="static/css/custom.css">';
+    } ?>
     <link rel="stylesheet" href="node_modules/leaflet.markercluster/dist/MarkerCluster.css" />
     <link rel="stylesheet" href="node_modules/leaflet.markercluster/dist/MarkerCluster.Default.css" />
     <link href='static/css/leaflet.fullscreen.css' rel='stylesheet' />
@@ -349,19 +352,21 @@ if ( $blockIframe ) {
                     </div>
                 </div>';
                 } ?>
-                <?php
-                if ( ! $noNestPolygon && ! $noNests ) {
-                    echo '<div class="form-control switch-container">
-                    <h3>' . i8ln( 'Nest Polygon' ) . '</h3>
-                    <div class="onoffswitch">
-                        <input id="nest-polygon-switch" type="checkbox" name="nest-polygon-switch" class="onoffswitch-checkbox">
-                        <label class="onoffswitch-label" for="nest-polygon-switch">
-                            <span class="switch-label" data-on="On" data-off="Off"></span>
-                            <span class="switch-handle"></span>
-                        </label>
-                    </div>
-                </div>';
-                } ?>
+                <div id="nest-filter-wrapper" style="display:none">
+                    <?php
+                    if ( ! $noNestPolygon && ! $noNests ) {
+                        echo '<div class="form-control switch-container">
+                        <h3>' . i8ln( 'Nest Polygon' ) . '</h3>
+                        <div class="onoffswitch">
+                            <input id="nest-polygon-switch" type="checkbox" name="nest-polygon-switch" class="onoffswitch-checkbox">
+                            <label class="onoffswitch-label" for="nest-polygon-switch">
+                                <span class="switch-label" data-on="On" data-off="Off"></span>
+                                <span class="switch-handle"></span>
+                            </label>
+                        </div>
+                    </div>';
+                    } ?>
+                </div>
                     <div id="pokemon-filter-wrapper" style="display:none">
                         <?php
                         if ( ! $noTinyRat && ! $noTinyRatSetting ) {
@@ -499,7 +504,7 @@ if ( $blockIframe ) {
                         </label>
                     </div>
                 </div>';
-        } ?>
+                } ?>
                     <div id="pokestops-filter-wrapper" style="display:none">
                 <?php
                 if ( ! $noLures ) {
@@ -514,7 +519,36 @@ if ( $blockIframe ) {
                         </label>
                     </div>
                 </div>';
-        } ?>
+                } ?>
+                <?php
+                if ( ! $noTeamRocket ) {
+                    echo '<div class="form-control switch-container" style="float:none;height:35px;margin-bottom:0px;">
+                    <h3>' . i8ln( 'Team Rocket only' ) . '</h3>
+                    <div class="onoffswitch">
+                        <input id="rocket-switch" type="checkbox" name="rocket-switch"
+                               class="onoffswitch-checkbox" checked>
+                        <label class="onoffswitch-label" for="rocket-switch">
+                            <span class="switch-label" data-on="On" data-off="Off"></span>
+                            <span class="switch-handle"></span>
+                        </label>
+                    </div>
+                </div>';
+                } ?>
+                <div id="rocket-wrapper" style="display:none">
+                    <?php
+                    if ( ! $noTeamRocketTimer && ! $noTeamRocket ) {
+                        echo '<div class="form-control switch-container">
+                        <h3>' . i8ln( 'Team Rocket Timer' ) . '</h3>
+                        <div class="onoffswitch">
+                        <input id="rocket-timer-switch" type="checkbox" name="rocket-timer-switch" class="onoffswitch-checkbox" checked>
+                        <label class="onoffswitch-label" for="rocket-timer-switch">
+                            <span class="switch-label" data-on="On" data-off="Off"></span>
+                            <span class="switch-handle"></span>
+                        </label>
+                    </div>
+                    </div>';
+                    } ?>
+                </div>
                 <?php
                 if ( ! $noQuests ) {
                     echo '<div class="form-control switch-container" style="float:none;height:35px;margin-bottom:0px;">
@@ -528,7 +562,7 @@ if ( $blockIframe ) {
                         </label>
                     </div>
                 </div>';
-        ?>
+                ?>
                     <div id="quests-filter-wrapper" style="display:none">
                         <div id="quests-tabs">
                             <ul>
@@ -932,26 +966,13 @@ if ( $blockIframe ) {
             }
             ?>
             <?php
-            if ( ! $noSearchLocation || ! $noNests || ! $noStartMe || ! $noStartLast || ! $noFollowMe || ! $noPokestops || ! $noScannedLocations || ! $noSpawnPoints || ! $noRanges || ! $noWeatherOverlay || ! $noSpawnArea ) {
+            if ( ! $noSearchLocation || ! $noNests || ! $noStartMe || ! $noStartLast || ! $noFollowMe || ! $noPokestops || ! $noSpawnPoints || ! $noRanges || ! $noWeatherOverlay || ! $noSpawnArea ) {
                 if ( ! $noSearchLocation ) {
                     echo '<h3>' . i8ln( 'Location &amp; Search' ) . '</h3>
                     <div>';
                 } else {
                     echo '<h3>' . i8ln( 'Location' ) . '</h3>
                     <div>';
-        } ?>
-                <?php
-                if ( $map != "monocle" && ! $noScannedLocations ) {
-                    echo '<div class="form-control switch-container">
-                    <h3> ' . i8ln( 'Scanned Locations' ) . ' </h3>
-                    <div class="onoffswitch">
-                        <input id = "scanned-switch" type = "checkbox" name = "scanned-switch" class="onoffswitch-checkbox">
-                        <label class="onoffswitch-label" for="scanned-switch">
-                            <span class="switch-label" data - on = "On" data - off = "Off"></span>
-                            <span class="switch-handle"></span>
-                        </label>
-                    </div>
-                </div>';
                 } ?>
                 <?php
                 if ( ! $noWeatherOverlay ) {
@@ -1088,7 +1109,7 @@ if ( $blockIframe ) {
             if ( ! $noNotifyPokemon ) {
                 echo '<div class="form-control hide-select-2">
                     <label for="notify-pokemon">
-                        <h3>' . i8ln( 'Notify of Pokemon' ) . '</h3><a href="#" class="select-all">All</a>/<a href="#" class="hide-all">None</a>
+                        <h3>' . i8ln( 'Notify of Pokemon' ) . '</h3><a href="#" class="select-all">' . i8ln( 'All' ) . '</a>/<a href="#" class="hide-all">' . i8ln( 'None' ) . '</a>
                         <div style="max-height:165px;overflow-y:auto;">
                             <input id="notify-pokemon" type="text" readonly="true"/>';
                 pokemonFilterImages( $noPokemonNumbers, '', [], 4 );
@@ -1242,6 +1263,23 @@ if ( $blockIframe ) {
                     <option value="bing">' . i8ln( 'Bing' ) . '</option>
                 </select>
             </div>';
+            }
+            ?>
+            <?php
+            if ( ! $noMultipleRepos && ! $copyrightSafe ) {
+            echo '<div class="form-control switch-container">
+                <h3>Icon Style</h3>';
+                $count = sizeof( $iconRepos );
+                if ( $count > 0 ) {
+                    echo '<div><select name="icon-style" id="icon-style">';
+                    for ( $i = 0; $i <= $count - 1; $i ++ ) {
+                        echo '<option value="' . $iconRepos[$i][1] . '">' . $iconRepos[$i][0] . '</option>';
+                    }
+                    echo '</select></div></div>';
+                } else {
+                    echo '</div>';
+                    echo '<div><p>404 No Icon Packs found</p></div>';
+                }
             }
             ?>
             <?php
@@ -1906,7 +1944,7 @@ if ( $blockIframe ) {
 <script src="node_modules/leaflet.markercluster/dist/leaflet.markercluster.js"></script>
 <script src='static/js/vendor/Leaflet.fullscreen.min.js'></script>
 <script src="static/js/vendor/smoothmarkerbouncing.js"></script>
-<script src='https://maps.googleapis.com/maps/api/js?key=<?php $gmapsKey ?> ' async defer></script>
+<script src='https://maps.googleapis.com/maps/api/js?key=<?= $gmapsKey ?> ' async defer></script>
 <script src="static/js/vendor/Leaflet.GoogleMutant.js"></script>
 <script src="static/js/vendor/turf.min.js"></script>
 <script>
@@ -1946,14 +1984,15 @@ if ( $blockIframe ) {
     var enablePokemon = <?php echo $noPokemon ? 'false' : $enablePokemon ?>;
     var enablePokestops = <?php echo $noPokestops ? 'false' : $enablePokestops ?>;
     var enableLured = <?php echo $noLures ? 'false' : $enableLured ?>;
+    var enableRocket = <?php echo $noTeamRocket ? 'false' : $enableTeamRocket ?>;
     var noQuests = <?php echo $noQuests === true ? 'true' : 'false' ?>;
     var noLures = <?php echo $noLures === true ? 'true' : 'false' ?>;
+    var noTeamRocket = <?php echo $noTeamRocket === true ? 'true' : 'false' ?>;
     var enableQuests = <?php echo $noQuests ? 'false' : $enableQuests ?>;
     var hideQuestsPokemon = <?php echo $noQuestsPokemon ? '[]' : $hideQuestsPokemon ?>;
     var hideQuestsItem = <?php echo $noQuestsItems ? '[]' : $hideQuestsItem ?>;
     var enableNewPortals = <?php echo ( ( $map != "monocle" ) || ( $fork == "alternate" ) ) ? $enableNewPortals : 0 ?>;
     var enableWeatherOverlay = <?php echo ! $noWeatherOverlay ? $enableWeatherOverlay : 'false' ?>;
-    var enableScannedLocations = <?php echo $map != "monocle" && ! $noScannedLocations ? $enableScannedLocations : 'false' ?>;
     var enableSpawnpoints = <?php echo $noSpawnPoints ? 'false' : $enableSpawnPoints ?>;
     var enableRanges = <?php echo $noRanges ? 'false' : $enableRanges ?>;
     var enableScanPolygon = <?php echo $noScanPolygon ? 'false' : $enableScanPolygon ?>;
@@ -1980,6 +2019,8 @@ if ( $blockIframe ) {
     var showBigKarp = <?php echo $noBigKarp === true ? 'true' : 'false' ?>;
     var showTinyRat = <?php echo $noTinyRat === true ? 'true' : 'false' ?>;
     var hidePokemonCoords = <?php echo $hidePokemonCoords === true ? 'true' : 'false' ?>;
+    var hidePokestopCoords = <?php echo $hidePokestopCoords === true ? 'true' : 'false' ?>;
+    var hideGymCoords = <?php echo $hideGymCoords === true ? 'true' : 'false' ?>;
     var directionProvider = '<?php echo $noDirectionProvider === true ? $directionProvider : 'google' ?>';
     var exEligible = <?php echo $noExEligible === true ? 'false' : $exEligible  ?>;
     var raidBossActive = <?php echo json_encode( $raidBosses ); ?>;
@@ -2020,6 +2061,8 @@ if ( $blockIframe ) {
     var noWeatherShadow = <?php echo $noWeatherShadow === true ? 'true' : 'false' ?>;
     var noRaidTimer = <?php echo $noRaidTimer === true ? 'true' : 'false' ?>;
     var enableRaidTimer = <?php echo $noRaidTimer ? 'false' : $enableRaidTimer ?>;
+    var noRocketTimer = <?php echo $noTeamRocketTimer === true ? 'true' : 'false' ?>;
+    var enableRocketTimer = <?php echo $noTeamRocketTimer ? 'false' : $enableTeamRocketTimer ?>;
     var enableNestPolygon = <?php echo $noNestPolygon ? 'false' : $enableNestPolygon ?>;
     var nestGeoJSONfile = '<?php echo $noNestPolygon ? '' : $nestGeoJSONfile ?>';
     var noCostumeIcons = <?php echo $noCostumeIcons === true ? 'true' : 'false' ?>;

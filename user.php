@@ -46,6 +46,9 @@ include('config/config.php');
         var token = '<?php echo (!empty($_SESSION['token'])) ? $_SESSION['token'] : ""; ?>';
     </script>
     <link rel="stylesheet" href="static/dist/css/app.min.css">
+    <?php if ( file_exists( 'static/css/custom.css' ) ) {
+        echo '<link rel="stylesheet" href="static/css/custom.css">';
+    } ?>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jqueryui/1.12.0/jquery-ui.min.css">
     <link rel="stylesheet" href="https://cdn.datatables.net/1.10.12/css/jquery.dataTables.css">
     <script src="static/js/vendor/modernizr.custom.js"></script>
@@ -61,6 +64,8 @@ include('config/config.php');
         }
         if ($noNativeLogin === true && $noDiscordLogin === false && empty($_SESSION['user']->id)) {
             header("Location: ./discord-login");
+        } else if ($noNativeLogin === true && $noDiscordLogin === false && !empty($_SESSION['user']->id)) {
+            header("Location: .");
         }
 
         if (isset($_POST['submitUpdatePwdBtn'])) {
@@ -160,7 +165,7 @@ include('config/config.php');
             !empty($domainName) ? $domainName = $domainName : $domainName = $_SERVER['SERVER_NAME'];
             $headers = "From: no-reply@{$domainName}" . "\r\n" .
                 "Reply-To: no-reply@{$domainName}" . "\r\n" .
-                'Content-Type: text/html; charset=ISO-8859-1' . "\r\n" .
+                'Content-Type: text/html; charset=utf-8' . "\r\n" .
                 'X-Mailer: PHP/' . phpversion();
 
             $sendMail = mail($_POST['email'], $subject, $message, $headers);

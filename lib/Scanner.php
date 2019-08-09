@@ -35,5 +35,9 @@ class Scanner
         $json_items = "static/data/items.json";
         $json_contents = file_get_contents($json_items);
         $this->items = json_decode($json_contents, true);
+
+        $json_grunttype = "static/data/grunttype.json";
+        $json_contents = file_get_contents($json_grunttype);
+        $this->grunttype = json_decode($json_contents, true);
     }
 }

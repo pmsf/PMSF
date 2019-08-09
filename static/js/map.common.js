@@ -259,6 +259,11 @@ var StoreOptions = {
             default: enableLured,
             type: StoreTypes.Boolean
         },
+    'showRocket':
+        {
+            default: enableRocket,
+            type: StoreTypes.Boolean
+        },
     'showQuests':
         {
             default: enableQuests,
@@ -272,11 +277,6 @@ var StoreOptions = {
     'showWeather':
         {
             default: enableWeatherOverlay,
-            type: StoreTypes.Boolean
-        },
-    'showScanned':
-        {
-            default: enableScannedLocations,
             type: StoreTypes.Boolean
         },
     'showSpawnpoints':
@@ -413,6 +413,11 @@ var StoreOptions = {
         {
             default: enableRaidTimer,
             type: StoreTypes.Boolean
+        },
+    'showRocketTimer':
+        {
+            default: enableRocketTimer,
+            type: StoreTypes.Boolean
         }
 }
 
@@ -448,7 +453,6 @@ var mapData = {
     gyms: {},
     pokestops: {},
     lurePokemons: {},
-    scanned: {},
     spawnpoints: {},
     nests: {},
     communities: {},

@@ -22,6 +22,11 @@
   color: #db03d1;
   padding: 1px;
 }
+.pokestop-rocket-name {
+  font-weight: 900;
+  color: #444;
+  padding: 1px;
+}
 
 .pokestop-image {
   width: 80px;
@@ -46,4 +51,12 @@
   border-radius: 50px;
   margin: 6px;
   border: 3px solid #db03d1;
+}
+.pokestop-rocket-image {
+    width: 80px;
+    height: 80px;
+    background-size: cover;
+    border-radius: 50px;
+    margin: 6px;
+    border: 3px solid #444;
 }

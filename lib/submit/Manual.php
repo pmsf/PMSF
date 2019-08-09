@@ -473,7 +473,7 @@ class Manual extends Submit
 
     public function convert_portal_inn($portalId, $loggedUser)
     {
-        global $db, $manualdb, $noPortals, $noDiscordSubmitLogChannel, $discordSubmitLogChannelUrl;
+        global $db, $manualdb, $noPortals, $noDiscordSubmitLogChannel, $discordSubmitLogChannelUrl, $submitMapUrl;
         if ( $noPortals === true ) {
             http_response_code( 401 );
             die();
@@ -499,7 +499,7 @@ class Manual extends Submit
 
     public function convert_portal_fortress($portalId, $loggedUser)
     {
-        global $db, $manualdb, $noPortals, $noDiscordSubmitLogChannel, $discordSubmitLogChannelUrl;
+        global $db, $manualdb, $noPortals, $noDiscordSubmitLogChannel, $discordSubmitLogChannelUrl, $submitMapUrl;
         if ( $noPortals === true ) {
             http_response_code( 401 );
             die();
@@ -525,7 +525,7 @@ class Manual extends Submit
 
     public function convert_portal_greenhouse($portalId, $loggedUser)
     {
-        global $db, $manualdb, $noPortals, $noDiscordSubmitLogChannel, $discordSubmitLogChannelUrl;
+        global $db, $manualdb, $noPortals, $noDiscordSubmitLogChannel, $discordSubmitLogChannelUrl, $submitMapUrl;
         if ( $noPortals === true ) {
             http_response_code( 401 );
             die();
