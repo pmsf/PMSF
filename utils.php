@@ -72,21 +72,6 @@ function sendToWebhook($webhookUrl, $webhook) {
     curl_exec($c);
     curl_close($c);
 }
-
-function uploadImage($imgbbAPI, $data) {
-    $c = curl_init("https://api.imgbb.com/1/upload?key=$imgbbAPI");
-    curl_setopt($c, CURLOPT_SSL_VERIFYPEER, false);
-    curl_setopt($c, CURLOPT_POST, true);
-    curl_setopt($c, CURLOPT_CUSTOMREQUEST, "POST");
-    curl_setopt($c, CURLOPT_RETURNTRANSFER, true);
-    curl_setopt($c, CURLOPT_HTTPHEADER, ['Content-type: multipart/form-data', 'User-Agent: python-requests/2.18.4']);
-    curl_setopt($c, CURLOPT_POSTFIELDS, $data);
-    $result = curl_exec($c);
-    curl_close($c);
-
-    return $result;
-}
-
 function generateRandomString($length = 8)
 {
     $characters = '0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ';
