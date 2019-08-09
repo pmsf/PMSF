@@ -4714,8 +4714,8 @@ function openSearchModal(event) { // eslint-disable-line no-unused-vars
 }
 
 function openFullscreenModal(image) { // eslint-disable-line no-unused-vars
-    var modal = document.getElementById('fullscreenModal')
-    var modalImg = document.getElementById('fullscreenimg')
+    var modal = document.getElementById('myModal')
+    var modalImg = document.getElementById('img01')
     modal.style.display = 'block'
     modalImg.src = image
     var span = document.getElementsByClassName('close')[0]
@@ -4724,7 +4724,7 @@ function openFullscreenModal(image) { // eslint-disable-line no-unused-vars
     }
 }
 function closeFullscreenModal() { // eslint-disable-line no-unused-vars
-    var modal = document.getElementById('fullscreenModal')
+    var modal = document.getElementById('myModal')
     modal.style.display = 'none'
 }
 function processPokemons(i, item) {
