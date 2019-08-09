@@ -51,7 +51,12 @@ class RocketMap_MAD extends Search
         ROUND(( 3959 * acos( cos( radians(:lat) ) * cos( radians( latitude ) ) * cos( radians( longitude ) - radians(:lon) ) + sin( radians(:lat) ) * sin( radians( latitude ) ) ) ),2) AS distance 
         FROM pokestop p
         LEFT JOIN trs_quest tq ON tq.GUID = p.pokestop_id
-        WHERE (:conditions) AND DATE(FROM_UNIXTIME(tq.quest_timestamp)) = CURDATE()
+        WHERE (:conditions)";
+        global $noBoundaries, $boundaries;
+        if (!$noBoundaries) {
+            $query .= " AND (ST_WITHIN(point(p.latitude,p.longitude),ST_GEOMFROMTEXT('POLYGON(( " . $boundaries . " ))')))";
+        }
+		$query .= " AND DATE(FROM_UNIXTIME(tq.quest_timestamp)) = CURDATE() 
         ORDER BY distance LIMIT " . $maxSearchResults . "";
         
         $query = str_replace(":conditions", join(" OR ", $conds), $query);

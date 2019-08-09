@@ -1,4 +1,11 @@
 {
+  "Grunt-Type": "Type de Sbire",
+  "Grunt-Gender": "Genre",
+  "Male Grunt": "Homme",
+  "Female Grunt": "Femme",
+  "Areas": "Ville",
+  "Team Rocket only": "Team Rocket Seulement",
+  "Incident Expiration": "Fin de l'invasion",
   "Please check connectivity or reduce marker settings.": "Vérifiez votre connexion ou réduisez les données à afficher.",
   "Error getting data": "Erreur de données",
   "Search Name & ID": "Rechercher Nom & ID",

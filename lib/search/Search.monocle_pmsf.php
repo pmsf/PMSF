@@ -50,8 +50,12 @@ class Monocle_PMSF extends Search
         json_extract(json_extract(`quest_rewards`,'$[*].info.item_id'),'$[0]') AS quest_item_id, 
         ROUND(( 3959 * acos( cos( radians(:lat) ) * cos( radians( lat ) ) * cos( radians( lon ) - radians(:lon) ) + sin( radians(:lat) ) * sin( radians( lat ) ) ) ),2) AS distance 
         FROM pokestops
-        WHERE :conditions
-        ORDER BY distance LIMIT " . $maxSearchResults . "";
+        WHERE :conditions";
+        global $noBoundaries, $boundaries;
+        if (!$noBoundaries) {
+            $query .= " AND (ST_WITHIN(point(lat,lon),ST_GEOMFROMTEXT('POLYGON(( " . $boundaries . " ))')))";
+        }
+        $query .= " ORDER BY distance LIMIT " . $maxSearchResults . "";
         
         $query = str_replace(":conditions", join(" OR ", $conds), $query);
         
