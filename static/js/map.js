@@ -1164,7 +1164,7 @@ function gymLabel(item) {
     var str
     var gymImage = ''
     if (url !== null) {
-        gymImage = '<img id="' + item['gym_id'] + '"class="gym-image" style="border:3px solid rgba(' + gymColor[teamId] + ')" src="' + url + '" onclick="openFullscreenModal(document.getElementById(\'' + item['gym_id'] + '\').src)">'
+        gymImage = '<img class="gym-image" style="border:3px solid rgba(' + gymColor[teamId] + ')" src="' + url + '">'
     }
     var teamStr = ''
     if (teamId === 0) {
@@ -1415,7 +1415,7 @@ function pokestopLabel(item) {
     } else if (!noLures && item['lure_expiration'] > Date.now() && item['url'] !== null) {
         stopImage = '<img class="pokestop-lure-image" src="' + item['url'] + '">'
     } else if (item['url'] !== null) {
-        stopImage = '<img id="' + item['pokestop_id'] + '" class="pokestop-image" src="' + item['url'] + '" onclick="openFullscreenModal(document.getElementById(\'' + item['pokestop_id'] + '\').src)"/>'
+        stopImage = '<img class="pokestop-image" src="' + item['url'] + '">'
     }
 
     str =
@@ -2432,7 +2432,7 @@ function portalLabel(item) {
     var updated = formatDate(new Date(item.updated * 1000))
     var imported = formatDate(new Date(item.imported * 1000))
     var str = '<center><div style="font-weight:900;font-size:12px;margin-left:10px;">' + item.name + '</div></center>' +
-        '<center><img id="' + item.external_id + '" src="' + item.url + '" align"middle" style="width:175px;height:auto;" onclick="openFullscreenModal(document.getElementById(\'' + item.external_id + '\').src)"/></center>'
+        '<center><img src="' + item.url + '" align"middle" style="width:175px;height:auto;"/></center>'
     if (!noConvertPortal) {
         str += '<center><div><a class="button" style="margin-top:0px;margin-bottom:3px;" onclick="openConvertPortalModal(event);" data-id="' + item.external_id + '"><i class="fas fa-sync-alt convert-portal"></i>' + ' ' + i8ln('Convert portal') + '</a></div></center>'
     }
@@ -2526,10 +2526,10 @@ function poiLabel(item) {
         str += '<div><b>' + i8ln('Notes') + ':</b> ' + item.notes + '</div>'
     }
     if (item.poiimageurl) {
-        str += '<center><img id="poi-image"src="' + item.poiimageurl + '" align"middle" style="width:100px;height:auto;" onclick="openFullscreenModal(document.getElementById(\'poi-image\').src)"/></center>'
+        str += '<center><img src="' + item.poiimageurl + '" align"middle" style="width:125px;height:auto;"/></center>'
     }
     if (item.poisurroundingurl) {
-        str += '<center><img id="poi-surrounding" src="' + item.poisurroundingurl + '" align"middle" style="width:100px;height:auto;" onclick="openFullscreenModal(document.getElementById(\'poi-surrounding\').src)"/></center>'
+        str += '<center><img src="' + item.poisurroundingurl + '" align"middle" style="width:125px;height:auto;"/></center>'
     }
     str += '<span class="' + dot + '"></span>' +
         '<div><b>' + i8ln('Submitted by') + ':</b> ' + item.submitted_by + '</div>'
@@ -4713,20 +4713,6 @@ function openSearchModal(event) { // eslint-disable-line no-unused-vars
     })
 }
 
-function openFullscreenModal(image) { // eslint-disable-line no-unused-vars
-    var modal = document.getElementById('myModal')
-    var modalImg = document.getElementById('img01')
-    modal.style.display = 'block'
-    modalImg.src = image
-    var span = document.getElementsByClassName('close')[0]
-    span.onclick = function () {
-        modal.style.display = 'none'
-    }
-}
-function closeFullscreenModal() { // eslint-disable-line no-unused-vars
-    var modal = document.getElementById('myModal')
-    modal.style.display = 'none'
-}
 function processPokemons(i, item) {
     if (!Store.get('showPokemon')) {
         return false // in case the checkbox was unchecked in the meantime.
