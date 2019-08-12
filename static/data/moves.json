@@ -1,7 +1,7 @@
 {
   "1": {
     "name": "Thunder Shock",
-    "type": "",
+    "type": "Electric",
     "damage": 0,
     "duration": 0,
     "energy": 0,
@@ -9,7 +9,7 @@
   },
   "2": {
     "name": "Quick Attack",
-    "type": "",
+    "type": "Normal",
     "damage": 0,
     "duration": 0,
     "energy": 0,
@@ -17,7 +17,7 @@
   },
   "3": {
     "name": "Scratch",
-    "type": "",
+    "type": "Normal",
     "damage": 0,
     "duration": 0,
     "energy": 0,
@@ -25,7 +25,7 @@
   },
   "4": {
     "name": "Ember",
-    "type": "",
+    "type": "Fire",
     "damage": 0,
     "duration": 0,
     "energy": 0,
@@ -33,7 +33,7 @@
   },
   "5": {
     "name": "Vine Whip",
-    "type": "",
+    "type": "Grass",
     "damage": 0,
     "duration": 0,
     "energy": 0,
@@ -41,7 +41,7 @@
   },
   "6": {
     "name": "Tackle",
-    "type": "",
+    "type": "Normal",
     "damage": 0,
     "duration": 0,
     "energy": 0,
@@ -49,7 +49,7 @@
   },
   "7": {
     "name": "Razor Leaf",
-    "type": "",
+    "type": "Grass",
     "damage": 0,
     "duration": 0,
     "energy": 0,
@@ -57,7 +57,7 @@
   },
   "8": {
     "name": "Take Down",
-    "type": "",
+    "type": "Normal",
     "damage": 0,
     "duration": 0,
     "energy": 0,
@@ -65,7 +65,7 @@
   },
   "9": {
     "name": "Water Gun",
-    "type": "",
+    "type": "Water",
     "damage": 0,
     "duration": 0,
     "energy": 0,
@@ -73,7 +73,7 @@
   },
   "10": {
     "name": "Bite",
-    "type": "",
+    "type": "Dark",
     "damage": 0,
     "duration": 0,
     "energy": 0,
@@ -81,7 +81,7 @@
   },
   "11": {
     "name": "Pound",
-    "type": "",
+    "type": "Normal",
     "damage": 0,
     "duration": 0,
     "energy": 0,
@@ -89,7 +89,7 @@
   },
   "12": {
     "name": "Double Slap",
-    "type": "",
+    "type": "Normal",
     "damage": 0,
     "duration": 0,
     "energy": 0,
@@ -113,7 +113,7 @@
   },
   "15": {
     "name": "Lick",
-    "type": "",
+    "type": "Ghost",
     "damage": 0,
     "duration": 0,
     "energy": 0,
@@ -129,7 +129,7 @@
   },
   "17": {
     "name": "Smog",
-    "type": "",
+    "type": "Poison",
     "damage": 0,
     "duration": 0,
     "energy": 0,
@@ -145,7 +145,7 @@
   },
   "19": {
     "name": "Metal Claw",
-    "type": "",
+    "type": "Steel",
     "damage": 0,
     "duration": 0,
     "energy": 0,
@@ -177,7 +177,7 @@
   },
   "23": {
     "name": "Wing Attack",
-    "type": "",
+    "type": "Flying",
     "damage": 0,
     "duration": 0,
     "energy": 0,
@@ -193,7 +193,7 @@
   },
   "25": {
     "name": "Sucker Punch",
-    "type": "",
+    "type": "Dark",
     "damage": 0,
     "duration": 0,
     "energy": 0,
@@ -209,7 +209,7 @@
   },
   "27": {
     "name": "Low Kick",
-    "type": "",
+    "type": "Fighting",
     "damage": 0,
     "duration": 0,
     "energy": 0,
@@ -225,7 +225,7 @@
   },
   "29": {
     "name": "Psycho Cut",
-    "type": "",
+    "type": "Psychic",
     "damage": 0,
     "duration": 0,
     "energy": 0,
@@ -289,7 +289,7 @@
   },
   "37": {
     "name": "Peck",
-    "type": "",
+    "type": "Flying",
     "damage": 0,
     "duration": 0,
     "energy": 0,
@@ -321,7 +321,7 @@
   },
   "41": {
     "name": "Air Slash",
-    "type": "",
+    "type": "Flying",
     "damage": 0,
     "duration": 0,
     "energy": 0,
@@ -337,7 +337,7 @@
   },
   "43": {
     "name": "Twineedle",
-    "type": "",
+    "type": "Bug",
     "damage": 0,
     "duration": 0,
     "energy": 0,
@@ -345,7 +345,7 @@
   },
   "44": {
     "name": "Poison Jab",
-    "type": "",
+    "type": "Poison",
     "damage": 0,
     "duration": 0,
     "energy": 0,
@@ -409,7 +409,7 @@
   },
   "52": {
     "name": "Slash",
-    "type": "",
+    "type": "Normal",
     "damage": 0,
     "duration": 0,
     "energy": 0,
@@ -433,7 +433,7 @@
   },
   "55": {
     "name": "Karate Chop",
-    "type": "",
+    "type": "Fighting",
     "damage": 0,
     "duration": 0,
     "energy": 0,
@@ -481,7 +481,7 @@
   },
   "61": {
     "name": "Rock Throw",
-    "type": "",
+    "type": "Rock",
     "damage": 0,
     "duration": 0,
     "energy": 0,
@@ -537,7 +537,7 @@
   },
   "68": {
     "name": "Shadow Claw",
-    "type": "",
+    "type": "Ghost",
     "damage": 0,
     "duration": 0,
     "energy": 0,
@@ -561,7 +561,7 @@
   },
   "71": {
     "name": "Bullet Punch",
-    "type": "",
+    "type": "Steel",
     "damage": 0,
     "duration": 0,
     "energy": 0,
@@ -577,7 +577,7 @@
   },
   "73": {
     "name": "Steel Wing",
-    "type": "",
+    "type": "Steel",
     "damage": 0,
     "duration": 0,
     "energy": 0,
@@ -601,7 +601,7 @@
   },
   "76": {
     "name": "Spark",
-    "type": "",
+    "type": "Electric",
     "damage": 0,
     "duration": 0,
     "energy": 0,
@@ -641,7 +641,7 @@
   },
   "81": {
     "name": "Dragon Breath",
-    "type": "",
+    "type": "Dragon",
     "damage": 0,
     "duration": 0,
     "energy": 0,
@@ -737,7 +737,7 @@
   },
   "93": {
     "name": "Mud Shot",
-    "type": "",
+    "type": "Ground",
     "damage": 0,
     "duration": 0,
     "energy": 0,
@@ -769,7 +769,7 @@
   },
   "97": {
     "name": "Fury Cutter",
-    "type": "",
+    "type": "Bug",
     "damage": 0,
     "duration": 0,
     "energy": 0,
@@ -777,7 +777,7 @@
   },
   "98": {
     "name": "Bug Bite",
-    "type": "",
+    "type": "Bug",
     "damage": 0,
     "duration": 0,
     "energy": 0,
@@ -873,7 +873,7 @@
   },
   "110": {
     "name": "Ice Shard",
-    "type": "",
+    "type": "Ice",
     "damage": 0,
     "duration": 0,
     "energy": 0,
@@ -889,7 +889,7 @@
   },
   "112": {
     "name": "Frost Breath",
-    "type": "",
+    "type": "Ice",
     "damage": 0,
     "duration": 0,
     "energy": 0,
@@ -897,7 +897,7 @@
   },
   "113": {
     "name": "Absorb",
-    "type": "",
+    "type": "Grass",
     "damage": 0,
     "duration": 0,
     "energy": 0,
@@ -945,7 +945,7 @@
   },
   "119": {
     "name": "Splash",
-    "type": "",
+    "type": "Normal",
     "damage": 0,
     "duration": 0,
     "energy": 0,
@@ -953,7 +953,7 @@
   },
   "120": {
     "name": "Acid",
-    "type": "",
+    "type": "Poison",
     "damage": 0,
     "duration": 0,
     "energy": 0,
@@ -985,7 +985,7 @@
   },
   "124": {
     "name": "Cut",
-    "type": "",
+    "type": "Normal",
     "damage": 0,
     "duration": 0,
     "energy": 0,
@@ -1017,7 +1017,7 @@
   },
   "128": {
     "name": "Headbutt",
-    "type": "",
+    "type": "Normal",
     "damage": 0,
     "duration": 0,
     "energy": 0,
@@ -1033,7 +1033,7 @@
   },
   "130": {
     "name": "Slam",
-    "type": "",
+    "type": "Normal",
     "damage": 0,
     "duration": 0,
     "energy": 0,
@@ -1353,7 +1353,7 @@
   },
   "232": {
     "name": "Water Gun (Blastoise)",
-    "type": "",
+    "type": "Water",
     "damage": 0,
     "duration": 0,
     "energy": 0,
@@ -2066,6 +2066,30 @@
   "321": {
     "name": "Giga impact",
     "type": "Normal",
+    "damage": 0,
+    "duration": 0,
+    "energy": 0,
+    "dps": 0
+  },
+  "322": {
+    "name": "Frustration",
+    "type": "Normal",
+    "damage": 0,
+    "duration": 0,
+    "energy": 0,
+    "dps": 0
+  },
+  "323": {
+    "name": "Return",
+    "type": "Normal",
+    "damage": 0,
+    "duration": 0,
+    "energy": 0,
+    "dps": 0
+  },
+  "324": {
+    "name": "Synchronoise",
+    "type": "Psychic",
     "damage": 0,
     "duration": 0,
     "energy": 0,

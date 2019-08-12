@@ -881,6 +881,8 @@ function pokemonLabel(item) {
     var sta = item['individual_stamina']
     var pMove1 = moves[item['move_1']] !== undefined ? i8ln(moves[item['move_1']]['name']) : 'gen/unknown'
     var pMove2 = moves[item['move_2']] !== undefined ? i8ln(moves[item['move_2']]['name']) : 'gen/unknown'
+    var pMoveType1 = ''
+    var pMoveType2 = ''
     var weight = item['weight']
     var height = item['height']
     var gender = item['gender']
@@ -912,33 +914,29 @@ function pokemonLabel(item) {
     var details = ''
     if (atk != null && def != null && sta != null) {
         var iv = getIv(atk, def, sta)
+        var pokemonLevel
+        if (level != null) {
+            pokemonLevel = level
+        } else {
+            pokemonLevel = getPokemonLevel(cpMultiplier)
+        }
+        if (pMove1 !== 'gen/unknown') {
+            pMoveType1 = '<img style="position:relative;top:3px;left:2px;height:15px;" src="static/types/' + moves[item['move_1']]['type'] + '.png">'
+        }
+        if (pMove2 !== 'gen/unknown') {
+            pMoveType2 = '<img style="position:relative;top:3px;left:2px;height:15px;" src="static/types/' + moves[item['move_2']]['type'] + '.png">'
+        }
         details +=
             '<div style="position:absolute;top:90px;left:80px;"><div>' +
             i8ln('IV') + ': <b>' + iv.toFixed(1) + '%</b> (<b>' + atk + '</b>/<b>' + def + '</b>/<b>' + sta + '</b>)' +
+            '</div>' +
+            '<div>' + i8ln('CP') + ': <b>' + cp + '</b> | ' + i8ln('Level') + ': <b>' + pokemonLevel + '</b></div>' + 
+            '</div><br>' +
+            '<div style="position:absolute;top:125px;">' +
+            '<div>' + i8ln('Quick') + ': <b>' + pMove1 + '</b>' + pMoveType1 + '</div>' +
+            '<div>' + i8ln('Charge') + ': <b>' + pMove2 + '</b>' + pMoveType2 + '</div>' +
+            '<div>' + i8ln('Weight') + ': <b>' + weight.toFixed(2) + 'kg</b>' + ' | ' + i8ln('Height') + ': <b>' + height.toFixed(2) + 'm</b></div>' +
             '</div>'
-
-        if (cp != null && (cpMultiplier != null || level != null)) {
-            var pokemonLevel
-            if (level != null) {
-                pokemonLevel = level
-            } else {
-                pokemonLevel = getPokemonLevel(cpMultiplier)
-            }
-            details +=
-                '<div>' +
-                i8ln('CP') + ': <b>' + cp + '</b> | ' + i8ln('Level') + ': <b>' + pokemonLevel +
-                '</b></div></div><br>'
-        }
-        details +=
-            '<div style="position:absolute;top:135px;">' +
-            '<div>' + i8ln('Quick') + ': <b>' + pMove1 + '</b></div>' +
-            '<div>' + i8ln('Charge') + ': <b>' + pMove2 + '</b></div>'
-    }
-    if (weight != null && height != null) {
-        details += '<div>' +
-            i8ln('Weight') + ': <b>' + weight.toFixed(2) + 'kg</b>' +
-            ' | ' + i8ln('Height') + ': <b>' + height.toFixed(2) + 'm</b>' +
-            '</div></div>'
     }
 
     if (weatherBoostedCondition !== 0) {
@@ -1130,7 +1128,7 @@ function gymLabel(item) {
     if (lastScanned != null) {
         lastScannedStr =
             '<div>' +
-            i8ln('Last Scanned') + ' : ' + getDateStr(lastScanned) + ' ' + getTimeStr(lastScanned) +
+            i8ln('Last Scanned') + ': ' + getDateStr(lastScanned) + ' ' + getTimeStr(lastScanned) +
             '</div>'
     }
 
@@ -1178,7 +1176,7 @@ function gymLabel(item) {
         whatsappLink +
         '</div>' +
         '<div>' +
-        i8ln('Last Modified') + ' : ' + lastModifiedStr +
+        i8ln('Last Modified') + ': ' + lastModifiedStr +
         '</div>' +
         '<div>' +
         lastScannedStr +
