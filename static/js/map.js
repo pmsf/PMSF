@@ -2524,10 +2524,13 @@ function poiLabel(item) {
         str += '<div><b>' + i8ln('Notes') + ':</b> ' + item.notes + '</div>'
     }
     if (item.poiimageurl) {
-        str += '<center><img id="poi-image"src="' + item.poiimageurl + '" align"middle" style="width:100px;height:auto;" onclick="openFullscreenModal(document.getElementById(\'poi-image\').src)"/></center>'
+        str += '<center><img id="poi-image"src="' + item.poiimageurl + '" style="float:left;width:45%;margin-right:1%;margin-bottom:0.5em;" onclick="openFullscreenModal(document.getElementById(\'poi-image\').src)"/></center>'
     }
     if (item.poisurroundingurl) {
-        str += '<center><img id="poi-surrounding" src="' + item.poisurroundingurl + '" align"middle" style="width:100px;height:auto;" onclick="openFullscreenModal(document.getElementById(\'poi-surrounding\').src)"/></center>'
+        str += '<center><img id="poi-surrounding" src="' + item.poisurroundingurl + '" style="float:right;width:45%;margin-right:1%;margin-bottom:0.5em;" onclick="openFullscreenModal(document.getElementById(\'poi-surrounding\').src)"/></center>'
+    }
+    if (item.poiimageurl || item.poisurroundingurl) {
+        str += '<p style="clear:both;">'
     }
     str += '<span class="' + dot + '"></span>' +
         '<div><b>' + i8ln('Submitted by') + ':</b> ' + item.submitted_by + '</div>'
