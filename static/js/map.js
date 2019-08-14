@@ -247,6 +247,28 @@ if (location.search.indexOf('login=true') > 0) {
 if (location.search.indexOf('login=false') > 0) {
     openAccessDeniedModal()
 }
+function previewPoiImage(event) { // eslint-disable-line no-unused-vars
+    var form = $(event.target).parent().parent()
+    var input = event.target
+    var reader = new FileReader()
+    var fileLoaded = function (event) {
+        var base64 = event.target.result
+        form.find('[name="preview-poi-image"]').attr('src', base64)
+    }
+    reader.readAsDataURL(input.files[0])
+    reader.onload = fileLoaded
+}
+function previewPoiSurrounding(event) { // eslint-disable-line no-unused-vars
+    var form = $(event.target).parent().parent()
+    var input = event.target
+    var reader = new FileReader()
+    var fileLoaded = function (event) {
+        var base64 = event.target.result
+        form.find('[name="preview-poi-surrounding"]').attr('src', base64)
+    }
+    reader.readAsDataURL(input.files[0])
+    reader.onload = fileLoaded
+}
 function openAccessDeniedModal(event) { // eslint-disable-line no-unused-vars
     $('.ui-dialog').remove()
     $('.accessdenied-modal').clone().dialog({
@@ -2501,6 +2523,12 @@ function poiLabel(item) {
     if (item.notes) {
         str += '<div><b>' + i8ln('Notes') + ':</b> ' + item.notes + '</div>'
     }
+    if (item.poiimageurl) {
+        str += '<center><img src="' + item.poiimageurl + '" align"middle" style="width:125px;height:auto;"/></center>'
+    }
+    if (item.poisurroundingurl) {
+        str += '<center><img src="' + item.poisurroundingurl + '" align"middle" style="width:125px;height:auto;"/></center>'
+    }
     str += '<span class="' + dot + '"></span>' +
         '<div><b>' + i8ln('Submitted by') + ':</b> ' + item.submitted_by + '</div>'
     if (item.edited_by) {
@@ -4029,6 +4057,18 @@ function submitPoi(event) { // eslint-disable-line no-unused-vars
     var poiName = form.find('[name="poi-name"]').val()
     var poiDescription = form.find('[name="poi-description"]').val()
     var poiNotes = form.find('[name="poi-notes"]').val()
+    var poiImage = form.find('[name="preview-poi-image"]').attr('src')
+    var poiSurrounding = form.find('[name="preview-poi-surrounding"]').attr('src')
+    if (typeof poiImage !== 'undefined') {
+        poiImage = poiImage.split(',')[1]
+    } else {
+        poiImage = null
+    }
+    if (typeof poiSurrounding !== 'undefined') {
+        poiSurrounding = poiSurrounding.split(',')[1]
+    } else {
+        poiSurrounding = null
+    }
     if (poiName && poiName !== '' && poiDescription && poiDescription !== '') {
         if (confirm(i8ln('I confirm this is an eligible POI location'))) {
             return $.ajax({
@@ -4043,7 +4083,9 @@ function submitPoi(event) { // eslint-disable-line no-unused-vars
                     'lon': lon,
                     'poiName': poiName,
                     'poiDescription': poiDescription,
-                    'poiNotes': poiNotes
+                    'poiNotes': poiNotes,
+                    'poiImage': poiImage,
+                    'poiSurrounding': poiSurrounding
                 },
                 error: function error() {
                     // Display error toast

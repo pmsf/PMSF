@@ -226,30 +226,103 @@ class Manual extends Submit
         }
     }
 
-    public function submit_poi($lat, $lon, $poiName, $poiDescription, $poiNotes, $loggedUser)
+    public function submit_poi($lat, $lon, $poiName, $poiDescription, $poiNotes, $poiImage, $poiSurrounding, $loggedUser)
     {
-        global $manualdb, $noPoi, $noAddPoi, $noDiscordSubmitLogChannel, $discordSubmitLogChannelUrl, $submitMapUrl;
+        global $manualdb, $noPoi, $noAddPoi, $noDiscordSubmitLogChannel, $discordSubmitLogChannelUrl, $submitMapUrl, $imgbbAPI;
         if ( $noPoi === true || $noAddPoi === true ) {
             http_response_code( 401 );
             die();
         }
+	$poiImageUrl = '';
+	$poiImageDeleteUrl = '';
+	$poiSurroundingUrl = '';
+	$poiSurroundingDeleteUrl = '';
+	if ( ! empty( $poiImage ) ) {
+            $payload    = [
+                'image'     => $poiImage,
+                'name'      => 'POI-' . $poiName
+            ];
+	    $response = uploadImage($imgbbAPI, $payload);
+            $info = json_decode($response, true);
+            $poiImageUrl = $info['data']['display_url'];
+	    $poiImageDeleteUrl = $info['data']['delete_url'];
+        };
+	if ( ! empty( $poiSurrounding ) ) {
+            $payload    = [
+                'image'     => $poiSurrounding,
+                'name'      => 'Surrounding-' . $poiName
+            ];
+	    $response = uploadImage($imgbbAPI, $payload);
+            $info = json_decode($response, true);
+            $poiSurroundingUrl = $info['data']['display_url'];
+	    $poiSurroundingDeleteUrl = $info['data']['delete_url'];
+        };
         if ( ! empty( $lat ) && ! empty( $lon ) && ! empty( $poiName ) && ! empty( $poiDescription ) ) {
             $poiId = randomNum();
             $cols       = [
-                'poi_id'              => $poiId,
-                'name'                => $poiName,
-                'description'         => $poiDescription,
-                'notes'               => $poiNotes,
-                'lat'                 => $lat,
-                'lon'                 => $lon,
-                'status'              => 1,
-                'updated'             => time(),
-                'submitted_by'        => $loggedUser 
+                'poi_id'                    => $poiId,
+                'name'                      => $poiName,
+                'description'               => $poiDescription,
+		'notes'                     => $poiNotes,
+		'poiimageurl'               => $poiImageUrl,
+		'poiimagedeleteurl'         => $poiImageDeleteUrl,
+		'poisurroundingurl'         => $poiSurroundingUrl,
+		'poisurroundingdeleteurl'   => $poiSurroundingDeleteUrl,
+                'lat'                       => $lat,
+                'lon'                       => $lon,
+                'status'                    => 1,
+                'updated'                   => time(),
+                'submitted_by'              => $loggedUser 
             ];
             $manualdb->insert( "poi", $cols );
             if ( $noDiscordSubmitLogChannel === false ) {
-                $data = array("content" => '```Added poi with id "' . $poiId . '" and gave it the new name: "' . $poiName . '".\nDescription: "' . $poiDescription . '".```' . $submitMapUrl . '/?lat=' . $lat . '&lon=' . $lon . '&zoom=18 ', "username" => $loggedUser);
-                sendToWebhook($discordSubmitLogChannelUrl, ($data));
+                $data = array(
+			"username" => $loggedUser, 
+			"embeds" => array(array(
+				"color" => 65280,
+				"image" => array(
+					"url" => $poiImageUrl
+				),
+				"fields" => array(
+					array(
+						"name" => 'POI Title:',
+						"value" => $poiName
+					),
+					array(
+						"name" => 'POI Description:',
+						"value" => $poiDescription
+					),
+					array(
+						"name" => 'POI ID:',
+						"value" => $poiId
+					),
+					array(
+						"name" => 'Map link',
+						"value" => '[View POI on Map](' . $submitMapUrl . '/?lat=' . $lat . '&lon=' . $lon . '&zoom=18)'
+					)
+				)
+			))
+		);
+		sendToWebhook($discordSubmitLogChannelUrl, ($data));
+		sleep(5); //Try to prevent Discord handles messages in reverse order.
+		if ( ! empty($poiSurroundingUrl)) {
+			$surrounding = array(
+				"username" => $loggedUser, 
+				"embeds" => array(array(
+					"color" => 65280,
+					"image" => array(
+						"url" => $poiSurroundingUrl
+					),
+					"fields" => array(
+						array(
+							"name" => 'POI surrounding image:',
+							"value" => $poiName
+						)
+					)
+				))
+			);
+                	sendToWebhook($discordSubmitLogChannelUrl, ($surrounding));
+		};
             }
         }
     }
