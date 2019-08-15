@@ -283,7 +283,14 @@ class Manual extends Submit
 				"image" => array(
 					"url" => $poiImageUrl
 				),
+				"thumbnail" => array(
+					"url" => $poiSurroundingUrl
+				),
 				"fields" => array(
+					array(
+						"name" => 'Manual Action:',
+						"value" => 'Submit POI'
+					),
 					array(
 						"name" => 'POI Title:',
 						"value" => $poiName
@@ -304,25 +311,6 @@ class Manual extends Submit
 			))
 		);
 		sendToWebhook($discordSubmitLogChannelUrl, ($data));
-		sleep(5); //Try to prevent Discord handles messages in reverse order.
-		if ( ! empty($poiSurroundingUrl)) {
-			$surrounding = array(
-				"username" => $loggedUser, 
-				"embeds" => array(array(
-					"color" => 65280,
-					"image" => array(
-						"url" => $poiSurroundingUrl
-					),
-					"fields" => array(
-						array(
-							"name" => 'POI surrounding image:',
-							"value" => $poiName
-						)
-					)
-				))
-			);
-                	sendToWebhook($discordSubmitLogChannelUrl, ($surrounding));
-		};
             }
         }
     }
@@ -382,10 +370,43 @@ class Manual extends Submit
             $where    = [
                     'poi_id' => $poiId
             ];
-            $manualdb->update( "poi", $cols, $where );
+            $manualdb->update( "poi", $cols, $where );;
             if ( $noDiscordSubmitLogChannel === false ) {
-                $data = array("content" => '```Updated poi with id "' . $poiId . '" and gave it the new name: "' . $poiName . '".\nDescription: "' . $poiDescription . '".```' . $submitMapUrl . '&zoom=18 ', "username" => $loggedUser);
-                sendToWebhook($discordSubmitLogChannelUrl, ($data));
+                $data = array(
+			"username" => $loggedUser, 
+			"embeds" => array(array(
+				"color" => 15105570,
+				"image" => array(
+					"url" => $poiImageUrl
+				),
+				"thumbnail" => array(
+					"url" => $poiSurroundingUrl
+				),
+				"fields" => array(
+					array(
+						"name" => 'Manual Action:',
+						"value" => 'Edit POI'
+					),
+					array(
+						"name" => 'POI Title:',
+						"value" => $poiName
+					),
+					array(
+						"name" => 'POI Description:',
+						"value" => $poiDescription
+					),
+					array(
+						"name" => 'POI ID:',
+						"value" => $poiId
+					),
+					array(
+						"name" => 'Map link',
+						"value" => '[View POI on Map](' . $submitMapUrl . '/?lat=' . $lat . '&lon=' . $lon . '&zoom=18)'
+					)
+				)
+			))
+		);
+		sendToWebhook($discordSubmitLogChannelUrl, ($data));
             }
         }
     }
