@@ -327,32 +327,68 @@ class Manual extends Submit
         }
     }
   
-  	public function modify_poi($poiId, $poiName, $poiDescription, $poiNotes, $loggedUser)
-		{
-		    global $manualdb, $noPoi, $noEditPoi, $noDiscordSubmitLogChannel, $discordSubmitLogChannelUrl, $submitMapUrl;
-			  if ( $noPoi === true || $noEditPoi === true ) {
-				    http_response_code( 401 );
-				    die();
-			  }
-			  if ( ! empty( $poiId ) && ! empty( $poiName ) && ! empty( $poiDescription ) ) {
-				    $cols       = [
-					      'name'                => $poiName,
-					      'description'         => $poiDescription,
-					      'notes'               => $poiNotes,
-					      'status'	            => 1,
-					      'updated'             => time(),
-					      'edited_by'           => $loggedUser 
-				    ];
-				    $where    = [
-					      'poi_id' => $poiId
-				    ];
-				    $manualdb->update( "poi", $cols, $where );
-				    if ( $noDiscordSubmitLogChannel === false ) {
-					      $data = array("content" => '```Updated poi with id "' . $poiId . '" and gave it the new name: "' . $poiName . '".\nDescription: "' . $poiDescription . '".```' . $submitMapUrl . '&zoom=18 ', "username" => $loggedUser);
-					      sendToWebhook($discordSubmitLogChannelUrl, ($data));
-				    }
-			  }
-		}
+    public function modify_poi($poiId, $poiName, $poiDescription, $poiNotes, $poiImage, $poiSurrounding, $loggedUser)
+    {
+        global $manualdb, $noPoi, $noEditPoi, $noDiscordSubmitLogChannel, $discordSubmitLogChannelUrl, $submitMapUrl, $imgbbAPI;
+            if ( $noPoi === true || $noEditPoi === true ) {
+            http_response_code( 401 );
+            die();
+        }
+	$poiImageUrl = '';
+	$poiImageDeleteUrl = '';
+	$poiSurroundingUrl = '';
+	$poiSurroundingDeleteUrl = '';
+	$CpoiImageUrl = $manualdb->get( "poi", "poiimageurl", [ 'poi_id' => $poiId ] );
+	$CpoiImageDeleteUrl = $manualdb->get( "poi", "poiimagedeleteurl", [ 'poi_id' => $poiId ] );
+	$CpoiSurroundingUrl = $manualdb->get( "poi", "poisurroundingurl", [ 'poi_id' => $poiId ] );
+	$CpoiSurroundingDeleteUrl = $manualdb->get( "poi", "poisurroundingdeleteurl", [ 'poi_id' => $poiId ] );
+	if ( ! empty( $poiImage ) ) {
+            $payload    = [
+                'image'     => $poiImage,
+                'name'      => 'POI-' . $poiName
+            ];
+	    $response = uploadImage($imgbbAPI, $payload);
+            $info = json_decode($response, true);
+            $poiImageUrl = $info['data']['display_url'];
+	    $poiImageDeleteUrl = $info['data']['delete_url'];
+        };
+	if ( ! empty( $poiSurrounding ) ) {
+            $payload    = [
+                'image'     => $poiSurrounding,
+                'name'      => 'Surrounding-' . $poiName
+            ];
+	    $response = uploadImage($imgbbAPI, $payload);
+            $info = json_decode($response, true);
+            $poiSurroundingUrl = $info['data']['display_url'];
+	    $poiSurroundingDeleteUrl = $info['data']['delete_url'];
+        };
+        $poiImageUrl			= ! empty( $poiImageUrl) ? $poiImageUrl : $CpoiImageUrl;
+        $poiImageDeleteUrl		= ! empty( $poiImageDeleteUrl) ? $poiImageDeleteUrl : $CpoiImageDeleteUrl;
+        $poiSurroundingUrl		= ! empty( $poiSurroundingUrl) ? $poiSurroundingUrl : $CpoiSurroundingUrl;
+        $poiSurroundingDeleteUrl	= ! empty( $poiSurroundingDeleteUrl) ? $poiSurroundingDeleteUrl : $CpoiSurroundingDeleteUrl;
+        if ( ! empty( $poiId ) && ! empty( $poiName ) && ! empty( $poiDescription ) ) {
+            $cols       = [
+                'name'                     => $poiName,
+                'description'              => $poiDescription,
+                'notes'                    => $poiNotes,
+                'poiimageurl'              => $poiImageUrl,
+                'poiimagedeleteurl'        => $poiImageDeleteUrl,
+                'poisurroundingurl'        => $poiSurroundingUrl,
+                'poisurroundingdeleteurl'  => $poiSurroundingDeleteUrl,
+                'status'	           => 1,
+                'updated'                  => time(),
+                'edited_by'                => $loggedUser 
+            ];
+            $where    = [
+                    'poi_id' => $poiId
+            ];
+            $manualdb->update( "poi", $cols, $where );
+            if ( $noDiscordSubmitLogChannel === false ) {
+                $data = array("content" => '```Updated poi with id "' . $poiId . '" and gave it the new name: "' . $poiName . '".\nDescription: "' . $poiDescription . '".```' . $submitMapUrl . '&zoom=18 ', "username" => $loggedUser);
+                sendToWebhook($discordSubmitLogChannelUrl, ($data));
+            }
+        }
+    }
 
     public function delete_poi($poiId, $loggedUser)
     {

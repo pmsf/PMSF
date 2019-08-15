@@ -4024,6 +4024,18 @@ function editPoiData(event) { // eslint-disable-line no-unused-vars
     var poiName = form.find('[name="poi-name"]').val()
     var poiDescription = form.find('[name="poi-description"]').val()
     var poiNotes = form.find('[name="poi-notes"]').val()
+    var poiImage = form.find('[name="preview-poi-image"]').attr('src')
+    var poiSurrounding = form.find('[name="preview-poi-surrounding"]').attr('src')
+    if (typeof poiImage !== 'undefined') {
+        poiImage = poiImage.split(',')[1]
+    } else {
+        poiImage = null
+    }
+    if (typeof poiSurrounding !== 'undefined') {
+        poiSurrounding = poiSurrounding.split(',')[1]
+    } else {
+        poiSurrounding = null
+    }
     if (poiName && poiName !== '' && poiDescription && poiDescription !== '') {
         if (confirm(i8ln('I confirm this is an eligible POI location'))) {
             return $.ajax({
@@ -4037,7 +4049,9 @@ function editPoiData(event) { // eslint-disable-line no-unused-vars
                     'poiId': poiId,
                     'poiName': poiName,
                     'poiDescription': poiDescription,
-                    'poiNotes': poiNotes
+                    'poiNotes': poiNotes,
+                    'poiImage': poiImage,
+                    'poiSurrounding': poiSurrounding
                 },
                 error: function error() {
                     // Display error toast

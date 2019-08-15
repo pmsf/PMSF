@@ -156,7 +156,7 @@ if ( $action === "poi-add" ) {
     $submitManual->submit_poi($lat, $lon, $poiName, $poiDescription, $poiNotes, $poiImage, $poiSurrounding, $loggedUser);
 }
 if ( $action === "edit-poi" ) {
-    $submitManual->modify_poi($poiId, $poiName, $poiDescription, $poiNotes, $loggedUser);
+    $submitManual->modify_poi($poiId, $poiName, $poiDescription, $poiNotes, $poiImage, $poiSurrounding, $loggedUser);
 }
 if ( $action === "delete-poi" ) {
     $submitManual->delete_poi($poiId, $loggedUser);
