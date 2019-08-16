@@ -228,34 +228,34 @@ class Manual extends Submit
 
     public function submit_poi($lat, $lon, $poiName, $poiDescription, $poiNotes, $poiImage, $poiSurrounding, $loggedUser)
     {
-        global $manualdb, $noPoi, $noAddPoi, $noDiscordSubmitLogChannel, $discordSubmitLogChannelUrl, $submitMapUrl, $imgbbAPI;
+        global $manualdb, $noPoi, $noAddPoi, $noDiscordSubmitLogChannel, $discordSubmitLogChannelUrl, $submitMapUrl, $imgurCID;
         if ( $noPoi === true || $noAddPoi === true ) {
             http_response_code( 401 );
             die();
         }
-	$poiImageUrl = '';
-	$poiImageDeleteUrl = '';
-	$poiSurroundingUrl = '';
-	$poiSurroundingDeleteUrl = '';
+	$poiImageUrl = null;
+	$poiImageDeleteHash = null;
+	$poiSurroundingUrl = null;
+	$poiSurroundingDeleteHash = null;
 	if ( ! empty( $poiImage ) ) {
             $payload    = [
                 'image'     => $poiImage,
                 'name'      => 'POI-' . $poiName
             ];
-	    $response = uploadImage($imgbbAPI, $payload);
+	    $response = uploadImage($imgurCID, $payload);
             $info = json_decode($response, true);
-            $poiImageUrl = $info['data']['display_url'];
-	    $poiImageDeleteUrl = $info['data']['delete_url'];
+            $poiImageUrl = $info['data']['link'];
+	    $poiImageDeleteHash = $info['data']['deletehash'];
         };
 	if ( ! empty( $poiSurrounding ) ) {
             $payload    = [
                 'image'     => $poiSurrounding,
                 'name'      => 'Surrounding-' . $poiName
             ];
-	    $response = uploadImage($imgbbAPI, $payload);
+	    $response = uploadImage($imgurCID, $payload);
             $info = json_decode($response, true);
-            $poiSurroundingUrl = $info['data']['display_url'];
-	    $poiSurroundingDeleteUrl = $info['data']['delete_url'];
+            $poiSurroundingUrl = $info['data']['link'];
+	    $poiSurroundingDeleteHash = $info['data']['deletehash'];
         };
         if ( ! empty( $lat ) && ! empty( $lon ) && ! empty( $poiName ) && ! empty( $poiDescription ) ) {
             $poiId = randomNum();
@@ -265,9 +265,9 @@ class Manual extends Submit
                 'description'               => $poiDescription,
 		'notes'                     => $poiNotes,
 		'poiimageurl'               => $poiImageUrl,
-		'poiimagedeleteurl'         => $poiImageDeleteUrl,
+		'poiimagedeletehash'         => $poiImageDeleteHash,
 		'poisurroundingurl'         => $poiSurroundingUrl,
-		'poisurroundingdeleteurl'   => $poiSurroundingDeleteUrl,
+		'poisurroundingdeletehash'   => $poiSurroundingDeleteHash,
                 'lat'                       => $lat,
                 'lon'                       => $lon,
                 'status'                    => 1,
@@ -317,52 +317,54 @@ class Manual extends Submit
   
     public function modify_poi($poiId, $poiName, $poiDescription, $poiNotes, $poiImage, $poiSurrounding, $loggedUser)
     {
-        global $manualdb, $noPoi, $noEditPoi, $noDiscordSubmitLogChannel, $discordSubmitLogChannelUrl, $submitMapUrl, $imgbbAPI;
+        global $manualdb, $noPoi, $noEditPoi, $noDiscordSubmitLogChannel, $discordSubmitLogChannelUrl, $submitMapUrl, $imgurCID;
             if ( $noPoi === true || $noEditPoi === true ) {
             http_response_code( 401 );
             die();
         }
-	$poiImageUrl = '';
-	$poiImageDeleteUrl = '';
-	$poiSurroundingUrl = '';
-	$poiSurroundingDeleteUrl = '';
 	$CpoiImageUrl = $manualdb->get( "poi", "poiimageurl", [ 'poi_id' => $poiId ] );
-	$CpoiImageDeleteUrl = $manualdb->get( "poi", "poiimagedeleteurl", [ 'poi_id' => $poiId ] );
+	$CpoiImageDeleteHash = $manualdb->get( "poi", "poiimagedeletehash", [ 'poi_id' => $poiId ] );
 	$CpoiSurroundingUrl = $manualdb->get( "poi", "poisurroundingurl", [ 'poi_id' => $poiId ] );
-	$CpoiSurroundingDeleteUrl = $manualdb->get( "poi", "poisurroundingdeleteurl", [ 'poi_id' => $poiId ] );
+	$CpoiSurroundingDeleteHash = $manualdb->get( "poi", "poisurroundingdeletehash", [ 'poi_id' => $poiId ] );
 	if ( ! empty( $poiImage ) ) {
+	    if ( ! empty( $CpoiImageDeleteHash) ) {
+                deleteImage($imgurCID, $CpoiImageDeleteHash);
+	    };
             $payload    = [
                 'image'     => $poiImage,
                 'name'      => 'POI-' . $poiName
             ];
-	    $response = uploadImage($imgbbAPI, $payload);
+	    $response = uploadImage($imgurCID, $payload);
             $info = json_decode($response, true);
-            $poiImageUrl = $info['data']['display_url'];
-	    $poiImageDeleteUrl = $info['data']['delete_url'];
+            $poiImageUrl = $info['data']['link'];
+	    $poiImageDeleteHash = $info['data']['deletehash'];
         };
 	if ( ! empty( $poiSurrounding ) ) {
+	    if ( ! empty( $CpoiSurroundingDeleteHash) ) {
+                deleteImage($imgurCID, $CpoiSurroundingDeleteHash);
+            };
             $payload    = [
                 'image'     => $poiSurrounding,
                 'name'      => 'Surrounding-' . $poiName
             ];
-	    $response = uploadImage($imgbbAPI, $payload);
+	    $response = uploadImage($imgurCID, $payload);
             $info = json_decode($response, true);
-            $poiSurroundingUrl = $info['data']['display_url'];
-	    $poiSurroundingDeleteUrl = $info['data']['delete_url'];
+            $poiSurroundingUrl = $info['data']['link'];
+	    $poiSurroundingDeleteHash = $info['data']['deletehash'];
         };
         $poiImageUrl			= ! empty( $poiImageUrl) ? $poiImageUrl : $CpoiImageUrl;
-        $poiImageDeleteUrl		= ! empty( $poiImageDeleteUrl) ? $poiImageDeleteUrl : $CpoiImageDeleteUrl;
+        $poiImageDeleteHash		= ! empty( $poiImageDeleteHash) ? $poiImageDeleteHash : $CpoiImageDeleteHash;
         $poiSurroundingUrl		= ! empty( $poiSurroundingUrl) ? $poiSurroundingUrl : $CpoiSurroundingUrl;
-        $poiSurroundingDeleteUrl	= ! empty( $poiSurroundingDeleteUrl) ? $poiSurroundingDeleteUrl : $CpoiSurroundingDeleteUrl;
+        $poiSurroundingDeleteHash	= ! empty( $poiSurroundingDeleteHash) ? $poiSurroundingDeleteHash : $CpoiSurroundingDeleteHash;
         if ( ! empty( $poiId ) && ! empty( $poiName ) && ! empty( $poiDescription ) ) {
             $cols       = [
                 'name'                     => $poiName,
                 'description'              => $poiDescription,
                 'notes'                    => $poiNotes,
                 'poiimageurl'              => $poiImageUrl,
-                'poiimagedeleteurl'        => $poiImageDeleteUrl,
+                'poiimagedeletehash'       => $poiImageDeleteHash,
                 'poisurroundingurl'        => $poiSurroundingUrl,
-                'poisurroundingdeleteurl'  => $poiSurroundingDeleteUrl,
+                'poisurroundingdeletehash' => $poiSurroundingDeleteHash,
                 'status'	           => 1,
                 'updated'                  => time(),
                 'edited_by'                => $loggedUser 
@@ -413,11 +415,13 @@ class Manual extends Submit
 
     public function delete_poi($poiId, $loggedUser)
     {
-        global $manualdb, $noPoi, $noDeletePoi, $noDiscordSubmitLogChannel, $discordSubmitLogChannelUrl;
+        global $manualdb, $noPoi, $noDeletePoi, $noDiscordSubmitLogChannel, $discordSubmitLogChannelUrl, $imgurCID;
         if ( $noPoi === true || $noDeletePoi === true) {
             http_response_code( 401 );
             die();
-        }
+	}
+	$poiImageDeleteHash = $manualdb->get( "poi", "poiimagedeletehash", [ 'poi_id' => $poiId ] );
+	$poiSurroundingDeleteHash = $manualdb->get( "poi", "poisurroundingdeletehash", [ 'poi_id' => $poiId ] );
         $poiName = $manualdb->get( "poi", [ 'name' ], [ 'poi_id' => $poiId ] );
         if ( ! empty( $poiId ) ) {
             $manualdb->delete( 'poi', [
@@ -425,6 +429,12 @@ class Manual extends Submit
                     'poi_id' => $poiId
                 ]
             ] );
+	    if ( ! empty( $poiImageDeleteHash) ) {
+                deleteImage($imgurCID, $poiImageDeleteHash);
+            };
+	    if ( ! empty( $poiSurroundingDeleteHash) ) {
+                deleteImage($imgurCID, $poiSurroundingDeleteHash);
+            };
         }
         if ( $noDiscordSubmitLogChannel === false ) {
             $data = array("content" => '```Deleted POI with id "' . $poiId . '" and name: "' . $poiName['name'] . '" . ```', "username" => $loggedUser);
