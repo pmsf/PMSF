@@ -1192,6 +1192,14 @@ function getReward(item) {
     var pokemonIdStr = ''
     var formStr = ''
     var shinyStr = ''
+    var styleStr = ''
+    if (!noTeamRocket && item['incident_expiration'] > Date.now()) {
+        styleStr = 'position:absolute;height:50px;top:60px;'
+    } else if (item['quest_reward_type'] === 2) {
+        styleStr = 'position:absolute;height:35px;right:55%;top:85px;filter:drop-shadow(1px 0 0 black)drop-shadow(-1px 0 0 black);'
+    } else {
+        styleStr = 'position:absolute;height:35px;right:55%;top:85px;'
+    }
     if (item['quest_reward_type'] === 7) {
         if (item['quest_pokemon_id'] <= 9) {
             pokemonIdStr = '00' + item['quest_pokemon_id']
@@ -1208,11 +1216,11 @@ function getReward(item) {
         if (item['quest_pokemon_shiny'] === 'true') {
             shinyStr = '_shiny'
         }
-        rewardImage = '<img height="70px" style="padding: 5px;" src="' + iconpath + 'pokemon_icon_' + pokemonIdStr + '_' + formStr + shinyStr + '.png"/>'
+        rewardImage = '<img style="' + styleStr + '" src="' + iconpath + 'pokemon_icon_' + pokemonIdStr + '_' + formStr + shinyStr + '.png"/>'
     } else if (item['quest_reward_type'] === 3) {
-        rewardImage = '<img height="70px" style="padding: 5px;" src="' + iconpath + 'rewards/reward_stardust_' + item['quest_dust_amount'] + '.png"/>'
+        rewardImage = '<img style="' + styleStr + '" src="' + iconpath + 'rewards/reward_stardust_' + item['quest_dust_amount'] + '.png"/>'
     } else if (item['quest_reward_type'] === 2) {
-        rewardImage = '<img height="70px" style="padding: 5px;" src="' + iconpath + 'rewards/reward_' + item['quest_item_id'] + '_' + item['quest_reward_amount'] + '.png"/>'
+        rewardImage = '<img style="' + styleStr + '" src="' + iconpath + 'rewards/reward_' + item['quest_item_id'] + '_' + item['quest_reward_amount'] + '.png"/>'
     }
     return rewardImage
 }
@@ -1385,14 +1393,19 @@ function pokestopLabel(item) {
     var lureEndStr = ''
     var incidentEndStr = ''
     if (!noTeamRocket && item['incident_expiration'] > Date.now() && item['url'] !== null) {
-        stopImage = '<img class="pokestop-rocket-image" src="' + item['url'] + '">'
+        stopImage = '<img class="pokestop-rocket-image" src="' + item['url'] + '">' +
+            '<img src="static/forts/teamRocket.png" style="position:absolute;height:30px;left:55%;">' +
+            '<img src="static/grunttype/' + item['grunt_type'] + '.png" style="position:absolute;height:35px;right:55%;top:85px;filter:drop-shadow(1px 0 0 black)drop-shadow(-1px 0 0 black);">'
     } else if (!noQuests && item['quest_type'] !== 0 && lastMidnight < Number(item['quest_timestamp']) && item['url'] !== null) {
-        stopImage = '<img class="pokestop-quest-image" src="' + item['url'] + '">'
+        stopImage = '<img class="pokestop-quest-image" src="' + item['url'] + '">' +
+            '<img src="static/images/reward.png" style="position:absolute;height:30px;left:55%;">'
     } else if (!noLures && item['lure_expiration'] > Date.now() && item['url'] !== null) {
         stopImage = '<img class="pokestop-lure-image" src="' + item['url'] + '">'
     } else if (item['url'] !== null) {
         stopImage = '<img class="pokestop-image" src="' + item['url'] + '">'
     }
+
+    var gruntReward = ''
 
     str =
         '<div class="pokestop-label">' +
@@ -1437,6 +1450,32 @@ function pokestopLabel(item) {
         str += '<div><b>' + i8ln('Expiration Time') + ': ' + incidentEndStr +
         ' <span class="label-countdown" disappears-at="' + item['incident_expiration'] + '">(00m00s)</span>' +
         '</b></div>'
+        if (!noInvasionEncounterData && item['encounters'] !== null) {
+            gruntReward +=
+            '<input class="button" name="button" type="button" onclick="showHideGruntEncounter()" value="' + i8ln('Show / Hide Possible Rewards') + '" style="margin-top:2px;outline:none;font-size:9pt">' +
+            '<div class="grunt-encounter-wrapper" style="display:none;background-color:#ccc;border-radius:10px;border:1px solid black">'
+            if (item['second_reward'] === 'false') {
+                gruntReward += '<center>' +
+                '<div>100% ' + i8ln('encounter chance for') + ':<br>'
+                item['encounters']['first'].forEach(function (data) {
+                    gruntReward += '<img src="' + iconpath + 'pokemon_icon_' + data + '.png" style="width:30px;height:auto;"/>'
+                })
+                gruntReward += '</div></div></center>'
+            } else if (item['second_reward'] === 'true') {
+                gruntReward += '<center>' +
+                '<div>85% ' + i8ln('encounter chance for') + ':<br>'
+                item['encounters']['first'].forEach(function (data) {
+                    gruntReward += '<img src="' + iconpath + 'pokemon_icon_' + data + '.png" style="width:30px;height:auto;"/>'
+                })
+                gruntReward += '</div>' +
+                '<div>15% ' + i8ln('encounter chance for') + ':<br>'
+                item['encounters']['second'].forEach(function (data) {
+                    gruntReward += '<img src="' + iconpath + 'pokemon_icon_' + data + '.png" style="width:30px;height:auto;"/>'
+                })
+                gruntReward += '</div></div><center>'
+            }
+            str += '<center>' + gruntReward + '</center>'
+        }
     }
     str += '</center></div>'
     if (!noDeletePokestops) {
@@ -1466,6 +1505,18 @@ function pokestopLabel(item) {
             '</div>'
     }
     return str
+}
+
+function showHideGruntEncounter() { // eslint-disable-line no-unused-vars
+    var x = document.getElementsByClassName('grunt-encounter-wrapper')
+    var i
+    for (i = 0; i < x.length; i++) {
+        if (x[i].style.display === 'none') {
+            x[i].style.display = 'block'
+        } else {
+            x[i].style.display = 'none'
+        }
+    }
 }
 
 function formatSpawnTime(seconds) {
@@ -1751,7 +1802,7 @@ function getGymMarkerIcon(item) {
             '<img src="' + iconpath + 'pokemon_icon_' + pokemonidStr + '_' + formStr + '.png" style="width:50px;height:auto;position:absolute;top:-15px;right:0px;"/>' +
             '</div>'
         if (noRaidTimer === false && Store.get(['showRaidTimer'])) {
-            html += '<div><span class="raid-countdown gym-icon-countdown" disappears-at="' + item['raid_end'] + '" end>00m00s</span></div>'
+            html += '<div><span class="raid-countdown gym-icon-countdown" disappears-at="' + item['raid_end'] + '" end>' + generateRemainingTimer(item['raid_end'], 'end') + '</span></div>'
         }
         fortMarker = L.divIcon({
             iconSize: [50, 50],
@@ -1775,7 +1826,7 @@ function getGymMarkerIcon(item) {
             '<img src="static/raids/egg_' + hatchedEgg + '.png" style="width:35px;height:auto;position:absolute;top:-11px;right:18px;"/>' +
             '</div>'
         if (noRaidTimer === false && Store.get(['showRaidTimer'])) {
-            html += '<div><span class="raid-countdown gym-icon-countdown" disappears-at="' + item['raid_end'] + '" end>00m00s</span></div>'
+            html += '<div><span class="raid-countdown gym-icon-countdown" disappears-at="' + item['raid_end'] + '" end>' + generateRemainingTimer(item['raid_end'], 'end') + '</span></div>'
         }
         fortMarker = L.divIcon({
             iconSize: [50, 50],
@@ -1799,7 +1850,7 @@ function getGymMarkerIcon(item) {
             '<img src="static/raids/egg_' + raidEgg + '.png" style="width:25px;height:auto;position:absolute;top:6px;right:18px;"/>' +
             '</div>'
         if (noRaidTimer === false && Store.get(['showRaidTimer'])) {
-            html += '<div><span class="raid-countdown gym-icon-countdown" disappears-at="' + item['raid_start'] + '" end>00m00s</span></div>'
+            html += '<div><span class="raid-countdown gym-icon-countdown" disappears-at="' + item['raid_start'] + '" end>' + generateRemainingTimer(item['raid_start'], 'end') + '</span></div>'
         }
         fortMarker = L.divIcon({
             iconSize: [50, 50],
@@ -5367,12 +5418,10 @@ function redrawPokemon(pokemonList) {
 var updateLabelDiffTime = function updateLabelDiffTime() {
     $('.label-countdown').each(function (index, element) {
         var disappearsAt = getTimeUntil(parseInt(element.getAttribute('disappears-at')))
-
         var hours = disappearsAt.hour
         var minutes = disappearsAt.min
         var seconds = disappearsAt.sec
         var timestring = ''
-
         if (disappearsAt.time < disappearsAt.now) {
             if (element.hasAttribute('start')) {
                 timestring = '(' + i8ln('started') + ')'
@@ -5386,43 +5435,59 @@ var updateLabelDiffTime = function updateLabelDiffTime() {
             if (hours > 0) {
                 timestring += hours + 'h'
             }
-
             timestring += lpad(minutes, 2, 0) + 'm'
             timestring += lpad(seconds, 2, 0) + 's'
             timestring += ')'
         }
-
         $(element).text(timestring)
     })
     $('.raid-countdown').each(function (index, element) {
         var disappearsAt = getTimeUntil(parseInt(element.getAttribute('disappears-at')))
-
         var hours = disappearsAt.hour
         var minutes = disappearsAt.min
         var seconds = disappearsAt.sec
         var timestring = ''
-
         if (disappearsAt.time < disappearsAt.now) {
             if (element.hasAttribute('start')) {
-                timestring = '\xa0' + i8ln('started') + '\xa0'
+                timestring = i8ln('started')
             } else if (element.hasAttribute('end')) {
-                timestring = '\xa0' + i8ln('ended') + '\xa0'
+                timestring = i8ln('ended')
             } else {
-                timestring = '\xa0' + i8ln('expired') + '\xa0'
+                timestring = i8ln('expired')
             }
         } else {
-            timestring = '\xa0'
             if (hours > 0) {
                 timestring += hours + 'h'
             }
-
             timestring += lpad(minutes, 2, 0) + 'm'
             timestring += lpad(seconds, 2, 0) + 's'
-            timestring += '\xa0'
         }
-
         $(element).text(timestring)
     })
+}
+
+function generateRemainingTimer(timestamp, type) {
+    var disappearsAt = getTimeUntil(parseInt(timestamp))
+    var hours = disappearsAt.hour
+    var minutes = disappearsAt.min
+    var seconds = disappearsAt.sec
+    var timestring = ''
+    if (disappearsAt.time < disappearsAt.now) {
+        if (type === 'start') {
+            timestring = i8ln('started')
+        } else if (type === 'end') {
+            timestring = i8ln('ended')
+        } else {
+            timestring = i8ln('expired')
+        }
+    } else {
+        if (hours > 0) {
+            timestring += hours + 'h'
+        }
+        timestring += lpad(minutes, 2, 0) + 'm'
+        timestring += lpad(seconds, 2, 0) + 's'
+    }
+    return timestring
 }
 
 function sendNotification(title, text, icon, lat, lon) {

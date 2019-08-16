@@ -188,6 +188,7 @@
     "noGreenhouses": false,
     "noDeleteInn": true,
     "noDeleteFortress": true,
-    "noDeleteGreenhouse": true
+    "noDeleteGreenhouse": true,
+    "noInvasionEncounterData": true
   }
 }

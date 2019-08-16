@@ -197,6 +197,7 @@ $noTeamRocket = false;
 $enableTeamRocket = 'false';
 $noTeamRocketTimer = false;
 $enableTeamRocketTimer = 'false';
+$noTeamRocketEncounterData = true; // Show/Hide possible rewards. Requires grunttype.json to be up to date.
 
 $noQuests = false;
 $enableQuests = 'false';
