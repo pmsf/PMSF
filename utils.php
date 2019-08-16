@@ -73,14 +73,25 @@ function sendToWebhook($webhookUrl, $webhook) {
     curl_close($c);
 }
 
-function uploadImage($imgbbAPI, $data) {
-    $c = curl_init("https://api.imgbb.com/1/upload?key=$imgbbAPI");
-    curl_setopt($c, CURLOPT_SSL_VERIFYPEER, false);
+function uploadImage($imgurCID, $data) {
+    $c = curl_init();
+    curl_setopt($c, CURLOPT_URL, 'https://api.imgur.com/3/image');
     curl_setopt($c, CURLOPT_POST, true);
-    curl_setopt($c, CURLOPT_CUSTOMREQUEST, "POST");
     curl_setopt($c, CURLOPT_RETURNTRANSFER, true);
-    curl_setopt($c, CURLOPT_HTTPHEADER, ['Content-type: multipart/form-data', 'User-Agent: python-requests/2.18.4']);
+    curl_setopt($c, CURLOPT_HTTPHEADER, ["Authorization: Client-ID $imgurCID"]);
     curl_setopt($c, CURLOPT_POSTFIELDS, $data);
+    $result = curl_exec($c);
+    curl_close($c);
+
+    return $result;
+}
+
+function deleteImage($imgurCID, $data) {
+    $c = curl_init();
+    curl_setopt($c, CURLOPT_URL, 'https://api.imgur.com/3/image/' . $data);
+    curl_setopt($c, CURLOPT_RETURNTRANSFER, true);
+    curl_setopt($c, CURLOPT_HTTPHEADER, ["Authorization: Client-ID $imgurCID"]);
+    curl_setopt($c, CURLOPT_CUSTOMREQUEST, 'DELETE');
     $result = curl_exec($c);
     curl_close($c);
 
