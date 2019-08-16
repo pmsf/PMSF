@@ -218,6 +218,7 @@ $noTeamRocket = false;
 $noTeamRocketTimer = false;                                         // true/false
 $enableTeamRocketTimer = 'false';                                   // true/false
 $enableTeamRocket = 'false';
+$noTeamRocketEncounterData = true;
 $noQuests = true;                                                  // true/false
 $enableQuests = 'false';                                            // true/false
 $noQuestsItems = false;

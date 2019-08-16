@@ -13,11 +13,23 @@
   },
   "4": {
     "type": "",
-    "grunt": "Male Grunt"
+    "grunt": "Male Grunt",
+    "second_reward": "true",
+    "encounters":{
+        "first": ["001_00","004_00","007_00"],
+        "second":["002_00","005_00","008_00"],
+        "third":["003_00","006_00","009_00"]
+    }
   },
   "5": {
     "type": "",
-    "grunt": "Female Grunt"
+    "grunt": "Female Grunt",
+    "second_reward": "false",
+    "encounters":{
+        "first": ["143_00"],
+        "second":["143_00","062_00","282_00"],
+        "third":["143_00","149_00","130_00"]
+    }
   },
   "6": {
     "type": "Bug",
@@ -25,7 +37,13 @@
   },
   "7": {
     "type": "Bug",
-    "grunt": "Male Grunt"
+    "grunt": "Male Grunt",
+    "second_reward": "false",
+    "encounters":{
+        "first": ["123_00"],
+        "second":["123_00","212_00"],
+        "third":["123_00","212_00"]
+    }
   },
   "8": {
     "type": "Ghost",
@@ -45,7 +63,13 @@
   },
   "12": {
     "type": "Dragon",
-    "grunt": "Female Grunt"
+    "grunt": "Female Grunt",
+    "second_reward": "false",
+    "encounters":{
+        "first": ["147_00"],
+        "second":["147_00","148_00"],
+        "third":["148_00","149_00","130_00"]
+    }
   },
   "13": {
     "type": "Dragon",
@@ -69,7 +93,13 @@
   },
   "18": {
     "type": "Fire",
-    "grunt": "Female Grunt"
+    "grunt": "Female Grunt",
+    "second_reward": "true",
+    "encounters":{
+        "first": ["004_00","019_00","228_00"],
+        "second":["229_00","005_00"],
+        "third":["229_00","005_00","006_00"]
+    }
   },
   "19": {
     "type": "Fire",
@@ -77,7 +107,13 @@
   },
   "20": {
     "type": "Flying",
-    "grunt": "Female Grunt"
+    "grunt": "Female Grunt",
+    "second_reward": "false",
+    "encounters":{
+        "first": ["041_00","042_00"],
+        "second":["042_00","169_00","123_00"],
+        "third":["169_00","149_00","130_00"]
+    }
   },
   "21": {
     "type": "Flying",
@@ -89,7 +125,13 @@
   },
   "23": {
     "type": "Grass",
-    "grunt": "Male Grunt"
+    "grunt": "Male Grunt",
+    "second_reward": "true",
+    "encounters":{
+        "first": ["001_00","019_00","041_00"],
+        "second":["001_00","002_00"],
+        "third":["002_00","003_00"]
+    }
   },
   "24": {
     "type": "Ground",
@@ -97,7 +139,13 @@
   },
   "25": {
     "type": "Ground",
-    "grunt": "Male Grunt"
+    "grunt": "Male Grunt",
+    "second_reward": "false",
+    "encounters":{
+        "first": ["104_00","019_00","041_00"],
+        "second":["104_00","105_00","020_00"],
+        "third":["105_00","020_00"]
+    }
   },
   "26": {
     "type": "Ice",
@@ -121,11 +169,23 @@
   },
   "31": {
     "type": "Normal",
-    "grunt": "Male Grunt"
+    "grunt": "Male Grunt",
+    "second_reward": "true",
+    "encounters":{
+        "first": ["019_00","041_00"],
+        "second":["019_00","020_00"],
+        "third":["020_00","143_00"]
+    }
   },
   "32": {
     "type": "Poison",
-    "grunt": "Female Grunt"
+    "grunt": "Female Grunt",
+    "second_reward": "true",
+    "encounters":{
+        "first": ["088_00","041_00","001_00"],
+        "second":["088_00","089_00","042_00"],
+        "third":["089_00","042_00","002_00"]
+    }
   },
   "33": {
     "type": "Poison",
@@ -137,7 +197,13 @@
   },
   "35": {
     "type": "Psychic",
-    "grunt": "Male Grunt"
+    "grunt": "Male Grunt",
+    "second_reward": "true",
+    "encounters":{
+        "first": ["096_00","041_00","280_00"],
+        "second":["096_00","097_00","280_00"],
+        "third":["097_00","281_00"]
+    }
   },
   "36": {
     "type": "Rock",
@@ -149,11 +215,23 @@
   },
   "38": {
     "type": "Water",
-    "grunt": "Female Grunt"
+    "grunt": "Female Grunt",
+    "second_reward": "false",
+    "encounters":{
+        "first": ["060_00","129_00"],
+        "second":["061_00"],
+        "third":["062_00","186_00"]
+    }
   },
   "39": {
     "type": "Water",
-    "grunt": "Male Grunt"
+    "grunt": "Male Grunt",
+    "second_reward": "false",
+    "encounters":{
+        "first": ["129_00"],
+        "second":["129_00"],
+        "third":["129_00"]
+    }
   },
   "40": {
     "type": "",
