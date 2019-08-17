@@ -1229,33 +1229,9 @@ function getQuest(item) {
     var str
     var raidLevel
     var questinfo = JSON.parse(item['quest_condition_info'])
-    var questStr = i8ln(questtypeList[item['quest_type']])
+    var questStr = questtypeList[item['quest_type']]
 
-    str = '<div><b>' +
-    i8ln('Quest') + ': ' +
-    questStr.replace('{0}', item['quest_target']) +
-    '</b></div>' +
-    '<div>'
-
-    if (item['quest_reward_type'] === 2) {
-        str += '<div><b>' +
-        i8ln('Reward') + ': ' +
-        item['quest_reward_amount'] + ' ' +
-        item['quest_item_name'] +
-        '</b></div>'
-    } else if (item['quest_reward_type'] === 3) {
-        str += '<div><b>' +
-        i8ln('Reward') + ': ' +
-        item['quest_dust_amount'] + ' ' +
-        i8ln('Stardust') +
-        '</b></div>'
-    } else if (item['quest_reward_type'] === 7) {
-        str += '<div><b>' +
-        i8ln('Reward') + ': ' +
-        item['quest_pokemon_name'] +
-        '</b></div>'
-    }
-    str += '</div>'
+    str = questStr.replace('{0}', item['quest_target'])
 
     if (item['quest_condition_type'] > 0) {
         switch (item['quest_condition_type']) {
@@ -1310,7 +1286,7 @@ function getQuest(item) {
                 break
             case 8:
                 str = str.replace('Land', 'Make')
-                str = str.replace('throw(s)', i8ln(throwType[questinfo['throw_type_id']] + ' Throw(s)'))
+                str = str.replace('throw(s)', throwType[questinfo['throw_type_id']] + ' Throw(s)')
                 if (item['quest_condition_type_1'] === 15) {
                     str = str.replace('Throw(s)', 'Curveball Throw(s)')
                 }
@@ -1326,7 +1302,7 @@ function getQuest(item) {
                     str = str.replace('Catch', 'Use').replace('pokémon with berrie(s)', 'berrie(s) to help catch Pokémon')
                 }
                 if (questinfo !== null) {
-                    str = str.replace('berrie(s)', i8ln(idToItem[questinfo['item_id']].name))
+                    str = str.replace('berrie(s)', idToItem[questinfo['item_id']].name)
                 } else {
                     str = str.replace('Evolve', 'Use a item to evolve')
                 }
@@ -1340,7 +1316,7 @@ function getQuest(item) {
                 if (typeof questinfo['throw_type_id'] === 'undefined') {
                     str = str.replace('throw(s)', 'Throw(s) in a row')
                 } else {
-                    str = str.replace('throw(s)', i8ln(throwType[questinfo['throw_type_id']] + ' Throw(s) in a row'))
+                    str = str.replace('throw(s)', throwType[questinfo['throw_type_id']] + ' Throw(s) in a row')
                 }
                 if (item['quest_condition_type_1'] === 15) {
                     str = str.replace('Throw(s)', 'Curveball Throw(s)')
@@ -1414,9 +1390,31 @@ function pokestopLabel(item) {
         '<div>' + stopImage
 
     if (!noQuests && item['quest_type'] !== null && lastMidnight < Number(item['quest_timestamp'])) {
-        str +=
-            getReward(item) + '</div>' +
-            getQuest(item)
+        var questStr = getQuest(item)
+
+        str += getReward(item) + '</div>' +
+            '<div>' +
+            i8ln('Quest') + ': <b>' +
+            i8ln(questStr) +
+            '</b></div>'
+        if (item['quest_reward_type'] === 2) {
+            str += '<div>' +
+            i8ln('Reward') + ': <b>' +
+            item['quest_reward_amount'] + ' ' +
+            item['quest_item_name'] +
+            '</b></div>'
+        } else if (item['quest_reward_type'] === 3) {
+            str += '<div>' +
+            i8ln('Reward') + ': <b>' +
+            item['quest_dust_amount'] + ' ' +
+            i8ln('Stardust') +
+            '</b></div>'
+        } else if (item['quest_reward_type'] === 7) {
+            str += '<div>' +
+            i8ln('Reward') + ': <b>' +
+            item['quest_pokemon_name'] +
+            '</b></div>'
+        }
     } else {
         str += '</div>'
     }
@@ -1433,8 +1431,8 @@ function pokestopLabel(item) {
         }
         lureEndStr = getTimeStr(item['lure_expiration'])
         str +=
-        '<div><b>' + i8ln('Lure Type') + ': ' + lureType + '</b></div>' +
-        '<div><b>' + i8ln('Lure expiration') + ': ' + lureEndStr +
+        '<div>' + i8ln('Lure Type') + ': <b>' + lureType + '</b></div>' +
+        '<div>' + i8ln('Lure expiration') + ': <b>' + lureEndStr +
         ' <span class="label-countdown" disappears-at="' + item['lure_expiration'] + '">(00m00s)</span>' +
         '</b></div>'
     }
@@ -1442,12 +1440,12 @@ function pokestopLabel(item) {
         str += '<br><div><b>' + i8ln('Team Rocket') + ':</b></div>'
         if (item['grunt_type'] > 0) {
             if (item['grunt_type_name'] !== '') {
-                str += '<div><b>' + i8ln('Grunt-Type') + ': ' + item['grunt_type_name'] + '</b></div>'
+                str += '<div>' + i8ln('Grunt-Type') + ': <b>' + item['grunt_type_name'] + '</b></div>'
             }
-            str += '<div><b>' + i8ln('Grunt-Gender') + ': ' + item['grunt_type_gender'] + '</b></div>'
+            str += '<div>' + i8ln('Grunt-Gender') + ': <b>' + item['grunt_type_gender'] + '</b></div>'
         }
         incidentEndStr = getTimeStr(item['incident_expiration'])
-        str += '<div><b>' + i8ln('Expiration Time') + ': ' + incidentEndStr +
+        str += '<div>' + i8ln('Expiration Time') + ': <b>' + incidentEndStr +
         ' <span class="label-countdown" disappears-at="' + item['incident_expiration'] + '">(00m00s)</span>' +
         '</b></div>'
         if (!noInvasionEncounterData && item['encounters'] !== null) {
