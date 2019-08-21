@@ -324,6 +324,9 @@ function initMap() { // eslint-disable-line no-unused-vars
         maxZoom: maxZoom,
         zoomControl: false,
         preferCanvas: true,
+        worldCopyJump: true,
+        updateWhenZooming: false,
+        updateWhenIdle: true,
         layers: [weatherLayerGroup, exLayerGroup, gymLayerGroup, stopLayerGroup, scanAreaGroup, nestLayerGroup]
     })
 
