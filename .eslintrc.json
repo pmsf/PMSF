@@ -158,7 +158,7 @@
     "iconpath": true,
     "noRarityDisplay": true,
     "noWeatherIcons": true,
-    "noWeatherShadow": true,
+    "noIvShadow": true,
     "hideQuestsPokemon": true,
     "hideQuestsItem": true,
     "noQuests": true,
