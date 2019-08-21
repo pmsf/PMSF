@@ -2046,7 +2046,7 @@ if ( $blockIframe ) {
     var copyrightSafe = <?php echo $copyrightSafe === true ? 'true' : 'false' ?>;
     var noRarityDisplay = <?php echo $noRarityDisplay === true ? 'true' : 'false' ?>;
     var noWeatherIcons = <?php echo $noWeatherIcons === true ? 'true' : 'false' ?>;
-    var noWeatherShadow = <?php echo $noWeatherShadow === true ? 'true' : 'false' ?>;
+    var noIvShadow = <?php echo $no100IvShadow === true ? 'true' : 'false' ?>;
     var noRaidTimer = <?php echo $noRaidTimer === true ? 'true' : 'false' ?>;
     var enableRaidTimer = <?php echo $noRaidTimer ? 'false' : $enableRaidTimer ?>;
     var noRocketTimer = <?php echo $noTeamRocketTimer === true ? 'true' : 'false' ?>;
@@ -2064,6 +2064,7 @@ if ( $blockIframe ) {
     var noDeleteInn = <?php echo $noDeleteInn === true ? 'true' : 'false' ?>;
     var noDeleteFortress = <?php echo $noDeleteFortress === true ? 'true' : 'false' ?>;
     var noDeleteGreenhouse = <?php echo $noDeleteGreenhouse === true ? 'true' : 'false' ?>;
+    var noInvasionEncounterData = <?php echo $noTeamRocketEncounterData === true ? 'true' : 'false' ?>;
 </script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js"></script>
 <script src="static/dist/js/map.common.min.js"></script>

@@ -159,7 +159,7 @@ $noMinLevel = true;                                            // true/false
 $noHighLevelData = true;                                       // true/false
 $noRarityDisplay = false;                                      // true/false
 $noWeatherIcons = true;
-$noWeatherShadow = false;
+$no100IvShadow = false;
 
 /* Notification Settings */
 $noNotifyPokemon = false;                                       // true/false
@@ -218,6 +218,7 @@ $noTeamRocket = false;
 $noTeamRocketTimer = false;                                         // true/false
 $enableTeamRocketTimer = 'false';                                   // true/false
 $enableTeamRocket = 'false';
+$noTeamRocketEncounterData = true;
 $noQuests = true;                                                  // true/false
 $enableQuests = 'false';                                            // true/false
 $noQuestsItems = false;
