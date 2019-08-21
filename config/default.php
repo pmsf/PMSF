@@ -159,7 +159,7 @@ $noMinLevel = true;                                            // true/false
 $noHighLevelData = true;                                       // true/false
 $noRarityDisplay = false;                                      // true/false
 $noWeatherIcons = true;
-$noWeatherShadow = false;
+$no100IvShadow = false;
 
 /* Notification Settings */
 $noNotifyPokemon = false;                                       // true/false
