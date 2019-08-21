@@ -1371,7 +1371,7 @@ function pokestopLabel(item) {
     if (!noTeamRocket && item['incident_expiration'] > Date.now() && item['url'] !== null) {
         stopImage = '<img class="pokestop-rocket-image" src="' + item['url'] + '">' +
             '<img src="static/forts/teamRocket.png" style="position:absolute;height:30px;left:55%;">' +
-            '<img src="static/grunttype/' + item['grunt_type'] + '.png" style="position:absolute;height:35px;right:55%;top:85px;filter:drop-shadow(1px 0 0 black)drop-shadow(-1px 0 0 black);">'
+            '<img src="static/grunttype/' + item['grunt_type'] + '.png" style="position:absolute;height:35px;right:55%;top:85px;">'
     } else if (!noQuests && item['quest_type'] !== 0 && lastMidnight < Number(item['quest_timestamp']) && item['url'] !== null) {
         stopImage = '<img class="pokestop-quest-image" src="' + item['url'] + '">' +
             '<img src="static/images/reward.png" style="position:absolute;height:30px;left:55%;">'
