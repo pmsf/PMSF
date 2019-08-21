@@ -1353,39 +1353,45 @@ function getQuest(item) {
 
 function pokestopLabel(item) {
     var str
+    var stopImage = ''
+    var lureEndStr = ''
+    var incidentEndStr = ''
+    var stopName = ''
+    var gruntReward = ''
+    var lastMidnight = ''
     if (item['pokestop_name'] === null) {
         item['pokestop_name'] = 'Pokéstop'
     }
     var d = new Date()
-    var lastMidnight = d.setHours(0, 0, 0, 0) / 1000
-    var stopName = ''
+    if (mapFork === 'mad') {
+        lastMidnight = d.setHours(0, 0, 0, 0) / 1000
+    } else {
+        lastMidnight = 0
+    }
     if (!noTeamRocket && item['incident_expiration'] > Date.now()) {
         stopName = '<b class="pokestop-rocket-name">' + item['pokestop_name'] + '</b>'
-    } else if (!noQuests && item['quest_type'] !== 0 && lastMidnight < Number(item['quest_timestamp'])) {
-        stopName = '<b class="pokestop-quest-name">' + item['pokestop_name'] + '</b>'
-    } else if (!noLures && item['lure_expiration'] > Date.now()) {
-        stopName = '<b class="pokestop-lure-name">' + item['pokestop_name'] + '</b>'
-    } else {
-        stopName = '<b class="pokestop-name">' + item['pokestop_name'] + '</b>'
-    }
-    var stopImage = ''
-    var lureEndStr = ''
-    var incidentEndStr = ''
-    if (!noTeamRocket && item['incident_expiration'] > Date.now() && item['url'] !== null) {
-        stopImage = '<img class="pokestop-rocket-image" src="' + item['url'] + '">' +
+        if (item['url'] !== null) {
+            stopImage = '<img class="pokestop-rocket-image" src="' + item['url'] + '">' +
             '<img src="static/forts/teamRocket.png" style="position:absolute;height:30px;left:55%;">' +
             '<img src="static/grunttype/' + item['grunt_type'] + '.png" style="position:absolute;height:35px;right:55%;top:85px;">'
-    } else if (!noQuests && item['quest_type'] !== 0 && lastMidnight < Number(item['quest_timestamp']) && item['url'] !== null) {
-        stopImage = '<img class="pokestop-quest-image" src="' + item['url'] + '">' +
+        }
+    } else if (!noQuests && item['quest_type'] !== 0 && lastMidnight < Number(item['quest_timestamp'])) {
+        stopName = '<b class="pokestop-quest-name">' + item['pokestop_name'] + '</b>'
+        if (item['url'] !== null) {
+            stopImage = '<img class="pokestop-quest-image" src="' + item['url'] + '">' +
             '<img src="static/images/reward.png" style="position:absolute;height:30px;left:55%;">'
-    } else if (!noLures && item['lure_expiration'] > Date.now() && item['url'] !== null) {
-        stopImage = '<img class="pokestop-lure-image" src="' + item['url'] + '">'
-    } else if (item['url'] !== null) {
-        stopImage = '<img class="pokestop-image" src="' + item['url'] + '">'
+        }
+    } else if (!noLures && item['lure_expiration'] > Date.now()) {
+        stopName = '<b class="pokestop-lure-name">' + item['pokestop_name'] + '</b>'
+        if (item['url'] !== null) {
+            stopImage = '<img class="pokestop-lure-image" src="' + item['url'] + '">'
+        }
+    } else {
+        stopName = '<b class="pokestop-name">' + item['pokestop_name'] + '</b>'
+        if (item['url'] !== null) {
+            stopImage = '<img class="pokestop-image" src="' + item['url'] + '">'
+        }
     }
-
-    var gruntReward = ''
-
     str =
         '<div class="pokestop-label">' +
         '<center>' +
@@ -1394,7 +1400,6 @@ function pokestopLabel(item) {
 
     if (!noQuests && item['quest_type'] !== null && lastMidnight < Number(item['quest_timestamp'])) {
         var questStr = getQuest(item)
-
         str += getReward(item) + '</div>' +
             '<div>' +
             i8ln('Quest') + ': <b>' +
@@ -2016,7 +2021,12 @@ function getPokestopMarkerIcon(item) {
     var stopMarker = ''
     var html = ''
     var d = new Date()
-    var lastMidnight = d.setHours(0, 0, 0, 0) / 1000
+    var lastMidnight = ''
+    if (mapFork === 'mad') {
+        lastMidnight = d.setHours(0, 0, 0, 0) / 1000
+    } else {
+        lastMidnight = 0
+    }
     if (!noTeamRocket && item['incident_expiration'] > Date.now()) {
         var lureStr = ''
         if (!noLures && item['lure_expiration'] > Date.now()) {
@@ -4977,7 +4987,12 @@ function updatePokestops() {
     var removeStops = []
     var currentTime = Math.round(new Date().getTime())
     var d = new Date()
-    var lastMidnight = d.setHours(0, 0, 0, 0) / 1000
+    var lastMidnight = ''
+    if (mapFork === 'mad') {
+        lastMidnight = d.setHours(0, 0, 0, 0) / 1000
+    } else {
+        lastMidnight = 0
+    }
 
     $.each(mapData.pokestops, function (key, value) {
         // change lured pokestop marker to unlured when expired.
