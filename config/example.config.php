@@ -137,8 +137,7 @@ $noMinLevel = false;
 $noHighLevelData = false;
 $noRarityDisplay = false;
 $noWeatherIcons = true;
-$noWeatherShadow = false;
-
+$no100IvShadow = false;
 /* Notification Settings */
 $noNotifyPokemon = false;
 $noNotifyRarity = false;
@@ -197,6 +196,7 @@ $noTeamRocket = false;
 $enableTeamRocket = 'false';
 $noTeamRocketTimer = false;
 $enableTeamRocketTimer = 'false';
+$noTeamRocketEncounterData = true; // Show/Hide possible rewards. Requires grunttype.json to be up to date.
 
 $noQuests = false;
 $enableQuests = 'false';
