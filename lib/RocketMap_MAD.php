@@ -340,6 +340,8 @@ class RocketMap_MAD extends RocketMap
             $pokestop["incident_expiration"] = !empty($pokestop["incident_expiration"]) ? $pokestop["incident_expiration"] * 1000 : null;
             $pokestop["grunt_type_name"] = empty($grunttype_pid) ? null : i8ln($this->grunttype[$grunttype_pid]["type"]);
             $pokestop["grunt_type_gender"] = empty($grunttype_pid) ? null : i8ln($this->grunttype[$grunttype_pid]["grunt"]);
+            $pokestop["encounters"] = empty($this->grunttype[$grunttype_pid]["encounters"]) ? null : $this->grunttype[$grunttype_pid]["encounters"];
+            $pokestop["second_reward"] = empty($this->grunttype[$grunttype_pid]["second_reward"]) ? null : $this->grunttype[$grunttype_pid]["second_reward"];
             $pokestop["lure_id"] = $pokestop["lure_id"] - 500;
             $pokestop["url"] = ! empty($pokestop["url"]) ? str_replace("http://", "https://images.weserv.nl/?url=", $pokestop["url"]) : null;
             $pokestop["quest_type"] = intval($pokestop["quest_type"]);
