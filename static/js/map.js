@@ -1254,6 +1254,7 @@ function getQuest(item) {
                     tstr = pokemonTypes[questinfo['pokemon_type_ids']]
                 }
                 str = str.replace('pokémon', tstr + '-type Pokémon')
+                str = str.replace('Snapshot(s)', 'Snapshot(s) of ' + tstr + '-type Pokémon')
                 break
             case 2:
                 var pstr = ''
@@ -1271,6 +1272,7 @@ function getQuest(item) {
                     pstr = idToPokemon[questinfo['pokemon_ids']].name
                 }
                 str = str.replace('pokémon', pstr)
+                str = str.replace('Snapshot(s)', 'Snapshot(s) of ' + pstr)
                 break
             case 3:
                 str = str.replace('pokémon', 'Pokémon with weather boost')
