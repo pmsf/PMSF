@@ -2542,7 +2542,7 @@ function poiLabel(item) {
         str += '<i class="fas fa-trash-alt delete-poi" onclick="deletePoi(event);" data-id="' + item.poi_id + '"></i>'
     }
     if (!noEditPoi) {
-        str += '<center><div><button onclick="openEditPoiModal(event);" data-id="' + item.poi_id + '" data-name="' + item.name + '" data-description="' + item.description + '" data-notes="' + item.notes + '" class="convertpoi"><i class="fas fa-edit edit-poi"></i> ' + i8ln('Edit POI') + '</button></div></center>'
+        str += '<center><div><button onclick="openEditPoiModal(event);" data-id="' + item.poi_id + '" data-name="' + item.name + '" data-description="' + item.description + '" data-notes="' + item.notes + '" data-poiimage="' + item.poiimageurl + '" data-poisurrounding="' + item.poisurroundingurl + '" class="convertpoi"><i class="fas fa-edit edit-poi"></i> ' + i8ln('Edit POI') + '</button></div></center>'
     }
     if (!noMarkPoi) {
         str += '<center><div><button onclick="openMarkPoiModal(event);" data-id="' + item.poi_id + '" class="convertpoi"><i class="fas fa-sync-alt convert-poi"></i> ' + i8ln('Mark POI') + '</button></div></center>'
@@ -4556,10 +4556,14 @@ function openEditPoiModal(event) { // eslint-disable-line no-unused-vars
     var name = $(event.target).data('name')
     var description = $(event.target).data('description')
     var notes = $(event.target).data('notes')
+    var poiimageurl = $(event.target).data('poiimage')
+    var poisurroundingurl = $(event.target).data('poisurrounding')
     $('.editpoiid').val(val)
     $('#poi-name').val(name)
     $('#poi-description').val(description)
     $('#poi-notes').val(notes)
+    $('#preview-poi-image').attr('src', poiimageurl)
+    $('#preview-poi-surrounding').attr('src', poisurroundingurl)
     $('.editpoi-modal').clone().dialog({
         modal: true,
         maxHeight: 600,
