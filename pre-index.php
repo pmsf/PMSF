@@ -1421,7 +1421,7 @@ if ( $blockIframe ) {
                 ?>
                 <div class="switch-container">
                     <div>
-                        <center><a class="button" href="<?= $worldopoleUrl ?>"><i class="far fa-chart-bar"></i> Full Stats</a></center>
+                        <center><a class="button" href="<?= $worldopoleUrl ?>"><i class="far fa-chart-bar"></i><?php echo i8ln(' Full Stats') ?></a></center>
                     </div>
                 </div>
                 <?php
