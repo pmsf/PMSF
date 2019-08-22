@@ -158,7 +158,7 @@
     "iconpath": true,
     "noRarityDisplay": true,
     "noWeatherIcons": true,
-    "noWeatherShadow": true,
+    "noIvShadow": true,
     "hideQuestsPokemon": true,
     "hideQuestsItem": true,
     "noQuests": true,
@@ -188,6 +188,7 @@
     "noGreenhouses": false,
     "noDeleteInn": true,
     "noDeleteFortress": true,
-    "noDeleteGreenhouse": true
+    "noDeleteGreenhouse": true,
+    "noInvasionEncounterData": true
   }
 }
