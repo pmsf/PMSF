@@ -1414,9 +1414,6 @@ function pokestopLabel(item) {
             stopImage = '<img class="pokestop-image" src="' + item['url'] + '">'
         }
     }
-    var stopImage = ''
-    var lureEndStr = ''
-    var incidentEndStr = ''
     if (!noTeamRocket && item['incident_expiration'] > Date.now() && item['url'] !== null) {
         stopImage = '<img class="pokestop-rocket-image" src="' + item['url'] + '">'
     } else if (!noQuests && item['quest_type'] !== 0 && lastMidnight < Number(item['quest_timestamp']) && item['url'] !== null) {
