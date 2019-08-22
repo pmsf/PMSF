@@ -322,13 +322,10 @@ class Manual extends Submit
             http_response_code( 401 );
             die();
         }
-	$CpoiImageUrl = $manualdb->get( "poi", "poiimageurl", [ 'poi_id' => $poiId ] );
-	$CpoiImageDeleteHash = $manualdb->get( "poi", "poiimagedeletehash", [ 'poi_id' => $poiId ] );
-	$CpoiSurroundingUrl = $manualdb->get( "poi", "poisurroundingurl", [ 'poi_id' => $poiId ] );
-	$CpoiSurroundingDeleteHash = $manualdb->get( "poi", "poisurroundingdeletehash", [ 'poi_id' => $poiId ] );
+	$CPoi = $manualdb->get( "poi", [ "poiimageurl", "poiimagedeletehash", "poisurroundingurl", "poisurroundingdeletehash" ], [ 'poi_id' => $poiId ] );
 	if ( ! empty( $poiImage ) ) {
-	    if ( ! empty( $CpoiImageDeleteHash) ) {
-                deleteImage($imgurCID, $CpoiImageDeleteHash);
+	    if ( ! empty( $Cpoi['poiimagedeletehash']) ) {
+                deleteImage($imgurCID, $Cpoi['poiimagedeletehash']);
 	    };
             $payload    = [
                 'image'     => $poiImage,
@@ -340,8 +337,8 @@ class Manual extends Submit
 	    $poiImageDeleteHash = $info['data']['deletehash'];
         };
 	if ( ! empty( $poiSurrounding ) ) {
-	    if ( ! empty( $CpoiSurroundingDeleteHash) ) {
-                deleteImage($imgurCID, $CpoiSurroundingDeleteHash);
+	    if ( ! empty( $Cpoi['poisurroundingdeletehash']) ) {
+                deleteImage($imgurCID, $Cpoi['poisurroundingdeletehash']);
             };
             $payload    = [
                 'image'     => $poiSurrounding,
@@ -352,10 +349,10 @@ class Manual extends Submit
             $poiSurroundingUrl = $info['data']['link'];
 	    $poiSurroundingDeleteHash = $info['data']['deletehash'];
         };
-        $poiImageUrl			= ! empty( $poiImageUrl) ? $poiImageUrl : $CpoiImageUrl;
-        $poiImageDeleteHash		= ! empty( $poiImageDeleteHash) ? $poiImageDeleteHash : $CpoiImageDeleteHash;
-        $poiSurroundingUrl		= ! empty( $poiSurroundingUrl) ? $poiSurroundingUrl : $CpoiSurroundingUrl;
-        $poiSurroundingDeleteHash	= ! empty( $poiSurroundingDeleteHash) ? $poiSurroundingDeleteHash : $CpoiSurroundingDeleteHash;
+        $poiImageUrl			= ! empty( $poiImageUrl) ? $poiImageUrl : $Cpoi['poiimageurl'];
+        $poiImageDeleteHash		= ! empty( $poiImageDeleteHash) ? $poiImageDeleteHash : $Cpoi['poiimagedeletehash'];
+        $poiSurroundingUrl		= ! empty( $poiSurroundingUrl) ? $poiSurroundingUrl : $Cpoi['poisurroundingurl'];
+        $poiSurroundingDeleteHash	= ! empty( $poiSurroundingDeleteHash) ? $poiSurroundingDeleteHash : $Cpoi['poisurroundingdeletehash'];
         if ( ! empty( $poiId ) && ! empty( $poiName ) && ! empty( $poiDescription ) ) {
             $cols       = [
                 'name'                     => $poiName,
@@ -415,29 +412,54 @@ class Manual extends Submit
 
     public function delete_poi($poiId, $loggedUser)
     {
-        global $manualdb, $noPoi, $noDeletePoi, $noDiscordSubmitLogChannel, $discordSubmitLogChannelUrl, $imgurCID;
+        global $manualdb, $noPoi, $noDeletePoi, $noDiscordSubmitLogChannel, $discordSubmitLogChannelUrl, $submitMapUrl, $imgurCID;
         if ( $noPoi === true || $noDeletePoi === true) {
             http_response_code( 401 );
             die();
 	}
-	$poiImageDeleteHash = $manualdb->get( "poi", "poiimagedeletehash", [ 'poi_id' => $poiId ] );
-	$poiSurroundingDeleteHash = $manualdb->get( "poi", "poisurroundingdeletehash", [ 'poi_id' => $poiId ] );
-        $poiName = $manualdb->get( "poi", [ 'name' ], [ 'poi_id' => $poiId ] );
+	$poi = $manualdb->get( "poi", [ "poiimagedeletehash", "poisurroundingdeletehash", "poiimageurl", "poisurroundingurl", "name", "description", "notes", "lat", "lon", "submitted_by" ], [ 'poi_id' => $poiId ] );
         if ( ! empty( $poiId ) ) {
             $manualdb->delete( 'poi', [
                 "AND" => [
                     'poi_id' => $poiId
                 ]
             ] );
-	    if ( ! empty( $poiImageDeleteHash) ) {
-                deleteImage($imgurCID, $poiImageDeleteHash);
+	    if ( ! empty( $poi['poiimagedeletehash']) ) {
+                deleteImage($imgurCID, $poi['poiimagedeletehash']);
             };
-	    if ( ! empty( $poiSurroundingDeleteHash) ) {
-                deleteImage($imgurCID, $poiSurroundingDeleteHash);
+	    if ( ! empty( $poi['poisurroundingdeletehash']) ) {
+                deleteImage($imgurCID, $poi['surroundingdeletehash']);
             };
         }
         if ( $noDiscordSubmitLogChannel === false ) {
-            $data = array("content" => '```Deleted POI with id "' . $poiId . '" and name: "' . $poiName['name'] . '" . ```', "username" => $loggedUser);
+            $data = array(
+		"username" => $loggedUser, 
+		"embeds" => array(array(
+			"color" => 15158332,
+			"fields" => array(
+				array(
+					"name" => 'Manual Action:',
+					"value" => 'Delete POI'
+				),
+				array(
+					"name" => 'POI Title:',
+					"value" => $poi['name']
+				),
+				array(
+					"name" => 'POI Description:',
+					"value" => $poi['description']
+				),
+				array(
+					"name" => 'POI ID:',
+					"value" => $poiId
+				),
+				array(
+					"name" => 'Map link',
+					"value" => '[View POI on Map](' . $submitMapUrl . '/?lat=' . $poi['lat'] . '&lon=' . $poi['lon'] . '&zoom=18)'
+				)
+			)
+		))
+            );
             sendToWebhook($discordSubmitLogChannelUrl, ($data));
         }
     }
