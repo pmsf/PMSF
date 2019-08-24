@@ -1416,15 +1416,7 @@ function pokestopLabel(item) {
             stopImage = '<img class="pokestop-image" src="' + item['url'] + '">'
         }
     }
-    if (!noTeamRocket && item['incident_expiration'] > Date.now() && item['url'] !== null) {
-        stopImage = '<img class="pokestop-rocket-image" src="' + item['url'] + '">'
-    } else if (!noQuests && item['quest_type'] !== 0 && lastMidnight < Number(item['quest_timestamp']) && item['url'] !== null) {
-        stopImage = '<img class="pokestop-quest-image" src="' + item['url'] + '">'
-    } else if (!noLures && item['lure_expiration'] > Date.now() && item['url'] !== null) {
-        stopImage = '<img class="pokestop-lure-image" src="' + item['url'] + '">'
-    } else if (item['url'] !== null) {
-        stopImage = '<img id="' + item['pokestop_id'] + '" class="pokestop-image" src="' + item['url'] + '" onclick="openFullscreenModal(document.getElementById(\'' + item['pokestop_id'] + '\').src)"/>'
-    }
+
     str =
         '<div class="pokestop-label">' +
         '<center>' +
