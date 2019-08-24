@@ -4109,10 +4109,11 @@ function editPoiData(event) { // eslint-disable-line no-unused-vars
     }
     if (poiName && poiName !== '' && poiDescription && poiDescription !== '') {
         if (confirm(i8ln('I confirm this is an eligible POI location'))) {
+            $('.loader').show()
             return $.ajax({
                 url: 'submit',
                 type: 'POST',
-                timeout: 300000,
+                timeout: 600000,
                 dataType: 'json',
                 cache: false,
                 data: {
@@ -4132,6 +4133,7 @@ function editPoiData(event) { // eslint-disable-line no-unused-vars
                 complete: function complete() {
                     lastpois = false
                     updateMap()
+                    $('.loader').hide()
                     $('.ui-dialog-content').dialog('close')
                 }
             })
@@ -4163,7 +4165,7 @@ function submitPoi(event) { // eslint-disable-line no-unused-vars
             return $.ajax({
                 url: 'submit',
                 type: 'POST',
-                timeout: 300000,
+                timeout: 600000,
                 dataType: 'json',
                 cache: false,
                 data: {

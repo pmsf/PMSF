@@ -293,6 +293,8 @@ a.leaflet-popup-close-button {
   position: fixed;
   top: 50%;
   left: 50%;
+  margin-top: -60px;
+  margin-left: -60px;
   border: 16px solid #f3f3f3; /* Light grey */
   border-top: 16px solid #3498db; /* Blue */
   border-radius: 50%;
