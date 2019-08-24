@@ -1464,6 +1464,7 @@ if ( $blockIframe ) {
     <div id="motd" title=""></div>
 
     <div id="map"></div>
+    <div class="loader" style="display:none;"></div>
     <div class="global-raid-modal">
 
     </div>

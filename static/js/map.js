@@ -4159,6 +4159,7 @@ function submitPoi(event) { // eslint-disable-line no-unused-vars
     }
     if (poiName && poiName !== '' && poiDescription && poiDescription !== '') {
         if (confirm(i8ln('I confirm this is an eligible POI location'))) {
+            $('.loader').show()
             return $.ajax({
                 url: 'submit',
                 type: 'POST',
@@ -4183,6 +4184,7 @@ function submitPoi(event) { // eslint-disable-line no-unused-vars
                 complete: function complete() {
                     lastpois = false
                     updateMap()
+                    $('.loader').hide()
                     $('.ui-dialog-content').dialog('close')
                 }
             })
