@@ -247,6 +247,28 @@ if (location.search.indexOf('login=true') > 0) {
 if (location.search.indexOf('login=false') > 0) {
     openAccessDeniedModal()
 }
+function previewPoiImage(event) { // eslint-disable-line no-unused-vars
+    var form = $(event.target).parent().parent()
+    var input = event.target
+    var reader = new FileReader()
+    var fileLoaded = function (event) {
+        var base64 = event.target.result
+        form.find('[name="preview-poi-image"]').attr('src', base64)
+    }
+    reader.readAsDataURL(input.files[0])
+    reader.onload = fileLoaded
+}
+function previewPoiSurrounding(event) { // eslint-disable-line no-unused-vars
+    var form = $(event.target).parent().parent()
+    var input = event.target
+    var reader = new FileReader()
+    var fileLoaded = function (event) {
+        var base64 = event.target.result
+        form.find('[name="preview-poi-surrounding"]').attr('src', base64)
+    }
+    reader.readAsDataURL(input.files[0])
+    reader.onload = fileLoaded
+}
 function openAccessDeniedModal(event) { // eslint-disable-line no-unused-vars
     $('.ui-dialog').remove()
     $('.accessdenied-modal').clone().dialog({
@@ -1143,7 +1165,7 @@ function gymLabel(item) {
     var str
     var gymImage = ''
     if (url !== null) {
-        gymImage = '<img class="gym-image" style="border:3px solid rgba(' + gymColor[teamId] + ')" src="' + url + '">'
+        gymImage = '<img id="' + item['gym_id'] + '"class="gym-image" style="border:3px solid rgba(' + gymColor[teamId] + ')" src="' + url + '" onclick="openFullscreenModal(document.getElementById(\'' + item['gym_id'] + '\').src)">'
     }
     var teamStr = ''
     if (teamId === 0) {
@@ -1393,6 +1415,15 @@ function pokestopLabel(item) {
         if (item['url'] !== null) {
             stopImage = '<img class="pokestop-image" src="' + item['url'] + '">'
         }
+    }
+    if (!noTeamRocket && item['incident_expiration'] > Date.now() && item['url'] !== null) {
+        stopImage = '<img class="pokestop-rocket-image" src="' + item['url'] + '">'
+    } else if (!noQuests && item['quest_type'] !== 0 && lastMidnight < Number(item['quest_timestamp']) && item['url'] !== null) {
+        stopImage = '<img class="pokestop-quest-image" src="' + item['url'] + '">'
+    } else if (!noLures && item['lure_expiration'] > Date.now() && item['url'] !== null) {
+        stopImage = '<img class="pokestop-lure-image" src="' + item['url'] + '">'
+    } else if (item['url'] !== null) {
+        stopImage = '<img id="' + item['pokestop_id'] + '" class="pokestop-image" src="' + item['url'] + '" onclick="openFullscreenModal(document.getElementById(\'' + item['pokestop_id'] + '\').src)"/>'
     }
     str =
         '<div class="pokestop-label">' +
@@ -2472,7 +2503,7 @@ function portalLabel(item) {
     var updated = formatDate(new Date(item.updated * 1000))
     var imported = formatDate(new Date(item.imported * 1000))
     var str = '<center><div style="font-weight:900;font-size:12px;margin-left:10px;">' + item.name + '</div></center>' +
-        '<center><img src="' + item.url + '" align"middle" style="width:175px;height:auto;"/></center>'
+        '<center><img id="' + item.external_id + '" src="' + item.url + '" align"middle" style="width:175px;height:auto;" onclick="openFullscreenModal(document.getElementById(\'' + item.external_id + '\').src)"/></center>'
     if (!noConvertPortal) {
         str += '<center><div><a class="button" style="margin-top:0px;margin-bottom:3px;" onclick="openConvertPortalModal(event);" data-id="' + item.external_id + '"><i class="fas fa-sync-alt convert-portal"></i>' + ' ' + i8ln('Convert portal') + '</a></div></center>'
     }
@@ -2565,6 +2596,15 @@ function poiLabel(item) {
     if (item.notes) {
         str += '<div><b>' + i8ln('Notes') + ':</b> ' + item.notes + '</div>'
     }
+    if (item.poiimageurl) {
+        str += '<center><img id="poi-image"src="' + item.poiimageurl + '" style="float:left;width:45%;margin-right:1%;margin-bottom:0.5em;" onclick="openFullscreenModal(document.getElementById(\'poi-image\').src)"/></center>'
+    }
+    if (item.poisurroundingurl) {
+        str += '<center><img id="poi-surrounding" src="' + item.poisurroundingurl + '" style="float:right;width:45%;margin-right:1%;margin-bottom:0.5em;" onclick="openFullscreenModal(document.getElementById(\'poi-surrounding\').src)"/></center>'
+    }
+    if (item.poiimageurl || item.poisurroundingurl) {
+        str += '<p style="clear:both;">'
+    }
     str += '<span class="' + dot + '"></span>' +
         '<div><b>' + i8ln('Submitted by') + ':</b> ' + item.submitted_by + '</div>'
     if (item.edited_by) {
@@ -2575,7 +2615,7 @@ function poiLabel(item) {
         str += '<i class="fas fa-trash-alt delete-poi" onclick="deletePoi(event);" data-id="' + item.poi_id + '"></i>'
     }
     if (!noEditPoi) {
-        str += '<center><div><button onclick="openEditPoiModal(event);" data-id="' + item.poi_id + '" data-name="' + item.name + '" data-description="' + item.description + '" data-notes="' + item.notes + '" class="convertpoi"><i class="fas fa-edit edit-poi"></i> ' + i8ln('Edit POI') + '</button></div></center>'
+        str += '<center><div><button onclick="openEditPoiModal(event);" data-id="' + item.poi_id + '" data-name="' + item.name + '" data-description="' + item.description + '" data-notes="' + item.notes + '" data-poiimage="' + item.poiimageurl + '" data-poisurrounding="' + item.poisurroundingurl + '" class="convertpoi"><i class="fas fa-edit edit-poi"></i> ' + i8ln('Edit POI') + '</button></div></center>'
     }
     if (!noMarkPoi) {
         str += '<center><div><button onclick="openMarkPoiModal(event);" data-id="' + item.poi_id + '" class="convertpoi"><i class="fas fa-sync-alt convert-poi"></i> ' + i8ln('Mark POI') + '</button></div></center>'
@@ -4057,12 +4097,25 @@ function editPoiData(event) { // eslint-disable-line no-unused-vars
     var poiName = form.find('[name="poi-name"]').val()
     var poiDescription = form.find('[name="poi-description"]').val()
     var poiNotes = form.find('[name="poi-notes"]').val()
+    var poiImage = form.find('[name="preview-poi-image"]').attr('src')
+    var poiSurrounding = form.find('[name="preview-poi-surrounding"]').attr('src')
+    if (typeof poiImage !== 'undefined') {
+        poiImage = poiImage.split(',')[1]
+    } else {
+        poiImage = null
+    }
+    if (typeof poiSurrounding !== 'undefined') {
+        poiSurrounding = poiSurrounding.split(',')[1]
+    } else {
+        poiSurrounding = null
+    }
     if (poiName && poiName !== '' && poiDescription && poiDescription !== '') {
         if (confirm(i8ln('I confirm this is an eligible POI location'))) {
+            $('.loader').show()
             return $.ajax({
                 url: 'submit',
                 type: 'POST',
-                timeout: 300000,
+                timeout: 600000,
                 dataType: 'json',
                 cache: false,
                 data: {
@@ -4070,7 +4123,9 @@ function editPoiData(event) { // eslint-disable-line no-unused-vars
                     'poiId': poiId,
                     'poiName': poiName,
                     'poiDescription': poiDescription,
-                    'poiNotes': poiNotes
+                    'poiNotes': poiNotes,
+                    'poiImage': poiImage,
+                    'poiSurrounding': poiSurrounding
                 },
                 error: function error() {
                     // Display error toast
@@ -4080,6 +4135,7 @@ function editPoiData(event) { // eslint-disable-line no-unused-vars
                 complete: function complete() {
                     lastpois = false
                     updateMap()
+                    $('.loader').hide()
                     $('.ui-dialog-content').dialog('close')
                 }
             })
@@ -4093,12 +4149,25 @@ function submitPoi(event) { // eslint-disable-line no-unused-vars
     var poiName = form.find('[name="poi-name"]').val()
     var poiDescription = form.find('[name="poi-description"]').val()
     var poiNotes = form.find('[name="poi-notes"]').val()
+    var poiImage = form.find('[name="preview-poi-image"]').attr('src')
+    var poiSurrounding = form.find('[name="preview-poi-surrounding"]').attr('src')
+    if (typeof poiImage !== 'undefined') {
+        poiImage = poiImage.split(',')[1]
+    } else {
+        poiImage = null
+    }
+    if (typeof poiSurrounding !== 'undefined') {
+        poiSurrounding = poiSurrounding.split(',')[1]
+    } else {
+        poiSurrounding = null
+    }
     if (poiName && poiName !== '' && poiDescription && poiDescription !== '') {
         if (confirm(i8ln('I confirm this is an eligible POI location'))) {
+            $('.loader').show()
             return $.ajax({
                 url: 'submit',
                 type: 'POST',
-                timeout: 300000,
+                timeout: 600000,
                 dataType: 'json',
                 cache: false,
                 data: {
@@ -4107,7 +4176,9 @@ function submitPoi(event) { // eslint-disable-line no-unused-vars
                     'lon': lon,
                     'poiName': poiName,
                     'poiDescription': poiDescription,
-                    'poiNotes': poiNotes
+                    'poiNotes': poiNotes,
+                    'poiImage': poiImage,
+                    'poiSurrounding': poiSurrounding
                 },
                 error: function error() {
                     // Display error toast
@@ -4117,6 +4188,7 @@ function submitPoi(event) { // eslint-disable-line no-unused-vars
                 complete: function complete() {
                     lastpois = false
                     updateMap()
+                    $('.loader').hide()
                     $('.ui-dialog-content').dialog('close')
                 }
             })
@@ -4561,10 +4633,14 @@ function openEditPoiModal(event) { // eslint-disable-line no-unused-vars
     var name = $(event.target).data('name')
     var description = $(event.target).data('description')
     var notes = $(event.target).data('notes')
+    var poiimageurl = $(event.target).data('poiimage')
+    var poisurroundingurl = $(event.target).data('poisurrounding')
     $('.editpoiid').val(val)
     $('#poi-name').val(name)
     $('#poi-description').val(description)
     $('#poi-notes').val(notes)
+    $('#preview-poi-image').attr('src', poiimageurl)
+    $('#preview-poi-surrounding').attr('src', poisurroundingurl)
     $('.editpoi-modal').clone().dialog({
         modal: true,
         maxHeight: 600,
@@ -4733,6 +4809,20 @@ function openSearchModal(event) { // eslint-disable-line no-unused-vars
     })
 }
 
+function openFullscreenModal(image) { // eslint-disable-line no-unused-vars
+    var modal = document.getElementById('fullscreenModal')
+    var modalImg = document.getElementById('fullscreenimg')
+    modal.style.display = 'block'
+    modalImg.src = image
+    var span = document.getElementsByClassName('close')[0]
+    span.onclick = function () {
+        modal.style.display = 'none'
+    }
+}
+function closeFullscreenModal() { // eslint-disable-line no-unused-vars
+    var modal = document.getElementById('fullscreenModal')
+    modal.style.display = 'none'
+}
 function processPokemons(i, item) {
     if (!Store.get('showPokemon')) {
         return false // in case the checkbox was unchecked in the meantime.

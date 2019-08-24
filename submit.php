@@ -41,7 +41,7 @@ $nestId     		= ! empty( $_POST['nestId'] ) ? $_POST['nestId'] : '';
 $portalId   		= ! empty( $_POST['portalId'] ) ? $_POST['portalId'] : '';
 $innId   		= ! empty( $_POST['innId'] ) ? $_POST['innId'] : '';
 $fortressId   		= ! empty( $_POST['fortressId'] ) ? $_POST['fortressId'] : '';
-$greenhouseId   		= ! empty( $_POST['greenhouseId'] ) ? $_POST['greenhouseId'] : '';
+$greenhouseId   	= ! empty( $_POST['greenhouseId'] ) ? $_POST['greenhouseId'] : '';
 $communityId   		= ! empty( $_POST['communityId'] ) ? $_POST['communityId'] : '';
 $communityName 		= ! empty( $_POST['communityName'] ) ? $_POST['communityName'] : '';
 $communityDescription 	= ! empty( $_POST['communityDescription'] ) ? $_POST['communityDescription'] : '';
@@ -50,6 +50,8 @@ $poiName		= ! empty( $_POST['poiName'] ) ? $_POST['poiName'] : '';
 $poiDescription		= ! empty( $_POST['poiDescription'] ) ? $_POST['poiDescription'] : '';
 $poiNotes		= ! empty( $_POST['poiNotes'] ) ? $_POST['poiNotes'] : '';
 $poiId			= ! empty( $_POST['poiId'] ) ? $_POST['poiId'] : '';
+$poiImage		= ! empty( $_POST['poiImage'] ) ? $_POST['poiImage'] : '';
+$poiSurrounding		= ! empty( $_POST['poiSurrounding'] ) ? $_POST['poiSurrounding'] : '';
 
 // set content type
 header( 'Content-Type: application/json' );
@@ -151,10 +153,10 @@ if ( $action === "delete-community" ) {
     $submitManual->delete_community($communityId, $loggedUser);
 }
 if ( $action === "poi-add" ) {
-    $submitManual->submit_poi($lat, $lon, $poiName, $poiDescription, $poiNotes, $loggedUser);
+    $submitManual->submit_poi($lat, $lon, $poiName, $poiDescription, $poiNotes, $poiImage, $poiSurrounding, $loggedUser);
 }
 if ( $action === "edit-poi" ) {
-    $submitManual->modify_poi($poiId, $poiName, $poiDescription, $poiNotes, $loggedUser);
+    $submitManual->modify_poi($poiId, $poiName, $poiDescription, $poiNotes, $poiImage, $poiSurrounding, $loggedUser);
 }
 if ( $action === "delete-poi" ) {
     $submitManual->delete_poi($poiId, $loggedUser);

@@ -117,6 +117,9 @@ $motdContent = "";
 
 /* Share links */
 $noWhatsappLink = true;
+
+/* IMGBB API */
+$imgurCID = "";
 //-----------------------------------------------------
 // Login  - You need to create the two tables referenced in sql.sql
 //-----------------------------------------------------
