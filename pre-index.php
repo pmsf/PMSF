@@ -316,18 +316,18 @@ if ( $blockIframe ) {
             if ( ! $noPokemon || ! $noNests ) {
                 if ( ! $noNests ) {
                 ?>
-                <h3><?php echo i8ln( 'Pokemon &amp; Nests' ) ?></h3>
+                <h3><?php echo i8ln( 'Pokémon &amp; Nests' ) ?></h3>
                 <?php
                 } else {
                 ?>
-                <h3><?php echo i8ln( 'Pokemon' ) ?></h3>
+                <h3><?php echo i8ln( 'Pokémon' ) ?></h3>
                 <?php
                 } ?>
                 <div>
                 <?php
                 if ( ! $noPokemon ) {
                     echo '<div class=" form-control switch-container" style="float:none;height:35px;margin-bottom:0px;">
-                    <h3>' . i8ln( 'Pokemon' ) . '</h3>
+                    <h3>' . i8ln( 'Pokémon' ) . '</h3>
                     <div class="onoffswitch">
                         <input id="pokemon-switch" type="checkbox" name="pokemon-switch" class="onoffswitch-checkbox"
                                checked>
@@ -425,7 +425,7 @@ if ( $blockIframe ) {
                                 <?php
                                 if ( ! $noHidePokemon ) {
                                     ?>
-                                    <li><a href="#tabs-1"><?php echo i8ln( 'Hide Pokemon' ) ?></a></li>
+                                    <li><a href="#tabs-1"><?php echo i8ln( 'Hide Pokémon' ) ?></a></li>
                                     <?php
                                 } ?>
                                 <?php
@@ -483,18 +483,18 @@ if ( $blockIframe ) {
             if ( ! $noPokestops ) {
                 if ( ! $noQuests ) {
                 ?>
-        <h3><?php echo i8ln( 'Pokestops &amp; Quests' ); ?></h3>
+        <h3><?php echo i8ln( 'Pokéstops &amp; Quests' ); ?></h3>
                 <?php
                 } else {
                 ?>
-        <h3><?php echo i8ln( 'Pokestops' ); ?></h3>
+        <h3><?php echo i8ln( 'Pokéstops' ); ?></h3>
                 <?php
                 } ?>
         <div>
                 <?php
                 if ( ! $noPokestops ) {
                     echo '<div class="form-control switch-container" style="float:none;height:35px;margin-bottom:0px;">
-                    <h3>' . i8ln( 'Pokestops' ) . '</h3>
+                    <h3>' . i8ln( 'Pokéstops' ) . '</h3>
                     <div class="onoffswitch">
                         <input id="pokestops-switch" type="checkbox" name="pokestops-switch"
                                class="onoffswitch-checkbox" checked>
@@ -569,7 +569,7 @@ if ( $blockIframe ) {
                                 <?php
                                 if ( ! $noQuestsPokemon ) {
                                     ?>
-                                    <li><a href="#tabs-1"><?php echo i8ln( 'Hide pokémon' ) ?></a></li>
+                                    <li><a href="#tabs-1"><?php echo i8ln( 'Hide Pokémon' ) ?></a></li>
                                     <?php
                                 } ?>
                                 <?php
@@ -949,7 +949,7 @@ if ( $blockIframe ) {
                         </div>
                     </div>
                     <div class="form-control switch-container">
-                        <h3>' . i8ln( 'Pokestop placement Cells' ) . '</h3>
+                        <h3>' . i8ln( 'Pokéstop placement Cells' ) . '</h3>
                         <div class="onoffswitch">
                             <input id="s2-level17-switch" type="checkbox" name="s2-level17-switch"
                                    class="onoffswitch-checkbox" checked>
@@ -1109,7 +1109,7 @@ if ( $blockIframe ) {
             if ( ! $noNotifyPokemon ) {
                 echo '<div class="form-control hide-select-2">
                     <label for="notify-pokemon">
-                        <h3>' . i8ln( 'Notify of Pokemon' ) . '</h3><a href="#" class="select-all">' . i8ln( 'All' ) . '</a>/<a href="#" class="hide-all">' . i8ln( 'None' ) . '</a>
+                        <h3>' . i8ln( 'Notify of Pokémon' ) . '</h3><a href="#" class="select-all">' . i8ln( 'All' ) . '</a>/<a href="#" class="hide-all">' . i8ln( 'None' ) . '</a>
                         <div style="max-height:165px;overflow-y:auto;">
                             <input id="notify-pokemon" type="text" readonly="true"/>';
                 pokemonFilterImages( $noPokemonNumbers, '', [], 4 );
@@ -1184,7 +1184,7 @@ if ( $blockIframe ) {
             <?php
             if ( ! $noCriesSound ) {
                 echo '<div class="form-control switch-container" id="cries-switch-wrapper">
-                <h3>' . i8ln( 'Use Pokemon cries' ) . '</h3>
+                <h3>' . i8ln( 'Use Pokémon cries' ) . '</h3>
                 <div class="onoffswitch">
                     <input id="cries-switch" type="checkbox" name="cries-switch" class="onoffswitch-checkbox"
                            checked>
@@ -1484,7 +1484,7 @@ if ( $blockIframe ) {
             <input type="text" id="pokestop-name" name="pokestop-name" 
                 placeholder="<?php echo i8ln( 'Enter New Pokéstop Name' ); ?>" data-type="pokestop" class="search-input">
             <div class="button-container">
-                <button type="button" onclick="renamePokestopData(event);" class="renamepokestopid"><i class="fas fa-edit"></i> <?php echo i8ln( 'Rename Pokestop' ); ?></button>
+                <button type="button" onclick="renamePokestopData(event);" class="renamepokestopid"><i class="fas fa-edit"></i> <?php echo i8ln( 'Rename Pokéstop' ); ?></button>
             </div>
         </div>
     <?php } ?>
@@ -1531,17 +1531,17 @@ if ( $blockIframe ) {
         <div class="convert-portal-modal" style="display: none;">
             <div class="button-container">
                 <button type="button" onclick="convertPortalToPokestopData(event);" class="convertportalid">
-                    <i class="fas fa-sync-alt"></i> <?php echo i8ln( 'Convert to pokestop' ); ?></button>
+                    <i class="fas fa-sync-alt"></i> <?php echo i8ln( 'Convert to Pokéstop' ); ?></button>
                 <button type="button" onclick="convertPortalToGymData(event);" class="convertportalid">
-                    <i class="fas fa-sync-alt"></i> <?php echo i8ln( 'Convert to gym' ); ?></button>
+                    <i class="fas fa-sync-alt"></i> <?php echo i8ln( 'Convert to Gym' ); ?></button>
                 <button type="button" onclick="convertPortalToInnData(event);" class="convertportalid">
-                    <i class="fas fa-sync-alt"></i> <?php echo i8ln( 'Convert to inn' ); ?></button>
+                    <i class="fas fa-sync-alt"></i> <?php echo i8ln( 'Convert to Inn' ); ?></button>
                 <button type="button" onclick="convertPortalToFortressData(event);" class="convertportalid">
-                    <i class="fas fa-sync-alt"></i> <?php echo i8ln( 'Convert to fortress' ); ?></button>
+                    <i class="fas fa-sync-alt"></i> <?php echo i8ln( 'Convert to Fortress' ); ?></button>
                 <button type="button" onclick="convertPortalToGreenhouseData(event);" class="convertportalid">
-                    <i class="fas fa-sync-alt"></i> <?php echo i8ln( 'Convert to greenhouse' ); ?></button>
+                    <i class="fas fa-sync-alt"></i> <?php echo i8ln( 'Convert to Greenhouse' ); ?></button>
                 <button type="button" onclick="markPortalChecked(event);" class="convertportalid">
-                    <i class="fas fa-times"></i> <?php echo i8ln( 'No Pokestop or Gym' ); ?></button>
+                    <i class="fas fa-times"></i> <?php echo i8ln( 'No Pokéstop or Gym' ); ?></button>
             </div>
         </div>
     <?php } ?>
@@ -1771,7 +1771,7 @@ if ( $blockIframe ) {
                     <?php if ( ! $noSearchNests ) { ?>
                         <div id="tab-nests">
                             <input type="search" id="nest-search" name="nest-search"
-                                   placeholder="<?php echo i8ln( 'Enter Pokemon or Type' ); ?>"
+                                   placeholder="<?php echo i8ln( 'Enter Pokémon or Type' ); ?>"
                                    data-type="nests" class="search-input"/>
                             <ul id="nest-search-results" class="search-results nest-results"></ul>
                         </div>
@@ -1787,7 +1787,7 @@ if ( $blockIframe ) {
             <?php if ( ! $noSearchPokestops ) { ?>
                         <div id="tab-pokestop">
                             <input type="search" id="pokestop-search" name="pokestop-search"
-                                   placeholder="<?php echo i8ln( 'Enter Pokestop Name' ); ?>" data-type="pokestops"
+                                   placeholder="<?php echo i8ln( 'Enter Pokéstop Name' ); ?>" data-type="pokestops"
                                    class="search-input"/>
                             <ul id="pokestop-search-results" class="search-results pokestop-results"></ul>
                         </div>
@@ -1847,7 +1847,7 @@ if ( $blockIframe ) {
                         <?php pokemonFilterImages( $noPokemonNumbers, 'pokemonSubmitFilter(event)', $pokemonToExclude, 6 ); ?>
                         <div class="button-container">
                             <button type="button" onclick="manualPokemonData(event);" class="submitting-pokemon">
-                                <i class="fas fa-binoculars"></i> <?php echo i8ln( 'Submit Pokemon' ); ?>
+                                <i class="fas fa-binoculars"></i> <?php echo i8ln( 'Submit Pokémon' ); ?>
                             </button>
                         </div>
                     </div>
@@ -1869,11 +1869,11 @@ if ( $blockIframe ) {
                     ?>
                     <div id="tab-pokestop">
                         <input type="text" id="pokestop-name" name="pokestop-name"
-                               placeholder="<?php echo i8ln( 'Enter Pokestop Name' ); ?>" data-type="pokestop"
+                               placeholder="<?php echo i8ln( 'Enter Pokétop Name' ); ?>" data-type="pokestop"
                                class="search-input">
                         <div class="button-container">
                             <button type="button" onclick="manualPokestopData(event);" class="submitting-pokestop"><i
-                                    class="fas fa-binoculars"></i> <?php echo i8ln( 'Submit Pokestop' ); ?>
+                                    class="fas fa-binoculars"></i> <?php echo i8ln( 'Submit Pokéstop' ); ?>
                             </button>
                         </div>
                     </div>
