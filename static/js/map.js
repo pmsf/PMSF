@@ -1422,7 +1422,7 @@ function pokestopLabel(item) {
         '<div>' + stopName + '</div>' +
         '<div>' + stopImage
 
-    if (!noQuests && item['quest_type'] !== null && lastMidnight < Number(item['quest_timestamp'])) {
+    if (!noQuests && item['quest_type'] !== null && typeof questtypeList[item['quest_type']] !== 'undefined' && lastMidnight < Number(item['quest_timestamp'])) {
         var questStr = getQuest(item)
         str += getReward(item) + '</div>' +
             '<div>' +
@@ -1449,6 +1449,10 @@ function pokestopLabel(item) {
         }
     } else {
         str += '</div>'
+    }
+    if (!noQuests && item['quest_type'] !== null && typeof questtypeList[item['quest_type']] === 'undefined' && lastMidnight < Number(item['quest_timestamp'])) {
+        console.log('Undefined Quest Type: ' + item['quest_type'])
+        str += '<div>' + i8ln('Error: Undefined Quest Type') + ': ' + item['quest_type'] + '</div>'
     }
     if (!noLures && item['lure_expiration'] > Date.now()) {
         var lureType = '<img style="padding:5px;position:relative;left:0px;top:12px;height:40px;" src="static/forts/LureModule_' + item['lure_id'] + '.png"/>'
