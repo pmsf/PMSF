@@ -1395,28 +1395,27 @@ function pokestopLabel(item) {
     if (!noTeamRocket && item['incident_expiration'] > Date.now()) {
         stopName = '<b class="pokestop-rocket-name">' + item['pokestop_name'] + '</b>'
         if (item['url'] !== null) {
-            stopImage = '<img class="pokestop-rocket-image" src="' + item['url'] + '">' +
+            stopImage = '<img class="pokestop-rocket-image" id="' + item['pokestop_id'] + '" src="' + item['url'] + '" onclick="openFullscreenModal(document.getElementById(\'' + item['pokestop_id'] + '\').src)"/>' +
             '<img src="static/forts/teamRocket.png" style="position:absolute;height:30px;left:55%;">' +
             '<img src="static/grunttype/' + item['grunt_type'] + '.png" style="position:absolute;height:35px;right:55%;top:85px;">'
         }
     } else if (!noQuests && item['quest_type'] !== 0 && lastMidnight < Number(item['quest_timestamp'])) {
         stopName = '<b class="pokestop-quest-name">' + item['pokestop_name'] + '</b>'
         if (item['url'] !== null) {
-            stopImage = '<img class="pokestop-quest-image" src="' + item['url'] + '">' +
+            stopImage = '<img class="pokestop-quest-image" id="' + item['pokestop_id'] + '" src="' + item['url'] + '" onclick="openFullscreenModal(document.getElementById(\'' + item['pokestop_id'] + '\').src)"/>' +
             '<img src="static/images/reward.png" style="position:absolute;height:30px;left:55%;">'
         }
     } else if (!noLures && item['lure_expiration'] > Date.now()) {
         stopName = '<b class="pokestop-lure-name">' + item['pokestop_name'] + '</b>'
         if (item['url'] !== null) {
-            stopImage = '<img class="pokestop-lure-image" src="' + item['url'] + '">'
+            stopImage = '<img class="pokestop-lure-image" id="' + item['pokestop_id'] + '" src="' + item['url'] + '" onclick="openFullscreenModal(document.getElementById(\'' + item['pokestop_id'] + '\').src)"/>'
         }
     } else {
         stopName = '<b class="pokestop-name">' + item['pokestop_name'] + '</b>'
         if (item['url'] !== null) {
-            stopImage = '<img class="pokestop-image" src="' + item['url'] + '">'
+            stopImage = '<img class="pokestop-image" id="' + item['pokestop_id'] + '" src="' + item['url'] + '" onclick="openFullscreenModal(document.getElementById(\'' + item['pokestop_id'] + '\').src)"/>'
         }
     }
-
     str =
         '<div class="pokestop-label">' +
         '<center>' +
