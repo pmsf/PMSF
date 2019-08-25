@@ -1520,7 +1520,7 @@ if ( $blockIframe ) {
 		    </div>
                     <center><img id='preview-poi-image' name='preview-poi-image' width="50px" height="auto"></center>
                     <div class="upload-button-container">
-                        <button type="button">Upload new POI Image</button>
+                        <button type="button">Upload new Surrounding Image</button>
                         <input type="file" id="poi-surrounding" name="poi-surrounding" accept="image/*" class="poi-surrounding" data-type="poi-surrounding" class="search-input" onchange='previewPoiSurrounding(event)'>
 		    </div>
                     <center><img id='preview-poi-surrounding' name='preview-poi-surrounding' width="50px" height="auto"></center>
