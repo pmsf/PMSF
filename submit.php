@@ -89,6 +89,9 @@ if ( $action === "toggle-ex-gym" ) {
 if ( $action === "delete-gym" ) {
     $submit->delete_gym($gymId, $loggedUser);
 }
+if ( $action === "renamegym" ) {
+    $submit->modify_gym($gymId, $gymName, $loggedUser);
+}
 if ( $action === "pokestop" ) {
     $submit->submit_pokestop($lat, $lon, $pokestopName, $loggedUser);
 }

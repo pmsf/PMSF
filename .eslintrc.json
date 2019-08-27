@@ -138,6 +138,7 @@
     "List": true,
     "defaultUnit": true,
     "noRenamePokestops": true,
+    "noRenameGyms": true,
     "noWhatsappLink": true,
     "enableCommunities": true,
     "noAddNewCommunity": false,

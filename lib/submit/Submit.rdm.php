@@ -227,7 +227,7 @@ class RDM extends Submit
             die();
         }
         if ( ! empty( $gymId ) ) {
-            $fortName = $db->get( "forts", [ 'name' ], [ 'external_id' => $gymId ] );    
+            $fortName = $db->get( "gym", [ 'name' ], [ 'id' => $gymId ] );    
             $db->delete( 'gym', [
                 "AND" => [
                     'id' => $gymId
@@ -235,6 +235,29 @@ class RDM extends Submit
             ] );
             if ( $noDiscordSubmitLogChannel === false ) {
                 $data = array("content" => '```Deleted gym with id "' . $gymId . '" and name: "' . $fortName['name'] . '"```', "username" => $loggedUser);
+                sendToWebhook($discordSubmitLogChannelUrl, ($data));
+            }
+        }
+    }
+
+    public function modify_gym($gymId, $gymName, $loggedUser)
+    {
+        global $db, $noRenameGyms, $noGyms, $noDiscordSubmitLogChannel, $discordSubmitLogChannelUrl;
+        if ( $noRenameGyms === true || $noGyms === true ) {
+            http_response_code( 401 );
+            die();
+        }
+        if ( ! empty( $gymName ) && ! empty( $gymId ) ) {
+            $cols     = [
+                'name'        => $gymName,
+                'updated'     => time()
+            ];
+            $where    = [
+                'id' => $gymId
+            ];
+            $db->update( "gym", $cols, $where );
+            if ( $noDiscordSubmitLogChannel === false ) {
+                $data = array("content" => '```Updated gym with id "' . $gymId . '" and gave it the new name: "' . $gymName . '" . ```', "username" => $loggedUser);
                 sendToWebhook($discordSubmitLogChannelUrl, ($data));
             }
         }
