@@ -1145,6 +1145,9 @@ function gymLabel(item) {
     if (!noDeleteGyms) {
         raidStr += '<i class="fas fa-trash-alt delete-gym" onclick="deleteGym(event);" data-id="' + item['gym_id'] + '"></i>'
     }
+    if (!noRenameGyms) {
+        raidStr += '<center><div><i class="fas fa-edit rename-gym" onclick="openRenameGymModal(event);" data-id="' + item['gym_id'] + '">' + i8ln('Rename Gym') + '</i></div></center>'
+    }
     if (!noToggleExGyms) {
         raidStr += '<i class="fas fa-trophy toggle-ex-gym" onclick="toggleExGym(event);" data-id="' + item['gym_id'] + '"></i>'
     }
@@ -3484,6 +3487,39 @@ function deleteGym(event) { // eslint-disable-line no-unused-vars
         }
     }
 }
+function renameGymData(event) { // eslint-disable-line no-unused-vars
+    var form = $(event.target).parent().parent()
+    var gymId = form.find('.renamegymid').val()
+    var gymName = form.find('[name="gym-name"]').val()
+    if (gymName && gymName !== '') {
+        if (confirm(i8ln('I confirm this is an accurate new name for this gym'))) {
+            return $.ajax({
+                url: 'submit',
+                type: 'POST',
+                timeout: 300000,
+                dataType: 'json',
+                cache: false,
+                data: {
+                    'action': 'renamegym',
+                    'gymId': gymId,
+                    'gymName': gymName
+                },
+                error: function error() {
+                    // Display error toast
+                    toastr['error'](i8ln('Please check connectivity or reduce marker settings.'), i8ln('Error changing gym name'))
+                    toastr.options = toastrOptions
+                },
+                complete: function complete() {
+                    jQuery('label[for="gyms-switch"]').click()
+                    jQuery('label[for="gyms-switch"]').click()
+                    lastgyms = false
+                    updateMap()
+                    $('.ui-dialog-content').dialog('close')
+                }
+            })
+        }
+    }
+}
 function toggleExGym(event) { // eslint-disable-line no-unused-vars
     var button = $(event.target)
     var gymId = button.data('id')
@@ -4545,11 +4581,26 @@ function openRenamePokestopModal(event) { // eslint-disable-line no-unused-vars
     $('.ui-dialog').remove()
     var val = $(event.target).data('id')
     $('.renamepokestopid').val(val)
-    $('.rename-modal').clone().dialog({
+    $('.renamepokestop-modal').clone().dialog({
         modal: true,
         maxHeight: 600,
         buttons: {},
         title: i8ln('Rename Pokéstop'),
+        classes: {
+            'ui-dialog': 'ui-dialog raid-widget-popup'
+        }
+    })
+}
+
+function openRenameGymModal(event) { // eslint-disable-line no-unused-vars
+    $('.ui-dialog').remove()
+    var val = $(event.target).data('id')
+    $('.renamegymid').val(val)
+    $('.renamegym-modal').clone().dialog({
+        modal: true,
+        maxHeight: 600,
+        buttons: {},
+        title: i8ln('Rename Gym'),
         classes: {
             'ui-dialog': 'ui-dialog raid-widget-popup'
         }

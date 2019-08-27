@@ -316,6 +316,7 @@ $discordSubmitLogChannelUrl = 'https://discordapp.com/api/webhooks/<yourCHANNELh
 $noManualPokemon = true;
 $pokemonTimer = 900;                                                                    // Time in seconds before a submitted Pokémon despawns. (not used atm)
 $noManualGyms = true;
+$noRenameGyms = true;
 $noManualPokestops = true;
 $noRenamePokestops = true;
 $noConvertPokestops = true;
