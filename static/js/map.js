@@ -3627,7 +3627,7 @@ function convertPokestopData(event) { // eslint-disable-line no-unused-vars
                 },
                 error: function error() {
                     // Display error toast
-                    toastr['error'](i8ln('Pokestop ID got lost somewhere.'), i8ln('Error converting Pokestop'))
+                    toastr['error'](i8ln('Pokéstop ID got lost somewhere.'), i8ln('Error converting Pokéstop'))
                     toastr.options = toastrOptions
                 },
                 complete: function complete() {
@@ -4412,7 +4412,7 @@ function openQuestModal(event) { // eslint-disable-line no-unused-vars
 
         var $pokeCatchList = $('.quest-modal #pokeCatchList')
         $pokeCatchList.select2({
-            placeholder: i8ln('Pokemon'),
+            placeholder: i8ln('Pokémon'),
             data: pokeList,
             multiple: true,
             maximumSelectionSize: 2
@@ -4420,7 +4420,7 @@ function openQuestModal(event) { // eslint-disable-line no-unused-vars
 
         var $pokemonTypes = $('.quest-modal #typeCatchList')
         $pokemonTypes.select2({
-            placeholder: i8ln('Pokemon type'),
+            placeholder: i8ln('Pokémon type'),
             minimumResultsForSearch: Infinity,
             multiple: true,
             maximumSelectionSize: 3
@@ -4529,7 +4529,7 @@ function openQuestModal(event) { // eslint-disable-line no-unused-vars
 
         var $pokeQuestList = $('.quest-modal #pokeQuestList')
         $pokeQuestList.select2({
-            placeholder: i8ln('Pokemon encounter'),
+            placeholder: i8ln('Pokémon encounter'),
             closeOnSelect: true,
             maximumSelectionSize: 1
         })
@@ -5508,7 +5508,7 @@ function updateS2Overlay() {
             showS2Cells(17, {color: 'blue'})
         } else if (Store.get('showStopCells') && (map.getZoom() <= 14)) {
             stopLayerGroup.clearLayers()
-            toastr['error'](i8ln('Zoom in more to show them.'), i8ln('Pokestop cells are currently hidden'))
+            toastr['error'](i8ln('Zoom in more to show them.'), i8ln('Pokéstop cells are currently hidden'))
             toastr.options = toastrOptions
         }
     }
