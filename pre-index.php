@@ -1869,7 +1869,7 @@ if ( $blockIframe ) {
                     ?>
                     <div id="tab-pokestop">
                         <input type="text" id="pokestop-name" name="pokestop-name"
-                               placeholder="<?php echo i8ln( 'Enter Pokétop Name' ); ?>" data-type="pokestop"
+                               placeholder="<?php echo i8ln( 'Enter Pokéstop Name' ); ?>" data-type="pokestop"
                                class="search-input">
                         <div class="button-container">
                             <button type="button" onclick="manualPokestopData(event);" class="submitting-pokestop"><i
