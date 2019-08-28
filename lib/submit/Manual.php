@@ -362,7 +362,6 @@ class Manual extends Submit
                 'poiimagedeletehash'       => $poiImageDeleteHash,
                 'poisurroundingurl'        => $poiSurroundingUrl,
                 'poisurroundingdeletehash' => $poiSurroundingDeleteHash,
-                'status'	           => 1,
                 'updated'                  => time(),
                 'edited_by'                => $loggedUser 
             ];
