@@ -79,9 +79,10 @@ $blockIframe = true;                                                // Block you
 $title = "PMSF Alt";                                                // Title to display in title bar
 $locale = "en";                                                     // Display language
 
-/* Google Maps ONLY USED FOR TILE LAYERS */
+/* Google Maps and MapBox are ONLY USED FOR TILE LAYERS */
 
 $gmapsKey = "";
+$mBoxKey = "";
 
 /* Google Analytics */
 

@@ -56,9 +56,21 @@ $title = "POGOmap";                                                 // Title to 
 $locale = "en";                                                     // Display language
 $raidmapLogo = '';                                                  // Upload logo to custom folder, leave '' for empty ( $raidmapLogo = 'custom/logo.png'; )
 
-/* Google Maps ONLY USED FOR TILE LAYERS */
+/* Google Maps and MapBox are ONLY USED FOR TILE LAYERS */
 
 $gmapsKey = "";
+$mBoxKey = "";
+
+/* How to use multiple Map Box Keys: */
+
+//$dayOfTheWeek = date('l');
+//If ($dayOfTheWeek === 'Monday' || $dayOfTheWeek === 'Tuesday' || $dayOfTheWeek === 'Wednesday') {
+//    $mapBoxKey = "";
+//} else if ($dayOfTheWeek === 'Thursday' || $dayOfTheWeek === 'Friday') {
+//    $mapBoxKey = "";
+//} else if ($dayOfTheWeek === 'Saturday' || $dayOfTheWeek === 'Sunday') {
+//    $mapBoxKey = "";
+//}
 
 /* Google Analytics */
 
