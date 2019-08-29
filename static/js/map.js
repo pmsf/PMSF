@@ -373,9 +373,6 @@ function initMap() { // eslint-disable-line no-unused-vars
         } else {
             storeZoom = true
         }
-
-        redrawPokemon(mapData.pokemons)
-        redrawPokemon(mapData.lurePokemons)
         if (this.getZoom() > 13) {
             // hide weather markers
             $.each(weatherMarkers, function (index, marker) {
@@ -460,7 +457,6 @@ function initMap() { // eslint-disable-line no-unused-vars
     $selectIconSize.on('change', function () {
         Store.set('iconSizeModifier', this.value)
         redrawPokemon(mapData.pokemons)
-        redrawPokemon(mapData.lurePokemons)
     })
 
     $selectIconNotifySizeModifier = $('#pokemon-icon-notify-size')
@@ -473,7 +469,6 @@ function initMap() { // eslint-disable-line no-unused-vars
     $selectIconNotifySizeModifier.on('change', function () {
         Store.set('iconNotifySizeModifier', this.value)
         redrawPokemon(mapData.pokemons)
-        redrawPokemon(mapData.lurePokemons)
     })
 
     $selectTeamGymsOnly = $('#team-gyms-only-switch')
@@ -612,6 +607,8 @@ var styletopo = L.tileLayer('https://{s}.tile.opentopomap.org/{z}/{x}/{y}.png', 
 var stylesatellite = L.tileLayer('https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}', {attribution: 'Tiles &copy; Esri &mdash; Source: Esri, i-cubed, USDA, USGS, AEX, GeoEye, Getmapping, Aerogrid, IGN, IGP, UPR-EGP, and the GIS User Community'}) // eslint-disable-line no-unused-vars
 
 var stylewikipedia = L.tileLayer('https://maps.wikimedia.org/osm-intl/{z}/{x}/{y}{r}.png', {attribution: '<a href="https://wikimediafoundation.org/wiki/Maps_Terms_of_Use">Wikimedia</a>'}) // eslint-disable-line no-unused-vars
+
+var mapbox = L.tileLayer('https://api.mapbox.com/styles/v1/mapbox/streets-v11/tiles/256/{z}/{x}/{y}?access_token=' + mBoxKey, {attribution: '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>'}) // eslint-disable-line no-unused-vars
 
 var googlemapssat = L.gridLayer.googleMutant({type: 'satellite'}) // eslint-disable-line no-unused-vars
 var googlemapsroad = L.gridLayer.googleMutant({type: 'roadmap'}) // eslint-disable-line no-unused-vars
@@ -2915,14 +2912,6 @@ function clearStaleMarkers() {
             markers.removeLayer(mapData.pokemons[key].marker)
             markersnotify.removeLayer(mapData.pokemons[key].marker)
             delete mapData.pokemons[key]
-        }
-    })
-
-    $.each(mapData.lurePokemons, function (key, value) {
-        if (mapData.lurePokemons[key]['lure_expiration'] < new Date().getTime() || (excludedPokemon.indexOf(mapData.lurePokemons[key]['pokemon_id']) >= 0 && ((encounterId && encounterId !== mapData.pokemons[key]['encounter_id']) || !encounterId))) {
-            markers.removeLayer(mapData.lurePokemons[key].marker)
-            markersnotify.removeLayer(mapData.lurePokemons[key].marker)
-            delete mapData.lurePokemons[key]
         }
     })
 }
@@ -5359,7 +5348,6 @@ function updateMap() {
         $.each(result.greenhouses, processGreenhouses)
         $.each(result.pois, processPois)
         showInBoundsMarkers(mapData.pokemons, 'pokemon')
-        showInBoundsMarkers(mapData.lurePokemons, 'pokemon')
         showInBoundsMarkers(mapData.gyms, 'gym')
         showInBoundsMarkers(mapData.pokestops, 'pokestop')
         showInBoundsMarkers(mapData.spawnpoints, 'inbound')
@@ -6051,12 +6039,24 @@ $(function () {
                 googleMaps = true
             }
             var googleStyle = value.includes('Google')
-            if (!googleMaps && !googleStyle) {
+            var mapBox
+            if (mBoxKey === '') {
+                mapBox = false
+            } else {
+                mapBox = true
+            }
+            var mapBoxStyle = value.includes('Mapbox')
+            if (!googleStyle && !mapBoxStyle) {
                 styleList.push({
                     id: key,
                     text: i8ln(value)
                 })
-            } else if (googleMaps) {
+            } else if (googleMaps && googleStyle) {
+                styleList.push({
+                    id: key,
+                    text: i8ln(value)
+                })
+            } else if (mapBox && mapBoxStyle) {
                 styleList.push({
                     id: key,
                     text: i8ln(value)
@@ -6170,7 +6170,6 @@ $(function () {
         iconpath = r.test(Store.get('icons')) ? Store.get('icons') : path + Store.get('icons')
 
         redrawPokemon(mapData.pokemons)
-        redrawPokemon(mapData.lurePokemons)
         jQuery('label[for="pokestops-switch"]').click()
         jQuery('label[for="pokestops-switch"]').click()
         jQuery('label[for="raids-switch"]').click()
