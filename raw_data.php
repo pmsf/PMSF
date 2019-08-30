@@ -85,8 +85,6 @@ if (!validateToken($_POST['token'])) {
 if (strtolower($map) === "monocle") {
     if (strtolower($fork) === "default") {
         $scanner = new \Scanner\Monocle();
-    } elseif (strtolower($fork) === "mad") {
-        $scanner = new \Scanner\Monocle_MAD();
     } else {
         $scanner = new \Scanner\Monocle_PMSF();
     }

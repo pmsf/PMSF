@@ -68,8 +68,6 @@ if (strtolower($map) === "rdm") {
 } else if (strtolower($map) === "monocle") {
     if (strtolower($fork) === "pmsf") {
         $submit = new \Submit\Monocle_PMSF();
-    } elseif (strtolower($fork) === "mad") {
-        $submit = new \Submit\Monocle_MAD();
     }
 }
 $submitManual = new \Submit\Manual();
