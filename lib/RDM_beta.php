@@ -31,6 +31,10 @@ class RDM_beta extends RDM
             $params[':oneLat'] = $oNeLat;
             $params[':oneLng'] = $oNeLng;
         }
+        global $noBoundaries, $boundaries;
+        if (!$noBoundaries) {
+            $conds[] = "(ST_WITHIN(point(lat,lon),ST_GEOMFROMTEXT('POLYGON(( " . $boundaries . " ))')))";
+        }
         if ($tstamp > 0) {
             $conds[] = "updated > :lastUpdated";
             $params[':lastUpdated'] = $tstamp;
@@ -97,6 +101,11 @@ class RDM_beta extends RDM
         $params[':neLat'] = $neLat;
         $params[':neLng'] = $neLng;
         $params[':time'] = time();
+
+        global $noBoundaries, $boundaries;
+        if (!$noBoundaries) {
+            $conds[] = "(ST_WITHIN(point(lat,lon),ST_GEOMFROMTEXT('POLYGON(( " . $boundaries . " ))')))";
+        }
         if (count($ids)) {
             $tmpSQL = '';
             if (!empty($tinyRat) && $tinyRat === 'true' && ($key = array_search("19", $ids)) !== false) {
@@ -194,13 +203,13 @@ class RDM_beta extends RDM
                     if ($pokemon["form"] === $v['protoform']) {
                         $types = $v['formtypes'];
                         foreach ($v['formtypes'] as $ft => $v) {
-                            $types[$ft]['type'] = i8ln($v['type']);
+                            $types[$ft]['type'] = $v['type'];
                         }
                         $pokemon["pokemon_types"] = $types;
                     } else if ($pokemon["form"] === $v['assetsform']) {
                         $types = $v['formtypes'];
                         foreach ($v['formtypes'] as $ft => $v) {
-                            $types[$ft]['type'] = i8ln($v['type']);
+                            $types[$ft]['type'] = $v['type'];
                         }
                         $pokemon["pokemon_types"] = $types;
                     }
@@ -208,7 +217,7 @@ class RDM_beta extends RDM
             } else {
                 $types = $this->data[$pokemon["pokemon_id"]]["types"];
                 foreach ($types as $k => $v) {
-                    $types[$k]['type'] = i8ln($v['type']);
+                    $types[$k]['type'] = $v['type'];
                 }
                 $pokemon["pokemon_types"] = $types;
             }
@@ -228,6 +237,10 @@ class RDM_beta extends RDM
         $params[':swLng'] = $swLng;
         $params[':neLat'] = $neLat;
         $params[':neLng'] = $neLng;
+        global $noBoundaries, $boundaries;
+        if (!$noBoundaries) {
+            $conds[] = "(ST_WITHIN(point(lat,lon),ST_GEOMFROMTEXT('POLYGON(( " . $boundaries . " ))')))";
+        }
         if (!empty($quests) && $quests === 'true') {
             $pokemonSQL = '';
             if (count($qpeids)) {
@@ -259,8 +272,15 @@ class RDM_beta extends RDM
             }
             $dustSQL = '';
             if (!empty($dustamount) && !is_nan((float)$dustamount) && $dustamount > 0) {
-                $dustSQL .= "OR (json_extract(json_extract(`quest_rewards`,'$[*].type'),'$[0]') = 3 AND json_extract(json_extract(`quest_rewards`,'$[*].info.amount'),'$[0]') > :amount)";
+                $dustSQL .= "OR (json_extract(json_extract(`quest_rewards`,'$[*].type'),'$[0]') = 3 AND json_extract(json_extract(`quest_rewards`,'$[*].info.amount'),'$[0]') > :amount) AND lat > :swLat AND lon > :swLng AND lat < :neLat AND lon < :neLng";
                 $params[':amount'] = intval($dustamount);
+                $params[':swLat'] = $swLat;
+                $params[':swLng'] = $swLng;
+                $params[':neLat'] = $neLat;
+                $params[':neLng'] = $neLng;
+                if (!$noBoundaries) {
+                    $dustSQL .= " AND (ST_WITHIN(point(lat,lon),ST_GEOMFROMTEXT('POLYGON(( " . $boundaries . " ))')))";
+                }
             }
             $conds[] = "(" . $pokemonSQL . " OR " . $itemSQL . ")" . $dustSQL . "";
         }
@@ -296,6 +316,11 @@ class RDM_beta extends RDM
         $params[':swLng'] = $swLng;
         $params[':neLat'] = $neLat;
         $params[':neLng'] = $neLng;
+
+        global $noBoundaries, $boundaries;
+        if (!$noBoundaries) {
+            $conds[] = "(ST_WITHIN(point(lat,lon),ST_GEOMFROMTEXT('POLYGON(( " . $boundaries . " ))')))";
+        }
         if (!empty($quests) && $quests === 'true') {
             $tmpSQL = '';
             if (count($qpreids)) {
@@ -407,6 +432,8 @@ class RDM_beta extends RDM
             $pokestop["quest_pokemon_name"] = empty($mon_pid) ? null : i8ln($this->data[$mon_pid]["name"]);
             $pokestop["grunt_type_name"] = empty($grunttype_pid) ? null : i8ln($this->grunttype[$grunttype_pid]["type"]);
             $pokestop["grunt_type_gender"] = empty($grunttype_pid) ? null : i8ln($this->grunttype[$grunttype_pid]["grunt"]);
+            $pokestop["encounters"] = empty($this->grunttype[$grunttype_pid]["encounters"]) ? null : $this->grunttype[$grunttype_pid]["encounters"];
+            $pokestop["second_reward"] = empty($this->grunttype[$grunttype_pid]["second_reward"]) ? null : $this->grunttype[$grunttype_pid]["second_reward"];
 
             $data[] = $pokestop;
             unset($pokestops[$i]);
@@ -429,6 +456,10 @@ class RDM_beta extends RDM
             $params[':oswLng'] = $oSwLng;
             $params[':oneLat'] = $oNeLat;
             $params[':oneLng'] = $oNeLng;
+        }
+        global $noBoundaries, $boundaries;
+        if (!$noBoundaries) {
+            $conds[] = "(ST_WITHIN(point(lat,lon),ST_GEOMFROMTEXT('POLYGON(( " . $boundaries . " ))')))";
         }
         if ($tstamp > 0) {
             $conds[] = "updated > :lastUpdated";

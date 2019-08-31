@@ -32,6 +32,19 @@ $zoomToBoundsOnClick = 15;                                          // Zoomlevel
 $maxClusterRadius = 30;                                             // The maximum radius that a cluster will cover from the central marker (in pixels).
 $spiderfyOnMaxZoom = 'true';                                        // Spiderfy cluster markers on click
 
+/* Boundaries */
+$noBoundaries = true;                                               // Enable/Disable boundaries to pull data from. Requires $boundaries to be set.
+$boundaries = '51.9258236369112 5.4520494625403,
+               51.8982915107015 5.4808885738685,
+               51.8715904160174 5.4630357906653,
+               51.8525084938523 5.4211504146888,
+               51.8427523855973 5.3504259273841,
+               51.8448734585841 5.2645952389075,
+               51.8635345916882 5.1952440426185,
+               51.9033756353006 5.2254564449622,
+               51.9304812498708 5.4032976314857,
+               51.9258236369112 5.4520494625403';                   // First and last coords have to be the same!
+
 /* Anti scrape Settings */
 $enableCsrf = true;                                                 // Don't disable this unless you know why you need to :)
 $sessionLifetime = 43200;                                           // Session lifetime, in seconds
@@ -81,6 +94,9 @@ $motdContent = "This is an example MOTD<br>Do whatever you like with it.";
 
 /* Favicon */
 $faviconPath = '';                                                  // Upload favicon.ico to custom folder, leave '' for empty ( $faviconPath = 'custom/favicon.ico'; )
+
+/* IMGBB API */
+$imgurCID = "";
 //-----------------------------------------------------
 // Login
 //-----------------------------------------------------
@@ -124,8 +140,7 @@ $noMinLevel = false;
 $noHighLevelData = false;
 $noRarityDisplay = false;
 $noWeatherIcons = true;
-$noWeatherShadow = false;
-
+$no100IvShadow = false;
 /* Notification Settings */
 $noNotifyPokemon = false;
 $noNotifyRarity = false;
@@ -161,6 +176,7 @@ $noTinyRatSetting = false;
 
 $noGyms = false;
 $enableGyms = 'false';
+$hideGymCoords = false;
 $noExEligible = false;
 $exEligible = 'false';
 
@@ -174,6 +190,7 @@ $enableRaidTimer = 'false';
 
 $noPokestops = false;
 $enablePokestops = 'false';
+$hidePokestopCoords = false;
 
 $noLures = false;
 $enableLured = 'false';
@@ -182,6 +199,7 @@ $noTeamRocket = false;
 $enableTeamRocket = 'false';
 $noTeamRocketTimer = false;
 $enableTeamRocketTimer = 'false';
+$noTeamRocketEncounterData = true; // Show/Hide possible rewards. Requires grunttype.json to be up to date.
 
 $noQuests = false;
 $enableQuests = 'false';
@@ -201,9 +219,6 @@ $hideConditionTypes = [0, 4, 5, 11, 12, 13, 16, 17, 19, 20];
 // Manual quest show options
 $showEncounters = [201];
 $showItems = [1, 2, 3, 101, 102, 103, 104, 201, 202, 701, 703, 705, 706, 707, 1301];
-
-$noScannedLocations = false;
-$enableScannedLocations = 'false';
 
 $noSpawnPoints = false;
 $enableSpawnPoints = 'false';
@@ -253,8 +268,15 @@ $notifyNotification = 'true';
 /* Style Settings */
 
 $copyrightSafe = true;
-$noCostumeIcons = true;                                             // Set to true if you $iconRepository doesnt support costume icons.
-$iconRepository = '';						                        // URLs or folder paths are allowed
+$noCostumeIcons = true;                                                              // Set to true if you $iconRepository doesnt support costume icons.
+$iconRepository = '';						                                         // URLs or folder paths are allowed
+$noMultipleRepos = true;                                                             // To enable Multiple icon packs:
+                                                                                     // Each iconpack needs to be in a seperate folder
+                                                                                     // For menu icons, $iconRepository is used always (if $copyrightSafe = false)
+$iconRepos = [["Standard","$iconRepository"],                                        // Multiple Repos in here with the format ["Name","Link_To_Icons"] - Link can be a relative path for an iconfolder or a Link to a Repo.
+              ["Some Icon Pack","path/to/iconpack/"],                                // Example for a pack located on your server at static/icons/pack01/, named "Some Icon Pack" in the Frontend
+              ["Some Other Iconpack","https://website.com/sub/folder/"],             // Example for a pack located on a website
+              ["Another Iconpack","https://AnotherURL.com/some/other/subfolders/"]]; // You May add different iconPacks here so mapusers can switch between them
 
 $noMapStyle = false;
 $mapStyle = 'openstreetmap';                                        // openstreetmap, darkmatter, styleblackandwhite, styletopo, stylesatellite, stylewikipedia

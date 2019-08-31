@@ -69,7 +69,7 @@ if ($noDiscordLogin === false) {
     } catch (Exception $e) {
         error_log("Unexpected error after Discord Auth!");
         error_log($e);
-        header("Location: ./?login=false&exception=yes");
+        header("Location: .?exception=yes");
     }
 } else {
     header("Location: .");

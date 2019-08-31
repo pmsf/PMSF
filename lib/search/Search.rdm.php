@@ -50,8 +50,12 @@ class RDM extends Search
         json_extract(json_extract(`quest_rewards`,'$[*].info.form_id'),'$[0]') AS quest_pokemon_formid,
         ROUND(( 3959 * acos( cos( radians(:lat) ) * cos( radians( lat ) ) * cos( radians( lon ) - radians(:lon) ) + sin( radians(:lat) ) * sin( radians( lat ) ) ) ),2) AS distance 
         FROM pokestop
-        WHERE :conditions
-        ORDER BY distance LIMIT " . $maxSearchResults . "";
+        WHERE :conditions";
+        global $noBoundaries, $boundaries;
+        if (!$noBoundaries) {
+            $query .= " AND (ST_WITHIN(point(lat,lon),ST_GEOMFROMTEXT('POLYGON(( " . $boundaries . " ))')))";
+        }
+        $query .= " ORDER BY distance LIMIT " . $maxSearchResults . "";
         
         $query = str_replace(":conditions", join(" OR ", $conds), $query);
         
