@@ -27,19 +27,12 @@ if (strtolower($map) === "rdm") {
     $search = new \Search\RDM();
 } else if (strtolower($map) === "monocle") {
     if (strtolower($fork) === "pmsf") {
-	if ( $action === "pokestops" ) {
-	    $dbname = "pokestops";
-	} elseif ( $action === "forts" ) {
-	    $dbname = "forts";
+	    if ( $action === "pokestops" ) {
+	        $dbname = "pokestops";
+	    } elseif ( $action === "forts" ) {
+	        $dbname = "forts";
         }
-        $search = new \Search\Monocle_PMSF();
-    } elseif (strtolower($fork) === "mad") {
-	if ( $action === "pokestops" ) {
-	    $dbname = "pokestops";
-	} elseif ( $action === "forts" ) {
-	    $dbname = "forts";
-        }
-        $search = new \Search\Monocle_MAD();
+    $search = new \Search\Monocle_PMSF();
     }
 } elseif (strtolower($map) === "rocketmap") {
     if ( $action === "pokestops" ) {
