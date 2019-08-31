@@ -1002,9 +1002,9 @@ function pokemonLabel(item) {
     contentstring += '.png" style="width:50px;margin-top:10px;"/>'
     if (item['expire_timestamp_verified'] > 0) {
         contentstring += '<b style="top:-20px;position:relative;">' +
-            ' <i class="fas fa-check-square" style="color:#28b728;"></i> ' +
             '<i class="far fa-clock"></i>' + ' ' + getTimeStr(disappearTime) +
             ' <span class="label-countdown" disappears-at="' + disappearTime + '">(00m00s)</span>' +
+            ' <i class="fas fa-check-square" style="color:#28b728;"></i>' +
             '</b></div>'
     } else if (pokemonReportTime === true) {
         contentstring += '<b style="top:-20px;position:relative;">' +
@@ -1014,6 +1014,7 @@ function pokemonLabel(item) {
         contentstring += '<b style="top:-20px;position:relative;">' +
             ' <i class="far fa-clock"></i>' + ' ' + getTimeStr(disappearTime) +
             ' <span class="label-countdown" disappears-at="' + disappearTime + '">(00m00s)</span>' +
+            ' <i class="fas fa-question" style="color:red;"></i>' +
             '</b></div>'
     }
 
@@ -1023,9 +1024,10 @@ function pokemonLabel(item) {
     } else {
         contentstring += '<center><div style="position:relative;">'
     }
-    contentstring += '<a href="javascript:excludePokemon(' + id + ')">' + i8ln('Exclude') + '</a>' +
-    ' | <a href="javascript:notifyAboutPokemon(' + id + ')">' + i8ln('Notify') + '</a>' +
-    ' | <a href="javascript:removePokemonMarker(\'' + encounterId + '\')">' + i8ln('Remove') + '</a>' +
+    contentstring += '<a href="javascript:excludePokemon(' + id + ')"><i class="fas fa-minus-circle" style="font-size:15px;width:20px;"></i></a>' +
+    ' | <a href="javascript:notifyAboutPokemon(' + id + ')"><i class="fas fa-bell" style="font-size:15px;width:20px;"></i></a>' +
+    ' | <a href="javascript:removePokemonMarker(\'' + encounterId + '\')"><i class="fas fa-trash-alt" style="font-size:15px;width:20px;"></i></a>' +
+    ' | <a href="javascript:void(0);" onclick="javascript:toggleOtherPokemon(' + id + ');" title="' + i8ln('Toggle display of other Pokemon') + '"><i class="fas fa-search-plus" style="font-size:15px;width:20px;"></i></a>' +
     '</div></center>'
     if (atk != null && def != null && sta != null) {
         contentstring += '<div style="position:relative;top:55px;"><center>'
