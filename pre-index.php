@@ -569,13 +569,13 @@ if ( $blockIframe ) {
                                 <?php
                                 if ( ! $noQuestsPokemon ) {
                                     ?>
-                                    <li><a href="#tabs-1"><?php echo i8ln( 'Hide Pokémon' ) ?></a></li>
+                                    <li><a href="#tabs-1"><?php echo i8ln( 'Pokémon' ) ?></a></li>
                                     <?php
                                 } ?>
                                 <?php
                                 if ( ! $noQuestsItems ) {
                                     ?>
-                                    <li><a href="#tabs-2"><?php echo i8ln( 'Hide items' ) ?></a></li>
+                                    <li><a href="#tabs-2"><?php echo i8ln( 'Items' ) ?></a></li>
                                     <?php
                                 } ?>
                         </ul>
