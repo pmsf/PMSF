@@ -68,7 +68,7 @@ var qireids = []
 var dustamount
 var reloaddustamount
 
-var numberOfPokemon = 493
+var numberOfPokemon = 649
 var numberOfItem = 1405
 var L
 var map
