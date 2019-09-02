@@ -6,5 +6,7 @@
   "stylesatellite": "Satellite",
   "stylewikipedia": "Wikipedia",
   "googlemapssat": "Google Maps Satellite",
-  "googlemapsroad": "Google Maps Roadmap"
+  "googlemapsroad": "Google Maps Roadmap",
+  "mapbox": "Mapbox Streets",
+  "mapboxPogo": "Mapbox Pokémon Go"
 }
