@@ -14,7 +14,6 @@ require_once(__DIR__ . '/../utils.php');
 $libs[] = "Scanner.php";
 $libs[] = "Monocle.php";
 $libs[] = "Monocle_PMSF.php";
-$libs[] = "Monocle_MAD.php";
 $libs[] = "RDM.php";
 $libs[] = "RDM_beta.php";
 $libs[] = "RocketMap.php";
@@ -22,13 +21,11 @@ $libs[] = "RocketMap_MAD.php";
 $libs[] = "search/Search.php";
 $libs[] = "search/Search.rdm.php";
 $libs[] = "search/Search.monocle_pmsf.php";
-$libs[] = "search/Search.monocle_mad.php";
 $libs[] = "search/Search.rocketmap_mad.php";
 $libs[] = "submit/Submit.php";
 $libs[] = "submit/Manual.php";
 $libs[] = "submit/Submit.rdm.php";
 $libs[] = "submit/Submit.monocle_pmsf.php";
-$libs[] = "submit/Submit.monocle_mad.php";
 $libs[] = "Manual.php";
 
 // Include libraries
@@ -79,9 +76,10 @@ $blockIframe = true;                                                // Block you
 $title = "PMSF Alt";                                                // Title to display in title bar
 $locale = "en";                                                     // Display language
 
-/* Google Maps ONLY USED FOR TILE LAYERS */
+/* Google Maps and MapBox are ONLY USED FOR TILE LAYERS */
 
 $gmapsKey = "";
+$mBoxKey = "";
 
 /* Google Analytics */
 

@@ -38,6 +38,7 @@
     "toastr": true,
     "google": true,
     "gmapsKey": true,
+    "mBoxKey": true,
     "mapData": true,
     "Store": true,
     "centerLat": true,
