@@ -1350,6 +1350,12 @@ function getQuest(item) {
                     str = str.replace('Throw(s)', 'Curveball Throw(s)')
                 }
                 break
+            case 22:
+                str = str.replace('Win', 'Battle a Team Leader').replace('pvp battle(s)', 'times')
+                break
+            case 23:
+                str = str.replace('Win', 'Battle Another Trainer').replace('pvp battle(s)', 'times')
+                break
         }
     } else if (item['quest_type'] > 0) {
         switch (item['quest_type']) {
