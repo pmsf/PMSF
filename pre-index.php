@@ -218,7 +218,7 @@ if ( $blockIframe ) {
     <link rel="stylesheet" href="node_modules/leaflet/dist/leaflet.css" />
     <link rel="stylesheet" href="static/dist/css/app.min.css">
     <?php if ( file_exists( 'static/css/custom.css' ) ) {
-        echo '<link rel="stylesheet" href="static/css/custom.css">';
+        echo '<link rel="stylesheet" href="static/css/custom.css?' . time() . '">';
     } ?>
     <link rel="stylesheet" href="node_modules/leaflet.markercluster/dist/MarkerCluster.css" />
     <link rel="stylesheet" href="node_modules/leaflet.markercluster/dist/MarkerCluster.Default.css" />
@@ -1513,17 +1513,17 @@ if ( $blockIframe ) {
 	        <input type="text" id="poi-description" name="poi-description" placeholder="<?php echo i8ln( 'Enter New POI Description' ); ?>" data-type="poi-description" class="search-input">
 	        <input type="text" id="poi-notes" name="poi-notes"placeholder="<?php echo i8ln( 'Enter New POI Notes' ); ?>" data-type="poi-notes" class="search-input">
                 <div class="upload-button-container">
-                     <button type="button">Upload new POI Image</button>
+                     <button type="button"><i class="fas fa-upload"></i> <?php echo i8ln('Upload POI Image') ?></button>
                      <input type="file" id="poi-image" name="poi-image" accept="image/*" capture="environment" class="poi-image" data-type="poi-image" class="search-input" onchange='previewPoiImage(event)' >
-		</div>
+                </div>
                 <center><img id='preview-poi-image' name='preview-poi-image' width="50px" height="auto"></center>
                 <div class="upload-button-container">
-                     <button type="button">Upload new POI Image</button>
+                     <button type="button"><i class="fas fa-upload"></i> <?php echo i8ln('Upload POI Surrounding') ?></button>
                      <input type="file" id="poi-surrounding" name="poi-surrounding" accept="image/*" capture="environment" class="poi-surrounding" data-type="poi-surrounding" class="search-input" onchange='previewPoiSurrounding(event)'>
-		</div>
+                </div>
                 <center><img id='preview-poi-surrounding' name='preview-poi-surrounding' width="50px" height="auto"></center>
 	        <div class="button-container">
-                <button type="button" onclick="editPoiData(event);" class="editpoiid"><i class="fas fa-edit"></i> <?php echo i8ln( 'Save Changes' ); ?></button>
+                <button type="button" onclick="editPoiData(event);" class="editpoiid"><i class="fas fa-save"></i> <?php echo i8ln( 'Save Changes' ); ?></button>
             </div>
         </div>
     <?php } ?>
@@ -1976,6 +1976,7 @@ if ( $blockIframe ) {
     var spiderfyOnMaxZoom = <?= $spiderfyOnMaxZoom; ?>;
     var mapStyle = '<?php echo $mapStyle ?>';
     var gmapsKey = '<?php echo $gmapsKey ?>';
+    var mBoxKey = '<?php echo $mBoxKey ?>';
     var hidePokemon = <?php echo $noHidePokemon ? '[]' : $hidePokemon ?>;
     var excludeMinIV = <?php echo $noExcludeMinIV ? '[]' : $excludeMinIV ?>;
     var minIV = <?php echo $noMinIV ? '""' : $minIV ?>;

@@ -79,7 +79,10 @@
   "Exclude": "Ausblenden",
   "Notify": "Benachrichtigen",
   "Remove": "Entfernen",
-  "Toggle display of other Pokemon": "Andere Pokémon anzeigen/ausblenden",
+  "Toggle display of other Pokémon": "Andere Pokémon anzeigen/ausblenden",
+  "Remove this Pokémon from the map": "Entferne dieses Pokémon von der Karte",
+  "Notify about this Pokémon": "Benachrichtigungen für dieses Pokémon einschalten",
+  "Exclude this Pokémon": "Dieses Pokémon ausblenden",
   "Toggle Others": "Alle anderen",
   "Disappears at": "Verschwindet um",
   "View in Pokedex": "Im Pokédex anschauen",
@@ -1687,5 +1690,7 @@
   "Hatch 4 eggs":"Brüte 4 Eier aus",
   "Hatch 5 eggs":"Brüte 5 Eier aus",
   "Spin 10 pokéstops":"Drehe 10 Pokéstops oder Arenen",
-  "Evolve a Pokémon":"Entwickle ein Pokémon"
+  "Evolve a Pokémon":"Entwickle ein Pokémon",
+  "Despawntime verified": "Verifizierte Despawnzeit",
+  "Despawntime not verified": "Nicht verifizierte Despawnzeit"
 }
