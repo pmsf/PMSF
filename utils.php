@@ -62,15 +62,29 @@ function validateToken($token)
 
 
 function sendToWebhook($webhookUrl, $webhook) {
-    $c = curl_init($webhookUrl);
-    curl_setopt($c, CURLOPT_SSL_VERIFYPEER, false);
-    curl_setopt($c, CURLOPT_POST, true);
-    curl_setopt($c, CURLOPT_CUSTOMREQUEST, "POST");
-    curl_setopt($c, CURLOPT_RETURNTRANSFER, true);
-    curl_setopt($c, CURLOPT_HTTPHEADER, ['Content-type: application/json', 'User-Agent: python-requests/2.18.4']);
-    curl_setopt($c, CURLOPT_POSTFIELDS, json_encode($webhook));
-    curl_exec($c);
-    curl_close($c);
+    if (is_array ($webhookUrl)) {
+        foreach($webhookUrl as $hook) {
+            $c = curl_init($hook);
+            curl_setopt($c, CURLOPT_SSL_VERIFYPEER, false);
+            curl_setopt($c, CURLOPT_POST, true);
+            curl_setopt($c, CURLOPT_CUSTOMREQUEST, "POST");
+            curl_setopt($c, CURLOPT_RETURNTRANSFER, true);
+            curl_setopt($c, CURLOPT_HTTPHEADER, ['Content-type: application/json', 'User-Agent: python-requests/2.18.4']);
+            curl_setopt($c, CURLOPT_POSTFIELDS, json_encode($webhook));
+            curl_exec($c);
+	    curl_close($c);
+        }
+    } else {
+        $c = curl_init($webhookUrl);
+        curl_setopt($c, CURLOPT_SSL_VERIFYPEER, false);
+        curl_setopt($c, CURLOPT_POST, true);
+        curl_setopt($c, CURLOPT_CUSTOMREQUEST, "POST");
+        curl_setopt($c, CURLOPT_RETURNTRANSFER, true);
+        curl_setopt($c, CURLOPT_HTTPHEADER, ['Content-type: application/json', 'User-Agent: python-requests/2.18.4']);
+        curl_setopt($c, CURLOPT_POSTFIELDS, json_encode($webhook));
+        curl_exec($c);
+	curl_close($c);
+    }
 }
 
 function uploadImage($imgurCID, $data) {
