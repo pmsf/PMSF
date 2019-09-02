@@ -480,7 +480,7 @@ class Manual extends Submit
                 'poi_id' => $poiId
             ];
             $manualdb->update( "poi", $cols, $where );
-            if ( $noDiscordPOISubmitLogChannel === false ) {
+            if ( $noDiscordSubmitLogChannel === false ) {
                 $data = array("content" => '```Marked poi with id "' . $poiId . '." As submitted. PoiName: "' . $poiName['name'] . '". ```', "username" => $loggedUser);
                 sendToWebhook($discordPOISubmitLogChannelUrl, ($data));
             }
