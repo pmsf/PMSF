@@ -1,240 +1,244 @@
 {
+  "0": {
+    "type": "None",
+    "grunt": ""
+  },
   "1": {
-    "type": "",
-    "grunt": "Blanche"
+    "type": "Blanche",
+    "grunt": "Female"
   },
   "2": {
-    "type": "",
-    "grunt": "Candela"
+    "type": "Candela",
+    "grunt": "Female"
   },
   "3": {
-    "type": "",
-    "grunt": "Spark"
+    "type": "Spark",
+    "grunt": "Male"
   },
   "4": {
-    "type": "",
-    "grunt": "Male Grunt",
+    "type": "Tier II",
+    "grunt": "Male",
     "second_reward": "true",
     "encounters":{
-        "first": ["001_00","004_00","007_00"],
-        "second":["002_00","005_00","008_00"],
-        "third":["003_00","006_00","009_00"]
+      "first": ["001_164","004_173","007_182"],
+      "second":["002_167","005_176","008_185"],
+      "third":["003_170","006_179","009_188"]
     }
   },
   "5": {
-    "type": "",
-    "grunt": "Female Grunt",
+    "type": "Tier II",
+    "grunt": "Female",
     "second_reward": "false",
     "encounters":{
-        "first": ["143_00"],
-        "second":["143_00","062_00","282_00"],
-        "third":["143_00","149_00","130_00"]
+      "first": ["143_200"],
+      "second":["143_200","062_242","282_299"],
+      "third":["143_200","149_197","130_257"]
     }
   },
   "6": {
     "type": "Bug",
-    "grunt": "Female Grunt"
+    "grunt": "Female"
   },
   "7": {
     "type": "Bug",
-    "grunt": "Male Grunt",
+    "grunt": "Male",
     "second_reward": "false",
     "encounters":{
-        "first": ["123_00"],
-        "second":["123_00","212_00"],
-        "third":["123_00","212_00"]
+      "first": ["123_248"],
+      "second":["123_248","212_251"],
+      "third":["123_248","212_251"]
     }
   },
   "8": {
     "type": "Ghost",
-    "grunt": "Female Grunt"
+    "grunt": "Female"
   },
   "9": {
     "type": "Ghost",
-    "grunt": "Male Grunt"
+    "grunt": "Male"
   },
   "10": {
     "type": "Dark",
-    "grunt": "Female Grunt"
+    "grunt": "Female"
   },
   "11": {
     "type": "Dark",
-    "grunt": "Male Grunt"
+    "grunt": "Male"
   },
   "12": {
     "type": "Dragon",
-    "grunt": "Female Grunt",
+    "grunt": "Female",
     "second_reward": "false",
     "encounters":{
-        "first": ["147_00"],
-        "second":["147_00","148_00"],
-        "third":["148_00","149_00","130_00"]
+      "first": ["147_191"],
+      "second":["147_191","148_194"],
+      "third":["148_194","149_197","130_257"]
     }
   },
   "13": {
     "type": "Dragon",
-    "grunt": "Male Grunt"
+    "grunt": "Male"
   },
   "14": {
     "type": "Fairy",
-    "grunt": "Female Grunt"
+    "grunt": "Female"
   },
   "15": {
     "type": "Fairy",
-    "grunt": "Male Grunt"
+    "grunt": "Male"
   },
   "16": {
     "type": "Fighting",
-    "grunt": "Female Grunt"
+    "grunt": "Female"
   },
   "17": {
     "type": "Fighting",
-    "grunt": "Male Grunt"
+    "grunt": "Male"
   },
   "18": {
     "type": "Fire",
-    "grunt": "Female Grunt",
+    "grunt": "Female",
     "second_reward": "true",
     "encounters":{
-        "first": ["004_00","019_00","228_00"],
-        "second":["229_00","005_00"],
-        "third":["229_00","005_00","006_00"]
+      "first": ["004_173","019_153","228_230"],
+      "second":["229_233","005_176"],
+      "third":["229_233","005_176","006_179"]
     }
   },
   "19": {
     "type": "Fire",
-    "grunt": "Male Grunt"
+    "grunt": "Male"
   },
   "20": {
     "type": "Flying",
-    "grunt": "Female Grunt",
+    "grunt": "Female",
     "second_reward": "false",
     "encounters":{
-        "first": ["041_00","042_00"],
-        "second":["042_00","169_00","123_00"],
-        "third":["169_00","149_00","130_00"]
+      "first": ["041_158","042_161"],
+      "second":["042_161","169_203","123_248"],
+      "third":["169_203","149_97","130_257"]
     }
   },
   "21": {
     "type": "Flying",
-    "grunt": "Male Grunt"
+    "grunt": "Male"
   },
   "22": {
     "type": "Grass",
-    "grunt": "Female Grunt"
+    "grunt": "Female"
   },
   "23": {
     "type": "Grass",
-    "grunt": "Male Grunt",
+    "grunt": "Male",
     "second_reward": "true",
     "encounters":{
-        "first": ["001_00","019_00","041_00"],
-        "second":["001_00","002_00"],
-        "third":["002_00","003_00"]
+      "first": ["001_164","019_153","041_158"],
+      "second":["001_164","002_167"],
+      "third":["002_167","003_170"]
     }
   },
   "24": {
     "type": "Ground",
-    "grunt": "Female Grunt"
+    "grunt": "Female"
   },
   "25": {
     "type": "Ground",
-    "grunt": "Male Grunt",
+    "grunt": "Male",
     "second_reward": "false",
     "encounters":{
-        "first": ["104_00","019_00","041_00"],
-        "second":["104_00","105_00","020_00"],
-        "third":["105_00","020_00"]
+      "first": ["104_225","019_153","041_158"],
+      "second":["104_225","105_227","020_155"],
+      "third":["105_227","020_155"]
     }
   },
   "26": {
     "type": "Ice",
-    "grunt": "Female Grunt"
+    "grunt": "Female"
   },
   "27": {
     "type": "Ice",
-    "grunt": "Male Grunt"
+    "grunt": "Male"
   },
   "28": {
     "type": "Metal",
-    "grunt": "Female Grunt"
+    "grunt": "Female"
   },
   "29": {
     "type": "Metal",
-    "grunt": "Male Grunt"
+    "grunt": "Male"
   },
   "30": {
     "type": "Normal",
-    "grunt": "Female Grunt"
+    "grunt": "Female"
   },
   "31": {
     "type": "Normal",
-    "grunt": "Male Grunt",
+    "grunt": "Male",
     "second_reward": "true",
     "encounters":{
-        "first": ["019_00","041_00"],
-        "second":["019_00","020_00"],
-        "third":["020_00","143_00"]
+      "first": ["019_153","041_158"],
+      "second":["019_153","020_155"],
+      "third":["020_155","143_200"]
     }
   },
   "32": {
     "type": "Poison",
-    "grunt": "Female Grunt",
+    "grunt": "Female",
     "second_reward": "true",
     "encounters":{
-        "first": ["088_00","041_00","001_00"],
-        "second":["088_00","089_00","042_00"],
-        "third":["089_00","042_00","002_00"]
+      "first": ["088_220","041_158","001_164"],
+      "second":["088_220","089_222","042_161"],
+      "third":["089_222","042_161","002_167"]
     }
   },
   "33": {
     "type": "Poison",
-    "grunt": "Male Grunt"
+    "grunt": "Male"
   },
   "34": {
     "type": "Psychic",
-    "grunt": "Female Grunt"
+    "grunt": "Female"
   },
   "35": {
     "type": "Psychic",
-    "grunt": "Male Grunt",
+    "grunt": "Male",
     "second_reward": "true",
     "encounters":{
-        "first": ["096_00","041_00","280_00"],
-        "second":["096_00","097_00","280_00"],
-        "third":["097_00","281_00"]
+      "first": ["096_215","041_158","280_293"],
+      "second":["096_215","097_218","280_293"],
+      "third":["097_218","281_296"]
     }
   },
   "36": {
     "type": "Rock",
-    "grunt": "Female Grunt"
+    "grunt": "Female"
   },
   "37": {
     "type": "Rock",
-    "grunt": "Male Grunt"
+    "grunt": "Male"
   },
   "38": {
     "type": "Water",
-    "grunt": "Female Grunt",
+    "grunt": "Female",
     "second_reward": "false",
     "encounters":{
-        "first": ["060_00","129_00"],
-        "second":["061_00"],
-        "third":["062_00","186_00"]
+      "first": ["060_236","129_254"],
+      "second":["061_239"],
+      "third":["062_242","186_245"]
     }
   },
   "39": {
     "type": "Water",
-    "grunt": "Male Grunt",
+    "grunt": "Male",
     "second_reward": "false",
     "encounters":{
-        "first": ["129_00"],
-        "second":["129_00"],
-        "third":["129_00"]
+      "first": ["129_254"],
+      "second":["129_254"],
+      "third":["129_254"]
     }
   },
   "40": {
-    "type": "",
-    "grunt": "Player Team Leader"
+    "type": "Player Team Leader",
+    "grunt": ""
   }
 }
