@@ -8,3 +8,25 @@
   padding: 5px;
   color: rgb(255, 255, 255);
 }
+.poi-upload {
+  border: 1px solid #ccc;
+  display: inline-block;
+  padding: 6px 12px;
+  cursor: pointer;
+}
+.upload-button-container {
+  position: relative;
+  overflow: hidden;
+  display: block;
+  text-align: center;
+}
+.upload-button-container input[type=file] {
+  font-size: 100px;
+  position: absolute;
+  left: 0;
+  top: 0;
+  opacity: 0;
+}
+.upload-button-container button {
+ margin-bottom: 15px;
+}

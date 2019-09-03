@@ -226,78 +226,240 @@ class Manual extends Submit
         }
     }
 
-    public function submit_poi($lat, $lon, $poiName, $poiDescription, $poiNotes, $loggedUser)
+    public function submit_poi($lat, $lon, $poiName, $poiDescription, $poiNotes, $poiImage, $poiSurrounding, $loggedUser)
     {
-        global $manualdb, $noPoi, $noAddPoi, $noDiscordSubmitLogChannel, $discordSubmitLogChannelUrl, $submitMapUrl;
+        global $manualdb, $noPoi, $noAddPoi, $noDiscordSubmitLogChannel, $discordSubmitLogChannelUrl, $submitMapUrl, $imgurCID;
         if ( $noPoi === true || $noAddPoi === true ) {
             http_response_code( 401 );
             die();
         }
+	$poiImageUrl = null;
+	$poiImageDeleteHash = null;
+	$poiSurroundingUrl = null;
+	$poiSurroundingDeleteHash = null;
+	if ( ! empty( $poiImage ) ) {
+            $payload    = [
+                'image'     => $poiImage,
+                'name'      => 'POI-' . $poiName
+            ];
+	    $response = uploadImage($imgurCID, $payload);
+            $info = json_decode($response, true);
+            $poiImageUrl = $info['data']['link'];
+	    $poiImageDeleteHash = $info['data']['deletehash'];
+        };
+	if ( ! empty( $poiSurrounding ) ) {
+            $payload    = [
+                'image'     => $poiSurrounding,
+                'name'      => 'Surrounding-' . $poiName
+            ];
+	    $response = uploadImage($imgurCID, $payload);
+            $info = json_decode($response, true);
+            $poiSurroundingUrl = $info['data']['link'];
+	    $poiSurroundingDeleteHash = $info['data']['deletehash'];
+        };
         if ( ! empty( $lat ) && ! empty( $lon ) && ! empty( $poiName ) && ! empty( $poiDescription ) ) {
             $poiId = randomNum();
             $cols       = [
-                'poi_id'              => $poiId,
-                'name'                => $poiName,
-                'description'         => $poiDescription,
-                'notes'               => $poiNotes,
-                'lat'                 => $lat,
-                'lon'                 => $lon,
-                'status'              => 1,
-                'updated'             => time(),
-                'submitted_by'        => $loggedUser 
+                'poi_id'                    => $poiId,
+                'name'                      => $poiName,
+                'description'               => $poiDescription,
+		'notes'                     => $poiNotes,
+		'poiimageurl'               => $poiImageUrl,
+		'poiimagedeletehash'         => $poiImageDeleteHash,
+		'poisurroundingurl'         => $poiSurroundingUrl,
+		'poisurroundingdeletehash'   => $poiSurroundingDeleteHash,
+                'lat'                       => $lat,
+                'lon'                       => $lon,
+                'status'                    => 1,
+                'updated'                   => time(),
+                'submitted_by'              => $loggedUser 
             ];
             $manualdb->insert( "poi", $cols );
             if ( $noDiscordSubmitLogChannel === false ) {
-                $data = array("content" => '```Added poi with id "' . $poiId . '" and gave it the new name: "' . $poiName . '".\nDescription: "' . $poiDescription . '".```' . $submitMapUrl . '/?lat=' . $lat . '&lon=' . $lon . '&zoom=18 ', "username" => $loggedUser);
-                sendToWebhook($discordSubmitLogChannelUrl, ($data));
+                $data = array(
+			"username" => $loggedUser, 
+			"embeds" => array(array(
+				"color" => 65280,
+				"image" => array(
+					"url" => $poiImageUrl
+				),
+				"thumbnail" => array(
+					"url" => $poiSurroundingUrl
+				),
+				"fields" => array(
+					array(
+						"name" => 'Manual Action:',
+						"value" => 'Submit POI'
+					),
+					array(
+						"name" => 'POI Title:',
+						"value" => $poiName
+					),
+					array(
+						"name" => 'POI Description:',
+						"value" => $poiDescription
+					),
+					array(
+						"name" => 'POI ID:',
+						"value" => $poiId
+					),
+					array(
+						"name" => 'Map link',
+						"value" => '[View POI on Map](' . $submitMapUrl . '/?lat=' . $lat . '&lon=' . $lon . '&zoom=18)'
+					)
+				)
+			))
+		);
+		sendToWebhook($discordSubmitLogChannelUrl, ($data));
             }
         }
     }
   
-  	public function modify_poi($poiId, $poiName, $poiDescription, $poiNotes, $loggedUser)
-		{
-		    global $manualdb, $noPoi, $noEditPoi, $noDiscordSubmitLogChannel, $discordSubmitLogChannelUrl, $submitMapUrl;
-			  if ( $noPoi === true || $noEditPoi === true ) {
-				    http_response_code( 401 );
-				    die();
-			  }
-			  if ( ! empty( $poiId ) && ! empty( $poiName ) && ! empty( $poiDescription ) ) {
-				    $cols       = [
-					      'name'                => $poiName,
-					      'description'         => $poiDescription,
-					      'notes'               => $poiNotes,
-					      'status'	            => 1,
-					      'updated'             => time(),
-					      'edited_by'           => $loggedUser 
-				    ];
-				    $where    = [
-					      'poi_id' => $poiId
-				    ];
-				    $manualdb->update( "poi", $cols, $where );
-				    if ( $noDiscordSubmitLogChannel === false ) {
-					      $data = array("content" => '```Updated poi with id "' . $poiId . '" and gave it the new name: "' . $poiName . '".\nDescription: "' . $poiDescription . '".```' . $submitMapUrl . '&zoom=18 ', "username" => $loggedUser);
-					      sendToWebhook($discordSubmitLogChannelUrl, ($data));
-				    }
-			  }
-		}
-
-    public function delete_poi($poiId, $loggedUser)
+    public function modify_poi($poiId, $poiName, $poiDescription, $poiNotes, $poiImage, $poiSurrounding, $loggedUser)
     {
-        global $manualdb, $noPoi, $noDeletePoi, $noDiscordSubmitLogChannel, $discordSubmitLogChannelUrl;
-        if ( $noPoi === true || $noDeletePoi === true) {
+        global $manualdb, $noPoi, $noEditPoi, $noDiscordSubmitLogChannel, $discordSubmitLogChannelUrl, $submitMapUrl, $imgurCID;
+            if ( $noPoi === true || $noEditPoi === true ) {
             http_response_code( 401 );
             die();
         }
-        $poiName = $manualdb->get( "poi", [ 'name' ], [ 'poi_id' => $poiId ] );
+	$CPoi = $manualdb->get( "poi", [ "poiimageurl", "poiimagedeletehash", "poisurroundingurl", "poisurroundingdeletehash" ], [ 'poi_id' => $poiId ] );
+	if ( ! empty( $poiImage ) ) {
+	    if ( ! empty( $Cpoi['poiimagedeletehash']) ) {
+                deleteImage($imgurCID, $Cpoi['poiimagedeletehash']);
+	    };
+            $payload    = [
+                'image'     => $poiImage,
+                'name'      => 'POI-' . $poiName
+            ];
+	    $response = uploadImage($imgurCID, $payload);
+            $info = json_decode($response, true);
+            $poiImageUrl = $info['data']['link'];
+	    $poiImageDeleteHash = $info['data']['deletehash'];
+        };
+	if ( ! empty( $poiSurrounding ) ) {
+	    if ( ! empty( $Cpoi['poisurroundingdeletehash']) ) {
+                deleteImage($imgurCID, $Cpoi['poisurroundingdeletehash']);
+            };
+            $payload    = [
+                'image'     => $poiSurrounding,
+                'name'      => 'Surrounding-' . $poiName
+            ];
+	    $response = uploadImage($imgurCID, $payload);
+            $info = json_decode($response, true);
+            $poiSurroundingUrl = $info['data']['link'];
+	    $poiSurroundingDeleteHash = $info['data']['deletehash'];
+        };
+        $poiImageUrl			= ! empty( $poiImageUrl) ? $poiImageUrl : $Cpoi['poiimageurl'];
+        $poiImageDeleteHash		= ! empty( $poiImageDeleteHash) ? $poiImageDeleteHash : $Cpoi['poiimagedeletehash'];
+        $poiSurroundingUrl		= ! empty( $poiSurroundingUrl) ? $poiSurroundingUrl : $Cpoi['poisurroundingurl'];
+        $poiSurroundingDeleteHash	= ! empty( $poiSurroundingDeleteHash) ? $poiSurroundingDeleteHash : $Cpoi['poisurroundingdeletehash'];
+        if ( ! empty( $poiId ) && ! empty( $poiName ) && ! empty( $poiDescription ) ) {
+            $cols       = [
+                'name'                     => $poiName,
+                'description'              => $poiDescription,
+                'notes'                    => $poiNotes,
+                'poiimageurl'              => $poiImageUrl,
+                'poiimagedeletehash'       => $poiImageDeleteHash,
+                'poisurroundingurl'        => $poiSurroundingUrl,
+                'poisurroundingdeletehash' => $poiSurroundingDeleteHash,
+                'status'	           => 1,
+                'updated'                  => time(),
+                'edited_by'                => $loggedUser 
+            ];
+            $where    = [
+                    'poi_id' => $poiId
+            ];
+            $manualdb->update( "poi", $cols, $where );;
+            if ( $noDiscordSubmitLogChannel === false ) {
+                $data = array(
+			"username" => $loggedUser, 
+			"embeds" => array(array(
+				"color" => 15105570,
+				"image" => array(
+					"url" => $poiImageUrl
+				),
+				"thumbnail" => array(
+					"url" => $poiSurroundingUrl
+				),
+				"fields" => array(
+					array(
+						"name" => 'Manual Action:',
+						"value" => 'Edit POI'
+					),
+					array(
+						"name" => 'POI Title:',
+						"value" => $poiName
+					),
+					array(
+						"name" => 'POI Description:',
+						"value" => $poiDescription
+					),
+					array(
+						"name" => 'POI ID:',
+						"value" => $poiId
+					),
+					array(
+						"name" => 'Map link',
+						"value" => '[View POI on Map](' . $submitMapUrl . '/?lat=' . $lat . '&lon=' . $lon . '&zoom=18)'
+					)
+				)
+			))
+		);
+		sendToWebhook($discordSubmitLogChannelUrl, ($data));
+            }
+        }
+    }
+
+    public function delete_poi($poiId, $loggedUser)
+    {
+        global $manualdb, $noPoi, $noDeletePoi, $noDiscordSubmitLogChannel, $discordSubmitLogChannelUrl, $submitMapUrl, $imgurCID;
+        if ( $noPoi === true || $noDeletePoi === true) {
+            http_response_code( 401 );
+            die();
+	}
+	$poi = $manualdb->get( "poi", [ "poiimagedeletehash", "poisurroundingdeletehash", "poiimageurl", "poisurroundingurl", "name", "description", "notes", "lat", "lon", "submitted_by" ], [ 'poi_id' => $poiId ] );
         if ( ! empty( $poiId ) ) {
             $manualdb->delete( 'poi', [
                 "AND" => [
                     'poi_id' => $poiId
                 ]
             ] );
+	    if ( ! empty( $poi['poiimagedeletehash']) ) {
+                deleteImage($imgurCID, $poi['poiimagedeletehash']);
+            };
+	    if ( ! empty( $poi['poisurroundingdeletehash']) ) {
+                deleteImage($imgurCID, $poi['surroundingdeletehash']);
+            };
         }
         if ( $noDiscordSubmitLogChannel === false ) {
-            $data = array("content" => '```Deleted POI with id "' . $poiId . '" and name: "' . $poiName['name'] . '" . ```', "username" => $loggedUser);
+            $data = array(
+		"username" => $loggedUser, 
+		"embeds" => array(array(
+			"color" => 15158332,
+			"fields" => array(
+				array(
+					"name" => 'Manual Action:',
+					"value" => 'Delete POI'
+				),
+				array(
+					"name" => 'POI Title:',
+					"value" => $poi['name']
+				),
+				array(
+					"name" => 'POI Description:',
+					"value" => $poi['description']
+				),
+				array(
+					"name" => 'POI ID:',
+					"value" => $poiId
+				),
+				array(
+					"name" => 'Map link',
+					"value" => '[View POI on Map](' . $submitMapUrl . '/?lat=' . $poi['lat'] . '&lon=' . $poi['lon'] . '&zoom=18)'
+				)
+			)
+		))
+            );
             sendToWebhook($discordSubmitLogChannelUrl, ($data));
         }
     }
@@ -395,6 +557,147 @@ class Manual extends Submit
                 $data = array("content" => '```Marked poi with id "' . $poiId . '." As non eligible candidate. PoiName: "' . $poiName['name'] . '". ```', "username" => $loggedUser);
                 sendToWebhook($discordSubmitLogChannelUrl, ($data));
             }
+        }
+    }
+
+    public function convert_portal_inn($portalId, $loggedUser)
+    {
+        global $db, $manualdb, $noPortals, $noDiscordSubmitLogChannel, $discordSubmitLogChannelUrl, $submitMapUrl;
+        if ( $noPortals === true ) {
+            http_response_code( 401 );
+            die();
+        }
+        $portal = $manualdb->get( "ingress_portals", [ 'lat', 'lon', 'name', 'url' ], [ 'external_id' => $portalId ] );
+        if ( ! empty( $portalId ) ) {
+            $cols     = [
+                'id'           => $portalId,
+                'lat'          => $portal['lat'],
+                'lon'          => $portal['lon'],
+                'name'         => $portal['name'],
+                'url'          => $portal['url'],
+                'updated'      => time(),
+                'submitted_by' => $loggedUser
+            ];
+            $manualdb->insert( "inn", $cols );
+            if ( $noDiscordSubmitLogChannel === false ) {
+                $data = array("content" => '```Converted portal with id "' . $portalId . '." New Inn: "' . $portal['name'] . '". ```' . $submitMapUrl . '/?lat=' . $portal['lat'] . '&lon=' . $portal['lon'] . '&zoom=18 ', "username" => $loggedUser);
+                sendToWebhook($discordSubmitLogChannelUrl, ($data));
+            }
+        }
+    }
+
+    public function convert_portal_fortress($portalId, $loggedUser)
+    {
+        global $db, $manualdb, $noPortals, $noDiscordSubmitLogChannel, $discordSubmitLogChannelUrl, $submitMapUrl;
+        if ( $noPortals === true ) {
+            http_response_code( 401 );
+            die();
+        }
+        $portal = $manualdb->get( "ingress_portals", [ 'lat', 'lon', 'name', 'url' ], [ 'external_id' => $portalId ] );
+        if ( ! empty( $portalId ) ) {
+            $cols     = [
+                'id'           => $portalId,
+                'lat'          => $portal['lat'],
+                'lon'          => $portal['lon'],
+                'name'         => $portal['name'],
+                'url'          => $portal['url'],
+                'updated'      => time(),
+                'submitted_by' => $loggedUser
+            ];
+            $manualdb->insert( "fortress", $cols );
+            if ( $noDiscordSubmitLogChannel === false ) {
+                $data = array("content" => '```Converted portal with id "' . $portalId . '." New Fortress: "' . $portal['name'] . '". ```' . $submitMapUrl . '/?lat=' . $portal['lat'] . '&lon=' . $portal['lon'] . '&zoom=18 ', "username" => $loggedUser);
+                sendToWebhook($discordSubmitLogChannelUrl, ($data));
+            }
+        }
+    }
+
+    public function convert_portal_greenhouse($portalId, $loggedUser)
+    {
+        global $db, $manualdb, $noPortals, $noDiscordSubmitLogChannel, $discordSubmitLogChannelUrl, $submitMapUrl;
+        if ( $noPortals === true ) {
+            http_response_code( 401 );
+            die();
+        }
+        $portal = $manualdb->get( "ingress_portals", [ 'lat', 'lon', 'name', 'url' ], [ 'external_id' => $portalId ] );
+        if ( ! empty( $portalId ) ) {
+            $cols     = [
+                'id'           => $portalId,
+                'lat'          => $portal['lat'],
+                'lon'          => $portal['lon'],
+                'name'         => $portal['name'],
+                'url'          => $portal['url'],
+                'updated'      => time(),
+                'submitted_by' => $loggedUser
+            ];
+            $manualdb->insert( "greenhouse", $cols );
+            if ( $noDiscordSubmitLogChannel === false ) {
+                $data = array("content" => '```Converted portal with id "' . $portalId . '." New Greenhouse: "' . $portal['name'] . '". ```' . $submitMapUrl . '/?lat=' . $portal['lat'] . '&lon=' . $portal['lon'] . '&zoom=18 ', "username" => $loggedUser);
+                sendToWebhook($discordSubmitLogChannelUrl, ($data));
+            }
+        }
+    }
+
+    public function delete_inn($innId, $loggedUser)
+    {
+        global $manualdb, $noInn, $noDeleteInn, $noDiscordSubmitLogChannel, $discordSubmitLogChannelUrl;
+        if ( $noInn === true || $noDeleteInn === true) {
+            http_response_code( 401 );
+            die();
+        }
+        $innName = $manualdb->get( "inn", [ 'name' ], [ 'id' => $innId ] );
+        if ( ! empty( $innId ) ) {
+            $manualdb->delete( 'inn', [
+                "AND" => [
+                    'id' => $innId
+                ]
+            ] );
+        }
+        if ( $noDiscordSubmitLogChannel === false ) {
+            $data = array("content" => '```Deleted inn with id "' . $innId . '" and name: "' . $innName['name'] . '" . ```', "username" => $loggedUser);
+            sendToWebhook($discordSubmitLogChannelUrl, ($data));
+        }
+    }
+
+    public function delete_fortress($fortressId, $loggedUser)
+    {
+        global $manualdb, $noFortress, $noDeleteFortress, $noDiscordSubmitLogChannel, $discordSubmitLogChannelUrl;
+        if ( $noFortress === true || $noDeleteFortress === true) {
+            http_response_code( 401 );
+            die();
+        }
+        $fortressName = $manualdb->get( "fortress", [ 'name' ], [ 'id' => $fortressId ] );
+        if ( ! empty( $fortressId ) ) {
+            $manualdb->delete( 'fortress', [
+                "AND" => [
+                    'id' => $fortressId
+                ]
+            ] );
+        }
+        if ( $noDiscordSubmitLogChannel === false ) {
+            $data = array("content" => '```Deleted fortress with id "' . $fortressId . '" and name: "' . $fortressName['name'] . '" . ```', "username" => $loggedUser);
+            sendToWebhook($discordSubmitLogChannelUrl, ($data));
+        }
+    }
+
+    public function delete_greenhouse($greenhouseId, $loggedUser)
+    {
+        global $manualdb, $noGreenhouse, $noDeleteGreenhouse, $noDiscordSubmitLogChannel, $discordSubmitLogChannelUrl;
+        if ( $noGreenhouse === true || $noDeleteGreenhouse === true) {
+            http_response_code( 401 );
+            die();
+        }
+        $innName = $manualdb->get( "greenhouse", [ 'name' ], [ 'id' => $greenhouseId ] );
+        if ( ! empty( $greenhouseId ) ) {
+            $manualdb->delete( 'greenhouse', [
+                "AND" => [
+                    'id' => $greenhouseId
+                ]
+            ] );
+        }
+        if ( $noDiscordSubmitLogChannel === false ) {
+            $data = array("content" => '```Deleted greenhouse with id "' . $greenhouseId . '" and name: "' . $greenhouseName['name'] . '" . ```', "username" => $loggedUser);
+            sendToWebhook($discordSubmitLogChannelUrl, ($data));
         }
     }
 }

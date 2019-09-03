@@ -72,6 +72,32 @@ function sendToWebhook($webhookUrl, $webhook) {
     curl_exec($c);
     curl_close($c);
 }
+
+function uploadImage($imgurCID, $data) {
+    $c = curl_init();
+    curl_setopt($c, CURLOPT_URL, 'https://api.imgur.com/3/image');
+    curl_setopt($c, CURLOPT_POST, true);
+    curl_setopt($c, CURLOPT_RETURNTRANSFER, true);
+    curl_setopt($c, CURLOPT_HTTPHEADER, ["Authorization: Client-ID $imgurCID"]);
+    curl_setopt($c, CURLOPT_POSTFIELDS, $data);
+    $result = curl_exec($c);
+    curl_close($c);
+
+    return $result;
+}
+
+function deleteImage($imgurCID, $data) {
+    $c = curl_init();
+    curl_setopt($c, CURLOPT_URL, 'https://api.imgur.com/3/image/' . $data);
+    curl_setopt($c, CURLOPT_RETURNTRANSFER, true);
+    curl_setopt($c, CURLOPT_HTTPHEADER, ["Authorization: Client-ID $imgurCID"]);
+    curl_setopt($c, CURLOPT_CUSTOMREQUEST, 'DELETE');
+    $result = curl_exec($c);
+    curl_close($c);
+
+    return $result;
+}
+
 function generateRandomString($length = 8)
 {
     $characters = '0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ';
@@ -106,7 +132,8 @@ function createUserAccount($user, $password, $newExpireTimestamp)
                 "user" => $user,
                 "temp_password" => $hashedPwd,
                 "expire_timestamp" => $newExpireTimestamp,
-                "login_system" => 'native'
+                "login_system" => 'native',
+                "access_level" => '0'
             ]);
             
             $logMsg = "INSERT INTO users (id, user, expire_timestamp, login_system) VALUES ('{$getId}', '{$user}', '{$newExpireTimestamp}', 'native'); -- " . date('Y-m-d H:i:s') . "\r\n";
