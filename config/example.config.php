@@ -65,11 +65,11 @@ $mBoxKey = "";
 
 //$dayOfTheWeek = date('l');
 //If ($dayOfTheWeek === 'Monday' || $dayOfTheWeek === 'Tuesday' || $dayOfTheWeek === 'Wednesday') {
-//    $mapBoxKey = "";
+//    $mBoxKey = "";
 //} else if ($dayOfTheWeek === 'Thursday' || $dayOfTheWeek === 'Friday') {
-//    $mapBoxKey = "";
+//    $mBoxKey = "";
 //} else if ($dayOfTheWeek === 'Saturday' || $dayOfTheWeek === 'Sunday') {
-//    $mapBoxKey = "";
+//    $mBoxKey = "";
 //}
 
 /* Google Analytics */
