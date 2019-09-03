@@ -103,12 +103,20 @@
     "prototext": "QUEST_EVOLVE_INTO_POKEMON",
     "text": "Evolve {0} pokémon into"
   },
-  "26": {
+  "27": {
     "prototext": "QUEST_COMPLETE_COMBAT",
     "text": "Win {0} pvp battle(s)"
   },
-  "27": {
+  "28": {
     "prototext": "QUEST_TAKE_SNAPSHOT",
-    "text": "Take {0} Snapshot photo(s)"
+    "text": "Take {0} Snapshot(s)"
+  },
+  "29": {
+    "prototext": "QUEST_BATTLE_TEAM_ROCKET",
+    "text": "Defeat {0} Team GO Rocket Grunt(s)"
+  },
+  "30": {
+    "prototext": "QUEST_PURIFY_POKEMON",
+    "text": "Purify {0} pokémon"
   }
 }

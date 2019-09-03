@@ -456,7 +456,7 @@ class RDM extends Submit
 
     public function convert_portal_pokestop($portalId, $loggedUser)
     {
-        global $db, $manualdb, $noPortals, $noDiscordSubmitLogChannel, $discordSubmitLogChannelUrl;
+        global $db, $manualdb, $noPortals, $noDiscordSubmitLogChannel, $discordSubmitLogChannelUrl, $submitMapUrl;
         if ( $noPortals === true ) {
             http_response_code( 401 );
             die();
@@ -469,7 +469,8 @@ class RDM extends Submit
                 'lon'      => $portal['lon'],
                 'name'     => $portal['name'],
                 'url'      => $portal['url'],
-                'updated'  => time()
+                'updated'  => time(),
+                'enabled'  => 1
             ];
             $db->insert( "pokestop", $cols );
             if ( $noDiscordSubmitLogChannel === false ) {
@@ -481,7 +482,7 @@ class RDM extends Submit
 
     public function convert_portal_gym($portalId, $loggedUser)
     {
-        global $db, $manualdb, $noPortals, $noDiscordSubmitLogChannel, $discordSubmitLogChannelUrl;
+        global $db, $manualdb, $noPortals, $noDiscordSubmitLogChannel, $discordSubmitLogChannelUrl, $submitMapUrl;
         if ( $noPortals === true ) {
             http_response_code( 401 );
             die();
