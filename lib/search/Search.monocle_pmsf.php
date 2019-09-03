@@ -87,7 +87,7 @@ class Monocle_PMSF extends Search
         $mons = json_decode( $json, true );
         $resids = [];
         foreach($mons as $k => $mon){
-            if( $k > 493){
+            if( $k > 649){
                 break;
             }
             if(strpos(strtolower(i8ln($mon['name'])), strtolower($term)) !== false){
