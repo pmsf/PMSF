@@ -1257,7 +1257,7 @@ function getQuest(item) {
     var questinfo = JSON.parse(item['quest_condition_info'])
     var questStr = questtypeList[item['quest_type']]
 
-    str = questStr.replace('{0}', item['quest_target'])
+    str = questStr
 
     if (item['quest_condition_type'] > 0) {
         switch (item['quest_condition_type']) {
@@ -1275,6 +1275,9 @@ function getQuest(item) {
                     })
                 } else {
                     tstr = pokemonTypes[questinfo['pokemon_type_ids']]
+                }
+                if (item['quest_condition_type_1'] === 21) {
+                    str = str.replace('Catch {0}', 'Catch {0} different species of')
                 }
                 str = str.replace('pokémon', tstr + '-type Pokémon')
                 str = str.replace('Snapshot(s)', 'Snapshot(s) of ' + tstr + '-type Pokémon')
@@ -1373,6 +1376,7 @@ function getQuest(item) {
                 break
         }
     }
+    str = str.replace('{0}', item['quest_target'])
     if (item['quest_target'] === 1) {
         str = str.replace('(s)', '').replace('1', 'a').replace('a times', '')
     } else {
