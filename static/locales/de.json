@@ -1702,8 +1702,8 @@
   "Catch 4 Eis or Pflanze-type Pokémon":"Fange 4 Pokémon vom Typ Eis oder Pflanze",
   "Catch 5 Fee-type Pokémon":"Fange 5 Pokémon vom Typ Fee",
   "Catch 5 Normal-type Pokémon":"Fange 5 Pokémon vom Typ Normal",
-  "Catch 3 Psycho-type Pokémon":"Fange 3 verschiedene Pokémon vom Typ Psycho",
-  "Catch 3 Unlicht-type Pokémon":"Fange 3 verschiedene Pokémon vom Typ Unlicht",
+  "Catch 3 different species of Psycho-type Pokémon":"Fange 3 verschiedene Pokémon vom Typ Psycho",
+  "Catch 3 different species of Unlicht-type Pokémon":"Fange 3 verschiedene Pokémon vom Typ Unlicht",
   "Catch a Ditto":"Fange ein Ditto",
   "Win a gym battle":"Gewinne einen Arenakampf",
   "Win 2 gym battles":"Gewinne 2 Arenakämpfe",
@@ -1754,5 +1754,6 @@
   "Take 5 Snapshots of Evoli":"Mache 5 Schnappschüsse von Evoli",
   "Trade a Pokémon":"Tausche ein Pokémon",
   "Evolve a Pokémon":"Entwickle ein Pokémon",
-  "Win 2 pvp battles":"Kämpfe gegen einen anderen Trainer / Kämpfe zweimal gegen einen Teamleiter"
+  "Battle Another Trainer 2 times":"Kämpfe zweimal gegen einen anderen Trainer",
+  "Battle a Team Leader 2 times":"Kämpfe zweimal gegen einen Teamleiter"
 }
