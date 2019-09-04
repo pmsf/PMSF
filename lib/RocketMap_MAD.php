@@ -544,6 +544,7 @@ class RocketMap_MAD extends RocketMap
             $pokestop["url"] = ! empty($pokestop["url"]) ? str_replace("http://", "https://images.weserv.nl/?url=", $pokestop["url"]) : null;
             $pokestop["quest_type"] = intval($pokestop["quest_type"]);
             $pokestop["quest_condition_type"] = intval($pokestop["quest_condition_type"]);
+            $pokestop["quest_condition_type_1"] = intval($pokestop["quest_condition_type_1"]);
             $pokestop["quest_reward_type"] = intval($pokestop["quest_reward_type"]);
             $pokestop["quest_target"] = intval($pokestop["quest_target"]);
             $pokestop["quest_pokemon_id"] = intval($pokestop["quest_pokemon_id"]);

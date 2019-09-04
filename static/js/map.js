@@ -1326,7 +1326,7 @@ function getQuest(item) {
                 str = str.replace('Complete', 'Win')
                 break
             case 10:
-                str = str.replace('Complete', 'Use a super effective charged attack in ')
+                str = str.replace('Complete', 'Use a super effective charged attack in')
                 break
             case 11:
                 if (item['quest_type'] === 13) {
@@ -1378,7 +1378,7 @@ function getQuest(item) {
     }
     str = str.replace('{0}', item['quest_target'])
     if (item['quest_target'] === 1) {
-        str = str.replace('(s)', '').replace('1', 'a').replace('a times', '')
+        str = str.replace('(s)', '').replace('1', 'a').replace(' a times', '')
     } else {
         str = str.replace('(s)', 's')
     }
