@@ -323,11 +323,12 @@ $hideIfManual = false;
 $noManualRaids = true;						 			                                // Enable/Disable ManualRaids permanently ( Comment this line if you want to use the block below )
 $noDiscordSubmitLogChannel = true;                                  			        // Send webhooks to discord channel upon submission
 $submitMapUrl = '';
-$discordSubmitLogChannelUrl = 'https://discordapp.com/api/webhooks/<yourCHANNELhere>';  // Sends gym/pokestop submit & pokestop rename directly to discord
-
+$discordSubmitLogChannelUrl = 'https://discordapp.com/api/webhooks/<yourCHANNELhere>';  // Sends gym/pokestop submit & pokestop rename directly to discord can also be an array ['URL', 'URL'] or as many as you like.
+$discordPOISubmitLogChannelUrl = 'https://discordapp.com/api/webhooks/<yourCHANNELhere>';  // Sends gym/pokestop submit & pokestop rename directly to discord can also be an array ['URL', 'URL'] or as many as you like.
 $noManualPokemon = true;
 $pokemonTimer = 900;                                                                    // Time in seconds before a submitted Pokémon despawns. (not used atm)
 $noManualGyms = true;
+$noRenameGyms = true;
 $noManualPokestops = true;
 $noRenamePokestops = true;
 $noConvertPokestops = true;
