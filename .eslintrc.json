@@ -46,6 +46,7 @@
     "locationSet": true,
     "zoom": true,
     "encounterId": true,
+    "defaultZoom": true,
     "minZoom": true,
     "maxZoom": true,
     "maxLatLng": true,
