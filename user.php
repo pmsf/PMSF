@@ -46,9 +46,9 @@ include('config/config.php');
         var token = '<?php echo (!empty($_SESSION['token'])) ? $_SESSION['token'] : ""; ?>';
     </script>
     <link rel="stylesheet" href="static/dist/css/app.min.css">
-    <?php if ( file_exists( 'static/css/custom.css' ) ) {
-        echo '<link rel="stylesheet" href="static/css/custom.css">';
-    } ?>
+    <?php if (file_exists('static/css/custom.css')) {
+    echo '<link rel="stylesheet" href="static/css/custom.css">';
+} ?>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jqueryui/1.12.0/jquery-ui.min.css">
     <link rel="stylesheet" href="https://cdn.datatables.net/1.10.12/css/jquery.dataTables.css">
     <script src="static/js/vendor/modernizr.custom.js"></script>
@@ -64,7 +64,7 @@ include('config/config.php');
         }
         if ($noNativeLogin === true && $noDiscordLogin === false && empty($_SESSION['user']->id)) {
             header("Location: ./discord-login");
-        } else if ($noNativeLogin === true && $noDiscordLogin === false && !empty($_SESSION['user']->id)) {
+        } elseif ($noNativeLogin === true && $noDiscordLogin === false && !empty($_SESSION['user']->id)) {
             header("Location: .?login=true");
         }
 

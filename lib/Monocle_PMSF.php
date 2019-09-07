@@ -196,7 +196,7 @@ class Monocle_PMSF extends Monocle
         }
         if (!empty($quests) && $quests === 'true') {
             $tmpSQL = '';
-        if (count($qpreids)) {
+            if (count($qpreids)) {
                 $pkmn_in = '';
                 $p = 1;
                 foreach ($qpreids as $qpreid) {
@@ -225,7 +225,7 @@ class Monocle_PMSF extends Monocle
             if ($reloaddustamount == "true") {
                 $tmpSQL .= "(json_extract(json_extract(`quest_rewards`,'$[*].type'),'$[0]') = 3 AND json_extract(json_extract(`quest_rewards`,'$[*].info.amount'),'$[0]') > :amount)";
                 $params[':amount'] = intval($dustamount);
-        } else {
+            } else {
                 $tmpSQL .= "";
             }
             $conds[] = $tmpSQL;
