@@ -437,7 +437,7 @@ class RocketMap_MAD extends RocketMap
         }
         if (!empty($quests) && $quests === 'true') {
             $tmpSQL = '';
-        if (count($qpreids)) {
+            if (count($qpreids)) {
                 $pkmn_in = '';
                 $p = 1;
                 foreach ($qpreids as $qpreid) {
@@ -466,7 +466,7 @@ class RocketMap_MAD extends RocketMap
             if ($reloaddustamount == "true") {
                 $tmpSQL .= "tq.quest_stardust > :amount";
                 $params[':amount'] = intval($dustamount);
-        } else {
+            } else {
                 $tmpSQL .= "";
             }
             $conds[] = $tmpSQL;
@@ -555,15 +555,15 @@ class RocketMap_MAD extends RocketMap
             $pokestop["quest_item_name"] = empty($item_pid) ? null : i8ln($this->items[$item_pid]["name"]);
             $pokestop["quest_pokemon_name"] = empty($mon_pid) ? null : i8ln($this->data[$mon_pid]["name"]);
             if (!empty($pokestop["quest_condition_pokemon_ids"])) {
-                $pokestop["quest_condition_info"] = str_replace('"category_name": "", ',"",$pokestop["quest_condition_pokemon_ids"]);
-            } else if (!empty($pokestop["quest_condition_with_pokemon_type"])) {
-                $pokestop["quest_condition_info"] = str_replace("pokemon_type","pokemon_type_ids",$pokestop["quest_condition_with_pokemon_type"]);
-            } else if (!empty($pokestop["quest_condition_with_throw_type"])) {
-                $pokestop["quest_condition_info"] = str_replace("throw_type","throw_type_id",$pokestop["quest_condition_with_throw_type"]);
-            } else if (!empty($pokestop["quest_condition_with_raid_level"])) {
-                $pokestop["quest_condition_info"] = str_replace("raid_level","raid_levels",$pokestop["quest_condition_with_raid_level"]);
-            } else if (!empty($pokestop["quest_condition_with_item"])) {
-                $pokestop["quest_condition_info"] = str_replace("item","item_id",$pokestop["quest_condition_with_item"]);
+                $pokestop["quest_condition_info"] = str_replace('"category_name": "", ', "", $pokestop["quest_condition_pokemon_ids"]);
+            } elseif (!empty($pokestop["quest_condition_with_pokemon_type"])) {
+                $pokestop["quest_condition_info"] = str_replace("pokemon_type", "pokemon_type_ids", $pokestop["quest_condition_with_pokemon_type"]);
+            } elseif (!empty($pokestop["quest_condition_with_throw_type"])) {
+                $pokestop["quest_condition_info"] = str_replace("throw_type", "throw_type_id", $pokestop["quest_condition_with_throw_type"]);
+            } elseif (!empty($pokestop["quest_condition_with_raid_level"])) {
+                $pokestop["quest_condition_info"] = str_replace("raid_level", "raid_levels", $pokestop["quest_condition_with_raid_level"]);
+            } elseif (!empty($pokestop["quest_condition_with_item"])) {
+                $pokestop["quest_condition_info"] = str_replace("item", "item_id", $pokestop["quest_condition_with_item"]);
             } else {
                 $pokestop["quest_condition_info"] = null;
             }

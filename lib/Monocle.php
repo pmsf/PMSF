@@ -128,7 +128,7 @@ class Monocle extends Scanner
             $pokemon["longitude"] = floatval($pokemon["longitude"]);
             $lastlat = floatval($pokemon["latitude"]);
             $lastlon = floatval($pokemon["longitude"]);
-            if (abs($pokemon["latitude"] - $lastlat) < 0.0001 && abs($pokemon["longitude"] - $lastlon) < 0.0001){
+            if (abs($pokemon["latitude"] - $lastlat) < 0.0001 && abs($pokemon["longitude"] - $lastlon) < 0.0001) {
                 $lasti = $lasti + 1;
             } else {
                 $lasti = 0;
@@ -158,7 +158,7 @@ class Monocle extends Scanner
                             $types[$ft]['type'] = $v['type'];
                         }
                         $pokemon["pokemon_types"] = $types;
-                    } else if ($pokemon["form"] === $v['assetsform']) {
+                    } elseif ($pokemon["form"] === $v['assetsform']) {
                         $types = $v['formtypes'];
                         foreach ($v['formtypes'] as $ft => $v) {
                             $types[$ft]['type'] = $v['type'];
