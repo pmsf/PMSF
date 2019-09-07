@@ -25,6 +25,7 @@ $startingLng = 5.302366;                                           // Starting l
 /* Zoom and Cluster Settings */
 
 $maxLatLng = 1;                                                     // Max latitude and longitude size (1 = ~110km, 0 to disable)
+$defaultZoom = 16;                                                  // Default zoom level for first time users.
 $maxZoomOut = 11;                                                   // Max zoom out level (11 ~= $maxLatLng = 1, 0 to disable, lower = the further you can zoom out)
 $maxZoomIn = 18;                                                    // Max zoom in level 18
 $disableClusteringAtZoom = 15;                                      // Disable clustering above this value. 0 to disable
