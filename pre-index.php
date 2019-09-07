@@ -1982,6 +1982,7 @@ if ( $blockIframe ) {
     var motd = <?php echo $noMotd ? 'false' : 'true' ?>;
     var zoom<?php echo $zoom ? " = " . $zoom : null; ?>;
     var encounterId<?php echo $encounterId ? " = '" . $encounterId . "'" : null; ?>;
+    var defaultZoom = <?= $defaultZoom; ?>;
     var maxZoom = <?= $maxZoomIn; ?>;
     var minZoom = <?= $maxZoomOut; ?>;
     var maxLatLng = <?= $maxLatLng; ?>;

@@ -72,7 +72,7 @@ function sendToWebhook($webhookUrl, $webhook) {
             curl_setopt($c, CURLOPT_HTTPHEADER, ['Content-type: application/json', 'User-Agent: python-requests/2.18.4']);
             curl_setopt($c, CURLOPT_POSTFIELDS, json_encode($webhook));
             curl_exec($c);
-	    curl_close($c);
+            curl_close($c);
         }
     } else {
         $c = curl_init($webhookUrl);
@@ -83,7 +83,7 @@ function sendToWebhook($webhookUrl, $webhook) {
         curl_setopt($c, CURLOPT_HTTPHEADER, ['Content-type: application/json', 'User-Agent: python-requests/2.18.4']);
         curl_setopt($c, CURLOPT_POSTFIELDS, json_encode($webhook));
         curl_exec($c);
-	curl_close($c);
+        curl_close($c);
     }
 }
 
