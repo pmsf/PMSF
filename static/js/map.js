@@ -2898,7 +2898,6 @@ function addListeners(marker) {
         }
     })
 
-
     if (!isMobileDevice() && !isTouchDevice()) {
         marker.on('mouseover', function () {
             marker.openPopup()
