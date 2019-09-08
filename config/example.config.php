@@ -347,7 +347,7 @@ $enableLevel13Cells = 'false';
 $enableLevel14Cells = 'false';
 $enableLevel17Cells = 'false';
 $markPortalsAsNew = 86400;                         // Time in seconds to mark new imported portals as new ( 86400 for 1 day )
-$noPoi = true;					                   // Allow users to view POI markers 
+$noPoi = true;					                   // Allow users to view POI markers
 $noAddPoi = true;				                   // Allow to add POI markers (locations eligible for submitting Pokestops/Ingress portals)
 $enablePoi = 'false';
 $noDeletePoi = true;
@@ -422,7 +422,7 @@ $nestGeoJSONfile = 'custom/nest.json';			    // path to geoJSON file provided by
 //-----------------------------------------------
 // HPWU
 //-----------------------------------------------------
-$noInn = true;               // Enable/Disable the option to see inns 
+$noInn = true;               // Enable/Disable the option to see inns
 $enableInn = 'false';        // Enable/Disable inns by default. A user can edit this.
 $noDeleteInn = true;         // Enable/Disable option do delete a inn
 
@@ -470,7 +470,7 @@ $fork = "default";                                                  // {default/
 $queryInterval = '2500';                                            // Interval between raw_data requests. Try to lower to increase performance.
 
 $db = new Medoo([// required
-    'database_type' => 'mysql',                                    
+    'database_type' => 'mysql',
     'database_name' => 'Monocle',
     'server' => '127.0.0.1',
     'username' => 'database_user',

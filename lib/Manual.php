@@ -77,7 +77,7 @@ class Manual
             $nest["lon"] = floatval($nest["lon"]);
             $nest["type"] = intval($nest["type"]);
             $nest["pokemon_avg"] = floatval($nest["pokemon_avg"]);
-            if($nest['pokemon_id'] > 0 ){
+            if ($nest['pokemon_id'] > 0) {
                 $nest["pokemon_name"] = i8ln($this->data[$nest["pokemon_id"]]['name']);
                 $types = $this->data[$nest["pokemon_id"]]["types"];
                 $etypes = $this->data[$nest["pokemon_id"]]["types"];
