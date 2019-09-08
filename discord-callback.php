@@ -18,7 +18,7 @@ if ($noDiscordLogin === false) {
                     header("Location: .?login=true");
                     $granted = true;
                 } else {
-                    foreach($guilds as $guild) {
+                    foreach ($guilds as $guild) {
                         $uses = $guild->id;
                         $guildName = $guild->name;
                         if (in_array($uses, $serverBlacklist)) {
@@ -75,8 +75,8 @@ if ($noDiscordLogin === false) {
     header("Location: .");
 }
 
-function logFailure($logFailure){
+function logFailure($logFailure)
+{
     global $logFailedLogin;
     file_put_contents($logFailedLogin, $logFailure, FILE_APPEND);
 }
-

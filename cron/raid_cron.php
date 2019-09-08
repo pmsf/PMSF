@@ -2,7 +2,7 @@
 include(dirname(__FILE__).'/../config/config.php');
 global $map, $fork, $db, $raidBosses, $webhookUrl, $sendWebhook, $manualFiveStar, $noManualRaids, $noRaids;
 
-if($noManualRaids === true || $noRaids === true){
+if ($noManualRaids === true || $noRaids === true) {
     http_response_code(401);
     die();
 }
@@ -18,7 +18,7 @@ if (count($eggs5) > 0) {
     foreach ($eggs5 as $egg) {
         // add each fort to the array for updating
         array_push($fort_ids, $egg['fort_id']);
-		$gym = $db->get("forts", ['external_id'], ['id' => $fort_ids]);
+        $gym = $db->get("forts", ['external_id'], ['id' => $fort_ids]);
 
         // do we need to send to webhooks?
         if ($sendWebhook === true && $manualFiveStar['webhook'] === true) {

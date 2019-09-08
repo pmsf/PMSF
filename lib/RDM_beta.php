@@ -168,7 +168,7 @@ class RDM_beta extends RDM
         
         foreach ($pokemons as $pokemon) {
             // Jitter pokemon when they have no spawn_id
-            if ( empty($pokemon['spawn_id'])) {
+            if (empty($pokemon['spawn_id'])) {
                 $pokemon["latitude"] = floatval($pokemon["latitude"]);
                 $pokemon["longitude"] = floatval($pokemon["longitude"]);
                 $lastlat = floatval($pokemon["latitude"]);
@@ -206,7 +206,7 @@ class RDM_beta extends RDM
                             $types[$ft]['type'] = $v['type'];
                         }
                         $pokemon["pokemon_types"] = $types;
-                    } else if ($pokemon["form"] === $v['assetsform']) {
+                    } elseif ($pokemon["form"] === $v['assetsform']) {
                         $types = $v['formtypes'];
                         foreach ($v['formtypes'] as $ft => $v) {
                             $types[$ft]['type'] = $v['type'];
