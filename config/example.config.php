@@ -182,10 +182,8 @@ $excludeMinIV = '[131, 143, 147, 148, 149, 248]';                   // [] for em
 $minIV = '0';                                                       // "0" for empty or a number
 $minLevel = '0';                                                    // "0" for empty or a number
 
-$noBigKarp = false;                                                 // BUGGED: Hides ALL Magikarp && the menu setting.
-$noBigKarpSetting = false;
-$noTinyRat = false;                                                 // BUGGED: Hides ALL Rattata && the menu setting.
-$noTinyRatSetting = false;
+$noBigKarp = false;
+$noTinyRat = false;
 
 $noGyms = false;
 $enableGyms = 'false';
