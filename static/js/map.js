@@ -991,7 +991,7 @@ function pokemonLabel(item) {
         contentstring += '_' + item['costume']
     }
     contentstring += '.png" style="width:50px;margin-top:10px;"/>'
-    if (item['expire_timestamp_verified'] > 0) {
+    if (item['expire_timestamp_verified'] !== 0 && item['expire_timestamp_verified'] !== '0') {
         contentstring += '<b style="top:-20px;position:relative;">' +
             '<i class="far fa-clock"></i>' + ' ' + getTimeStr(disappearTime) +
             ' <span class="label-countdown" disappears-at="' + disappearTime + '">(00m00s)</span>' +
