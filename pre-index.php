@@ -2117,6 +2117,8 @@ if ($blockIframe) {
     var noDeleteFortress = <?php echo $noDeleteFortress === true ? 'true' : 'false' ?>;
     var noDeleteGreenhouse = <?php echo $noDeleteGreenhouse === true ? 'true' : 'false' ?>;
     var noInvasionEncounterData = <?php echo $noTeamRocketEncounterData === true ? 'true' : 'false' ?>;
+    var noDitto = <?php echo $noDittoDetection === true ? 'true' : 'false' ?>;
+    var possibleDitto = <?php echo $possibleDitto ?>;
 </script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js"></script>
 <script src="static/dist/js/map.common.min.js"></script>
