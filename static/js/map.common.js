@@ -463,7 +463,7 @@ var mapData = {
     greenhouses: {}
 }
 
-function getPokemonSprite(index, sprite, displayHeight, weather = 0, encounterForm = 0, pokemonCostume = 0, attack = 0, defense = 0, stamina = 0, level = 0) {
+function getPokemonSprite(index, sprite, displayHeight, weather = 0, encounterForm = 0, pokemonCostume = 0, attack = 0, defense = 0, stamina = 0) {
     displayHeight = Math.max(displayHeight, 3)
     var scale = displayHeight / sprite.iconHeight
     // Crop icon just a tiny bit to avoid bleedover from neighbor
@@ -485,14 +485,7 @@ function getPokemonSprite(index, sprite, displayHeight, weather = 0, encounterFo
     } else if (pokemonId <= 99) {
         pokemonIdStr = '0' + pokemonId
     } else {
-        pokemonIdStr += pokemonId
-    }
-    var possibleDitto = ['046', '048', '163', '165', '193', '223', '293', '316']
-    if (noDitto === false && possibleDitto.includes(pokemonIdStr) && weather > 0 && level !== null) {
-        if ((level < 6) || (attack < 4 || defense < 4 || stamina < 4)) {
-            pokemonIdStr = '132'
-            formStr = '00'
-        }
+        pokemonIdStr = pokemonId
     }
 
     var costume = ''
@@ -534,8 +527,7 @@ function setupPokemonMarker(item, map, isBounceDisabled) {
     var attack = item['individual_attack']
     var defense = item['individual_defense']
     var stamina = item['individual_stamina']
-    var level = item['level']
-    var icon = getPokemonSprite(pokemonIndex, pokemonSprites, iconSize, item['weather_boosted_condition'], item['form'], item['costume'], item['individual_attack'], item['individual_defense'], item['individual_stamina'], item['level'])
+    var icon = getPokemonSprite(pokemonIndex, pokemonSprites, iconSize, item['weather_boosted_condition'], item['form'], item['costume'], item['individual_attack'], item['individual_defense'], item['individual_stamina'])
 
     var animationDisabled = false
     if (isBounceDisabled === true) {

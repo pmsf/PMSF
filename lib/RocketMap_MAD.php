@@ -194,6 +194,16 @@ class RocketMap_MAD extends RocketMap
                 $types[$k]['type'] = $v['type'];
             }
             $pokemon["pokemon_types"] = $types;
+
+            // Ditto detection
+            global $noDittoDetection;
+            if (!$noDittoDetection) {
+                if (in_array($pokemon["pokemon_id"], [92, 193, 316]) && $pokemon["weather_boosted_condition"] == 3 ) {
+                    $pokemon["pokemon_id"] = 132;
+                    $pokemon["form"] = 0;
+                }
+            }
+
             $data[] = $pokemon;
 
             unset($pokemons[$i]);
