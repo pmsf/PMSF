@@ -230,13 +230,10 @@ if ($blockIframe) {
 
         <h1><a href="#"><?= $title ?><img src="<?= $raidmapLogo ?>" height="35" width="auto" border="0" style="float: right; margin-left: 5px; margin-top: 10px;"></a></h1>
 
-        <?php if (! $noStatsToggle) {
-            ?>
-            <a href="#stats" id="statsToggle" class="statsNav" title="<?php echo i8ln('Stats') ?>" style="float: right;"></a>
-            <?php
-        } ?>
-
         <?php
+        if (! $noStatsToggle) {
+            echo '<a href="#stats" id="statsToggle" class="statsNav" title="' . i8ln('Stats') . '" style="float: right;"></a>';
+        }
         if ($paypalUrl != "") {
             echo '<a href="' . $paypalUrl . '" target="_blank" style="float:right;padding:0 5px;">
                  <i class="fab fa-paypal" title="' . i8ln('PayPal') . '" style="position:relative;vertical-align:middle;color:white;margin-left:10px;font-size:20px;"></i>
