@@ -486,7 +486,7 @@ function getPokemonSprite(index, sprite, displayHeight, weather = 0, encounterFo
     } else {
         pokemonIdStr = pokemonId
     }
-    var possibleDittoTest = ['046', '048', '163', '165', '193', '223', '293', '316']
+    var possibleDitto = ['046', '048', '163', '165', '193', '223', '293', '316']
     if (noDitto === false && possibleDitto.includes(pokemonIdStr) && weather > 0 && level !== null && level < 6) {
         pokemonIdStr = '132'
         formStr = '00'
