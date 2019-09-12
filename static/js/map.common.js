@@ -468,7 +468,8 @@ function getPokemonSprite(index, sprite, displayHeight, weather = 0, encounterFo
     var scale = displayHeight / sprite.iconHeight
     // Crop icon just a tiny bit to avoid bleedover from neighbor
     var scaledIconSizeWidth = scale * sprite.iconWidth
-    var scaledWeatherIconSizeWidth = scale * sprite.iconWidth - 10
+    var scaledWeatherIconSizeWidth = scaledIconSizeWidth * 0.6
+    var scaledWeatherIconOffset = scaledIconSizeWidth * 0.2
     var scaledIconCenterOffset = [scale * sprite.iconWidth / 2, scale * sprite.iconHeight / 2]
     var formStr = ''
     if (encounterForm === '0' || encounterForm === null || encounterForm === 0) {
@@ -510,7 +511,7 @@ function getPokemonSprite(index, sprite, displayHeight, weather = 0, encounterFo
             html += 'filter:drop-shadow(0 0 10px red)drop-shadow(0 0 10px red);-webkit-filter:drop-shadow(0 0 10px red)drop-shadow(0 0 10px red);'
         }
         html += '"/>' +
-        '<img src="static/weather/i-' + weather + '.png" style="width:' + scaledWeatherIconSizeWidth + 'px;height:auto;position:absolute;top:-' + scaledWeatherIconSizeWidth + 'px;right:0px;"/>'
+        '<img src="static/weather/a-' + weather + '.png" style="width:' + scaledWeatherIconSizeWidth + 'px;height:auto;position:absolute;top:-' + scaledWeatherIconOffset + 'px;left:' + scaledWeatherIconSizeWidth + 'px;"/>'
     }
     var pokemonIcon = L.divIcon({
         iconAnchor: scaledIconCenterOffset,
