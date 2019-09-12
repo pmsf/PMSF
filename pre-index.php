@@ -226,28 +226,35 @@ if ($blockIframe) {
 <div class="wrapper">
     <!-- Header -->
     <header id="header">
-        <a href="#nav"><span class="label"><?php echo i8ln('Options') ?></span></a>
+        <a href="#nav" title="<?php echo i8ln('Options') ?>"></a>
 
         <h1><a href="#"><?= $title ?><img src="<?= $raidmapLogo ?>" height="35" width="auto" border="0" style="float: right; margin-left: 5px; margin-top: 10px;"></a></h1>
+
+        <?php if (! $noStatsToggle) {
+            ?>
+            <a href="#stats" id="statsToggle" class="statsNav" title="<?php echo i8ln('Stats') ?>" style="float: right;"></a>
+            <?php
+        } ?>
+
         <?php
-        if ($discordUrl != "") {
-            echo '<a href="' . $discordUrl . '" target="_blank" style="margin-bottom: 5px; vertical-align: middle;padding:0 5px;">
-                 <i class="fab fa-discord" style="float:right;color:white;font-size:20px;"></i>
+        if ($paypalUrl != "") {
+            echo '<a href="' . $paypalUrl . '" target="_blank" style="float:right;padding:0 5px;">
+                 <i class="fab fa-paypal" title="' . i8ln('PayPal') . '" style="position:relative;vertical-align:middle;color:white;margin-left:10px;font-size:20px;"></i>
                  </a>';
         }
         if ($telegramUrl != "") {
-            echo '<a href="' . $telegramUrl . '" target="_blank" style="margin-bottom: 5px; vertical-align: middle; padding:0 5px;">
-                 <i class="fab fa-telegram" style="float:right;color:white;margin-left:10px;font-size:20px;"></i>
+            echo '<a href="' . $telegramUrl . '" target="_blank" style="float:right;padding:0 5px;">
+                 <i class="fab fa-telegram" title="' . i8ln('Telegram') . '" style="position:relative;vertical-align: middle;color:white;margin-left:10px;font-size:20px;"></i>
                  </a>';
         }
         if ($whatsAppUrl != "") {
-            echo '<a href="' . $whatsAppUrl . '" target="_blank" style="margin-bottom: 5px; vertical-align: middle; padding:0 5px;">
-                 <i class="fab fa-whatsapp" style="float:right;color:white;margin-left:10px;font-size:20px;"></i>
+            echo '<a href="' . $whatsAppUrl . '" target="_blank" style="float:right;padding:0 5px;">
+                 <i class="fab fa-whatsapp" title="' . i8ln('WhatsApp') . '" style="position:relative;vertical-align:middle;color:white;margin-left:10px;font-size:20px;"></i>
                  </a>';
         }
-        if ($paypalUrl != "") {
-            echo '<a href="' . $paypalUrl . '" target="_blank" style="margin-bottom: 5px; vertical-align: middle; padding:0 5px;">
-                 <i class="fab fa-paypal" style="float:right;color:white;margin-left:10px;font-size:20px;"></i>
+        if ($discordUrl != "") {
+            echo '<a href="' . $discordUrl . '" target="_blank" style="float:right;padding:0 5px;">
+                 <i class="fab fa-discord" title="' . i8ln('Discord') . '" style="position:relative;vertical-align:middle;color:white;margin-left:10px;font-size:20px;"></i>
                  </a>';
         }
         ?>
@@ -298,24 +305,17 @@ if ($blockIframe) {
                 }
                 
                 if ($noSelly || $info['expire_timestamp'] > time()) {
-                    $color = "green";
+                    echo '<i class="fas fa-user-check" title="' . i8ln('User Logged in') . '" style="color: green;font-size: 20px;position: relative;float: right;padding: 0 5px;top: 17px;"></i>';
                 } else {
-                    $color = "red";
+                    echo '<i class="fas fa-user-times" title="' . i8ln('User Expired') . '" style="color: red;font-size: 20px;position: relative;float: right;padding: 0 5px;top: 17px;"></i>';
                 }
-
-                echo "<span style='color: {$color};'>" . substr($_SESSION['user']->user, 0, 3) . "...</span>";
             } elseif ($forcedDiscordLogin === true) {
                 header("Location: ./discord-login");
             } else {
-                echo "<a href='./user'>" . i8ln('Login') . "</a>";
+                echo "<a href='./user' style='float:right;padding:0 5px;' title='" . i8ln('Login') . "'><i class='fas fa-user' style='color:white;font-size:20px;vertical-align:middle;'></i></a>";
             }
         }
         ?>
-        <?php if (! $noStatsToggle) {
-            ?>
-        <a href="#stats" id="statsToggle" class="statsNav" style="float: right;"><span class="label"><?php echo i8ln('Stats') ?></span></a>
-            <?php
-        } ?>
     </header>
     <!-- NAV -->
     <nav id="nav">
@@ -2127,7 +2127,6 @@ if ($blockIframe) {
     var noDeleteFortress = <?php echo $noDeleteFortress === true ? 'true' : 'false' ?>;
     var noDeleteGreenhouse = <?php echo $noDeleteGreenhouse === true ? 'true' : 'false' ?>;
     var noInvasionEncounterData = <?php echo $noTeamRocketEncounterData === true ? 'true' : 'false' ?>;
-    var noDitto = <?php echo $noDittoDetection === true ? 'true' : 'false' ?>;
 </script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js"></script>
 <script src="static/dist/js/map.common.min.js"></script>
