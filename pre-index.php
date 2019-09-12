@@ -232,12 +232,22 @@ if ($blockIframe) {
         <?php
         if ($discordUrl != "") {
             echo '<a href="' . $discordUrl . '" target="_blank" style="margin-bottom: 5px; vertical-align: middle;padding:0 5px;">
-                 <i class="fab fa-discord fa-2x" style="float:right;color:white;"></i>
+                 <i class="fab fa-discord" style="float:right;color:white;font-size:20px;"></i>
+                 </a>';
+        }
+        if ($telegramUrl != "") {
+            echo '<a href="' . $telegramUrl . '" target="_blank" style="margin-bottom: 5px; vertical-align: middle; padding:0 5px;">
+                 <i class="fab fa-telegram" style="float:right;color:white;margin-left:10px;font-size:20px;"></i>
+                 </a>';
+        }
+        if ($whatsAppUrl != "") {
+            echo '<a href="' . $whatsAppUrl . '" target="_blank" style="margin-bottom: 5px; vertical-align: middle; padding:0 5px;">
+                 <i class="fab fa-whatsapp" style="float:right;color:white;margin-left:10px;font-size:20px;"></i>
                  </a>';
         }
         if ($paypalUrl != "") {
             echo '<a href="' . $paypalUrl . '" target="_blank" style="margin-bottom: 5px; vertical-align: middle; padding:0 5px;">
-                 <i class="fab fa-paypal fa-2x" style="float:right;color:white;margin-left:10px;"></i>
+                 <i class="fab fa-paypal" style="float:right;color:white;margin-left:10px;font-size:20px;"></i>
                  </a>';
         }
         ?>
