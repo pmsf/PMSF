@@ -163,7 +163,7 @@ class RocketMap_MAD extends RocketMap
         $query = "SELECT :select
         FROM pokemon p
         LEFT JOIN trs_spawn ts ON ts.spawnpoint = p.spawnpoint_id
-        WHERE :conditions";
+        WHERE :conditions OR (pokemon_id in (46, 48, 163, 165, 193, 223, 293, 316) AND weather_boosted_condition > 0 AND (individual_attack < 4 OR individual_defense < 4 OR individual_stamina < 4 OR cp_multiplier < .3))";
 
         $query = str_replace(":select", $select, $query);
         $query = str_replace(":conditions", '(' . join(" AND ", $conds) . ')' . $encSql, $query);
@@ -200,7 +200,7 @@ class RocketMap_MAD extends RocketMap
             if (!$noDittoDetection && isset($pokemon["weather_boosted_condition"]) && isset($pokemon["cp_multiplier"])) {
                 if (in_array($pokemon["pokemon_id"], $possibleDitto) && $pokemon["weather_boosted_condition"] > 0 && $pokemon["cp_multiplier"] !== null) {
                     $multipliedMultiplier = $pokemon["cp_multiplier"] * 1000;
-                    if (($multipliedMultiplier <= 256) || ($pokemon["individual_attack"] < 4 || $pokemon["individual_defense"] < 4 || $pokemon["individual_stamina"] < 4)) {
+                    if (($multipliedMultiplier <= 291) || ($pokemon["individual_attack"] < 4 || $pokemon["individual_defense"] < 4 || $pokemon["individual_stamina"] < 4)) {
                         $pokemon["pokemon_id"] = 132;
                         $pokemon["form"] = 0;
                         $pokemon["weather_boosted_condition"] = 0;

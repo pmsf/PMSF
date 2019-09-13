@@ -155,7 +155,7 @@ class RDM_beta extends RDM
 
         $query = "SELECT :select
         FROM pokemon 
-        WHERE :conditions ORDER BY lat,lon ";
+        WHERE :conditions OR weather > 0 AND (level < 6 OR atk_iv < 4 OR def_iv < 4 OR sta_iv < 4) and pokemon_id in (48,46,163,165,193,223,293,316) ORDER BY lat,lon ";
 
         $query = str_replace(":select", $select, $query);
         $query = str_replace(":conditions", '(' . join(" AND ", $conds) . ')' . $encSql, $query);
