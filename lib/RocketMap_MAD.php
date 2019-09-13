@@ -86,7 +86,7 @@ class RocketMap_MAD extends RocketMap
         $dittoSql = '';
         if (!$noDittoDetection) {
             $pDitto = implode(",", $possibleDitto);
-            $dittoSql = " OR (pokemon_id in (" . $pDitto . ") AND weather_boosted_condition > 0 AND (individual_attack < 4 OR individual_defense < 4 OR individual_stamina < 4 OR cp_multiplier < .3))"
+            $dittoSql = " OR (pokemon_id in (" . $pDitto . ") AND weather_boosted_condition > 0 AND (individual_attack < 4 OR individual_defense < 4 OR individual_stamina < 4 OR cp_multiplier < .3))";
         }
         return $this->query_active($select, $conds, $params, $encSql, $dittoSql);
     }
