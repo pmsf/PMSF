@@ -187,6 +187,7 @@ class RocketMap_MAD extends RocketMap
             $pokemon["weather_boosted_condition"] = intval($pokemon["weather_boosted_condition"]);
 
             $pokemon["pokemon_id"] = intval($pokemon["pokemon_id"]);
+            $pokemon["pokemon_name"] = i8ln($this->data[$pokemon["pokemon_id"]]['name']);
             $pokemon["pokemon_rarity"] = i8ln($this->data[$pokemon["pokemon_id"]]['rarity']);
             $types = $this->data[$pokemon["pokemon_id"]]["types"];
             foreach ($types as $k => $v) {
@@ -196,16 +197,17 @@ class RocketMap_MAD extends RocketMap
 
             // Ditto detection
             global $noDittoDetection, $possibleDitto;
-            if (!$noDittoDetection && isset($pokemon["weather_boosted_condition"]) && isset($pokemon["level"])) {
-                if (in_array($pokemon["pokemon_id"], $possibleDitto) && $pokemon["weather_boosted_condition"] > 0 && $pokemon["level"] !== null) {
-                    if (($pokemon["level"] < 6) || ($pokemon["individual_attack"] < 4 || $pokemon["individual_defense"] < 4 || $pokemon["individual_stamina"] < 4)) {
+            if (!$noDittoDetection && isset($pokemon["weather_boosted_condition"]) && isset($pokemon["cp_multiplier"])) {
+                if (in_array($pokemon["pokemon_id"], $possibleDitto) && $pokemon["weather_boosted_condition"] > 0 && $pokemon["cp_multiplier"] !== null) {
+                    $multipliedMultiplier = $pokemon["cp_multiplier"] * 1000
+                    if (($multipliedMultiplier <= 256) || ($pokemon["individual_attack"] < 4 || $pokemon["individual_defense"] < 4 || $pokemon["individual_stamina"] < 4)) {
                         $pokemon["pokemon_id"] = 132;
                         $pokemon["form"] = 0;
                         $pokemon["weather_boosted_condition"] = 0;
+                        $pokemon["pokemon_name"] = $pokemon["pokemon_name"] . ' (' . i8ln('Ditto') . ')';
                     }
                 }
             }
-            $pokemon["pokemon_name"] = i8ln($this->data[$pokemon["pokemon_id"]]['name']);
 
             $data[] = $pokemon;
 
