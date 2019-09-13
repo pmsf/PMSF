@@ -82,7 +82,13 @@ class RocketMap_MAD extends RocketMap
         if ($encId != 0) {
             $encSql = " OR (encounter_id = " . $encId . " AND p.latitude > '" . $swLat . "' AND p.longitude > '" . $swLng . "' AND p.latitude < '" . $neLat . "' AND p.longitude < '" . $neLng . "' AND disappear_time > '" . $params[':time'] . "')";
         }
-        return $this->query_active($select, $conds, $params, $encSql);
+        global $noDittoDetection, $possibleDitto;
+        $dittoSql = '';
+        if (!$noDittoDetection) {
+            $pDitto = implode(",", $possibleDitto);
+            $dittoSql = " OR (pokemon_id in (" . $pDitto . ") AND weather_boosted_condition > 0 AND (individual_attack < 4 OR individual_defense < 4 OR individual_stamina < 4 OR cp_multiplier < .3))"
+        }
+        return $this->query_active($select, $conds, $params, $encSql, $dittoSql);
     }
 
     public function get_active_by_id($ids, $minIv, $minLevel, $exMinIv, $bigKarp, $tinyRat, $swLat, $swLng, $neLat, $neLng)
@@ -156,17 +162,17 @@ class RocketMap_MAD extends RocketMap
         return $this->query_active($select, $conds, $params);
     }
 
-    public function query_active($select, $conds, $params, $encSql = '')
+    public function query_active($select, $conds, $params, $encSql = '', $dittoSql = '')
     {
         global $db;
 
         $query = "SELECT :select
         FROM pokemon p
         LEFT JOIN trs_spawn ts ON ts.spawnpoint = p.spawnpoint_id
-        WHERE :conditions OR (pokemon_id in (46, 48, 163, 165, 193, 223, 293, 316) AND weather_boosted_condition > 0 AND (individual_attack < 4 OR individual_defense < 4 OR individual_stamina < 4 OR cp_multiplier < .3))";
+        WHERE :conditions";
 
         $query = str_replace(":select", $select, $query);
-        $query = str_replace(":conditions", '(' . join(" AND ", $conds) . ')' . $encSql, $query);
+        $query = str_replace(":conditions", '(' . join(" AND ", $conds) . ')' . $encSql . $dittoSql, $query);
         $pokemons = $db->query($query, $params)->fetchAll(\PDO::FETCH_ASSOC);
 
         $data = array();
@@ -201,9 +207,11 @@ class RocketMap_MAD extends RocketMap
                 if (in_array($pokemon["pokemon_id"], $possibleDitto) && $pokemon["weather_boosted_condition"] > 0 && $pokemon["cp_multiplier"] !== null) {
                     $multipliedMultiplier = $pokemon["cp_multiplier"] * 1000;
                     if (($multipliedMultiplier <= 291) || ($pokemon["individual_attack"] < 4 || $pokemon["individual_defense"] < 4 || $pokemon["individual_stamina"] < 4)) {
+                        if ($pokemon["weather_boosted_condition"] != 3) {
+                            $pokemon["weather_boosted_condition"] = 0;
+                        }
                         $pokemon["pokemon_id"] = 132;
                         $pokemon["form"] = 0;
-                        $pokemon["weather_boosted_condition"] = 0;
                         $pokemon["pokemon_name"] = $pokemon["pokemon_name"] . ' (' . i8ln('Ditto') . ')';
                     }
                 }
