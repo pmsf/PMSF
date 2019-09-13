@@ -195,6 +195,7 @@ class RDM_beta extends RDM
             $pokemon["weather_boosted_condition"] = isset($pokemon["weather_boosted_condition"]) ? intval($pokemon["weather_boosted_condition"]) : 0;
 
             $pokemon["pokemon_id"] = intval($pokemon["pokemon_id"]);
+            $pokemon["pokemon_name"] = i8ln($this->data[$pokemon["pokemon_id"]]['name']);
             $pokemon["pokemon_rarity"] = i8ln($this->data[$pokemon["pokemon_id"]]['rarity']);
             if (isset($pokemon["form"]) && $pokemon["form"] > 0) {
                 $forms = $this->data[$pokemon["pokemon_id"]]["forms"];
@@ -229,10 +230,10 @@ class RDM_beta extends RDM
                         $pokemon["pokemon_id"] = 132;
                         $pokemon["form"] = 0;
                         $pokemon["weather_boosted_condition"] = 0;
+                        $pokemon["pokemon_name"] = $pokemon["pokemon_name"] . ' (' . i8ln('Ditto') . ')';
                     }
                 }
             }
-            $pokemon["pokemon_name"] = i8ln($this->data[$pokemon["pokemon_id"]]['name']);
 
             $data[] = $pokemon;
             unset($pokemons[$i]);
