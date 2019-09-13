@@ -184,6 +184,7 @@ $noBigKarp = false;
 $noTinyRat = false;
 
 $noDittoDetection = true;
+$possibleDitto = [46, 48, 163, 165, 193, 223, 293, 316];
 
 $noGyms = false;
 $enableGyms = 'false';
