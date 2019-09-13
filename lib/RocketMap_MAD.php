@@ -200,13 +200,12 @@ class RocketMap_MAD extends RocketMap
                 $types[$k]['type'] = $v['type'];
             }
             $pokemon["pokemon_types"] = $types;
-
+            $pokemon["cp_multiplier"] = isset($pokemon["cp_multiplier"]) ? floatval($pokemon["cp_multiplier"]) : null;
             // Ditto detection
             global $noDittoDetection, $possibleDitto;
             if (!$noDittoDetection && isset($pokemon["weather_boosted_condition"]) && isset($pokemon["cp_multiplier"])) {
                 if (in_array($pokemon["pokemon_id"], $possibleDitto) && $pokemon["weather_boosted_condition"] > 0 && $pokemon["cp_multiplier"] !== null) {
-                    $multipliedMultiplier = $pokemon["cp_multiplier"] * 1000;
-                    if (($multipliedMultiplier <= 291) || ($pokemon["individual_attack"] < 4 || $pokemon["individual_defense"] < 4 || $pokemon["individual_stamina"] < 4)) {
+                    if (($pokemon["cp_multiplier"]) < 0.3 || ($pokemon["individual_attack"] < 4 || $pokemon["individual_defense"] < 4 || $pokemon["individual_stamina"] < 4)) {
                         if ($pokemon["weather_boosted_condition"] != 3) {
                             $pokemon["weather_boosted_condition"] = 0;
                         }
