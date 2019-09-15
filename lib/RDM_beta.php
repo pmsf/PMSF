@@ -230,9 +230,9 @@ class RDM_beta extends RDM
 
             // Ditto detection
             global $noDittoDetection, $possibleDitto;
-            if (!$noDittoDetection && isset($pokemon["weather_boosted_condition"]) && isset($pokemon["level"])) {
+            if (!$noDittoDetection) {
                 if (in_array($pokemon["pokemon_id"], $possibleDitto) && $pokemon["weather_boosted_condition"] > 0 && $pokemon["level"] !== null) {
-                    if (($pokemon["level"] < 6) || ($pokemon["individual_attack"] < 4 || $pokemon["individual_defense"] < 4 || $pokemon["individual_stamina"] < 4)) {
+                    if ($pokemon["level"] < 6 || $pokemon["individual_attack"] < 4 || $pokemon["individual_defense"] < 4 || $pokemon["individual_stamina"] < 4) {
                         if ($pokemon["weather_boosted_condition"] != 3) {
                             $pokemon["weather_boosted_condition"] = 0;
                         }
