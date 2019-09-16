@@ -78,7 +78,13 @@ class RDM_beta extends RDM
         if ($encId != 0) {
             $encSql = " OR (id = " . $encId . " AND lat > '" . $swLat . "' AND lon > '" . $swLng . "' AND lat < '" . $neLat . "' AND lon < '" . $neLng . "' AND expire_timestamp > '" . $params[':time'] . "')";
         }
-        return $this->query_active($select, $conds, $params, $encSql);
+        global $noDittoDetection, $possibleDitto;
+        $dittoSql = '';
+        if (!$noDittoDetection) {
+            $pDitto = implode(",", $possibleDitto);
+            $dittoSql = " OR weather > 0 AND (level < 6 OR atk_iv < 4 OR def_iv < 4 OR sta_iv < 4) and pokemon_id in (" . $pDitto . ")";
+        }
+        return $this->query_active($select, $conds, $params, $encSql, $dittoSql);
     }
 
     public function get_active_by_id($ids, $minIv, $minLevel, $exMinIv, $bigKarp, $tinyRat, $swLat, $swLng, $neLat, $neLng)
@@ -149,7 +155,7 @@ class RDM_beta extends RDM
         return $this->query_active($select, $conds, $params);
     }
 
-    public function query_active($select, $conds, $params, $encSql = '')
+    public function query_active($select, $conds, $params, $encSql = '', $dittoSql = '')
     {
         global $db;
 
@@ -158,7 +164,7 @@ class RDM_beta extends RDM
         WHERE :conditions ORDER BY lat,lon ";
 
         $query = str_replace(":select", $select, $query);
-        $query = str_replace(":conditions", '(' . join(" AND ", $conds) . ')' . $encSql, $query);
+        $query = str_replace(":conditions", '(' . join(" AND ", $conds) . ')' . $encSql . $dittoSql, $query);
         $pokemons = $db->query($query, $params)->fetchAll(\PDO::FETCH_ASSOC);
         $data = array();
         $i = 0;
@@ -221,6 +227,22 @@ class RDM_beta extends RDM
                 }
                 $pokemon["pokemon_types"] = $types;
             }
+
+            // Ditto detection
+            global $noDittoDetection, $possibleDitto;
+            if (!$noDittoDetection) {
+                if (in_array($pokemon["pokemon_id"], $possibleDitto) && $pokemon["weather_boosted_condition"] > 0 && $pokemon["level"] !== null) {
+                    if ($pokemon["level"] < 6 || $pokemon["individual_attack"] < 4 || $pokemon["individual_defense"] < 4 || $pokemon["individual_stamina"] < 4) {
+                        if ($pokemon["weather_boosted_condition"] != 3) {
+                            $pokemon["weather_boosted_condition"] = 0;
+                        }
+                        $pokemon["pokemon_id"] = 132;
+                        $pokemon["form"] = 0;
+                        $pokemon["pokemon_name"] = $pokemon["pokemon_name"] . ' (' . i8ln('Ditto') . ')';
+                    }
+                }
+            }
+
             $data[] = $pokemon;
             unset($pokemons[$i]);
             $i++;
