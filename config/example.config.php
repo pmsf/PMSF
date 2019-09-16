@@ -85,13 +85,11 @@ $piwikSiteId = "";
 /* Cookie Disclamer */
 $noCookie = true;                                                   // Display a Cookie Disclamer
 
-/* PayPal */
-
+/* header urls */
 $paypalUrl = "";                                                    // PayPal donation URL, leave "" for empty
-
-/* Discord */
-
 $discordUrl = "https://discord.gg/INVITE_LINK";                     // Discord URL, leave "" for empty
+$whatsAppUrl = "";                                                  // WhatsApp URL, leave "" for empty
+$telegramUrl = "";                                                  // Telegram URL, leave "" for empty
 
 /* Worldopole */
 
@@ -184,6 +182,9 @@ $minLevel = '0';                                                    // "0" for e
 
 $noBigKarp = false;
 $noTinyRat = false;
+
+$noDittoDetection = true;
+$possibleDitto = [46, 48, 163, 165, 193, 223, 293, 316];
 
 $noGyms = false;
 $enableGyms = 'false';
