@@ -494,7 +494,7 @@ function getPokemonSprite(index, sprite, displayHeight, weather = 0, encounterFo
     }
     var iv = 100 * (attack + defense + stamina) / 45
     var html = ''
-    if (weather === 0 || boostedMons[weather].indexOf(pokemonId) === -1 || noWeatherIcons) {
+    if (weather === 0 || noWeatherIcons) {
         html = '<img src="' + iconpath + 'pokemon_icon_' + pokemonIdStr + '_' + formStr + costume + '.png" style="width:' + scaledIconSizeWidth + 'px;height:auto;'
         if (iv === 100 && !noIvShadow) {
             html += 'filter:drop-shadow(0 0 10px red)drop-shadow(0 0 10px red);-webkit-filter:drop-shadow(0 0 10px red)drop-shadow(0 0 10px red);'
