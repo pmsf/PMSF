@@ -2156,10 +2156,10 @@ function getPokestopMarkerIcon(item) {
     } else {
         stopMarker = L.divIcon({
             iconSize: [31, 31],
-            iconAnchor: [15, 28],
+            iconAnchor: [24, 38],
             popupAnchor: [0, -35],
             className: 'stop-marker',
-            html: '<div><img src="static/forts/Pstop.png"></div>'
+            html: '<div><img src="static/forts/Pstop.png" style="width:50px;height:72;top:-35px;right:10px;"/></div>'
         })
     }
     return stopMarker
