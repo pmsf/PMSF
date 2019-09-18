@@ -147,7 +147,7 @@ function countMarkers(map) { // eslint-disable-line no-unused-vars
                 if (i === 0) {
                     pokestopListString += '<tr><td><img src="static/forts/Pstop.png" /></td><td>' + i8ln('Not Lured') + '</td><td>' + pokestopCount[i] + '</td><td>' + Math.round(pokestopCount[i] * 100 / pokestopTotal * 10) / 10 + '%</td></tr>'
                 } else if (i === 1) {
-                    pokestopListString += '<tr><td><img src="static/forts/PstopLured.png" /></td><td>' + i8ln('Lured') + '</td><td>' + pokestopCount[i] + '</td><td>' + Math.round(pokestopCount[i] * 100 / pokestopTotal * 10) / 10 + '%</td></tr>'
+                    pokestopListString += '<tr><td><img src="static/forts/PstopLured_1.png" /></td><td>' + i8ln('Lured') + '</td><td>' + pokestopCount[i] + '</td><td>' + Math.round(pokestopCount[i] * 100 / pokestopTotal * 10) / 10 + '%</td></tr>'
                 }
             }
         }
