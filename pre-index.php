@@ -1453,6 +1453,12 @@ if ($blockIframe) {
                 <center><h1 id="stats-gym-label"></h1></center>
             </div>
             <div id="arenaList" style="color: black;"></div>
+
+            <div class="stats-label-container">
+                <center><h1 id="stats-raid-label"></h1></center>
+            </div>
+            <div id="raidList" style="color: black;"></div>
+
             <div class="stats-label-container">
                 <center><h1 id="stats-pkstop-label"></h1></center>
             </div>
