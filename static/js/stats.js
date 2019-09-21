@@ -76,7 +76,7 @@ function countMarkers(map) { // eslint-disable-line no-unused-vars
     }
 
 
-    if (Store.get('showGyms')) {
+    if (Store.get('showGyms') || Store.get('showRaids')) {
         $.each(mapData.gyms, function (key, value) {
             var thisGymLocation = {lat: mapData.gyms[key]['latitude'], lng: mapData.gyms[key]['longitude']}
             thisGymIsVisible = currentVisibleMap.contains(thisGymLocation)
@@ -163,7 +163,7 @@ function countMarkers(map) { // eslint-disable-line no-unused-vars
                 } else if (i === 2) {
                     raidListString += '<tr><td><img src="static/raids/egg_normal.png" style="height:48px;"/></td><td style="vertical-align:middle;">2</td><td style="vertical-align:middle;">' + raidCount[i] + '</td><td style="vertical-align:middle;">' + Math.round(raidCount[i] * 100 / raidTotal * 10) / 10 + '%</td></tr>'
                 } else if (i === 3) {
-                    raidListString += '<tr><td><img src="static/raids/egg_normal.png" style="height:48px;"/></td><td style="vertical-align:middle;">3</td><td style="vertical-align:middle;">' + raidCount[i] + '</td><td style="vertical-align:middle;">' + Math.round(raidCount[i] * 100 / raidTotal * 10) / 10 + '%</td></tr>'
+                    raidListString += '<tr><td><img src="static/raids/egg_rare.png" style="height:48px;"/></td><td style="vertical-align:middle;">3</td><td style="vertical-align:middle;">' + raidCount[i] + '</td><td style="vertical-align:middle;">' + Math.round(raidCount[i] * 100 / raidTotal * 10) / 10 + '%</td></tr>'
                 } else if (i === 4) {
                     raidListString += '<tr><td><img src="static/raids/egg_rare.png" style="height:48px;"/></td><td style="vertical-align:middle;">4</td><td style="vertical-align:middle;">' + raidCount[i] + '</td><td style="vertical-align:middle;">' + Math.round(raidCount[i] * 100 / raidTotal * 10) / 10 + '%</td></tr>'
                 } else if (i === 5) {
