@@ -52,6 +52,12 @@ class RocketMap_MAD extends RocketMap
             $tmpSQL .= ' OR (pokemon_id = 129 AND weight' . $float . ' > 13.13)';
             $eids[] = "129";
         }
+        global $noDittoDetection, $possibleDitto;
+        if (!$noDittoDetection && ($key = array_search("132", $eids)) === false) {
+            $pDitto = implode(",", $possibleDitto);
+            $tmpSQL .= " OR (pokemon_id in (" . $pDitto . ") AND weather_boosted_condition > 0 AND (individual_attack < 4 OR individual_defense < 4 OR individual_stamina < 4 OR cp_multiplier < .3))";
+            $eids[] = "132";
+        }
         if (count($eids)) {
             $pkmn_in = '';
             $i = 1;
@@ -82,13 +88,7 @@ class RocketMap_MAD extends RocketMap
         if ($encId != 0) {
             $encSql = " OR (encounter_id = " . $encId . " AND p.latitude > '" . $swLat . "' AND p.longitude > '" . $swLng . "' AND p.latitude < '" . $neLat . "' AND p.longitude < '" . $neLng . "' AND disappear_time > '" . $params[':time'] . "')";
         }
-        global $noDittoDetection, $possibleDitto;
-        $dittoSql = '';
-        if (!$noDittoDetection) {
-            $pDitto = implode(",", $possibleDitto);
-            $dittoSql = " OR (pokemon_id in (" . $pDitto . ") AND weather_boosted_condition > 0 AND (individual_attack < 4 OR individual_defense < 4 OR individual_stamina < 4 OR cp_multiplier < .3))";
-        }
-        return $this->query_active($select, $conds, $params, $encSql, $dittoSql);
+        return $this->query_active($select, $conds, $params, $encSql);
     }
 
     public function get_active_by_id($ids, $minIv, $minLevel, $exMinIv, $bigKarp, $tinyRat, $swLat, $swLng, $neLat, $neLng)
@@ -129,6 +129,12 @@ class RocketMap_MAD extends RocketMap
                 $tmpSQL .= ' OR (pokemon_id = 129 AND weight' . $float . ' > 13.13)';
                 unset($ids[$key]);
             }
+            global $noDittoDetection, $possibleDitto;
+            if (!$noDittoDetection && ($key = array_search("132", $ids)) !== false) {
+                $pDitto = implode(",", $possibleDitto);
+                $tmpSQL .= " OR (pokemon_id in (" . $pDitto . ") AND weather_boosted_condition > 0 AND (individual_attack < 4 OR individual_defense < 4 OR individual_stamina < 4 OR cp_multiplier < .3))";
+                unset($ids[$key]);
+            }
             $pkmn_in = '';
             $i = 1;
             foreach ($ids as $id) {
@@ -162,7 +168,7 @@ class RocketMap_MAD extends RocketMap
         return $this->query_active($select, $conds, $params);
     }
 
-    public function query_active($select, $conds, $params, $encSql = '', $dittoSql = '')
+    public function query_active($select, $conds, $params, $encSql = '')
     {
         global $db;
 
@@ -172,7 +178,7 @@ class RocketMap_MAD extends RocketMap
         WHERE :conditions";
 
         $query = str_replace(":select", $select, $query);
-        $query = str_replace(":conditions", '(' . join(" AND ", $conds) . ')' . $encSql . $dittoSql, $query);
+        $query = str_replace(":conditions", '(' . join(" AND ", $conds) . ')' . $encSql, $query);
         $pokemons = $db->query($query, $params)->fetchAll(\PDO::FETCH_ASSOC);
 
         $data = array();
