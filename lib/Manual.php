@@ -77,7 +77,7 @@ class Manual
             $nest["lon"] = floatval($nest["lon"]);
             $nest["type"] = intval($nest["type"]);
             $nest["pokemon_avg"] = floatval($nest["pokemon_avg"]);
-            if($nest['pokemon_id'] > 0 ){
+            if ($nest['pokemon_id'] > 0) {
                 $nest["pokemon_name"] = i8ln($this->data[$nest["pokemon_id"]]['name']);
                 $types = $this->data[$nest["pokemon_id"]]["types"];
                 $etypes = $this->data[$nest["pokemon_id"]]["types"];
@@ -204,7 +204,7 @@ class Manual
         foreach ($portals as $portal) {
             $portal["lat"] = floatval($portal["lat"]);
             $portal["lon"] = floatval($portal["lon"]);
-            $portal["url"] = str_replace("http://", "https://images.weserv.nl/?url=", $portal["url"]);
+            $portal["url"] = preg_replace("/^http:/i", "https:", $portal["url"]);
             $data[] = $portal;
             unset($portals[$i]);
             $i++;
@@ -313,7 +313,7 @@ class Manual
         foreach ($inns as $inn) {
             $inn["lat"] = floatval($inn["lat"]);
             $inn["lon"] = floatval($inn["lon"]);
-            $inn["url"] = ! empty($inn["url"]) ? str_replace("http://", "https://images.weserv.nl/?url=", $inn["url"]) : null;
+            $inn["url"] = ! empty($inn["url"]) ? preg_replace("/^http:/i", "https:", $inn["url"]) : null;
             $data[] = $inn;
             unset($inns[$i]);
             $i++;
@@ -365,7 +365,7 @@ class Manual
         foreach ($fortresses as $fortress) {
             $fortress["lat"] = floatval($fortress["lat"]);
             $fortress["lon"] = floatval($fortress["lon"]);
-            $fortress["url"] = ! empty($fortress["url"]) ? str_replace("http://", "https://images.weserv.nl/?url=", $fortress["url"]) : null;
+            $fortress["url"] = ! empty($fortress["url"]) ? preg_replace("/^http:/i", "https:", $fortress["url"]) : null;
             $data[] = $fortress;
             unset($fortresses[$i]);
             $i++;
@@ -417,7 +417,7 @@ class Manual
         foreach ($greenhouses as $greenhouse) {
             $greenhouse["lat"] = floatval($greenhouse["lat"]);
             $greenhouse["lon"] = floatval($greenhouse["lon"]);
-            $greenhouse["url"] = ! empty($greenhouse["url"]) ? str_replace("http://", "https://images.weserv.nl/?url=", $greenhouse["url"]) : null;
+            $greenhouse["url"] = ! empty($greenhouse["url"]) ? preg_replace("/^http:/i", "https:", $greenhouse["url"]) : null;
             $data[] = $greenhouse;
             unset($greenhouses[$i]);
             $i++;
