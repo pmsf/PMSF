@@ -48,6 +48,12 @@ class RDM_beta extends RDM
             $tmpSQL .= ' OR (pokemon_id = 129 AND weight' . $float . ' > 13.13)';
             $eids[] = "129";
         }
+        global $noDittoDetection, $possibleDitto;
+        if (!$noDittoDetection && ($key = array_search("132", $eids)) === false) {
+            $pDitto = implode(",", $possibleDitto);
+            $tmpSQL .= " OR (weather > 0 AND (level < 6 OR atk_iv < 4 OR def_iv < 4 OR sta_iv < 4) and pokemon_id in (" . $pDitto . "))";
+            $eids[] = "132";
+        }
         if (count($eids)) {
             $pkmn_in = '';
             $i = 1;
@@ -78,13 +84,7 @@ class RDM_beta extends RDM
         if ($encId != 0) {
             $encSql = " OR (id = " . $encId . " AND lat > '" . $swLat . "' AND lon > '" . $swLng . "' AND lat < '" . $neLat . "' AND lon < '" . $neLng . "' AND expire_timestamp > '" . $params[':time'] . "')";
         }
-        global $noDittoDetection, $possibleDitto;
-        $dittoSql = '';
-        if (!$noDittoDetection) {
-            $pDitto = implode(",", $possibleDitto);
-            $dittoSql = " OR weather > 0 AND (level < 6 OR atk_iv < 4 OR def_iv < 4 OR sta_iv < 4) and pokemon_id in (" . $pDitto . ")";
-        }
-        return $this->query_active($select, $conds, $params, $encSql, $dittoSql);
+        return $this->query_active($select, $conds, $params, $encSql);
     }
 
     public function get_active_by_id($ids, $minIv, $minLevel, $exMinIv, $bigKarp, $tinyRat, $swLat, $swLng, $neLat, $neLng)
@@ -122,6 +122,12 @@ class RDM_beta extends RDM
                 $tmpSQL .= ' OR (pokemon_id = 129 AND weight' . $float . ' > 13.13)';
                 unset($ids[$key]);
             }
+            global $noDittoDetection, $possibleDitto;
+            if (!$noDittoDetection && ($key = array_search("132", $ids)) !== false) {
+                $pDitto = implode(",", $possibleDitto);
+                $tmpSQL .= " OR (weather > 0 AND (level < 6 OR atk_iv < 4 OR def_iv < 4 OR sta_iv < 4) and pokemon_id in (" . $pDitto . "))";
+                unset($ids[$key]);
+            }
             $pkmn_in = '';
             $i = 1;
             foreach ($ids as $id) {
@@ -155,7 +161,7 @@ class RDM_beta extends RDM
         return $this->query_active($select, $conds, $params);
     }
 
-    public function query_active($select, $conds, $params, $encSql = '', $dittoSql = '')
+    public function query_active($select, $conds, $params, $encSql = '')
     {
         global $db;
 
@@ -164,7 +170,7 @@ class RDM_beta extends RDM
         WHERE :conditions ORDER BY lat,lon ";
 
         $query = str_replace(":select", $select, $query);
-        $query = str_replace(":conditions", '(' . join(" AND ", $conds) . ')' . $encSql . $dittoSql, $query);
+        $query = str_replace(":conditions", '(' . join(" AND ", $conds) . ')' . $encSql, $query);
         $pokemons = $db->query($query, $params)->fetchAll(\PDO::FETCH_ASSOC);
         $data = array();
         $i = 0;
