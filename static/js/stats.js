@@ -1,8 +1,8 @@
 function countMarkers(map) { // eslint-disable-line no-unused-vars
     document.getElementById('stats-ldg-label').innerHTML = ''
-    document.getElementById('stats-pkmn-label').innerHTML = i8ln('Pokémon')
+    document.getElementById('stats-pkmn-label').innerHTML = i8ln('PokÃ©mon')
     document.getElementById('stats-gym-label').innerHTML = i8ln('Gyms')
-    document.getElementById('stats-pkstop-label').innerHTML = i8ln('Pokéstops')
+    document.getElementById('stats-pkstop-label').innerHTML = i8ln('PokÃ©stops')
     document.getElementById('stats-raid-label').innerHTML = i8ln('Raids')
 
     var i = 0
@@ -72,7 +72,7 @@ function countMarkers(map) { // eslint-disable-line no-unused-vars
                 var pkmnPercentage = (pkmnCount[i].Count * 100 / pkmnTotal * 10) / 10
                 pokeCounts.push([
                     '<img style="height:30px;" src="' + iconpath + 'pokemon_icon_' + pokemonIdStr + '_' + formStr + '.png"/>',
-                    '<a href=\'https://pokemon.gameinfo.io/' + languageSite + '/pokemon/' + pkmnCount[i].ID + '\' target=\'_blank\' title=\'' + i8ln('View in Pokédex') + '\' style=\'color: black;\'>' + pkmnCount[i].Name + '</a>',
+                    '<a href=\'https://pokemon.gameinfo.io/' + languageSite + '/pokemon/' + pkmnCount[i].ID + '\' target=\'_blank\' title=\'' + i8ln('View in PokÃ©dex') + '\' style=\'color: black;\'>' + pkmnCount[i].Name + '</a>',
                     pkmnCount[i].Count,
                     pkmnPercentage.toFixed(2) + '%'
                 ])
@@ -82,7 +82,7 @@ function countMarkers(map) { // eslint-disable-line no-unused-vars
         pokeStatTable.clear().rows.add(pokeCounts).draw()
     } else {
         pokeStatTable.clear().draw()
-        document.getElementById('pokeStatStatus').innerHTML = '<center>' + i8ln('Pokémon markers are disabled') + '<center>'
+        document.getElementById('pokeStatStatus').innerHTML = '<center>' + i8ln('PokÃ©mon markers are disabled') + '<center>'
         $('#pokemonList_table').dataTable().hide()
     }
 
@@ -243,6 +243,6 @@ function countMarkers(map) { // eslint-disable-line no-unused-vars
         pokestopListString += '</table>'
         document.getElementById('pokestopList').innerHTML = pokestopListString
     } else {
-        document.getElementById('pokestopList').innerHTML = '<center>' + i8ln('Pokéstop markers are disabled') + '<center>'
+        document.getElementById('pokestopList').innerHTML = '<center>' + i8ln('PokÃ©stop markers are disabled') + '<center>'
     }
 }
