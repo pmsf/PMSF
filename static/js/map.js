@@ -927,7 +927,7 @@ function pokemonLabel(item) {
             typesDisplay += '<img src="static/types/' + type['type'] + '.png" style="height:20px;">'
         })
     } else {
-       typesDisplay += '<img src="static/types/Normal.png" style="height:20px;">'
+        typesDisplay += '<img src="static/types/Normal.png" style="height:20px;">'
     }
 
     var details = ''
