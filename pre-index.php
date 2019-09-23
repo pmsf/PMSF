@@ -1621,7 +1621,7 @@ if ($blockIframe) {
                     }
                 }
                 ?>
-        </select>
+            </select>
             <select id="questAmountList" name="questAmountList" class="questAmountList">
                 <option />
                 <option value="1">1</option>
@@ -1634,7 +1634,7 @@ if ($blockIframe) {
                 <option value="8">8</option>
                 <option value="9">9</option>
                 <option value="10">10</option>
-        </select>
+            </select>
             </label>
             <label for="conditionTypeList"><?php echo i8ln('Conditions'); ?>
             <select id="conditionTypeList" name="conditionTypeList" class="conditionTypeList">
@@ -1648,9 +1648,9 @@ if ($blockIframe) {
                     }
                 }
                 ?>
-        </select>
+            </select>
             <select id="pokeCatchList" name="pokeCatchList" class="pokeCatchList" multiple></select>
-        <select id="typeCatchList" name="typeCatchList" class="typeCatchList" multiple>
+            <select id="typeCatchList" name="typeCatchList" class="typeCatchList" multiple>
                 <option value="1"><?php echo i8ln('Normal'); ?></option>
                 <option value="2"><?php echo i8ln('Fighting'); ?></option>
                 <option value="3"><?php echo i8ln('Flying'); ?></option>
@@ -1676,15 +1676,15 @@ if ($blockIframe) {
                 <option value="3">3</option>
                 <option value="4">4</option>
                 <option value="5">5</option>
-        </select>
-        <select id="throwTypeList" name="throwTypeList" class="throwTypeList">
-        <option />
+            </select>
+            <select id="throwTypeList" name="throwTypeList" class="throwTypeList">
+                <option />
                 <option value="10"><?php echo i8ln('Nice'); ?></option>
                 <option value="11"><?php echo i8ln('Great'); ?></option>
                 <option value="12"><?php echo i8ln('Excellent'); ?></option>
             </select>
             <select id="curveThrow" class="curveThrow" class="curveThrow">
-        <option />
+                <option />
                 <option value="0"><?php echo i8ln('Without curve throw'); ?></option>
                 <option value="1"><?php echo i8ln('With curve throw'); ?></option>
             </select>
@@ -1701,7 +1701,7 @@ if ($blockIframe) {
                     }
                 }
                 ?>
-        </select>
+            </select>
             <select id="pokeQuestList" name="pokeQuestList" class="pokeQuestList">
                 <option />
                 <?php
@@ -1713,7 +1713,7 @@ if ($blockIframe) {
                     }
                 }
                 ?>
-        </select>
+            </select>
             <select id="itemQuestList" name="itemQuestList" class="itemQuestList">
                 <option />
                 <?php
@@ -1725,7 +1725,7 @@ if ($blockIframe) {
                     }
                 }
                 ?>
-        </select>
+            </select>
             <select id="itemAmountList" name="itemAmountList" class="itemAmountList">
                 <option />
                 <option value="1">1</option>
@@ -1746,7 +1746,7 @@ if ($blockIframe) {
                 <option value="1000">1000</option>
                 <option value="1500">1500</option>
                 <option value="2000">2000</option>
-        </select>
+            </select>
             </label>
             <div class="button-container">
                 <button type="button" onclick="manualQuestData(event);" class="submitting-quest"><i

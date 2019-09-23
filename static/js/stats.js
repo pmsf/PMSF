@@ -195,6 +195,13 @@ function countMarkers(map) { // eslint-disable-line no-unused-vars
         $.each(mapData.pokestops, function (key, value) {
             var thisPokestopLocation = {lat: mapData.pokestops[key]['latitude'], lng: mapData.pokestops[key]['longitude']}
             thisPokestopIsVisible = currentVisibleMap.contains(thisPokestopLocation)
+            var d = new Date()
+            var lastMidnight = ''
+            if (mapFork === 'mad') {
+                lastMidnight = d.setHours(0, 0, 0, 0) / 1000
+            } else {
+                lastMidnight = 0
+            }
             if (thisPokestopIsVisible) {
                 if (mapData.pokestops[key]['incident_expiration'] && mapData.pokestops[key]['incident_expiration'] > 0) {
                     if (pokestopCount[3] === 0 || !pokestopCount[3]) {
@@ -210,7 +217,7 @@ function countMarkers(map) { // eslint-disable-line no-unused-vars
                         pokestopCount[2] += 1
                     }
                 }
-                if (mapData.pokestops[key]['quest_type'] && mapData.pokestops[key]['quest_type'] > 0) {
+                if (lastMidnight < Number(mapData.pokestops[key]['quest_timestamp']) && mapData.pokestops[key]['quest_type'] && mapData.pokestops[key]['quest_type'] > 0) {
                     if (pokestopCount[1] === 0 || !pokestopCount[1]) {
                         pokestopCount[1] = 1
                     } else {
