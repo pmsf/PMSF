@@ -894,12 +894,12 @@ function pokemonLabel(item) {
     var atk = item['individual_attack']
     var def = item['individual_defense']
     var sta = item['individual_stamina']
-    var pMove1 = moves[item['move_1']] !== undefined ? i8ln(moves[item['move_1']]['name']) : 'gen/unknown'
-    var pMove2 = moves[item['move_2']] !== undefined ? i8ln(moves[item['move_2']]['name']) : 'gen/unknown'
+    var pMove1 = moves[item['move_1']] !== undefined ? i8ln(moves[item['move_1']]['name']) : 'unknown'
+    var pMove2 = moves[item['move_2']] !== undefined ? i8ln(moves[item['move_2']]['name']) : 'unknown'
     var pMoveType1 = ''
     var pMoveType2 = ''
-    var weight = item['weight']
-    var height = item['height']
+    var weight = item['weight'] !== null ? item['weight'].toFixed(2) + 'kg' : '??'
+    var height = item['height'] !== null ? item['height'].toFixed(2) + 'm' : '??'
     var gender = item['gender']
     var form = item['form']
     var cp = item['cp']
@@ -922,9 +922,13 @@ function pokemonLabel(item) {
         pokemonidStr = id
     }
 
-    $.each(types, function (index, type) {
-        typesDisplay += '<img src="static/types/' + type['type'] + '.png" style="height:20px;">'
-    })
+    if (id !== 132) {
+        $.each(types, function (index, type) {
+            typesDisplay += '<img src="static/types/' + type['type'] + '.png" style="height:20px;">'
+        })
+    } else {
+       typesDisplay += '<img src="static/types/Normal.png" style="height:20px;">'
+    }
 
     var details = ''
     if (atk != null && def != null && sta != null) {
@@ -935,10 +939,10 @@ function pokemonLabel(item) {
         } else {
             pokemonLevel = getPokemonLevel(cpMultiplier)
         }
-        if (pMove1 !== 'gen/unknown') {
+        if (pMove1 !== 'unknown') {
             pMoveType1 = '<img style="position:relative;top:3px;left:2px;height:15px;" src="static/types/' + moves[item['move_1']]['type'] + '.png">'
         }
-        if (pMove2 !== 'gen/unknown') {
+        if (pMove2 !== 'unknown') {
             pMoveType2 = '<img style="position:relative;top:3px;left:2px;height:15px;" src="static/types/' + moves[item['move_2']]['type'] + '.png">'
         }
         details +=
@@ -950,7 +954,7 @@ function pokemonLabel(item) {
             '<div style="position:absolute;top:125px;">' +
             '<div>' + i8ln('Quick') + ': <b>' + pMove1 + '</b>' + pMoveType1 + '</div>' +
             '<div>' + i8ln('Charge') + ': <b>' + pMove2 + '</b>' + pMoveType2 + '</div>' +
-            '<div>' + i8ln('Weight') + ': <b>' + weight.toFixed(2) + 'kg</b>' + ' | ' + i8ln('Height') + ': <b>' + height.toFixed(2) + 'm</b></div>' +
+            '<div>' + i8ln('Weight') + ': <b>' + weight + '</b>' + ' | ' + i8ln('Height') + ': <b>' + height + '</b></div>' +
             '</div>'
     }
 
@@ -2079,7 +2083,7 @@ function getPokestopMarkerIcon(item) {
         }
         stopMarker = L.divIcon({
             iconSize: [31, 31],
-            iconAnchor: [24, 38],
+            iconAnchor: [25, 45],
             popupAnchor: [0, -35],
             className: 'stop-rocket-marker',
             html: html
@@ -2114,7 +2118,7 @@ function getPokestopMarkerIcon(item) {
                 '</div>'
             stopMarker = L.divIcon({
                 iconSize: [31, 31],
-                iconAnchor: [24, 38],
+                iconAnchor: [25, 45],
                 popupAnchor: [0, -35],
                 className: 'stop-quest-marker',
                 html: html
@@ -2126,7 +2130,7 @@ function getPokestopMarkerIcon(item) {
                 '</div>'
             stopMarker = L.divIcon({
                 iconSize: [31, 31],
-                iconAnchor: [24, 38],
+                iconAnchor: [25, 45],
                 popupAnchor: [0, -35],
                 className: 'stop-quest-marker',
                 html: html
@@ -2138,7 +2142,7 @@ function getPokestopMarkerIcon(item) {
                 '</div>'
             stopMarker = L.divIcon({
                 iconSize: [31, 31],
-                iconAnchor: [24, 38],
+                iconAnchor: [25, 45],
                 popupAnchor: [0, -35],
                 className: 'stop-quest-marker',
                 html: html
@@ -2148,7 +2152,7 @@ function getPokestopMarkerIcon(item) {
         html = '<div><img src="static/forts/PstopLured_' + item['lure_id'] + '.png" style="width:50px;height:72;top:-35px;right:10px;"/><div>'
         stopMarker = L.divIcon({
             iconSize: [31, 31],
-            iconAnchor: [24, 38],
+            iconAnchor: [25, 45],
             popupAnchor: [0, -35],
             className: 'stop-lured-marker',
             html: html
@@ -2156,7 +2160,7 @@ function getPokestopMarkerIcon(item) {
     } else {
         stopMarker = L.divIcon({
             iconSize: [31, 31],
-            iconAnchor: [24, 38],
+            iconAnchor: [25, 45],
             popupAnchor: [0, -35],
             className: 'stop-marker',
             html: '<div><img src="static/forts/Pstop.png" style="width:50px;height:72;top:-35px;right:10px;"/></div>'

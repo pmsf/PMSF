@@ -218,6 +218,11 @@ class RocketMap_MAD extends RocketMap
                         $pokemon["pokemon_id"] = 132;
                         $pokemon["form"] = 0;
                         $pokemon["pokemon_name"] = $pokemon["pokemon_name"] . ' (' . i8ln('Ditto') . ')';
+                        $pokemon["move_1"] = null;
+                        $pokemon["move_2"] = null;
+                        $pokemon["height"] = null;
+                        $pokemon["weight"] = null;
+                        $pokemon["gender"] = 3;
                     }
                 }
             }
