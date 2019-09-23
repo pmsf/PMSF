@@ -203,14 +203,14 @@ function countMarkers(map) { // eslint-disable-line no-unused-vars
                 lastMidnight = 0
             }
             if (thisPokestopIsVisible) {
-                if (mapData.pokestops[key]['incident_expiration'] && mapData.pokestops[key]['incident_expiration'] > 0) {
+                if (mapData.pokestops[key]['incident_expiration'] && mapData.pokestops[key]['incident_expiration'] > Date.now()) {
                     if (pokestopCount[3] === 0 || !pokestopCount[3]) {
                         pokestopCount[3] = 1
                     } else {
                         pokestopCount[3] += 1
                     }
                 }
-                if (mapData.pokestops[key]['lure_expiration'] && mapData.pokestops[key]['lure_expiration'] > 0) {
+                if (mapData.pokestops[key]['lure_expiration'] && mapData.pokestops[key]['lure_expiration'] > Date.now()) {
                     if (pokestopCount[2] === 0 || !pokestopCount[2]) {
                         pokestopCount[2] = 1
                     } else {
