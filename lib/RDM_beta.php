@@ -126,7 +126,6 @@ class RDM_beta extends RDM
             if (!$noDittoDetection && ($key = array_search("132", $ids)) !== false) {
                 $pDitto = implode(",", $possibleDitto);
                 $tmpSQL .= " OR (weather > 0 AND (level < 6 OR atk_iv < 4 OR def_iv < 4 OR sta_iv < 4) and pokemon_id in (" . $pDitto . "))";
-                unset($ids[$key]);
             }
             $pkmn_in = '';
             $i = 1;
