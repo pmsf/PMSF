@@ -171,7 +171,7 @@ class RocketMap_MAD extends Search
 
         if (!$noBoundaries && $dbname === 'pokestop') {
             $coords = " AND (ST_WITHIN(point(latitude,longitude),ST_GEOMFROMTEXT('POLYGON(( " . $boundaries . " ))'))) ";
-        } else if (!$noBoundaries && $dbname === 'gym') {
+        } elseif (!$noBoundaries && $dbname === 'gym') {
             $coords = " AND (ST_WITHIN(point(g.latitude,g.longitude),ST_GEOMFROMTEXT('POLYGON(( " . $boundaries . " ))'))) ";
         } else {
             $coords = "";
