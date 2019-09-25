@@ -173,7 +173,7 @@ class RocketMap_MAD extends RocketMap
 
         $query = "SELECT :select
         FROM pokemon p
-        LEFT JOIN trs_spawn ts ON ts.spawnpoint = p.spawnpoint_id
+        INNER JOIN trs_spawn ts ON ts.spawnpoint = p.spawnpoint_id
         WHERE :conditions";
 
         $query = str_replace(":select", $select, $query);
