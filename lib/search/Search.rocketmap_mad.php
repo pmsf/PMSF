@@ -169,8 +169,10 @@ class RocketMap_MAD extends Search
     {
         global $db, $defaultUnit, $maxSearchResults, $noBoundaries, $boundaries;
 
-        if (!$noBoundaries) {
-            $coords = " AND (ST_WITHIN(point(lat,lon),ST_GEOMFROMTEXT('POLYGON(( " . $boundaries . " ))'))) ";
+        if (!$noBoundaries && $dbname === 'pokestop') {
+            $coords = " AND (ST_WITHIN(point(latitude,longitude),ST_GEOMFROMTEXT('POLYGON(( " . $boundaries . " ))'))) ";
+        } else if (!$noBoundaries && $dbname === 'gym') {
+            $coords = " AND (ST_WITHIN(point(g.latitude,g.longitude),ST_GEOMFROMTEXT('POLYGON(( " . $boundaries . " ))'))) ";
         } else {
             $coords = "";
         }
