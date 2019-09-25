@@ -133,7 +133,6 @@ class RocketMap_MAD extends RocketMap
             if (!$noDittoDetection && ($key = array_search("132", $ids)) !== false) {
                 $pDitto = implode(",", $possibleDitto);
                 $tmpSQL .= " OR (pokemon_id in (" . $pDitto . ") AND weather_boosted_condition > 0 AND (individual_attack < 4 OR individual_defense < 4 OR individual_stamina < 4 OR cp_multiplier < .3))";
-                unset($ids[$key]);
             }
             $pkmn_in = '';
             $i = 1;
