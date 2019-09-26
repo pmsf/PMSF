@@ -244,8 +244,8 @@ class RDM_beta extends RDM
                         $pokemon["pokemon_id"] = 132;
                         $pokemon["form"] = 0;
                         $pokemon["pokemon_name"] = $pokemon["pokemon_name"] . ' (' . i8ln('Ditto') . ')';
-                        $pokemon["move_1"] = null;
-                        $pokemon["move_2"] = null;
+                        $pokemon["move_1"] = 242;
+                        $pokemon["move_2"] = 133;
                         $pokemon["height"] = null;
                         $pokemon["weight"] = null;
                         $pokemon["gender"] = 3;
