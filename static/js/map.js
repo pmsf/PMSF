@@ -366,8 +366,8 @@ function initMap() { // eslint-disable-line no-unused-vars
     }).addTo(map)
 
     // If you see this: Don't tell anyone.
-    var d = new Date();
-    if (d.getMonth() == 11 && d.getDate() >= 24) {
+    var d = new Date()
+    if (d.getMonth() === 11 && d.getDate() >= 24) {
         const snow = '<div class="winter-is-coming">\n' +
             '<div class="snow snow--near"></div>\n' +
             '<div class="snow snow--near snow--alt"></div>\n' +
