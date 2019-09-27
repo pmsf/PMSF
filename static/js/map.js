@@ -1266,135 +1266,140 @@ function getReward(item) {
 function getQuest(item) {
     var str
     var raidLevel
-    var questinfo = JSON.parse(item['quest_condition_info'])
-    var questStr = questtypeList[item['quest_type']]
-
-    str = questStr
-
-    if (item['quest_condition_type'] > 0) {
-        switch (item['quest_condition_type']) {
-            case 1:
-                var tstr = ''
-                if (questinfo['pokemon_type_ids'].length > 1) {
-                    $.each(questinfo['pokemon_type_ids'], function (index, typeId) {
-                        if (index === questinfo['pokemon_type_ids'].length - 2) {
-                            tstr += pokemonTypes[typeId] + ' or '
-                        } else if (index === questinfo['pokemon_type_ids'].length - 1) {
-                            tstr += pokemonTypes[typeId]
-                        } else {
-                            tstr += pokemonTypes[typeId] + ', '
-                        }
-                    })
-                } else {
-                    tstr = pokemonTypes[questinfo['pokemon_type_ids']]
-                }
-                if (item['quest_condition_type_1'] === 21) {
-                    str = str.replace('Catch {0}', 'Catch {0} different species of')
-                }
-                str = str.replace('pokémon', tstr + '-type Pokémon')
-                str = str.replace('Snapshot(s)', 'Snapshot(s) of ' + tstr + '-type Pokémon')
-                break
-            case 2:
-                var pstr = ''
-                if (questinfo['pokemon_ids'].length > 1) {
-                    $.each(questinfo['pokemon_ids'], function (index, id) {
-                        if (index === questinfo['pokemon_ids'].length - 2) {
-                            pstr += idToPokemon[id].name + ' or '
-                        } else if (index === questinfo['pokemon_ids'].length - 1) {
-                            pstr += idToPokemon[id].name
-                        } else {
-                            pstr += idToPokemon[id].name + ', '
-                        }
-                    })
-                } else {
-                    pstr = idToPokemon[questinfo['pokemon_ids']].name
-                }
-                str = str.replace('pokémon', pstr)
-                str = str.replace('Snapshot(s)', 'Snapshot(s) of ' + pstr)
-                break
-            case 3:
-                str = str.replace('pokémon', 'Pokémon with weather boost')
-                break
-            case 6:
-                str = str.replace('Complete', 'Win')
-                break
-            case 7:
-                raidLevel = Math.min.apply(null, questinfo['raid_levels'])
-                if (raidLevel > 1) {
-                    str = str.replace('raid battle(s)', 'level ' + raidLevel + ' or higher raid')
-                }
-                if (item['quest_condition_type_1'] === 6) {
-                    str = str.replace('Complete', 'Win')
-                }
-                break
-            case 8:
-                str = str.replace('Land', 'Make')
-                str = str.replace('throw(s)', throwType[questinfo['throw_type_id']] + ' Throw(s)')
-                if (item['quest_condition_type_1'] === 15) {
-                    str = str.replace('Throw(s)', 'Curveball Throw(s)')
-                }
-                break
-            case 9:
-                str = str.replace('Complete', 'Win')
-                break
-            case 10:
-                str = str.replace('Complete', 'Use a super effective charged attack in')
-                break
-            case 11:
-                if (item['quest_type'] === 13) {
-                    str = str.replace('Catch', 'Use').replace('pokémon with berrie(s)', 'berrie(s) to help catch Pokémon')
-                }
-                if (questinfo !== null) {
-                    str = str.replace('berrie(s)', idToItem[questinfo['item_id']].name)
-                } else {
-                    str = str.replace('Evolve', 'Use a item to evolve')
-                }
-
-                break
-            case 12:
-                str = str.replace('pokéstop(s)', "pokéstop(s) you haven't visited before")
-                break
-            case 14:
-                str = str.replace('Land', 'Make')
-                if (typeof questinfo['throw_type_id'] === 'undefined') {
-                    str = str.replace('throw(s)', 'Throw(s) in a row')
-                } else {
-                    str = str.replace('throw(s)', throwType[questinfo['throw_type_id']] + ' Throw(s) in a row')
-                }
-                if (item['quest_condition_type_1'] === 15) {
-                    str = str.replace('Throw(s)', 'Curveball Throw(s)')
-                }
-                break
-            case 22:
-                str = str.replace('Win', 'Battle a Team Leader').replace('pvp battle(s)', 'times')
-                break
-            case 23:
-                str = str.replace('Win', 'Battle Another Trainer').replace('pvp battle(s)', 'times')
-                break
-        }
-    } else if (item['quest_type'] > 0) {
-        switch (item['quest_type']) {
-            case 7:
-                str = str.replace('Complete', 'Battle in a gym').replace('gym battle(s)', 'times')
-                break
-            case 8:
-                str = str.replace('Complete', 'Battle in a raid').replace('raid battle(s)', 'times')
-                break
-            case 13:
-                str = str.replace('Catch', 'Use').replace('pokémon with berrie(s)', 'berries to help catch Pokémon')
-                break
-            case 17:
-                str = str.replace('Walk your buddy to earn', 'Earn').replace('candy', 'candy walking with your buddy')
-                break
-        }
-    }
-    str = str.replace('{0}', item['quest_target'])
-    if (item['quest_target'] === 1) {
-        str = str.replace('(s)', '').replace('1', 'a').replace(' a times', '')
+    if (mapFork === 'mad') {
+        str = item['quest_task']
     } else {
-        str = str.replace('(s)', 's')
-    }
-    str = str.replace('pokémon', 'Pokémon')
+        var questinfo = JSON.parse(item['quest_condition_info'])
+        var questStr = questtypeList[item['quest_type']]
+        str = questStr
+        if (item['quest_condition_type'] > 0) {
+            switch (item['quest_condition_type']) {
+                case 1:
+                    var tstr = ''
+                    if (questinfo['pokemon_type_ids'].length > 1) {
+                        $.each(questinfo['pokemon_type_ids'], function (index, typeId) {
+                            if (index === questinfo['pokemon_type_ids'].length - 2) {
+                                tstr += pokemonTypes[typeId] + ' or '
+                            } else if (index === questinfo['pokemon_type_ids'].length - 1) {
+                                tstr += pokemonTypes[typeId]
+                            } else {
+                                tstr += pokemonTypes[typeId] + ', '
+                            }
+                        })
+                    } else {
+                        tstr = pokemonTypes[questinfo['pokemon_type_ids']]
+                    }
+                    if (item['quest_condition_type_1'] === 21) {
+                        str = str.replace('Catch {0}', 'Catch {0} different species of')
+                    }
+                    str = str.replace('pokémon', tstr + '-type Pokémon')
+                    str = str.replace('Snapshot(s)', 'Snapshot(s) of ' + tstr + '-type Pokémon')
+                    break
+                case 2:
+                    var pstr = ''
+                    if (questinfo['pokemon_ids'].length > 1) {
+                        $.each(questinfo['pokemon_ids'], function (index, id) {
+                            if (index === questinfo['pokemon_ids'].length - 2) {
+                                pstr += idToPokemon[id].name + ' or '
+                            } else if (index === questinfo['pokemon_ids'].length - 1) {
+                                pstr += idToPokemon[id].name
+                            } else {
+                                pstr += idToPokemon[id].name + ', '
+                            }
+                        })
+                    } else {
+                        pstr = idToPokemon[questinfo['pokemon_ids']].name
+                    }
+                    str = str.replace('pokémon', pstr)
+                    str = str.replace('Snapshot(s)', 'Snapshot(s) of ' + pstr)
+                    break
+                case 3:
+                    str = str.replace('pokémon', 'Pokémon with weather boost')
+                    break
+                case 6:
+                    str = str.replace('Complete', 'Win')
+                    break
+                case 7:
+                    raidLevel = Math.min.apply(null, questinfo['raid_levels'])
+                    if (raidLevel > 1) {
+                        str = str.replace('raid battle(s)', 'level ' + raidLevel + ' or higher raid')
+                    }
+                    if (item['quest_condition_type_1'] === 6) {
+                        str = str.replace('Complete', 'Win')
+                    }
+                    break
+                case 8:
+                    str = str.replace('Land', 'Make')
+                    str = str.replace('throw(s)', throwType[questinfo['throw_type_id']] + ' Throw(s)')
+                    if (item['quest_condition_type_1'] === 15) {
+                        str = str.replace('Throw(s)', 'Curveball Throw(s)')
+                    }
+                    break
+                case 9:
+                    str = str.replace('Complete', 'Win')
+                    break
+                case 10:
+                    str = str.replace('Complete', 'Use a super effective charged attack in')
+                    break
+                case 11:
+                    if (item['quest_type'] === 13) {
+                        str = str.replace('Catch', 'Use').replace('pokémon with berrie(s)', 'berrie(s) to help catch Pokémon')
+                    }
+                    if (questinfo !== null) {
+                        str = str.replace('berrie(s)', idToItem[questinfo['item_id']].name)
+                    } else {
+                        str = str.replace('Evolve', 'Use a item to evolve')
+                    }
+        
+                    break
+                case 12:
+                    str = str.replace('pokéstop(s)', "pokéstop(s) you haven't visited before")
+                    break
+                case 14:
+                    str = str.replace('Land', 'Make')
+                    if (typeof questinfo['throw_type_id'] === 'undefined') {
+                        str = str.replace('throw(s)', 'Throw(s) in a row')
+                    } else {
+                        str = str.replace('throw(s)', throwType[questinfo['throw_type_id']] + ' Throw(s) in a row')
+                    }
+                    if (item['quest_condition_type_1'] === 15) {
+                        str = str.replace('Throw(s)', 'Curveball Throw(s)')
+                    }
+                    break
+                case 22:
+                    str = str.replace('Win', 'Battle a Team Leader').replace('pvp battle(s)', 'times')
+                    break
+                case 23:
+                    str = str.replace('Win', 'Battle Another Trainer').replace('pvp battle(s)', 'times')
+                    break
+                case 25:
+                    str = str.replace('{0} pokémon', 'pokémon caught ' + questinfo['distance'] + 'km apart')
+                    break
+            }
+        } else if (item['quest_type'] > 0) {
+            switch (item['quest_type']) {
+                case 7:
+                    str = str.replace('Complete', 'Battle in a gym').replace('gym battle(s)', 'times')
+                    break
+                case 8:
+                    str = str.replace('Complete', 'Battle in a raid').replace('raid battle(s)', 'times')
+                    break
+                case 13:
+                    str = str.replace('Catch', 'Use').replace('pokémon with berrie(s)', 'berries to help catch Pokémon')
+                    break
+                case 17:
+                    str = str.replace('Walk your buddy to earn', 'Earn').replace('candy', 'candy walking with your buddy')
+                    break
+            }
+        }
+        str = str.replace('{0}', item['quest_target'])
+        if (item['quest_target'] === 1) {
+            str = str.replace('(s)', '').replace('1 ', 'a ').replace(' a times', '').replace('friends', 'friend')
+        } else {
+            str = str.replace('(s)', 's')
+        }
+        str = str.replace('pokémon', 'Pokémon')
+	}
     return str
 }
 
