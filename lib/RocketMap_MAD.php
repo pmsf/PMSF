@@ -491,7 +491,6 @@ class RocketMap_MAD extends RocketMap
         incident_grunt_type AS grunt_type,
         tq.quest_type,
         tq.quest_timestamp,
-        tq.quest_target,
         tq.quest_reward,
         tq.quest_pokemon_id,
         tq.quest_item_id,
@@ -542,7 +541,7 @@ class RocketMap_MAD extends RocketMap
             $pokestop["quest_condition_type"] = 0;
             $pokestop["quest_condition_type_1"] = 0;
             $pokestop["quest_reward_type"] = intval($pokestop["quest_reward_type"]);
-            $pokestop["quest_target"] = intval($pokestop["quest_target"]);
+            $pokestop["quest_target"] = 0;
             $pokestop["quest_pokemon_id"] = intval($pokestop["quest_pokemon_id"]);
             $pokestop["quest_pokemon_formid"] = intval($pokestop["quest_pokemon_formid"]);
             $pokestop["quest_item_id"] = intval($pokestop["quest_item_id"]);
