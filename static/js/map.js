@@ -1350,7 +1350,6 @@ function getQuest(item) {
                     } else {
                         str = str.replace('Evolve', 'Use a item to evolve')
                     }
-        
                     break
                 case 12:
                     str = str.replace('pokéstop(s)', "pokéstop(s) you haven't visited before")
@@ -1399,7 +1398,7 @@ function getQuest(item) {
             str = str.replace('(s)', 's')
         }
         str = str.replace('pokémon', 'Pokémon')
-	}
+    }
     return str
 }
 
