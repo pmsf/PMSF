@@ -495,13 +495,7 @@ class RocketMap_MAD extends RocketMap
         tq.quest_reward,
         tq.quest_pokemon_id,
         tq.quest_item_id,
-        json_extract(json_extract(`quest_condition`,'$[*].type'),'$[0]') AS quest_condition_type,
-        json_extract(json_extract(`quest_condition`,'$[*].type'),'$[1]') AS quest_condition_type_1,
-        json_extract(json_extract(`quest_condition`,'$[*].with_pokemon_category'),'$[0]') AS quest_condition_pokemon_ids,
-        json_extract(json_extract(`quest_condition`,'$[*].with_throw_type'),'$[0]') AS quest_condition_with_throw_type,
-        json_extract(json_extract(`quest_condition`,'$[*].with_pokemon_type'),'$[0]') AS quest_condition_with_pokemon_type,
-        json_extract(json_extract(`quest_condition`,'$[*].with_raid_level'),'$[0]') AS quest_condition_with_raid_level,
-        json_extract(json_extract(`quest_condition`,'$[*].with_item'),'$[0]') AS quest_condition_with_item,
+        tq.quest_task,
         tq.quest_reward_type,
         json_extract(json_extract(`quest_reward`,'$[*].info'),'$[0]') AS quest_reward_info,
         json_extract(json_extract(`quest_reward`,'$[*].pokemon_encounter.pokemon_display.form_value'),'$[0]') AS quest_pokemon_formid,
@@ -545,8 +539,8 @@ class RocketMap_MAD extends RocketMap
             $pokestop["lure_id"] = $pokestop["lure_id"] - 500;
             $pokestop["url"] = ! empty($pokestop["url"]) ? preg_replace("/^http:/i", "https:", $pokestop["url"]) : null;
             $pokestop["quest_type"] = intval($pokestop["quest_type"]);
-            $pokestop["quest_condition_type"] = intval($pokestop["quest_condition_type"]);
-            $pokestop["quest_condition_type_1"] = intval($pokestop["quest_condition_type_1"]);
+            $pokestop["quest_condition_type"] = 0;
+            $pokestop["quest_condition_type_1"] = 0;
             $pokestop["quest_reward_type"] = intval($pokestop["quest_reward_type"]);
             $pokestop["quest_target"] = intval($pokestop["quest_target"]);
             $pokestop["quest_pokemon_id"] = intval($pokestop["quest_pokemon_id"]);
@@ -556,19 +550,7 @@ class RocketMap_MAD extends RocketMap
             $pokestop["quest_dust_amount"] = intval($pokestop["quest_dust_amount"]);
             $pokestop["quest_item_name"] = empty($item_pid) ? null : i8ln($this->items[$item_pid]["name"]);
             $pokestop["quest_pokemon_name"] = empty($mon_pid) ? null : i8ln($this->data[$mon_pid]["name"]);
-            if (!empty($pokestop["quest_condition_pokemon_ids"])) {
-                $pokestop["quest_condition_info"] = str_replace('"category_name": "", ', "", $pokestop["quest_condition_pokemon_ids"]);
-            } elseif (!empty($pokestop["quest_condition_with_pokemon_type"])) {
-                $pokestop["quest_condition_info"] = str_replace("pokemon_type", "pokemon_type_ids", $pokestop["quest_condition_with_pokemon_type"]);
-            } elseif (!empty($pokestop["quest_condition_with_throw_type"])) {
-                $pokestop["quest_condition_info"] = str_replace("throw_type", "throw_type_id", $pokestop["quest_condition_with_throw_type"]);
-            } elseif (!empty($pokestop["quest_condition_with_raid_level"])) {
-                $pokestop["quest_condition_info"] = str_replace("raid_level", "raid_levels", $pokestop["quest_condition_with_raid_level"]);
-            } elseif (!empty($pokestop["quest_condition_with_item"])) {
-                $pokestop["quest_condition_info"] = str_replace("item", "item_id", $pokestop["quest_condition_with_item"]);
-            } else {
-                $pokestop["quest_condition_info"] = null;
-            }
+            $pokestop["quest_condition_info"] = null;
             $data[] = $pokestop;
             unset($pokestops[$i]);
             $i++;
