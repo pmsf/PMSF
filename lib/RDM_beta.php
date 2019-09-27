@@ -365,8 +365,6 @@ class RDM_beta extends RDM
                 }
                 $pkmn_in = substr($pkmn_in, 0, -1);
                 $tmpSQL .= "quest_pokemon_id IN ( $pkmn_in )";
-            } else {
-                $tmpSQL .= "";
             }
             if (count($qireids)) {
                 $item_in = '';
@@ -378,14 +376,10 @@ class RDM_beta extends RDM
                 }
                 $item_in = substr($item_in, 0, -1);
                 $tmpSQL .= "quest_item_id IN ( $item_in )";
-            } else {
-                $tmpSQL .= "";
             }
             if ($reloaddustamount == "true") {
                 $tmpSQL .= "(json_extract(json_extract(`quest_rewards`,'$[*].type'),'$[0]') = 3 AND json_extract(json_extract(`quest_rewards`,'$[*].info.amount'),'$[0]') > :amount)";
                 $params[':amount'] = intval($dustamount);
-            } else {
-                $tmpSQL .= "";
             }
             $conds[] = $tmpSQL;
         }
@@ -415,7 +409,6 @@ class RDM_beta extends RDM
         json_extract(json_extract(`quest_conditions`,'$[*].type'),'$[1]') AS quest_condition_type_1,
         json_extract(json_extract(`quest_conditions`,'$[*].info'),'$[0]') AS quest_condition_info,
         quest_reward_type,
-        json_extract(json_extract(`quest_rewards`,'$[*].info'),'$[0]') AS quest_reward_info,
         json_extract(json_extract(`quest_rewards`,'$[*].info.amount'),'$[0]') AS quest_reward_amount,
         json_extract(json_extract(`quest_rewards`,'$[*].info.amount'),'$[0]') AS quest_dust_amount,
         json_extract(json_extract(`quest_rewards`,'$[*].info.form_id'),'$[0]') AS quest_pokemon_formid,

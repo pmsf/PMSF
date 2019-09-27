@@ -449,8 +449,6 @@ class RocketMap_MAD extends RocketMap
                 }
                 $pkmn_in = substr($pkmn_in, 0, -1);
                 $tmpSQL .= "tq.quest_pokemon_id IN ( $pkmn_in )";
-            } else {
-                $tmpSQL .= "";
             }
             if (count($qireids)) {
                 $item_in = '';
@@ -462,14 +460,10 @@ class RocketMap_MAD extends RocketMap
                 }
                 $item_in = substr($item_in, 0, -1);
                 $tmpSQL .= "tq.quest_item_id IN ( $item_in )";
-            } else {
-                $tmpSQL .= "";
             }
             if ($reloaddustamount == "true") {
                 $tmpSQL .= "tq.quest_stardust > :amount";
                 $params[':amount'] = intval($dustamount);
-            } else {
-                $tmpSQL .= "";
             }
             $conds[] = $tmpSQL;
         }
@@ -496,7 +490,6 @@ class RocketMap_MAD extends RocketMap
         tq.quest_item_id,
         tq.quest_task,
         tq.quest_reward_type,
-        json_extract(json_extract(`quest_reward`,'$[*].info'),'$[0]') AS quest_reward_info,
         json_extract(json_extract(`quest_reward`,'$[*].pokemon_encounter.pokemon_display.form_value'),'$[0]') AS quest_pokemon_formid,
         json_extract(json_extract(`quest_reward`,'$[*].pokemon_encounter.pokemon_display.is_shiny'),'$[0]') AS quest_pokemon_shiny,
         tq.quest_item_amount AS quest_reward_amount,
