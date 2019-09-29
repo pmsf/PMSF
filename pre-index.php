@@ -1398,7 +1398,7 @@ if ($blockIframe) {
             </div>
             <div><center><p>
                 <?php
-                if (! $noSelly && $_SESSION['user']->login_system === native) {
+                if (! $noSelly) {
                     $time = date("Y-m-d", $_SESSION['user']->expire_timestamp);
                 
                     if ($_SESSION['user']->expire_timestamp > time()) {
