@@ -2094,5 +2094,45 @@
     "duration": 0,
     "energy": 0,
     "dps": 0
+  },
+  "325": {
+    "name": "Lock-on",
+    "type": "Normal",
+    "damage": 0,
+    "duration": 0,
+    "energy": 0,
+    "dps": 0
+  },
+  "326": {
+    "name": "Thunder Fang",
+    "type": "Electric",
+    "damage": 0,
+    "duration": 0,
+    "energy": 0,
+    "dps": 0
+  },
+  "327": {
+    "name": "Ice Fang",
+    "type": "Ice",
+    "damage": 0,
+    "duration": 0,
+    "energy": 0,
+    "dps": 0
+  },
+  "328": {
+    "name": "Horn Drill",
+    "type": "Normal",
+    "damage": 0,
+    "duration": 0,
+    "energy": 0,
+    "dps": 0
+  },
+  "329": {
+    "name": "Fissure",
+    "type": "Ground",
+    "damage": 0,
+    "duration": 0,
+    "energy": 0,
+    "dps": 0
   }
 }

@@ -48,7 +48,7 @@ $startingLng = 5.302366;                                        // Starting long
 $maxLatLng = 1;                                                     // Max latitude and longitude size (1 = ~110km, 0 to disable)
 $defaultZoom = 16;                                                  // Default zoom level for first time users.
 $maxZoomOut = 0;                                                    // Max zoom out level (11 ~= $maxLatLng = 1, 0 to disable, lower = the further you can zoom out)
-$maxZoomIn = 18;                                                    // Max zoom in level 18 
+$maxZoomIn = 18;                                                    // Max zoom in level 18
 $disableClusteringAtZoom = 15;					                    // Disable clustering above this value. 0 to disable
 $zoomToBoundsOnClick = 15;					                        // Zoomlevel on clusterClick
 $maxClusterRadius = 30;						                        // The maximum radius that a cluster will cover from the central marker (in pixels).
@@ -94,13 +94,11 @@ $piwikSiteId = "";
 /* Cookie Disclamer */
 $noCookie = true;                                                   // Display a Cookie Disclamer
 
-/* PayPal */
-
+/* header urls */
 $paypalUrl = "";                                                    // PayPal donation URL, leave "" for empty
-
-/* Discord */
-
-$discordUrl = "";                                                   // Discord URL, leave "" for empty
+$discordUrl = "https://discord.gg/INVITE_LINK";                     // Discord URL, leave "" for empty
+$whatsAppUrl = "";                                                  // WhatsApp URL, leave "" for empty
+$telegramUrl = "";                                                  // Telegram URL, leave "" for empty
 
 /* Worldopole */
 
@@ -192,10 +190,11 @@ $excludeMinIV = '[131, 143, 147, 148, 149, 248]';                   // [] for em
 $minIV = '0';                                                       // "0" for empty or a number
 $minLevel = '0';                                                    // "0" for empty or a number
 
-$noBigKarp = false;                                                 // BUGGED: Hides ALL Magikarp && the menu setting. true/false
-$noBigKarpSetting = false;                                          // true/false
-$noTinyRat = false;                                                 // BUGGED: Hides ALL Rattata && the menu setting. true/false
-$noTinyRatSetting = false;                                          // true/false
+$noBigKarp = false;
+$noTinyRat = false;
+
+$noDittoDetection = true;
+$possibleDitto = [13, 46, 48, 163, 165, 167, 187, 223, 273, 293, 300, 316, 322, 399];
 
 $noGyms = false;                                                    // true/false
 $enableGyms = 'false';                                              // true/false
@@ -410,7 +409,7 @@ $nestGeoJSONfile = 'custom/nest.json';			    // path to geoJSON file provided by
 //-----------------------------------------------
 // HPWU
 //-----------------------------------------------------
-$noInn = true;               // Enable/Disable the option to see inns 
+$noInn = true;               // Enable/Disable the option to see inns
 $enableInn = 'false';        // Enable/Disable inns by default. A user can edit this.
 $noDeleteInn = true;         // Enable/Disable option do delete a inn
 

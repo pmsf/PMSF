@@ -162,7 +162,7 @@ class RocketMap_MAD extends RocketMap
 
         $query = "SELECT :select
         FROM pokemon p
-        LEFT JOIN trs_spawn ts ON ts.spawnpoint = p.spawnpoint_id
+        INNER JOIN trs_spawn ts ON ts.spawnpoint = p.spawnpoint_id
         WHERE :conditions";
 
         $query = str_replace(":select", $select, $query);
@@ -175,7 +175,7 @@ class RocketMap_MAD extends RocketMap
         foreach ($pokemons as $pokemon) {
             $pokemon["latitude"] = floatval($pokemon["latitude"]);
             $pokemon["longitude"] = floatval($pokemon["longitude"]);
-            $pokemon["expire_timestamp_verified"] = floatval($pokemon["expire_timestamp_verified"]);
+            $pokemon["expire_timestamp_verified"] = isset($pokemon["expire_timestamp_verified"]) ? 1 : null;
             $pokemon["disappear_time"] = $pokemon["disappear_time"] * 1000;
 
             $pokemon["weight"] = isset($pokemon["weight"]) ? floatval($pokemon["weight"]) : null;
@@ -194,6 +194,8 @@ class RocketMap_MAD extends RocketMap
                 $types[$k]['type'] = $v['type'];
             }
             $pokemon["pokemon_types"] = $types;
+            $pokemon["cp_multiplier"] = isset($pokemon["cp_multiplier"]) ? floatval($pokemon["cp_multiplier"]) : null;
+
             $data[] = $pokemon;
 
             unset($pokemons[$i]);
@@ -322,7 +324,7 @@ class RocketMap_MAD extends RocketMap
             $gym["raid_start"] = $gym["raid_start"] * 1000;
             $gym["raid_end"] = $gym["raid_end"] * 1000;
             $gym["slots_available"] = intval($gym["slots_available"]);
-            $gym["url"] = ! empty($gym["url"]) ? str_replace("http://", "https://images.weserv.nl/?url=", $gym["url"]) : null;
+            $gym["url"] = ! empty($gym["url"]) ? preg_replace("/^http:/i", "https:", $gym["url"]) : null;
             $gym["park"] = intval($gym["park"]);
             $data[] = $gym;
 
@@ -437,7 +439,7 @@ class RocketMap_MAD extends RocketMap
         }
         if (!empty($quests) && $quests === 'true') {
             $tmpSQL = '';
-        if (count($qpreids)) {
+            if (count($qpreids)) {
                 $pkmn_in = '';
                 $p = 1;
                 foreach ($qpreids as $qpreid) {
@@ -447,8 +449,6 @@ class RocketMap_MAD extends RocketMap
                 }
                 $pkmn_in = substr($pkmn_in, 0, -1);
                 $tmpSQL .= "tq.quest_pokemon_id IN ( $pkmn_in )";
-            } else {
-                $tmpSQL .= "";
             }
             if (count($qireids)) {
                 $item_in = '';
@@ -460,14 +460,10 @@ class RocketMap_MAD extends RocketMap
                 }
                 $item_in = substr($item_in, 0, -1);
                 $tmpSQL .= "tq.quest_item_id IN ( $item_in )";
-            } else {
-                $tmpSQL .= "";
             }
             if ($reloaddustamount == "true") {
                 $tmpSQL .= "tq.quest_stardust > :amount";
                 $params[':amount'] = intval($dustamount);
-        } else {
-                $tmpSQL .= "";
             }
             $conds[] = $tmpSQL;
         }
@@ -489,19 +485,11 @@ class RocketMap_MAD extends RocketMap
         incident_grunt_type AS grunt_type,
         tq.quest_type,
         tq.quest_timestamp,
-        tq.quest_target,
         tq.quest_reward,
         tq.quest_pokemon_id,
         tq.quest_item_id,
-        json_extract(json_extract(`quest_condition`,'$[*].type'),'$[0]') AS quest_condition_type,
-        json_extract(json_extract(`quest_condition`,'$[*].type'),'$[1]') AS quest_condition_type_1,
-        json_extract(json_extract(`quest_condition`,'$[*].with_pokemon_category'),'$[0]') AS quest_condition_pokemon_ids,
-        json_extract(json_extract(`quest_condition`,'$[*].with_throw_type'),'$[0]') AS quest_condition_with_throw_type,
-        json_extract(json_extract(`quest_condition`,'$[*].with_pokemon_type'),'$[0]') AS quest_condition_with_pokemon_type,
-        json_extract(json_extract(`quest_condition`,'$[*].with_raid_level'),'$[0]') AS quest_condition_with_raid_level,
-        json_extract(json_extract(`quest_condition`,'$[*].with_item'),'$[0]') AS quest_condition_with_item,
+        tq.quest_task,
         tq.quest_reward_type,
-        json_extract(json_extract(`quest_reward`,'$[*].info'),'$[0]') AS quest_reward_info,
         json_extract(json_extract(`quest_reward`,'$[*].pokemon_encounter.pokemon_display.form_value'),'$[0]') AS quest_pokemon_formid,
         json_extract(json_extract(`quest_reward`,'$[*].pokemon_encounter.pokemon_display.is_shiny'),'$[0]') AS quest_pokemon_shiny,
         tq.quest_item_amount AS quest_reward_amount,
@@ -541,12 +529,12 @@ class RocketMap_MAD extends RocketMap
             $pokestop["encounters"] = empty($this->grunttype[$grunttype_pid]["encounters"]) ? null : $this->grunttype[$grunttype_pid]["encounters"];
             $pokestop["second_reward"] = empty($this->grunttype[$grunttype_pid]["second_reward"]) ? null : $this->grunttype[$grunttype_pid]["second_reward"];
             $pokestop["lure_id"] = $pokestop["lure_id"] - 500;
-            $pokestop["url"] = ! empty($pokestop["url"]) ? str_replace("http://", "https://images.weserv.nl/?url=", $pokestop["url"]) : null;
+            $pokestop["url"] = ! empty($pokestop["url"]) ? preg_replace("/^http:/i", "https:", $pokestop["url"]) : null;
             $pokestop["quest_type"] = intval($pokestop["quest_type"]);
-            $pokestop["quest_condition_type"] = intval($pokestop["quest_condition_type"]);
-            $pokestop["quest_condition_type_1"] = intval($pokestop["quest_condition_type_1"]);
+            $pokestop["quest_condition_type"] = 0;
+            $pokestop["quest_condition_type_1"] = 0;
             $pokestop["quest_reward_type"] = intval($pokestop["quest_reward_type"]);
-            $pokestop["quest_target"] = intval($pokestop["quest_target"]);
+            $pokestop["quest_target"] = 0;
             $pokestop["quest_pokemon_id"] = intval($pokestop["quest_pokemon_id"]);
             $pokestop["quest_pokemon_formid"] = intval($pokestop["quest_pokemon_formid"]);
             $pokestop["quest_item_id"] = intval($pokestop["quest_item_id"]);
@@ -554,19 +542,7 @@ class RocketMap_MAD extends RocketMap
             $pokestop["quest_dust_amount"] = intval($pokestop["quest_dust_amount"]);
             $pokestop["quest_item_name"] = empty($item_pid) ? null : i8ln($this->items[$item_pid]["name"]);
             $pokestop["quest_pokemon_name"] = empty($mon_pid) ? null : i8ln($this->data[$mon_pid]["name"]);
-            if (!empty($pokestop["quest_condition_pokemon_ids"])) {
-                $pokestop["quest_condition_info"] = str_replace('"category_name": "", ',"",$pokestop["quest_condition_pokemon_ids"]);
-            } else if (!empty($pokestop["quest_condition_with_pokemon_type"])) {
-                $pokestop["quest_condition_info"] = str_replace("pokemon_type","pokemon_type_ids",$pokestop["quest_condition_with_pokemon_type"]);
-            } else if (!empty($pokestop["quest_condition_with_throw_type"])) {
-                $pokestop["quest_condition_info"] = str_replace("throw_type","throw_type_id",$pokestop["quest_condition_with_throw_type"]);
-            } else if (!empty($pokestop["quest_condition_with_raid_level"])) {
-                $pokestop["quest_condition_info"] = str_replace("raid_level","raid_levels",$pokestop["quest_condition_with_raid_level"]);
-            } else if (!empty($pokestop["quest_condition_with_item"])) {
-                $pokestop["quest_condition_info"] = str_replace("item","item_id",$pokestop["quest_condition_with_item"]);
-            } else {
-                $pokestop["quest_condition_info"] = null;
-            }
+            $pokestop["quest_condition_info"] = null;
             $data[] = $pokestop;
             unset($pokestops[$i]);
             $i++;
