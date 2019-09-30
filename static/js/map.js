@@ -329,6 +329,15 @@ function removePokemonMarker(encounterId) { // eslint-disable-line no-unused-var
     mapData.pokemons[encounterId].hidden = true
 }
 
+function removePokestopMarker(pokestop_id) { // eslint-disable-line no-unused-vars
+    if (mapData.pokestops[pokestop_id].marker.rangeCircle) {
+        markers.removeLayer(mapData.pokestops[pokestop_id].marker.rangeCircle)
+        delete mapData.pokestops[pokestop_id].marker.rangeCircle
+    }
+    markers.removeLayer(mapData.pokestops[pokestop_id].marker)
+    mapData.pokestops[pokestop_id].hidden = true
+}
+
 function createServiceWorkerReceiver() {
     navigator.serviceWorker.addEventListener('message', function (event) {
         const data = JSON.parse(event.data)
@@ -1473,6 +1482,7 @@ function pokestopLabel(item) {
             item['quest_pokemon_name'] +
             '</b></div>'
         }
+        str += '<a href="javascript:removePokestopMarker(\'' + item['pokestop_id'] + '\')" title="' + i8ln('Hide this Pokéstop') + '"><i class="fas fa-trash-alt" style="font-size:15px;"></i></a>'
     } else {
         str += '</div>'
     }
