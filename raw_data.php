@@ -167,18 +167,18 @@ if (!$noPokestops) {
             } else {
                 $d["pokestops"] = $scanner->get_stops($qpeids, $qieids, $swLat, $swLng, $neLat, $neLng, $timestamp, 0, 0, 0, 0, $lures, $rocket, $quests, $dustamount);
             }
-	}
+        }
         if ((strtolower($map) === "rdm" && strtolower($fork) === "beta") || (strtolower($map) === "monocle" && strtolower($fork) === "mad") || (strtolower($map) === "rocketmap" && strtolower($fork) === "mad")) {
             if ($reloaddustamount == "true") {
                 $d["pokestops"] = array_merge($d["pokestops"], $scanner->get_stops_quest($qpreids, $qireids, $swLat, $swLng, $neLat, $neLng, 0, $oSwLat, $oSwLng, $oNeLat, $oNeLng, $lures, $rocket, $quests, $dustamount, $reloaddustamount));
             }
-	    if (!empty($_POST['qpreids'])) {
+            if (!empty($_POST['qpreids'])) {
                 $qpreids = !empty($_POST['qpreids']) ? array_unique(explode(",", $_POST['qpreids'])) : array();
 
                 $qpreidsDiff = array_diff($qpreids, $qpeids);
                 if (count($qpreidsDiff)) {
                     $d["pokestops"] = array_merge($d["pokestops"], $scanner->get_stops_quest($qpreids, $qireids, $swLat, $swLng, $neLat, $neLng, 0, $oSwLat, $oSwLng, $oNeLat, $oNeLng, $lures, $rocket, $quests, $dustamount, $reloaddustamount));
-	        }
+                }
 
                 $d["qpreids"] = $qpreids;
             }
@@ -186,11 +186,11 @@ if (!$noPokestops) {
                 $qireids = !empty($_POST['qireids']) ? array_unique(explode(",", $_POST['qireids'])) : array();
 
                 $qireidsDiff = array_diff($qireids, $qieids);
-	        if (count($qireidsDiff)) {
+                if (count($qireidsDiff)) {
                     $d["pokestops"] = array_merge($d["pokestops"], $scanner->get_stops_quest($qpreids, $qireids, $swLat, $swLng, $neLat, $neLng, 0, $oSwLat, $oSwLng, $oNeLat, $oNeLng, $lures, $rocket, $quests, $dustamount, $reloaddustamount));
-	        }
+                }
 
-	        $d["qireids"] = $qireids;
+                $d["qireids"] = $qireids;
             }
         }
     }
@@ -214,7 +214,7 @@ if (!$noGyms || !$noRaids) {
 $debug['4_after_gyms'] = microtime(true) - $timing['start'];
 
 global $noNests;
-if (!$noNests ) {
+if (!$noNests) {
     if ($d["lastnests"] == "true") {
         if ($lastnests != "true") {
             $d["nests"] = $manual->get_nests($swLat, $swLng, $neLat, $neLng);
@@ -229,7 +229,7 @@ if (!$noNests ) {
 }
 
 global $noCommunity;
-if (!$noCommunity ) {
+if (!$noCommunity) {
     if ($d["lastcommunities"] == "true") {
         if ($lastcommunities != "true") {
             $d["communities"] = $manual->get_communities($swLat, $swLng, $neLat, $neLng);
@@ -244,7 +244,7 @@ if (!$noCommunity ) {
 }
 
 global $noPortals;
-if (!$noPortals ) {
+if (!$noPortals) {
     if ($d["lastportals"] == "true") {
         if ($lastportals != "true") {
             $d["portals"] = $manual->get_portals($swLat, $swLng, $neLat, $neLng, 0, 0, 0, 0, 0, $newportals);
@@ -252,14 +252,14 @@ if (!$noPortals ) {
             if ($newarea) {
                 $d["portals"] = $manual->get_portals($swLat, $swLng, $neLat, $neLng, 0, $oSwLat, $oSwLng, $oNeLat, $oNeLng, $newportals);
             } else {
-                $d["portals"] = $manual->get_portals($swLat, $swLng, $neLat, $neLng, time(), 0, 0, 0, 0,$newportals);
+                $d["portals"] = $manual->get_portals($swLat, $swLng, $neLat, $neLng, time(), 0, 0, 0, 0, $newportals);
             }
         }
     }
 }
 
 global $noInn;
-if (!$noInn ) {
+if (!$noInn) {
     if ($d["lastinns"] == "true") {
         if ($lastinns != "true") {
             $d["inns"] = $manual->get_inns($swLat, $swLng, $neLat, $neLng);
@@ -274,7 +274,7 @@ if (!$noInn ) {
 }
 
 global $noFortress;
-if (!$noFortress ) {
+if (!$noFortress) {
     if ($d["lastfortresses"] == "true") {
         if ($lastfortresses != "true") {
             $d["fortresses"] = $manual->get_fortresses($swLat, $swLng, $neLat, $neLng);
@@ -289,7 +289,7 @@ if (!$noFortress ) {
 }
 
 global $noGreenhouse;
-if (!$noGreenhouse ) {
+if (!$noGreenhouse) {
     if ($d["lastgreenhouses"] == "true") {
         if ($lastgreenhouses != "true") {
             $d["greenhouses"] = $manual->get_greenhouses($swLat, $swLng, $neLat, $neLng);
@@ -304,7 +304,7 @@ if (!$noGreenhouse ) {
 }
 
 global $noPoi;
-if (!$noPoi ) {
+if (!$noPoi) {
     if ($d["lastpois"] == "true") {
         if ($lastpois != "true") {
             $d["pois"] = $manual->get_poi($swLat, $swLng, $neLat, $neLng, 0, 0, 0, 0, 0);
