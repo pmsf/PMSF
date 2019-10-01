@@ -4012,6 +4012,53 @@
         "type": "Ground",
         "color": "#e0c068"
       }
+    ],
+    "forms": [
+      {
+        "nameform": "Normal",
+        "protoform": "",
+        "assetsform": "00",
+        "formtypes": [
+          {
+            "type": "Rock",
+            "color": "#b8a038"
+          },
+          {
+            "type": "Ground",
+            "color": "#e0c068"
+          }
+        ]
+      },
+      {
+        "nameform": "Shadow",
+        "protoform": "",
+        "assetsform": "00",
+        "formtypes": [
+          {
+            "type": "Rock",
+            "color": "#b8a038"
+          },
+          {
+            "type": "Ground",
+            "color": "#e0c068"
+          }
+        ]
+      },
+      {
+        "nameform": "Purified",
+        "protoform": "",
+        "assetsform": "00",
+        "formtypes": [
+          {
+            "type": "Rock",
+            "color": "#b8a038"
+          },
+          {
+            "type": "Ground",
+            "color": "#e0c068"
+          }
+        ]
+      }
     ]
   },
   "96": {
@@ -7433,6 +7480,53 @@
         "type": "Ground",
         "color": "#e0c068"
       }
+    ],
+    "forms": [
+      {
+        "nameform": "Normal",
+        "protoform": "",
+        "assetsform": "00",
+        "formtypes": [
+          {
+            "type": "Steel",
+            "color": "#b8b8d0"
+          },
+          {
+            "type": "Ground",
+            "color": "#e0c068"
+          }
+        ]
+      },
+      {
+        "nameform": "Shadow",
+        "protoform": "",
+        "assetsform": "00",
+        "formtypes": [
+          {
+            "type": "Steel",
+            "color": "#b8b8d0"
+          },
+          {
+            "type": "Ground",
+            "color": "#e0c068"
+          }
+        ]
+      },
+      {
+        "nameform": "Purified",
+        "protoform": "",
+        "assetsform": "00",
+        "formtypes": [
+          {
+            "type": "Steel",
+            "color": "#b8b8d0"
+          },
+          {
+            "type": "Ground",
+            "color": "#e0c068"
+          }
+        ]
+      }
     ]
   },
   "209": {
@@ -7798,6 +7892,53 @@
         "type": "Flying",
         "color": "#a890f0"
       }
+    ],
+    "forms": [
+      {
+        "nameform": "Normal",
+        "protoform": "",
+        "assetsform": "00",
+        "formtypes": [
+          {
+            "type": "Ice",
+            "color": "#98d8d8"
+          },
+          {
+            "type": "Flying",
+            "color": "#a890f0"
+          }
+        ]
+      },
+      {
+        "nameform": "Shadow",
+        "protoform": "",
+        "assetsform": "00",
+        "formtypes": [
+          {
+            "type": "Ice",
+            "color": "#98d8d8"
+          },
+          {
+            "type": "Flying",
+            "color": "#a890f0"
+          }
+        ]
+      },
+      {
+        "nameform": "Purified",
+        "protoform": "",
+        "assetsform": "00",
+        "formtypes": [
+          {
+            "type": "Ice",
+            "color": "#98d8d8"
+          },
+          {
+            "type": "Flying",
+            "color": "#a890f0"
+          }
+        ]
+      }
     ]
   },
   "226": {
@@ -8041,6 +8182,41 @@
       {
         "type": "Normal",
         "color": "#8a8a59"
+      }
+    ],
+    "forms": [
+      {
+        "nameform": "Normal",
+        "protoform": "",
+        "assetsform": "00",
+        "formtypes": [
+          {
+            "type": "Normal",
+            "color": "#8a8a59"
+          }
+        ]
+      },
+      {
+        "nameform": "Shadow",
+        "protoform": "",
+        "assetsform": "00",
+        "formtypes": [
+          {
+            "type": "Normal",
+            "color": "#8a8a59"
+          }
+        ]
+      },
+      {
+        "nameform": "Purified",
+        "protoform": "",
+        "assetsform": "00",
+        "formtypes": [
+          {
+            "type": "Normal",
+            "color": "#8a8a59"
+          }
+        ]
       }
     ]
   },
@@ -9446,6 +9622,53 @@
         "type": "Ghost",
         "color": "#705898"
       }
+    ],
+    "forms": [
+      {
+        "nameform": "Normal",
+        "protoform": "",
+        "assetsform": "00",
+        "formtypes": [
+          {
+            "type": "Dark",
+            "color": "#707070"
+          },
+          {
+            "type": "Ghost",
+            "color": "#705898"
+          }
+        ]
+      },
+      {
+        "nameform": "Shadow",
+        "protoform": "",
+        "assetsform": "00",
+        "formtypes": [
+          {
+            "type": "Dark",
+            "color": "#707070"
+          },
+          {
+            "type": "Ghost",
+            "color": "#705898"
+          }
+        ]
+      },
+      {
+        "nameform": "Purified",
+        "protoform": "",
+        "assetsform": "00",
+        "formtypes": [
+          {
+            "type": "Dark",
+            "color": "#707070"
+          },
+          {
+            "type": "Ghost",
+            "color": "#705898"
+          }
+        ]
+      }
     ]
   },
   "303":{
@@ -10580,6 +10803,41 @@
         "type": "Ghost",
         "color": "#705898"
       }
+    ],
+    "forms": [
+      {
+        "nameform": "Normal",
+        "protoform": "",
+        "assetsform": "00",
+        "formtypes": [
+          {
+            "type": "Ghost",
+            "color": "#705898"
+          }
+        ]
+      },
+      {
+        "nameform": "Shadow",
+        "protoform": "",
+        "assetsform": "00",
+        "formtypes": [
+          {
+            "type": "Ghost",
+            "color": "#705898"
+          }
+        ]
+      },
+      {
+        "nameform": "Purified",
+        "protoform": "",
+        "assetsform": "00",
+        "formtypes": [
+          {
+            "type": "Ghost",
+            "color": "#705898"
+          }
+        ]
+      }
     ]
   },
   "354":{
@@ -10589,6 +10847,41 @@
       {
         "type": "Ghost",
         "color": "#705898"
+      }
+    ],
+    "forms": [
+      {
+        "nameform": "Normal",
+        "protoform": "",
+        "assetsform": "00",
+        "formtypes": [
+          {
+            "type": "Ghost",
+            "color": "#705898"
+          }
+        ]
+      },
+      {
+        "nameform": "Shadow",
+        "protoform": "",
+        "assetsform": "00",
+        "formtypes": [
+          {
+            "type": "Ghost",
+            "color": "#705898"
+          }
+        ]
+      },
+      {
+        "nameform": "Purified",
+        "protoform": "",
+        "assetsform": "00",
+        "formtypes": [
+          {
+            "type": "Ghost",
+            "color": "#705898"
+          }
+        ]
       }
     ]
   },
@@ -10602,6 +10895,41 @@
         "type": "Ghost",
         "color": "#705898"
       }
+    ],
+    "forms": [
+      {
+        "nameform": "Normal",
+        "protoform": "",
+        "assetsform": "00",
+        "formtypes": [
+          {
+            "type": "Ghost",
+            "color": "#705898"
+          }
+        ]
+      },
+      {
+        "nameform": "Shadow",
+        "protoform": "",
+        "assetsform": "00",
+        "formtypes": [
+          {
+            "type": "Ghost",
+            "color": "#705898"
+          }
+        ]
+      },
+      {
+        "nameform": "Purified",
+        "protoform": "",
+        "assetsform": "00",
+        "formtypes": [
+          {
+            "type": "Ghost",
+            "color": "#705898"
+          }
+        ]
+      }
     ]
   },
   "356":{
@@ -10611,6 +10939,41 @@
       {
         "type": "Ghost",
         "color": "#705898"
+      }
+    ],
+    "forms": [
+      {
+        "nameform": "Normal",
+        "protoform": "",
+        "assetsform": "00",
+        "formtypes": [
+          {
+            "type": "Ghost",
+            "color": "#705898"
+          }
+        ]
+      },
+      {
+        "nameform": "Shadow",
+        "protoform": "",
+        "assetsform": "00",
+        "formtypes": [
+          {
+            "type": "Ghost",
+            "color": "#705898"
+          }
+        ]
+      },
+      {
+        "nameform": "Purified",
+        "protoform": "",
+        "assetsform": "00",
+        "formtypes": [
+          {
+            "type": "Ghost",
+            "color": "#705898"
+          }
+        ]
       }
     ]
   },
@@ -10705,6 +11068,41 @@
         "type": "Ice",
         "color": "#98d8d8"
       }
+    ],
+    "forms": [
+      {
+        "nameform": "Normal",
+        "protoform": "",
+        "assetsform": "00",
+        "formtypes": [
+          {
+            "type": "Ice",
+            "color": "#98d8d8"
+          }
+        ]
+      },
+      {
+        "nameform": "Shadow",
+        "protoform": "",
+        "assetsform": "00",
+        "formtypes": [
+          {
+            "type": "Ice",
+            "color": "#98d8d8"
+          }
+        ]
+      },
+      {
+        "nameform": "Purified",
+        "protoform": "",
+        "assetsform": "00",
+        "formtypes": [
+          {
+            "type": "Ice",
+            "color": "#98d8d8"
+          }
+        ]
+      }
     ]
   },
   "362":{
@@ -10714,6 +11112,41 @@
       {
         "type": "Ice",
         "color": "#98d8d8"
+      }
+    ],
+    "forms": [
+      {
+        "nameform": "Normal",
+        "protoform": "",
+        "assetsform": "00",
+        "formtypes": [
+          {
+            "type": "Ice",
+            "color": "#98d8d8"
+          }
+        ]
+      },
+      {
+        "nameform": "Shadow",
+        "protoform": "",
+        "assetsform": "00",
+        "formtypes": [
+          {
+            "type": "Ice",
+            "color": "#98d8d8"
+          }
+        ]
+      },
+      {
+        "nameform": "Purified",
+        "protoform": "",
+        "assetsform": "00",
+        "formtypes": [
+          {
+            "type": "Ice",
+            "color": "#98d8d8"
+          }
+        ]
       }
     ]
   },
@@ -13020,6 +13453,53 @@
         "type": "Ice",
         "color": "#98d8d8"
       }
+    ],
+    "forms": [
+      {
+        "nameform": "Normal",
+        "protoform": "",
+        "assetsform": "00",
+        "formtypes": [
+          {
+            "type": "Grass",
+            "color": "#78c850"
+          },
+          {
+            "type": "Ice",
+            "color": "#98d8d8"
+          }
+        ]
+      },
+      {
+        "nameform": "Shadow",
+        "protoform": "",
+        "assetsform": "00",
+        "formtypes": [
+          {
+            "type": "Grass",
+            "color": "#78c850"
+          },
+          {
+            "type": "Ice",
+            "color": "#98d8d8"
+          }
+        ]
+      },
+      {
+        "nameform": "Purified",
+        "protoform": "",
+        "assetsform": "00",
+        "formtypes": [
+          {
+            "type": "Grass",
+            "color": "#78c850"
+          },
+          {
+            "type": "Ice",
+            "color": "#98d8d8"
+          }
+        ]
+      }
     ]
   },
   "460":{
@@ -13033,6 +13513,53 @@
       {
         "type": "Ice",
         "color": "#98d8d8"
+      }
+    ],
+    "forms": [
+      {
+        "nameform": "Normal",
+        "protoform": "",
+        "assetsform": "00",
+        "formtypes": [
+          {
+            "type": "Grass",
+            "color": "#78c850"
+          },
+          {
+            "type": "Ice",
+            "color": "#98d8d8"
+          }
+        ]
+      },
+      {
+        "nameform": "Shadow",
+        "protoform": "",
+        "assetsform": "00",
+        "formtypes": [
+          {
+            "type": "Grass",
+            "color": "#78c850"
+          },
+          {
+            "type": "Ice",
+            "color": "#98d8d8"
+          }
+        ]
+      },
+      {
+        "nameform": "Purified",
+        "protoform": "",
+        "assetsform": "00",
+        "formtypes": [
+          {
+            "type": "Grass",
+            "color": "#78c850"
+          },
+          {
+            "type": "Ice",
+            "color": "#98d8d8"
+          }
+        ]
       }
     ]
   },
@@ -13581,6 +14108,41 @@
       {
         "type": "Ghost",
         "color": "#705898"
+      }
+    ],
+    "forms": [
+      {
+        "nameform": "Normal",
+        "protoform": "",
+        "assetsform": "00",
+        "formtypes": [
+          {
+            "type": "Ghost",
+            "color": "#705898"
+          }
+        ]
+      },
+      {
+        "nameform": "Shadow",
+        "protoform": "",
+        "assetsform": "00",
+        "formtypes": [
+          {
+            "type": "Ghost",
+            "color": "#705898"
+          }
+        ]
+      },
+      {
+        "nameform": "Purified",
+        "protoform": "",
+        "assetsform": "00",
+        "formtypes": [
+          {
+            "type": "Ghost",
+            "color": "#705898"
+          }
+        ]
       }
     ]
   },
