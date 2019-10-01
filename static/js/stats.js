@@ -24,7 +24,7 @@ function countMarkers(map) { // eslint-disable-line no-unused-vars
     var thisGymIsVisible = false
     var thisPokestopIsVisible = false
     var thisRaidIsVisible = false
-    var thisSpawnpointIsVisible = false;
+    var thisSpawnpointIsVisible = false
 
     if (Store.get('showPokemon')) {
         $.each(mapData.pokemons, function (key, value) {
