@@ -510,7 +510,6 @@ class RDM_beta extends RDM
             $spawnpoint["latitude"] = floatval($spawnpoint["latitude"]);
             $spawnpoint["longitude"] = floatval($spawnpoint["longitude"]);
             $spawnpoint["time"] = intval($spawnpoint["despawn_sec"]);
-            $spawnpoint["duration"] = !empty($spawnpoint["duration"]) ? $spawnpoint["duration"] : null;
             $data[] = $spawnpoint;
             unset($spawnpoints[$i]);
             $i++;
