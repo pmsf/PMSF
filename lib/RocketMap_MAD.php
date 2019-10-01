@@ -367,8 +367,7 @@ class RocketMap_MAD extends RocketMap
         $query = "SELECT latitude,
         longitude,
         spawnpoint AS spawnpoint_id,
-        (SUBSTRING_INDEX(SUBSTRING_INDEX(calc_endminsec, ':', 1), ' ', -1)*60) + (SUBSTRING_INDEX(SUBSTRING_INDEX(calc_endminsec, ':', -1), ' ', -1)) AS despawn_time,
-        calc_endminsec AS duration
+        (SUBSTRING_INDEX(SUBSTRING_INDEX(calc_endminsec, ':', 1), ' ', -1)*60) + (SUBSTRING_INDEX(SUBSTRING_INDEX(calc_endminsec, ':', -1), ' ', -1)) AS time
         FROM trs_spawn
         WHERE :conditions";
         $query = str_replace(":conditions", join(" AND ", $conds), $query);
@@ -378,8 +377,7 @@ class RocketMap_MAD extends RocketMap
         foreach ($spawnpoints as $spawnpoint) {
             $spawnpoint["latitude"] = floatval($spawnpoint["latitude"]);
             $spawnpoint["longitude"] = floatval($spawnpoint["longitude"]);
-            $spawnpoint["time"] = intval($spawnpoint["despawn_time"]);
-            $spawnpoint["duration"] = intval($spawnpoint["duration"]);
+            $spawnpoint["time"] = intval($spawnpoint["time"]);
             $data[] = $spawnpoint;
             unset($spawnpoints[$i]);
             $i++;

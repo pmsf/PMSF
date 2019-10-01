@@ -1593,48 +1593,26 @@ function showHideGruntEncounter() { // eslint-disable-line no-unused-vars
 }
 
 function formatSpawnTime(seconds) {
-    var results = 0
-    if (mapType !== 'rdm' && mapFork !== 'beta') {
-        return ('0' + Math.floor((seconds + 3600) % 3600 / 60)).substr(-2) + ':' + ('0' + seconds % 60).substr(-2)
-    } else {
-        var d = new Date()
-        if (seconds >= 1800) {
-            d.setMinutes(d.getMinutes() - 30)
-            d.setMinutes(0)
-            d.setSeconds(0)
-            d.setSeconds(d.getSeconds() + seconds)
-        } else {
-            d.setMinutes(d.getMinutes() + 30)
-            d.setMinutes(0)
-            d.setSeconds(0)
-            d.setSeconds(d.getSeconds() + seconds)
-        }
-        var Min = (d.getMinutes() < 10 ? '0' : '') + d.getMinutes()
-        var Sec = (d.getSeconds() < 10 ? '0' : '') + d.getSeconds()
-        results = Min + ':' + Sec
-    }
-    return results
+    return ('0' + Math.floor((seconds + 3600) % 3600 / 60)).substr(-2) + ':' + ('0' + seconds % 60).substr(-2)
 }
 
 function spawnpointLabel(item) {
-    var str =
-        '<div>' +
-        '<b>' + i8ln('Spawn Point') + '</b>' +
-        '</div>' +
-        '<div>' +
-        i8ln('Every hour from') + ' ' + formatSpawnTime(item.time + 1800) + ' ' + i8ln('to') + ' ' + formatSpawnTime(item.time) +
-        '</div>'
-    if (item.duration === 60 || item.kind === 'ssss') {
-        str =
-            '<div>' +
-            '<b>' + i8ln('Spawn Point') + '</b>' +
-            '</div>' +
-            '<div>' +
-            i8ln('Every hour from') + ' ' + formatSpawnTime(item.time) +
-            '</div>'
+    var str = '<div><b>' + i8ln('Spawn Point') + '</b></div>'
+
+    // 60 minute
+    if (item.time > 1800) {
+        str += '<div>' + i8ln('Spawn time') + ': xx:' + formatSpawnTime(item.time) + '</div>' +
+            '<div>' + i8ln('Despawn time') + ': xx:' + formatSpawnTime(item.time) + '</div>'
+    // 30 minute
+    } else if (item.time > 0) {
+        str += '<div>' + i8ln('Spawn time') + ': xx:' + formatSpawnTime(item.time + 1800) + '</div>' +
+        '<div>' + i8ln('Despawn time') + ': xx:' + formatSpawnTime(item.time) + '</div>'
+    } else {
+        str += '<div>' + i8ln('Unknown spawnpoint info') + '</div>'
     }
     return str
 }
+
 
 function addRangeCircle(marker, map, type, teamId) {
     var markerPos = marker.getLatLng()

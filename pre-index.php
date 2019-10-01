@@ -1463,6 +1463,11 @@ if ($blockIframe) {
                 <center><h1 id="stats-pkstop-label"></h1></center>
             </div>
             <div id="pokestopList" style="color: black;"></div>
+
+            <div class="stats-label-container">
+                <center><h1 id="stats-spawnpoint-label"></h1></center>
+            </div>
+            <div id="spawnpointList" style="color: black;"></div>
         </div>
     </nav>
     <nav id="gym-details">
