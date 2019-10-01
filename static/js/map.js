@@ -329,13 +329,13 @@ function removePokemonMarker(encounterId) { // eslint-disable-line no-unused-var
     mapData.pokemons[encounterId].hidden = true
 }
 
-function removePokestopMarker(pokestop_id) { // eslint-disable-line no-unused-vars
-    if (mapData.pokestops[pokestop_id].marker.rangeCircle) {
-        markers.removeLayer(mapData.pokestops[pokestop_id].marker.rangeCircle)
-        delete mapData.pokestops[pokestop_id].marker.rangeCircle
+function removePokestopMarker(pokestopId) { // eslint-disable-line no-unused-vars
+    if (mapData.pokestops[pokestopId].marker.rangeCircle) {
+        markers.removeLayer(mapData.pokestops[pokestopId].marker.rangeCircle)
+        delete mapData.pokestops[pokestopId].marker.rangeCircle
     }
-    markers.removeLayer(mapData.pokestops[pokestop_id].marker)
-    mapData.pokestops[pokestop_id].hidden = true
+    markers.removeLayer(mapData.pokestops[pokestopId].marker)
+    mapData.pokestops[pokestopId].hidden = true
 }
 
 function createServiceWorkerReceiver() {
@@ -1612,7 +1612,6 @@ function spawnpointLabel(item) {
     }
     return str
 }
-
 
 function addRangeCircle(marker, map, type, teamId) {
     var markerPos = marker.getLatLng()
