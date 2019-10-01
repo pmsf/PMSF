@@ -1031,6 +1031,19 @@ if ($blockIframe) {
                 </div>';
                 } ?>
                 <?php
+                if (! $noLiveScanLocation) {
+                    echo '<div class="form-control switch-container">
+                    <h3>' . i8ln('Live scanner location') . '</h3>
+                    <div class="onoffswitch">
+                        <input id="scan-location-switch" type="checkbox" name="scan-location-switch" class="onoffswitch-checkbox">
+                        <label class="onoffswitch-label" for="scan-location-switch">
+                            <span class="switch-label" data-on="On" data-off="Off"></span>
+                            <span class="switch-handle"></span>
+                        </label>
+                    </div>
+                </div>';
+                } ?>
+                <?php
                 if (! $noSearchLocation) {
                     echo '<div class="form-control switch-container" style="display:{{is_fixed}}">
                 <label for="next-location">
@@ -2046,6 +2059,7 @@ if ($blockIframe) {
     var enableNewPortals = <?php echo (($map != "monocle") || ($fork == "alternate")) ? $enableNewPortals : 0 ?>;
     var enableWeatherOverlay = <?php echo ! $noWeatherOverlay ? $enableWeatherOverlay : 'false' ?>;
     var enableSpawnpoints = <?php echo $noSpawnPoints ? 'false' : $enableSpawnPoints ?>;
+    var enableLiveScan = <?php echo $noLiveScanLocation ? 'false' : $enableLiveScan ?>;
     var enableRanges = <?php echo $noRanges ? 'false' : $enableRanges ?>;
     var enableScanPolygon = <?php echo $noScanPolygon ? 'false' : $enableScanPolygon ?>;
     var geoJSONfile = '<?php echo $noScanPolygon ? '' : $geoJSONfile ?>';

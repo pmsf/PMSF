@@ -192,6 +192,7 @@
     "noDeleteInn": true,
     "noDeleteFortress": true,
     "noDeleteGreenhouse": true,
-    "noInvasionEncounterData": true
+    "noInvasionEncounterData": true,
+    "enableLiveScan": true
   }
 }
