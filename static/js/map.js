@@ -2904,7 +2904,7 @@ function setupScanLocationMarker(item) {
         iconAnchor: [18, 24],
         popupAnchor: [0, -35],
         className: 'marker-livescan',
-        html: '<img src="static/images/scan-marker.svg" style="width:36px;height: auto;"/>'
+        html: '<img src="static/images/scan-marker.png" style="width:36px;height: auto;"/>'
     })
 
     var marker = L.marker([item['latitude'], item['longitude']], {icon: icon, zIndexOffset: 1030, virtual: true}).bindPopup(liveScanLabel(item), {autoPan: false, closeOnClick: false, autoClose: false})
