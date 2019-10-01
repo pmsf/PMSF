@@ -248,6 +248,9 @@ $enableRanges = 'false';                                            // true/fals
 $noScanPolygon = true;
 $enableScanPolygon = 'false';
 $geoJSONfile = 'custom/scannerarea.json';			    // path to geoJSON file create your own on http://geojson.io/ adjust filename
+
+$noLiveScanLocation = true;
+$enableLiveScan = 'false';
 /* Location & Search Settings */
 
 $noSearchLocation = false;                                          // true/false
