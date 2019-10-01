@@ -228,21 +228,14 @@ function countMarkers(map) { // eslint-disable-line no-unused-vars
                         pokestopCount[1] += 1
                     }
                 }
-                if (pokestopCount[0] === 0 || !pokestopCount[0]) {
-                    pokestopCount[0] = 1
-                } else {
-                    pokestopCount[0] += 1
-                }
                 pokestopTotal++
             }
         })
 
-        var pokestopListString = '<table><th>' + i8ln('Icon') + '</th><th>' + i8ln('Status') + '</th><th>' + i8ln('Count') + '</th><th>%</th>'
+        var pokestopListString = '<table><th>' + i8ln('Icon') + '</th><th>' + i8ln('Status') + '</th><th>' + i8ln('Count') + '</th><th>%</th><tr><td></td><td>' + i8ln('Total') + '</td><td>' + pokestopTotal + '</td></tr>'
         for (i = 0; i < pokestopCount.length; i++) {
             if (pokestopCount[i] > 0) {
-                if (i === 0) {
-                    pokestopListString += '<tr><td><img src="static/forts/Pstop.png" style="height:48px;"/></td><td style="vertical-align:middle;">' + i8ln('Total') + '</td><td style="vertical-align:middle;">' + pokestopCount[i] + '</td></tr>'
-                } else if (i === 1) {
+                if (i === 1) {
                     pokestopListString += '<tr><td><img src="static/forts/PstopQuest.png" style="height:48px;"/></td><td style="vertical-align:middle;">' + i8ln('Quest') + '</td><td style="vertical-align:middle;">' + pokestopCount[i] + '</td><td style="vertical-align:middle;">' + Math.round(pokestopCount[i] * 100 / pokestopTotal * 10) / 10 + '%</td></tr>'
                 } else if (i === 2) {
                     pokestopListString += '<tr><td><img src="static/forts/PstopLured_1.png" style="height:48px;"/></td><td style="vertical-align:middle;">' + i8ln('Lured') + '</td><td style="vertical-align:middle;">' + pokestopCount[i] + '</td><td style="vertical-align:middle;">' + Math.round(pokestopCount[i] * 100 / pokestopTotal * 10) / 10 + '%</td></tr>'
@@ -280,7 +273,7 @@ function countMarkers(map) { // eslint-disable-line no-unused-vars
             }
         })
 
-        var spawnpointListString = '<table><th>' + i8ln('Icon') + '</th><th>' + i8ln('TTH') + '</th><th>' + i8ln('Count') + '</th><th>%</th><tr><td></td></tr>'
+        var spawnpointListString = '<table><th>' + i8ln('Icon') + '</th><th>' + i8ln('TTH') + '</th><th>' + i8ln('Count') + '</th><th>%</th><tr><td></td><td>' + i8ln('Total') + '</td><td>' + spawnpointTotal + '</td></tr>'
         for (i = 0; i < spawnpointCount.length; i++) {
             if (spawnpointCount[i] > 0) {
                 if (i === 1) {
