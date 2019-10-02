@@ -99,6 +99,8 @@ $paypalUrl = "";                                                    // PayPal do
 $discordUrl = "https://discord.gg/INVITE_LINK";                     // Discord URL, leave "" for empty
 $whatsAppUrl = "";                                                  // WhatsApp URL, leave "" for empty
 $telegramUrl = "";                                                  // Telegram URL, leave "" for empty
+$customUrl = "";                                                    // Custom URL, leave "" for empty
+$customUrlFontIcon = "far fa-smile-beam";                           // Choose a custom icon on: https://fontawesome.com/icons?d=gallery&m=free
 
 /* Worldopole */
 
