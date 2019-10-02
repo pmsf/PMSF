@@ -2899,12 +2899,18 @@ function setupSpawnpointMarker(item) {
 }
 
 function setupScanLocationMarker(item) {
+    var html = ''
+    if (item['last_seen'] < Math.round((new Date()).getTime() / 1000) - deviceOfflineAfterSeconds) {
+        html = '<img src="static/images/device-offline.png" style="width:36px;height: auto;"/>'
+    } else {
+        html = '<img src="static/images/device-online.png" style="width:36px;height: auto;"/>'
+    }
     var icon = L.divIcon({
         iconSize: [36, 48],
         iconAnchor: [18, 24],
         popupAnchor: [0, -35],
         className: 'marker-livescan',
-        html: '<img src="static/images/scan-marker.svg" style="width:36px;height: auto;"/>'
+        html: html
     })
 
     var marker = L.marker([item['latitude'], item['longitude']], {icon: icon, zIndexOffset: 1030, virtual: true}).bindPopup(liveScanLabel(item), {autoPan: false, closeOnClick: false, autoClose: false})
