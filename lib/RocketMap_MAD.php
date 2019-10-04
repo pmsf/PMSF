@@ -573,7 +573,7 @@ class RocketMap_MAD extends RocketMap
         $data = array();
         $i = 0;
         foreach ($scanlocations as $scanlocation) {
-            $parts = explode(", ",$scanlocation["latLon"]);
+            $parts = explode(", ", $scanlocation["latLon"]);
             $scanlocation["latitude"] = floatval($parts['0']);
             $scanlocation["longitude"] = floatval($parts['1']);
             $data[] = $scanlocation;
