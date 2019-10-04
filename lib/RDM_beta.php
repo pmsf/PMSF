@@ -538,6 +538,10 @@ class RDM_beta extends RDM
         if (!$noBoundaries) {
             $conds[] = "(ST_WITHIN(point(last_lat,last_lon),ST_GEOMFROMTEXT('POLYGON(( " . $boundaries . " ))')))";
         }
+        global $hideDeviceAfterMinutes;
+        if ($hideDeviceAfterMinutes > 0) {
+            $conds[] = "last_seen > UNIX_TIMESTAMP( NOW() - INTERVAL " . $hideDeviceAfterMinutes . " MINUTE)";
+        }
         return $this->query_scanlocation($conds, $params);
     }
 
@@ -545,12 +549,12 @@ class RDM_beta extends RDM
     {
         global $db;
         $query = "SELECT last_lat AS latitude,
-	last_lon AS longitude,
-	last_seen,
-	uuid,
-	instance_name
+        last_lon AS longitude,
+        last_seen,
+        uuid,
+        instance_name
         FROM device
-        WHERE :conditions AND last_seen > UNIX_TIMESTAMP( NOW() - INTERVAL 30 MINUTE)";
+        WHERE :conditions";
         $query = str_replace(":conditions", join(" AND ", $conds), $query);
         $scanlocations = $db->query($query, $params)->fetchAll(\PDO::FETCH_ASSOC);
         $data = array();

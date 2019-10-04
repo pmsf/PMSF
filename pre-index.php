@@ -2060,6 +2060,7 @@ if ($blockIframe) {
     var enableWeatherOverlay = <?php echo ! $noWeatherOverlay ? $enableWeatherOverlay : 'false' ?>;
     var enableSpawnpoints = <?php echo $noSpawnPoints ? 'false' : $enableSpawnPoints ?>;
     var enableLiveScan = <?php echo $noLiveScanLocation ? 'false' : $enableLiveScan ?>;
+    var deviceOfflineAfterSeconds = <?php echo $deviceOfflineAfterSeconds ?>;
     var enableRanges = <?php echo $noRanges ? 'false' : $enableRanges ?>;
     var enableScanPolygon = <?php echo $noScanPolygon ? 'false' : $enableScanPolygon ?>;
     var geoJSONfile = '<?php echo $noScanPolygon ? '' : $geoJSONfile ?>';
