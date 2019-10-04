@@ -549,4 +549,37 @@ class RocketMap_MAD extends RocketMap
         }
         return $data;
     }
+
+    public function get_scanlocation($swLat, $swLng, $neLat, $neLng, $tstamp = 0, $oSwLat = 0, $oSwLng = 0, $oNeLat = 0, $oNeLng = 0)
+    {
+        $conds = array();
+        $params = array();
+        $conds[] = "origin is not :null";
+        $params[':null'] = null;
+        return $this->query_scanlocation($conds, $params);
+    }
+
+    private function query_scanlocation($conds, $params)
+    {
+        global $db;
+        $query = "SELECT currentPos AS latLon,
+        Unix_timestamp(Convert_tz(lastProtoDateTime, '+00:00', @@global.time_zone)) AS last_seen,
+        origin AS uuid,
+        routemanager AS instance_name
+        FROM trs_status
+        WHERE :conditions";
+        $query = str_replace(":conditions", join(" AND ", $conds), $query);
+        $scanlocations = $db->query($query, $params)->fetchAll(\PDO::FETCH_ASSOC);
+        $data = array();
+        $i = 0;
+        foreach ($scanlocations as $scanlocation) {
+            $parts = explode(", ",$scanlocation["latLon"]);
+            $scanlocation["latitude"] = floatval($parts['0']);
+            $scanlocation["longitude"] = floatval($parts['1']);
+            $data[] = $scanlocation;
+            unset($scanlocations[$i]);
+            $i++;
+        }
+        return $data;
+    }
 }
