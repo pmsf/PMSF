@@ -193,6 +193,7 @@
     "noDeleteFortress": true,
     "noDeleteGreenhouse": true,
     "noInvasionEncounterData": true,
-    "enableLiveScan": true
+    "enableLiveScan": true,
+    "deviceOfflineAfterSeconds": true
   }
 }
