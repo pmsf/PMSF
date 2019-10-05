@@ -987,11 +987,10 @@ function pokemonLabel(item) {
     var contentstring =
         '<div><center>' +
         '<b>' + name + '</b>'
-
     if (form !== null && form > 0 && item['form_name'] !== 'Normal') {
         contentstring += ' (' + i8ln(item['form_name']) + ')'
     }
-	
+
     if (gender != null) {
         contentstring += ' ' + genderType[gender - 1]
     }
