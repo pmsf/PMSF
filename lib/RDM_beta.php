@@ -213,12 +213,7 @@ class RDM_beta extends RDM
                 foreach ($forms as $f => $v) {
                     if ($pokemon["form"] === $v['protoform']) {
                         $types = $v['formtypes'];
-                        foreach ($v['formtypes'] as $ft => $v) {
-                            $types[$ft]['type'] = $v['type'];
-                        }
-                        $pokemon["pokemon_types"] = $types;
-                    } elseif ($pokemon["form"] === $v['assetsform']) {
-                        $types = $v['formtypes'];
+                        $pokemon["form_name"] = $v['nameform'];
                         foreach ($v['formtypes'] as $ft => $v) {
                             $types[$ft]['type'] = $v['type'];
                         }

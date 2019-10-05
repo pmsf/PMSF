@@ -195,7 +195,14 @@ class RocketMap_MAD extends RocketMap
             }
             $pokemon["pokemon_types"] = $types;
             $pokemon["cp_multiplier"] = isset($pokemon["cp_multiplier"]) ? floatval($pokemon["cp_multiplier"]) : null;
-
+            if (isset($pokemon["form"]) && $pokemon["form"] > 0) {
+                $forms = $this->data[$pokemon["pokemon_id"]]["forms"];
+                foreach ($forms as $f => $v) {
+                    if ($pokemon["form"] === $v['protoform']) {
+                        $pokemon["form_name"] = $v['nameform'];
+                    }
+                }
+            }
             $data[] = $pokemon;
 
             unset($pokemons[$i]);
@@ -326,6 +333,14 @@ class RocketMap_MAD extends RocketMap
             $gym["slots_available"] = intval($gym["slots_available"]);
             $gym["url"] = ! empty($gym["url"]) ? preg_replace("/^http:/i", "https:", $gym["url"]) : null;
             $gym["park"] = intval($gym["park"]);
+            if (isset($gym["form"]) && $gym["form"] > 0) {
+                $forms = $this->data[$gym["raid_pokemon_id"]]["forms"];
+                foreach ($forms as $f => $v) {
+                    if ($gym["raid_pokemon_form"] === $v['protoform']) {
+                        $gym["form_name"] = $v['nameform'];
+                    }
+                }
+            }
             $data[] = $gym;
 
             unset($gyms[$i]);
