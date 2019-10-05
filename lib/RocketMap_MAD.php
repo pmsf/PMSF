@@ -563,7 +563,7 @@ class RocketMap_MAD extends RocketMap
     {
         global $db;
         $query = "SELECT currentPos AS latLon,
-        Unix_timestamp(Convert_tz(lastProtoDateTime, '+00:00', @@global.time_zone)) AS last_seen,
+        Unix_timestamp(lastProtoDateTime) AS last_seen,
         origin AS uuid,
         routemanager AS instance_name
         FROM trs_status
