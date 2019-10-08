@@ -1589,15 +1589,17 @@ function formatSpawnTime(seconds) {
 }
 
 function spawnpointLabel(item) {
-    var str = '<div><b>' + i8ln('Spawn Point') + '</b></div>'
+    var str = ''
 
     // 60 minute
     if (item.time > 1800) {
-        str += '<div>' + i8ln('Spawn time') + ': xx:' + formatSpawnTime(item.time) + '</div>' +
+        str += '<div><b>' + i8ln('Spawn Point (60)') + '</b></div>' +
+            '<div>' + i8ln('Spawn time') + ': xx:' + formatSpawnTime(item.time) + '</div>' +
             '<div>' + i8ln('Despawn time') + ': xx:' + formatSpawnTime(item.time) + '</div>'
     // 30 minute
     } else if (item.time > 0) {
-        str += '<div>' + i8ln('Spawn time') + ': xx:' + formatSpawnTime(item.time + 1800) + '</div>' +
+        str += '<div><b>' + i8ln('Spawn Point (30)') + '</b></div>' +
+        '<div>' + i8ln('Spawn time') + ': xx:' + formatSpawnTime(item.time + 1800) + '</div>' +
         '<div>' + i8ln('Despawn time') + ': xx:' + formatSpawnTime(item.time) + '</div>'
     } else {
         str += '<div>' + i8ln('Unknown spawnpoint info') + '</div>'
@@ -2248,8 +2250,7 @@ function nestLabel(item) {
             '</div>' +
             nestName + '<br />' +
             '<div>' +
-            '<img src="static/images/nest-' + item.english_pokemon_types[0].type.toLowerCase() + '.png" style="width:70px;height:auto;"/>' +
-            '<img src="' + iconpath + 'pokemon_icon_' + pokemonIdStr + '_00.png" style="position:absolute;width:65px;height:65px;top:53px;left:85px;"/>' +
+            '<img src="' + iconpath + 'pokemon_icon_' + pokemonIdStr + '_00.png" style="width:65px;height:65px;"/>' +
             '</div>' +
             pokemonAvg +
             '</center>'
@@ -2268,9 +2269,9 @@ function nestLabel(item) {
     if (!noManualNests) {
         str += '<center><div>' + i8ln('Add Nest') + ' <i class="fas fa-binoculars submit-nest" onclick="openNestModal(event);" data-id="' + item['nest_id'] + '"></i></div></center>'
     }
-    str += '<div>' +
+    str += '<center><div>' +
         '<a href="javascript:void(0)" onclick="javascript:openMapDirections(' + item.lat + ',' + item.lon + ')" title="' + i8ln('View in Maps') + '"><i class="fas fa-road"></i> ' + item.lat.toFixed(6) + ', ' + item.lon.toFixed(7) + '</a> - <a href="./?lat=' + item.lat + '&lon=' + item.lon + '&zoom=16"><i class="far fa-share-square" aria-hidden="true" style="position:relative;top:3px;left:0px;color:#26c300;font-size:20px;"></i></a>' +
-        '</div>'
+        '</div></center>'
     if ((!noWhatsappLink) && (item.pokemon_id > 0)) {
         str += '<div>' +
             '<center>' +
@@ -2778,8 +2779,10 @@ function deletePoi(event) { // eslint-disable-line no-unused-vars
 
 function setupSpawnpointMarker(item) {
     var color = ''
-    if (item['time'] > 0) {
+    if (item['time'] > 1800) {
         color = 'green'
+    } else if (item['time'] > 0) {
+        color = 'lightgreen'
     } else {
         color = 'red'
     }
@@ -5293,8 +5296,10 @@ function updateSpawnPoints() {
     $.each(mapData.spawnpoints, function (key, value) {
         if (map.getBounds().contains(value.marker.getLatLng())) {
             var color = ''
-            if (value['time'] > 0) {
+            if (value['time'] > 1800) {
                 color = 'green'
+            } else if (value['time'] > 0) {
+                color = 'lightgreen'
             } else {
                 color = 'red'
             }
