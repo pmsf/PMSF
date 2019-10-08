@@ -1137,6 +1137,17 @@
             "color": "#f8d030"
           }
         ]
+      },
+      {
+        "nameform": "VS 2019",
+        "protoform": "901",
+        "assetsform": "00",
+        "formtypes": [
+          {
+            "type": "Electric",
+            "color": "#f8d030"
+          }
+        ]
       }
     ]
   },
@@ -4016,7 +4027,7 @@
     "forms": [
       {
         "nameform": "Normal",
-        "protoform": "",
+        "protoform": "902",
         "assetsform": "00",
         "formtypes": [
           {
@@ -4031,7 +4042,7 @@
       },
       {
         "nameform": "Shadow",
-        "protoform": "",
+        "protoform": "903",
         "assetsform": "00",
         "formtypes": [
           {
@@ -4046,7 +4057,7 @@
       },
       {
         "nameform": "Purified",
-        "protoform": "",
+        "protoform": "904",
         "assetsform": "00",
         "formtypes": [
           {
@@ -7484,7 +7495,7 @@
     "forms": [
       {
         "nameform": "Normal",
-        "protoform": "",
+        "protoform": "905",
         "assetsform": "00",
         "formtypes": [
           {
@@ -7499,7 +7510,7 @@
       },
       {
         "nameform": "Shadow",
-        "protoform": "",
+        "protoform": "906",
         "assetsform": "00",
         "formtypes": [
           {
@@ -7514,7 +7525,7 @@
       },
       {
         "nameform": "Purified",
-        "protoform": "",
+        "protoform": "907",
         "assetsform": "00",
         "formtypes": [
           {
@@ -7896,7 +7907,7 @@
     "forms": [
       {
         "nameform": "Normal",
-        "protoform": "",
+        "protoform": "938",
         "assetsform": "00",
         "formtypes": [
           {
@@ -7911,7 +7922,7 @@
       },
       {
         "nameform": "Shadow",
-        "protoform": "",
+        "protoform": "939",
         "assetsform": "00",
         "formtypes": [
           {
@@ -7926,7 +7937,7 @@
       },
       {
         "nameform": "Purified",
-        "protoform": "",
+        "protoform": "940",
         "assetsform": "00",
         "formtypes": [
           {
@@ -8187,7 +8198,7 @@
     "forms": [
       {
         "nameform": "Normal",
-        "protoform": "",
+        "protoform": "941",
         "assetsform": "00",
         "formtypes": [
           {
@@ -8198,7 +8209,7 @@
       },
       {
         "nameform": "Shadow",
-        "protoform": "",
+        "protoform": "942",
         "assetsform": "00",
         "formtypes": [
           {
@@ -8209,7 +8220,7 @@
       },
       {
         "nameform": "Purified",
-        "protoform": "",
+        "protoform": "043",
         "assetsform": "00",
         "formtypes": [
           {
@@ -9626,7 +9637,7 @@
     "forms": [
       {
         "nameform": "Normal",
-        "protoform": "",
+        "protoform": "923",
         "assetsform": "00",
         "formtypes": [
           {
@@ -9641,7 +9652,7 @@
       },
       {
         "nameform": "Shadow",
-        "protoform": "",
+        "protoform": "924",
         "assetsform": "00",
         "formtypes": [
           {
@@ -9656,7 +9667,7 @@
       },
       {
         "nameform": "Purified",
-        "protoform": "",
+        "protoform": "925",
         "assetsform": "00",
         "formtypes": [
           {
@@ -10807,7 +10818,7 @@
     "forms": [
       {
         "nameform": "Normal",
-        "protoform": "",
+        "protoform": "908",
         "assetsform": "00",
         "formtypes": [
           {
@@ -10818,7 +10829,7 @@
       },
       {
         "nameform": "Shadow",
-        "protoform": "",
+        "protoform": "909",
         "assetsform": "00",
         "formtypes": [
           {
@@ -10829,7 +10840,7 @@
       },
       {
         "nameform": "Purified",
-        "protoform": "",
+        "protoform": "910",
         "assetsform": "00",
         "formtypes": [
           {
@@ -10852,7 +10863,7 @@
     "forms": [
       {
         "nameform": "Normal",
-        "protoform": "",
+        "protoform": "911",
         "assetsform": "00",
         "formtypes": [
           {
@@ -10863,7 +10874,7 @@
       },
       {
         "nameform": "Shadow",
-        "protoform": "",
+        "protoform": "912",
         "assetsform": "00",
         "formtypes": [
           {
@@ -10874,7 +10885,7 @@
       },
       {
         "nameform": "Purified",
-        "protoform": "",
+        "protoform": "913",
         "assetsform": "00",
         "formtypes": [
           {
@@ -10899,7 +10910,7 @@
     "forms": [
       {
         "nameform": "Normal",
-        "protoform": "",
+        "protoform": "914",
         "assetsform": "00",
         "formtypes": [
           {
@@ -10910,7 +10921,7 @@
       },
       {
         "nameform": "Shadow",
-        "protoform": "",
+        "protoform": "915",
         "assetsform": "00",
         "formtypes": [
           {
@@ -10921,7 +10932,7 @@
       },
       {
         "nameform": "Purified",
-        "protoform": "",
+        "protoform": "916",
         "assetsform": "00",
         "formtypes": [
           {
@@ -10944,7 +10955,7 @@
     "forms": [
       {
         "nameform": "Normal",
-        "protoform": "",
+        "protoform": "917",
         "assetsform": "00",
         "formtypes": [
           {
@@ -10955,7 +10966,7 @@
       },
       {
         "nameform": "Shadow",
-        "protoform": "",
+        "protoform": "918",
         "assetsform": "00",
         "formtypes": [
           {
@@ -10966,7 +10977,7 @@
       },
       {
         "nameform": "Purified",
-        "protoform": "",
+        "protoform": "919",
         "assetsform": "00",
         "formtypes": [
           {
@@ -11072,7 +11083,7 @@
     "forms": [
       {
         "nameform": "Normal",
-        "protoform": "",
+        "protoform": "926",
         "assetsform": "00",
         "formtypes": [
           {
@@ -11083,7 +11094,7 @@
       },
       {
         "nameform": "Shadow",
-        "protoform": "",
+        "protoform": "927",
         "assetsform": "00",
         "formtypes": [
           {
@@ -11094,7 +11105,7 @@
       },
       {
         "nameform": "Purified",
-        "protoform": "",
+        "protoform": "928",
         "assetsform": "00",
         "formtypes": [
           {
@@ -11117,7 +11128,7 @@
     "forms": [
       {
         "nameform": "Normal",
-        "protoform": "",
+        "protoform": "929",
         "assetsform": "00",
         "formtypes": [
           {
@@ -11128,7 +11139,7 @@
       },
       {
         "nameform": "Shadow",
-        "protoform": "",
+        "protoform": "930",
         "assetsform": "00",
         "formtypes": [
           {
@@ -11139,7 +11150,7 @@
       },
       {
         "nameform": "Purified",
-        "protoform": "",
+        "protoform": "931",
         "assetsform": "00",
         "formtypes": [
           {
@@ -13457,7 +13468,7 @@
     "forms": [
       {
         "nameform": "Normal",
-        "protoform": "",
+        "protoform": "932",
         "assetsform": "00",
         "formtypes": [
           {
@@ -13472,7 +13483,7 @@
       },
       {
         "nameform": "Shadow",
-        "protoform": "",
+        "protoform": "933",
         "assetsform": "00",
         "formtypes": [
           {
@@ -13487,7 +13498,7 @@
       },
       {
         "nameform": "Purified",
-        "protoform": "",
+        "protoform": "934",
         "assetsform": "00",
         "formtypes": [
           {
@@ -13518,7 +13529,7 @@
     "forms": [
       {
         "nameform": "Normal",
-        "protoform": "",
+        "protoform": "935",
         "assetsform": "00",
         "formtypes": [
           {
@@ -13533,7 +13544,7 @@
       },
       {
         "nameform": "Shadow",
-        "protoform": "",
+        "protoform": "936",
         "assetsform": "00",
         "formtypes": [
           {
@@ -13548,7 +13559,7 @@
       },
       {
         "nameform": "Purified",
-        "protoform": "",
+        "protoform": "937",
         "assetsform": "00",
         "formtypes": [
           {
@@ -14113,7 +14124,7 @@
     "forms": [
       {
         "nameform": "Normal",
-        "protoform": "",
+        "protoform": "920",
         "assetsform": "00",
         "formtypes": [
           {
@@ -14124,7 +14135,7 @@
       },
       {
         "nameform": "Shadow",
-        "protoform": "",
+        "protoform": "921",
         "assetsform": "00",
         "formtypes": [
           {
@@ -14135,7 +14146,7 @@
       },
       {
         "nameform": "Purified",
-        "protoform": "",
+        "protoform": "922",
         "assetsform": "00",
         "formtypes": [
           {
