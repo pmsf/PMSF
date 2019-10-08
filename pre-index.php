@@ -228,7 +228,7 @@ if ($blockIframe) {
     <header id="header">
         <a href="#nav" title="<?php echo i8ln('Options') ?>"></a>
 
-        <h1><a href="#"><?= $title ?><img src="<?= $raidmapLogo ?>" height="35" width="auto" border="0" style="float: right; margin-left: 5px; margin-top: 10px;"></a></h1>
+        <h1><a href="#"><?= $headerTitle ?><img src="<?= $raidmapLogo ?>" height="35" width="auto" border="0" style="float: right; margin-left: 5px; margin-top: 10px;"></a></h1>
 
         <?php
         if (! $noStatsToggle) {

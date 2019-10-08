@@ -75,6 +75,7 @@ $blockIframe = true;                                                // Block you
 /* Map Title + Language */
 
 $title = "PMSF Alt";                                                // Title to display in title bar
+$headerTitle = "POGOmap";                                           // Title to display in header
 $locale = "en";                                                     // Display language
 
 /* Google Maps and MapBox are ONLY USED FOR TILE LAYERS */
