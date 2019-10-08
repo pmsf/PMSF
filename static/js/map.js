@@ -981,7 +981,7 @@ function pokemonLabel(item) {
 
     if (weatherBoostedCondition !== 0) {
         details +=
-            '<img style="height:30px;position:absolute;top:25px;left:0px;" src="static/weather/i-' + weatherBoostedCondition + '.png" style="height:15px;"></div>'
+            '<img style="height:25px;position:absolute;top:25px;left:5px;" src="static/weather/a-' + weatherBoostedCondition + '.png"></div>'
     }
 
     var contentstring =
