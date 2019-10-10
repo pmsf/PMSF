@@ -4,12 +4,15 @@ function countMarkers(map) { // eslint-disable-line no-unused-vars
     document.getElementById('stats-gym-label').innerHTML = i8ln('Gyms')
     document.getElementById('stats-pkstop-label').innerHTML = i8ln('Pokéstops')
     document.getElementById('stats-raid-label').innerHTML = i8ln('Raids')
+    document.getElementById('stats-spawnpoint-label').innerHTML = i8ln('Spawnpoints')
 
     var i = 0
     var arenaCount = []
     var arenaTotal = 0
     var raidCount = []
     var raidTotal = 0
+    var spawnpointCount = []
+    var spawnpointTotal = 0
     var pkmnCount = []
     var pkmnTotal = 0
     var pokestopCount = []
@@ -21,6 +24,7 @@ function countMarkers(map) { // eslint-disable-line no-unused-vars
     var thisGymIsVisible = false
     var thisPokestopIsVisible = false
     var thisRaidIsVisible = false
+    var thisSpawnpointIsVisible = false
 
     if (Store.get('showPokemon')) {
         $.each(mapData.pokemons, function (key, value) {
@@ -224,21 +228,14 @@ function countMarkers(map) { // eslint-disable-line no-unused-vars
                         pokestopCount[1] += 1
                     }
                 }
-                if (pokestopCount[0] === 0 || !pokestopCount[0]) {
-                    pokestopCount[0] = 1
-                } else {
-                    pokestopCount[0] += 1
-                }
                 pokestopTotal++
             }
         })
 
-        var pokestopListString = '<table><th>' + i8ln('Icon') + '</th><th>' + i8ln('Status') + '</th><th>' + i8ln('Count') + '</th><th>%</th>'
+        var pokestopListString = '<table><th>' + i8ln('Icon') + '</th><th>' + i8ln('Status') + '</th><th>' + i8ln('Count') + '</th><th>%</th><tr><td></td><td>' + i8ln('Total') + '</td><td>' + pokestopTotal + '</td></tr>'
         for (i = 0; i < pokestopCount.length; i++) {
             if (pokestopCount[i] > 0) {
-                if (i === 0) {
-                    pokestopListString += '<tr><td><img src="static/forts/Pstop.png" style="height:48px;"/></td><td style="vertical-align:middle;">' + i8ln('Total') + '</td><td style="vertical-align:middle;">' + pokestopCount[i] + '</td></tr>'
-                } else if (i === 1) {
+                if (i === 1) {
                     pokestopListString += '<tr><td><img src="static/forts/PstopQuest.png" style="height:48px;"/></td><td style="vertical-align:middle;">' + i8ln('Quest') + '</td><td style="vertical-align:middle;">' + pokestopCount[i] + '</td><td style="vertical-align:middle;">' + Math.round(pokestopCount[i] * 100 / pokestopTotal * 10) / 10 + '%</td></tr>'
                 } else if (i === 2) {
                     pokestopListString += '<tr><td><img src="static/forts/PstopLured_1.png" style="height:48px;"/></td><td style="vertical-align:middle;">' + i8ln('Lured') + '</td><td style="vertical-align:middle;">' + pokestopCount[i] + '</td><td style="vertical-align:middle;">' + Math.round(pokestopCount[i] * 100 / pokestopTotal * 10) / 10 + '%</td></tr>'
@@ -251,5 +248,44 @@ function countMarkers(map) { // eslint-disable-line no-unused-vars
         document.getElementById('pokestopList').innerHTML = pokestopListString
     } else {
         document.getElementById('pokestopList').innerHTML = '<center>' + i8ln('Pokéstop markers are disabled') + '<center>'
+    }
+
+
+    if (Store.get('showSpawnpoints')) {
+        $.each(mapData.spawnpoints, function (key, value) {
+            var thisSpawnpointLocation = {lat: mapData.spawnpoints[key]['latitude'], lng: mapData.spawnpoints[key]['longitude']}
+            thisSpawnpointIsVisible = currentVisibleMap.contains(thisSpawnpointLocation)
+            if (thisSpawnpointIsVisible) {
+                if (mapData.spawnpoints[key]['time'] === 0) {
+                    if (spawnpointCount[2] === 0 || !spawnpointCount[2]) {
+                        spawnpointCount[2] = 1
+                    } else {
+                        spawnpointCount[2] += 1
+                    }
+                } else {
+                    if (spawnpointCount[1] === 0 || !spawnpointCount[1]) {
+                        spawnpointCount[1] = 1
+                    } else {
+                        spawnpointCount[1] += 1
+                    }
+                }
+                spawnpointTotal++
+            }
+        })
+
+        var spawnpointListString = '<table><th>' + i8ln('Icon') + '</th><th>' + i8ln('TTH') + '</th><th>' + i8ln('Count') + '</th><th>%</th><tr><td></td><td>' + i8ln('Total') + '</td><td>' + spawnpointTotal + '</td></tr>'
+        for (i = 0; i < spawnpointCount.length; i++) {
+            if (spawnpointCount[i] > 0) {
+                if (i === 1) {
+                    spawnpointListString += '<tr><td><img src="static/images/green.png" style="height:48px;"/></td><td style="vertical-align:middle;">Known</td><td style="vertical-align:middle;">' + spawnpointCount[i] + '</td><td style="vertical-align:middle;">' + Math.round(spawnpointCount[i] * 100 / spawnpointTotal * 10) / 10 + '%</td></tr>'
+                } else if (i === 2) {
+                    spawnpointListString += '<tr><td><img src="static/images/red.png" style="height:48px;"/></td><td style="vertical-align:middle;">Unknown</td><td style="vertical-align:middle;">' + spawnpointCount[i] + '</td><td style="vertical-align:middle;">' + Math.round(spawnpointCount[i] * 100 / spawnpointTotal * 10) / 10 + '%</td></tr>'
+                }
+            }
+        }
+        spawnpointListString += '</table>'
+        document.getElementById('spawnpointList').innerHTML = spawnpointListString
+    } else {
+        document.getElementById('spawnpointList').innerHTML = '<center>' + i8ln('Spawnpoint markers are disabled') + '</center>'
     }
 }

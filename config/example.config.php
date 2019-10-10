@@ -54,6 +54,7 @@ $blockIframe = true;                                                // Block you
 /* Map Title + Language */
 
 $title = "POGOmap";                                                 // Title to display in title bar
+$headerTitle = "POGOmap";                                           // Title to display in header
 $locale = "en";                                                     // Display language
 $raidmapLogo = '';                                                  // Upload logo to custom folder, leave '' for empty ( $raidmapLogo = 'custom/logo.png'; )
 
@@ -90,6 +91,8 @@ $paypalUrl = "";                                                    // PayPal do
 $discordUrl = "https://discord.gg/INVITE_LINK";                     // Discord URL, leave "" for empty
 $whatsAppUrl = "";                                                  // WhatsApp URL, leave "" for empty
 $telegramUrl = "";                                                  // Telegram URL, leave "" for empty
+$customUrl = "";                                                    // Custom URL, leave "" for empty
+$customUrlFontIcon = "far fa-smile-beam";                           // Choose a custom icon on: https://fontawesome.com/icons?d=gallery&m=free
 
 /* Worldopole */
 

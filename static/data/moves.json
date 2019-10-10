@@ -2134,5 +2134,13 @@
     "duration": 0,
     "energy": 0,
     "dps": 0
+  },
+  "330": {
+    "name": "Sacred Sword",
+    "type": "Fighting",
+    "damage": 0,
+    "duration": 0,
+    "energy": 0,
+    "dps": 0
   }
 }

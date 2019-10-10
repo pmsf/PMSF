@@ -213,12 +213,7 @@ class RDM_beta extends RDM
                 foreach ($forms as $f => $v) {
                     if ($pokemon["form"] === $v['protoform']) {
                         $types = $v['formtypes'];
-                        foreach ($v['formtypes'] as $ft => $v) {
-                            $types[$ft]['type'] = $v['type'];
-                        }
-                        $pokemon["pokemon_types"] = $types;
-                    } elseif ($pokemon["form"] === $v['assetsform']) {
-                        $types = $v['formtypes'];
+                        $pokemon["form_name"] = $v['nameform'];
                         foreach ($v['formtypes'] as $ft => $v) {
                             $types[$ft]['type'] = $v['type'];
                         }
@@ -510,7 +505,6 @@ class RDM_beta extends RDM
             $spawnpoint["latitude"] = floatval($spawnpoint["latitude"]);
             $spawnpoint["longitude"] = floatval($spawnpoint["longitude"]);
             $spawnpoint["time"] = intval($spawnpoint["despawn_sec"]);
-            $spawnpoint["duration"] = !empty($spawnpoint["duration"]) ? $spawnpoint["duration"] : null;
             $data[] = $spawnpoint;
             unset($spawnpoints[$i]);
             $i++;
