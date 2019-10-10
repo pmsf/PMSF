@@ -195,7 +195,14 @@ class RocketMap_MAD extends RocketMap
             }
             $pokemon["pokemon_types"] = $types;
             $pokemon["cp_multiplier"] = isset($pokemon["cp_multiplier"]) ? floatval($pokemon["cp_multiplier"]) : null;
-
+            if (isset($pokemon["form"]) && $pokemon["form"] > 0) {
+                $forms = $this->data[$pokemon["pokemon_id"]]["forms"];
+                foreach ($forms as $f => $v) {
+                    if ($pokemon["form"] === $v['protoform']) {
+                        $pokemon["form_name"] = $v['nameform'];
+                    }
+                }
+            }
             $data[] = $pokemon;
 
             unset($pokemons[$i]);
@@ -326,6 +333,14 @@ class RocketMap_MAD extends RocketMap
             $gym["slots_available"] = intval($gym["slots_available"]);
             $gym["url"] = ! empty($gym["url"]) ? preg_replace("/^http:/i", "https:", $gym["url"]) : null;
             $gym["park"] = intval($gym["park"]);
+            if (isset($gym["form"]) && $gym["form"] > 0) {
+                $forms = $this->data[$gym["raid_pokemon_id"]]["forms"];
+                foreach ($forms as $f => $v) {
+                    if ($gym["raid_pokemon_form"] === $v['protoform']) {
+                        $gym["form_name"] = $v['nameform'];
+                    }
+                }
+            }
             $data[] = $gym;
 
             unset($gyms[$i]);
@@ -367,8 +382,7 @@ class RocketMap_MAD extends RocketMap
         $query = "SELECT latitude,
         longitude,
         spawnpoint AS spawnpoint_id,
-        (SUBSTRING_INDEX(SUBSTRING_INDEX(calc_endminsec, ':', 1), ' ', -1)*60) + (SUBSTRING_INDEX(SUBSTRING_INDEX(calc_endminsec, ':', -1), ' ', -1)) AS despawn_time,
-        calc_endminsec AS duration
+        (SUBSTRING_INDEX(SUBSTRING_INDEX(calc_endminsec, ':', 1), ' ', -1)*60) + (SUBSTRING_INDEX(SUBSTRING_INDEX(calc_endminsec, ':', -1), ' ', -1)) AS time
         FROM trs_spawn
         WHERE :conditions";
         $query = str_replace(":conditions", join(" AND ", $conds), $query);
@@ -378,8 +392,7 @@ class RocketMap_MAD extends RocketMap
         foreach ($spawnpoints as $spawnpoint) {
             $spawnpoint["latitude"] = floatval($spawnpoint["latitude"]);
             $spawnpoint["longitude"] = floatval($spawnpoint["longitude"]);
-            $spawnpoint["time"] = intval($spawnpoint["despawn_time"]);
-            $spawnpoint["duration"] = intval($spawnpoint["duration"]);
+            $spawnpoint["time"] = intval($spawnpoint["time"]);
             $data[] = $spawnpoint;
             unset($spawnpoints[$i]);
             $i++;

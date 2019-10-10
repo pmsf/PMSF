@@ -228,7 +228,7 @@ if ($blockIframe) {
     <header id="header">
         <a href="#nav" title="<?php echo i8ln('Options') ?>"></a>
 
-        <h1><a href="#"><?= $title ?><img src="<?= $raidmapLogo ?>" height="35" width="auto" border="0" style="float: right; margin-left: 5px; margin-top: 10px;"></a></h1>
+        <h1><a href="#"><?= $headerTitle ?><img src="<?= $raidmapLogo ?>" height="35" width="auto" border="0" style="float: right; margin-left: 5px; margin-top: 10px;"></a></h1>
 
         <?php
         if (! $noStatsToggle) {
@@ -252,6 +252,11 @@ if ($blockIframe) {
         if ($discordUrl != "") {
             echo '<a href="' . $discordUrl . '" target="_blank" style="float:right;padding:0 5px;">
                  <i class="fab fa-discord" title="' . i8ln('Discord') . '" style="position:relative;vertical-align:middle;color:white;margin-left:10px;font-size:20px;"></i>
+                 </a>';
+        }
+        if ($customUrl != "") {
+            echo '<a href="' . $customUrl . '" target="_blank" style="float:right;padding:0 5px;">
+                 <i class="' . $customUrlFontIcon . '" style="position:relative;vertical-align:middle;color:white;margin-left:10px;font-size:20px;"></i>
                  </a>';
         }
         ?>
@@ -1476,6 +1481,11 @@ if ($blockIframe) {
                 <center><h1 id="stats-pkstop-label"></h1></center>
             </div>
             <div id="pokestopList" style="color: black;"></div>
+
+            <div class="stats-label-container">
+                <center><h1 id="stats-spawnpoint-label"></h1></center>
+            </div>
+            <div id="spawnpointList" style="color: black;"></div>
         </div>
     </nav>
     <nav id="gym-details">
@@ -1788,7 +1798,7 @@ if ($blockIframe) {
                             <li><a href="#tab-gym"><img src="static/forts/ingame/Uncontested.png"/></a></li>
                         <?php }
                         if (! $noSearchPokestops) { ?>
-                            <li><a href="#tab-pokestop"><img src="static/forts/Pstop-large.png"/></a></li>
+                            <li><a href="#tab-pokestop"><img src="static/forts/Pstop.png"/></a></li>
                         <?php }
                         if (! $noSearchPortals) { ?>
                             <li><a href="#tab-portals"><img src="static/images/portal.png"/></a></li>
@@ -1861,7 +1871,7 @@ if ($blockIframe) {
         } ?>
                     <?php if (! $noManualPokestops && !$noPokestops) {
             ?>
-                        <li><a href="#tab-pokestop"><img src="static/forts/Pstop-large.png"/></a></li>
+                        <li><a href="#tab-pokestop"><img src="static/forts/Pstop.png"/></a></li>
                     <?php
         } ?>
                     <?php if (! $noAddNewNests && !$noNests) {

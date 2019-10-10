@@ -153,7 +153,6 @@ createjs.Sound.registerSound('static/sounds/ding.mp3', 'ding')
 
 var pokemonTypes = [i8ln('unset'), i8ln('Normal'), i8ln('Fighting'), i8ln('Flying'), i8ln('Poison'), i8ln('Ground'), i8ln('Rock'), i8ln('Bug'), i8ln('Ghost'), i8ln('Steel'), i8ln('Fire'), i8ln('Water'), i8ln('Grass'), i8ln('Electric'), i8ln('Psychic'), i8ln('Ice'), i8ln('Dragon'), i8ln('Dark'), i8ln('Fairy')]
 var genderType = ['♂', '♀', '⚲']
-var forms = ['unset', 'A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N', 'O', 'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z', '!', '?', i8ln('Normal'), i8ln('Sunny'), i8ln('Rainy'), i8ln('Snowy'), i8ln('Normal'), i8ln('Attack'), i8ln('Defense'), i8ln('Speed'), '1', '2', '3', '4', '5', '6', '7', '8', '', i8ln('Alola'), '', i8ln('Alola'), '', i8ln('Alola'), '', i8ln('Alola'), '', i8ln('Alola'), '', i8ln('Alola'), '', i8ln('Alola'), '', i8ln('Alola'), '', i8ln('Alola'), '', i8ln('Alola'), '', i8ln('Alola'), '', i8ln('Alola'), '', i8ln('Alola'), '', i8ln('Alola'), '', i8ln('Alola'), '', i8ln('Alola'), '', i8ln('Alola'), '', i8ln('Alola'), '', i8ln('Frost'), i8ln('Fan'), i8ln('Mow'), i8ln('Wash'), i8ln('Heat'), i8ln('Plant'), i8ln('Sandy'), i8ln('Trash'), i8ln('Altered'), i8ln('Origin'), i8ln('Sky'), i8ln('Land'), i8ln('Overcast'), i8ln('Sunny'), i8ln('West sea'), i8ln('East sea'), i8ln('West sea'), i8ln('East sea'), i8ln('Normal'), i8ln('Fighting'), i8ln('Flying'), i8ln('Poison'), i8ln('Ground'), i8ln('Rock'), i8ln('Bug'), i8ln('Ghost'), i8ln('Steel'), i8ln('Fire'), i8ln('Water'), i8ln('Grass'), i8ln('Electric'), i8ln('Psychic'), i8ln('Ice'), i8ln('Dragon'), i8ln('Dark'), i8ln('Fairy'), i8ln('Plant'), i8ln('Sandy'), i8ln('Trash'), '8', '9', '10', '11', '12', '13', '14', '15', '16', '17', '18', '19', i8ln('Armored'), i8ln('A-intro'), '', i8ln('Red Striped'), i8ln('Blue Striped'), i8ln('Standard'), i8ln('Zen'), i8ln('Incarnate'), i8ln('Therian'), i8ln('Incarnate'), i8ln('Therian'), i8ln('Incarnate'), i8ln('Therian'), i8ln('Normal'), i8ln('Black'), i8ln('White'), i8ln('Ordinary'), i8ln('Resolute'), i8ln('Aria'), i8ln('Pirouette'), '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', i8ln('Spring'), i8ln('Summer'), i8ln('Autumn'), i8ln('Winter'), i8ln('Spring'), i8ln('Summer'), i8ln('Autumn'), i8ln('Winter'), i8ln('Normal'), i8ln('Shock'), i8ln('Burn'), i8ln('Chill'), i8ln('Douse'), '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '']
 var cpMultiplier = [0.094, 0.16639787, 0.21573247, 0.25572005, 0.29024988, 0.3210876, 0.34921268, 0.37523559, 0.39956728, 0.42250001, 0.44310755, 0.46279839, 0.48168495, 0.49985844, 0.51739395, 0.53435433, 0.55079269, 0.56675452, 0.58227891, 0.59740001, 0.61215729, 0.62656713, 0.64065295, 0.65443563, 0.667934, 0.68116492, 0.69414365, 0.70688421, 0.71939909, 0.7317, 0.73776948, 0.74378943, 0.74976104, 0.75568551, 0.76156384, 0.76739717, 0.7731865, 0.77893275, 0.7846369, 0.79030001]
 var throwType = JSON.parse('{"10": "Nice", "11": "Great", "12": "Excellent"}')
 var weatherLayerGroup = new L.LayerGroup()
@@ -328,6 +327,15 @@ function removePokemonMarker(encounterId) { // eslint-disable-line no-unused-var
     markers.removeLayer(mapData.pokemons[encounterId].marker)
     markersnotify.removeLayer(mapData.pokemons[encounterId].marker)
     mapData.pokemons[encounterId].hidden = true
+}
+
+function removePokestopMarker(pokestopId) { // eslint-disable-line no-unused-vars
+    if (mapData.pokestops[pokestopId].marker.rangeCircle) {
+        markers.removeLayer(mapData.pokestops[pokestopId].marker.rangeCircle)
+        delete mapData.pokestops[pokestopId].marker.rangeCircle
+    }
+    markers.removeLayer(mapData.pokestops[pokestopId].marker)
+    mapData.pokestops[pokestopId].hidden = true
 }
 
 function createServiceWorkerReceiver() {
@@ -975,19 +983,16 @@ function pokemonLabel(item) {
 
     if (weatherBoostedCondition !== 0) {
         details +=
-            '<img style="height:30px;position:absolute;top:25px;left:0px;" src="static/weather/i-' + weatherBoostedCondition + '.png" style="height:15px;"></div>'
+            '<img style="height:25px;position:absolute;top:25px;left:5px;" src="static/weather/a-' + weatherBoostedCondition + '.png"></div>'
     }
 
     var contentstring =
         '<div><center>' +
         '<b>' + name + '</b>'
-    if (form !== null && form > 0 && forms.length > form) {
-        if (id === 132) {
-            contentstring += ' (' + idToPokemon[item['form']].name + ')'
-        } else if (forms[item['form']] !== '') {
-            contentstring += ' (' + forms[item['form']] + ')'
-        }
+    if (form !== null && form > 0 && item['form_name'] !== 'Normal') {
+        contentstring += ' (' + i8ln(item['form_name']) + ')'
     }
+
     if (gender != null) {
         contentstring += ' ' + genderType[gender - 1]
     }
@@ -1086,12 +1091,8 @@ function gymLabel(item) {
                 cpStr = ' CP ' + item.raid_pokemon_cp
             }
             raidStr += '<br>' + item.raid_pokemon_name
-            if (form !== null && form > 0 && forms.length > form) {
-                if (item['raid_pokemon_id'] === 132) {
-                    raidStr += ' (' + idToPokemon[item['form']].name + ')'
-                } else if (forms[item['form']] !== '') {
-                    raidStr += ' (' + forms[item['form']] + ')'
-                }
+            if (form !== null && form > 0 && item['form_name'] !== 'Normal') {
+                raidStr += ' (' + i8ln(item['form_name']) + ')'
             }
             raidStr += cpStr
         }
@@ -1475,6 +1476,7 @@ function pokestopLabel(item) {
             item['quest_pokemon_name'] +
             '</b></div>'
         }
+        str += '<a href="javascript:removePokestopMarker(\'' + item['pokestop_id'] + '\')" title="' + i8ln('Hide this Pokéstop') + '"><i class="fas fa-trash-alt" style="font-size:15px;"></i></a>'
     } else {
         str += '</div>'
     }
@@ -1585,45 +1587,24 @@ function showHideGruntEncounter() { // eslint-disable-line no-unused-vars
 }
 
 function formatSpawnTime(seconds) {
-    var results = 0
-    if (mapType !== 'rdm' && mapFork !== 'beta') {
-        return ('0' + Math.floor((seconds + 3600) % 3600 / 60)).substr(-2) + ':' + ('0' + seconds % 60).substr(-2)
-    } else {
-        var d = new Date()
-        if (seconds >= 1800) {
-            d.setMinutes(d.getMinutes() - 30)
-            d.setMinutes(0)
-            d.setSeconds(0)
-            d.setSeconds(d.getSeconds() + seconds)
-        } else {
-            d.setMinutes(d.getMinutes() + 30)
-            d.setMinutes(0)
-            d.setSeconds(0)
-            d.setSeconds(d.getSeconds() + seconds)
-        }
-        var Min = (d.getMinutes() < 10 ? '0' : '') + d.getMinutes()
-        var Sec = (d.getSeconds() < 10 ? '0' : '') + d.getSeconds()
-        results = Min + ':' + Sec
-    }
-    return results
+    return ('0' + Math.floor((seconds + 3600) % 3600 / 60)).substr(-2) + ':' + ('0' + seconds % 60).substr(-2)
 }
 
 function spawnpointLabel(item) {
-    var str =
-        '<div>' +
-        '<b>' + i8ln('Spawn Point') + '</b>' +
-        '</div>' +
-        '<div>' +
-        i8ln('Every hour from') + ' ' + formatSpawnTime(item.time + 1800) + ' ' + i8ln('to') + ' ' + formatSpawnTime(item.time) +
-        '</div>'
-    if (item.duration === 60 || item.kind === 'ssss') {
-        str =
-            '<div>' +
-            '<b>' + i8ln('Spawn Point') + '</b>' +
-            '</div>' +
-            '<div>' +
-            i8ln('Every hour from') + ' ' + formatSpawnTime(item.time) +
-            '</div>'
+    var str = ''
+
+    // 60 minute
+    if (item.time > 1800) {
+        str += '<div><b>' + i8ln('Spawn Point (60)') + '</b></div>' +
+            '<div>' + i8ln('Spawn time') + ': xx:' + formatSpawnTime(item.time) + '</div>' +
+            '<div>' + i8ln('Despawn time') + ': xx:' + formatSpawnTime(item.time) + '</div>'
+    // 30 minute
+    } else if (item.time > 0) {
+        str += '<div><b>' + i8ln('Spawn Point (30)') + '</b></div>' +
+        '<div>' + i8ln('Spawn time') + ': xx:' + formatSpawnTime(item.time + 1800) + '</div>' +
+        '<div>' + i8ln('Despawn time') + ': xx:' + formatSpawnTime(item.time) + '</div>'
+    } else {
+        str += '<div>' + i8ln('Unknown spawnpoint info') + '</div>'
     }
     return str
 }
@@ -2271,8 +2252,7 @@ function nestLabel(item) {
             '</div>' +
             nestName + '<br />' +
             '<div>' +
-            '<img src="static/images/nest-' + item.english_pokemon_types[0].type.toLowerCase() + '.png" style="width:70px;height:auto;"/>' +
-            '<img src="' + iconpath + 'pokemon_icon_' + pokemonIdStr + '_00.png" style="position:absolute;width:65px;height:65px;top:53px;left:85px;"/>' +
+            '<img src="' + iconpath + 'pokemon_icon_' + pokemonIdStr + '_00.png" style="width:65px;height:65px;"/>' +
             '</div>' +
             pokemonAvg +
             '</center>'
@@ -2291,9 +2271,9 @@ function nestLabel(item) {
     if (!noManualNests) {
         str += '<center><div>' + i8ln('Add Nest') + ' <i class="fas fa-binoculars submit-nest" onclick="openNestModal(event);" data-id="' + item['nest_id'] + '"></i></div></center>'
     }
-    str += '<div>' +
+    str += '<center><div>' +
         '<a href="javascript:void(0)" onclick="javascript:openMapDirections(' + item.lat + ',' + item.lon + ')" title="' + i8ln('View in Maps') + '"><i class="fas fa-road"></i> ' + item.lat.toFixed(6) + ', ' + item.lon.toFixed(7) + '</a> - <a href="./?lat=' + item.lat + '&lon=' + item.lon + '&zoom=16"><i class="far fa-share-square" aria-hidden="true" style="position:relative;top:3px;left:0px;color:#26c300;font-size:20px;"></i></a>' +
-        '</div>'
+        '</div></center>'
     if ((!noWhatsappLink) && (item.pokemon_id > 0)) {
         str += '<div>' +
             '<center>' +
@@ -2799,96 +2779,23 @@ function deletePoi(event) { // eslint-disable-line no-unused-vars
     }
 }
 
-function getColorBySpawnTime(value) {
-    var now = new Date()
-    var seconds = now.getMinutes() * 60 + now.getSeconds()
-    // account for hour roll-over
-    if (seconds < 900 && value > 2700) {
-        seconds += 3600
-    } else if (seconds > 2700 && value < 900) {
-        value += 3600
-    }
-
-    var diff = seconds - value
-    var hue = 275 // light purple when spawn is neither about to spawn nor active
-    if (diff >= 0 && diff <= 900) {
-        // green to red over 15 minutes of active spawn
-        hue = (1 - diff / 60 / 15) * 120
-    } else if (diff < 0 && diff > -300) {
-        // light blue to dark blue over 5 minutes til spawn
-        hue = (1 - -diff / 60 / 5) * 50 + 200
-    }
-
-    hue = Math.round(hue / 5) * 5
-
-    return colourConversion.hsvToHex(hue, 1.0, 1.0)
-}
-var colourConversion = (function () {
-    var self = {}
-    self.hsvToHex = function (hue, sat, val) {
-        if (hue > 360 || hue < 0 || sat > 1 || sat < 0 || val > 1 || val < 0) {
-            console.log('{colourConverion.hsvToHex} illegal input')
-            return '#000000'
-        }
-        let rgbArray = hsvToRgb(hue, sat, val)
-        return rgbArrayToHexString(rgbArray)
-    }
-    function rgbArrayToHexString(rgbArray) {
-        let hexString = '#'
-        for (var i = 0; i < rgbArray.length; i++) {
-            let hexOfNumber = rgbArray[i].toString(16)
-            if (hexOfNumber.length === 1) {
-                hexOfNumber = '0' + hexOfNumber
-            }
-            hexString += hexOfNumber
-        }
-        if (hexString.length !== 7) {
-            console.log('Hexstring not complete for colours...')
-        }
-        return hexString
-    }
-    function hsvToRgb(hue, sat, val) {
-        let hder = Math.floor(hue / 60)
-        let f = hue / 60 - hder
-        let p = val * (1 - sat)
-        let q = val * (1 - sat * f)
-        let t = val * (1 - sat * (1 - f))
-        var rgb
-        if (sat === 0) {
-            rgb = [val, val, val]
-        } else if (hder === 0 || hder === 6) {
-            rgb = [val, t, p]
-        } else if (hder === 1) {
-            rgb = [q, val, p]
-        } else if (hder === 2) {
-            rgb = [p, val, t]
-        } else if (hder === 3) {
-            rgb = [p, q, val]
-        } else if (hder === 4) {
-            rgb = [t, p, val]
-        } else if (hder === 5) {
-            rgb = [val, p, q]
-        } else {
-            console.log('Failed converting HSV to RGB')
-        }
-        for (var i = 0; i < rgb.length; i++) {
-            rgb[i] = Math.round(rgb[i] * 255)
-        }
-        return rgb
-    }
-    return self
-})()
-
 function setupSpawnpointMarker(item) {
-    var hue = getColorBySpawnTime(item.time)
+    var color = ''
+    if (item['time'] > 1800) {
+        color = 'green'
+    } else if (item['time'] > 0) {
+        color = 'lightgreen'
+    } else {
+        color = 'red'
+    }
 
     var rangeCircleOpts = {
         radius: 4,
         weight: 1,
-        color: hue,
+        color: color,
         opacity: 1,
         center: [item['latitude'], item['longitude']],
-        fillColor: hue,
+        fillColor: color,
         fillOpacity: 0.4
     }
     var circle = L.circle([item['latitude'], item['longitude']], rangeCircleOpts).bindPopup(spawnpointLabel(item), {autoPan: false, closeOnclick: false, autoClose: false})
@@ -5430,8 +5337,15 @@ function updateSpawnPoints() {
 
     $.each(mapData.spawnpoints, function (key, value) {
         if (map.getBounds().contains(value.marker.getLatLng())) {
-            var hue = getColorBySpawnTime(value['time'])
-            value.marker.setStyle({color: hue, fillColor: hue})
+            var color = ''
+            if (value['time'] > 1800) {
+                color = 'green'
+            } else if (value['time'] > 0) {
+                color = 'lightgreen'
+            } else {
+                color = 'red'
+            }
+            value.marker.setStyle({color: color, fillColor: color})
         }
     })
 }
