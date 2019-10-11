@@ -294,6 +294,11 @@ var StoreOptions = {
             default: enableScanPolygon,
             type: StoreTypes.Boolean
         },
+    'showScanLocation':
+        {
+            default: enableLiveScan,
+            type: StoreTypes.Boolean
+        },
     'showNestPolygon':
         {
             default: enableNestPolygon,

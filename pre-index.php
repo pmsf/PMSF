@@ -228,7 +228,7 @@ if ($blockIframe) {
     <header id="header">
         <a href="#nav" title="<?php echo i8ln('Options') ?>"></a>
 
-        <h1><a href="#"><?= $title ?><img src="<?= $raidmapLogo ?>" height="35" width="auto" border="0" style="float: right; margin-left: 5px; margin-top: 10px;"></a></h1>
+        <h1><a href="#"><?= $headerTitle ?><img src="<?= $raidmapLogo ?>" height="35" width="auto" border="0" style="float: right; margin-left: 5px; margin-top: 10px;"></a></h1>
 
         <?php
         if (! $noStatsToggle) {
@@ -252,6 +252,11 @@ if ($blockIframe) {
         if ($discordUrl != "") {
             echo '<a href="' . $discordUrl . '" target="_blank" style="float:right;padding:0 5px;">
                  <i class="fab fa-discord" title="' . i8ln('Discord') . '" style="position:relative;vertical-align:middle;color:white;margin-left:10px;font-size:20px;"></i>
+                 </a>';
+        }
+        if ($customUrl != "") {
+            echo '<a href="' . $customUrl . '" target="_blank" style="float:right;padding:0 5px;">
+                 <i class="' . $customUrlFontIcon . '" style="position:relative;vertical-align:middle;color:white;margin-left:10px;font-size:20px;"></i>
                  </a>';
         }
         ?>
@@ -1031,6 +1036,19 @@ if ($blockIframe) {
                 </div>';
                 } ?>
                 <?php
+                if (! $noLiveScanLocation) {
+                    echo '<div class="form-control switch-container">
+                    <h3>' . i8ln('Live scanner location') . '</h3>
+                    <div class="onoffswitch">
+                        <input id="scan-location-switch" type="checkbox" name="scan-location-switch" class="onoffswitch-checkbox">
+                        <label class="onoffswitch-label" for="scan-location-switch">
+                            <span class="switch-label" data-on="On" data-off="Off"></span>
+                            <span class="switch-handle"></span>
+                        </label>
+                    </div>
+                </div>';
+                } ?>
+                <?php
                 if (! $noSearchLocation) {
                     echo '<div class="form-control switch-container" style="display:{{is_fixed}}">
                 <label for="next-location">
@@ -1453,10 +1471,21 @@ if ($blockIframe) {
                 <center><h1 id="stats-gym-label"></h1></center>
             </div>
             <div id="arenaList" style="color: black;"></div>
+
+            <div class="stats-label-container">
+                <center><h1 id="stats-raid-label"></h1></center>
+            </div>
+            <div id="raidList" style="color: black;"></div>
+
             <div class="stats-label-container">
                 <center><h1 id="stats-pkstop-label"></h1></center>
             </div>
             <div id="pokestopList" style="color: black;"></div>
+
+            <div class="stats-label-container">
+                <center><h1 id="stats-spawnpoint-label"></h1></center>
+            </div>
+            <div id="spawnpointList" style="color: black;"></div>
         </div>
     </nav>
     <nav id="gym-details">
@@ -1615,7 +1644,7 @@ if ($blockIframe) {
                     }
                 }
                 ?>
-        </select>
+            </select>
             <select id="questAmountList" name="questAmountList" class="questAmountList">
                 <option />
                 <option value="1">1</option>
@@ -1628,7 +1657,7 @@ if ($blockIframe) {
                 <option value="8">8</option>
                 <option value="9">9</option>
                 <option value="10">10</option>
-        </select>
+            </select>
             </label>
             <label for="conditionTypeList"><?php echo i8ln('Conditions'); ?>
             <select id="conditionTypeList" name="conditionTypeList" class="conditionTypeList">
@@ -1642,9 +1671,9 @@ if ($blockIframe) {
                     }
                 }
                 ?>
-        </select>
+            </select>
             <select id="pokeCatchList" name="pokeCatchList" class="pokeCatchList" multiple></select>
-        <select id="typeCatchList" name="typeCatchList" class="typeCatchList" multiple>
+            <select id="typeCatchList" name="typeCatchList" class="typeCatchList" multiple>
                 <option value="1"><?php echo i8ln('Normal'); ?></option>
                 <option value="2"><?php echo i8ln('Fighting'); ?></option>
                 <option value="3"><?php echo i8ln('Flying'); ?></option>
@@ -1670,15 +1699,15 @@ if ($blockIframe) {
                 <option value="3">3</option>
                 <option value="4">4</option>
                 <option value="5">5</option>
-        </select>
-        <select id="throwTypeList" name="throwTypeList" class="throwTypeList">
-        <option />
+            </select>
+            <select id="throwTypeList" name="throwTypeList" class="throwTypeList">
+                <option />
                 <option value="10"><?php echo i8ln('Nice'); ?></option>
                 <option value="11"><?php echo i8ln('Great'); ?></option>
                 <option value="12"><?php echo i8ln('Excellent'); ?></option>
             </select>
             <select id="curveThrow" class="curveThrow" class="curveThrow">
-        <option />
+                <option />
                 <option value="0"><?php echo i8ln('Without curve throw'); ?></option>
                 <option value="1"><?php echo i8ln('With curve throw'); ?></option>
             </select>
@@ -1695,7 +1724,7 @@ if ($blockIframe) {
                     }
                 }
                 ?>
-        </select>
+            </select>
             <select id="pokeQuestList" name="pokeQuestList" class="pokeQuestList">
                 <option />
                 <?php
@@ -1707,7 +1736,7 @@ if ($blockIframe) {
                     }
                 }
                 ?>
-        </select>
+            </select>
             <select id="itemQuestList" name="itemQuestList" class="itemQuestList">
                 <option />
                 <?php
@@ -1719,7 +1748,7 @@ if ($blockIframe) {
                     }
                 }
                 ?>
-        </select>
+            </select>
             <select id="itemAmountList" name="itemAmountList" class="itemAmountList">
                 <option />
                 <option value="1">1</option>
@@ -1740,7 +1769,7 @@ if ($blockIframe) {
                 <option value="1000">1000</option>
                 <option value="1500">1500</option>
                 <option value="2000">2000</option>
-        </select>
+            </select>
             </label>
             <div class="button-container">
                 <button type="button" onclick="manualQuestData(event);" class="submitting-quest"><i
@@ -1769,7 +1798,7 @@ if ($blockIframe) {
                             <li><a href="#tab-gym"><img src="static/forts/ingame/Uncontested.png"/></a></li>
                         <?php }
                         if (! $noSearchPokestops) { ?>
-                            <li><a href="#tab-pokestop"><img src="static/forts/Pstop-large.png"/></a></li>
+                            <li><a href="#tab-pokestop"><img src="static/forts/Pstop.png"/></a></li>
                         <?php }
                         if (! $noSearchPortals) { ?>
                             <li><a href="#tab-portals"><img src="static/images/portal.png"/></a></li>
@@ -1842,7 +1871,7 @@ if ($blockIframe) {
         } ?>
                     <?php if (! $noManualPokestops && !$noPokestops) {
             ?>
-                        <li><a href="#tab-pokestop"><img src="static/forts/Pstop-large.png"/></a></li>
+                        <li><a href="#tab-pokestop"><img src="static/forts/Pstop.png"/></a></li>
                     <?php
         } ?>
                     <?php if (! $noAddNewNests && !$noNests) {
@@ -1971,10 +2000,10 @@ if ($blockIframe) {
 </div>
 <!-- Scripts -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/babel-polyfill/6.9.1/polyfill.min.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.0/jquery.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jqueryui/1.12.0/jquery-ui.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/skel/3.0.1/skel.min.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.6-rc.1/js/select2.full.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.10/js/select2.full.min.js"></script>
 <script src="node_modules/datatables/media/js/jquery.dataTables.min.js"></script>
 <script src="node_modules/moment/min/moment-with-locales.min.js"></script>
 <script src="https://code.createjs.com/soundjs-0.6.2.min.js"></script>
@@ -2040,6 +2069,8 @@ if ($blockIframe) {
     var enableNewPortals = <?php echo (($map != "monocle") || ($fork == "alternate")) ? $enableNewPortals : 0 ?>;
     var enableWeatherOverlay = <?php echo ! $noWeatherOverlay ? $enableWeatherOverlay : 'false' ?>;
     var enableSpawnpoints = <?php echo $noSpawnPoints ? 'false' : $enableSpawnPoints ?>;
+    var enableLiveScan = <?php echo $noLiveScanLocation ? 'false' : $enableLiveScan ?>;
+    var deviceOfflineAfterSeconds = <?php echo $deviceOfflineAfterSeconds ?>;
     var enableRanges = <?php echo $noRanges ? 'false' : $enableRanges ?>;
     var enableScanPolygon = <?php echo $noScanPolygon ? 'false' : $enableScanPolygon ?>;
     var geoJSONfile = '<?php echo $noScanPolygon ? '' : $geoJSONfile ?>';
