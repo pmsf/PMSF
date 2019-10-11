@@ -89,7 +89,7 @@
   },
   "22": {
     "prototext": "QUEST_ADD_FRIEND",
-    "text": "Become new friends with {0} "
+    "text": "Make {0} new friends"
   },
   "23": {
     "prototext": "QUEST_TRADE_POKEMON",

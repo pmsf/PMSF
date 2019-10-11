@@ -48,6 +48,12 @@ class RDM_beta extends RDM
             $tmpSQL .= ' OR (pokemon_id = 129 AND weight' . $float . ' > 13.13)';
             $eids[] = "129";
         }
+        global $noDittoDetection, $possibleDitto;
+        if (!$noDittoDetection && ($key = array_search("132", $eids)) === false) {
+            $pDitto = implode(",", $possibleDitto);
+            $tmpSQL .= " OR (weather > 0 AND (level < 6 OR atk_iv < 4 OR def_iv < 4 OR sta_iv < 4) and pokemon_id in (" . $pDitto . "))";
+            $eids[] = "132";
+        }
         if (count($eids)) {
             $pkmn_in = '';
             $i = 1;
@@ -78,13 +84,7 @@ class RDM_beta extends RDM
         if ($encId != 0) {
             $encSql = " OR (id = " . $encId . " AND lat > '" . $swLat . "' AND lon > '" . $swLng . "' AND lat < '" . $neLat . "' AND lon < '" . $neLng . "' AND expire_timestamp > '" . $params[':time'] . "')";
         }
-        global $noDittoDetection, $possibleDitto;
-        $dittoSql = '';
-        if (!$noDittoDetection) {
-            $pDitto = implode(",", $possibleDitto);
-            $dittoSql = " OR weather > 0 AND (level < 6 OR atk_iv < 4 OR def_iv < 4 OR sta_iv < 4) and pokemon_id in (" . $pDitto . ")";
-        }
-        return $this->query_active($select, $conds, $params, $encSql, $dittoSql);
+        return $this->query_active($select, $conds, $params, $encSql);
     }
 
     public function get_active_by_id($ids, $minIv, $minLevel, $exMinIv, $bigKarp, $tinyRat, $swLat, $swLng, $neLat, $neLng)
@@ -122,6 +122,11 @@ class RDM_beta extends RDM
                 $tmpSQL .= ' OR (pokemon_id = 129 AND weight' . $float . ' > 13.13)';
                 unset($ids[$key]);
             }
+            global $noDittoDetection, $possibleDitto;
+            if (!$noDittoDetection && ($key = array_search("132", $ids)) !== false) {
+                $pDitto = implode(",", $possibleDitto);
+                $tmpSQL .= " OR (weather > 0 AND (level < 6 OR atk_iv < 4 OR def_iv < 4 OR sta_iv < 4) and pokemon_id in (" . $pDitto . "))";
+            }
             $pkmn_in = '';
             $i = 1;
             foreach ($ids as $id) {
@@ -155,7 +160,7 @@ class RDM_beta extends RDM
         return $this->query_active($select, $conds, $params);
     }
 
-    public function query_active($select, $conds, $params, $encSql = '', $dittoSql = '')
+    public function query_active($select, $conds, $params, $encSql = '')
     {
         global $db;
 
@@ -164,7 +169,7 @@ class RDM_beta extends RDM
         WHERE :conditions ORDER BY lat,lon ";
 
         $query = str_replace(":select", $select, $query);
-        $query = str_replace(":conditions", '(' . join(" AND ", $conds) . ')' . $encSql . $dittoSql, $query);
+        $query = str_replace(":conditions", '(' . join(" AND ", $conds) . ')' . $encSql, $query);
         $pokemons = $db->query($query, $params)->fetchAll(\PDO::FETCH_ASSOC);
         $data = array();
         $i = 0;
@@ -208,12 +213,7 @@ class RDM_beta extends RDM
                 foreach ($forms as $f => $v) {
                     if ($pokemon["form"] === $v['protoform']) {
                         $types = $v['formtypes'];
-                        foreach ($v['formtypes'] as $ft => $v) {
-                            $types[$ft]['type'] = $v['type'];
-                        }
-                        $pokemon["pokemon_types"] = $types;
-                    } elseif ($pokemon["form"] === $v['assetsform']) {
-                        $types = $v['formtypes'];
+                        $pokemon["form_name"] = $v['nameform'];
                         foreach ($v['formtypes'] as $ft => $v) {
                             $types[$ft]['type'] = $v['type'];
                         }
@@ -239,6 +239,11 @@ class RDM_beta extends RDM
                         $pokemon["pokemon_id"] = 132;
                         $pokemon["form"] = 0;
                         $pokemon["pokemon_name"] = $pokemon["pokemon_name"] . ' (' . i8ln('Ditto') . ')';
+                        $pokemon["move_1"] = 242;
+                        $pokemon["move_2"] = 133;
+                        $pokemon["height"] = null;
+                        $pokemon["weight"] = null;
+                        $pokemon["gender"] = 3;
                     }
                 }
             }
@@ -355,8 +360,6 @@ class RDM_beta extends RDM
                 }
                 $pkmn_in = substr($pkmn_in, 0, -1);
                 $tmpSQL .= "quest_pokemon_id IN ( $pkmn_in )";
-            } else {
-                $tmpSQL .= "";
             }
             if (count($qireids)) {
                 $item_in = '';
@@ -368,14 +371,10 @@ class RDM_beta extends RDM
                 }
                 $item_in = substr($item_in, 0, -1);
                 $tmpSQL .= "quest_item_id IN ( $item_in )";
-            } else {
-                $tmpSQL .= "";
             }
             if ($reloaddustamount == "true") {
                 $tmpSQL .= "(json_extract(json_extract(`quest_rewards`,'$[*].type'),'$[0]') = 3 AND json_extract(json_extract(`quest_rewards`,'$[*].info.amount'),'$[0]') > :amount)";
                 $params[':amount'] = intval($dustamount);
-            } else {
-                $tmpSQL .= "";
             }
             $conds[] = $tmpSQL;
         }
@@ -405,7 +404,6 @@ class RDM_beta extends RDM
         json_extract(json_extract(`quest_conditions`,'$[*].type'),'$[1]') AS quest_condition_type_1,
         json_extract(json_extract(`quest_conditions`,'$[*].info'),'$[0]') AS quest_condition_info,
         quest_reward_type,
-        json_extract(json_extract(`quest_rewards`,'$[*].info'),'$[0]') AS quest_reward_info,
         json_extract(json_extract(`quest_rewards`,'$[*].info.amount'),'$[0]') AS quest_reward_amount,
         json_extract(json_extract(`quest_rewards`,'$[*].info.amount'),'$[0]') AS quest_dust_amount,
         json_extract(json_extract(`quest_rewards`,'$[*].info.form_id'),'$[0]') AS quest_pokemon_formid,
@@ -507,9 +505,59 @@ class RDM_beta extends RDM
             $spawnpoint["latitude"] = floatval($spawnpoint["latitude"]);
             $spawnpoint["longitude"] = floatval($spawnpoint["longitude"]);
             $spawnpoint["time"] = intval($spawnpoint["despawn_sec"]);
-            $spawnpoint["duration"] = !empty($spawnpoint["duration"]) ? $spawnpoint["duration"] : null;
             $data[] = $spawnpoint;
             unset($spawnpoints[$i]);
+            $i++;
+        }
+        return $data;
+    }
+
+    public function get_scanlocation($swLat, $swLng, $neLat, $neLng, $tstamp = 0, $oSwLat = 0, $oSwLng = 0, $oNeLat = 0, $oNeLng = 0)
+    {
+        $conds = array();
+        $params = array();
+        $conds[] = "last_lat > :swLat AND last_lon > :swLng AND last_lat < :neLat AND last_lon < :neLng";
+        $params[':swLat'] = $swLat;
+        $params[':swLng'] = $swLng;
+        $params[':neLat'] = $neLat;
+        $params[':neLng'] = $neLng;
+        if ($oSwLat != 0) {
+            $conds[] = "NOT (last_lat > :oswLat AND last_lon > :oswLng AND last_lat < :oneLat AND last_lon < :oneLng)";
+            $params[':oswLat'] = $oSwLat;
+            $params[':oswLng'] = $oSwLng;
+            $params[':oneLat'] = $oNeLat;
+            $params[':oneLng'] = $oNeLng;
+        }
+        global $noBoundaries, $boundaries;
+        if (!$noBoundaries) {
+            $conds[] = "(ST_WITHIN(point(last_lat,last_lon),ST_GEOMFROMTEXT('POLYGON(( " . $boundaries . " ))')))";
+        }
+        global $hideDeviceAfterMinutes;
+        if ($hideDeviceAfterMinutes > 0) {
+            $conds[] = "last_seen > UNIX_TIMESTAMP( NOW() - INTERVAL " . $hideDeviceAfterMinutes . " MINUTE)";
+        }
+        return $this->query_scanlocation($conds, $params);
+    }
+
+    private function query_scanlocation($conds, $params)
+    {
+        global $db;
+        $query = "SELECT last_lat AS latitude,
+        last_lon AS longitude,
+        last_seen,
+        uuid,
+        instance_name
+        FROM device
+        WHERE :conditions";
+        $query = str_replace(":conditions", join(" AND ", $conds), $query);
+        $scanlocations = $db->query($query, $params)->fetchAll(\PDO::FETCH_ASSOC);
+        $data = array();
+        $i = 0;
+        foreach ($scanlocations as $scanlocation) {
+            $scanlocation["latitude"] = floatval($scanlocation["latitude"]);
+            $scanlocation["longitude"] = floatval($scanlocation["longitude"]);
+            $data[] = $scanlocation;
+            unset($scanlocations[$i]);
             $i++;
         }
         return $data;

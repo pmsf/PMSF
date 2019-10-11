@@ -75,6 +75,7 @@ $blockIframe = true;                                                // Block you
 /* Map Title + Language */
 
 $title = "PMSF Alt";                                                // Title to display in title bar
+$headerTitle = "POGOmap";                                           // Title to display in header
 $locale = "en";                                                     // Display language
 
 /* Google Maps and MapBox are ONLY USED FOR TILE LAYERS */
@@ -99,6 +100,8 @@ $paypalUrl = "";                                                    // PayPal do
 $discordUrl = "https://discord.gg/INVITE_LINK";                     // Discord URL, leave "" for empty
 $whatsAppUrl = "";                                                  // WhatsApp URL, leave "" for empty
 $telegramUrl = "";                                                  // Telegram URL, leave "" for empty
+$customUrl = "";                                                    // Custom URL, leave "" for empty
+$customUrlFontIcon = "far fa-smile-beam";                           // Choose a custom icon on: https://fontawesome.com/icons?d=gallery&m=free
 
 /* Worldopole */
 
@@ -194,7 +197,7 @@ $noBigKarp = false;
 $noTinyRat = false;
 
 $noDittoDetection = true;
-$possibleDitto = [46, 48, 163, 165, 193, 223, 293, 316];
+$possibleDitto = [13, 46, 48, 163, 165, 167, 187, 223, 273, 293, 300, 316, 322, 399];
 
 $noGyms = false;                                                    // true/false
 $enableGyms = 'false';                                              // true/false
@@ -248,6 +251,11 @@ $enableRanges = 'false';                                            // true/fals
 $noScanPolygon = true;
 $enableScanPolygon = 'false';
 $geoJSONfile = 'custom/scannerarea.json';			    // path to geoJSON file create your own on http://geojson.io/ adjust filename
+
+$noLiveScanLocation = true;                                         // Show scan devices on the map
+$enableLiveScan = 'false';
+$hideDeviceAfterMinutes = 0;                                        // Hide scan devices from map after x amount of minutes not being updated in database. 0 to disable.
+$deviceOfflineAfterSeconds = 300;                                   // Mark scan devices offline (red color) after x amount of seconds not being updated in database.
 /* Location & Search Settings */
 
 $noSearchLocation = false;                                          // true/false
