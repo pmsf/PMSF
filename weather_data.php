@@ -9,6 +9,10 @@ if (strtolower($map) === "monocle") {
     } else {
         $scanner = new \Scanner\Monocle_PMSF();
     }
+} elseif (strtolower($map) === "rdm") {
+    if (strtolower($fork) === "beta") {
+        $scanner = new \Scanner\RDM_beta();
+    }
 } elseif (strtolower($map) === "rocketmap") {
     if (strtolower($fork) === "mad") {
         $scanner = new \Scanner\RocketMap_MAD();
