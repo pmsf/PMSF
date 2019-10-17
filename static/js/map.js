@@ -943,13 +943,9 @@ function pokemonLabel(item) {
         pokemonidStr = id
     }
 
-    if (id !== 132) {
-        $.each(types, function (index, type) {
-            typesDisplay += '<img src="static/types/' + type['type'] + '.png" style="height:20px;">'
-        })
-    } else {
-        typesDisplay += '<img src="static/types/Normal.png" style="height:20px;">'
-    }
+    $.each(types, function (index, type) {
+        typesDisplay += '<img src="static/types/' + type['type'] + '.png" style="height:20px;">'
+    })
 
     var details = ''
     if (atk != null && def != null && sta != null) {
