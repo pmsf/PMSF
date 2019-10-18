@@ -5450,7 +5450,8 @@ function drawWeatherOverlay(weather) {
                 color: weatherColors[item.condition],
                 opacity: 1,
                 weight: 1,
-                fillOpacity: 0
+                fillOpacity: 0.2,
+                fillColor: weatherColors[item.condition]
             })
             var bounds = new L.LatLngBounds()
             var i, center
@@ -5460,9 +5461,9 @@ function drawWeatherOverlay(weather) {
             }
             center = bounds.getCenter()
             var icon = L.icon({
-                iconSize: [30, 30],
-                iconAnchor: [15, 15],
-                iconUrl: 'static/weather/i-' + item.condition + '.png'
+                iconSize: [25, 25],
+                iconAnchor: [13, 13],
+                iconUrl: 'static/weather/a-' + item.condition + '.png'
             })
             var marker = L.marker([center.lat, center.lng], {icon})
             weatherPolys.push(poly)
