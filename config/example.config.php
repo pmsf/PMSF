@@ -186,9 +186,6 @@ $minLevel = '0';                                                    // "0" for e
 $noBigKarp = false;
 $noTinyRat = false;
 
-$noDittoDetection = true;
-$possibleDitto = [13, 46, 48, 163, 165, 167, 187, 223, 273, 293, 300, 316, 322, 399];
-
 $noGyms = false;
 $enableGyms = 'false';
 $hideGymCoords = false;
