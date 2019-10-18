@@ -5450,7 +5450,7 @@ function drawWeatherOverlay(weather) {
                 color: weatherColors[item.condition],
                 opacity: 1,
                 weight: 1,
-                fillOpacity: 0.2,
+                fillOpacity: 0.1,
                 fillColor: weatherColors[item.condition]
             })
             var bounds = new L.LatLngBounds()
