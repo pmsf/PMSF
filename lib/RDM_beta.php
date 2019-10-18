@@ -485,7 +485,7 @@ class RDM_beta extends RDM
     {
         global $db;
         $query = "SELECT id AS s2_cell_id, gameplay_condition AS gameplay_weather FROM weather WHERE id = :cell_id";
-        $params = [':cell_id' => $cell_id]; // use float to intval because RM is signed int
+        $params = [':cell_id' => intval((float)$cell_id)]; // use float to intval because RDM is signed int
         $weather_info = $db->query($query, $params)->fetchAll(\PDO::FETCH_ASSOC);
         if ($weather_info) {
             // force re-bind of gameplay_weather to condition
