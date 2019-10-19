@@ -166,6 +166,7 @@ var exLayerGroup = new L.LayerGroup()
 var gymLayerGroup = new L.LayerGroup()
 var stopLayerGroup = new L.LayerGroup()
 var scanAreaGroup = new L.LayerGroup()
+var liveScanGroup = new L.LayerGroup()
 var scanAreas = []
 var nestLayerGroup = new L.LayerGroup()
 /*
@@ -357,7 +358,7 @@ function initMap() { // eslint-disable-line no-unused-vars
         worldCopyJump: true,
         updateWhenZooming: false,
         updateWhenIdle: true,
-        layers: [weatherLayerGroup, exLayerGroup, gymLayerGroup, stopLayerGroup, scanAreaGroup, nestLayerGroup]
+        layers: [weatherLayerGroup, exLayerGroup, gymLayerGroup, stopLayerGroup, scanAreaGroup, liveScanGroup, nestLayerGroup]
     })
 
     setTileLayer(Store.get('map_style'))
@@ -806,6 +807,7 @@ function initSidebar() {
     $('#direction-provider').val(Store.get('directionProvider'))
     $('#ranges-switch').prop('checked', Store.get('showRanges'))
     $('#scan-area-switch').prop('checked', Store.get('showScanPolygon'))
+    $('#scan-location-switch').prop('checked', Store.get('showScanLocation'))
     $('#nest-polygon-switch').prop('checked', Store.get('showNestPolygon'))
     $('#raid-timer-switch').prop('checked', Store.get('showRaidTimer'))
     $('#rocket-timer-switch').prop('checked', Store.get('showRocketTimer'))
@@ -2799,6 +2801,37 @@ function setupSpawnpointMarker(item) {
     return circle
 }
 
+function setupScanLocationMarker(item) {
+    var html = ''
+    if (item['last_seen'] < Math.round((new Date()).getTime() / 1000) - deviceOfflineAfterSeconds) {
+        html = '<img src="static/images/device-offline.png" style="width:36px;height: auto;"/>'
+    } else {
+        html = '<img src="static/images/device-online.png" style="width:36px;height: auto;"/>'
+    }
+    var icon = L.divIcon({
+        iconSize: [36, 48],
+        iconAnchor: [18, 24],
+        popupAnchor: [0, -35],
+        className: 'marker-livescan',
+        html: html
+    })
+
+    var marker = L.marker([item['latitude'], item['longitude']], {icon: icon, zIndexOffset: 1030, virtual: true}).bindPopup(liveScanLabel(item), {autoPan: false, closeOnClick: false, autoClose: false})
+    liveScanGroup.addLayer(marker)
+
+    addListeners(marker)
+
+    return marker
+}
+
+function liveScanLabel(item) {
+    var lastSeen = formatDate(new Date(item.last_seen * 1000))
+    var str = '<center><div style="font-weight:900;font-size:12px;margin-left:10px;">' + item.uuid + '</div></center>' +
+        '<center><div>' + i8ln('Current instance') + ': ' + item.instance_name + '</div></center>' +
+        '<center><div>' + i8ln('Last seen') + ': ' + lastSeen + '</div></center>'
+    return str
+}
+
 function clearSelection() {
     if (document.selection) {
         document.selection.empty()
@@ -2905,6 +2938,7 @@ function loadRawData() {
     var loadPois = Store.get('showPoi')
     var loadNewPortalsOnly = Store.get('showNewPortalsOnly')
     var loadSpawnpoints = Store.get('showSpawnpoints')
+    var loadScanLocation = Store.get('showScanLocation')
     var loadMinIV = Store.get('remember_text_min_iv')
     var loadMinLevel = Store.get('remember_text_min_level')
     var bigKarp = Boolean(Store.get('showBigKarp'))
@@ -2953,6 +2987,7 @@ function loadRawData() {
             'lastslocs': lastslocs,
             'spawnpoints': loadSpawnpoints,
             'lastspawns': lastspawns,
+            'scanlocations': loadScanLocation,
             'minIV': loadMinIV,
             'prevMinIV': prevMinIV,
             'minLevel': loadMinLevel,
@@ -5284,6 +5319,13 @@ function processSpawnpoints(i, item) {
     }
 }
 
+function processScanlocation(i, item) {
+    if (!Store.get('showScanLocation')) {
+        return false
+    }
+    setupScanLocationMarker(item)
+}
+
 function updateSpawnPoints() {
     if (!Store.get('showSpawnpoints')) {
         return false
@@ -5325,12 +5367,13 @@ function updateMap() {
             }
         })
     }
-
+    liveScanGroup.clearLayers()
     loadRawData().done(function (result) {
         $.each(result.pokemons, processPokemons)
         $.each(result.pokestops, processPokestops)
         $.each(result.gyms, processGyms)
         $.each(result.spawnpoints, processSpawnpoints)
+        $.each(result.scanlocations, processScanlocation)
         $.each(result.nests, processNests)
         $.each(result.communities, processCommunities)
         $.each(result.portals, processPortals)
@@ -6721,7 +6764,13 @@ $(function () {
             scanAreaGroup.clearLayers()
         }
     })
-
+    $('#scan-location-switch').change(function () {
+        Store.set('showScanLocation', this.checked)
+        if (this.checked) {
+        } else {
+            liveScanGroup.clearLayers()
+        }
+    })
     $('#nest-polygon-switch').change(function () {
         Store.set('showNestPolygon', this.checked)
         if (this.checked) {
