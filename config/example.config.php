@@ -241,6 +241,11 @@ $enableRanges = 'false';
 $noScanPolygon = true;
 $enableScanPolygon = 'false';
 $geoJSONfile = 'custom/scannerarea.json';			                // path to geoJSON file create your own on http://geojson.io/ adjust filename
+
+$noLiveScanLocation = true;                                         // Show scan devices on the map
+$enableLiveScan = 'false';
+$hideDeviceAfterMinutes = 0;                                        // Hide scan devices from map after x amount of minutes not being updated in database. 0 to disable.
+$deviceOfflineAfterSeconds = 300;                                   // Mark scan devices offline (red color) after x amount of seconds not being updated in database.
 /* Location & Search Settings */
 
 $noSearchLocation = false;

@@ -510,4 +510,55 @@ class RDM_beta extends RDM
         }
         return $data;
     }
+
+    public function get_scanlocation($swLat, $swLng, $neLat, $neLng, $tstamp = 0, $oSwLat = 0, $oSwLng = 0, $oNeLat = 0, $oNeLng = 0)
+    {
+        $conds = array();
+        $params = array();
+        $conds[] = "last_lat > :swLat AND last_lon > :swLng AND last_lat < :neLat AND last_lon < :neLng";
+        $params[':swLat'] = $swLat;
+        $params[':swLng'] = $swLng;
+        $params[':neLat'] = $neLat;
+        $params[':neLng'] = $neLng;
+        if ($oSwLat != 0) {
+            $conds[] = "NOT (last_lat > :oswLat AND last_lon > :oswLng AND last_lat < :oneLat AND last_lon < :oneLng)";
+            $params[':oswLat'] = $oSwLat;
+            $params[':oswLng'] = $oSwLng;
+            $params[':oneLat'] = $oNeLat;
+            $params[':oneLng'] = $oNeLng;
+        }
+        global $noBoundaries, $boundaries;
+        if (!$noBoundaries) {
+            $conds[] = "(ST_WITHIN(point(last_lat,last_lon),ST_GEOMFROMTEXT('POLYGON(( " . $boundaries . " ))')))";
+        }
+        global $hideDeviceAfterMinutes;
+        if ($hideDeviceAfterMinutes > 0) {
+            $conds[] = "last_seen > UNIX_TIMESTAMP( NOW() - INTERVAL " . $hideDeviceAfterMinutes . " MINUTE)";
+        }
+        return $this->query_scanlocation($conds, $params);
+    }
+
+    private function query_scanlocation($conds, $params)
+    {
+        global $db;
+        $query = "SELECT last_lat AS latitude,
+        last_lon AS longitude,
+        last_seen,
+        uuid,
+        instance_name
+        FROM device
+        WHERE :conditions";
+        $query = str_replace(":conditions", join(" AND ", $conds), $query);
+        $scanlocations = $db->query($query, $params)->fetchAll(\PDO::FETCH_ASSOC);
+        $data = array();
+        $i = 0;
+        foreach ($scanlocations as $scanlocation) {
+            $scanlocation["latitude"] = floatval($scanlocation["latitude"]);
+            $scanlocation["longitude"] = floatval($scanlocation["longitude"]);
+            $data[] = $scanlocation;
+            unset($scanlocations[$i]);
+            $i++;
+        }
+        return $data;
+    }
 }
