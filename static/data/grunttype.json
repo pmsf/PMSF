@@ -12,7 +12,7 @@
     "grunt": "Spark"
   },
   "4": {
-    "type": "",
+    "type": "Kanto starter",
     "grunt": "Male Grunt",
     "second_reward": "true",
     "encounters":{
@@ -22,7 +22,7 @@
     }
   },
   "5": {
-    "type": "",
+    "type": "Snorlax",
     "grunt": "Female Grunt",
     "second_reward": "false",
     "encounters":{
