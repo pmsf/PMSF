@@ -4715,6 +4715,21 @@
             "color": "#a040a0"
           }
         ]
+      },
+      {
+        "nameform": "Galarian",
+        "protoform": "944",
+        "assetsform": "00",
+        "formtypes": [
+          {
+            "type": "Poison",
+            "color": "#a040a0"
+          },
+          {
+            "type": "Fairy",
+            "color": "#e898e8"
+          }
+        ]
       }
     ]
   },
@@ -8855,7 +8870,7 @@
     "forms": [
       {
         "nameform": "Normal",
-        "protoform": "",
+        "protoform": "945",
         "assetsform": "00",
         "formtypes": [
           {
@@ -8866,7 +8881,7 @@
       },
       {
         "nameform": "Galarian",
-        "protoform": "",
+        "protoform": "946",
         "assetsform": "00",
         "formtypes": [
           {
@@ -8893,7 +8908,7 @@
     "forms": [
       {
         "nameform": "Normal",
-        "protoform": "",
+        "protoform": "947",
         "assetsform": "00",
         "formtypes": [
           {
@@ -8904,7 +8919,7 @@
       },
       {
         "nameform": "Galarian",
-        "protoform": "",
+        "protoform": "948",
         "assetsform": "00",
         "formtypes": [
           {
