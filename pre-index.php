@@ -1429,7 +1429,7 @@ if ($blockIframe) {
             </p></center></div>
             <div><center><p>
             <?php
-            echo 'Logged in as: ' . $_SESSION['user']->user . "<br>"; ?>
+            echo i8ln('Logged in as') . ': ' . $_SESSION['user']->user . "<br>"; ?>
             </p></center></div>
         <?php
         }
@@ -1607,7 +1607,7 @@ if ($blockIframe) {
             <?php } ?>
             <center><?php echo i8ln('Your access has been denied.'); ?></center>
             <br>
-            <?php echo i8ln('You might not be a member of our Discord or you joined a server which is on our blacklist. Click <a href="' .$discordUrl .'">here</a> to join!'); ?>
+            <?php echo i8ln('You might not be a member of our Discord or you joined a server which is on our blacklist. Click') . ' <a href="' . $discordUrl . '">' . i8ln('here') . '</a> ' . i8ln('to join!'); ?>
         </div>
     <?php } ?>
     <div id="fullscreenModal" class="modal">
