@@ -5492,7 +5492,7 @@ function updateS2Overlay() {
 function drawWeatherOverlay(weather) {
     if (weather) {
         $.each(weather, function (idx, item) {
-            if (map.getZoom() < 13) {
+            if (map.getZoom() <= 13) {
                 $.each(weatherMarkers, function (index, marker) {
                     markers.addLayer(marker)
                 })
