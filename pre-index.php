@@ -197,7 +197,13 @@ if ($blockIframe) {
                     "button": {
                     "background": "#d6d6d6"
                     }
-                }
+		},
+		"content": {
+		    "message": "' . i8ln('This website uses cookies to ensure you get the best experience on our website.') . '",
+		    "dismiss": "' . i8ln('Allow') . '",
+		    "link": "' . i8ln('Learn more') . '",
+		    "href": "https://www.cookiesandyou.com/"
+		}
             })});
         </script>';
     }
