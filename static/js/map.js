@@ -5488,6 +5488,11 @@ function updateS2Overlay() {
 function drawWeatherOverlay(weather) {
     if (weather) {
         $.each(weather, function (idx, item) {
+            if (map.getZoom() < 13) {
+                $.each(weatherMarkers, function (index, marker) {
+                    markers.addLayer(marker)
+                })
+            }
             weatherArray.push(S2.idToCornerLatLngs(item.s2_cell_id))
             var poly = L.polygon(weatherArray, {
                 color: weatherColors[item.condition],
