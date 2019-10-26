@@ -705,6 +705,24 @@ function showS2Cells(level, style) {
             s2Lats[j] = vertices[j]['lat']
             s2Lons[j] = vertices[j]['lng']
         }
+        var stopCount = 0
+        var gymCount = 0
+        var totalCount = 0
+        if (cell.level === 14 || cell.level === 17) {
+            $.each(mapData.pokestops, function (key, value) {
+                if (pointInPolygon(value['latitude'], value['longitude'], s2Lats, s2Lons)) {
+                    stopCount++
+                    totalCount++
+                }
+            })
+            $.each(mapData.gyms, function (key, value) {
+                if (pointInPolygon(value['latitude'], value['longitude'], s2Lats, s2Lons)) {
+                    gymCount++
+                    totalCount++
+                }
+            })
+        }
+
         var filledStyle = {color: 'blue', fillOpacity: 0.0}
         if (cell.level === 17) {
             $.each(mapData.pokestops, function (key, value) {
@@ -719,6 +737,13 @@ function showS2Cells(level, style) {
             })
         }
         const poly = L.polygon(vertices, Object.assign({color: 'blue', opacity: 0.5, weight: 2, fillOpacity: 0.0, dashArray: '2 6', dashOffset: '0'}, style, filledStyle))
+        if (cell.level === 14 || cell.level === 17) {
+            poly.bindPopup(
+                '<div>' + i8ln('Gyms in cell') + ': <b>' + gymCount + '</b></div>' +
+                '<div>' + i8ln('Pokéstops in cell') + ': <b>' + stopCount + '</b></div>' +
+                '<div>' + i8ln('Total') + ': <b>' + totalCount + '</b></div>', {autoPan: false, closeOnClick: false, autoClose: false}
+            )
+        }
         if (cell.level === 13) {
             exLayerGroup.addLayer(poly)
         } else if (cell.level === 14) {
