@@ -673,6 +673,21 @@ function createLocationMarker() {
     return locationMarker
 }
 
+function pointInPolygon(x, y, cornersX, cornersY) {
+    var i
+    var j = cornersX.length - 1
+    var odd = 0
+    var pX = cornersX
+    var pY = cornersY
+    for (i = 0; i < cornersX.length; i++) {
+        if (((pY[i] < y && pY[j] >= y) || (pY[j] < y && pY[i] >= y)) && (pX[i] <= x || pX[j] <= x)) {
+            odd ^= (pX[i] + (y - pY[i]) * (pX[j] - pX[i]) / (pY[j] - pY[i])) < x
+        }
+        j = i
+    }
+    return odd === 1
+}
+
 function showS2Cells(level, style) {
     const bounds = map.getBounds()
     const swPoint = bounds.getSouthWest()
@@ -684,8 +699,26 @@ function showS2Cells(level, style) {
 
     function addPoly(cell) {
         const vertices = cell.getCornerLatLngs()
-        const poly = L.polygon(vertices,
-            Object.assign({color: 'blue', opacity: 0.5, weight: 2, fillOpacity: 0.0, dashArray: '2 6', dashOffset: '0'}, style))
+        var s2Lats = []
+        var s2Lons = []
+        for (let j = 0; j < vertices.length; j++) {
+            s2Lats[j] = vertices[j]['lat']
+            s2Lons[j] = vertices[j]['lng']
+        }
+        var filledStyle = {color: 'blue', fillOpacity: 0.0}
+        if (cell.level === 17) {
+            $.each(mapData.pokestops, function (key, value) {
+                if (pointInPolygon(value['latitude'], value['longitude'], s2Lats, s2Lons)) {
+                    filledStyle = {fillColor: 'red', fillOpacity: 0.3}
+                }
+            })
+            $.each(mapData.gyms, function (key, value) {
+                if (pointInPolygon(value['latitude'], value['longitude'], s2Lats, s2Lons)) {
+                    filledStyle = {fillColor: 'red', fillOpacity: 0.3}
+                }
+            })
+        }
+        const poly = L.polygon(vertices, Object.assign({color: 'blue', opacity: 0.5, weight: 2, fillOpacity: 0.0, dashArray: '2 6', dashOffset: '0'}, style, filledStyle))
         if (cell.level === 13) {
             exLayerGroup.addLayer(poly)
         } else if (cell.level === 14) {
@@ -5391,7 +5424,7 @@ function updateMap() {
         showInBoundsMarkers(mapData.spawnpoints, 'inbound')
 
         clearStaleMarkers()
-
+        updateS2Overlay()
         updateSpawnPoints()
         updatePokestops()
         updatePortals()
