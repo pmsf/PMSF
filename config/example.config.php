@@ -347,12 +347,23 @@ $enableNewPortals = 0;                             // O: all, 1: new portals onl
 $noPortals = true;
 $noDeletePortal = true;
 $noConvertPortal = true;
+$markPortalsAsNew = 86400;                         // Time in seconds to mark new imported portals as new ( 86400 for 1 day )
+//-----------------------------------------------------
+// s2 cells
+//-----------------------------------------------------
 $noS2Cells = true;
 $enableS2Cells = 'false';
 $enableLevel13Cells = 'false';
 $enableLevel14Cells = 'false';
 $enableLevel17Cells = 'false';
-$markPortalsAsNew = 86400;                         // Time in seconds to mark new imported portals as new ( 86400 for 1 day )
+
+$oneMoreUntilNewGymFillColor = 'green';
+$twoMoreUntilNewGymFillColor = 'orange';
+$maxGymAmountReachedFillColor = 'black';
+$maxAmountReachedFillColor = 'red';
+//-----------------------------------------------------
+// POI
+//-----------------------------------------------------
 $noPoi = true;					                   // Allow users to view POI markers
 $noAddPoi = true;				                   // Allow to add POI markers (locations eligible for submitting Pokestops/Ingress portals)
 $enablePoi = 'false';

@@ -723,26 +723,39 @@ function showS2Cells(level, style) {
             })
         }
 
+        var html = ''
         var filledStyle = {color: 'blue', fillOpacity: 0.0}
+        if ((cell.level === 14) && (totalCount === 1 || totalCount === 5 || totalCount === 19)) {
+            filledStyle = {fillColor: oneMoreUntilNewGymFillColor, fillOpacity: 0.3}
+            html += '<div><center><b>' + i8ln('1 more Pokéstop until new gym') + '</b></center></div>'
+        } else if ((cell.level === 14) && (totalCount === 4 || totalCount === 18)) {
+            filledStyle = {fillColor: twoMoreUntilNewGymFillColor, fillOpacity: 0.3}
+            html += '<div><center><b>' + i8ln('2 more Pokéstops until new gym') + '</b></center></div>'
+        } else if (cell.level === 14 && totalCount >= 20) {
+            filledStyle = {fillColor: maxGymAmountReachedFillColor, fillOpacity: 0.3}
+            html += '<div><center><b>' + i8ln('Max amount of Gyms reached') + '</b></center></div>'
+        }
+
         if (cell.level === 17) {
             $.each(mapData.pokestops, function (key, value) {
                 if (pointInPolygon(value['latitude'], value['longitude'], s2Lats, s2Lons)) {
-                    filledStyle = {fillColor: 'red', fillOpacity: 0.3}
+                    filledStyle = {fillColor: maxAmountReachedFillColor, fillOpacity: 0.3}
+                    html += '<div><center><b>' + i8ln('Max amount reached') + '</b></center></div>'
                 }
             })
             $.each(mapData.gyms, function (key, value) {
                 if (pointInPolygon(value['latitude'], value['longitude'], s2Lats, s2Lons)) {
-                    filledStyle = {fillColor: 'red', fillOpacity: 0.3}
+                    filledStyle = {fillColor: maxAmountReachedFillColor, fillOpacity: 0.3}
+                    html += '<div><center><b>' + i8ln('Max amount reached') + '</b></center></div>'
                 }
             })
         }
         const poly = L.polygon(vertices, Object.assign({color: 'blue', opacity: 0.5, weight: 2, fillOpacity: 0.0, dashArray: '2 6', dashOffset: '0'}, style, filledStyle))
         if (cell.level === 14 || cell.level === 17) {
-            poly.bindPopup(
-                '<div>' + i8ln('Gyms in cell') + ': <b>' + gymCount + '</b></div>' +
-                '<div>' + i8ln('Pokéstops in cell') + ': <b>' + stopCount + '</b></div>' +
-                '<div>' + i8ln('Total') + ': <b>' + totalCount + '</b></div>', {autoPan: false, closeOnClick: false, autoClose: false}
-            )
+            html += '<div>' + i8ln('Gyms in cell') + ': <b>' + gymCount + '</b></div>' +
+                '<div>' + i8ln('Pokétops in cell') + ': <b>' + stopCount + '</b></div>' +
+                '<div>' + i8ln('Total') + ': <b>' + totalCount + '</b></div>'
+            poly.bindPopup(html, {autoPan: false, closeOnClick: false, autoClose: false})
         }
         if (cell.level === 13) {
             exLayerGroup.addLayer(poly)
