@@ -2131,10 +2131,6 @@ if ($blockIframe) {
     var enableLevel13Cells = <?php echo $noS2Cells ? 'false' : $enableLevel13Cells ?>;
     var enableLevel14Cells = <?php echo $noS2Cells ? 'false' : $enableLevel14Cells ?>;
     var enableLevel17Cells = <?php echo $noS2Cells ? 'false' : $enableLevel17Cells ?>;
-    var oneMoreUntilNewGymFillColor = <?php echo $oneMoreUntilNewGymFillColor ?>;
-    var twoMoreUntilNewGymFillColor = <?php echo $twoMoreUntilNewGymFillColor ?>;
-    var maxGymAmountReachedFillColor = <?php echo $maxGymAmountReachedFillColor ?>;
-    var maxAmountReachedFillColor = <?php echo $maxAmountReachedFillColor ?>;
     var noDeletePortal = <?php echo $noDeletePortal === true ? 'true' : 'false' ?>;
     var noConvertPortal = <?php echo $noConvertPortal === true ? 'true' : 'false' ?>;
     var markPortalsAsNew = <?php echo $markPortalsAsNew ?>;
