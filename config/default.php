@@ -333,12 +333,23 @@ $enableNewPortals = 0;                                                   // O: a
 $noPortals = true;
 $noDeletePortal = true;
 $noConvertPortal = true;
+$markPortalsAsNew = 86400;                                         // Time in seconds to mark new imported portals as new ( 86400 for 1 day )
+//-----------------------------------------------------
+// s2 cells
+//-----------------------------------------------------
 $noS2Cells = true;
 $enableS2Cells = 'false';
 $enableLevel13Cells = 'false';
 $enableLevel14Cells = 'false';
 $enableLevel17Cells = 'false';
-$markPortalsAsNew = 86400;                                         // Time in seconds to mark new imported portals as new ( 86400 for 1 day )
+
+$oneMoreUntilNewGymFillColor = 'green';
+$twoMoreUntilNewGymFillColor = 'orange';
+$maxGymAmountReachedFillColor = 'black';
+$maxAmountReachedFillColor = 'red';
+//-----------------------------------------------------
+// POI
+//-----------------------------------------------------
 $noPoi = true;
 $noAddPoi = true;
 $enablePoi = 'false';
