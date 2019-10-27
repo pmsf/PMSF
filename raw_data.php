@@ -81,6 +81,14 @@ if (!validateToken($_POST['token'])) {
     die();
 }
 
+if ((! $noDiscordLogin || ! $noNativeLogin) && !empty($_SESSION['user']->id)) {
+    $info = $manualdb->query("SELECT expire_timestamp FROM users WHERE id = :id", [":id" => $_SESSION['user']->id])->fetch();
+    if ($info['expire_timestamp'] !== $_SESSION['user']->expire_timestamp) {
+        http_response_code(400);
+        die();
+    }
+}
+
 // init map
 if (strtolower($map) === "monocle") {
     if (strtolower($fork) === "default") {

@@ -185,7 +185,7 @@ var notifyNoIvTitle = '<pkm>'
  <dist>  - disappear time
  <udist> - time until disappear
  */
-var notifyText = 'disappears at <dist> (<udist>)'
+var notifyText = i8ln('disappears at') + ' <dist> (<udist>)'
 
 var OpenStreetMapProvider = window.GeoSearch.OpenStreetMapProvider
 var searchProvider = new OpenStreetMapProvider()
@@ -673,6 +673,21 @@ function createLocationMarker() {
     return locationMarker
 }
 
+function pointInPolygon(x, y, cornersX, cornersY) {
+    var i
+    var j = cornersX.length - 1
+    var odd = 0
+    var pX = cornersX
+    var pY = cornersY
+    for (i = 0; i < cornersX.length; i++) {
+        if (((pY[i] < y && pY[j] >= y) || (pY[j] < y && pY[i] >= y)) && (pX[i] <= x || pX[j] <= x)) {
+            odd ^= (pX[i] + (y - pY[i]) * (pX[j] - pX[i]) / (pY[j] - pY[i])) < x
+        }
+        j = i
+    }
+    return odd === 1
+}
+
 function showS2Cells(level, style) {
     const bounds = map.getBounds()
     const swPoint = bounds.getSouthWest()
@@ -684,8 +699,64 @@ function showS2Cells(level, style) {
 
     function addPoly(cell) {
         const vertices = cell.getCornerLatLngs()
-        const poly = L.polygon(vertices,
-            Object.assign({color: 'blue', opacity: 0.5, weight: 2, fillOpacity: 0.0, dashArray: '2 6', dashOffset: '0'}, style))
+        var s2Lats = []
+        var s2Lons = []
+        for (let j = 0; j < vertices.length; j++) {
+            s2Lats[j] = vertices[j]['lat']
+            s2Lons[j] = vertices[j]['lng']
+        }
+        var stopCount = 0
+        var gymCount = 0
+        var totalCount = 0
+        if (cell.level === 14 || cell.level === 17) {
+            $.each(mapData.pokestops, function (key, value) {
+                if (pointInPolygon(value['latitude'], value['longitude'], s2Lats, s2Lons)) {
+                    stopCount++
+                    totalCount++
+                }
+            })
+            $.each(mapData.gyms, function (key, value) {
+                if (pointInPolygon(value['latitude'], value['longitude'], s2Lats, s2Lons)) {
+                    gymCount++
+                    totalCount++
+                }
+            })
+        }
+
+        var html = ''
+        var filledStyle = {color: 'blue', fillOpacity: 0.0}
+        if ((cell.level === 14) && (totalCount === 1 || totalCount === 5 || totalCount === 19)) {
+            filledStyle = {fillColor: 'green', fillOpacity: 0.3}
+            html += '<div><center><b>' + i8ln('1 more Pokéstop until new gym') + '</b></center></div>'
+        } else if ((cell.level === 14) && (totalCount === 4 || totalCount === 18)) {
+            filledStyle = {fillColor: 'orange', fillOpacity: 0.3}
+            html += '<div><center><b>' + i8ln('2 more Pokéstops until new gym') + '</b></center></div>'
+        } else if (cell.level === 14 && totalCount >= 20) {
+            filledStyle = {fillColor: 'black', fillOpacity: 0.3}
+            html += '<div><center><b>' + i8ln('Max amount of Gyms reached') + '</b></center></div>'
+        }
+
+        if (cell.level === 17) {
+            $.each(mapData.pokestops, function (key, value) {
+                if (pointInPolygon(value['latitude'], value['longitude'], s2Lats, s2Lons)) {
+                    filledStyle = {fillColor: 'red', fillOpacity: 0.3}
+                    html += '<div><center><b>' + i8ln('Max amount reached') + '</b></center></div>'
+                }
+            })
+            $.each(mapData.gyms, function (key, value) {
+                if (pointInPolygon(value['latitude'], value['longitude'], s2Lats, s2Lons)) {
+                    filledStyle = {fillColor: 'red', fillOpacity: 0.3}
+                    html += '<div><center><b>' + i8ln('Max amount reached') + '</b></center></div>'
+                }
+            })
+        }
+        const poly = L.polygon(vertices, Object.assign({color: 'blue', opacity: 0.5, weight: 2, fillOpacity: 0.0, dashArray: '2 6', dashOffset: '0'}, style, filledStyle))
+        if (cell.level === 14 || cell.level === 17) {
+            html += '<div>' + i8ln('Gyms in cell') + ': <b>' + gymCount + '</b></div>' +
+                '<div>' + i8ln('Pokéstops in cell') + ': <b>' + stopCount + '</b></div>' +
+                '<div>' + i8ln('Total') + ': <b>' + totalCount + '</b></div>'
+            poly.bindPopup(html, {autoPan: false, closeOnClick: false, autoClose: false})
+        }
         if (cell.level === 13) {
             exLayerGroup.addLayer(poly)
         } else if (cell.level === 14) {
@@ -945,13 +1016,9 @@ function pokemonLabel(item) {
         pokemonidStr = id
     }
 
-    if (id !== 132) {
-        $.each(types, function (index, type) {
-            typesDisplay += '<img src="static/types/' + type['type'] + '.png" style="height:20px;">'
-        })
-    } else {
-        typesDisplay += '<img src="static/types/Normal.png" style="height:20px;">'
-    }
+    $.each(types, function (index, type) {
+        typesDisplay += '<img src="static/types/' + type['type'] + '.png" style="height:20px;">'
+    })
 
     var details = ''
     if (atk != null && def != null && sta != null) {
@@ -1072,6 +1139,7 @@ function gymLabel(item) {
     var url = item['url']
     var form = item['form']
     var freeSlots = item['slots_available']
+    var gender = item['raid_pokemon_gender']
 
     var raidSpawned = item['raid_level'] != null
     var raidStarted = item['raid_pokemon_id'] != null
@@ -1093,6 +1161,9 @@ function gymLabel(item) {
             raidStr += '<br>' + item.raid_pokemon_name
             if (form !== null && form > 0 && item['form_name'] !== 'Normal') {
                 raidStr += ' (' + i8ln(item['form_name']) + ')'
+            }
+            if (gender > 0) {
+                raidStr += ' ' + genderType[gender - 1]
             }
             raidStr += cpStr
         }
@@ -5357,21 +5428,19 @@ function updateMap() {
         lng: position.lng
     })
     // lets try and get the s2 cell id in the middle
-    if (mapType !== 'rdm') {
-        var s2CellCenter = S2.keyToId(S2.latLngToKey(position.lat, position.lng, 10))
-        if ((s2CellCenter) && (String(s2CellCenter) !== $('#currentWeather').data('current-cell')) && (map.getZoom() > 13)) {
-            loadWeatherCellData(s2CellCenter).done(function (cellWeather) {
-                var currentWeather = cellWeather.weather
-                var currentCell = $('#currentWeather').data('current-cell')
-                if ((currentWeather) && (currentCell !== currentWeather.s2_cell_id)) {
-                    $('#currentWeather').data('current-cell', currentWeather.s2_cell_id)
-                    $('#currentWeather').html('<img src="static/weather/' + currentWeather.condition + '.png" alt="" height="55px"">')
-                } else if (!currentWeather) {
-                    $('#currentWeather').data('current-cell', '')
-                    $('#currentWeather').html('')
-                }
-            })
-        }
+    var s2CellCenter = S2.keyToId(S2.latLngToKey(position.lat, position.lng, 10))
+    if ((s2CellCenter) && (String(s2CellCenter) !== $('#currentWeather').data('current-cell')) && (map.getZoom() > 13)) {
+        loadWeatherCellData(s2CellCenter).done(function (cellWeather) {
+            var currentWeather = cellWeather.weather
+            var currentCell = $('#currentWeather').data('current-cell')
+            if ((currentWeather) && (currentCell !== currentWeather.s2_cell_id)) {
+                $('#currentWeather').data('current-cell', currentWeather.s2_cell_id)
+                $('#currentWeather').html('<img src="static/weather/' + currentWeather.condition + '.png" alt="" height="55px"">')
+            } else if (!currentWeather) {
+                $('#currentWeather').data('current-cell', '')
+                $('#currentWeather').html('')
+            }
+        })
     }
     liveScanGroup.clearLayers()
     loadRawData().done(function (result) {
@@ -5494,12 +5563,18 @@ function updateS2Overlay() {
 function drawWeatherOverlay(weather) {
     if (weather) {
         $.each(weather, function (idx, item) {
+            if (map.getZoom() <= 13) {
+                $.each(weatherMarkers, function (index, marker) {
+                    markers.addLayer(marker)
+                })
+            }
             weatherArray.push(S2.idToCornerLatLngs(item.s2_cell_id))
             var poly = L.polygon(weatherArray, {
                 color: weatherColors[item.condition],
                 opacity: 1,
                 weight: 1,
-                fillOpacity: 0
+                fillOpacity: 0.1,
+                fillColor: weatherColors[item.condition]
             })
             var bounds = new L.LatLngBounds()
             var i, center
@@ -5509,9 +5584,9 @@ function drawWeatherOverlay(weather) {
             }
             center = bounds.getCenter()
             var icon = L.icon({
-                iconSize: [30, 30],
-                iconAnchor: [15, 15],
-                iconUrl: 'static/weather/i-' + item.condition + '.png'
+                iconSize: [25, 25],
+                iconAnchor: [13, 13],
+                iconUrl: 'static/weather/a-' + item.condition + '.png'
             })
             var marker = L.marker([center.lat, center.lng], {icon})
             weatherPolys.push(poly)
