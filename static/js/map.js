@@ -753,7 +753,7 @@ function showS2Cells(level, style) {
         const poly = L.polygon(vertices, Object.assign({color: 'blue', opacity: 0.5, weight: 2, fillOpacity: 0.0, dashArray: '2 6', dashOffset: '0'}, style, filledStyle))
         if (cell.level === 14 || cell.level === 17) {
             html += '<div>' + i8ln('Gyms in cell') + ': <b>' + gymCount + '</b></div>' +
-                '<div>' + i8ln('Pokétops in cell') + ': <b>' + stopCount + '</b></div>' +
+                '<div>' + i8ln('Pokéstops in cell') + ': <b>' + stopCount + '</b></div>' +
                 '<div>' + i8ln('Total') + ': <b>' + totalCount + '</b></div>'
             poly.bindPopup(html, {autoPan: false, closeOnClick: false, autoClose: false})
         }
@@ -5462,7 +5462,7 @@ function updateMap() {
         showInBoundsMarkers(mapData.spawnpoints, 'inbound')
 
         clearStaleMarkers()
-        updateS2Overlay()
+
         updateSpawnPoints()
         updatePokestops()
         updatePortals()
