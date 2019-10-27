@@ -724,7 +724,7 @@ function showS2Cells(level, style) {
         }
 
         var html = ''
-        var filledStyle = {color: 'blue', fillOpacity: 0.0}
+        var filledStyle = {color: 'black', fillOpacity: 0.0}
         if ((cell.level === 14) && (totalCount === 1 || totalCount === 5 || totalCount === 19)) {
             filledStyle = {fillColor: 'green', fillOpacity: 0.3}
             html += '<div><center><b>' + i8ln('1 more Pokéstop until new gym') + '</b></center></div>'
@@ -750,7 +750,7 @@ function showS2Cells(level, style) {
                 }
             })
         }
-        const poly = L.polygon(vertices, Object.assign({color: 'blue', opacity: 0.5, weight: 2, fillOpacity: 0.0, dashArray: '2 6', dashOffset: '0'}, style, filledStyle))
+        const poly = L.polygon(vertices, Object.assign({color: 'black', opacity: 0.5, weight: 0.5, fillOpacity: 0.0}, style, filledStyle))
         if (cell.level === 14 || cell.level === 17) {
             html += '<div>' + i8ln('Gyms in cell') + ': <b>' + gymCount + '</b></div>' +
                 '<div>' + i8ln('Pokéstops in cell') + ': <b>' + stopCount + '</b></div>' +
@@ -5535,27 +5535,21 @@ function updateS2Overlay() {
     if ((Store.get('showCells'))) {
         if (Store.get('showExCells') && (map.getZoom() > 10)) {
             exLayerGroup.clearLayers()
-            showS2Cells(13, {color: 'red', weight: 6, dashOffset: '8'})
+            showS2Cells(13, {color: 'black', weight: 5, dashOffset: '8', dashArray: '2 6'})
         } else if (Store.get('showExCells') && (map.getZoom() <= 10)) {
             exLayerGroup.clearLayers()
-            toastr['error'](i8ln('Zoom in more to show them.'), i8ln('EX trigger cells are currently hidden'))
-            toastr.options = toastrOptions
         }
         if (Store.get('showGymCells') && (map.getZoom() > 11)) {
             gymLayerGroup.clearLayers()
-            showS2Cells(14, {color: 'green', weight: 4, dashOffset: '4'})
+            showS2Cells(14, {color: 'black', weight: 3, dashOffset: '4', dashArray: '2 6'})
         } else if (Store.get('showGymCells') && (map.getZoom() <= 11)) {
             gymLayerGroup.clearLayers()
-            toastr['error'](i8ln('Zoom in more to show them.'), i8ln('Gym cells are currently hidden'))
-            toastr.options = toastrOptions
         }
         if (Store.get('showStopCells') && (map.getZoom() > 14)) {
             stopLayerGroup.clearLayers()
-            showS2Cells(17, {color: 'blue'})
+            showS2Cells(17, {color: 'black'})
         } else if (Store.get('showStopCells') && (map.getZoom() <= 14)) {
             stopLayerGroup.clearLayers()
-            toastr['error'](i8ln('Zoom in more to show them.'), i8ln('Pokéstop cells are currently hidden'))
-            toastr.options = toastrOptions
         }
     }
 }
@@ -6765,13 +6759,13 @@ $(function () {
         if (this.checked) {
             wrapper.show(options)
             if (Store.get('showExCells')) {
-                showS2Cells(13, {color: 'red', weight: 6, dashOffset: '8'})
+                showS2Cells(13, {color: 'black', weight: 5, dashOffset: '8', dashArray: '2 6'})
             }
             if (Store.get('showGymCells')) {
-                showS2Cells(14, {color: 'green', weight: 4, dashOffset: '4'})
+                showS2Cells(14, {color: 'black', weight: 3, dashOffset: '4', dashArray: '2 6'})
             }
             if (Store.get('showStopCells')) {
-                showS2Cells(17, {color: 'blue'})
+                showS2Cells(17, {color: 'black'})
             }
         } else {
             wrapper.hide(options)
@@ -6785,7 +6779,7 @@ $(function () {
     $('#s2-level13-switch').change(function () {
         Store.set('showExCells', this.checked)
         if (this.checked) {
-            showS2Cells(13, {color: 'red', weight: 6, dashOffset: '8'})
+            showS2Cells(13, {color: 'black', weight: 5, dashOffset: '8', dashArray: '2 6'})
         } else {
             exLayerGroup.clearLayers()
         }
@@ -6794,7 +6788,7 @@ $(function () {
     $('#s2-level14-switch').change(function () {
         Store.set('showGymCells', this.checked)
         if (this.checked) {
-            showS2Cells(14, {color: 'green', weight: 4, dashOffset: '4'})
+            showS2Cells(14, {color: 'black', weight: 3, dashOffset: '4', dashArray: '2 6'})
         } else {
             gymLayerGroup.clearLayers()
         }
@@ -6803,7 +6797,7 @@ $(function () {
     $('#s2-level17-switch').change(function () {
         Store.set('showStopCells', this.checked)
         if (this.checked) {
-            showS2Cells(17, {color: 'blue'})
+            showS2Cells(17, {color: 'black'})
         } else {
             stopLayerGroup.clearLayers()
         }
