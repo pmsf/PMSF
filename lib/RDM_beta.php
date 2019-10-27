@@ -48,12 +48,6 @@ class RDM_beta extends RDM
             $tmpSQL .= ' OR (pokemon_id = 129 AND weight' . $float . ' > 13.13)';
             $eids[] = "129";
         }
-        global $noDittoDetection, $possibleDitto;
-        if (!$noDittoDetection && ($key = array_search("132", $eids)) === false) {
-            $pDitto = implode(",", $possibleDitto);
-            $tmpSQL .= " OR (weather > 0 AND (level < 6 OR atk_iv < 4 OR def_iv < 4 OR sta_iv < 4) and pokemon_id in (" . $pDitto . "))";
-            $eids[] = "132";
-        }
         if (count($eids)) {
             $pkmn_in = '';
             $i = 1;
@@ -121,11 +115,6 @@ class RDM_beta extends RDM
             if (!empty($bigKarp) && $bigKarp === 'true' && ($key = array_search("129", $ids)) !== false) {
                 $tmpSQL .= ' OR (pokemon_id = 129 AND weight' . $float . ' > 13.13)';
                 unset($ids[$key]);
-            }
-            global $noDittoDetection, $possibleDitto;
-            if (!$noDittoDetection && ($key = array_search("132", $ids)) !== false) {
-                $pDitto = implode(",", $possibleDitto);
-                $tmpSQL .= " OR (weather > 0 AND (level < 6 OR atk_iv < 4 OR def_iv < 4 OR sta_iv < 4) and pokemon_id in (" . $pDitto . "))";
             }
             $pkmn_in = '';
             $i = 1;
@@ -226,26 +215,6 @@ class RDM_beta extends RDM
                     $types[$k]['type'] = $v['type'];
                 }
                 $pokemon["pokemon_types"] = $types;
-            }
-
-            // Ditto detection
-            global $noDittoDetection, $possibleDitto;
-            if (!$noDittoDetection) {
-                if (in_array($pokemon["pokemon_id"], $possibleDitto) && $pokemon["weather_boosted_condition"] > 0 && $pokemon["level"] !== null) {
-                    if ($pokemon["level"] < 6 || $pokemon["individual_attack"] < 4 || $pokemon["individual_defense"] < 4 || $pokemon["individual_stamina"] < 4) {
-                        if ($pokemon["weather_boosted_condition"] != 3) {
-                            $pokemon["weather_boosted_condition"] = 0;
-                        }
-                        $pokemon["pokemon_id"] = 132;
-                        $pokemon["form"] = 0;
-                        $pokemon["pokemon_name"] = $pokemon["pokemon_name"] . ' (' . i8ln('Ditto') . ')';
-                        $pokemon["move_1"] = 242;
-                        $pokemon["move_2"] = 133;
-                        $pokemon["height"] = null;
-                        $pokemon["weight"] = null;
-                        $pokemon["gender"] = 3;
-                    }
-                }
             }
 
             $data[] = $pokemon;
@@ -461,6 +430,75 @@ class RDM_beta extends RDM
         }
         return $data;
     }
+
+    public function query_gyms($conds, $params)
+    {
+        global $db;
+
+        $query = "SELECT id AS gym_id,
+        lat AS latitude,
+        lon AS longitude,
+        name,
+        url,
+        last_modified_timestamp AS last_modified,
+        raid_end_timestamp AS raid_end,
+        raid_battle_timestamp AS raid_start,
+        updated AS last_scanned,
+        raid_pokemon_id,
+        availble_slots AS slots_available,
+        team_id,
+        raid_level,
+        raid_pokemon_move_1,
+        raid_pokemon_move_2,
+        raid_pokemon_form,
+        raid_pokemon_cp,
+        raid_pokemon_gender,
+        ex_raid_eligible AS park
+        FROM gym
+        WHERE :conditions";
+
+        $query = str_replace(":conditions", join(" AND ", $conds), $query);
+        $gyms = $db->query($query, $params)->fetchAll(\PDO::FETCH_ASSOC);
+
+        $data = array();
+        $i = 0;
+
+        foreach ($gyms as $gym) {
+            $raid_pid = $gym["raid_pokemon_id"];
+            if ($raid_pid == "0") {
+                $raid_pid = null;
+                $gym["raid_pokemon_id"] = null;
+            }
+            $gym["team_id"] = intval($gym["team_id"]);
+            $gym["pokemon"] = [];
+            $gym["raid_pokemon_name"] = empty($raid_pid) ? null : i8ln($this->data[$raid_pid]["name"]);
+            $gym["form"] = intval($gym["raid_pokemon_form"]);
+            $gym["latitude"] = floatval($gym["latitude"]);
+            $gym["longitude"] = floatval($gym["longitude"]);
+            $gym["slots_available"] = intval($gym["slots_available"]);
+            $gym["last_modified"] = $gym["last_modified"] * 1000;
+            $gym["last_scanned"] = $gym["last_scanned"] * 1000;
+            $gym["raid_start"] = $gym["raid_start"] * 1000;
+            $gym["raid_end"] = $gym["raid_end"] * 1000;
+            $gym["sponsor"] = !empty($gym["sponsor"]) ? $gym["sponsor"] : null;
+            $gym["url"] = ! empty($gym["url"]) ? preg_replace("/^http:/i", "https:", $gym["url"]) : null;
+            $gym["park"] = intval($gym["park"]);
+            if (isset($gym["form"]) && $gym["form"] > 0) {
+                $forms = $this->data[$gym["raid_pokemon_id"]]["forms"];
+                foreach ($forms as $f => $v) {
+                    if ($gym["raid_pokemon_form"] === $v['protoform']) {
+                        $gym["form_name"] = $v['nameform'];
+                    }
+                }
+            }
+
+            $data[] = $gym;
+            unset($gyms[$i]);
+            $i++;
+        }
+        return $data;
+    }
+
     public function get_spawnpoints($swLat, $swLng, $neLat, $neLng, $tstamp = 0, $oSwLat = 0, $oSwLng = 0, $oNeLat = 0, $oNeLng = 0)
     {
         $conds = array();
@@ -508,6 +546,36 @@ class RDM_beta extends RDM
             $data[] = $spawnpoint;
             unset($spawnpoints[$i]);
             $i++;
+        }
+        return $data;
+    }
+
+    public function get_weather_by_cell_id($cell_id)
+    {
+        global $db;
+        $query = "SELECT id AS s2_cell_id, gameplay_condition AS gameplay_weather FROM weather WHERE id = :cell_id";
+        $params = [':cell_id' => intval((float)$cell_id)]; // use float to intval because RDM is signed int
+        $weather_info = $db->query($query, $params)->fetchAll(\PDO::FETCH_ASSOC);
+        if ($weather_info) {
+            // force re-bind of gameplay_weather to condition
+            $weather_info[0]['condition'] = $weather_info[0]['gameplay_weather'];
+            unset($weather_info[0]['gameplay_weather']);
+            return $weather_info[0];
+        } else {
+            return null;
+        }
+    }
+
+    public function get_weather($updated = null)
+    {
+        global $db;
+        $query = "SELECT id AS s2_cell_id, gameplay_condition AS gameplay_weather FROM weather";
+        $weathers = $db->query($query)->fetchAll(\PDO::FETCH_ASSOC);
+        $data = array();
+        foreach ($weathers as $weather) {
+            $data["weather_" . $weather['s2_cell_id']] = $weather;
+            $data["weather_" . $weather['s2_cell_id']]['condition'] = $data["weather_" . $weather['s2_cell_id']]['gameplay_weather'];
+            unset($data["weather_" . $weather['s2_cell_id']]['gameplay_weather']);
         }
         return $data;
     }

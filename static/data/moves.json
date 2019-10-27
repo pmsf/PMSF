@@ -2142,5 +2142,21 @@
     "duration": 0,
     "energy": 0,
     "dps": 0
+  },
+  "331": {
+    "name": "Flying Press",
+    "type": "Fighting",
+    "damage": 0,
+    "duration": 0,
+    "energy": 0,
+    "dps": 0
+  },
+  "332": {
+    "name": "Aura Sphere",
+    "type": "Fighting",
+    "damage": 0,
+    "duration": 0,
+    "energy": 0,
+    "dps": 0
   }
 }
