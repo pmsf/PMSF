@@ -708,6 +708,14 @@ function showS2Cells(level, style) {
         var stopCount = 0
         var gymCount = 0
         var totalCount = 0
+
+        var possibleCandidatePoiCount = 0
+        var submittedPoiCount = 0
+        var declinedPoiCount = 0
+        var resubmittedPoiCount = 0
+        var notEligiblePoiCount = 0
+        var totalPoiCount = 0
+
         if (cell.level === 14 || cell.level === 17) {
             $.each(mapData.pokestops, function (key, value) {
                 if (pointInPolygon(value['latitude'], value['longitude'], s2Lats, s2Lons)) {
@@ -719,6 +727,22 @@ function showS2Cells(level, style) {
                 if (pointInPolygon(value['latitude'], value['longitude'], s2Lats, s2Lons)) {
                     gymCount++
                     totalCount++
+                }
+            })
+            $.each(mapData.pois, function (key, item) {
+                if (pointInPolygon(item['lat'], item['lon'], s2Lats, s2Lons)) {
+                    if (item['status'] === '1') {
+                        possibleCandidatePoiCount++
+                    } else if (item['status'] === '2') {
+                        submittedPoiCount++
+                    } else if (item['status'] === '3') {
+                        declinedPoiCount++
+                    } else if (item['status'] === '4') {
+                        resubmittedPoiCount++
+                    } else if (item['status'] === '5') {
+                        notEligiblePoiCount++
+                    }
+                    totalPoiCount++
                 }
             })
         }
@@ -754,7 +778,14 @@ function showS2Cells(level, style) {
         if (cell.level === 14 || cell.level === 17) {
             html += '<div>' + i8ln('Gyms in cell') + ': <b>' + gymCount + '</b></div>' +
                 '<div>' + i8ln('Pokéstops in cell') + ': <b>' + stopCount + '</b></div>' +
-                '<div>' + i8ln('Total') + ': <b>' + totalCount + '</b></div>'
+                '<div>' + i8ln('Total') + ': <b>' + totalCount + '</b></div>' +
+                '<br>' +
+                '<div>' + i8ln('POI possible candidate') + ': <b>' + possibleCandidatePoiCount + '</b></div>' +
+                '<div>' + i8ln('POI submitted') + ': <b>' + submittedPoiCount + '</b></div>' +
+                '<div>' + i8ln('POI declined') + ': <b>' + declinedPoiCount + '</b></div>' +
+                '<div>' + i8ln('POI resubmitted') + ': <b>' + resubmittedPoiCount + '</b></div>' +
+                '<div>' + i8ln('POI not eligible') + ': <b>' + notEligiblePoiCount + '</b></div>' +
+                '<div>' + i8ln('Total POI') + ': <b>' + totalPoiCount + '</b></div>'
             poly.bindPopup(html, {autoPan: false, closeOnClick: false, autoClose: false})
         }
         if (cell.level === 13) {
@@ -2522,55 +2553,28 @@ function setupGreenhouseMarker(item) {
 }
 
 function setupPoiMarker(item) {
+    var dot = ''
     if (item.status === '1') {
-        var circle = {
-            color: '#008000',
-            radius: 10,
-            fillOpacity: 1,
-            fillColor: '#FFFFFF',
-            weight: 3,
-            pane: 'portals'
-        }
+        dot = 'dot possible-candidate'
     } else if (item.status === '2') {
-        circle = {
-            color: '#008000',
-            radius: 10,
-            fillOpacity: 1,
-            fillColor: '#008000',
-            weight: 1,
-            pane: 'portals'
-        }
+        dot = 'dot candidate-submitted'
     } else if (item.status === '3') {
-        circle = {
-            color: '#FFA500',
-            radius: 10,
-            fillOpacity: 1,
-            fillColor: '#FFA500',
-            weight: 1,
-            pane: 'portals'
-        }
+        dot = 'dot candidate-declined'
     } else if (item.status === '4') {
-        circle = {
-            color: '#008000',
-            radius: 10,
-            fillOpacity: 1,
-            fillColor: '#FFA500',
-            weight: 3,
-            pane: 'portals'
-        }
+        dot = 'dot candidate-resubmit'
     } else if (item.status === '5') {
-        circle = {
-            color: '#FF0000',
-            radius: 10,
-            fillOpacity: 1,
-            fillColor: '#FF0000',
-            weight: 1,
-            pane: 'portals'
-        }
+        dot = 'dot candidate-not-eligible'
     }
-    var marker = L.circleMarker([item['lat'], item['lon']], circle).bindPopup(poiLabel(item), {autoPan: false, closeOnClick: false, autoClose: false})
+    var html = '<div><span class="' + dot + '" style="width:20px;height:20px;"></span></div>'
+    var poiMarkerIcon = L.divIcon({
+        iconSize: [36, 48],
+        iconAnchor: [10, 16],
+        popupAnchor: [8, -10],
+        className: 'marker-poi',
+        html: html
+    })
+    var marker = L.marker([item['lat'], item['lon']], {icon: poiMarkerIcon, zIndexOffset: 1020}).bindPopup(poiLabel(item), {autoPan: false, closeOnClick: false, autoClose: false, virtual: true})
     markers.addLayer(marker)
-
     addListeners(marker)
 
     return marker
@@ -5082,17 +5086,11 @@ function processPois(i, item) {
     }
     if (!mapData.pois[item['poi_id']]) {
         if (item.marker && item.marker.rangeCircle) {
-            markers.removeLayer(item.marker.rangeCircle)
+            item.marker.rangeCircle.setMap(null)
         }
         if (item.marker) {
-            markers.removeLayer(item.marker)
+            item.marker.setMap(null)
         }
-        item.marker = setupPoiMarker(item)
-        mapData.pois[item['poi_id']] = item
-    } else {
-        // change existing pokestop marker to unlured/lured
-        var item2 = mapData.pois[item['poi_id']]
-        markers.removeLayer(item2.marker)
         item.marker = setupPoiMarker(item)
         mapData.pois[item['poi_id']] = item
     }
