@@ -800,26 +800,6 @@ function showS2Cells(level, style) {
             }
             poly.bindPopup(html, {autoPan: false, closeOnClick: false, autoClose: false})
         }
-        else if(cell.level === 17){
-            html += '<div>' + i8ln('Gyms in cell') + ': <b>' + gymCount + '</b></div>' +
-                '<div>' + i8ln('Pokéstops in cell') + ': <b>' + stopCount + '</b></div>'
-            if(possibleCandidatePoiCount > 0){
-                html += '<div>' + i8ln('POI possible candidate') + ': <b>' + possibleCandidatePoiCount + '</b></div>'
-            }
-            if(submittedPoiCount > 0){
-                html += '<div>' + i8ln('POI submitted') + ': <b>' + submittedPoiCount + '</b></div>'
-            }
-            if(declinedPoiCount > 0){
-                html += '<div>' + i8ln('POI declined') + ': <b>' + declinedPoiCount + '</b></div>'
-            }
-            if(resubmittedPoiCount > 0){
-                html += '<div>' + i8ln('POI resubmitted') + ': <b>' + resubmittedPoiCount + '</b></div>'
-            }
-            if(notEligiblePoiCount > 0){
-                html += '<div>' + i8ln('POI not eligible') + ': <b>' + notEligiblePoiCount + '</b></div>'
-            }
-            poly.bindPopup(html, {autoPan: false, closeOnClick: false, autoClose: false})            
-        }
         if (cell.level === 13) {
             exLayerGroup.addLayer(poly)
         } else if (cell.level === 14) {
