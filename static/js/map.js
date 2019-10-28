@@ -781,19 +781,19 @@ function showS2Cells(level, style) {
                 '<div>' + i8ln('Total') + ': <b>' + totalCount + '</b></div>'
             if (!noPoi && totalPoiCount > 0) {
                 html += '<br>'
-                if(possibleCandidatePoiCount > 0){
+                if (possibleCandidatePoiCount > 0) {
                     html += '<div>' + i8ln('POI possible candidate') + ': <b>' + possibleCandidatePoiCount + '</b></div>'
                 }
-                if(submittedPoiCount > 0){
+                if (submittedPoiCount > 0) {
                     html += '<div>' + i8ln('POI submitted') + ': <b>' + submittedPoiCount + '</b></div>'
                 }
-                if(declinedPoiCount > 0){
+                if (declinedPoiCount > 0) {
                     html += '<div>' + i8ln('POI declined') + ': <b>' + declinedPoiCount + '</b></div>'
                 }
-                if(resubmittedPoiCount > 0){
+                if (resubmittedPoiCount > 0) {
                     html += '<div>' + i8ln('POI resubmitted') + ': <b>' + resubmittedPoiCount + '</b></div>'
                 }
-                if(notEligiblePoiCount > 0){
+                if (notEligiblePoiCount > 0) {
                     html += '<div>' + i8ln('POI not eligible') + ': <b>' + notEligiblePoiCount + '</b></div>'
                 }
                 html += '<div>' + i8ln('Total POI') + ': <b>' + totalPoiCount + '</b></div>'
