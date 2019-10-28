@@ -2089,6 +2089,7 @@ if ($blockIframe) {
     var weatherSpritesSrc = '<?php echo $copyrightSafe ? 'static/sprites-safe/' : 'static/sprites-pokemon/' ?>';
     var icons = '<?php echo $copyrightSafe ? 'static/icons-safe/' : $iconRepository ?>';
     var weatherColors = <?php echo json_encode($weatherColors); ?>;
+    var s2Colors = <?php echo json_encode($s2Colors); ?>;
     var mapType = '<?php echo strtolower($map); ?>';
     var mapFork = '<?php echo strtolower($fork); ?>';
     var triggerGyms = <?php echo $triggerGyms ?>;
