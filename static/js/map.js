@@ -160,6 +160,7 @@ var weatherArray = []
 var weatherPolys = []
 var weatherMarkers = []
 var weatherColors
+var s2Colors
 
 var S2
 var exLayerGroup = new L.LayerGroup()
