@@ -2127,6 +2127,7 @@ if ($blockIframe) {
     var noEditPoi = <?php echo $noEditPoi === true ? 'true' : 'false' ?>;
     var noMarkPoi = <?php echo $noMarkPoi === true ? 'true' : 'false' ?>;
     var noPortals = <?php echo $noPortals === true ? 'true' : 'false' ?>;
+    var noPoi = <?php echo $noPoi === true ? 'true' : 'false' ?>;
     var enableS2Cells = <?php echo $noS2Cells ? 'false' : $enableS2Cells ?>;
     var enableLevel13Cells = <?php echo $noS2Cells ? 'false' : $enableLevel13Cells ?>;
     var enableLevel14Cells = <?php echo $noS2Cells ? 'false' : $enableLevel14Cells ?>;

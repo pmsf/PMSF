@@ -194,6 +194,7 @@
     "noDeleteGreenhouse": true,
     "noInvasionEncounterData": true,
     "enableLiveScan": true,
-    "deviceOfflineAfterSeconds": true
+    "deviceOfflineAfterSeconds": true,
+    "noPoi": true
   }
 }
