@@ -800,7 +800,7 @@ function showS2Cells(level, style) {
             }
             poly.bindPopup(html, {autoPan: false, closeOnClick: false, autoClose: false})
         }
-        else if(cell.level == 17){
+        else if(cell.level === 17){
             html += '<div>' + i8ln('Gyms in cell') + ': <b>' + gymCount + '</b></div>' +
                 '<div>' + i8ln('Pokéstops in cell') + ': <b>' + stopCount + '</b></div>'
             if(possibleCandidatePoiCount > 0){
