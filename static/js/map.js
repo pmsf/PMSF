@@ -775,20 +775,50 @@ function showS2Cells(level, style) {
             })
         }
         const poly = L.polygon(vertices, Object.assign({color: 'black', opacity: 0.5, weight: 0.5, fillOpacity: 0.0}, style, filledStyle))
-        if (cell.level === 14 || cell.level === 17) {
+        if (cell.level === 14) {
             html += '<div>' + i8ln('Gyms in cell') + ': <b>' + gymCount + '</b></div>' +
                 '<div>' + i8ln('Pokéstops in cell') + ': <b>' + stopCount + '</b></div>' +
                 '<div>' + i8ln('Total') + ': <b>' + totalCount + '</b></div>'
-            if (!noPoi) {
-                html += '<br>' +
-                    '<div>' + i8ln('POI possible candidate') + ': <b>' + possibleCandidatePoiCount + '</b></div>' +
-                    '<div>' + i8ln('POI submitted') + ': <b>' + submittedPoiCount + '</b></div>' +
-                    '<div>' + i8ln('POI declined') + ': <b>' + declinedPoiCount + '</b></div>' +
-                    '<div>' + i8ln('POI resubmitted') + ': <b>' + resubmittedPoiCount + '</b></div>' +
-                    '<div>' + i8ln('POI not eligible') + ': <b>' + notEligiblePoiCount + '</b></div>' +
-                    '<div>' + i8ln('Total POI') + ': <b>' + totalPoiCount + '</b></div>'
+            if (!noPoi && totalPoiCount > 0) {
+                html += '<br>'
+                if(possibleCandidatePoiCount > 0){
+                    html += '<div>' + i8ln('POI possible candidate') + ': <b>' + possibleCandidatePoiCount + '</b></div>'
+                }
+                if(submittedPoiCount > 0){
+                    html += '<div>' + i8ln('POI submitted') + ': <b>' + submittedPoiCount + '</b></div>'
+                }
+                if(declinedPoiCount > 0){
+                    html += '<div>' + i8ln('POI declined') + ': <b>' + declinedPoiCount + '</b></div>'
+                }
+                if(resubmittedPoiCount > 0){
+                    html += '<div>' + i8ln('POI resubmitted') + ': <b>' + resubmittedPoiCount + '</b></div>'
+                }
+                if(notEligiblePoiCount > 0){
+                    html += '<div>' + i8ln('POI not eligible') + ': <b>' + notEligiblePoiCount + '</b></div>'
+                }
+                html += '<div>' + i8ln('Total POI') + ': <b>' + totalPoiCount + '</b></div>'
             }
             poly.bindPopup(html, {autoPan: false, closeOnClick: false, autoClose: false})
+        }
+        else if(cell.level == 17){
+            html += '<div>' + i8ln('Gyms in cell') + ': <b>' + gymCount + '</b></div>' +
+                '<div>' + i8ln('Pokéstops in cell') + ': <b>' + stopCount + '</b></div>'
+            if(possibleCandidatePoiCount > 0){
+                html += '<div>' + i8ln('POI possible candidate') + ': <b>' + possibleCandidatePoiCount + '</b></div>'
+            }
+            if(submittedPoiCount > 0){
+                html += '<div>' + i8ln('POI submitted') + ': <b>' + submittedPoiCount + '</b></div>'
+            }
+            if(declinedPoiCount > 0){
+                html += '<div>' + i8ln('POI declined') + ': <b>' + declinedPoiCount + '</b></div>'
+            }
+            if(resubmittedPoiCount > 0){
+                html += '<div>' + i8ln('POI resubmitted') + ': <b>' + resubmittedPoiCount + '</b></div>'
+            }
+            if(notEligiblePoiCount > 0){
+                html += '<div>' + i8ln('POI not eligible') + ': <b>' + notEligiblePoiCount + '</b></div>'
+            }
+            poly.bindPopup(html, {autoPan: false, closeOnClick: false, autoClose: false})            
         }
         if (cell.level === 13) {
             exLayerGroup.addLayer(poly)
