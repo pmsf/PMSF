@@ -764,13 +764,11 @@ function showS2Cells(level, style) {
             $.each(mapData.pokestops, function (key, value) {
                 if (pointInPolygon(value['latitude'], value['longitude'], s2Lats, s2Lons)) {
                     filledStyle = {fillColor: 'red', fillOpacity: 0.3}
-                    html += '<div><center><b>' + i8ln('Max amount reached') + '</b></center></div>'
                 }
             })
             $.each(mapData.gyms, function (key, value) {
                 if (pointInPolygon(value['latitude'], value['longitude'], s2Lats, s2Lons)) {
                     filledStyle = {fillColor: 'red', fillOpacity: 0.3}
-                    html += '<div><center><b>' + i8ln('Max amount reached') + '</b></center></div>'
                 }
             })
         }
