@@ -164,6 +164,21 @@ var StoreOptions = {
             default: enablePortals,
             type: StoreTypes.Boolean
         },
+    'showInns':
+        {
+            default: enableInns,
+            type: StoreTypes.Boolean
+        },
+    'showFortresses':
+        {
+            default: enableFortresses,
+            type: StoreTypes.Boolean
+        },
+    'showGreenhouses':
+        {
+            default: enableGreenhouses,
+            type: StoreTypes.Boolean
+        },
     'showPoi':
         {
             default: enablePoi,
@@ -244,6 +259,11 @@ var StoreOptions = {
             default: enableLured,
             type: StoreTypes.Boolean
         },
+    'showRocket':
+        {
+            default: enableRocket,
+            type: StoreTypes.Boolean
+        },
     'showQuests':
         {
             default: enableQuests,
@@ -259,11 +279,6 @@ var StoreOptions = {
             default: enableWeatherOverlay,
             type: StoreTypes.Boolean
         },
-    'showScanned':
-        {
-            default: enableScannedLocations,
-            type: StoreTypes.Boolean
-        },
     'showSpawnpoints':
         {
             default: enableSpawnpoints,
@@ -277,6 +292,11 @@ var StoreOptions = {
     'showScanPolygon':
         {
             default: enableScanPolygon,
+            type: StoreTypes.Boolean
+        },
+    'showScanLocation':
+        {
+            default: enableLiveScan,
             type: StoreTypes.Boolean
         },
     'showNestPolygon':
@@ -376,7 +396,7 @@ var StoreOptions = {
         },
     'zoomLevel':
         {
-            default: 16,
+            default: defaultZoom,
             type: StoreTypes.Number
         },
     'icons':
@@ -397,6 +417,11 @@ var StoreOptions = {
     'showRaidTimer':
         {
             default: enableRaidTimer,
+            type: StoreTypes.Boolean
+        },
+    'showRocketTimer':
+        {
+            default: enableRocketTimer,
             type: StoreTypes.Boolean
         }
 }
@@ -433,20 +458,23 @@ var mapData = {
     gyms: {},
     pokestops: {},
     lurePokemons: {},
-    scanned: {},
     spawnpoints: {},
     nests: {},
     communities: {},
     portals: {},
-    pois: {}
+    pois: {},
+    inns: {},
+    fortresses: {},
+    greenhouses: {}
 }
 
-function getPokemonSprite(index, sprite, displayHeight, weather = 0, encounterForm = 0, pokemonCostume = 0) {
+function getPokemonSprite(index, sprite, displayHeight, weather = 0, encounterForm = 0, pokemonCostume = 0, attack = 0, defense = 0, stamina = 0) {
     displayHeight = Math.max(displayHeight, 3)
     var scale = displayHeight / sprite.iconHeight
     // Crop icon just a tiny bit to avoid bleedover from neighbor
     var scaledIconSizeWidth = scale * sprite.iconWidth
-    var scaledWeatherIconSizeWidth = scale * sprite.iconWidth - 10
+    var scaledWeatherIconSizeWidth = scaledIconSizeWidth * 0.6
+    var scaledWeatherIconOffset = scaledIconSizeWidth * 0.2
     var scaledIconCenterOffset = [scale * sprite.iconWidth / 2, scale * sprite.iconHeight / 2]
     var formStr = ''
     if (encounterForm === '0' || encounterForm === null || encounterForm === 0) {
@@ -464,24 +492,26 @@ function getPokemonSprite(index, sprite, displayHeight, weather = 0, encounterFo
     } else {
         pokemonIdStr = pokemonId
     }
+
     var costume = ''
     if (pokemonCostume > 0 && noCostumeIcons === false) {
         costume = '_' + pokemonCostume
     }
+    var iv = 100 * (attack + defense + stamina) / 45
     var html = ''
-    if (weather === 0) {
-        html = '<img src="' + iconpath + 'pokemon_icon_' + pokemonIdStr + '_' + formStr + costume + '.png" style="width:' + scaledIconSizeWidth + 'px;height:auto;"/>'
-    } else if (boostedMons[weather].indexOf(pokemonId) === -1) {
-        html = '<img src="' + iconpath + 'pokemon_icon_' + pokemonIdStr + '_' + formStr + costume + '.png" style="width:' + scaledIconSizeWidth + 'px;height:auto;"/>'
-    } else if (noWeatherIcons && noWeatherShadow) {
-        html = '<img src="' + iconpath + 'pokemon_icon_' + pokemonIdStr + '_' + formStr + costume + '.png" style="width:' + scaledIconSizeWidth + 'px;height:auto;"/>'
-    } else if (noWeatherIcons && noWeatherShadow === false) {
-        html = '<img src="' + iconpath + 'pokemon_icon_' + pokemonIdStr + '_' + formStr + costume + '.png" style="width:' + scaledIconSizeWidth + 'px;height:auto;-webkit-filter: drop-shadow(10px 10px 10px #4444dd); filter: drop-shadow(10px 10px 10px #4444dd);"/>'
-    } else if (noWeatherIcons === false && noWeatherShadow) {
-        html = '<img src="' + iconpath + 'pokemon_icon_' + pokemonIdStr + '_' + formStr + costume + '.png" style="width:' + scaledIconSizeWidth + 'px;height:auto;"/>' +
-        '<img src="static/weather/i-' + weather + '.png" style="width:' + scaledWeatherIconSizeWidth + 'px;height:auto;position:absolute;top:-' + scaledWeatherIconSizeWidth + 'px;right:0px;"/>'
-    } else {
-        html = '<img src="' + iconpath + 'pokemon_icon_' + pokemonIdStr + '_' + formStr + costume + '.png" style="width:' + scaledIconSizeWidth + 'px;height:auto;-webkit-filter: drop-shadow(10px 10px 10px #4444dd); filter: drop-shadow(10px 10px 10px #4444dd);"/>'
+    if (weather === 0 || noWeatherIcons) {
+        html = '<img src="' + iconpath + 'pokemon_icon_' + pokemonIdStr + '_' + formStr + costume + '.png" style="width:' + scaledIconSizeWidth + 'px;height:auto;'
+        if (iv === 100 && !noIvShadow) {
+            html += 'filter:drop-shadow(0 0 10px red)drop-shadow(0 0 10px red);-webkit-filter:drop-shadow(0 0 10px red)drop-shadow(0 0 10px red);'
+        }
+        html += '"/>'
+    } else if (noWeatherIcons === false) {
+        html = '<img src="' + iconpath + 'pokemon_icon_' + pokemonIdStr + '_' + formStr + costume + '.png" style="width:' + scaledIconSizeWidth + 'px;height:auto;'
+        if (iv === 100 && !noIvShadow) {
+            html += 'filter:drop-shadow(0 0 10px red)drop-shadow(0 0 10px red);-webkit-filter:drop-shadow(0 0 10px red)drop-shadow(0 0 10px red);'
+        }
+        html += '"/>' +
+        '<img src="static/weather/a-' + weather + '.png" style="width:' + scaledWeatherIconSizeWidth + 'px;height:auto;position:absolute;top:-' + scaledWeatherIconOffset + 'px;left:' + scaledWeatherIconSizeWidth + 'px;"/>'
     }
     var pokemonIcon = L.divIcon({
         iconAnchor: scaledIconCenterOffset,
@@ -499,13 +529,16 @@ function setupPokemonMarker(item, map, isBounceDisabled) {
     }
     var pokemonIndex = item['pokemon_id'] - 1
     var pokemonCostume = item['costume']
-    var icon = getPokemonSprite(pokemonIndex, pokemonSprites, iconSize, item['weather_boosted_condition'], item['form'], item['costume'])
+    var attack = item['individual_attack']
+    var defense = item['individual_defense']
+    var stamina = item['individual_stamina']
+    var icon = getPokemonSprite(pokemonIndex, pokemonSprites, iconSize, item['weather_boosted_condition'], item['form'], item['costume'], item['individual_attack'], item['individual_defense'], item['individual_stamina'])
 
     var animationDisabled = false
     if (isBounceDisabled === true) {
         animationDisabled = true
     }
-    var marker = L.marker([item['latitude'], item['longitude']], {icon: icon, zIndexOffset: 9999}).addTo(markers)
+    var marker = L.marker([item['latitude'], item['longitude']], {icon: icon, zIndexOffset: 9999, virtual: true}).addTo(markers)
     return marker
 }
 

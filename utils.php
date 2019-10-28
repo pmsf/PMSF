@@ -61,17 +61,60 @@ function validateToken($token)
 }
 
 
-function sendToWebhook($webhookUrl, $webhook) {
-    $c = curl_init($webhookUrl);
-    curl_setopt($c, CURLOPT_SSL_VERIFYPEER, false);
-    curl_setopt($c, CURLOPT_POST, true);
-    curl_setopt($c, CURLOPT_CUSTOMREQUEST, "POST");
-    curl_setopt($c, CURLOPT_RETURNTRANSFER, true);
-    curl_setopt($c, CURLOPT_HTTPHEADER, ['Content-type: application/json', 'User-Agent: python-requests/2.18.4']);
-    curl_setopt($c, CURLOPT_POSTFIELDS, json_encode($webhook));
-    curl_exec($c);
-    curl_close($c);
+function sendToWebhook($webhookUrl, $webhook)
+{
+    if (is_array($webhookUrl)) {
+        foreach ($webhookUrl as $hook) {
+            $c = curl_init($hook);
+            curl_setopt($c, CURLOPT_SSL_VERIFYPEER, false);
+            curl_setopt($c, CURLOPT_POST, true);
+            curl_setopt($c, CURLOPT_CUSTOMREQUEST, "POST");
+            curl_setopt($c, CURLOPT_RETURNTRANSFER, true);
+            curl_setopt($c, CURLOPT_HTTPHEADER, ['Content-type: application/json', 'User-Agent: python-requests/2.18.4']);
+            curl_setopt($c, CURLOPT_POSTFIELDS, json_encode($webhook));
+            curl_exec($c);
+            curl_close($c);
+        }
+    } else {
+        $c = curl_init($webhookUrl);
+        curl_setopt($c, CURLOPT_SSL_VERIFYPEER, false);
+        curl_setopt($c, CURLOPT_POST, true);
+        curl_setopt($c, CURLOPT_CUSTOMREQUEST, "POST");
+        curl_setopt($c, CURLOPT_RETURNTRANSFER, true);
+        curl_setopt($c, CURLOPT_HTTPHEADER, ['Content-type: application/json', 'User-Agent: python-requests/2.18.4']);
+        curl_setopt($c, CURLOPT_POSTFIELDS, json_encode($webhook));
+        curl_exec($c);
+        curl_close($c);
+    }
 }
+
+function uploadImage($imgurCID, $data)
+{
+    $c = curl_init();
+    curl_setopt($c, CURLOPT_URL, 'https://api.imgur.com/3/image');
+    curl_setopt($c, CURLOPT_POST, true);
+    curl_setopt($c, CURLOPT_RETURNTRANSFER, true);
+    curl_setopt($c, CURLOPT_HTTPHEADER, ["Authorization: Client-ID $imgurCID"]);
+    curl_setopt($c, CURLOPT_POSTFIELDS, $data);
+    $result = curl_exec($c);
+    curl_close($c);
+
+    return $result;
+}
+
+function deleteImage($imgurCID, $data)
+{
+    $c = curl_init();
+    curl_setopt($c, CURLOPT_URL, 'https://api.imgur.com/3/image/' . $data);
+    curl_setopt($c, CURLOPT_RETURNTRANSFER, true);
+    curl_setopt($c, CURLOPT_HTTPHEADER, ["Authorization: Client-ID $imgurCID"]);
+    curl_setopt($c, CURLOPT_CUSTOMREQUEST, 'DELETE');
+    $result = curl_exec($c);
+    curl_close($c);
+
+    return $result;
+}
+
 function generateRandomString($length = 8)
 {
     $characters = '0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ';
@@ -106,7 +149,8 @@ function createUserAccount($user, $password, $newExpireTimestamp)
                 "user" => $user,
                 "temp_password" => $hashedPwd,
                 "expire_timestamp" => $newExpireTimestamp,
-                "login_system" => 'native'
+                "login_system" => 'native',
+                "access_level" => '0'
             ]);
             
             $logMsg = "INSERT INTO users (id, user, expire_timestamp, login_system) VALUES ('{$getId}', '{$user}', '{$newExpireTimestamp}', 'native'); -- " . date('Y-m-d H:i:s') . "\r\n";
@@ -216,38 +260,37 @@ function validateCookie($cookie)
     }
 }
 
-if (!function_exists('getallheaders')) 
-{
-    function getallheaders() 
+if (!function_exists('getallheaders')) {
+    function getallheaders()
     {
-        $headers = array (); 
-        foreach ($_SERVER as $name => $value) 
-        {
-            if (substr($name, 0, 5) == 'HTTP_') 
-            { 
-                $headers[str_replace(' ', '-', ucwords(strtolower(str_replace('_', ' ', substr($name, 5)))))] = $value; 
+        $headers = array();
+        foreach ($_SERVER as $name => $value) {
+            if (substr($name, 0, 5) == 'HTTP_') {
+                $headers[str_replace(' ', '-', ucwords(strtolower(str_replace('_', ' ', substr($name, 5)))))] = $value;
             }
         }
-        return $headers; 
+        return $headers;
     }
 }
-function randomGymId() {
+function randomGymId()
+{
     $alphabet    = 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890';
     $pass        = array(); //remember to declare $pass as an array
-    $alphaLength = strlen( $alphabet ) - 1; //put the length -1 in cache
-    for ( $i = 0; $i < 12; $i ++ ) {
-        $n      = rand( 0, $alphaLength );
+    $alphaLength = strlen($alphabet) - 1; //put the length -1 in cache
+    for ($i = 0; $i < 12; $i ++) {
+        $n      = rand(0, $alphaLength);
         $pass[] = $alphabet[ $n ];
     }
-    return implode( $pass ); //turn the array into a string
+    return implode($pass); //turn the array into a string
 }
-function randomNum() {
+function randomNum()
+{
     $alphabet    = '1234567890';
     $pass        = array(); //remember to declare $pass as an array
-    $alphaLength = strlen( $alphabet ) - 1; //put the length -1 in cache
-    for ( $i = 0; $i < 15; $i ++ ) {
-        $n      = rand( 0, $alphaLength );
+    $alphaLength = strlen($alphabet) - 1; //put the length -1 in cache
+    for ($i = 0; $i < 15; $i ++) {
+        $n      = rand(0, $alphaLength);
         $pass[] = $alphabet[ $n ];
     }
-    return implode( $pass ); //turn the array into a string
+    return implode($pass); //turn the array into a string
 }

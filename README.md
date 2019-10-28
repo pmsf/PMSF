@@ -33,9 +33,6 @@ $fork = "default" OR $fork = "beta";
 
 * MAD Map a Droid 
 ```
-$map = "monocle";
-$fork = "mad";
-
 $map = "rocketmap";
 $fork = "mad";
 ```

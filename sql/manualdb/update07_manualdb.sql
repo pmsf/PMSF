@@ -1,0 +1,1 @@
+ALTER TABLE `poi` ADD `poiimageurl` VARCHAR(200) NULL DEFAULT NULL AFTER `notes`, ADD `poiimagedeletehash` VARCHAR(200) NULL DEFAULT NULL AFTER `poiimageurl`, ADD `poisurroundingurl` VARCHAR(200) NULL DEFAULT NULL AFTER `poiimagedeletehash`, ADD `poisurroundingdeletehash` VARCHAR(200) NULL DEFAULT NULL AFTER `poisurroundingurl`;
