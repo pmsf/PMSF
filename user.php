@@ -46,6 +46,9 @@ include('config/config.php');
         var token = '<?php echo (!empty($_SESSION['token'])) ? $_SESSION['token'] : ""; ?>';
     </script>
     <link rel="stylesheet" href="static/dist/css/app.min.css">
+    <?php if (file_exists('static/css/custom.css')) {
+    echo '<link rel="stylesheet" href="static/css/custom.css">';
+} ?>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jqueryui/1.12.0/jquery-ui.min.css">
     <link rel="stylesheet" href="https://cdn.datatables.net/1.10.12/css/jquery.dataTables.css">
     <script src="static/js/vendor/modernizr.custom.js"></script>
@@ -61,6 +64,8 @@ include('config/config.php');
         }
         if ($noNativeLogin === true && $noDiscordLogin === false && empty($_SESSION['user']->id)) {
             header("Location: ./discord-login");
+        } elseif ($noNativeLogin === true && $noDiscordLogin === false && !empty($_SESSION['user']->id)) {
+            header("Location: .?login=true");
         }
 
         if (isset($_POST['submitUpdatePwdBtn'])) {
@@ -116,7 +121,7 @@ include('config/config.php');
                         ]);
                     }
                 }
-                header("Location: .");
+                header("Location: .?login=true");
                 die();
             }
         }
@@ -160,14 +165,14 @@ include('config/config.php');
             !empty($domainName) ? $domainName = $domainName : $domainName = $_SERVER['SERVER_NAME'];
             $headers = "From: no-reply@{$domainName}" . "\r\n" .
                 "Reply-To: no-reply@{$domainName}" . "\r\n" .
-                'Content-Type: text/html; charset=ISO-8859-1' . "\r\n" .
+                'Content-Type: text/html; charset=utf-8' . "\r\n" .
                 'X-Mailer: PHP/' . phpversion();
 
             $sendMail = mail($_POST['email'], $subject, $message, $headers);
 
             if (!$sendMail) {
                 http_response_code(500);
-                die("<h1>Warning</h1><p>The email has not been sent.<br>If you're an user please contact your administrator.<br>If you're an administrator install <i><b>apt-get install sendmail</b></i> and restart your web server and try again.</p><p><a href='.'>Back to Map</a> - <a href='./user?forgotPwd'>Retry</a></p>");
+                die("<h1>Warning</h1><p>The email has not been sent.<br>If you're an user please contact your administrator.<br>If you're an administrator install <i><b>apt-get install sendmail</b></i> and restart your web server and try again.</p><p><a href='.'><i class='fas fa-backward'></i> Back to Map</a> - <a href='./user?forgotPwd'>Retry</a></p>");
             }
             
             header("Location: ?sentPwd");
@@ -250,7 +255,7 @@ include('config/config.php');
                         <th><?php echo i8ln('E-mail'); ?></th><td><input type="text" name="email" required></td>
                     </tr>
                 </table>
-                <table><tr><td><input id="margin" type="submit" name="submitCreateUserOrResetPasswordBtn" value="<?php echo i8ln('Submit'); ?>"><a class='button' href='/user'><?php echo i8ln('Back'); ?></a></td></tr></table>
+                <table><tr><td><input class="button" id="margin" type="submit" name="submitCreateUserOrResetPasswordBtn" value="<?php echo i8ln('Submit'); ?>"><a class='button' href='/user'><i class='fas fa-backward'></i> <?php echo i8ln('Back'); ?></a></td></tr></table>
             </form>
         <?php
         } elseif (!empty($_SESSION['user']->updatePwd)) {
@@ -274,7 +279,7 @@ include('config/config.php');
                     <?php
                     } ?>
                 </table>
-                <table><tr><td><input id="margin" type="submit" name="submitUpdatePwdBtn" value="<?php echo i8ln('Submit'); ?>"><a class='button' href='./logout.php'><?php echo i8ln('Logout'); ?></a></td></tr></table>
+                <table><tr><td><input class="button" id="margin" type="submit" name="submitUpdatePwdBtn" value="<?php echo i8ln('Submit'); ?>"><a class='button' href='./logout.php'><?php echo i8ln('Logout'); ?></a></td></tr></table>
             </form>
         <?php
         } elseif (in_array(isset($_SESSION['user']->user) ? $_SESSION['user']->user : null, $adminUsers)) {
@@ -332,7 +337,7 @@ include('config/config.php');
                         <th><?php echo i8ln('Create User'); ?></th><td><input type="text" name="createUserEmail" placeholder='<?php echo i8ln('E-mail'); ?>'></td>
                     </tr>
                 </table>
-                <table><tr><td><input id="margin" type="submit" name="submitUpdateUserBtn" value="<?php echo i8ln('Submit'); ?>"></td></tr></table>
+                <table><tr><td><input class="button" id="margin" type="submit" name="submitUpdateUserBtn" value="<?php echo i8ln('Submit'); ?>"></td></tr></table>
             </form>
             
             <?php
@@ -396,6 +401,12 @@ include('config/config.php');
                         "selly_id" => $info['selly_id']
                     ]);
 
+                    $manualdb->update("users", [
+                        "access_level" => 1
+                    ], [
+                        "user" => $_SESSION['user']->user
+                    ]);
+
                     updateExpireTimestamp($_SESSION['user']->user, $_SESSION['user']->login_system, $newExpireTimestamp);
                     $time = date("Y-m-d H:i", $newExpireTimestamp);
 
@@ -412,9 +423,9 @@ include('config/config.php');
                         
                     </tr>
                 </table>
-                <table><tr><td><input id="margin" type="submit" name="submitKey" value="<?php echo i8ln('Submit'); ?>"><?php if ($sellyPage) {
+                <table><tr><td><input class="button" id="margin" type="submit" name="submitKey" value="<?php echo i8ln('Submit'); ?>"><?php if ($sellyPage) {
                     echo "<a class='button' target='_TAB' id='margin' href='{$sellyPage}'>" . i8ln('Extend Membership') . "</a>";
-                } ?><a class='button' id="margin" href='.'><?php echo i8ln('Back to map'); ?></a></td></tr></table>
+                } ?><a class='button' id="margin" href='.'><i class='fas fa-backward'></i> <?php echo i8ln('Back to map'); ?></a></td></tr></table>
             </form>
         <?php
         } else {
@@ -447,9 +458,9 @@ include('config/config.php');
                     <?php
                     } ?>
                 </table>
-                <table><tr><td><input id="margin" type="submit" name="submitLoginBtn" value="<?php echo i8ln('Submit'); ?>"><a class='button' id="margin" href='?account'><?php echo i8ln('Create User / Reset Password'); ?></a><?php if ($noDiscordLogin === false) {
-                        echo "<a class='button' id='margin' href='./discord-login'>" . i8ln('Login with Discord') . "</a>";
-                    } ?> <a class='button' id='margin' href='.'><?php echo i8ln('Back to Map'); ?></a></td></tr></table>
+                <table><tr><td><input class="button" id="margin" type="submit" name="submitLoginBtn" value="<?php echo i8ln('Submit'); ?>"><a class='button' id="margin" href='?account'><i class='fas fa-user'></i> <?php echo i8ln('Create User / Reset Password'); ?></a><?php if ($noDiscordLogin === false) {
+                        echo "<a class='button' id='margin' href='./discord-login'><i class='fab fa-discord'></i> " . i8ln('Login with Discord') . "</a>";
+                    } ?> <a class='button' id='margin' href='.'><i class='fas fa-backward'></i>  <?php echo i8ln('Back to Map'); ?></a></td></tr></table>
             </form>
        <?php
         }
