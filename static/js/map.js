@@ -775,7 +775,7 @@ function showS2Cells(level, style) {
             })
         }
         const poly = L.polygon(vertices, Object.assign({color: 'black', opacity: 0.5, weight: 0.5, fillOpacity: 0.0}, style, filledStyle))
-        if (cell.level === 14 || cell.level === 17) {
+        if (cell.level === 14) {
             html += '<div>' + i8ln('Gyms in cell') + ': <b>' + gymCount + '</b></div>' +
                 '<div>' + i8ln('Pokéstops in cell') + ': <b>' + stopCount + '</b></div>' +
                 '<div>' + i8ln('Total') + ': <b>' + totalCount + '</b></div>'
@@ -5539,17 +5539,17 @@ function updateS2Overlay() {
         } else if (Store.get('showExCells') && (map.getZoom() <= 10)) {
             exLayerGroup.clearLayers()
         }
-        if (Store.get('showGymCells') && (map.getZoom() > 11)) {
-            gymLayerGroup.clearLayers()
-            showS2Cells(14, {color: 'black', weight: 3, dashOffset: '4', dashArray: '2 6'})
-        } else if (Store.get('showGymCells') && (map.getZoom() <= 11)) {
-            gymLayerGroup.clearLayers()
-        }
         if (Store.get('showStopCells') && (map.getZoom() > 14)) {
             stopLayerGroup.clearLayers()
             showS2Cells(17, {color: 'black'})
         } else if (Store.get('showStopCells') && (map.getZoom() <= 14)) {
             stopLayerGroup.clearLayers()
+        }
+        if (Store.get('showGymCells') && (map.getZoom() > 11)) {
+            gymLayerGroup.clearLayers()
+            showS2Cells(14, {color: 'black', weight: 3, dashOffset: '4', dashArray: '2 6'})
+        } else if (Store.get('showGymCells') && (map.getZoom() <= 11)) {
+            gymLayerGroup.clearLayers()
         }
     }
 }
