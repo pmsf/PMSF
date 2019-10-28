@@ -31,6 +31,10 @@ class RDM extends Scanner
             $params[':oneLat'] = $oNeLat;
             $params[':oneLng'] = $oNeLng;
         }
+        global $noBoundaries, $boundaries;
+        if (!$noBoundaries) {
+            $conds[] = "(ST_WITHIN(point(lat,lon),ST_GEOMFROMTEXT('POLYGON(( " . $boundaries . " ))')))";
+        }
         if ($tstamp > 0) {
             $conds[] = "updated > :lastUpdated";
             $params[':lastUpdated'] = $tstamp;
@@ -97,6 +101,11 @@ class RDM extends Scanner
         $params[':neLat'] = $neLat;
         $params[':neLng'] = $neLng;
         $params[':time'] = time();
+
+        global $noBoundaries, $boundaries;
+        if (!$noBoundaries) {
+            $conds[] = "(ST_WITHIN(point(lat,lon),ST_GEOMFROMTEXT('POLYGON(( " . $boundaries . " ))')))";
+        }
         if (count($ids)) {
             $tmpSQL = '';
             if (!empty($tinyRat) && $tinyRat === 'true' && ($key = array_search("19", $ids)) !== false) {
@@ -159,7 +168,7 @@ class RDM extends Scanner
         
         foreach ($pokemons as $pokemon) {
             // Jitter pokemon when they have no spawn_id
-            if ( empty($pokemon['spawn_id'])) {
+            if (empty($pokemon['spawn_id'])) {
                 $pokemon["latitude"] = floatval($pokemon["latitude"]);
                 $pokemon["longitude"] = floatval($pokemon["longitude"]);
                 $lastlat = floatval($pokemon["latitude"]);
@@ -190,14 +199,9 @@ class RDM extends Scanner
                 foreach ($forms as $f => $v) {
                     if ($pokemon["form"] === $v['protoform']) {
                         $types = $v['formtypes'];
+                        $pokemon["form_name"] = $v['nameform'];
                         foreach ($v['formtypes'] as $ft => $v) {
-                            $types[$ft]['type'] = i8ln($v['type']);
-                        }
-                        $pokemon["pokemon_types"] = $types;
-                    } else if ($pokemon["form"] === $v['assetsform']) {
-                        $types = $v['formtypes'];
-                        foreach ($v['formtypes'] as $ft => $v) {
-                            $types[$ft]['type'] = i8ln($v['type']);
+                            $types[$ft]['type'] = $v['type'];
                         }
                         $pokemon["pokemon_types"] = $types;
                     }
@@ -205,7 +209,7 @@ class RDM extends Scanner
             } else {
                 $types = $this->data[$pokemon["pokemon_id"]]["types"];
                 foreach ($types as $k => $v) {
-                    $types[$k]['type'] = i8ln($v['type']);
+                    $types[$k]['type'] = $v['type'];
                 }
                 $pokemon["pokemon_types"] = $types;
             }
@@ -216,7 +220,7 @@ class RDM extends Scanner
         return $data;
     }
 
-    public function get_stops($qpeids, $qieids, $swLat, $swLng, $neLat, $neLng, $tstamp = 0, $oSwLat = 0, $oSwLng = 0, $oNeLat = 0, $oNeLng = 0, $lures, $quests, $dustamount)
+    public function get_stops($qpeids, $qieids, $swLat, $swLng, $neLat, $neLng, $tstamp = 0, $oSwLat = 0, $oSwLng = 0, $oNeLat = 0, $oNeLng = 0, $lures, $rocket, $quests, $dustamount)
     {
         $conds = array();
         $params = array();
@@ -232,7 +236,11 @@ class RDM extends Scanner
             $params[':oswLng'] = $oSwLng;
             $params[':oneLat'] = $oNeLat;
             $params[':oneLng'] = $oNeLng;
-    }
+        }
+        global $noBoundaries, $boundaries;
+        if (!$noBoundaries) {
+            $conds[] = "(ST_WITHIN(point(lat,lon),ST_GEOMFROMTEXT('POLYGON(( " . $boundaries . " ))')))";
+        }
         if (!empty($lures) && $lures === 'true') {
             $conds[] = "lure_expire_timestamp > :time";
             $params[':time'] = time();
@@ -265,29 +273,18 @@ class RDM extends Scanner
         foreach ($pokestops as $pokestop) {
             $pokestop["latitude"] = floatval($pokestop["latitude"]);
             $pokestop["longitude"] = floatval($pokestop["longitude"]);
-            $pokestop["url"] = ! empty($pokestop["url"]) ? str_replace("http://", "https://images.weserv.nl/?url=", $pokestop["url"]) : null;
+            $pokestop["url"] = ! empty($pokestop["url"]) ? preg_replace("/^http:/i", "https:", $pokestop["url"]) : null;
             $pokestop["lure_expiration"] = $pokestop["lure_expiration"] * 1000;
             $pokestop["lure_id"] = 1;
+            $pokestop["grunt_type"] = 0;
+            $pokestop["grunt_type_name"] = null;
+            $pokestop["grunt_type_gender"] = null;
 
             $data[] = $pokestop;
             unset($pokestops[$i]);
             $i++;
         }
         return $data;
-    }
-
-    public function get_gym($gymId)
-    {
-        $conds = array();
-        $params = array();
-
-        $conds[] = "id = :gymId";
-        $params[':gymId'] = $gymId;
-
-        $gyms = $this->query_gyms($conds, $params);
-        $gym = $gyms[0];
-
-        return $gym;
     }
 
     public function get_gyms($swLat, $swLng, $neLat, $neLng, $exEligible = false, $tstamp = 0, $oSwLat = 0, $oSwLng = 0, $oNeLat = 0, $oNeLng = 0)
@@ -307,6 +304,10 @@ class RDM extends Scanner
             $params[':oswLng'] = $oSwLng;
             $params[':oneLat'] = $oNeLat;
             $params[':oneLng'] = $oNeLng;
+        }
+        global $noBoundaries, $boundaries;
+        if (!$noBoundaries) {
+            $conds[] = "(ST_WITHIN(point(lat,lon),ST_GEOMFROMTEXT('POLYGON(( " . $boundaries . " ))')))";
         }
         if ($tstamp > 0) {
             $conds[] = "updated > :lastUpdated";
@@ -359,6 +360,7 @@ class RDM extends Scanner
             $gym["team_id"] = intval($gym["team_id"]);
             $gym["pokemon"] = [];
             $gym["raid_pokemon_name"] = empty($raid_pid) ? null : i8ln($this->data[$raid_pid]["name"]);
+            $gym["raid_pokemon_gender"] = 0;
             $gym["form"] = intval($gym["raid_pokemon_form"]);
             $gym["latitude"] = floatval($gym["latitude"]);
             $gym["longitude"] = floatval($gym["longitude"]);
@@ -368,8 +370,16 @@ class RDM extends Scanner
             $gym["raid_start"] = $gym["raid_start"] * 1000;
             $gym["raid_end"] = $gym["raid_end"] * 1000;
             $gym["sponsor"] = !empty($gym["sponsor"]) ? $gym["sponsor"] : null;
-            $gym["url"] = ! empty($gym["url"]) ? str_replace("http://", "https://images.weserv.nl/?url=", $gym["url"]) : null;
+            $gym["url"] = ! empty($gym["url"]) ? preg_replace("/^http:/i", "https:", $gym["url"]) : null;
             $gym["park"] = intval($gym["park"]);
+            if (isset($gym["form"]) && $gym["form"] > 0) {
+                $forms = $this->data[$gym["raid_pokemon_id"]]["forms"];
+                foreach ($forms as $f => $v) {
+                    if ($gym["raid_pokemon_form"] === $v['protoform']) {
+                        $gym["form_name"] = $v['nameform'];
+                    }
+                }
+            }
 
             $data[] = $gym;
             unset($gyms[$i]);
@@ -393,6 +403,10 @@ class RDM extends Scanner
             $params[':oswLng'] = $oSwLng;
             $params[':oneLat'] = $oNeLat;
             $params[':oneLng'] = $oNeLng;
+        }
+        global $noBoundaries, $boundaries;
+        if (!$noBoundaries) {
+            $conds[] = "(ST_WITHIN(point(lat,lon),ST_GEOMFROMTEXT('POLYGON(( " . $boundaries . " ))')))";
         }
         if ($tstamp > 0) {
             $conds[] = "updated > :lastUpdated";

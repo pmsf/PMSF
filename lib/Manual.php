@@ -46,6 +46,10 @@ class Manual
             $params[':oneLat'] = $oNeLat;
             $params[':oneLng'] = $oNeLng;
         }
+        global $noBoundaries, $boundaries;
+        if (!$noBoundaries) {
+            $conds[] = "(ST_WITHIN(point(lat,lon),ST_GEOMFROMTEXT('POLYGON(( " . $boundaries . " ))')))";
+        }
         if ($tstamp > 0) {
             $conds[] = "updated > :lastUpdated";
             $params[':lastUpdated'] = $tstamp;
@@ -73,7 +77,7 @@ class Manual
             $nest["lon"] = floatval($nest["lon"]);
             $nest["type"] = intval($nest["type"]);
             $nest["pokemon_avg"] = floatval($nest["pokemon_avg"]);
-            if($nest['pokemon_id'] > 0 ){
+            if ($nest['pokemon_id'] > 0) {
                 $nest["pokemon_name"] = i8ln($this->data[$nest["pokemon_id"]]['name']);
                 $types = $this->data[$nest["pokemon_id"]]["types"];
                 $etypes = $this->data[$nest["pokemon_id"]]["types"];
@@ -105,6 +109,10 @@ class Manual
             $params[':oswLng'] = $oSwLng;
             $params[':oneLat'] = $oNeLat;
             $params[':oneLng'] = $oNeLng;
+        }
+        global $noBoundaries, $boundaries;
+        if (!$noBoundaries) {
+            $conds[] = "(ST_WITHIN(point(lat,lon),ST_GEOMFROMTEXT('POLYGON(( " . $boundaries . " ))')))";
         }
         if ($tstamp > 0) {
             $conds[] = "updated > :lastUpdated";
@@ -167,6 +175,10 @@ class Manual
             $params[':oneLat'] = $oNeLat;
             $params[':oneLng'] = $oNeLng;
         }
+        global $noBoundaries, $boundaries;
+        if (!$noBoundaries) {
+            $conds[] = "(ST_WITHIN(point(lat,lon),ST_GEOMFROMTEXT('POLYGON(( " . $boundaries . " ))')))";
+        }
         if ($tstamp > 0) {
             $conds[] = "updated > :lastUpdated";
             $params[':lastUpdated'] = $tstamp;
@@ -192,7 +204,7 @@ class Manual
         foreach ($portals as $portal) {
             $portal["lat"] = floatval($portal["lat"]);
             $portal["lon"] = floatval($portal["lon"]);
-            $portal["url"] = str_replace("http://", "https://images.weserv.nl/?url=", $portal["url"]);
+            $portal["url"] = preg_replace("/^http:/i", "https:", $portal["url"]);
             $data[] = $portal;
             unset($portals[$i]);
             $i++;
@@ -215,6 +227,10 @@ class Manual
             $params[':oneLat'] = $oNeLat;
             $params[':oneLng'] = $oNeLng;
         }
+        global $noBoundaries, $boundaries;
+        if (!$noBoundaries) {
+            $conds[] = "(ST_WITHIN(point(lat,lon),ST_GEOMFROMTEXT('POLYGON(( " . $boundaries . " ))')))";
+        }
         if ($tstamp > 0) {
             $conds[] = "updated > :lastUpdated";
             $params[':lastUpdated'] = $tstamp;
@@ -230,6 +246,8 @@ class Manual
         name,
         description,
         notes,
+        poiimageurl,
+        poisurroundingurl,
         updated,
         submitted_by,
         edited_by,
@@ -245,6 +263,163 @@ class Manual
             $poi["lon"] = floatval($poi["lon"]);
             $data[] = $poi;
             unset($pois[$i]);
+            $i++;
+        }
+        return $data;
+    }
+    public function get_inns($swLat, $swLng, $neLat, $neLng, $tstamp = 0, $oSwLat = 0, $oSwLng = 0, $oNeLat = 0, $oNeLng = 0)
+    {
+        $conds = array();
+        $params = array();
+        $conds[] = "lat > :swLat AND lon > :swLng AND lat < :neLat AND lon < :neLng";
+        $params[':swLat'] = $swLat;
+        $params[':swLng'] = $swLng;
+        $params[':neLat'] = $neLat;
+        $params[':neLng'] = $neLng;
+        if ($oSwLat != 0) {
+            $conds[] = "NOT (lat > :oswLat AND lon > :oswLng AND lat < :oneLat AND lon < :oneLng)";
+            $params[':oswLat'] = $oSwLat;
+            $params[':oswLng'] = $oSwLng;
+            $params[':oneLat'] = $oNeLat;
+            $params[':oneLng'] = $oNeLng;
+        }
+        global $noBoundaries, $boundaries;
+        if (!$noBoundaries) {
+            $conds[] = "(ST_WITHIN(point(lat,lon),ST_GEOMFROMTEXT('POLYGON(( " . $boundaries . " ))')))";
+        }
+        if ($tstamp > 0) {
+            $conds[] = "updated > :lastUpdated";
+            $params[':lastUpdated'] = $tstamp;
+        }
+        return $this->query_inns($conds, $params);
+    }
+    public function query_inns($conds, $params)
+    {
+        global $manualdb;
+        $query = "SELECT id,
+        lat,
+        lon,
+        name,
+        url,
+        updated,
+        submitted_by,
+        type
+        FROM inn
+        WHERE :conditions";
+        $query = str_replace(":conditions", join(" AND ", $conds), $query);
+        $inns = $manualdb->query($query, $params)->fetchAll(\PDO::FETCH_ASSOC);
+        $data = array();
+        $i = 0;
+        foreach ($inns as $inn) {
+            $inn["lat"] = floatval($inn["lat"]);
+            $inn["lon"] = floatval($inn["lon"]);
+            $inn["url"] = ! empty($inn["url"]) ? preg_replace("/^http:/i", "https:", $inn["url"]) : null;
+            $data[] = $inn;
+            unset($inns[$i]);
+            $i++;
+        }
+        return $data;
+    }
+    public function get_fortresses($swLat, $swLng, $neLat, $neLng, $tstamp = 0, $oSwLat = 0, $oSwLng = 0, $oNeLat = 0, $oNeLng = 0)
+    {
+        $conds = array();
+        $params = array();
+        $conds[] = "lat > :swLat AND lon > :swLng AND lat < :neLat AND lon < :neLng";
+        $params[':swLat'] = $swLat;
+        $params[':swLng'] = $swLng;
+        $params[':neLat'] = $neLat;
+        $params[':neLng'] = $neLng;
+        if ($oSwLat != 0) {
+            $conds[] = "NOT (lat > :oswLat AND lon > :oswLng AND lat < :oneLat AND lon < :oneLng)";
+            $params[':oswLat'] = $oSwLat;
+            $params[':oswLng'] = $oSwLng;
+            $params[':oneLat'] = $oNeLat;
+            $params[':oneLng'] = $oNeLng;
+        }
+        global $noBoundaries, $boundaries;
+        if (!$noBoundaries) {
+            $conds[] = "(ST_WITHIN(point(lat,lon),ST_GEOMFROMTEXT('POLYGON(( " . $boundaries . " ))')))";
+        }
+        if ($tstamp > 0) {
+            $conds[] = "updated > :lastUpdated";
+            $params[':lastUpdated'] = $tstamp;
+        }
+        return $this->query_fortresses($conds, $params);
+    }
+    public function query_fortresses($conds, $params)
+    {
+        global $manualdb;
+        $query = "SELECT id,
+        lat,
+        lon,
+        name,
+        url,
+        updated,
+        submitted_by
+        FROM fortress
+        WHERE :conditions";
+        $query = str_replace(":conditions", join(" AND ", $conds), $query);
+        $fortresses = $manualdb->query($query, $params)->fetchAll(\PDO::FETCH_ASSOC);
+        $data = array();
+        $i = 0;
+        foreach ($fortresses as $fortress) {
+            $fortress["lat"] = floatval($fortress["lat"]);
+            $fortress["lon"] = floatval($fortress["lon"]);
+            $fortress["url"] = ! empty($fortress["url"]) ? preg_replace("/^http:/i", "https:", $fortress["url"]) : null;
+            $data[] = $fortress;
+            unset($fortresses[$i]);
+            $i++;
+        }
+        return $data;
+    }
+    public function get_greenhouses($swLat, $swLng, $neLat, $neLng, $tstamp = 0, $oSwLat = 0, $oSwLng = 0, $oNeLat = 0, $oNeLng = 0)
+    {
+        $conds = array();
+        $params = array();
+        $conds[] = "lat > :swLat AND lon > :swLng AND lat < :neLat AND lon < :neLng";
+        $params[':swLat'] = $swLat;
+        $params[':swLng'] = $swLng;
+        $params[':neLat'] = $neLat;
+        $params[':neLng'] = $neLng;
+        if ($oSwLat != 0) {
+            $conds[] = "NOT (lat > :oswLat AND lon > :oswLng AND lat < :oneLat AND lon < :oneLng)";
+            $params[':oswLat'] = $oSwLat;
+            $params[':oswLng'] = $oSwLng;
+            $params[':oneLat'] = $oNeLat;
+            $params[':oneLng'] = $oNeLng;
+        }
+        global $noBoundaries, $boundaries;
+        if (!$noBoundaries) {
+            $conds[] = "(ST_WITHIN(point(lat,lon),ST_GEOMFROMTEXT('POLYGON(( " . $boundaries . " ))')))";
+        }
+        if ($tstamp > 0) {
+            $conds[] = "updated > :lastUpdated";
+            $params[':lastUpdated'] = $tstamp;
+        }
+        return $this->query_greenhouses($conds, $params);
+    }
+    public function query_greenhouses($conds, $params)
+    {
+        global $manualdb;
+        $query = "SELECT id,
+        lat,
+        lon,
+        name,
+        url,
+        updated,
+        submitted_by
+        FROM greenhouse
+        WHERE :conditions";
+        $query = str_replace(":conditions", join(" AND ", $conds), $query);
+        $greenhouses = $manualdb->query($query, $params)->fetchAll(\PDO::FETCH_ASSOC);
+        $data = array();
+        $i = 0;
+        foreach ($greenhouses as $greenhouse) {
+            $greenhouse["lat"] = floatval($greenhouse["lat"]);
+            $greenhouse["lon"] = floatval($greenhouse["lon"]);
+            $greenhouse["url"] = ! empty($greenhouse["url"]) ? preg_replace("/^http:/i", "https:", $greenhouse["url"]) : null;
+            $data[] = $greenhouse;
+            unset($greenhouses[$i]);
             $i++;
         }
         return $data;

@@ -30,6 +30,10 @@ class Monocle extends Scanner
             $params[':oneLat'] = $oNeLat;
             $params[':oneLng'] = $oNeLng;
         }
+        global $noBoundaries, $boundaries;
+        if (!$noBoundaries) {
+            $conds[] = "(ST_WITHIN(point(lat,lon),ST_GEOMFROMTEXT('POLYGON(( " . $boundaries . " ))')))";
+        }
         if (count($eids)) {
             $pkmn_in = '';
             $i = 1;
@@ -75,6 +79,10 @@ class Monocle extends Scanner
         $params[':neLat'] = $neLat;
         $params[':neLng'] = $neLng;
         $params[':time'] = time();
+        global $noBoundaries, $boundaries;
+        if (!$noBoundaries) {
+            $conds[] = "(ST_WITHIN(point(lat,lon),ST_GEOMFROMTEXT('POLYGON(( " . $boundaries . " ))')))";
+        }
         if (count($ids)) {
             $pkmn_in = '';
             $i = 1;
@@ -120,7 +128,7 @@ class Monocle extends Scanner
             $pokemon["longitude"] = floatval($pokemon["longitude"]);
             $lastlat = floatval($pokemon["latitude"]);
             $lastlon = floatval($pokemon["longitude"]);
-            if (abs($pokemon["latitude"] - $lastlat) < 0.0001 && abs($pokemon["longitude"] - $lastlon) < 0.0001){
+            if (abs($pokemon["latitude"] - $lastlat) < 0.0001 && abs($pokemon["longitude"] - $lastlon) < 0.0001) {
                 $lasti = $lasti + 1;
             } else {
                 $lasti = 0;
@@ -147,13 +155,13 @@ class Monocle extends Scanner
                     if ($pokemon["form"] === $v['protoform']) {
                         $types = $v['formtypes'];
                         foreach ($v['formtypes'] as $ft => $v) {
-                            $types[$ft]['type'] = i8ln($v['type']);
+                            $types[$ft]['type'] = $v['type'];
                         }
                         $pokemon["pokemon_types"] = $types;
-                    } else if ($pokemon["form"] === $v['assetsform']) {
+                    } elseif ($pokemon["form"] === $v['assetsform']) {
                         $types = $v['formtypes'];
                         foreach ($v['formtypes'] as $ft => $v) {
-                            $types[$ft]['type'] = i8ln($v['type']);
+                            $types[$ft]['type'] = $v['type'];
                         }
                         $pokemon["pokemon_types"] = $types;
                     }
@@ -161,7 +169,7 @@ class Monocle extends Scanner
             } else {
                 $types = $this->data[$pokemon["pokemon_id"]]["types"];
                 foreach ($types as $k => $v) {
-                    $types[$k]['type'] = i8ln($v['type']);
+                    $types[$k]['type'] = $v['type'];
                 }
                 $pokemon["pokemon_types"] = $types;
             }
@@ -173,7 +181,7 @@ class Monocle extends Scanner
         return $data;
     }
 
-    public function get_stops($qpeids, $qieids, $swLat, $swLng, $neLat, $neLng, $tstamp = 0, $oSwLat = 0, $oSwLng = 0, $oNeLat = 0, $oNeLng = 0, $lures, $quests, $dustamount)
+    public function get_stops($qpeids, $qieids, $swLat, $swLng, $neLat, $neLng, $tstamp = 0, $oSwLat = 0, $oSwLng = 0, $oNeLat = 0, $oNeLng = 0, $lures, $rocket, $quests, $dustamount)
     {
         $conds = array();
         $params = array();
@@ -190,6 +198,11 @@ class Monocle extends Scanner
             $params[':oswLng'] = $oSwLng;
             $params[':oneLat'] = $oNeLat;
             $params[':oneLng'] = $oNeLng;
+        }
+
+        global $noBoundaries, $boundaries;
+        if (!$noBoundaries) {
+            $conds[] = "(ST_WITHIN(point(lat,lon),ST_GEOMFROMTEXT('POLYGON(( " . $boundaries . " ))')))";
         }
 
         return $this->query_stops($conds, $params);
@@ -240,6 +253,10 @@ class Monocle extends Scanner
             $params[':oneLat'] = $oNeLat;
             $params[':oneLng'] = $oNeLng;
         }
+        global $noBoundaries, $boundaries;
+        if (!$noBoundaries) {
+            $conds[] = "(ST_WITHIN(point(lat,lon),ST_GEOMFROMTEXT('POLYGON(( " . $boundaries . " ))')))";
+        }
         if ($tstamp > 0) {
             $conds[] = "updated > :lastUpdated";
             $params[':lastUpdated'] = $tstamp;
@@ -279,14 +296,6 @@ class Monocle extends Scanner
         return $data;
     }
 
-    public function get_recent($swLat, $swLng, $neLat, $neLng, $tstamp = 0, $oSwLat = 0, $oSwLng = 0, $oNeLat = 0, $oNeLng = 0)
-    {
-        $recent = array();
-        // Monocle doesn't currently do anything for this.
-
-        return $recent;
-    }
-
     public function get_gyms($swLat, $swLng, $neLat, $neLng, $exEligible = false, $tstamp = 0, $oSwLat = 0, $oSwLng = 0, $oNeLat = 0, $oNeLng = 0)
     {
         $conds = array();
@@ -306,20 +315,11 @@ class Monocle extends Scanner
             $params[':oneLng'] = $oNeLng;
         }
 
+        global $noBoundaries, $boundaries;
+        if (!$noBoundaries) {
+            $conds[] = "(ST_WITHIN(point(f.lat,f.lon),ST_GEOMFROMTEXT('POLYGON(( " . $boundaries . " ))')))";
+        }
         return $this->query_gyms($conds, $params);
-    }
-
-    public function get_gym($gymId)
-    {
-        $conds = array();
-        $params = array();
-
-        $conds[] = "f.external_id = :gymId";
-        $params[':gymId'] = $gymId;
-
-        $gyms = $this->query_gyms($conds, $params);
-        $gym = $gyms[0];
-        return $gym;
     }
 
     public function query_gyms($conds, $params)
@@ -367,6 +367,7 @@ class Monocle extends Scanner
             $gym["team_id"] = intval($gym["team_id"]);
             $gym["pokemon"] = [];
             $gym["raid_pokemon_name"] = empty($raid_pid) ? null : i8ln($this->data[$raid_pid]["name"]);
+            $gym["raid_pokemon_gender"] = 0;
             $gym["latitude"] = floatval($gym["latitude"]);
             $gym["longitude"] = floatval($gym["longitude"]);
             $gym["slots_available"] = intval($gym["slots_available"]);

@@ -14,7 +14,6 @@ require_once(__DIR__ . '/../utils.php');
 $libs[] = "Scanner.php";
 $libs[] = "Monocle.php";
 $libs[] = "Monocle_PMSF.php";
-$libs[] = "Monocle_MAD.php";
 $libs[] = "RDM.php";
 $libs[] = "RDM_beta.php";
 $libs[] = "RocketMap.php";
@@ -22,13 +21,11 @@ $libs[] = "RocketMap_MAD.php";
 $libs[] = "search/Search.php";
 $libs[] = "search/Search.rdm.php";
 $libs[] = "search/Search.monocle_pmsf.php";
-$libs[] = "search/Search.monocle_mad.php";
 $libs[] = "search/Search.rocketmap_mad.php";
 $libs[] = "submit/Submit.php";
 $libs[] = "submit/Manual.php";
 $libs[] = "submit/Submit.rdm.php";
 $libs[] = "submit/Submit.monocle_pmsf.php";
-$libs[] = "submit/Submit.monocle_mad.php";
 $libs[] = "Manual.php";
 
 // Include libraries
@@ -49,12 +46,26 @@ $startingLng = 5.302366;                                        // Starting long
 /* Zoom and Cluster Settings */
 
 $maxLatLng = 1;                                                     // Max latitude and longitude size (1 = ~110km, 0 to disable)
+$defaultZoom = 16;                                                  // Default zoom level for first time users.
 $maxZoomOut = 0;                                                    // Max zoom out level (11 ~= $maxLatLng = 1, 0 to disable, lower = the further you can zoom out)
-$maxZoomIn = 18;                                                    // Max zoom in level 18 
-$disableClusteringAtZoom = 15;					    // Disable clustering above this value. 0 to disable
-$zoomToBoundsOnClick = 15;					    // Zoomlevel on clusterClick
-$maxClusterRadius = 30;						    // The maximum radius that a cluster will cover from the central marker (in pixels).
-$spiderfyOnMaxZoom = 'true';					    // Spiderfy cluster markers on click
+$maxZoomIn = 18;                                                    // Max zoom in level 18
+$disableClusteringAtZoom = 15;					                    // Disable clustering above this value. 0 to disable
+$zoomToBoundsOnClick = 15;					                        // Zoomlevel on clusterClick
+$maxClusterRadius = 30;						                        // The maximum radius that a cluster will cover from the central marker (in pixels).
+$spiderfyOnMaxZoom = 'true';				                   	    // Spiderfy cluster markers on click
+
+/* Boundaries */
+$noBoundaries = true;                                               // Enable/Disable boundaries to pull data from. Requires $boundaries to be set.
+$boundaries = '51.9258236369112 5.4520494625403,
+               51.8982915107015 5.4808885738685,
+               51.8715904160174 5.4630357906653,
+               51.8525084938523 5.4211504146888,
+               51.8427523855973 5.3504259273841,
+               51.8448734585841 5.2645952389075,
+               51.8635345916882 5.1952440426185,
+               51.9033756353006 5.2254564449622,
+               51.9304812498708 5.4032976314857,
+               51.9258236369112 5.4520494625403';
 
 /* Anti scrape Settings */
 $enableCsrf = true;                                                 // Don't disable this unless you know why you need to :)
@@ -64,11 +75,13 @@ $blockIframe = true;                                                // Block you
 /* Map Title + Language */
 
 $title = "PMSF Alt";                                                // Title to display in title bar
+$headerTitle = "POGOmap";                                           // Title to display in header
 $locale = "en";                                                     // Display language
 
-/* Google Maps ONLY USED FOR TILE LAYERS */
+/* Google Maps and MapBox are ONLY USED FOR TILE LAYERS */
 
 $gmapsKey = "";
+$mBoxKey = "";
 
 /* Google Analytics */
 
@@ -82,13 +95,13 @@ $piwikSiteId = "";
 /* Cookie Disclamer */
 $noCookie = true;                                                   // Display a Cookie Disclamer
 
-/* PayPal */
-
+/* header urls */
 $paypalUrl = "";                                                    // PayPal donation URL, leave "" for empty
-
-/* Discord */
-
-$discordUrl = "";                                                   // Discord URL, leave "" for empty
+$discordUrl = "https://discord.gg/INVITE_LINK";                     // Discord URL, leave "" for empty
+$whatsAppUrl = "";                                                  // WhatsApp URL, leave "" for empty
+$telegramUrl = "";                                                  // Telegram URL, leave "" for empty
+$customUrl = "";                                                    // Custom URL, leave "" for empty
+$customUrlFontIcon = "far fa-smile-beam";                           // Choose a custom icon on: https://fontawesome.com/icons?d=gallery&m=free
 
 /* Worldopole */
 
@@ -104,10 +117,14 @@ $motdContent = "";
 
 /* Share links */
 $noWhatsappLink = true;
+
+/* IMGBB API */
+$imgurCID = "";
 //-----------------------------------------------------
 // Login  - You need to create the two tables referenced in sql.sql
 //-----------------------------------------------------
-
+$noSelly = true;
+$forcedDiscordLogin = false;
 $noNativeLogin = true;                                              // true/false - This will enable the built in login system.
 $domainName = '';                                                   // If this is empty, reset-password emails will use the domain name taken from the URL.
 
@@ -145,7 +162,7 @@ $noMinLevel = true;                                            // true/false
 $noHighLevelData = true;                                       // true/false
 $noRarityDisplay = false;                                      // true/false
 $noWeatherIcons = true;
-$noWeatherShadow = false;
+$no100IvShadow = false;
 
 /* Notification Settings */
 $noNotifyPokemon = false;                                       // true/false
@@ -176,13 +193,12 @@ $excludeMinIV = '[131, 143, 147, 148, 149, 248]';                   // [] for em
 $minIV = '0';                                                       // "0" for empty or a number
 $minLevel = '0';                                                    // "0" for empty or a number
 
-$noBigKarp = false;                                                 // BUGGED: Hides ALL Magikarp && the menu setting. true/false
-$noBigKarpSetting = false;                                          // true/false
-$noTinyRat = false;                                                 // BUGGED: Hides ALL Rattata && the menu setting. true/false
-$noTinyRatSetting = false;                                          // true/false
+$noBigKarp = false;
+$noTinyRat = false;
 
 $noGyms = false;                                                    // true/false
 $enableGyms = 'false';                                              // true/false
+$hideGymCoords = false;
 $noExEligible = false;                                              // true/false
 $exEligible = 'false';                                              // true/false
 
@@ -196,8 +212,14 @@ $enableRaidTimer = 'false';                                         // true/fals
 
 $noPokestops = false;                                               // true/false
 $enablePokestops = 'false';                                         // true/false
+$hidePokestopCoords = false;
 $noLures = false;                                                   // true/false
 $enableLured = 'false';                                             // true/false
+$noTeamRocket = false;
+$noTeamRocketTimer = false;                                         // true/false
+$enableTeamRocketTimer = 'false';                                   // true/false
+$enableTeamRocket = 'false';
+$noTeamRocketEncounterData = true;
 $noQuests = true;                                                  // true/false
 $enableQuests = 'false';                                            // true/false
 $noQuestsItems = false;
@@ -217,9 +239,6 @@ $hideConditionTypes = [0, 4, 5, 11, 12, 13, 16, 17, 19, 20];
 $showEncounters = [201];
 $showItems = [1, 2, 3, 101, 102, 103, 104, 201, 202, 701, 703, 705, 706, 707, 1301];
 
-$noScannedLocations = true;                                         // true/false
-$enableScannedLocations = 'false';                                  // true/false
-
 $noSpawnPoints = true;                                              // true/false
 $enableSpawnPoints = 'false';                                       // true/false
 
@@ -229,6 +248,11 @@ $enableRanges = 'false';                                            // true/fals
 $noScanPolygon = true;
 $enableScanPolygon = 'false';
 $geoJSONfile = 'custom/scannerarea.json';			    // path to geoJSON file create your own on http://geojson.io/ adjust filename
+
+$noLiveScanLocation = true;                                         // Show scan devices on the map
+$enableLiveScan = 'false';
+$hideDeviceAfterMinutes = 0;                                        // Hide scan devices from map after x amount of minutes not being updated in database. 0 to disable.
+$deviceOfflineAfterSeconds = 300;                                   // Mark scan devices offline (red color) after x amount of seconds not being updated in database.
 /* Location & Search Settings */
 
 $noSearchLocation = false;                                          // true/false
@@ -262,6 +286,8 @@ $notifyNotification = 'true';                                       // true/fals
 $copyrightSafe = true;
 $noCostumeIcons = true;                                            // Set to true if you $iconRepository doesnt support costume icons. true/false
 $iconRepository = 'https://raw.githubusercontent.com/whitewillem/PogoAssets/resized/icons_large/';
+$noMultipleRepos = true;
+$iconRepos = [["Standard","$iconRepository"]];
 
 $noMapStyle = false;                                                // true/false
 $mapStyle = 'openstreetmap';                                        // openstreetmap, darkmatter, styleblackandwhite, styletopo, stylesatellite, stylewikipedia
@@ -280,8 +306,6 @@ $gymStyle = 'ingame';                                               // ingame, s
 $noLocationStyle = false;                                           // true/false
 $locationStyle = 'none';                                            // none, google, red, red_animated, blue, blue_animated, yellow, yellow_animated, pokesition, pokeball
 
-$osmTileServer = 'tile.openstreetmap.org';                          // osm tile server (no trailing slash)
-
 $triggerGyms = '[]';                                                // Add Gyms that the OSM-Query doesn't take care of like '["gym_id", "gym_id"]'
 $onlyTriggerGyms = false;                                           // Only show EX-Gyms that are defined in $triggerGyms
 $noExGyms = false;                                                  // Do not display EX-Gyms on the map
@@ -295,6 +319,7 @@ $noManualRaids = true;
 $noManualPokemon = true;
 $pokemonTimer = 900;                                                // Time in seconds before a submitted Pokémon despawns.
 $noManualGyms = true;
+$noRenameGyms = true;
 $noManualPokestops = true;
 $noRenamePokestops = true;
 $noConvertPokestops = true;
@@ -308,12 +333,23 @@ $enableNewPortals = 0;                                                   // O: a
 $noPortals = true;
 $noDeletePortal = true;
 $noConvertPortal = true;
+$markPortalsAsNew = 86400;                                         // Time in seconds to mark new imported portals as new ( 86400 for 1 day )
+//-----------------------------------------------------
+// s2 cells
+//-----------------------------------------------------
 $noS2Cells = true;
 $enableS2Cells = 'false';
 $enableLevel13Cells = 'false';
 $enableLevel14Cells = 'false';
 $enableLevel17Cells = 'false';
-$markPortalsAsNew = 86400;                                         // Time in seconds to mark new imported portals as new ( 86400 for 1 day )
+
+$oneMoreUntilNewGymFillColor = 'green';
+$twoMoreUntilNewGymFillColor = 'orange';
+$maxGymAmountReachedFillColor = 'black';
+$maxAmountReachedFillColor = 'red';
+//-----------------------------------------------------
+// POI
+//-----------------------------------------------------
 $noPoi = true;
 $noAddPoi = true;
 $enablePoi = 'false';
@@ -378,16 +414,28 @@ $noNests = true;                                                   // true/false
 $enableNests = 'false';                                             // true/false
 $noManualNests = true;
 $noDeleteNests = true;
-$nestVerifyLevel = 1;						    // 1 = Verified 2 = 1 + Unverified 3 = 1 + 2 + Revoked 4 = Get all nests
 $deleteNestsOlderThan = 42;					    // days after not updated nests are removed from database by nest cron
 $migrationDay = strtotime('5 April 2018');                          // Adjust day value after non consitent 14 day migration
 $noAddNewNests = false;
 $excludeNestMons = [2,3,5,6,8,9,11,12,14,15,17,18,20,22,24,26,28,29,30,31,32,33,34,36,38,40,42,44,45,49,51,53,55,57,59,61,62,64,65,67,68,70,71,73,75,76,78,80,82,83,85,87,88,89,91,93,94,97,99,101,103,105,106,107,108,109,110,112,113,114,115,117,119,121,122,128,130,131,132,134,135,136,137,139,142,143,144,145,146,147,148,149,150,151,153,154,156,157,159,160,161,162,163,164,165,166,167,168,169,171,172,173,174,175,176,177,178,179,180,181,182,183,184,186,187,188,189,191,192,194,195,196,197,199,201,204,205,207,208,210,212,214,217,218,219,221,222,223,224,225,228,229,230,232,233,235,236,237,238,239,240,241,242,243,244,245,246,247,248,249,250,251,253,254,256,257,259,260,262,263,264,265,266,267,268,269,270,271,272,274,275,276,277,279,280,281,282,284,286,287,288,289,290,291,292,293,294,295,297,298,301,303,304,305,306,308,310,313,314,316,317,319,321,323,324,326,327,328,329,330,331,332,334,335,336,337,338,339,340,342,344,346,348,349,350,351,352,354,356,357,358,359,360,361,362,363,364,365,366,367,368,369,371,372,373,374,375,376,377,378,379,380,381,382,383,384,385,386];
-$nestCoords = array();                                           //$nestCoords = array(array('lat1' => 42.8307723529682, 'lng1' => -88.7527692278689, 'lat2' => 42.1339901128552, 'lng2' => -88.0688703020877),array(    'lat1' => 42.8529250952743,'lng1' => -88.1292951067752,'lat2' => 41.7929306950085,'lng2' => -87.5662457903689));
 
 $noNestPolygon = true;
 $enableNestPolygon = 'false';
 $nestGeoJSONfile = 'custom/nest.json';			    // path to geoJSON file provided by https://github.com/M4d40/PMSFnestScript
+//-----------------------------------------------
+// HPWU
+//-----------------------------------------------------
+$noInn = true;               // Enable/Disable the option to see inns
+$enableInn = 'false';        // Enable/Disable inns by default. A user can edit this.
+$noDeleteInn = true;         // Enable/Disable option do delete a inn
+
+$noFortress = true;          // Enable/Disable the option to see fortresses
+$enableFortress = 'false';   // Enable/Disable fortresses by default. A user can edit this
+$noDeleteFortress = true;    // Enable/Disable option do delete a fortress
+
+$noGreenhouse = true;        // Enable/Disable the option to see greenhouses
+$enableGreenhouse = 'false'; // Enable/Disable greenhouses by default. A user can edit this
+$noDeleteGreenhouse = true;  // Enable/Disable option do delete a greenhouse
 //-----------------------------------------------------
 // Areas
 //-----------------------------------------------------

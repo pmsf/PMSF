@@ -31,6 +31,10 @@ class RDM_beta extends RDM
             $params[':oneLat'] = $oNeLat;
             $params[':oneLng'] = $oNeLng;
         }
+        global $noBoundaries, $boundaries;
+        if (!$noBoundaries) {
+            $conds[] = "(ST_WITHIN(point(lat,lon),ST_GEOMFROMTEXT('POLYGON(( " . $boundaries . " ))')))";
+        }
         if ($tstamp > 0) {
             $conds[] = "updated > :lastUpdated";
             $params[':lastUpdated'] = $tstamp;
@@ -97,6 +101,11 @@ class RDM_beta extends RDM
         $params[':neLat'] = $neLat;
         $params[':neLng'] = $neLng;
         $params[':time'] = time();
+
+        global $noBoundaries, $boundaries;
+        if (!$noBoundaries) {
+            $conds[] = "(ST_WITHIN(point(lat,lon),ST_GEOMFROMTEXT('POLYGON(( " . $boundaries . " ))')))";
+        }
         if (count($ids)) {
             $tmpSQL = '';
             if (!empty($tinyRat) && $tinyRat === 'true' && ($key = array_search("19", $ids)) !== false) {
@@ -159,7 +168,7 @@ class RDM_beta extends RDM
         
         foreach ($pokemons as $pokemon) {
             // Jitter pokemon when they have no spawn_id
-            if ( empty($pokemon['spawn_id'])) {
+            if (empty($pokemon['spawn_id'])) {
                 $pokemon["latitude"] = floatval($pokemon["latitude"]);
                 $pokemon["longitude"] = floatval($pokemon["longitude"]);
                 $lastlat = floatval($pokemon["latitude"]);
@@ -193,14 +202,9 @@ class RDM_beta extends RDM
                 foreach ($forms as $f => $v) {
                     if ($pokemon["form"] === $v['protoform']) {
                         $types = $v['formtypes'];
+                        $pokemon["form_name"] = $v['nameform'];
                         foreach ($v['formtypes'] as $ft => $v) {
-                            $types[$ft]['type'] = i8ln($v['type']);
-                        }
-                        $pokemon["pokemon_types"] = $types;
-                    } else if ($pokemon["form"] === $v['assetsform']) {
-                        $types = $v['formtypes'];
-                        foreach ($v['formtypes'] as $ft => $v) {
-                            $types[$ft]['type'] = i8ln($v['type']);
+                            $types[$ft]['type'] = $v['type'];
                         }
                         $pokemon["pokemon_types"] = $types;
                     }
@@ -208,10 +212,11 @@ class RDM_beta extends RDM
             } else {
                 $types = $this->data[$pokemon["pokemon_id"]]["types"];
                 foreach ($types as $k => $v) {
-                    $types[$k]['type'] = i8ln($v['type']);
+                    $types[$k]['type'] = $v['type'];
                 }
                 $pokemon["pokemon_types"] = $types;
             }
+
             $data[] = $pokemon;
             unset($pokemons[$i]);
             $i++;
@@ -219,7 +224,7 @@ class RDM_beta extends RDM
         return $data;
     }
 
-    public function get_stops($qpeids, $qieids, $swLat, $swLng, $neLat, $neLng, $tstamp = 0, $oSwLat = 0, $oSwLng = 0, $oNeLat = 0, $oNeLng = 0, $lures, $quests, $dustamount)
+    public function get_stops($qpeids, $qieids, $swLat, $swLng, $neLat, $neLng, $tstamp = 0, $oSwLat = 0, $oSwLng = 0, $oNeLat = 0, $oNeLng = 0, $lures, $rocket, $quests, $dustamount)
     {
         $conds = array();
         $params = array();
@@ -228,6 +233,10 @@ class RDM_beta extends RDM
         $params[':swLng'] = $swLng;
         $params[':neLat'] = $neLat;
         $params[':neLng'] = $neLng;
+        global $noBoundaries, $boundaries;
+        if (!$noBoundaries) {
+            $conds[] = "(ST_WITHIN(point(lat,lon),ST_GEOMFROMTEXT('POLYGON(( " . $boundaries . " ))')))";
+        }
         if (!empty($quests) && $quests === 'true') {
             $pokemonSQL = '';
             if (count($qpeids)) {
@@ -259,8 +268,15 @@ class RDM_beta extends RDM
             }
             $dustSQL = '';
             if (!empty($dustamount) && !is_nan((float)$dustamount) && $dustamount > 0) {
-                $dustSQL .= "OR (json_extract(json_extract(`quest_rewards`,'$[*].type'),'$[0]') = 3 AND json_extract(json_extract(`quest_rewards`,'$[*].info.amount'),'$[0]') > :amount)";
+                $dustSQL .= "OR (json_extract(json_extract(`quest_rewards`,'$[*].type'),'$[0]') = 3 AND json_extract(json_extract(`quest_rewards`,'$[*].info.amount'),'$[0]') > :amount) AND lat > :swLat AND lon > :swLng AND lat < :neLat AND lon < :neLng";
                 $params[':amount'] = intval($dustamount);
+                $params[':swLat'] = $swLat;
+                $params[':swLng'] = $swLng;
+                $params[':neLat'] = $neLat;
+                $params[':neLng'] = $neLng;
+                if (!$noBoundaries) {
+                    $dustSQL .= " AND (ST_WITHIN(point(lat,lon),ST_GEOMFROMTEXT('POLYGON(( " . $boundaries . " ))')))";
+                }
             }
             $conds[] = "(" . $pokemonSQL . " OR " . $itemSQL . ")" . $dustSQL . "";
         }
@@ -275,6 +291,10 @@ class RDM_beta extends RDM
             $conds[] = "lure_expire_timestamp > :time";
             $params[':time'] = time();
         }
+        if (!empty($rocket) && $rocket === 'true') {
+            $conds[] = "incident_expire_timestamp > :time";
+            $params[':time'] = time();
+        }
         if ($tstamp > 0) {
             $conds[] = "updated > :lastUpdated";
             $params[':lastUpdated'] = $tstamp;
@@ -283,7 +303,7 @@ class RDM_beta extends RDM
     }
 
 
-    public function get_stops_quest($qpreids, $qireids, $swLat, $swLng, $neLat, $neLng, $tstamp = 0, $oSwLat = 0, $oSwLng = 0, $oNeLat = 0, $oNeLng = 0, $lures, $quests, $dustamount, $reloaddustamount)
+    public function get_stops_quest($qpreids, $qireids, $swLat, $swLng, $neLat, $neLng, $tstamp = 0, $oSwLat = 0, $oSwLng = 0, $oNeLat = 0, $oNeLng = 0, $lures, $rocket, $quests, $dustamount, $reloaddustamount)
     {
         $conds = array();
         $params = array();
@@ -292,6 +312,11 @@ class RDM_beta extends RDM
         $params[':swLng'] = $swLng;
         $params[':neLat'] = $neLat;
         $params[':neLng'] = $neLng;
+
+        global $noBoundaries, $boundaries;
+        if (!$noBoundaries) {
+            $conds[] = "(ST_WITHIN(point(lat,lon),ST_GEOMFROMTEXT('POLYGON(( " . $boundaries . " ))')))";
+        }
         if (!empty($quests) && $quests === 'true') {
             $tmpSQL = '';
             if (count($qpreids)) {
@@ -304,8 +329,6 @@ class RDM_beta extends RDM
                 }
                 $pkmn_in = substr($pkmn_in, 0, -1);
                 $tmpSQL .= "quest_pokemon_id IN ( $pkmn_in )";
-            } else {
-                $tmpSQL .= "";
             }
             if (count($qireids)) {
                 $item_in = '';
@@ -317,14 +340,10 @@ class RDM_beta extends RDM
                 }
                 $item_in = substr($item_in, 0, -1);
                 $tmpSQL .= "quest_item_id IN ( $item_in )";
-            } else {
-                $tmpSQL .= "";
             }
             if ($reloaddustamount == "true") {
                 $tmpSQL .= "(json_extract(json_extract(`quest_rewards`,'$[*].type'),'$[0]') = 3 AND json_extract(json_extract(`quest_rewards`,'$[*].info.amount'),'$[0]') > :amount)";
                 $params[':amount'] = intval($dustamount);
-            } else {
-                $tmpSQL .= "";
             }
             $conds[] = $tmpSQL;
         }
@@ -333,7 +352,7 @@ class RDM_beta extends RDM
 
     public function query_stops($conds, $params)
     {
-        global $db, $noManualQuests;
+        global $db;
 
         $query = "SELECT id AS pokestop_id,
         lat AS latitude,
@@ -341,7 +360,9 @@ class RDM_beta extends RDM
         name AS pokestop_name,
         url,
         lure_expire_timestamp AS lure_expiration,
+        incident_expire_timestamp AS incident_expiration,
         lure_id,
+        grunt_type,
         quest_type,
         quest_timestamp,
         quest_target,
@@ -352,7 +373,6 @@ class RDM_beta extends RDM
         json_extract(json_extract(`quest_conditions`,'$[*].type'),'$[1]') AS quest_condition_type_1,
         json_extract(json_extract(`quest_conditions`,'$[*].info'),'$[0]') AS quest_condition_info,
         quest_reward_type,
-        json_extract(json_extract(`quest_rewards`,'$[*].info'),'$[0]') AS quest_reward_info,
         json_extract(json_extract(`quest_rewards`,'$[*].info.amount'),'$[0]') AS quest_reward_amount,
         json_extract(json_extract(`quest_rewards`,'$[*].info.amount'),'$[0]') AS quest_dust_amount,
         json_extract(json_extract(`quest_rewards`,'$[*].info.form_id'),'$[0]') AS quest_pokemon_formid,
@@ -376,6 +396,11 @@ class RDM_beta extends RDM
                 $mon_pid = null;
                 $pokestop["quest_pokemon_id"] = null;
             }
+            $grunttype_pid = $pokestop["grunt_type"];
+            if ($grunttype_pid == "0") {
+                $grunttype_pid = null;
+                $pokestop["grunt_type"] = null;
+            }
             $pokestop["latitude"] = floatval($pokestop["latitude"]);
             $pokestop["longitude"] = floatval($pokestop["longitude"]);
             $pokestop["quest_type"] = intval($pokestop["quest_type"]);
@@ -388,11 +413,16 @@ class RDM_beta extends RDM
             $pokestop["quest_item_id"] = intval($pokestop["quest_item_id"]);
             $pokestop["quest_reward_amount"] = intval($pokestop["quest_reward_amount"]);
             $pokestop["quest_dust_amount"] = intval($pokestop["quest_dust_amount"]);
-            $pokestop["url"] = ! empty($pokestop["url"]) ? str_replace("http://", "https://images.weserv.nl/?url=", $pokestop["url"]) : null;
+            $pokestop["url"] = ! empty($pokestop["url"]) ? preg_replace("/^http:/i", "https:", $pokestop["url"]) : null;
             $pokestop["lure_expiration"] = $pokestop["lure_expiration"] * 1000;
+            $pokestop["incident_expiration"] = $pokestop["incident_expiration"] * 1000;
             $pokestop["lure_id"] = $pokestop["lure_id"] - 500;
             $pokestop["quest_item_name"] = empty($item_pid) ? null : i8ln($this->items[$item_pid]["name"]);
             $pokestop["quest_pokemon_name"] = empty($mon_pid) ? null : i8ln($this->data[$mon_pid]["name"]);
+            $pokestop["grunt_type_name"] = empty($grunttype_pid) ? null : i8ln($this->grunttype[$grunttype_pid]["type"]);
+            $pokestop["grunt_type_gender"] = empty($grunttype_pid) ? null : i8ln($this->grunttype[$grunttype_pid]["grunt"]);
+            $pokestop["encounters"] = empty($this->grunttype[$grunttype_pid]["encounters"]) ? null : $this->grunttype[$grunttype_pid]["encounters"];
+            $pokestop["second_reward"] = empty($this->grunttype[$grunttype_pid]["second_reward"]) ? null : $this->grunttype[$grunttype_pid]["second_reward"];
 
             $data[] = $pokestop;
             unset($pokestops[$i]);
@@ -400,6 +430,75 @@ class RDM_beta extends RDM
         }
         return $data;
     }
+
+    public function query_gyms($conds, $params)
+    {
+        global $db;
+
+        $query = "SELECT id AS gym_id,
+        lat AS latitude,
+        lon AS longitude,
+        name,
+        url,
+        last_modified_timestamp AS last_modified,
+        raid_end_timestamp AS raid_end,
+        raid_battle_timestamp AS raid_start,
+        updated AS last_scanned,
+        raid_pokemon_id,
+        availble_slots AS slots_available,
+        team_id,
+        raid_level,
+        raid_pokemon_move_1,
+        raid_pokemon_move_2,
+        raid_pokemon_form,
+        raid_pokemon_cp,
+        raid_pokemon_gender,
+        ex_raid_eligible AS park
+        FROM gym
+        WHERE :conditions";
+
+        $query = str_replace(":conditions", join(" AND ", $conds), $query);
+        $gyms = $db->query($query, $params)->fetchAll(\PDO::FETCH_ASSOC);
+
+        $data = array();
+        $i = 0;
+
+        foreach ($gyms as $gym) {
+            $raid_pid = $gym["raid_pokemon_id"];
+            if ($raid_pid == "0") {
+                $raid_pid = null;
+                $gym["raid_pokemon_id"] = null;
+            }
+            $gym["team_id"] = intval($gym["team_id"]);
+            $gym["pokemon"] = [];
+            $gym["raid_pokemon_name"] = empty($raid_pid) ? null : i8ln($this->data[$raid_pid]["name"]);
+            $gym["form"] = intval($gym["raid_pokemon_form"]);
+            $gym["latitude"] = floatval($gym["latitude"]);
+            $gym["longitude"] = floatval($gym["longitude"]);
+            $gym["slots_available"] = intval($gym["slots_available"]);
+            $gym["last_modified"] = $gym["last_modified"] * 1000;
+            $gym["last_scanned"] = $gym["last_scanned"] * 1000;
+            $gym["raid_start"] = $gym["raid_start"] * 1000;
+            $gym["raid_end"] = $gym["raid_end"] * 1000;
+            $gym["sponsor"] = !empty($gym["sponsor"]) ? $gym["sponsor"] : null;
+            $gym["url"] = ! empty($gym["url"]) ? preg_replace("/^http:/i", "https:", $gym["url"]) : null;
+            $gym["park"] = intval($gym["park"]);
+            if (isset($gym["form"]) && $gym["form"] > 0) {
+                $forms = $this->data[$gym["raid_pokemon_id"]]["forms"];
+                foreach ($forms as $f => $v) {
+                    if ($gym["raid_pokemon_form"] === $v['protoform']) {
+                        $gym["form_name"] = $v['nameform'];
+                    }
+                }
+            }
+
+            $data[] = $gym;
+            unset($gyms[$i]);
+            $i++;
+        }
+        return $data;
+    }
+
     public function get_spawnpoints($swLat, $swLng, $neLat, $neLng, $tstamp = 0, $oSwLat = 0, $oSwLng = 0, $oNeLat = 0, $oNeLng = 0)
     {
         $conds = array();
@@ -415,6 +514,10 @@ class RDM_beta extends RDM
             $params[':oswLng'] = $oSwLng;
             $params[':oneLat'] = $oNeLat;
             $params[':oneLng'] = $oNeLng;
+        }
+        global $noBoundaries, $boundaries;
+        if (!$noBoundaries) {
+            $conds[] = "(ST_WITHIN(point(lat,lon),ST_GEOMFROMTEXT('POLYGON(( " . $boundaries . " ))')))";
         }
         if ($tstamp > 0) {
             $conds[] = "updated > :lastUpdated";
@@ -440,9 +543,89 @@ class RDM_beta extends RDM
             $spawnpoint["latitude"] = floatval($spawnpoint["latitude"]);
             $spawnpoint["longitude"] = floatval($spawnpoint["longitude"]);
             $spawnpoint["time"] = intval($spawnpoint["despawn_sec"]);
-            $spawnpoint["duration"] = !empty($spawnpoint["duration"]) ? $spawnpoint["duration"] : null;
             $data[] = $spawnpoint;
             unset($spawnpoints[$i]);
+            $i++;
+        }
+        return $data;
+    }
+
+    public function get_weather_by_cell_id($cell_id)
+    {
+        global $db;
+        $query = "SELECT id AS s2_cell_id, gameplay_condition AS gameplay_weather FROM weather WHERE id = :cell_id";
+        $params = [':cell_id' => intval((float)$cell_id)]; // use float to intval because RDM is signed int
+        $weather_info = $db->query($query, $params)->fetchAll(\PDO::FETCH_ASSOC);
+        if ($weather_info) {
+            // force re-bind of gameplay_weather to condition
+            $weather_info[0]['condition'] = $weather_info[0]['gameplay_weather'];
+            unset($weather_info[0]['gameplay_weather']);
+            return $weather_info[0];
+        } else {
+            return null;
+        }
+    }
+
+    public function get_weather($updated = null)
+    {
+        global $db;
+        $query = "SELECT id AS s2_cell_id, gameplay_condition AS gameplay_weather FROM weather";
+        $weathers = $db->query($query)->fetchAll(\PDO::FETCH_ASSOC);
+        $data = array();
+        foreach ($weathers as $weather) {
+            $data["weather_" . $weather['s2_cell_id']] = $weather;
+            $data["weather_" . $weather['s2_cell_id']]['condition'] = $data["weather_" . $weather['s2_cell_id']]['gameplay_weather'];
+            unset($data["weather_" . $weather['s2_cell_id']]['gameplay_weather']);
+        }
+        return $data;
+    }
+
+    public function get_scanlocation($swLat, $swLng, $neLat, $neLng, $tstamp = 0, $oSwLat = 0, $oSwLng = 0, $oNeLat = 0, $oNeLng = 0)
+    {
+        $conds = array();
+        $params = array();
+        $conds[] = "last_lat > :swLat AND last_lon > :swLng AND last_lat < :neLat AND last_lon < :neLng";
+        $params[':swLat'] = $swLat;
+        $params[':swLng'] = $swLng;
+        $params[':neLat'] = $neLat;
+        $params[':neLng'] = $neLng;
+        if ($oSwLat != 0) {
+            $conds[] = "NOT (last_lat > :oswLat AND last_lon > :oswLng AND last_lat < :oneLat AND last_lon < :oneLng)";
+            $params[':oswLat'] = $oSwLat;
+            $params[':oswLng'] = $oSwLng;
+            $params[':oneLat'] = $oNeLat;
+            $params[':oneLng'] = $oNeLng;
+        }
+        global $noBoundaries, $boundaries;
+        if (!$noBoundaries) {
+            $conds[] = "(ST_WITHIN(point(last_lat,last_lon),ST_GEOMFROMTEXT('POLYGON(( " . $boundaries . " ))')))";
+        }
+        global $hideDeviceAfterMinutes;
+        if ($hideDeviceAfterMinutes > 0) {
+            $conds[] = "last_seen > UNIX_TIMESTAMP( NOW() - INTERVAL " . $hideDeviceAfterMinutes . " MINUTE)";
+        }
+        return $this->query_scanlocation($conds, $params);
+    }
+
+    private function query_scanlocation($conds, $params)
+    {
+        global $db;
+        $query = "SELECT last_lat AS latitude,
+        last_lon AS longitude,
+        last_seen,
+        uuid,
+        instance_name
+        FROM device
+        WHERE :conditions";
+        $query = str_replace(":conditions", join(" AND ", $conds), $query);
+        $scanlocations = $db->query($query, $params)->fetchAll(\PDO::FETCH_ASSOC);
+        $data = array();
+        $i = 0;
+        foreach ($scanlocations as $scanlocation) {
+            $scanlocation["latitude"] = floatval($scanlocation["latitude"]);
+            $scanlocation["longitude"] = floatval($scanlocation["longitude"]);
+            $data[] = $scanlocation;
+            unset($scanlocations[$i]);
             $i++;
         }
         return $data;

@@ -1,0 +1,1 @@
+alter table payments add column activated tinyint(1) DEFAULT NULL;
