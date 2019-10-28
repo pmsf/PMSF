@@ -750,25 +750,25 @@ function showS2Cells(level, style) {
         var html = ''
         var filledStyle = {color: 'black', fillOpacity: 0.0}
         if ((cell.level === 14) && (totalCount === 1 || totalCount === 5 || totalCount === 19)) {
-            filledStyle = {fillColor: 'green', fillOpacity: 0.3}
+            filledStyle = {fillColor: s2Colors[1], fillOpacity: 0.3}
             html += '<div><center><b>' + i8ln('1 more Pokéstop until new gym') + '</b></center></div>'
         } else if ((cell.level === 14) && (totalCount === 4 || totalCount === 18)) {
-            filledStyle = {fillColor: 'orange', fillOpacity: 0.3}
+            filledStyle = {fillColor: s2Colors[2], fillOpacity: 0.3}
             html += '<div><center><b>' + i8ln('2 more Pokéstops until new gym') + '</b></center></div>'
         } else if (cell.level === 14 && totalCount >= 20) {
-            filledStyle = {fillColor: 'black', fillOpacity: 0.3}
+            filledStyle = {fillColor: s2Colors[3], fillOpacity: 0.3}
             html += '<div><center><b>' + i8ln('Max amount of Gyms reached') + '</b></center></div>'
         }
 
         if (cell.level === 17) {
             $.each(mapData.pokestops, function (key, value) {
                 if (pointInPolygon(value['latitude'], value['longitude'], s2Lats, s2Lons)) {
-                    filledStyle = {fillColor: 'red', fillOpacity: 0.3}
+                    filledStyle = {fillColor: s2Colors[0], fillOpacity: 0.3}
                 }
             })
             $.each(mapData.gyms, function (key, value) {
                 if (pointInPolygon(value['latitude'], value['longitude'], s2Lats, s2Lons)) {
-                    filledStyle = {fillColor: 'red', fillOpacity: 0.3}
+                    filledStyle = {fillColor: s2Colors[0], fillOpacity: 0.3}
                 }
             })
         }

@@ -343,10 +343,12 @@ $enableLevel13Cells = 'false';
 $enableLevel14Cells = 'false';
 $enableLevel17Cells = 'false';
 
-$oneMoreUntilNewGymFillColor = 'green';
-$twoMoreUntilNewGymFillColor = 'orange';
-$maxGymAmountReachedFillColor = 'black';
-$maxAmountReachedFillColor = 'red';
+$s2Colors = [
+    'red',          // pokestop placement cell with a marker
+    'green',        // 1 more until new gym
+    'orange',       // 2 more until new gym
+    'black'         // Max amount of gyms reached
+];
 //-----------------------------------------------------
 // POI
 //-----------------------------------------------------
