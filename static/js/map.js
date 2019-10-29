@@ -415,7 +415,7 @@ function initMap() { // eslint-disable-line no-unused-vars
     })
 
     map.createPane('portals')
-    map.getPane('portals').style.zIndex = 450
+    map.getPane('portals').style.zIndex = 300
     createMyLocationButton()
     initSidebar()
 
@@ -2477,7 +2477,7 @@ function setupPortalMarker(item) {
     if (item.checked === '1') {
         var circle = {
             color: 'red',
-            radius: 10,
+            radius: 20,
             fillOpacity: 0.4,
             fillColor: '#f00',
             weight: 1,
@@ -2486,7 +2486,7 @@ function setupPortalMarker(item) {
     } else if (item.imported > yesterday) {
         circle = {
             color: 'green',
-            radius: 10,
+            radius: 20,
             fillOpacity: 0.4,
             fillColor: '#9f3',
             weight: 1,
@@ -2495,14 +2495,14 @@ function setupPortalMarker(item) {
     } else {
         circle = {
             color: 'blue',
-            radius: 10,
+            radius: 20,
             fillOpacity: 0.4,
             fillColor: '#00f',
             weight: 1,
             pane: 'portals'
         }
     }
-    var marker = L.circleMarker([item['lat'], item['lon']], circle).bindPopup(portalLabel(item), {autoPan: false, closeOnClick: false, autoClose: false})
+    var marker = L.circle([item['lat'], item['lon']], circle).bindPopup(portalLabel(item), {autoPan: false, closeOnClick: false, autoClose: false})
     markers.addLayer(marker)
 
     addListeners(marker)
