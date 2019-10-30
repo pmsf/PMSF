@@ -707,6 +707,8 @@ function showS2Cells(level, style) {
             s2Lons[j] = vertices[j]['lng']
         }
         var stopCount = 0
+        var sponsoredStopCount = 0
+        var sponsoredGymCount = 0
         var gymCount = 0
         var totalCount = 0
 
@@ -720,14 +722,24 @@ function showS2Cells(level, style) {
         if (cell.level === 14 || cell.level === 17) {
             $.each(mapData.pokestops, function (key, value) {
                 if (pointInPolygon(value['latitude'], value['longitude'], s2Lats, s2Lons)) {
-                    stopCount++
-                    totalCount++
+                    if (value['pokestop_id'].includes(".")) {
+                        stopCount++
+                        totalCount++
+                    }
+                    else {
+                        sponsoredStopCount++
+                    }
                 }
             })
             $.each(mapData.gyms, function (key, value) {
                 if (pointInPolygon(value['latitude'], value['longitude'], s2Lats, s2Lons)) {
-                    gymCount++
-                    totalCount++
+                    if (value['gym_id'].includes(".")) {
+                        gymCount++
+                        totalCount++
+                    }
+                    else {
+                        sponsoredGymCount++
+                    }                    
                 }
             })
             $.each(mapData.pois, function (key, item) {
@@ -776,8 +788,19 @@ function showS2Cells(level, style) {
         const poly = L.polygon(vertices, Object.assign({color: 'black', opacity: 0.5, weight: 0.5, fillOpacity: 0.0}, style, filledStyle))
         if (cell.level === 14) {
             html += '<div>' + i8ln('Gyms in cell') + ': <b>' + gymCount + '</b></div>' +
-                '<div>' + i8ln('Pokéstops in cell') + ': <b>' + stopCount + '</b></div>' +
-                '<div>' + i8ln('Total') + ': <b>' + totalCount + '</b></div>'
+                '<div>' + i8ln('Pokéstops in cell') + ': <b>' + stopCount + '</b></div>'
+            if (sponsoredStopCount > 0) {
+                html += '<div>' + i8ln('Sponsored Pokéstops in cell') + ': <b>' + sponsoredStopCount + '</b></div>'
+            }            
+            if (sponsoredGymCount > 0) {
+                html += '<div>' + i8ln('Sponsored Gyms in cell') + ': <b>' + sponsoredGymCount + '</b></div>'
+            }
+            if (sponsoredStopCount > 0 || sponsoredGymCount > 0){
+                html += '<div>' + i8ln('Total (excluding sponsored)') + ': <b>' + totalCount + '</b></div>'
+            }
+            else{
+                html += '<div>' + i8ln('Total') + ': <b>' + totalCount + '</b></div>'
+            }
             if (!noPoi && totalPoiCount > 0) {
                 html += '<br>'
                 if (possibleCandidatePoiCount > 0) {
