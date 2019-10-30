@@ -775,12 +775,12 @@ function showS2Cells(level, style) {
 
         if (cell.level === 17) {
             $.each(mapData.pokestops, function (key, value) {
-                if (pointInPolygon(value['latitude'], value['longitude'], s2Lats, s2Lons)) {
+                if (pointInPolygon(value['latitude'], value['longitude'], s2Lats, s2Lons) && value['pokestop_id'].includes(".")) {
                     filledStyle = {fillColor: s2Colors[0], fillOpacity: 0.3}
                 }
             })
             $.each(mapData.gyms, function (key, value) {
-                if (pointInPolygon(value['latitude'], value['longitude'], s2Lats, s2Lons)) {
+                if (pointInPolygon(value['latitude'], value['longitude'], s2Lats, s2Lons) && value['gym_id'].includes(".")) {
                     filledStyle = {fillColor: s2Colors[0], fillOpacity: 0.3}
                 }
             })
