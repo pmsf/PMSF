@@ -722,22 +722,20 @@ function showS2Cells(level, style) {
         if (cell.level === 14 || cell.level === 17) {
             $.each(mapData.pokestops, function (key, value) {
                 if (pointInPolygon(value['latitude'], value['longitude'], s2Lats, s2Lons)) {
-                    if (value['pokestop_id'].includes(".")) {
+                    if (value['pokestop_id'].includes('.')) {
                         stopCount++
                         totalCount++
-                    }
-                    else {
+                    } else {
                         sponsoredStopCount++
                     }
                 }
             })
             $.each(mapData.gyms, function (key, value) {
                 if (pointInPolygon(value['latitude'], value['longitude'], s2Lats, s2Lons)) {
-                    if (value['gym_id'].includes(".")) {
+                    if (value['gym_id'].includes('.')) {
                         gymCount++
                         totalCount++
-                    }
-                    else {
+                    } else {
                         sponsoredGymCount++
                     }                    
                 }
@@ -775,12 +773,12 @@ function showS2Cells(level, style) {
 
         if (cell.level === 17) {
             $.each(mapData.pokestops, function (key, value) {
-                if (pointInPolygon(value['latitude'], value['longitude'], s2Lats, s2Lons) && value['pokestop_id'].includes(".")) {
+                if (pointInPolygon(value['latitude'], value['longitude'], s2Lats, s2Lons) && value['pokestop_id'].includes('.')) {
                     filledStyle = {fillColor: s2Colors[0], fillOpacity: 0.3}
                 }
             })
             $.each(mapData.gyms, function (key, value) {
-                if (pointInPolygon(value['latitude'], value['longitude'], s2Lats, s2Lons) && value['gym_id'].includes(".")) {
+                if (pointInPolygon(value['latitude'], value['longitude'], s2Lats, s2Lons) && value['gym_id'].includes('.')) {
                     filledStyle = {fillColor: s2Colors[0], fillOpacity: 0.3}
                 }
             })
@@ -795,10 +793,9 @@ function showS2Cells(level, style) {
             if (sponsoredGymCount > 0) {
                 html += '<div>' + i8ln('Sponsored Gyms in cell') + ': <b>' + sponsoredGymCount + '</b></div>'
             }
-            if (sponsoredStopCount > 0 || sponsoredGymCount > 0){
+            if (sponsoredStopCount > 0 || sponsoredGymCount > 0) {
                 html += '<div>' + i8ln('Total (excluding sponsored)') + ': <b>' + totalCount + '</b></div>'
-            }
-            else{
+            } else {
                 html += '<div>' + i8ln('Total') + ': <b>' + totalCount + '</b></div>'
             }
             if (!noPoi && totalPoiCount > 0) {
