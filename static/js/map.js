@@ -737,7 +737,7 @@ function showS2Cells(level, style) {
                         totalCount++
                     } else {
                         sponsoredGymCount++
-                    }                    
+                    }
                 }
             })
             $.each(mapData.pois, function (key, item) {
@@ -789,7 +789,7 @@ function showS2Cells(level, style) {
                 '<div>' + i8ln('Pokéstops in cell') + ': <b>' + stopCount + '</b></div>'
             if (sponsoredStopCount > 0) {
                 html += '<div>' + i8ln('Sponsored Pokéstops in cell') + ': <b>' + sponsoredStopCount + '</b></div>'
-            }            
+            }
             if (sponsoredGymCount > 0) {
                 html += '<div>' + i8ln('Sponsored Gyms in cell') + ': <b>' + sponsoredGymCount + '</b></div>'
             }
