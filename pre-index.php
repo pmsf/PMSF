@@ -2089,6 +2089,7 @@ if ($blockIframe) {
     var weatherSpritesSrc = '<?php echo $copyrightSafe ? 'static/sprites-safe/' : 'static/sprites-pokemon/' ?>';
     var icons = '<?php echo $copyrightSafe ? 'static/icons-safe/' : $iconRepository ?>';
     var weatherColors = <?php echo json_encode($weatherColors); ?>;
+    var s2Colors = <?php echo json_encode($s2Colors); ?>;
     var mapType = '<?php echo strtolower($map); ?>';
     var mapFork = '<?php echo strtolower($fork); ?>';
     var triggerGyms = <?php echo $triggerGyms ?>;
@@ -2127,6 +2128,7 @@ if ($blockIframe) {
     var noEditPoi = <?php echo $noEditPoi === true ? 'true' : 'false' ?>;
     var noMarkPoi = <?php echo $noMarkPoi === true ? 'true' : 'false' ?>;
     var noPortals = <?php echo $noPortals === true ? 'true' : 'false' ?>;
+    var noPoi = <?php echo $noPoi === true ? 'true' : 'false' ?>;
     var enableS2Cells = <?php echo $noS2Cells ? 'false' : $enableS2Cells ?>;
     var enableLevel13Cells = <?php echo $noS2Cells ? 'false' : $enableLevel13Cells ?>;
     var enableLevel14Cells = <?php echo $noS2Cells ? 'false' : $enableLevel14Cells ?>;
