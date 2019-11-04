@@ -1510,7 +1510,7 @@ function pokestopLabel(item) {
             }
             if (item['grunt_type_gender'] !== '') {
                 str += '<div>' + i8ln('Grunt-Gender') + ': <b>' + item['grunt_type_gender'] + '</b></div>'
-		    }
+            }
         }
         incidentEndStr = getTimeStr(item['incident_expiration'])
         str += '<div>' + i8ln('Expiration Time') + ': <b>' + incidentEndStr +
