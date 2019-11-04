@@ -1,19 +1,19 @@
 {
   "1": {
-    "type": "",
-    "grunt": "Blanche"
+    "type": "Blanche",
+    "grunt": ""
   },
   "2": {
-    "type": "",
-    "grunt": "Candela"
+    "type": "Candela",
+    "grunt": ""
   },
   "3": {
-    "type": "",
-    "grunt": "Spark"
+    "type": "Spark",
+    "grunt": ""
   },
   "4": {
     "type": "",
-    "grunt": "Male Grunt",
+    "grunt": "Male",
     "second_reward": "true",
     "encounters":{
         "first": ["001_00","004_00","007_00"],
@@ -23,7 +23,7 @@
   },
   "5": {
     "type": "",
-    "grunt": "Female Grunt",
+    "grunt": "Female",
     "second_reward": "false",
     "encounters":{
         "first": ["143_00","131_00"],
@@ -33,11 +33,11 @@
   },
   "6": {
     "type": "Bug",
-    "grunt": "Female Grunt"
+    "grunt": "Female"
   },
   "7": {
     "type": "Bug",
-    "grunt": "Male Grunt",
+    "grunt": "Male",
     "second_reward": "false",
     "encounters":{
         "first": ["013_00","048_00","123_00"],
@@ -47,11 +47,11 @@
   },
   "8": {
     "type": "Ghost",
-    "grunt": "Female Grunt"
+    "grunt": "Female"
   },
   "9": {
     "type": "Ghost",
-    "grunt": "Male Grunt",
+    "grunt": "Male",
     "second_reward": "false",
     "encounters":{
         "first": ["302_00","353_00","355_00"],
@@ -61,15 +61,15 @@
   },
   "10": {
     "type": "Dark",
-    "grunt": "Female Grunt"
+    "grunt": "Female"
   },
   "11": {
     "type": "Dark",
-    "grunt": "Male Grunt"
+    "grunt": "Male"
   },
   "12": {
     "type": "Dragon",
-    "grunt": "Female Grunt",
+    "grunt": "Female",
     "second_reward": "false",
     "encounters":{
         "first": ["147_00"],
@@ -79,19 +79,19 @@
   },
   "13": {
     "type": "Dragon",
-    "grunt": "Male Grunt"
+    "grunt": "Male"
   },
   "14": {
     "type": "Fairy",
-    "grunt": "Female Grunt"
+    "grunt": "Female"
   },
   "15": {
     "type": "Fairy",
-    "grunt": "Male Grunt"
+    "grunt": "Male"
   },
   "16": {
     "type": "Fighting",
-    "grunt": "Female Grunt",
+    "grunt": "Female",
     "second_reward": "false",
     "encounters":{
         "first": ["107_00"],
@@ -101,11 +101,11 @@
   },
   "17": {
     "type": "Fighting",
-    "grunt": "Male Grunt"
+    "grunt": "Male"
   },
   "18": {
     "type": "Fire",
-    "grunt": "Female Grunt",
+    "grunt": "Female",
     "second_reward": "true",
     "encounters":{
         "first": ["058_00","126_00","228_00"],
@@ -115,11 +115,11 @@
   },
   "19": {
     "type": "Fire",
-    "grunt": "Male Grunt"
+    "grunt": "Male"
   },
   "20": {
     "type": "Flying",
-    "grunt": "Female Grunt",
+    "grunt": "Female",
     "second_reward": "false",
     "encounters":{
         "first": ["041_00","042_00"],
@@ -129,15 +129,15 @@
   },
   "21": {
     "type": "Flying",
-    "grunt": "Male Grunt"
+    "grunt": "Male"
   },
   "22": {
     "type": "Grass",
-    "grunt": "Female Grunt"
+    "grunt": "Female"
   },
   "23": {
     "type": "Grass",
-    "grunt": "Male Grunt",
+    "grunt": "Male",
     "second_reward": "true",
     "encounters":{
         "first": ["273_00","331_00","387_00"],
@@ -147,11 +147,11 @@
   },
   "24": {
     "type": "Ground",
-    "grunt": "Female Grunt"
+    "grunt": "Female"
   },
   "25": {
     "type": "Ground",
-    "grunt": "Male Grunt",
+    "grunt": "Male",
     "second_reward": "false",
     "encounters":{
         "first": ["104_00","246_00","328_00"],
@@ -161,27 +161,27 @@
   },
   "26": {
     "type": "Ice",
-    "grunt": "Female Grunt"
+    "grunt": "Female"
   },
   "27": {
     "type": "Ice",
-    "grunt": "Male Grunt"
+    "grunt": "Male"
   },
   "28": {
     "type": "Metal",
-    "grunt": "Female Grunt"
+    "grunt": "Female"
   },
   "29": {
     "type": "Metal",
-    "grunt": "Male Grunt"
+    "grunt": "Male"
   },
   "30": {
     "type": "Normal",
-    "grunt": "Female Grunt"
+    "grunt": "Female"
   },
   "31": {
     "type": "Normal",
-    "grunt": "Male Grunt",
+    "grunt": "Male",
     "second_reward": "true",
     "encounters":{
         "first": ["019_00","041_00"],
@@ -191,7 +191,7 @@
   },
   "32": {
     "type": "Poison",
-    "grunt": "Female Grunt",
+    "grunt": "Female",
     "second_reward": "true",
     "encounters":{
         "first": ["041_00","048_00","088_00"],
@@ -201,15 +201,15 @@
   },
   "33": {
     "type": "Poison",
-    "grunt": "Male Grunt"
+    "grunt": "Male"
   },
   "34": {
     "type": "Psychic",
-    "grunt": "Female Grunt"
+    "grunt": "Female"
   },
   "35": {
     "type": "Psychic",
-    "grunt": "Male Grunt",
+    "grunt": "Male",
     "second_reward": "true",
     "encounters":{
         "first": ["063_00","096_00","280_00"],
@@ -219,11 +219,11 @@
   },
   "36": {
     "type": "Rock",
-    "grunt": "Female Grunt"
+    "grunt": "Female"
   },
   "37": {
     "type": "Rock",
-    "grunt": "Male Grunt",
+    "grunt": "Male",
     "second_reward": "false",
     "encounters":{
         "first": ["246_00"],
@@ -233,7 +233,7 @@
   },
   "38": {
     "type": "Water",
-    "grunt": "Female Grunt",
+    "grunt": "Female",
     "second_reward": "false",
     "encounters":{
         "first": ["054_00","060_00"],
@@ -243,7 +243,7 @@
   },
   "39": {
     "type": "Water",
-    "grunt": "Male Grunt",
+    "grunt": "Male",
     "second_reward": "false",
     "encounters":{
         "first": ["129_00"],
@@ -252,7 +252,47 @@
     }
   },
   "40": {
-    "type": "",
-    "grunt": "Player Team Leader"
+    "type": "Player Team Leader",
+    "grunt": ""
+  },
+  "41": {
+    "type": "Executive Cliff",
+    "grunt": ""
+  },
+  "42": {
+    "type": "Executive Arlo",
+    "grunt": ""
+  },
+  "43": {
+    "type": "Executive Sierra",
+    "grunt": ""
+  },
+  "44": {
+    "type": "Giovanni",
+    "grunt": ""
+  },
+  "45": {
+    "type": "Decoy",
+    "grunt": "Male"
+  },
+  "46": {
+    "type": "Decoy",
+    "grunt": "Female"
+  },
+  "47": {
+    "type": "Ghost",
+    "grunt": "Female"
+  },
+  "48": {
+    "type": "Ghost",
+    "grunt": "Male"
+  },
+  "49": {
+    "type": "Electric",
+    "grunt": "Female"
+  },
+  "50": {
+    "type": "Electric",
+    "grunt": "Male"
   }
 }
