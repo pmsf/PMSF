@@ -277,9 +277,9 @@ function countMarkers(map) { // eslint-disable-line no-unused-vars
         for (i = 0; i < spawnpointCount.length; i++) {
             if (spawnpointCount[i] > 0) {
                 if (i === 1) {
-                    spawnpointListString += '<tr><td><img src="static/images/green.png" style="height:48px;"/></td><td style="vertical-align:middle;">Known</td><td style="vertical-align:middle;">' + spawnpointCount[i] + '</td><td style="vertical-align:middle;">' + Math.round(spawnpointCount[i] * 100 / spawnpointTotal * 10) / 10 + '%</td></tr>'
+                    spawnpointListString += '<tr><td><img src="static/images/green.png" style="height:48px;"/></td><td style="vertical-align:middle;">' + i8ln('Known') + '</td><td style="vertical-align:middle;">' + spawnpointCount[i] + '</td><td style="vertical-align:middle;">' + Math.round(spawnpointCount[i] * 100 / spawnpointTotal * 10) / 10 + '%</td></tr>'
                 } else if (i === 2) {
-                    spawnpointListString += '<tr><td><img src="static/images/red.png" style="height:48px;"/></td><td style="vertical-align:middle;">Unknown</td><td style="vertical-align:middle;">' + spawnpointCount[i] + '</td><td style="vertical-align:middle;">' + Math.round(spawnpointCount[i] * 100 / spawnpointTotal * 10) / 10 + '%</td></tr>'
+                    spawnpointListString += '<tr><td><img src="static/images/red.png" style="height:48px;"/></td><td style="vertical-align:middle;">' + i8ln('Unknown') + '</td><td style="vertical-align:middle;">' + spawnpointCount[i] + '</td><td style="vertical-align:middle;">' + Math.round(spawnpointCount[i] * 100 / spawnpointTotal * 10) / 10 + '%</td></tr>'
                 }
             }
         }
