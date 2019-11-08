@@ -1774,6 +1774,10 @@ function addRangeCircle(marker, map, type, teamId) {
             circleColor = teamColor
             range = 40
             break
+		case 'poi':
+			circleColor = '#303030'
+			range = 20
+			break
     }
 
     var rangeCircleOpts = {
@@ -2613,6 +2617,10 @@ function setupPoiMarker(item) {
     var marker = L.marker([item['lat'], item['lon']], {icon: poiMarkerIcon, zIndexOffset: 1020}).bindPopup(poiLabel(item), {autoPan: false, closeOnClick: false, autoClose: false, virtual: true})
     markers.addLayer(marker)
     addListeners(marker)
+
+	if (!marker.rangeCircle && isRangeActive(map)) {
+        marker.rangeCircle = addRangeCircle(marker, map, 'poi')
+    }
 
     return marker
 }
@@ -6863,7 +6871,7 @@ $(function () {
     $('#spawnpoints-switch').change(function () {
         buildSwitchChangeListener(mapData, ['spawnpoints'], 'showSpawnpoints').bind(this)()
     })
-    $('#ranges-switch').change(buildSwitchChangeListener(mapData, ['gyms', 'pokemons', 'pokestops'], 'showRanges'))
+    $('#ranges-switch').change(buildSwitchChangeListener(mapData, ['gyms', 'pokemons', 'pokestops', 'pois'], 'showRanges'))
 
     $('#scan-area-switch').change(function () {
         Store.set('showScanPolygon', this.checked)
