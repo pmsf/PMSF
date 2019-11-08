@@ -392,6 +392,7 @@ function initMap() { // eslint-disable-line no-unused-vars
     map.addLayer(markers)
     markersnotify = L.layerGroup().addTo(map)
     map.on('zoom', function () {
+        updateS2Overlay()
         if (storeZoom === true) {
             Store.set('zoomLevel', map.getZoom())
         } else {
@@ -447,6 +448,7 @@ function initMap() { // eslint-disable-line no-unused-vars
 
     map.on('click', function (e) {
         if ($('.submit-on-off-button').hasClass('on')) {
+            updateS2Overlay()
             $('.submitLatitude').val(e.latlng.lat)
             $('.submitLongitude').val(e.latlng.lng)
             $('.ui-dialog').remove()
@@ -817,7 +819,9 @@ function showS2Cells(level, style) {
                 }
                 html += '<div>' + i8ln('Total POI') + ': <b>' + totalPoiCount + '</b></div>'
             }
-            poly.bindPopup(html, {autoPan: false, closeOnClick: false, autoClose: false})
+            if (!$('.submit-on-off-button').hasClass('on')) {
+                poly.bindPopup(html, {autoPan: false, closeOnClick: false, autoClose: false})
+            }
         }
         if (cell.level === 13) {
             exLayerGroup.addLayer(poly)
