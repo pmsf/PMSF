@@ -285,11 +285,23 @@
   },
   "48": {
     "type": "Ghost",
-    "grunt": "Male"
+    "grunt": "Male",
+    "second_reward": "false",
+    "encounters":{
+        "first": ["302_00","353_00","355_00"],
+        "second":["302_00","354_00","356_00"],
+        "third":["302_00","354_00","477_00"]
+    }
   },
   "49": {
     "type": "Electric",
-    "grunt": "Female"
+    "grunt": "Female",
+    "second_reward": "false",
+    "encounters":{
+        "first": ["125_00","179_00"],
+        "second":["125_00","180_00"],
+        "third":["125_00","181_00"]
+    }
   },
   "50": {
     "type": "Electric",
