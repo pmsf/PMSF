@@ -2981,15 +2981,29 @@ function setupPoiMarker(item) {
     }
     var html = '<div><span class="' + dot + '" style="width:20px;height:20px;"></span></div>'
     var poiMarkerIcon = L.divIcon({
-        iconSize: [36, 48],
-        iconAnchor: [10, 16],
-        popupAnchor: [8, -10],
+        iconSize: [20, 20],
+        iconAnchor: [18, 18],
+        popupAnchor: [0, -10],
         className: 'marker-poi',
         html: html
     })
     var marker = L.marker([item['lat'], item['lon']], {icon: poiMarkerIcon, zIndexOffset: 1020}).bindPopup(poiLabel(item), {autoPan: false, closeOnClick: false, autoClose: false, virtual: true})
     markers.addLayer(marker)
     addListeners(marker)
+
+    var circleCenter = L.latLng(item['lat'], item['lon'])
+    var rangeCircleOpts = {
+        color: '#C233F2',
+        radius: 20, // meters
+        strokeWeight: 1,
+        strokeColor: '#C233F2',
+        strokeOpacity: 0.9,
+        center: circleCenter,
+        fillColor: '#C233F2',
+        fillOpacity: 0.4
+    }
+    var rangeCircle = L.circle(circleCenter, rangeCircleOpts)
+    markers.addLayer(rangeCircle)
 
     return marker
 }
