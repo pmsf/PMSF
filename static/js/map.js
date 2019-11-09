@@ -2206,7 +2206,15 @@ function getPokestopMarkerIcon(item) {
     } else {
         lastMidnight = 0
     }
-    if (!noTeamRocket && item['incident_expiration'] > Date.now()) {
+    if (Store.get(['showPokestops']) && !Store.get(['showQuests']) && !Store.get(['showLures']) && !Store.get(['showRocket'])) {
+        stopMarker = L.divIcon({
+            iconSize: [31, 31],
+            iconAnchor: [25, 45],
+            popupAnchor: [0, -35],
+            className: 'stop-marker',
+            html: '<div><img src="static/forts/Pstop.png" style="width:50px;height:72;top:-35px;right:10px;"/></div>'
+        })
+    } else if (Store.get(['showRocket']) && !noTeamRocket && item['incident_expiration'] > Date.now()) {
         var lureStr = ''
         if (!noLures && item['lure_expiration'] > Date.now()) {
             lureStr = 'Lured_' + item['lure_id']
@@ -2227,7 +2235,7 @@ function getPokestopMarkerIcon(item) {
             className: 'stop-rocket-marker',
             html: html
         })
-    } else if (!noQuests && item['quest_reward_type'] !== null && lastMidnight < Number(item['quest_timestamp'])) {
+    } else if (Store.get(['showQuests']) && !noQuests && item['quest_reward_type'] !== null && lastMidnight < Number(item['quest_timestamp'])) {
         var stopQuestIcon = 'PstopQuest.png'
         if (!noLures && item['lure_expiration'] > Date.now()) {
             stopQuestIcon = 'PstopLured_' + item['lure_id'] + '.png'
@@ -2287,7 +2295,7 @@ function getPokestopMarkerIcon(item) {
                 html: html
             })
         }
-    } else if (!noLures && item['lure_expiration'] > Date.now()) {
+    } else if (Store.get(['showLures']) && !noLures && item['lure_expiration'] > Date.now()) {
         html = '<div><img src="static/forts/PstopLured_' + item['lure_id'] + '.png" style="width:50px;height:72;top:-35px;right:10px;"/><div>'
         stopMarker = L.divIcon({
             iconSize: [31, 31],
@@ -2307,7 +2315,6 @@ function getPokestopMarkerIcon(item) {
     }
     return stopMarker
 }
-
 function setupPokestopMarker(item) {
     var pokestopMarkerIcon = getPokestopMarkerIcon(item)
     var marker
@@ -6938,6 +6945,8 @@ $(function () {
             lastpokestops = false
             updateMap()
         }
+        jQuery('label[for="pokestops-switch"]').click()
+        jQuery('label[for="pokestops-switch"]').click()
         return buildSwitchChangeListener(mapData, ['pokestops'], 'showLures').bind(this)()
     })
 
@@ -6966,6 +6975,8 @@ $(function () {
             rocketWrapper.hide(options)
             updateMap()
         }
+        jQuery('label[for="pokestops-switch"]').click()
+        jQuery('label[for="pokestops-switch"]').click()
         return buildSwitchChangeListener(mapData, ['pokestops'], 'showRocket').bind(this)()
     })
 
@@ -6992,6 +7003,8 @@ $(function () {
             wrapper.hide(options)
             updateMap()
         }
+        jQuery('label[for="pokestops-switch"]').click()
+        jQuery('label[for="pokestops-switch"]').click()
         return buildSwitchChangeListener(mapData, ['pokestops'], 'showQuests').bind(this)()
     })
 
