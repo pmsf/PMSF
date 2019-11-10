@@ -7001,8 +7001,11 @@ $(function () {
     $('#rocket-timer-switch').change(function () {
         Store.set('showRocketTimer', this.checked)
         lastpokestops = false
-        jQuery('label[for="rocket-switch"]').click()
-        jQuery('label[for="rocket-switch"]').click()
+        $.each(mapData.pokestops, function (key, value) {
+            markers.removeLayer(value.marker)
+            markersnotify.removeLayer(value.marker)
+            value.marker = setupPokestopMarker(value)
+        })
         buildSwitchChangeListener(mapData, ['pokestops'], 'showRocketTimer').bind(this)()
     })
 
