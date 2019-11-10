@@ -2207,6 +2207,11 @@ function getPokestopMarkerIcon(item) {
     } else {
         lastMidnight = 0
     }
+    var lureStr = ''
+    var stopQuestIcon = 'PstopQuest.png'
+    var pokemonIdStr = ''
+    var formStr = ''
+    var shinyStr = ''
     if (Store.get(['showPokestops']) && !Store.get(['showQuests']) && !Store.get(['showLures']) && !Store.get(['showRocket']) && !Store.get(['showAllPokestops'])) {
         stopMarker = L.divIcon({
             iconSize: [31, 31],
@@ -2217,7 +2222,6 @@ function getPokestopMarkerIcon(item) {
         })
     } else if (Store.get(['showAllPokestops']) && !noAllPokestops) {
         if (!noTeamRocket && item['incident_expiration'] > Date.now()) {
-            var lureStr = ''
             if (!noLures && item['lure_expiration'] > Date.now()) {
                 lureStr = 'Lured_' + item['lure_id']
             }
@@ -2238,12 +2242,10 @@ function getPokestopMarkerIcon(item) {
                 html: html
             })
         } else if (!noQuests && item['quest_reward_type'] !== null && lastMidnight < Number(item['quest_timestamp'])) {
-            var stopQuestIcon = 'PstopQuest.png'
             if (!noLures && item['lure_expiration'] > Date.now()) {
                 stopQuestIcon = 'PstopLured_' + item['lure_id'] + '.png'
             }
             if (item['quest_reward_type'] === 7) {
-                var pokemonIdStr = ''
                 if (item['quest_pokemon_id'] <= 9) {
                     pokemonIdStr = '00' + item['quest_pokemon_id']
                 } else if (item['quest_pokemon_id'] <= 99) {
@@ -2251,13 +2253,11 @@ function getPokestopMarkerIcon(item) {
                 } else {
                     pokemonIdStr = item['quest_pokemon_id']
                 }
-                var formStr = ''
                 if (item['quest_pokemon_formid'] === 0) {
                     formStr = '00'
                 } else {
                     formStr = item['quest_pokemon_formid']
                 }
-                var shinyStr = ''
                 if (item['quest_pokemon_shiny'] === 'true') {
                     shinyStr = '_shiny'
                 }
@@ -2316,7 +2316,6 @@ function getPokestopMarkerIcon(item) {
             })
         }
     } else if (Store.get(['showRocket']) && !noTeamRocket && item['incident_expiration'] > Date.now()) {
-        var lureStr = ''
         if (!noLures && item['lure_expiration'] > Date.now()) {
             lureStr = 'Lured_' + item['lure_id']
         }
@@ -2337,12 +2336,10 @@ function getPokestopMarkerIcon(item) {
             html: html
         })
     } else if (Store.get(['showQuests']) && !noQuests && item['quest_reward_type'] !== null && lastMidnight < Number(item['quest_timestamp'])) {
-        var stopQuestIcon = 'PstopQuest.png'
         if (!noLures && item['lure_expiration'] > Date.now()) {
             stopQuestIcon = 'PstopLured_' + item['lure_id'] + '.png'
         }
         if (item['quest_reward_type'] === 7) {
-            var pokemonIdStr = ''
             if (item['quest_pokemon_id'] <= 9) {
                 pokemonIdStr = '00' + item['quest_pokemon_id']
             } else if (item['quest_pokemon_id'] <= 99) {
@@ -2350,13 +2347,11 @@ function getPokestopMarkerIcon(item) {
             } else {
                 pokemonIdStr = item['quest_pokemon_id']
             }
-            var formStr = ''
             if (item['quest_pokemon_formid'] === 0) {
                 formStr = '00'
             } else {
                 formStr = item['quest_pokemon_formid']
             }
-            var shinyStr = ''
             if (item['quest_pokemon_shiny'] === 'true') {
                 shinyStr = '_shiny'
             }
