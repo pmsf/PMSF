@@ -204,6 +204,9 @@ $noPokestops = false;
 $enablePokestops = 'false';
 $hidePokestopCoords = false;
 
+$noAllPokestops = false;
+$enableAllPokestops = 'false';
+
 $noLures = false;
 $enableLured = 'false';
 

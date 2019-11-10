@@ -523,6 +523,19 @@ if ($blockIframe) {
                 } ?>
                     <div id="pokestops-filter-wrapper" style="display:none">
                 <?php
+                if (! $noAllPokestops) {
+                    echo '<div class="form-control switch-container" style="float:none;height:35px;margin-bottom:0px;">
+                    <h3>' . i8ln('All Pokéstops') . '</h3>
+                    <div class="onoffswitch">
+                        <input id="allPokestops-switch" type="checkbox" name="allPokestops-switch" class="onoffswitch-checkbox" checked>
+                        <label class="onoffswitch-label" for="allPokestops-switch">
+                            <span class="switch-label" data-on="On" data-off="Off"></span>
+                            <span class="switch-handle"></span>
+                        </label>
+                    </div>
+                </div>';
+                ?>
+                <?php
                 if (! $noLures) {
                     echo '<div class="form-control switch-container" style="float:none;height:35px;margin-bottom:0px;">
                     <h3>' . i8ln('Lures only') . '</h3>
@@ -2070,6 +2083,8 @@ if ($blockIframe) {
     var noQuests = <?php echo $noQuests === true ? 'true' : 'false' ?>;
     var noLures = <?php echo $noLures === true ? 'true' : 'false' ?>;
     var noTeamRocket = <?php echo $noTeamRocket === true ? 'true' : 'false' ?>;
+    var noAllPokestops = <?php echo $noAllPokestops === true ? 'true' : 'false' ?>;
+    var enableAllPokestops = <?php echo $noAllPokestops ? 'false' : $enableAllPokestops ?>;
     var enableQuests = <?php echo $noQuests ? 'false' : $enableQuests ?>;
     var hideQuestsPokemon = <?php echo $noQuestsPokemon ? '[]' : $hideQuestsPokemon ?>;
     var hideQuestsItem = <?php echo $noQuestsItems ? '[]' : $hideQuestsItem ?>;
