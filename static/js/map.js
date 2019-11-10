@@ -7046,8 +7046,11 @@ $(function () {
             lastpokestops = false
             updateMap()
         }
-        jQuery('label[for="pokestops-switch"]').click()
-        jQuery('label[for="pokestops-switch"]').click()
+        $.each(mapData.pokestops, function (key, value) {
+            markers.removeLayer(value.marker)
+            markersnotify.removeLayer(value.marker)
+            value.marker = setupPokestopMarker(value)
+        })
         return buildSwitchChangeListener(mapData, ['pokestops'], 'showAllPokestops').bind(this)()
     })
 
@@ -7078,8 +7081,11 @@ $(function () {
             lastpokestops = false
             updateMap()
         }
-        jQuery('label[for="pokestops-switch"]').click()
-        jQuery('label[for="pokestops-switch"]').click()
+        $.each(mapData.pokestops, function (key, value) {
+            markers.removeLayer(value.marker)
+            markersnotify.removeLayer(value.marker)
+            value.marker = setupPokestopMarker(value)
+        })
         return buildSwitchChangeListener(mapData, ['pokestops'], 'showLures').bind(this)()
     })
 
@@ -7112,8 +7118,11 @@ $(function () {
             rocketWrapper.hide(options)
             updateMap()
         }
-        jQuery('label[for="pokestops-switch"]').click()
-        jQuery('label[for="pokestops-switch"]').click()
+        $.each(mapData.pokestops, function (key, value) {
+            markers.removeLayer(value.marker)
+            markersnotify.removeLayer(value.marker)
+            value.marker = setupPokestopMarker(value)
+        })
         return buildSwitchChangeListener(mapData, ['pokestops'], 'showRocket').bind(this)()
     })
 
@@ -7144,8 +7153,11 @@ $(function () {
             wrapper.hide(options)
             updateMap()
         }
-        jQuery('label[for="pokestops-switch"]').click()
-        jQuery('label[for="pokestops-switch"]').click()
+        $.each(mapData.pokestops, function (key, value) {
+            markers.removeLayer(value.marker)
+            markersnotify.removeLayer(value.marker)
+            value.marker = setupPokestopMarker(value)
+        })
         return buildSwitchChangeListener(mapData, ['pokestops'], 'showQuests').bind(this)()
     })
 
