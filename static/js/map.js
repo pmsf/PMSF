@@ -6842,6 +6842,10 @@ $(function () {
         buildSwitchChangeListener(mapData, ['gyms'], 'showGyms').bind(this)()
     })
     $('#nests-switch').change(function () {
+        if (!this.checked && Store.get('showNestPolygon') === true) {
+            Store.set('showNestPolygon', false)
+            $('#nest-polygon-switch').prop('checked', false)
+        }
         var options = {
             'duration': 500
         }
