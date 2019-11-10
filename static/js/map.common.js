@@ -254,6 +254,11 @@ var StoreOptions = {
             default: enablePokestops,
             type: StoreTypes.Boolean
         },
+    'showAllPokestops':
+        {
+            default: enableAllPokestops,
+            type: StoreTypes.Boolean
+        },
     'showLures':
         {
             default: enableLured,
