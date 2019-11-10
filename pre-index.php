@@ -534,7 +534,7 @@ if ($blockIframe) {
                         </label>
                     </div>
                 </div>';
-                ?>
+                } ?>
                 <?php
                 if (! $noLures) {
                     echo '<div class="form-control switch-container" style="float:none;height:35px;margin-bottom:0px;">
