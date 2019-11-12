@@ -85,6 +85,7 @@
     "hidePokemonCoords": true,
     "hidePokestopCoords": true,
     "hideGymCoords": true,
+    "hideNestCoords": true,
     "notifyPokemon": true,
     "notifyRarity": true,
     "notifyIv": true,
