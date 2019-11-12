@@ -416,6 +416,7 @@ $noEditCommunity = true;
 //-----------------------------------------------------
 $noNests = true;                                                   // true/false
 $enableNests = 'false';                                             // true/false
+$hideNestCoords = false;
 $noManualNests = true;
 $noDeleteNests = true;
 $deleteNestsOlderThan = 42;					    // days after not updated nests are removed from database by nest cron
