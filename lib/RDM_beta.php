@@ -224,7 +224,7 @@ class RDM_beta extends RDM
         return $data;
     }
 
-    public function get_stops($qpeids, $qieids, $swLat, $swLng, $neLat, $neLng, $tstamp = 0, $oSwLat = 0, $oSwLng = 0, $oNeLat = 0, $oNeLng = 0, $lures, $rocket, $quests, $dustamount)
+    public function get_stops($geids, $qpeids, $qieids, $swLat, $swLng, $neLat, $neLng, $tstamp = 0, $oSwLat = 0, $oSwLng = 0, $oNeLat = 0, $oNeLng = 0, $lures, $rocket, $quests, $dustamount)
     {
         $conds = array();
         $params = array();
@@ -280,6 +280,23 @@ class RDM_beta extends RDM
             }
             $conds[] = "(" . $pokemonSQL . " OR " . $itemSQL . ")" . $dustSQL . "";
         }
+        if (!empty($rocket) && $rocket === 'true') {
+            $rocketSQL = '';
+            if (count($geids)) {
+                $rocket_in = '';
+                $r = 1;
+                foreach ($geids as $geid) {
+                    $params[':rqry_' . $r . "_"] = $geid;
+                    $rocket_in .= ':rqry_' . $r . "_,";
+                    $r++;
+                }
+                $rocket_in = substr($rocket_in, 0, -1);
+                $rocketSQL .= "grunt_type NOT IN ( $rocket_in )";
+            } else {
+                $rocketSQL .= "grunt_type IS NOT NULL";
+            }
+            $conds[] = "" . $rocketSQL . "";
+        }
         if ($oSwLat != 0) {
             $conds[] = "NOT (lat > :oswLat AND lon > :oswLng AND lat < :oneLat AND lon < :oneLng)";
             $params[':oswLat'] = $oSwLat;
@@ -291,10 +308,6 @@ class RDM_beta extends RDM
             $conds[] = "lure_expire_timestamp > :time";
             $params[':time'] = time();
         }
-        if (!empty($rocket) && $rocket === 'true') {
-            $conds[] = "incident_expire_timestamp > :time";
-            $params[':time'] = time();
-        }
         if ($tstamp > 0) {
             $conds[] = "updated > :lastUpdated";
             $params[':lastUpdated'] = $tstamp;
@@ -303,8 +316,9 @@ class RDM_beta extends RDM
     }
 
 
-    public function get_stops_quest($qpreids, $qireids, $swLat, $swLng, $neLat, $neLng, $tstamp = 0, $oSwLat = 0, $oSwLng = 0, $oNeLat = 0, $oNeLng = 0, $lures, $rocket, $quests, $dustamount, $reloaddustamount)
+    public function get_stops_quest($greids, $qpreids, $qireids, $swLat, $swLng, $neLat, $neLng, $tstamp = 0, $oSwLat = 0, $oSwLng = 0, $oNeLat = 0, $oNeLng = 0, $lures, $rocket, $quests, $dustamount, $reloaddustamount)
     {
+		file_put_contents('log.txt', print_r($rocket, true), FILE_APPEND);
         $conds = array();
         $params = array();
         $conds[] = "lat > :swLat AND lon > :swLng AND lat < :neLat AND lon < :neLng";
@@ -344,6 +358,21 @@ class RDM_beta extends RDM
             if ($reloaddustamount == "true") {
                 $tmpSQL .= "(json_extract(json_extract(`quest_rewards`,'$[*].type'),'$[0]') = 3 AND json_extract(json_extract(`quest_rewards`,'$[*].info.amount'),'$[0]') > :amount)";
                 $params[':amount'] = intval($dustamount);
+            }
+            $conds[] = $tmpSQL;
+        }
+        if (!empty($rocket) && $rocket === 'true') {
+            $tmpSQL = '';
+            if (count($greids)) {
+                $rocket_in = '';
+                $r = 1;
+                foreach ($greids as $greid) {
+                    $params[':rqry_' . $r . "_"] = $greid;
+                    $rocket_in .= ':rqry_' . $r . "_,";
+                    $r++;
+                }
+                $rocket_in = substr($rocket_in, 0, -1);
+                $tmpSQL .= "grunt_type IN ( $rocket_in )";
             }
             $conds[] = $tmpSQL;
         }

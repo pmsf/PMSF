@@ -215,13 +215,20 @@ $enablePokestops = 'false';                                         // true/fals
 $hidePokestopCoords = false;
 $noAllPokestops = false;
 $enableAllPokestops = 'false';
+
 $noLures = false;                                                   // true/false
 $enableLured = 'false';                                             // true/false
+
 $noTeamRocket = false;
 $noTeamRocketTimer = false;                                         // true/false
 $enableTeamRocketTimer = 'false';                                   // true/false
 $enableTeamRocket = 'false';
 $noTeamRocketEncounterData = true;
+$noGrunts = false;
+$noGruntNumbers = false;
+$hideGrunts = [];
+$excludeGrunts = [];
+
 $noQuests = true;                                                  // true/false
 $enableQuests = 'false';                                            // true/false
 $noQuestsItems = false;
