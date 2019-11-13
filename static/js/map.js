@@ -2520,8 +2520,12 @@ function nestLabel(item) {
     if (!noManualNests) {
         str += '<center><div>' + i8ln('Add Nest') + ' <i class="fas fa-binoculars submit-nest" onclick="openNestModal(event);" data-id="' + item['nest_id'] + '"></i></div></center>'
     }
+    var coordText = item.lat.toFixed(6) + ', ' + item.lon.toFixed(7)
+    if (hideNestCoords === true) {
+        coordText = i8ln('Directions')
+    }
     str += '<center><div>' +
-        '<a href="javascript:void(0)" onclick="javascript:openMapDirections(' + item.lat + ',' + item.lon + ')" title="' + i8ln('View in Maps') + '"><i class="fas fa-road"></i> ' + item.lat.toFixed(6) + ', ' + item.lon.toFixed(7) + '</a> - <a href="./?lat=' + item.lat + '&lon=' + item.lon + '&zoom=16"><i class="far fa-share-square" aria-hidden="true" style="position:relative;top:3px;left:0px;color:#26c300;font-size:20px;"></i></a>' +
+        '<a href="javascript:void(0)" onclick="javascript:openMapDirections(' + item.lat + ',' + item.lon + ')" title="' + i8ln('View in Maps') + '"><i class="fas fa-road"></i> ' + coordText + '</a> - <a href="./?lat=' + item.lat + '&lon=' + item.lon + '&zoom=16"><i class="far fa-share-square" aria-hidden="true" style="position:relative;top:3px;left:0px;color:#26c300;font-size:20px;"></i></a>' +
         '</div></center>'
     if ((!noWhatsappLink) && (item.pokemon_id > 0)) {
         str += '<div>' +
