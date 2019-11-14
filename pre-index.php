@@ -2045,6 +2045,8 @@ if ($blockIframe) {
     var mapStyle = '<?php echo $mapStyle ?>';
     var gmapsKey = '<?php echo $gmapsKey ?>';
     var mBoxKey = '<?php echo $mBoxKey ?>';
+    var noCustomTileServer = <?php echo $noCustomTileServer === true ? 'true' : 'false' ?>;
+    var customTileServerAddress = '<?php echo $customTileServerAddress ?>';
     var hidePokemon = <?php echo $noHidePokemon ? '[]' : $hidePokemon ?>;
     var excludeMinIV = <?php echo $noExcludeMinIV ? '[]' : $excludeMinIV ?>;
     var minIV = <?php echo $noMinIV ? '""' : $minIV ?>;
