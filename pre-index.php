@@ -701,7 +701,7 @@ if (strtolower($map) === "rdm") {
                                             <div class="quest-item-container">
                                                 <input id="exclude-quests-item" type="text" readonly="true">
                                                 <?php
-                                                    if ($generateExcludeQuestsPokemon === true) {
+                                                    if ($generateExcludeQuestsItem === true) {
                                                         itemFilterImages($noItemNumbers, '', array_diff(range(1, $numberOfItem), $getList->generated_exclude_list('itemlist')), 9);
                                                     } else {
                                                         itemFilterImages($noItemNumbers, '', $excludeQuestsItem, 9);
