@@ -199,6 +199,9 @@
     "enableLiveScan": true,
     "deviceOfflineAfterSeconds": true,
     "noPoi": true,
-    "hideGrunts": true
+    "hideGrunts": true,
+    "numberOfPokemon": true,
+    "numberOfItem": true,
+    "numberOfGrunt": true
   }
 }
