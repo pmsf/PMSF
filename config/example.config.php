@@ -111,6 +111,11 @@ $faviconPath = '';                                                  // Upload fa
 
 /* IMGBB API */
 $imgurCID = "";
+
+/* Counts */
+$numberOfPokemon = 649;
+$numberOfItem = 1405;
+$numberOfGrunt = 50;
 //-----------------------------------------------------
 // Login
 //-----------------------------------------------------
@@ -215,6 +220,10 @@ $enableTeamRocket = 'false';
 $noTeamRocketTimer = false;
 $enableTeamRocketTimer = 'false';
 $noTeamRocketEncounterData = true; // Show/Hide possible rewards. Requires grunttype.json to be up to date.
+$noGrunts = false;
+$noGruntNumbers = false;
+$hideGrunts = [];
+$excludeGrunts = [];
 
 $noQuests = false;
 $enableQuests = 'false';

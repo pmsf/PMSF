@@ -16,6 +16,15 @@ if (! empty($_GET['lat']) && ! empty($_GET['lon'])) {
 if ($blockIframe) {
     header('X-Frame-Options: DENY');
 }
+if (strtolower($map) === "rdm") {
+    if (strtolower($fork) === "beta") {
+        $getList = new \Scanner\RDM_beta();
+    }
+} elseif (strtolower($map) === "rocketmap") {
+    if (strtolower($fork) === "mad") {
+        $getList = new \Scanner\RocketMap_MAD();
+    }
+}
 ?>
 <!DOCTYPE html>
 <html lang="<?= $locale ?>">
@@ -149,7 +158,37 @@ if ($blockIframe) {
         </script>
         <?php
     }
+    function gruntFilterImages($noGruntNumbers, $onClick = '', $gruntsToExclude = array(), $num = 0)
+    {
+        global $grunts;
+        if (empty($grunts)) {
+            $json = file_get_contents('static/dist/data/grunttype.min.json');
+            $grunts = json_decode($json, true);
+        }
+        echo '<div class="grunt-list-cont" id="grunt-list-cont-' . $num . '"><input type="hidden" class="search-number" value="' . $num . '" /><input class="search search-input" placeholder="' . i8ln("Search Name & ID") . '" /><div class="grunt-list list">';
+        $i = 0;
+        $z = 0;
+        foreach ($grunts as $g => $grunt) {
+            $type = $grunt['type'];
+            $gender = $grunt['grunt'];
 
+            if (! in_array($g, $gruntsToExclude)) {
+                echo '<span class="grunt-icon-sprite" data-value="' . $g . '" onclick="' . $onClick . '"><span style="display:none" class="gender">' . i8ln($gender) . '</span><span style="display:none" class="type">' . i8ln($type) . '</span><span style="display:none" class="id">' . $g . '</span><img src="static/grunttype/' . $g . '.png" style="width:48px;height:48px;"/>';
+                if (! $noGruntNumbers) {
+                    echo '<span class="grunt-number">' . $g . '</span>';
+                }
+                echo "</span>";
+            }
+        }
+        echo '</div></div>'; ?>
+        <script>
+            var options = {
+                valueNames: ['type', 'gender', 'id']
+            };
+            var gruntList = new List('grunt-list-cont-<?php echo $num; ?>', options);
+        </script>
+        <?php
+    }
     ?>
 
     <?php
@@ -577,6 +616,29 @@ if ($blockIframe) {
                     </div>
                     </div>';
                     } ?>
+                    <div id="grunt-tabs">
+                        <ul>
+                            <li><a href="#tabs-1"><?php echo i8ln('Team Rocket') ?></a></li>
+                        </ul>
+                        <div id="tabs-1">
+                            <div class="form-control-rocket hide-select-2">
+                                <label for="exclude-grunts">
+                                    <div class="grunts-container">
+                                        <input id="exclude-grunts" type="text" readonly="true">
+                                        <?php
+                                        if ($generateExcludeQuestsPokemon === true) {
+                                            gruntFilterImages($noGruntNumbers, '', array_diff(range(1, $numberOfGrunt), $getList->generated_exclude_list('gruntlist')), 10);
+                                        } else {
+                                            gruntFilterImages($noGruntNumbers, '', $excludeGrunts, 10);
+                                        } ?>
+                                    </div>
+                                    <a href="#" class="select-all-grunt"><?php echo i8ln('All') ?>
+                                        <div>
+                                    </a><a href="#" class="hide-all-grunt"><?php echo i8ln('None') ?> </a>
+                                </label>
+			    </div>
+                        </div>
+		    </div>
                 </div>
                 <?php
                 if (! $noQuests) {
@@ -606,7 +668,7 @@ if ($blockIframe) {
                                     <li><a href="#tabs-2"><?php echo i8ln('Items') ?></a></li>
                                     <?php
                                 } ?>
-                        </ul>
+                            </ul>
                             <?php
                             if (! $noQuestsPokemon) {
                                 ?>
@@ -617,22 +679,7 @@ if ($blockIframe) {
                                                 <input id="exclude-quests-pokemon" type="text" readonly="true">
                                                 <?php
                                                     if ($generateExcludeQuestsPokemon === true) {
-                                                        if (strtolower($fork) === "mad") {
-                                                            $questTable = 'trs_quest';
-                                                        } else {
-                                                            $questTable = 'pokestop';
-                                                        }
-        
-                                                        $pokestops = $db->query(
-                                                            "SELECT distinct quest_pokemon_id FROM " . $questTable . " WHERE quest_pokemon_id >= '1' AND DATE(FROM_UNIXTIME(quest_timestamp)) = CURDATE() order by quest_pokemon_id;"
-                                                        )->fetchAll(\PDO::FETCH_ASSOC);
-
-                                                        $data = array();
-                                                        foreach ($pokestops as $pokestop) {
-                                                            $data[] = $pokestop['quest_pokemon_id'];
-                                                        }
-                                                        $numberOfPokemon = 649;
-                                                        pokemonFilterImages($noPokemonNumbers, '', array_diff(range(1, $numberOfPokemon), $data), 8);
+                                                        pokemonFilterImages($noPokemonNumbers, '', array_diff(range(1, $numberOfPokemon), $getList->generated_exclude_list('pokemonlist')), 8);
                                                     } else {
                                                         pokemonFilterImages($noPokemonNumbers, '', $excludeQuestsPokemon, 8);
                                                     } ?>
@@ -654,7 +701,11 @@ if ($blockIframe) {
                                             <div class="quest-item-container">
                                                 <input id="exclude-quests-item" type="text" readonly="true">
                                                 <?php
-                                                itemFilterImages($noItemNumbers, '', $excludeQuestsItem, 9); ?>
+                                                    if ($generateExcludeQuestsPokemon === true) {
+                                                        itemFilterImages($noItemNumbers, '', array_diff(range(1, $numberOfItem), $getList->generated_exclude_list('itemlist')), 9);
+                                                    } else {
+                                                        itemFilterImages($noItemNumbers, '', $excludeQuestsItem, 9);
+                                                    } ?>
                                             </div>
                                             <a href="#" class="select-all-item"><?php echo i8ln('All') ?>
                                                 <div>
@@ -2083,6 +2134,7 @@ if ($blockIframe) {
     var noQuests = <?php echo $noQuests === true ? 'true' : 'false' ?>;
     var noLures = <?php echo $noLures === true ? 'true' : 'false' ?>;
     var noTeamRocket = <?php echo $noTeamRocket === true ? 'true' : 'false' ?>;
+    var hideGrunts = <?php echo $noTeamRocket ? '[]' : $hideGrunts ?>;
     var noAllPokestops = <?php echo $noAllPokestops === true ? 'true' : 'false' ?>;
     var enableAllPokestops = <?php echo $noAllPokestops ? 'false' : $enableAllPokestops ?>;
     var enableQuests = <?php echo $noQuests ? 'false' : $enableQuests ?>;
@@ -2180,6 +2232,9 @@ if ($blockIframe) {
     var noDeleteFortress = <?php echo $noDeleteFortress === true ? 'true' : 'false' ?>;
     var noDeleteGreenhouse = <?php echo $noDeleteGreenhouse === true ? 'true' : 'false' ?>;
     var noInvasionEncounterData = <?php echo $noTeamRocketEncounterData === true ? 'true' : 'false' ?>;
+    var numberOfPokemon = <?php echo $numberOfPokemon; ?>;
+    var numberOfItem = <?php echo $numberOfItem; ?>;
+    var numberOfGrunt = <?php echo $numberOfGrunt; ?>;
 </script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js"></script>
 <script src="static/dist/js/map.common.min.js"></script>
