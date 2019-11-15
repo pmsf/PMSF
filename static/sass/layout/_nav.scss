@@ -331,7 +331,7 @@
 
       .ui-tabs-panel{
         padding:0;
-        .form-control{
+        .form-control-rocket{
           float:none;
           .grunts-container{
             box-shadow:none!important;
@@ -360,7 +360,7 @@
       display: -webkit-flex;
       display:flex;
       align-items:center;
-      .form-control{
+      .form-control-rocket{
         label{
           display: -ms-flexbox;
           display: -webkit-flex;
@@ -431,8 +431,8 @@
     }
   }
 
-  .form-control > select,
-  .form-control > span {
+  .form-control-rocket > select,
+  .form-control-rocket > span {
     float: right;
   }
 

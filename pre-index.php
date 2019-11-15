@@ -610,21 +610,20 @@ if ($blockIframe) {
                     <div id="grunt-tabs">
                         <ul>
                             <li><a href="#tabs-1"><?php echo i8ln('Team Rocket') ?></a></li>
-                            <li><a href="#tabs-2"><?php echo i8ln('Female') ?></a></li>
                         </ul>
                         <div id="tabs-1">
-                        <div class="form-control hide-select-2">
-                            <label for="exclude-grunts">
-                                <div class="grunts-container">
-                                    <input id="exclude-grunts" type="text" readonly="true">
-                                    <?php
-                                    gruntFilterImages($noGruntNumbers, '', $excludeGrunts, 10); ?>
-                                </div>
-                                <a href="#" class="select-all-grunt"><?php echo i8ln('All') ?>
-                                    <div>
-                                </a><a href="#" class="hide-all-grunt"><?php echo i8ln('None') ?> </a>
-                            </label>
-			</div>
+                            <div class="form-control-rocket hide-select-2">
+                                <label for="exclude-grunts">
+                                    <div class="grunts-container">
+                                        <input id="exclude-grunts" type="text" readonly="true">
+                                        <?php
+                                        gruntFilterImages($noGruntNumbers, '', $excludeGrunts, 10); ?>
+                                    </div>
+                                    <a href="#" class="select-all-grunt"><?php echo i8ln('All') ?>
+                                        <div>
+                                    </a><a href="#" class="hide-all-grunt"><?php echo i8ln('None') ?> </a>
+                                </label>
+			    </div>
                         </div>
 		    </div>
                 </div>
