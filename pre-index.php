@@ -618,7 +618,7 @@ if (strtolower($map) === "rdm") {
                     } ?>
                     <div id="grunt-tabs">
                         <ul>
-                            <li><a href="#tabs-1"><?php echo i8ln('Team Rocket') ?></a></li>
+                            <li><a href="#tabs-1"><?php echo i8ln('Hide Team Rocket') ?></a></li>
                         </ul>
                         <div id="tabs-1">
                             <div class="form-control-rocket hide-select-2">
@@ -626,7 +626,7 @@ if (strtolower($map) === "rdm") {
                                     <div class="grunts-container">
                                         <input id="exclude-grunts" type="text" readonly="true">
                                         <?php
-                                        if ($generateExcludeQuestsPokemon === true) {
+                                        if ($generateExcludeGrunts === true) {
                                             gruntFilterImages($noGruntNumbers, '', array_diff(range(1, $numberOfGrunt), $getList->generated_exclude_list('gruntlist')), 10);
                                         } else {
                                             gruntFilterImages($noGruntNumbers, '', $excludeGrunts, 10);

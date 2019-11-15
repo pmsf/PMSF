@@ -224,6 +224,7 @@ $noGrunts = false;
 $noGruntNumbers = false;
 $hideGrunts = [];
 $excludeGrunts = [];
+$generateExcludeGrunts = true;
 
 $noQuests = false;
 $enableQuests = 'false';

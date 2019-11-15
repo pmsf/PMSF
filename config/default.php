@@ -233,6 +233,7 @@ $noGrunts = false;
 $noGruntNumbers = false;
 $hideGrunts = [];
 $excludeGrunts = [];
+$generateExcludeGrunts = true;
 
 $noQuests = true;                                                  // true/false
 $enableQuests = 'false';                                            // true/false
