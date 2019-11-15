@@ -162,7 +162,7 @@ class RocketMap_MAD extends RocketMap
 
         $query = "SELECT :select
         FROM pokemon p
-        INNER JOIN trs_spawn ts ON ts.spawnpoint = p.spawnpoint_id
+        LEFT JOIN trs_spawn ts ON ts.spawnpoint = p.spawnpoint_id
         WHERE :conditions";
 
         $query = str_replace(":select", $select, $query);
@@ -618,7 +618,7 @@ class RocketMap_MAD extends RocketMap
                 $data[] = $pokestop['quest_item_id'];
             }
         } elseif ($type === 'gruntlist') {
-            $pokestops = $db->query("SELECT distinct incident_grunt_type FROM pokestop WHERE incident_grunt_type > 0 AND incident_expiration > NOW() order by incident_grunt_type;")->fetchAll(\PDO::FETCH_ASSOC);
+            $pokestops = $db->query("SELECT distinct incident_grunt_type FROM pokestop WHERE incident_grunt_type > 0 AND incident_expiration > UTC_TIMESTAMP() order by incident_grunt_type;")->fetchAll(\PDO::FETCH_ASSOC);
             $data = array();
             foreach ($pokestops as $pokestop) {
                 $data[] = $pokestop['incident_grunt_type'];
