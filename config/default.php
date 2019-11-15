@@ -120,6 +120,11 @@ $noWhatsappLink = true;
 
 /* IMGBB API */
 $imgurCID = "";
+
+/* Counts */
+$numberOfPokemon = 649;
+$numberOfItem = 1405;
+$numberOfGrunt = 50;
 //-----------------------------------------------------
 // Login  - You need to create the two tables referenced in sql.sql
 //-----------------------------------------------------
@@ -215,13 +220,20 @@ $enablePokestops = 'false';                                         // true/fals
 $hidePokestopCoords = false;
 $noAllPokestops = false;
 $enableAllPokestops = 'false';
+
 $noLures = false;                                                   // true/false
 $enableLured = 'false';                                             // true/false
+
 $noTeamRocket = false;
 $noTeamRocketTimer = false;                                         // true/false
 $enableTeamRocketTimer = 'false';                                   // true/false
 $enableTeamRocket = 'false';
 $noTeamRocketEncounterData = true;
+$noGrunts = false;
+$noGruntNumbers = false;
+$hideGrunts = [];
+$excludeGrunts = [];
+
 $noQuests = true;                                                  // true/false
 $enableQuests = 'false';                                            // true/false
 $noQuestsItems = false;

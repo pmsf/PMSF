@@ -198,6 +198,10 @@
     "noInvasionEncounterData": true,
     "enableLiveScan": true,
     "deviceOfflineAfterSeconds": true,
-    "noPoi": true
+    "noPoi": true,
+    "hideGrunts": true,
+    "numberOfPokemon": true,
+    "numberOfItem": true,
+    "numberOfGrunt": true
   }
 }
