@@ -659,13 +659,13 @@ if (strtolower($map) === "rdm") {
                                 <?php
                                 if (! $noQuestsPokemon) {
                                     ?>
-                                    <li><a href="#tabs-1"><?php echo i8ln('Pokémon') ?></a></li>
+                                    <li><a href="#tabs-1"><?php echo i8ln('Hide Pokémon') ?></a></li>
                                     <?php
                                 } ?>
                                 <?php
                                 if (! $noQuestsItems) {
                                     ?>
-                                    <li><a href="#tabs-2"><?php echo i8ln('Items') ?></a></li>
+                                    <li><a href="#tabs-2"><?php echo i8ln('Hide Items') ?></a></li>
                                     <?php
                                 } ?>
                             </ul>
@@ -2109,8 +2109,6 @@ if (strtolower($map) === "rdm") {
     var mapStyle = '<?php echo $mapStyle ?>';
     var gmapsKey = '<?php echo $gmapsKey ?>';
     var mBoxKey = '<?php echo $mBoxKey ?>';
-    var noCustomTileServer = <?php echo $noCustomTileServer === true ? 'true' : 'false' ?>;
-    var customTileServerAddress = '<?php echo $customTileServerAddress ?>';
     var hidePokemon = <?php echo $noHidePokemon ? '[]' : $hidePokemon ?>;
     var excludeMinIV = <?php echo $noExcludeMinIV ? '[]' : $excludeMinIV ?>;
     var minIV = <?php echo $noMinIV ? '""' : $minIV ?>;
