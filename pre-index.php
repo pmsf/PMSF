@@ -236,13 +236,13 @@ if (strtolower($map) === "rdm") {
                     "button": {
                     "background": "#d6d6d6"
                     }
-		},
-		"content": {
-		    "message": "' . i8ln('This website uses cookies to ensure you get the best experience on our website.') . '",
-		    "dismiss": "' . i8ln('Allow') . '",
-		    "link": "' . i8ln('Learn more') . '",
-		    "href": "https://www.cookiesandyou.com/"
-		}
+        },
+        "content": {
+            "message": "' . i8ln('This website uses cookies to ensure you get the best experience on our website.') . '",
+            "dismiss": "' . i8ln('Allow') . '",
+            "link": "' . i8ln('Learn more') . '",
+            "href": "https://www.cookiesandyou.com/"
+        }
             })});
         </script>';
     }
@@ -636,9 +636,9 @@ if (strtolower($map) === "rdm") {
                                         <div>
                                     </a><a href="#" style="margin-bottom:20px;" class="hide-all-grunt"><?php echo i8ln('None') ?> </a>
                                 </label>
-			    </div>
+                            </div>
                         </div>
-		    </div>
+                    </div>
                 </div>
                 <?php
                 if (! $noQuests) {
@@ -652,7 +652,7 @@ if (strtolower($map) === "rdm") {
                             <span class="switch-handle"></span>
                         </label>
                     </div>
-                </div>'; ?>
+                    </div>'; ?>
                     <div id="quests-filter-wrapper" style="display:none">
                         <div id="quests-tabs">
                             <ul>
@@ -1620,9 +1620,9 @@ if (strtolower($map) === "rdm") {
     <?php } ?>
     <?php if (! $noEditPoi) { ?>
         <div class="editpoi-modal" style="display: none;">
-	        <input type="text" id="poi-name" name="poi-name" placeholder="<?php echo i8ln('Enter New POI Name'); ?>" data-type="poi-name" class="search-input">
-	        <input type="text" id="poi-description" name="poi-description" placeholder="<?php echo i8ln('Enter New POI Description'); ?>" data-type="poi-description" class="search-input">
-	        <input type="text" id="poi-notes" name="poi-notes"placeholder="<?php echo i8ln('Enter New POI Notes'); ?>" data-type="poi-notes" class="search-input">
+            <input type="text" id="poi-name" name="poi-name" placeholder="<?php echo i8ln('Enter New POI Name'); ?>" data-type="poi-name" class="search-input">
+            <input type="text" id="poi-description" name="poi-description" placeholder="<?php echo i8ln('Enter New POI Description'); ?>" data-type="poi-description" class="search-input">
+            <input type="text" id="poi-notes" name="poi-notes"placeholder="<?php echo i8ln('Enter New POI Notes'); ?>" data-type="poi-notes" class="search-input">
                 <?php if (! empty($imgurCID)) {
                 ?>
                     <div class="upload-button-container">
@@ -1637,7 +1637,7 @@ if (strtolower($map) === "rdm") {
                     <center><img id='preview-poi-surrounding' name='preview-poi-surrounding' width="50px" height="auto"></center>
                 <?php
             } ?>
-	        <div class="button-container">
+            <div class="button-container">
                 <button type="button" onclick="editPoiData(event);" class="editpoiid"><i class="fas fa-save"></i> <?php echo i8ln('Save Changes'); ?></button>
             </div>
         </div>
@@ -2051,7 +2051,7 @@ if (strtolower($map) === "rdm") {
                             <center><img id='preview-poi-image' name='preview-poi-image' width="50px" height="auto"></center>
                             <div class="upload-button-container">
                                 <button type="button"><i class="fas fa-upload"></i> <?php echo i8ln('Upload Surrounding Image') ?></button>
-			        <input type="file" id="poi-surrounding" name="poi-surrounding" accept="image/*" class="poi-surrounding" data-type="poi-surrounding" class="search-input" onchange='previewPoiSurrounding(event)'>
+                                <input type="file" id="poi-surrounding" name="poi-surrounding" accept="image/*" class="poi-surrounding" data-type="poi-surrounding" class="search-input" onchange='previewPoiSurrounding(event)'>
                             </div>
                             <center><img id='preview-poi-surrounding' name='preview-poi-surrounding' width="50px" height="auto" ></center>
                         <?php
