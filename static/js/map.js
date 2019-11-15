@@ -7123,7 +7123,7 @@ $(function () {
         Store.set('showAllPokestops', this.checked)
         if (this.checked === true && Store.get('showQuests') === true) {
             Store.set('showQuests', false)
-            $('#quests-switch').prop('checked', false)
+            jQuery('label[for="quests-switch"]').click()
         }
         if (this.checked === true && Store.get('showRocket') === true) {
             Store.set('showRocket', false)
@@ -7133,19 +7133,9 @@ $(function () {
             Store.set('showLures', false)
             $('#lures-switch').prop('checked', false)
         }
+        lastpokestops = false
+        updateMap()
 
-        var options = {
-            'duration': 500
-        }
-        var wrapper = $('#quests-filter-wrapper')
-        if (this.checked) {
-            lastpokestops = false
-            wrapper.hide(options)
-            updateMap()
-        } else {
-            lastpokestops = false
-            updateMap()
-        }
         $.each(mapData.pokestops, function (key, value) {
             markers.removeLayer(value.marker)
             markersnotify.removeLayer(value.marker)
@@ -7159,7 +7149,7 @@ $(function () {
         Store.set('showLures', this.checked)
         if (this.checked === true && Store.get('showQuests') === true) {
             Store.set('showQuests', false)
-            $('#quests-switch').prop('checked', false)
+            jQuery('label[for="quests-switch"]').click()
         }
         if (this.checked === true && Store.get('showRocket') === true) {
             Store.set('showRocket', false)
@@ -7169,18 +7159,9 @@ $(function () {
             Store.set('showAllPokestops', false)
             $('#allPokestops-switch').prop('checked', false)
         }
-        var options = {
-            'duration': 500
-        }
-        var wrapper = $('#quests-filter-wrapper')
-        if (this.checked) {
-            lastpokestops = false
-            wrapper.hide(options)
-            updateMap()
-        } else {
-            lastpokestops = false
-            updateMap()
-        }
+        lastpokestops = false
+        updateMap()
+
         $.each(mapData.pokestops, function (key, value) {
             markers.removeLayer(value.marker)
             markersnotify.removeLayer(value.marker)

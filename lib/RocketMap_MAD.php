@@ -437,7 +437,7 @@ class RocketMap_MAD extends RocketMap
                 }
                 $rocket_in = substr($rocket_in, 0, -1);
                 $rocketSQL .= "incident_grunt_type NOT IN ( $rocket_in )";
-	    } else {
+            } else {
                 $rocketSQL .= "incident_grunt_type > 0";
             }
             $conds[] = "" . $rocketSQL . "";
@@ -494,7 +494,7 @@ class RocketMap_MAD extends RocketMap
                 $params[':amount'] = intval($dustamount);
             }
             $conds[] = $tmpSQL;
-	}
+        }
         if (!empty($rocket) && $rocket === 'true') {
             $rocketSQL = '';
             if (count($greids)) {
@@ -507,7 +507,7 @@ class RocketMap_MAD extends RocketMap
                 }
                 $rocket_in = substr($rocket_in, 0, -1);
                 $rocketSQL .= "incident_grunt_type IN ( $rocket_in )";
-	    }
+            }
             $conds[] = "" . $rocketSQL . "";
         }
         return $this->query_stops($conds, $params);
