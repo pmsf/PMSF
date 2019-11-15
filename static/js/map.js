@@ -73,9 +73,6 @@ var greids = []
 var dustamount
 var reloaddustamount
 
-var numberOfPokemon = 649
-var numberOfItem = 1405
-var numberOfGrunts = 50
 var L
 var map
 var markers
@@ -6806,7 +6803,7 @@ $(function () {
         e.preventDefault()
         var parent = $(this).parent()
         parent.find('.grunt-list .grunt-icon-sprite').addClass('active')
-        parent.find('input').val(Array.from(Array(numberOfGrunts + 1).keys()).slice(1).join(',')).trigger('change')
+        parent.find('input').val(Array.from(Array(numberOfGrunt + 1).keys()).slice(1).join(',')).trigger('change')
     })
 
     $('.hide-all-grunt').on('click', function (e) {
@@ -7196,7 +7193,7 @@ $(function () {
         Store.set('showRocket', this.checked)
         if (this.checked === true && Store.get('showQuests') === true) {
             Store.set('showQuests', false)
-            $('#quests-switch').prop('checked', false)
+            jQuery('label[for="quests-switch"]').click()
         }
         if (this.checked === true && Store.get('showLures') === true) {
             Store.set('showLures', false)

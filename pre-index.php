@@ -16,6 +16,15 @@ if (! empty($_GET['lat']) && ! empty($_GET['lon'])) {
 if ($blockIframe) {
     header('X-Frame-Options: DENY');
 }
+if (strtolower($map) === "rdm") {
+    if (strtolower($fork) === "beta") {
+        $getList = new \Scanner\RDM_beta();
+    }
+} elseif (strtolower($map) === "rocketmap") {
+    if (strtolower($fork) === "mad") {
+        $getList = new \Scanner\RocketMap_MAD();
+    }
+}
 ?>
 <!DOCTYPE html>
 <html lang="<?= $locale ?>">
@@ -617,7 +626,11 @@ if ($blockIframe) {
                                     <div class="grunts-container">
                                         <input id="exclude-grunts" type="text" readonly="true">
                                         <?php
-                                        gruntFilterImages($noGruntNumbers, '', $excludeGrunts, 10); ?>
+                                        if ($generateExcludeQuestsPokemon === true) {
+                                            gruntFilterImages($noGruntNumbers, '', array_diff(range(1, $numberOfGrunt), $getList->generated_exclude_list('gruntlist')), 10);
+                                        } else {
+                                            gruntFilterImages($noGruntNumbers, '', $excludeGrunts, 10);
+                                        } ?>
                                     </div>
                                     <a href="#" class="select-all-grunt"><?php echo i8ln('All') ?>
                                         <div>
@@ -666,22 +679,7 @@ if ($blockIframe) {
                                                 <input id="exclude-quests-pokemon" type="text" readonly="true">
                                                 <?php
                                                     if ($generateExcludeQuestsPokemon === true) {
-                                                        if (strtolower($fork) === "mad") {
-                                                            $questTable = 'trs_quest';
-                                                        } else {
-                                                            $questTable = 'pokestop';
-                                                        }
-        
-                                                        $pokestops = $db->query(
-                                                            "SELECT distinct quest_pokemon_id FROM " . $questTable . " WHERE quest_pokemon_id >= '1' AND DATE(FROM_UNIXTIME(quest_timestamp)) = CURDATE() order by quest_pokemon_id;"
-                                                        )->fetchAll(\PDO::FETCH_ASSOC);
-
-                                                        $data = array();
-                                                        foreach ($pokestops as $pokestop) {
-                                                            $data[] = $pokestop['quest_pokemon_id'];
-                                                        }
-                                                        $numberOfPokemon = 649;
-                                                        pokemonFilterImages($noPokemonNumbers, '', array_diff(range(1, $numberOfPokemon), $data), 8);
+                                                        pokemonFilterImages($noPokemonNumbers, '', array_diff(range(1, $numberOfPokemon), $getList->generated_exclude_list('pokemonlist')), 8);
                                                     } else {
                                                         pokemonFilterImages($noPokemonNumbers, '', $excludeQuestsPokemon, 8);
                                                     } ?>
@@ -703,7 +701,11 @@ if ($blockIframe) {
                                             <div class="quest-item-container">
                                                 <input id="exclude-quests-item" type="text" readonly="true">
                                                 <?php
-                                                itemFilterImages($noItemNumbers, '', $excludeQuestsItem, 9); ?>
+                                                    if ($generateExcludeQuestsPokemon === true) {
+                                                        itemFilterImages($noItemNumbers, '', array_diff(range(1, $numberOfItem), $getList->generated_exclude_list('itemlist')), 9);
+                                                    } else {
+                                                        itemFilterImages($noItemNumbers, '', $excludeQuestsItem, 9);
+                                                    } ?>
                                             </div>
                                             <a href="#" class="select-all-item"><?php echo i8ln('All') ?>
                                                 <div>
@@ -2230,6 +2232,9 @@ if ($blockIframe) {
     var noDeleteFortress = <?php echo $noDeleteFortress === true ? 'true' : 'false' ?>;
     var noDeleteGreenhouse = <?php echo $noDeleteGreenhouse === true ? 'true' : 'false' ?>;
     var noInvasionEncounterData = <?php echo $noTeamRocketEncounterData === true ? 'true' : 'false' ?>;
+    var numberOfPokemon = <?php echo $numberOfPokemon; ?>;
+    var numberOfItem = <?php echo $numberOfItem; ?>;
+    var numberOfGrunt = <?php echo $numberOfGrunt; ?>;
 </script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js"></script>
 <script src="static/dist/js/map.common.min.js"></script>

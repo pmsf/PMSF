@@ -111,6 +111,11 @@ $faviconPath = '';                                                  // Upload fa
 
 /* IMGBB API */
 $imgurCID = "";
+
+/* Counts */
+$numberOfPokemon = 649;
+$numberOfItem = 1405;
+$numberOfGrunt = 50;
 //-----------------------------------------------------
 // Login
 //-----------------------------------------------------

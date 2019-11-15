@@ -602,6 +602,30 @@ class RocketMap_MAD extends RocketMap
         return $this->query_scanlocation($conds, $params);
     }
 
+    public function generated_exclude_list($type)
+    {
+        global $db;
+	if ($type === 'pokemonlist') {
+            $pokestops = $db->query( "SELECT distinct quest_pokemon_id FROM trs_quest WHERE quest_pokemon_id > 0 AND DATE(FROM_UNIXTIME(quest_timestamp)) = CURDATE() order by quest_pokemon_id;")->fetchAll(\PDO::FETCH_ASSOC);
+            $data = array();
+	    foreach ($pokestops as $pokestop) {
+                $data[] = $pokestop['quest_pokemon_id'];
+            }
+	} else if ($type === 'itemlist') {
+            $pokestops = $db->query( "SELECT distinct quest_item_id FROM trs_quest WHERE quest_item_id > 0 AND DATE(FROM_UNIXTIME(quest_timestamp)) = CURDATE() order by quest_item_id;")->fetchAll(\PDO::FETCH_ASSOC);
+            $data = array();
+	    foreach ($pokestops as $pokestop) {
+                $data[] = $pokestop['quest_item_id'];
+            }
+        } else if ($type === 'gruntlist') {
+            $pokestops = $db->query( "SELECT distinct incident_grunt_type FROM pokestop WHERE incident_grunt_type > 0 AND incident_expiration > NOW() order by incident_grunt_type;")->fetchAll(\PDO::FETCH_ASSOC);
+            $data = array();
+	    foreach ($pokestops as $pokestop) {
+                $data[] = $pokestop['incident_grunt_type'];
+            }
+        }
+	return $data;
+    }
     private function query_scanlocation($conds, $params)
     {
         global $db;
