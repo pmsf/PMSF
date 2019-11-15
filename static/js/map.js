@@ -633,6 +633,7 @@ var stylesatellite = L.tileLayer('https://server.arcgisonline.com/ArcGIS/rest/se
 var stylewikipedia = L.tileLayer('https://maps.wikimedia.org/osm-intl/{z}/{x}/{y}{r}.png', {attribution: '<a href="https://wikimediafoundation.org/wiki/Maps_Terms_of_Use">Wikimedia</a>'}) // eslint-disable-line no-unused-vars
 var mapbox = L.tileLayer('https://api.mapbox.com/styles/v1/mapbox/streets-v11/tiles/256/{z}/{x}/{y}?access_token=' + mBoxKey, {attribution: '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>'}) // eslint-disable-line no-unused-vars
 var mapboxPogo = L.tileLayer('https://api.mapbox.com/styles/v1/skoodat/cjpuer4j702ph2sl3ktkrkkqa/tiles/256/{z}/{x}/{y}@2x?access_token=' + mBoxKey, {attribution: '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>'}) // eslint-disable-line no-unused-vars
+var tileserver = L.tileLayer(customTileServerAddress, {attribution: 'Tileserver'}) // eslint-disable-line no-unused-vars
 var googlemapssat = L.gridLayer.googleMutant({type: 'satellite'}) // eslint-disable-line no-unused-vars
 var googlemapsroad = L.gridLayer.googleMutant({type: 'roadmap'}) // eslint-disable-line no-unused-vars
 
@@ -6335,7 +6336,14 @@ $(function () {
                 mapBox = true
             }
             var mapBoxStyle = value.includes('Mapbox')
-            if (!googleStyle && !mapBoxStyle) {
+            var customTileServer
+            if (noCustomTileServer) {
+                customTileServer = false
+            } else {
+                customTileServer = true
+            }
+            var customTileServerStyle = value.includes('Tileserver')
+            if (!googleStyle && !mapBoxStyle && !customTileServerStyle) {
                 styleList.push({
                     id: key,
                     text: i8ln(value)
@@ -6346,6 +6354,11 @@ $(function () {
                     text: i8ln(value)
                 })
             } else if (mapBox && mapBoxStyle) {
+                styleList.push({
+                    id: key,
+                    text: i8ln(value)
+                })
+            } else if (customTileServer && customTileServerStyle) {
                 styleList.push({
                     id: key,
                     text: i8ln(value)
