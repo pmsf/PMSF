@@ -605,7 +605,7 @@ if (strtolower($map) === "rdm") {
                 <div id="rocket-wrapper" style="display:none">
                     <?php
                     if (! $noTeamRocketTimer && ! $noTeamRocket) {
-                        echo '<div class="form-control switch-container">
+                        echo '<div class="form-control switch-container" style="float:none;height:35px;margin-bottom:0px;">
                         <h3>' . i8ln('Team Rocket Timer') . '</h3>
                         <div class="onoffswitch">
                         <input id="rocket-timer-switch" type="checkbox" name="rocket-timer-switch" class="onoffswitch-checkbox" checked>
@@ -634,7 +634,7 @@ if (strtolower($map) === "rdm") {
                                     </div>
                                     <a href="#" class="select-all-grunt"><?php echo i8ln('All') ?>
                                         <div>
-                                    </a><a href="#" class="hide-all-grunt"><?php echo i8ln('None') ?> </a>
+                                    </a><a href="#" style="margin-bottom:20px;" class="hide-all-grunt"><?php echo i8ln('None') ?> </a>
                                 </label>
 			    </div>
                         </div>
