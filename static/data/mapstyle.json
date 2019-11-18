@@ -7,5 +7,7 @@
   "googlemapssat": "Google Maps Satellite",
   "googlemapsroad": "Google Maps Roadmap",
   "mapbox": "Mapbox Streets",
-  "mapboxPogo": "Mapbox Pokémon Go"
+  "mapboxPogo": "Mapbox Pokémon Go",
+  "mapboxPogoDark": "Mapbox Pokémon Go Dark",
+  "tileserver": "Tileserver"
 }

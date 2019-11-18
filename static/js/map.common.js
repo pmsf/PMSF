@@ -124,6 +124,11 @@ var StoreOptions = {
             default: hideQuestsItem,
             type: StoreTypes.JSON
         },
+    'remember_exclude_grunts':
+        {
+            default: hideGrunts,
+            type: StoreTypes.JSON
+        },
     'showRaids':
         {
             default: enableRaids,
@@ -252,6 +257,11 @@ var StoreOptions = {
     'showPokestops':
         {
             default: enablePokestops,
+            type: StoreTypes.Boolean
+        },
+    'showAllPokestops':
+        {
+            default: enableAllPokestops,
             type: StoreTypes.Boolean
         },
     'showLures':

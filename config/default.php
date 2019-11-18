@@ -83,6 +83,12 @@ $locale = "en";                                                     // Display l
 $gmapsKey = "";
 $mBoxKey = "";
 
+/* Custom Tileserver. Only tested with https://github.com/123FLO321/SwiftTileserverCache */
+
+$noCustomTileServer = true;                                         // Enable/Disable Custom TileServer
+$customTileServerAddress = "";                                      // TileServer URL: http://ipAddress:port/tile/klokantech-basic/{z}/{x}/{y}/1/png
+
+
 /* Google Analytics */
 
 $gAnalyticsId = "";                                                 // "" for empty, "UA-XXXXX-Y" add your Google Analytics tracking ID
@@ -120,6 +126,11 @@ $noWhatsappLink = true;
 
 /* IMGBB API */
 $imgurCID = "";
+
+/* Counts */
+$numberOfPokemon = 649;
+$numberOfItem = 1405;
+$numberOfGrunt = 50;
 //-----------------------------------------------------
 // Login  - You need to create the two tables referenced in sql.sql
 //-----------------------------------------------------
@@ -213,19 +224,30 @@ $enableRaidTimer = 'false';                                         // true/fals
 $noPokestops = false;                                               // true/false
 $enablePokestops = 'false';                                         // true/false
 $hidePokestopCoords = false;
+$noAllPokestops = false;
+$enableAllPokestops = 'false';
+
 $noLures = false;                                                   // true/false
 $enableLured = 'false';                                             // true/false
+
 $noTeamRocket = false;
 $noTeamRocketTimer = false;                                         // true/false
 $enableTeamRocketTimer = 'false';                                   // true/false
 $enableTeamRocket = 'false';
 $noTeamRocketEncounterData = true;
+$noGrunts = false;
+$noGruntNumbers = false;
+$hideGrunts = [];
+$excludeGrunts = [];
+$generateExcludeGrunts = true;
+
 $noQuests = true;                                                  // true/false
 $enableQuests = 'false';                                            // true/false
 $noQuestsItems = false;
 $noQuestsPokemon = false;
 $hideQuestsPokemon = '[]';  // Pokemon ids
 $generateExcludeQuestsPokemon = true;
+$generateExcludeQuestsItem = true;
 $excludeQuestsPokemon = [];  // Pokemon ids
 $hideQuestsItem = '[4, 5, 301, 401, 402, 403, 404, 501, 602, 603, 604, 702, 704, 708, 801, 901, 902, 903, 1001, 1002, 1401, 1402, 1403, 1404, 1405]';    // Item ids "See protos https://github.com/Furtif/POGOProtos/blob/master/src/POGOProtos/Inventory/Item/ItemId.proto"
 $excludeQuestsItem = [4, 5, 301, 401, 402, 403, 404, 501, 602, 603, 604, 702, 704, 708, 801, 901, 902, 903, 1001, 1002, 1401, 1402, 1403, 1404, 1405];
@@ -414,6 +436,7 @@ $noEditCommunity = true;
 //-----------------------------------------------------
 $noNests = true;                                                   // true/false
 $enableNests = 'false';                                             // true/false
+$hideNestCoords = false;
 $noManualNests = true;
 $noDeleteNests = true;
 $deleteNestsOlderThan = 42;					    // days after not updated nests are removed from database by nest cron

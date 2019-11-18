@@ -85,6 +85,7 @@
     "hidePokemonCoords": true,
     "hidePokestopCoords": true,
     "hideGymCoords": true,
+    "hideNestCoords": true,
     "notifyPokemon": true,
     "notifyRarity": true,
     "notifyIv": true,
@@ -99,6 +100,7 @@
     "enableGyms": true,
     "enablePokemon": true,
     "enablePokestops": true,
+    "enableAllPokestops": true,
     "enableLured": true,
     "enableRocket": true,
     "showWeather": true,
@@ -167,6 +169,7 @@
     "noQuests": true,
     "noLures": true,
     "noTeamRocket": true,
+    "noAllPokestops": true,
     "enableQuests": true,
     "enableScanPolygon": true,
     "turf": true,
@@ -195,6 +198,12 @@
     "noInvasionEncounterData": true,
     "enableLiveScan": true,
     "deviceOfflineAfterSeconds": true,
-    "noPoi": true
+    "noPoi": true,
+    "hideGrunts": true,
+    "numberOfPokemon": true,
+    "numberOfItem": true,
+    "numberOfGrunt": true,
+    "customTileServerAddress": true,
+    "noCustomTileServer": true
   }
 }

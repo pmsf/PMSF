@@ -74,6 +74,11 @@ $mBoxKey = "";
 //    $mBoxKey = "";
 //}
 
+/* Custom Tileserver. Only tested with https://github.com/123FLO321/SwiftTileserverCache */
+
+$noCustomTileServer = true;                                         // Enable/Disable Custom TileServer
+$customTileServerAddress = "";                                      // TileServer URL: http://ipAddress:port/tile/klokantech-basic/{z}/{x}/{y}/1/png
+
 /* Google Analytics */
 
 $gAnalyticsId = "";                                                 // "" for empty, "UA-XXXXX-Y" add your Google Analytics tracking ID
@@ -111,6 +116,11 @@ $faviconPath = '';                                                  // Upload fa
 
 /* IMGBB API */
 $imgurCID = "";
+
+/* Counts */
+$numberOfPokemon = 649;
+$numberOfItem = 1405;
+$numberOfGrunt = 50;
 //-----------------------------------------------------
 // Login
 //-----------------------------------------------------
@@ -204,6 +214,9 @@ $noPokestops = false;
 $enablePokestops = 'false';
 $hidePokestopCoords = false;
 
+$noAllPokestops = false;
+$enableAllPokestops = 'false';
+
 $noLures = false;
 $enableLured = 'false';
 
@@ -212,6 +225,11 @@ $enableTeamRocket = 'false';
 $noTeamRocketTimer = false;
 $enableTeamRocketTimer = 'false';
 $noTeamRocketEncounterData = true; // Show/Hide possible rewards. Requires grunttype.json to be up to date.
+$noGrunts = false;
+$noGruntNumbers = false;
+$hideGrunts = [];
+$excludeGrunts = [];
+$generateExcludeGrunts = true;
 
 $noQuests = false;
 $enableQuests = 'false';
@@ -219,6 +237,7 @@ $noQuestsItems = false;
 $noQuestsPokemon = false;
 $hideQuestsPokemon = '[]';  					                    // Pokemon ids will default be hidden in the menu every user is able to change this personaly
 $generateExcludeQuestsPokemon = true;                               // Generate $excludeQuestsPokemon based on active quests in database
+$generateExcludeQuestsItem = true;
 $excludeQuestsPokemon = [];					                        // All Pokémon in this array will not be shown in the filter.
 $hideQuestsItem = '[4, 5, 301, 401, 402, 403, 404, 501, 602, 603, 604, 702, 704, 707, 801, 901, 902, 903, 1001, 1002, 1401, 1402, 1402, 1403, 1404, 1405]';    // Item ids "See protos https://github.com/Furtif/POGOProtos/blob/master/src/POGOProtos/Inventory/Item/ItemId.proto"
 $excludeQuestsItem = [4, 5, 301, 401, 402, 403, 404, 501, 602, 603, 604, 702, 704, 707, 801, 901, 902, 903, 1001, 1002, 1401, 1402, 1402, 1403, 1404, 1405];   // All excluded item wil not be shown in the filter.
@@ -428,6 +447,7 @@ $noEditCommunity = true;
 //-----------------------------------------------------
 $noNests = true;
 $enableNests = 'false';
+$hideNestCoords = false;
 $noManualNests = true;
 $noDeleteNests = true;
 $deleteNestsOlderThan = 42;					                       // days after not updated nests are removed from database by nest cron
