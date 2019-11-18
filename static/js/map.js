@@ -6337,14 +6337,14 @@ $(function () {
                 mapBox = true
             }
             var mapBoxStyle = value.includes('Mapbox')
-            var customTileServer	
-            if (noCustomTileServer) {	
-                customTileServer = false	
-            } else {	
-                customTileServer = true	
+            var customTileServer
+            if (noCustomTileServer) {
+                customTileServer = false
+            } else {
+                customTileServer = true
             }
             var customTileServerStyle = value.includes('Tileserver')
-            if (!googleStyle && !mapBoxStyle) {
+            if (!googleStyle && !mapBoxStyle && !customTileServerStyle) {
                 styleList.push({
                     id: key,
                     text: i8ln(value)
@@ -6359,11 +6359,11 @@ $(function () {
                     id: key,
                     text: i8ln(value)
                 })
-            } else if (customTileServer && customTileServerStyle) {	
-                styleList.push({	
-                    id: key,	
-                    text: i8ln(value)	
-                })	
+            } else if (customTileServer && customTileServerStyle) {
+                styleList.push({
+                    id: key,
+                    text: i8ln(value)
+                })
             }
         })
 
@@ -6952,6 +6952,7 @@ $(function () {
         if (!this.checked && Store.get('showNestPolygon') === true) {
             Store.set('showNestPolygon', false)
             $('#nest-polygon-switch').prop('checked', false)
+            nestLayerGroup.clearLayers()
         }
         var options = {
             'duration': 500
