@@ -31,12 +31,14 @@ var $selectDirectionProvider
 var $switchExEligible
 var $questsExcludePokemon
 var $questsExcludeItem
+var $excludeGrunts
 var $selectIconStyle
 
 var language = document.documentElement.lang === '' ? 'en' : document.documentElement.lang
 var languageSite = 'en'
 var idToPokemon = {}
 var idToItem = {}
+var idToGrunt = {}
 var i8lnDictionary = {}
 var languageLookups = 0
 var languageLookupThreshold = 3
@@ -50,6 +52,7 @@ var notifiedPokemon = []
 var notifiedRarity = []
 var questsExcludedPokemon = []
 var questsExcludedItem = []
+var excludedGrunts = []
 var notifiedMinPerfection = null
 var notifiedMinLevel = null
 var minIV = null
@@ -62,14 +65,14 @@ var buffer = []
 var reincludedPokemon = []
 var reincludedQuestsPokemon = []
 var reincludedQuestsItem = []
+var reincludedGrunts = []
 var reids = []
 var qpreids = []
 var qireids = []
+var greids = []
 var dustamount
 var reloaddustamount
 
-var numberOfPokemon = 649
-var numberOfItem = 1405
 var L
 var map
 var markers
@@ -117,6 +120,7 @@ var pokeList = []
 var raidBoss = {} // eslint-disable-line no-unused-vars
 var questList = []
 var itemList = []
+var gruntList = []
 var rewardList = []
 var questtypeList = []
 var rewardtypeList = []
@@ -628,9 +632,11 @@ var styletopo = L.tileLayer('https://{s}.tile.opentopomap.org/{z}/{x}/{y}.png', 
 var stylesatellite = L.tileLayer('https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}', {attribution: 'Tiles &copy; Esri &mdash; Source: Esri, i-cubed, USDA, USGS, AEX, GeoEye, Getmapping, Aerogrid, IGN, IGP, UPR-EGP, and the GIS User Community'}) // eslint-disable-line no-unused-vars
 var stylewikipedia = L.tileLayer('https://maps.wikimedia.org/osm-intl/{z}/{x}/{y}{r}.png', {attribution: '<a href="https://wikimediafoundation.org/wiki/Maps_Terms_of_Use">Wikimedia</a>'}) // eslint-disable-line no-unused-vars
 var mapbox = L.tileLayer('https://api.mapbox.com/styles/v1/mapbox/streets-v11/tiles/256/{z}/{x}/{y}?access_token=' + mBoxKey, {attribution: '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>'}) // eslint-disable-line no-unused-vars
-var mapboxPogo = L.tileLayer('https://api.mapbox.com/styles/v1/skoodat/cjpuer4j702ph2sl3ktkrkkqa/tiles/256/{z}/{x}/{y}@2x?access_token=' + mBoxKey, {attribution: '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>'}) // eslint-disable-line no-unused-vars
+var mapboxPogo = L.tileLayer('https://api.mapbox.com/styles/v1/anonymous89/ck2uz9d5t09qm1cl66b9giwun/tiles/256/{z}/{x}/{y}@2x?access_token=' + mBoxKey, {attribution: '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>'}) // eslint-disable-line no-unused-vars
+var mapboxPogoDark = L.tileLayer('https://api.mapbox.com/styles/v1/anonymous89/ck2xw3j6h0e0v1dqtlcx9c4od/tiles/256/{z}/{x}/{y}@2x?access_token=' + mBoxKey, {attribution: '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>'}) // eslint-disable-line no-unused-vars
 var googlemapssat = L.gridLayer.googleMutant({type: 'satellite'}) // eslint-disable-line no-unused-vars
 var googlemapsroad = L.gridLayer.googleMutant({type: 'roadmap'}) // eslint-disable-line no-unused-vars
+var tileserver = L.tileLayer(customTileServerAddress, {attribution: 'Tileserver'}) // eslint-disable-line no-unused-vars
 
 function setTileLayer(layername) {
     if (map.hasLayer(window[_oldlayer])) { map.removeLayer(window[_oldlayer]) }
@@ -927,6 +933,7 @@ function initSidebar() {
     $('#big-karp-switch').prop('checked', Store.get('showBigKarp'))
     $('#tiny-rat-switch').prop('checked', Store.get('showTinyRat'))
     $('#pokestops-switch').prop('checked', Store.get('showPokestops'))
+    $('#allPokestops-switch').prop('checked', Store.get('showAllPokestops'))
     $('#pokestops-filter-wrapper').toggle(Store.get('showPokestops'))
     $('#lures-switch').prop('checked', Store.get('showLures'))
     $('#rocket-switch').prop('checked', Store.get('showRocket'))
@@ -2206,8 +2213,115 @@ function getPokestopMarkerIcon(item) {
     } else {
         lastMidnight = 0
     }
-    if (!noTeamRocket && item['incident_expiration'] > Date.now()) {
-        var lureStr = ''
+    var lureStr = ''
+    var stopQuestIcon = 'PstopQuest.png'
+    var pokemonIdStr = ''
+    var formStr = ''
+    var shinyStr = ''
+    if (Store.get(['showPokestops']) && !Store.get(['showQuests']) && !Store.get(['showLures']) && !Store.get(['showRocket']) && !Store.get(['showAllPokestops'])) {
+        stopMarker = L.divIcon({
+            iconSize: [31, 31],
+            iconAnchor: [25, 45],
+            popupAnchor: [0, -35],
+            className: 'stop-marker',
+            html: '<div><img src="static/forts/Pstop.png" style="width:50px;height:72;top:-35px;right:10px;"/></div>'
+        })
+    } else if (Store.get(['showAllPokestops']) && !noAllPokestops) {
+        if (!noTeamRocket && item['incident_expiration'] > Date.now()) {
+            if (!noLures && item['lure_expiration'] > Date.now()) {
+                lureStr = 'Lured_' + item['lure_id']
+            }
+            html = '<div style="position:relative;"><img src="static/forts/Pstop' + lureStr + '_rocket.png" style="width:50px;height:72;top:-35px;right:10px;"/>'
+            if (item['grunt_type'] > 0) {
+                html += '<img src="static/grunttype/' + item['grunt_type'] + '.png" style="width:30px;height:auto;position:absolute;top:4px;left:0px;"/></div>'
+            } else {
+                html += '</div>'
+            }
+            if (noRocketTimer === false && Store.get(['showRocketTimer'])) {
+                html += '<div><span class="raid-countdown gym-icon-countdown" disappears-at="' + item['incident_expiration'] + '"> </span></div>'
+            }
+            stopMarker = L.divIcon({
+                iconSize: [31, 31],
+                iconAnchor: [25, 45],
+                popupAnchor: [0, -35],
+                className: 'stop-rocket-marker',
+                html: html
+            })
+        } else if (!noQuests && item['quest_reward_type'] !== null && lastMidnight < Number(item['quest_timestamp'])) {
+            if (!noLures && item['lure_expiration'] > Date.now()) {
+                stopQuestIcon = 'PstopLured_' + item['lure_id'] + '.png'
+            }
+            if (item['quest_reward_type'] === 7) {
+                if (item['quest_pokemon_id'] <= 9) {
+                    pokemonIdStr = '00' + item['quest_pokemon_id']
+                } else if (item['quest_pokemon_id'] <= 99) {
+                    pokemonIdStr = '0' + item['quest_pokemon_id']
+                } else {
+                    pokemonIdStr = item['quest_pokemon_id']
+                }
+                if (item['quest_pokemon_formid'] === 0) {
+                    formStr = '00'
+                } else {
+                    formStr = item['quest_pokemon_formid']
+                }
+                if (item['quest_pokemon_shiny'] === 'true') {
+                    shinyStr = '_shiny'
+                }
+                html = '<div style="position:relative;">' +
+                    '<img src="static/forts/' + stopQuestIcon + '" style="width:50px;height:72;top:-35px;right:10px;"/>' +
+                    '<img src="' + iconpath + 'pokemon_icon_' + pokemonIdStr + '_' + formStr + shinyStr + '.png" style="width:30px;height:auto;position:absolute;top:4px;left:0px;"/>' +
+                    '</div>'
+                stopMarker = L.divIcon({
+                    iconSize: [31, 31],
+                    iconAnchor: [25, 45],
+                    popupAnchor: [0, -35],
+                    className: 'stop-quest-marker',
+                    html: html
+                })
+            } else if (item['quest_reward_type'] === 3) {
+                html = '<div style="position:relative;">' +
+                    '<img src="static/forts/' + stopQuestIcon + '" style="width:50px;height:72;top:-35px;right:10px;"/>' +
+                    '<img src="' + iconpath + 'rewards/reward_stardust_' + item['quest_dust_amount'] + '.png" style="width:30px;height:auto;position:absolute;top:4px;left:0px;"/>' +
+                    '</div>'
+                stopMarker = L.divIcon({
+                    iconSize: [31, 31],
+                    iconAnchor: [25, 45],
+                    popupAnchor: [0, -35],
+                    className: 'stop-quest-marker',
+                    html: html
+                })
+            } else if (item['quest_reward_type'] === 2) {
+                html = '<div style="position:relative;">' +
+                    '<img src="static/forts/' + stopQuestIcon + '" style="width:50px;height:72;top:-35px;right:10px;"/>' +
+                    '<img src="' + iconpath + 'rewards/reward_' + item['quest_item_id'] + '_' + item['quest_reward_amount'] + '.png" style="width:30px;height:auto;position:absolute;top:4px;left:0px;"/>' +
+                    '</div>'
+                stopMarker = L.divIcon({
+                    iconSize: [31, 31],
+                    iconAnchor: [25, 45],
+                    popupAnchor: [0, -35],
+                    className: 'stop-quest-marker',
+                    html: html
+                })
+            }
+        } else if (!noLures && item['lure_expiration'] > Date.now()) {
+            html = '<div><img src="static/forts/PstopLured_' + item['lure_id'] + '.png" style="width:50px;height:72;top:-35px;right:10px;"/><div>'
+            stopMarker = L.divIcon({
+                iconSize: [31, 31],
+                iconAnchor: [25, 45],
+                popupAnchor: [0, -35],
+                className: 'stop-lured-marker',
+                html: html
+            })
+        } else {
+            stopMarker = L.divIcon({
+                iconSize: [31, 31],
+                iconAnchor: [25, 45],
+                popupAnchor: [0, -35],
+                className: 'stop-marker',
+                html: '<div><img src="static/forts/Pstop.png" style="width:50px;height:72;top:-35px;right:10px;"/></div>'
+            })
+        }
+    } else if (Store.get(['showRocket']) && !noTeamRocket && item['incident_expiration'] > Date.now()) {
         if (!noLures && item['lure_expiration'] > Date.now()) {
             lureStr = 'Lured_' + item['lure_id']
         }
@@ -2227,13 +2341,11 @@ function getPokestopMarkerIcon(item) {
             className: 'stop-rocket-marker',
             html: html
         })
-    } else if (!noQuests && item['quest_reward_type'] !== null && lastMidnight < Number(item['quest_timestamp'])) {
-        var stopQuestIcon = 'PstopQuest.png'
+    } else if (Store.get(['showQuests']) && !noQuests && item['quest_reward_type'] !== null && lastMidnight < Number(item['quest_timestamp'])) {
         if (!noLures && item['lure_expiration'] > Date.now()) {
             stopQuestIcon = 'PstopLured_' + item['lure_id'] + '.png'
         }
         if (item['quest_reward_type'] === 7) {
-            var pokemonIdStr = ''
             if (item['quest_pokemon_id'] <= 9) {
                 pokemonIdStr = '00' + item['quest_pokemon_id']
             } else if (item['quest_pokemon_id'] <= 99) {
@@ -2241,13 +2353,11 @@ function getPokestopMarkerIcon(item) {
             } else {
                 pokemonIdStr = item['quest_pokemon_id']
             }
-            var formStr = ''
             if (item['quest_pokemon_formid'] === 0) {
                 formStr = '00'
             } else {
                 formStr = item['quest_pokemon_formid']
             }
-            var shinyStr = ''
             if (item['quest_pokemon_shiny'] === 'true') {
                 shinyStr = '_shiny'
             }
@@ -2287,7 +2397,7 @@ function getPokestopMarkerIcon(item) {
                 html: html
             })
         }
-    } else if (!noLures && item['lure_expiration'] > Date.now()) {
+    } else if (Store.get(['showLures']) && !noLures && item['lure_expiration'] > Date.now()) {
         html = '<div><img src="static/forts/PstopLured_' + item['lure_id'] + '.png" style="width:50px;height:72;top:-35px;right:10px;"/><div>'
         stopMarker = L.divIcon({
             iconSize: [31, 31],
@@ -2307,7 +2417,6 @@ function getPokestopMarkerIcon(item) {
     }
     return stopMarker
 }
-
 function setupPokestopMarker(item) {
     var pokestopMarkerIcon = getPokestopMarkerIcon(item)
     var marker
@@ -2410,8 +2519,12 @@ function nestLabel(item) {
     if (!noManualNests) {
         str += '<center><div>' + i8ln('Add Nest') + ' <i class="fas fa-binoculars submit-nest" onclick="openNestModal(event);" data-id="' + item['nest_id'] + '"></i></div></center>'
     }
+    var coordText = item.lat.toFixed(6) + ', ' + item.lon.toFixed(7)
+    if (hideNestCoords === true) {
+        coordText = i8ln('Directions')
+    }
     str += '<center><div>' +
-        '<a href="javascript:void(0)" onclick="javascript:openMapDirections(' + item.lat + ',' + item.lon + ')" title="' + i8ln('View in Maps') + '"><i class="fas fa-road"></i> ' + item.lat.toFixed(6) + ', ' + item.lon.toFixed(7) + '</a> - <a href="./?lat=' + item.lat + '&lon=' + item.lon + '&zoom=16"><i class="far fa-share-square" aria-hidden="true" style="position:relative;top:3px;left:0px;color:#26c300;font-size:20px;"></i></a>' +
+        '<a href="javascript:void(0)" onclick="javascript:openMapDirections(' + item.lat + ',' + item.lon + ')" title="' + i8ln('View in Maps') + '"><i class="fas fa-road"></i> ' + coordText + '</a> - <a href="./?lat=' + item.lat + '&lon=' + item.lon + '&zoom=16"><i class="far fa-share-square" aria-hidden="true" style="position:relative;top:3px;left:0px;color:#26c300;font-size:20px;"></i></a>' +
         '</div></center>'
     if ((!noWhatsappLink) && (item.pokemon_id > 0)) {
         str += '<div>' +
@@ -3125,6 +3238,8 @@ function loadRawData() {
             'qpeids': String(questsExcludedPokemon),
             'qireids': String(reincludedQuestsItem),
             'qieids': String(questsExcludedItem),
+            'geids': String(excludedGrunts),
+            'greids': String(reincludedGrunts),
             'token': token,
             'encId': encounterId
         },
@@ -5244,7 +5359,7 @@ function updatePokestops() {
     }
     if (Store.get('showRocket')) {
         $.each(mapData.pokestops, function (key, value) {
-            if (value['incident_expiration'] < currentTime) {
+            if (value['incident_expiration'] < currentTime || excludedGrunts.indexOf(Number(value['grunt_type'])) > -1) {
                 removeStops.push(key)
             }
         })
@@ -5529,6 +5644,7 @@ function updateMap() {
         reids = result.reids
         qpreids = result.qpreids
         qireids = result.qireids
+        greids = result.greids
         if (reids instanceof Array) {
             reincludedPokemon = reids.filter(function (e) {
                 return this.indexOf(e) < 0
@@ -5543,6 +5659,11 @@ function updateMap() {
             reincludedQuestsItem = qireids.filter(function (e) {
                 return this.indexOf(e) < 0
             }, reincludedQuestsItem)
+        }
+        if (greids instanceof Array) {
+            reincludedGrunts = greids.filter(function (e) {
+                return this.indexOf(e) < 0
+            }, reincludedGrunts)
         }
         reloaddustamount = false
         timestamp = result.timestamp
@@ -6098,12 +6219,33 @@ function itemSpritesFilter() {
     })
 }
 
+function gruntSpritesFilter() {
+    jQuery('.grunt-list').parent().find('.select2').hide()
+    loadDefaultImages()
+    jQuery('#nav .grunt-list .grunt-icon-sprite').on('click', function () {
+        var img = jQuery(this)
+        var select = jQuery(this).parent().parent().parent().find('.select2-hidden-accessible')
+        var value = select.val().split(',')
+        var id = img.data('value').toString()
+        if (img.hasClass('active')) {
+            select.val(value.filter(function (elem) {
+                return elem !== id
+            }).join(',')).trigger('change')
+            img.removeClass('active')
+        } else {
+            select.val((value.concat(id).join(','))).trigger('change')
+            img.addClass('active')
+        }
+    })
+}
+
 function loadDefaultImages() {
     var ep = Store.get('remember_select_exclude')
     var eminiv = Store.get('remember_select_exclude_min_iv')
     var en = Store.get('remember_select_notify')
     var eqp = Store.get('remember_quests_exclude_pokemon')
     var eqi = Store.get('remember_quests_exclude_item')
+    var eg = Store.get('remember_exclude_grunts')
     $('label[for="exclude-pokemon"] .pokemon-icon-sprite').each(function () {
         if (ep.indexOf($(this).data('value')) !== -1) {
             $(this).addClass('active')
@@ -6126,6 +6268,11 @@ function loadDefaultImages() {
     })
     $('label[for="exclude-quests-item"] .item-icon-sprite').each(function () {
         if (eqi.indexOf($(this).data('value')) !== -1) {
+            $(this).addClass('active')
+        }
+    })
+    $('label[for="exclude-grunts"] .grunt-icon-sprite').each(function () {
+        if (eg.indexOf($(this).data('value')) !== -1) {
             $(this).addClass('active')
         }
     })
@@ -6190,7 +6337,14 @@ $(function () {
                 mapBox = true
             }
             var mapBoxStyle = value.includes('Mapbox')
-            if (!googleStyle && !mapBoxStyle) {
+            var customTileServer
+            if (noCustomTileServer) {
+                customTileServer = false
+            } else {
+                customTileServer = true
+            }
+            var customTileServerStyle = value.includes('Tileserver')
+            if (!googleStyle && !mapBoxStyle && !customTileServerStyle) {
                 styleList.push({
                     id: key,
                     text: i8ln(value)
@@ -6201,6 +6355,11 @@ $(function () {
                     text: i8ln(value)
                 })
             } else if (mapBox && mapBoxStyle) {
+                styleList.push({
+                    id: key,
+                    text: i8ln(value)
+                })
+            } else if (customTileServer && customTileServerStyle) {
                 styleList.push({
                     id: key,
                     text: i8ln(value)
@@ -6322,6 +6481,7 @@ $(function () {
     $selectIconStyle.val(Store.get('icons')).trigger('change')
     pokemonSpritesFilter()
     itemSpritesFilter()
+    gruntSpritesFilter()
 })
 
 $(function () {
@@ -6378,6 +6538,40 @@ $(function () {
     $switchBigKarp = $('#big-karp-switch')
     $questsExcludePokemon = $('#exclude-quests-pokemon')
     $questsExcludeItem = $('#exclude-quests-item')
+    $excludeGrunts = $('#exclude-grunts')
+
+    $.getJSON('static/dist/data/grunttype.min.json').done(function (data) {
+        $.each(data, function (key, value) {
+            gruntList.push({
+                id: key,
+                name: i8ln(value['type']),
+                gender: i8ln(value['grunt'])
+            })
+            value['type'] = i8ln(value['type'])
+            value['grunt'] = i8ln(value['grunt'])
+            idToGrunt[key] = value
+        })
+        $excludeGrunts.select2({
+            placeholder: i8ln('Select Grunt'),
+            data: gruntList,
+            templateResult: formatState,
+            multiple: true,
+            maximumSelectionSize: 1
+        })
+        $excludeGrunts.on('change', function (e) {
+            buffer = excludedGrunts
+            excludedGrunts = $excludeGrunts.val().split(',').map(Number).sort(function (a, b) {
+                return parseInt(a) - parseInt(b)
+            })
+            buffer = buffer.filter(function (e) {
+                return this.indexOf(e) < 0
+            }, excludedGrunts)
+            reincludedGrunts = reincludedGrunts.concat(buffer).map(String)
+            updateMap()
+            Store.set('remember_exclude_grunts', excludedGrunts)
+        })
+        $excludeGrunts.val(Store.get('remember_exclude_grunts')).trigger('change')
+    })
 
     $.getJSON('static/dist/data/items.min.json').done(function (data) {
         $.each(data, function (key, value) {
@@ -6407,6 +6601,7 @@ $(function () {
             updateMap()
             Store.set('remember_quests_exclude_item', questsExcludedItem)
         })
+        $questsExcludeItem.val(Store.get('remember_quests_exclude_item')).trigger('change')
     })
 
     $.getJSON('static/dist/data/pokemon.min.json').done(function (data) {
@@ -6433,7 +6628,6 @@ $(function () {
             value['types'] = _types
             idToPokemon[key] = value
         })
-        $questsExcludeItem.val(Store.get('remember_quests_exclude_item')).trigger('change')
 
         // setup the filter lists
         $selectExclude.select2({
@@ -6586,6 +6780,7 @@ $(function () {
         }
         $('#tabs').tabs()
         $('#quests-tabs').tabs()
+        $('#grunt-tabs').tabs()
         if (manualRaids) {
             $('.global-raid-modal').html(generateRaidModal())
         }
@@ -6617,6 +6812,21 @@ $(function () {
         parent.find('.item-list .item-icon-sprite').removeClass('active')
         parent.find('input').val('').trigger('change')
     })
+
+    $('.select-all-grunt').on('click', function (e) {
+        e.preventDefault()
+        var parent = $(this).parent()
+        parent.find('.grunt-list .grunt-icon-sprite').addClass('active')
+        parent.find('input').val(Array.from(Array(numberOfGrunt + 1).keys()).slice(1).join(',')).trigger('change')
+    })
+
+    $('.hide-all-grunt').on('click', function (e) {
+        e.preventDefault()
+        var parent = $(this).parent()
+        parent.find('.grunt-list .grunt-icon-sprite').removeClass('active')
+        parent.find('input').val('').trigger('change')
+    })
+
     $('.area-go-to').on('click', function (e) {
         e.preventDefault()
         var lat = $(this).data('lat')
@@ -6739,6 +6949,11 @@ $(function () {
         buildSwitchChangeListener(mapData, ['gyms'], 'showGyms').bind(this)()
     })
     $('#nests-switch').change(function () {
+        if (!this.checked && Store.get('showNestPolygon') === true) {
+            Store.set('showNestPolygon', false)
+            $('#nest-polygon-switch').prop('checked', false)
+            nestLayerGroup.clearLayers()
+        }
         var options = {
             'duration': 500
         }
@@ -6898,8 +7113,11 @@ $(function () {
     $('#rocket-timer-switch').change(function () {
         Store.set('showRocketTimer', this.checked)
         lastpokestops = false
-        jQuery('label[for="rocket-switch"]').click()
-        jQuery('label[for="rocket-switch"]').click()
+        $.each(mapData.pokestops, function (key, value) {
+            markers.removeLayer(value.marker)
+            markersnotify.removeLayer(value.marker)
+            value.marker = setupPokestopMarker(value)
+        })
         buildSwitchChangeListener(mapData, ['pokestops'], 'showRocketTimer').bind(this)()
     })
 
@@ -6916,28 +7134,54 @@ $(function () {
         buildSwitchChangeListener(mapData, ['pokestops'], 'showPokestops').bind(this)()
     })
 
-    $('#lures-switch').change(function () {
-        Store.set('showLures', this.checked)
+    $('#allPokestops-switch').change(function () {
+        Store.set('showAllPokestops', this.checked)
         if (this.checked === true && Store.get('showQuests') === true) {
             Store.set('showQuests', false)
-            $('#quests-switch').prop('checked', false)
+            jQuery('label[for="quests-switch"]').click()
         }
         if (this.checked === true && Store.get('showRocket') === true) {
             Store.set('showRocket', false)
             jQuery('label[for="rocket-switch"]').click()
         }
-        var options = {
-            'duration': 500
+        if (this.checked === true && Store.get('showLures') === true) {
+            Store.set('showLures', false)
+            $('#lures-switch').prop('checked', false)
         }
-        var wrapper = $('#quests-filter-wrapper')
-        if (this.checked) {
-            lastpokestops = false
-            wrapper.hide(options)
-            updateMap()
-        } else {
-            lastpokestops = false
-            updateMap()
+        lastpokestops = false
+        updateMap()
+
+        $.each(mapData.pokestops, function (key, value) {
+            markers.removeLayer(value.marker)
+            markersnotify.removeLayer(value.marker)
+            value.marker = setupPokestopMarker(value)
+        })
+        return buildSwitchChangeListener(mapData, ['pokestops'], 'showAllPokestops').bind(this)()
+    })
+
+
+    $('#lures-switch').change(function () {
+        Store.set('showLures', this.checked)
+        if (this.checked === true && Store.get('showQuests') === true) {
+            Store.set('showQuests', false)
+            jQuery('label[for="quests-switch"]').click()
         }
+        if (this.checked === true && Store.get('showRocket') === true) {
+            Store.set('showRocket', false)
+            jQuery('label[for="rocket-switch"]').click()
+        }
+        if (this.checked === true && Store.get('showAllPokestops') === true) {
+            Store.set('showAllPokestops', false)
+            $('#allPokestops-switch').prop('checked', false)
+        }
+        lastpokestops = false
+        updateMap()
+
+        $.each(mapData.pokestops, function (key, value) {
+            markers.removeLayer(value.marker)
+            markersnotify.removeLayer(value.marker)
+            value.marker = setupPokestopMarker(value)
+        })
         return buildSwitchChangeListener(mapData, ['pokestops'], 'showLures').bind(this)()
     })
 
@@ -6945,20 +7189,22 @@ $(function () {
         Store.set('showRocket', this.checked)
         if (this.checked === true && Store.get('showQuests') === true) {
             Store.set('showQuests', false)
-            $('#quests-switch').prop('checked', false)
+            jQuery('label[for="quests-switch"]').click()
         }
         if (this.checked === true && Store.get('showLures') === true) {
             Store.set('showLures', false)
             $('#lures-switch').prop('checked', false)
         }
+        if (this.checked === true && Store.get('showAllPokestops') === true) {
+            Store.set('showAllPokestops', false)
+            $('#allPokestops-switch').prop('checked', false)
+        }
         var options = {
             'duration': 500
         }
-        var wrapper = $('#quests-filter-wrapper')
         var rocketWrapper = $('#rocket-wrapper')
         if (this.checked) {
             lastpokestops = false
-            wrapper.hide(options)
             rocketWrapper.show(options)
             updateMap()
         } else {
@@ -6966,6 +7212,11 @@ $(function () {
             rocketWrapper.hide(options)
             updateMap()
         }
+        $.each(mapData.pokestops, function (key, value) {
+            markers.removeLayer(value.marker)
+            markersnotify.removeLayer(value.marker)
+            value.marker = setupPokestopMarker(value)
+        })
         return buildSwitchChangeListener(mapData, ['pokestops'], 'showRocket').bind(this)()
     })
 
@@ -6978,6 +7229,10 @@ $(function () {
         if (this.checked === true && Store.get('showRocket') === true) {
             Store.set('showRocket', false)
             jQuery('label[for="rocket-switch"]').click()
+        }
+        if (this.checked === true && Store.get('showAllPokestops') === true) {
+            Store.set('showAllPokestops', false)
+            $('#allPokestops-switch').prop('checked', false)
         }
         var options = {
             'duration': 1000
@@ -6992,6 +7247,11 @@ $(function () {
             wrapper.hide(options)
             updateMap()
         }
+        $.each(mapData.pokestops, function (key, value) {
+            markers.removeLayer(value.marker)
+            markersnotify.removeLayer(value.marker)
+            value.marker = setupPokestopMarker(value)
+        })
         return buildSwitchChangeListener(mapData, ['pokestops'], 'showQuests').bind(this)()
     })
 

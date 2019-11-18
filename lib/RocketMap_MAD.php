@@ -162,7 +162,7 @@ class RocketMap_MAD extends RocketMap
 
         $query = "SELECT :select
         FROM pokemon p
-        INNER JOIN trs_spawn ts ON ts.spawnpoint = p.spawnpoint_id
+        LEFT JOIN trs_spawn ts ON ts.spawnpoint = p.spawnpoint_id
         WHERE :conditions";
 
         $query = str_replace(":select", $select, $query);
@@ -401,7 +401,7 @@ class RocketMap_MAD extends RocketMap
         return $data;
     }
 
-    public function get_stops($qpeids, $qieids, $swLat, $swLng, $neLat, $neLng, $tstamp = 0, $oSwLat = 0, $oSwLng = 0, $oNeLat = 0, $oNeLng = 0, $lured = false, $rocket = false, $quests, $dustamount)
+    public function get_stops($geids, $qpeids, $qieids, $swLat, $swLng, $neLat, $neLng, $tstamp = 0, $oSwLat = 0, $oSwLng = 0, $oNeLat = 0, $oNeLng = 0, $lured = false, $rocket = false, $quests, $dustamount)
     {
         $conds = array();
         $params = array();
@@ -421,13 +421,27 @@ class RocketMap_MAD extends RocketMap
         if (!$noBoundaries) {
             $conds[] = "(ST_WITHIN(point(latitude,longitude),ST_GEOMFROMTEXT('POLYGON(( " . $boundaries . " ))')))";
         }
+
         if ($lured == "true") {
             $conds[] = "active_fort_modifier IS NOT NULL";
         }
-        if ($rocket == "true") {
-            $conds[] = "incident_expiration IS NOT NULL";
+        if (!empty($rocket) && $rocket === 'true') {
+            $rocketSQL = '';
+            if (count($geids)) {
+                $rocket_in = '';
+                $r = 1;
+                foreach ($geids as $geid) {
+                    $params[':rqry_' . $r . "_"] = $geid;
+                    $rocket_in .= ':rqry_' . $r . "_,";
+                    $r++;
+                }
+                $rocket_in = substr($rocket_in, 0, -1);
+                $rocketSQL .= "incident_grunt_type NOT IN ( $rocket_in )";
+            } else {
+                $rocketSQL .= "incident_grunt_type > 0";
+            }
+            $conds[] = "" . $rocketSQL . "";
         }
-
         if ($tstamp > 0) {
             $date = new \DateTime();
             $date->setTimezone(new \DateTimeZone('UTC'));
@@ -438,7 +452,7 @@ class RocketMap_MAD extends RocketMap
         return $this->query_stops($conds, $params);
     }
 
-    public function get_stops_quest($qpreids, $qireids, $swLat, $swLng, $neLat, $neLng, $tstamp = 0, $oSwLat = 0, $oSwLng = 0, $oNeLat = 0, $oNeLng = 0, $lures, $rocket, $quests, $dustamount, $reloaddustamount)
+    public function get_stops_quest($greids, $qpreids, $qireids, $swLat, $swLng, $neLat, $neLng, $tstamp = 0, $oSwLat = 0, $oSwLng = 0, $oNeLat = 0, $oNeLng = 0, $lures, $rocket, $quests, $dustamount, $reloaddustamount)
     {
         $conds = array();
         $params = array();
@@ -480,6 +494,21 @@ class RocketMap_MAD extends RocketMap
                 $params[':amount'] = intval($dustamount);
             }
             $conds[] = $tmpSQL;
+        }
+        if (!empty($rocket) && $rocket === 'true') {
+            $rocketSQL = '';
+            if (count($greids)) {
+                $rocket_in = '';
+                $r = 1;
+                foreach ($greids as $greid) {
+                    $params[':rqry_' . $r . "_"] = $greid;
+                    $rocket_in .= ':rqry_' . $r . "_,";
+                    $r++;
+                }
+                $rocket_in = substr($rocket_in, 0, -1);
+                $rocketSQL .= "incident_grunt_type IN ( $rocket_in )";
+            }
+            $conds[] = "" . $rocketSQL . "";
         }
         return $this->query_stops($conds, $params);
     }
@@ -573,6 +602,30 @@ class RocketMap_MAD extends RocketMap
         return $this->query_scanlocation($conds, $params);
     }
 
+    public function generated_exclude_list($type)
+    {
+        global $db;
+        if ($type === 'pokemonlist') {
+            $pokestops = $db->query("SELECT distinct quest_pokemon_id FROM trs_quest WHERE quest_pokemon_id > 0 AND DATE(FROM_UNIXTIME(quest_timestamp)) = CURDATE() order by quest_pokemon_id;")->fetchAll(\PDO::FETCH_ASSOC);
+            $data = array();
+            foreach ($pokestops as $pokestop) {
+                $data[] = $pokestop['quest_pokemon_id'];
+            }
+        } elseif ($type === 'itemlist') {
+            $pokestops = $db->query("SELECT distinct quest_item_id FROM trs_quest WHERE quest_item_id > 0 AND DATE(FROM_UNIXTIME(quest_timestamp)) = CURDATE() order by quest_item_id;")->fetchAll(\PDO::FETCH_ASSOC);
+            $data = array();
+            foreach ($pokestops as $pokestop) {
+                $data[] = $pokestop['quest_item_id'];
+            }
+        } elseif ($type === 'gruntlist') {
+            $pokestops = $db->query("SELECT distinct incident_grunt_type FROM pokestop WHERE incident_grunt_type > 0 AND incident_expiration > UTC_TIMESTAMP() order by incident_grunt_type;")->fetchAll(\PDO::FETCH_ASSOC);
+            $data = array();
+            foreach ($pokestops as $pokestop) {
+                $data[] = $pokestop['incident_grunt_type'];
+            }
+        }
+        return $data;
+    }
     private function query_scanlocation($conds, $params)
     {
         global $db;
