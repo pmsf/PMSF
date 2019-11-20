@@ -253,6 +253,11 @@ function validateCookie($cookie)
             $_SESSION['user']->updatePwd = 1;
         }
         setcookie("LoginCookie", $cookie, time()+60*60*24*7);
+        if (!isset($_SESSION['already_refreshed'])) {
+            $refreshAfter = 1;
+            header('Refresh: ' . $refreshAfter);
+            $_SESSION['already_refreshed'] = true;
+        }
         return true;
     } else {
         destroyCookiesAndSessions();

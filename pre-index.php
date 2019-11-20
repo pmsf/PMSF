@@ -4,6 +4,9 @@ if (! file_exists('config/config.php')) {
     die("<h1>Config file missing</h1><p>Please ensure you have created your config file (<code>config/config.php</code>).</p>");
 }
 include('config/config.php');
+if (isset($_COOKIE["LoginCookie"])) {
+    validateCookie($_COOKIE["LoginCookie"]);
+}
 $zoom        = ! empty($_GET['zoom']) ? $_GET['zoom'] : null;
 $encounterId = ! empty($_GET['encId']) ? $_GET['encId'] : null;
 if (! empty($_GET['lat']) && ! empty($_GET['lon'])) {
@@ -332,19 +335,6 @@ if (strtolower($map) === "rdm") {
                 }
 
                 $_SESSION['user']->expire_timestamp = $info['expire_timestamp'];
-                
-                //If the session variable does not exist, presume that user suffers from a bug and access config is not used.
-                //If you don't like this, help me fix it.
-                if (!isset($_SESSION['already_refreshed'])) {
-                    //Number of seconds to refresh the page after.
-                    $refreshAfter = 1;
-
-                    //Send a Refresh header.
-                    header('Refresh: ' . $refreshAfter);
-
-                    //Set the session variable so that we don't refresh again.
-                    $_SESSION['already_refreshed'] = true;
-                }
 
                 if (!empty($_SESSION['user']->updatePwd) && $_SESSION['user']->updatePwd === 1) {
                     header("Location: ./user");
