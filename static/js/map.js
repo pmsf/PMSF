@@ -770,13 +770,26 @@ function showS2Cells(level, style) {
         var filledStyle = {color: 'black', fillOpacity: 0.0}
         if ((cell.level === 14) && (totalCount === 1 || totalCount === 5 || totalCount === 19)) {
             filledStyle = {fillColor: s2Colors[1], fillOpacity: 0.3}
-            html += '<div><center><b>' + i8ln('1 more Pokéstop until new gym') + '</b></center></div>'
         } else if ((cell.level === 14) && (totalCount === 4 || totalCount === 18)) {
             filledStyle = {fillColor: s2Colors[2], fillOpacity: 0.3}
-            html += '<div><center><b>' + i8ln('2 more Pokéstops until new gym') + '</b></center></div>'
         } else if (cell.level === 14 && totalCount >= 20) {
             filledStyle = {fillColor: s2Colors[3], fillOpacity: 0.3}
-            html += '<div><center><b>' + i8ln('Max amount of Gyms reached') + '</b></center></div>'
+        }
+
+        if (cell.level === 14) {
+            var count = ''
+            if (totalCount >= 20) {
+                html += '<div><center><b>' + i8ln('Max amount of Gyms reached') + '</b></center></div>'
+            } else if (totalCount >= 6) {
+                count = 20 - totalCount
+                html += '<div><center><b>' + count + ' ' + i8ln('more Pokéstop(s) until new gym') + '</b></center></div>'
+            } else if (totalCount >= 2) {
+                count = 6 - totalCount
+                html += '<div><center><b>' + count + ' ' + i8ln('more Pokéstop(s) until new gym') + '</b></center></div>'
+            } else if (totalCount < 2) {
+                count = 2 - totalCount
+                html += '<div><center><b>' + count + ' ' + i8ln('more Pokéstop(s) until new gym') + '</b></center></div>'
+            }
         }
 
         if (cell.level === 17) {
