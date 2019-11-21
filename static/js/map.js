@@ -642,6 +642,10 @@ var mapboxPogoDark = L.tileLayer('https://api.mapbox.com/styles/v1/anonymous89/c
 var googlemapssat = L.gridLayer.googleMutant({type: 'satellite'}) // eslint-disable-line no-unused-vars
 var googlemapsroad = L.gridLayer.googleMutant({type: 'roadmap'}) // eslint-disable-line no-unused-vars
 var tileserver = L.tileLayer(customTileServerAddress, {attribution: 'Tileserver'}) // eslint-disable-line no-unused-vars
+// dynamic map style chooses mapboxPogo or mapboxPogoDark depending on client time
+var currentDate = new Date()
+var currentHour = currentDate.getHours()
+var mapboxPogoDynamic = currentHour >= 6 && currentHour < 19 ? mapboxPogo : mapboxPogoDark
 
 function setTileLayer(layername) {
     if (map.hasLayer(window[_oldlayer])) { map.removeLayer(window[_oldlayer]) }
