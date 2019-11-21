@@ -252,6 +252,11 @@ if (location.search.indexOf('login=true') > 0) {
 if (location.search.indexOf('login=false') > 0) {
     openAccessDeniedModal()
 }
+if (copyrightSafe) {
+    Store.set('icons', 'static/icons-safe/')
+} else {
+    Store.set('icons', icons)
+}
 function previewPoiImage(event) { // eslint-disable-line no-unused-vars
     var form = $(event.target).parent().parent()
     var input = event.target
@@ -770,13 +775,26 @@ function showS2Cells(level, style) {
         var filledStyle = {color: 'black', fillOpacity: 0.0}
         if ((cell.level === 14) && (totalCount === 1 || totalCount === 5 || totalCount === 19)) {
             filledStyle = {fillColor: s2Colors[1], fillOpacity: 0.3}
-            html += '<div><center><b>' + i8ln('1 more Pokéstop until new gym') + '</b></center></div>'
         } else if ((cell.level === 14) && (totalCount === 4 || totalCount === 18)) {
             filledStyle = {fillColor: s2Colors[2], fillOpacity: 0.3}
-            html += '<div><center><b>' + i8ln('2 more Pokéstops until new gym') + '</b></center></div>'
         } else if (cell.level === 14 && totalCount >= 20) {
             filledStyle = {fillColor: s2Colors[3], fillOpacity: 0.3}
-            html += '<div><center><b>' + i8ln('Max amount of Gyms reached') + '</b></center></div>'
+        }
+
+        if (cell.level === 14) {
+            var count = ''
+            if (totalCount >= 20) {
+                html += '<div><center><b>' + i8ln('Max amount of Gyms reached') + '</b></center></div>'
+            } else if (totalCount >= 6) {
+                count = 20 - totalCount
+                html += '<div><center><b>' + count + ' ' + i8ln('more Pokéstop(s) until new gym') + '</b></center></div>'
+            } else if (totalCount >= 2) {
+                count = 6 - totalCount
+                html += '<div><center><b>' + count + ' ' + i8ln('more Pokéstop(s) until new gym') + '</b></center></div>'
+            } else if (totalCount < 2) {
+                count = 2 - totalCount
+                html += '<div><center><b>' + count + ' ' + i8ln('more Pokéstop(s) until new gym') + '</b></center></div>'
+            }
         }
 
         if (cell.level === 17) {
@@ -6337,14 +6355,14 @@ $(function () {
                 mapBox = true
             }
             var mapBoxStyle = value.includes('Mapbox')
-            var customTileServer	
-            if (noCustomTileServer) {	
-                customTileServer = false	
-            } else {	
-                customTileServer = true	
+            var customTileServer
+            if (noCustomTileServer) {
+                customTileServer = false
+            } else {
+                customTileServer = true
             }
             var customTileServerStyle = value.includes('Tileserver')
-            if (!googleStyle && !mapBoxStyle) {
+            if (!googleStyle && !mapBoxStyle && !customTileServerStyle) {
                 styleList.push({
                     id: key,
                     text: i8ln(value)
@@ -6359,11 +6377,11 @@ $(function () {
                     id: key,
                     text: i8ln(value)
                 })
-            } else if (customTileServer && customTileServerStyle) {	
-                styleList.push({	
-                    id: key,	
-                    text: i8ln(value)	
-                })	
+            } else if (customTileServer && customTileServerStyle) {
+                styleList.push({
+                    id: key,
+                    text: i8ln(value)
+                })
             }
         })
 
@@ -6952,6 +6970,7 @@ $(function () {
         if (!this.checked && Store.get('showNestPolygon') === true) {
             Store.set('showNestPolygon', false)
             $('#nest-polygon-switch').prop('checked', false)
+            nestLayerGroup.clearLayers()
         }
         var options = {
             'duration': 500
