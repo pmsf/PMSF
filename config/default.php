@@ -237,7 +237,7 @@ $enableTeamRocket = 'false';
 $noTeamRocketEncounterData = true;
 $noGrunts = false;
 $noGruntNumbers = false;
-$hideGrunts = [];
+$hideGrunts = '[]';
 $excludeGrunts = [];
 $generateExcludeGrunts = true;
 
