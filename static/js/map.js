@@ -463,7 +463,7 @@ function initMap() { // eslint-disable-line no-unused-vars
             $('.ui-dialog').remove()
             $('.submit-modal').clone().dialog({
                 modal: true,
-                maxHeight: 600,
+                maxHeight: 700,
                 buttons: {},
                 title: i8ln('Submit Data to Map'),
                 classes: {
