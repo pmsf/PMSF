@@ -252,6 +252,11 @@ if (location.search.indexOf('login=true') > 0) {
 if (location.search.indexOf('login=false') > 0) {
     openAccessDeniedModal()
 }
+if (copyrightSafe) {
+    Store.set('icons', 'static/icons-safe/')
+} else {
+    Store.set('icons', icons)
+}
 function previewPoiImage(event) { // eslint-disable-line no-unused-vars
     var form = $(event.target).parent().parent()
     var input = event.target
