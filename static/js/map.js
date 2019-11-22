@@ -650,8 +650,6 @@ function setTileLayer(layername) {
     _oldlayer = layername
 }
 
-Store.set('map_style', 'tileserver')
-
 function updateLocationMarker(style) {
     var locationIcon
     if (style in searchMarkerStyles) {
