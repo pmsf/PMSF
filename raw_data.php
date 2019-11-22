@@ -42,9 +42,6 @@ $lastspawns = !empty($_POST['lastspawns']) ? $_POST['lastspawns'] : false;
 $lastnests = !empty($_POST['lastnests']) ? $_POST['lastnests'] : false;
 $lastcommunities = !empty($_POST['lastcommunities']) ? $_POST['lastcommunities'] : false;
 $lastportals = !empty($_POST['lastportals']) ? $_POST['lastportals'] : false;
-$lastinns = !empty($_POST['lastinns']) ? $_POST['lastinns'] : false;
-$lastfortresses = !empty($_POST['lastfortresses']) ? $_POST['lastfortresses'] : false;
-$lastgreenhouses = !empty($_POST['lastgreenhouses']) ? $_POST['lastgreenhouses'] : false;
 $lastpois = !empty($_POST['lastpois']) ? $_POST['lastpois'] : false;
 $exEligible = !empty($_POST['exEligible']) ? $_POST['exEligible'] : false;
 $d["lastpokestops"] = !empty($_POST['pokestops']) ? $_POST['pokestops'] : false;
@@ -55,9 +52,6 @@ $d["lastpokemon"] = !empty($_POST['pokemon']) ? $_POST['pokemon'] : false;
 $d["lastnests"] = !empty($_POST['nests']) ? $_POST['nests'] : false;
 $d["lastcommunities"] = !empty($_POST['communities']) ? $_POST['communities'] : false;
 $d["lastportals"] = !empty($_POST['portals']) ? $_POST['portals'] : false;
-$d["lastinns"] = !empty($_POST['inns']) ? $_POST['inns'] : false;
-$d["lastfortresses"] = !empty($_POST['fortresses']) ? $_POST['fortresses'] : false;
-$d["lastgreenhouses"] = !empty($_POST['greenhouses']) ? $_POST['greenhouses'] : false;
 $d["lastpois"] = !empty($_POST['pois']) ? $_POST['pois'] : false;
 if ($minIv < $prevMinIv || $minLevel < $prevMinLevel) {
     $lastpokemon = false;
@@ -275,51 +269,6 @@ if (!$noPortals) {
                 $d["portals"] = $manual->get_portals($swLat, $swLng, $neLat, $neLng, 0, $oSwLat, $oSwLng, $oNeLat, $oNeLng, $newportals);
             } else {
                 $d["portals"] = $manual->get_portals($swLat, $swLng, $neLat, $neLng, time(), 0, 0, 0, 0, $newportals);
-            }
-        }
-    }
-}
-
-global $noInn;
-if (!$noInn) {
-    if ($d["lastinns"] == "true") {
-        if ($lastinns != "true") {
-            $d["inns"] = $manual->get_inns($swLat, $swLng, $neLat, $neLng);
-        } else {
-            if ($newarea) {
-                $d["inns"] = $manual->get_inns($swLat, $swLng, $neLat, $neLng, 0, $oSwLat, $oSwLng, $oNeLat, $oNeLng);
-            } else {
-                $d["inns"] = $manual->get_inns($swLat, $swLng, $neLat, $neLng, time());
-            }
-        }
-    }
-}
-
-global $noFortress;
-if (!$noFortress) {
-    if ($d["lastfortresses"] == "true") {
-        if ($lastfortresses != "true") {
-            $d["fortresses"] = $manual->get_fortresses($swLat, $swLng, $neLat, $neLng);
-        } else {
-            if ($newarea) {
-                $d["fortresses"] = $manual->get_fortresses($swLat, $swLng, $neLat, $neLng, 0, $oSwLat, $oSwLng, $oNeLat, $oNeLng);
-            } else {
-                $d["fortresses"] = $manual->get_fortresses($swLat, $swLng, $neLat, $neLng, time());
-            }
-        }
-    }
-}
-
-global $noGreenhouse;
-if (!$noGreenhouse) {
-    if ($d["lastgreenhouses"] == "true") {
-        if ($lastgreenhouses != "true") {
-            $d["greenhouses"] = $manual->get_greenhouses($swLat, $swLng, $neLat, $neLng);
-        } else {
-            if ($newarea) {
-                $d["greenhouses"] = $manual->get_greenhouses($swLat, $swLng, $neLat, $neLng, 0, $oSwLat, $oSwLng, $oNeLat, $oNeLng);
-            } else {
-                $d["greenhouses"] = $manual->get_greenhouses($swLat, $swLng, $neLat, $neLng, time());
             }
         }
     }
