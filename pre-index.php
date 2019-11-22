@@ -358,6 +358,8 @@ if (strtolower($map) === "rdm") {
                 }
             } elseif ($forcedDiscordLogin === true) {
                 header("Location: ./discord-login");
+            } elseif ($forcedLogin === true) {
+                header("Location: ./user");
             } else {
                 echo "<a href='./user' style='float:right;padding:0 5px;' title='" . i8ln('Login') . "'><i class='fas fa-user' style='color:white;font-size:20px;vertical-align:middle;'></i></a>";
             }
