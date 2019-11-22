@@ -66,7 +66,7 @@ $mBoxKey = "";
 /* How to use multiple Map Box Keys: */
 
 //$dayOfTheWeek = date('l');
-//If ($dayOfTheWeek === 'Monday' || $dayOfTheWeek === 'Tuesday' || $dayOfTheWeek === 'Wednesday') {
+//if ($dayOfTheWeek === 'Monday' || $dayOfTheWeek === 'Tuesday' || $dayOfTheWeek === 'Wednesday') {
 //    $mBoxKey = "";
 //} else if ($dayOfTheWeek === 'Thursday' || $dayOfTheWeek === 'Friday') {
 //    $mBoxKey = "";
