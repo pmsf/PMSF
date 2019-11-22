@@ -143,6 +143,7 @@ $serverBlacklist = [''];                                            // Array of 
 $logFailedLogin = 'logs/failed_login.log';                          // File location of where to store a log file of blocked users
 
 /* Native Auth */
+$forcedLogin = false;                                               // Force users to login before they can see map
 $noNativeLogin = true;                                              // This will enable the built in login system.
 $domainName = '';                                                   // If this is empty, reset-password emails will use the domain name taken from the URL.
 
