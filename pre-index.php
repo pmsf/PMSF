@@ -356,8 +356,6 @@ if (strtolower($map) === "rdm") {
                 } else {
                     echo '<i class="fas fa-user-times" title="' . i8ln('User Expired') . '" style="color: red;font-size: 20px;position: relative;float: right;padding: 0 5px;top: 17px;"></i>';
                 }
-            } elseif ($forcedDiscordLogin === true) {
-                header("Location: ./discord-login");
             } elseif ($forcedLogin === true) {
                 header("Location: ./user");
             } else {
