@@ -939,48 +939,6 @@ if (strtolower($map) === "rdm") {
                 </div>';
                 } ?>
                 <?php
-                if (! $noInn) {
-                    echo '<div class="form-control switch-container">
-                    <h3>' . i8ln('Inn') . '</h3>
-                    <div class="onoffswitch">
-                        <input id="inns-switch" type="checkbox" name="inns-switch"
-                               class="onoffswitch-checkbox" checked>
-                        <label class="onoffswitch-label" for="inns-switch">
-                            <span class="switch-label" data-on="On" data-off="Off"></span>
-                            <span class="switch-handle"></span>
-                        </label>
-                    </div>
-                </div>';
-                } ?>
-                <?php
-                if (! $noFortress) {
-                    echo '<div class="form-control switch-container">
-                    <h3>' . i8ln('Fortress') . '</h3>
-                    <div class="onoffswitch">
-                        <input id="fortresses-switch" type="checkbox" name="fortresses-switch"
-                               class="onoffswitch-checkbox" checked>
-                        <label class="onoffswitch-label" for="fortresses-switch">
-                            <span class="switch-label" data-on="On" data-off="Off"></span>
-                            <span class="switch-handle"></span>
-                        </label>
-                    </div>
-                </div>';
-                } ?>
-                <?php
-                if (! $noGreenhouse) {
-                    echo '<div class="form-control switch-container">
-                    <h3>' . i8ln('Greenhouse') . '</h3>
-                    <div class="onoffswitch">
-                        <input id="greenhouses-switch" type="checkbox" name="greenhouses-switch"
-                               class="onoffswitch-checkbox" checked>
-                        <label class="onoffswitch-label" for="greenhouses-switch">
-                            <span class="switch-label" data-on="On" data-off="Off"></span>
-                            <span class="switch-handle"></span>
-                        </label>
-                    </div>
-                </div>';
-                } ?>
-                <?php
                 if (! $noS2Cells) {
                     echo '<div class="form-control switch-container">
                     <h3>' . i8ln('Show S2 Cells') . '</h3>
@@ -1639,12 +1597,6 @@ if (strtolower($map) === "rdm") {
                     <i class="fas fa-sync-alt"></i> <?php echo i8ln('Convert to Pokéstop'); ?></button>
                 <button type="button" onclick="convertPortalToGymData(event);" class="convertportalid">
                     <i class="fas fa-sync-alt"></i> <?php echo i8ln('Convert to Gym'); ?></button>
-                <button type="button" onclick="convertPortalToInnData(event);" class="convertportalid">
-                    <i class="fas fa-sync-alt"></i> <?php echo i8ln('Convert to Inn'); ?></button>
-                <button type="button" onclick="convertPortalToFortressData(event);" class="convertportalid">
-                    <i class="fas fa-sync-alt"></i> <?php echo i8ln('Convert to Fortress'); ?></button>
-                <button type="button" onclick="convertPortalToGreenhouseData(event);" class="convertportalid">
-                    <i class="fas fa-sync-alt"></i> <?php echo i8ln('Convert to Greenhouse'); ?></button>
                 <button type="button" onclick="markPortalChecked(event);" class="convertportalid">
                     <i class="fas fa-times"></i> <?php echo i8ln('No Pokéstop or Gym'); ?></button>
             </div>
@@ -2214,15 +2166,6 @@ if (strtolower($map) === "rdm") {
     var nestGeoJSONfile = '<?php echo $noNestPolygon ? '' : $nestGeoJSONfile ?>';
     var noCostumeIcons = <?php echo $noCostumeIcons === true ? 'true' : 'false' ?>;
     var queryInterval = <?php echo $queryInterval ?>;
-    var enableInns = <?php echo $noInn ? 'false' : $enableInn ?>;
-    var noInns = <?php echo $noInn === true ? 'true' : 'false' ?>;
-    var enableFortresses = <?php echo $noFortress ? 'false' : $enableFortress ?>;
-    var noFortresses = <?php echo $noFortress === true ? 'true' : 'false' ?>;
-    var enableGreenhouses = <?php echo $noGreenhouse ? 'false' : $enableGreenhouse ?>;
-    var noGreenhouses = <?php echo $noGreenhouse === true ? 'true' : 'false' ?>;
-    var noDeleteInn = <?php echo $noDeleteInn === true ? 'true' : 'false' ?>;
-    var noDeleteFortress = <?php echo $noDeleteFortress === true ? 'true' : 'false' ?>;
-    var noDeleteGreenhouse = <?php echo $noDeleteGreenhouse === true ? 'true' : 'false' ?>;
     var noInvasionEncounterData = <?php echo $noTeamRocketEncounterData === true ? 'true' : 'false' ?>;
     var numberOfPokemon = <?php echo $numberOfPokemon; ?>;
     var numberOfItem = <?php echo $numberOfItem; ?>;
