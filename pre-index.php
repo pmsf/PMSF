@@ -719,29 +719,6 @@ if (strtolower($map) === "rdm") {
             }
             ?>
             <?php
-            if (! $noCommunity) {
-                ?>
-                <h3><?php echo i8ln('Communities'); ?></h3>
-        <div>
-                <?php
-                if (! $noCommunity) {
-                    echo '<div class="form-control switch-container">
-                    <h3>' . i8ln('Communities') . '</h3>
-                    <div class="onoffswitch">
-                        <input id="communities-switch" type="checkbox" name="communities-switch"
-                               class="onoffswitch-checkbox" checked>
-                        <label class="onoffswitch-label" for="communities-switch">
-                            <span class="switch-label" data-on="On" data-off="Off"></span>
-                            <span class="switch-handle"></span>
-                        </label>
-                    </div>
-                </div>';
-                } ?>
-                </div>
-                <?php
-            }
-            ?>
-            <?php
             if (! $noRaids || ! $noGyms) {
                 ?>
                 <h3><?php echo i8ln('Gym &amp; Raid'); ?></h3>
@@ -758,7 +735,7 @@ if (strtolower($map) === "rdm") {
                             <span class="switch-handle"></span>
                         </label>
                     </div>
-                </div>';
+                    </div>';
                     } ?>
                     <div id="raids-filter-wrapper" style="display:none">
                     <?php
@@ -817,7 +794,7 @@ if (strtolower($map) === "rdm") {
                             <span class="switch-handle"></span>
                         </label>
                     </div>
-                </div>';
+                    </div>';
                     } ?>
                     <?php
                     if (! $hideIfManual) {
@@ -830,7 +807,7 @@ if (strtolower($map) === "rdm") {
                                 <option value="2">' . i8ln('Valor') . '</option>
                                 <option value="3">' . i8ln('Instinct') . '</option>
                             </select>
-            </div>
+                        </div>
                         <div class="form-control switch-container" id="open-gyms-only-wrapper">
                             <h3>' . i8ln('Open Spot') . '</h3>
                             <div class="onoffswitch">
@@ -877,7 +854,7 @@ if (strtolower($map) === "rdm") {
                                 <option value="168">' . i8ln('Last Week') . '</option>
                             </select>
                         </div>
-            </div>';
+                        </div>';
                     } ?>
                     <div id="gyms-raid-filter-wrapper" style="display:none">
                         <?php
@@ -895,6 +872,29 @@ if (strtolower($map) === "rdm") {
                             </div>';
                         } ?>
                     </div>
+                </div>
+                <?php
+            }
+            ?>
+            <?php
+            if (! $noCommunity) {
+                ?>
+                <h3><?php echo i8ln('Communities'); ?></h3>
+                <div>
+                <?php
+                if (! $noCommunity) {
+                    echo '<div class="form-control switch-container">
+                    <h3>' . i8ln('Communities') . '</h3>
+                    <div class="onoffswitch">
+                        <input id="communities-switch" type="checkbox" name="communities-switch"
+                               class="onoffswitch-checkbox" checked>
+                        <label class="onoffswitch-label" for="communities-switch">
+                            <span class="switch-label" data-on="On" data-off="Off"></span>
+                            <span class="switch-handle"></span>
+                        </label>
+                    </div>
+                </div>';
+                } ?>
                 </div>
                 <?php
             }
