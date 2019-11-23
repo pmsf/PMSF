@@ -904,7 +904,7 @@ function buildScanPolygons() {
 }
 
 function buildNestPolygons() {
-    if (!Store.get(['showNestPolygon'])) {
+    if (!Store.get(['showNestPolygon']) || !enableNestPolygon) {
         return false
     }
 
