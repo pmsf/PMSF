@@ -645,7 +645,7 @@ var tileserver = L.tileLayer(customTileServerAddress, {attribution: 'Tileserver'
 // dynamic map style chooses mapboxPogo or mapboxPogoDark depending on client time
 var currentDate = new Date()
 var currentHour = currentDate.getHours()
-var mapboxPogoDynamic = currentHour >= 6 && currentHour < 19 ? mapboxPogo : mapboxPogoDark
+var mapboxPogoDynamic = currentHour >= 6 && currentHour < 19 ? mapboxPogo : mapboxPogoDark // eslint-disable-line no-unused-vars
 
 function setTileLayer(layername) {
     if (map.hasLayer(window[_oldlayer])) { map.removeLayer(window[_oldlayer]) }
