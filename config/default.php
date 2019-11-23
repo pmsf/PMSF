@@ -8,7 +8,9 @@
 // PMSF - DEFAULT CONFIG FILE
 // https://github.com/whitewillem/PMSF
 //======================================================================
-session_start();
+if (!isset($_SESSION)) {
+    session_start();
+}
 require_once(__DIR__ . '/../utils.php');
 
 $libs[] = "Scanner.php";
