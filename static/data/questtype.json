@@ -118,5 +118,13 @@
   "30": {
     "prototext": "QUEST_PURIFY_POKEMON",
     "text": "Purify {0} pokémon"
+  },
+  "31": {
+    "prototext": "QUEST_FIND_TEAM_ROCKET",
+    "text": "Find Team Rocket {0} times"
+  },
+  "32": {
+    "prototext": "QUEST_FIRST_GRUNT_OF_THE_DAY",
+    "text": "First Grunt of the day"
   }
 }

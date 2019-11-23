@@ -124,6 +124,11 @@ var StoreOptions = {
             default: hideQuestsItem,
             type: StoreTypes.JSON
         },
+    'remember_exclude_grunts':
+        {
+            default: hideGrunts,
+            type: StoreTypes.JSON
+        },
     'showRaids':
         {
             default: enableRaids,
@@ -254,6 +259,11 @@ var StoreOptions = {
             default: enablePokestops,
             type: StoreTypes.Boolean
         },
+    'showAllPokestops':
+        {
+            default: enableAllPokestops,
+            type: StoreTypes.Boolean
+        },
     'showLures':
         {
             default: enableLured,
@@ -292,6 +302,11 @@ var StoreOptions = {
     'showScanPolygon':
         {
             default: enableScanPolygon,
+            type: StoreTypes.Boolean
+        },
+    'showScanLocation':
+        {
+            default: enableLiveScan,
             type: StoreTypes.Boolean
         },
     'showNestPolygon':
