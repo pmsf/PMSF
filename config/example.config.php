@@ -124,8 +124,8 @@ $numberOfGrunt = 50;
 //-----------------------------------------------------
 // Login
 //-----------------------------------------------------
+$forcedLogin = false;                                               // Force users to login before they can see map
 /* Discord Auth */
-$forcedDiscordLogin = false;                                        // Force users to login with discord before they can see map
 $noDiscordLogin = true;                                             // This will enable login through discord.
                                                                     // 1. Create a discord bot here -> https://discordapp.com/developers/applications/me
                                                                     // 2. Install composer with "apt-get install composer".
