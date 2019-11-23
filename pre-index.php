@@ -724,8 +724,7 @@ if (strtolower($map) === "rdm") {
                     echo '<h3>' . i8ln('Gym &amp; Raid') . '</h3>';
                 } else {
                     echo '<h3>' . i8ln('Gym') . '</h3>';
-                }
-                ?>
+                } ?>
                 <div>
                     <?php
                     if (! $noRaids) {
