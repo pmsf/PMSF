@@ -688,6 +688,57 @@ function createLocationMarker() {
     return locationMarker
 }
 
+function cellLabel(stopCount, sponsoredStopCount, sponsoredGymCount, gymCount, totalCount, possibleCandidatePoiCount, submittedPoiCount, declinedPoiCount, resubmittedPoiCount, notEligiblePoiCount, totalPoiCount) {
+    var html = ''
+    var count = ''
+    if (totalCount >= 20) {
+        html += '<div><center><b>' + i8ln('Max amount of Gyms reached') + '</b></center></div>'
+    } else if (totalCount >= 6) {
+        count = 20 - totalCount
+        html += '<div><center><b>' + count + ' ' + i8ln('more Pokéstop(s) until new gym') + '</b></center></div>'
+    } else if (totalCount >= 2) {
+        count = 6 - totalCount
+        html += '<div><center><b>' + count + ' ' + i8ln('more Pokéstop(s) until new gym') + '</b></center></div>'
+    } else if (totalCount < 2) {
+        count = 2 - totalCount
+        html += '<div><center><b>' + count + ' ' + i8ln('more Pokéstop(s) until new gym') + '</b></center></div>'
+    }
+
+    html += '<div>' + i8ln('Gyms in cell') + ': <b>' + gymCount + '</b></div>' +
+        '<div>' + i8ln('Pokéstops in cell') + ': <b>' + stopCount + '</b></div>'
+    if (sponsoredStopCount > 0) {
+        html += '<div>' + i8ln('Sponsored Pokéstops in cell') + ': <b>' + sponsoredStopCount + '</b></div>'
+    }
+    if (sponsoredGymCount > 0) {
+        html += '<div>' + i8ln('Sponsored Gyms in cell') + ': <b>' + sponsoredGymCount + '</b></div>'
+    }
+    if (sponsoredStopCount > 0 || sponsoredGymCount > 0) {
+        html += '<div>' + i8ln('Total (excluding sponsored)') + ': <b>' + totalCount + '</b></div>'
+    } else {
+        html += '<div>' + i8ln('Total') + ': <b>' + totalCount + '</b></div>'
+    }
+    if (!noPoi && totalPoiCount > 0) {
+        html += '<br>'
+        if (possibleCandidatePoiCount > 0) {
+            html += '<div>' + i8ln('POI possible candidate') + ': <b>' + possibleCandidatePoiCount + '</b></div>'
+        }
+        if (submittedPoiCount > 0) {
+            html += '<div>' + i8ln('POI submitted') + ': <b>' + submittedPoiCount + '</b></div>'
+        }
+        if (declinedPoiCount > 0) {
+            html += '<div>' + i8ln('POI declined') + ': <b>' + declinedPoiCount + '</b></div>'
+        }
+        if (resubmittedPoiCount > 0) {
+            html += '<div>' + i8ln('POI resubmitted') + ': <b>' + resubmittedPoiCount + '</b></div>'
+        }
+        if (notEligiblePoiCount > 0) {
+            html += '<div>' + i8ln('POI not eligible') + ': <b>' + notEligiblePoiCount + '</b></div>'
+        }
+        html += '<div>' + i8ln('Total POI') + ': <b>' + totalPoiCount + '</b></div>'
+    }
+    return html
+}
+
 function pointInPolygon(x, y, cornersX, cornersY) {
     var i
     var j = cornersX.length - 1
@@ -772,33 +823,16 @@ function showS2Cells(level, style) {
             })
         }
 
-        var html = ''
         var filledStyle = {color: 'black', fillOpacity: 0.0}
-        if ((cell.level === 14) && (totalCount === 1 || totalCount === 5 || totalCount === 19)) {
-            filledStyle = {fillColor: s2Colors[1], fillOpacity: 0.3}
-        } else if ((cell.level === 14) && (totalCount === 4 || totalCount === 18)) {
-            filledStyle = {fillColor: s2Colors[2], fillOpacity: 0.3}
-        } else if (cell.level === 14 && totalCount >= 20) {
-            filledStyle = {fillColor: s2Colors[3], fillOpacity: 0.3}
-        }
-
         if (cell.level === 14) {
-            var count = ''
-            if (totalCount >= 20) {
-                html += '<div><center><b>' + i8ln('Max amount of Gyms reached') + '</b></center></div>'
-            } else if (totalCount >= 6) {
-                count = 20 - totalCount
-                html += '<div><center><b>' + count + ' ' + i8ln('more Pokéstop(s) until new gym') + '</b></center></div>'
-            } else if (totalCount >= 2) {
-                count = 6 - totalCount
-                html += '<div><center><b>' + count + ' ' + i8ln('more Pokéstop(s) until new gym') + '</b></center></div>'
-            } else if (totalCount < 2) {
-                count = 2 - totalCount
-                html += '<div><center><b>' + count + ' ' + i8ln('more Pokéstop(s) until new gym') + '</b></center></div>'
+            if ((cell.level === 14) && (totalCount === 1 || totalCount === 5 || totalCount === 19)) {
+                filledStyle = {fillColor: s2Colors[1], fillOpacity: 0.3}
+            } else if ((cell.level === 14) && (totalCount === 4 || totalCount === 18)) {
+                filledStyle = {fillColor: s2Colors[2], fillOpacity: 0.3}
+            } else if (cell.level === 14 && totalCount >= 20) {
+                filledStyle = {fillColor: s2Colors[3], fillOpacity: 0.3}
             }
-        }
-
-        if (cell.level === 17) {
+        } else if (cell.level === 17) {
             $.each(mapData.pokestops, function (key, value) {
                 if (pointInPolygon(value['latitude'], value['longitude'], s2Lats, s2Lons) && value['pokestop_id'].includes('.')) {
                     filledStyle = {fillColor: s2Colors[0], fillOpacity: 0.3}
@@ -810,44 +844,12 @@ function showS2Cells(level, style) {
                 }
             })
         }
+
         const poly = L.polygon(vertices, Object.assign({color: 'black', opacity: 0.5, weight: 0.5, fillOpacity: 0.0}, style, filledStyle))
-        if (cell.level === 14) {
-            html += '<div>' + i8ln('Gyms in cell') + ': <b>' + gymCount + '</b></div>' +
-                '<div>' + i8ln('Pokéstops in cell') + ': <b>' + stopCount + '</b></div>'
-            if (sponsoredStopCount > 0) {
-                html += '<div>' + i8ln('Sponsored Pokéstops in cell') + ': <b>' + sponsoredStopCount + '</b></div>'
-            }
-            if (sponsoredGymCount > 0) {
-                html += '<div>' + i8ln('Sponsored Gyms in cell') + ': <b>' + sponsoredGymCount + '</b></div>'
-            }
-            if (sponsoredStopCount > 0 || sponsoredGymCount > 0) {
-                html += '<div>' + i8ln('Total (excluding sponsored)') + ': <b>' + totalCount + '</b></div>'
-            } else {
-                html += '<div>' + i8ln('Total') + ': <b>' + totalCount + '</b></div>'
-            }
-            if (!noPoi && totalPoiCount > 0) {
-                html += '<br>'
-                if (possibleCandidatePoiCount > 0) {
-                    html += '<div>' + i8ln('POI possible candidate') + ': <b>' + possibleCandidatePoiCount + '</b></div>'
-                }
-                if (submittedPoiCount > 0) {
-                    html += '<div>' + i8ln('POI submitted') + ': <b>' + submittedPoiCount + '</b></div>'
-                }
-                if (declinedPoiCount > 0) {
-                    html += '<div>' + i8ln('POI declined') + ': <b>' + declinedPoiCount + '</b></div>'
-                }
-                if (resubmittedPoiCount > 0) {
-                    html += '<div>' + i8ln('POI resubmitted') + ': <b>' + resubmittedPoiCount + '</b></div>'
-                }
-                if (notEligiblePoiCount > 0) {
-                    html += '<div>' + i8ln('POI not eligible') + ': <b>' + notEligiblePoiCount + '</b></div>'
-                }
-                html += '<div>' + i8ln('Total POI') + ': <b>' + totalPoiCount + '</b></div>'
-            }
-            if (!$('.submit-on-off-button').hasClass('on')) {
-                poly.bindPopup(html, {autoPan: false, closeOnClick: false, autoClose: false})
-            }
+        if (cell.level === 14 && !$('.submit-on-off-button').hasClass('on')) {
+            poly.bindPopup(cellLabel(stopCount, sponsoredStopCount, sponsoredGymCount, gymCount, totalCount, possibleCandidatePoiCount, submittedPoiCount, declinedPoiCount, resubmittedPoiCount, notEligiblePoiCount, totalPoiCount), {autoPan: false, closeOnClick: false, autoClose: false})
         }
+
         if (cell.level === 13) {
             exLayerGroup.addLayer(poly)
         } else if (cell.level === 14) {
