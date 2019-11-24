@@ -251,7 +251,7 @@ if (location.search.indexOf('login=false') > 0) {
 }
 if (copyrightSafe) {
     Store.set('icons', 'static/icons-safe/')
-} else if (Store.get('icons') === 'static/icons-safe/') {
+} else if (Store.get('icons') === 'static/icons-safe/' || Store.get('icons') === '') {
     Store.set('icons', icons)
 }
 function previewPoiImage(event) { // eslint-disable-line no-unused-vars
