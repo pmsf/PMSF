@@ -805,6 +805,8 @@ function showS2Cells(level, style) {
                     }
                 }
             })
+        }
+        if (cell.level === 14) {
             $.each(mapData.pois, function (key, item) {
                 if (pointInPolygon(item['lat'], item['lon'], s2Lats, s2Lons)) {
                     if (item['status'] === '1') {
@@ -825,11 +827,11 @@ function showS2Cells(level, style) {
 
         var filledStyle = {color: 'black', fillOpacity: 0.0}
         if (cell.level === 14) {
-            if ((cell.level === 14) && (totalCount === 1 || totalCount === 5 || totalCount === 19)) {
+            if (totalCount === 1 || totalCount === 5 || totalCount === 19) {
                 filledStyle = {fillColor: s2Colors[1], fillOpacity: 0.3}
-            } else if ((cell.level === 14) && (totalCount === 4 || totalCount === 18)) {
+            } else if (totalCount === 4 || totalCount === 18) {
                 filledStyle = {fillColor: s2Colors[2], fillOpacity: 0.3}
-            } else if (cell.level === 14 && totalCount >= 20) {
+            } else if (totalCount >= 20) {
                 filledStyle = {fillColor: s2Colors[3], fillOpacity: 0.3}
             }
         } else if (cell.level === 17) {
@@ -906,7 +908,7 @@ function buildScanPolygons() {
 }
 
 function buildNestPolygons() {
-    if (!Store.get(['showNestPolygon']) || !enableNestPolygon) {
+    if (!Store.get(['showNestPolygon']) || enableNestPolygon) {
         return false
     }
 
