@@ -78,6 +78,7 @@ $mBoxKey = "";
 
 $noCustomTileServer = true;                                         // Enable/Disable Custom TileServer
 $customTileServerAddress = "";                                      // TileServer URL: http://ipAddress:port/tile/klokantech-basic/{z}/{x}/{y}/1/png
+$forcedTileServer = false;
 
 /* Google Analytics */
 

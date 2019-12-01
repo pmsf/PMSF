@@ -1286,7 +1286,7 @@ if (strtolower($map) === "rdm") {
             }
             ?>
             <?php
-            if (! $noMapStyle) {
+            if (! $noMapStyle && !$forcedTileServer) {
                 echo '<div class="form-control switch-container">
                 <h3>' . i8ln('Map Style') . '</h3>
                 <select id="map-style"></select>
@@ -2158,6 +2158,7 @@ if (strtolower($map) === "rdm") {
     var noConvertPortal = <?php echo $noConvertPortal === true ? 'true' : 'false' ?>;
     var markPortalsAsNew = <?php echo $markPortalsAsNew ?>;
     var copyrightSafe = <?php echo $copyrightSafe === true ? 'true' : 'false' ?>;
+    var forcedTileServer = <?php echo $forcedTileServer === true ? 'true' : 'false' ?>;
     var noRarityDisplay = <?php echo $noRarityDisplay === true ? 'true' : 'false' ?>;
     var noWeatherIcons = <?php echo $noWeatherIcons === true ? 'true' : 'false' ?>;
     var noIvShadow = <?php echo $no100IvShadow === true ? 'true' : 'false' ?>;
