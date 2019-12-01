@@ -425,7 +425,7 @@ function initMap() { // eslint-disable-line no-unused-vars
     })
 
     map.createPane('portals')
-    map.getPane('portals').style.zIndex = 300
+    map.getPane('portals').style.zIndex = 400
     createMyLocationButton()
     initSidebar()
 
@@ -850,7 +850,7 @@ function showS2Cells(level, style) {
             })
         }
 
-        const poly = L.polygon(vertices, Object.assign({color: 'black', opacity: 0.5, weight: 0.5, fillOpacity: 0.0}, style, filledStyle))
+        const poly = L.polygon(vertices, Object.assign({pane: 'portals', color: 'black', opacity: 0.5, weight: 0.5, fillOpacity: 0.0}, style, filledStyle))
         if (cell.level === 14 && !$('.submit-on-off-button').hasClass('on')) {
             poly.bindPopup(cellLabel(stopCount, sponsoredStopCount, sponsoredGymCount, gymCount, totalCount, possibleCandidatePoiCount, submittedPoiCount, declinedPoiCount, resubmittedPoiCount, notEligiblePoiCount, totalPoiCount), {autoPan: false, closeOnClick: false, autoClose: false})
         }
