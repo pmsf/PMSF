@@ -195,6 +195,7 @@
     "numberOfItem": true,
     "numberOfGrunt": true,
     "customTileServerAddress": true,
-    "noCustomTileServer": true
+    "noCustomTileServer": true,
+    "forcedTileServer": true
   }
 }
