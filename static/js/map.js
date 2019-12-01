@@ -627,63 +627,63 @@ function initMap() { // eslint-disable-line no-unused-vars
 function toggleFullscreenMap() { // eslint-disable-line no-unused-vars
     map.toggleFullscreen()
 }
-var openstreetmap = L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+var openstreetmap = L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', { // eslint-disable-line no-unused-vars
     attribution: '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>',
     maxZoom: maxZoom,
     maxNativeZoom: 18
-}) // eslint-disable-line no-unused-vars
+})
 
-var darkmatter = L.tileLayer('https://cartodb-basemaps-{s}.global.ssl.fastly.net/dark_all/{z}/{x}/{y}.png', {
+var darkmatter = L.tileLayer('https://cartodb-basemaps-{s}.global.ssl.fastly.net/dark_all/{z}/{x}/{y}.png', { // eslint-disable-line no-unused-vars
     attribution: '&copy; <a href="https://carto.com/">Carto</a>',
     maxZoom: maxZoom,
     maxNativeZoom: 18
-}) // eslint-disable-line no-unused-vars
+})
 
-var styletopo = L.tileLayer('https://{s}.tile.opentopomap.org/{z}/{x}/{y}.png', {
+var styletopo = L.tileLayer('https://{s}.tile.opentopomap.org/{z}/{x}/{y}.png', { // eslint-disable-line no-unused-vars
     attribution: '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>',
     maxZoom: maxZoom,
     maxNativeZoom: 18
-}) // eslint-disable-line no-unused-vars
+})
 
-var stylesatellite = L.tileLayer('https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}', {
+var stylesatellite = L.tileLayer('https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}', { // eslint-disable-line no-unused-vars
     attribution: 'Tiles &copy; Esri &mdash; Source: Esri, i-cubed, USDA, USGS, AEX, GeoEye, Getmapping, Aerogrid, IGN, IGP, UPR-EGP, and the GIS User Community',
     maxZoom: maxZoom,
     maxNativeZoom: 18
-}) // eslint-disable-line no-unused-vars
+})
 
-var stylewikipedia = L.tileLayer('https://maps.wikimedia.org/osm-intl/{z}/{x}/{y}{r}.png', {
+var stylewikipedia = L.tileLayer('https://maps.wikimedia.org/osm-intl/{z}/{x}/{y}{r}.png', { // eslint-disable-line no-unused-vars
     attribution: '<a href="https://wikimediafoundation.org/wiki/Maps_Terms_of_Use">Wikimedia</a>',
     maxZoom: maxZoom,
     maxNativeZoom: 18
-}) // eslint-disable-line no-unused-vars
+})
 
-var mapbox = L.tileLayer('https://api.mapbox.com/styles/v1/mapbox/streets-v11/tiles/256/{z}/{x}/{y}?access_token=' + mBoxKey, {
+var mapbox = L.tileLayer('https://api.mapbox.com/styles/v1/mapbox/streets-v11/tiles/256/{z}/{x}/{y}?access_token=' + mBoxKey, { // eslint-disable-line no-unused-vars
     attribution: '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>',
     maxZoom: maxZoom,
     maxNativeZoom: 18
-}) // eslint-disable-line no-unused-vars
+})
 
-var mapboxPogo = L.tileLayer('https://api.mapbox.com/styles/v1/anonymous89/ck2uz9d5t09qm1cl66b9giwun/tiles/256/{z}/{x}/{y}@2x?access_token=' + mBoxKey, {
+var mapboxPogo = L.tileLayer('https://api.mapbox.com/styles/v1/anonymous89/ck2uz9d5t09qm1cl66b9giwun/tiles/256/{z}/{x}/{y}@2x?access_token=' + mBoxKey, { // eslint-disable-line no-unused-vars
     attribution: '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>',
     maxZoom: maxZoom,
     maxNativeZoom: 18
-}) // eslint-disable-line no-unused-vars
+})
 
-var mapboxPogoDark = L.tileLayer('https://api.mapbox.com/styles/v1/anonymous89/ck2xw3j6h0e0v1dqtlcx9c4od/tiles/256/{z}/{x}/{y}@2x?access_token=' + mBoxKey, {
+var mapboxPogoDark = L.tileLayer('https://api.mapbox.com/styles/v1/anonymous89/ck2xw3j6h0e0v1dqtlcx9c4od/tiles/256/{z}/{x}/{y}@2x?access_token=' + mBoxKey, { // eslint-disable-line no-unused-vars
     attribution: '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>',
     maxZoom: maxZoom,
     maxNativeZoom: 18
-}) // eslint-disable-line no-unused-vars
+})
 
 var googlemapssat = L.gridLayer.googleMutant({type: 'satellite'}) // eslint-disable-line no-unused-vars
 
 var googlemapsroad = L.gridLayer.googleMutant({type: 'roadmap'}) // eslint-disable-line no-unused-vars
 
-var tileserver = L.tileLayer(customTileServerAddress, {
+var tileserver = L.tileLayer(customTileServerAddress, { // eslint-disable-line no-unused-vars
     attribution: 'Tileserver',
     maxZoom: maxZoom,
     maxNativeZoom: 18
-}) // eslint-disable-line no-unused-vars
+})
 
 // dynamic map style chooses mapboxPogo or mapboxPogoDark depending on client time
 var currentDate = new Date()
