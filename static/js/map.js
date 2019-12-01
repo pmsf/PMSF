@@ -254,6 +254,9 @@ if (copyrightSafe) {
 } else if (Store.get('icons') === 'static/icons-safe/' || Store.get('icons') === '') {
     Store.set('icons', icons)
 }
+if (forcedTileServer) {
+    Store.set('map_style', 'tileserver')
+}
 function previewPoiImage(event) { // eslint-disable-line no-unused-vars
     var form = $(event.target).parent().parent()
     var input = event.target
