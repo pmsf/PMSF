@@ -694,15 +694,15 @@ function createLocationMarker() {
 function cellLabel(stopCount, sponsoredStopCount, sponsoredGymCount, gymCount, totalCount, possibleCandidatePoiCount, submittedPoiCount, declinedPoiCount, resubmittedPoiCount, notEligiblePoiCount, totalPoiCount) {
     var html = ''
     var count = ''
-    if (totalCount >= 20) {
+    if (totalCount >= 20 && gymCount >= 3) {
         html += '<div><center><b>' + i8ln('Max amount of Gyms reached') + '</b></center></div>'
-    } else if (totalCount >= 6) {
+    } else if (totalCount >= 6 && gymCount === 2) {
         count = 20 - totalCount
         html += '<div><center><b>' + count + ' ' + i8ln('more Pokéstop(s) until new gym') + '</b></center></div>'
-    } else if (totalCount >= 2) {
+    } else if (totalCount >= 2 && gymCount === 1) {
         count = 6 - totalCount
         html += '<div><center><b>' + count + ' ' + i8ln('more Pokéstop(s) until new gym') + '</b></center></div>'
-    } else if (totalCount < 2) {
+    } else if (totalCount < 2 && gymCount === 0) {
         count = 2 - totalCount
         html += '<div><center><b>' + count + ' ' + i8ln('more Pokéstop(s) until new gym') + '</b></center></div>'
     }
@@ -830,11 +830,11 @@ function showS2Cells(level, style) {
 
         var filledStyle = {color: 'black', fillOpacity: 0.0}
         if (cell.level === 14 && Store.get('showPokestops') && Store.get('showGyms')) {
-            if (totalCount === 1 || totalCount === 5 || totalCount === 19) {
+            if ((totalCount === 1 && gymCount === 0) || (totalCount === 5 && gymCount === 1) || (totalCount === 19 && gymCount === 2)) {
                 filledStyle = {fillColor: s2Colors[1], fillOpacity: 0.3}
-            } else if (totalCount === 4 || totalCount === 18) {
+            } else if ((totalCount === 4 && gymCount === 1) || (totalCount === 18 && gymCount === 2)) {
                 filledStyle = {fillColor: s2Colors[2], fillOpacity: 0.3}
-            } else if (totalCount >= 20) {
+            } else if (totalCount >= 20 && gymCount >= 3) {
                 filledStyle = {fillColor: s2Colors[3], fillOpacity: 0.3}
             }
         } else if (cell.level === 17) {
