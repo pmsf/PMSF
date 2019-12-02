@@ -5391,6 +5391,13 @@ function updateS2Overlay() {
         if (Store.get('showGymCells') && (map.getZoom() > 11)) {
             gymLayerGroup.clearLayers()
             showS2Cells(14, {color: 'black', weight: 3, dashOffset: '4', dashArray: '2 6'})
+            if (Store.get('showPortals')) {
+                $.each(mapData.portals, function (key, value) {
+                    markers.removeLayer(value.marker)
+                    value.marker = setupPortalMarker(value)
+                    mapData.portals[value['external_id']] = value
+                })
+            }
         } else if (Store.get('showGymCells') && (map.getZoom() <= 11)) {
             gymLayerGroup.clearLayers()
         }
