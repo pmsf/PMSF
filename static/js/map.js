@@ -809,7 +809,7 @@ function showS2Cells(level, style) {
                 }
             })
         }
-        if (cell.level === 14) {
+        if (cell.level === 14 && Store.get('showPoi')) {
             $.each(mapData.pois, function (key, item) {
                 if (pointInPolygon(item['lat'], item['lon'], s2Lats, s2Lons)) {
                     if (item['status'] === '1') {
@@ -829,7 +829,7 @@ function showS2Cells(level, style) {
         }
 
         var filledStyle = {color: 'black', fillOpacity: 0.0}
-        if (cell.level === 14) {
+        if (cell.level === 14 && Store.get('showPokestops') && Store.get('showGyms')) {
             if (totalCount === 1 || totalCount === 5 || totalCount === 19) {
                 filledStyle = {fillColor: s2Colors[1], fillOpacity: 0.3}
             } else if (totalCount === 4 || totalCount === 18) {
@@ -850,9 +850,20 @@ function showS2Cells(level, style) {
             })
         }
 
-        const poly = L.polygon(vertices, Object.assign({pane: 'portals', color: 'black', opacity: 0.5, weight: 0.5, fillOpacity: 0.0}, style, filledStyle))
-        if (cell.level === 14 && !$('.submit-on-off-button').hasClass('on')) {
-            poly.bindPopup(cellLabel(stopCount, sponsoredStopCount, sponsoredGymCount, gymCount, totalCount, possibleCandidatePoiCount, submittedPoiCount, declinedPoiCount, resubmittedPoiCount, notEligiblePoiCount, totalPoiCount), {autoPan: false, closeOnClick: false, autoClose: false})
+        const poly = L.polygon(vertices, Object.assign({
+            pane: 'portals',
+            color: 'black',
+            opacity: 0.5,
+            weight: 0.5,
+            fillOpacity: 0.0
+        }, style, filledStyle))
+
+        if (cell.level === 14 && Store.get('showPokestops') && Store.get('showGyms') && !$('.submit-on-off-button').hasClass('on')) {
+            poly.bindPopup(cellLabel(stopCount, sponsoredStopCount, sponsoredGymCount, gymCount, totalCount, possibleCandidatePoiCount, submittedPoiCount, declinedPoiCount, resubmittedPoiCount, notEligiblePoiCount, totalPoiCount), {
+                autoPan: false,
+                closeOnClick: false,
+                autoClose: false
+            })
         }
 
         if (cell.level === 13) {
