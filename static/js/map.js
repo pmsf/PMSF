@@ -922,7 +922,7 @@ function buildScanPolygons() {
 }
 
 function buildNestPolygons() {
-    if (!Store.get(['showNestPolygon']) || enableNestPolygon) {
+    if (!Store.get(['showNestPolygon'])) {
         return false
     }
 
