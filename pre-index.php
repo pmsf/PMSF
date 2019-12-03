@@ -4,8 +4,12 @@ if (! file_exists('config/config.php')) {
     die("<h1>Config file missing</h1><p>Please ensure you have created your config file (<code>config/config.php</code>).</p>");
 }
 include('config/config.php');
-if (isset($_COOKIE["LoginCookie"])) {
-    validateCookie($_COOKIE["LoginCookie"]);
+if ($noNativeLogin === false || $noDiscordLogin === false) {
+    if (isset($_COOKIE["LoginCookie"])) {
+        if (validateCookie($_COOKIE["LoginCookie"]) === false) {
+            header("Location: .");
+        }
+    }
 }
 $zoom        = ! empty($_GET['zoom']) ? $_GET['zoom'] : null;
 $encounterId = ! empty($_GET['encId']) ? $_GET['encId'] : null;
@@ -316,11 +320,6 @@ if (strtolower($map) === "rdm") {
         
         <?php
         if ($noNativeLogin === false || $noDiscordLogin === false) {
-            if (isset($_COOKIE["LoginCookie"])) {
-                if (validateCookie($_COOKIE["LoginCookie"]) === false) {
-                    header("Location: .");
-                }
-            }
             if (!empty($_SESSION['user']->id)) {
                 $info = $manualdb->query(
                     "SELECT expire_timestamp, access_level FROM users WHERE id = :id AND login_system = :login_system", [

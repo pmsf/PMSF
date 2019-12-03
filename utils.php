@@ -259,8 +259,12 @@ function validateCookie($cookie)
             $_SESSION['already_refreshed'] = true;
         }
         return true;
-    } else {
+    } elseif (!empty($_SESSION['user']->id)) {
         destroyCookiesAndSessions();
+        return false;
+    } else {
+        unset($_COOKIE['LoginCookie']);
+        setcookie("LoginCookie", "", time()-3600);
         return false;
     }
 }
