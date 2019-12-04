@@ -76,8 +76,8 @@ if (!validateToken($_POST['token'])) {
 }
 
 if ((! $noDiscordLogin || ! $noNativeLogin) && !empty($_SESSION['user']->id)) {
-    $info = $manualdb->query("SELECT expire_timestamp FROM users WHERE id = :id", [":id" => $_SESSION['user']->id])->fetch();
-    if ($info['expire_timestamp'] !== $_SESSION['user']->expire_timestamp) {
+    $info = $manualdb->query("SELECT session_id FROM users WHERE id = :id", [":id" => $_SESSION['user']->id])->fetch();
+    if ($info['session_id'] !== $_COOKIE["LoginCookie"]) {
         http_response_code(400);
         die();
     }
