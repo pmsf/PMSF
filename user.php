@@ -289,15 +289,6 @@ include('config/config.php');
         } elseif (in_array(isset($_SESSION['user']->user) ? $_SESSION['user']->user : null, $adminUsers)) {
             ?>
             <h2><?php echo "[<a href='.'>{$title}</a>] - " . i8ln('Admin page'); ?></h2>
-            <?php
-            if (!file_exists($logfile)) {
-                if (file_put_contents($logfile, "-- " . i8ln('This is a test to make sure logging is okay.') . " " . date('Y-m-d H:i:s') ."\r\n", FILE_APPEND) == false) {
-                    echo "<h1>" . i8ln('Warning') . "</h1>" .
-                        "<p>" . i8ln('Your backup logging doesn\'t work. In case of database corruption all data may be lost.') .
-                        "<br>" . i8ln('To solve this, type') .
-                        ":<br><i><b>sudo chgrp " . exec('whoami') . " " . dirname(__DIR__) . "<br>sudo chmod g+w " . dirname(__DIR__) . "</b></i></p>";
-                }
-            } ?>
             <form action='' method='POST'>
                 <table style='margin: 0;'>
                     <tr>

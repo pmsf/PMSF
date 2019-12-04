@@ -152,7 +152,6 @@ $discordBotClientSecret = "";
 $discordBotRedirectUri = "https://example.com/discord-callback.php";
 
 $adminUsers = array('admin@example.com', 'Superadmin#13337');       // You can add multiple admins by adding them to the array.
-$logfile = '../members.log';                                        // Path to log file. Make sure this works as it will be your life saver if your db crashes.
 $daysMembershipPerQuantity = 31;                                    // How many days membership one selly quantity will give.
 $sellyPage = '';                                                    // Link to selly purchase page for membership renewal.
 $sellyWebhookSecret = '';                                           // Add a secret key at https://selly.gg/settings to make sure the payment webhook is sent from selly to prevent fake payments.
