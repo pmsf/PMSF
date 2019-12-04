@@ -128,7 +128,7 @@ function generateRandomString($length = 8)
 
 function createUserAccount($user, $password, $newExpireTimestamp)
 {
-    global $manualdb, $logfile;
+    global $manualdb;
 
     $count = $manualdb->count("users", [
         "user" => $user,
@@ -152,9 +152,6 @@ function createUserAccount($user, $password, $newExpireTimestamp)
                 "login_system" => 'native',
                 "access_level" => '0'
             ]);
-            
-            $logMsg = "INSERT INTO users (id, user, expire_timestamp, login_system) VALUES ('{$getId}', '{$user}', '{$newExpireTimestamp}', 'native'); -- " . date('Y-m-d H:i:s') . "\r\n";
-            file_put_contents($logfile, $logMsg, FILE_APPEND);
 
             return true;
         } else {
@@ -167,7 +164,7 @@ function createUserAccount($user, $password, $newExpireTimestamp)
 
 function resetUserPassword($user, $password, $resetType)
 {
-    global $manualdb, $logfile;
+    global $manualdb;
     
     $hashedPwd = password_hash($password, PASSWORD_DEFAULT);
     if ($resetType === 0) {
@@ -200,7 +197,7 @@ function resetUserPassword($user, $password, $resetType)
 
 function updateExpireTimestamp($user, $login_system, $newExpireTimestamp)
 {
-    global $manualdb, $logfile;
+    global $manualdb;
 
     $manualdb->update("users", [
         "expire_timestamp" => $newExpireTimestamp
@@ -209,15 +206,12 @@ function updateExpireTimestamp($user, $login_system, $newExpireTimestamp)
         "login_system" => $login_system
     ]);
 
-    $logMsg = "UPDATE users SET expire_timestamp = '{$newExpireTimestamp}' WHERE user = '{$user}' AND login_system = '{$login_system}'; -- " . date('Y-m-d H:i:s') . "\r\n";
-    file_put_contents($logfile, $logMsg, FILE_APPEND);
-
     return true;
 }
 
 function updateAccessLevel($user, $login_system, $newAccessLevel)
 {
-    global $manualdb, $logfile;
+    global $manualdb;
 
     $manualdb->update("users", [
         "access_level" => $newAccessLevel
@@ -225,9 +219,6 @@ function updateAccessLevel($user, $login_system, $newAccessLevel)
         "user" => $user,
         "login_system" => $login_system
     ]);
-
-    $logMsg = "UPDATE users SET access_level = '{$newAccessLevel}' WHERE user = '{$user}' AND login_system = '{$login_system}'; -- " . date('Y-m-d H:i:s') . "\r\n";
-    file_put_contents($logfile, $logMsg, FILE_APPEND);
 
     return true;
 }

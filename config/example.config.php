@@ -148,7 +148,6 @@ $noNativeLogin = true;                                              // This will
 $domainName = '';                                                   // If this is empty, reset-password emails will use the domain name taken from the URL.
 
 $noSelly = true;                                                    // Enable/Disable Selly Payment system. (WIP, USE AT OWN RISK!)
-$logfile = 'logs/members.log';                                      // Path to log file. Make sure this works as it will be your life saver if your db crashes.
 $daysMembershipPerQuantity = 31;                                    // How many days membership one selly quantity will give.
 $sellyPage = '';                                                    // Link to selly purchase page for membership renewal.
 $sellyWebhookSecret = '';                                           // Add a secret key at https://selly.gg/settings to make sure the payment webhook is sent from selly to prevent fake payments.
