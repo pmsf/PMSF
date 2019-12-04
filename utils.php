@@ -215,6 +215,23 @@ function updateExpireTimestamp($user, $login_system, $newExpireTimestamp)
     return true;
 }
 
+function updateAccessLevel($user, $login_system, $newAccessLevel)
+{
+    global $manualdb, $logfile;
+
+    $manualdb->update("users", [
+        "access_level" => $newAccessLevel
+    ], [
+        "user" => $user,
+        "login_system" => $login_system
+    ]);
+
+    $logMsg = "UPDATE users SET access_level = '{$newAccessLevel}' WHERE user = '{$user}' AND login_system = '{$login_system}'; -- " . date('Y-m-d H:i:s') . "\r\n";
+    file_put_contents($logfile, $logMsg, FILE_APPEND);
+
+    return true;
+}
+
 function destroyCookiesAndSessions()
 {
     global $manualdb;
@@ -228,7 +245,7 @@ function destroyCookiesAndSessions()
 
     unset($_SESSION);
     unset($_COOKIE['LoginCookie']);
-    setcookie("LoginCookie", "", time()-3600);
+    setcookie("LoginCookie", "", time() - 3600);
     session_destroy();
     session_write_close();
 }
@@ -237,7 +254,7 @@ function validateCookie($cookie)
 {
     global $manualdb;
     $info = $manualdb->query(
-        "SELECT id, user, password, login_system, expire_timestamp FROM users WHERE session_id = :session_id", [
+        "SELECT id, user, password, login_system, expire_timestamp, access_level FROM users WHERE session_id = :session_id", [
             ":session_id" => $cookie
         ]
     )->fetch();
@@ -248,23 +265,24 @@ function validateCookie($cookie)
         $_SESSION['user']->user = $info['user'];
         $_SESSION['user']->login_system = $info['login_system'];
         $_SESSION['user']->expire_timestamp = $info['expire_timestamp'];
+        $_SESSION['user']->access_level = $info['access_level'];
         
         if (empty($info['password']) && $info['login_system'] == 'native') {
             $_SESSION['user']->updatePwd = 1;
         }
-        setcookie("LoginCookie", $cookie, time()+60*60*24*7);
+        setcookie("LoginCookie", $cookie, time() + 60 * 60 * 24 * 7);
         if (!isset($_SESSION['already_refreshed'])) {
-            $refreshAfter = 1;
-            header('Refresh: ' . $refreshAfter);
             $_SESSION['already_refreshed'] = true;
+            return false;
+        } else {
+            return true;
         }
-        return true;
     } elseif (!empty($_SESSION['user']->id)) {
         destroyCookiesAndSessions();
         return false;
     } else {
         unset($_COOKIE['LoginCookie']);
-        setcookie("LoginCookie", "", time()-3600);
+        setcookie("LoginCookie", "", time() - 3600);
         return false;
     }
 }

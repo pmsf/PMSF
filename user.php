@@ -7,8 +7,7 @@ include('config/config.php');
 <head>
     <meta charset="utf-8">
     <title><?= $title ?></title>
-    <meta name="viewport"
-          content="width=device-width, initial-scale=1, maximum-scale=1, minimum-scale=1, user-scalable=no, minimal-ui">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, minimum-scale=1, user-scalable=no, minimal-ui">
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-status-bar-style" content="black">
     <meta name="apple-mobile-web-app-title" content="PokeMap">
@@ -64,7 +63,7 @@ include('config/config.php');
         }
         if ($noNativeLogin === true && $noDiscordLogin === false && empty($_SESSION['user']->id)) {
             header("Location: ./discord-login");
-        } elseif ($noNativeLogin === true && $noDiscordLogin === false && !empty($_SESSION['user']->id)) {
+        } elseif ($noNativeLogin === true && $noDiscordLogin === false && !empty($_SESSION['user']->id) && !in_array(isset($_SESSION['user']->user) ? $_SESSION['user']->user : null, $adminUsers)) {
             header("Location: .?login=true");
         }
 
@@ -181,7 +180,7 @@ include('config/config.php');
         if (isset($_POST['submitUpdateUserBtn'])) {
             $Err = '';
             if ($_POST['email'] !== '-1' || !empty($_POST['createUserEmail'])) {
-                if ((isset($_POST['ResetPwd']) || $_POST['radioExpireDate'] > 0) && $_POST['email'] !== '-1') {
+                if ((isset($_POST['ResetPwd']) || $_POST['radioExpireDate'] > 0 || $_POST['radioAccessLevel'] !== 'none') && $_POST['email'] !== '-1') {
                     if (strpos($_POST['email'], '#')) {
                         $login_system = 'discord';
                     } else {
@@ -212,6 +211,11 @@ include('config/config.php');
                         }
 
                         updateExpireTimestamp($_POST['email'], $login_system, $newExpireTimestamp);
+                    }
+
+                    if ($_POST['radioAccessLevel'] !== 'none') {
+                        $newAccessLevel = $_POST['radioAccessLevel'];
+                        updateAccessLevel($_POST['email'], $login_system, $newAccessLevel);
                     }
                 } else {
                     $Err = i8ln('No changes made.');
@@ -310,14 +314,32 @@ include('config/config.php');
                                     ]
                                 ]);
 
-            if ($users) {
-                foreach ($users as $user) {
-                    echo "<option>{$user['user']}</option>";
-                }
-            } ?>
+                                if ($users) {
+                                    foreach ($users as $user) {
+                                        echo "<option>{$user['user']}</option>";
+                                    }
+                                } ?>
                             </select>
                         </td>
                     </tr>
+
+                    <tr>
+                        <th><?php echo i8ln('Access Level'); ?></th>
+                        <td>
+                            <label><input type="radio" name="radioAccessLevel" value="none" checked="checked"><?php echo i8ln('No change'); ?></label>
+                            <label><input type="radio" name="radioAccessLevel" value="0">0</label>
+                            <label><input type="radio" name="radioAccessLevel" value="1">1</label>
+                            <label><input type="radio" name="radioAccessLevel" value="2">2</label>
+                            <label><input type="radio" name="radioAccessLevel" value="3">3</label>
+                            <label><input type="radio" name="radioAccessLevel" value="4">4</label>
+                            <label><input type="radio" name="radioAccessLevel" value="5">5</label>
+                            <label><input type="radio" name="radioAccessLevel" value="6">6</label>
+                            <label><input type="radio" name="radioAccessLevel" value="7">7</label>
+                            <label><input type="radio" name="radioAccessLevel" value="8">8</label>
+                            <label><input type="radio" name="radioAccessLevel" value="9">9</label>
+                        </td>
+                    </tr>
+
                     <tr>
                         <th><?php echo i8ln('Expire Date'); ?></th>
                         <td>
@@ -330,14 +352,20 @@ include('config/config.php');
                             <input class="date" type="date" name="customDate" id="customDate" value="<?php echo date('Y-m-d', time()); ?>" disabled="disabled">
                         </td>
                     </tr>
+
                     <tr>
                         <th><?php echo i8ln('Reset Password'); ?></th><td><input type="checkbox" name="ResetPwd"></td>
                     </tr>
+
                     <tr>
                         <th><?php echo i8ln('Create User'); ?></th><td><input type="text" name="createUserEmail" placeholder='<?php echo i8ln('E-mail'); ?>'></td>
                     </tr>
                 </table>
-                <table><tr><td><input class="button" id="margin" type="submit" name="submitUpdateUserBtn" value="<?php echo i8ln('Submit'); ?>"></td></tr></table>
+                <table>
+                    <tr><td>
+                        <input class="button" id="margin" type="submit" name="submitUpdateUserBtn" value="<?php echo i8ln('Submit'); ?>">
+                    </td></tr>
+                </table>
             </form>
             
             <?php
