@@ -149,10 +149,7 @@ include('config/config.php');
                 $message .= i8ln('Thank you for signing up.') . "<br>";
                 $message .= i8ln('Your temporary password is ') . " {$randomPwd}<br><br>";
             }
-            
-            if ($sellyPage) {
-                $message .= i8ln('You can purchase membership on ') . "<a href='{$sellyPage}'>selly</a>.<br><br>";
-            }
+
             if ($discordUrl) {
                 $message .= i8ln('For support, ask your questions in the ') . "<a href='{$discordUrl}'>" . i8ln('discord guild') . "</a>!<br><br>";
             }
@@ -202,14 +199,13 @@ include('config/config.php');
                     if ($_POST['radioExpireDate'] > 0) {
                         if ($_POST['radioExpireDate'] >= 1 && $_POST['radioExpireDate'] <= 12) {
                             if ($info['expire_timestamp'] > time()) {
-                                $newExpireTimestamp = $info['expire_timestamp'] + 60 * 60 * 24 * $daysMembershipPerQuantity * $_POST['radioExpireDate'];
+                                $newExpireTimestamp = $info['expire_timestamp'] + 60 * 60 * 24 * 31 * $_POST['radioExpireDate'];
                             } else {
-                                $newExpireTimestamp = time() + 60 * 60 * 24 * $daysMembershipPerQuantity;
+                                $newExpireTimestamp = time() + 60 * 60 * 24 * 31 * $_POST['radioExpireDate'];
                             }
                         } else {
                             $newExpireTimestamp = strtotime($_POST['customDate']);
                         }
-
                         updateExpireTimestamp($_POST['email'], $login_system, $newExpireTimestamp);
                     }
 
@@ -233,20 +229,6 @@ include('config/config.php');
                 }
             } else {
                 $Err = i8ln('No changes made.');
-            }
-        }
-        if (isset($_POST['submitKey'])) {
-            $Err = '';
-            $info = $manualdb->query(
-                "SELECT selly_id, activated, quantity FROM payments WHERE selly_id = :selly_id", [
-                    ":selly_id" => $_POST['key']
-                ]
-            )->fetch();
-
-            if (empty($info['selly_id'])) {
-                $Err = i8ln('Invalid key.');
-            } elseif ($info['activated'] === 1) {
-                $Err = i8ln('This key has already been activated.');
             }
         }
 
@@ -401,52 +383,6 @@ include('config/config.php');
                 </table>
             <?php
             }
-        } elseif (!empty($_SESSION['user']->user)) {
-            ?>
-            <h2><?php echo "[<a href='.'>{$title}</a>] - " . i8ln('Activate key'); ?></h2>
-            <?php
-                if (isset($_POST['submitKey']) && empty($Err)) {
-                    if ($_SESSION['user']->expire_timestamp > time()) {
-                        $newExpireTimestamp = $_SESSION['user']->expire_timestamp + 60 * 60 * 24 * $daysMembershipPerQuantity * $info['quantity'];
-                    } else {
-                        $newExpireTimestamp = time() + 60 * 60 * 24 * $daysMembershipPerQuantity * $info['quantity'];
-                    }
-
-                    $_SESSION['user']->expire_timestamp = $newExpireTimestamp;
-
-                    $manualdb->update("payments", [
-                        "activated" => 1
-                    ], [
-                        "selly_id" => $info['selly_id']
-                    ]);
-
-                    $manualdb->update("users", [
-                        "access_level" => 1
-                    ], [
-                        "user" => $_SESSION['user']->user
-                    ]);
-
-                    updateExpireTimestamp($_SESSION['user']->user, $_SESSION['user']->login_system, $newExpireTimestamp);
-                    $time = date("Y-m-d H:i", $newExpireTimestamp);
-
-                    echo "<h3><span style='color: green;'>" . i8ln('Your key has been activated!') . "<br>" . i8ln('Your account expires on: ') . $time . "</span></h3>";
-                } elseif (isset($_POST['submitKey']) && !empty($Err)) {
-                    echo "<h3><span style='color: red;'>{$Err}</span></h3>";
-                } ?>
-            <form action='' method='POST'>
-                <table style='margin: 0;'>
-                    <tr>
-                        <th><?php echo i8ln('Selly Order ID'); ?></th><td><input type="text" name="key" required placeholder="123a4b5c-de67-8901-f234-5g6789801h23"></td>
-                    </tr>
-                    <tr>
-                        
-                    </tr>
-                </table>
-                <table><tr><td><input class="button" id="margin" type="submit" name="submitKey" value="<?php echo i8ln('Submit'); ?>"><?php if ($sellyPage) {
-                    echo "<a class='button' target='_TAB' id='margin' href='{$sellyPage}'>" . i8ln('Extend Membership') . "</a>";
-                } ?><a class='button' id="margin" href='.'><i class='fas fa-backward'></i> <?php echo i8ln('Back to map'); ?></a></td></tr></table>
-            </form>
-        <?php
         } else {
             ?>
             <p><h2><?php echo "[<a href='.'>{$title}</a>] - " . i8ln('Login'); ?></h2></p>
