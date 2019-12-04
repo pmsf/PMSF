@@ -153,6 +153,7 @@ $sellyPage = '';                                                    // Link to s
 $sellyWebhookSecret = '';                                           // Add a secret key at https://selly.gg/settings to make sure the payment webhook is sent from selly to prevent fake payments.
                                                                     // Add the same key to the $sellyWebhookSecret variable.
 $adminUsers = ['admin@example.com', 'admin2@example.com'];          // You can add multiple admins by adding them to the array.
+$manualAccessLevel = false;
 //-----------------------------------------------------
 // FRONTEND SETTINGS
 //-----------------------------------------------------

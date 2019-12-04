@@ -243,7 +243,7 @@ function destroyCookiesAndSessions()
 
 function validateCookie($cookie)
 {
-    global $manualdb;
+    global $manualdb, $manualAccessLevel;
     $info = $manualdb->query(
         "SELECT id, user, password, login_system, expire_timestamp, access_level FROM users WHERE session_id = :session_id", [
             ":session_id" => $cookie
@@ -251,6 +251,14 @@ function validateCookie($cookie)
     )->fetch();
 
     if (!empty($info['user'])) {
+        if ($manualAccessLevel && $info['access_level'] > 0 && $info['expire_timestamp'] < time()) {
+            $manualdb->update("users", [
+                "access_level" => 0
+            ], [
+                "id" => $info['id']
+            ]);
+            $info['access_level'] = 0;
+        }
         $_SESSION['user'] = new \stdClass();
         $_SESSION['user']->id = $info['id'];
         $_SESSION['user']->user = $info['user'];

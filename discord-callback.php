@@ -46,24 +46,43 @@ if ($noDiscordLogin === false) {
             ]);
 
             if ($count === 0) {
-                $manualdb->insert("users", [
-                    "id" => $user->{'id'},
-                    "user" => $user->{'username'} . "#" . $user->{'discriminator'},
-                    "expire_timestamp" => time() + 60 * 60 * 24 * 7,
-                    "login_system" => 'discord'
-                ]);
+                if ($manualAccessLevel) {
+                    $manualdb->insert("users", [
+                        "id" => $user->{'id'},
+                        "user" => $user->{'username'} . "#" . $user->{'discriminator'},
+                        "expire_timestamp" => time(),
+                        "login_system" => 'discord'
+                    ]);
+                } else {
+                    $manualdb->insert("users", [
+                        "id" => $user->{'id'},
+                        "user" => $user->{'username'} . "#" . $user->{'discriminator'},
+                        "expire_timestamp" => time() + 60 * 60 * 24 * 7,
+                        "login_system" => 'discord'
+                    ]);
+                }
             }
 
             setcookie("LoginCookie", session_id(), time() + 60 * 60 * 24 * 7);
 
-            $manualdb->update("users", [
-                "session_id" => session_id(),
-                "expire_timestamp" => time() + 60 * 60 * 24 * 7,
-                "user" => $user->{'username'} . "#" . $user->{'discriminator'}
-            ], [
-                "id" => $user->{'id'},
-                "login_system" => 'discord'
-            ]);
+            if ($manualAccessLevel) {
+                $manualdb->update("users", [
+                    "session_id" => session_id(),
+                    "user" => $user->{'username'} . "#" . $user->{'discriminator'}
+                ], [
+                    "id" => $user->{'id'},
+                    "login_system" => 'discord'
+                ]);
+            } else {
+                $manualdb->update("users", [
+                    "session_id" => session_id(),
+                    "expire_timestamp" => time() + 60 * 60 * 24 * 7,
+                    "user" => $user->{'username'} . "#" . $user->{'discriminator'}
+                ], [
+                    "id" => $user->{'id'},
+                    "login_system" => 'discord'
+                ]);
+            }
         }
         die();
     } catch (Exception $e) {
