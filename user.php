@@ -356,6 +356,14 @@ include('config/config.php');
                         </tr>
                         <?php
                         }
+                        if (isset($_POST['submitUpdateUserBtn']) && $_POST['radioAccessLevel'] !== 'none' && $_POST['email'] !== '-1') {
+                            ?>
+                        <tr>
+                            <th id="one-third"><?php echo $_POST['email'] . " - " . i8ln('Access Level'); ?></th>
+                            <td><input type="text" name="infoMess" value="<?php echo $newAccessLevel; ?>" id="greenBox" disabled></td>
+                        </tr>
+                        <?php
+                        }
                         if (isset($_POST['submitUpdateUserBtn']) && isset($_POST['ResetPwd']) && $login_system === 'native' && $_POST['email'] !== '-1') {
                             ?>
                         <tr>
