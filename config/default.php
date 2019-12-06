@@ -81,7 +81,10 @@ $headerTitle = "POGOmap";                                           // Title to 
 $locale = "en";                                                     // Display language
 
 /* Loading screen */
-$FAicon = "fa-cog";                                                 // Icon to use in Loading screen
+$noLoadingScreen = false;                                           // show loading animation while main page loads. 
+$loadingStyle = '';                                                 // Leave blank for default loading icon. Use image tag
+                                                                    // and path to gif for animated gif; or use your own html.
+                                                                    // '<IMG SRC=static/images/pokeball2.gif>' for pokeball.
 
 /* Google Maps and MapBox are ONLY USED FOR TILE LAYERS */
 
