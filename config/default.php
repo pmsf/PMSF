@@ -80,6 +80,9 @@ $title = "PMSF Alt";                                                // Title to 
 $headerTitle = "POGOmap";                                           // Title to display in header
 $locale = "en";                                                     // Display language
 
+/* Loading screen */
+$FAicon = "fa-cog";                                                 // Icon to use in Loading screen
+
 /* Google Maps and MapBox are ONLY USED FOR TILE LAYERS */
 
 $gmapsKey = "";

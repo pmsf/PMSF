@@ -58,6 +58,9 @@ $headerTitle = "POGOmap";                                           // Title to 
 $locale = "en";                                                     // Display language
 $raidmapLogo = '';                                                  // Upload logo to custom folder, leave '' for empty ( $raidmapLogo = 'custom/logo.png'; )
 
+/* Loading screen */
+$FAicon = "fa-cog";                                                 // Icon to use in Loading screen
+
 /* Google Maps and MapBox are ONLY USED FOR TILE LAYERS */
 
 $gmapsKey = "";
