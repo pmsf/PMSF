@@ -1554,6 +1554,11 @@ function getQuest(item) {
                 case 25:
                     str = str.replace('{0} pokémon', 'pokémon caught ' + questinfo['distance'] + 'km apart')
                     break
+                case 27:
+                    if (questinfo['character_category_ids']) {
+                        str = str.replace('Grunt(s)', 'Leader(s)')
+                    }
+                    break
             }
         } else if (item['quest_type'] > 0) {
             switch (item['quest_type']) {
