@@ -276,7 +276,7 @@ if (strtolower($map) === "rdm") {
     <link href='static/css/leaflet.fullscreen.css' rel='stylesheet' />
 </head>
 <app-root>
-    <p class="spinner" VALIGN="CENTER"><i class="fa fas fa-cog fa-spin fa-2x" aria-hidden="true"></i><?php echo '&nbsp;Loading...' ?></p>
+        <p class="spinner" VALIGN="CENTER"><i class="fa fas <?= $FAicon ?> fa-spin fa-2x" aria-hidden="true"></i>&nbsp;<?= i8ln('Loading') ?>...</p>
 </app-root>
 <body id="top">
 <div class="wrapper">
