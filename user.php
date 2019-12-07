@@ -46,8 +46,8 @@ include('config/config.php');
     </script>
     <link rel="stylesheet" href="static/dist/css/app.min.css">
     <?php if (file_exists('static/css/custom.css')) {
-    echo '<link rel="stylesheet" href="static/css/custom.css">';
-} ?>
+        echo '<link rel="stylesheet" href="static/css/custom.css?' . time() . '">';
+    } ?>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jqueryui/1.12.0/jquery-ui.min.css">
     <link rel="stylesheet" href="https://cdn.datatables.net/1.10.12/css/jquery.dataTables.css">
     <script src="static/js/vendor/modernizr.custom.js"></script>
