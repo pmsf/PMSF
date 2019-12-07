@@ -165,7 +165,7 @@
   "Male Grunt":"Male",
   "Female Grunt":"Female",
   " Full Stats":" Pełne Statystyki",
-  "Excl. Min IV/Lvl":"Wyklucz Min. IV/Lvl",
+  "Excl. Min IV/Lvl":"Ukryj Min. IV/Lvl",
   "Team Rocket only":"Tylko Zespół R",
   "Quick":"Fast",
   "Charge":"Charge",
@@ -300,5 +300,13 @@
   "Declined":"Odrzucone",
   "Resubmit":"Zgłoszone ponownie",
   "Not a candidate":"Nie jest nominowany",
-  "Hide Team Rocket":"Ukyj Inwazje"
+  "Hide Team Rocket":"Ukyj Inwazje",
+  "Hide Items":"Ukryj Itemy",
+  "POI possible candidate":"Oczekujące Nominacje",
+  "Total POI":"Wszystkie Nominacje",
+  "Areas":"Obszary",
+  "more Pokéstop(s) until new gym":"Pokestop(y/ów) do powstania Gyma",
+  "Gym":"Gymy",
+  "Use Pokémon cries":"Użyj Pokedźwięków",
+  "Loading":"Wczytywanie"
 }
