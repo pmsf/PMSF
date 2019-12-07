@@ -277,6 +277,8 @@ $noLiveScanLocation = true;                                         // Show scan
 $enableLiveScan = 'false';
 $hideDeviceAfterMinutes = 0;                                        // Hide scan devices from map after x amount of minutes not being updated in database. 0 to disable.
 $deviceOfflineAfterSeconds = 300;                                   // Mark scan devices offline (red color) after x amount of seconds not being updated in database.
+
+$hideDeleted = true;
 /* Location & Search Settings */
 
 $noSearchLocation = false;                                          // true/false
