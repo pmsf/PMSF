@@ -15,6 +15,9 @@ if ($noNativeLogin === false || $noDiscordLogin === false) {
         header("Location: ./user");
         die();
     }
+    if (empty($_SESSION['user']->id) && $forcedLogin === true) {
+        header("Location: ./user");
+    }
 }
 $zoom        = ! empty($_GET['zoom']) ? $_GET['zoom'] : null;
 $encounterId = ! empty($_GET['encId']) ? $_GET['encId'] : null;
@@ -339,8 +342,6 @@ if (!$noLoadingScreen) {
                 } else {
                     echo '<i class="fas fa-user-times" title="' . i8ln('User Expired') . '" style="color: red;font-size: 20px;position: relative;float: right;padding: 0 5px;top: 17px;"></i>';
                 }
-            } elseif ($forcedLogin === true) {
-                header("Location: ./user");
             } else {
                 echo "<a href='./user' style='float:right;padding:0 5px;' title='" . i8ln('Login') . "'><i class='fas fa-user' style='color:white;font-size:20px;vertical-align:middle;'></i></a>";
             }
