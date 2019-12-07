@@ -1,3 +1,4 @@
+
 <?php
 if (! file_exists('config/config.php')) {
     http_response_code(500);
@@ -278,6 +279,17 @@ if (strtolower($map) === "rdm") {
     <link rel="stylesheet" href="node_modules/leaflet.markercluster/dist/MarkerCluster.Default.css" />
     <link href='static/css/leaflet.fullscreen.css' rel='stylesheet' />
 </head>
+<app-root>
+    <p class="spinner" VALIGN="CENTER">
+    <?php
+    if (!$noLoadingScreen) {
+        if ($loadingStyle == '') {
+            $loadingStyle = '<i class="fa fas fa-cog fa-spin fa-2x" aria-hidden="true"></i>';
+        }
+        echo $loadingStyle;
+    } ?>
+    &nbsp;<?= i8ln('Loading') ?>...</p>
+</app-root>
 <body id="top">
 <div class="wrapper">
     <!-- Header -->
