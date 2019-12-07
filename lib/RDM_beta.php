@@ -236,7 +236,7 @@ class RDM_beta extends RDM
         global $noBoundaries, $boundaries, $hideDeleted;
         if (!$noBoundaries) {
             $conds[] = "(ST_WITHIN(point(lat,lon),ST_GEOMFROMTEXT('POLYGON(( " . $boundaries . " ))')))";
-	}
+        }
         if ($hideDeleted) {
             $conds[] = "deleted = 0";
         }
