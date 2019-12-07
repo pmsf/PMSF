@@ -1400,7 +1400,7 @@ if (strtolower($map) === "rdm") {
         </div>
         <?php
         if (($noNativeLogin === false || $noDiscordLogin === false) && !empty($_SESSION['user']->id)) {
-                ?>
+            ?>
             <div>
                 <center>
                     <button class="settings"
