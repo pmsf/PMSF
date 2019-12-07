@@ -10,6 +10,10 @@ if ($noNativeLogin === false || $noDiscordLogin === false) {
             header("Location: .");
         }
     }
+    if (!empty($_SESSION['user']->updatePwd) && $_SESSION['user']->updatePwd === 1) {
+        header("Location: ./user");
+        die();
+    }
 }
 $zoom        = ! empty($_GET['zoom']) ? $_GET['zoom'] : null;
 $encounterId = ! empty($_GET['encId']) ? $_GET['encId'] : null;
@@ -321,26 +325,7 @@ if (strtolower($map) === "rdm") {
         <?php
         if ($noNativeLogin === false || $noDiscordLogin === false) {
             if (!empty($_SESSION['user']->id)) {
-                $info = $manualdb->query(
-                    "SELECT expire_timestamp, access_level FROM users WHERE id = :id AND login_system = :login_system", [
-                        ":id" => $_SESSION['user']->id,
-                        ":login_system" => $_SESSION['user']->login_system
-                    ]
-                )->fetch();
-
-                if (! $noSelly && $info['expire_timestamp'] < time() && $info['access_level'] > 0) {
-                    $manualdb->update("users", ["access_level" => 0, "session_id" => null], ["id" => $_SESSION['user']->id]);
-                    header('Refresh: ');
-                }
-
-                $_SESSION['user']->expire_timestamp = $info['expire_timestamp'];
-
-                if (!empty($_SESSION['user']->updatePwd) && $_SESSION['user']->updatePwd === 1) {
-                    header("Location: ./user");
-                    die();
-                }
-                
-                if ($noSelly || $info['expire_timestamp'] > time()) {
+                if ($_SESSION['user']->expire_timestamp > time()) {
                     echo '<i class="fas fa-user-check" title="' . i8ln('User Logged in') . '" style="color: green;font-size: 20px;position: relative;float: right;padding: 0 5px;top: 17px;"></i>';
                 } else {
                     echo '<i class="fas fa-user-times" title="' . i8ln('User Expired') . '" style="color: red;font-size: 20px;position: relative;float: right;padding: 0 5px;top: 17px;"></i>';
@@ -1415,18 +1400,7 @@ if (strtolower($map) === "rdm") {
         </div>
         <?php
         if (($noNativeLogin === false || $noDiscordLogin === false) && !empty($_SESSION['user']->id)) {
-            if (! $noSelly) {
-                ?>
-                <div>
-                    <center>
-                        <button class="settings"
-                                onclick="document.location.href='user'">
-                            <i class="fas fa-key" aria-hidden="true"></i> <?php echo i8ln('Activate Key'); ?>
-                        </button>
-                    </center>
-                </div>
-            <?php
-            } ?>
+            ?>
             <div>
                 <center>
                     <button class="settings"
@@ -1437,9 +1411,8 @@ if (strtolower($map) === "rdm") {
             </div>
             <div><center><p>
                 <?php
-                if (! $noSelly) {
+                if ($manualAccessLevel && $noDiscordLogin) {
                     $time = date("Y-m-d", $_SESSION['user']->expire_timestamp);
-                
                     if ($_SESSION['user']->expire_timestamp > time()) {
                         echo "<span style='color: green;'>" . i8ln('Membership expires on') . " {$time}</span>";
                     } else {

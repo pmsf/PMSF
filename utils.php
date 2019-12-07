@@ -128,7 +128,7 @@ function generateRandomString($length = 8)
 
 function createUserAccount($user, $password, $newExpireTimestamp)
 {
-    global $manualdb, $logfile;
+    global $manualdb;
 
     $count = $manualdb->count("users", [
         "user" => $user,
@@ -152,9 +152,6 @@ function createUserAccount($user, $password, $newExpireTimestamp)
                 "login_system" => 'native',
                 "access_level" => '0'
             ]);
-            
-            $logMsg = "INSERT INTO users (id, user, expire_timestamp, login_system) VALUES ('{$getId}', '{$user}', '{$newExpireTimestamp}', 'native'); -- " . date('Y-m-d H:i:s') . "\r\n";
-            file_put_contents($logfile, $logMsg, FILE_APPEND);
 
             return true;
         } else {
@@ -167,7 +164,7 @@ function createUserAccount($user, $password, $newExpireTimestamp)
 
 function resetUserPassword($user, $password, $resetType)
 {
-    global $manualdb, $logfile;
+    global $manualdb;
     
     $hashedPwd = password_hash($password, PASSWORD_DEFAULT);
     if ($resetType === 0) {
@@ -200,7 +197,7 @@ function resetUserPassword($user, $password, $resetType)
 
 function updateExpireTimestamp($user, $login_system, $newExpireTimestamp)
 {
-    global $manualdb, $logfile;
+    global $manualdb;
 
     $manualdb->update("users", [
         "expire_timestamp" => $newExpireTimestamp
@@ -209,8 +206,19 @@ function updateExpireTimestamp($user, $login_system, $newExpireTimestamp)
         "login_system" => $login_system
     ]);
 
-    $logMsg = "UPDATE users SET expire_timestamp = '{$newExpireTimestamp}' WHERE user = '{$user}' AND login_system = '{$login_system}'; -- " . date('Y-m-d H:i:s') . "\r\n";
-    file_put_contents($logfile, $logMsg, FILE_APPEND);
+    return true;
+}
+
+function updateAccessLevel($user, $login_system, $newAccessLevel)
+{
+    global $manualdb;
+
+    $manualdb->update("users", [
+        "access_level" => $newAccessLevel
+    ], [
+        "user" => $user,
+        "login_system" => $login_system
+    ]);
 
     return true;
 }
@@ -235,7 +243,7 @@ function destroyCookiesAndSessions()
 
 function validateCookie($cookie)
 {
-    global $manualdb;
+    global $manualdb, $manualAccessLevel;
     $info = $manualdb->query(
         "SELECT id, user, password, login_system, expire_timestamp, access_level FROM users WHERE session_id = :session_id", [
             ":session_id" => $cookie
@@ -243,6 +251,14 @@ function validateCookie($cookie)
     )->fetch();
 
     if (!empty($info['user'])) {
+        if ($manualAccessLevel && $info['access_level'] > 0 && $info['expire_timestamp'] < time()) {
+            $manualdb->update("users", [
+                "access_level" => 0
+            ], [
+                "id" => $info['id']
+            ]);
+            $info['access_level'] = 0;
+        }
         $_SESSION['user'] = new \stdClass();
         $_SESSION['user']->id = $info['id'];
         $_SESSION['user']->user = $info['user'];
