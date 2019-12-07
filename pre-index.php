@@ -4,6 +4,13 @@ if (! file_exists('config/config.php')) {
     die("<h1>Config file missing</h1><p>Please ensure you have created your config file (<code>config/config.php</code>).</p>");
 }
 include('config/config.php');
+if ($noNativeLogin === false || $noDiscordLogin === false) {
+    if (isset($_COOKIE["LoginCookie"])) {
+        if (validateCookie($_COOKIE["LoginCookie"]) === false) {
+            header("Location: .");
+        }
+    }
+}
 $zoom        = ! empty($_GET['zoom']) ? $_GET['zoom'] : null;
 $encounterId = ! empty($_GET['encId']) ? $_GET['encId'] : null;
 if (! empty($_GET['lat']) && ! empty($_GET['lon'])) {
@@ -313,11 +320,6 @@ if (strtolower($map) === "rdm") {
         
         <?php
         if ($noNativeLogin === false || $noDiscordLogin === false) {
-            if (isset($_COOKIE["LoginCookie"])) {
-                if (validateCookie($_COOKIE["LoginCookie"]) === false) {
-                    header("Location: .");
-                }
-            }
             if (!empty($_SESSION['user']->id)) {
                 $info = $manualdb->query(
                     "SELECT expire_timestamp, access_level FROM users WHERE id = :id AND login_system = :login_system", [
@@ -332,19 +334,6 @@ if (strtolower($map) === "rdm") {
                 }
 
                 $_SESSION['user']->expire_timestamp = $info['expire_timestamp'];
-                
-                //If the session variable does not exist, presume that user suffers from a bug and access config is not used.
-                //If you don't like this, help me fix it.
-                if (!isset($_SESSION['already_refreshed'])) {
-                    //Number of seconds to refresh the page after.
-                    $refreshAfter = 1;
-
-                    //Send a Refresh header.
-                    header('Refresh: ' . $refreshAfter);
-
-                    //Set the session variable so that we don't refresh again.
-                    $_SESSION['already_refreshed'] = true;
-                }
 
                 if (!empty($_SESSION['user']->updatePwd) && $_SESSION['user']->updatePwd === 1) {
                     header("Location: ./user");
@@ -356,8 +345,8 @@ if (strtolower($map) === "rdm") {
                 } else {
                     echo '<i class="fas fa-user-times" title="' . i8ln('User Expired') . '" style="color: red;font-size: 20px;position: relative;float: right;padding: 0 5px;top: 17px;"></i>';
                 }
-            } elseif ($forcedDiscordLogin === true) {
-                header("Location: ./discord-login");
+            } elseif ($forcedLogin === true) {
+                header("Location: ./user");
             } else {
                 echo "<a href='./user' style='float:right;padding:0 5px;' title='" . i8ln('Login') . "'><i class='fas fa-user' style='color:white;font-size:20px;vertical-align:middle;'></i></a>";
             }
@@ -729,32 +718,12 @@ if (strtolower($map) === "rdm") {
             }
             ?>
             <?php
-            if (! $noCommunity) {
-                ?>
-                <h3><?php echo i8ln('Communities'); ?></h3>
-        <div>
-                <?php
-                if (! $noCommunity) {
-                    echo '<div class="form-control switch-container">
-                    <h3>' . i8ln('Communities') . '</h3>
-                    <div class="onoffswitch">
-                        <input id="communities-switch" type="checkbox" name="communities-switch"
-                               class="onoffswitch-checkbox" checked>
-                        <label class="onoffswitch-label" for="communities-switch">
-                            <span class="switch-label" data-on="On" data-off="Off"></span>
-                            <span class="switch-handle"></span>
-                        </label>
-                    </div>
-                </div>';
-                } ?>
-                </div>
-                <?php
-            }
-            ?>
-            <?php
             if (! $noRaids || ! $noGyms) {
-                ?>
-                <h3><?php echo i8ln('Gym &amp; Raid'); ?></h3>
+                if (! $noRaids) {
+                    echo '<h3>' . i8ln('Gym &amp; Raid') . '</h3>';
+                } else {
+                    echo '<h3>' . i8ln('Gym') . '</h3>';
+                } ?>
                 <div>
                     <?php
                     if (! $noRaids) {
@@ -768,7 +737,7 @@ if (strtolower($map) === "rdm") {
                             <span class="switch-handle"></span>
                         </label>
                     </div>
-                </div>';
+                    </div>';
                     } ?>
                     <div id="raids-filter-wrapper" style="display:none">
                     <?php
@@ -827,7 +796,7 @@ if (strtolower($map) === "rdm") {
                             <span class="switch-handle"></span>
                         </label>
                     </div>
-                </div>';
+                    </div>';
                     } ?>
                     <?php
                     if (! $hideIfManual) {
@@ -840,7 +809,7 @@ if (strtolower($map) === "rdm") {
                                 <option value="2">' . i8ln('Valor') . '</option>
                                 <option value="3">' . i8ln('Instinct') . '</option>
                             </select>
-            </div>
+                        </div>
                         <div class="form-control switch-container" id="open-gyms-only-wrapper">
                             <h3>' . i8ln('Open Spot') . '</h3>
                             <div class="onoffswitch">
@@ -887,7 +856,7 @@ if (strtolower($map) === "rdm") {
                                 <option value="168">' . i8ln('Last Week') . '</option>
                             </select>
                         </div>
-            </div>';
+                        </div>';
                     } ?>
                     <div id="gyms-raid-filter-wrapper" style="display:none">
                         <?php
@@ -905,6 +874,29 @@ if (strtolower($map) === "rdm") {
                             </div>';
                         } ?>
                     </div>
+                </div>
+                <?php
+            }
+            ?>
+            <?php
+            if (! $noCommunity) {
+                ?>
+                <h3><?php echo i8ln('Communities'); ?></h3>
+                <div>
+                <?php
+                if (! $noCommunity) {
+                    echo '<div class="form-control switch-container">
+                    <h3>' . i8ln('Communities') . '</h3>
+                    <div class="onoffswitch">
+                        <input id="communities-switch" type="checkbox" name="communities-switch"
+                               class="onoffswitch-checkbox" checked>
+                        <label class="onoffswitch-label" for="communities-switch">
+                            <span class="switch-label" data-on="On" data-off="Off"></span>
+                            <span class="switch-handle"></span>
+                        </label>
+                    </div>
+                </div>';
+                } ?>
                 </div>
                 <?php
             }
@@ -942,48 +934,6 @@ if (strtolower($map) === "rdm") {
                         <input id="poi-switch" type="checkbox" name="poi-switch"
                                class="onoffswitch-checkbox" checked>
                         <label class="onoffswitch-label" for="poi-switch">
-                            <span class="switch-label" data-on="On" data-off="Off"></span>
-                            <span class="switch-handle"></span>
-                        </label>
-                    </div>
-                </div>';
-                } ?>
-                <?php
-                if (! $noInn) {
-                    echo '<div class="form-control switch-container">
-                    <h3>' . i8ln('Inn') . '</h3>
-                    <div class="onoffswitch">
-                        <input id="inns-switch" type="checkbox" name="inns-switch"
-                               class="onoffswitch-checkbox" checked>
-                        <label class="onoffswitch-label" for="inns-switch">
-                            <span class="switch-label" data-on="On" data-off="Off"></span>
-                            <span class="switch-handle"></span>
-                        </label>
-                    </div>
-                </div>';
-                } ?>
-                <?php
-                if (! $noFortress) {
-                    echo '<div class="form-control switch-container">
-                    <h3>' . i8ln('Fortress') . '</h3>
-                    <div class="onoffswitch">
-                        <input id="fortresses-switch" type="checkbox" name="fortresses-switch"
-                               class="onoffswitch-checkbox" checked>
-                        <label class="onoffswitch-label" for="fortresses-switch">
-                            <span class="switch-label" data-on="On" data-off="Off"></span>
-                            <span class="switch-handle"></span>
-                        </label>
-                    </div>
-                </div>';
-                } ?>
-                <?php
-                if (! $noGreenhouse) {
-                    echo '<div class="form-control switch-container">
-                    <h3>' . i8ln('Greenhouse') . '</h3>
-                    <div class="onoffswitch">
-                        <input id="greenhouses-switch" type="checkbox" name="greenhouses-switch"
-                               class="onoffswitch-checkbox" checked>
-                        <label class="onoffswitch-label" for="greenhouses-switch">
                             <span class="switch-label" data-on="On" data-off="Off"></span>
                             <span class="switch-handle"></span>
                         </label>
@@ -1335,7 +1285,7 @@ if (strtolower($map) === "rdm") {
             }
             ?>
             <?php
-            if (! $noMapStyle) {
+            if (! $noMapStyle && !$forcedTileServer) {
                 echo '<div class="form-control switch-container">
                 <h3>' . i8ln('Map Style') . '</h3>
                 <select id="map-style"></select>
@@ -1649,12 +1599,6 @@ if (strtolower($map) === "rdm") {
                     <i class="fas fa-sync-alt"></i> <?php echo i8ln('Convert to Pokéstop'); ?></button>
                 <button type="button" onclick="convertPortalToGymData(event);" class="convertportalid">
                     <i class="fas fa-sync-alt"></i> <?php echo i8ln('Convert to Gym'); ?></button>
-                <button type="button" onclick="convertPortalToInnData(event);" class="convertportalid">
-                    <i class="fas fa-sync-alt"></i> <?php echo i8ln('Convert to Inn'); ?></button>
-                <button type="button" onclick="convertPortalToFortressData(event);" class="convertportalid">
-                    <i class="fas fa-sync-alt"></i> <?php echo i8ln('Convert to Fortress'); ?></button>
-                <button type="button" onclick="convertPortalToGreenhouseData(event);" class="convertportalid">
-                    <i class="fas fa-sync-alt"></i> <?php echo i8ln('Convert to Greenhouse'); ?></button>
                 <button type="button" onclick="markPortalChecked(event);" class="convertportalid">
                     <i class="fas fa-times"></i> <?php echo i8ln('No Pokéstop or Gym'); ?></button>
             </div>
@@ -2213,6 +2157,7 @@ if (strtolower($map) === "rdm") {
     var noConvertPortal = <?php echo $noConvertPortal === true ? 'true' : 'false' ?>;
     var markPortalsAsNew = <?php echo $markPortalsAsNew ?>;
     var copyrightSafe = <?php echo $copyrightSafe === true ? 'true' : 'false' ?>;
+    var forcedTileServer = <?php echo $forcedTileServer === true ? 'true' : 'false' ?>;
     var noRarityDisplay = <?php echo $noRarityDisplay === true ? 'true' : 'false' ?>;
     var noWeatherIcons = <?php echo $noWeatherIcons === true ? 'true' : 'false' ?>;
     var noIvShadow = <?php echo $no100IvShadow === true ? 'true' : 'false' ?>;
@@ -2224,15 +2169,6 @@ if (strtolower($map) === "rdm") {
     var nestGeoJSONfile = '<?php echo $noNestPolygon ? '' : $nestGeoJSONfile ?>';
     var noCostumeIcons = <?php echo $noCostumeIcons === true ? 'true' : 'false' ?>;
     var queryInterval = <?php echo $queryInterval ?>;
-    var enableInns = <?php echo $noInn ? 'false' : $enableInn ?>;
-    var noInns = <?php echo $noInn === true ? 'true' : 'false' ?>;
-    var enableFortresses = <?php echo $noFortress ? 'false' : $enableFortress ?>;
-    var noFortresses = <?php echo $noFortress === true ? 'true' : 'false' ?>;
-    var enableGreenhouses = <?php echo $noGreenhouse ? 'false' : $enableGreenhouse ?>;
-    var noGreenhouses = <?php echo $noGreenhouse === true ? 'true' : 'false' ?>;
-    var noDeleteInn = <?php echo $noDeleteInn === true ? 'true' : 'false' ?>;
-    var noDeleteFortress = <?php echo $noDeleteFortress === true ? 'true' : 'false' ?>;
-    var noDeleteGreenhouse = <?php echo $noDeleteGreenhouse === true ? 'true' : 'false' ?>;
     var noInvasionEncounterData = <?php echo $noTeamRocketEncounterData === true ? 'true' : 'false' ?>;
     var numberOfPokemon = <?php echo $numberOfPokemon; ?>;
     var numberOfItem = <?php echo $numberOfItem; ?>;

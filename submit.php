@@ -39,9 +39,6 @@ $itemAmount   		= ! empty($_POST['itemamount']) ? $_POST['itemamount'] : '1';
 $dust			= ! empty($_POST['dust']) ? $_POST['dust'] : '';
 $nestId     		= ! empty($_POST['nestId']) ? $_POST['nestId'] : '';
 $portalId   		= ! empty($_POST['portalId']) ? $_POST['portalId'] : '';
-$innId   		= ! empty($_POST['innId']) ? $_POST['innId'] : '';
-$fortressId   		= ! empty($_POST['fortressId']) ? $_POST['fortressId'] : '';
-$greenhouseId   	= ! empty($_POST['greenhouseId']) ? $_POST['greenhouseId'] : '';
 $communityId   		= ! empty($_POST['communityId']) ? $_POST['communityId'] : '';
 $communityName 		= ! empty($_POST['communityName']) ? $_POST['communityName'] : '';
 $communityDescription 	= ! empty($_POST['communityDescription']) ? $_POST['communityDescription'] : '';
@@ -111,29 +108,11 @@ if ($action === "convertportalpokestop") {
 if ($action === "convertportalgym") {
     $submit->convert_portal_gym($portalId, $loggedUser);
 }
-if ($action === "convertportalinn") {
-    $submitManual->convert_portal_inn($portalId, $loggedUser);
-}
-if ($action === "convertportalfortress") {
-    $submitManual->convert_portal_fortress($portalId, $loggedUser);
-}
-if ($action === "convertportalgreenhouse") {
-    $submitManual->convert_portal_greenhouse($portalId, $loggedUser);
-}
 if ($action === "markportal") {
     $submitManual->mark_portal($portalId, $loggedUser);
 }
 if ($action === "delete-portal") {
     $submitManual->delete_portal($portalId, $loggedUser);
-}
-if ($action === "delete-inn") {
-    $submitManual->delete_inn($innId, $loggedUser);
-}
-if ($action === "delete-fortress") {
-    $submitManual->delete_fortress($fortressId, $loggedUser);
-}
-if ($action === "delete-greenhouse") {
-    $submitManual->delete_greenhouse($greenhouseId, $loggedUser);
 }
 if ($action === "nest") {
     $submitManual->modify_nest($nestId, $pokemonId, $loggedUser);

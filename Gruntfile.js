@@ -42,7 +42,7 @@ module.exports = function (grunt) {
         obfuscator: {
             options: {
                 compact: true,
-                controlFlowFlattening: true,
+                controlFlowFlattening: false,
                 controlFlowFlatteningThreshold: 1,
                 deadCodeInjection: false,
                 deadCodeInjectionThreshold: 0.2,

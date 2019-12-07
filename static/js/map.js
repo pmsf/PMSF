@@ -96,9 +96,6 @@ var lastgyms
 var lastnests
 var lastcommunities
 var lastportals
-var lastinns
-var lastfortresses
-var lastgreenhouses
 var lastpois
 var lastpokemon
 var lastslocs
@@ -254,8 +251,11 @@ if (location.search.indexOf('login=false') > 0) {
 }
 if (copyrightSafe) {
     Store.set('icons', 'static/icons-safe/')
-} else {
+} else if (Store.get('icons') === 'static/icons-safe/' || Store.get('icons') === '') {
     Store.set('icons', icons)
+}
+if (forcedTileServer) {
+    Store.set('map_style', 'tileserver')
 }
 function previewPoiImage(event) { // eslint-disable-line no-unused-vars
     var form = $(event.target).parent().parent()
@@ -425,7 +425,7 @@ function initMap() { // eslint-disable-line no-unused-vars
     })
 
     map.createPane('portals')
-    map.getPane('portals').style.zIndex = 300
+    map.getPane('portals').style.zIndex = 400
     createMyLocationButton()
     initSidebar()
 
@@ -691,6 +691,57 @@ function createLocationMarker() {
     return locationMarker
 }
 
+function cellLabel(stopCount, sponsoredStopCount, sponsoredGymCount, gymCount, totalCount, possibleCandidatePoiCount, submittedPoiCount, declinedPoiCount, resubmittedPoiCount, notEligiblePoiCount, totalPoiCount) {
+    var html = ''
+    var count = ''
+    if (totalCount >= 20 && gymCount >= 3) {
+        html += '<div><center><b>' + i8ln('Max amount of Gyms reached') + '</b></center></div>'
+    } else if (totalCount >= 6 && gymCount === 2) {
+        count = 20 - totalCount
+        html += '<div><center><b>' + count + ' ' + i8ln('more Pokéstop(s) until new gym') + '</b></center></div>'
+    } else if (totalCount >= 2 && gymCount === 1) {
+        count = 6 - totalCount
+        html += '<div><center><b>' + count + ' ' + i8ln('more Pokéstop(s) until new gym') + '</b></center></div>'
+    } else if (totalCount < 2 && gymCount === 0) {
+        count = 2 - totalCount
+        html += '<div><center><b>' + count + ' ' + i8ln('more Pokéstop(s) until new gym') + '</b></center></div>'
+    }
+
+    html += '<div>' + i8ln('Gyms in cell') + ': <b>' + gymCount + '</b></div>' +
+        '<div>' + i8ln('Pokéstops in cell') + ': <b>' + stopCount + '</b></div>'
+    if (sponsoredStopCount > 0) {
+        html += '<div>' + i8ln('Sponsored Pokéstops in cell') + ': <b>' + sponsoredStopCount + '</b></div>'
+    }
+    if (sponsoredGymCount > 0) {
+        html += '<div>' + i8ln('Sponsored Gyms in cell') + ': <b>' + sponsoredGymCount + '</b></div>'
+    }
+    if (sponsoredStopCount > 0 || sponsoredGymCount > 0) {
+        html += '<div>' + i8ln('Total (excluding sponsored)') + ': <b>' + totalCount + '</b></div>'
+    } else {
+        html += '<div>' + i8ln('Total') + ': <b>' + totalCount + '</b></div>'
+    }
+    if (!noPoi && totalPoiCount > 0) {
+        html += '<br>'
+        if (possibleCandidatePoiCount > 0) {
+            html += '<div>' + i8ln('POI possible candidate') + ': <b>' + possibleCandidatePoiCount + '</b></div>'
+        }
+        if (submittedPoiCount > 0) {
+            html += '<div>' + i8ln('POI submitted') + ': <b>' + submittedPoiCount + '</b></div>'
+        }
+        if (declinedPoiCount > 0) {
+            html += '<div>' + i8ln('POI declined') + ': <b>' + declinedPoiCount + '</b></div>'
+        }
+        if (resubmittedPoiCount > 0) {
+            html += '<div>' + i8ln('POI resubmitted') + ': <b>' + resubmittedPoiCount + '</b></div>'
+        }
+        if (notEligiblePoiCount > 0) {
+            html += '<div>' + i8ln('POI not eligible') + ': <b>' + notEligiblePoiCount + '</b></div>'
+        }
+        html += '<div>' + i8ln('Total POI') + ': <b>' + totalPoiCount + '</b></div>'
+    }
+    return html
+}
+
 function pointInPolygon(x, y, cornersX, cornersY) {
     var i
     var j = cornersX.length - 1
@@ -757,6 +808,8 @@ function showS2Cells(level, style) {
                     }
                 }
             })
+        }
+        if (cell.level === 14 && Store.get('showPoi')) {
             $.each(mapData.pois, function (key, item) {
                 if (pointInPolygon(item['lat'], item['lon'], s2Lats, s2Lons)) {
                     if (item['status'] === '1') {
@@ -775,33 +828,16 @@ function showS2Cells(level, style) {
             })
         }
 
-        var html = ''
         var filledStyle = {color: 'black', fillOpacity: 0.0}
-        if ((cell.level === 14) && (totalCount === 1 || totalCount === 5 || totalCount === 19)) {
-            filledStyle = {fillColor: s2Colors[1], fillOpacity: 0.3}
-        } else if ((cell.level === 14) && (totalCount === 4 || totalCount === 18)) {
-            filledStyle = {fillColor: s2Colors[2], fillOpacity: 0.3}
-        } else if (cell.level === 14 && totalCount >= 20) {
-            filledStyle = {fillColor: s2Colors[3], fillOpacity: 0.3}
-        }
-
-        if (cell.level === 14) {
-            var count = ''
-            if (totalCount >= 20) {
-                html += '<div><center><b>' + i8ln('Max amount of Gyms reached') + '</b></center></div>'
-            } else if (totalCount >= 6) {
-                count = 20 - totalCount
-                html += '<div><center><b>' + count + ' ' + i8ln('more Pokéstop(s) until new gym') + '</b></center></div>'
-            } else if (totalCount >= 2) {
-                count = 6 - totalCount
-                html += '<div><center><b>' + count + ' ' + i8ln('more Pokéstop(s) until new gym') + '</b></center></div>'
-            } else if (totalCount < 2) {
-                count = 2 - totalCount
-                html += '<div><center><b>' + count + ' ' + i8ln('more Pokéstop(s) until new gym') + '</b></center></div>'
+        if (cell.level === 14 && Store.get('showPokestops') && Store.get('showGyms')) {
+            if ((totalCount === 1 && gymCount === 0) || (totalCount === 5 && gymCount === 1) || (totalCount === 19 && gymCount === 2)) {
+                filledStyle = {fillColor: s2Colors[1], fillOpacity: 0.3}
+            } else if ((totalCount === 4 && gymCount === 1) || (totalCount === 18 && gymCount === 2)) {
+                filledStyle = {fillColor: s2Colors[2], fillOpacity: 0.3}
+            } else if (totalCount >= 20 && gymCount >= 3) {
+                filledStyle = {fillColor: s2Colors[3], fillOpacity: 0.3}
             }
-        }
-
-        if (cell.level === 17) {
+        } else if (cell.level === 17) {
             $.each(mapData.pokestops, function (key, value) {
                 if (pointInPolygon(value['latitude'], value['longitude'], s2Lats, s2Lons) && value['pokestop_id'].includes('.')) {
                     filledStyle = {fillColor: s2Colors[0], fillOpacity: 0.3}
@@ -813,44 +849,23 @@ function showS2Cells(level, style) {
                 }
             })
         }
-        const poly = L.polygon(vertices, Object.assign({color: 'black', opacity: 0.5, weight: 0.5, fillOpacity: 0.0}, style, filledStyle))
-        if (cell.level === 14) {
-            html += '<div>' + i8ln('Gyms in cell') + ': <b>' + gymCount + '</b></div>' +
-                '<div>' + i8ln('Pokéstops in cell') + ': <b>' + stopCount + '</b></div>'
-            if (sponsoredStopCount > 0) {
-                html += '<div>' + i8ln('Sponsored Pokéstops in cell') + ': <b>' + sponsoredStopCount + '</b></div>'
-            }
-            if (sponsoredGymCount > 0) {
-                html += '<div>' + i8ln('Sponsored Gyms in cell') + ': <b>' + sponsoredGymCount + '</b></div>'
-            }
-            if (sponsoredStopCount > 0 || sponsoredGymCount > 0) {
-                html += '<div>' + i8ln('Total (excluding sponsored)') + ': <b>' + totalCount + '</b></div>'
-            } else {
-                html += '<div>' + i8ln('Total') + ': <b>' + totalCount + '</b></div>'
-            }
-            if (!noPoi && totalPoiCount > 0) {
-                html += '<br>'
-                if (possibleCandidatePoiCount > 0) {
-                    html += '<div>' + i8ln('POI possible candidate') + ': <b>' + possibleCandidatePoiCount + '</b></div>'
-                }
-                if (submittedPoiCount > 0) {
-                    html += '<div>' + i8ln('POI submitted') + ': <b>' + submittedPoiCount + '</b></div>'
-                }
-                if (declinedPoiCount > 0) {
-                    html += '<div>' + i8ln('POI declined') + ': <b>' + declinedPoiCount + '</b></div>'
-                }
-                if (resubmittedPoiCount > 0) {
-                    html += '<div>' + i8ln('POI resubmitted') + ': <b>' + resubmittedPoiCount + '</b></div>'
-                }
-                if (notEligiblePoiCount > 0) {
-                    html += '<div>' + i8ln('POI not eligible') + ': <b>' + notEligiblePoiCount + '</b></div>'
-                }
-                html += '<div>' + i8ln('Total POI') + ': <b>' + totalPoiCount + '</b></div>'
-            }
-            if (!$('.submit-on-off-button').hasClass('on')) {
-                poly.bindPopup(html, {autoPan: false, closeOnClick: false, autoClose: false})
-            }
+
+        const poly = L.polygon(vertices, Object.assign({
+            pane: 'portals',
+            color: 'black',
+            opacity: 0.5,
+            weight: 0.5,
+            fillOpacity: 0.0
+        }, style, filledStyle))
+
+        if (cell.level === 14 && Store.get('showPokestops') && Store.get('showGyms') && !$('.submit-on-off-button').hasClass('on')) {
+            poly.bindPopup(cellLabel(stopCount, sponsoredStopCount, sponsoredGymCount, gymCount, totalCount, possibleCandidatePoiCount, submittedPoiCount, declinedPoiCount, resubmittedPoiCount, notEligiblePoiCount, totalPoiCount), {
+                autoPan: false,
+                closeOnClick: false,
+                autoClose: false
+            })
         }
+
         if (cell.level === 13) {
             exLayerGroup.addLayer(poly)
         } else if (cell.level === 14) {
@@ -926,9 +941,6 @@ function initSidebar() {
     $('#nests-switch').prop('checked', Store.get('showNests'))
     $('#communities-switch').prop('checked', Store.get('showCommunities'))
     $('#portals-switch').prop('checked', Store.get('showPortals'))
-    $('#inns-switch').prop('checked', Store.get('showInns'))
-    $('#fortresses-switch').prop('checked', Store.get('showFortresses'))
-    $('#greenhouses-switch').prop('checked', Store.get('showGreenhouses'))
     $('#poi-switch').prop('checked', Store.get('showPoi'))
     $('#s2-switch').prop('checked', Store.get('showCells'))
     $('#s2-switch-wrapper').toggle(Store.get('showCells'))
@@ -1214,7 +1226,7 @@ function pokemonLabel(item) {
     contentstring +=
     '<a href="javascript:void(0)" onclick="javascript:openMapDirections(' + latitude + ', ' + longitude + ')" title="' + i8ln('View in Maps') + '">' +
     '<i class="fas fa-road"></i> ' + coordText + '</a> - ' +
-    '<a href="./?lat=' + latitude + '&lon=' + longitude + '&zoom=16">' +
+    '<a href="./?encId=' + encounterId + '">' +
     '<i class="far fa-share-square" aria-hidden="true" style="position:relative;top:3px;left:0px;color:#26c300;margin-bottom:10px;font-size:18px;"></i>' +
     '</a></center></div>'
     if (atk != null && def != null && sta != null) {
@@ -1541,6 +1553,11 @@ function getQuest(item) {
                     break
                 case 25:
                     str = str.replace('{0} pokémon', 'pokémon caught ' + questinfo['distance'] + 'km apart')
+                    break
+                case 27:
+                    if (questinfo['character_category_ids']) {
+                        str = str.replace('Grunt(s)', 'Leader(s)')
+                    }
                     break
             }
         } else if (item['quest_type'] > 0) {
@@ -2671,59 +2688,6 @@ function setupPortalMarker(item) {
     return marker
 }
 
-function setupInnMarker(item) {
-    var html = ''
-    if (item['type'] === '0' || item['type'] === '5') {
-        html = '<div><img src="static/forts/hpwu/inn5.png" style="width:33px;height:49px;top:-35px;right:10px;"/><div>'
-    } else {
-        html = '<div><img src="static/forts/hpwu/inn' + item['type'] + '.png" style="width:33px;height:49px;top:-35px;right:10px;"/><div>'
-    }
-    var innMarkerIcon = L.divIcon({
-        iconSize: [36, 48],
-        iconAnchor: [20, 45],
-        popupAnchor: [0, -45],
-        className: 'marker-inns',
-        html: html
-    })
-    var marker = L.marker([item['lat'], item['lon']], {icon: innMarkerIcon, zIndexOffset: 1020}).bindPopup(innLabel(item), {autoPan: false, closeOnClick: false, autoClose: false, virtual: true})
-    markers.addLayer(marker)
-    addListeners(marker)
-
-    return marker
-}
-
-function setupFortressMarker(item) {
-    var html = '<div><img src="static/forts/hpwu/fortress.png" style="width:33px;height:75px;top:-35px;right:10px;"/><div>'
-    var fortressMarkerIcon = L.divIcon({
-        iconSize: [36, 48],
-        iconAnchor: [18, 68],
-        popupAnchor: [0, -45],
-        className: 'marker-fortresses',
-        html: html
-    })
-    var marker = L.marker([item['lat'], item['lon']], {icon: fortressMarkerIcon, zIndexOffset: 1020}).bindPopup(fortressLabel(item), {autoPan: false, closeOnClick: false, autoClose: false, virtual: true})
-    markers.addLayer(marker)
-    addListeners(marker)
-
-    return marker
-}
-
-function setupGreenhouseMarker(item) {
-    var html = '<div><img src="static/forts/hpwu/greenhouse.png" style="width:40px;height:40px;top:-35px;right:10px;"/><div>'
-    var greenhouseMarkerIcon = L.divIcon({
-        iconSize: [36, 48],
-        iconAnchor: [20, 33],
-        popupAnchor: [0, -45],
-        className: 'marker-greenhouses',
-        html: html
-    })
-    var marker = L.marker([item['lat'], item['lon']], {icon: greenhouseMarkerIcon, zIndexOffset: 1020}).bindPopup(greenhouseLabel(item), {autoPan: false, closeOnClick: false, autoClose: false, virtual: true})
-    markers.addLayer(marker)
-    addListeners(marker)
-
-    return marker
-}
-
 function setupPoiMarker(item) {
     var dot = ''
     if (item.status === '1') {
@@ -2769,57 +2733,6 @@ function portalLabel(item) {
         '</center>'
     if (!noDeletePortal) {
         str += '<i class="fas fa-trash-alt delete-portal" onclick="deletePortal(event);" data-id="' + item.external_id + '"></i>'
-    }
-    return str
-}
-
-function innLabel(item) {
-    var updated = formatDate(new Date(item.updated * 1000))
-    var str = '<center>' +
-        '<div><b>' + item['name'] + '</b></div>' +
-        '<div><img src="' + item.url + '" style="width:175px;height:auto;"/></div>' +
-        '<div><b>' + i8ln('Submitted by') + ': ' + item['submitted_by'] + '</b></div>' +
-        '<div><b>' + i8ln('Submitted at') + ': ' + updated + '</b></div>' +
-        '<a href="javascript:void(0);" onclick="javascript:openMapDirections(' + item['lat'] + ',' + item['lon'] + ');" title="' + i8ln('View in Maps') + '">' +
-        '<i class="fas fa-road"></i> ' + item['lat'].toFixed(6) + ' , ' + item['lon'].toFixed(7) + '</a> - ' +
-        '<a href="./?lat=' + item['lat'] + '&lon=' + item['lon'] + '&zoom=16"><i class="far fa-share-square" aria-hidden="true" style="position:relative;top:3px;left:0px;color:#26c300;font-size:20px;"></i></a>' +
-        '</center>'
-    if (!noDeleteInn) {
-        str += '<i class="fas fa-trash-alt delete-portal" onclick="deleteInn(event);" data-id="' + item['id'] + '"></i>'
-    }
-    return str
-}
-
-function fortressLabel(item) {
-    var updated = formatDate(new Date(item.updated * 1000))
-    var str = '<center>' +
-        '<div><b>' + item['name'] + '</b></div>' +
-        '<div><img src="' + item.url + '" style="width:175px;height:auto;"/></div>' +
-        '<div><b>' + i8ln('Submitted by') + ': ' + item['submitted_by'] + '</b></div>' +
-        '<div><b>' + i8ln('Submitted at') + ': ' + updated + '</b></div>' +
-        '<a href="javascript:void(0);" onclick="javascript:openMapDirections(' + item['lat'] + ',' + item['lon'] + ');" title="' + i8ln('View in Maps') + '">' +
-        '<i class="fas fa-road"></i> ' + item['lat'].toFixed(6) + ' , ' + item['lon'].toFixed(7) + '</a> - ' +
-        '<a href="./?lat=' + item['lat'] + '&lon=' + item['lon'] + '&zoom=16"><i class="far fa-share-square" aria-hidden="true" style="position:relative;top:3px;left:0px;color:#26c300;font-size:20px;"></i></a>' +
-        '</center>'
-    if (!noDeleteFortress) {
-        str += '<i class="fas fa-trash-alt delete-portal" onclick="deleteFortress(event);" data-id="' + item['id'] + '"></i>'
-    }
-    return str
-}
-
-function greenhouseLabel(item) {
-    var updated = formatDate(new Date(item.updated * 1000))
-    var str = '<center>' +
-        '<div><b>' + item['name'] + '</b></div>' +
-        '<div><img src="' + item.url + '" style="width:175px;height:auto;"/></div>' +
-        '<div><b>' + i8ln('Submitted by') + ': ' + item['submitted_by'] + '</b></div>' +
-        '<div><b>' + i8ln('Submitted at') + ': ' + updated + '</b></div>' +
-        '<a href="javascript:void(0);" onclick="javascript:openMapDirections(' + item['lat'] + ',' + item['lon'] + ');" title="' + i8ln('View in Maps') + '">' +
-        '<i class="fas fa-road"></i> ' + item['lat'].toFixed(6) + ' , ' + item['lon'].toFixed(7) + '</a> - ' +
-        '<a href="./?lat=' + item['lat'] + '&lon=' + item['lon'] + '&zoom=16"><i class="far fa-share-square" aria-hidden="true" style="position:relative;top:3px;left:0px;color:#26c300;font-size:20px;"></i></a>' +
-        '</center>'
-    if (!noDeleteGreenhouse) {
-        str += '<i class="fas fa-trash-alt delete-portal" onclick="deleteGreenhouse(event);" data-id="' + item['id'] + '"></i>'
     }
     return str
 }
@@ -2904,93 +2817,6 @@ function deletePortal(event) { // eslint-disable-line no-unused-vars
                 complete: function complete() {
                     jQuery('label[for="portals-switch"]').click()
                     jQuery('label[for="portals-switch"]').click()
-                }
-            })
-        }
-    }
-}
-
-function deleteInn(event) { // eslint-disable-line no-unused-vars
-    var button = $(event.target)
-    var innid = button.data('id')
-    if (innid && innid !== '') {
-        if (confirm(i8ln('I confirm that this inn does not longer exist. This is a permanent deleture'))) {
-            return $.ajax({
-                url: 'submit',
-                type: 'POST',
-                timeout: 300000,
-                dataType: 'json',
-                cache: false,
-                data: {
-                    'action': 'delete-inn',
-                    'innId': innid
-                },
-                error: function error() {
-                    // Display error toast
-                    toastr['error'](i8ln('Oops something went wrong.'), i8ln('Error Deleting inn'))
-                    toastr.options = toastrOptions
-                },
-                complete: function complete() {
-                    jQuery('label[for="inns-switch"]').click()
-                    jQuery('label[for="inns-switch"]').click()
-                }
-            })
-        }
-    }
-}
-
-function deleteFortress(event) { // eslint-disable-line no-unused-vars
-    var button = $(event.target)
-    var fortressid = button.data('id')
-    if (fortressid && fortressid !== '') {
-        if (confirm(i8ln('I confirm that this fortress does not longer exist. This is a permanent deleture'))) {
-            return $.ajax({
-                url: 'submit',
-                type: 'POST',
-                timeout: 300000,
-                dataType: 'json',
-                cache: false,
-                data: {
-                    'action': 'delete-fortress',
-                    'fortressId': fortressid
-                },
-                error: function error() {
-                    // Display error toast
-                    toastr['error'](i8ln('Oops something went wrong.'), i8ln('Error Deleting fortress'))
-                    toastr.options = toastrOptions
-                },
-                complete: function complete() {
-                    jQuery('label[for="fortresses-switch"]').click()
-                    jQuery('label[for="fortresses-switch"]').click()
-                }
-            })
-        }
-    }
-}
-
-function deleteGreenhouse(event) { // eslint-disable-line no-unused-vars
-    var button = $(event.target)
-    var greenhouseid = button.data('id')
-    if (greenhouseid && greenhouseid !== '') {
-        if (confirm(i8ln('I confirm that this greenhouse does not longer exist. This is a permanent deleture'))) {
-            return $.ajax({
-                url: 'submit',
-                type: 'POST',
-                timeout: 300000,
-                dataType: 'json',
-                cache: false,
-                data: {
-                    'action': 'delete-greenhouse',
-                    'greenhouseId': greenhouseid
-                },
-                error: function error() {
-                    // Display error toast
-                    toastr['error'](i8ln('Oops something went wrong.'), i8ln('Error Deleting greenhouse'))
-                    toastr.options = toastrOptions
-                },
-                complete: function complete() {
-                    jQuery('label[for="greenhouses-switch"]').click()
-                    jQuery('label[for="greenhouses-switch"]').click()
                 }
             })
         }
@@ -3183,9 +3009,6 @@ function loadRawData() {
     var loadNests = Store.get('showNests')
     var loadCommunities = Store.get('showCommunities')
     var loadPortals = Store.get('showPortals')
-    var loadInns = Store.get('showInns')
-    var loadFortresses = Store.get('showFortresses')
-    var loadGreenhouses = Store.get('showGreenhouses')
     var loadPois = Store.get('showPoi')
     var loadNewPortalsOnly = Store.get('showNewPortalsOnly')
     var loadSpawnpoints = Store.get('showSpawnpoints')
@@ -3225,12 +3048,6 @@ function loadRawData() {
             'lastpois': lastpois,
             'newportals': loadNewPortalsOnly,
             'lastportals': lastportals,
-            'inns': loadInns,
-            'lastinns': lastinns,
-            'fortresses': loadFortresses,
-            'lastfortresses': lastfortresses,
-            'greenhouses': loadGreenhouses,
-            'lastgreenhouses': lastgreenhouses,
             'lastpokestops': lastpokestops,
             'gyms': loadGyms,
             'lastgyms': lastgyms,
@@ -3911,99 +3728,6 @@ function convertPortalToGymData(event) { // eslint-disable-line no-unused-vars
                     jQuery('label[for="pokestops-switch"]').click()
                     jQuery('label[for="pokestops-switch"]').click()
                     lastpokestops = false
-                    updateMap()
-                    $('.ui-dialog-content').dialog('close')
-                }
-            })
-        }
-    }
-}
-function convertPortalToInnData(event) { // eslint-disable-line no-unused-vars
-    var form = $(event.target).parent().parent()
-    var portalId = form.find('.convertportalid').val()
-    if (portalId && portalId !== '') {
-        if (confirm(i8ln('I confirm this portal is a Inn'))) {
-            return $.ajax({
-                url: 'submit',
-                type: 'POST',
-                timeout: 300000,
-                dataType: 'json',
-                cache: false,
-                data: {
-                    'action': 'convertportalinn',
-                    'portalId': portalId
-                },
-                error: function error() {
-                    // Display error toast
-                    toastr['error'](i8ln('Portal ID got lost somewhere.'), i8ln('Error converting to Inn'))
-                    toastr.options = toastrOptions
-                },
-                complete: function complete() {
-                    lastinns = false
-                    jQuery('label[for="inns-switch"]').click()
-                    jQuery('label[for="inns-switch"]').click()
-                    updateMap()
-                    $('.ui-dialog-content').dialog('close')
-                }
-            })
-        }
-    }
-}
-function convertPortalToFortressData(event) { // eslint-disable-line no-unused-vars
-    var form = $(event.target).parent().parent()
-    var portalId = form.find('.convertportalid').val()
-    if (portalId && portalId !== '') {
-        if (confirm(i8ln('I confirm this portal is a Fortress'))) {
-            return $.ajax({
-                url: 'submit',
-                type: 'POST',
-                timeout: 300000,
-                dataType: 'json',
-                cache: false,
-                data: {
-                    'action': 'convertportalfortress',
-                    'portalId': portalId
-                },
-                error: function error() {
-                    // Display error toast
-                    toastr['error'](i8ln('Portal ID got lost somewhere.'), i8ln('Error converting to Fortress'))
-                    toastr.options = toastrOptions
-                },
-                complete: function complete() {
-                    lastfortresses = false
-                    jQuery('label[for="fortresses-switch"]').click()
-                    jQuery('label[for="fortresses-switch"]').click()
-                    updateMap()
-                    $('.ui-dialog-content').dialog('close')
-                }
-            })
-        }
-    }
-}
-function convertPortalToGreenhouseData(event) { // eslint-disable-line no-unused-vars
-    var form = $(event.target).parent().parent()
-    var portalId = form.find('.convertportalid').val()
-    if (portalId && portalId !== '') {
-        if (confirm(i8ln('I confirm this portal is a Greenhouse'))) {
-            return $.ajax({
-                url: 'submit',
-                type: 'POST',
-                timeout: 300000,
-                dataType: 'json',
-                cache: false,
-                data: {
-                    'action': 'convertportalgreenhouse',
-                    'portalId': portalId
-                },
-                error: function error() {
-                    // Display error toast
-                    toastr['error'](i8ln('Portal ID got lost somewhere.'), i8ln('Error converting to Greenhouse'))
-                    toastr.options = toastrOptions
-                },
-                complete: function complete() {
-                    lastgreenhouses = false
-                    jQuery('label[for="greenhouses-switch"]').click()
-                    jQuery('label[for="greenhouses-switch"]').click()
                     updateMap()
                     $('.ui-dialog-content').dialog('close')
                 }
@@ -5206,54 +4930,6 @@ function updatePortals() {
         })
     }
 }
-function processInns(i, item) {
-    if (!Store.get('showInns')) {
-        return false
-    }
-
-    if (!mapData.inns[item['id']]) {
-        if (item.marker && item.marker.rangeCircle) {
-            item.marker.rangeCircle.setMap(null)
-        }
-        if (item.marker) {
-            item.marker.setMap(null)
-        }
-        item.marker = setupInnMarker(item)
-        mapData.inns[item['id']] = item
-    }
-}
-function processFortresses(i, item) {
-    if (!Store.get('showFortresses')) {
-        return false
-    }
-
-    if (!mapData.fortresses[item['id']]) {
-        if (item.marker && item.marker.rangeCircle) {
-            item.marker.rangeCircle.setMap(null)
-        }
-        if (item.marker) {
-            item.marker.setMap(null)
-        }
-        item.marker = setupFortressMarker(item)
-        mapData.fortresses[item['id']] = item
-    }
-}
-function processGreenhouses(i, item) {
-    if (!Store.get('showGreenhouses')) {
-        return false
-    }
-
-    if (!mapData.greenhouses[item['id']]) {
-        if (item.marker && item.marker.rangeCircle) {
-            item.marker.rangeCircle.setMap(null)
-        }
-        if (item.marker) {
-            item.marker.setMap(null)
-        }
-        item.marker = setupGreenhouseMarker(item)
-        mapData.greenhouses[item['id']] = item
-    }
-}
 function processPois(i, item) {
     if (!Store.get('showPoi')) {
         return false
@@ -5624,9 +5300,6 @@ function updateMap() {
         $.each(result.nests, processNests)
         $.each(result.communities, processCommunities)
         $.each(result.portals, processPortals)
-        $.each(result.inns, processInns)
-        $.each(result.fortresses, processFortresses)
-        $.each(result.greenhouses, processGreenhouses)
         $.each(result.pois, processPois)
         showInBoundsMarkers(mapData.pokemons, 'pokemon')
         showInBoundsMarkers(mapData.gyms, 'gym')
@@ -5656,9 +5329,6 @@ function updateMap() {
         lastnests = result.lastnests
         lastcommunities = result.lastcommunities
         lastportals = result.lastportals
-        lastinns = result.lastinns
-        lastfortresses = result.lastfortresses
-        lastgreenhouses = result.lastgreenhouses
         lastpois = result.lastpois
 
         prevMinIV = result.preMinIV
@@ -7009,18 +6679,6 @@ $(function () {
             wrapper.hide(options)
         }
         return buildSwitchChangeListener(mapData, ['portals'], 'showPortals').bind(this)()
-    })
-    $('#inns-switch').change(function () {
-        lastinns = false
-        buildSwitchChangeListener(mapData, ['inns'], 'showInns').bind(this)()
-    })
-    $('#fortresses-switch').change(function () {
-        lastfortresses = false
-        buildSwitchChangeListener(mapData, ['fortresses'], 'showFortresses').bind(this)()
-    })
-    $('#greenhouses-switch').change(function () {
-        lastgreenhouses = false
-        buildSwitchChangeListener(mapData, ['greenhouses'], 'showGreenhouses').bind(this)()
     })
 
     $('#s2-switch').change(function () {
