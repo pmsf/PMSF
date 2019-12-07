@@ -287,11 +287,11 @@ include('config/config.php');
                                     ]
                                 ]);
 
-                                if ($users) {
-                                    foreach ($users as $user) {
-                                        echo "<option>{$user['user']}</option>";
-                                    }
-                                } ?>
+            if ($users) {
+                foreach ($users as $user) {
+                    echo "<option>{$user['user']}</option>";
+                }
+            } ?>
                             </select>
                         </td>
                     </tr>
