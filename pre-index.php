@@ -234,11 +234,11 @@ if (strtolower($map) === "rdm") {
     }
     ?>
     <!-- Cookie Disclamer -->
-    <link rel="stylesheet" type="text/css" href="//cdnjs.cloudflare.com/ajax/libs/cookieconsent2/3.1.0/cookieconsent.min.css" />
-    <script src="//cdnjs.cloudflare.com/ajax/libs/cookieconsent2/3.1.0/cookieconsent.min.js"></script>
     <?php
     if (! $noCookie) {
-        echo '<script>
+        echo '<link rel="stylesheet" type="text/css" href="//cdnjs.cloudflare.com/ajax/libs/cookieconsent2/3.1.0/cookieconsent.min.css" />
+            <script src="//cdnjs.cloudflare.com/ajax/libs/cookieconsent2/3.1.0/cookieconsent.min.js"></script>
+            <script>
             window.addEventListener("load", function(){
                 window.cookieconsent.initialise({
                 "palette": {
@@ -259,7 +259,7 @@ if (strtolower($map) === "rdm") {
         </script>';
     }
     ?>
-    
+
     <script>
         var token = '<?php echo (! empty($_SESSION['token'])) ? $_SESSION['token'] : ""; ?>';
     </script>
