@@ -295,6 +295,7 @@ class RDM_beta extends RDM
                 }
                 $rocket_in = substr($rocket_in, 0, -1);
                 $rocketSQL .= "grunt_type NOT IN ( $rocket_in )";
+			file_put_contents('log.txt', print_r($rocketSQL, true), FILE_APPEND);
             } else {
                 $rocketSQL .= "grunt_type IS NOT NULL";
             }
@@ -378,6 +379,7 @@ class RDM_beta extends RDM
                 }
                 $rocket_in = substr($rocket_in, 0, -1);
                 $tmpSQL .= "grunt_type IN ( $rocket_in )";
+			file_put_contents('log.txt', print_r($tmpSQL, true), FILE_APPEND);
             }
             $conds[] = $tmpSQL;
         }
@@ -465,7 +467,7 @@ class RDM_beta extends RDM
         return $data;
     }
 
-    public function get_gyms($swLat, $swLng, $neLat, $neLng, $exEligible = false, $tstamp = 0, $oSwLat = 0, $oSwLng = 0, $oNeLat = 0, $oNeLng = 0)
+    public function get_gyms($rbeids, $reeids, $swLat, $swLng, $neLat, $neLng, $exEligible = false, $tstamp = 0, $oSwLat = 0, $oSwLng = 0, $oNeLat = 0, $oNeLng = 0, $raids)
     {
         $conds = array();
         $params = array();
@@ -486,6 +488,23 @@ class RDM_beta extends RDM
         global $noBoundaries, $boundaries, $hideDeleted;
         if (!$noBoundaries) {
             $conds[] = "(ST_WITHIN(point(lat,lon),ST_GEOMFROMTEXT('POLYGON(( " . $boundaries . " ))')))";
+	}
+        if (!empty($raids) && $raids === 'true') {
+            $raidSQL = '';
+            if (count($rbeids)) {
+                $raid_in = '';
+                $r = 1;
+                foreach ($rbeids as $rbeid) {
+                    $params[':rbqry_' . $r . "_"] = $rbeid;
+                    $raid_in .= ':rbqry_' . $r . "_,";
+                    $r++;
+                }
+                $raid_in = substr($raid_in, 0, -1);
+                $raidSQL .= "raid_pokemon_id NOT IN ( $raid_in )";
+            } else {
+                $raidSQL .= "raid_pokemon_id IS NOT NULL";
+            }
+            $conds[] = "" . $raidSQL . "";
         }
         if ($hideDeleted) {
             $conds[] = "deleted = 0";
@@ -697,6 +716,12 @@ class RDM_beta extends RDM
             $data = array();
             foreach ($pokestops as $pokestop) {
                 $data[] = $pokestop['grunt_type'];
+            }
+        } elseif ($type === 'raidbosslist') {
+            $gyms = $db->query("SELECT distinct raid_pokemon_id FROM gym WHERE raid_pokemon_id > 0 AND raid_end_timestamp > UNIX_TIMESTAMP() order by raid_pokemon_id;")->fetchAll(\PDO::FETCH_ASSOC);
+            $data = array();
+            foreach ($gyms as $gym) {
+                $data[] = $gym['raid_pokemon_id'];
             }
         }
         return $data;

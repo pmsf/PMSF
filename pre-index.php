@@ -784,10 +784,67 @@ if (strtolower($map) === "rdm") {
                                 <option value="5">5</option>
                             </select>
                         </div>
+                        <div id="raid-tabs">
+                            <ul>
+                                <li><a href="#tabs-1"><?php echo i8ln('Hide Raidboss') ?></a></li>
+                                <li><a href="#tabs-2"><?php echo i8ln('Hide Raidegg') ?></a></li>
+                            </ul>
+                            <div id="tabs-1">
+                                <div class="form-control-raids hide-select-2">
+                                    <label for="exclude-raidboss">
+                                        <div class="raidboss-container">
+                                            <input id="exclude-raidboss" type="text" readonly="true">
+                                            <?php
+                                                if ($generateExcludeRaidboss === true) {
+                                                    pokemonFilterImages($noRaidbossNumbers, '', array_diff(range(1, $numberOfPokemon), $getList->generated_exclude_list('raidbosslist')), 11);
+                                                } else {
+                                                    pokemonFilterImages($noRaidbossNumbers, '', $excludeRaidboss, 11);
+                                                } ?>
+                                        </div>
+                                        <a href="#" class="select-all"><?php echo i8ln('All') ?>
+                                            <div>
+                                        </a><a href="#" class="hide-all"><?php echo i8ln('None') ?></a>
+                                    </label>
+                                </div>
+                            </div>
+                            <div id="tabs-2">
+                                <div class="form-control-raids hide-select-2">
+                                    <label for="exclude-raidegg">
+                                        <div class="raidegg-container">
+					    <div class="raideggs-list-cont" id="raideggs-list-cont-12">
+					    <div class="raideggs-list list">
+					    <span class="raideggs-icon-sprite" data-value="1" onclick="">
+					        <span style="display:none" class="level">1</span>
+                                                <img src="static/raids/egg_normal.png" style="width:48px;height:56px;"/>
+					    <span class="raidegg-number">1</span>
+					    <span class="raideggs-icon-sprite" data-value="2" onclick="">
+					        <span style="display:none" class="level">2</span>
+                                                <img src="static/raids/egg_normal.png" style="width:48px;height:56px;"/>
+                                            <span class="raidegg-number">2</span>
+					    <span class="raideggs-icon-sprite" data-value="3" onclick="">
+					        <span style="display:none" class="level">3</span>
+                                                <img src="static/raids/egg_rare.png" style="width:48px;height:56px;"/>
+                                            <span class="raidegg-number">3</span>
+					    <span class="raideggs-icon-sprite" data-value="4" onclick="">
+					        <span style="display:none" class="level">4</span>
+                                                <img src="static/raids/egg_rare.png" style="width:48px;height:56px;"/>
+                                            <span class="raidegg-number">4</span>
+					    <span class="raideggs-icon-sprite" data-value="5" onclick="">
+					        <span style="display:none" class="level">5</span>
+                                                <img src="static/raids/egg_legendary.png" style="width:48px;height:56px;"/>
+                                            <span class="raidegg-number">5</span>
+                                        </div>
+                                        <a href="#" class="select-all-egg"><?php echo i8ln('All') ?>
+                                            <div>
+                                        </a><a href="#" class="hide-all-egg"><?php echo i8ln('None') ?></a>
+                                    </label>
+                                </div>
+                            </div>
+                        </div>
                     </div>
                     <?php
                     if (! $noGyms) {
-                        echo '<div class="form-control switch-container">
+                        echo '<div class="form-control switch-container" style="margin-top:10px">
                     <h3>' . i8ln('Gyms') . '</h3>
                     <div class="onoffswitch">
                         <input id="gyms-switch" type="checkbox" name="gyms-switch" class="onoffswitch-checkbox" checked>
@@ -2070,6 +2127,8 @@ if (strtolower($map) === "rdm") {
     var activeRaids = <?php echo $activeRaids ?>;
     var minRaidLevel = <?php echo $minRaidLevel ?>;
     var maxRaidLevel = <?php echo $maxRaidLevel ?>;
+    var hideRaidboss = <?php echo $noRaids ? '[]' : $hideRaidboss ?>;
+    var hideRaidegg = <?php echo $noRaids ? '[]' : $hideRaidegg ?>;
     var enableGyms = <?php echo $noGyms ? 'false' : $enableGyms ?>;
     var enableNests = <?php echo $noNests ? 'false' : $enableNests ?>;
     var enableCommunities = <?php echo $noCommunity ? 'false' : $enableCommunities ?>;
@@ -2173,6 +2232,7 @@ if (strtolower($map) === "rdm") {
     var numberOfPokemon = <?php echo $numberOfPokemon; ?>;
     var numberOfItem = <?php echo $numberOfItem; ?>;
     var numberOfGrunt = <?php echo $numberOfGrunt; ?>;
+    var numberOfEgg = <?php echo $numberOfEgg; ?>;
 </script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js"></script>
 <script src="static/dist/js/map.common.min.js"></script>

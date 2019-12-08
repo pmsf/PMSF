@@ -32,6 +32,8 @@ var $switchExEligible
 var $questsExcludePokemon
 var $questsExcludeItem
 var $excludeGrunts
+var $excludeRaidboss
+var $excludeRaidegg
 var $selectIconStyle
 
 var language = document.documentElement.lang === '' ? 'en' : document.documentElement.lang
@@ -53,6 +55,8 @@ var notifiedRarity = []
 var questsExcludedPokemon = []
 var questsExcludedItem = []
 var excludedGrunts = []
+var excludedRaidboss = []
+var excludedRaidegg = []
 var notifiedMinPerfection = null
 var notifiedMinLevel = null
 var minIV = null
@@ -66,10 +70,14 @@ var reincludedPokemon = []
 var reincludedQuestsPokemon = []
 var reincludedQuestsItem = []
 var reincludedGrunts = []
+var reincludedRaidboss = []
+var reincludedRaidegg = []
 var reids = []
 var qpreids = []
 var qireids = []
 var greids = []
+var rbreids = []
+var rereids = []
 var dustamount
 var reloaddustamount
 
@@ -3001,6 +3009,7 @@ function showInBoundsMarkers(markersInput, type) {
 function loadRawData() {
     var loadPokemon = Store.get('showPokemon')
     var loadGyms = (Store.get('showGyms') || Store.get('showRaids')) ? 'true' : 'false'
+    var loadRaids = Store.get('showRaids')
     var loadPokestops = Store.get('showPokestops')
     var loadLures = Store.get('showLures')
     var loadRocket = Store.get('showRocket')
@@ -3050,6 +3059,7 @@ function loadRawData() {
             'lastportals': lastportals,
             'lastpokestops': lastpokestops,
             'gyms': loadGyms,
+            'raids': loadRaids,
             'lastgyms': lastgyms,
             'exEligible': exEligible,
             'lastslocs': lastslocs,
@@ -3079,6 +3089,10 @@ function loadRawData() {
             'qieids': String(questsExcludedItem),
             'geids': String(excludedGrunts),
             'greids': String(reincludedGrunts),
+            'rbeids': String(excludedRaidboss),
+            'rbreids': String(reincludedRaidboss),
+            'reeids': String(excludedRaidegg),
+            'rereids': String(reincludedRaidegg),
             'token': token,
             'encId': encounterId
         },
@@ -5120,21 +5134,12 @@ function processGyms(i, item) {
             delete mapData.gyms[gymid]
         }
     }
-
     if (!Store.get('showGyms') && Store.get('showRaids')) {
-        if (item.raid_end === undefined) {
+        if (item.raid_end === undefined || item.raid_end < Date.now() || Store.get('remember_exclude_raidboss').indexOf(Number(item.raid_pokemon_id)) > -1) {
             removeGymFromMap(item['gym_id'])
             return true
         }
     }
-
-    if (!Store.get('showGyms') && Store.get('showRaids')) {
-        if (item.raid_end < Date.now()) {
-            removeGymFromMap(item['gym_id'])
-            return true
-        }
-    }
-
     if (Store.get('showGyms') && !Store.get('showRaids')) {
         item.raid_end = 0
         item.raid_level = item.raid_pokemon_cp = item.raid_pokemon_id = item.raid_pokemon_move_1 = item.raid_pokemon_move_1 = item.raid_pokemon_name = null
@@ -5337,6 +5342,8 @@ function updateMap() {
         qpreids = result.qpreids
         qireids = result.qireids
         greids = result.greids
+        rbreids = result.rbreids
+        rereids = result.rereids
         if (reids instanceof Array) {
             reincludedPokemon = reids.filter(function (e) {
                 return this.indexOf(e) < 0
@@ -5356,6 +5363,16 @@ function updateMap() {
             reincludedGrunts = greids.filter(function (e) {
                 return this.indexOf(e) < 0
             }, reincludedGrunts)
+        }
+        if (rbreids instanceof Array) {
+            reincludedRaidboss = rbreids.filter(function (e) {
+                return this.indexOf(e) < 0
+            }, reincludedRaidboss)
+        }
+        if (rereids instanceof Array) {
+            reincludedRaidegg = rereids.filter(function (e) {
+                return this.indexOf(e) < 0
+            }, reincludedRaidegg)
         }
         reloaddustamount = false
         timestamp = result.timestamp
@@ -5938,6 +5955,9 @@ function loadDefaultImages() {
     var eqp = Store.get('remember_quests_exclude_pokemon')
     var eqi = Store.get('remember_quests_exclude_item')
     var eg = Store.get('remember_exclude_grunts')
+    var erb = Store.get('remember_exclude_raidboss')
+    var ere = Store.get('remember_exclude_raidegg')
+
     $('label[for="exclude-pokemon"] .pokemon-icon-sprite').each(function () {
         if (ep.indexOf($(this).data('value')) !== -1) {
             $(this).addClass('active')
@@ -5965,6 +5985,16 @@ function loadDefaultImages() {
     })
     $('label[for="exclude-grunts"] .grunt-icon-sprite').each(function () {
         if (eg.indexOf($(this).data('value')) !== -1) {
+            $(this).addClass('active')
+        }
+    })
+    $('label[for="exclude-raidboss"] .pokemon-icon-sprite').each(function () {
+        if (erb.indexOf($(this).data('value')) !== -1) {
+            $(this).addClass('active')
+        }
+    })
+    $('label[for="exclude-raidegg"] .pokemon-icon-sprite').each(function () {
+        if (ere.indexOf($(this).data('value')) !== -1) {
             $(this).addClass('active')
         }
     })
@@ -6231,6 +6261,8 @@ $(function () {
     $questsExcludePokemon = $('#exclude-quests-pokemon')
     $questsExcludeItem = $('#exclude-quests-item')
     $excludeGrunts = $('#exclude-grunts')
+    $excludeRaidboss = $('#exclude-raidboss')
+    $excludeRaidegg = $('#exclude-raidegg')
 
     $.getJSON('static/dist/data/grunttype.min.json').done(function (data) {
         $.each(data, function (key, value) {
@@ -6354,6 +6386,13 @@ $(function () {
             multiple: true,
             maximumSelectionSize: 1
         })
+        $excludeRaidboss.select2({
+            placeholder: i8ln('Select Pokémon'),
+            data: pokeList,
+            templateResult: formatState,
+            multiple: true,
+            maximumSelectionSize: 1
+        })
         // setup list change behavior now that we have the list to work from
         $selectExclude.on('change', function (e) {
             buffer = excludedPokemon
@@ -6455,6 +6494,19 @@ $(function () {
             updateMap()
             Store.set('remember_quests_exclude_pokemon', questsExcludedPokemon)
         })
+        $excludeRaidboss.on('change', function (e) {
+            buffer = excludedRaidboss
+            excludedRaidboss = $excludeRaidboss.val().split(',').map(Number).sort(function (a, b) {
+                return parseInt(a) - parseInt(b)
+            })
+            buffer = buffer.filter(function (e) {
+                return this.indexOf(e) < 0
+            }, excludedRaidboss)
+            reincludedRaidboss = reincludedRaidboss.concat(buffer).map(String)
+            lastgyms = false
+            updateMap()
+            Store.set('remember_exclude_raidboss', excludedRaidboss)
+        })
         // recall saved lists
         $selectExclude.val(Store.get('remember_select_exclude')).trigger('change')
         $selectExcludeMinIV.val(Store.get('remember_select_exclude_min_iv')).trigger('change')
@@ -6466,6 +6518,7 @@ $(function () {
         $textMinLevel.val(Store.get('remember_text_min_level')).trigger('change')
         $raidNotify.val(Store.get('remember_raid_notify')).trigger('change')
         $questsExcludePokemon.val(Store.get('remember_quests_exclude_pokemon')).trigger('change')
+        $excludeRaidboss.val(Store.get('remember_exclude_raidboss')).trigger('change')
 
         if (isTouchDevice() && isMobileDevice()) {
             $('.select2-search input').prop('readonly', true)
@@ -6473,6 +6526,7 @@ $(function () {
         $('#tabs').tabs()
         $('#quests-tabs').tabs()
         $('#grunt-tabs').tabs()
+        $('#raid-tabs').tabs()
         if (manualRaids) {
             $('.global-raid-modal').html(generateRaidModal())
         }
@@ -6516,6 +6570,20 @@ $(function () {
         e.preventDefault()
         var parent = $(this).parent()
         parent.find('.grunt-list .grunt-icon-sprite').removeClass('active')
+        parent.find('input').val('').trigger('change')
+    })
+
+    $('.select-all-egg').on('click', function (e) {
+        e.preventDefault()
+        var parent = $(this).parent()
+        parent.find('.raideggs-list .raideggs-icon-sprite').addClass('active')
+        parent.find('input').val(Array.from(Array(numberOfEgg + 1).keys()).slice(1).join(',')).trigger('change')
+    })
+
+    $('.hide-all-egg').on('click', function (e) {
+        e.preventDefault()
+        var parent = $(this).parent()
+        parent.find('.raideggslist .raideggs-icon-sprite').removeClass('active')
         parent.find('input').val('').trigger('change')
     })
 

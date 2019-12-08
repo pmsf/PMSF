@@ -210,6 +210,10 @@ $minRaidLevel = 1;
 $maxRaidLevel = 5;
 $noRaidTimer = false;
 $enableRaidTimer = 'false';
+$noRaidbossNumbers = false;
+$hideRaidbosses = '[]';
+$excludeRaidboss = [];
+$generateExcludeRaidboss = true;
 
 $noPokestops = false;
 $enablePokestops = 'false';
