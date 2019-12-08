@@ -2971,9 +2971,6 @@ function clearStaleMarkers() {
         }
     })
     $.each(mapData.gyms, function (key, value) {
-	    console.log(mapData.gyms[key]['raid_pokemon_id'])
-	    console.log(excludedRaidboss)
-	    console.log(excludedRaidboss.indexOf(Number(mapData.gyms[key]['raid_pokemon_id'])) > -1)
         if (excludedRaidboss.indexOf(Number(mapData.gyms[key]['raid_pokemon_id'])) > -1) {
             if (mapData.gyms[key].marker.rangeCircle) {
                 markers.removeLayer(mapData.gyms[key].marker.rangeCircle)
@@ -5963,6 +5960,26 @@ function gruntSpritesFilter() {
     })
 }
 
+function raideggSpritesFilter() {
+    jQuery('.raidegg-list').parent().find('.select2').hide()
+    loadDefaultImages()
+    jQuery('#nav .raidegg-list .raidegg-icon-sprite').on('click', function () {
+        var img = jQuery(this)
+        var select = jQuery(this).parent().parent().parent().find('.select2-hidden-accessible')
+        var value = select.val().split(',')
+        var id = img.data('value').toString()
+        if (img.hasClass('active')) {
+            select.val(value.filter(function (elem) {
+                return elem !== id
+            }).join(',')).trigger('change')
+            img.removeClass('active')
+        } else {
+            select.val((value.concat(id).join(','))).trigger('change')
+            img.addClass('active')
+        }
+    })
+}
+
 function loadDefaultImages() {
     var ep = Store.get('remember_select_exclude')
     var eminiv = Store.get('remember_select_exclude_min_iv')
@@ -6008,7 +6025,7 @@ function loadDefaultImages() {
             $(this).addClass('active')
         }
     })
-    $('label[for="exclude-raidegg"] .pokemon-icon-sprite').each(function () {
+    $('label[for="exclude-raidegg"] .raidegg-icon-sprite').each(function () {
         if (ere.indexOf($(this).data('value')) !== -1) {
             $(this).addClass('active')
         }
@@ -6219,6 +6236,7 @@ $(function () {
     pokemonSpritesFilter()
     itemSpritesFilter()
     gruntSpritesFilter()
+    raideggSpritesFilter()
 })
 
 $(function () {
@@ -6278,6 +6296,37 @@ $(function () {
     $excludeGrunts = $('#exclude-grunts')
     $excludeRaidboss = $('#exclude-raidboss')
     $excludeRaidegg = $('#exclude-raidegg')
+
+    var raideggList = []
+    var eggLevel = 1
+    while (eggLevel <= 5) {
+        raideggList.push({
+            level: eggLevel
+        })
+        eggLevel++
+    }
+    $excludeRaidegg.select2({
+        placeholder: i8ln('Select level'),
+        data: raideggList,
+        templateResult: formatState,
+        multiple: true,
+        maximumSelectionSize: 1
+    })
+
+    $excludeRaidegg.on('change', function (e) {
+        buffer = excludedRaidegg
+        excludedRaidegg = $excludeRaidegg.val().split(',').map(Number).sort(function (a, b) {
+            return parseInt(a) - parseInt(b)
+        })
+        buffer = buffer.filter(function (e) {
+            return this.indexOf(e) < 0
+        }, excludedRaidegg)
+        reincludedRaidegg = reincludedRaidegg.concat(buffer).map(String)
+        lastgyms = false
+        updateMap()
+        Store.set('remember_exclude_raidegg', excludedRaidegg)
+    })
+    $excludeRaidegg.val(Store.get('remember_exclude_raidegg')).trigger('change')
 
     $.getJSON('static/dist/data/grunttype.min.json').done(function (data) {
         $.each(data, function (key, value) {
@@ -6591,14 +6640,14 @@ $(function () {
     $('.select-all-egg').on('click', function (e) {
         e.preventDefault()
         var parent = $(this).parent()
-        parent.find('.raideggs-list .raideggs-icon-sprite').addClass('active')
+        parent.find('.raidegg-list .raidegg-icon-sprite').addClass('active')
         parent.find('input').val(Array.from(Array(numberOfEgg + 1).keys()).slice(1).join(',')).trigger('change')
     })
 
     $('.hide-all-egg').on('click', function (e) {
         e.preventDefault()
         var parent = $(this).parent()
-        parent.find('.raideggslist .raideggs-icon-sprite').removeClass('active')
+        parent.find('.raidegg-list .raidegg-icon-sprite').removeClass('active')
         parent.find('input').val('').trigger('change')
     })
 

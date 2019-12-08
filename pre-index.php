@@ -811,28 +811,36 @@ if (strtolower($map) === "rdm") {
                                 <div class="form-control-raids hide-select-2">
                                     <label for="exclude-raidegg">
                                         <div class="raidegg-container">
-					    <div class="raideggs-list-cont" id="raideggs-list-cont-12">
-					    <div class="raideggs-list list">
-					    <span class="raideggs-icon-sprite" data-value="1" onclick="">
+                                            <input id="exclude-raidegg" type="text" readonly="true">
+					    <div class="raidegg-list-cont" id="raidegg-list-cont-12">
+					    <input type="hidden" class="search-number" value="12" />
+					    <input class="search search-input" placeholder="<?php echo i8ln("Search Level") ?>" />
+					    <div class="raidegg-list list">
+					    <span class="raidegg-icon-sprite" data-value="1" onclick="">
 					        <span style="display:none" class="level">1</span>
                                                 <img src="static/raids/egg_normal.png" style="width:48px;height:56px;"/>
 					    <span class="raidegg-number">1</span>
-					    <span class="raideggs-icon-sprite" data-value="2" onclick="">
+                                            </span>
+					    <span class="raidegg-icon-sprite" data-value="2" onclick="">
 					        <span style="display:none" class="level">2</span>
                                                 <img src="static/raids/egg_normal.png" style="width:48px;height:56px;"/>
                                             <span class="raidegg-number">2</span>
-					    <span class="raideggs-icon-sprite" data-value="3" onclick="">
+                                            </span>
+					    <span class="raidegg-icon-sprite" data-value="3" onclick="">
 					        <span style="display:none" class="level">3</span>
                                                 <img src="static/raids/egg_rare.png" style="width:48px;height:56px;"/>
                                             <span class="raidegg-number">3</span>
-					    <span class="raideggs-icon-sprite" data-value="4" onclick="">
+                                            </span>
+					    <span class="raidegg-icon-sprite" data-value="4" onclick="">
 					        <span style="display:none" class="level">4</span>
                                                 <img src="static/raids/egg_rare.png" style="width:48px;height:56px;"/>
                                             <span class="raidegg-number">4</span>
-					    <span class="raideggs-icon-sprite" data-value="5" onclick="">
+                                            </span>
+					    <span class="raidegg-icon-sprite" data-value="5" onclick="">
 					        <span style="display:none" class="level">5</span>
                                                 <img src="static/raids/egg_legendary.png" style="width:48px;height:56px;"/>
                                             <span class="raidegg-number">5</span>
+                                            </span>
                                         </div>
                                         <a href="#" class="select-all-egg"><?php echo i8ln('All') ?>
                                             <div>

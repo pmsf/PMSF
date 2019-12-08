@@ -1092,6 +1092,42 @@
     background: rgba(255, 0, 0, 0.4);
   }
 }
+.raidegg-list {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: -webkit-flex;
+  display: flex;
+  -webkit-flex-flow: row wrap;
+  flex-flow: row wrap;
+  -webkit-align-items:center;
+  align-items: center;
+  text-align:center;
+  max-width: 100%;
+  img {
+    width: calc(20% - 10px);
+    padding: 2px;
+    margin: -2px -2px;
+    box-sizing: border-box;
+  }
+  .raidegg-icon-sprite{
+    border:1px solid #FFF;
+    width: calc( 20% - 2px);
+    margin-bottom: 5px;
+    margin-left: 1px;
+    margin-right: 1px;
+    position:relative;
+    .inner-bg{
+      width: 48.13px;
+      height: 48.13px;
+      display: block;
+      margin: 0 auto;
+    }
+  }
+  .active {
+    border: 1px solid red;
+    background: rgba(255, 0, 0, 0.4);
+  }
+}
 li.place-result {
     padding: 5px;
     border: 1px solid #989696;
