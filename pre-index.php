@@ -727,7 +727,7 @@ if (strtolower($map) === "rdm") {
                 <div>
                     <?php
                     if (! $noRaids) {
-                        echo '<div class="form-control switch-container" id="raids-wrapper">
+                        echo '<div class="form-control switch-container" id="raids-wrapper" style="float:none;height:35px;margin-bottom:0px;">
                     <h3>' . i8ln('Raids') . '</h3>
                     <div class="onoffswitch">
                         <input id="raids-switch" type="checkbox" name="raids-switch"
@@ -742,7 +742,7 @@ if (strtolower($map) === "rdm") {
                     <div id="raids-filter-wrapper" style="display:none">
                     <?php
                     if (! $noRaidTimer && ! $noRaids) {
-                        echo '<div class="form-control switch-container">
+                        echo '<div class="form-control switch-container" style="float:none;height:35px;margin-bottom:0px;">
                         <h3>' . i8ln('Raids Timer') . '</h3>
                         <div class="onoffswitch">
                         <input id="raid-timer-switch" type="checkbox" name="raid-timer-switch" class="onoffswitch-checkbox" checked>
@@ -753,7 +753,7 @@ if (strtolower($map) === "rdm") {
                     </div>
                     </div>';
                     } ?>
-                        <div class="form-control switch-container" id="active-raids-wrapper">
+                        <div class="form-control switch-container" id="active-raids-wrapper" style="float:none;height:35px;margin-bottom:0px;">
                             <h3><?php echo i8ln('Only Active Raids') ?></h3>
                             <div class="onoffswitch">
                                 <input id="active-raids-switch" type="checkbox" name="active-raids-switch"
@@ -764,7 +764,7 @@ if (strtolower($map) === "rdm") {
                                 </label>
                             </div>
                         </div>
-                        <div class="form-control switch-container" id="min-level-raids-filter-wrapper">
+                        <div class="form-control switch-container" id="min-level-raids-filter-wrapper" style="float:none;height:50px;margin-bottom:0px;">
                             <h3><?php echo i8ln('Minimum Raid Level') ?></h3>
                             <select name="min-level-raids-filter-switch" id="min-level-raids-filter-switch">
                                 <option value="1">1</option>
@@ -774,7 +774,7 @@ if (strtolower($map) === "rdm") {
                                 <option value="5">5</option>
                             </select>
                         </div>
-                        <div class="form-control switch-container" id="max-level-raids-filter-wrapper">
+                        <div class="form-control switch-container" id="max-level-raids-filter-wrapper" style="float:none;height:50px;margin-bottom:5px;">
                             <h3><?php echo i8ln('Maximum Raid Level') ?></h3>
                             <select name="max-level-raids-filter-switch" id="max-level-raids-filter-switch">
                                 <option value="1">1</option>
@@ -844,7 +844,7 @@ if (strtolower($map) === "rdm") {
                     </div>
                     <?php
                     if (! $noGyms) {
-                        echo '<div class="form-control switch-container" style="margin-top:10px">
+                        echo '<div class="form-control switch-container" style="float:none;height:35px;margin-bottom:0px;">
                     <h3>' . i8ln('Gyms') . '</h3>
                     <div class="onoffswitch">
                         <input id="gyms-switch" type="checkbox" name="gyms-switch" class="onoffswitch-checkbox" checked>
@@ -858,7 +858,7 @@ if (strtolower($map) === "rdm") {
                     <?php
                     if (! $hideIfManual) {
                         echo '<div id="gyms-filter-wrapper" style="display:none">
-                        <div class="form-control switch-container" id="team-gyms-only-wrapper">
+                        <div class="form-control switch-container" id="team-gyms-only-wrapper" style="float:none;height:50px;margin-bottom:5px;">
                             <h3>' . i8ln('Team') . '</h3>
                             <select name="team-gyms-filter-switch" id="team-gyms-only-switch">
                                 <option value="0">' . i8ln('All') . '</option>
