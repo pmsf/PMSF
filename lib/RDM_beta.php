@@ -295,7 +295,6 @@ class RDM_beta extends RDM
                 }
                 $rocket_in = substr($rocket_in, 0, -1);
                 $rocketSQL .= "grunt_type NOT IN ( $rocket_in )";
-			file_put_contents('log.txt', print_r($rocketSQL, true), FILE_APPEND);
             } else {
                 $rocketSQL .= "grunt_type IS NOT NULL";
             }
@@ -379,7 +378,6 @@ class RDM_beta extends RDM
                 }
                 $rocket_in = substr($rocket_in, 0, -1);
                 $tmpSQL .= "grunt_type IN ( $rocket_in )";
-			file_put_contents('log.txt', print_r($tmpSQL, true), FILE_APPEND);
             }
             $conds[] = $tmpSQL;
         }
