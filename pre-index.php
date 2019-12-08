@@ -337,10 +337,10 @@ if (!$noLoadingScreen) {
         <?php
         if ($noNativeLogin === false || $noDiscordLogin === false) {
             if (!empty($_SESSION['user']->id)) {
-                if ($_SESSION['user']->expire_timestamp > time()) {
-                    echo '<i class="fas fa-user-check" title="' . i8ln('User Logged in') . '" style="color: green;font-size: 20px;position: relative;float: right;padding: 0 5px;top: 17px;"></i>';
-                } else {
+                if ($_SESSION['user']->expire_timestamp < time() && $manualAccessLevel === true) {
                     echo '<i class="fas fa-user-times" title="' . i8ln('User Expired') . '" style="color: red;font-size: 20px;position: relative;float: right;padding: 0 5px;top: 17px;"></i>';
+                } else {
+                    echo '<i class="fas fa-user-check" title="' . i8ln('User Logged in') . '" style="color: green;font-size: 20px;position: relative;float: right;padding: 0 5px;top: 17px;"></i>';
                 }
             } else {
                 echo "<a href='./user' style='float:right;padding:0 5px;' title='" . i8ln('Login') . "'><i class='fas fa-user' style='color:white;font-size:20px;vertical-align:middle;'></i></a>";
