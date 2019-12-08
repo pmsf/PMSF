@@ -2970,6 +2970,21 @@ function clearStaleMarkers() {
             delete mapData.pokemons[key]
         }
     })
+    $.each(mapData.gyms, function (key, value) {
+	    console.log(mapData.gyms[key]['raid_pokemon_id'])
+	    console.log(excludedRaidboss)
+	    console.log(excludedRaidboss.indexOf(Number(mapData.gyms[key]['raid_pokemon_id'])) > -1)
+        if (excludedRaidboss.indexOf(Number(mapData.gyms[key]['raid_pokemon_id'])) > -1) {
+            if (mapData.gyms[key].marker.rangeCircle) {
+                markers.removeLayer(mapData.gyms[key].marker.rangeCircle)
+                markersnotify.removeLayer(mapData.gyms[key].marker.rangeCircle)
+                delete mapData.gyms[key].marker.rangeCircle
+            }
+            markers.removeLayer(mapData.gyms[key].marker)
+            markersnotify.removeLayer(mapData.gyms[key].marker)
+            delete mapData.gyms[key]
+        }
+    })
 }
 
 function showInBoundsMarkers(markersInput, type) {
@@ -5135,7 +5150,7 @@ function processGyms(i, item) {
         }
     }
     if (!Store.get('showGyms') && Store.get('showRaids')) {
-        if (item.raid_end === undefined || item.raid_end < Date.now() || Store.get('remember_exclude_raidboss').indexOf(Number(item.raid_pokemon_id)) > -1) {
+        if (item.raid_end === undefined || item.raid_end < Date.now()) {
             removeGymFromMap(item['gym_id'])
             return true
         }
