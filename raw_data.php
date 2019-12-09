@@ -222,6 +222,7 @@ global $noGyms, $noRaids;
 if (!$noGyms || !$noRaids) {
     if ($d["lastgyms"] == "true") {
         $rbeids = !empty($_POST['rbeids']) ? explode(",", $_POST['rbeids']) : array();
+        $reeids = !empty($_POST['rbeids']) ? explode(",", $_POST['rbeids']) : array();
         if ($lastgyms != "true") {
             $d["gyms"] = $scanner->get_gyms($rbeids, $reeids, $swLat, $swLng, $neLat, $neLng, $exEligible, 0, 0, 0, 0, 0, $raids);
         } else {
@@ -239,6 +240,15 @@ if (!$noGyms || !$noRaids) {
             }
             $d["rbreids"] = $rbreids;
         }
+        if (!empty($_POST['rereids'])) {
+            $rbreids = !empty($_POST['rereids']) ? array_unique(explode(",", $_POST['rereids'])) : array();
+            $rbreidsDiff = array_diff($rereids, $reeids);
+            if (count($rereidsDiff)) {
+                $d["gyms"] = array_merge($d["gyms"], $scanner->get_gyms($rbeids, $reeids, $swLat, $swLng, $neLat, $neLng, $exEligible, 0, $oSwLat, $oSwLng, $oNeLat, $oNeLng, $raids));
+            }
+            $d["rbreids"] = $rereids;
+        }
+
     }
 }
 $debug['4_after_gyms'] = microtime(true) - $timing['start'];

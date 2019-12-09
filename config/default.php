@@ -226,6 +226,7 @@ $enableRaidTimer = 'false';                                         // true/fals
 $noRaidbossNumbers = false;
 $hideRaidboss = '[]';
 $excludeRaidboss = [];
+$noRaideggNumbers = false;
 $hideRaidegg = '[]';
 $excludeRaidegg = [];
 $generateExcludeRaidboss = true;

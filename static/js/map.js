@@ -130,6 +130,7 @@ var rewardList = []
 var questtypeList = []
 var rewardtypeList = []
 var conditiontypeList = []
+var raideggList = []
 var gymId
 
 var assetsPath = 'static/sounds/'
@@ -6297,7 +6298,6 @@ $(function () {
     $excludeRaidboss = $('#exclude-raidboss')
     $excludeRaidegg = $('#exclude-raidegg')
 
-    var raideggList = []
     var eggLevel = 1
     while (eggLevel <= 5) {
         raideggList.push({
@@ -6326,7 +6326,7 @@ $(function () {
         updateMap()
         Store.set('remember_exclude_raidegg', excludedRaidegg)
     })
-    $excludeRaidegg.val(Store.get('remember_exclude_raidegg')).trigger('change')
+    //$excludeRaidegg.val(Store.get('remember_exclude_raidegg')).trigger('change')
 
     $.getJSON('static/dist/data/grunttype.min.json').done(function (data) {
         $.each(data, function (key, value) {
