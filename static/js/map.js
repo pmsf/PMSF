@@ -6298,36 +6298,6 @@ $(function () {
     $excludeRaidboss = $('#exclude-raidboss')
     $excludeRaidegg = $('#exclude-raidegg')
 
-    var eggLevel = 1
-    while (eggLevel <= 5) {
-        raideggList.push({
-            level: eggLevel
-        })
-        eggLevel++
-    }
-    $excludeRaidegg.select2({
-        placeholder: i8ln('Select level'),
-        data: raideggList,
-        templateResult: formatState,
-        multiple: true,
-        maximumSelectionSize: 1
-    })
-
-    $excludeRaidegg.on('change', function (e) {
-        buffer = excludedRaidegg
-        excludedRaidegg = $excludeRaidegg.val().split(',').map(Number).sort(function (a, b) {
-            return parseInt(a) - parseInt(b)
-        })
-        buffer = buffer.filter(function (e) {
-            return this.indexOf(e) < 0
-        }, excludedRaidegg)
-        reincludedRaidegg = reincludedRaidegg.concat(buffer).map(String)
-        lastgyms = false
-        updateMap()
-        Store.set('remember_exclude_raidegg', excludedRaidegg)
-    })
-    //$excludeRaidegg.val(Store.get('remember_exclude_raidegg')).trigger('change')
-
     $.getJSON('static/dist/data/grunttype.min.json').done(function (data) {
         $.each(data, function (key, value) {
             gruntList.push({
@@ -6393,6 +6363,13 @@ $(function () {
     })
 
     $.getJSON('static/dist/data/pokemon.min.json').done(function (data) {
+        var eggLevel = 1
+        while (eggLevel <= 5) {
+            raideggList.push({
+                level: eggLevel
+            })
+            eggLevel++
+        }
         $.each(data, function (key, value) {
             if (key > numberOfPokemon) {
                 return false
@@ -6453,6 +6430,13 @@ $(function () {
         $excludeRaidboss.select2({
             placeholder: i8ln('Select Pokémon'),
             data: pokeList,
+            templateResult: formatState,
+            multiple: true,
+            maximumSelectionSize: 1
+        })
+        $excludeRaidegg.select2({
+            placeholder: i8ln('Select level'),
+            data: raideggList,
             templateResult: formatState,
             multiple: true,
             maximumSelectionSize: 1
@@ -6571,6 +6555,19 @@ $(function () {
             updateMap()
             Store.set('remember_exclude_raidboss', excludedRaidboss)
         })
+        $excludeRaidegg.on('change', function (e) {
+            buffer = excludedRaidegg
+            excludedRaidegg = $excludeRaidegg.val().split(',').map(Number).sort(function (a, b) {
+                return parseInt(a) - parseInt(b)
+            })
+            buffer = buffer.filter(function (e) {
+                return this.indexOf(e) < 0
+            }, excludedRaidegg)
+            reincludedRaidegg = reincludedRaidegg.concat(buffer).map(String)
+            lastgyms = false
+            updateMap()
+            Store.set('remember_exclude_raidegg', excludedRaidegg)
+        })
         // recall saved lists
         $selectExclude.val(Store.get('remember_select_exclude')).trigger('change')
         $selectExcludeMinIV.val(Store.get('remember_select_exclude_min_iv')).trigger('change')
@@ -6583,6 +6580,7 @@ $(function () {
         $raidNotify.val(Store.get('remember_raid_notify')).trigger('change')
         $questsExcludePokemon.val(Store.get('remember_quests_exclude_pokemon')).trigger('change')
         $excludeRaidboss.val(Store.get('remember_exclude_raidboss')).trigger('change')
+        $excludeRaidegg.val(Store.get('remember_exclude_raidegg')).trigger('change')
 
         if (isTouchDevice() && isMobileDevice()) {
             $('.select2-search input').prop('readonly', true)
