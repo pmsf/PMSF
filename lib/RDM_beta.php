@@ -502,7 +502,21 @@ class RDM_beta extends RDM
             } else {
                 $raidSQL .= "raid_pokemon_id IS NOT NULL";
             }
-            $conds[] = "" . $raidSQL . "";
+            $eggSQL = '';
+            if (count($reeids)) {
+                $egg_in = '';
+                $e = 1;
+                foreach ($reeids as $reeid) {
+                    $params[':reqry_' . $e . '_'] = $reeids;
+                   $egg_in .= ':reqry_' . $e . '_,';
+                    $e++;
+                }
+                $egg_in = substr($egg_in, 0, -1);
+                $eggSQL .= "raid_pokemon_id = 0 AND raid_level NOT IN ( $egg_in )";
+            } else {
+                $eggSQL .= "raid_pokemon_id = 0 AND raid_level IS NOT NULL";
+            }
+            $conds[] = "(" . $raidSQL . " OR " . $eggSQL . ")";
         }
         if ($hideDeleted) {
             $conds[] = "deleted = 0";

@@ -315,8 +315,8 @@ class RDM extends Scanner
                 $raid_in = '';
                 $r = 1;
                 foreach ($rbeids as $rbeid) {
-                    $params[':rqry_' . $r . "_"] = $rbeids;
-                    $raid_in .= ':rqry_' . $r . "_,";
+                    $params[':rbqry_' . $r . '_'] = $rbeids;
+                    $raid_in .= ':rbqry_' . $r . '_,';
                     $r++;
                 }
                 $raid_in = substr($raid_in, 0, -1);
@@ -324,6 +324,21 @@ class RDM extends Scanner
             } else {
                 $raidsSQL .= "raid_pokemon_id IS NOT NULL";
             }
+            $eggSQL = '';
+            if (count($reeids)) {
+                $egg_in = '';
+                $e = 1;
+                foreach ($reeids as $reeid) {
+                    $params[':reqry_' . $e . '_'] = $reeids;
+                   $egg_in .= ':reqry_' . $e . '_,';
+                    $e++;
+                }
+                $egg_in = substr($egg_in, 0, -1);
+                $eggSQL .= "raid_level NOT IN ( $egg_in )";
+            } else {
+                $eggSQL .= "raid_level IS NOT NULL";
+            }
+            $conds[] = "" . $eggSQL . "";
             $conds[] = "" . $raidsSQL . "";
         }
         if ($tstamp > 0) {
