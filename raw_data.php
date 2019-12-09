@@ -248,7 +248,6 @@ if (!$noGyms || !$noRaids) {
             }
             $d["rbreids"] = $rereids;
         }
-
     }
 }
 $debug['4_after_gyms'] = microtime(true) - $timing['start'];

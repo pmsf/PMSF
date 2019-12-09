@@ -204,11 +204,11 @@ if (strtolower($map) === "rdm") {
         $z = 0;
         for ($e = 1; $e <= 5; $e++) {
             $level = $e;
-            if($e === 1 || $e === 2){
+            if ($e === 1 || $e === 2) {
                 $egg = 'normal';
-            } else if($e === 3 || $e === 4){
+            } elseif ($e === 3 || $e === 4) {
                 $egg = 'rare';
-            } else if($e === 5){
+            } elseif ($e === 5) {
                 $egg = 'legendary';
             }
             if (! in_array($e, $raideggToExclude)) {
@@ -218,7 +218,7 @@ if (strtolower($map) === "rdm") {
                 }
                 echo "</span>";
             }
-		}
+        }
         echo '</div></div>'; ?>
         <script>
             var options = {
@@ -845,8 +845,7 @@ if (strtolower($map) === "rdm") {
                                         <div class="raidegg-container">
                                             <input id="exclude-raidegg" type="text" readonly="true">
                                             <?php
-                                                raideggFilterImages($noRaideggNumbers, '', $excludeRaidegg, 12);
-                                            ?>
+                                                raideggFilterImages($noRaideggNumbers, '', $excludeRaidegg, 12); ?>
                                         </div>
                                         <a href="#" class="select-all-egg"><?php echo i8ln('All') ?>
                                             <div>
