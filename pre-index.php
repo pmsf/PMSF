@@ -785,6 +785,17 @@ if (strtolower($map) === "rdm") {
                     </div>
                     </div>';
                     } ?>
+                        <div class="form-control switch-container" id="active-raids-wrapper" style="float:none;height:35px;margin-bottom:0px;">
+                            <h3><?php echo i8ln('Only Active Raids') ?></h3>
+                            <div class="onoffswitch">
+                                <input id="active-raids-switch" type="checkbox" name="active-raids-switch"
+                                       class="onoffswitch-checkbox" checked>
+                                <label class="onoffswitch-label" for="active-raids-switch">
+                                    <span class="switch-label" data-on="On" data-off="Off"></span>
+                                    <span class="switch-handle"></span>
+                                </label>
+                            </div>
+                        </div>
                         <div class="form-control switch-container" id="min-level-raids-filter-wrapper" style="float:none;height:50px;margin-bottom:0px;">
                             <h3><?php echo i8ln('Minimum Raid Level') ?></h3>
                             <select name="min-level-raids-filter-switch" id="min-level-raids-filter-switch">
@@ -2126,6 +2137,7 @@ if (strtolower($map) === "rdm") {
     var notifyBounce = <?php echo $notifyBounce ?>;
     var notifyNotification = <?php echo $notifyNotification ?>;
     var enableRaids = <?php echo $noRaids ? 'false' : $enableRaids ?>;
+    var activeRaids = <?php echo $activeRaids ?>;
     var minRaidLevel = <?php echo $minRaidLevel ?>;
     var maxRaidLevel = <?php echo $maxRaidLevel ?>;
     var hideRaidboss = <?php echo $noRaids ? '[]' : $hideRaidboss ?>;

@@ -134,6 +134,11 @@ var StoreOptions = {
             default: enableRaids,
             type: StoreTypes.Boolean
         },
+    'activeRaids':
+        {
+            default: activeRaids,
+            type: StoreTypes.Boolean
+        },
     'minRaidLevel':
         {
             default: minRaidLevel,
