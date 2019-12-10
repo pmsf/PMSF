@@ -835,7 +835,7 @@ if (strtolower($map) === "rdm") {
                                         </div>
                                         <a href="#" class="select-all"><?php echo i8ln('All') ?>
                                             <div>
-                                        </a><a href="#" class="hide-all"><?php echo i8ln('None') ?></a>
+                                        </a><a href="#" style="margin-bottom:20px;" class="hide-all"><?php echo i8ln('None') ?></a>
                                     </label>
                                 </div>
                             </div>
@@ -849,7 +849,7 @@ if (strtolower($map) === "rdm") {
                                         </div>
                                         <a href="#" class="select-all-egg"><?php echo i8ln('All') ?>
                                             <div>
-                                        </a><a href="#" class="hide-all-egg"><?php echo i8ln('None') ?></a>
+                                        </a><a href="#" style="margin-bottom:20px;" class="hide-all-egg"><?php echo i8ln('None') ?></a>
                                     </label>
                                 </div>
                             </div>
@@ -857,7 +857,7 @@ if (strtolower($map) === "rdm") {
                     </div>
                     <?php
                     if (! $noGyms) {
-                        echo '<div class="form-control switch-container" style="float:none;height:35px;margin-bottom:0px;">
+                        echo '<div class="form-control switch-container">
                     <h3>' . i8ln('Gyms') . '</h3>
                     <div class="onoffswitch">
                         <input id="gyms-switch" type="checkbox" name="gyms-switch" class="onoffswitch-checkbox" checked>
@@ -871,7 +871,7 @@ if (strtolower($map) === "rdm") {
                     <?php
                     if (! $hideIfManual) {
                         echo '<div id="gyms-filter-wrapper" style="display:none">
-                        <div class="form-control switch-container" id="team-gyms-only-wrapper" style="float:none;height:50px;margin-bottom:5px;">
+                        <div class="form-control switch-container" id="team-gyms-only-wrapper">
                             <h3>' . i8ln('Team') . '</h3>
                             <select name="team-gyms-filter-switch" id="team-gyms-only-switch">
                                 <option value="0">' . i8ln('All') . '</option>
