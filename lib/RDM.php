@@ -330,7 +330,7 @@ class RDM extends Scanner
                 $e = 1;
                 foreach ($reeids as $reeid) {
                     $params[':reqry_' . $e . '_'] = $reeids;
-                   $egg_in .= ':reqry_' . $e . '_,';
+                    $egg_in .= ':reqry_' . $e . '_,';
                     $e++;
                 }
                 $egg_in = substr($egg_in, 0, -1);
