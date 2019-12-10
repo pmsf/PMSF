@@ -205,7 +205,6 @@ $exEligible = 'false';
 
 $noRaids = false;
 $enableRaids = 'false';
-$activeRaids = 'false';
 $minRaidLevel = 1;
 $maxRaidLevel = 5;
 $noRaidTimer = false;
