@@ -655,6 +655,12 @@ class RocketMap_MAD extends RocketMap
             foreach ($pokestops as $pokestop) {
                 $data[] = $pokestop['incident_grunt_type'];
             }
+	} elseif ($type === 'raidbosslist') {
+            $gyms = $db->query("SELECT distinct raid_pokemon_id FROM raid WHERE raid_pokemon_id > 0 AND end > UTC_TIMESTAMP() order by raid_pokemon_id;")->fetchAll(\PDO::FETCH_ASSOC);
+            $data = array();
+            foreach ($gyms as $gym) {
+                $data[] = $gym['raid_pokemon_id'];
+            }
         }
         return $data;
     }
