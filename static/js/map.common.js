@@ -489,18 +489,26 @@ function getPokemonSprite(index, sprite, displayHeight, weather = 0, encounterFo
     if (pokemonCostume > 0 && noCostumeIcons === false) {
         costume = '_' + pokemonCostume
     }
-    var iv = 100 * (attack + defense + stamina) / 45
+    var iv = 100 * (attack + defense + stamina) / 45;
+    var shadowColor = 'blue';
+    if (iv === 100) {
+      shadowColor = 'red';
+    } else if (iv >= 95) {
+      shadowColor = 'orange';
+    } else if (iv >= 90) {
+      shadowColor = 'yellow';
+    }
     var html = ''
     if (weather === 0 || noWeatherIcons) {
         html = '<img src="' + iconpath + 'pokemon_icon_' + pokemonIdStr + '_' + formStr + costume + '.png" style="width:' + scaledIconSizeWidth + 'px;height:auto;'
-        if (iv === 100 && !noIvShadow) {
-            html += 'filter:drop-shadow(0 0 10px red)drop-shadow(0 0 10px red);-webkit-filter:drop-shadow(0 0 10px red)drop-shadow(0 0 10px red);'
+        if ((iv === 100 || (iv >= 90 && map.getZoom() <= 13)) && !noIvShadow) {
+          html += 'filter:drop-shadow(0 0 10px ' + shadowColor + ')drop-shadow(0 0 10px ' + shadowColor + ');' + '-webkit-filter:drop-shadow(0 0 10px ' + shadowColor + ')drop-shadow(0 0 10px ' + shadowColor + ');';
         }
         html += '"/>'
     } else if (noWeatherIcons === false) {
         html = '<img src="' + iconpath + 'pokemon_icon_' + pokemonIdStr + '_' + formStr + costume + '.png" style="width:' + scaledIconSizeWidth + 'px;height:auto;'
-        if (iv === 100 && !noIvShadow) {
-            html += 'filter:drop-shadow(0 0 10px red)drop-shadow(0 0 10px red);-webkit-filter:drop-shadow(0 0 10px red)drop-shadow(0 0 10px red);'
+        if ((iv === 100 || (iv >= 90 && map.getZoom() <= 13)) && !noIvShadow) {
+          html += 'filter:drop-shadow(0 0 10px ' + shadowColor + ')drop-shadow(0 0 10px ' + shadowColor + ');' + '-webkit-filter:drop-shadow(0 0 10px ' + shadowColor + ')drop-shadow(0 0 10px ' + shadowColor + ');';
         }
         html += '"/>' +
         '<img src="static/weather/a-' + weather + '.png" style="width:' + scaledWeatherIconSizeWidth + 'px;height:auto;position:absolute;top:-' + scaledWeatherIconOffset + 'px;left:' + scaledWeatherIconSizeWidth + 'px;"/>'
