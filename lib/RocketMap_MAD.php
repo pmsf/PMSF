@@ -659,7 +659,7 @@ class RocketMap_MAD extends RocketMap
             $gyms = $db->query("SELECT distinct pokemon_id FROM raid WHERE pokemon_id > 0 AND end > UTC_TIMESTAMP() order by pokemon_id;")->fetchAll(\PDO::FETCH_ASSOC);
             $data = array();
             foreach ($gyms as $gym) {
-                $data[] = $gym['raid_pokemon_id'];
+                $data[] = $gym['pokemon_id'];
             }
         }
         return $data;
