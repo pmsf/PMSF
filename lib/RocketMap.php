@@ -403,9 +403,9 @@ class RocketMap extends Scanner
                     $r++;
                 }
                 $raid_in = substr($raid_in, 0, -1);
-                $raidsSQL .= "raid_pokemon_id NOT IN ( $raid_in )";
+                $raidsSQL .= "raid.pokemon_id NOT IN ( $raid_in )";
             } else {
-                $raidsSQL .= "raid_pokemon_id IS NOT NULL";
+                $raidsSQL .= "raid.pokemon_id IS NOT NULL";
             }
             $eggSQL = '';
             if (count($reeids)) {
@@ -417,9 +417,9 @@ class RocketMap extends Scanner
                     $e++;
                 }
                 $egg_in = substr($egg_in, 0, -1);
-                $eggSQL .= "raid_level NOT IN ( $egg_in )";
+                $eggSQL .= "level NOT IN ( $egg_in )";
             } else {
-                $eggSQL .= "raid_level IS NOT NULL";
+                $eggSQL .= "level IS NOT NULL";
             }
             $conds[] = "" . $eggSQL . "";
             $conds[] = "" . $raidsSQL . "";
