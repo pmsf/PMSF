@@ -209,7 +209,7 @@ if (strtolower($map) === "rdm") {
         foreach ($egg as $e => $egg) {
             $eggImage = $egg['image_name'];
             $eggLevel = $egg['level'];
-	    $eggType = $egg['type'];
+            $eggType = $egg['type'];
             if (! in_array($e, $raideggToExclude)) {
                 echo '<span class="raidegg-icon-sprite" data-value="' . $e . '" onclick="' . $onClick . '"><span style="display:none" class="level">' . $eggLevel . '</span><img src="static/raids/egg_' . $eggImage . '.png" style="width:48px;height:56px;"/>';
                 if (! $noRaideggNumbers) {
