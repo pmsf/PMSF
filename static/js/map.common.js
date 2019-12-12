@@ -489,29 +489,43 @@ function getPokemonSprite(index, sprite, displayHeight, weather = 0, encounterFo
     if (pokemonCostume > 0 && noCostumeIcons === false) {
         costume = '_' + pokemonCostume
     }
+
     var iv = 100 * (attack + defense + stamina) / 45;
-    var shadowColor = 'blue';
+    var html = '<img src="' + iconpath + 'pokemon_icon_' + pokemonIdStr + '_' +
+      formStr + costume + '.png" style="width:' + scaledIconSizeWidth +
+      'px;height:auto;';
+
+    var shadowColor = 'rgba(0, 0, 255, 0.3)';
+    var spread      = '7px';
     if (iv === 100) {
       shadowColor = 'red';
+      spread = '10px';
     } else if (iv >= 95) {
       shadowColor = 'orange';
+      spread = '9px';
     } else if (iv >= 90) {
       shadowColor = 'yellow';
+      spread = '8px';
     }
-    var html = ''
-    if (weather === 0 || noWeatherIcons) {
-        html = '<img src="' + iconpath + 'pokemon_icon_' + pokemonIdStr + '_' + formStr + costume + '.png" style="width:' + scaledIconSizeWidth + 'px;height:auto;'
-        if ((iv === 100 || (iv >= 90 && map.getZoom() <= 13)) && !noIvShadow) {
-          html += 'filter:drop-shadow(0 0 10px ' + shadowColor + ')drop-shadow(0 0 10px ' + shadowColor + ');' + '-webkit-filter:drop-shadow(0 0 10px ' + shadowColor + ')drop-shadow(0 0 10px ' + shadowColor + ');';
-        }
-        html += '"/>'
-    } else if (noWeatherIcons === false) {
-        html = '<img src="' + iconpath + 'pokemon_icon_' + pokemonIdStr + '_' + formStr + costume + '.png" style="width:' + scaledIconSizeWidth + 'px;height:auto;'
-        if ((iv === 100 || (iv >= 90 && map.getZoom() <= 13)) && !noIvShadow) {
-          html += 'filter:drop-shadow(0 0 10px ' + shadowColor + ')drop-shadow(0 0 10px ' + shadowColor + ');' + '-webkit-filter:drop-shadow(0 0 10px ' + shadowColor + ')drop-shadow(0 0 10px ' + shadowColor + ');';
-        }
-        html += '"/>' +
-        '<img src="static/weather/a-' + weather + '.png" style="width:' + scaledWeatherIconSizeWidth + 'px;height:auto;position:absolute;top:-' + scaledWeatherIconOffset + 'px;left:' + scaledWeatherIconSizeWidth + 'px;"/>'
+
+    if ((iv >= 90 || (iv !== 0 && map.getZoom() >= 13)) && !noIvShadow) {
+
+      var dropShadow = 'drop-shadow(0 0 ' + spread + ' ' + shadowColor + ')';
+
+      html += 'filter:' + dropShadow + dropShadow + ';' +
+        '-webkit-filter:' + dropShadow + dropShadow + ';';
+
+    }
+
+    html += '"/>';
+
+    if (noWeatherIcons === false) {
+
+      html += '<img src="static/weather/a-' + weather +
+        '.png" style="width:' + scaledWeatherIconSizeWidth +
+        'px;height:auto;position:absolute;top:-' + scaledWeatherIconOffset +
+        'px;left:' + scaledWeatherIconSizeWidth + 'px;"/>';
+
     }
     var pokemonIcon = L.divIcon({
         iconAnchor: scaledIconCenterOffset,
