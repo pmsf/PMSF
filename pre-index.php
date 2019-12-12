@@ -199,22 +199,21 @@ if (strtolower($map) === "rdm") {
     function raidEggFilterImages($noRaideggNumbers, $onClick = '', $raideggToExclude = array(), $num = 0)
     {
         global $raids, $copyrightSafe, $iconRepository;
+        if (empty($raids)) {
+            $json = file_get_contents('static/dist/data/raidegg.min.json');
+            $egg = json_decode($json, true);
+        }
         echo '<div class="raidegg-list-cont" id="raidegg-list-cont-' . $num . '"><input type="hidden" class="search-number" value="' . $num . '" /><input class="search search-input" placeholder="' . i8ln("Search Level") . '" /><div class="raidegg-list list">';
         $i = 0;
         $z = 0;
-        for ($e = 1; $e <= 5; $e++) {
-            $level = $e;
-            if ($e === 1 || $e === 2) {
-                $egg = 'normal';
-            } elseif ($e === 3 || $e === 4) {
-                $egg = 'rare';
-            } elseif ($e === 5) {
-                $egg = 'legendary';
-            }
+        foreach ($egg as $e => $egg) {
+            $eggImage = $egg['image_name'];
+            $eggLevel = $egg['level'];
+	    $eggType = $egg['type'];
             if (! in_array($e, $raideggToExclude)) {
-                echo '<span class="raidegg-icon-sprite" data-value="' . $e . '" onclick="' . $onClick . '"><span style="display:none" class="level">' . $level . '</span><img src="static/raids/egg_' . $egg . '.png" style="width:48px;height:56px;"/>';
+                echo '<span class="raidegg-icon-sprite" data-value="' . $e . '" onclick="' . $onClick . '"><span style="display:none" class="level">' . $eggLevel . '</span><img src="static/raids/egg_' . $eggImage . '.png" style="width:48px;height:56px;"/>';
                 if (! $noRaideggNumbers) {
-                    echo '<span class="raidegg-number">' . $e . '</span>';
+                    echo '<span class="raidegg-number">' . $eggLevel . '</span>';
                 }
                 echo "</span>";
             }

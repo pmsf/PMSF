@@ -41,6 +41,7 @@ var languageSite = 'en'
 var idToPokemon = {}
 var idToItem = {}
 var idToGrunt = {}
+var idToRaidegg = {}
 var i8lnDictionary = {}
 var languageLookups = 0
 var languageLookupThreshold = 3
@@ -2972,7 +2973,7 @@ function clearStaleMarkers() {
         }
     })
     $.each(mapData.gyms, function (key, value) {
-        if (((excludedRaidboss.indexOf(Number(mapData.gyms[key]['raid_pokemon_id'])) > -1) && (mapData.gyms[key]['raid_start'] < new Date().getTime() && mapData.gyms[key]['raid_end'] > new Date().getTime())) || ((excludedRaidegg.indexOf(Number(mapData.gyms[key]['raid_level'])) > -1) && mapData.gyms[key]['raid_start'] > new Date().getTime())) {
+        if (((excludedRaidboss.indexOf(Number(mapData.gyms[key]['raid_pokemon_id'])) > -1) && (mapData.gyms[key]['raid_start'] < new Date().getTime() && mapData.gyms[key]['raid_end'] > new Date().getTime())) || ((excludedRaidegg.indexOf(Number(mapData.gyms[key]['raid_level'])) > -1) && mapData.gyms[key]['raid_start'] > new Date().getTime()) || ((excludedRaidegg.indexOf((Number(mapData.gyms[key]['raid_level']) - 5)) > -1) && (mapData.gyms[key]['raid_start'] < new Date().getTime() && mapData.gyms[key]['raid_pokemon_id'] < 1))) {
             if (mapData.gyms[key].marker.rangeCircle) {
                 markers.removeLayer(mapData.gyms[key].marker.rangeCircle)
                 markersnotify.removeLayer(mapData.gyms[key].marker.rangeCircle)
@@ -6298,6 +6299,38 @@ $(function () {
     $excludeRaidboss = $('#exclude-raidboss')
     $excludeRaidegg = $('#exclude-raidegg')
 
+    $.getJSON('static/dist/data/raidegg.min.json').done(function (data) {
+        $.each(data, function (key, value) {
+            raideggList.push({
+                type: value['type'],
+                level: value['level']
+            })
+            idToRaidegg[key] = value
+        })
+        $excludeRaidegg.select2({
+            placeholder: i8ln('Select level'),
+            data: raideggList,
+            templateResult: formatState,
+            multiple: true,
+            maximumSelectionSize: 1
+        })
+        $excludeRaidegg.on('change', function (e) {
+            buffer = excludedRaidegg
+            excludedRaidegg = $excludeRaidegg.val().split(',').map(Number).sort(function (a, b) {
+                return parseInt(a) - parseInt(b)
+            })
+            buffer = buffer.filter(function (e) {
+                return this.indexOf(e) < 0
+            }, excludedRaidegg)
+            reincludedRaidegg = reincludedRaidegg.concat(buffer).map(String)
+            lastgyms = false
+            updateMap()
+            Store.set('remember_exclude_raidegg', excludedRaidegg)
+        })
+        // recall saved lists
+        $excludeRaidegg.val(Store.get('remember_exclude_raidegg')).trigger('change')
+    })
+
     $.getJSON('static/dist/data/grunttype.min.json').done(function (data) {
         $.each(data, function (key, value) {
             gruntList.push({
@@ -6328,6 +6361,8 @@ $(function () {
             updateMap()
             Store.set('remember_exclude_grunts', excludedGrunts)
         })
+        $('#grunt-tabs').tabs()
+        // recall saved lists
         $excludeGrunts.val(Store.get('remember_exclude_grunts')).trigger('change')
     })
 
@@ -6363,13 +6398,6 @@ $(function () {
     })
 
     $.getJSON('static/dist/data/pokemon.min.json').done(function (data) {
-        var eggLevel = 1
-        while (eggLevel <= 5) {
-            raideggList.push({
-                level: eggLevel
-            })
-            eggLevel++
-        }
         $.each(data, function (key, value) {
             if (key > numberOfPokemon) {
                 return false
@@ -6409,7 +6437,6 @@ $(function () {
             multiple: true,
             maximumSelectionSize: 1
         })
-
         $selectRarityNotify.select2({
             placeholder: i8ln('Select Rarity'),
             data: [i8ln('Common'), i8ln('Uncommon'), i8ln('Rare'), i8ln('Very Rare'), i8ln('Ultra Rare')],
@@ -6430,13 +6457,6 @@ $(function () {
         $excludeRaidboss.select2({
             placeholder: i8ln('Select Pokémon'),
             data: pokeList,
-            templateResult: formatState,
-            multiple: true,
-            maximumSelectionSize: 1
-        })
-        $excludeRaidegg.select2({
-            placeholder: i8ln('Select level'),
-            data: raideggList,
             templateResult: formatState,
             multiple: true,
             maximumSelectionSize: 1
@@ -6555,19 +6575,6 @@ $(function () {
             updateMap()
             Store.set('remember_exclude_raidboss', excludedRaidboss)
         })
-        $excludeRaidegg.on('change', function (e) {
-            buffer = excludedRaidegg
-            excludedRaidegg = $excludeRaidegg.val().split(',').map(Number).sort(function (a, b) {
-                return parseInt(a) - parseInt(b)
-            })
-            buffer = buffer.filter(function (e) {
-                return this.indexOf(e) < 0
-            }, excludedRaidegg)
-            reincludedRaidegg = reincludedRaidegg.concat(buffer).map(String)
-            lastgyms = false
-            updateMap()
-            Store.set('remember_exclude_raidegg', excludedRaidegg)
-        })
         // recall saved lists
         $selectExclude.val(Store.get('remember_select_exclude')).trigger('change')
         $selectExcludeMinIV.val(Store.get('remember_select_exclude_min_iv')).trigger('change')
@@ -6580,14 +6587,12 @@ $(function () {
         $raidNotify.val(Store.get('remember_raid_notify')).trigger('change')
         $questsExcludePokemon.val(Store.get('remember_quests_exclude_pokemon')).trigger('change')
         $excludeRaidboss.val(Store.get('remember_exclude_raidboss')).trigger('change')
-        $excludeRaidegg.val(Store.get('remember_exclude_raidegg')).trigger('change')
 
         if (isTouchDevice() && isMobileDevice()) {
             $('.select2-search input').prop('readonly', true)
         }
         $('#tabs').tabs()
         $('#quests-tabs').tabs()
-        $('#grunt-tabs').tabs()
         $('#raid-tabs').tabs()
         if (manualRaids) {
             $('.global-raid-modal').html(generateRaidModal())
