@@ -508,7 +508,7 @@ function getPokemonSprite(index, sprite, displayHeight, weather = 0, encounterFo
       spread = '8px';
     }
 
-    if ((iv >= 90 || (iv !== 0 && map.getZoom() >= 13)) && !noIvShadow) {
+    if ((iv >= 90 || (iv !== 0 && map.getZoom() >= 15)) && !noIvShadow) {
 
       var dropShadow = 'drop-shadow(0 0 ' + spread + ' ' + shadowColor + ')';
 
