@@ -309,12 +309,12 @@ $debug['5_after_spawnpoints'] = microtime(true) - $timing['start'];
 global $noLiveScanLocation;
 if (!$noLiveScanLocation) {
     if ($d["lastscanlocations"] == "true") {
-		if ($newarea) {
-			$d["scanlocations"] = $scanner->get_scanlocation($swLat, $swLng, $neLat, $neLng, 0, $oSwLat, $oSwLng, $oNeLat, $oNeLng);
-		} else {
-			$d["scanlocations"] = $scanner->get_scanlocation($swLat, $swLng, $neLat, $neLng, $timestamp);
-		}
-	}
+        if ($newarea) {
+            $d["scanlocations"] = $scanner->get_scanlocation($swLat, $swLng, $neLat, $neLng, 0, $oSwLat, $oSwLng, $oNeLat, $oNeLng);
+        } else {
+            $d["scanlocations"] = $scanner->get_scanlocation($swLat, $swLng, $neLat, $neLng, $timestamp);
+        }
+    }
 }
 
 $d['token'] = refreshCsrfToken();
