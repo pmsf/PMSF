@@ -4941,7 +4941,7 @@ function processPois(i, item) {
     }
 }
 
-function processPokestops(i, item) {
+function processPokestops(i, item, lastMidnight) {
     if (!Store.get('showPokestops')) {
         return false
     }
@@ -4953,8 +4953,13 @@ function processPokestops(i, item) {
     if (Store.get('showRocket') && !item['incident_expiration']) {
         return true
     }
+
     if (!mapData.pokestops[item['pokestop_id']]) {
         // new pokestop, add marker to map and item to dict
+        if (Store.get('showQuests') && !pokestopMeetsQuestFilter(item, lastMidnight)) {
+            return true
+        }
+
         if (item.marker && item.marker.rangeCircle) {
             markers.removeLayer(item.marker.rangeCircle)
         }
@@ -4992,6 +4997,14 @@ function processPokestops(i, item) {
             item.marker = setupPokestopMarker(item)
             mapData.pokestops[item['pokestop_id']] = item
         }
+    }
+}
+
+function pokestopMeetsQuestFilter(value, lastMidnight) {
+    if (value['quest_type'] === 0 || lastMidnight > Number(value['quest_timestamp']) || ((value['quest_pokemon_id'] > 0 && questsExcludedPokemon.indexOf(value['quest_pokemon_id']) > -1) || (value['quest_item_id'] > 0 && questsExcludedItem.indexOf(value['quest_item_id']) > -1) || ((value['quest_reward_type'] === 3 && (Number(value['quest_dust_amount']) < Number(Store.get('showDustAmount')))) || (value['quest_reward_type'] === 3 && Store.get('showDustAmount') === 0)))) {
+        return false
+    } else {
+        return true
     }
 }
 
@@ -5070,7 +5083,7 @@ function updatePokestops() {
     }
     if (Store.get('showQuests')) {
         $.each(mapData.pokestops, function (key, value) {
-            if (value['quest_type'] === 0 || lastMidnight > Number(value['quest_timestamp']) || ((value['quest_pokemon_id'] > 0 && questsExcludedPokemon.indexOf(value['quest_pokemon_id']) > -1) || (value['quest_item_id'] > 0 && questsExcludedItem.indexOf(value['quest_item_id']) > -1) || ((value['quest_reward_type'] === 3 && (Number(value['quest_dust_amount']) < Number(Store.get('showDustAmount')))) || (value['quest_reward_type'] === 3 && Store.get('showDustAmount') === 0)))) {
+            if (!pokestopMeetsQuestFilter(value, lastMidnight)) {
                 removeStops.push(key)
             }
         })
@@ -5266,6 +5279,13 @@ function updateSpawnPoints() {
 
 function updateMap() {
     var position = map.getCenter()
+    var lastMidnight = ''
+    var d = new Date()
+    if (mapFork === 'mad') {
+        lastMidnight = d.setHours(0, 0, 0, 0) / 1000
+    } else {
+        lastMidnight = 0
+    }
     Store.set('startAtLastLocationPosition', {
         lat: position.lat,
         lng: position.lng
@@ -5288,7 +5308,7 @@ function updateMap() {
     liveScanGroup.clearLayers()
     loadRawData().done(function (result) {
         $.each(result.pokemons, processPokemons)
-        $.each(result.pokestops, processPokestops)
+        $.each(result.pokestops, processPokestops, lastMidnight)
         $.each(result.gyms, processGyms)
         $.each(result.spawnpoints, processSpawnpoints)
         $.each(result.scanlocations, processScanlocation)
