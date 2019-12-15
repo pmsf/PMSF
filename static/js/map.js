@@ -5172,21 +5172,22 @@ function processGyms(i, item) {
         item.raid_level = item.raid_pokemon_cp = item.raid_pokemon_id = item.raid_pokemon_move_1 = item.raid_pokemon_move_1 = item.raid_pokemon_name = null
     }
 
-    if (Store.get('activeRaids') && item.raid_end > Date.now()) {
+    if (!noActiveRaids && Store.get('activeRaids') && item.raid_end > Date.now()) {
         if ((item.raid_pokemon_id === undefined) || (item.raid_pokemon_id === null)) {
             removeGymFromMap(item['gym_id'])
             return true
         }
     }
 
-    if (raidLevel < Store.get('minRaidLevel') && item.raid_end > Date.now()) {
-        removeGymFromMap(item['gym_id'])
-        return true
-    }
-
-    if (raidLevel > Store.get('maxRaidLevel') && item.raid_end > Date.now()) {
-        removeGymFromMap(item['gym_id'])
-        return true
+    if (!noMinMaxRaidLevel) {
+        if (raidLevel < Store.get('minRaidLevel') && item.raid_end > Date.now()) {
+            removeGymFromMap(item['gym_id'])
+            return true
+        }
+        if (raidLevel > Store.get('maxRaidLevel') && item.raid_end > Date.now()) {
+            removeGymFromMap(item['gym_id'])
+            return true
+        }
     }
 
     if (Store.get('exEligible') && (item.park === null || item.park === 0)) {

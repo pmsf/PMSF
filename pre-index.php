@@ -779,6 +779,9 @@ if (!$noLoadingScreen) {
                     </div>
                     </div>';
                     } ?>
+                    <?php
+                    if (! $noActiveRaids) {
+                        ?>
                         <div class="form-control switch-container" id="active-raids-wrapper" style="float:none;height:35px;margin-bottom:0px;">
                             <h3><?php echo i8ln('Only Active Raids') ?></h3>
                             <div class="onoffswitch">
@@ -790,6 +793,11 @@ if (!$noLoadingScreen) {
                                 </label>
                             </div>
                         </div>
+                        <?php
+                    } ?>
+                    <?php
+                    if (! $noMinMaxRaidLevel) {
+                        ?>
                         <div class="form-control switch-container" id="min-level-raids-filter-wrapper" style="float:none;height:50px;margin-bottom:0px;">
                             <h3><?php echo i8ln('Minimum Raid Level') ?></h3>
                             <select name="min-level-raids-filter-switch" id="min-level-raids-filter-switch">
@@ -810,6 +818,8 @@ if (!$noLoadingScreen) {
                                 <option value="5">5</option>
                             </select>
                         </div>
+                        <?php
+                    } ?>
                         <div id="raid-tabs">
                             <ul>
                                 <li><a href="#tabs-1"><?php echo i8ln('Hide Raidboss') ?></a></li>
@@ -2120,6 +2130,8 @@ if (!$noLoadingScreen) {
     var notifyNotification = <?php echo $notifyNotification ?>;
     var enableRaids = <?php echo $noRaids ? 'false' : $enableRaids ?>;
     var activeRaids = <?php echo $activeRaids ?>;
+    var noActiveRaids = <?php echo $noActiveRaids === true ? 'true' : 'false' ?>;
+    var noMinMaxRaidLevel = <?php echo $noMinMaxRaidLevel === true ? 'true' : 'false' ?>;
     var minRaidLevel = <?php echo $minRaidLevel ?>;
     var maxRaidLevel = <?php echo $maxRaidLevel ?>;
     var hideRaidboss = <?php echo $noRaids ? '[]' : $hideRaidboss ?>;

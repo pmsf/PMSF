@@ -196,17 +196,24 @@ $minLevel = '0';                                                    // "0" for e
 $noBigKarp = false;
 $noTinyRat = false;
 
+/* Gyms */
 $noGyms = false;
 $enableGyms = 'false';
 $hideGymCoords = false;
 $noExEligible = false;
 $exEligible = 'false';
 
+/* Raids */
 $noRaids = false;
 $enableRaids = 'false';
+
+$noActiveRaids = true;
 $activeRaids = 'false';
+
+$noMinMaxRaidLevel = true;
 $minRaidLevel = 1;
 $maxRaidLevel = 5;
+
 $noRaidTimer = false;
 $enableRaidTimer = 'false';
 
@@ -219,6 +226,7 @@ $noRaideggNumbers = false;
 $hideRaidegg = '[]';
 $excludeRaidegg = [];
 
+/* Pokestops */
 $noPokestops = false;
 $enablePokestops = 'false';
 $hidePokestopCoords = false;
@@ -275,7 +283,7 @@ $enableLiveScan = 'false';
 $hideDeviceAfterMinutes = 0;                                        // Hide scan devices from map after x amount of minutes not being updated in database. 0 to disable.
 $deviceOfflineAfterSeconds = 300;                                   // Mark scan devices offline (red color) after x amount of seconds not being updated in database.
 
-$hideDeleted = true;						// Hide deleted Pokestop / Gyms from map
+$hideDeleted = true;                                                // Hide deleted Pokestop / Gyms from map
 /* Location & Search Settings */
 
 $noSearchLocation = false;

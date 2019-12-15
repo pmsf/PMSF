@@ -199,6 +199,8 @@
     "noCustomTileServer": true,
     "forcedTileServer": true,
     "hideRaidboss": true,
-    "hideRaidegg": true
+    "hideRaidegg": true,
+    "noActiveRaids": true,
+    "noMinMaxRaidLevel": true
   }
 }
