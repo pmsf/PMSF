@@ -46,6 +46,7 @@ class RDM extends Submit
             'raid_end_timestamp'      => $time_end,
             'raid_pokemon_cp'         => 0,
             'raid_pokemon_id'         => 0,
+            'raid_pokemon_form'       => 0,
             'raid_pokemon_move_1'     => 0,
             'raid_pokemon_move_2'     => 0,
         ];

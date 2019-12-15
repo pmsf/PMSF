@@ -138,6 +138,7 @@ $imgurCID = "";
 $numberOfPokemon = 649;
 $numberOfItem = 1405;
 $numberOfGrunt = 50;
+$numberOfEgg = 5;
 //-----------------------------------------------------
 // Login  - You need to create the two tables referenced in sql.sql
 //-----------------------------------------------------
@@ -223,6 +224,13 @@ $minRaidLevel = 1;
 $maxRaidLevel = 5;
 $noRaidTimer = false;                                               // true/false
 $enableRaidTimer = 'false';                                         // true/false
+$noRaidbossNumbers = false;
+$hideRaidboss = '[]';
+$excludeRaidboss = [];
+$noRaideggNumbers = false;
+$hideRaidegg = '[]';
+$excludeRaidegg = [];
+$generateExcludeRaidboss = true;
 
 $noPokestops = false;                                               // true/false
 $enablePokestops = 'false';                                         // true/false

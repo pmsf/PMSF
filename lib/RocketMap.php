@@ -363,7 +363,7 @@ class RocketMap extends Scanner
         return $end % 3600;
     }
 
-    public function get_gyms($swLat, $swLng, $neLat, $neLng, $exEligible = false, $tstamp = 0, $oSwLat = 0, $oSwLng = 0, $oNeLat = 0, $oNeLng = 0)
+    public function get_gyms($rbeids, $reeids, $swLat, $swLng, $neLat, $neLng, $exEligible = false, $tstamp = 0, $oSwLat = 0, $oSwLng = 0, $oNeLat = 0, $oNeLng = 0)
     {
         $conds = array();
         $params = array();
@@ -391,6 +391,38 @@ class RocketMap extends Scanner
         global $noBoundaries, $boundaries;
         if (!$noBoundaries) {
             $conds[] = "(ST_WITHIN(point(latitude,longitude),ST_GEOMFROMTEXT('POLYGON(( " . $boundaries . " ))')))";
+        }
+        if (!empty($raids) && $raids === 'true') {
+            $raidsSQL = '';
+            if (count($rbeids)) {
+                $raid_in = '';
+                $r = 1;
+                foreach ($rbeids as $rbeid) {
+                    $params[':rbqry_' . $r . '_'] = $rbeids;
+                    $raid_in .= ':rbqry_' . $r . '_,';
+                    $r++;
+                }
+                $raid_in = substr($raid_in, 0, -1);
+                $raidsSQL .= "raid.pokemon_id NOT IN ( $raid_in )";
+            } else {
+                $raidsSQL .= "raid.pokemon_id IS NOT NULL";
+            }
+            $eggSQL = '';
+            if (count($reeids)) {
+                $egg_in = '';
+                $e = 1;
+                foreach ($reeids as $reeid) {
+                    $params[':reqry_' . $e . '_'] = $reeids;
+                    $egg_in .= ':reqry_' . $e . '_,';
+                    $e++;
+                }
+                $egg_in = substr($egg_in, 0, -1);
+                $eggSQL .= "level NOT IN ( $egg_in )";
+            } else {
+                $eggSQL .= "level IS NOT NULL";
+            }
+            $conds[] = "" . $eggSQL . "";
+            $conds[] = "" . $raidsSQL . "";
         }
         if ($exEligible === "true") {
             $conds[] = "(park = 1)";

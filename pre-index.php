@@ -204,6 +204,37 @@ if (strtolower($map) === "rdm") {
         </script>
         <?php
     }
+    function raidEggFilterImages($noRaideggNumbers, $onClick = '', $raideggToExclude = array(), $num = 0)
+    {
+        global $raids, $copyrightSafe, $iconRepository;
+        if (empty($raids)) {
+            $json = file_get_contents('static/dist/data/raidegg.min.json');
+            $egg = json_decode($json, true);
+        }
+        echo '<div class="raidegg-list-cont" id="raidegg-list-cont-' . $num . '"><input type="hidden" class="search-number" value="' . $num . '" /><input class="search search-input" placeholder="' . i8ln("Search Level") . '" /><div class="raidegg-list list">';
+        $i = 0;
+        $z = 0;
+        foreach ($egg as $e => $egg) {
+            $eggImage = $egg['image_name'];
+            $eggLevel = $egg['level'];
+            $eggType = $egg['type'];
+            if (! in_array($e, $raideggToExclude)) {
+                echo '<span class="raidegg-icon-sprite" data-value="' . $e . '" onclick="' . $onClick . '"><span style="display:none" class="level">' . $eggLevel . '</span><img src="static/raids/egg_' . $eggImage . '.png" style="width:48px;height:56px;"/>';
+                if (! $noRaideggNumbers) {
+                    echo '<span class="raidegg-number">' . $eggLevel . '</span>';
+                }
+                echo "</span>";
+            }
+        }
+        echo '</div></div>'; ?>
+        <script>
+            var options = {
+                valueNames: ['level']
+            };
+            var raideggsList = new List('raidegg-list-cont-<?php echo $num; ?>', options);
+        </script>
+        <?php
+    }
     ?>
 
     <?php
@@ -722,7 +753,7 @@ if (!$noLoadingScreen) {
                 <div>
                     <?php
                     if (! $noRaids) {
-                        echo '<div class="form-control switch-container" id="raids-wrapper">
+                        echo '<div class="form-control switch-container" id="raids-wrapper" style="float:none;height:35px;margin-bottom:0px;">
                     <h3>' . i8ln('Raids') . '</h3>
                     <div class="onoffswitch">
                         <input id="raids-switch" type="checkbox" name="raids-switch"
@@ -737,7 +768,7 @@ if (!$noLoadingScreen) {
                     <div id="raids-filter-wrapper" style="display:none">
                     <?php
                     if (! $noRaidTimer && ! $noRaids) {
-                        echo '<div class="form-control switch-container">
+                        echo '<div class="form-control switch-container" style="float:none;height:35px;margin-bottom:0px;">
                         <h3>' . i8ln('Raids Timer') . '</h3>
                         <div class="onoffswitch">
                         <input id="raid-timer-switch" type="checkbox" name="raid-timer-switch" class="onoffswitch-checkbox" checked>
@@ -748,7 +779,7 @@ if (!$noLoadingScreen) {
                     </div>
                     </div>';
                     } ?>
-                        <div class="form-control switch-container" id="active-raids-wrapper">
+                        <div class="form-control switch-container" id="active-raids-wrapper" style="float:none;height:35px;margin-bottom:0px;">
                             <h3><?php echo i8ln('Only Active Raids') ?></h3>
                             <div class="onoffswitch">
                                 <input id="active-raids-switch" type="checkbox" name="active-raids-switch"
@@ -759,7 +790,7 @@ if (!$noLoadingScreen) {
                                 </label>
                             </div>
                         </div>
-                        <div class="form-control switch-container" id="min-level-raids-filter-wrapper">
+                        <div class="form-control switch-container" id="min-level-raids-filter-wrapper" style="float:none;height:50px;margin-bottom:0px;">
                             <h3><?php echo i8ln('Minimum Raid Level') ?></h3>
                             <select name="min-level-raids-filter-switch" id="min-level-raids-filter-switch">
                                 <option value="1">1</option>
@@ -769,7 +800,7 @@ if (!$noLoadingScreen) {
                                 <option value="5">5</option>
                             </select>
                         </div>
-                        <div class="form-control switch-container" id="max-level-raids-filter-wrapper">
+                        <div class="form-control switch-container" id="max-level-raids-filter-wrapper" style="float:none;height:50px;margin-bottom:5px;">
                             <h3><?php echo i8ln('Maximum Raid Level') ?></h3>
                             <select name="max-level-raids-filter-switch" id="max-level-raids-filter-switch">
                                 <option value="1">1</option>
@@ -778,6 +809,44 @@ if (!$noLoadingScreen) {
                                 <option value="4">4</option>
                                 <option value="5">5</option>
                             </select>
+                        </div>
+                        <div id="raid-tabs">
+                            <ul>
+                                <li><a href="#tabs-1"><?php echo i8ln('Hide Raidboss') ?></a></li>
+                                <li><a href="#tabs-2"><?php echo i8ln('Hide Raidegg') ?></a></li>
+                            </ul>
+                            <div id="tabs-1">
+                                <div class="form-control-raids hide-select-2">
+                                    <label for="exclude-raidboss">
+                                        <div class="raidboss-container">
+                                            <input id="exclude-raidboss" type="text" readonly="true">
+                                            <?php
+                                                if ($generateExcludeRaidboss === true) {
+                                                    pokemonFilterImages($noRaidbossNumbers, '', array_diff(range(1, $numberOfPokemon), $getList->generated_exclude_list('raidbosslist')), 11);
+                                                } else {
+                                                    pokemonFilterImages($noRaidbossNumbers, '', $excludeRaidboss, 11);
+                                                } ?>
+                                        </div>
+                                        <a href="#" class="select-all"><?php echo i8ln('All') ?>
+                                            <div>
+                                        </a><a href="#" style="margin-bottom:20px;" class="hide-all"><?php echo i8ln('None') ?></a>
+                                    </label>
+                                </div>
+                            </div>
+                            <div id="tabs-2">
+                                <div class="form-control-raids hide-select-2">
+                                    <label for="exclude-raidegg">
+                                        <div class="raidegg-container">
+                                            <input id="exclude-raidegg" type="text" readonly="true">
+                                            <?php
+                                                raideggFilterImages($noRaideggNumbers, '', $excludeRaidegg, 12); ?>
+                                        </div>
+                                        <a href="#" class="select-all-egg"><?php echo i8ln('All') ?>
+                                            <div>
+                                        </a><a href="#" style="margin-bottom:20px;" class="hide-all-egg"><?php echo i8ln('None') ?></a>
+                                    </label>
+                                </div>
+                            </div>
                         </div>
                     </div>
                     <?php
@@ -2053,6 +2122,8 @@ if (!$noLoadingScreen) {
     var activeRaids = <?php echo $activeRaids ?>;
     var minRaidLevel = <?php echo $minRaidLevel ?>;
     var maxRaidLevel = <?php echo $maxRaidLevel ?>;
+    var hideRaidboss = <?php echo $noRaids ? '[]' : $hideRaidboss ?>;
+    var hideRaidegg = <?php echo $noRaids ? '[]' : $hideRaidegg ?>;
     var enableGyms = <?php echo $noGyms ? 'false' : $enableGyms ?>;
     var enableNests = <?php echo $noNests ? 'false' : $enableNests ?>;
     var enableCommunities = <?php echo $noCommunity ? 'false' : $enableCommunities ?>;
@@ -2156,6 +2227,7 @@ if (!$noLoadingScreen) {
     var numberOfPokemon = <?php echo $numberOfPokemon; ?>;
     var numberOfItem = <?php echo $numberOfItem; ?>;
     var numberOfGrunt = <?php echo $numberOfGrunt; ?>;
+    var numberOfEgg = <?php echo $numberOfEgg; ?>;
 </script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js"></script>
 <script src="static/dist/js/map.common.min.js"></script>
