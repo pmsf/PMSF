@@ -201,6 +201,10 @@
     "hideRaidboss": true,
     "hideRaidegg": true,
     "noActiveRaids": true,
-    "noMinMaxRaidLevel": true
+    "noMinMaxRaidLevel": true,
+    "noTeams": true,
+    "noOpenSpot": true,
+    "noMinMaxFreeSlots": true,
+    "noLastScan": true
   }
 }

@@ -216,6 +216,10 @@ $enableGyms = 'false';                                              // true/fals
 $hideGymCoords = false;
 $noExEligible = false;                                              // true/false
 $exEligible = 'false';                                              // true/false
+$noTeams = false;
+$noOpenSpot = false;
+$noMinMaxFreeSlots = false;
+$noLastScan = false;
 
 $noRaids = false;                                                   // true/false
 $enableRaids = 'false';                                             // true/false

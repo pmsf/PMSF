@@ -5195,19 +5195,19 @@ function processGyms(i, item) {
         return true
     }
 
-    if (Store.get('showOpenGymsOnly')) {
+    if (!noOpenSpot && Store.get('showOpenGymsOnly')) {
         if (item.slots_available === 0 && (item.raid_end === undefined || item.raid_end < Date.now())) {
             removeGymFromMap(item['gym_id'])
             return true
         }
     }
 
-    if (Store.get('showTeamGymsOnly') && Store.get('showTeamGymsOnly') !== item.team_id && (item.raid_end === undefined || item.raid_end < Date.now())) {
+    if (!noTeams && Store.get('showTeamGymsOnly') && Store.get('showTeamGymsOnly') !== item.team_id && (item.raid_end === undefined || item.raid_end < Date.now())) {
         removeGymFromMap(item['gym_id'])
         return true
     }
 
-    if (Store.get('showLastUpdatedGymsOnly')) {
+    if (!noLastScan && Store.get('showLastUpdatedGymsOnly')) {
         var now = new Date()
         if (item.last_scanned == null) {
             if (Store.get('showLastUpdatedGymsOnly') * 3600 * 1000 + item.last_modified < now.getTime() && (item.raid_end === undefined || item.raid_end < Date.now())) {
@@ -5222,15 +5222,17 @@ function processGyms(i, item) {
         }
     }
 
-    if (gymLevel < Store.get('minGymLevel') && (item.raid_end === undefined || item.raid_end < Date.now())) {
-        removeGymFromMap(item['gym_id'])
-        return true
+    if (!noMinMaxFreeSlots) {
+        if (gymLevel < Store.get('minGymLevel') && (item.raid_end === undefined || item.raid_end < Date.now())) {
+            removeGymFromMap(item['gym_id'])
+            return true
+        }
+        if (gymLevel > Store.get('maxGymLevel') && (item.raid_end === undefined || item.raid_end < Date.now())) {
+            removeGymFromMap(item['gym_id'])
+            return true
+        }
     }
 
-    if (gymLevel > Store.get('maxGymLevel') && (item.raid_end === undefined || item.raid_end < Date.now())) {
-        removeGymFromMap(item['gym_id'])
-        return true
-    }
     if (item['gym_id'] in mapData.gyms) {
         item.marker = updateGymMarker(item, mapData.gyms[item['gym_id']].marker)
     } else {

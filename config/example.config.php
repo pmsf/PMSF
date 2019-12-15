@@ -199,9 +199,16 @@ $noTinyRat = false;
 /* Gyms */
 $noGyms = false;
 $enableGyms = 'false';
+
 $hideGymCoords = false;
+
 $noExEligible = false;
 $exEligible = 'false';
+
+$noTeams = false;
+$noOpenSpot = false;
+$noMinMaxFreeSlots = false;
+$noLastScan = false;
 
 /* Raids */
 $noRaids = false;
