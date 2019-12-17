@@ -5167,7 +5167,23 @@ function processPokemons(i, item) {
     if (!Store.get('showPokemon')) {
         return false // in case the checkbox was unchecked in the meantime.
     }
-    if (!(item['encounter_id'] in mapData.pokemons) && item['disappear_time'] > Date.now() && ((encounterId && encounterId === item['encounter_id']) || (excludedPokemon.indexOf(item['pokemon_id']) < 0 && !isTemporaryHidden(item['pokemon_id'])))) {
+    if (item['disappear_time'] > Date.now() && ((encounterId && encounterId === item['encounter_id']) || (excludedPokemon.indexOf(item['pokemon_id']) < 0 && !isTemporaryHidden(item['pokemon_id'])))) {
+        if (item['encounter_id'] in mapData.pokemons) {
+            if ((mapData.pokemons[item['encounter_id']]['individual_attack'] != item['individual_attack']) || (mapData.pokemons[item['encounter_id']]['individual_defense'] != item['individual_defense']) || (mapData.pokemons[item['encounter_id']]['individual_stamina'] != item['individual_stamina'])) {
+                // updated information received. delete marker and item from dict
+                if (mapData.pokemons[item['encounter_id']].marker.rangeCircle) {
+                    markers.removeLayer(mapData.pokemons[item['encounter_id']].marker.rangeCircle)
+                    markersnotify.removeLayer(mapData.pokemons[item['encounter_id']].marker.rangeCircle)
+                    delete mapData.pokemons[item['encounter_id']].marker.rangeCircle
+                }
+                markers.removeLayer(mapData.pokemons[item['encounter_id']].marker)
+                markersnotify.removeLayer(mapData.pokemons[item['encounter_id']].marker)
+                delete mapData.pokemons[item['encounter_id']]
+            } else {
+                // in mapData and appears up to date, skip
+                return true
+            }
+        }
         // add marker to map and item to dict
         if (item.marker) {
             markers.removeLayer(item.marker)
