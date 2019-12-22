@@ -2023,6 +2023,8 @@ if (!$noLoadingScreen) {
     var centerLng = <?= $startingLng; ?>;
     var locationSet = <?= $locationSet; ?>;
     var motd = <?php echo $noMotd ? 'false' : 'true' ?>;
+    var motdContent = <?php echo json_encode($motdContent) ?>;
+    var showMotdOnlyOnce = <?php echo $showMotdOnlyOnce === true ? 'true' : 'false' ?>;
     var zoom<?php echo $zoom ? " = " . $zoom : null; ?>;
     var encounterId<?php echo $encounterId ? " = '" . $encounterId . "'" : null; ?>;
     var defaultZoom = <?= $defaultZoom; ?>;
