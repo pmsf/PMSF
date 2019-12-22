@@ -258,6 +258,9 @@ if (copyrightSafe) {
 if (forcedTileServer) {
     Store.set('map_style', 'tileserver')
 }
+if (noRaids && Store.get('showRaids')) {
+    Store.set('showRaids', false)
+}
 function previewPoiImage(event) { // eslint-disable-line no-unused-vars
     var form = $(event.target).parent().parent()
     var input = event.target
@@ -5148,7 +5151,7 @@ function processGyms(i, item) {
         }
     }
 
-    if (Store.get('showGyms') && (!Store.get('showRaids') || noRaids)) {
+    if (Store.get('showGyms') && !Store.get('showRaids')) {
         item.raid_end = 0
         item.raid_level = item.raid_pokemon_cp = item.raid_pokemon_id = item.raid_pokemon_move_1 = item.raid_pokemon_move_1 = item.raid_pokemon_name = null
     }
