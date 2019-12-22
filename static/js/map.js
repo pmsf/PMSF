@@ -6001,13 +6001,14 @@ $(function () {
         fetchCriesJson()
     }
     // load MOTD, if set
-    if (motd) {
+    if ((motd && !showMotdOnlyOnce) || (motd && showMotdOnlyOnce && Store.get('oldMotd') !== motdContent)) {
         $.ajax({
             url: 'motd_data',
             type: 'POST',
             dataType: 'json',
             cache: false,
             success: function (data) {
+                Store.set('oldMotd', motdContent)
                 // set content of motd banner
                 $('#motd').attr('title', data.title).html(data.content).dialog()
             },

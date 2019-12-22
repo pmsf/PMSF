@@ -125,6 +125,7 @@ $noStatsToggle = false;                                             // Enables o
 
 /* MOTD */
 $noMotd = true;
+$showMotdOnlyOnce = false;
 $motdTitle = "";
 $motdContent = "";
 
