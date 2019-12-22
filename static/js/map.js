@@ -5148,7 +5148,7 @@ function processGyms(i, item) {
         }
     }
 
-    if (Store.get('showGyms') && !Store.get('showRaids')) {
+    if (Store.get('showGyms') && (!Store.get('showRaids') || noRaids)) {
         item.raid_end = 0
         item.raid_level = item.raid_pokemon_cp = item.raid_pokemon_id = item.raid_pokemon_move_1 = item.raid_pokemon_move_1 = item.raid_pokemon_name = null
     }

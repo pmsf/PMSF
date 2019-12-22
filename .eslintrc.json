@@ -198,6 +198,7 @@
     "numberOfGrunt": true,
     "customTileServerAddress": true,
     "noCustomTileServer": true,
-    "forcedTileServer": true
+    "forcedTileServer": true,
+    "noRaids": true
   }
 }
