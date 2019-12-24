@@ -2159,6 +2159,8 @@ if (!$noLoadingScreen) {
     var numberOfItem = <?php echo $numberOfItem; ?>;
     var numberOfGrunt = <?php echo $numberOfGrunt; ?>;
     var noRaids = <?php echo $noRaids === true ? 'true' : 'false' ?>;
+    var letItSnow = <?php echo $letItSnow === true ? 'true' : 'false' ?>;
+    var makeItBang = <?php echo $makeItBang === true ? 'true' : 'false' ?>;
 </script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js"></script>
 <script src="static/dist/js/map.common.min.js"></script>

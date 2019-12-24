@@ -485,6 +485,13 @@ $weatherColors = [
     'black'         // fog
 ];
 
+
+//-----------------------------------------------------
+// Holiday Overlay
+//-----------------------------------------------------
+letItSnow = true;                                                   // Show snow overlay at 24, 25 and 26 December
+makeItBang = true;                                                  // Show fireworks overlay at 31 December
+
 //-----------------------------------------------------
 // DEBUGGING
 //-----------------------------------------------------
