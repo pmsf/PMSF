@@ -166,6 +166,7 @@ var pokemonTypes = [i8ln('unset'), i8ln('Normal'), i8ln('Fighting'), i8ln('Flyin
 var genderType = ['♂', '♀', '⚲']
 var cpMultiplier = [0.094, 0.16639787, 0.21573247, 0.25572005, 0.29024988, 0.3210876, 0.34921268, 0.37523559, 0.39956728, 0.42250001, 0.44310755, 0.46279839, 0.48168495, 0.49985844, 0.51739395, 0.53435433, 0.55079269, 0.56675452, 0.58227891, 0.59740001, 0.61215729, 0.62656713, 0.64065295, 0.65443563, 0.667934, 0.68116492, 0.69414365, 0.70688421, 0.71939909, 0.7317, 0.73776948, 0.74378943, 0.74976104, 0.75568551, 0.76156384, 0.76739717, 0.7731865, 0.77893275, 0.7846369, 0.79030001]
 var throwType = JSON.parse('{"10": "Nice", "11": "Great", "12": "Excellent"}')
+var gruntCharacterTypes = [i8ln('unset'), i8ln('Team Leader'), i8ln('Grunt(s)'), i8ln('Arlo'), i8ln('Cliff'), i8ln('Sierra'), i8ln('Giovanni')]
 var weatherLayerGroup = new L.LayerGroup()
 var weatherArray = []
 var weatherPolys = []
@@ -266,6 +267,9 @@ if (copyrightSafe) {
 }
 if (forcedTileServer) {
     Store.set('map_style', 'tileserver')
+}
+if (noRaids && Store.get('showRaids')) {
+    Store.set('showRaids', false)
 }
 function previewPoiImage(event) { // eslint-disable-line no-unused-vars
     var form = $(event.target).parent().parent()
@@ -1565,9 +1569,21 @@ function getQuest(item) {
                     str = str.replace('{0} pokémon', 'pokémon caught ' + questinfo['distance'] + 'km apart')
                     break
                 case 27:
-                    if (questinfo['character_category_ids']) {
-                        str = str.replace('Grunt(s)', 'Leader(s)')
+                    var gstr = ''
+                    if (questinfo['character_category_ids'].length > 1) {
+                        $.each(questinfo['character_category_ids'], function (index, charId) {
+                            if (index === (questinfo['character_category_ids'].length - 2)) {
+                                gstr += gruntCharacterTypes[charId] + ' or '
+                            } else if (index === (questinfo['character_category_ids'].length - 1)) {
+                                gstr += gruntCharacterTypes[charId]
+                            } else {
+                                gstr += gruntCharacterTypes[charId] + ', '
+                            }
+                        })
+                    } else {
+                        gstr += questinfo['character_category_ids']
                     }
+                    str = str.replace('Team GO Rocket Grunt(s)', gstr)
                     break
             }
         } else if (item['quest_type'] > 0) {
@@ -6052,13 +6068,14 @@ $(function () {
         fetchCriesJson()
     }
     // load MOTD, if set
-    if (motd) {
+    if ((motd && !showMotdOnlyOnce) || (motd && showMotdOnlyOnce && Store.get('oldMotd') !== motdContent)) {
         $.ajax({
             url: 'motd_data',
             type: 'POST',
             dataType: 'json',
             cache: false,
             success: function (data) {
+                Store.set('oldMotd', motdContent)
                 // set content of motd banner
                 $('#motd').attr('title', data.title).html(data.content).dialog()
             },

@@ -48,17 +48,6 @@ CREATE TABLE IF NOT EXISTS `nests` (
   PRIMARY KEY (`nest_id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=utf8;
 
-CREATE TABLE IF NOT EXISTS `payments` (
-  `id` int(11) NOT NULL AUTO_INCREMENT,
-  `selly_id` varchar(100) NOT NULL,
-  `product_id` int(30) NOT NULL,
-  `email` varchar(250) NOT NULL,
-  `value` int(11) NOT NULL,
-  `quantity` int(11) NOT NULL,
-  `timestamp` int(11) NOT NULL,
-  PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
-
 CREATE TABLE IF NOT EXISTS `users` (
   `id` bigint(20) NOT NULL AUTO_INCREMENT,
   `user` varchar(250) NOT NULL,

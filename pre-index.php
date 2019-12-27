@@ -1,3 +1,4 @@
+
 <?php
 if (! file_exists('config/config.php')) {
     http_response_code(500);
@@ -9,6 +10,13 @@ if ($noNativeLogin === false || $noDiscordLogin === false) {
         if (validateCookie($_COOKIE["LoginCookie"]) === false) {
             header("Location: .");
         }
+    }
+    if (!empty($_SESSION['user']->updatePwd) && $_SESSION['user']->updatePwd === 1) {
+        header("Location: ./user");
+        die();
+    }
+    if (empty($_SESSION['user']->id) && $forcedLogin === true) {
+        header("Location: ./user");
     }
 }
 $zoom        = ! empty($_GET['zoom']) ? $_GET['zoom'] : null;
@@ -260,11 +268,11 @@ if (strtolower($map) === "rdm") {
     }
     ?>
     <!-- Cookie Disclamer -->
-    <link rel="stylesheet" type="text/css" href="//cdnjs.cloudflare.com/ajax/libs/cookieconsent2/3.1.0/cookieconsent.min.css" />
-    <script src="//cdnjs.cloudflare.com/ajax/libs/cookieconsent2/3.1.0/cookieconsent.min.js"></script>
     <?php
     if (! $noCookie) {
-        echo '<script>
+        echo '<link rel="stylesheet" type="text/css" href="//cdnjs.cloudflare.com/ajax/libs/cookieconsent2/3.1.0/cookieconsent.min.css" />
+            <script src="//cdnjs.cloudflare.com/ajax/libs/cookieconsent2/3.1.0/cookieconsent.min.js"></script>
+            <script>
             window.addEventListener("load", function(){
                 window.cookieconsent.initialise({
                 "palette": {
@@ -285,7 +293,7 @@ if (strtolower($map) === "rdm") {
         </script>';
     }
     ?>
-    
+
     <script>
         var token = '<?php echo (! empty($_SESSION['token'])) ? $_SESSION['token'] : ""; ?>';
     </script>
@@ -305,6 +313,14 @@ if (strtolower($map) === "rdm") {
     <link rel="stylesheet" href="node_modules/leaflet.markercluster/dist/MarkerCluster.Default.css" />
     <link href='static/css/leaflet.fullscreen.css' rel='stylesheet' />
 </head>
+<?php
+if (!$noLoadingScreen) {
+    echo '<app-root><p class="spinner" VALIGN="CENTER">';
+    if ($loadingStyle == '') {
+        $loadingStyle = '<i class="fa fas fa-cog fa-spin fa-2x" aria-hidden="true"></i>';
+    }
+    echo $loadingStyle . '&nbsp;' . i8ln('Loading') . '...</p></app-root>';
+} ?>
 <body id="top">
 <div class="wrapper">
     <!-- Header -->
@@ -352,32 +368,11 @@ if (strtolower($map) === "rdm") {
         <?php
         if ($noNativeLogin === false || $noDiscordLogin === false) {
             if (!empty($_SESSION['user']->id)) {
-                $info = $manualdb->query(
-                    "SELECT expire_timestamp, access_level FROM users WHERE id = :id AND login_system = :login_system", [
-                        ":id" => $_SESSION['user']->id,
-                        ":login_system" => $_SESSION['user']->login_system
-                    ]
-                )->fetch();
-
-                if (! $noSelly && $info['expire_timestamp'] < time() && $info['access_level'] > 0) {
-                    $manualdb->update("users", ["access_level" => 0, "session_id" => null], ["id" => $_SESSION['user']->id]);
-                    header('Refresh: ');
-                }
-
-                $_SESSION['user']->expire_timestamp = $info['expire_timestamp'];
-
-                if (!empty($_SESSION['user']->updatePwd) && $_SESSION['user']->updatePwd === 1) {
-                    header("Location: ./user");
-                    die();
-                }
-                
-                if ($noSelly || $info['expire_timestamp'] > time()) {
-                    echo '<i class="fas fa-user-check" title="' . i8ln('User Logged in') . '" style="color: green;font-size: 20px;position: relative;float: right;padding: 0 5px;top: 17px;"></i>';
-                } else {
+                if ($_SESSION['user']->expire_timestamp < time() && $manualAccessLevel === true) {
                     echo '<i class="fas fa-user-times" title="' . i8ln('User Expired') . '" style="color: red;font-size: 20px;position: relative;float: right;padding: 0 5px;top: 17px;"></i>';
+                } else {
+                    echo '<i class="fas fa-user-check" title="' . i8ln('User Logged in') . '" style="color: green;font-size: 20px;position: relative;float: right;padding: 0 5px;top: 17px;"></i>';
                 }
-            } elseif ($forcedLogin === true) {
-                header("Location: ./user");
             } else {
                 echo "<a href='./user' style='float:right;padding:0 5px;' title='" . i8ln('Login') . "'><i class='fas fa-user' style='color:white;font-size:20px;vertical-align:middle;'></i></a>";
             }
@@ -1484,18 +1479,7 @@ if (strtolower($map) === "rdm") {
         </div>
         <?php
         if (($noNativeLogin === false || $noDiscordLogin === false) && !empty($_SESSION['user']->id)) {
-            if (! $noSelly) {
-                ?>
-                <div>
-                    <center>
-                        <button class="settings"
-                                onclick="document.location.href='user'">
-                            <i class="fas fa-key" aria-hidden="true"></i> <?php echo i8ln('Activate Key'); ?>
-                        </button>
-                    </center>
-                </div>
-            <?php
-            } ?>
+            ?>
             <div>
                 <center>
                     <button class="settings"
@@ -1506,9 +1490,8 @@ if (strtolower($map) === "rdm") {
             </div>
             <div><center><p>
                 <?php
-                if (! $noSelly) {
+                if ($manualAccessLevel && $noDiscordLogin) {
                     $time = date("Y-m-d", $_SESSION['user']->expire_timestamp);
-                
                     if ($_SESSION['user']->expire_timestamp > time()) {
                         echo "<span style='color: green;'>" . i8ln('Membership expires on') . " {$time}</span>";
                     } else {
@@ -2109,6 +2092,8 @@ if (strtolower($map) === "rdm") {
     var centerLng = <?= $startingLng; ?>;
     var locationSet = <?= $locationSet; ?>;
     var motd = <?php echo $noMotd ? 'false' : 'true' ?>;
+    var motdContent = <?php echo json_encode($motdContent) ?>;
+    var showMotdOnlyOnce = <?php echo $showMotdOnlyOnce === true ? 'true' : 'false' ?>;
     var zoom<?php echo $zoom ? " = " . $zoom : null; ?>;
     var encounterId<?php echo $encounterId ? " = '" . $encounterId . "'" : null; ?>;
     var defaultZoom = <?= $defaultZoom; ?>;
@@ -2245,6 +2230,7 @@ if (strtolower($map) === "rdm") {
     var numberOfItem = <?php echo $numberOfItem; ?>;
     var numberOfGrunt = <?php echo $numberOfGrunt; ?>;
     var numberOfEgg = <?php echo $numberOfEgg; ?>;
+    var noRaids = <?php echo $noRaids === true ? 'true' : 'false' ?>;
 </script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js"></script>
 <script src="static/dist/js/map.common.min.js"></script>

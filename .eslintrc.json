@@ -129,6 +129,8 @@
     "boostedMons": true,
     "exEligible": true,
     "motd": true,
+    "showMotdOnlyOnce": true,
+    "motdContent": true,
     "raidBossActive": true,
     "manualRaids": true,
     "pokemonReportTime": true,
@@ -199,6 +201,7 @@
     "noCustomTileServer": true,
     "forcedTileServer": true,
     "hideRaidboss": true,
-    "hideRaidegg": true
+    "hideRaidegg": true,
+    "noRaids": true
   }
 }
