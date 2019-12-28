@@ -22,11 +22,20 @@ module.exports = function (grunt) {
         eslint: {
             src: ['static/js/*.js', '!js/vendor/**/*.js']
         },
-
         babel: {
             options: {
                 sourceMap: true,
                 presets: ['env']
+            },
+            prod: {
+                files: {
+                    'static/dist/js/app.built.js': 'static/js/app.js',
+                    'static/dist/js/map.built.js': 'static/js/map.js',
+                    'static/dist/js/map.common.built.js': 'static/js/map.common.js',
+                    'static/dist/js/mobile.built.js': 'static/js/mobile.js',
+                    'static/dist/js/stats.built.js': 'static/js/stats.js',
+                    'static/dist/js/serviceWorker.built.js': 'static/js/serviceWorker.js'
+                }
             },
             dev: {
                 files: {
@@ -55,12 +64,12 @@ module.exports = function (grunt) {
                 rotateStringArray: true,
                 selfDefending: true,
                 stringArray: true,
-                stringArrayEncoding: 'rc4',
+                stringArrayEncoding: 'base64',
                 stringArrayThreshold: 1,
                 transformObjectKeys: true,
                 unicodeEscapeSequence: false
             },
-            prod: {
+            obfuscator: {
                 files: {
                     'static/dist/js/app.min.js' :'static/js/app.js',
                     'static/dist/js/map.min.js':'static/js/map.js',
@@ -70,7 +79,25 @@ module.exports = function (grunt) {
                     'static/dist/js/serviceWorker.min.js':'static/js/serviceWorker.js'
                 }
             }
-
+        },
+        uglify: {
+            options: {
+                banner: '/*\n <%= pkg.name %> <%= grunt.template.today("yyyy-mm-dd") %> \n*/\n',
+                sourceMap: true,
+                compress: {
+                    unused: false
+                }
+            },
+            prod: {
+                files: {
+                    'static/dist/js/app.min.js': 'static/dist/js/app.built.js',
+                    'static/dist/js/map.min.js': 'static/dist/js/map.built.js',
+                    'static/dist/js/map.common.min.js': 'static/dist/js/map.common.built.js',
+                    'static/dist/js/mobile.min.js': 'static/dist/js/mobile.built.js',
+                    'static/dist/js/stats.min.js': 'static/dist/js/stats.built.js',
+                    'static/dist/js/serviceWorker.min.js': 'static/dist/js/serviceWorker.built.js'
+                }
+            }
         },
         minjson: {
             build: {
@@ -148,7 +175,8 @@ module.exports = function (grunt) {
                     collapseWhitespace: true
                 },
                 files: {
-                    'index.php': 'pre-index.php'
+                    'index.php': 'pre-index.php',
+                    'user.php': 'pre-user.php'
                 }
             }
         },
@@ -158,13 +186,14 @@ module.exports = function (grunt) {
             },
             taskName: {
                 files: [{
-                    src: ['index.php']
+                    src: ['index.php', 'user.php']
                 }]
             }
         }
     });
 
-    grunt.registerTask('js-build', ['newer:obfuscator']);
+    grunt.registerTask('js-build', ['babel:prod', 'newer:uglify']);
+    grunt.registerTask('js-obfuscator', ['newer:obfuscator']);
     grunt.registerTask('js-dev', ['babel:dev']);
     grunt.registerTask('css-build', ['newer:sass', 'newer:cssmin']);
     grunt.registerTask('js-lint', ['newer:eslint']);
@@ -173,6 +202,7 @@ module.exports = function (grunt) {
     grunt.registerTask('html-build', ['htmlmin', 'cacheBust']);
 
     grunt.registerTask('build', ['clean', 'js-build', 'css-build', 'json', 'html-build']);
+    grunt.registerTask('obfuscate', ['clean', 'js-obfuscator', 'css-build', 'json', 'html-build']);
     grunt.registerTask('dev', ['clean', 'js-dev', 'css-build', 'json', 'html-build']);
     grunt.registerTask('lint', ['js-lint', 'php-lint']);
     grunt.registerTask('default', ['build', 'watch']);

@@ -1,11 +1,12 @@
 {
   "name": "pmsf",
   "version": "2.0.0",
-  "description": "PMSF (PokeMap Standalone Frontend) is a standalone PHP map interface that is able to run on any traditional web server. It works for both Monocle or Rocketmap database setups.",
+  "description": "PMSF (PokeMap Standalone Frontend) is a standalone PHP map interface that is able to run on any traditional web server. It works for both RDM or MAD database setups.",
   "main": "Gruntfile.js",
   "scripts": {
     "build": "grunt build",
     "watch": "grunt default",
+    "obfuscator": "grunt obfuscate",
     "dev": "grunt dev",
     "lint": "grunt lint",
     "grunt": "grunt"
@@ -17,8 +18,8 @@
   "keywords": [
     "pokemon",
     "pokemongo",
-    "rocketmap",
-    "monocle"
+    "rdm",
+    "mad"
   ],
   "author": "Whitewillem & Wheel",
   "license": "ISC",
@@ -45,9 +46,9 @@
     "grunt-contrib-connect": "latest",
     "grunt-contrib-copy": "latest",
     "grunt-contrib-cssmin": "latest",
-    "grunt-contrib-htmlmin": "2.4.0",
+    "grunt-contrib-htmlmin": "3.1.0",
     "grunt-contrib-obfuscator": "latest",
-    "grunt-contrib-uglify": "^3.3.0",
+    "grunt-contrib-uglify": "^4.0.1",
     "grunt-contrib-watch": "^1.1.0",
     "grunt-eslint": "^22.0.0",
     "grunt-minjson": "latest",
