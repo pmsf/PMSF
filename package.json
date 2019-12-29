@@ -6,7 +6,6 @@
   "scripts": {
     "build": "grunt build",
     "watch": "grunt default",
-    "obfuscator": "grunt obfuscate",
     "dev": "grunt dev",
     "lint": "grunt lint",
     "grunt": "grunt"
@@ -47,7 +46,6 @@
     "grunt-contrib-copy": "latest",
     "grunt-contrib-cssmin": "latest",
     "grunt-contrib-htmlmin": "3.1.0",
-    "grunt-contrib-obfuscator": "latest",
     "grunt-contrib-uglify": "^4.0.1",
     "grunt-contrib-watch": "^1.1.0",
     "grunt-eslint": "^22.0.0",

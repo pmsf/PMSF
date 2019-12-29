@@ -46,42 +46,6 @@ module.exports = function (grunt) {
                     'static/dist/js/stats.min.js': 'static/js/stats.js',
                     'static/dist/js/serviceWorker.min.js': 'static/js/serviceWorker.js'
                 }
-            },
-            obfuscator: {
-                files: {
-                    'static/dist/js/app.min.js' :'static/js/app.js'
-                }
-            }
-        },
-        obfuscator: {
-            options: {
-                compact: true,
-                controlFlowFlattening: false,
-                controlFlowFlatteningThreshold: 1,
-                deadCodeInjection: false,
-                deadCodeInjectionThreshold: 0.2,
-                debugProtection: true,
-                debugProtectionInterval: true,
-                disableConsoleOutput: true,
-                identifierNamesGenerator: 'mangled',
-                log: false,
-                renameGlobals: false,
-                rotateStringArray: true,
-                selfDefending: true,
-                stringArray: true,
-                stringArrayEncoding: 'base64',
-                stringArrayThreshold: 1,
-                transformObjectKeys: true,
-                unicodeEscapeSequence: false
-            },
-            obfuscator: {
-                files: {
-                    'static/dist/js/map.min.js':'static/js/map.js',
-                    'static/dist/js/map.common.min.js' : 'static/js/map.common.js',
-                    'static/dist/js/mobile.min.js':'static/js/mobile.js',
-                    'static/dist/js/stats.min.js':'static/js/stats.js',
-                    'static/dist/js/serviceWorker.min.js':'static/js/serviceWorker.js'
-                }
             }
         },
         uglify: {
@@ -197,7 +161,6 @@ module.exports = function (grunt) {
     });
 
     grunt.registerTask('js-build', ['babel:prod', 'newer:uglify']);
-    grunt.registerTask('js-obfuscator', ['babel:obfuscator', 'newer:obfuscator']);
     grunt.registerTask('js-dev', ['babel:dev']);
     grunt.registerTask('css-build', ['newer:sass', 'newer:cssmin']);
     grunt.registerTask('js-lint', ['newer:eslint']);
@@ -206,7 +169,6 @@ module.exports = function (grunt) {
     grunt.registerTask('html-build', ['htmlmin', 'cacheBust']);
 
     grunt.registerTask('build', ['clean', 'js-build', 'css-build', 'json', 'html-build']);
-    grunt.registerTask('obfuscate', ['clean', 'js-obfuscator', 'css-build', 'json', 'html-build']);
     grunt.registerTask('dev', ['clean', 'js-dev', 'css-build', 'json', 'html-build']);
     grunt.registerTask('lint', ['js-lint', 'php-lint']);
     grunt.registerTask('default', ['build', 'watch']);
