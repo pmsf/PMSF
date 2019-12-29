@@ -47,7 +47,7 @@
     "grunt-contrib-copy": "latest",
     "grunt-contrib-cssmin": "latest",
     "grunt-contrib-htmlmin": "3.1.0",
-    "grunt-contrib-obfuscator": "https://github.com/whitewillem/grunt-contrib-obfuscator/tarball/master",
+    "grunt-contrib-obfuscator": "latest",
     "grunt-contrib-uglify": "^4.0.1",
     "grunt-contrib-watch": "^1.1.0",
     "grunt-eslint": "^22.0.0",
@@ -61,9 +61,9 @@
     "node-sass": "^4.13.0",
     "phplint": "^1.7.4",
     "push.js": "^1.0.12",
-    "leaflet": "1.5.1",
+    "leaflet": "1.6.0",
     "leaflet-geosearch": "2.7.0",
-    "leaflet.markercluster": "1.4.1",
+    "leaflet.markercluster": "https://github.com/whitewillem/Leaflet.markercluster/tarball/master",
     "moment": "2.24.0",
     "datatables": "1.10.18"
   }

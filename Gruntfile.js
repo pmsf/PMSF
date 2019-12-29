@@ -46,6 +46,11 @@ module.exports = function (grunt) {
                     'static/dist/js/stats.min.js': 'static/js/stats.js',
                     'static/dist/js/serviceWorker.min.js': 'static/js/serviceWorker.js'
                 }
+            },
+            obfuscator: {
+                files: {
+                    'static/dist/js/app.min.js' :'static/js/app.js'
+                }
             }
         },
         obfuscator: {
@@ -71,7 +76,6 @@ module.exports = function (grunt) {
             },
             obfuscator: {
                 files: {
-                    'static/dist/js/app.min.js' :'static/js/app.js',
                     'static/dist/js/map.min.js':'static/js/map.js',
                     'static/dist/js/map.common.min.js' : 'static/js/map.common.js',
                     'static/dist/js/mobile.min.js':'static/js/mobile.js',
@@ -193,7 +197,7 @@ module.exports = function (grunt) {
     });
 
     grunt.registerTask('js-build', ['babel:prod', 'newer:uglify']);
-    grunt.registerTask('js-obfuscator', ['newer:obfuscator']);
+    grunt.registerTask('js-obfuscator', ['babel:obfuscator', 'newer:obfuscator']);
     grunt.registerTask('js-dev', ['babel:dev']);
     grunt.registerTask('css-build', ['newer:sass', 'newer:cssmin']);
     grunt.registerTask('js-lint', ['newer:eslint']);
