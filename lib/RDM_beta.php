@@ -636,11 +636,39 @@ class RDM_beta extends RDM
         }
     }
 
-    public function get_weather($updated = null)
+    public function get_weather($swLat, $swLng, $neLat, $neLng, $oSwLat = 0, $oSwLng = 0, $oNeLat = 0, $oNeLng = 0)
+    {
+        $conds = array();
+        $params = array();
+        $conds[] = "latitude > :swLat AND longitude > :swLng AND latitude < :neLat AND longitude < :neLng";
+        $params[':swLat'] = $swLat;
+        $params[':swLng'] = $swLng;
+        $params[':neLat'] = $neLat;
+        $params[':neLng'] = $neLng;
+        if ($oSwLat != 0) {
+            $conds[] = "NOT (latitude > :oswLat AND longitude > :oswLng AND latitude < :oneLat AND longitude < :oneLng)";
+            $params[':oswLat'] = $oSwLat;
+            $params[':oswLng'] = $oSwLng;
+            $params[':oneLat'] = $oNeLat;
+            $params[':oneLng'] = $oNeLng;
+        }
+        global $noBoundaries, $boundaries;
+        if (!$noBoundaries) {
+            $conds[] = "(ST_WITHIN(point(latitude,longitude),ST_GEOMFROMTEXT('POLYGON(( " . $boundaries . " ))')))";
+        }
+        return $this->query_weather($conds, $params);
+    }
+
+    public function query_weather($conds, $params)
     {
         global $db;
-        $query = "SELECT id AS s2_cell_id, gameplay_condition AS gameplay_weather FROM weather";
-        $weathers = $db->query($query)->fetchAll(\PDO::FETCH_ASSOC);
+        $query = "SELECT id AS s2_cell_id,
+        gameplay_condition AS gameplay_weather
+        FROM weather
+        WHERE :conditions";
+        $query = str_replace(":conditions", join(" AND ", $conds), $query);
+        $weathers = $db->query($query, $params)->fetchAll(\PDO::FETCH_ASSOC);
+
         $data = array();
         foreach ($weathers as $weather) {
             $data["weather_" . $weather['s2_cell_id']] = $weather;

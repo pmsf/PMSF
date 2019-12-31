@@ -3144,12 +3144,30 @@ function loadRawData() {
 }
 
 function loadWeather() {
+    var bounds = map.getBounds()
+    var swPoint = bounds.getSouthWest()
+    var nePoint = bounds.getNorthEast()
+    var swLat = swPoint.lat
+    var swLng = swPoint.lng
+    var neLat = nePoint.lat
+    var neLng = nePoint.lng
     return $.ajax({
         url: 'weather_data?all',
         type: 'POST',
         timeout: 300000,
         dataType: 'json',
         cache: false,
+        data: {
+            'token': token,
+            'swLat': swLat,
+            'swLng': swLng,
+            'neLat': neLat,
+            'neLng': neLng,
+            'oSwLat': oSwLat,
+            'oSwLng': oSwLng,
+            'oNeLat': oNeLat,
+            'oNeLng': oNeLng
+        },
         error: function error() {
             // Display error toast
             toastr['error'](i8ln('Please check connectivity or reduce marker settings.'), i8ln('Error getting weather'))
@@ -3162,6 +3180,13 @@ function loadWeather() {
 }
 
 function loadWeatherCellData(cell) { // eslint-disable-line no-unused-vars
+    var bounds = map.getBounds()
+    var swPoint = bounds.getSouthWest()
+    var nePoint = bounds.getNorthEast()
+    var swLat = swPoint.lat
+    var swLng = swPoint.lng
+    var neLat = nePoint.lat
+    var neLng = nePoint.lng
     return $.ajax({
         url: 'weather_data?cell',
         type: 'POST',
@@ -3169,7 +3194,16 @@ function loadWeatherCellData(cell) { // eslint-disable-line no-unused-vars
         dataType: 'json',
         cache: false,
         data: {
-            'cell_id': cell
+            'cell_id': cell,
+            'token': token,
+            'swLat': swLat,
+            'swLng': swLng,
+            'neLat': neLat,
+            'neLng': neLng,
+            'oSwLat': oSwLat,
+            'oSwLng': oSwLng,
+            'oNeLat': oNeLat,
+            'oNeLng': oNeLng
         },
         error: function error() {
             // Display error toast
@@ -5821,7 +5855,7 @@ function createUpdateWorker() {
                     updateMap()
                     updateGeoLocation()
                 }
-                if (document.hidden && data.name === 'backgroundUpdate' && Date.now() - lastWeatherUpdateTime > 60000) {
+                if (document.hidden && data.name === 'backgroundUpdate' && Date.now() - lastWeatherUpdateTime > 2500) {
                     updateWeatherOverlay()
                 }
             }
@@ -6580,7 +6614,7 @@ $(function () {
     // run interval timers to regularly update map and timediffs
     window.setInterval(updateLabelDiffTime, 1000)
     window.setInterval(updateMap, queryInterval)
-    window.setInterval(updateWeatherOverlay, 60000)
+    window.setInterval(updateWeatherOverlay, 2500)
     window.setInterval(updateGeoLocation, 1000)
 
     createUpdateWorker()
