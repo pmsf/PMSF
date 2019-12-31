@@ -2231,6 +2231,8 @@ if (!$noLoadingScreen) {
     var numberOfGrunt = <?php echo $numberOfGrunt; ?>;
     var numberOfEgg = <?php echo $numberOfEgg; ?>;
     var noRaids = <?php echo $noRaids === true ? 'true' : 'false' ?>;
+    var letItSnow = <?php echo $letItSnow === true ? 'true' : 'false' ?>;
+    var makeItBang = <?php echo $makeItBang === true ? 'true' : 'false' ?>;
 </script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js"></script>
 <script src="static/dist/js/map.common.min.js"></script>

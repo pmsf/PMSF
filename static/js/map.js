@@ -398,20 +398,6 @@ function initMap() { // eslint-disable-line no-unused-vars
         position: 'bottomright'
     }).addTo(map)
 
-    // If you see this: Don't tell anyone.
-    var d = new Date()
-    if (d.getMonth() === 11 && d.getDate() >= 24) {
-        const snow = '<div class="winter-is-coming">\n' +
-            '<div class="snow snow--near"></div>\n' +
-            '<div class="snow snow--near snow--alt"></div>\n' +
-            '<div class="snow snow--mid"></div>\n' +
-            '<div class="snow snow--mid snow--alt"></div>\n' +
-            '<div class="snow snow--far"></div>\n' +
-            '<div class="snow snow--far snow--alt"></div>\n' +
-            '</div>'
-        $('#map').append(snow)
-    }
-
     map.addLayer(markers)
     markersnotify = L.layerGroup().addTo(map)
     map.on('zoom', function () {
@@ -464,6 +450,8 @@ function initMap() { // eslint-disable-line no-unused-vars
     updateS2Overlay()
     buildScanPolygons()
     buildNestPolygons()
+    createSnow()
+    createFireworks()
 
     map.on('moveend', function () {
         updateS2Overlay()
@@ -948,6 +936,38 @@ function buildNestPolygons() {
         })
         nestLayerGroup.addLayer(nestGeoPolys)
     })
+}
+
+function createSnow() {
+    if (!letItSnow) {
+        return false
+    }
+    var d = new Date()
+    if (d.getMonth() === 11 && d.getDate() >= 24 && d.getDate() <= 26) {
+        const snow = '<div class="winter-is-coming">\n' +
+            '<div class="snow snow--near"></div>\n' +
+            '<div class="snow snow--near snow--alt"></div>\n' +
+            '<div class="snow snow--mid"></div>\n' +
+            '<div class="snow snow--mid snow--alt"></div>\n' +
+            '<div class="snow snow--far"></div>\n' +
+            '<div class="snow snow--far snow--alt"></div>\n' +
+            '</div>'
+        $('#map').append(snow)
+    }
+}
+
+function createFireworks() {
+    if (!makeItBang) {
+        return false
+    }
+    var d = new Date()
+    if ((d.getMonth() === 11 && d.getDate() === 31) || (d.getMonth() === 0 && d.getDate() === 1)) {
+        const fireworks = '<div class="pyro">' +
+            '<div class="before"></div>' +
+            '<div class="after"></div>' +
+            '</div>'
+        $('#map').append(fireworks)
+    }
 }
 
 function initSidebar() {
