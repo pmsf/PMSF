@@ -109,7 +109,7 @@
   },
   "28": {
     "prototext": "QUEST_TAKE_SNAPSHOT",
-    "text": "Take {0} Snapshot(s) of your Buddy"
+    "text": "Take {0} Snapshot(s)"
   },
   "29": {
     "prototext": "QUEST_BATTLE_TEAM_ROCKET",
@@ -133,7 +133,7 @@
   },
   "34": {
     "prototext": "QUEST_BUDDY_EARN_AFFECTION_POINTS",
-    "text": "Earn {0} hearts with your Buddy"
+    "text": "Earn {0} Heart(s) with your Buddy"
   },
   "35": {
     "prototext": "QUEST_BUDDY_PET",
