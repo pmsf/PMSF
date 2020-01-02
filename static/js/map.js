@@ -1590,10 +1590,8 @@ function getQuest(item) {
                                 gstr += gruntCharacterTypes[charId] + ', '
                             }
                         })
-                    } else {
-                        gstr += gruntCharacterTypes[charId]
+                        str = str.replace('Team GO Rocket Grunt(s)', gstr)
                     }
-                    str = str.replace('Team GO Rocket Grunt(s)', gstr)
                     break
             }
         } else if (item['quest_type'] > 0) {
