@@ -109,7 +109,7 @@
   },
   "28": {
     "prototext": "QUEST_TAKE_SNAPSHOT",
-    "text": "Take {0} Snapshot(s)"
+    "text": "Take {0} Snapshot(s) of your Buddy"
   },
   "29": {
     "prototext": "QUEST_BATTLE_TEAM_ROCKET",
@@ -126,5 +126,29 @@
   "32": {
     "prototext": "QUEST_FIRST_GRUNT_OF_THE_DAY",
     "text": "First Grunt of the day"
+  },
+  "33": {
+    "prototext": "QUEST_BUDDY_FEED",
+    "text": ""
+  },
+  "34": {
+    "prototext": "QUEST_BUDDY_EARN_AFFECTION_POINTS",
+    "text": "Earn {0} hearts with your Buddy"
+  },
+  "35": {
+    "prototext": "QUEST_BUDDY_PET",
+    "text": ""
+  },
+  "36": {
+    "prototext": "QUEST_BUDDY_LEVEL",
+    "text": ""
+  },
+  "37": {
+    "prototext": "QUEST_BUDDY_WALK",
+    "text": ""
+  },
+  "38": {
+    "prototext": "QUEST_BUDDY_YATTA",
+    "text": ""
   }
 }

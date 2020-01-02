@@ -1591,7 +1591,7 @@ function getQuest(item) {
                             }
                         })
                     } else {
-                        gstr += questinfo['character_category_ids']
+                        gstr += gruntCharacterTypes[charId]
                     }
                     str = str.replace('Team GO Rocket Grunt(s)', gstr)
                     break
