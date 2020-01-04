@@ -129,6 +129,8 @@
     "boostedMons": true,
     "exEligible": true,
     "motd": true,
+    "showMotdOnlyOnce": true,
+    "motdContent": true,
     "raidBossActive": true,
     "manualRaids": true,
     "pokemonReportTime": true,
@@ -196,6 +198,9 @@
     "numberOfGrunt": true,
     "customTileServerAddress": true,
     "noCustomTileServer": true,
-    "forcedTileServer": true
+    "forcedTileServer": true,
+    "noRaids": true,
+    "letItSnow": true,
+    "makeItBang": true
   }
 }

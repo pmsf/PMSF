@@ -44,6 +44,7 @@ $lastcommunities = !empty($_POST['lastcommunities']) ? $_POST['lastcommunities']
 $lastportals = !empty($_POST['lastportals']) ? $_POST['lastportals'] : false;
 $lastpois = !empty($_POST['lastpois']) ? $_POST['lastpois'] : false;
 $exEligible = !empty($_POST['exEligible']) ? $_POST['exEligible'] : false;
+$d["lastscanlocations"] = !empty($_POST['scanlocations']) ? $_POST['scanlocations'] : false;
 $d["lastpokestops"] = !empty($_POST['pokestops']) ? $_POST['pokestops'] : false;
 $d["lastgyms"] = !empty($_POST['gyms']) ? $_POST['gyms'] : false;
 $d["lastslocs"] = !empty($_POST['scanned']) ? $_POST['scanned'] : false;
@@ -76,8 +77,8 @@ if (!validateToken($_POST['token'])) {
 }
 
 if ((! $noDiscordLogin || ! $noNativeLogin) && !empty($_SESSION['user']->id)) {
-    $info = $manualdb->query("SELECT expire_timestamp FROM users WHERE id = :id", [":id" => $_SESSION['user']->id])->fetch();
-    if ($info['expire_timestamp'] !== $_SESSION['user']->expire_timestamp) {
+    $info = $manualdb->query("SELECT session_id FROM users WHERE id = :id", [":id" => $_SESSION['user']->id])->fetch();
+    if ($info['session_id'] !== $_COOKIE["LoginCookie"]) {
         http_response_code(400);
         die();
     }
@@ -307,10 +308,12 @@ $debug['5_after_spawnpoints'] = microtime(true) - $timing['start'];
 
 global $noLiveScanLocation;
 if (!$noLiveScanLocation) {
-    if ($newarea) {
-        $d["scanlocations"] = $scanner->get_scanlocation($swLat, $swLng, $neLat, $neLng, 0, $oSwLat, $oSwLng, $oNeLat, $oNeLng);
-    } else {
-        $d["scanlocations"] = $scanner->get_scanlocation($swLat, $swLng, $neLat, $neLng, $timestamp);
+    if ($d["lastscanlocations"] == "true") {
+        if ($newarea) {
+            $d["scanlocations"] = $scanner->get_scanlocation($swLat, $swLng, $neLat, $neLng, 0, $oSwLat, $oSwLng, $oNeLat, $oNeLng);
+        } else {
+            $d["scanlocations"] = $scanner->get_scanlocation($swLat, $swLng, $neLat, $neLng, $timestamp);
+        }
     }
 }
 

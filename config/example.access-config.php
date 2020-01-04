@@ -1,9 +1,9 @@
 <?php
 /* How it works */
-// - Requires the bot Chuckleslove wrote https://github.com/jepke/PMSF-Discord-AuthBot
+// - Requires the bot Chuckleslove wrote https://github.com/jepke/PMSF-Discord-AuthBot or $manualAccessLevel
 // - IDs in Authbot config must match user levels below.
 // - You can add or remove as many user levels as you like.
-// - Access config does work for native login BUT ALL users are set to user level 0. Selly integration could be working, it could also not work. Use at own risk.
+// - Access config does work for native login with the use off $manualAccessLevel.
 // - TIP: Patreon has a Discord integration to set discord roles (read: user levels) when someone makes a pledge. This works perfect in combination with authbot and this example access config.
 // - EVERYTHING in this file overwrites config.php.
 

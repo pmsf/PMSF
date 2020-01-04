@@ -418,6 +418,11 @@ var StoreOptions = {
         {
             default: enableRocketTimer,
             type: StoreTypes.Boolean
+        },
+    'oldMotd':
+        {
+            default: 'default',
+            type: StoreTypes.String
         }
 }
 
