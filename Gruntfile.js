@@ -47,7 +47,7 @@ module.exports = function (grunt) {
                     'static/dist/js/serviceWorker.min.js': 'static/js/serviceWorker.js'
                 }
             }
-        },	
+        },
         javascript_obfuscator: {
             options: {
                 compact: true,
