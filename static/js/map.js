@@ -2050,6 +2050,10 @@ function getGymMarkerIcon(item) {
     } else {
         pokemonidStr = pokemonid
     }
+    var costumeStr = ''
+    if (item['raid_pokemon_costume'] > 0) {
+        costumeStr = '_' + item['raid_pokemon_costume']
+    }
     var team = item.team_id
     var teamStr = ''
     if (team === 0 || level === null) {
@@ -2071,7 +2075,7 @@ function getGymMarkerIcon(item) {
         html = '<div style="position:relative;">' +
             '<img src="static/forts/' + Store.get('gymMarkerStyle') + '/' + teamStr + '.png" style="width:50px;height:auto;"/>' +
             exIcon +
-            '<img src="' + iconpath + 'pokemon_icon_' + pokemonidStr + '_' + formStr + '.png" style="width:50px;height:auto;position:absolute;top:-15px;right:0px;"/>' +
+            '<img src="' + iconpath + 'pokemon_icon_' + pokemonidStr + '_' + formStr + costumeStr + '.png" style="width:50px;height:auto;position:absolute;top:-15px;right:0px;"/>' +
             '</div>'
         if (noRaidTimer === false && Store.get(['showRaidTimer'])) {
             html += '<div><span class="raid-countdown gym-icon-countdown" disappears-at="' + item['raid_end'] + '" end>' + generateRemainingTimer(item['raid_end'], 'end') + '</span></div>'
