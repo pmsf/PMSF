@@ -1327,9 +1327,13 @@ function gymLabel(item) {
         } else {
             pokemonidStr = pokemonid
         }
+        var costumeStr = ''
+        if (item['raid_pokemon_costume'] > 0) {
+            costumeStr = '_' + item['raid_pokemon_costume']
+        }
 
         if (raidStarted) {
-            raidIcon = '<img style="width: 70px;" src="' + iconpath + 'pokemon_icon_' + pokemonidStr + '_' + formStr + '.png"/>'
+            raidIcon = '<img style="width: 70px;" src="' + iconpath + 'pokemon_icon_' + pokemonidStr + '_' + formStr + costumeStr + '.png"/>'
         } else if (item.raid_start <= Date.now()) {
             var hatchedEgg = ''
             if (item['raid_level'] <= 2) {
@@ -2180,8 +2184,12 @@ function setupGymMarker(item) {
             } else {
                 pokemonidStr = pokemonid
             }
+            var costumeStr = ''
+            if (item['raid_pokemon_costume'] > 0) {
+                costumeStr = '_' + item['raid_pokemon_costume']
+            }
 
-            icon = iconpath + 'pokemon_icon_' + pokemonidStr + '_' + formStr + '.png'
+            icon = iconpath + 'pokemon_icon_' + pokemonidStr + '_' + formStr + costumeStr + '.png'
             checkAndCreateSound(item.raid_pokemon_id)
         } else if (item.raid_start <= Date.now()) {
             var hatchedEgg = ''
@@ -2243,7 +2251,12 @@ function updateGymMarker(item, marker) {
                 } else {
                     pokemonidStr = pokemonid
                 }
-                icon = iconpath + 'pokemon_icon_' + pokemonidStr + '_' + formStr + '.png'
+                var costumeStr = ''
+                if (item['raid_pokemon_costume'] > 0) {
+                    costumeStr = '_' + item['raid_pokemon_costume']
+                }
+
+                icon = iconpath + 'pokemon_icon_' + pokemonidStr + '_' + formStr + costumeStr + '.png'
                 checkAndCreateSound(item.raid_pokemon_id)
             } else if (item.raid_start <= Date.now()) {
                 var hatchedEgg = ''
