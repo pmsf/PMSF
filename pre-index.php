@@ -21,7 +21,8 @@ if ($noNativeLogin === false || $noDiscordLogin === false) {
 $zoom        = ! empty($_GET['zoom']) ? $_GET['zoom'] : null;
 $encounterId = ! empty($_GET['encId']) ? $_GET['encId'] : null;
 if (!empty($_GET['lang'])) {
-    setcookie("LocaleCookie", $_GET['lang'], time() + 60 * 60 * 24 * 7);
+    setcookie("LocaleCookie", $_GET['lang'], time() + 60 * 60 * 24 * 31);
+    header("Location: .");
 }
 if (!empty($_COOKIE["LocaleCookie"])) {
     $locale = $_COOKIE["LocaleCookie"];
