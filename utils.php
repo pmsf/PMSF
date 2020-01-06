@@ -5,7 +5,7 @@ $localeData = null;
 function i8ln($word)
 {
     global $locale;
-    $locale = ! empty($_SESSION['locale']) ? $_SESSION['locale'] : $locale;
+    $locale = !empty($_COOKIE["LocaleCookie"]) ? $_COOKIE["LocaleCookie"] : $locale;
     if ($locale == "en") {
         return $word;
     }
