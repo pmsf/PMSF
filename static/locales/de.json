@@ -1608,10 +1608,5 @@
   "Error changing gym name": "Fehler beim Ändern des Arenanamens",
   "Select Grunt": "Rüpel auswählen",
   "Female": "Weiblich",
-  "Male": "Männlich",
-  "Executive Arlo": "Boss Arlo",
-  "Executive Sierra": "Boss Sierra",
-  "Executive Cliff": "Boss Cliff",
-  "Team Leader(s)":"Team Boss(e)",
-  "Team GO Rocket Grunt(s)":"Team GO Rocket Rüpel"
+  "Male": "Männlich"
 }
