@@ -21,6 +21,7 @@ if ($noNativeLogin === false || $noDiscordLogin === false) {
 }
 $zoom        = ! empty($_GET['zoom']) ? $_GET['zoom'] : null;
 $encounterId = ! empty($_GET['encId']) ? $_GET['encId'] : null;
+$locale = ! empty($_GET['lang']) ? $_GET['lang'] : $locale;
 if (! empty($_GET['lat']) && ! empty($_GET['lon'])) {
     $startingLat = $_GET['lat'];
     $startingLng = $_GET['lon'];
