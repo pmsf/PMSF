@@ -113,7 +113,7 @@
   },
   "29": {
     "prototext": "QUEST_BATTLE_TEAM_ROCKET",
-    "text": "Defeat {0} Team GO Rocket Grunt(s)"
+    "text": "Battle against {0} Team GO Rocket Grunt(s)"
   },
   "30": {
     "prototext": "QUEST_PURIFY_POKEMON",
