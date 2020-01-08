@@ -1594,6 +1594,9 @@ function getQuest(item) {
                         }
                     })
                     str = str.replace('Team GO Rocket Grunt(s)', gstr)
+                    if (item['quest_condition_type_1'] === 18) {
+                        str = str.replace('Battle against', 'Defeat')
+                    }
                     break
                 case 28:
                     if (item['quest_type'] === 28) {
