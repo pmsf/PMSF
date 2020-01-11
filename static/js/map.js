@@ -3038,7 +3038,7 @@ function showInBoundsMarkers(markersInput, type) {
 
 function loadRawData() {
     var loadPokemon = Store.get('showPokemon')
-    var loadGyms = (Store.get('showGyms') || Store.get('showRaids')) ? 'true' : 'false'
+    var loadGyms = Store.get('showGyms')
     var loadRaids = Store.get('showRaids')
     var loadPokestops = Store.get('showPokestops')
     var loadLures = Store.get('showLures')
