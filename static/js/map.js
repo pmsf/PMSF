@@ -166,7 +166,7 @@ var pokemonTypes = [i8ln('unset'), i8ln('Normal'), i8ln('Fighting'), i8ln('Flyin
 var genderType = ['♂', '♀', '⚲']
 var cpMultiplier = [0.094, 0.16639787, 0.21573247, 0.25572005, 0.29024988, 0.3210876, 0.34921268, 0.37523559, 0.39956728, 0.42250001, 0.44310755, 0.46279839, 0.48168495, 0.49985844, 0.51739395, 0.53435433, 0.55079269, 0.56675452, 0.58227891, 0.59740001, 0.61215729, 0.62656713, 0.64065295, 0.65443563, 0.667934, 0.68116492, 0.69414365, 0.70688421, 0.71939909, 0.7317, 0.73776948, 0.74378943, 0.74976104, 0.75568551, 0.76156384, 0.76739717, 0.7731865, 0.77893275, 0.7846369, 0.79030001]
 var throwType = JSON.parse('{"10": "Nice", "11": "Great", "12": "Excellent"}')
-var gruntCharacterTypes = [i8ln('unset'), i8ln('Team Leader'), i8ln('Grunt(s)'), i8ln('Arlo'), i8ln('Cliff'), i8ln('Sierra'), i8ln('Giovanni')]
+var gruntCharacterTypes = ['unset', 'Team Leader(s)', 'Team GO Rocket Grunt(s)', 'Arlo', 'Cliff', 'Sierra', 'Giovanni']
 var weatherLayerGroup = new L.LayerGroup()
 var weatherArray = []
 var weatherPolys = []
@@ -398,20 +398,6 @@ function initMap() { // eslint-disable-line no-unused-vars
         position: 'bottomright'
     }).addTo(map)
 
-    // If you see this: Don't tell anyone.
-    var d = new Date()
-    if (d.getMonth() === 11 && d.getDate() >= 24) {
-        const snow = '<div class="winter-is-coming">\n' +
-            '<div class="snow snow--near"></div>\n' +
-            '<div class="snow snow--near snow--alt"></div>\n' +
-            '<div class="snow snow--mid"></div>\n' +
-            '<div class="snow snow--mid snow--alt"></div>\n' +
-            '<div class="snow snow--far"></div>\n' +
-            '<div class="snow snow--far snow--alt"></div>\n' +
-            '</div>'
-        $('#map').append(snow)
-    }
-
     map.addLayer(markers)
     markersnotify = L.layerGroup().addTo(map)
     map.on('zoom', function () {
@@ -464,6 +450,8 @@ function initMap() { // eslint-disable-line no-unused-vars
     updateS2Overlay()
     buildScanPolygons()
     buildNestPolygons()
+    createSnow()
+    createFireworks()
 
     map.on('moveend', function () {
         updateS2Overlay()
@@ -950,6 +938,38 @@ function buildNestPolygons() {
     })
 }
 
+function createSnow() {
+    if (!letItSnow) {
+        return false
+    }
+    var d = new Date()
+    if (d.getMonth() === 11 && d.getDate() >= 24 && d.getDate() <= 26) {
+        const snow = '<div class="winter-is-coming">\n' +
+            '<div class="snow snow--near"></div>\n' +
+            '<div class="snow snow--near snow--alt"></div>\n' +
+            '<div class="snow snow--mid"></div>\n' +
+            '<div class="snow snow--mid snow--alt"></div>\n' +
+            '<div class="snow snow--far"></div>\n' +
+            '<div class="snow snow--far snow--alt"></div>\n' +
+            '</div>'
+        $('#map').append(snow)
+    }
+}
+
+function createFireworks() {
+    if (!makeItBang) {
+        return false
+    }
+    var d = new Date()
+    if ((d.getMonth() === 11 && d.getDate() === 31) || (d.getMonth() === 0 && d.getDate() === 1)) {
+        const fireworks = '<div class="pyro">' +
+            '<div class="before"></div>' +
+            '<div class="after"></div>' +
+            '</div>'
+        $('#map').append(fireworks)
+    }
+}
+
 function initSidebar() {
     $('#gyms-switch').prop('checked', Store.get('showGyms'))
     $('#nests-switch').prop('checked', Store.get('showNests'))
@@ -1317,9 +1337,13 @@ function gymLabel(item) {
         } else {
             pokemonidStr = pokemonid
         }
+        var costumeStr = ''
+        if (item['raid_pokemon_costume'] > 0) {
+            costumeStr = '_' + item['raid_pokemon_costume']
+        }
 
         if (raidStarted) {
-            raidIcon = '<img style="width: 70px;" src="' + iconpath + 'pokemon_icon_' + pokemonidStr + '_' + formStr + '.png"/>'
+            raidIcon = '<img style="width: 70px;" src="' + iconpath + 'pokemon_icon_' + pokemonidStr + '_' + formStr + costumeStr + '.png"/>'
         } else if (item.raid_start <= Date.now()) {
             var hatchedEgg = ''
             if (item['raid_level'] <= 2) {
@@ -1570,20 +1594,24 @@ function getQuest(item) {
                     break
                 case 27:
                     var gstr = ''
-                    if (questinfo['character_category_ids'].length > 1) {
-                        $.each(questinfo['character_category_ids'], function (index, charId) {
-                            if (index === (questinfo['character_category_ids'].length - 2)) {
-                                gstr += gruntCharacterTypes[charId] + ' or '
-                            } else if (index === (questinfo['character_category_ids'].length - 1)) {
-                                gstr += gruntCharacterTypes[charId]
-                            } else {
-                                gstr += gruntCharacterTypes[charId] + ', '
-                            }
-                        })
-                    } else {
-                        gstr += questinfo['character_category_ids']
-                    }
+                    $.each(questinfo['character_category_ids'], function (index, charId) {
+                        if (index === (questinfo['character_category_ids'].length - 2)) {
+                            gstr += gruntCharacterTypes[charId] + ' or '
+                        } else if (index === (questinfo['character_category_ids'].length - 1)) {
+                            gstr += gruntCharacterTypes[charId]
+                        } else {
+                            gstr += gruntCharacterTypes[charId] + ', '
+                        }
+                    })
                     str = str.replace('Team GO Rocket Grunt(s)', gstr)
+                    if (item['quest_condition_type_1'] === 18) {
+                        str = str.replace('Battle against', 'Defeat')
+                    }
+                    break
+                case 28:
+                    if (item['quest_type'] === 28) {
+                        str = str.replace('Snapshot(s)', 'Snapshot(s) of your Buddy')
+                    }
                     break
             }
         } else if (item['quest_type'] > 0) {
@@ -2035,6 +2063,10 @@ function getGymMarkerIcon(item) {
     } else {
         pokemonidStr = pokemonid
     }
+    var costumeStr = ''
+    if (item['raid_pokemon_costume'] > 0) {
+        costumeStr = '_' + item['raid_pokemon_costume']
+    }
     var team = item.team_id
     var teamStr = ''
     if (team === 0 || level === null) {
@@ -2056,7 +2088,7 @@ function getGymMarkerIcon(item) {
         html = '<div style="position:relative;">' +
             '<img src="static/forts/' + Store.get('gymMarkerStyle') + '/' + teamStr + '.png" style="width:50px;height:auto;"/>' +
             exIcon +
-            '<img src="' + iconpath + 'pokemon_icon_' + pokemonidStr + '_' + formStr + '.png" style="width:50px;height:auto;position:absolute;top:-15px;right:0px;"/>' +
+            '<img src="' + iconpath + 'pokemon_icon_' + pokemonidStr + '_' + formStr + costumeStr + '.png" style="width:50px;height:auto;position:absolute;top:-15px;right:0px;"/>' +
             '</div>'
         if (noRaidTimer === false && Store.get(['showRaidTimer'])) {
             html += '<div><span class="raid-countdown gym-icon-countdown" disappears-at="' + item['raid_end'] + '" end>' + generateRemainingTimer(item['raid_end'], 'end') + '</span></div>'
@@ -2169,8 +2201,12 @@ function setupGymMarker(item) {
             } else {
                 pokemonidStr = pokemonid
             }
+            var costumeStr = ''
+            if (item['raid_pokemon_costume'] > 0) {
+                costumeStr = '_' + item['raid_pokemon_costume']
+            }
 
-            icon = iconpath + 'pokemon_icon_' + pokemonidStr + '_' + formStr + '.png'
+            icon = iconpath + 'pokemon_icon_' + pokemonidStr + '_' + formStr + costumeStr + '.png'
             checkAndCreateSound(item.raid_pokemon_id)
         } else if (item.raid_start <= Date.now()) {
             var hatchedEgg = ''
@@ -2232,7 +2268,12 @@ function updateGymMarker(item, marker) {
                 } else {
                     pokemonidStr = pokemonid
                 }
-                icon = iconpath + 'pokemon_icon_' + pokemonidStr + '_' + formStr + '.png'
+                var costumeStr = ''
+                if (item['raid_pokemon_costume'] > 0) {
+                    costumeStr = '_' + item['raid_pokemon_costume']
+                }
+
+                icon = iconpath + 'pokemon_icon_' + pokemonidStr + '_' + formStr + costumeStr + '.png'
                 checkAndCreateSound(item.raid_pokemon_id)
             } else if (item.raid_start <= Date.now()) {
                 var hatchedEgg = ''
