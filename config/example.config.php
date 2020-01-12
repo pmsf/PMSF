@@ -113,7 +113,8 @@ $worldopoleUrl = "";                                                // Link to W
 $noStatsToggle = false;                                             // Enables or disables the stats button in the header.
 
 /* MOTD */
-$noMotd = true;
+$noMotd = true;                                                     // Message of the day.
+$showMotdOnlyOnce = false;                                          // Only show motd if user didnt see the current $motdContent yet.
 $motdTitle = "Message of the Day";
 $motdContent = "This is an example MOTD<br>Do whatever you like with it.";
 
@@ -507,6 +508,13 @@ $weatherColors = [
     'white',        // snow
     'black'         // fog
 ];
+
+
+//-----------------------------------------------------
+// Holiday Overlay
+//-----------------------------------------------------
+$letItSnow = true;                                                   // Show snow overlay at 24, 25 and 26 December
+$makeItBang = true;                                                  // Show fireworks overlay at 31 December and 1 January
 
 //-----------------------------------------------------
 // DEBUGGING

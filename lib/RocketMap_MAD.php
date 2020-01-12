@@ -243,7 +243,7 @@ class RocketMap_MAD extends RocketMap
         return $data;
     }
 
-    public function get_gyms($rbeids, $reeids, $swLat, $swLng, $neLat, $neLng, $exEligible = false, $tstamp = 0, $oSwLat = 0, $oSwLng = 0, $oNeLat = 0, $oNeLng = 0)
+    public function get_gyms($rbeids, $reeids, $swLat, $swLng, $neLat, $neLng, $exEligible = false, $tstamp = 0, $oSwLat = 0, $oSwLng = 0, $oNeLat = 0, $oNeLng = 0, $raids, $gyms)
     {
         $conds = array();
         $params = array();
@@ -328,6 +328,8 @@ class RocketMap_MAD extends RocketMap
         level AS raid_level, 
         raid.pokemon_id AS raid_pokemon_id, 
         raid.form AS raid_pokemon_form, 
+        raid.costume AS raid_pokemon_costume,
+        raid.gender AS raid_pokemon_gender,
         cp AS raid_pokemon_cp, 
         move_1 AS raid_pokemon_move_1, 
         move_2 AS raid_pokemon_move_2, 
@@ -355,7 +357,8 @@ class RocketMap_MAD extends RocketMap
             $gym["team_id"] = intval($gym["team_id"]);
             $gym["pokemon"] = [];
             $gym["raid_pokemon_name"] = empty($raid_pid) ? null : i8ln($this->data[$raid_pid]["name"]);
-            $gym["raid_pokemon_gender"] = 0;
+            $gym["raid_pokemon_gender"] = intval($gym["raid_pokemon_gender"]);
+            $gym["raid_pokemon_costume"] = intval($gym["raid_pokemon_costume"]);
             $gym["form"] = intval($gym["raid_pokemon_form"]);
             $gym["latitude"] = floatval($gym["latitude"]);
             $gym["longitude"] = floatval($gym["longitude"]);
@@ -565,7 +568,7 @@ class RocketMap_MAD extends RocketMap
         tq.quest_item_id,
         tq.quest_task,
         tq.quest_reward_type,
-        json_extract(json_extract(`quest_reward`,'$[*].pokemon_encounter.pokemon_display.form_value'),'$[0]') AS quest_pokemon_formid,
+        tq.quest_pokemon_form_id AS quest_pokemon_formid,
         json_extract(json_extract(`quest_reward`,'$[*].pokemon_encounter.pokemon_display.is_shiny'),'$[0]') AS quest_pokemon_shiny,
         tq.quest_item_amount AS quest_reward_amount,
         tq.quest_stardust AS quest_dust_amount

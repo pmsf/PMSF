@@ -1,4 +1,3 @@
-
 <?php
 if (! file_exists('config/config.php')) {
     http_response_code(500);
@@ -21,6 +20,13 @@ if ($noNativeLogin === false || $noDiscordLogin === false) {
 }
 $zoom        = ! empty($_GET['zoom']) ? $_GET['zoom'] : null;
 $encounterId = ! empty($_GET['encId']) ? $_GET['encId'] : null;
+if (!empty($_GET['lang'])) {
+    setcookie("LocaleCookie", $_GET['lang'], time() + 60 * 60 * 24 * 31);
+    header("Location: .");
+}
+if (!empty($_COOKIE["LocaleCookie"])) {
+    $locale = $_COOKIE["LocaleCookie"];
+}
 if (! empty($_GET['lat']) && ! empty($_GET['lon'])) {
     $startingLat = $_GET['lat'];
     $startingLng = $_GET['lon'];
@@ -2111,6 +2117,8 @@ if (!$noLoadingScreen) {
     var centerLng = <?= $startingLng; ?>;
     var locationSet = <?= $locationSet; ?>;
     var motd = <?php echo $noMotd ? 'false' : 'true' ?>;
+    var motdContent = <?php echo json_encode($motdContent) ?>;
+    var showMotdOnlyOnce = <?php echo $showMotdOnlyOnce === true ? 'true' : 'false' ?>;
     var zoom<?php echo $zoom ? " = " . $zoom : null; ?>;
     var encounterId<?php echo $encounterId ? " = '" . $encounterId . "'" : null; ?>;
     var defaultZoom = <?= $defaultZoom; ?>;
@@ -2253,6 +2261,9 @@ if (!$noLoadingScreen) {
     var numberOfItem = <?php echo $numberOfItem; ?>;
     var numberOfGrunt = <?php echo $numberOfGrunt; ?>;
     var numberOfEgg = <?php echo $numberOfEgg; ?>;
+    var noRaids = <?php echo $noRaids === true ? 'true' : 'false' ?>;
+    var letItSnow = <?php echo $letItSnow === true ? 'true' : 'false' ?>;
+    var makeItBang = <?php echo $makeItBang === true ? 'true' : 'false' ?>;
 </script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js"></script>
 <script src="static/dist/js/map.common.min.js"></script>
