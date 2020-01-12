@@ -12,7 +12,7 @@
   "Minimum Raid Level": "Min. Poziom Raidu",
   "Maximum Raid Level": "Max. Poziom Raidu",
   "Gyms": "Gymy",
-  "All": "Wszystkie",
+  "All": "Ukryj Wszystkie",
   "Uncontested": "Puste",
   "Open Spot": "Wolne Miejsce",
   "Minimum Free Slots": "Min. Wolnych Miejsc",
@@ -103,7 +103,7 @@
   "Status": "Rodzaj",
   "Not Lured": "Brak Lura",
   "Weather Bonus": "Pogoda",
-  "None": "Żadne",
+  "None": "Pokaż Wszystkie",
   "Clear": "Przejrzyście",
   "Rainy": "Deszcz",
   "Partly cloudy": "Częściowo pochmurnie",
@@ -147,8 +147,8 @@
   "to join!": "aby dołączyć!",
   "Enter Reward Name": "Wpisz nagrodę",
   "Enter Pokéstop Name": "Wpisz nazwę Pokestopa",
-  "Enter Pokemon or Type": "Wpisz Pokemona lub jego typ",
-  "Enter Pokémon or Type": "Wpisz Pokemona lub jego typ",
+  "Enter Pokemon or Type": "Wpisz nazwę Pokemona lub jego typ",
+  "Enter Pokémon or Type": "Wpisz nazwę Pokemona lub jego typ",
   "Directions": "Nawigacja",
   "Pokemon &amp; Nests":"Pokemony i Nesty",
   "Lures only":"Tylko Lury",
@@ -308,5 +308,8 @@
   "more Pokéstop(s) until new gym":"Pokestop(y/ów) do powstania Gyma",
   "Gym":"Gymy",
   "Use Pokémon cries":"Użyj Pokedźwięków",
-  "Loading":"Wczytywanie"
+  "Loading":"Wczytywanie",
+  "Hide Raidboss":"Ukryj Pokemony",
+  "Hide Raidegg":"Ukryj Raidy",
+  "Search Level":"Wyszukaj poziom"
 }
