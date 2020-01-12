@@ -196,11 +196,20 @@
     "numberOfPokemon": true,
     "numberOfItem": true,
     "numberOfGrunt": true,
+    "numberOfEgg": true,
     "customTileServerAddress": true,
     "noCustomTileServer": true,
     "forcedTileServer": true,
+    "hideRaidboss": true,
+    "hideRaidegg": true,
     "noRaids": true,
     "letItSnow": true,
-    "makeItBang": true
+    "makeItBang": true,
+    "noActiveRaids": true,
+    "noMinMaxRaidLevel": true,
+    "noTeams": true,
+    "noOpenSpot": true,
+    "noMinMaxFreeSlots": true,
+    "noLastScan": true
   }
 }

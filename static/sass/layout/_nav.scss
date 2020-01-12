@@ -756,6 +756,222 @@
   .ui-state-focus {
     outline: none;
   }
+  #raids-filter-wrapper{
+    #raid-tabs{
+      padding:0;
+      border:0;
+      height:0px;
+      &:after{
+        display: table;
+        content: "";
+        clear: both;
+      }
+      .ui-tabs-nav{
+        background: transparent;
+        border: 0;
+        padding: 0;
+        li{
+          width: 50%;
+          box-sizing: border-box;
+          margin:0;
+          border-right:1px solid #fff;
+          &:last-child{
+            border-right-color:#c5c5c5;
+          }
+          &:focus{
+
+          }
+          a{
+            padding: 0.5em 0.1em;
+            text-align: center;
+            width: 100%;
+          }
+        }
+      }
+
+      .ui-tabs-panel{
+        padding:0;
+        .form-control-raids{
+          float:none;
+          .raidboss-container{
+            box-shadow:none!important;
+            border:1px solid #3b3b3b;
+            max-height:350px!important;
+          }
+          .raidegg-container{
+            box-shadow:none!important;
+            border:1px solid #3b3b3b;
+            max-height:350px!important;
+          }
+          a{
+            width: 50%;
+            float: left;
+            background: #3b3b3b;
+            text-align: center;
+            padding: 10px;
+            color: white;
+            text-transform: uppercase;
+            text-decoration: none;
+            border-right:1px solid #FFF;
+            &:last-child{
+              border-right:0;
+            }
+          }
+        }
+      }
+    }
+    .form-row{
+      display: -ms-flexbox;
+      display: -webkit-flex;
+      display:flex;
+      align-items:center;
+      .form-control-raidboss{
+        label{
+          display: -ms-flexbox;
+          display: -webkit-flex;
+          display:flex;
+          align-items:center;
+        }
+        h3{
+          float:left;
+          margin-bottom:0;
+        }
+        input{
+          float:left;
+          width: 50px;
+          text-align:center;
+          margin-left: 5px;
+        }
+      }
+    }
+  }
+  .area-container{
+    padding:0!important;
+    ul{
+      padding:0;
+    }
+    li{
+      list-style: none;
+      padding-left: 0;
+      width: 50%;
+      float: left;
+      text-align: center;
+      background: #c7c7c7;
+      border-top: 1px solid #d8d8d8;
+      border-left: 1px solid #d8d8d8;
+      border-right: 1px solid #d8d8d8;
+      &:hover{
+        background:grey;
+        a{
+          color:#FFF;
+        }
+      }
+    }
+    a{
+      padding: 10px 5px;
+      display: block;
+      text-decoration: none;
+    }
+  }
+  label[for="exclude-raidboss"]{
+    .raidboss-list .active{
+      opacity: 0.4;
+      filter: alpha(opacity=40);
+      background: #000;
+    }
+  }
+  label[for="exclude-raidegg"]{
+    .raidegg-list .active{
+      opacity: 0.4;
+      filter: alpha(opacity=40);
+      background: #000;
+    }
+  }
+  .hide-select-2{
+    h3{
+      display:inline-block;
+      margin-right:10px;
+    }
+    label > div {
+      max-height: 200px !important;
+      overflow-y: auto !important;
+      padding: 5px !important;
+      box-shadow: 0 0 2px #000 !important;
+    }
+    .select2 {
+      display: none;
+    }
+  }
+
+  .form-control-raids > select,
+  .form-control-raids > span {
+    float: right;
+  }
+
+  .close {
+    @include icon('\f00d');
+    @include vendor('transition', 'color #{_duration(transition)} ease-in-out');
+    -webkit-tap-highlight-color: rgba(0, 0, 0, 0);
+    border: 0;
+    color: _palette(accent2, fg-light);
+    cursor: pointer;
+    display: none;
+    height: 3.25em;
+    line-height: 3.25em;
+    padding-right: 1.25em;
+    position: absolute;
+    right: 0;
+    text-align: right;
+    top: 0;
+    vertical-align: middle;
+    width: 7em;
+
+    &:before {
+      font-size: 1.25em;
+    }
+
+    &:hover {
+      color: _palette(accent2, fg-bold);
+    }
+
+    @include breakpoint(small) {
+      height: 4em;
+      line-height: 4em;
+    }
+  }
+
+  &.visible {
+    @include vendor('transform', 'translateX(0)');
+    box-shadow: 0 0 1.5em 0 rgba(0, 0, 0, 0.2);
+    visibility: visible;
+  }
+
+  .ui-accordion-content {
+    padding-top: 0.5em;
+    padding-right: 0.5em;
+    padding-bottom: 0.5em;
+    padding-left: 0.5em;
+  }
+  .ui-state-active,
+  .onoffswitch-checkbox:checked + .onoffswitch-label {
+    border-color: #3b3b3b;
+    background-color: #3b3b3b;
+  }
+  .onoffswitch-checkbox:checked + .onoffswitch-label:before {
+    border-color: #c0c0c0;
+  }
+  .ui-accordion-header.ui-state-active {
+    color: #d6d6d6;
+  }
+  .ui-corner-all {
+    border-top-left-radius: 0;
+    border-top-right-radius: 0;
+    border-bottom-left-radius: 0;
+    border-bottom-right-radius: 0;
+  }
+  .ui-state-focus {
+    outline: none;
+  }
 }
 .grunt-list {
   display: -webkit-box;
@@ -858,6 +1074,42 @@
     box-sizing: border-box;
   }
   .item-icon-sprite{
+    border:1px solid #FFF;
+    width: calc( 20% - 2px);
+    margin-bottom: 5px;
+    margin-left: 1px;
+    margin-right: 1px;
+    position:relative;
+    .inner-bg{
+      width: 48.13px;
+      height: 48.13px;
+      display: block;
+      margin: 0 auto;
+    }
+  }
+  .active {
+    border: 1px solid red;
+    background: rgba(255, 0, 0, 0.4);
+  }
+}
+.raidegg-list {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: -webkit-flex;
+  display: flex;
+  -webkit-flex-flow: row wrap;
+  flex-flow: row wrap;
+  -webkit-align-items:center;
+  align-items: center;
+  text-align:center;
+  max-width: 100%;
+  img {
+    width: calc(20% - 10px);
+    padding: 2px;
+    margin: -2px -2px;
+    box-sizing: border-box;
+  }
+  .raidegg-icon-sprite{
     border:1px solid #FFF;
     width: calc( 20% - 2px);
     margin-bottom: 5px;

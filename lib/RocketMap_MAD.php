@@ -243,7 +243,7 @@ class RocketMap_MAD extends RocketMap
         return $data;
     }
 
-    public function get_gyms($swLat, $swLng, $neLat, $neLng, $exEligible = false, $tstamp = 0, $oSwLat = 0, $oSwLng = 0, $oNeLat = 0, $oNeLng = 0)
+    public function get_gyms($rbeids, $reeids, $swLat, $swLng, $neLat, $neLng, $exEligible = false, $tstamp = 0, $oSwLat = 0, $oSwLng = 0, $oNeLat = 0, $oNeLng = 0, $raids, $gyms)
     {
         $conds = array();
         $params = array();
@@ -265,6 +265,38 @@ class RocketMap_MAD extends RocketMap
         if (!$noBoundaries) {
             $conds[] = "(ST_WITHIN(point(latitude,longitude),ST_GEOMFROMTEXT('POLYGON(( " . $boundaries . " ))')))";
         }
+        if ((!empty($raids) && $raids === 'true') && (!empty($gyms) && $gyms === 'false')) {
+            $raidsSQL = '';
+            if (count($rbeids)) {
+                $raid_in = '';
+                $r = 1;
+                foreach ($rbeids as $rbeid) {
+                    $params[':rbqry_' . $r . '_'] = $rbeids;
+                    $raid_in .= ':rbqry_' . $r . '_,';
+                    $r++;
+                }
+                $raid_in = substr($raid_in, 0, -1);
+                $raidsSQL .= "raid.pokemon_id NOT IN ( $raid_in )";
+            } else {
+                $raidsSQL .= "raid.pokemon_id IS NOT NULL";
+            }
+            $eggSQL = '';
+            if (count($reeids)) {
+                $egg_in = '';
+                $e = 1;
+                foreach ($reeids as $reeid) {
+                    $params[':reqry_' . $e . '_'] = $reeids;
+                    $egg_in .= ':reqry_' . $e . '_,';
+                    $e++;
+                }
+                $egg_in = substr($egg_in, 0, -1);
+                $eggSQL .= "level NOT IN ( $egg_in )";
+            } else {
+                $eggSQL .= "level IS NOT NULL";
+            }
+            $conds[] = "" . $eggSQL . "";
+            $conds[] = "" . $raidsSQL . "";
+        }
         if ($tstamp > 0) {
             $date = new \DateTime();
             $date->setTimezone(new \DateTimeZone('UTC'));
@@ -276,10 +308,10 @@ class RocketMap_MAD extends RocketMap
             $conds[] = "(is_ex_raid_eligible = 1)";
         }
 
-        return $this->query_gyms($conds, $params);
+        return $this->query_gyms($conds, $params, $raids, $gyms, $rbeids, $reeids);
     }
 
-    public function query_gyms($conds, $params)
+    public function query_gyms($conds, $params, $raids, $gyms, $rbeids, $reeids)
     {
         global $db;
 
@@ -345,8 +377,41 @@ class RocketMap_MAD extends RocketMap
                     }
                 }
             }
+            if ((!empty($raids) && $raids === 'true') && (!empty($gyms) && $gyms === 'true')) {
+                if (count($rbeids)) {
+                    foreach ($rbeids as $rbeid) {
+                        if ($rbeid == $gym["raid_pokemon_id"]) {
+                            $gym["raid_pokemon_id"] = null;
+                            $gym["raid_end"] = null;
+                            $gym["raid_start"] = null;
+                            $gym["raid_level"] = null;
+                            $gym["raid_pokemon_move_1"] = null;
+                            $gym["raid_pokemon_move_2"] = null;
+                            $gym["raid_pokemon_form"] = null;
+                            $gym["raid_pokemon_cp"] = null;
+                            $gym["raid_pokemon_gender"] = null;
+                            break;
+                        }
+                    }
+                }
+                if (count($reeids)) {
+                    foreach ($reeids as $reeid) {
+                        if ($rbeid == $gym["raid_pokemon_id"]) {
+                            $gym["raid_pokemon_id"] = null;
+                            $gym["raid_end"] = null;
+                            $gym["raid_start"] = null;
+                            $gym["raid_level"] = null;
+                            $gym["raid_pokemon_move_1"] = null;
+                            $gym["raid_pokemon_move_2"] = null;
+                            $gym["raid_pokemon_form"] = null;
+                            $gym["raid_pokemon_cp"] = null;
+                            $gym["raid_pokemon_gender"] = null;
+                            break;
+                        }
+                    }
+                }
+            }
             $data[] = $gym;
-
             unset($gyms[$i]);
             $i++;
         }
@@ -625,6 +690,12 @@ class RocketMap_MAD extends RocketMap
             $data = array();
             foreach ($pokestops as $pokestop) {
                 $data[] = $pokestop['incident_grunt_type'];
+            }
+        } elseif ($type === 'raidbosslist') {
+            $gyms = $db->query("SELECT distinct pokemon_id FROM raid WHERE pokemon_id > 0 AND end > UTC_TIMESTAMP() order by pokemon_id;")->fetchAll(\PDO::FETCH_ASSOC);
+            $data = array();
+            foreach ($gyms as $gym) {
+                $data[] = $gym['pokemon_id'];
             }
         }
         return $data;

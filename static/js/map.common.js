@@ -149,6 +149,16 @@ var StoreOptions = {
             default: maxRaidLevel,
             type: StoreTypes.Number
         },
+    'remember_exclude_raidboss':
+        {
+            default: hideRaidboss,
+            type: StoreTypes.JSON
+        },
+    'remember_exclude_raidegg':
+        {
+            default: hideRaidegg,
+            type: StoreTypes.JSON
+        },
     'showGyms':
         {
             default: enableGyms,

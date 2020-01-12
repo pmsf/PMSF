@@ -23,6 +23,7 @@ $oNeLat = !empty($_POST['oNeLat']) ? $_POST['oNeLat'] : 0;
 $oNeLng = !empty($_POST['oNeLng']) ? $_POST['oNeLng'] : 0;
 $lures = !empty($_POST['lures']) ? $_POST['lures'] : false;
 $rocket = !empty($_POST['rocket']) ? $_POST['rocket'] : false;
+$raids = !empty($_POST['raids']) ? $_POST['raids'] : false;
 $quests = !empty($_POST['quests']) ? $_POST['quests'] : false;
 $dustamount = isset($_POST['dustamount']) ? $_POST['dustamount'] : false;
 $reloaddustamount = !empty($_POST['reloaddustamount']) ? $_POST['reloaddustamount'] : false;
@@ -128,6 +129,10 @@ $qieids = array();
 $qireids = array();
 $geids = array();
 $greids = array();
+$rbeids = array();
+$rbreids = array();
+$reeids = array();
+$rereids = array();
 
 $debug['1_before_functions'] = microtime(true) - $timing['start'];
 
@@ -216,15 +221,34 @@ $debug['3_after_pokestops'] = microtime(true) - $timing['start'];
 
 global $noGyms, $noRaids;
 if (!$noGyms || !$noRaids) {
-    if ($d["lastgyms"] == "true") {
+    if ($d["lastgyms"] == "true" || $raids == "true") {
+        $gyms = $d["lastgyms"];
+        $rbeids = !empty($_POST['rbeids']) ? explode(",", $_POST['rbeids']) : array();
+        $reeids = !empty($_POST['reeids']) ? explode(",", $_POST['reeids']) : array();
         if ($lastgyms != "true") {
-            $d["gyms"] = $scanner->get_gyms($swLat, $swLng, $neLat, $neLng, $exEligible);
+            $d["gyms"] = $scanner->get_gyms($rbeids, $reeids, $swLat, $swLng, $neLat, $neLng, $exEligible, 0, 0, 0, 0, 0, $raids, $gyms);
         } else {
             if ($newarea) {
-                $d["gyms"] = $scanner->get_gyms($swLat, $swLng, $neLat, $neLng, $exEligible, 0, $oSwLat, $oSwLng, $oNeLat, $oNeLng);
+                $d["gyms"] = $scanner->get_gyms($rbeids, $reeids, $swLat, $swLng, $neLat, $neLng, $exEligible, 0, $oSwLat, $oSwLng, $oNeLat, $oNeLng, $raids, $gyms);
             } else {
-                $d["gyms"] = $scanner->get_gyms($swLat, $swLng, $neLat, $neLng, $exEligible, $timestamp);
+                $d["gyms"] = $scanner->get_gyms($rbeids, $reeids, $swLat, $swLng, $neLat, $neLng, $exEligible, $timestamp, 0, 0, 0, 0, $raids, $gyms);
             }
+        }
+        if (!empty($_POST['rbreids'])) {
+            $rbreids = !empty($_POST['rbreids']) ? array_unique(explode(",", $_POST['rbreids'])) : array();
+            $rbreidsDiff = array_diff($rbreids, $rbeids);
+            if (count($rbreidsDiff)) {
+                $d["gyms"] = array_merge($d["gyms"], $scanner->get_gyms($rbeids, $reeids, $swLat, $swLng, $neLat, $neLng, $exEligible, 0, $oSwLat, $oSwLng, $oNeLat, $oNeLng, $raids, $gyms));
+            }
+            $d["rbreids"] = $rbreids;
+        }
+        if (!empty($_POST['rereids'])) {
+            $rereids = !empty($_POST['rereids']) ? array_unique(explode(",", $_POST['rereids'])) : array();
+            $rereidsDiff = array_diff($rereids, $reeids);
+            if (count($rereidsDiff)) {
+                $d["gyms"] = array_merge($d["gyms"], $scanner->get_gyms($rbeids, $reeids, $swLat, $swLng, $neLat, $neLng, $exEligible, 0, $oSwLat, $oSwLng, $oNeLat, $oNeLng, $raids, $gyms));
+            }
+            $d["rereids"] = $rereids;
         }
     }
 }
