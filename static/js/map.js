@@ -3029,18 +3029,20 @@ function clearStaleMarkers() {
             delete mapData.pokemons[key]
         }
     })
-    $.each(mapData.gyms, function (key, value) {
-        if ((((excludedRaidboss.indexOf(Number(mapData.gyms[key]['raid_pokemon_id'])) > -1) && mapData.gyms[key]['raid_pokemon_id'] > 0) && (mapData.gyms[key]['raid_start'] < new Date().getTime() && mapData.gyms[key]['raid_end'] > new Date().getTime())) || ((excludedRaidegg.indexOf(Number(mapData.gyms[key]['raid_level'])) > -1) && mapData.gyms[key]['raid_start'] > new Date().getTime()) || ((excludedRaidegg.indexOf(Number(mapData.gyms[key]['raid_level']) + 5) > -1) && (mapData.gyms[key]['raid_start'] < new Date().getTime() && (mapData.gyms[key]['raid_pokemon_id'] <= 0)))) {
-            if (mapData.gyms[key].marker.rangeCircle) {
-                markers.removeLayer(mapData.gyms[key].marker.rangeCircle)
-                markersnotify.removeLayer(mapData.gyms[key].marker.rangeCircle)
-                delete mapData.gyms[key].marker.rangeCircle
+    if (!Store.get('showGyms') && Store.get('showRaids')) {
+        $.each(mapData.gyms, function (key, value) {
+            if ((((excludedRaidboss.indexOf(Number(mapData.gyms[key]['raid_pokemon_id'])) > -1) && mapData.gyms[key]['raid_pokemon_id'] > 0) && (mapData.gyms[key]['raid_start'] < new Date().getTime() && mapData.gyms[key]['raid_end'] > new Date().getTime())) || ((excludedRaidegg.indexOf(Number(mapData.gyms[key]['raid_level'])) > -1) && mapData.gyms[key]['raid_start'] > new Date().getTime()) || ((excludedRaidegg.indexOf(Number(mapData.gyms[key]['raid_level']) + 5) > -1) && (mapData.gyms[key]['raid_start'] < new Date().getTime() && (mapData.gyms[key]['raid_pokemon_id'] === 0)))) {
+                if (mapData.gyms[key].marker.rangeCircle) {
+                    markers.removeLayer(mapData.gyms[key].marker.rangeCircle)
+                    markersnotify.removeLayer(mapData.gyms[key].marker.rangeCircle)
+                    delete mapData.gyms[key].marker.rangeCircle
+                }
+                markers.removeLayer(mapData.gyms[key].marker)
+                markersnotify.removeLayer(mapData.gyms[key].marker)
+                delete mapData.gyms[key]
             }
-            markers.removeLayer(mapData.gyms[key].marker)
-            markersnotify.removeLayer(mapData.gyms[key].marker)
-            delete mapData.gyms[key]
-        }
-    })
+        })
+    }
 }
 
 function showInBoundsMarkers(markersInput, type) {
@@ -5214,6 +5216,43 @@ function processGyms(i, item) {
     if (Store.get('showGyms') && !Store.get('showRaids')) {
         item.raid_end = 0
         item.raid_level = item.raid_pokemon_cp = item.raid_pokemon_id = item.raid_pokemon_move_1 = item.raid_pokemon_move_1 = item.raid_pokemon_name = null
+    }
+
+    if (Store.get('showGyms') && Store.get('showRaids')) {
+        var time = new Date().getTime()
+        // Remove raidbosses from gym
+        if (excludedRaidboss.indexOf(Number(item['raid_pokemon_id'])) > -1) {
+            if (item['raid_pokemon_id'] > 0) {
+                if (item['raid_start'] < time) {
+                    if (item['raid_end'] > time) {
+                        item.raid_end = 0
+                        item.raid_level = item.raid_pokemon_cp = item.raid_pokemon_id = item.raid_pokemon_move_1 = item.raid_pokemon_move_1 = item.raid_pokemon_name = null
+                    }
+                }
+            }
+        }
+        // Remove Raid eggs from gym
+        if (excludedRaidegg.indexOf(Number(item['raid_level'])) > -1) {
+            if (item['raid_pokemon_id'] <= 0) {
+                if (item['raid_start'] > time) {
+                    if (item['raid_end'] > time) {
+                        item.raid_end = 0
+                        item.raid_level = item.raid_pokemon_cp = item.raid_pokemon_id = item.raid_pokemon_move_1 = item.raid_pokemon_move_1 = item.raid_pokemon_name = null
+                    }
+                }
+            }
+        }
+        // Remove Broken Raid eggs from gym
+        if (excludedRaidegg.indexOf(Number(item['raid_level']) + 5) > -1) {
+            if (item['raid_pokemon_id'] === 0) {
+                if (item['raid_start'] < time) {
+                    if (item['raid_end'] > time) {
+                        item.raid_end = 0
+                        item.raid_level = item.raid_pokemon_cp = item.raid_pokemon_id = item.raid_pokemon_move_1 = item.raid_pokemon_move_1 = item.raid_pokemon_name = null
+                    }
+                }
+            }
+        }
     }
 
     if (!noActiveRaids && Store.get('activeRaids') && item.raid_end > Date.now()) {

@@ -265,7 +265,7 @@ class RocketMap_MAD extends RocketMap
         if (!$noBoundaries) {
             $conds[] = "(ST_WITHIN(point(latitude,longitude),ST_GEOMFROMTEXT('POLYGON(( " . $boundaries . " ))')))";
         }
-        if (!empty($raids) && $raids === 'true') {
+        if ((!empty($raids) && $raids === 'true') && (!empty($gyms) && $gyms === 'false')) {
             $raidsSQL = '';
             if (count($rbeids)) {
                 $raid_in = '';
@@ -308,10 +308,10 @@ class RocketMap_MAD extends RocketMap
             $conds[] = "(is_ex_raid_eligible = 1)";
         }
 
-        return $this->query_gyms($conds, $params);
+        return $this->query_gyms($conds, $params, $raids, $gyms, $rbeids, $reeids);
     }
 
-    public function query_gyms($conds, $params)
+    public function query_gyms($conds, $params, $raids, $gyms, $rbeids, $reeids)
     {
         global $db;
 
@@ -377,8 +377,41 @@ class RocketMap_MAD extends RocketMap
                     }
                 }
             }
+            if ((!empty($raids) && $raids === 'true') && (!empty($gyms) && $gyms === 'true')) {
+                if (count($rbeids)) {
+                    foreach ($rbeids as $rbeid) {
+                        if ($rbeid == $gym["raid_pokemon_id"]) {
+                            $gym["raid_pokemon_id"] = null;
+                            $gym["raid_end"] = null;
+                            $gym["raid_start"] = null;
+                            $gym["raid_level"] = null;
+                            $gym["raid_pokemon_move_1"] = null;
+                            $gym["raid_pokemon_move_2"] = null;
+                            $gym["raid_pokemon_form"] = null;
+                            $gym["raid_pokemon_cp"] = null;
+                            $gym["raid_pokemon_gender"] = null;
+                            break;
+                        }
+                    }
+                }
+                if (count($reeids)) {
+                    foreach ($reeids as $reeid) {
+                        if ($rbeid == $gym["raid_pokemon_id"]) {
+                            $gym["raid_pokemon_id"] = null;
+                            $gym["raid_end"] = null;
+                            $gym["raid_start"] = null;
+                            $gym["raid_level"] = null;
+                            $gym["raid_pokemon_move_1"] = null;
+                            $gym["raid_pokemon_move_2"] = null;
+                            $gym["raid_pokemon_form"] = null;
+                            $gym["raid_pokemon_cp"] = null;
+                            $gym["raid_pokemon_gender"] = null;
+                            break;
+                        }
+                    }
+                }
+            }
             $data[] = $gym;
-
             unset($gyms[$i]);
             $i++;
         }

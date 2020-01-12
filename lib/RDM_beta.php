@@ -595,7 +595,7 @@ class RDM_beta extends RDM
             if ((!empty($raids) && $raids === 'true') && (!empty($gyms) && $gyms === 'true')) {
                 if (count($rbeids)) {
                     foreach ($rbeids as $rbeid) {
-			if ($rbeid == $gym["raid_pokemon_id"]) {
+                        if ($rbeid == $gym["raid_pokemon_id"]) {
                             $gym["raid_pokemon_id"] = null;
                             $gym["raid_end"] = null;
                             $gym["raid_start"] = null;
@@ -608,10 +608,10 @@ class RDM_beta extends RDM
                             break;
                         }
                     }
-		}
+                }
                 if (count($reeids)) {
                     foreach ($reeids as $reeid) {
-			if ($rbeid == $gym["raid_pokemon_id"]) {
+                        if ($rbeid == $gym["raid_pokemon_id"]) {
                             $gym["raid_pokemon_id"] = null;
                             $gym["raid_end"] = null;
                             $gym["raid_start"] = null;
@@ -624,7 +624,7 @@ class RDM_beta extends RDM
                             break;
                         }
                     }
-		}
+                }
             }
             $data[] = $gym;
             unset($gyms[$i]);
