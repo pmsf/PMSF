@@ -1509,30 +1509,40 @@ if (!$noLoadingScreen) {
         <?php
         if (($noNativeLogin === false || $noDiscordLogin === false) && !empty($_SESSION['user']->id)) {
             ?>
-            <div>
-                <center>
-                    <button class="settings"
-                            onclick="document.location.href='logout.php'">
-                        <i class="fas fa-sign-out-alt" aria-hidden="true"></i> <?php echo i8ln('Logout'); ?>
-                    </button>
-                </center>
-            </div>
-            <div><center><p>
-                <?php
-                if ($manualAccessLevel && $noDiscordLogin) {
-                    $time = date("Y-m-d", $_SESSION['user']->expire_timestamp);
-                    if ($_SESSION['user']->expire_timestamp > time()) {
-                        echo "<span style='color: green;'>" . i8ln('Membership expires on') . " {$time}</span>";
-                    } else {
-                        echo "<span style='color: red;'>" . i8ln('Membership expired on') . " {$time}</span>";
-                    }
-                } ?>
-            </p></center></div>
-            <div><center><p>
+            <div><center>
+                <button class="settings" onclick="document.location.href='logout.php'">
+                    <i class="fas fa-sign-out-alt" aria-hidden="true"></i> <?php echo i8ln('Logout'); ?>
+                </button>
+            </center></div>
             <?php
-            echo i8ln('Logged in as') . ': ' . $_SESSION['user']->user . "<br>"; ?>
-            </p></center></div>
+        } ?>
+        
+        <div class="form-control switch-container" style="width:40%;left:32%;top:10px;position:relative;">
+            <select name="language-switch" onchange="location = this.value;">
+                <option selected>select language</option>
+                <option value="?lang=en">English</option>
+                <option value="?lang=de">German</option>
+                <option value="?lang=fr">French</option>
+                <option value="?lang=it">Italian</option>
+                <option value="?lang=pl">Polish</option>
+                <option value="?lang=sp">Spanish</option>
+            </select>
+        </div>
+        <br><br>
+
         <?php
+        if (($noNativeLogin === false || $noDiscordLogin === false) && !empty($_SESSION['user']->id)) {
+            if ($manualAccessLevel && $noDiscordLogin) {
+                $time = date("Y-m-d", $_SESSION['user']->expire_timestamp);
+                echo '<div><center><p>';
+                if ($_SESSION['user']->expire_timestamp > time()) {
+                    echo "<span style='color: green;'>" . i8ln('Membership expires on') . " {$time}</span>";
+                } else {
+                    echo "<span style='color: red;'>" . i8ln('Membership expired on') . " {$time}</span>";
+                }
+                echo '</p></center></div>';
+            }
+            echo '<div><center><p>' . i8ln('Logged in as') . ': ' . $_SESSION['user']->user . '</p></center></div><br>';
         }
         ?>
     </nav>
