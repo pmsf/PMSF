@@ -266,19 +266,19 @@ class RocketMap_MAD extends RocketMap
             $conds[] = "(ST_WITHIN(point(latitude,longitude),ST_GEOMFROMTEXT('POLYGON(( " . $boundaries . " ))')))";
         }
         if ((!empty($raids) && $raids === 'true') && (!empty($gyms) && $gyms === 'false')) {
-            $raidsSQL = '';
+            $raidSQL = '';
             if (count($rbeids)) {
                 $raid_in = '';
                 $r = 1;
                 foreach ($rbeids as $rbeid) {
-                    $params[':rbqry_' . $r . '_'] = $rbeids;
-                    $raid_in .= ':rbqry_' . $r . '_,';
+                    $params[':rbqry_' . $r . "_"] = $rbeid;
+                    $raid_in .= ':rbqry_' . $r . "_,";
                     $r++;
                 }
                 $raid_in = substr($raid_in, 0, -1);
-                $raidsSQL .= "raid.pokemon_id NOT IN ( $raid_in )";
+                $raidSQL .= "raid.pokemon_id NOT IN ( $raid_in )";
             } else {
-                $raidsSQL .= "raid.pokemon_id IS NOT NULL";
+                $raidSQL .= "raid.pokemon_id IS NOT NULL";
             }
             $eggSQL = '';
             if (count($reeids)) {
@@ -290,12 +290,11 @@ class RocketMap_MAD extends RocketMap
                     $e++;
                 }
                 $egg_in = substr($egg_in, 0, -1);
-                $eggSQL .= "level NOT IN ( $egg_in )";
+                $eggSQL .= "raid.pokemon_id IS NULL AND raid.level NOT IN ( $egg_in )";
             } else {
-                $eggSQL .= "level IS NOT NULL";
+                $eggSQL .= "raid.pokemon_id IS NULL AND raid.level IS NOT NULL";
             }
-            $conds[] = "" . $eggSQL . "";
-            $conds[] = "" . $raidsSQL . "";
+            $conds[] = "(" . $raidSQL . " OR " . $eggSQL . ")";
         }
         if ($tstamp > 0) {
             $date = new \DateTime();
@@ -315,31 +314,31 @@ class RocketMap_MAD extends RocketMap
     {
         global $db;
 
-        $query = "SELECT gym.gym_id, 
-        latitude, 
-        longitude, 
-        slots_available, 
-        Unix_timestamp(Convert_tz(last_modified, '+00:00', @@global.time_zone)) AS last_modified, 
-        Unix_timestamp(Convert_tz(gym.last_scanned, '+00:00', @@global.time_zone)) AS last_scanned, 
-        team_id, 
+        $query = "SELECT gym.gym_id,
+        latitude,
+        longitude,
+        slots_available,
+        Unix_timestamp(Convert_tz(last_modified, '+00:00', @@global.time_zone)) AS last_modified,
+        Unix_timestamp(Convert_tz(gym.last_scanned, '+00:00', @@global.time_zone)) AS last_scanned,
+        team_id,
         name,
         url,
         is_ex_raid_eligible AS park,
-        level AS raid_level, 
-        raid.pokemon_id AS raid_pokemon_id, 
-        raid.form AS raid_pokemon_form, 
+        raid.level AS raid_level,
+        raid.pokemon_id AS raid_pokemon_id,
+        raid.form AS raid_pokemon_form,
         raid.costume AS raid_pokemon_costume,
         raid.gender AS raid_pokemon_gender,
-        cp AS raid_pokemon_cp, 
-        move_1 AS raid_pokemon_move_1, 
-        move_2 AS raid_pokemon_move_2, 
-        Unix_timestamp(Convert_tz(start, '+00:00', @@global.time_zone)) AS raid_start, 
-        Unix_timestamp(Convert_tz(end, '+00:00', @@global.time_zone)) AS raid_end 
-        FROM gym 
-        LEFT JOIN gymdetails 
-        ON gym.gym_id = gymdetails.gym_id 
-        LEFT JOIN raid 
-        ON gym.gym_id = raid.gym_id 
+        raid.cp AS raid_pokemon_cp,
+        raid.move_1 AS raid_pokemon_move_1,
+        raid.move_2 AS raid_pokemon_move_2,
+        Unix_timestamp(Convert_tz(start, '+00:00', @@global.time_zone)) AS raid_start,
+        Unix_timestamp(Convert_tz(end, '+00:00', @@global.time_zone)) AS raid_end
+        FROM gym
+        LEFT JOIN gymdetails
+        ON gym.gym_id = gymdetails.gym_id
+        LEFT JOIN raid
+        ON gym.gym_id = raid.gym_id
         WHERE :conditions";
 
         $query = str_replace(":conditions", join(" AND ", $conds), $query);
