@@ -1237,15 +1237,19 @@ if (!$noLoadingScreen) {
             ?>
             <?php
             if (! $noNotifyPokemon) {
-                echo '<div class="form-control hide-select-2">
+                ?>
+                <div class="form-control hide-select-2">
                     <label for="notify-pokemon">
-                        <h3>' . i8ln('Notify of Pokémon') . '</h3><a href="#" class="select-all">' . i8ln('All') . '</a>/<a href="#" class="hide-all">' . i8ln('None') . '</a>
+                        <h3><?php echo i8ln('Notify of Pokémon'); ?></h3>
                         <div style="max-height:165px;overflow-y:auto;">
-                            <input id="notify-pokemon" type="text" readonly="true"/>';
-                pokemonFilterImages($noPokemonNumbers, '', [], 4);
-                echo '</div>
+                            <input id="notify-pokemon" type="text" readonly="true"/>
+                            <?php pokemonFilterImages($noPokemonNumbers, '', [], 4); ?>
+                        </div>
+                        <a href="#" class="select-all notify-pokemon-button"><?php echo i8ln('All'); ?></a>
+                        <a href="#" class="hide-all notify-pokemon-button"><?php echo i8ln('None'); ?></a>
                     </label>
-                </div>';
+                </div>
+                <?php
             }
             ?>
             <?php

@@ -1141,7 +1141,7 @@ form#search-places {
   margin-bottom: 0px;
 }
 
-   .settings {
+.settings {
     text-transform: uppercase;
     font-family: 'Lato', sans-serif;
     font-size: 11px;
@@ -1149,3 +1149,18 @@ form#search-places {
     text-decoration: none;
     padding: 10px 30px;
 } 
+
+a.notify-pokemon-button {
+    width: 50%;
+    float: left;
+    background: #3b3b3b;
+    text-align: center;
+    padding: 10px;
+    color: white;
+    text-transform: uppercase;
+    text-decoration: none;
+    border-right:1px solid #FFF;
+    &:last-child{
+      border-right:0;
+    }
+}
