@@ -8,7 +8,7 @@
   "Options": "Opcje",
   "Marker Settings": "Ustawienia Znaczników",
   "Stats": "Statystyki",
-  "Only Active Raids": "Tylko Aktywne Raidy",
+  "Only Active Raids": "Tylko Wyklute Raidy",
   "Minimum Raid Level": "Min. Poziom Raidu",
   "Maximum Raid Level": "Max. Poziom Raidu",
   "Gyms": "Gymy",
@@ -311,5 +311,12 @@
   "Loading":"Wczytywanie",
   "Hide Raidboss":"Ukryj Pokemony",
   "Hide Raidegg":"Ukryj Raidy",
-  "Search Level":"Wyszukaj poziom"
+  "Search Level":"Wyszukaj poziom",
+  "select language":"Wybierz język",
+  "English":"English",
+  "German":"Deutsch",
+  "French":"Français",
+  "Italian":"Italiano",
+  "Polish":"Polski",
+  "Spanish":"Español"
 }
