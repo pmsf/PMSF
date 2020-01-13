@@ -1240,7 +1240,7 @@ if (!$noLoadingScreen) {
                 ?>
                 <div class="form-control hide-select-2">
                     <label for="notify-pokemon">
-                        <h3><?php echo i8ln('Notify of Pokémon'); ?></h3>
+                        <h3 class="notify-pokemon-tab"><?php echo i8ln('Notify of Pokémon'); ?></h3>
                         <div style="max-height:165px;overflow-y:auto;">
                             <input id="notify-pokemon" type="text" readonly="true"/>
                             <?php pokemonFilterImages($noPokemonNumbers, '', [], 4); ?>
