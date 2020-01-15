@@ -56,6 +56,7 @@ $blockIframe = true;                                                // Block you
 $title = "POGOmap";                                                 // Title to display in title bar
 $headerTitle = "POGOmap";                                           // Title to display in header
 $locale = "en";                                                     // Display language
+$noLocaleSelection = false;
 $raidmapLogo = '';                                                  // Upload logo to custom folder, leave '' for empty ( $raidmapLogo = 'custom/logo.png'; )
 
 /* Loading screen */

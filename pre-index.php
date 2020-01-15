@@ -1516,20 +1516,23 @@ if (!$noLoadingScreen) {
             </center></div>
             <?php
         } ?>
-        
-        <div class="form-control switch-container" style="width:40%;left:32%;top:10px;position:relative;">
-            <select name="language-switch" onchange="location = this.value;">
-                <option selected><?php echo i8ln('select language'); ?></option>
-                <option value="?lang=en"><?php echo i8ln('English'); ?></option>
-                <option value="?lang=de"><?php echo i8ln('German'); ?></option>
-                <option value="?lang=fr"><?php echo i8ln('French'); ?></option>
-                <option value="?lang=it"><?php echo i8ln('Italian'); ?></option>
-                <option value="?lang=pl"><?php echo i8ln('Polish'); ?></option>
-                <option value="?lang=sp"><?php echo i8ln('Spanish'); ?></option>
-            </select>
-        </div>
-        <br><br>
-
+        <?php
+        if (!$noLocaleSelection) {
+            ?>
+            <div class="form-control switch-container" style="width:40%;left:32%;top:10px;position:relative;">
+                <select name="language-switch" onchange="location = this.value;">
+                    <option selected><?php echo i8ln('select language'); ?></option>
+                    <option value="?lang=en"><?php echo i8ln('English'); ?></option>
+                    <option value="?lang=de"><?php echo i8ln('German'); ?></option>
+                    <option value="?lang=fr"><?php echo i8ln('French'); ?></option>
+                    <option value="?lang=it"><?php echo i8ln('Italian'); ?></option>
+                    <option value="?lang=pl"><?php echo i8ln('Polish'); ?></option>
+                    <option value="?lang=sp"><?php echo i8ln('Spanish'); ?></option>
+                </select>
+            </div>
+            <br><br>
+            <?php
+        }?>
         <?php
         if (($noNativeLogin === false || $noDiscordLogin === false) && !empty($_SESSION['user']->id)) {
             if ($manualAccessLevel && $noDiscordLogin) {

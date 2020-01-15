@@ -79,7 +79,7 @@ $blockIframe = true;                                                // Block you
 $title = "PMSF Alt";                                                // Title to display in title bar
 $headerTitle = "POGOmap";                                           // Title to display in header
 $locale = "en";                                                     // Display language
-
+$noLocaleSelection = false;
 /* Loading screen */
 
 $noLoadingScreen = false;                                           // show loading animation while main page loads.
