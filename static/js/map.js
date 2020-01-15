@@ -7181,7 +7181,7 @@ $(function () {
         dustamount = $(this).val()
         Store.set('showDustAmount', dustamount)
         if (dustamount === '0') {
-            $('#dustvalue').text('Off')
+            $('#dustvalue').text(i8ln('Off'))
             setTimeout(function () { updateMap() }, 2000)
         } else {
             $('#dustvalue').text(i8ln('above') + ' ' + dustamount)
