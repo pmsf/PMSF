@@ -98,7 +98,7 @@ if (strtolower($map) === "rdm") {
     <?php
     function pokemonFilterImages($noPokemonNumbers, $onClick = '', $pokemonToExclude = array(), $num = 0)
     {
-        global $mons, $copyrightSafe, $iconRepository;
+        global $mons, $copyrightSafe, $iconRepository, $numberOfPokemon;
         if (empty($mons)) {
             $json = file_get_contents('static/dist/data/pokemon.min.json');
             $mons = json_decode($json, true);
@@ -114,7 +114,7 @@ if (strtolower($map) === "rdm") {
             }
 
             if (! in_array($k, $pokemonToExclude)) {
-                if ($k > 649) {
+                if ($k > $numberOfPokemon) {
                     break;
                 }
                 if ($k <= 9) {
