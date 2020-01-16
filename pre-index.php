@@ -1402,7 +1402,7 @@ if (!$noLoadingScreen) {
             <?php
             if (! $noMultipleRepos && ! $copyrightSafe) {
                 echo '<div class="form-control switch-container">
-                <h3>Icon Style</h3>';
+                <h3>' . i8ln('Icon Style') . '</h3>';
                 $count = sizeof($iconRepos);
                 if ($count > 0) {
                     echo '<div><select name="icon-style" id="icon-style">';
