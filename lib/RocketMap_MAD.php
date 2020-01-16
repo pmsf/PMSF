@@ -660,15 +660,6 @@ class RocketMap_MAD extends RocketMap
         return $data;
     }
 
-    public function get_scanlocation($swLat, $swLng, $neLat, $neLng, $tstamp = 0, $oSwLat = 0, $oSwLng = 0, $oNeLat = 0, $oNeLng = 0)
-    {
-        $conds = array();
-        $params = array();
-        $conds[] = "origin is not :null";
-        $params[':null'] = null;
-        return $this->query_scanlocation($conds, $params);
-    }
-
     public function generated_exclude_list($type)
     {
         global $db;
@@ -699,23 +690,49 @@ class RocketMap_MAD extends RocketMap
         }
         return $data;
     }
+
+    public function get_scanlocation($swLat, $swLng, $neLat, $neLng, $tstamp = 0, $oSwLat = 0, $oSwLng = 0, $oNeLat = 0, $oNeLng = 0)
+    {
+        $conds = array();
+        $params = array();
+        $conds[] = "x(currentPos) > :swLat AND y(currentPos) > :swLng AND x(currentPos) < :neLat AND y(currentPos) < :neLng";
+        $params[':swLat'] = $swLat;
+        $params[':swLng'] = $swLng;
+        $params[':neLat'] = $neLat;
+        $params[':neLng'] = $neLng;
+        if ($oSwLat != 0) {
+            $conds[] = "NOT (x(currentPos) > :oswLat AND y(currentPos) > :oswLng AND x(currentPos) < :oneLat AND y(currentPos) < :oneLng)";
+            $params[':oswLat'] = $oSwLat;
+            $params[':oswLng'] = $oSwLng;
+            $params[':oneLat'] = $oNeLat;
+            $params[':oneLng'] = $oNeLng;
+        }
+        global $noBoundaries, $boundaries;
+        if (!$noBoundaries) {
+            $conds[] = "(ST_WITHIN(currentPos),ST_GEOMFROMTEXT('POLYGON(( " . $boundaries . " ))'))";
+        }
+        return $this->query_scanlocation($conds, $params);
+    }
+
     private function query_scanlocation($conds, $params)
     {
         global $db;
-        $query = "SELECT currentPos AS latLon,
+        $query = "SELECT x(currentPos) AS latitude,
+        y(currentPos) AS longitude,
         Unix_timestamp(lastProtoDateTime) AS last_seen,
-        origin AS uuid,
-        routemanager AS instance_name
-        FROM trs_status
+        dev.name AS uuid,
+        sa.name AS instance_name
+        FROM trs_status trs
+        INNER JOIN settings_device dev ON dev.device_id = trs.device_id
+        LEFT JOIN settings_area sa ON sa.area_id = trs.area_id
         WHERE :conditions";
         $query = str_replace(":conditions", join(" AND ", $conds), $query);
         $scanlocations = $db->query($query, $params)->fetchAll(\PDO::FETCH_ASSOC);
         $data = array();
         $i = 0;
         foreach ($scanlocations as $scanlocation) {
-            $parts = explode(", ", $scanlocation["latLon"]);
-            $scanlocation["latitude"] = floatval($parts['0']);
-            $scanlocation["longitude"] = floatval($parts['1']);
+            $scanlocation["latitude"] = floatval($scanlocation["latitude"]);
+            $scanlocation["longitude"] = floatval($scanlocation["longitude"]);
             $data[] = $scanlocation;
             unset($scanlocations[$i]);
             $i++;
