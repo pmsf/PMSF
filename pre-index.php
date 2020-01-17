@@ -1382,7 +1382,7 @@ if (!$noLoadingScreen) {
                 echo '<div class="form-control switch-container">
                 <h3> ' . i8ln('BETA Dark Mode') . ' </h3>
                 <div class="onoffswitch">
-                    <input id = "dark-mode-switch" type = "checkbox" name = "dark-mode-switch" class="onoffswitch-checkbox"/>
+                    <input id="dark-mode-switch" type="checkbox" name="dark-mode-switch" class="onoffswitch-checkbox"/>
                     <label class="onoffswitch-label" for="dark-mode-switch">
                         <span class="switch-label" data-on="On" data-off="Off"></span>
                         <span class="switch-handle"></span>
@@ -2294,6 +2294,7 @@ if (!$noLoadingScreen) {
     var noRaids = <?php echo $noRaids === true ? 'true' : 'false' ?>;
     var letItSnow = <?php echo $letItSnow === true ? 'true' : 'false' ?>;
     var makeItBang = <?php echo $makeItBang === true ? 'true' : 'false' ?>;
+    var noDarkMode = <?php echo $noDarkMode === true ? 'true' : 'false' ?>;
     var enableDarkMode = <?php echo $noDarkMode ? 'false' : $enableDarkMode ?>;
 </script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js"></script>

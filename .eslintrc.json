@@ -210,6 +210,8 @@
     "noTeams": true,
     "noOpenSpot": true,
     "noMinMaxFreeSlots": true,
-    "noLastScan": true
+    "noLastScan": true,
+    "noDarkMode": true,
+    "enableDarkMode": true
   }
 }

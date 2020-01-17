@@ -269,7 +269,7 @@ if (forcedTileServer) {
 if (noRaids && Store.get('showRaids')) {
     Store.set('showRaids', false)
 }
-if (Store.get('darkMode')) {
+if (!noDarkMode && Store.get('darkMode')) {
     enableDarkMode()
 }
 function previewPoiImage(event) { // eslint-disable-line no-unused-vars
