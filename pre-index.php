@@ -1484,7 +1484,7 @@ if (!$noLoadingScreen) {
         <div>
             <center>
                 <button class="settings"
-                        onclick="confirm('Are you sure you want to reset settings to default values?') ? (localStorage.clear(), window.location.reload()) : false">
+                        onclick="confirm(' <?php echo i8ln('Are you sure you want to reset settings to default values?') ?>') ? (localStorage.clear(), window.location.reload()) : false">
                     <i class="fas fa-sync-alt" aria-hidden="true"></i> <?php echo i8ln('Reset Settings') ?>
                 </button>
             </center>
