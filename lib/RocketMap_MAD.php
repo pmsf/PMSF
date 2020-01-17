@@ -695,13 +695,13 @@ class RocketMap_MAD extends RocketMap
     {
         $conds = array();
         $params = array();
-        $conds[] = "x(currentPos) > :swLat AND y(currentPos) > :swLng AND x(currentPos) < :neLat AND y(currentPos) < :neLng";
+        $conds[] = "ST_X(currentPos) > :swLat AND ST_Y(currentPos) > :swLng AND ST_X(currentPos) < :neLat AND ST_Y(currentPos) < :neLng";
         $params[':swLat'] = $swLat;
         $params[':swLng'] = $swLng;
         $params[':neLat'] = $neLat;
         $params[':neLng'] = $neLng;
         if ($oSwLat != 0) {
-            $conds[] = "NOT (x(currentPos) > :oswLat AND y(currentPos) > :oswLng AND x(currentPos) < :oneLat AND y(currentPos) < :oneLng)";
+            $conds[] = "NOT (ST_X(currentPos) > :oswLat AND ST_Y(currentPos) > :oswLng AND ST_X(currentPos) < :oneLat AND ST_Y(currentPos) < :oneLng)";
             $params[':oswLat'] = $oSwLat;
             $params[':oswLng'] = $oSwLng;
             $params[':oneLat'] = $oNeLat;
