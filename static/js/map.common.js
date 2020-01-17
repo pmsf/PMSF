@@ -433,6 +433,11 @@ var StoreOptions = {
         {
             default: 'default',
             type: StoreTypes.String
+        },
+    'darkMode':
+        {
+            default: enableDarkMode,
+            type: StoreTypes.Boolean
         }
 }
 

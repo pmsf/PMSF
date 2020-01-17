@@ -47,7 +47,7 @@
 // @import 'components/overlay';
 
 // Layout.
-
+@import 'abstracts/variables';
 @import 'layout/header';
 @import 'layout/nav';
 @import 'layout/stats';
@@ -64,5 +64,6 @@
 @import 'layout/pokestop';
 @import 'layout/poi';
 @import 'layout/nest';
+@import 'layout/dark';
 @import 'layout/snow';
 @import 'layout/fireworks';
