@@ -1,5 +1,15 @@
 .dark {
-  #nav {
-    background: $background-color-dark !important;
-  }
+    #nav {
+        background: $background-color-dark !important;
+    }
+    .leaflet-popup-content-wrapper {
+        background: $popup-color-dark;
+        color: $text-color-dark;
+    }
+    .leaflet-popup-tip {
+        background: $popup-color-dark;
+    }
+    .leaflet-popup-content-wrapper {
+        color: $text-color-dark;
+    }
 }
