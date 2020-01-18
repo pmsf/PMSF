@@ -695,13 +695,13 @@ class RocketMap_MAD extends RocketMap
     {
         $conds = array();
         $params = array();
-        $conds[] = "ST_X(currentPos) > :swLat AND ST_Y(currentPos) > :swLng AND ST_X(currentPos) < :neLat AND ST_Y(currentPos) < :neLng";
+        $conds[] = "ST_X(currentPos_raw) > :swLat AND ST_Y(currentPos_raw) > :swLng AND ST_X(currentPos_raw) < :neLat AND ST_Y(currentPos_raw) < :neLng";
         $params[':swLat'] = $swLat;
         $params[':swLng'] = $swLng;
         $params[':neLat'] = $neLat;
         $params[':neLng'] = $neLng;
         if ($oSwLat != 0) {
-            $conds[] = "NOT (ST_X(currentPos) > :oswLat AND ST_Y(currentPos) > :oswLng AND ST_X(currentPos) < :oneLat AND ST_Y(currentPos) < :oneLng)";
+            $conds[] = "NOT (ST_X(currentPos_raw) > :oswLat AND ST_Y(currentPos_raw) > :oswLng AND ST_X(currentPos_raw) < :oneLat AND ST_Y(currentPos_raw) < :oneLng)";
             $params[':oswLat'] = $oSwLat;
             $params[':oswLng'] = $oSwLng;
             $params[':oneLat'] = $oNeLat;
@@ -709,7 +709,11 @@ class RocketMap_MAD extends RocketMap
         }
         global $noBoundaries, $boundaries;
         if (!$noBoundaries) {
-            $conds[] = "(ST_WITHIN(currentPos),ST_GEOMFROMTEXT('POLYGON(( " . $boundaries . " ))'))";
+            $conds[] = "(ST_WITHIN(currentPos_raw),ST_GEOMFROMTEXT('POLYGON(( " . $boundaries . " ))'))";
+        }
+        global $hideDeviceAfterMinutes;
+        if ($hideDeviceAfterMinutes > 0) {
+            $conds[] = "lastProtoDateTime > UNIX_TIMESTAMP( NOW() - INTERVAL " . $hideDeviceAfterMinutes . " MINUTE)";
         }
         return $this->query_scanlocation($conds, $params);
     }
@@ -717,14 +721,12 @@ class RocketMap_MAD extends RocketMap
     private function query_scanlocation($conds, $params)
     {
         global $db;
-        $query = "SELECT x(currentPos) AS latitude,
-        y(currentPos) AS longitude,
-        Unix_timestamp(lastProtoDateTime) AS last_seen,
-        dev.name AS uuid,
-        sa.name AS instance_name
-        FROM trs_status trs
-        INNER JOIN settings_device dev ON dev.device_id = trs.device_id
-        LEFT JOIN settings_area sa ON sa.area_id = trs.area_id
+        $query = "SELECT ST_X(currentPos_raw) AS latitude,
+        ST_Y(currentPos_raw) AS longitude,
+        lastProtoDateTime AS last_seen,
+        name AS uuid,
+        rmname AS instance_name
+        FROM v_trs_status
         WHERE :conditions";
         $query = str_replace(":conditions", join(" AND ", $conds), $query);
         $scanlocations = $db->query($query, $params)->fetchAll(\PDO::FETCH_ASSOC);
