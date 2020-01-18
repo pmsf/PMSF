@@ -6,7 +6,7 @@
 
 //======================================================================
 // PMSF - DEFAULT CONFIG FILE
-// https://github.com/whitewillem/PMSF
+// https://github.com/pmsf/PMSF
 //======================================================================
 if (!isset($_SESSION)) {
     session_start();
