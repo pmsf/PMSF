@@ -711,6 +711,10 @@ class RocketMap_MAD extends RocketMap
         if (!$noBoundaries) {
             $conds[] = "(ST_WITHIN(currentPos_raw),ST_GEOMFROMTEXT('POLYGON(( " . $boundaries . " ))'))";
         }
+        global $hideDeviceAfterMinutes;
+        if ($hideDeviceAfterMinutes > 0) {
+            $conds[] = "lastProtoDateTime > UNIX_TIMESTAMP( NOW() - INTERVAL " . $hideDeviceAfterMinutes . " MINUTE)";
+        }
         return $this->query_scanlocation($conds, $params);
     }
 
