@@ -1,6 +1,49 @@
 .dark {
     #nav {
         background: $background-color-dark !important;
+        .ui-state-default {
+            background-color: $background-color-dark !important;
+            color: $text-color-dark;
+            border-left: none;
+            border-right: none;
+            border-top: none;
+        }
+        .ui-widget-content {
+            background-color: $background-color-dark !important;
+            border-left: none;
+            border-bottom: none;
+        }
+        .form-control {
+            h3 {
+                color: $text-color-dark;
+            }
+        }
+        .onoffswitch .onoffswitch-label {
+            background-color: #444;
+        }
+        .onoffswitch-checkbox:checked+.onoffswitch-label {
+            background-color: #13a260;
+        }
+        .onoffswitch-checkbox:checked+.onoffswitch-label:before {
+            background-color: #13a260;
+        }
+        .select2-container--default .select2-selection--single .select2-selection__rendered {
+            background-color: #444 !important;
+            color: $text-color-dark;
+        }
+        ul {
+            li {
+                a {
+                    border: 1px solid #3b3b3b;
+                }
+            }
+       }
+       p {
+           color: $text-color-dark;
+       }
+       span.pokemon-number {
+           color: $text-color-dark;
+       }
     }
     .leaflet-popup-content-wrapper {
         background: $popup-color-dark;
