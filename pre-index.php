@@ -1268,9 +1268,9 @@ if (!$noLoadingScreen) {
             if (! $noNotifyIv) {
                 echo '<div class="form-control">
                 <label for="notify-perfection">
-                    <h3>' . i8ln('Notify of Perfection') . '</h3>
+                    <h3>' . i8ln('Notify of IV') . '</h3>
                     <input id="notify-perfection" type="text" name="notify-perfection"
-                           placeholder="' . i8ln('Minimum perfection') . ' %" style="float: right;width: 75px;text-align:center"/>
+                           placeholder="' . i8ln('Min IV') . '%" style="float: right;width: 75px;text-align:center"/>
                 </label>
             </div>';
             }
