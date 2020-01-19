@@ -329,7 +329,6 @@ $notifyNotification = 'true';                                       // true/fals
 
 /* Style Settings */
 $noDarkMode = false;
-$enableDarkMode = 'false';
 
 $copyrightSafe = true;
 $noCostumeIcons = true;                                            // Set to true if you $iconRepository doesnt support costume icons. true/false

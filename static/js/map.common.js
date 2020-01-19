@@ -436,7 +436,7 @@ var StoreOptions = {
         },
     'darkMode':
         {
-            default: enableDarkMode,
+            default: window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches,
             type: StoreTypes.Boolean
         }
 }

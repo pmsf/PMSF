@@ -159,8 +159,6 @@ $domainName = '';                                                   // If this i
 // FRONTEND SETTINGS
 //-----------------------------------------------------
 $noDarkMode = false;
-$enableDarkMode = 'false';
-
 
 /* Marker Settings */
 $noExcludeMinIV = false;

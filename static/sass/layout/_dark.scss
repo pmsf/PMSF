@@ -9,10 +9,10 @@
             border-top: none;
         }
         .ui-state-active {
-            background-color: $text-color-dark !important;
-            color: $background-color-dark;
+            background-color: #3b3b3b !important;
+            color: $text-color-dark;
             .ui-tabs-anchor {
-                color: $background-color-dark !important;
+                color: $text-color-dark !important;
             }
         }
         .ui-widget-content {
@@ -36,15 +36,16 @@
         }
 
         .onoffswitch-checkbox:checked+.onoffswitch-label {
-            background-color: #64ab8a;
+            background-color: #545454!important;
         }
         .onoffswitch-checkbox:checked+.onoffswitch-label:before {
-            background-color: #13a260;
+            background-color: $background-color-dark !important;
         }
 
         .select2-container--default .select2-selection--single .select2-selection__rendered {
             background-color: $background-color-dark !important;
             color: $text-color-dark;
+            border-bottom: 1px solid !important;
         }
 
         select {
@@ -96,8 +97,11 @@
            color: $text-color-dark;
        }
        button.settings {
-           color: $background-color-dark !important;
-           background-color: $text-color-dark !important;
+           color: $text-color-dark !important;
+           background-color: #3b3b3b !important;
+       }
+       a.select-all, a.hide-all, h3.notify-pokemon-tab {
+           color: $text-color-dark !important;
        }
     }
     .leaflet-popup-content-wrapper {
