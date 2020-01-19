@@ -8,6 +8,10 @@
             border-right: none;
             border-top: none;
         }
+        .ui-state-active {
+            background-color: $text-color-dark !important;
+            color: $background-color-dark;
+        }
         .ui-widget-content {
             background-color: $background-color-dark !important;
             border-left: none;
@@ -31,7 +35,7 @@
         }
 
         .onoffswitch-checkbox:checked+.onoffswitch-label {
-            background-color: #13a260;
+            background-color: #64ab8a;
         }
         .onoffswitch-checkbox:checked+.onoffswitch-label:before {
             background-color: #13a260;
@@ -89,6 +93,10 @@
        }
        span.pokemon-number {
            color: $text-color-dark;
+       }
+       button.settings {
+           color: $background-color-dark !important;
+           background-color: $text-color-dark !important;
        }
     }
     .leaflet-popup-content-wrapper {
