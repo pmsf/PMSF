@@ -29,6 +29,7 @@
 
         .onoffswitch .onoffswitch-label {
             background-color: $background-color-dark;
+            border: 2px solid $text-color-dark !important;
         }
         .onoffswitch .onoffswitch-label:before {
             background-color: $background-color-dark;
