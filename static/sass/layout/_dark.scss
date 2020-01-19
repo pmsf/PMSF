@@ -11,15 +11,15 @@
         .ui-state-active {
             background-color: $text-color-dark !important;
             color: $background-color-dark;
+            .ui-tabs-anchor {
+                color: $background-color-dark !important;
+            }
         }
         .ui-widget-content {
             background-color: $background-color-dark !important;
             border-left: none;
             border-right: none;
             border-bottom: none;
-        }
-        h3#ui-id-13 {
-            border-bottom: 1px solid;
         }
         .form-control {
             h3 {
