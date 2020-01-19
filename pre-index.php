@@ -1380,7 +1380,7 @@ if (!$noLoadingScreen) {
             <?php
             if (! $noDarkMode) {
                 echo '<div class="form-control switch-container">
-                <h3> ' . i8ln('BETA Dark Mode') . ' </h3>
+                <h3> ' . i8ln('Dark Mode') . ' </h3>
                 <div class="onoffswitch">
                     <input id="dark-mode-switch" type="checkbox" name="dark-mode-switch" class="onoffswitch-checkbox"/>
                     <label class="onoffswitch-label" for="dark-mode-switch">
