@@ -56,10 +56,13 @@
         .pokemon-list .pokemon-icon-sprite {
             border: none;
         }
-        .item-list .item-icon-sprite{
+        .item-list .item-icon-sprite {
             border: none;
         }
-        .grunt-list .grunt-icon-sprite{
+        .grunt-list .grunt-icon-sprite {
+            border: none;
+        }
+        .raidegg-list .raidegg-icon-sprite {
             border: none;
         }
         label[for=exclude-quests-pokemon] .pokemon-list .active {
@@ -70,6 +73,12 @@
         }
         label[for=exclude-grunts] .grunt-list .active {
             background: #f00;
+        }
+        label[for=exclude-raidegg] .raidegg-list .active {
+            background: #f00;
+        }
+        span.pokemon-number, span.grunt-number, span.raidegg-number {
+            color: $text-color-dark;
         }
         input {
             background: $popup-color-dark;
@@ -89,20 +98,17 @@
                     border: 1px solid #3b3b3b;
                 }
             }
-       }
-       p {
-           color: $text-color-dark;
-       }
-       span.pokemon-number {
-           color: $text-color-dark;
-       }
-       button.settings {
-           color: $text-color-dark !important;
-           background-color: #3b3b3b !important;
-       }
-       a.select-all, a.hide-all, h3.notify-pokemon-tab {
-           color: $text-color-dark !important;
-       }
+        }
+        p {
+            color: $text-color-dark;
+        }
+        button.settings {
+            color: $text-color-dark !important;
+            background-color: #3b3b3b !important;
+        }
+        a.select-all, a.hide-all, h3.notify-pokemon-tab {
+            color: $text-color-dark !important;
+        }
     }
     .leaflet-popup-content-wrapper {
         background: $popup-color-dark;
@@ -121,7 +127,7 @@
         background-color: $background-color-dark !important;
         color: $text-color-dark !important;
     }
-    div#tab-rewards, div#tab-gym, div#tab-pokestop, div#tab-portals {
+    div#tab-rewards, div#tab-gym, div#tab-pokestop, div#tab-portals, div#tab-poi {
         background-color: $background-color-dark !important;
     }
     .ui-dialog.search-widget-popup.ui-widget.ui-widget-content.ui-front {
@@ -139,6 +145,12 @@
         background-color: #7d7a7a;
     }
     .search-widget-popup .search-modal.ui-dialog-content #search-tabs ul.ui-tabs-nav li.ui-state-active {
+        background-color: $background-color-dark !important;
+    }
+    .submit-widget-popup .submit-modal.ui-dialog-content #submit-tabs ul.ui-tabs-nav li {
+        background-color: #7d7a7a;
+    }
+    .submit-widget-popup .submit-modal.ui-dialog-content #submit-tabs ul.ui-tabs-nav li.ui-state-active {
         background-color: $background-color-dark !important;
     }
     .map-toggle-button {
@@ -187,5 +199,24 @@
                 }
             }
         }
+    }
+    .ui-dialog-content .button-container {
+        background-color: $background-color-dark !important;
+        h6 {
+            color: $text-color-dark !important;
+        }
+    }
+    .ui-dialog.submit-widget-popup.ui-widget.ui-widget-content.ui-front.ui-draggable.ui-resizable {
+        background-color: $background-color-dark !important;
+    }
+    .submit-widget-popup input {
+        background-color: $background-color-dark !important;
+        color: $text-color-dark !important;
+    }
+    .submit-widget-popup .submit-modal.ui-dialog-content #submit-tabs {
+        background-color: $background-color-dark !important;
+    }
+    button.submitting-poi, button.submitting-pokestop, button.submitting-gym, button.submitting-nest {
+        color: $text-color-dark !important;
     }
 }
