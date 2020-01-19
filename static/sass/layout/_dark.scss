@@ -151,6 +151,14 @@
     i.fa.fa-expand {
         color: unset;
     }
+    div#current-location {
+        filter: brightness(0) invert(1);
+    }
+    .leaflet-control {
+        button {
+            background-color: #5a5a5a !important;
+        }
+    }
     #stats {
         background-color: $background-color-dark !important;
         h1, h3, p {
