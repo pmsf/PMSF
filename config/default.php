@@ -328,6 +328,7 @@ $notifyBounce = 'true';                                             // true/fals
 $notifyNotification = 'true';                                       // true/false
 
 /* Style Settings */
+$noDarkMode = false;
 
 $copyrightSafe = true;
 $noCostumeIcons = true;                                            // Set to true if you $iconRepository doesnt support costume icons. true/false

@@ -433,6 +433,11 @@ var StoreOptions = {
         {
             default: 'default',
             type: StoreTypes.String
+        },
+    'darkMode':
+        {
+            default: window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches,
+            type: StoreTypes.Boolean
         }
 }
 

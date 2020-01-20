@@ -269,6 +269,9 @@ if (forcedTileServer) {
 if (noRaids && Store.get('showRaids')) {
     Store.set('showRaids', false)
 }
+if (!noDarkMode && Store.get('darkMode')) {
+    enableDarkMode()
+}
 function previewPoiImage(event) { // eslint-disable-line no-unused-vars
     var form = $(event.target).parent().parent()
     var input = event.target
@@ -968,6 +971,14 @@ function createFireworks() {
     }
 }
 
+function enableDarkMode() {
+    $('body').addClass('dark')
+}
+
+function disableDarkMode() {
+    $('body').removeClass('dark')
+}
+
 function initSidebar() {
     $('#gyms-switch').prop('checked', Store.get('showGyms'))
     $('#nests-switch').prop('checked', Store.get('showNests'))
@@ -1027,6 +1038,7 @@ function initSidebar() {
     $('#cries-type-filter-wrapper').toggle(Store.get('playCries'))
     $('#bounce-switch').prop('checked', Store.get('remember_bounce_notify'))
     $('#notification-switch').prop('checked', Store.get('remember_notification_notify'))
+    $('#dark-mode-switch').prop('checked', Store.get('darkMode'))
 
     if (Store.get('showGyms') === true || Store.get('showRaids') === true) {
         $('#gyms-raid-filter-wrapper').toggle(true)
@@ -7267,6 +7279,15 @@ $(function () {
             markers.removeLayer(locationMarker.rangeCircle)
             markersnotify.removeLayer(locationMarker.rangeCircle)
             delete locationMarker.rangeCircle
+        }
+    })
+
+    $('#dark-mode-switch').change(function () {
+        Store.set('darkMode', this.checked)
+        if (this.checked) {
+            enableDarkMode()
+        } else {
+            disableDarkMode()
         }
     })
 
