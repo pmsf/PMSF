@@ -10,7 +10,7 @@ use Medoo\Medoo;
 
 //======================================================================
 // PMSF - CONFIG FILE
-// https://github.com/whitewillem/PMSF
+// https://github.com/pmsf/PMSF
 //======================================================================
 
 //-----------------------------------------------------
@@ -269,7 +269,7 @@ $excludeQuestsPokemon = [];					                        // All Pokémon in this 
 $hideQuestsItem = '[4, 5, 301, 401, 402, 403, 404, 501, 602, 603, 604, 702, 704, 707, 801, 901, 902, 903, 1001, 1002, 1401, 1402, 1402, 1403, 1404, 1405]';    // Item ids "See protos https://github.com/Furtif/POGOProtos/blob/master/src/POGOProtos/Inventory/Item/ItemId.proto"
 $excludeQuestsItem = [4, 5, 301, 401, 402, 403, 404, 501, 602, 603, 604, 702, 704, 707, 801, 901, 902, 903, 1001, 1002, 1401, 1402, 1402, 1403, 1404, 1405];   // All excluded item wil not be shown in the filter.
 $noItemNumbers = false;
-
+$defaultDustAmount = 500;
 // Manual quest hide options
 $hideQuestTypes = [0, 1, 2, 3, 12, 18, 19, 22, 24, 25];
 $hideRewardTypes = [0, 1, 4, 5, 6];

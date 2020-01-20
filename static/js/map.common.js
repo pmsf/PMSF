@@ -276,7 +276,7 @@ var StoreOptions = {
         },
     'showDustAmount':
         {
-            default: 500,
+            default: defaultDustAmount,
             type: StoreTypes.Number
         },
     'showWeather':

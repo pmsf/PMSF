@@ -1497,7 +1497,7 @@ if (!$noLoadingScreen) {
         <div>
             <center>
                 <button class="settings"
-                        onclick="confirm('Are you sure you want to reset settings to default values?') ? (localStorage.clear(), window.location.reload()) : false">
+                        onclick="confirm(' <?php echo i8ln('Are you sure you want to reset settings to default values?') ?>') ? (localStorage.clear(), window.location.reload()) : false">
                     <i class="fas fa-sync-alt" aria-hidden="true"></i> <?php echo i8ln('Reset Settings') ?>
                 </button>
             </center>
@@ -2294,6 +2294,7 @@ if (!$noLoadingScreen) {
     var noRaids = <?php echo $noRaids === true ? 'true' : 'false' ?>;
     var letItSnow = <?php echo $letItSnow === true ? 'true' : 'false' ?>;
     var makeItBang = <?php echo $makeItBang === true ? 'true' : 'false' ?>;
+    var defaultDustAmount = <?php echo $defaultDustAmount; ?>;
     var noDarkMode = <?php echo $noDarkMode === true ? 'true' : 'false' ?>;
 </script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js"></script>
