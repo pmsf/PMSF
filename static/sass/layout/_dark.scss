@@ -219,4 +219,11 @@
     button.submitting-poi, button.submitting-pokestop, button.submitting-gym, button.submitting-nest {
         color: $text-color-dark !important;
     }
+    div#motd {
+        background-color: $background-color-dark !important;
+        color: $text-color-dark !important;
+    }
+    .ui-dialog.ui-corner-all.ui-widget.ui-widget-content.ui-front.ui-draggable.ui-resizable {
+        background-color: $background-color-dark !important;
+    }
 }
