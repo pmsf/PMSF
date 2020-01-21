@@ -211,6 +211,7 @@
     "noOpenSpot": true,
     "noMinMaxFreeSlots": true,
     "noLastScan": true,
-    "noDarkMode": true
+    "noDarkMode": true,
+    "defaultDustAmount": true
   }
 }
