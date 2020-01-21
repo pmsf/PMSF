@@ -226,4 +226,16 @@
     .ui-dialog.ui-corner-all.ui-widget.ui-widget-content.ui-front.ui-draggable.ui-resizable {
         background-color: $background-color-dark !important;
     }
+    .ui-dialog.raid-widget-popup.ui-widget.ui-widget-content.ui-front.ui-draggable.ui-resizable {
+        background-color: black;
+    }
+    .editpoi-modal .ui-dialog-content .ui-widget-content {
+        background-color: $background-color-dark !important;
+    }
+    input#poi-name, input#poi-description, button.editpoiid, button.markpoiid, button.convertpoi, button.markpoi {
+        color: $text-color-dark !important;
+    }
+    .ui-dialog.raid-widget-popup.ui-widget.ui-widget-content.ui-front.ui-draggable.ui-resizable {
+        background-color: $background-color-dark !important;
+    }
 }
