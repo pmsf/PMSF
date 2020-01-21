@@ -398,7 +398,7 @@ class RocketMap extends Scanner
                 $raid_in = '';
                 $r = 1;
                 foreach ($rbeids as $rbeid) {
-                    $params[':rbqry_' . $r . '_'] = $rbeids;
+                    $params[':rbqry_' . $r . '_'] = $rbeid;
                     $raid_in .= ':rbqry_' . $r . '_,';
                     $r++;
                 }
@@ -412,7 +412,7 @@ class RocketMap extends Scanner
                 $egg_in = '';
                 $e = 1;
                 foreach ($reeids as $reeid) {
-                    $params[':reqry_' . $e . '_'] = $reeids;
+                    $params[':reqry_' . $e . '_'] = $reeid;
                     $egg_in .= ':reqry_' . $e . '_,';
                     $e++;
                 }

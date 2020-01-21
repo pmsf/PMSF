@@ -285,7 +285,7 @@ class RocketMap_MAD extends RocketMap
                 $egg_in = '';
                 $e = 1;
                 foreach ($reeids as $reeid) {
-                    $params[':reqry_' . $e . '_'] = $reeids;
+                    $params[':reqry_' . $e . '_'] = $reeid;
                     $egg_in .= ':reqry_' . $e . '_,';
                     $e++;
                 }
