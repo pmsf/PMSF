@@ -222,6 +222,9 @@
     div#motd {
         background-color: $background-color-dark !important;
         color: $text-color-dark !important;
+        a {
+            color: #0078a8
+        }
     }
     .ui-dialog.ui-corner-all.ui-widget.ui-widget-content.ui-front.ui-draggable.ui-resizable {
         background-color: $background-color-dark !important;
