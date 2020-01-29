@@ -149,6 +149,16 @@ var StoreOptions = {
             default: maxRaidLevel,
             type: StoreTypes.Number
         },
+    'remember_exclude_raidboss':
+        {
+            default: hideRaidboss,
+            type: StoreTypes.JSON
+        },
+    'remember_exclude_raidegg':
+        {
+            default: hideRaidegg,
+            type: StoreTypes.JSON
+        },
     'showGyms':
         {
             default: enableGyms,
@@ -266,7 +276,7 @@ var StoreOptions = {
         },
     'showDustAmount':
         {
-            default: 500,
+            default: defaultDustAmount,
             type: StoreTypes.Number
         },
     'showWeather':
@@ -417,6 +427,16 @@ var StoreOptions = {
     'showRocketTimer':
         {
             default: enableRocketTimer,
+            type: StoreTypes.Boolean
+        },
+    'oldMotd':
+        {
+            default: 'default',
+            type: StoreTypes.String
+        },
+    'darkMode':
+        {
+            default: window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches,
             type: StoreTypes.Boolean
         }
 }

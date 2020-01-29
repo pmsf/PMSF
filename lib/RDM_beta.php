@@ -233,9 +233,12 @@ class RDM_beta extends RDM
         $params[':swLng'] = $swLng;
         $params[':neLat'] = $neLat;
         $params[':neLng'] = $neLng;
-        global $noBoundaries, $boundaries;
+        global $noBoundaries, $boundaries, $hideDeleted;
         if (!$noBoundaries) {
             $conds[] = "(ST_WITHIN(point(lat,lon),ST_GEOMFROMTEXT('POLYGON(( " . $boundaries . " ))')))";
+        }
+        if ($hideDeleted) {
+            $conds[] = "deleted = 0";
         }
         if (!empty($quests) && $quests === 'true') {
             $pokemonSQL = '';
@@ -268,7 +271,7 @@ class RDM_beta extends RDM
             }
             $dustSQL = '';
             if (!empty($dustamount) && !is_nan((float)$dustamount) && $dustamount > 0) {
-                $dustSQL .= "OR (json_extract(json_extract(`quest_rewards`,'$[*].type'),'$[0]') = 3 AND json_extract(json_extract(`quest_rewards`,'$[*].info.amount'),'$[0]') > :amount) AND lat > :swLat AND lon > :swLng AND lat < :neLat AND lon < :neLng";
+                $dustSQL .= "OR (quest_reward_type = 3 AND json_extract(json_extract(`quest_rewards`,'$[*].info.amount'),'$[0]') > :amount) AND lat > :swLat AND lon > :swLng AND lat < :neLat AND lon < :neLng";
                 $params[':amount'] = intval($dustamount);
                 $params[':swLat'] = $swLat;
                 $params[':swLng'] = $swLng;
@@ -326,9 +329,12 @@ class RDM_beta extends RDM
         $params[':neLat'] = $neLat;
         $params[':neLng'] = $neLng;
 
-        global $noBoundaries, $boundaries;
+        global $noBoundaries, $boundaries, $hideDeleted;
         if (!$noBoundaries) {
             $conds[] = "(ST_WITHIN(point(lat,lon),ST_GEOMFROMTEXT('POLYGON(( " . $boundaries . " ))')))";
+        }
+        if ($hideDeleted) {
+            $conds[] = "deleted = 0";
         }
         if (!empty($quests) && $quests === 'true') {
             $tmpSQL = '';
@@ -355,7 +361,7 @@ class RDM_beta extends RDM
                 $tmpSQL .= "quest_item_id IN ( $item_in )";
             }
             if ($reloaddustamount == "true") {
-                $tmpSQL .= "(json_extract(json_extract(`quest_rewards`,'$[*].type'),'$[0]') = 3 AND json_extract(json_extract(`quest_rewards`,'$[*].info.amount'),'$[0]') > :amount)";
+                $tmpSQL .= "(quest_reward_type = 3 AND json_extract(json_extract(`quest_rewards`,'$[*].info.amount'),'$[0]') > :amount)";
                 $params[':amount'] = intval($dustamount);
             }
             $conds[] = $tmpSQL;
@@ -459,7 +465,74 @@ class RDM_beta extends RDM
         return $data;
     }
 
-    public function query_gyms($conds, $params)
+    public function get_gyms($rbeids, $reeids, $swLat, $swLng, $neLat, $neLng, $exEligible = false, $tstamp = 0, $oSwLat = 0, $oSwLng = 0, $oNeLat = 0, $oNeLng = 0, $raids, $gyms)
+    {
+        $conds = array();
+        $params = array();
+
+        $conds[] = "lat > :swLat AND lon > :swLng AND lat < :neLat AND lon < :neLng";
+        $params[':swLat'] = $swLat;
+        $params[':swLng'] = $swLng;
+        $params[':neLat'] = $neLat;
+        $params[':neLng'] = $neLng;
+
+        if ($oSwLat != 0) {
+            $conds[] = "NOT (lat > :oswLat AND lon > :oswLng AND lat < :oneLat AND lon < :oneLng)";
+            $params[':oswLat'] = $oSwLat;
+            $params[':oswLng'] = $oSwLng;
+            $params[':oneLat'] = $oNeLat;
+            $params[':oneLng'] = $oNeLng;
+        }
+        global $noBoundaries, $boundaries, $hideDeleted;
+        if (!$noBoundaries) {
+            $conds[] = "(ST_WITHIN(point(lat,lon),ST_GEOMFROMTEXT('POLYGON(( " . $boundaries . " ))')))";
+        }
+        if ((!empty($raids) && $raids === 'true') && (!empty($gyms) && $gyms === 'false')) {
+            $raidSQL = '';
+            if (count($rbeids)) {
+                $raid_in = '';
+                $r = 1;
+                foreach ($rbeids as $rbeid) {
+                    $params[':rbqry_' . $r . "_"] = $rbeid;
+                    $raid_in .= ':rbqry_' . $r . "_,";
+                    $r++;
+                }
+                $raid_in = substr($raid_in, 0, -1);
+                $raidSQL .= "raid_pokemon_id NOT IN ( $raid_in )";
+            } else {
+                $raidSQL .= "raid_pokemon_id IS NOT NULL";
+            }
+            $eggSQL = '';
+            if (count($reeids)) {
+                $egg_in = '';
+                $e = 1;
+                foreach ($reeids as $reeid) {
+                    $params[':reqry_' . $e . '_'] = $reeid;
+                    $egg_in .= ':reqry_' . $e . '_,';
+                    $e++;
+                }
+                $egg_in = substr($egg_in, 0, -1);
+                $eggSQL .= "raid_pokemon_id = 0 AND raid_level NOT IN ( $egg_in )";
+            } else {
+                $eggSQL .= "raid_pokemon_id = 0 AND raid_level IS NOT NULL";
+            }
+            $conds[] = "(" . $raidSQL . " OR " . $eggSQL . ")";
+        }
+        if ($hideDeleted) {
+            $conds[] = "deleted = 0";
+        }
+        if ($tstamp > 0) {
+            $conds[] = "updated > :lastUpdated";
+            $params[':lastUpdated'] = $tstamp;
+        }
+        if ($exEligible === "true") {
+            $conds[] = "(ex_raid_eligible = 1)";
+        }
+
+        return $this->query_gyms($conds, $params, $raids, $gyms, $rbeids, $reeids);
+    }
+
+    public function query_gyms($conds, $params, $raids, $gyms, $rbeids, $reeids)
     {
         global $db;
 
@@ -500,6 +573,7 @@ class RDM_beta extends RDM
             $gym["team_id"] = intval($gym["team_id"]);
             $gym["pokemon"] = [];
             $gym["raid_pokemon_name"] = empty($raid_pid) ? null : i8ln($this->data[$raid_pid]["name"]);
+            $gym["raid_pokemon_costume"] = 0;
             $gym["form"] = intval($gym["raid_pokemon_form"]);
             $gym["latitude"] = floatval($gym["latitude"]);
             $gym["longitude"] = floatval($gym["longitude"]);
@@ -508,7 +582,6 @@ class RDM_beta extends RDM
             $gym["last_scanned"] = $gym["last_scanned"] * 1000;
             $gym["raid_start"] = $gym["raid_start"] * 1000;
             $gym["raid_end"] = $gym["raid_end"] * 1000;
-            $gym["sponsor"] = !empty($gym["sponsor"]) ? $gym["sponsor"] : null;
             $gym["url"] = ! empty($gym["url"]) ? preg_replace("/^http:/i", "https:", $gym["url"]) : null;
             $gym["park"] = intval($gym["park"]);
             if (isset($gym["form"]) && $gym["form"] > 0) {
@@ -519,7 +592,40 @@ class RDM_beta extends RDM
                     }
                 }
             }
-
+            if ((!empty($raids) && $raids === 'true') && (!empty($gyms) && $gyms === 'true')) {
+                if (count($rbeids)) {
+                    foreach ($rbeids as $rbeid) {
+                        if ($rbeid == $gym["raid_pokemon_id"]) {
+                            $gym["raid_pokemon_id"] = null;
+                            $gym["raid_end"] = null;
+                            $gym["raid_start"] = null;
+                            $gym["raid_level"] = null;
+                            $gym["raid_pokemon_move_1"] = null;
+                            $gym["raid_pokemon_move_2"] = null;
+                            $gym["raid_pokemon_form"] = null;
+                            $gym["raid_pokemon_cp"] = null;
+                            $gym["raid_pokemon_gender"] = null;
+                            break;
+                        }
+                    }
+                }
+                if (count($reeids)) {
+                    foreach ($reeids as $reeid) {
+                        if ($rbeid == $gym["raid_pokemon_id"]) {
+                            $gym["raid_pokemon_id"] = null;
+                            $gym["raid_end"] = null;
+                            $gym["raid_start"] = null;
+                            $gym["raid_level"] = null;
+                            $gym["raid_pokemon_move_1"] = null;
+                            $gym["raid_pokemon_move_2"] = null;
+                            $gym["raid_pokemon_form"] = null;
+                            $gym["raid_pokemon_cp"] = null;
+                            $gym["raid_pokemon_gender"] = null;
+                            break;
+                        }
+                    }
+                }
+            }
             $data[] = $gym;
             unset($gyms[$i]);
             $i++;
@@ -655,6 +761,12 @@ class RDM_beta extends RDM
             $data = array();
             foreach ($pokestops as $pokestop) {
                 $data[] = $pokestop['grunt_type'];
+            }
+        } elseif ($type === 'raidbosslist') {
+            $gyms = $db->query("SELECT distinct raid_pokemon_id FROM gym WHERE raid_pokemon_id > 0 AND raid_end_timestamp > UNIX_TIMESTAMP() order by raid_pokemon_id;")->fetchAll(\PDO::FETCH_ASSOC);
+            $data = array();
+            foreach ($gyms as $gym) {
+                $data[] = $gym['raid_pokemon_id'];
             }
         }
         return $data;

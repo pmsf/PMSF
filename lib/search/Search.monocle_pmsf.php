@@ -6,7 +6,7 @@ class Monocle_PMSF extends Search
 {
     public function search_reward($lat, $lon, $term)
     {
-        global $db, $defaultUnit, $maxSearchResults, $maxSearchNameLength;
+        global $db, $defaultUnit, $maxSearchResults, $maxSearchNameLength, $numberOfPokemon;
 
         $conds = array();
         $params = array();
@@ -18,7 +18,7 @@ class Monocle_PMSF extends Search
         $prewardsjson = json_decode($pjson, true);
         $presids = array();
         foreach ($prewardsjson as $p => $preward) {
-            if ($p > 493) {
+            if ($p > $numberOfPokemon) {
                 break;
             }
             if (strpos(strtolower(i8ln($preward['name'])), strtolower($term)) !== false) {
@@ -81,13 +81,13 @@ class Monocle_PMSF extends Search
 
     public function search_nests($lat, $lon, $term)
     {
-        global $manualdb, $defaultUnit, $maxSearchResults, $noBoundaries, $boundaries;
+        global $manualdb, $defaultUnit, $maxSearchResults, $noBoundaries, $boundaries, $numberOfPokemon;
 
         $json = file_get_contents('static/dist/data/pokemon.min.json');
         $mons = json_decode($json, true);
         $resids = [];
         foreach ($mons as $k => $mon) {
-            if ($k > 649) {
+            if ($k > $numberOfPokemon) {
                 break;
             }
             if (strpos(strtolower(i8ln($mon['name'])), strtolower($term)) !== false) {

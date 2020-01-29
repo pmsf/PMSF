@@ -1,38 +1,39 @@
 {
   "name": "pmsf",
   "version": "2.0.0",
-  "description": "PMSF (PokeMap Standalone Frontend) is a standalone PHP map interface that is able to run on any traditional web server. It works for both Monocle or Rocketmap database setups.",
+  "description": "PMSF (PokeMap Standalone Frontend) is a standalone PHP map interface that is able to run on any traditional web server. It works for both RDM or MAD database setups.",
   "main": "Gruntfile.js",
   "scripts": {
     "build": "grunt build",
     "watch": "grunt default",
     "dev": "grunt dev",
+    "obfuscator": "grunt obfuscate",
     "lint": "grunt lint",
     "grunt": "grunt"
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/whitewillem/PMSF.git"
+    "url": "git+https://github.com/pmsf/PMSF.git"
   },
   "keywords": [
     "pokemon",
     "pokemongo",
-    "rocketmap",
-    "monocle"
+    "rdm",
+    "mad"
   ],
   "author": "Whitewillem & Wheel",
   "license": "ISC",
   "bugs": {
     "url": "https://discord.gg/yGujp8D"
   },
-  "homepage": "https://github.com/whitewillem/PMSF#readme",
+  "homepage": "https://github.com/pmsf/PMSF#readme",
   "dependencies": {
     "babel-core": "^6.26.3",
     "babel-preset-env": "^1.7.0",
     "clean": "^4.0.2",
-    "eslint": "^6.3.0",
+    "eslint": "^6.8.0",
     "eslint-config-standard": "^10.2.1",
-    "eslint-plugin-import": "^2.18.0",
+    "eslint-plugin-import": "^2.19.1",
     "eslint-plugin-node": "^5.2.0",
     "eslint-plugin-promise": "^4.2.1",
     "eslint-plugin-standard": "^4.0.1",
@@ -45,24 +46,25 @@
     "grunt-contrib-connect": "latest",
     "grunt-contrib-copy": "latest",
     "grunt-contrib-cssmin": "latest",
-    "grunt-contrib-htmlmin": "2.4.0",
-    "grunt-contrib-obfuscator": "latest",
-    "grunt-contrib-uglify": "^3.3.0",
+    "grunt-contrib-htmlmin": "3.1.0",
+    "grunt-contrib-uglify": "^4.0.1",
     "grunt-contrib-watch": "^1.1.0",
+    "grunt-javascript-obfuscator": "latest",
+    "javascript-obfuscator": "0.19.2",
     "grunt-eslint": "^22.0.0",
     "grunt-minjson": "latest",
     "grunt-newer": "^1.2.0",
     "grunt-sass": "^3.1.0",
     "grunt-unused": "latest",
-    "grunt-usemin": "https://github.com/whitewillem/grunt-usemin/tarball/master",
+    "grunt-usemin": "https://github.com/pmsf/grunt-usemin/tarball/master",
     "jit-grunt": "^0.10.0",
     "long": "^3.2.0",
     "node-sass": "^4.13.0",
     "phplint": "^1.7.4",
     "push.js": "^1.0.12",
-    "leaflet": "1.5.1",
+    "leaflet": "1.6.0",
     "leaflet-geosearch": "2.7.0",
-    "leaflet.markercluster": "1.4.1",
+    "leaflet.markercluster": "https://github.com/pmsf/Leaflet.markercluster/tarball/master",
     "moment": "2.24.0",
     "datatables": "1.10.18"
   }

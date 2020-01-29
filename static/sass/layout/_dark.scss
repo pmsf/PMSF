@@ -1,0 +1,244 @@
+.dark {
+    #nav {
+        background: $background-color-dark !important;
+        .ui-state-default {
+            background-color: $background-color-dark !important;
+            color: $text-color-dark;
+            border-left: none;
+            border-right: none;
+            border-top: none;
+        }
+        .ui-state-active {
+            background-color: #3b3b3b !important;
+            color: $text-color-dark;
+            .ui-tabs-anchor {
+                color: $text-color-dark !important;
+            }
+        }
+        .ui-widget-content {
+            background-color: $background-color-dark !important;
+            border-left: none;
+            border-right: none;
+            border-bottom: none;
+        }
+        .form-control {
+            h3 {
+                color: $text-color-dark;
+            }
+        }
+
+        .onoffswitch .onoffswitch-label {
+            background-color: $background-color-dark;
+            border: 2px solid $text-color-dark !important;
+        }
+        .onoffswitch .onoffswitch-label:before {
+            background-color: $background-color-dark;
+        }
+
+        .onoffswitch-checkbox:checked+.onoffswitch-label {
+            background-color: #545454!important;
+        }
+        .onoffswitch-checkbox:checked+.onoffswitch-label:before {
+            background-color: $background-color-dark !important;
+        }
+
+        .select2-container--default .select2-selection--single .select2-selection__rendered {
+            background-color: $background-color-dark !important;
+            color: $text-color-dark;
+            border-bottom: 1px solid !important;
+        }
+
+        select {
+            background-color: $background-color-dark;
+            color: $text-color-dark;
+        }
+
+        .pokemon-list .pokemon-icon-sprite {
+            border: none;
+        }
+        .item-list .item-icon-sprite {
+            border: none;
+        }
+        .grunt-list .grunt-icon-sprite {
+            border: none;
+        }
+        .raidegg-list .raidegg-icon-sprite {
+            border: none;
+        }
+        label[for=exclude-quests-pokemon] .pokemon-list .active {
+            background: #f00;
+        }
+        label[for=exclude-quests-item] .item-list .active {
+            background: #f00;
+        }
+        label[for=exclude-grunts] .grunt-list .active {
+            background: #f00;
+        }
+        label[for=exclude-raidegg] .raidegg-list .active {
+            background: #f00;
+        }
+        span.pokemon-number, span.grunt-number, span.raidegg-number {
+            color: $text-color-dark;
+        }
+        input {
+            background: $popup-color-dark;
+            color: $text-color-dark;
+            border: 1px solid;
+        }
+        .select2-container--default.select2-container--focus .select2-selection--multiple {
+            border: none;
+        }
+        .select2-container--default .select2-selection--multiple {
+           background: $popup-color-dark;
+           color: $text-color-dark;
+        }
+        ul {
+            li {
+                a {
+                    border: 1px solid #3b3b3b;
+                }
+            }
+        }
+        p {
+            color: $text-color-dark;
+        }
+        button.settings {
+            color: $text-color-dark !important;
+            background-color: #3b3b3b !important;
+        }
+        a.select-all, a.hide-all, h3.notify-pokemon-tab {
+            color: $text-color-dark !important;
+        }
+    }
+    .leaflet-popup-content-wrapper {
+        background: $popup-color-dark;
+        color: $text-color-dark;
+        b, h3 {
+            color: $text-color-dark;
+        }
+    }
+    .leaflet-popup-tip {
+        background: $popup-color-dark;
+    }
+    .leaflet-container a.leaflet-popup-close-button {
+        color: red !important;
+    }
+    .search-widget-popup input {
+        background-color: $background-color-dark !important;
+        color: $text-color-dark !important;
+    }
+    div#tab-rewards, div#tab-gym, div#tab-pokestop, div#tab-portals, div#tab-poi {
+        background-color: $background-color-dark !important;
+    }
+    .ui-dialog.search-widget-popup.ui-widget.ui-widget-content.ui-front {
+        background-color: $background-color-dark !important;
+    }
+    .left-column {
+        background-color: $background-color-dark !important;
+        color: $text-color-dark !important;
+    }
+    .ui-dialog-titlebar.ui-corner-all.ui-widget-header.ui-helper-clearfix {
+        background-color: $background-color-dark !important;
+        color: $text-color-dark !important;
+    }
+    .search-widget-popup .search-modal.ui-dialog-content #search-tabs ul.ui-tabs-nav li {
+        background-color: #7d7a7a;
+    }
+    .search-widget-popup .search-modal.ui-dialog-content #search-tabs ul.ui-tabs-nav li.ui-state-active {
+        background-color: $background-color-dark !important;
+    }
+    .submit-widget-popup .submit-modal.ui-dialog-content #submit-tabs ul.ui-tabs-nav li {
+        background-color: #7d7a7a;
+    }
+    .submit-widget-popup .submit-modal.ui-dialog-content #submit-tabs ul.ui-tabs-nav li.ui-state-active {
+        background-color: $background-color-dark !important;
+    }
+    .map-toggle-button {
+        background-color: #5a5a5a !important;
+    }
+    a.leaflet-control-zoom-in, a.leaflet-control-zoom-out {
+        background-color: #5a5a5a !important;
+        color: #ffffff
+    }
+    i.fa.fa-expand {
+        color: unset;
+    }
+    div#current-location {
+        filter: brightness(0) invert(1);
+    }
+    .leaflet-control {
+        button {
+            background-color: #5a5a5a !important;
+        }
+    }
+    #stats {
+        background-color: $background-color-dark !important;
+        h1, h3, p {
+            color: $text-color-dark !important;
+        }
+        .stats-label-container {
+            background-color: #3b3b3b !important;
+        }
+    }
+    div#pokeStatStatus, div#arenaList, div#raidList, div#pokestopList, div#spawnpointList, th {
+        color: $text-color-dark !important;
+    }
+    table#pokemonList_table {
+        background-color: black;
+    }
+    td, tr, table {
+        background-color: #3b3b3b;
+        color: $text-color-dark !important;
+    }
+    tbody {
+        tr {
+            td {
+                background-color: #3b3b3b !important;
+                a {
+                    color: $text-color-dark !important;
+                }
+            }
+        }
+    }
+    .ui-dialog-content .button-container {
+        background-color: $background-color-dark !important;
+        h6 {
+            color: $text-color-dark !important;
+        }
+    }
+    .ui-dialog.submit-widget-popup.ui-widget.ui-widget-content.ui-front.ui-draggable.ui-resizable {
+        background-color: $background-color-dark !important;
+    }
+    .submit-widget-popup input {
+        background-color: $background-color-dark !important;
+        color: $text-color-dark !important;
+    }
+    .submit-widget-popup .submit-modal.ui-dialog-content #submit-tabs {
+        background-color: $background-color-dark !important;
+    }
+    button.submitting-poi, button.submitting-pokestop, button.submitting-gym, button.submitting-nest {
+        color: $text-color-dark !important;
+    }
+    div#motd {
+        background-color: $background-color-dark !important;
+        color: $text-color-dark !important;
+        a {
+            color: #0078a8;
+        }
+    }
+    .ui-dialog.ui-corner-all.ui-widget.ui-widget-content.ui-front.ui-draggable.ui-resizable {
+        background-color: $background-color-dark !important;
+    }
+    .ui-dialog.raid-widget-popup.ui-widget.ui-widget-content.ui-front.ui-draggable.ui-resizable {
+        background-color: black;
+    }
+    .editpoi-modal .ui-dialog-content .ui-widget-content {
+        background-color: $background-color-dark !important;
+    }
+    input#poi-name, input#poi-description, button.editpoiid, button.markpoiid, button.convertpoi, button.markpoi {
+        color: $text-color-dark !important;
+    }
+    .ui-dialog.raid-widget-popup.ui-widget.ui-widget-content.ui-front.ui-draggable.ui-resizable {
+        background-color: $background-color-dark !important;
+    }
+}

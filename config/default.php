@@ -6,7 +6,7 @@
 
 //======================================================================
 // PMSF - DEFAULT CONFIG FILE
-// https://github.com/whitewillem/PMSF
+// https://github.com/pmsf/PMSF
 //======================================================================
 if (!isset($_SESSION)) {
     session_start();
@@ -79,7 +79,12 @@ $blockIframe = true;                                                // Block you
 $title = "PMSF Alt";                                                // Title to display in title bar
 $headerTitle = "POGOmap";                                           // Title to display in header
 $locale = "en";                                                     // Display language
+$noLocaleSelection = false;
+/* Loading screen */
 
+$noLoadingScreen = false;                                           // show loading animation while main page loads.
+$loadingStyle = '';                                                 // Leave blank for default loading icon. Use '<IMG SRC=static/images/pokeball2.gif>'
+                                                                    // for pokeball or custom gif for animated gif; or use your own html.
 /* Google Maps and MapBox are ONLY USED FOR TILE LAYERS */
 
 $gmapsKey = "";
@@ -89,7 +94,11 @@ $mBoxKey = "";
 
 $noCustomTileServer = true;                                         // Enable/Disable Custom TileServer
 $customTileServerAddress = "";                                      // TileServer URL: http://ipAddress:port/tile/klokantech-basic/{z}/{x}/{y}/1/png
+$forcedTileServer = false;
 
+/* Custom Overlay */
+$letItSnow = true;                                                   // Show snow overlay at 24, 25 and 26 December
+$makeItBang = true;                                                  // Show fireworks overlay at 31 December and 1 January
 
 /* Google Analytics */
 
@@ -120,6 +129,7 @@ $noStatsToggle = false;                                             // Enables o
 
 /* MOTD */
 $noMotd = true;
+$showMotdOnlyOnce = false;
 $motdTitle = "";
 $motdContent = "";
 
@@ -133,11 +143,11 @@ $imgurCID = "";
 $numberOfPokemon = 649;
 $numberOfItem = 1405;
 $numberOfGrunt = 50;
+$numberOfEgg = 10;
 //-----------------------------------------------------
 // Login  - You need to create the two tables referenced in sql.sql
 //-----------------------------------------------------
-$noSelly = true;
-$forcedDiscordLogin = false;
+$forcedLogin = false;
 $noNativeLogin = true;                                              // true/false - This will enable the built in login system.
 $domainName = '';                                                   // If this is empty, reset-password emails will use the domain name taken from the URL.
 
@@ -152,11 +162,8 @@ $discordBotClientSecret = "";
 $discordBotRedirectUri = "https://example.com/discord-callback.php";
 
 $adminUsers = array('admin@example.com', 'Superadmin#13337');       // You can add multiple admins by adding them to the array.
-$logfile = '../members.log';                                        // Path to log file. Make sure this works as it will be your life saver if your db crashes.
-$daysMembershipPerQuantity = 31;                                    // How many days membership one selly quantity will give.
-$sellyPage = '';                                                    // Link to selly purchase page for membership renewal.
-$sellyWebhookSecret = '';                                           // Add a secret key at https://selly.gg/settings to make sure the payment webhook is sent from selly to prevent fake payments.
-                                                                    // Add the same key to the $sellyWebhookSecret variable.
+$manualAccessLevel = false;
+
 /* Blacklist Settings - Only available with Discord login */
 $userBlacklist = [''];                                                                // Array of user ID's that are always blocked from accessing the map
 $userWhitelist = [''];                                              // Array of user ID's that's allowed to bypass the server blacklist
@@ -214,14 +221,27 @@ $enableGyms = 'false';                                              // true/fals
 $hideGymCoords = false;
 $noExEligible = false;                                              // true/false
 $exEligible = 'false';                                              // true/false
+$noTeams = false;
+$noOpenSpot = false;
+$noMinMaxFreeSlots = false;
+$noLastScan = false;
 
 $noRaids = false;                                                   // true/false
 $enableRaids = 'false';                                             // true/false
+$noActiveRaids = true;
 $activeRaids = 'false';                                             // true/false
+$noMinMaxRaidLevel = true;
 $minRaidLevel = 1;
 $maxRaidLevel = 5;
 $noRaidTimer = false;                                               // true/false
 $enableRaidTimer = 'false';                                         // true/false
+$noRaidbossNumbers = false;
+$hideRaidboss = '[]';
+$excludeRaidboss = [];
+$noRaideggNumbers = false;
+$hideRaidegg = '[]';
+$excludeRaidegg = [];
+$generateExcludeRaidboss = true;
 
 $noPokestops = false;                                               // true/false
 $enablePokestops = 'false';                                         // true/false
@@ -254,7 +274,7 @@ $excludeQuestsPokemon = [];  // Pokemon ids
 $hideQuestsItem = '[4, 5, 301, 401, 402, 403, 404, 501, 602, 603, 604, 702, 704, 708, 801, 901, 902, 903, 1001, 1002, 1401, 1402, 1403, 1404, 1405]';    // Item ids "See protos https://github.com/Furtif/POGOProtos/blob/master/src/POGOProtos/Inventory/Item/ItemId.proto"
 $excludeQuestsItem = [4, 5, 301, 401, 402, 403, 404, 501, 602, 603, 604, 702, 704, 708, 801, 901, 902, 903, 1001, 1002, 1401, 1402, 1403, 1404, 1405];
 $noItemNumbers = true;                                             // true/false
-
+$defaultDustAmount = 500;
 // Manual quest hide options
 $hideQuestTypes = [0, 1, 2, 3, 12, 18, 19, 22, 24, 25];
 $hideRewardTypes = [0, 1, 4, 5, 6];
@@ -277,6 +297,8 @@ $noLiveScanLocation = true;                                         // Show scan
 $enableLiveScan = 'false';
 $hideDeviceAfterMinutes = 0;                                        // Hide scan devices from map after x amount of minutes not being updated in database. 0 to disable.
 $deviceOfflineAfterSeconds = 300;                                   // Mark scan devices offline (red color) after x amount of seconds not being updated in database.
+
+$hideDeleted = true;
 /* Location & Search Settings */
 
 $noSearchLocation = false;                                          // true/false
@@ -306,6 +328,7 @@ $notifyBounce = 'true';                                             // true/fals
 $notifyNotification = 'true';                                       // true/false
 
 /* Style Settings */
+$noDarkMode = false;
 
 $copyrightSafe = true;
 $noCostumeIcons = true;                                            // Set to true if you $iconRepository doesnt support costume icons. true/false
