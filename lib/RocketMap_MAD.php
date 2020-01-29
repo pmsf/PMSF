@@ -695,12 +695,14 @@ class RocketMap_MAD extends RocketMap
     {
         $conds = array();
         $params = array();
+
         $conds[] = "ST_X(currentPos_raw) > :swLat AND ST_Y(currentPos_raw) > :swLng AND ST_X(currentPos_raw) < :neLat AND ST_Y(currentPos_raw) < :neLng";
         $params[':swLat'] = $swLat;
         $params[':swLng'] = $swLng;
         $params[':neLat'] = $neLat;
         $params[':neLng'] = $neLng;
         if ($oSwLat != 0) {
+
             $conds[] = "NOT (ST_X(currentPos_raw) > :oswLat AND ST_Y(currentPos_raw) > :oswLng AND ST_X(currentPos_raw) < :oneLat AND ST_Y(currentPos_raw) < :oneLng)";
             $params[':oswLat'] = $oSwLat;
             $params[':oswLng'] = $oSwLng;
@@ -709,11 +711,13 @@ class RocketMap_MAD extends RocketMap
         }
         global $noBoundaries, $boundaries;
         if (!$noBoundaries) {
+
             $conds[] = "(ST_WITHIN(currentPos_raw),ST_GEOMFROMTEXT('POLYGON(( " . $boundaries . " ))'))";
         }
         global $hideDeviceAfterMinutes;
         if ($hideDeviceAfterMinutes > 0) {
             $conds[] = "lastProtoDateTime > UNIX_TIMESTAMP( NOW() - INTERVAL " . $hideDeviceAfterMinutes . " MINUTE)";
+
         }
         return $this->query_scanlocation($conds, $params);
     }
@@ -721,6 +725,7 @@ class RocketMap_MAD extends RocketMap
     private function query_scanlocation($conds, $params)
     {
         global $db;
+
         $query = "SELECT ST_X(currentPos_raw) AS latitude,
         ST_Y(currentPos_raw) AS longitude,
         lastProtoDateTime AS last_seen,
