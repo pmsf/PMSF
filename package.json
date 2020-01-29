@@ -13,7 +13,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/whitewillem/PMSF.git"
+    "url": "git+https://github.com/pmsf/PMSF.git"
   },
   "keywords": [
     "pokemon",
@@ -26,7 +26,7 @@
   "bugs": {
     "url": "https://discord.gg/yGujp8D"
   },
-  "homepage": "https://github.com/whitewillem/PMSF#readme",
+  "homepage": "https://github.com/pmsf/PMSF#readme",
   "dependencies": {
     "babel-core": "^6.26.3",
     "babel-preset-env": "^1.7.0",
@@ -56,7 +56,7 @@
     "grunt-newer": "^1.2.0",
     "grunt-sass": "^3.1.0",
     "grunt-unused": "latest",
-    "grunt-usemin": "https://github.com/whitewillem/grunt-usemin/tarball/master",
+    "grunt-usemin": "https://github.com/pmsf/grunt-usemin/tarball/master",
     "jit-grunt": "^0.10.0",
     "long": "^3.2.0",
     "node-sass": "^4.13.0",
@@ -64,7 +64,7 @@
     "push.js": "^1.0.12",
     "leaflet": "1.6.0",
     "leaflet-geosearch": "2.7.0",
-    "leaflet.markercluster": "https://github.com/whitewillem/Leaflet.markercluster/tarball/master",
+    "leaflet.markercluster": "https://github.com/pmsf/Leaflet.markercluster/tarball/master",
     "moment": "2.24.0",
     "datatables": "1.10.18"
   }

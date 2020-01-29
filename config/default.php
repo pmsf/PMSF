@@ -6,7 +6,7 @@
 
 //======================================================================
 // PMSF - DEFAULT CONFIG FILE
-// https://github.com/whitewillem/PMSF
+// https://github.com/pmsf/PMSF
 //======================================================================
 if (!isset($_SESSION)) {
     session_start();
@@ -79,7 +79,7 @@ $blockIframe = true;                                                // Block you
 $title = "PMSF Alt";                                                // Title to display in title bar
 $headerTitle = "POGOmap";                                           // Title to display in header
 $locale = "en";                                                     // Display language
-
+$noLocaleSelection = false;
 /* Loading screen */
 
 $noLoadingScreen = false;                                           // show loading animation while main page loads.
@@ -143,6 +143,7 @@ $imgurCID = "";
 $numberOfPokemon = 649;
 $numberOfItem = 1405;
 $numberOfGrunt = 50;
+$numberOfEgg = 10;
 //-----------------------------------------------------
 // Login  - You need to create the two tables referenced in sql.sql
 //-----------------------------------------------------
@@ -220,14 +221,27 @@ $enableGyms = 'false';                                              // true/fals
 $hideGymCoords = false;
 $noExEligible = false;                                              // true/false
 $exEligible = 'false';                                              // true/false
+$noTeams = false;
+$noOpenSpot = false;
+$noMinMaxFreeSlots = false;
+$noLastScan = false;
 
 $noRaids = false;                                                   // true/false
 $enableRaids = 'false';                                             // true/false
+$noActiveRaids = true;
 $activeRaids = 'false';                                             // true/false
+$noMinMaxRaidLevel = true;
 $minRaidLevel = 1;
 $maxRaidLevel = 5;
 $noRaidTimer = false;                                               // true/false
 $enableRaidTimer = 'false';                                         // true/false
+$noRaidbossNumbers = false;
+$hideRaidboss = '[]';
+$excludeRaidboss = [];
+$noRaideggNumbers = false;
+$hideRaidegg = '[]';
+$excludeRaidegg = [];
+$generateExcludeRaidboss = true;
 
 $noPokestops = false;                                               // true/false
 $enablePokestops = 'false';                                         // true/false
@@ -260,7 +274,7 @@ $excludeQuestsPokemon = [];  // Pokemon ids
 $hideQuestsItem = '[4, 5, 301, 401, 402, 403, 404, 501, 602, 603, 604, 702, 704, 708, 801, 901, 902, 903, 1001, 1002, 1401, 1402, 1403, 1404, 1405]';    // Item ids "See protos https://github.com/Furtif/POGOProtos/blob/master/src/POGOProtos/Inventory/Item/ItemId.proto"
 $excludeQuestsItem = [4, 5, 301, 401, 402, 403, 404, 501, 602, 603, 604, 702, 704, 708, 801, 901, 902, 903, 1001, 1002, 1401, 1402, 1403, 1404, 1405];
 $noItemNumbers = true;                                             // true/false
-
+$defaultDustAmount = 500;
 // Manual quest hide options
 $hideQuestTypes = [0, 1, 2, 3, 12, 18, 19, 22, 24, 25];
 $hideRewardTypes = [0, 1, 4, 5, 6];
@@ -314,6 +328,7 @@ $notifyBounce = 'true';                                             // true/fals
 $notifyNotification = 'true';                                       // true/false
 
 /* Style Settings */
+$noDarkMode = false;
 
 $copyrightSafe = true;
 $noCostumeIcons = true;                                            // Set to true if you $iconRepository doesnt support costume icons. true/false

@@ -98,7 +98,7 @@ if (strtolower($map) === "rdm") {
     <?php
     function pokemonFilterImages($noPokemonNumbers, $onClick = '', $pokemonToExclude = array(), $num = 0)
     {
-        global $mons, $copyrightSafe, $iconRepository;
+        global $mons, $copyrightSafe, $iconRepository, $numberOfPokemon;
         if (empty($mons)) {
             $json = file_get_contents('static/dist/data/pokemon.min.json');
             $mons = json_decode($json, true);
@@ -114,7 +114,7 @@ if (strtolower($map) === "rdm") {
             }
 
             if (! in_array($k, $pokemonToExclude)) {
-                if ($k > 649) {
+                if ($k > $numberOfPokemon) {
                     break;
                 }
                 if ($k <= 9) {
@@ -207,6 +207,37 @@ if (strtolower($map) === "rdm") {
                 valueNames: ['type', 'gender', 'id']
             };
             var gruntList = new List('grunt-list-cont-<?php echo $num; ?>', options);
+        </script>
+        <?php
+    }
+    function raidEggFilterImages($noRaideggNumbers, $onClick = '', $raideggToExclude = array(), $num = 0)
+    {
+        global $raids, $copyrightSafe, $iconRepository;
+        if (empty($raids)) {
+            $json = file_get_contents('static/dist/data/raidegg.min.json');
+            $egg = json_decode($json, true);
+        }
+        echo '<div class="raidegg-list-cont" id="raidegg-list-cont-' . $num . '"><input type="hidden" class="search-number" value="' . $num . '" /><input class="search search-input" placeholder="' . i8ln("Search Level") . '" /><div class="raidegg-list list">';
+        $i = 0;
+        $z = 0;
+        foreach ($egg as $e => $egg) {
+            $eggImage = $egg['image_name'];
+            $eggLevel = $egg['level'];
+            $eggType = $egg['type'];
+            if (! in_array($e, $raideggToExclude)) {
+                echo '<span class="raidegg-icon-sprite" data-value="' . $e . '" onclick="' . $onClick . '"><span style="display:none" class="level">' . $eggLevel . '</span><img src="static/raids/egg_' . $eggImage . '.png" style="width:48px;height:56px;"/>';
+                if (! $noRaideggNumbers) {
+                    echo '<span class="raidegg-number">' . $eggLevel . '</span>';
+                }
+                echo "</span>";
+            }
+        }
+        echo '</div></div>'; ?>
+        <script>
+            var options = {
+                valueNames: ['level']
+            };
+            var raideggsList = new List('raidegg-list-cont-<?php echo $num; ?>', options);
         </script>
         <?php
     }
@@ -728,7 +759,7 @@ if (!$noLoadingScreen) {
                 <div>
                     <?php
                     if (! $noRaids) {
-                        echo '<div class="form-control switch-container" id="raids-wrapper">
+                        echo '<div class="form-control switch-container" id="raids-wrapper" style="float:none;height:35px;margin-bottom:0px;">
                     <h3>' . i8ln('Raids') . '</h3>
                     <div class="onoffswitch">
                         <input id="raids-switch" type="checkbox" name="raids-switch"
@@ -743,7 +774,7 @@ if (!$noLoadingScreen) {
                     <div id="raids-filter-wrapper" style="display:none">
                     <?php
                     if (! $noRaidTimer && ! $noRaids) {
-                        echo '<div class="form-control switch-container">
+                        echo '<div class="form-control switch-container" style="float:none;height:35px;margin-bottom:0px;">
                         <h3>' . i8ln('Raids Timer') . '</h3>
                         <div class="onoffswitch">
                         <input id="raid-timer-switch" type="checkbox" name="raid-timer-switch" class="onoffswitch-checkbox" checked>
@@ -754,7 +785,10 @@ if (!$noLoadingScreen) {
                     </div>
                     </div>';
                     } ?>
-                        <div class="form-control switch-container" id="active-raids-wrapper">
+                    <?php
+                    if (! $noActiveRaids) {
+                        ?>
+                        <div class="form-control switch-container" id="active-raids-wrapper" style="float:none;height:35px;margin-bottom:0px;">
                             <h3><?php echo i8ln('Only Active Raids') ?></h3>
                             <div class="onoffswitch">
                                 <input id="active-raids-switch" type="checkbox" name="active-raids-switch"
@@ -765,7 +799,12 @@ if (!$noLoadingScreen) {
                                 </label>
                             </div>
                         </div>
-                        <div class="form-control switch-container" id="min-level-raids-filter-wrapper">
+                        <?php
+                    } ?>
+                    <?php
+                    if (! $noMinMaxRaidLevel) {
+                        ?>
+                        <div class="form-control switch-container" id="min-level-raids-filter-wrapper" style="float:none;height:50px;margin-bottom:0px;">
                             <h3><?php echo i8ln('Minimum Raid Level') ?></h3>
                             <select name="min-level-raids-filter-switch" id="min-level-raids-filter-switch">
                                 <option value="1">1</option>
@@ -775,7 +814,7 @@ if (!$noLoadingScreen) {
                                 <option value="5">5</option>
                             </select>
                         </div>
-                        <div class="form-control switch-container" id="max-level-raids-filter-wrapper">
+                        <div class="form-control switch-container" id="max-level-raids-filter-wrapper" style="float:none;height:50px;margin-bottom:5px;">
                             <h3><?php echo i8ln('Maximum Raid Level') ?></h3>
                             <select name="max-level-raids-filter-switch" id="max-level-raids-filter-switch">
                                 <option value="1">1</option>
@@ -785,83 +824,132 @@ if (!$noLoadingScreen) {
                                 <option value="5">5</option>
                             </select>
                         </div>
+                        <?php
+                    } ?>
+                        <div id="raid-tabs">
+                            <ul>
+                                <li><a href="#tabs-1"><?php echo i8ln('Hide Raidboss') ?></a></li>
+                                <li><a href="#tabs-2"><?php echo i8ln('Hide Raidegg') ?></a></li>
+                            </ul>
+                            <div id="tabs-1">
+                                <div class="form-control-raids hide-select-2">
+                                    <label for="exclude-raidboss">
+                                        <div class="raidboss-container">
+                                            <input id="exclude-raidboss" type="text" readonly="true">
+                                            <?php
+                                                if ($generateExcludeRaidboss === true) {
+                                                    pokemonFilterImages($noRaidbossNumbers, '', array_diff(range(1, $numberOfPokemon), $getList->generated_exclude_list('raidbosslist')), 11);
+                                                } else {
+                                                    pokemonFilterImages($noRaidbossNumbers, '', $excludeRaidboss, 11);
+                                                } ?>
+                                        </div>
+                                        <a href="#" class="select-all"><?php echo i8ln('All') ?>
+                                            <div>
+                                        </a><a href="#" style="margin-bottom:20px;" class="hide-all"><?php echo i8ln('None') ?></a>
+                                    </label>
+                                </div>
+                            </div>
+                            <div id="tabs-2">
+                                <div class="form-control-raids hide-select-2">
+                                    <label for="exclude-raidegg">
+                                        <div class="raidegg-container">
+                                            <input id="exclude-raidegg" type="text" readonly="true">
+                                            <?php
+                                                raideggFilterImages($noRaideggNumbers, '', $excludeRaidegg, 12); ?>
+                                        </div>
+                                        <a href="#" class="select-all-egg"><?php echo i8ln('All') ?>
+                                            <div>
+                                        </a><a href="#" style="margin-bottom:20px;" class="hide-all-egg"><?php echo i8ln('None') ?></a>
+                                    </label>
+                                </div>
+                            </div>
+                        </div>
                     </div>
                     <?php
                     if (! $noGyms) {
                         echo '<div class="form-control switch-container">
-                    <h3>' . i8ln('Gyms') . '</h3>
-                    <div class="onoffswitch">
-                        <input id="gyms-switch" type="checkbox" name="gyms-switch" class="onoffswitch-checkbox" checked>
-                        <label class="onoffswitch-label" for="gyms-switch">
-                            <span class="switch-label" data-on="On" data-off="Off"></span>
-                            <span class="switch-handle"></span>
-                        </label>
-                    </div>
-                    </div>';
-                    } ?>
-                    <?php
-                    if (! $hideIfManual) {
-                        echo '<div id="gyms-filter-wrapper" style="display:none">
-                        <div class="form-control switch-container" id="team-gyms-only-wrapper">
-                            <h3>' . i8ln('Team') . '</h3>
-                            <select name="team-gyms-filter-switch" id="team-gyms-only-switch">
-                                <option value="0">' . i8ln('All') . '</option>
-                                <option value="1">' . i8ln('Mystic') . '</option>
-                                <option value="2">' . i8ln('Valor') . '</option>
-                                <option value="3">' . i8ln('Instinct') . '</option>
-                            </select>
-                        </div>
-                        <div class="form-control switch-container" id="open-gyms-only-wrapper">
-                            <h3>' . i8ln('Open Spot') . '</h3>
+                            <h3>' . i8ln('Gyms') . '</h3>
                             <div class="onoffswitch">
-                                <input id="open-gyms-only-switch" type="checkbox" name="open-gyms-only-switch"
-                                       class="onoffswitch-checkbox" checked>
-                                <label class="onoffswitch-label" for="open-gyms-only-switch">
+                                <input id="gyms-switch" type="checkbox" name="gyms-switch" class="onoffswitch-checkbox" checked>
+                                <label class="onoffswitch-label" for="gyms-switch">
                                     <span class="switch-label" data-on="On" data-off="Off"></span>
                                     <span class="switch-handle"></span>
                                 </label>
                             </div>
-                        </div>
-                        <div class="form-control switch-container" id="min-level-gyms-filter-wrapper">
-                            <h3>' . i8ln('Minimum Free Slots') . '</h3>
-                            <select name="min-level-gyms-filter-switch" id="min-level-gyms-filter-switch">
-                                <option value="0">0</option>
-                                <option value="1">1</option>
-                                <option value="2">2</option>
-                                <option value="3">3</option>
-                                <option value="4">4</option>
-                                <option value="5">5</option>
-                                <option value="6">6</option>
-                            </select>
-                        </div>
-                        <div class="form-control switch-container" id="max-level-gyms-filter-wrapper">
-                            <h3>' . i8ln('Maximum Free Slots') . '</h3>
-                            <select name="max-level-gyms-filter-switch" id="max-level-gyms-filter-switch">
-                                <option value="0">0</option>
-                                <option value="1">1</option>
-                                <option value="2">2</option>
-                                <option value="3">3</option>
-                                <option value="4">4</option>
-                                <option value="5">5</option>
-                                <option value="6">6</option>
-                            </select>
-                        </div>
-                        <div class="form-control switch-container" id="last-update-gyms-wrapper">
-                            <h3>' . i8ln('Last Scan') . '</h3>
-                            <select name="last-update-gyms-switch" id="last-update-gyms-switch">
-                                <option value="0">' . i8ln('All') . '</option>
-                                <option value="1">' . i8ln('Last Hour') . '</option>
-                                <option value="6">' . i8ln('Last 6 Hours') . '</option>
-                                <option value="12">' . i8ln('Last 12 Hours') . '</option>
-                                <option value="24">' . i8ln('Last 24 Hours') . '</option>
-                                <option value="168">' . i8ln('Last Week') . '</option>
-                            </select>
-                        </div>
                         </div>';
                     } ?>
+                    <div id="gyms-filter-wrapper" style="display:none">
+                        <?php
+                        if (! $noTeams) {
+                            echo '<div class="form-control switch-container" id="team-gyms-only-wrapper">
+                                <h3>' . i8ln('Team') . '</h3>
+                                <select name="team-gyms-filter-switch" id="team-gyms-only-switch">
+                                    <option value="0">' . i8ln('All') . '</option>
+                                    <option value="1">' . i8ln('Mystic') . '</option>
+                                    <option value="2">' . i8ln('Valor') . '</option>
+                                    <option value="3">' . i8ln('Instinct') . '</option>
+                                </select>
+                            </div>';
+                        } ?>
+                        <?php
+                        if (! $noOpenSpot) {
+                            echo '<div class="form-control switch-container" id="open-gyms-only-wrapper">
+                                <h3>' . i8ln('Open Spot') . '</h3>
+                                <div class="onoffswitch">
+                                    <input id="open-gyms-only-switch" type="checkbox" name="open-gyms-only-switch"
+                                           class="onoffswitch-checkbox" checked>
+                                    <label class="onoffswitch-label" for="open-gyms-only-switch">
+                                        <span class="switch-label" data-on="On" data-off="Off"></span>
+                                        <span class="switch-handle"></span>
+                                    </label>
+                                </div>
+                            </div>';
+                        } ?>
+                        <?php
+                        if (! $noMinMaxFreeSlots) {
+                            echo '<div class="form-control switch-container" id="min-level-gyms-filter-wrapper">
+                                <h3>' . i8ln('Minimum Free Slots') . '</h3>
+                                <select name="min-level-gyms-filter-switch" id="min-level-gyms-filter-switch">
+                                    <option value="0">0</option>
+                                    <option value="1">1</option>
+                                    <option value="2">2</option>
+                                    <option value="3">3</option>
+                                    <option value="4">4</option>
+                                    <option value="5">5</option>
+                                    <option value="6">6</option>
+                                </select>
+                            </div>
+                            <div class="form-control switch-container" id="max-level-gyms-filter-wrapper">
+                                <h3>' . i8ln('Maximum Free Slots') . '</h3>
+                                <select name="max-level-gyms-filter-switch" id="max-level-gyms-filter-switch">
+                                    <option value="0">0</option>
+                                    <option value="1">1</option>
+                                    <option value="2">2</option>
+                                    <option value="3">3</option>
+                                    <option value="4">4</option>
+                                    <option value="5">5</option>
+                                    <option value="6">6</option>
+                                </select>
+                            </div>';
+                        } ?>
+                        <?php
+                        if (! $noLastScan) {
+                            echo '<div class="form-control switch-container" id="last-update-gyms-wrapper">
+                                <h3>' . i8ln('Last Scan') . '</h3>
+                                <select name="last-update-gyms-switch" id="last-update-gyms-switch">
+                                    <option value="0">' . i8ln('All') . '</option>
+                                    <option value="1">' . i8ln('Last Hour') . '</option>
+                                    <option value="6">' . i8ln('Last 6 Hours') . '</option>
+                                    <option value="12">' . i8ln('Last 12 Hours') . '</option>
+                                    <option value="24">' . i8ln('Last 24 Hours') . '</option>
+                                    <option value="168">' . i8ln('Last Week') . '</option>
+                                </select>
+                            </div>';
+                        } ?>
+                    </div>
                     <div id="gyms-raid-filter-wrapper" style="display:none">
                         <?php
-                        if (($fork === "alternate" || $map === "rdm" || ($fork === "mad" && $map === "monocle" || $map === "rocketmap")) && ! $noExEligible) {
+                        if (! $noExEligible) {
                             echo '<div class="form-control switch-container" id="ex-eligible-wrapper">
                                 <h3>' . i8ln('EX Eligible Only') . '</h3>
                                 <div class="onoffswitch">
@@ -1149,15 +1237,19 @@ if (!$noLoadingScreen) {
             ?>
             <?php
             if (! $noNotifyPokemon) {
-                echo '<div class="form-control hide-select-2">
+                ?>
+                <div class="form-control hide-select-2">
                     <label for="notify-pokemon">
-                        <h3>' . i8ln('Notify of Pokémon') . '</h3><a href="#" class="select-all">' . i8ln('All') . '</a>/<a href="#" class="hide-all">' . i8ln('None') . '</a>
+                        <h3 class="notify-pokemon-tab"><?php echo i8ln('Notify of Pokémon'); ?></h3>
                         <div style="max-height:165px;overflow-y:auto;">
-                            <input id="notify-pokemon" type="text" readonly="true"/>';
-                pokemonFilterImages($noPokemonNumbers, '', [], 4);
-                echo '</div>
+                            <input id="notify-pokemon" type="text" readonly="true"/>
+                            <?php pokemonFilterImages($noPokemonNumbers, '', [], 4); ?>
+                        </div>
+                        <a href="#" class="select-all notify-pokemon-button"><?php echo i8ln('All'); ?></a>
+                        <a href="#" class="hide-all notify-pokemon-button"><?php echo i8ln('None'); ?></a>
                     </label>
-                </div>';
+                </div>
+                <?php
             }
             ?>
             <?php
@@ -1176,9 +1268,9 @@ if (!$noLoadingScreen) {
             if (! $noNotifyIv) {
                 echo '<div class="form-control">
                 <label for="notify-perfection">
-                    <h3>' . i8ln('Notify of Perfection') . '</h3>
+                    <h3>' . i8ln('Notify of IV') . '</h3>
                     <input id="notify-perfection" type="text" name="notify-perfection"
-                           placeholder="' . i8ln('Minimum perfection') . ' %" style="float: right;width: 75px;text-align:center"/>
+                           placeholder="' . i8ln('Min IV') . '%" style="float: right;width: 75px;text-align:center"/>
                 </label>
             </div>';
             }
@@ -1286,6 +1378,19 @@ if (!$noLoadingScreen) {
             }
             ?>
             <?php
+            if (! $noDarkMode) {
+                echo '<div class="form-control switch-container">
+                <h3> ' . i8ln('Dark Mode') . ' </h3>
+                <div class="onoffswitch">
+                    <input id="dark-mode-switch" type="checkbox" name="dark-mode-switch" class="onoffswitch-checkbox"/>
+                    <label class="onoffswitch-label" for="dark-mode-switch">
+                        <span class="switch-label" data-on="On" data-off="Off"></span>
+                        <span class="switch-handle"></span>
+                    </label>
+                </div>
+            </div>';
+            } ?>
+            <?php
             if (! $noMapStyle && !$forcedTileServer) {
                 echo '<div class="form-control switch-container">
                 <h3>' . i8ln('Map Style') . '</h3>
@@ -1310,7 +1415,7 @@ if (!$noLoadingScreen) {
             <?php
             if (! $noMultipleRepos && ! $copyrightSafe) {
                 echo '<div class="form-control switch-container">
-                <h3>Icon Style</h3>';
+                <h3>' . i8ln('Icon Style') . '</h3>';
                 $count = sizeof($iconRepos);
                 if ($count > 0) {
                     echo '<div><select name="icon-style" id="icon-style">';
@@ -1392,7 +1497,7 @@ if (!$noLoadingScreen) {
         <div>
             <center>
                 <button class="settings"
-                        onclick="confirm('Are you sure you want to reset settings to default values?') ? (localStorage.clear(), window.location.reload()) : false">
+                        onclick="confirm('<?php echo i8ln('Are you sure you want to reset settings to default values?') ?>') ? (localStorage.clear(), window.location.reload()) : false">
                     <i class="fas fa-sync-alt" aria-hidden="true"></i> <?php echo i8ln('Reset Settings') ?>
                 </button>
             </center>
@@ -1417,30 +1522,43 @@ if (!$noLoadingScreen) {
         <?php
         if (($noNativeLogin === false || $noDiscordLogin === false) && !empty($_SESSION['user']->id)) {
             ?>
-            <div>
-                <center>
-                    <button class="settings"
-                            onclick="document.location.href='logout.php'">
-                        <i class="fas fa-sign-out-alt" aria-hidden="true"></i> <?php echo i8ln('Logout'); ?>
-                    </button>
-                </center>
-            </div>
-            <div><center><p>
-                <?php
-                if ($manualAccessLevel && $noDiscordLogin) {
-                    $time = date("Y-m-d", $_SESSION['user']->expire_timestamp);
-                    if ($_SESSION['user']->expire_timestamp > time()) {
-                        echo "<span style='color: green;'>" . i8ln('Membership expires on') . " {$time}</span>";
-                    } else {
-                        echo "<span style='color: red;'>" . i8ln('Membership expired on') . " {$time}</span>";
-                    }
-                } ?>
-            </p></center></div>
-            <div><center><p>
+            <div><center>
+                <button class="settings" onclick="document.location.href='logout.php'">
+                    <i class="fas fa-sign-out-alt" aria-hidden="true"></i> <?php echo i8ln('Logout'); ?>
+                </button>
+            </center></div>
             <?php
-            echo i8ln('Logged in as') . ': ' . $_SESSION['user']->user . "<br>"; ?>
-            </p></center></div>
+        } ?>
         <?php
+        if (!$noLocaleSelection) {
+            ?>
+            <div class="form-control switch-container" style="width:40%;left:32%;top:10px;position:relative;">
+                <select name="language-switch" onchange="location = this.value;">
+                    <option selected><?php echo i8ln('select language'); ?></option>
+                    <option value="?lang=en"><?php echo i8ln('English'); ?></option>
+                    <option value="?lang=de"><?php echo i8ln('German'); ?></option>
+                    <option value="?lang=fr"><?php echo i8ln('French'); ?></option>
+                    <option value="?lang=it"><?php echo i8ln('Italian'); ?></option>
+                    <option value="?lang=pl"><?php echo i8ln('Polish'); ?></option>
+                    <option value="?lang=sp"><?php echo i8ln('Spanish'); ?></option>
+                </select>
+            </div>
+            <br><br>
+            <?php
+        }?>
+        <?php
+        if (($noNativeLogin === false || $noDiscordLogin === false) && !empty($_SESSION['user']->id)) {
+            if ($manualAccessLevel && $noDiscordLogin) {
+                $time = date("Y-m-d", $_SESSION['user']->expire_timestamp);
+                echo '<div><center><p>';
+                if ($_SESSION['user']->expire_timestamp > time()) {
+                    echo "<span style='color: green;'>" . i8ln('Membership expires on') . " {$time}</span>";
+                } else {
+                    echo "<span style='color: red;'>" . i8ln('Membership expired on') . " {$time}</span>";
+                }
+                echo '</p></center></div>';
+            }
+            echo '<div><center><p>' . i8ln('Logged in as') . ': ' . $_SESSION['user']->user . '</p></center></div><br>';
         }
         ?>
     </nav>
@@ -2059,8 +2177,16 @@ if (!$noLoadingScreen) {
     var notifyNotification = <?php echo $notifyNotification ?>;
     var enableRaids = <?php echo $noRaids ? 'false' : $enableRaids ?>;
     var activeRaids = <?php echo $activeRaids ?>;
+    var noActiveRaids = <?php echo $noActiveRaids === true ? 'true' : 'false' ?>;
+    var noMinMaxRaidLevel = <?php echo $noMinMaxRaidLevel === true ? 'true' : 'false' ?>;
+    var noTeams = <?php echo $noTeams === true ? 'true' : 'false' ?>;
+    var noOpenSpot = <?php echo $noOpenSpot === true ? 'true' : 'false' ?>;
+    var noMinMaxFreeSlots = <?php echo $noMinMaxFreeSlots === true ? 'true' : 'false' ?>;
+    var noLastScan = <?php echo $noLastScan === true ? 'true' : 'false' ?>;
     var minRaidLevel = <?php echo $minRaidLevel ?>;
     var maxRaidLevel = <?php echo $maxRaidLevel ?>;
+    var hideRaidboss = <?php echo $noRaids ? '[]' : $hideRaidboss ?>;
+    var hideRaidegg = <?php echo $noRaids ? '[]' : $hideRaidegg ?>;
     var enableGyms = <?php echo $noGyms ? 'false' : $enableGyms ?>;
     var enableNests = <?php echo $noNests ? 'false' : $enableNests ?>;
     var enableCommunities = <?php echo $noCommunity ? 'false' : $enableCommunities ?>;
@@ -2164,9 +2290,12 @@ if (!$noLoadingScreen) {
     var numberOfPokemon = <?php echo $numberOfPokemon; ?>;
     var numberOfItem = <?php echo $numberOfItem; ?>;
     var numberOfGrunt = <?php echo $numberOfGrunt; ?>;
+    var numberOfEgg = <?php echo $numberOfEgg; ?>;
     var noRaids = <?php echo $noRaids === true ? 'true' : 'false' ?>;
     var letItSnow = <?php echo $letItSnow === true ? 'true' : 'false' ?>;
     var makeItBang = <?php echo $makeItBang === true ? 'true' : 'false' ?>;
+    var defaultDustAmount = <?php echo $defaultDustAmount; ?>;
+    var noDarkMode = <?php echo $noDarkMode === true ? 'true' : 'false' ?>;
 </script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js"></script>
 <script src="static/dist/js/map.common.min.js"></script>
