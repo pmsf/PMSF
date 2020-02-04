@@ -527,35 +527,27 @@ $enableDebug = false;
 //-----------------------------------------------------
 // DATABASE CONFIG
 //-----------------------------------------------------
-$map = "rdm";                                                       // {monocle}/{rdm}/{rocketmap}
-$fork = "default";                                                  // {default/alternate}/{default/beta}/{mad}
-$queryInterval = '2500';                                            // Interval between raw_data requests. Try to lower to increase performance.
+$map = "rdm";                                                       // rdm / rocketmap
+$fork = "default";                                                  // beta / mad
+$queryInterval = '2500';                                            // Interval between raw_data requests.
 
-$db = new Medoo([// required
+$db = new Medoo([
     'database_type' => 'mysql',
-    'database_name' => 'Monocle',
+    'database_name' => 'scannerdb',
     'server' => '127.0.0.1',
     'username' => 'database_user',
     'password' => 'database_password',
-    'charset' => 'utf8',
-
-    // [optional]
-    //'port' => 5432,                                               // Comment out if not needed, just add // in front!
-    //'socket' => /path/to/socket/,
+    'charset' => 'utf8'
 ]);
 
-//$manualdb = new Medoo([// required
+//$manualdb = new Medoo([
 //    'database_type' => 'mysql',
-//    'database_name' => 'Monocle',
+//    'database_name' => 'manualdb',
 //    'server' => '127.0.0.1',
 //    'username' => 'database_user',
 //    'password' => 'database_password',
-//    'charset' => 'utf8mb4',
-
-    // [optional]
-    //'port' => 5432,                                               // Comment out if not needed, just add // in front!
-    //'socket' => /path/to/socket/,
-//]);                                                               // Dont forget to uncomment this line to use $manualdb :)
+//    'charset' => 'utf8mb4'
+//]);
 
 // DONT EDIT THE CODE BELOW
 if (($noNativeLogin === false || $noDiscordLogin === false) && !empty($_SESSION['user']->user)) {
