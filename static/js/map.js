@@ -1026,6 +1026,9 @@ function createFireworks() {
 }
 
 function createHearts() {
+    if (!showYourLove) {
+        return false
+    }
     var d = new Date()
     if (d.getMonth() === 1 && d.getDate() === 14) {
         const valentine = '<canvas id="valentine-canvas"></canvas>'
