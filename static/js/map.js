@@ -1577,7 +1577,7 @@ function gymLabel(item) {
     return str
 }
 
-function  (item) {
+function getReward(item) {
     var rewardImage
     var pokemonIdStr = ''
     var formStr = ''
