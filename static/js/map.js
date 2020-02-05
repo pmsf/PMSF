@@ -1049,7 +1049,7 @@ function createHearts() {
                     heart.image.style.height = heart.height
                     heart.image.src = this.heartImage
                     this.ctx.globalAlpha = heart.opacity
-                    this.ctx.drawImage (heart.image, heart.x, heart.y, heart.width, heart.height)
+                    this.ctx.drawImage(heart.image, heart.x, heart.y, heart.width, heart.height)
                 }
                 this.move()
             },
