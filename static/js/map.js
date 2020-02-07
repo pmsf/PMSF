@@ -1702,6 +1702,7 @@ function getQuest(item) {
                     }
                     if (questinfo !== null) {
                         str = str.replace('berrie(s)', idToItem[questinfo['item_id']].name)
+                        str = str.replace('Evolve {0} pokémon', 'Evolve {0} pokémon with a ' + idToItem[questinfo['item_id']].name)
                     } else {
                         str = str.replace('Evolve', 'Use a item to evolve')
                     }

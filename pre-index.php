@@ -1937,7 +1937,7 @@ if (!$noLoadingScreen) {
                     <?php if (! $noSearchNests) { ?>
                         <div id="tab-nests">
                             <input type="search" id="nest-search" name="nest-search"
-                                   placeholder="<?php echo i8ln('Enter Pokémon or Type'); ?>"
+                                   placeholder="<?php echo i8ln('Enter nest Pokémon or Type'); ?>"
                                    data-type="nests" class="search-input"/>
                             <ul id="nest-search-results" class="search-results nest-results"></ul>
                         </div>
