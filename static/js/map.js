@@ -1975,16 +1975,8 @@ function formatSpawnTime(seconds) {
 
 function spawnpointLabel(item) {
     var str = ''
-
-    // 60 minute
-    if (item.time > 1800) {
-        str += '<div><b>' + i8ln('Spawn Point (60)') + '</b></div>' +
-            '<div>' + i8ln('Spawn time') + ': xx:' + formatSpawnTime(item.time) + '</div>' +
-            '<div>' + i8ln('Despawn time') + ': xx:' + formatSpawnTime(item.time) + '</div>'
-    // 30 minute
-    } else if (item.time > 0) {
-        str += '<div><b>' + i8ln('Spawn Point (30)') + '</b></div>' +
-        '<div>' + i8ln('Spawn time') + ': xx:' + formatSpawnTime(item.time + 1800) + '</div>' +
+    if (item.time > 0) {
+        str += '<div><b>' + i8ln('Spawn Point') + '</b></div>' +
         '<div>' + i8ln('Despawn time') + ': xx:' + formatSpawnTime(item.time) + '</div>'
     } else {
         str += '<div>' + i8ln('Unknown spawnpoint info') + '</div>'
@@ -3065,14 +3057,11 @@ function deletePoi(event) { // eslint-disable-line no-unused-vars
 
 function setupSpawnpointMarker(item) {
     var color = ''
-    if (item['time'] > 1800) {
+    if (item['time'] > 0) {
         color = 'green'
-    } else if (item['time'] > 0) {
-        color = 'lightgreen'
     } else {
         color = 'red'
     }
-
     var rangeCircleOpts = {
         radius: 4,
         weight: 1,
@@ -5530,10 +5519,8 @@ function updateSpawnPoints() {
     $.each(mapData.spawnpoints, function (key, value) {
         if (map.getBounds().contains(value.marker.getLatLng())) {
             var color = ''
-            if (value['time'] > 1800) {
+            if (value['time'] > 0) {
                 color = 'green'
-            } else if (value['time'] > 0) {
-                color = 'lightgreen'
             } else {
                 color = 'red'
             }
