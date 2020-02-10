@@ -35929,6 +35929,21 @@
             "color": "#705898"
           }
         ]
+      },
+      {
+        "nameform": "Female",
+        "protoform": "2330",
+        "assetsform": "00",
+        "formtypes": [
+          {
+            "type": "Water",
+            "color": "#6890f0"
+          },
+          {
+            "type": "Ghost",
+            "color": "#705898"
+          }
+        ]
       }
     ]
   },
@@ -35982,6 +35997,21 @@
       {
         "nameform": "Purified",
         "protoform": "2173",
+        "assetsform": "00",
+        "formtypes": [
+          {
+            "type": "Water",
+            "color": "#6890f0"
+          },
+          {
+            "type": "Ghost",
+            "color": "#705898"
+          }
+        ]
+      },
+      {
+        "nameform": "Female",
+        "protoform": "2331",
         "assetsform": "00",
         "formtypes": [
           {
