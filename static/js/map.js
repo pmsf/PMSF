@@ -1034,12 +1034,13 @@ function createHearts() {
         const valentine = '<canvas id="valentine-canvas"></canvas>'
         $('#map').append(valentine)
         var hearts = {
-            heartHeight: 15,
-            heartWidth: 15,
+            heartHeight: 25,
+            heartWidth: 25,
             hearts: [],
-            heartImage: 'https://pngimage.net/wp-content/uploads/2018/06/heart-png-images.png',
-            maxHearts: 30,
-            minScale: 0.3,
+            heartImage: 'static/images/misc/heart-0.png',
+            heartImageAlt: 'static/images/misc/heart-1.png',
+            maxHearts: 50,
+            minScale: 0.4,
             draw: function () {
                 this.setCanvasSize()
                 this.ctx.clearRect(0, 0, this.w, this.h)
@@ -1047,7 +1048,11 @@ function createHearts() {
                     var heart = this.hearts[i]
                     heart.image = new Image()
                     heart.image.style.height = heart.height
-                    heart.image.src = this.heartImage
+                    if (i % 2 === 1) {
+                        heart.image.src = this.heartImageAlt
+                    } else {
+                        heart.image.src = this.heartImage
+                    }
                     this.ctx.globalAlpha = heart.opacity
                     this.ctx.drawImage(heart.image, heart.x, heart.y, heart.width, heart.height)
                 }
