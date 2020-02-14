@@ -484,7 +484,7 @@ $areas = [];                                                        // [[latitud
 //-----------------------------------------------------
 // Weather Config
 //-----------------------------------------------------
-
+$noHeaderWeatherIcon = true;
 $noWeatherOverlay = true;                                          // true/false
 $enableWeatherOverlay = 'false';                                    // true/false
 

@@ -365,7 +365,7 @@ if (!$noLoadingScreen) {
                  </a>';
         }
         ?>
-        <?php if (! $noWeatherOverlay) {
+        <?php if (! $noHeaderWeatherIcon) {
             ?>
             <div id="currentWeather"></div>
             <?php
