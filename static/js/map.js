@@ -363,6 +363,17 @@ function removePokestopMarker(pokestopId) { // eslint-disable-line no-unused-var
     mapData.pokestops[pokestopId].hidden = true
 }
 
+function removeGymMarker(gymId) { // eslint-disable-line no-unused-vars
+    if (mapData.gyms[gymId].marker.rangeCircle) {
+        markers.removeLayer(mapData.gyms[gymId].marker.rangeCircle)
+        markersnotify.removeLayer(mapData.gyms[gymId].marker.rangeCircle)
+        delete mapData.gyms[gymId].marker.rangeCircle
+    }
+    markers.removeLayer(mapData.gyms[gymId].marker)
+    markersnotify.removeLayer(mapData.gyms[gymId].marker)
+    mapData.gyms[gymId].hidden = true
+}
+
 function createServiceWorkerReceiver() {
     navigator.serviceWorker.addEventListener('message', function (event) {
         const data = JSON.parse(event.data)
@@ -1457,6 +1468,8 @@ function gymLabel(item) {
         var raidEndStr = getTimeStr(item['raid_end'])
         raidStr += '<div>' + i8ln('Start') + ': <b>' + raidStartStr + '</b> <span class="label-countdown" disappears-at="' + item['raid_start'] + '" start>(' + generateRemainingTimer(item['raid_start'], 'start') + ')</span></div>'
         raidStr += '<div>' + i8ln('End') + ': <b>' + raidEndStr + '</b> <span class="label-countdown" disappears-at="' + item['raid_end'] + '" end>(' + generateRemainingTimer(item['raid_end'], 'end') + ')</span></div>'
+
+        raidStr += '<a href="javascript:removeGymMarker(\'' + item['gym_id'] + '\')" title="' + i8ln('Hide this Gym') + '"><i class="fas fa-trash-alt" style="font-size:15px;"></i></a>'
 
         var raidForm = item['form']
         var formStr = ''
