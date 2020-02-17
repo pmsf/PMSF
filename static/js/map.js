@@ -1673,15 +1673,15 @@ function getQuest(item) {
                     if (questinfo['pokemon_ids'].length > 1) {
                         $.each(questinfo['pokemon_ids'], function (index, id) {
                             if (index === questinfo['pokemon_ids'].length - 2) {
-                                pstr += idToPokemon[id].name + ' or '
+                                pstr += idToPokemon[id] + ' or '
                             } else if (index === questinfo['pokemon_ids'].length - 1) {
-                                pstr += idToPokemon[id].name
+                                pstr += idToPokemon[id]
                             } else {
-                                pstr += idToPokemon[id].name + ', '
+                                pstr += idToPokemon[id] + ', '
                             }
                         })
                     } else {
-                        pstr = idToPokemon[questinfo['pokemon_ids']].name
+                        pstr = idToPokemon[questinfo['pokemon_ids']]
                     }
                     str = str.replace('pokémon', pstr)
                     str = str.replace('Snapshot(s)', 'Snapshot(s) of ' + pstr)
@@ -1719,8 +1719,8 @@ function getQuest(item) {
                         str = str.replace('Catch', 'Use').replace('pokémon with berrie(s)', 'berrie(s) to help catch Pokémon')
                     }
                     if (questinfo !== null) {
-                        str = str.replace('berrie(s)', idToItem[questinfo['item_id']].name)
-                        str = str.replace('Evolve {0} pokémon', 'Evolve {0} pokémon with a ' + idToItem[questinfo['item_id']].name)
+                        str = str.replace('berrie(s)', idToItem[questinfo['item_id']])
+                        str = str.replace('Evolve {0} pokémon', 'Evolve {0} pokémon with a ' + idToItem[questinfo['item_id']])
                     } else {
                         str = str.replace('Evolve', 'Use a item to evolve')
                     }
@@ -6641,7 +6641,7 @@ $(function () {
                 name: i8ln(value['name'])
             })
             value['name'] = i8ln(value['name'])
-            idToItem[key] = value
+            idToItem[key] = value['name']
         })
         $questsExcludeItem.select2({
             placeholder: i8ln('Select Item'),
@@ -6687,7 +6687,7 @@ $(function () {
                 })
             })
             value['types'] = _types
-            idToPokemon[key] = value
+            idToPokemon[key] = value['name']
         })
 
         // setup the filter lists
