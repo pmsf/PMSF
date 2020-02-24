@@ -93,10 +93,8 @@ if (strtolower($map) === "monocle") {
         $scanner = new \Scanner\Monocle_PMSF();
     }
 } elseif (strtolower($map) === "rdm") {
-    if (strtolower($fork) === "default") {
+    if (strtolower($fork) === "default" || strtolower($fork) === "beta") {
         $scanner = new \Scanner\RDM();
-    } else {
-        $scanner = new \Scanner\RDM_beta();
     }
 } elseif (strtolower($map) === "rocketmap") {
     if (strtolower($fork) === "mad") {
@@ -180,7 +178,7 @@ if (!$noPokestops) {
                 $d["pokestops"] = $scanner->get_stops($geids, $qpeids, $qieids, $swLat, $swLng, $neLat, $neLng, $timestamp, 0, 0, 0, 0, $lures, $rocket, $quests, $dustamount);
             }
         }
-        if ((strtolower($map) === "rdm" && strtolower($fork) === "beta") || (strtolower($map) === "rocketmap" && strtolower($fork) === "mad")) {
+        if ((strtolower($map) === "rdm") || (strtolower($map) === "rocketmap" && strtolower($fork) === "mad")) {
             if ($reloaddustamount == "true") {
                 $d["pokestops"] = array_merge($d["pokestops"], $scanner->get_stops_quest($greids, $qpreids, $qireids, $swLat, $swLng, $neLat, $neLng, 0, $oSwLat, $oSwLng, $oNeLat, $oNeLng, $lures, $rocket, $quests, $dustamount, $reloaddustamount));
             }
