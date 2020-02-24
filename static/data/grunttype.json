@@ -13,22 +13,16 @@
   },
   "4": {
     "type": "",
-    "grunt": "Male",
-    "second_reward": "true",
-    "encounters":{
-        "first": ["001_00","004_00","007_00"],
-        "second":["002_00","005_00","008_00"],
-        "third":["003_00","006_00","009_00"]
-    }
+    "grunt": "Male"
   },
   "5": {
     "type": "",
     "grunt": "Female",
     "second_reward": "false",
     "encounters":{
-        "first": ["143_00","131_00"],
-        "second":["143_00","062_00","282_00"],
-        "third":["143_00","149_00","130_00"]
+        "first": ["131_00"],
+        "second":["062_00","143_00","282_00"],
+        "third":["130_00","143_00","149_00"]
     }
   },
   "6": {
@@ -54,7 +48,7 @@
     "grunt": "Male",
     "second_reward": "false",
     "encounters":{
-        "first": ["302_00","353_00","355_00"],
+        "first": ["200_00"],
         "second":["302_00","354_00","356_00"],
         "third":["302_00","354_00","477_00"]
     }
@@ -69,13 +63,7 @@
   },
   "12": {
     "type": "Dragon",
-    "grunt": "Female",
-    "second_reward": "false",
-    "encounters":{
-        "first": ["147_00"],
-        "second":["147_00","148_00","330_00"],
-        "third":["130_00","148_00","149_00"]
-    }
+    "grunt": "Female"
   },
   "13": {
     "type": "Dragon",
@@ -108,8 +96,8 @@
     "grunt": "Female",
     "second_reward": "true",
     "encounters":{
-        "first": ["058_00","126_00","228_00"],
-        "second":["005_00","229_00"],
+        "first": ["037_00","058_00","228_00"],
+        "second":["005_00","038_00","229_00"],
         "third":["005_00","059_00","229_00"]
     }
   },
@@ -140,7 +128,7 @@
     "grunt": "Male",
     "second_reward": "true",
     "encounters":{
-        "first": ["001_00","043_00","069_00"],
+        "first": ["001_00","069_00","102_00"],
         "second":["002_00","044_00","070_00"],
         "third":["045_00","071_00","275_00"]
     }
@@ -161,13 +149,7 @@
   },
   "26": {
     "type": "Ice",
-    "grunt": "Female",
-    "second_reward": "false",
-    "encounters":{
-        "first": ["225_00","459_00"],
-        "second":["225_00"],
-        "third":["225_00","460_00"]
-    }
+    "grunt": "Female"
   },
   "27": {
     "type": "Ice",
@@ -192,18 +174,12 @@
     "encounters":{
         "first": ["137_00"],
         "second":["233_00"],
-        "third":["474_00","143_00"]
+        "third":["143_00","474_00"]
     }
   },
   "32": {
     "type": "Poison",
-    "grunt": "Female",
-    "second_reward": "true",
-    "encounters":{
-        "first": ["041_00","048_00","088_00"],
-        "second":["042_00","088_00","089_00"],
-        "third":["042_00","049_00","089_00"]
-    }
+    "grunt": "Female"
   },
   "33": {
     "type": "Poison",
@@ -232,7 +208,7 @@
     "grunt": "Male",
     "second_reward": "false",
     "encounters":{
-        "first": ["246_00"],
+        "first": ["138_00","246_00"],
         "second":["246_00","247_00"],
         "third":["247_00","248_00"]
 	}
@@ -242,20 +218,14 @@
     "grunt": "Female",
     "second_reward": "false",
     "encounters":{
-        "first": ["054_00","060_00","258_00"],
+        "first": ["060_00","258_00","318_00"],
         "second":["055_00","061_00"],
         "third":["062_00","186_00"]
     }
   },
   "39": {
     "type": "Water",
-    "grunt": "Male",
-    "second_reward": "false",
-    "encounters":{
-        "first": ["129_00"],
-        "second":["129_00"],
-        "third":["129_00","130_00"]
-    }
+    "grunt": "Male"
   },
   "40": {
     "type": "Player Team Leader",
@@ -266,8 +236,8 @@
     "grunt": "",
     "second_reward": "false",
     "encounters":{
-        "first": ["234_00"],
-        "second":["095_00","105_00","466_00"],
+        "first": ["127_00"],
+        "second":["105_00","138_00","466_00"],
         "third":["248_00","260_00","389_00"]
     }
   },
@@ -276,7 +246,7 @@
     "grunt": "",
     "second_reward": "false",
     "encounters":{
-        "first": ["371_00"],
+        "first": ["303_00"],
         "second":["006_00","009_00","208_00"],
         "third":["149_00","212_00","373_00"]
     }
@@ -286,9 +256,9 @@
     "grunt": "",
     "second_reward": "false",
     "encounters":{
-        "first": ["359_00"],
-        "second":["065_00","131_00","332_00"],
-        "third":["229_00","275_00","475_00"]
+        "first": ["374_00"],
+        "second":["103_00","131_00","319_00"],
+        "third":["065_00","228_00","275_00"]
     }
   },
   "44": {
@@ -296,7 +266,7 @@
     "grunt": "",
     "second_reward": "false",
     "encounters":{
-        "first": ["146_00"]
+        "first": ["243_00"]
     }
   },
   "45": {

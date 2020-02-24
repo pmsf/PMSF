@@ -363,6 +363,17 @@ function removePokestopMarker(pokestopId) { // eslint-disable-line no-unused-var
     mapData.pokestops[pokestopId].hidden = true
 }
 
+function removeGymMarker(gymId) { // eslint-disable-line no-unused-vars
+    if (mapData.gyms[gymId].marker.rangeCircle) {
+        markers.removeLayer(mapData.gyms[gymId].marker.rangeCircle)
+        markersnotify.removeLayer(mapData.gyms[gymId].marker.rangeCircle)
+        delete mapData.gyms[gymId].marker.rangeCircle
+    }
+    markers.removeLayer(mapData.gyms[gymId].marker)
+    markersnotify.removeLayer(mapData.gyms[gymId].marker)
+    mapData.gyms[gymId].hidden = true
+}
+
 function createServiceWorkerReceiver() {
     navigator.serviceWorker.addEventListener('message', function (event) {
         const data = JSON.parse(event.data)
@@ -377,7 +388,6 @@ function initMap() { // eslint-disable-line no-unused-vars
         center: [centerLat, centerLng],
         zoom: zoom == null ? Store.get('zoomLevel') : zoom,
         minZoom: minZoom,
-        maxZoom: maxZoom,
         zoomControl: false,
         preferCanvas: true,
         worldCopyJump: true,
@@ -453,6 +463,7 @@ function initMap() { // eslint-disable-line no-unused-vars
     buildNestPolygons()
     createSnow()
     createFireworks()
+    createHearts()
 
     map.on('moveend', function () {
         updateS2Overlay()
@@ -634,18 +645,71 @@ function initMap() { // eslint-disable-line no-unused-vars
 function toggleFullscreenMap() { // eslint-disable-line no-unused-vars
     map.toggleFullscreen()
 }
-var openstreetmap = L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {attribution: '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>'}) // eslint-disable-line no-unused-vars
-var darkmatter = L.tileLayer('https://cartodb-basemaps-{s}.global.ssl.fastly.net/dark_all/{z}/{x}/{y}.png', {attribution: '&copy; <a href="https://carto.com/">Carto</a>'}) // eslint-disable-line no-unused-vars
-var styletopo = L.tileLayer('https://{s}.tile.opentopomap.org/{z}/{x}/{y}.png', {attribution: '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>'}) // eslint-disable-line no-unused-vars
-var stylesatellite = L.tileLayer('https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}', {attribution: 'Tiles &copy; Esri &mdash; Source: Esri, i-cubed, USDA, USGS, AEX, GeoEye, Getmapping, Aerogrid, IGN, IGP, UPR-EGP, and the GIS User Community'}) // eslint-disable-line no-unused-vars
-var stylewikipedia = L.tileLayer('https://maps.wikimedia.org/osm-intl/{z}/{x}/{y}{r}.png', {attribution: '<a href="https://wikimediafoundation.org/wiki/Maps_Terms_of_Use">Wikimedia</a>'}) // eslint-disable-line no-unused-vars
-var mapbox = L.tileLayer('https://api.mapbox.com/styles/v1/mapbox/streets-v11/tiles/256/{z}/{x}/{y}?access_token=' + mBoxKey, {attribution: '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>'}) // eslint-disable-line no-unused-vars
-var mapboxDark = L.tileLayer('https://api.mapbox.com/styles/v1/mapbox/dark-v10/tiles/256/{z}/{x}/{y}?access_token=' + mBoxKey, {attribution: '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>'}) // eslint-disable-line no-unused-vars
-var mapboxPogo = L.tileLayer('https://api.mapbox.com/styles/v1/anonymous89/ck2uz9d5t09qm1cl66b9giwun/tiles/256/{z}/{x}/{y}@2x?access_token=' + mBoxKey, {attribution: '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>'}) // eslint-disable-line no-unused-vars
-var mapboxPogoDark = L.tileLayer('https://api.mapbox.com/styles/v1/anonymous89/ck2xw3j6h0e0v1dqtlcx9c4od/tiles/256/{z}/{x}/{y}@2x?access_token=' + mBoxKey, {attribution: '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>'}) // eslint-disable-line no-unused-vars
+
+var openstreetmap = L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', { // eslint-disable-line no-unused-vars
+    attribution: '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>',
+    maxZoom: maxZoom,
+    maxNativeZoom: 18
+})
+
+var darkmatter = L.tileLayer('https://cartodb-basemaps-{s}.global.ssl.fastly.net/dark_all/{z}/{x}/{y}.png', { // eslint-disable-line no-unused-vars
+    attribution: '&copy; <a href="https://carto.com/">Carto</a>',
+    maxZoom: maxZoom,
+    maxNativeZoom: 18
+})
+
+var styletopo = L.tileLayer('https://{s}.tile.opentopomap.org/{z}/{x}/{y}.png', { // eslint-disable-line no-unused-vars
+    attribution: '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>',
+    maxZoom: maxZoom,
+    maxNativeZoom: 18
+})
+
+var stylesatellite = L.tileLayer('https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}', { // eslint-disable-line no-unused-vars
+    attribution: 'Tiles &copy; Esri &mdash; Source: Esri, i-cubed, USDA, USGS, AEX, GeoEye, Getmapping, Aerogrid, IGN, IGP, UPR-EGP, and the GIS User Community',
+    maxZoom: maxZoom,
+    maxNativeZoom: 18
+})
+
+var stylewikipedia = L.tileLayer('https://maps.wikimedia.org/osm-intl/{z}/{x}/{y}{r}.png', { // eslint-disable-line no-unused-vars
+    attribution: '<a href="https://wikimediafoundation.org/wiki/Maps_Terms_of_Use">Wikimedia</a>',
+    maxZoom: maxZoom,
+    maxNativeZoom: 18
+})
+
+var mapbox = L.tileLayer('https://api.mapbox.com/styles/v1/mapbox/streets-v11/tiles/256/{z}/{x}/{y}?access_token=' + mBoxKey, { // eslint-disable-line no-unused-vars
+    attribution: '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>',
+    maxZoom: maxZoom,
+    maxNativeZoom: 18
+})
+
+var mapboxDark = L.tileLayer('https://api.mapbox.com/styles/v1/mapbox/dark-v10/tiles/256/{z}/{x}/{y}?access_token=' + mBoxKey, { // eslint-disable-line no-unused-vars
+    attribution: '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>',
+    maxZoom: maxZoom,
+    maxNativeZoom: 18
+})
+
+var mapboxPogo = L.tileLayer('https://api.mapbox.com/styles/v1/anonymous89/ck2uz9d5t09qm1cl66b9giwun/tiles/256/{z}/{x}/{y}@2x?access_token=' + mBoxKey, { // eslint-disable-line no-unused-vars
+    attribution: '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>',
+    maxZoom: maxZoom,
+    maxNativeZoom: 18
+})
+
+var mapboxPogoDark = L.tileLayer('https://api.mapbox.com/styles/v1/anonymous89/ck2xw3j6h0e0v1dqtlcx9c4od/tiles/256/{z}/{x}/{y}@2x?access_token=' + mBoxKey, { // eslint-disable-line no-unused-vars
+    attribution: '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>',
+    maxZoom: maxZoom,
+    maxNativeZoom: 18
+})
+
 var googlemapssat = L.gridLayer.googleMutant({type: 'satellite'}) // eslint-disable-line no-unused-vars
+
 var googlemapsroad = L.gridLayer.googleMutant({type: 'roadmap'}) // eslint-disable-line no-unused-vars
-var tileserver = L.tileLayer(customTileServerAddress, {attribution: 'Tileserver'}) // eslint-disable-line no-unused-vars
+
+var tileserver = L.tileLayer(customTileServerAddress, { // eslint-disable-line no-unused-vars
+    attribution: 'Tileserver',
+    maxZoom: maxZoom,
+    maxNativeZoom: 18
+})
+
 // dynamic map style chooses mapboxPogo or mapboxPogoDark depending on client time
 var currentDate = new Date()
 var currentHour = currentDate.getHours()
@@ -969,6 +1033,80 @@ function createFireworks() {
             '<div class="after"></div>' +
             '</div>'
         $('#map').append(fireworks)
+    }
+}
+
+function createHearts() {
+    if (!showYourLove) {
+        return false
+    }
+    var d = new Date()
+    if (d.getMonth() === 1 && d.getDate() === 14) {
+        const valentine = '<canvas id="valentine-canvas"></canvas>'
+        $('#map').append(valentine)
+        var hearts = {
+            heartHeight: 25,
+            heartWidth: 25,
+            hearts: [],
+            heartImage: 'static/images/misc/heart-0.png',
+            heartImageAlt: 'static/images/misc/heart-1.png',
+            maxHearts: 50,
+            minScale: 0.4,
+            draw: function () {
+                this.setCanvasSize()
+                this.ctx.clearRect(0, 0, this.w, this.h)
+                for (var i = 0; i < this.hearts.length; i++) {
+                    var heart = this.hearts[i]
+                    heart.image = new Image()
+                    heart.image.style.height = heart.height
+                    if (i % 2 === 1) {
+                        heart.image.src = this.heartImageAlt
+                    } else {
+                        heart.image.src = this.heartImage
+                    }
+                    this.ctx.globalAlpha = heart.opacity
+                    this.ctx.drawImage(heart.image, heart.x, heart.y, heart.width, heart.height)
+                }
+                this.move()
+            },
+            move: function () {
+                for (var b = 0; b < this.hearts.length; b++) {
+                    var heart = this.hearts[b]
+                    heart.y += heart.ys
+                    if (heart.y > this.h) {
+                        heart.x = Math.random() * this.w
+                        heart.y = -1 * this.heartHeight
+                    }
+                }
+            },
+            setCanvasSize: function () {
+                this.canvas.width = window.innerWidth
+                this.canvas.height = window.innerHeight
+                this.w = this.canvas.width
+                this.h = this.canvas.height
+            },
+            initialize: function () {
+                this.canvas = $('#valentine-canvas')[0]
+                if (!this.canvas.getContext) {
+                    return
+                }
+                this.setCanvasSize()
+                this.ctx = this.canvas.getContext('2d')
+                for (var a = 0; a < this.maxHearts; a++) {
+                    var scale = (Math.random() * (1 - this.minScale)) + this.minScale
+                    this.hearts.push({
+                        x: Math.random() * this.w,
+                        y: Math.random() * this.h,
+                        ys: Math.random() + 1,
+                        height: scale * this.heartHeight,
+                        width: scale * this.heartWidth,
+                        opacity: scale
+                    })
+                }
+                setInterval($.proxy(this.draw, this), 30)
+            }
+        }
+        hearts.initialize()
     }
 }
 
@@ -1331,6 +1469,8 @@ function gymLabel(item) {
         raidStr += '<div>' + i8ln('Start') + ': <b>' + raidStartStr + '</b> <span class="label-countdown" disappears-at="' + item['raid_start'] + '" start>(' + generateRemainingTimer(item['raid_start'], 'start') + ')</span></div>'
         raidStr += '<div>' + i8ln('End') + ': <b>' + raidEndStr + '</b> <span class="label-countdown" disappears-at="' + item['raid_end'] + '" end>(' + generateRemainingTimer(item['raid_end'], 'end') + ')</span></div>'
 
+        raidStr += '<a href="javascript:removeGymMarker(\'' + item['gym_id'] + '\')" title="' + i8ln('Hide this Gym') + '"><i class="fas fa-trash-alt" style="font-size:15px;"></i></a>'
+
         var raidForm = item['form']
         var formStr = ''
         if (raidForm <= 10 || raidForm == null || raidForm === '0') {
@@ -1533,15 +1673,15 @@ function getQuest(item) {
                     if (questinfo['pokemon_ids'].length > 1) {
                         $.each(questinfo['pokemon_ids'], function (index, id) {
                             if (index === questinfo['pokemon_ids'].length - 2) {
-                                pstr += idToPokemon[id].name + ' or '
+                                pstr += idToPokemon[id] + ' or '
                             } else if (index === questinfo['pokemon_ids'].length - 1) {
-                                pstr += idToPokemon[id].name
+                                pstr += idToPokemon[id]
                             } else {
-                                pstr += idToPokemon[id].name + ', '
+                                pstr += idToPokemon[id] + ', '
                             }
                         })
                     } else {
-                        pstr = idToPokemon[questinfo['pokemon_ids']].name
+                        pstr = idToPokemon[questinfo['pokemon_ids']]
                     }
                     str = str.replace('pokémon', pstr)
                     str = str.replace('Snapshot(s)', 'Snapshot(s) of ' + pstr)
@@ -1579,7 +1719,8 @@ function getQuest(item) {
                         str = str.replace('Catch', 'Use').replace('pokémon with berrie(s)', 'berrie(s) to help catch Pokémon')
                     }
                     if (questinfo !== null) {
-                        str = str.replace('berrie(s)', idToItem[questinfo['item_id']].name)
+                        str = str.replace('berrie(s)', idToItem[questinfo['item_id']])
+                        str = str.replace('Evolve {0} pokémon', 'Evolve {0} pokémon with a ' + idToItem[questinfo['item_id']])
                     } else {
                         str = str.replace('Evolve', 'Use a item to evolve')
                     }
@@ -1853,16 +1994,8 @@ function formatSpawnTime(seconds) {
 
 function spawnpointLabel(item) {
     var str = ''
-
-    // 60 minute
-    if (item.time > 1800) {
-        str += '<div><b>' + i8ln('Spawn Point (60)') + '</b></div>' +
-            '<div>' + i8ln('Spawn time') + ': xx:' + formatSpawnTime(item.time) + '</div>' +
-            '<div>' + i8ln('Despawn time') + ': xx:' + formatSpawnTime(item.time) + '</div>'
-    // 30 minute
-    } else if (item.time > 0) {
-        str += '<div><b>' + i8ln('Spawn Point (30)') + '</b></div>' +
-        '<div>' + i8ln('Spawn time') + ': xx:' + formatSpawnTime(item.time + 1800) + '</div>' +
+    if (item.time > 0) {
+        str += '<div><b>' + i8ln('Spawn Point') + '</b></div>' +
         '<div>' + i8ln('Despawn time') + ': xx:' + formatSpawnTime(item.time) + '</div>'
     } else {
         str += '<div>' + i8ln('Unknown spawnpoint info') + '</div>'
@@ -2943,14 +3076,11 @@ function deletePoi(event) { // eslint-disable-line no-unused-vars
 
 function setupSpawnpointMarker(item) {
     var color = ''
-    if (item['time'] > 1800) {
+    if (item['time'] > 0) {
         color = 'green'
-    } else if (item['time'] > 0) {
-        color = 'lightgreen'
     } else {
         color = 'red'
     }
-
     var rangeCircleOpts = {
         radius: 4,
         weight: 1,
@@ -5055,7 +5185,7 @@ function processPois(i, item) {
     }
 }
 
-function processPokestops(i, item) {
+function processPokestops(i, item, lastMidnight) {
     if (!Store.get('showPokestops')) {
         return false
     }
@@ -5067,8 +5197,13 @@ function processPokestops(i, item) {
     if (Store.get('showRocket') && !item['incident_expiration']) {
         return true
     }
+
     if (!mapData.pokestops[item['pokestop_id']]) {
         // new pokestop, add marker to map and item to dict
+        if (Store.get('showQuests') && !pokestopMeetsQuestFilter(item, lastMidnight)) {
+            return true
+        }
+
         if (item.marker && item.marker.rangeCircle) {
             markers.removeLayer(item.marker.rangeCircle)
         }
@@ -5106,6 +5241,14 @@ function processPokestops(i, item) {
             item.marker = setupPokestopMarker(item)
             mapData.pokestops[item['pokestop_id']] = item
         }
+    }
+}
+
+function pokestopMeetsQuestFilter(pokestop, lastMidnight) {
+    if (pokestop['quest_type'] === 0 || lastMidnight > Number(pokestop['quest_timestamp']) || ((pokestop['quest_pokemon_id'] > 0 && questsExcludedPokemon.indexOf(pokestop['quest_pokemon_id']) > -1) || (pokestop['quest_item_id'] > 0 && questsExcludedItem.indexOf(pokestop['quest_item_id']) > -1) || ((pokestop['quest_reward_type'] === 3 && (Number(pokestop['quest_dust_amount']) < Number(Store.get('showDustAmount')))) || (pokestop['quest_reward_type'] === 3 && Store.get('showDustAmount') === 0)))) {
+        return false
+    } else {
+        return true
     }
 }
 
@@ -5184,7 +5327,7 @@ function updatePokestops() {
     }
     if (Store.get('showQuests')) {
         $.each(mapData.pokestops, function (key, value) {
-            if (value['quest_type'] === 0 || lastMidnight > Number(value['quest_timestamp']) || ((value['quest_pokemon_id'] > 0 && questsExcludedPokemon.indexOf(value['quest_pokemon_id']) > -1) || (value['quest_item_id'] > 0 && questsExcludedItem.indexOf(value['quest_item_id']) > -1) || ((value['quest_reward_type'] === 3 && (Number(value['quest_dust_amount']) < Number(Store.get('showDustAmount')))) || (value['quest_reward_type'] === 3 && Store.get('showDustAmount') === 0)))) {
+            if (!pokestopMeetsQuestFilter(value, lastMidnight)) {
                 removeStops.push(key)
             }
         })
@@ -5395,10 +5538,8 @@ function updateSpawnPoints() {
     $.each(mapData.spawnpoints, function (key, value) {
         if (map.getBounds().contains(value.marker.getLatLng())) {
             var color = ''
-            if (value['time'] > 1800) {
+            if (value['time'] > 0) {
                 color = 'green'
-            } else if (value['time'] > 0) {
-                color = 'lightgreen'
             } else {
                 color = 'red'
             }
@@ -5409,6 +5550,13 @@ function updateSpawnPoints() {
 
 function updateMap() {
     var position = map.getCenter()
+    var lastMidnight = ''
+    var d = new Date()
+    if (mapFork === 'mad') {
+        lastMidnight = d.setHours(0, 0, 0, 0) / 1000
+    } else {
+        lastMidnight = 0
+    }
     Store.set('startAtLastLocationPosition', {
         lat: position.lat,
         lng: position.lng
@@ -5431,7 +5579,7 @@ function updateMap() {
     liveScanGroup.clearLayers()
     loadRawData().done(function (result) {
         $.each(result.pokemons, processPokemons)
-        $.each(result.pokestops, processPokestops)
+        $.each(result.pokestops, processPokestops, lastMidnight)
         $.each(result.gyms, processGyms)
         $.each(result.spawnpoints, processSpawnpoints)
         $.each(result.scanlocations, processScanlocation)
@@ -6493,7 +6641,7 @@ $(function () {
                 name: i8ln(value['name'])
             })
             value['name'] = i8ln(value['name'])
-            idToItem[key] = value
+            idToItem[key] = value['name']
         })
         $questsExcludeItem.select2({
             placeholder: i8ln('Select Item'),
@@ -6539,7 +6687,7 @@ $(function () {
                 })
             })
             value['types'] = _types
-            idToPokemon[key] = value
+            idToPokemon[key] = value['name']
         })
 
         // setup the filter lists

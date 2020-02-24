@@ -251,6 +251,24 @@
             "color": "#a040a0"
           }
         ]
+      },
+      {
+        "nameform": "Clone",
+        "protoform": "950",
+        "assetsform": "00",
+        "baseAttack": 198,
+        "baseDefense": 189,
+        "baseStamina": 190,
+        "formtypes": [
+          {
+            "type": "Grass",
+            "color": "#78c850"
+          },
+          {
+            "type": "Poison",
+            "color": "#a040a0"
+          }
+        ]
       }
     ]
   },
@@ -484,6 +502,24 @@
             "color": "#a890f0"
           }
         ]
+      },
+      {
+        "nameform": "Clone",
+        "protoform": "951",
+        "assetsform": "00",
+        "baseAttack": 223,
+        "baseDefense": 173,
+        "baseStamina": 186,
+        "formtypes": [
+          {
+            "type": "Fire",
+            "color": "#f08030"
+          },
+          {
+            "type": "Flying",
+            "color": "#a890f0"
+          }
+        ]
       }
     ]
 
@@ -688,6 +724,20 @@
       {
         "nameform": "No Evolve",
         "protoform": "607",
+        "assetsform": "00",
+        "baseAttack": 171,
+        "baseDefense": 207,
+        "baseStamina": 188,
+        "formtypes": [
+          {
+            "type": "Water",
+            "color": "#6890f0"
+          }
+        ]
+      },
+      {
+        "nameform": "Clone",
+        "protoform": "952",
         "assetsform": "00",
         "baseAttack": 171,
         "baseDefense": 207,
@@ -1736,6 +1786,17 @@
       {
         "nameform": "VS 2019",
         "protoform": "901",
+        "assetsform": "00",
+        "formtypes": [
+          {
+            "type": "Electric",
+            "color": "#f8d030"
+          }
+        ]
+      },
+      {
+        "nameform": "Clone",
+        "protoform": "949",
         "assetsform": "00",
         "formtypes": [
           {
@@ -20277,6 +20338,160 @@
             "color": "#8a8a59"
           }
         ]
+      },
+      {
+        "nameform": "9",
+        "protoform": "122",
+        "assetsform": "00",
+        "baseStamina": 155,
+        "baseAttack": 116,
+        "baseDefense": 116,
+        "formtypes": [
+          {
+            "type": "Normal",
+            "color": "#8a8a59"
+          }
+        ]
+      },
+      {
+        "nameform": "10",
+        "protoform": "123",
+        "assetsform": "00",
+        "baseStamina": 155,
+        "baseAttack": 116,
+        "baseDefense": 116,
+        "formtypes": [
+          {
+            "type": "Normal",
+            "color": "#8a8a59"
+          }
+        ]
+      },
+      {
+        "nameform": "11",
+        "protoform": "124",
+        "assetsform": "00",
+        "baseStamina": 155,
+        "baseAttack": 116,
+        "baseDefense": 116,
+        "formtypes": [
+          {
+            "type": "Normal",
+            "color": "#8a8a59"
+          }
+        ]
+      },
+      {
+        "nameform": "12",
+        "protoform": "125",
+        "assetsform": "00",
+        "baseStamina": 155,
+        "baseAttack": 116,
+        "baseDefense": 116,
+        "formtypes": [
+          {
+            "type": "Normal",
+            "color": "#8a8a59"
+          }
+        ]
+      },
+      {
+        "nameform": "13",
+        "protoform": "126",
+        "assetsform": "00",
+        "baseStamina": 155,
+        "baseAttack": 116,
+        "baseDefense": 116,
+        "formtypes": [
+          {
+            "type": "Normal",
+            "color": "#8a8a59"
+          }
+        ]
+      },
+      {
+        "nameform": "14",
+        "protoform": "127",
+        "assetsform": "00",
+        "baseStamina": 155,
+        "baseAttack": 116,
+        "baseDefense": 116,
+        "formtypes": [
+          {
+            "type": "Normal",
+            "color": "#8a8a59"
+          }
+        ]
+      },
+      {
+        "nameform": "15",
+        "protoform": "128",
+        "assetsform": "00",
+        "baseStamina": 155,
+        "baseAttack": 116,
+        "baseDefense": 116,
+        "formtypes": [
+          {
+            "type": "Normal",
+            "color": "#8a8a59"
+          }
+        ]
+      },
+      {
+        "nameform": "16",
+        "protoform": "129",
+        "assetsform": "00",
+        "baseStamina": 155,
+        "baseAttack": 116,
+        "baseDefense": 116,
+        "formtypes": [
+          {
+            "type": "Normal",
+            "color": "#8a8a59"
+          }
+        ]
+      },
+      {
+        "nameform": "17",
+        "protoform": "130",
+        "assetsform": "00",
+        "baseStamina": 155,
+        "baseAttack": 116,
+        "baseDefense": 116,
+        "formtypes": [
+          {
+            "type": "Normal",
+            "color": "#8a8a59"
+          }
+        ]
+      },
+      {
+        "nameform": "18",
+        "protoform": "131",
+        "assetsform": "00",
+        "baseStamina": 155,
+        "baseAttack": 116,
+        "baseDefense": 116,
+        "formtypes": [
+          {
+            "type": "Normal",
+            "color": "#8a8a59"
+          }
+        ]
+      },
+      {
+        "nameform": "19",
+        "protoform": "132",
+        "assetsform": "00",
+        "baseStamina": 155,
+        "baseAttack": 116,
+        "baseDefense": 116,
+        "formtypes": [
+          {
+            "type": "Normal",
+            "color": "#8a8a59"
+          }
+        ]
       }
     ]
   },
@@ -35929,6 +36144,21 @@
             "color": "#705898"
           }
         ]
+      },
+      {
+        "nameform": "Female",
+        "protoform": "2330",
+        "assetsform": "00",
+        "formtypes": [
+          {
+            "type": "Water",
+            "color": "#6890f0"
+          },
+          {
+            "type": "Ghost",
+            "color": "#705898"
+          }
+        ]
       }
     ]
   },
@@ -35982,6 +36212,21 @@
       {
         "nameform": "Purified",
         "protoform": "2173",
+        "assetsform": "00",
+        "formtypes": [
+          {
+            "type": "Water",
+            "color": "#6890f0"
+          },
+          {
+            "type": "Ghost",
+            "color": "#705898"
+          }
+        ]
+      },
+      {
+        "nameform": "Female",
+        "protoform": "2331",
         "assetsform": "00",
         "formtypes": [
           {

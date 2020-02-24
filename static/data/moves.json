@@ -2158,5 +2158,21 @@
     "duration": 0,
     "energy": 0,
     "dps": 0
+  },
+  "333": {
+    "name": "Payback",
+    "type": "Dark",
+    "damage": 0,
+    "duration": 0,
+    "energy": 0,
+    "dps": 0
+  },
+  "334": {
+    "name": "Rock Wrecker",
+    "type": "Rock",
+    "damage": 0,
+    "duration": 0,
+    "energy": 0,
+    "dps": 0
   }
 }

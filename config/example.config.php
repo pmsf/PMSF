@@ -27,7 +27,7 @@ $startingLng = 5.302366;                                           // Starting l
 $maxLatLng = 1;                                                     // Max latitude and longitude size (1 = ~110km, 0 to disable)
 $defaultZoom = 16;                                                  // Default zoom level for first time users.
 $maxZoomOut = 11;                                                   // Max zoom out level (11 ~= $maxLatLng = 1, 0 to disable, lower = the further you can zoom out)
-$maxZoomIn = 18;                                                    // Max zoom in level 18
+$maxZoomIn = 18;                                                    // Max zoom in level 18, higher values will be loaded from level 18 and auto-scaled
 $disableClusteringAtZoom = 15;                                      // Disable clustering above this value. 0 to disable
 $zoomToBoundsOnClick = 15;                                          // Zoomlevel on clusterClick
 $maxClusterRadius = 30;                                             // The maximum radius that a cluster will cover from the central marker (in pixels).
@@ -497,6 +497,7 @@ $areas = [];      // [[latitude,longitude,zoom,"name"],[latitude,longitude,zoom,
 //-----------------------------------------------------
 // Weather Config
 //-----------------------------------------------------
+$noHeaderWeatherIcon = true;
 $noWeatherOverlay = true;
 $enableWeatherOverlay = 'false';
 
@@ -517,6 +518,7 @@ $weatherColors = [
 //-----------------------------------------------------
 $letItSnow = true;                                                   // Show snow overlay at 24, 25 and 26 December
 $makeItBang = true;                                                  // Show fireworks overlay at 31 December and 1 January
+$showYourLove = true;                                                // Show valentine overlay at 14 februari
 
 //-----------------------------------------------------
 // DEBUGGING
@@ -527,35 +529,27 @@ $enableDebug = false;
 //-----------------------------------------------------
 // DATABASE CONFIG
 //-----------------------------------------------------
-$map = "rdm";                                                       // {monocle}/{rdm}/{rocketmap}
-$fork = "default";                                                  // {default/alternate}/{default/beta}/{mad}
-$queryInterval = '2500';                                            // Interval between raw_data requests. Try to lower to increase performance.
+$map = "rdm";                                                       // rdm / rocketmap
+$fork = "default";                                                  // beta / mad
+$queryInterval = '2500';                                            // Interval between raw_data requests.
 
-$db = new Medoo([// required
+$db = new Medoo([
     'database_type' => 'mysql',
-    'database_name' => 'Monocle',
+    'database_name' => 'scannerdb',
     'server' => '127.0.0.1',
     'username' => 'database_user',
     'password' => 'database_password',
-    'charset' => 'utf8',
-
-    // [optional]
-    //'port' => 5432,                                               // Comment out if not needed, just add // in front!
-    //'socket' => /path/to/socket/,
+    'charset' => 'utf8'
 ]);
 
-//$manualdb = new Medoo([// required
+//$manualdb = new Medoo([
 //    'database_type' => 'mysql',
-//    'database_name' => 'Monocle',
+//    'database_name' => 'manualdb',
 //    'server' => '127.0.0.1',
 //    'username' => 'database_user',
 //    'password' => 'database_password',
-//    'charset' => 'utf8mb4',
-
-    // [optional]
-    //'port' => 5432,                                               // Comment out if not needed, just add // in front!
-    //'socket' => /path/to/socket/,
-//]);                                                               // Dont forget to uncomment this line to use $manualdb :)
+//    'charset' => 'utf8mb4'
+//]);
 
 // DONT EDIT THE CODE BELOW
 if (($noNativeLogin === false || $noDiscordLogin === false) && !empty($_SESSION['user']->user)) {

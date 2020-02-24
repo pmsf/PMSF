@@ -365,7 +365,7 @@ if (!$noLoadingScreen) {
                  </a>';
         }
         ?>
-        <?php if (! $noWeatherOverlay) {
+        <?php if (! $noHeaderWeatherIcon) {
             ?>
             <div id="currentWeather"></div>
             <?php
@@ -1937,7 +1937,7 @@ if (!$noLoadingScreen) {
                     <?php if (! $noSearchNests) { ?>
                         <div id="tab-nests">
                             <input type="search" id="nest-search" name="nest-search"
-                                   placeholder="<?php echo i8ln('Enter Pokémon or Type'); ?>"
+                                   placeholder="<?php echo i8ln('Enter nest Pokémon or Type'); ?>"
                                    data-type="nests" class="search-input"/>
                             <ul id="nest-search-results" class="search-results nest-results"></ul>
                         </div>
@@ -2294,6 +2294,7 @@ if (!$noLoadingScreen) {
     var noRaids = <?php echo $noRaids === true ? 'true' : 'false' ?>;
     var letItSnow = <?php echo $letItSnow === true ? 'true' : 'false' ?>;
     var makeItBang = <?php echo $makeItBang === true ? 'true' : 'false' ?>;
+    var showYourLove = <?php echo $showYourLove === true ? 'true' : 'false' ?>;
     var defaultDustAmount = <?php echo $defaultDustAmount; ?>;
     var noDarkMode = <?php echo $noDarkMode === true ? 'true' : 'false' ?>;
 </script>

@@ -241,4 +241,7 @@
     .ui-dialog.raid-widget-popup.ui-widget.ui-widget-content.ui-front.ui-draggable.ui-resizable {
         background-color: $background-color-dark !important;
     }
+    input#gym-name, input#pokestop-name {
+        color: $text-color-dark !important;
+    }
 }
