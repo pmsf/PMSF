@@ -20338,6 +20338,160 @@
             "color": "#8a8a59"
           }
         ]
+      },
+      {
+        "nameform": "9",
+        "protoform": "122",
+        "assetsform": "00",
+        "baseStamina": 155,
+        "baseAttack": 116,
+        "baseDefense": 116,
+        "formtypes": [
+          {
+            "type": "Normal",
+            "color": "#8a8a59"
+          }
+        ]
+      },
+      {
+        "nameform": "10",
+        "protoform": "123",
+        "assetsform": "00",
+        "baseStamina": 155,
+        "baseAttack": 116,
+        "baseDefense": 116,
+        "formtypes": [
+          {
+            "type": "Normal",
+            "color": "#8a8a59"
+          }
+        ]
+      },
+      {
+        "nameform": "11",
+        "protoform": "124",
+        "assetsform": "00",
+        "baseStamina": 155,
+        "baseAttack": 116,
+        "baseDefense": 116,
+        "formtypes": [
+          {
+            "type": "Normal",
+            "color": "#8a8a59"
+          }
+        ]
+      },
+      {
+        "nameform": "12",
+        "protoform": "125",
+        "assetsform": "00",
+        "baseStamina": 155,
+        "baseAttack": 116,
+        "baseDefense": 116,
+        "formtypes": [
+          {
+            "type": "Normal",
+            "color": "#8a8a59"
+          }
+        ]
+      },
+      {
+        "nameform": "13",
+        "protoform": "126",
+        "assetsform": "00",
+        "baseStamina": 155,
+        "baseAttack": 116,
+        "baseDefense": 116,
+        "formtypes": [
+          {
+            "type": "Normal",
+            "color": "#8a8a59"
+          }
+        ]
+      },
+      {
+        "nameform": "14",
+        "protoform": "127",
+        "assetsform": "00",
+        "baseStamina": 155,
+        "baseAttack": 116,
+        "baseDefense": 116,
+        "formtypes": [
+          {
+            "type": "Normal",
+            "color": "#8a8a59"
+          }
+        ]
+      },
+      {
+        "nameform": "15",
+        "protoform": "128",
+        "assetsform": "00",
+        "baseStamina": 155,
+        "baseAttack": 116,
+        "baseDefense": 116,
+        "formtypes": [
+          {
+            "type": "Normal",
+            "color": "#8a8a59"
+          }
+        ]
+      },
+      {
+        "nameform": "16",
+        "protoform": "129",
+        "assetsform": "00",
+        "baseStamina": 155,
+        "baseAttack": 116,
+        "baseDefense": 116,
+        "formtypes": [
+          {
+            "type": "Normal",
+            "color": "#8a8a59"
+          }
+        ]
+      },
+      {
+        "nameform": "17",
+        "protoform": "130",
+        "assetsform": "00",
+        "baseStamina": 155,
+        "baseAttack": 116,
+        "baseDefense": 116,
+        "formtypes": [
+          {
+            "type": "Normal",
+            "color": "#8a8a59"
+          }
+        ]
+      },
+      {
+        "nameform": "18",
+        "protoform": "131",
+        "assetsform": "00",
+        "baseStamina": 155,
+        "baseAttack": 116,
+        "baseDefense": 116,
+        "formtypes": [
+          {
+            "type": "Normal",
+            "color": "#8a8a59"
+          }
+        ]
+      },
+      {
+        "nameform": "19",
+        "protoform": "132",
+        "assetsform": "00",
+        "baseStamina": 155,
+        "baseAttack": 116,
+        "baseDefense": 116,
+        "formtypes": [
+          {
+            "type": "Normal",
+            "color": "#8a8a59"
+          }
+        ]
       }
     ]
   },
