@@ -17,7 +17,6 @@ $libs[] = "Scanner.php";
 $libs[] = "Monocle.php";
 $libs[] = "Monocle_PMSF.php";
 $libs[] = "RDM.php";
-$libs[] = "RDM_beta.php";
 $libs[] = "RocketMap.php";
 $libs[] = "RocketMap_MAD.php";
 $libs[] = "search/Search.php";

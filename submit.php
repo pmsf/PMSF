@@ -59,7 +59,7 @@ $d['status'] = "ok";
 $d["timestamp"] = $now->getTimestamp();
 
 if (strtolower($map) === "rdm") {
-    if (strtolower($fork) === "beta") {
+    if (strtolower($fork) === "default" || strtolower($fork) === "beta") {
         $submit = new \Submit\RDM();
     }
 } elseif (strtolower($map) === "monocle") {
