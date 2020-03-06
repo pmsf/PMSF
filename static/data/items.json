@@ -63,6 +63,10 @@
     "protoname": "ITEM_INCENSE_FLORAL",
     "name": "Incense Floral"
   },
+  "405": {
+    "protoname": "ITEM_INCENSE_BELUGA_BOX",
+    "name": "Mystery Box"
+  },
   "501": {
     "protoname": "ITEM_TROY_DISK",
     "name": "Lure Module"
@@ -122,6 +126,10 @@
   "708": {
     "protoname": "ITEM_GOLDEN_PINAP_BERRY",
     "name": "Silver Pinap"
+  },
+  "709": {
+    "protoname": "ITEM_POFFIN",
+    "name": "Poffin"
   },
   "801": {
     "protoname": "ITEM_SPECIAL_CAMERA",
@@ -206,5 +214,25 @@
   "1405": {
     "protoname": "ITEM_FRIEND_GIFT_BOX",
     "name": "Gift"
+  },
+  "1406": {
+    "protoname": "ITEM_TEAM_CHANGE",
+    "name": "Team Medallion"
+  },
+  "1501": {
+    "protoname": "ITEM_LEADER_MAP_FRAGMENT",
+    "name": "Mysterious Component"
+  },
+  "1502": {
+    "protoname": "ITEM_LEADER_MAP",
+    "name": "Rocket Radar"
+  },
+  "1503": {
+    "protoname": "ITEM_GIOVANNI_MAP",
+    "name": "Super Rocket Radar"
+  },
+  "1600": {
+    "protoname": "ITEM_GLOBAL_EVENT_TICKET",
+    "name": "Global Event Ticket"
   }
 }
