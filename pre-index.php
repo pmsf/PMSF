@@ -38,8 +38,8 @@ if ($blockIframe) {
     header('X-Frame-Options: DENY');
 }
 if (strtolower($map) === "rdm") {
-    if (strtolower($fork) === "beta") {
-        $getList = new \Scanner\RDM_beta();
+    if (strtolower($fork) === "default" || strtolower($fork) === "beta") {
+        $getList = new \Scanner\RDM();
     }
 } elseif (strtolower($map) === "rocketmap") {
     if (strtolower($fork) === "mad") {
