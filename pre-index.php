@@ -20,6 +20,8 @@ if ($noNativeLogin === false || $noDiscordLogin === false) {
 }
 $zoom        = ! empty($_GET['zoom']) ? $_GET['zoom'] : null;
 $encounterId = ! empty($_GET['encId']) ? $_GET['encId'] : null;
+$stopId = ! empty($_GET['stopId']) ? $_GET['stopId'] : null;
+$gymId = ! empty($_GET['gymId']) ? $_GET['gymId'] : null;
 if (!empty($_GET['lang'])) {
     setcookie("LocaleCookie", $_GET['lang'], time() + 60 * 60 * 24 * 31);
     header("Location: .");
@@ -2151,6 +2153,8 @@ if (!$noLoadingScreen) {
     var showMotdOnlyOnce = <?php echo $showMotdOnlyOnce === true ? 'true' : 'false' ?>;
     var zoom<?php echo $zoom ? " = " . $zoom : null; ?>;
     var encounterId<?php echo $encounterId ? " = '" . $encounterId . "'" : null; ?>;
+    var stopId<?php echo $stopId ? " = '" . $stopId . "'" : null; ?>;
+    var gymId<?php echo $gymId ? " = '" . $gymId . "'" : null; ?>;
     var defaultZoom = <?= $defaultZoom; ?>;
     var maxZoom = <?= $maxZoomIn; ?>;
     var minZoom = <?= $maxZoomOut; ?>;

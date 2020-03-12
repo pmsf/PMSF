@@ -5242,6 +5242,19 @@ function processPokestops(i, item, lastMidnight) {
             mapData.pokestops[item['pokestop_id']] = item
         }
     }
+    if (stopId && stopId === item['pokestop_id']) {
+        if (!item.marker.infoWindowIsOpen) {
+            item.marker.openPopup()
+            clearSelection()
+            updateLabelDiffTime()
+            item.marker.persist = true
+            item.marker.infoWindowIsOpen = true
+        } else {
+            item.marker.persist = null
+            item.marker.closePopup()
+            item.marker.infoWindowIsOpen = false
+        }
+    }
 }
 
 function pokestopMeetsQuestFilter(pokestop, lastMidnight) {
@@ -5493,6 +5506,19 @@ function processGyms(i, item) {
         setTimeOut(item['gym_id'], item, delayEnd)
     }
     mapData.gyms[item['gym_id']] = item
+    if (gymId && gymId === item['gym_id']) {
+        if (!item.marker.infoWindowIsOpen) {
+            item.marker.openPopup()
+            clearSelection()
+            updateLabelDiffTime()
+            item.marker.persist = true
+            item.marker.infoWindowIsOpen = true
+        } else {
+            item.marker.persist = null
+            item.marker.closePopup()
+            item.marker.infoWindowIsOpen = false
+        }
+    }
 }
 
 var timeoutHandles = []
