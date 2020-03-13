@@ -46,6 +46,8 @@
     "locationSet": true,
     "zoom": true,
     "encounterId": true,
+    "stopId": true,
+    "gymId": true,
     "defaultZoom": true,
     "minZoom": true,
     "maxZoom": true,
