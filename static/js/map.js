@@ -670,12 +670,6 @@ var stylesatellite = L.tileLayer('https://server.arcgisonline.com/ArcGIS/rest/se
     maxNativeZoom: 18
 })
 
-var stylewikipedia = L.tileLayer('https://maps.wikimedia.org/osm-intl/{z}/{x}/{y}{r}.png', { // eslint-disable-line no-unused-vars
-    attribution: '<a href="https://wikimediafoundation.org/wiki/Maps_Terms_of_Use">Wikimedia</a>',
-    maxZoom: maxZoom,
-    maxNativeZoom: 18
-})
-
 var mapbox = L.tileLayer('https://api.mapbox.com/styles/v1/mapbox/streets-v11/tiles/256/{z}/{x}/{y}?access_token=' + mBoxKey, { // eslint-disable-line no-unused-vars
     attribution: '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>',
     maxZoom: maxZoom,
