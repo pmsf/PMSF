@@ -340,7 +340,7 @@ $iconRepos = [["Standard","$iconRepository"],                                   
               ["Another Iconpack","https://AnotherURL.com/some/other/subfolders/"]]; // You May add different iconPacks here so mapusers can switch between them
 
 $noMapStyle = false;
-$mapStyle = 'openstreetmap';                                        // openstreetmap, darkmatter, styleblackandwhite, styletopo, stylesatellite, stylewikipedia
+$mapStyle = 'openstreetmap';                                        // openstreetmap, darkmatter, styleblackandwhite, styletopo, stylesatellite
 
 $noDirectionProvider = false;
 $directionProvider = 'google';                                      // google, waze, apple, bing, google_pin
