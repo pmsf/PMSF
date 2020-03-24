@@ -710,7 +710,9 @@ var currentHour = currentDate.getHours()
 var mapboxPogoDynamic = currentHour >= 6 && currentHour < 19 ? mapboxPogo : mapboxPogoDark // eslint-disable-line no-unused-vars
 
 function setTileLayer(layername) {
-    if (map.hasLayer(window[_oldlayer])) { map.removeLayer(window[_oldlayer]) }
+    if (map.hasLayer(window[_oldlayer]) && window[_oldlayer] !== window[layername]) {
+        map.removeLayer(window[_oldlayer])
+    }
     map.addLayer(window[layername])
     _oldlayer = layername
 }
