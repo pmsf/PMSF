@@ -1968,7 +1968,11 @@ function pokestopLabel(item) {
             '<i class="fab fa-whatsapp" style="position:relative;top:3px;left:5px;color:#26c300;font-size:20px;"></i></a>'
     }
     str += '</center></div>'
-
+    if (!noQuests && item['quest_type'] !== null && lastMidnight < Number(item['quest_timestamp'])) {
+        str += '<center><div>' +
+            i8ln('Quest found') + ': ' + getDateStr(item['quest_timestamp'] * 1000) + ' ' + getTimeStr(item['quest_timestamp'] * 1000) +
+            '</div></center>'
+    }
     return str
 }
 
