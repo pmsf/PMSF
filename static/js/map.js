@@ -1973,6 +1973,7 @@ function pokestopLabel(item) {
             i8ln('Quest found') + ': ' + getDateStr(item['quest_timestamp'] * 1000) + ' ' + getTimeStr(item['quest_timestamp'] * 1000) +
             '</div></center>'
     }
+    str += '<center><div>' + i8ln('Last seen') + ': ' + getDateStr(item['last_seen']) + ' ' + getTimeStr(item['last_seen']) + '</div></center>'
     return str
 }
 

@@ -392,6 +392,7 @@ class RDM extends Scanner
         lon AS longitude,
         name AS pokestop_name,
         url,
+        updated AS last_seen,
         lure_expire_timestamp AS lure_expiration,
         incident_expire_timestamp AS incident_expiration,
         lure_id,
@@ -456,6 +457,7 @@ class RDM extends Scanner
             $pokestop["grunt_type_gender"] = empty($grunttype_pid) ? null : i8ln($this->grunttype[$grunttype_pid]["grunt"]);
             $pokestop["encounters"] = empty($this->grunttype[$grunttype_pid]["encounters"]) ? null : $this->grunttype[$grunttype_pid]["encounters"];
             $pokestop["second_reward"] = empty($this->grunttype[$grunttype_pid]["second_reward"]) ? null : $this->grunttype[$grunttype_pid]["second_reward"];
+            $pokestop["last_seen"] = $pokestop["last_seen"] * 1000;
 
             $data[] = $pokestop;
             unset($pokestops[$i]);

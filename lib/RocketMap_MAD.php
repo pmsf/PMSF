@@ -586,6 +586,7 @@ class RocketMap_MAD extends RocketMap
 
         $query = "SELECT Unix_timestamp(Convert_tz(lure_expiration, '+00:00', @@global.time_zone)) AS lure_expiration,
         Unix_timestamp(Convert_tz(incident_expiration, '+00:00', @@global.time_zone)) AS incident_expiration,
+        Unix_timestamp(Convert_tz(last_updated, '+00:00', @@global.time_zone)) AS last_seen,
         pokestop_id,
         latitude,
         name AS pokestop_name,
@@ -653,6 +654,7 @@ class RocketMap_MAD extends RocketMap
             $pokestop["quest_item_name"] = empty($item_pid) ? null : i8ln($this->items[$item_pid]["name"]);
             $pokestop["quest_pokemon_name"] = empty($mon_pid) ? null : i8ln($this->data[$mon_pid]["name"]);
             $pokestop["quest_condition_info"] = null;
+            $pokestop["last_seen"] = $pokestop["last_seen"] * 1000;
             $data[] = $pokestop;
             unset($pokestops[$i]);
             $i++;
