@@ -129,7 +129,7 @@
   },
   "33": {
     "prototext": "QUEST_BUDDY_FEED",
-    "text": ""
+    "text": "Feed your buddy {0} times"
   },
   "34": {
     "prototext": "QUEST_BUDDY_EARN_AFFECTION_POINTS",
