@@ -1500,7 +1500,7 @@ function gymLabel(item) {
             } else {
                 hatchedEgg = 'hatched_legendary'
             }
-            raidIcon = '<img src="static/raids/egg_' + hatchedEgg + '.png" style="width:60px;height:70">'
+            raidIcon = '<img src="static/raids/egg_' + hatchedEgg + '.png" style="height:70px;">'
         } else {
             var raidEgg = ''
             if (item['raid_level'] <= 2) {
@@ -1510,7 +1510,7 @@ function gymLabel(item) {
             } else {
                 raidEgg = 'legendary'
             }
-            raidIcon = '<img src="static/raids/egg_' + raidEgg + '.png">'
+            raidIcon = '<img src="static/raids/egg_' + raidEgg + '.png" style="height:70px;">'
         }
     }
     if (manualRaids && item['scanArea'] === false) {
