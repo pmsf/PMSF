@@ -96,7 +96,7 @@ if (strtolower($map) === "rdm") {
     <!-- retina iPhone 6 iOS 7 -->
     <link rel="apple-touch-icon" href="static/appicons/180x180.png"
           sizes="180x180">
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/list.js/1.5.0/list.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/list.js/1.5.0/list.min.js"></script>
     <?php
     function pokemonFilterImages($noPokemonNumbers, $onClick = '', $pokemonToExclude = array(), $num = 0)
     {
