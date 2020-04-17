@@ -1541,7 +1541,7 @@ if (!$noLoadingScreen) {
                     <option value="?lang=it"><?php echo i8ln('Italian'); ?></option>
                     <option value="?lang=pl"><?php echo i8ln('Polish'); ?></option>
                     <option value="?lang=sp"><?php echo i8ln('Spanish'); ?></option>
-					<option value="?lang=sv"><?php echo i8ln('Swedish'); ?></option>
+                    <option value="?lang=sv"><?php echo i8ln('Swedish'); ?></option>
                 </select>
             </div>
             <br><br>
