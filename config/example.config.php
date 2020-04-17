@@ -161,6 +161,7 @@ $noExcludeMinIV = false;
 $noMinIV = false;
 $noMinLevel = false;
 $noHighLevelData = false;
+$noCatchRates = false;
 $noRarityDisplay = false;
 $noWeatherIcons = true;
 $no100IvShadow = false;

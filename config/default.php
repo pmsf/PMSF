@@ -180,6 +180,7 @@ $noExcludeMinIV = true;                                        // true/false
 $noMinIV = true;                                               // true/false
 $noMinLevel = true;                                            // true/false
 $noHighLevelData = true;                                       // true/false
+$noCatchRates = false;
 $noRarityDisplay = false;                                      // true/false
 $noWeatherIcons = true;
 $no100IvShadow = false;

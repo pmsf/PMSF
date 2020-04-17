@@ -1321,6 +1321,16 @@ function pokemonLabel(item) {
         if (pMove2 !== 'unknown') {
             pMoveType2 = '<img style="position:relative;top:3px;left:2px;height:15px;" src="static/types/' + moves[item['move_2']]['type'] + '.png">'
         }
+
+        var catchRates = ''
+        if (!noCatchRates && item['catch_rate_1'] != null && item['catch_rate_2'] != null && item['catch_rate_3'] != null) {
+            catchRates = '<div>' + 
+            '<img src="static/images/pokeball1.png" height="14"> ' + (item['catch_rate_1'] * 100).toFixed(1) + '% ' +
+            '<img src="static/images/greatball.png" height="14"> ' + (item['catch_rate_2'] * 100).toFixed(1) + '% ' +
+            '<img src="static/images/ultraball.png" height="14"> ' + (item['catch_rate_3'] * 100).toFixed(1) + '% ' +
+            '</div>'
+        }
+
         details +=
             '<div style="position:absolute;top:90px;left:80px;"><div>' +
             i8ln('IV') + ': <b>' + iv.toFixed(1) + '%</b> (<b>' + atk + '</b>/<b>' + def + '</b>/<b>' + sta + '</b>)' +
@@ -1328,6 +1338,7 @@ function pokemonLabel(item) {
             '<div>' + i8ln('CP') + ': <b>' + cp + '</b> | ' + i8ln('Level') + ': <b>' + pokemonLevel + '</b></div>' +
             '</div><br>' +
             '<div style="position:absolute;top:125px;">' +
+            catchRates +
             '<div>' + i8ln('Quick') + ': <b>' + pMove1 + '</b>' + pMoveType1 + '</div>' +
             '<div>' + i8ln('Charge') + ': <b>' + pMove2 + '</b>' + pMoveType2 + '</div>' +
             '<div>' + i8ln('Weight') + ': <b>' + weight + '</b>' + ' | ' + i8ln('Height') + ': <b>' + height + '</b></div>' +
