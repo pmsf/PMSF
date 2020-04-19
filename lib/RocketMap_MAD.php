@@ -11,10 +11,31 @@ class RocketMap_MAD extends RocketMap
         $params = array();
         $float = $db->info()['driver'] == 'pgsql' ? "::float" : "";
 
-        $select = "ts.calc_endminsec AS expire_timestamp_verified, pokemon_id, Unix_timestamp(Convert_tz(disappear_time, '+00:00', @@global.time_zone)) AS disappear_time, encounter_id, p.latitude, p.longitude, gender, form, weather_boosted_condition, costume";
+        $select = "ts.calc_endminsec AS expire_timestamp_verified,
+        pokemon_id,
+        Unix_timestamp(Convert_tz(disappear_time, '+00:00', @@global.time_zone)) AS disappear_time,
+        encounter_id,
+        p.latitude,
+        p.longitude,
+        gender,
+        form,
+        weather_boosted_condition,
+        costume";
         global $noHighLevelData;
         if (!$noHighLevelData) {
-            $select .= ", weight, height, individual_attack, individual_defense, individual_stamina, move_1, move_2, cp, cp_multiplier";
+            $select .= ",
+            weight,
+            height,
+            individual_attack,
+            individual_defense,
+            individual_stamina,
+            move_1,
+            move_2,
+            cp,
+            cp_multiplier,
+            catch_prob_1 AS catch_rate_1,
+            catch_prob_2 AS catch_rate_2,
+            catch_prob_3 AS catch_rate_3";
         }
 
         $conds[] = "p.latitude > :swLat AND p.longitude > :swLng AND p.latitude < :neLat AND p.longitude < :neLng AND disappear_time > :time";
@@ -92,10 +113,31 @@ class RocketMap_MAD extends RocketMap
         $params = array();
         $float = $db->info()['driver'] == 'pgsql' ? "::float" : "";
 
-        $select = "ts.calc_endminsec AS expire_timestamp_verified, pokemon_id, Unix_timestamp(Convert_tz(disappear_time, '+00:00', @@global.time_zone)) AS disappear_time, encounter_id, p.latitude, p.longitude, gender, form, weather_boosted_condition, costume";
+        $select = "ts.calc_endminsec AS expire_timestamp_verified,
+        pokemon_id,
+        Unix_timestamp(Convert_tz(disappear_time, '+00:00', @@global.time_zone)) AS disappear_time,
+        encounter_id,
+        p.latitude,
+        p.longitude,
+        gender,
+        form,
+        weather_boosted_condition,
+        costume";
         global $noHighLevelData;
         if (!$noHighLevelData) {
-            $select .= ", weight, height, individual_attack, individual_defense, individual_stamina, move_1, move_2, cp, cp_multiplier";
+            $select .= ",
+            weight,
+            height,
+            individual_attack,
+            individual_defense,
+            individual_stamina,
+            move_1,
+            move_2,
+            cp,
+            cp_multiplier,
+            catch_prob_1 AS catch_rate_1,
+            catch_prob_2 AS catch_rate_2,
+            catch_prob_3 AS catch_rate_3";
         }
 
         $conds[] = "p.latitude > :swLat AND p.longitude > :swLng AND p.latitude < :neLat AND p.longitude < :neLng AND disappear_time > :time";

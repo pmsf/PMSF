@@ -2302,6 +2302,7 @@ if (!$noLoadingScreen) {
     var showYourLove = <?php echo $showYourLove === true ? 'true' : 'false' ?>;
     var defaultDustAmount = <?php echo $defaultDustAmount; ?>;
     var noDarkMode = <?php echo $noDarkMode === true ? 'true' : 'false' ?>;
+    var noCatchRates = <?php echo $noCatchRates === true ? 'true' : 'false' ?>;
 </script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js"></script>
 <script src="static/dist/js/map.common.min.js"></script>
