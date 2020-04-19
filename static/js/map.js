@@ -1324,7 +1324,7 @@ function pokemonLabel(item) {
 
         var catchRates = ''
         if (!noCatchRates && item['catch_rate_1'] != null && item['catch_rate_2'] != null && item['catch_rate_3'] != null) {
-            catchRates = '<div>' + 
+            catchRates = '<div>' +
             '<img src="static/images/pokeball-1.png" style="height:14px;position:relative;top:2px;"> ' + (item['catch_rate_1'] * 100).toFixed(1) + '% ' +
             '<img src="static/images/greatball.png" style="height:14px;position:relative;top:2px;"> ' + (item['catch_rate_2'] * 100).toFixed(1) + '% ' +
             '<img src="static/images/ultraball.png" style="height:14px;position:relative;top:2px;"> ' + (item['catch_rate_3'] * 100).toFixed(1) + '%' +
