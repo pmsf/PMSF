@@ -37,7 +37,7 @@ class RDM extends Scanner
             level,
             capture_1 AS catch_rate_1,
             capture_2 AS catch_rate_2,
-            capture_3 AS catch_rate3";
+            capture_3 AS catch_rate_3";
         }
 
         $conds[] = "lat > :swLat AND lon > :swLng AND lat < :neLat AND lon < :neLng AND expire_timestamp > :time";

@@ -1325,9 +1325,9 @@ function pokemonLabel(item) {
         var catchRates = ''
         if (!noCatchRates && item['catch_rate_1'] != null && item['catch_rate_2'] != null && item['catch_rate_3'] != null) {
             catchRates = '<div>' + 
-            '<img src="static/images/pokeball-1.png" height="14"> ' + (item['catch_rate_1'] * 100).toFixed(1) + '% ' +
-            '<img src="static/images/greatball.png" height="14"> ' + (item['catch_rate_2'] * 100).toFixed(1) + '% ' +
-            '<img src="static/images/ultraball.png" height="14"> ' + (item['catch_rate_3'] * 100).toFixed(1) + '%' +
+            '<img src="static/images/pokeball-1.png" style="height:14px;position:relative;top:2px;"> ' + (item['catch_rate_1'] * 100).toFixed(1) + '% ' +
+            '<img src="static/images/greatball.png" style="height:14px;position:relative;top:2px;"> ' + (item['catch_rate_2'] * 100).toFixed(1) + '% ' +
+            '<img src="static/images/ultraball.png" style="height:14px;position:relative;top:2px;"> ' + (item['catch_rate_3'] * 100).toFixed(1) + '%' +
             '</div>'
         }
 
@@ -1338,10 +1338,10 @@ function pokemonLabel(item) {
             '<div>' + i8ln('CP') + ': <b>' + cp + '</b> | ' + i8ln('Level') + ': <b>' + pokemonLevel + '</b></div>' +
             '</div><br>' +
             '<div style="position:absolute;top:125px;">' +
-            catchRates +
             '<div>' + i8ln('Quick') + ': <b>' + pMove1 + '</b>' + pMoveType1 + '</div>' +
             '<div>' + i8ln('Charge') + ': <b>' + pMove2 + '</b>' + pMoveType2 + '</div>' +
             '<div>' + i8ln('Weight') + ': <b>' + weight + '</b>' + ' | ' + i8ln('Height') + ': <b>' + height + '</b></div>' +
+            catchRates +
             '</div>'
     }
 
@@ -1398,8 +1398,10 @@ function pokemonLabel(item) {
     }
 
     contentstring += '<small>' + typesDisplay + '</small>' + '<br>' + details
-    if (atk != null && def != null && sta != null) {
+    if (atk != null && def != null && sta != null && noCatchRates) {
         contentstring += '<center><div style="position:relative;top:55px;">'
+    } else if (atk != null && def != null && sta != null && !noCatchRates) {
+        contentstring += '<center><div style="position:relative;top:70px;">'
     } else {
         contentstring += '<center><div style="position:relative;">'
     }
@@ -1408,8 +1410,10 @@ function pokemonLabel(item) {
     ' | <a href="javascript:removePokemonMarker(\'' + encounterId + '\')" title="' + i8ln('Remove this Pokémon from the map') + '"><i class="fas fa-trash-alt" style="font-size:15px;width:20px;"></i></a>' +
     ' | <a href="javascript:void(0);" onclick="javascript:toggleOtherPokemon(' + id + ');" title="' + i8ln('Toggle display of other Pokémon') + '"><i class="fas fa-search-plus" style="font-size:15px;width:20px;"></i></a>' +
     '</div></center>'
-    if (atk != null && def != null && sta != null) {
+    if (atk != null && def != null && sta != null && noCatchRates) {
         contentstring += '<div style="position:relative;top:55px;"><center>'
+    } else if (atk != null && def != null && sta != null && !noCatchRates) {
+        contentstring += '<div style="position:relative;top:70px;"><center>'
     } else {
         contentstring += '<div style="position:relative;"><center>'
     }
@@ -1421,6 +1425,9 @@ function pokemonLabel(item) {
     '</a></center></div>'
     if (atk != null && def != null && sta != null) {
         contentstring += '<br><br><br>'
+        if (!noCatchRates) {
+            contentstring += '<br>'
+        }
     }
     return contentstring
 }
