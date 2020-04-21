@@ -993,7 +993,7 @@ if (!$noLoadingScreen) {
             }
             ?>
             <?php
-            if (! $noPortals || ! $noS2Cells) {
+            if (! $noPortals || ! $noS2Cells || ! $noPoi) {
                 ?>
                 <h3><?php echo i8ln('Ingress / S2Cell'); ?></h3>
                 <div>
