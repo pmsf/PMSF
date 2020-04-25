@@ -20,6 +20,8 @@ if ($noNativeLogin === false || $noDiscordLogin === false) {
 }
 $zoom        = ! empty($_GET['zoom']) ? $_GET['zoom'] : null;
 $encounterId = ! empty($_GET['encId']) ? $_GET['encId'] : null;
+$stopId = ! empty($_GET['stopId']) ? $_GET['stopId'] : null;
+$gymId = ! empty($_GET['gymId']) ? $_GET['gymId'] : null;
 if (!empty($_GET['lang'])) {
     setcookie("LocaleCookie", $_GET['lang'], time() + 60 * 60 * 24 * 31);
     header("Location: .");
@@ -94,7 +96,7 @@ if (strtolower($map) === "rdm") {
     <!-- retina iPhone 6 iOS 7 -->
     <link rel="apple-touch-icon" href="static/appicons/180x180.png"
           sizes="180x180">
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/list.js/1.5.0/list.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/list.js/1.5.0/list.min.js"></script>
     <?php
     function pokemonFilterImages($noPokemonNumbers, $onClick = '', $pokemonToExclude = array(), $num = 0)
     {
@@ -225,7 +227,7 @@ if (strtolower($map) === "rdm") {
             $eggLevel = $egg['level'];
             $eggType = $egg['type'];
             if (! in_array($e, $raideggToExclude)) {
-                echo '<span class="raidegg-icon-sprite" data-value="' . $e . '" onclick="' . $onClick . '"><span style="display:none" class="level">' . $eggLevel . '</span><img src="static/raids/egg_' . $eggImage . '.png" style="width:48px;height:56px;"/>';
+                echo '<span class="raidegg-icon-sprite" data-value="' . $e . '" onclick="' . $onClick . '"><span style="display:none" class="level">' . $eggLevel . '</span><img src="static/raids/egg_' . $eggImage . '.png" style="width:48px;"/>';
                 if (! $noRaideggNumbers) {
                     echo '<span class="raidegg-number">' . $eggLevel . '</span>';
                 }
@@ -991,7 +993,7 @@ if (!$noLoadingScreen) {
             }
             ?>
             <?php
-            if (! $noPortals || ! $noS2Cells) {
+            if (! $noPortals || ! $noS2Cells || ! $noPoi) {
                 ?>
                 <h3><?php echo i8ln('Ingress / S2Cell'); ?></h3>
                 <div>
@@ -1541,6 +1543,7 @@ if (!$noLoadingScreen) {
                     <option value="?lang=it"><?php echo i8ln('Italian'); ?></option>
                     <option value="?lang=pl"><?php echo i8ln('Polish'); ?></option>
                     <option value="?lang=sp"><?php echo i8ln('Spanish'); ?></option>
+                    <option value="?lang=sv"><?php echo i8ln('Swedish'); ?></option>
                 </select>
             </div>
             <br><br>
@@ -2151,6 +2154,8 @@ if (!$noLoadingScreen) {
     var showMotdOnlyOnce = <?php echo $showMotdOnlyOnce === true ? 'true' : 'false' ?>;
     var zoom<?php echo $zoom ? " = " . $zoom : null; ?>;
     var encounterId<?php echo $encounterId ? " = '" . $encounterId . "'" : null; ?>;
+    var stopId<?php echo $stopId ? " = '" . $stopId . "'" : null; ?>;
+    var gymId<?php echo $gymId ? " = '" . $gymId . "'" : null; ?>;
     var defaultZoom = <?= $defaultZoom; ?>;
     var maxZoom = <?= $maxZoomIn; ?>;
     var minZoom = <?= $maxZoomOut; ?>;
@@ -2297,6 +2302,7 @@ if (!$noLoadingScreen) {
     var showYourLove = <?php echo $showYourLove === true ? 'true' : 'false' ?>;
     var defaultDustAmount = <?php echo $defaultDustAmount; ?>;
     var noDarkMode = <?php echo $noDarkMode === true ? 'true' : 'false' ?>;
+    var noCatchRates = <?php echo $noCatchRates === true ? 'true' : 'false' ?>;
 </script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js"></script>
 <script src="static/dist/js/map.common.min.js"></script>

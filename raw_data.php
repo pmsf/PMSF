@@ -79,7 +79,7 @@ if (!validateToken($_POST['token'])) {
 
 if ((! $noDiscordLogin || ! $noNativeLogin) && !empty($_SESSION['user']->id)) {
     $info = $manualdb->query("SELECT session_id FROM users WHERE id = :id", [":id" => $_SESSION['user']->id])->fetch();
-    if ($info['session_id'] !== $_COOKIE["LoginCookie"]) {
+    if (empty($_COOKIE["LoginCookie"]) || $info['session_id'] !== $_COOKIE["LoginCookie"]) {
         http_response_code(400);
         die();
     }

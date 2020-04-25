@@ -11,10 +11,31 @@ class RocketMap_MAD extends RocketMap
         $params = array();
         $float = $db->info()['driver'] == 'pgsql' ? "::float" : "";
 
-        $select = "ts.calc_endminsec AS expire_timestamp_verified, pokemon_id, Unix_timestamp(Convert_tz(disappear_time, '+00:00', @@global.time_zone)) AS disappear_time, encounter_id, p.latitude, p.longitude, gender, form, weather_boosted_condition, costume";
+        $select = "ts.calc_endminsec AS expire_timestamp_verified,
+        pokemon_id,
+        Unix_timestamp(Convert_tz(disappear_time, '+00:00', @@global.time_zone)) AS disappear_time,
+        encounter_id,
+        p.latitude,
+        p.longitude,
+        gender,
+        form,
+        weather_boosted_condition,
+        costume";
         global $noHighLevelData;
         if (!$noHighLevelData) {
-            $select .= ", weight, height, individual_attack, individual_defense, individual_stamina, move_1, move_2, cp, cp_multiplier";
+            $select .= ",
+            weight,
+            height,
+            individual_attack,
+            individual_defense,
+            individual_stamina,
+            move_1,
+            move_2,
+            cp,
+            cp_multiplier,
+            catch_prob_1 AS catch_rate_1,
+            catch_prob_2 AS catch_rate_2,
+            catch_prob_3 AS catch_rate_3";
         }
 
         $conds[] = "p.latitude > :swLat AND p.longitude > :swLng AND p.latitude < :neLat AND p.longitude < :neLng AND disappear_time > :time";
@@ -92,10 +113,31 @@ class RocketMap_MAD extends RocketMap
         $params = array();
         $float = $db->info()['driver'] == 'pgsql' ? "::float" : "";
 
-        $select = "ts.calc_endminsec AS expire_timestamp_verified, pokemon_id, Unix_timestamp(Convert_tz(disappear_time, '+00:00', @@global.time_zone)) AS disappear_time, encounter_id, p.latitude, p.longitude, gender, form, weather_boosted_condition, costume";
+        $select = "ts.calc_endminsec AS expire_timestamp_verified,
+        pokemon_id,
+        Unix_timestamp(Convert_tz(disappear_time, '+00:00', @@global.time_zone)) AS disappear_time,
+        encounter_id,
+        p.latitude,
+        p.longitude,
+        gender,
+        form,
+        weather_boosted_condition,
+        costume";
         global $noHighLevelData;
         if (!$noHighLevelData) {
-            $select .= ", weight, height, individual_attack, individual_defense, individual_stamina, move_1, move_2, cp, cp_multiplier";
+            $select .= ",
+            weight,
+            height,
+            individual_attack,
+            individual_defense,
+            individual_stamina,
+            move_1,
+            move_2,
+            cp,
+            cp_multiplier,
+            catch_prob_1 AS catch_rate_1,
+            catch_prob_2 AS catch_rate_2,
+            catch_prob_3 AS catch_rate_3";
         }
 
         $conds[] = "p.latitude > :swLat AND p.longitude > :swLng AND p.latitude < :neLat AND p.longitude < :neLng AND disappear_time > :time";
@@ -586,6 +628,7 @@ class RocketMap_MAD extends RocketMap
 
         $query = "SELECT Unix_timestamp(Convert_tz(lure_expiration, '+00:00', @@global.time_zone)) AS lure_expiration,
         Unix_timestamp(Convert_tz(incident_expiration, '+00:00', @@global.time_zone)) AS incident_expiration,
+        Unix_timestamp(Convert_tz(last_updated, '+00:00', @@global.time_zone)) AS last_seen,
         pokestop_id,
         latitude,
         name AS pokestop_name,
@@ -653,6 +696,7 @@ class RocketMap_MAD extends RocketMap
             $pokestop["quest_item_name"] = empty($item_pid) ? null : i8ln($this->items[$item_pid]["name"]);
             $pokestop["quest_pokemon_name"] = empty($mon_pid) ? null : i8ln($this->data[$mon_pid]["name"]);
             $pokestop["quest_condition_info"] = null;
+            $pokestop["last_seen"] = $pokestop["last_seen"] * 1000;
             $data[] = $pokestop;
             unset($pokestops[$i]);
             $i++;

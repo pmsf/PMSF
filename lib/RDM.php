@@ -11,10 +11,33 @@ class RDM extends Scanner
         $params = array();
         $float = $db->info()['driver'] == 'pgsql' ? "::float" : "";
 
-        $select = "pokemon_id, expire_timestamp AS disappear_time, id AS encounter_id, spawn_id, lat AS latitude, lon AS longitude, gender, form, weather AS weather_boosted_condition, costume, expire_timestamp_verified";
+        $select = "pokemon_id,
+        expire_timestamp AS disappear_time,
+        id AS encounter_id,
+        spawn_id,
+        lat AS latitude,
+        lon AS longitude,
+        gender,
+        form,
+        weather AS weather_boosted_condition,
+        costume,
+        expire_timestamp_verified";
+
         global $noHighLevelData;
         if (!$noHighLevelData) {
-            $select .= ", weight, size AS height, atk_iv AS individual_attack, def_iv AS individual_defense, sta_iv AS individual_stamina, move_1, move_2, cp, level";
+            $select .= ",
+            weight,
+            size AS height,
+            atk_iv AS individual_attack,
+            def_iv AS individual_defense,
+            sta_iv AS individual_stamina,
+            move_1,
+            move_2,
+            cp,
+            level,
+            capture_1 AS catch_rate_1,
+            capture_2 AS catch_rate_2,
+            capture_3 AS catch_rate_3";
         }
 
         $conds[] = "lat > :swLat AND lon > :swLng AND lat < :neLat AND lon < :neLng AND expire_timestamp > :time";
@@ -88,11 +111,33 @@ class RDM extends Scanner
         $params = array();
         $float = $db->info()['driver'] == 'pgsql' ? "::float" : "";
 
-        $select = "pokemon_id, expire_timestamp AS disappear_time, id AS encounter_id, spawn_id, lat AS latitude, lon AS longitude, gender, form, weather AS weather_boosted_condition, costume, expire_timestamp_verified";
+        $select = "pokemon_id,
+        expire_timestamp AS disappear_time,
+        id AS encounter_id,
+        spawn_id,
+        lat AS latitude,
+        lon AS longitude,
+        gender,
+        form,
+        weather AS weather_boosted_condition,
+        costume,
+        expire_timestamp_verified";
 
         global $noHighLevelData;
         if (!$noHighLevelData) {
-            $select .= ", weight, size AS height, atk_iv AS individual_attack, def_iv AS individual_defense, sta_iv AS individual_stamina, move_1, move_2, cp, level";
+            $select .= ",
+            weight,
+            size AS height,
+            atk_iv AS individual_attack,
+            def_iv AS individual_defense,
+            sta_iv AS individual_stamina,
+            move_1,
+            move_2,
+            cp,
+            level,
+            capture_1 AS catch_rate_1,
+            capture_2 AS catch_rate_2,
+            capture_3 AS catch_rate_3";
         }
 
         $conds[] = "lat > :swLat AND lon > :swLng AND lat < :neLat AND lon < :neLng AND expire_timestamp > :time";
@@ -392,6 +437,7 @@ class RDM extends Scanner
         lon AS longitude,
         name AS pokestop_name,
         url,
+        updated AS last_seen,
         lure_expire_timestamp AS lure_expiration,
         incident_expire_timestamp AS incident_expiration,
         lure_id,
@@ -456,6 +502,7 @@ class RDM extends Scanner
             $pokestop["grunt_type_gender"] = empty($grunttype_pid) ? null : i8ln($this->grunttype[$grunttype_pid]["grunt"]);
             $pokestop["encounters"] = empty($this->grunttype[$grunttype_pid]["encounters"]) ? null : $this->grunttype[$grunttype_pid]["encounters"];
             $pokestop["second_reward"] = empty($this->grunttype[$grunttype_pid]["second_reward"]) ? null : $this->grunttype[$grunttype_pid]["second_reward"];
+            $pokestop["last_seen"] = $pokestop["last_seen"] * 1000;
 
             $data[] = $pokestop;
             unset($pokestops[$i]);

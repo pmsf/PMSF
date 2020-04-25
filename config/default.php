@@ -141,7 +141,7 @@ $imgurCID = "";
 
 /* Counts */
 $numberOfPokemon = 649;
-$numberOfItem = 1405;
+$numberOfItem = 1600;
 $numberOfGrunt = 50;
 $numberOfEgg = 10;
 //-----------------------------------------------------
@@ -180,6 +180,7 @@ $noExcludeMinIV = true;                                        // true/false
 $noMinIV = true;                                               // true/false
 $noMinLevel = true;                                            // true/false
 $noHighLevelData = true;                                       // true/false
+$noCatchRates = false;
 $noRarityDisplay = false;                                      // true/false
 $noWeatherIcons = true;
 $no100IvShadow = false;
@@ -337,7 +338,7 @@ $noMultipleRepos = true;
 $iconRepos = [["Standard","$iconRepository"]];
 
 $noMapStyle = false;                                                // true/false
-$mapStyle = 'openstreetmap';                                        // openstreetmap, darkmatter, styleblackandwhite, styletopo, stylesatellite, stylewikipedia
+$mapStyle = 'openstreetmap';                                        // openstreetmap, darkmatter, styleblackandwhite, styletopo, stylesatellite
 
 $noDirectionProvider = false;                                       // true/false
 $directionProvider = 'google';                                      // google, waze, apple, bing, google_pin

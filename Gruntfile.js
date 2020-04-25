@@ -138,7 +138,8 @@ module.exports = function (grunt) {
                     'static/dist/locales/sp.min.json': 'static/locales/sp.json',
                     'static/dist/locales/zh_cn.min.json': 'static/locales/zh_cn.json',
                     'static/dist/locales/zh_tw.min.json': 'static/locales/zh_tw.json',
-                    'static/dist/locales/zh_hk.min.json': 'static/locales/zh_hk.json'
+                    'static/dist/locales/zh_hk.min.json': 'static/locales/zh_hk.json',
+                    'static/dist/locales/sv.min.json': 'static/locales/sv.json'
                 }
             }
         },
