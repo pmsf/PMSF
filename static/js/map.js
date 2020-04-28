@@ -5316,7 +5316,7 @@ function processPokestops(i, item, lastMidnight) {
 }
 
 function pokestopMeetsQuestFilter(pokestop, lastMidnight) {
-    if (pokestop['quest_type'] === 0 || lastMidnight > Number(pokestop['quest_timestamp']) {
+    if (pokestop['quest_type'] === 0 || lastMidnight > Number(pokestop['quest_timestamp'])) {
         return false
     }
     if (pokestop['quest_pokemon_id'] > 0 && questsExcludedPokemon.indexOf(pokestop['quest_pokemon_id']) > -1) {
