@@ -510,7 +510,7 @@ class RocketMap_MAD extends RocketMap
         return $data;
     }
 
-    public function get_stops($geids, $qpeids, $qieids, $swLat, $swLng, $neLat, $neLng, $tstamp = 0, $oSwLat = 0, $oSwLng = 0, $oNeLat = 0, $oNeLng = 0, $lured = false, $rocket = false, $quests, $dustamount)
+    public function get_stops($geids, $qpeids, $qieids, $swLat, $swLng, $neLat, $neLng, $tstamp = 0, $oSwLat = 0, $oSwLng = 0, $oNeLat = 0, $oNeLng = 0, $lured = false, $rocket = false, $quests, $dustamount, $pokecoinamount)
     {
         $conds = array();
         $params = array();
@@ -561,7 +561,7 @@ class RocketMap_MAD extends RocketMap
         return $this->query_stops($conds, $params);
     }
 
-    public function get_stops_quest($greids, $qpreids, $qireids, $swLat, $swLng, $neLat, $neLng, $tstamp = 0, $oSwLat = 0, $oSwLng = 0, $oNeLat = 0, $oNeLng = 0, $lures, $rocket, $quests, $dustamount, $reloaddustamount)
+    public function get_stops_quest($greids, $qpreids, $qireids, $swLat, $swLng, $neLat, $neLng, $tstamp = 0, $oSwLat = 0, $oSwLng = 0, $oNeLat = 0, $oNeLng = 0, $lures, $rocket, $quests, $dustamount, $reloaddustamount, $pokecoinamount, $reloadpokecoinamount)
     {
         $conds = array();
         $params = array();
@@ -601,6 +601,10 @@ class RocketMap_MAD extends RocketMap
             if ($reloaddustamount == "true") {
                 $tmpSQL .= "tq.quest_stardust > :amount";
                 $params[':amount'] = intval($dustamount);
+            }
+            if ($reloadpokecoinamount == "true") {
+                $tmpSQL .= "tq.quest_pokecoin > :amount";
+                $params[':amount'] = intval($pokecoinamount);
             }
             $conds[] = $tmpSQL;
         }
