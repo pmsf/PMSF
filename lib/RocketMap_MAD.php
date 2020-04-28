@@ -646,7 +646,8 @@ class RocketMap_MAD extends RocketMap
         tq.quest_pokemon_form_id AS quest_pokemon_formid,
         json_extract(json_extract(`quest_reward`,'$[*].pokemon_encounter.pokemon_display.is_shiny'),'$[0]') AS quest_pokemon_shiny,
         tq.quest_item_amount AS quest_reward_amount,
-        tq.quest_stardust AS quest_dust_amount
+        tq.quest_stardust AS quest_dust_amount,
+        tq.quest_pokecoin AS quest_pokecoin_amount
         FROM pokestop p
         LEFT JOIN trs_quest tq ON tq.GUID = p.pokestop_id
         WHERE :conditions";
@@ -693,6 +694,7 @@ class RocketMap_MAD extends RocketMap
             $pokestop["quest_item_id"] = intval($pokestop["quest_item_id"]);
             $pokestop["quest_reward_amount"] = intval($pokestop["quest_reward_amount"]);
             $pokestop["quest_dust_amount"] = intval($pokestop["quest_dust_amount"]);
+            $pokestop["quest_pokecoin_amount"] = intval($pokestop["quest_pokecoin_amount"]);
             $pokestop["quest_item_name"] = empty($item_pid) ? null : i8ln($this->items[$item_pid]["name"]);
             $pokestop["quest_pokemon_name"] = empty($mon_pid) ? null : i8ln($this->data[$mon_pid]["name"]);
             $pokestop["quest_condition_info"] = null;
