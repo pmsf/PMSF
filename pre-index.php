@@ -740,8 +740,12 @@ if (!$noLoadingScreen) {
                             } ?>
                         </div>
                         <div class="dustslider">
-                <input type="range" min="0" max="2500" value="500" class="slider" id="dustrange">
-                <p><?php echo i8ln('Show stardust ') ?><span id="dustvalue"></span></p>
+                            <input type="range" min="0" max="2500" value="500" class="slider" id="dustrange">
+                            <p><?php echo i8ln('Show stardust ') ?><span id="dustvalue"></span></p>
+                        </div>
+                        <div class="pokecoinslider">
+                            <input type="range" min="0" max="100" value="100" class="coinslider" id="pokecoinrange">
+                            <p><?php echo i8ln('Show Pokécoin ') ?><span id="pokecoinvalue"></span></p>
                         </div>
                     </div>
                 <?php
@@ -2301,6 +2305,7 @@ if (!$noLoadingScreen) {
     var makeItBang = <?php echo $makeItBang === true ? 'true' : 'false' ?>;
     var showYourLove = <?php echo $showYourLove === true ? 'true' : 'false' ?>;
     var defaultDustAmount = <?php echo $defaultDustAmount; ?>;
+    var defaultPokecoinAmount = <?php echo $defaultPokecoinAmount; ?>;
     var noDarkMode = <?php echo $noDarkMode === true ? 'true' : 'false' ?>;
     var noCatchRates = <?php echo $noCatchRates === true ? 'true' : 'false' ?>;
 </script>

@@ -81,6 +81,8 @@ var rbreids = []
 var rereids = []
 var dustamount
 var reloaddustamount
+var pokecoinamount
+var reloadpokecoinamount
 
 var L
 var map
@@ -1153,6 +1155,8 @@ function initSidebar() {
     $('#quests-filter-wrapper').toggle(Store.get('showQuests'))
     $('#dustvalue').text(Store.get('showDustAmount'))
     $('#dustrange').val(Store.get('showDustAmount'))
+    $('#pokecoinvalue').text(Store.get('showPokecoinAmount'))
+    $('#pokecoinrange').val(Store.get('showPokecoinAmount'))
     $('#start-at-user-location-switch').prop('checked', Store.get('startAtUserLocation'))
     $('#start-at-last-location-switch').prop('checked', Store.get('startAtLastLocation'))
     $('#follow-my-location-switch').prop('checked', Store.get('followMyLocation'))
@@ -3291,6 +3295,7 @@ function loadRawData() {
     var loadRocket = Store.get('showRocket')
     var loadQuests = Store.get('showQuests')
     var loadDustamount = Store.get('showDustAmount')
+    var loadPokecoinamount = Store.get('showPokecoinAmount')
     var loadNests = Store.get('showNests')
     var loadCommunities = Store.get('showCommunities')
     var loadPortals = Store.get('showPortals')
@@ -3324,6 +3329,8 @@ function loadRawData() {
             'quests': loadQuests,
             'dustamount': loadDustamount,
             'reloaddustamount': reloaddustamount,
+            'pokecoinamount': loadPokecoinamount,
+            'reloadpokecoinamount': reloadpokecoinamount,
             'nests': loadNests,
             'lastnests': lastnests,
             'communities': loadCommunities,
@@ -5309,11 +5316,28 @@ function processPokestops(i, item, lastMidnight) {
 }
 
 function pokestopMeetsQuestFilter(pokestop, lastMidnight) {
-    if (pokestop['quest_type'] === 0 || lastMidnight > Number(pokestop['quest_timestamp']) || ((pokestop['quest_pokemon_id'] > 0 && questsExcludedPokemon.indexOf(pokestop['quest_pokemon_id']) > -1) || (pokestop['quest_item_id'] > 0 && questsExcludedItem.indexOf(pokestop['quest_item_id']) > -1) || ((pokestop['quest_reward_type'] === 3 && (Number(pokestop['quest_dust_amount']) < Number(Store.get('showDustAmount')))) || (pokestop['quest_reward_type'] === 3 && Store.get('showDustAmount') === 0)))) {
+    if (pokestop['quest_type'] === 0 || lastMidnight > Number(pokestop['quest_timestamp']) {
         return false
-    } else {
-        return true
     }
+    if (pokestop['quest_pokemon_id'] > 0 && questsExcludedPokemon.indexOf(pokestop['quest_pokemon_id']) > -1) {
+        return false
+    }
+    if (pokestop['quest_item_id'] > 0 && questsExcludedItem.indexOf(pokestop['quest_item_id']) > -1) {
+        return false
+    }
+    if (pokestop['quest_reward_type'] === 3 && Number(pokestop['quest_dust_amount']) < Number(Store.get('showDustAmount'))) {
+        return false 
+    }
+    if (pokestop['quest_reward_type'] === 3 && Store.get('showDustAmount') === 0) {
+        return false
+    }
+    if (pokestop['quest_reward_type'] === 8 && Number(pokestop['quest_pokecoin_amount']) < Number(Store.get('showPokecoinAmount'))) {
+        return false 
+    }
+    if (pokestop['quest_reward_type'] === 8 && Store.get('showPokecoinAmount') === 0) {
+        return false
+    }
+    return true
 }
 
 function updatePokestops() {
@@ -5733,6 +5757,7 @@ function updateMap() {
             }, reincludedRaidegg)
         }
         reloaddustamount = false
+        reloadpokecoinamount = false
         timestamp = result.timestamp
         lastUpdateTime = Date.now()
         token = result.token
@@ -7424,6 +7449,19 @@ $(function () {
         } else {
             $('#dustvalue').text(i8ln('above') + ' ' + dustamount)
             reloaddustamount = true
+            setTimeout(function () { updateMap() }, 2000)
+        }
+    })
+
+    $('#pokecoinrange').on('input', function () {
+        pokecoinamount = $(this).val()
+        Store.set('showPokecoinAmount', pokecoinamount)
+        if (pokecoinamount === '0') {
+            $('#pokecoinvalue').text(i8ln('Off'))
+            setTimeout(function () { updateMap() }, 2000)
+        } else {
+            $('#pokecoinvalue').text(i8ln('above') + ' ' + pokecoinamount)
+            reloadpokecoinamount = true
             setTimeout(function () { updateMap() }, 2000)
         }
     })

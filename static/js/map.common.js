@@ -279,6 +279,11 @@ var StoreOptions = {
             default: defaultDustAmount,
             type: StoreTypes.Number
         },
+    'showPokecoinAmount':
+        {
+            default: defaultPokecoinAmount,
+            type: StoreTypes.Number
+        },
     'showWeather':
         {
             default: enableWeatherOverlay,

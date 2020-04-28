@@ -269,7 +269,7 @@ class RDM extends Scanner
         return $data;
     }
 
-    public function get_stops($geids, $qpeids, $qieids, $swLat, $swLng, $neLat, $neLng, $tstamp = 0, $oSwLat = 0, $oSwLng = 0, $oNeLat = 0, $oNeLng = 0, $lures, $rocket, $quests, $dustamount)
+    public function get_stops($geids, $qpeids, $qieids, $swLat, $swLng, $neLat, $neLng, $tstamp = 0, $oSwLat = 0, $oSwLng = 0, $oNeLat = 0, $oNeLng = 0, $lures, $rocket, $quests, $dustamount, $pokecoinamount)
     {
         $conds = array();
         $params = array();
@@ -326,7 +326,12 @@ class RDM extends Scanner
                     $dustSQL .= " AND (ST_WITHIN(point(lat,lon),ST_GEOMFROMTEXT('POLYGON(( " . $boundaries . " ))')))";
                 }
             }
-            $conds[] = "(" . $pokemonSQL . " OR " . $itemSQL . ")" . $dustSQL . "";
+            $pokecoinSQL = '';
+            if (!empty($pokecoinamount) && !is_nan((float)$pokecoinamount) && $pokecoinamount > 0) {
+                $dustSQL .= "OR (quest_reward_type = 8 AND json_extract(json_extract(`quest_rewards`,'$[*].info.amount'),'$[0]') > :amount)";
+                $params[':amount'] = intval($pokecoinamount);
+            }
+            $conds[] = "(" . $pokemonSQL . " OR " . $itemSQL . ")" . $dustSQL . $pokecoinSQL . "";
         }
         if (!empty($rocket) && $rocket === 'true') {
             $rocketSQL = '';
@@ -363,7 +368,7 @@ class RDM extends Scanner
         return $this->query_stops($conds, $params);
     }
 
-    public function get_stops_quest($greids, $qpreids, $qireids, $swLat, $swLng, $neLat, $neLng, $tstamp = 0, $oSwLat = 0, $oSwLng = 0, $oNeLat = 0, $oNeLng = 0, $lures, $rocket, $quests, $dustamount, $reloaddustamount)
+    public function get_stops_quest($greids, $qpreids, $qireids, $swLat, $swLng, $neLat, $neLng, $tstamp = 0, $oSwLat = 0, $oSwLng = 0, $oNeLat = 0, $oNeLng = 0, $lures, $rocket, $quests, $dustamount, $reloaddustamount, $pokecoinamount, $reloadpokecoinamount)
     {
         $conds = array();
         $params = array();
@@ -407,6 +412,10 @@ class RDM extends Scanner
             if ($reloaddustamount == "true") {
                 $tmpSQL .= "(quest_reward_type = 3 AND json_extract(json_extract(`quest_rewards`,'$[*].info.amount'),'$[0]') > :amount)";
                 $params[':amount'] = intval($dustamount);
+            }
+            if ($reloadpokecoinamount == "true") {
+                $tmpSQL .= "(quest_reward_type = 8 AND json_extract(json_extract(`quest_rewards`,'$[*].info.amount'),'$[0]') > :amount)";
+                $params[':amount'] = intval($pokecoinamount);
             }
             $conds[] = $tmpSQL;
         }
