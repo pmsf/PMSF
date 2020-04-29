@@ -2058,7 +2058,7 @@ function addRangeCircle(marker, map, type, teamId) {
         strokeOpacity: 0.9,
         center: circleCenter,
         fillColor: circleColor,
-        fillOpacity: 0.4
+        fillOpacity: 0.2
     }
     var rangeCircle = L.circle(circleCenter, rangeCircleOpts)
     markers.addLayer(rangeCircle)
