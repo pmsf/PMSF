@@ -132,6 +132,8 @@ var conditiontypeList = []
 var raideggList = []
 var gymId
 
+var deviceLocation = []
+
 var assetsPath = 'static/sounds/'
 var iconpath = null
 
@@ -5572,7 +5574,27 @@ function processScanlocation(i, item) {
     if (!Store.get('showScanLocation')) {
         return false
     }
-    setupScanLocationMarker(item)
+    var name = item['uuid']
+    var newLoc = [item['latitude'], item['longitude']]
+    var oldLoc = null
+    if (typeof deviceLocation[name] !== 'undefined') {
+        oldLoc = deviceLocation[name]
+    }
+    if (oldLoc === null) {
+        setupScanLocationMarker(item)
+    }
+    if ((oldLoc !== null) && (oldLoc[0] !== newLoc[0] || oldLoc[1] !== newLoc[1])) {
+        var deviceMarkers = liveScanGroup.getLayers()
+        for (i = 0; i < deviceMarkers.length; i++) {
+            var lat = deviceMarkers[i].getLatLng().lat
+            var lon = deviceMarkers[i].getLatLng().lng
+            if (lat === oldLoc[0] && lon === oldLoc[1]) {
+                liveScanGroup.removeLayer(deviceMarkers[i])
+            }
+        }
+        setupScanLocationMarker(item)
+    }
+    deviceLocation[name] = [item['latitude'], item['longitude']]
 }
 
 function updateSpawnPoints() {
@@ -5621,7 +5643,6 @@ function updateMap() {
             }
         })
     }
-    liveScanGroup.clearLayers()
     loadRawData().done(function (result) {
         $.each(result.pokemons, processPokemons)
         $.each(result.pokestops, processPokestops, lastMidnight)
