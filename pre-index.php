@@ -1416,6 +1416,7 @@ if (!$noLoadingScreen) {
                     <option value="google_pin">' . i8ln('Google (Pin)') . '</option>
                     <option value="waze">' . i8ln('Waze') . '</option>
                     <option value="bing">' . i8ln('Bing') . '</option>
+                    <option value="geouri">' . i8ln('GeoUri') . '</option>
                 </select>
             </div>';
             }
