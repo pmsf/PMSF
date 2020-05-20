@@ -1224,6 +1224,9 @@ function openMapDirections(lat, lng) { // eslint-disable-line no-unused-vars
         case 'bing':
             url = 'https://www.bing.com/maps/?v=2&where1=' + lat + ',' + lng
             break
+        case 'geouri':
+            url = 'geo:' + lat + ',' + lng
+            break
     }
     window.open(url, '_blank')
 }
