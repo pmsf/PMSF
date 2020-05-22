@@ -132,6 +132,8 @@ var conditiontypeList = []
 var raideggList = []
 var gymId
 
+var deviceLocation = []
+
 var assetsPath = 'static/sounds/'
 var iconpath = null
 
@@ -1222,6 +1224,9 @@ function openMapDirections(lat, lng) { // eslint-disable-line no-unused-vars
         case 'bing':
             url = 'https://www.bing.com/maps/?v=2&where1=' + lat + ',' + lng
             break
+        case 'geouri':
+            url = 'geo:' + lat + ',' + lng
+            break
     }
     window.open(url, '_blank')
 }
@@ -2042,11 +2047,11 @@ function addRangeCircle(marker, map, type, teamId) {
             break
         case 'pokestop':
             circleColor = '#3EB0FF'
-            range = 40
+            range = 80
             break
         case 'gym':
             circleColor = teamColor
-            range = 40
+            range = 80
             break
     }
 
@@ -2058,7 +2063,7 @@ function addRangeCircle(marker, map, type, teamId) {
         strokeOpacity: 0.9,
         center: circleCenter,
         fillColor: circleColor,
-        fillOpacity: 0.4
+        fillOpacity: 0.2
     }
     var rangeCircle = L.circle(circleCenter, rangeCircleOpts)
     markers.addLayer(rangeCircle)
@@ -3189,7 +3194,7 @@ function addListeners(marker) {
 
 function clearStaleMarkers() {
     $.each(mapData.pokemons, function (key, value) {
-        if (((mapData.pokemons[key]['disappear_time'] < new Date().getTime() || ((excludedPokemon.indexOf(mapData.pokemons[key]['pokemon_id']) >= 0 || isTemporaryHidden(mapData.pokemons[key]['pokemon_id']) || ((((mapData.pokemons[key]['individual_attack'] + mapData.pokemons[key]['individual_defense'] + mapData.pokemons[key]['individual_stamina']) / 45 * 100 < minIV) || ((mapType === 'monocle' && mapData.pokemons[key]['level'] < minLevel) || (mapType === 'rm' && !isNaN(minLevel) && (mapData.pokemons[key]['cp_multiplier'] < cpMultiplier[minLevel - 1])))) && !excludedMinIV.includes(mapData.pokemons[key]['pokemon_id'])) || (Store.get('showBigKarp') === true && mapData.pokemons[key]['pokemon_id'] === 129 && (mapData.pokemons[key]['weight'] < 13.14 || mapData.pokemons[key]['weight'] === null)) || (Store.get('showTinyRat') === true && mapData.pokemons[key]['pokemon_id'] === 19 && (mapData.pokemons[key]['weight'] > 2.40 || mapData.pokemons[key]['weight'] === null))) && encounterId !== mapData.pokemons[key]['encounter_id'])) || (encounterId && encounterId === mapData.pokemons[key]['encounter_id'] && mapData.pokemons[key]['disappear_time'] < new Date().getTime()))) {
+        if (((mapData.pokemons[key]['disappear_time'] < new Date().getTime() || ((excludedPokemon.indexOf(mapData.pokemons[key]['pokemon_id']) >= 0 || isTemporaryHidden(mapData.pokemons[key]['pokemon_id']) || ((((mapData.pokemons[key]['individual_attack'] + mapData.pokemons[key]['individual_defense'] + mapData.pokemons[key]['individual_stamina']) / 45 * 100 < minIV) || ((mapType === 'rdm' && mapData.pokemons[key]['level'] < minLevel) || (mapType === 'rocketmap' && !isNaN(minLevel) && (mapData.pokemons[key]['cp_multiplier'] < cpMultiplier[minLevel - 1])))) && !excludedMinIV.includes(mapData.pokemons[key]['pokemon_id'])) || (Store.get('showBigKarp') === true && mapData.pokemons[key]['pokemon_id'] === 129 && (mapData.pokemons[key]['weight'] < 13.14 || mapData.pokemons[key]['weight'] === null)) || (Store.get('showTinyRat') === true && mapData.pokemons[key]['pokemon_id'] === 19 && (mapData.pokemons[key]['weight'] > 2.40 || mapData.pokemons[key]['weight'] === null))) && encounterId !== mapData.pokemons[key]['encounter_id'])) || (encounterId && encounterId === mapData.pokemons[key]['encounter_id'] && mapData.pokemons[key]['disappear_time'] < new Date().getTime()))) {
             if (mapData.pokemons[key].marker.rangeCircle) {
                 markers.removeLayer(mapData.pokemons[key].marker.rangeCircle)
                 markersnotify.removeLayer(mapData.pokemons[key].marker.rangeCircle)
@@ -5572,7 +5577,27 @@ function processScanlocation(i, item) {
     if (!Store.get('showScanLocation')) {
         return false
     }
-    setupScanLocationMarker(item)
+    var name = item['uuid']
+    var newLoc = [item['latitude'], item['longitude']]
+    var oldLoc = null
+    if (typeof deviceLocation[name] !== 'undefined') {
+        oldLoc = deviceLocation[name]
+    }
+    if (oldLoc === null) {
+        setupScanLocationMarker(item)
+    }
+    if ((oldLoc !== null) && (oldLoc[0] !== newLoc[0] || oldLoc[1] !== newLoc[1])) {
+        var deviceMarkers = liveScanGroup.getLayers()
+        for (i = 0; i < deviceMarkers.length; i++) {
+            var lat = deviceMarkers[i].getLatLng().lat
+            var lon = deviceMarkers[i].getLatLng().lng
+            if (lat === oldLoc[0] && lon === oldLoc[1]) {
+                liveScanGroup.removeLayer(deviceMarkers[i])
+            }
+        }
+        setupScanLocationMarker(item)
+    }
+    deviceLocation[name] = [item['latitude'], item['longitude']]
 }
 
 function updateSpawnPoints() {
@@ -5621,7 +5646,6 @@ function updateMap() {
             }
         })
     }
-    liveScanGroup.clearLayers()
     loadRawData().done(function (result) {
         $.each(result.pokemons, processPokemons)
         $.each(result.pokestops, processPokestops, lastMidnight)
