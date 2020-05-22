@@ -1,197 +1,44 @@
 <?php
-/* User levels */
-// The part below requires the bot Chuckleslove wrote https://github.com/jepke/PMSF-Discord-AuthBot
-// This bot is included when you pull PMSF so no need to pull it separately
-// IDs must match the bots config
-//
-//THIS PART IS NOT PMSF CONFIG
-//"guilds": {
-//    "guildID": {		// Change GuildID into the discord server ID
-//        "roleID":1,		// Change roleID into the role ID of the desired role
-//        "roleID2":2		// Change roleID into the role ID of the desired role
-//    },
-//    "guildID2": {		// If only one server is used remove this.
-//        "roleID": 3
-//    }
-//}
-//THIS PART IS NOT PMSF CONFIG
+/* How it works */
+// - Requires the bot Chuckleslove wrote https://github.com/jepke/PMSF-Discord-AuthBot or $manualAccessLevel
+// - IDs in Authbot config must match user levels below.
+// - You can add or remove as many user levels as you like.
+// - Access config does work for native login with the use off $manualAccessLevel.
+// - TIP: Patreon has a Discord integration to set discord roles (read: user levels) when someone makes a pledge. This works perfect in combination with authbot and this example access config.
+// - EVERYTHING in this file overwrites config.php.
 
+/* Define access levels. (must match authbot config)*/
 $userLevel = 0;
-$donorLevel = 1;
-$helperLevel = 2;
-$adminLevel = 3;
+$raidLevel = 1;
+$questLevel = 2;
+$ivLevel = 3;
 $ownerLevel = 4;
 
-// if you are brave enough and now what you are doing you can add as many as levels you want
-// If variable is the same as in config.php it may be removed from that specific level
-
-
-if ($noNativeLogin === true && $noDiscordLogin === true ||  (($noNativeLogin === false || $noDiscordLogin === false) && !empty($_SESSION['user']->expire_timestamp) && $_SESSION['user']->expire_timestamp > time()))  {
-    $userAccessLevel = $manualdb->get( "users", [ 'access_level' ], [ 'expire_timestamp' => $_SESSION['user']->expire_timestamp ] );
-    if ($userAccessLevel['access_level'] == $userLevel) {
-// Editting variables
-        $noManualGyms = true;                                          // true/false
-        $noManualPokestops = true;                                     // true/false
-        $noRenamePokestops = true;                                     // true/false
-        $noConvertPokestops = true;                                    // true/false
-        $noDeleteGyms = true;                                          // true/false
-        $noDeletePokestops = true;                                     // true/false
-        $noAddNewCommunity = true;                                     // true/false
-        $noDeleteCommunity = true;                                     // true/false
-        $noEditCommunity = true;                                       // true/false
-        $noAddNewNests = true;                                         // true/false
-        $noDeletePortal = true;                                        // true/false
-// Markers
-        $noGyms = false;                                               // true/false
-        $noPokestops = false;                                          // true/false  
-        $noNests = false;                                              // true/false
-        $noPortals = true;                                             // true/false
-        $noCommunity = false;                                          // true/false
-        $noRaids = false;                                              // true/false
-        $noAreas = false;                                              // true/false
-// Functionality
-        $noManualPokemon = false;                                      // true/false
-	    $noManualQuests = false;                                       // true/false
-        $noManualRaids = false;                                        // true/false
-        $copyrightSafe = true;                                         // true/false
-        $noStartLast = false;                                          // true/false
-        $noMapStyle = false;                                           // true/false
-        $noSearchPortals = false;                                      // true/false
-// Message of the Day
-        $noMotd = true;                                                // true/false
-        $motdTitle = "Message of the Day";
-        $motdContent = "This is an example MOTD<br>Do whatever you like with it.";
-    } else if ($userAccessLevel['access_level'] == $donorLevel) {
-// Editting variables
-        $noManualGyms = true;                                          // true/false
-        $noManualPokestops = true;                                     // true/false
-        $noRenamePokestops = true;                                     // true/false
-        $noConvertPokestops = true;                                    // true/false
-        $noDeleteGyms = true;                                          // true/false
-        $noDeletePokestops = true;                                     // true/false
-        $noAddNewCommunity = true;                                     // true/false
-        $noDeleteCommunity = true;                                     // true/false
-        $noEditCommunity = true;                                       // true/false
-        $noAddNewNests = true;                                         // true/false
-        $noDeletePortal = true;                                        // true/false
-// Markers
-        $noGyms = false;                                               // true/false
-	    $noPokestops = false;                                          // true/false
-        $noNests = false;                                              // true/false
-        $noPortals = true;                                             // true/false
-        $noCommunity = false;                                          // true/false
-        $noRaids = false;                                              // true/false
-        $noAreas = false;                                              // true/false
-// Functionality
-        $noManualPokemon = false;                                      // true/false
-        $noManualQuests = false;                                       // true/false
-        $noManualRaids = false;                                        // true/false
-        $copyrightSafe = false;                                        // true/false
-        $noStartLast = false;                                          // true/false
-        $noMapStyle = false;                                           // true/false
-        $noSearchPortals = false;                                      // true/false
-// Message of the Day
-        $noMotd = true;                                                // true/false
-        $motdTitle = "Message of the Day";
-        $motdContent = "This is an example MOTD<br>Do whatever you like with it.";
-    } else if ($userAccessLevel['access_level'] == $helperLevel) {
-// Editting variables
-        $noManualGyms = false;                                         // true/false
-        $noManualPokestops = false;                                    // true/false
-        $noRenamePokestops = false;                                    // true/false
-        $noConvertPokestops = true;                                    // true/false
-        $noDeleteGyms = true;                                          // true/false
-        $noDeletePokestops = true;                                     // true/false
-        $noAddNewCommunity = true;                                     // true/false
-        $noDeleteCommunity = true;                                     // true/false
-        $noEditCommunity = true;                                       // true/false
-        $noAddNewNests = true;                                         // true/false
-        $noDeletePortal = true;                                        // true/false
-// Markers
-        $noGyms = false;                                               // true/false
-        $noPokestops = false;                                          // true/false  
-        $noNests = false;                                              // true/false
-        $noPortals = false;                                            // true/false
-        $noCommunity = true;                                           // true/false
-        $noRaids = false;                                              // true/false
-        $noAreas = false;                                              // true/false
-// Functionality
-        $noManualPokemon = false;                                      // true/false
-        $noManualQuests = false;                                       // true/false
-        $noManualRaids = false;                                        // true/false
-        $copyrightSafe = false;                                        // true/false
-        $noStartLast = false;                                          // true/false
-        $noMapStyle = false;                                           // true/false
-        $noSearchPortals = false;                                      // true/false
-// Message of the Day
-        $noMotd = true;                                                // true/false
-        $motdTitle = "Message of the Day";
-        $motdContent = "This is an example MOTD<br>Do whatever you like with it.";
-    } else if ($userAccessLevel['access_level'] == $adminLevel) {
-// Editting variables
-        $noManualGyms = false;                                         // true/false
-        $noManualPokestops = false;                                    // true/false
-        $noManualPokemon = false;                                      // true/false
-        $noRenamePokestops = false;                                    // true/false
-        $noConvertPokestops = false;                                   // true/false
-        $noDeleteGyms = false;                                         // true/false
-        $noDeletePokestops = false;                                    // true/false
-        $noAddNewCommunity = false;                                    // true/false
-        $noDeleteCommunity = false;                                    // true/false
-        $noEditCommunity = false;                                      // true/false
-        $noDeletePortal = false;                                       // true/false
-// Markers
-        $noGyms = false;                                               // true/false
-        $noPokestops = false;                                          // true/false  
-        $noNests = false;                                              // true/false
-        $noPortals = false;                                            // true/false
-        $noCommunity = false;                                          // true/false
-        $noRaids = false;                                              // true/false
-        $noAreas = false;                                              // true/false
-// Functionality
-        $copyrightSafe = false;                                        // true/false
-        $noManualQuests = false;                                       // true/false
-        $noStartLast = false;                                          // true/false
-        $noMapStyle = false;                                           // true/false
-        $noManualRaids = false;                                        // true/false
-        $noAddNewNests = false;                                        // true/false
-        $noSearchPortals = false;                                      // true/false
-// Message of the Day
-        $noMotd = true;                                                // true/false
-        $motdTitle = "Message of the Day";
-        $motdContent = "This is an example MOTD<br>Do whatever you like with it.";
-    } else if ($userAccessLevel['access_level'] == $ownerLevel) {
-// Editting variables
-        $noManualGyms = false;                                         // true/false
-        $noManualPokemon = false;                                      // true/false
-        $noManualPokestops = false;                                    // true/false
-        $noRenamePokestops = false;                                    // true/false
-        $noConvertPokestops = false;                                   // true/false
-        $noDeleteGyms = false;                                         // true/false
-        $noDeletePokestops = false;                                    // true/false
-        $noAddNewCommunity = false;                                    // true/false
-        $noDeleteCommunity = false;                                    // true/false
-        $noEditCommunity = false;                                      // true/false
-        $noDeletePortal = false;                                       // true/false
-// Markers
-        $noGyms = false;                                               // true/false
-        $noPokestops = false;                                          // true/false  
-        $noNests = false;                                              // true/false
-        $noPortals = false;                                            // true/false
-        $noCommunity = false;                                          // true/false
-        $noRaids = false;                                              // true/false
-        $noAreas = false;                                              // true/false
-// Functionality
-        $copyrightSafe = false;                                        // true/false
-        $noManualQuests = false;                                       // true/false
-        $noStartLast = false;                                          // true/false
-        $noMapStyle = false;                                           // true/false
-        $noManualRaids = false;                                        // true/false
-        $noAddNewNests = false;                                        // true/false
-        $noSearchPortals = false;                                      // true/false
-//Message of the Day
-        $noMotd = true;                                                // true/false
-        $motdTitle = "Message of the Day";
-        $motdContent = "This is an example MOTD<br>Do whatever you like with it.";
-    }
+/* If $_SESSION['user']->access_level matches defined user level, enable/disable something. */
+if ($_SESSION['user']->access_level == $userLevel) {
+    $noMotd = false;
+    $motdTitle = "Welcome " . $_SESSION['user']->user . "!";
+    $patreonUrl = 'https://yourPatreonURL.com';
+    $motdContent = "<center>You can get access to Raids, Quests, Pok&eacute;mon and IV if you make a pledge to our Patreon.<br>
+                    <a class='button' style='outline:none;' href='" . $patreonUrl . "'><i class='fab fa-patreon'></i> Pledge</a>
+                    </center>";
+} elseif ($_SESSION['user']->access_level == $raidLevel) {
+    $noRaids = false;
+} elseif ($_SESSION['user']->access_level == $questLevel) {
+    $noRaids = false;
+    $noQuests = false;
+    $noLures = false;
+} elseif ($_SESSION['user']->access_level == $ivLevel) {
+    $noRaids = false;
+    $noQuests = false;
+    $noLures = false;
+    $noPokemon = false;
+    $noHighLevelData = false;
+} elseif ($_SESSION['user']->access_level == $ownerLevel) {
+    $noRaids = false;
+    $noQuests = false;
+    $noLures = false;
+    $noPokemon = false;
+    $noHighLevelData = false;
+    $maxZoomOut = 1;
 }

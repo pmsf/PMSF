@@ -42,6 +42,10 @@ class RocketMap extends Scanner
             $params[':oneLat'] = $oNeLat;
             $params[':oneLng'] = $oNeLng;
         }
+        global $noBoundaries, $boundaries;
+        if (!$noBoundaries) {
+            $conds[] = "(ST_WITHIN(point(latitude,longitude),ST_GEOMFROMTEXT('POLYGON(( " . $boundaries . " ))')))";
+        }
         if ($tstamp > 0) {
             $date->setTimestamp($tstamp);
             $conds[] = "last_modified > :lastUpdated";
@@ -111,6 +115,12 @@ class RocketMap extends Scanner
         $date->setTimezone(new \DateTimeZone('UTC'));
         $date->setTimestamp(time());
         $params[':time'] = date_format($date, 'Y-m-d H:i:s');
+
+        global $noBoundaries, $boundaries;
+        if (!$noBoundaries) {
+            $conds[] = "(ST_WITHIN(point(latitude,longitude),ST_GEOMFROMTEXT('POLYGON(( " . $boundaries . " ))')))";
+        }
+
         if (count($ids)) {
             $tmpSQL = '';
             if (!empty($tinyRat) && $tinyRat === 'true' && ($key = array_search("19", $ids)) !== false) {
@@ -188,7 +198,7 @@ class RocketMap extends Scanner
             $pokemon["pokemon_rarity"] = i8ln($this->data[$pokemon["pokemon_id"]]['rarity']);
             $types = $this->data[$pokemon["pokemon_id"]]["types"];
             foreach ($types as $k => $v) {
-                $types[$k]['type'] = i8ln($v['type']);
+                $types[$k]['type'] = $v['type'];
             }
             $pokemon["pokemon_types"] = $types;
             $data[] = $pokemon;
@@ -199,7 +209,7 @@ class RocketMap extends Scanner
         return $data;
     }
 
-    public function get_stops($qpeids, $qieids, $swLat, $swLng, $neLat, $neLng, $tstamp = 0, $oSwLat = 0, $oSwLng = 0, $oNeLat = 0, $oNeLng = 0, $lured = false, $quests, $dustamount)
+    public function get_stops($geids, $qpeids, $qieids, $swLat, $swLng, $neLat, $neLng, $tstamp = 0, $oSwLat = 0, $oSwLng = 0, $oNeLat = 0, $oNeLng = 0, $lured = false, $rocket = false, $quests, $dustamount)
     {
         $conds = array();
         $params = array();
@@ -216,6 +226,11 @@ class RocketMap extends Scanner
             $params[':oswLng'] = $oSwLng;
             $params[':oneLat'] = $oNeLat;
             $params[':oneLng'] = $oNeLng;
+        }
+
+        global $noBoundaries, $boundaries;
+        if (!$noBoundaries) {
+            $conds[] = "(ST_WITHIN(point(latitude,longitude),ST_GEOMFROMTEXT('POLYGON(( " . $boundaries . " ))')))";
         }
 
         if ($lured == "true") {
@@ -288,6 +303,11 @@ class RocketMap extends Scanner
             $params[':lastUpdated'] = date_format($date, 'Y-m-d H:i:s');
         }
 
+        global $noBoundaries, $boundaries;
+        if (!$noBoundaries) {
+            $conds[] = "(ST_WITHIN(point(latitude,longitude),ST_GEOMFROMTEXT('POLYGON(( " . $boundaries . " ))')))";
+        }
+
         return $this->query_spawnpoints($conds, $params);
     }
 
@@ -343,67 +363,7 @@ class RocketMap extends Scanner
         return $end % 3600;
     }
 
-    public function get_recent($swLat, $swLng, $neLat, $neLng, $tstamp = 0, $oSwLat = 0, $oSwLng = 0, $oNeLat = 0, $oNeLng = 0)
-    {
-        $conds = array();
-        $params = array();
-
-        $conds[] = "latitude > :swLat AND longitude > :swLng AND latitude < :neLat AND longitude < :neLng";
-        $params[':swLat'] = $swLat;
-        $params[':swLng'] = $swLng;
-        $params[':neLat'] = $neLat;
-        $params[':neLng'] = $neLng;
-
-        if ($oSwLat != 0) {
-            $conds[] = "NOT (latitude > :oswLat AND longitude > :oswLng AND latitude < :oneLat AND longitude < :oneLng)";
-            $params[':oswLat'] = $oSwLat;
-            $params[':oswLng'] = $oSwLng;
-            $params[':oneLat'] = $oNeLat;
-            $params[':oneLng'] = $oNeLng;
-        }
-        $date = new \DateTime();
-        $date->setTimezone(new \DateTimeZone('UTC'));
-        $conds[] = "last_modified > :lastUpdated";
-        if ($tstamp > 0) {
-            $date->setTimestamp($tstamp);
-            $params[':lastUpdated'] = date_format($date, 'Y-m-d H:i:s');
-        } else {
-            $date->sub(new \DateInterval('PT15M'));
-            $params[':lastUpdated'] = date_format($date, 'Y-m-d H:i:s');
-        }
-
-        return $this->query_recents($conds, $params);
-    }
-
-    private function query_recents($conds, $params)
-    {
-        global $db;
-
-        $query = "SELECT latitude, 
-        longitude, 
-        Unix_timestamp(Convert_tz(last_modified, '+00:00', @@global.time_zone)) AS last_modified 
-        FROM scannedlocation 
-        WHERE :conditions";
-
-        $query = str_replace(":conditions", join(" AND ", $conds), $query);
-        $recents = $db->query($query, $params)->fetchAll(\PDO::FETCH_ASSOC);
-
-        $data = array();
-        $i = 0;
-
-        foreach ($recents as $recent) {
-            $recent["latitude"] = floatval($recent["latitude"]);
-            $recent["longitude"] = floatval($recent["longitude"]);
-            $recent["last_modified"] = $recent["last_modified"] * 1000;
-            $data[] = $recent;
-
-            unset($recents[$i]);
-            $i++;
-        }
-        return $data;
-    }
-
-    public function get_gyms($swLat, $swLng, $neLat, $neLng, $exEligible = false, $tstamp = 0, $oSwLat = 0, $oSwLng = 0, $oNeLat = 0, $oNeLng = 0)
+    public function get_gyms($rbeids, $reeids, $swLat, $swLng, $neLat, $neLng, $exEligible = false, $tstamp = 0, $oSwLat = 0, $oSwLng = 0, $oNeLat = 0, $oNeLng = 0, $raids, $gyms)
     {
         $conds = array();
         $params = array();
@@ -428,28 +388,50 @@ class RocketMap extends Scanner
             $conds[] = "gym.last_scanned > :lastUpdated";
             $params[':lastUpdated'] = date_format($date, 'Y-m-d H:i:s');
         }
+        global $noBoundaries, $boundaries;
+        if (!$noBoundaries) {
+            $conds[] = "(ST_WITHIN(point(latitude,longitude),ST_GEOMFROMTEXT('POLYGON(( " . $boundaries . " ))')))";
+        }
+        if ((!empty($raids) && $raids === 'true') && (!empty($gyms) && $gyms === 'false')) {
+            $raidsSQL = '';
+            if (count($rbeids)) {
+                $raid_in = '';
+                $r = 1;
+                foreach ($rbeids as $rbeid) {
+                    $params[':rbqry_' . $r . '_'] = $rbeid;
+                    $raid_in .= ':rbqry_' . $r . '_,';
+                    $r++;
+                }
+                $raid_in = substr($raid_in, 0, -1);
+                $raidsSQL .= "raid.pokemon_id NOT IN ( $raid_in )";
+            } else {
+                $raidsSQL .= "raid.pokemon_id IS NOT NULL";
+            }
+            $eggSQL = '';
+            if (count($reeids)) {
+                $egg_in = '';
+                $e = 1;
+                foreach ($reeids as $reeid) {
+                    $params[':reqry_' . $e . '_'] = $reeid;
+                    $egg_in .= ':reqry_' . $e . '_,';
+                    $e++;
+                }
+                $egg_in = substr($egg_in, 0, -1);
+                $eggSQL .= "level NOT IN ( $egg_in )";
+            } else {
+                $eggSQL .= "level IS NOT NULL";
+            }
+            $conds[] = "" . $eggSQL . "";
+            $conds[] = "" . $raidsSQL . "";
+        }
         if ($exEligible === "true") {
             $conds[] = "(park = 1)";
         }
 
-        return $this->query_gyms($conds, $params);
+        return $this->query_gyms($conds, $params, $raids, $gyms, $rbeids, $reeids);
     }
 
-    public function get_gym($gymId)
-    {
-        $conds = array();
-        $params = array();
-
-        $conds[] = "gym.gym_id = :gymId";
-        $params[':gymId'] = $gymId;
-
-        $gyms = $this->query_gyms($conds, $params);
-        $gym = $gyms[0];
-
-        return $gym;
-    }
-
-    public function query_gyms($conds, $params)
+    public function query_gyms($conds, $params, $raids, $gyms, $rbeids, $reeids)
     {
         global $db;
 
@@ -492,6 +474,7 @@ class RocketMap extends Scanner
             $gym["team_id"] = intval($gym["team_id"]);
             $gym["pokemon"] = [];
             $gym["raid_pokemon_name"] = empty($raid_pid) ? null : i8ln($this->data[$raid_pid]["name"]);
+            $gym["raid_pokemon_gender"] = 0;
             $gym["latitude"] = floatval($gym["latitude"]);
             $gym["longitude"] = floatval($gym["longitude"]);
             $gym["last_modified"] = $gym["last_modified"] * 1000;
@@ -499,8 +482,41 @@ class RocketMap extends Scanner
             $gym["raid_start"] = $gym["raid_start"] * 1000;
             $gym["raid_end"] = $gym["raid_end"] * 1000;
             $gym["slots_available"] = intval($gym["slots_available"]);
+            if ((!empty($raids) && $raids === 'true') && (!empty($gyms) && $gyms === 'true')) {
+                if (count($rbeids)) {
+                    foreach ($rbeids as $rbeid) {
+                        if ($rbeid == $gym["raid_pokemon_id"]) {
+                            $gym["raid_pokemon_id"] = null;
+                            $gym["raid_end"] = null;
+                            $gym["raid_start"] = null;
+                            $gym["raid_level"] = null;
+                            $gym["raid_pokemon_move_1"] = null;
+                            $gym["raid_pokemon_move_2"] = null;
+                            $gym["raid_pokemon_form"] = null;
+                            $gym["raid_pokemon_cp"] = null;
+                            $gym["raid_pokemon_gender"] = null;
+                            break;
+                        }
+                    }
+                }
+                if (count($reeids)) {
+                    foreach ($reeids as $reeid) {
+                        if ($rbeid == $gym["raid_pokemon_id"]) {
+                            $gym["raid_pokemon_id"] = null;
+                            $gym["raid_end"] = null;
+                            $gym["raid_start"] = null;
+                            $gym["raid_level"] = null;
+                            $gym["raid_pokemon_move_1"] = null;
+                            $gym["raid_pokemon_move_2"] = null;
+                            $gym["raid_pokemon_form"] = null;
+                            $gym["raid_pokemon_cp"] = null;
+                            $gym["raid_pokemon_gender"] = null;
+                            break;
+                        }
+                    }
+                }
+            }
             $data[] = $gym;
-
             unset($gyms[$i]);
             $i++;
         }

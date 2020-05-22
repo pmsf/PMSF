@@ -5,6 +5,7 @@ $localeData = null;
 function i8ln($word)
 {
     global $locale;
+    $locale = !empty($_COOKIE["LocaleCookie"]) ? $_COOKIE["LocaleCookie"] : $locale;
     if ($locale == "en") {
         return $word;
     }
@@ -61,17 +62,60 @@ function validateToken($token)
 }
 
 
-function sendToWebhook($webhookUrl, $webhook) {
-    $c = curl_init($webhookUrl);
-    curl_setopt($c, CURLOPT_SSL_VERIFYPEER, false);
-    curl_setopt($c, CURLOPT_POST, true);
-    curl_setopt($c, CURLOPT_CUSTOMREQUEST, "POST");
-    curl_setopt($c, CURLOPT_RETURNTRANSFER, true);
-    curl_setopt($c, CURLOPT_HTTPHEADER, ['Content-type: application/json', 'User-Agent: python-requests/2.18.4']);
-    curl_setopt($c, CURLOPT_POSTFIELDS, json_encode($webhook));
-    curl_exec($c);
-    curl_close($c);
+function sendToWebhook($webhookUrl, $webhook)
+{
+    if (is_array($webhookUrl)) {
+        foreach ($webhookUrl as $hook) {
+            $c = curl_init($hook);
+            curl_setopt($c, CURLOPT_SSL_VERIFYPEER, false);
+            curl_setopt($c, CURLOPT_POST, true);
+            curl_setopt($c, CURLOPT_CUSTOMREQUEST, "POST");
+            curl_setopt($c, CURLOPT_RETURNTRANSFER, true);
+            curl_setopt($c, CURLOPT_HTTPHEADER, ['Content-type: application/json', 'User-Agent: python-requests/2.18.4']);
+            curl_setopt($c, CURLOPT_POSTFIELDS, json_encode($webhook));
+            curl_exec($c);
+            curl_close($c);
+        }
+    } else {
+        $c = curl_init($webhookUrl);
+        curl_setopt($c, CURLOPT_SSL_VERIFYPEER, false);
+        curl_setopt($c, CURLOPT_POST, true);
+        curl_setopt($c, CURLOPT_CUSTOMREQUEST, "POST");
+        curl_setopt($c, CURLOPT_RETURNTRANSFER, true);
+        curl_setopt($c, CURLOPT_HTTPHEADER, ['Content-type: application/json', 'User-Agent: python-requests/2.18.4']);
+        curl_setopt($c, CURLOPT_POSTFIELDS, json_encode($webhook));
+        curl_exec($c);
+        curl_close($c);
+    }
 }
+
+function uploadImage($imgurCID, $data)
+{
+    $c = curl_init();
+    curl_setopt($c, CURLOPT_URL, 'https://api.imgur.com/3/image');
+    curl_setopt($c, CURLOPT_POST, true);
+    curl_setopt($c, CURLOPT_RETURNTRANSFER, true);
+    curl_setopt($c, CURLOPT_HTTPHEADER, ["Authorization: Client-ID $imgurCID"]);
+    curl_setopt($c, CURLOPT_POSTFIELDS, $data);
+    $result = curl_exec($c);
+    curl_close($c);
+
+    return $result;
+}
+
+function deleteImage($imgurCID, $data)
+{
+    $c = curl_init();
+    curl_setopt($c, CURLOPT_URL, 'https://api.imgur.com/3/image/' . $data);
+    curl_setopt($c, CURLOPT_RETURNTRANSFER, true);
+    curl_setopt($c, CURLOPT_HTTPHEADER, ["Authorization: Client-ID $imgurCID"]);
+    curl_setopt($c, CURLOPT_CUSTOMREQUEST, 'DELETE');
+    $result = curl_exec($c);
+    curl_close($c);
+
+    return $result;
+}
+
 function generateRandomString($length = 8)
 {
     $characters = '0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ';
@@ -85,7 +129,7 @@ function generateRandomString($length = 8)
 
 function createUserAccount($user, $password, $newExpireTimestamp)
 {
-    global $manualdb, $logfile;
+    global $manualdb;
 
     $count = $manualdb->count("users", [
         "user" => $user,
@@ -106,11 +150,9 @@ function createUserAccount($user, $password, $newExpireTimestamp)
                 "user" => $user,
                 "temp_password" => $hashedPwd,
                 "expire_timestamp" => $newExpireTimestamp,
-                "login_system" => 'native'
+                "login_system" => 'native',
+                "access_level" => '0'
             ]);
-            
-            $logMsg = "INSERT INTO users (id, user, expire_timestamp, login_system) VALUES ('{$getId}', '{$user}', '{$newExpireTimestamp}', 'native'); -- " . date('Y-m-d H:i:s') . "\r\n";
-            file_put_contents($logfile, $logMsg, FILE_APPEND);
 
             return true;
         } else {
@@ -123,7 +165,7 @@ function createUserAccount($user, $password, $newExpireTimestamp)
 
 function resetUserPassword($user, $password, $resetType)
 {
-    global $manualdb, $logfile;
+    global $manualdb;
     
     $hashedPwd = password_hash($password, PASSWORD_DEFAULT);
     if ($resetType === 0) {
@@ -156,7 +198,7 @@ function resetUserPassword($user, $password, $resetType)
 
 function updateExpireTimestamp($user, $login_system, $newExpireTimestamp)
 {
-    global $manualdb, $logfile;
+    global $manualdb;
 
     $manualdb->update("users", [
         "expire_timestamp" => $newExpireTimestamp
@@ -165,8 +207,19 @@ function updateExpireTimestamp($user, $login_system, $newExpireTimestamp)
         "login_system" => $login_system
     ]);
 
-    $logMsg = "UPDATE users SET expire_timestamp = '{$newExpireTimestamp}' WHERE user = '{$user}' AND login_system = '{$login_system}'; -- " . date('Y-m-d H:i:s') . "\r\n";
-    file_put_contents($logfile, $logMsg, FILE_APPEND);
+    return true;
+}
+
+function updateAccessLevel($user, $login_system, $newAccessLevel)
+{
+    global $manualdb;
+
+    $manualdb->update("users", [
+        "access_level" => $newAccessLevel
+    ], [
+        "user" => $user,
+        "login_system" => $login_system
+    ]);
 
     return true;
 }
@@ -184,70 +237,87 @@ function destroyCookiesAndSessions()
 
     unset($_SESSION);
     unset($_COOKIE['LoginCookie']);
-    setcookie("LoginCookie", "", time()-3600);
+    setcookie("LoginCookie", "", time() - 3600);
     session_destroy();
     session_write_close();
 }
 
 function validateCookie($cookie)
 {
-    global $manualdb;
+    global $manualdb, $manualAccessLevel;
     $info = $manualdb->query(
-        "SELECT id, user, password, login_system, expire_timestamp FROM users WHERE session_id = :session_id", [
+        "SELECT id, user, password, login_system, expire_timestamp, access_level FROM users WHERE session_id = :session_id", [
             ":session_id" => $cookie
         ]
     )->fetch();
 
     if (!empty($info['user'])) {
+        if ($manualAccessLevel && $info['access_level'] > 0 && $info['expire_timestamp'] < time()) {
+            $manualdb->update("users", [
+                "access_level" => 0
+            ], [
+                "id" => $info['id']
+            ]);
+            $info['access_level'] = 0;
+        }
         $_SESSION['user'] = new \stdClass();
         $_SESSION['user']->id = $info['id'];
         $_SESSION['user']->user = $info['user'];
         $_SESSION['user']->login_system = $info['login_system'];
         $_SESSION['user']->expire_timestamp = $info['expire_timestamp'];
+        $_SESSION['user']->access_level = $info['access_level'];
         
         if (empty($info['password']) && $info['login_system'] == 'native') {
             $_SESSION['user']->updatePwd = 1;
         }
-        setcookie("LoginCookie", $cookie, time()+60*60*24*7);
-        return true;
-    } else {
+        setcookie("LoginCookie", $cookie, time() + 60 * 60 * 24 * 7);
+        if (!isset($_SESSION['already_refreshed'])) {
+            $_SESSION['already_refreshed'] = true;
+            return false;
+        } else {
+            return true;
+        }
+    } elseif (!empty($_SESSION['user']->id)) {
         destroyCookiesAndSessions();
+        return false;
+    } else {
+        unset($_COOKIE['LoginCookie']);
+        setcookie("LoginCookie", "", time() - 3600);
         return false;
     }
 }
 
-if (!function_exists('getallheaders')) 
-{
-    function getallheaders() 
+if (!function_exists('getallheaders')) {
+    function getallheaders()
     {
-        $headers = array (); 
-        foreach ($_SERVER as $name => $value) 
-        {
-            if (substr($name, 0, 5) == 'HTTP_') 
-            { 
-                $headers[str_replace(' ', '-', ucwords(strtolower(str_replace('_', ' ', substr($name, 5)))))] = $value; 
+        $headers = array();
+        foreach ($_SERVER as $name => $value) {
+            if (substr($name, 0, 5) == 'HTTP_') {
+                $headers[str_replace(' ', '-', ucwords(strtolower(str_replace('_', ' ', substr($name, 5)))))] = $value;
             }
         }
-        return $headers; 
+        return $headers;
     }
 }
-function randomGymId() {
+function randomGymId()
+{
     $alphabet    = 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890';
     $pass        = array(); //remember to declare $pass as an array
-    $alphaLength = strlen( $alphabet ) - 1; //put the length -1 in cache
-    for ( $i = 0; $i < 12; $i ++ ) {
-        $n      = rand( 0, $alphaLength );
+    $alphaLength = strlen($alphabet) - 1; //put the length -1 in cache
+    for ($i = 0; $i < 12; $i ++) {
+        $n      = rand(0, $alphaLength);
         $pass[] = $alphabet[ $n ];
     }
-    return implode( $pass ); //turn the array into a string
+    return implode($pass); //turn the array into a string
 }
-function randomNum() {
+function randomNum()
+{
     $alphabet    = '1234567890';
     $pass        = array(); //remember to declare $pass as an array
-    $alphaLength = strlen( $alphabet ) - 1; //put the length -1 in cache
-    for ( $i = 0; $i < 15; $i ++ ) {
-        $n      = rand( 0, $alphaLength );
+    $alphaLength = strlen($alphabet) - 1; //put the length -1 in cache
+    for ($i = 0; $i < 15; $i ++) {
+        $n      = rand(0, $alphaLength);
         $pass[] = $alphabet[ $n ];
     }
-    return implode( $pass ); //turn the array into a string
+    return implode($pass); //turn the array into a string
 }

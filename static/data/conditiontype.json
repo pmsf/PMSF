@@ -102,5 +102,25 @@
   "25": {
     "prototext": "WITH_DISTANCE",
     "text": ""
+  },
+  "26": {
+    "prototext": "WITH_POKEMON_ALIGNMENT",
+    "text": ""
+  },
+  "27": {
+    "prototext": "WITH_INVASION_CHARACTER",
+    "text": ""
+  },
+  "28": {
+    "prototext": "WITH_BUDDY",
+    "text": ""
+  },
+  "29": {
+    "prototext": "WITH_BUDDY_INTERESTING_POI",
+    "text": ""
+  },
+  "30": {
+    "prototext": "WITH_DAILY_BUDDY_EFFECTION",
+    "text": ""
   }
 }

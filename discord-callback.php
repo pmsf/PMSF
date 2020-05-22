@@ -9,7 +9,7 @@ if ($noDiscordLogin === false) {
             $auth = new DiscordAuth();
             $auth->handleAuthorizationResponse($_GET);
             $user = json_decode($auth->get("/api/users/@me"));
-	    $guilds = json_decode($auth->get("/api/users/@me/guilds"));
+            $guilds = json_decode($auth->get("/api/users/@me/guilds"));
             if (in_array($user->{'id'}, $userBlacklist)) {
                 header("Location: ./access-denied.php");
                 $granted = false;
@@ -18,7 +18,7 @@ if ($noDiscordLogin === false) {
                     header("Location: .?login=true");
                     $granted = true;
                 } else {
-	            foreach($guilds as $guild) {
+                    foreach ($guilds as $guild) {
                         $uses = $guild->id;
                         $guildName = $guild->name;
                         if (in_array($uses, $serverBlacklist)) {
@@ -33,9 +33,9 @@ if ($noDiscordLogin === false) {
                                 $granted = true;
                             }
                         }
-		    }
+                    }
                 }
-	    }
+            }
             if ($granted !== true) {
                 header("Location: .?login=false");
                 die();
@@ -46,35 +46,56 @@ if ($noDiscordLogin === false) {
             ]);
 
             if ($count === 0) {
-                $manualdb->insert("users", [
+                if ($manualAccessLevel) {
+                    $manualdb->insert("users", [
+                        "id" => $user->{'id'},
+                        "user" => $user->{'username'} . "#" . $user->{'discriminator'},
+                        "expire_timestamp" => time(),
+                        "login_system" => 'discord'
+                    ]);
+                } else {
+                    $manualdb->insert("users", [
+                        "id" => $user->{'id'},
+                        "user" => $user->{'username'} . "#" . $user->{'discriminator'},
+                        "expire_timestamp" => time() + 60 * 60 * 24 * 7,
+                        "login_system" => 'discord'
+                    ]);
+                }
+            }
+
+            setcookie("LoginCookie", session_id(), time() + 60 * 60 * 24 * 7);
+
+            if ($manualAccessLevel) {
+                $manualdb->update("users", [
+                    "session_id" => session_id(),
+                    "user" => $user->{'username'} . "#" . $user->{'discriminator'}
+                ], [
                     "id" => $user->{'id'},
-                    "user" => $user->{'username'} . "#" . $user->{'discriminator'},
-                    "expire_timestamp" => time()+$sessionLifetime,
+                    "login_system" => 'discord'
+                ]);
+            } else {
+                $manualdb->update("users", [
+                    "session_id" => session_id(),
+                    "expire_timestamp" => time() + 60 * 60 * 24 * 7,
+                    "user" => $user->{'username'} . "#" . $user->{'discriminator'}
+                ], [
+                    "id" => $user->{'id'},
                     "login_system" => 'discord'
                 ]);
             }
-
-            setcookie("LoginCookie", session_id(), time()+$sessionLifetime);
-
-            $manualdb->update("users", [
-                "expire_timestamp" => time()+$sessionLifetime,
-                "session_id" => session_id(),
-                "user" => $user->{'username'} . "#" . $user->{'discriminator'}
-            ], [
-                "id" => $user->{'id'},
-                "login_system" => 'discord'
-            ]);
-	}
+        }
         die();
     } catch (Exception $e) {
-        header("Location: ./discord-login");
+        error_log("Unexpected error after Discord Auth!");
+        error_log($e);
+        header("Location: .?exception=yes");
     }
 } else {
     header("Location: .");
 }
 
-function logFailure($logFailure){
+function logFailure($logFailure)
+{
     global $logFailedLogin;
     file_put_contents($logFailedLogin, $logFailure, FILE_APPEND);
 }
-

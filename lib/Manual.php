@@ -46,6 +46,10 @@ class Manual
             $params[':oneLat'] = $oNeLat;
             $params[':oneLng'] = $oNeLng;
         }
+        global $noBoundaries, $boundaries;
+        if (!$noBoundaries) {
+            $conds[] = "(ST_WITHIN(point(lat,lon),ST_GEOMFROMTEXT('POLYGON(( " . $boundaries . " ))')))";
+        }
         if ($tstamp > 0) {
             $conds[] = "updated > :lastUpdated";
             $params[':lastUpdated'] = $tstamp;
@@ -73,7 +77,7 @@ class Manual
             $nest["lon"] = floatval($nest["lon"]);
             $nest["type"] = intval($nest["type"]);
             $nest["pokemon_avg"] = floatval($nest["pokemon_avg"]);
-            if($nest['pokemon_id'] > 0 ){
+            if ($nest['pokemon_id'] > 0) {
                 $nest["pokemon_name"] = i8ln($this->data[$nest["pokemon_id"]]['name']);
                 $types = $this->data[$nest["pokemon_id"]]["types"];
                 $etypes = $this->data[$nest["pokemon_id"]]["types"];
@@ -105,6 +109,10 @@ class Manual
             $params[':oswLng'] = $oSwLng;
             $params[':oneLat'] = $oNeLat;
             $params[':oneLng'] = $oNeLng;
+        }
+        global $noBoundaries, $boundaries;
+        if (!$noBoundaries) {
+            $conds[] = "(ST_WITHIN(point(lat,lon),ST_GEOMFROMTEXT('POLYGON(( " . $boundaries . " ))')))";
         }
         if ($tstamp > 0) {
             $conds[] = "updated > :lastUpdated";
@@ -167,6 +175,10 @@ class Manual
             $params[':oneLat'] = $oNeLat;
             $params[':oneLng'] = $oNeLng;
         }
+        global $noBoundaries, $boundaries;
+        if (!$noBoundaries) {
+            $conds[] = "(ST_WITHIN(point(lat,lon),ST_GEOMFROMTEXT('POLYGON(( " . $boundaries . " ))')))";
+        }
         if ($tstamp > 0) {
             $conds[] = "updated > :lastUpdated";
             $params[':lastUpdated'] = $tstamp;
@@ -192,7 +204,7 @@ class Manual
         foreach ($portals as $portal) {
             $portal["lat"] = floatval($portal["lat"]);
             $portal["lon"] = floatval($portal["lon"]);
-            $portal["url"] = str_replace("http://", "https://images.weserv.nl/?url=", $portal["url"]);
+            $portal["url"] = preg_replace("/^http:/i", "https:", $portal["url"]);
             $data[] = $portal;
             unset($portals[$i]);
             $i++;
@@ -215,6 +227,10 @@ class Manual
             $params[':oneLat'] = $oNeLat;
             $params[':oneLng'] = $oNeLng;
         }
+        global $noBoundaries, $boundaries;
+        if (!$noBoundaries) {
+            $conds[] = "(ST_WITHIN(point(lat,lon),ST_GEOMFROMTEXT('POLYGON(( " . $boundaries . " ))')))";
+        }
         if ($tstamp > 0) {
             $conds[] = "updated > :lastUpdated";
             $params[':lastUpdated'] = $tstamp;
@@ -230,6 +246,8 @@ class Manual
         name,
         description,
         notes,
+        poiimageurl,
+        poisurroundingurl,
         updated,
         submitted_by,
         edited_by,
