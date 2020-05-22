@@ -1472,6 +1472,7 @@ if (!$noLoadingScreen) {
                     <option value="ingame">' . i8ln('In-Game') . '</option>
                     <option value="shield">' . i8ln('Shield') . '</option>
                     <option value="rocketmap">' . i8ln('Rocketmap') . '</option>
+                    <option value="comic">' . i8ln('Comic') . '</option>
                 </select>
             </div>';
             }
