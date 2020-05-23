@@ -1558,7 +1558,7 @@ if (!$noLoadingScreen) {
         }?>
         <?php
         if (($noNativeLogin === false || $noDiscordLogin === false) && !empty($_SESSION['user']->id)) {
-            if ($manualAccessLevel && $noDiscordLogin) {
+            if ($manualAccessLevel) {
                 $time = date("Y-m-d", $_SESSION['user']->expire_timestamp);
                 echo '<div><center><p>';
                 if ($_SESSION['user']->expire_timestamp > time()) {
