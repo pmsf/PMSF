@@ -2071,7 +2071,7 @@ function addRangeCircle(marker, map, type, teamId) {
 }
 
 function isRangeActive(map) {
-    if (map.getZoom() < 16) return false
+    if (map.getZoom() < 15) return false
     return Store.get('showRanges')
 }
 
