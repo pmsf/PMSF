@@ -1,9 +1,11 @@
 <?php
 
 namespace Scanner;
+use \DateTime;
 
 class Scanner
 {
+
     // Common functions for both RDM and MAD
     /**
      * $data
