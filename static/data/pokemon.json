@@ -1826,6 +1826,17 @@
             "color": "#f8d030"
           }
         ]
+      },
+      {
+        "nameform": "Costume 2020",
+        "protoform": "2332",
+        "assetsform": "00",
+        "formtypes": [
+          {
+            "type": "Electric",
+            "color": "#f8d030"
+          }
+        ]
       }
     ]
   },
@@ -3578,6 +3589,20 @@
         "formtypes": [
           {
             "type": "Normal",
+            "color": "#8a8a59"
+          }
+        ]
+      },
+      {
+        "nameform": "Galarian",
+        "protoform": "2335",
+        "assetsform": "00",
+        "baseStamina": 120,
+        "baseAttack": 92,
+        "baseDefense": 78,
+        "formtypes": [
+          {
+            "type": "Steel",
             "color": "#8a8a59"
           }
         ]
@@ -5559,6 +5584,21 @@
             "color": "#a890f0"
           }
         ]
+      },
+      {
+        "nameform": "Galarian",
+        "protoform": "2335",
+        "assetsform": "00",
+        "formtypes": [
+          {
+            "type": "Normal",
+            "color": "#8a8a59"
+          },
+          {
+            "type": "Flying",
+            "color": "#a890f0"
+          }
+        ]
       }
     ]
   },
@@ -6330,6 +6370,24 @@
       {
         "nameform": "Purified",
         "protoform": "904",
+        "assetsform": "00",
+        "baseStamina": 111,
+        "baseAttack": 85,
+        "baseDefense": 232,
+        "formtypes": [
+          {
+            "type": "Rock",
+            "color": "#b8a038"
+          },
+          {
+            "type": "Ground",
+            "color": "#e0c068"
+          }
+        ]
+      },
+      {
+        "nameform": "Costume 2020",
+        "protoform": "2334",
         "assetsform": "00",
         "baseStamina": 111,
         "baseAttack": 85,
@@ -9570,6 +9628,24 @@
       {
         "nameform": "Purified",
         "protoform": "198",
+        "assetsform": "00",
+        "baseStamina": 209,
+        "baseAttack": 263,
+        "baseDefense": 198,
+        "formtypes": [
+          {
+            "type": "Dragon",
+            "color": "#7038f8"
+          },
+          {
+            "type": "Flying",
+            "color": "#a890f0"
+          }
+        ]
+      },
+      {
+        "nameform": "Costume 2020",
+        "protoform": "2333",
         "assetsform": "00",
         "baseStamina": 209,
         "baseAttack": 263,
@@ -34006,6 +34082,17 @@
             "color": "#f08030"
           }
         ]
+      },
+      {
+        "nameform": "Galarian",
+        "protoform": "2341",
+        "assetsform": "00",
+        "formtypes": [
+          {
+            "type": "Fire",
+            "color": "#f08030"
+          }
+        ]
       }
     ]
   },
@@ -34039,6 +34126,35 @@
       {
         "nameform": "Zen",
         "protoform": "139",
+        "assetsform": "00",
+        "formtypes": [
+          {
+            "type": "Fire",
+            "color": "#f08030"
+          },
+          {
+            "type": "Psychic",
+            "color": "#f85888"
+          }
+        ]
+      },
+      {
+        "nameform": "Galarian Standard",
+        "protoform": "2342",
+        "assetsform": "00",
+        "baseStamina": 233,
+        "baseAttack": 243,
+        "baseDefense": 202,
+        "formtypes": [
+          {
+            "type": "Fire",
+            "color": "#f08030"
+          }
+        ]
+      },
+      {
+        "nameform": "Galarian Zen",
+        "protoform": "2343",
         "assetsform": "00",
         "formtypes": [
           {
@@ -37563,6 +37679,21 @@
           },
           {
             "type": "Electric",
+            "color": "#f8d030"
+          }
+        ]
+      },
+      {
+        "nameform": "Galarian",
+        "protoform": "2345",
+        "assetsform": "00",
+        "formtypes": [
+          {
+            "type": "Ground",
+            "color": "#e0c068"
+          },
+          {
+            "type": "Steel",
             "color": "#f8d030"
           }
         ]
@@ -41944,6 +42075,145 @@
         "formtypes": [
           {
             "type": "Steel",
+            "color": "#b8b8d0"
+          }
+        ]
+      }
+    ]
+  },
+  "862": {
+    "name": "Obstagoon",
+    "types": [
+      {
+        "type": "Dark",
+        "color": "#b8b8d0"
+      },
+      {
+        "type": "Normal",
+        "color": "#b8b8d0"
+      }
+    ],
+    "forms": [
+      {
+        "nameform": "Normal",
+        "protoform": "2501",
+        "formtypes": [
+          {
+            "type": "Dark",
+            "color": "#b8b8d0"
+          },
+          {
+            "type": "Normal",
+            "color": "#b8b8d0"
+          }
+        ]
+      },
+      {
+        "nameform": "Shadow",
+        "protoform": "2502",
+        "formtypes": [
+          {
+            "type": "Dark",
+            "color": "#b8b8d0"
+          },
+          {
+            "type": "Normal",
+            "color": "#b8b8d0"
+          }
+        ]
+      },
+      {
+        "nameform": "Purified",
+        "protoform": "2503",
+        "formtypes": [
+          {
+            "type": "Dark",
+            "color": "#b8b8d0"
+          },
+          {
+            "type": "Normal",
+            "color": "#b8b8d0"
+          }
+        ]
+      }
+    ]
+  },
+  "862": {
+    "name": "Perrserker",
+    "types": [
+      {
+        "type": "Steel",
+        "color": "#b8b8d0"
+      }
+    ],
+    "forms": [
+      {
+        "nameform": "Normal",
+        "protoform": "2504",
+        "formtypes": [
+          {
+            "type": "Steel",
+            "color": "#b8b8d0"
+          }
+        ]
+      },
+      {
+        "nameform": "Shadow",
+        "protoform": "2505",
+        "formtypes": [
+          {
+            "type": "Steel",
+            "color": "#b8b8d0"
+          }
+        ]
+      },
+      {
+        "nameform": "Purified",
+        "protoform": "2506",
+        "formtypes": [
+          {
+            "type": "Steel",
+            "color": "#b8b8d0"
+          }
+        ]
+      }
+    ]
+  },
+  "865": {
+    "name": "Sirfetch'd",
+    "types": [
+      {
+        "type": "Fighting",
+        "color": "#b8b8d0"
+      }
+    ],
+    "forms": [
+      {
+        "nameform": "Normal",
+        "protoform": "2510",
+        "formtypes": [
+          {
+            "type": "Fighting",
+            "color": "#b8b8d0"
+          }
+        ]
+      },
+      {
+        "nameform": "Shadow",
+        "protoform": "2511",
+        "formtypes": [
+          {
+            "type": "Fighting",
+            "color": "#b8b8d0"
+          }
+        ]
+      },
+      {
+        "nameform": "Purified",
+        "protoform": "2512",
+        "formtypes": [
+          {
+            "type": "Fighting",
             "color": "#b8b8d0"
           }
         ]

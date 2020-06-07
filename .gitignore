@@ -51,3 +51,4 @@ static/.DS_Store
 vendor/*
 composer.lock
 custom/*
+static/css/custom.css

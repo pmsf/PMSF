@@ -105,16 +105,18 @@ if (strtolower($map) === "rdm") {
             $json = file_get_contents('static/dist/data/pokemon.min.json');
             $mons = json_decode($json, true);
         }
-        echo '<div class="pokemon-list-cont" id="pokemon-list-cont-' . $num . '"><input type="hidden" class="search-number" value="' . $num . '" /><input class="search search-input" placeholder="' . i8ln("Search Name, ID & Type") . '" /><div class="pokemon-list list">';
+        echo '<div class="pokemon-list-cont" id="pokemon-list-cont-' . $num . '">
+        <input type="hidden" class="search-number" value="' . $num . '" />
+        <input class="search search-input" placeholder="' . i8ln("Search Name, ID & Type") . '" />
+        <div class="pokemon-list list">';
         $i = 0;
         $z = 0;
         foreach ($mons as $k => $pokemon) {
             $type = '';
             $name = $pokemon['name'];
             foreach ($pokemon['types'] as $t) {
-                $type .= $t['type'];
+                $type .= i8ln($t['type']);
             }
-
             if (! in_array($k, $pokemonToExclude)) {
                 if ($k > $numberOfPokemon) {
                     break;
@@ -126,10 +128,14 @@ if (strtolower($map) === "rdm") {
                 } else {
                     $id = $k;
                 }
+                echo '<span class="pokemon-icon-sprite" data-value="' . $k . '" onclick="' . $onClick . '">
+                <span style="display:none" class="types">' . $type . '</span>
+                <span style="display:none" class="name">' . i8ln($name) . '</span>
+                <span style="display:none" class="id">' . $k . '</span>';
                 if (! $copyrightSafe) {
-                    echo '<span class="pokemon-icon-sprite" data-value="' . $k . '" onclick="' . $onClick . '"><span style="display:none" class="types">' . i8ln($type) . '</span><span style="display:none" class="name">' . i8ln($name) . '</span><span style="display:none" class="id">' . $k . '</span><img src="' . $iconRepository . 'pokemon_icon_' . $id . '_00.png" style="width:48px;height:48px;"/>';
+                    echo '<img src="' . $iconRepository . 'pokemon_icon_' . $id . '_00.png" style="width:48px;height:48px;"/>';
                 } else {
-                    echo '<span class="pokemon-icon-sprite" data-value="' . $k . '" onclick="' . $onClick . '"><span style="display:none" class="types">' . i8ln($type) . '</span><span style="display:none" class="name">' . i8ln($name) . '</span><span style="display:none" class="id">' . $k . '</span><img src="static/icons-safe/pokemon_icon_' . $id . '_00.png" style="width:48px;height:48px;"/>';
+                    echo '<img src="static/icons-safe/pokemon_icon_' . $id . '_00.png" style="width:48px;height:48px;"/>';
                 }
                 if (! $noPokemonNumbers) {
                     echo "<span class='pokemon-number'>" . $k . "</span>";
@@ -1410,6 +1416,7 @@ if (!$noLoadingScreen) {
                     <option value="google_pin">' . i8ln('Google (Pin)') . '</option>
                     <option value="waze">' . i8ln('Waze') . '</option>
                     <option value="bing">' . i8ln('Bing') . '</option>
+                    <option value="geouri">' . i8ln('GeoUri') . '</option>
                 </select>
             </div>';
             }
@@ -1551,7 +1558,7 @@ if (!$noLoadingScreen) {
         }?>
         <?php
         if (($noNativeLogin === false || $noDiscordLogin === false) && !empty($_SESSION['user']->id)) {
-            if ($manualAccessLevel && $noDiscordLogin) {
+            if ($manualAccessLevel) {
                 $time = date("Y-m-d", $_SESSION['user']->expire_timestamp);
                 echo '<div><center><p>';
                 if ($_SESSION['user']->expire_timestamp > time()) {

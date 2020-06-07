@@ -262,7 +262,7 @@ function validateCookie($cookie)
         }
         $_SESSION['user'] = new \stdClass();
         $_SESSION['user']->id = $info['id'];
-        $_SESSION['user']->user = $info['user'];
+        $_SESSION['user']->user = htmlspecialchars($info['user'], ENT_QUOTES, 'UTF-8');
         $_SESSION['user']->login_system = $info['login_system'];
         $_SESSION['user']->expire_timestamp = $info['expire_timestamp'];
         $_SESSION['user']->access_level = $info['access_level'];
