@@ -451,11 +451,9 @@ if (!$noLoadingScreen) {
 		    </div>';
                     }
                     if (! $noNestsAvg && ! $noNests) {
-                        echo '<div class="form-control switch-container">
-                            <div class="nestslider">
+                        echo '<div class="nestslider-div">
                                 <input type="range" min="0" max="' . $nestAvgMax . '" value="' . $nestAvgDefault . '" class="nestslider" id="nestrange">
                                 <p>' . i8ln('Show nest average. ') . '<span id="nestavg"></span></p>
-                            </div>
                         </div>';
                     } ?>
                 </div>
