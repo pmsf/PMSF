@@ -30,7 +30,7 @@ class Manual
         $json_contents = file_get_contents($json_moves);
         $this->moves = json_decode($json_contents, true);
     }
-    public function get_nests($swLat, $swLng, $neLat, $neLng, $tstamp = 0, $oSwLat = 0, $oSwLng = 0, $oNeLat = 0, $oNeLng = 0)
+    public function get_nests($swLat, $swLng, $neLat, $neLng, $tstamp = 0, $oSwLat = 0, $oSwLng = 0, $oNeLat = 0, $oNeLng = 0, $nestavg)
     {
         $conds = array();
         $params = array();
@@ -53,6 +53,10 @@ class Manual
         if ($tstamp > 0) {
             $conds[] = "updated > :lastUpdated";
             $params[':lastUpdated'] = $tstamp;
+	}
+	if ($nestavg != 0) {
+            $conds[] = "pokemon_avg > :nestavg";
+	    $params[':nestavg'] = $nestavg;
         }
         return $this->query_nests($conds, $params);
     }

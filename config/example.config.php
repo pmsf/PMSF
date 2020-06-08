@@ -474,6 +474,9 @@ $noEditCommunity = true;
 // Nests
 //-----------------------------------------------------
 $noNests = true;
+$noNestsAvg = true;                                                   // true/false
+$nestAvgMax = 50;						      // Nest Average filter maximum
+$nestAvgDefault = 5;                                                  // Nest Average filter default
 $enableNests = 'false';
 $hideNestCoords = false;
 $noManualNests = true;

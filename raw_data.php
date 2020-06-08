@@ -26,6 +26,7 @@ $rocket = !empty($_POST['rocket']) ? $_POST['rocket'] : false;
 $raids = !empty($_POST['raids']) ? $_POST['raids'] : false;
 $quests = !empty($_POST['quests']) ? $_POST['quests'] : false;
 $dustamount = isset($_POST['dustamount']) ? $_POST['dustamount'] : false;
+$nestavg = isset($_POST['nestavg']) ? $_POST['nestavg'] : false;
 $reloaddustamount = !empty($_POST['reloaddustamount']) ? $_POST['reloaddustamount'] : false;
 $newportals = !empty($_POST['newportals']) ? $_POST['newportals'] : 0;
 $minIv = isset($_POST['minIV']) ? floatval($_POST['minIV']) : false;
@@ -256,12 +257,12 @@ global $noNests;
 if (!$noNests) {
     if ($d["lastnests"] == "true") {
         if ($lastnests != "true") {
-            $d["nests"] = $manual->get_nests($swLat, $swLng, $neLat, $neLng);
+            $d["nests"] = $manual->get_nests($swLat, $swLng, $neLat, $neLng, 0, 0, 0, 0, 0, $nestavg);
         } else {
             if ($newarea) {
-                $d["nests"] = $manual->get_nests($swLat, $swLng, $neLat, $neLng, 0, $oSwLat, $oSwLng, $oNeLat, $oNeLng);
+                $d["nests"] = $manual->get_nests($swLat, $swLng, $neLat, $neLng, 0, $oSwLat, $oSwLng, $oNeLat, $oNeLng, $nestavg);
             } else {
-                $d["nests"] = $manual->get_nests($swLat, $swLng, $neLat, $neLng, time());
+                $d["nests"] = $manual->get_nests($swLat, $swLng, $neLat, $neLng, time(), 0, 0, 0, 0, $nestavg);
             }
         }
     }

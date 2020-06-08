@@ -81,6 +81,7 @@ var rbreids = []
 var rereids = []
 var dustamount
 var reloaddustamount
+var nestavg
 
 var L
 var map
@@ -1144,6 +1145,7 @@ function initSidebar() {
     $('#last-update-gyms-switch').val(Store.get('showLastUpdatedGymsOnly'))
     $('#pokemon-switch').prop('checked', Store.get('showPokemon'))
     $('#pokemon-filter-wrapper').toggle(Store.get('showPokemon'))
+    $('#nest-filter-wrapper').toggle(Store.get('showNests'))
     $('#big-karp-switch').prop('checked', Store.get('showBigKarp'))
     $('#tiny-rat-switch').prop('checked', Store.get('showTinyRat'))
     $('#pokestops-switch').prop('checked', Store.get('showPokestops'))
@@ -1155,6 +1157,8 @@ function initSidebar() {
     $('#quests-filter-wrapper').toggle(Store.get('showQuests'))
     $('#dustvalue').text(Store.get('showDustAmount'))
     $('#dustrange').val(Store.get('showDustAmount'))
+    $('#nestrange').val(Store.get('showNestAvg'))
+    $('#nestavg').text(Store.get('showNestAvg'))
     $('#start-at-user-location-switch').prop('checked', Store.get('startAtUserLocation'))
     $('#start-at-last-location-switch').prop('checked', Store.get('startAtLastLocation'))
     $('#follow-my-location-switch').prop('checked', Store.get('followMyLocation'))
@@ -3219,6 +3223,20 @@ function clearStaleMarkers() {
             }
         })
     }
+    if (Store.get('showNests')) {
+        $.each(mapData.nests, function (key, value) {
+            if (Number(mapData.nests[key]['pokemon_avg']) < Store.get('showNestAvg')) {
+                if (mapData.nests[key].marker.rangeCircle) {
+                    markers.removeLayer(mapData.nests[key].marker.rangeCircle)
+                    markersnotify.removeLayer(mapData.nests[key].marker.rangeCircle)
+                    delete mapData.nests[key].marker.rangeCircle
+                }
+                markers.removeLayer(mapData.nests[key].marker)
+                markersnotify.removeLayer(mapData.nests[key].marker)
+                delete mapData.nests[key]
+            }
+        })
+    }
 }
 
 function showInBoundsMarkers(markersInput, type) {
@@ -3264,6 +3282,7 @@ function loadRawData() {
     var loadRocket = Store.get('showRocket')
     var loadQuests = Store.get('showQuests')
     var loadDustamount = Store.get('showDustAmount')
+    var loadNestAvg = Store.get('showNestAvg')
     var loadNests = Store.get('showNests')
     var loadCommunities = Store.get('showCommunities')
     var loadPortals = Store.get('showPortals')
@@ -3297,6 +3316,7 @@ function loadRawData() {
             'quests': loadQuests,
             'dustamount': loadDustamount,
             'reloaddustamount': reloaddustamount,
+            'nestavg': loadNestAvg,
             'nests': loadNests,
             'lastnests': lastnests,
             'communities': loadCommunities,
@@ -5121,6 +5141,7 @@ function processNests(i, item) {
         mapData.nests[item['nest_id']] = item
     }
 }
+
 function processCommunities(i, item) {
     if (!Store.get('showCommunities')) {
         return false
@@ -7419,7 +7440,19 @@ $(function () {
             setTimeout(function () { updateMap() }, 2000)
         }
     })
-
+    $('#nestrange').on('input', function () {
+        nestavg = $(this).val()
+        Store.set('showNestAvg', nestavg)
+        if (nestavg === '0') {
+            $('#nestavg').text(i8ln('All'))
+            lastnests = false
+            setTimeout(function () { updateMap() }, 2000)
+        } else {
+            $('#nestavg').text(i8ln('minimum') + ' ' + nestavg)
+            lastnests = false
+            setTimeout(function () { updateMap() }, 2000)
+        }
+    })
     $('#sound-switch').change(function () {
         Store.set('playSound', this.checked)
         var options = {

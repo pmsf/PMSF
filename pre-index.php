@@ -448,7 +448,15 @@ if (!$noLoadingScreen) {
                                 <span class="switch-handle"></span>
                             </label>
                         </div>
-                    </div>';
+		    </div>';
+                    }
+                    if (! $noNestsAvg && ! $noNests) {
+                        echo '<div class="form-control switch-container">
+                            <div class="nestslider">
+                                <input type="range" min="0" max="' . $nestAvgMax . '" value="' . $nestAvgDefault . '" class="nestslider" id="nestrange">
+                                <p>' . i8ln('Show nest average. ') . '<span id="nestavg"></span></p>
+                            </div>
+                        </div>';
                     } ?>
                 </div>
                     <div id="pokemon-filter-wrapper" style="display:none">
@@ -2308,6 +2316,7 @@ if (!$noLoadingScreen) {
     var makeItBang = <?php echo $makeItBang === true ? 'true' : 'false' ?>;
     var showYourLove = <?php echo $showYourLove === true ? 'true' : 'false' ?>;
     var defaultDustAmount = <?php echo $defaultDustAmount; ?>;
+    var nestAvgDefault = <?php echo $nestAvgDefault; ?>;
     var noDarkMode = <?php echo $noDarkMode === true ? 'true' : 'false' ?>;
     var noCatchRates = <?php echo $noCatchRates === true ? 'true' : 'false' ?>;
 </script>
