@@ -1,6 +1,7 @@
 <?php
 
 namespace Scanner;
+use \DateTime;
 
 class Scanner
 {
