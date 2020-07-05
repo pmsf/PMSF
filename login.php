@@ -43,10 +43,6 @@ if (isset($_GET['callback'])) {
                 $user = request($user_request, $access_token);
                 $guilds = request($guilds_request, $access_token);
 
-		####TESTING
-                echo "<h1>Hello, {$user->username}#{$user->discriminator}.</h1><br><h2>{$user->id}</h2><br><img src='https://cdn.discordapp.com/avatars/{$user->id}/{$user->avatar}.jpg' /><br><br>Dashboard Token: {$access_token}";
-		file_put_contents('log.txt', print_r($access_token, true), FILE_APPEND);
-		####TESTING
                 if (in_array($user->id, $userBlacklist)) {
                     header("Location: ./access-denied.php");
                     $granted = false;
@@ -85,6 +81,7 @@ if (isset($_GET['callback'])) {
                         $manualdb->update('users', [
                             'session_id' => $response->access_token,
                             'user' => $user->username . '#' . $user->discriminator
+                            'avatar' => 'https://cdn.discordapp.com/avatars/' . $user->id . '/' . $user->avatar . '.jpg',
                         ], [
                             'id' => $user->id,
                             'login_system' => 'discord'
@@ -94,6 +91,7 @@ if (isset($_GET['callback'])) {
                             'session_id' => $response->access_token,
                             "expire_timestamp" => time() + $response->expires_in,
                             'user' => $user->username . '#' . $user->discriminator
+                            'avatar' => 'https://cdn.discordapp.com/avatars/' . $user->id . '/' . $user->avatar . '.jpg',
                         ], [
                             'id' => $user->id,
                             'login_system' => 'discord'
@@ -104,6 +102,7 @@ if (isset($_GET['callback'])) {
                         $manualdb->insert('users', [
                             'id' => $user->id,
                             'user' => $user->username . '#' . $user->discriminator,
+                            'avatar' => 'https://cdn.discordapp.com/avatars/' . $user->id . '/' . $user->avatar . '.jpg',
                             'expire_timestamp' => time() + $response->expires_in,
                             'login_system' => 'discord'
                         ]);
@@ -111,6 +110,7 @@ if (isset($_GET['callback'])) {
                         $manualdb->insert('users', [
                             'id' => $user->id,
                             'user' => $user->username . '#' . $user->discriminator,
+                            'avatar' => 'https://cdn.discordapp.com/avatars/' . $user->id . '/' . $user->avatar . '.jpg',
                             'expire_timestamp' => time() + $response->expires_in,
                             'login_system' => 'discord'
                         ]);

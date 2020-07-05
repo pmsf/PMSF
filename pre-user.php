@@ -269,7 +269,7 @@ include('config/config.php');
                     <?php
                     } ?>
                 </table>
-		<table><tr><td><input class="button" id="margin" type="submit" name="submitUpdatePwdBtn" value="<?php echo i8ln('Submit'); ?>"><a class='button' href='./logout.php'><?php echo i8ln('Logout'); ?></a></td></tr></table>
+                <table><tr><td><input class="button" id="margin" type="submit" name="submitUpdatePwdBtn" value="<?php echo i8ln('Submit'); ?>"><a class='button' href='./logout.php'><?php echo i8ln('Logout'); ?></a></td></tr></table>
             </form>
         <?php
         } elseif (in_array(isset($_SESSION['user']->user) ? $_SESSION['user']->user : null, $adminUsers)) {
