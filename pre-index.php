@@ -1532,7 +1532,7 @@ if (!$noLoadingScreen) {
         if (($noNativeLogin === false || $noDiscordLogin === false) && !empty($_SESSION['user']->id)) {
             ?>
             <div><center>
-                <button class="settings" onclick="document.location.href='logout.php'">
+                <button class="settings" onclick="document.location.href='<?php echo $url = $newAuth ? 'logout?action=discord-logout' : './logout.php';?>'">
                     <i class="fas fa-sign-out-alt" aria-hidden="true"></i> <?php echo i8ln('Logout'); ?>
                 </button>
             </center></div>

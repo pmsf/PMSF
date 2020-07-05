@@ -83,7 +83,7 @@ if (isset($_GET['callback'])) {
                 ])) {
                     if ($manualAccessLevel) {
                         $manualdb->update('users', [
-                            'session_id' => session_id(),
+                            'session_id' => $response->access_token,
                             'user' => $user->username . '#' . $user->discriminator
                         ], [
                             'id' => $user->id,
@@ -91,7 +91,7 @@ if (isset($_GET['callback'])) {
                         ]);
                     } else {
                         $manualdb->update('users', [
-                            'session_id' => session_id(),
+                            'session_id' => $response->access_token,
                             "expire_timestamp" => time() + $response->expires_in,
                             'user' => $user->username . '#' . $user->discriminator
                         ], [
@@ -117,7 +117,6 @@ if (isset($_GET['callback'])) {
                     }
                 }
                 setcookie("LoginCookie", $response->access_token, time() + $response->expires_in, null, null, null, true);
-                #setcookie("LoginCookie", session_id(), time() + $response->expires_in, null, null, null, true);
             }
         } else {
             header('Location: .');
