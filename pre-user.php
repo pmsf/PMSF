@@ -62,7 +62,11 @@ include('config/config.php');
             validateCookie($_COOKIE["LoginCookie"]);
         }
         if ($noNativeLogin === true && $noDiscordLogin === false && empty($_SESSION['user']->id)) {
-            header("Location: ./discord-login");
+            if ($newAuth) {
+                header("Location: ./login?action=discord-login");
+            } else {
+                header("Location: ./discord-login");
+            }
         } elseif ($noNativeLogin === true && $noDiscordLogin === false && !empty($_SESSION['user']->id) && !in_array(isset($_SESSION['user']->user) ? $_SESSION['user']->user : null, $adminUsers)) {
             header("Location: .?login=true");
         }
@@ -265,7 +269,7 @@ include('config/config.php');
                     <?php
                     } ?>
                 </table>
-                <table><tr><td><input class="button" id="margin" type="submit" name="submitUpdatePwdBtn" value="<?php echo i8ln('Submit'); ?>"><a class='button' href='./logout.php'><?php echo i8ln('Logout'); ?></a></td></tr></table>
+		<table><tr><td><input class="button" id="margin" type="submit" name="submitUpdatePwdBtn" value="<?php echo i8ln('Submit'); ?>"><a class='button' href=<?php echo $url = $newAuth ? 'logout?action=discord-logout' : './logout.php';?>><?php echo i8ln('Logout'); ?></a></td></tr></table>
             </form>
         <?php
         } elseif (in_array(isset($_SESSION['user']->user) ? $_SESSION['user']->user : null, $adminUsers)) {
