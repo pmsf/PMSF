@@ -80,7 +80,7 @@ if (isset($_GET['callback'])) {
                     if ($manualAccessLevel) {
                         $manualdb->update('users', [
                             'session_id' => $response->access_token,
-                            'user' => $user->username . '#' . $user->discriminator
+                            'user' => $user->username . '#' . $user->discriminator,
                             'avatar' => 'https://cdn.discordapp.com/avatars/' . $user->id . '/' . $user->avatar . '.jpg',
                         ], [
                             'id' => $user->id,
@@ -90,7 +90,7 @@ if (isset($_GET['callback'])) {
                         $manualdb->update('users', [
                             'session_id' => $response->access_token,
                             "expire_timestamp" => time() + $response->expires_in,
-                            'user' => $user->username . '#' . $user->discriminator
+                            'user' => $user->username . '#' . $user->discriminator,
                             'avatar' => 'https://cdn.discordapp.com/avatars/' . $user->id . '/' . $user->avatar . '.jpg',
                         ], [
                             'id' => $user->id,
