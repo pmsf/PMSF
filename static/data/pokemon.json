@@ -2245,6 +2245,50 @@
         "type": "Poison",
         "color": "#a040a0"
       }
+    ],
+    "forms": [
+      {
+        "nameform": "Normal",
+        "protoform": "776",
+        "assetsform": "00",
+        "baseStamina": 130,
+        "baseAttack": 105,
+        "baseDefense": 76,
+        "formtypes": [
+          {
+            "type": "Poison",
+            "color": "#a040a0"
+          }
+        ]
+      },
+      {
+        "nameform": "Shadow",
+        "protoform": "777",
+        "assetsform": "00",
+        "baseStamina": 130,
+        "baseAttack": 105,
+        "baseDefense": 76,
+        "formtypes": [
+          {
+            "type": "Poison",
+            "color": "#a040a0"
+          }
+        ]
+      },
+      {
+        "nameform": "Purified",
+        "protoform": "778",
+        "assetsform": "00",
+        "baseStamina": 130,
+        "baseAttack": 105,
+        "baseDefense": 76,
+        "formtypes": [
+          {
+            "type": "Poison",
+            "color": "#a040a0"
+          }
+        ]
+      }
     ]
   },
   "33": {
