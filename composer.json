@@ -2,6 +2,7 @@
     "name": "Discord Login",
     "description": "Discord Login for PMSF",
     "require": {
-        "easybiblabs/oauth2-client-php": "^4.1"
+        "easybiblabs/oauth2-client-php": "^4.1",
+        "nesbot/carbon": "^2.35"
     }
 }

@@ -1380,7 +1380,7 @@ if (!$noLoadingScreen) {
             ?>
 
             <?php
-            if (! $noMapStyle || ! $noDirectionProvider || ! $noIconSize || ! $noIconNotifySizeModifier || ! $noGymStyle || ! $noLocationStyle) {
+            if (! $noDarkMode || ! $noMapStyle || ! $noDirectionProvider || ! $noIconSize || ! $noIconNotifySizeModifier || ! $noGymStyle || ! $noLocationStyle) {
                 echo '<h3>' . i8ln('Style') . '</h3>
             <div>';
             }
@@ -1485,7 +1485,7 @@ if (!$noLoadingScreen) {
             }
             ?>
             <?php
-            if (! $noMapStyle || ! $noDirectionProvider || ! $noIconSize || ! $noIconNotifySizeModifier || ! $noGymStyle || ! $noLocationStyle) {
+            if (! $noDarkMode || ! $noMapStyle || ! $noDirectionProvider || ! $noIconSize || ! $noIconNotifySizeModifier || ! $noGymStyle || ! $noLocationStyle) {
                 echo '</div>';
             }
             ?>
