@@ -1,5 +1,32 @@
 <?php
 include('config/config.php');
+require __DIR__.'/vendor/autoload.php';
+
+use Monolog\Logger;
+use Monolog\Handler\StreamHandler;
+use Monolog\Handler\FirePHPHandler;
+use RestCord\DiscordClient;
+
+switch ($discordLogLevel) {
+case "NOTICE":
+    $loglevel = Logger::NOTICE;
+    break;
+case "INFO":
+    $loglevel = Logger::INFO;
+    break;
+case "DEBUG":
+    $loglevel = Logger::DEBUG;
+    break;
+default:
+    $loglevel = Logger::INFO;
+}
+
+$logger = new Logger('PMSFLogger');
+$logger->pushHandler(new StreamHandler(__DIR__.'/log/pmsf_auth.log', $loglevel));
+$logger->pushHandler(new FirePHPHandler());
+
+
+$discord = new DiscordClient(['token' => $discordBotToken, 'logger' => $logger]); // Token is required
 
 if (isset($_GET['action'])) {
     if ($_GET['action'] == 'discord-login') {
@@ -82,6 +109,7 @@ if (isset($_GET['callback'])) {
                             'session_id' => $response->access_token,
                             'user' => $user->username . '#' . $user->discriminator,
                             'avatar' => 'https://cdn.discordapp.com/avatars/' . $user->id . '/' . $user->avatar . '.jpg',
+			    'discord_guilds' => json_encode($guilds)
                         ], [
                             'id' => $user->id,
                             'login_system' => 'discord'
@@ -92,6 +120,7 @@ if (isset($_GET['callback'])) {
                             "expire_timestamp" => time() + $response->expires_in,
                             'user' => $user->username . '#' . $user->discriminator,
                             'avatar' => 'https://cdn.discordapp.com/avatars/' . $user->id . '/' . $user->avatar . '.jpg',
+			    'discord_guilds' => json_encode($guilds)
                         ], [
                             'id' => $user->id,
                             'login_system' => 'discord'
@@ -104,7 +133,8 @@ if (isset($_GET['callback'])) {
                             'user' => $user->username . '#' . $user->discriminator,
                             'avatar' => 'https://cdn.discordapp.com/avatars/' . $user->id . '/' . $user->avatar . '.jpg',
                             'expire_timestamp' => time() + $response->expires_in,
-                            'login_system' => 'discord'
+                            'login_system' => 'discord',
+			    'discord_guilds' => json_encode($guilds)
                         ]);
                     } else {
                         $manualdb->insert('users', [
@@ -112,11 +142,24 @@ if (isset($_GET['callback'])) {
                             'user' => $user->username . '#' . $user->discriminator,
                             'avatar' => 'https://cdn.discordapp.com/avatars/' . $user->id . '/' . $user->avatar . '.jpg',
                             'expire_timestamp' => time() + $response->expires_in,
-                            'login_system' => 'discord'
+                            'login_system' => 'discord',
+			    'discord_guilds' => json_encode($guilds)
                         ]);
                     }
                 }
-                setcookie("LoginCookie", $response->access_token, time() + $response->expires_in, null, null, null, true);
+                if (!empty($guildRoles)) {
+                    foreach ($guildRoles['guildIDS'] as $guild => $guildRoles) {
+                        $isMember = array_search($guild , array_column($guilds, 'id'));
+			if (is_numeric($isMember)) {
+                            #$discordRoles = $discord->guild->getGuildRoles(['guild_id' => '323035478460989440']);
+                            $discordRoles = $discord->guild->getGuildRoles(['guild.id' => $guild]);
+		        file_put_contents('log.txt', print_r($discordRoles, true) . PHP_EOL . PHP_EOL, FILE_APPEND);
+                        }
+                    }
+                }
+		#file_put_contents('log.txt', print_r($guildRoles, true), FILE_APPEND);
+		#file_put_contents('log.txt', print_r(json_decode(json_encode($guilds), true), true), FILE_APPEND);
+                setcookie("LoginCookie", $response->access_token, time() + $response->expires_in, null, null, null, null);
             }
         } else {
             header('Location: .');

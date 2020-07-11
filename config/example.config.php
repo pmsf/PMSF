@@ -144,6 +144,9 @@ $noDiscordLogin = true;                                             // This will
 $discordBotClientId = 0;
 $discordBotClientSecret = "";
 $discordBotRedirectUri = "https://example.com/discord-callback.php";
+$discordBotToken = "";
+$discordLogLevel = "INFO";					    // Do NOT change unless asked
+
 
 $userBlacklist = [''];                                              // Array of user ID's that are always blocked from accessing the map
 $userWhitelist = [''];                                              // Array of user ID's that's allowed to bypass the server blacklist
