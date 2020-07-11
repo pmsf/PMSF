@@ -100,6 +100,22 @@ if (isset($_GET['callback'])) {
                     header("Location: .?login=false");
                     die();
                 }
+                if (!empty($guildRoles)) {
+                    $accessRole = null;
+                    foreach ($guildRoles['guildIDS'] as $guild => $guildRoles) {
+                        $isMember = array_search($guild , array_column($guilds, 'id'));
+                        if (!empty($isMember)) {
+                            $getMemberDetails = $discord->guild->getGuildMember(['guild.id' => $guild, 'user.id' => intval($user->id)]);
+			    foreach ($getMemberDetails->roles as $role) {
+                                if (array_key_exists($role, $guildRoles)) {
+                                    if ($accessRole < $guildRoles[$role]) {
+                                        $accessRole = $guildRoles[$role];
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
 		if ($manualdb->has('users', [
                     'id' => $user->id,
                     'login_system' => 'discord'
@@ -117,8 +133,9 @@ if (isset($_GET['callback'])) {
                     } else {
                         $manualdb->update('users', [
                             'session_id' => $response->access_token,
-                            "expire_timestamp" => time() + $response->expires_in,
+                            'expire_timestamp' => time() + $response->expires_in,
                             'user' => $user->username . '#' . $user->discriminator,
+                            'access_level' => $accessRole,
                             'avatar' => 'https://cdn.discordapp.com/avatars/' . $user->id . '/' . $user->avatar . '.jpg',
 			    'discord_guilds' => json_encode($guilds)
                         ], [
@@ -140,27 +157,12 @@ if (isset($_GET['callback'])) {
                         $manualdb->insert('users', [
                             'id' => $user->id,
                             'user' => $user->username . '#' . $user->discriminator,
+                            'access_level' => $accessRole,
                             'avatar' => 'https://cdn.discordapp.com/avatars/' . $user->id . '/' . $user->avatar . '.jpg',
                             'expire_timestamp' => time() + $response->expires_in,
                             'login_system' => 'discord',
 			    'discord_guilds' => json_encode($guilds)
                         ]);
-                    }
-                }
-                if (!empty($guildRoles)) {
-                    $accessRole = null;
-                    foreach ($guildRoles['guildIDS'] as $guild => $guildRoles) {
-                        $isMember = array_search($guild , array_column($guilds, 'id'));
-                        if (!empty($isMember)) {
-                            $getMemberDetails = $discord->guild->getGuildMember(['guild.id' => $guild, 'user.id' => intval($user->id)]);
-			    foreach ($getMemberDetails->roles as $role) {
-                                if (array_key_exists($role, $guildRoles)) {
-                                    if ($accessRole < $guildRoles[$role]) {
-                                        $accessRole = $guildRoles[$role];
-                                    }
-                                }
-                            }
-                        }
                     }
                 }
                 setcookie("LoginCookie", $response->access_token, time() + $response->expires_in);
