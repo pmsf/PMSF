@@ -106,7 +106,7 @@ if (isset($_GET['callback'])) {
                         $isMember = array_search($guild , array_column($guilds, 'id'));
                         if (!empty($isMember)) {
                             $getMemberDetails = $discord->guild->getGuildMember(['guild.id' => $guild, 'user.id' => intval($user->id)]);
-			    foreach ($getMemberDetails->roles as $role) {
+                            foreach ($getMemberDetails->roles as $role) {
                                 if (array_key_exists($role, $guildRoles)) {
                                     if ($accessRole < $guildRoles[$role]) {
                                         $accessRole = $guildRoles[$role];

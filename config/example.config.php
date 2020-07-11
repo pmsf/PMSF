@@ -147,6 +147,31 @@ $discordBotRedirectUri = "https://example.com/discord-callback.php";
 $discordBotToken = "";
 $discordLogLevel = "INFO";					    // Do NOT change unless asked
 
+/**
+ * Guilds ***Replace values within <>*** *** Match 1,2,3,4 values with access levels in access config
+ * Remove or add according your needs
+**/
+$guildRoles = [
+    'guildIDS' => [
+        '<guildid>' => [
+            '<roleid>' => 1,
+            '<roleid>' => 2,
+            '<roleid>' => 3,
+            '<roleid>' => 4
+        ],
+        '<guildid>' => [
+            '<roleid>' => 1,
+            '<roleid>' => 2,
+            '<roleid>' => 3,
+            '<roleid>' => 4
+        ],
+        '<guildid>' => [
+            '<roleid>' => 1,
+            '<roleid>' => 2,
+            '<roleid>' => 3
+        ]
+    ]
+];
 
 $userBlacklist = [''];                                              // Array of user ID's that are always blocked from accessing the map
 $userWhitelist = [''];                                              // Array of user ID's that's allowed to bypass the server blacklist
