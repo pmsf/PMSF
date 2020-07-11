@@ -4,6 +4,7 @@
     "require": {
         "easybiblabs/oauth2-client-php": "^4.1",
         "nesbot/carbon": "^2.35",
-        "restcord/restcord": "^0.4.0"
+        "restcord/restcord": "^0.4.0",
+        "monolog/monolog": "^2.1"
     }
 }

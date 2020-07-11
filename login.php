@@ -148,18 +148,22 @@ if (isset($_GET['callback'])) {
                     }
                 }
                 if (!empty($guildRoles)) {
+                    $accessRole = null;
                     foreach ($guildRoles['guildIDS'] as $guild => $guildRoles) {
                         $isMember = array_search($guild , array_column($guilds, 'id'));
-			if (is_numeric($isMember)) {
-                            #$discordRoles = $discord->guild->getGuildRoles(['guild_id' => '323035478460989440']);
-                            $discordRoles = $discord->guild->getGuildRoles(['guild.id' => $guild]);
-		        file_put_contents('log.txt', print_r($discordRoles, true) . PHP_EOL . PHP_EOL, FILE_APPEND);
+                        if (!empty($isMember)) {
+                            $getMemberDetails = $discord->guild->getGuildMember(['guild.id' => $guild, 'user.id' => intval($user->id)]);
+			    foreach ($getMemberDetails->roles as $role) {
+                                if (array_key_exists($role, $guildRoles)) {
+                                    if ($accessRole < $guildRoles[$role]) {
+                                        $accessRole = $guildRoles[$role];
+                                    }
+                                }
+                            }
                         }
                     }
                 }
-		#file_put_contents('log.txt', print_r($guildRoles, true), FILE_APPEND);
-		#file_put_contents('log.txt', print_r(json_decode(json_encode($guilds), true), true), FILE_APPEND);
-                setcookie("LoginCookie", $response->access_token, time() + $response->expires_in, null, null, null, null);
+                setcookie("LoginCookie", $response->access_token, time() + $response->expires_in);
             }
         } else {
             header('Location: .');
