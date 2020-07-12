@@ -151,6 +151,7 @@ $userTimezone = date_default_timezone_get();
 // Login  - You need to create the two tables referenced in sql.sql
 //-----------------------------------------------------
 $newAuth = false;
+$monologPath = 'php://stdout';
 $forcedLogin = false;
 $noNativeLogin = true;                                              // true/false - This will enable the built in login system.
 $domainName = '';                                                   // If this is empty, reset-password emails will use the domain name taken from the URL.
@@ -164,6 +165,7 @@ $noDiscordLogin = true;                                             // true/fals
 $discordBotClientId = 0;
 $discordBotClientSecret = "";
 $discordBotRedirectUri = "https://example.com/discord-callback.php";
+$guildRoles = [];
 
 $adminUsers = array('admin@example.com', 'Superadmin#13337');       // You can add multiple admins by adding them to the array.
 $manualAccessLevel = false;

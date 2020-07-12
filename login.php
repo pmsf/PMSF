@@ -22,7 +22,7 @@ default:
 }
 
 $logger = new Logger('PMSFLogger');
-$logger->pushHandler(new StreamHandler(__DIR__.'/log/pmsf_auth.log', $loglevel));
+$logger->pushHandler(new StreamHandler($monologPath, $loglevel));
 $logger->pushHandler(new FirePHPHandler());
 
 
