@@ -296,9 +296,7 @@
     "grunt": "",
     "second_reward": "false",
     "encounters":{
-        "first": ["053_00"],
-        "second":["034_00","051_00","445_00"],
-        "third":["245_00"]
+        "first": ["245_00"]
     }
   },
   "45": {
