@@ -166,11 +166,42 @@ if (isset($_GET['callback'])) {
                     }
                 }
                 setcookie("LoginCookie", $response->access_token, time() + $response->expires_in);
+                setcookie("LoginEngine", 'discord', time() + $response->expires_in);
             }
         } else {
             header('Location: .');
         }
     }
+}
+if (!empty($_POST['refresh'])) {
+    if ($_POST['refresh'] == 'discord') {
+        $dbUser = $manualdb->get('users', ['id','session_id', 'access_level', 'discord_guilds'],['id' => $_SESSION['user']->id]);
+	file_put_contents('log.txt', print_r($dbUser['id'], true) . PHP_EOL, FILE_APPEND);
+        if (empty($dbUser)) {
+            $answer = 'false';
+        } else {
+            $accessLevel = checkAccessLevel($dbUser['id'], json_decode($dbUser['discord_guilds']));
+	    if ($accessLevel == $dbUser['access_level']) {
+                $answer = 'true';
+            } elseif (!empty($accessLevel)) {
+                $manualdb->update('users', [
+                    'access_level' => $accessLevel
+                ], [
+                    'id' => $dbUser['id']
+                ]);
+                $answer = 'reload';
+	    } else {
+                $manualdb->update('users', [
+                    'access_level' => null
+                ], [
+                    'id' => $dbUser['id']
+                ]);
+                $answer = 'reload';
+            }
+        }
+    }
+    $answer = json_encode($answer);
+    echo $answer;
 }
 
 function request($request, $access_token) {
@@ -189,4 +220,22 @@ function request($request, $access_token) {
 function logFailure($logFailure) {
     global $logFailedLogin;
     file_put_contents($logFailedLogin, $logFailure, FILE_APPEND);
+}
+function checkAccessLevel ($userId, $guilds) {
+    global $guildRoles, $discord;
+    $accessRole = null;
+    foreach ($guildRoles['guildIDS'] as $guild => $guildRoles) {
+        $isMember = array_search($guild , array_column($guilds, 'id'));
+        if (!empty($isMember)) {
+            $getMemberDetails = $discord->guild->getGuildMember(['guild.id' => $guild, 'user.id' => intval($userId)]);
+            foreach ($getMemberDetails->roles as $role) {
+                if (array_key_exists($role, $guildRoles)) {
+                    if ($accessRole < $guildRoles[$role]) {
+                        $accessRole = $guildRoles[$role];
+                    }
+                }
+            }
+        }
+    }
+    return $accessRole;
 }

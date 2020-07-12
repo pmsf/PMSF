@@ -229,7 +229,8 @@ function destroyCookiesAndSessions()
     global $manualdb;
     
     $manualdb->update("users", [
-        "session_id" => null
+        "session_id" => null,
+        "discord_guild" => null
     ], [
         "id" => $_SESSION['user']->id,
         "login_system" => $_SESSION['user']->login_system
@@ -237,6 +238,7 @@ function destroyCookiesAndSessions()
 
     unset($_SESSION);
     unset($_COOKIE['LoginCookie']);
+    unset($_COOKIE['LoginEngine']);
     setcookie("LoginCookie", "", time() - 3600);
     session_destroy();
     session_write_close();
