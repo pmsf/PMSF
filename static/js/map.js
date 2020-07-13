@@ -7589,12 +7589,17 @@ function checkAndCreateSound(pokemonId = 0) {
     }
 }
 function updateUser() {
-    loadUser().done(function (result) {
-        console.log(result)
+    var engine = getCookie('LoginEngine')
+    if (engine === '') {
+        return false
+    }
+    loadUser(engine).done(function (result) {
+        if (result === 'reload') {
+            window.location.href = './logout?action=' + engine + '-logout'
+        }
     })
 }
-function loadUser() {
-    var engine = getCookie('LoginEngine')
+function loadUser(engine) {
     return $.ajax({
         url: 'login',
         type: 'POST',

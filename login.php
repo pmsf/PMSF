@@ -123,7 +123,7 @@ if (isset($_GET['callback'])) {
                         $manualdb->update('users', [
                             'session_id' => $response->access_token,
                             'user' => $user->username . '#' . $user->discriminator,
-                            'avatar' => 'https://cdn.discordapp.com/avatars/' . $user->id . '/' . $user->avatar . '.jpg',
+                            'avatar' => 'https://cdn.discordapp.com/avatars/' . $user->id . '/' . $user->avatar . '.png',
                             'discord_guilds' => json_encode($guilds)
                         ], [
                             'id' => $user->id,
@@ -135,7 +135,7 @@ if (isset($_GET['callback'])) {
                             'expire_timestamp' => time() + $response->expires_in,
                             'user' => $user->username . '#' . $user->discriminator,
                             'access_level' => $accessRole,
-                            'avatar' => 'https://cdn.discordapp.com/avatars/' . $user->id . '/' . $user->avatar . '.jpg',
+                            'avatar' => 'https://cdn.discordapp.com/avatars/' . $user->id . '/' . $user->avatar . '.png',
                             'discord_guilds' => json_encode($guilds)
                         ], [
                             'id' => $user->id,
@@ -147,7 +147,7 @@ if (isset($_GET['callback'])) {
                         $manualdb->insert('users', [
                             'id' => $user->id,
                             'user' => $user->username . '#' . $user->discriminator,
-                            'avatar' => 'https://cdn.discordapp.com/avatars/' . $user->id . '/' . $user->avatar . '.jpg',
+                            'avatar' => 'https://cdn.discordapp.com/avatars/' . $user->id . '/' . $user->avatar . '.png',
                             'expire_timestamp' => time() + $response->expires_in,
                             'login_system' => 'discord',
                             'discord_guilds' => json_encode($guilds)
@@ -157,7 +157,7 @@ if (isset($_GET['callback'])) {
                             'id' => $user->id,
                             'user' => $user->username . '#' . $user->discriminator,
                             'access_level' => $accessRole,
-                            'avatar' => 'https://cdn.discordapp.com/avatars/' . $user->id . '/' . $user->avatar . '.jpg',
+                            'avatar' => 'https://cdn.discordapp.com/avatars/' . $user->id . '/' . $user->avatar . '.png',
                             'expire_timestamp' => time() + $response->expires_in,
                             'login_system' => 'discord',
                             'discord_guilds' => json_encode($guilds)
@@ -176,7 +176,6 @@ if (isset($_GET['callback'])) {
 if (!empty($_POST['refresh'])) {
     if ($_POST['refresh'] == 'discord') {
         $dbUser = $manualdb->get('users', ['id','session_id', 'access_level', 'discord_guilds'],['id' => $_SESSION['user']->id]);
-        file_put_contents('log.txt', print_r($dbUser['id'], true) . PHP_EOL, FILE_APPEND);
         if (empty($dbUser)) {
             $answer = 'false';
         } else {
