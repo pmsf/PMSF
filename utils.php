@@ -248,7 +248,7 @@ function validateCookie($cookie)
 {
     global $manualdb, $manualAccessLevel;
     $info = $manualdb->query(
-        "SELECT id, user, password, login_system, expire_timestamp, access_level FROM users WHERE session_id = :session_id", [
+        "SELECT id, user, password, login_system, expire_timestamp, access_level, avatar FROM users WHERE session_id = :session_id", [
             ":session_id" => $cookie
         ]
     )->fetch();
@@ -265,6 +265,7 @@ function validateCookie($cookie)
         $_SESSION['user'] = new \stdClass();
         $_SESSION['user']->id = $info['id'];
         $_SESSION['user']->user = htmlspecialchars($info['user'], ENT_QUOTES, 'UTF-8');
+        $_SESSION['user']->avatar = $info['avatar'];
         $_SESSION['user']->login_system = $info['login_system'];
         $_SESSION['user']->expire_timestamp = $info['expire_timestamp'];
         $_SESSION['user']->access_level = $info['access_level'];

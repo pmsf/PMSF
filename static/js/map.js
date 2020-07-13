@@ -4792,6 +4792,19 @@ function openRenamePokestopModal(event) { // eslint-disable-line no-unused-vars
     })
 }
 
+function openAccountModal(event) { // eslint-disable-line no-unused-vars
+    $('.ui-dialog').remove()
+    $('.account-modal').clone().dialog({
+        modal: true,
+        maxHeight: 600,
+        buttons: {},
+        title: i8ln('Profile'),
+        classes: {
+            'ui-dialog': 'ui-dialog raid-widget-popup'
+        }
+    })
+}
+
 function openRenameGymModal(event) { // eslint-disable-line no-unused-vars
     $('.ui-dialog').remove()
     var val = $(event.target).data('id')

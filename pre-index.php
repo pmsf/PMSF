@@ -385,10 +385,10 @@ if (!$noLoadingScreen) {
                 if ($_SESSION['user']->expire_timestamp < time() && $manualAccessLevel === true) {
                     echo '<i class="fas fa-user-times" title="' . i8ln('User Expired') . '" style="color: red;font-size: 20px;position: relative;float: right;padding: 0 5px;top: 17px;"></i>';
                 } else {
-                    echo '<i class="fas fa-user-check" title="' . i8ln('User Logged in') . '" style="color: green;font-size: 20px;position: relative;float: right;padding: 0 5px;top: 17px;"></i>';
+                    echo "<a href='#' onclick='openAccountModal(event);' style='float:right;padding:0 5px;' title='" . i8ln('Profile') . "'><img src='" .  $_SESSION['user']->avatar . "' style='height:40px;width:40px;border-radius:50%;border:2px solid;margin-top:10px'></a>";
                 }
             } else {
-                echo "<a href='./user' style='float:right;padding:0 5px;' title='" . i8ln('Login') . "'><i class='fas fa-user' style='color:white;font-size:20px;vertical-align:middle;'></i></a>";
+                echo "<a href='#' onclick='openAccountModal(event);' style='float:right;padding:0 5px;' title='" . i8ln('Login') . "'><i class='fas fa-user' style='color:white;font-size:20px;vertical-align:middle;'></i></a>";
             }
         }
         ?>
@@ -1503,74 +1503,6 @@ if (!$noLoadingScreen) {
             }
             ?>
         </div>
-        <div>
-            <center>
-                <button class="settings"
-                        onclick="confirm('<?php echo i8ln('Are you sure you want to reset settings to default values?') ?>') ? (localStorage.clear(), window.location.reload()) : false">
-                    <i class="fas fa-sync-alt" aria-hidden="true"></i> <?php echo i8ln('Reset Settings') ?>
-                </button>
-            </center>
-        </div>
-        <div>
-            <center>
-                <button class="settings"
-                        onclick="download('<?= addslashes($title) ?>', JSON.stringify(JSON.stringify(localStorage)))">
-                    <i class="fas fa-upload" aria-hidden="true"></i> <?php echo i8ln('Export Settings') ?>
-                </button>
-            </center>
-        </div>
-        <div>
-            <center>
-                <input id="fileInput" type="file" style="display:none;" onchange="openFile(event)"/>
-                <button class="settings"
-                        onclick="document.getElementById('fileInput').click()">
-                    <i class="fas fa-download" aria-hidden="true"></i> <?php echo i8ln('Import Settings') ?>
-                </button>
-            </center>
-        </div>
-        <?php
-        if (($noNativeLogin === false || $noDiscordLogin === false) && !empty($_SESSION['user']->id)) {
-            ?>
-            <div><center>
-                <button class="settings" onclick="document.location.href='<?php echo $url = $newAuth ? 'logout?action=discord-logout' : './logout.php';?>'">
-                    <i class="fas fa-sign-out-alt" aria-hidden="true"></i> <?php echo i8ln('Logout'); ?>
-                </button>
-            </center></div>
-            <?php
-        } ?>
-        <?php
-        if (!$noLocaleSelection) {
-            ?>
-            <div class="form-control switch-container" style="width:40%;left:32%;top:10px;position:relative;">
-                <select name="language-switch" onchange="location = this.value;">
-                    <option selected><?php echo i8ln('select language'); ?></option>
-                    <option value="?lang=en"><?php echo i8ln('English'); ?></option>
-                    <option value="?lang=de"><?php echo i8ln('German'); ?></option>
-                    <option value="?lang=fr"><?php echo i8ln('French'); ?></option>
-                    <option value="?lang=it"><?php echo i8ln('Italian'); ?></option>
-                    <option value="?lang=pl"><?php echo i8ln('Polish'); ?></option>
-                    <option value="?lang=sp"><?php echo i8ln('Spanish'); ?></option>
-                    <option value="?lang=sv"><?php echo i8ln('Swedish'); ?></option>
-                </select>
-            </div>
-            <br><br>
-            <?php
-        }?>
-        <?php
-        if (($noNativeLogin === false || $noDiscordLogin === false) && !empty($_SESSION['user']->id)) {
-            if ($manualAccessLevel) {
-                $time = date("Y-m-d", $_SESSION['user']->expire_timestamp);
-                echo '<div><center><p>';
-                if ($_SESSION['user']->expire_timestamp > time()) {
-                    echo "<span style='color: green;'>" . i8ln('Membership expires on') . " {$time}</span>";
-                } else {
-                    echo "<span style='color: red;'>" . i8ln('Membership expired on') . " {$time}</span>";
-                }
-                echo '</p></center></div>';
-            }
-            echo '<div><center><p>' . i8ln('Logged in as') . ': ' . $_SESSION['user']->user . '</p></center></div><br>';
-        }
-        ?>
     </nav>
     <nav id="stats">
         <div class="switch-container">
@@ -1636,6 +1568,81 @@ if (!$noLoadingScreen) {
     <div class="loader" style="display:none;"></div>
     <div class="global-raid-modal">
 
+    </div>
+    <div class="account-modal" style="display: none;">
+        <div class="button-container">
+        <div>
+            <center>
+                <button class="settings"
+                        onclick="confirm('<?php echo i8ln('Are you sure you want to reset settings to default values?') ?>') ? (localStorage.clear(), window.location.reload()) : false">
+                    <i class="fas fa-sync-alt" aria-hidden="true"></i> <?php echo i8ln('Reset Settings') ?>
+                </button>
+            </center>
+        </div>
+        <div>
+            <center>
+                <button class="settings"
+                        onclick="download('<?= addslashes($title) ?>', JSON.stringify(JSON.stringify(localStorage)))">
+                    <i class="fas fa-upload" aria-hidden="true"></i> <?php echo i8ln('Export Settings') ?>
+                </button>
+            </center>
+        </div>
+        <div>
+            <center>
+                <input id="fileInput" type="file" style="display:none;" onchange="openFile(event)"/>
+                <button class="settings"
+                        onclick="document.getElementById('fileInput').click()">
+                    <i class="fas fa-download" aria-hidden="true"></i> <?php echo i8ln('Import Settings') ?>
+                </button>
+            </center>
+        </div>
+        <?php
+        if (($noNativeLogin === false || $noDiscordLogin === false) && !empty($_SESSION['user']->id)) {
+            ?>
+            <div><center>
+                <button class="settings" onclick="document.location.href='<?php echo $url = $newAuth ? 'logout?action=discord-logout' : './logout.php';?>'">
+                    <i class="fas fa-sign-out-alt" aria-hidden="true"></i> <?php echo i8ln('Logout'); ?>
+                </button>
+            </center></div>
+            <?php
+        } ?>
+        <?php
+        if (!$noLocaleSelection) {
+            ?>
+            <div class="form-control switch-container" style="width:40%;left:32%;top:10px;position:relative;">
+                <select name="language-switch" onchange="location = this.value;">
+                    <option selected><?php echo i8ln('select language'); ?></option>
+                    <option value="?lang=en"><?php echo i8ln('English'); ?></option>
+                    <option value="?lang=de"><?php echo i8ln('German'); ?></option>
+                    <option value="?lang=fr"><?php echo i8ln('French'); ?></option>
+                    <option value="?lang=it"><?php echo i8ln('Italian'); ?></option>
+                    <option value="?lang=pl"><?php echo i8ln('Polish'); ?></option>
+                    <option value="?lang=sp"><?php echo i8ln('Spanish'); ?></option>
+                    <option value="?lang=sv"><?php echo i8ln('Swedish'); ?></option>
+                </select>
+            </div>
+            <br><br>
+            <?php
+        }?>
+        <?php
+        if (($noNativeLogin === false || $noDiscordLogin === false) && !empty($_SESSION['user']->id)) {
+            if ($manualAccessLevel) {
+                $time = date("Y-m-d", $_SESSION['user']->expire_timestamp);
+                echo '<div><center><p>';
+                if ($_SESSION['user']->expire_timestamp > time()) {
+                    echo "<span style='color: green;'>" . i8ln('Membership expires on') . " {$time}</span>";
+                } else {
+                    echo "<span style='color: red;'>" . i8ln('Membership expired on') . " {$time}</span>";
+                }
+                echo '</p></center></div>';
+            }
+            echo '<div><center><p>' . i8ln('Logged in as') . ': ' . $_SESSION['user']->user . '</p></center></div><img src="' . $_SESSION['user']->avatar . '" style="height:80px;width:80px;border-radius:50%;border:2px solid;"><br>';
+	} else {
+            echo "<div class='button-container'>
+            <button style='background-color: #1877f2' onclick=\"location.href='./login?action=discord-login';\" value='Login with discord'><i class='fab fa-discord'></i>" . i8ln('Login with Discord') . "</button>
+        </div>";
+        }?>
+        </div>
     </div>
     <?php if (! $noManualNests) { ?>
         <div class="global-nest-modal" style="display:none;">

@@ -30,14 +30,16 @@ $discord = new DiscordClient(['token' => $discordBotToken, 'logger' => $logger])
 
 if (isset($_GET['action'])) {
     if ($_GET['action'] == 'discord-login') {
-        $params = array(
+        $params = [
             'client_id' => $discordBotClientId,
-	    'redirect_uri' => $discordBotRedirectUri,
-	    'response_type' => 'code',
-	    'scope' => 'identify guilds'
-        );
+	        'redirect_uri' => $discordBotRedirectUri,
+	        'response_type' => 'code',
+	        'scope' => 'identify guilds'
+        ];
         header('Location: https://discordapp.com/api/oauth2/authorize' . '?' . http_build_query($params));
         die();
+    } else {
+        header("Location: .");
     }
 }
 
@@ -46,17 +48,17 @@ if (isset($_GET['callback'])) {
         if ($_GET['code']) {
             $token_request = 'https://discordapp.com/api/oauth2/token';
             $token = curl_init();
-            curl_setopt_array($token, array(
+            curl_setopt_array($token, [
                 CURLOPT_URL => $token_request,
                 CURLOPT_POST => 1,
-                CURLOPT_POSTFIELDS => array(
+                CURLOPT_POSTFIELDS => [
                     'grant_type' => 'authorization_code',
                     'client_id' => $discordBotClientId,
                     'client_secret' => $discordBotClientSecret,
                     'redirect_uri' => $discordBotRedirectUri,
                     'code' => $_GET['code']
-                )
-            ));
+                ]
+            ]);
             curl_setopt($token, CURLOPT_RETURNTRANSFER, true);
 
             $response = json_decode(curl_exec($token));
@@ -77,7 +79,7 @@ if (isset($_GET['callback'])) {
                     if (in_array($user->id, $userWhitelist)) {
                         header("Location: .?login=true");
                         $granted = true;
-		    } else {
+                    } else {
                         foreach ($guilds as $guild) {
                             $uses = $guild->id;
                             $guildName = $guild->name;
@@ -95,7 +97,7 @@ if (isset($_GET['callback'])) {
                             }
                         }
                     }
-		}
+                }
                 if ($granted !== true) {
                     header("Location: .?login=false");
                     die();
@@ -116,16 +118,13 @@ if (isset($_GET['callback'])) {
                         }
                     }
                 }
-		if ($manualdb->has('users', [
-                    'id' => $user->id,
-                    'login_system' => 'discord'
-                ])) {
+                if ($manualdb->has('users', ['id' => $user->id, 'login_system' => 'discord'])) {
                     if ($manualAccessLevel) {
                         $manualdb->update('users', [
                             'session_id' => $response->access_token,
                             'user' => $user->username . '#' . $user->discriminator,
                             'avatar' => 'https://cdn.discordapp.com/avatars/' . $user->id . '/' . $user->avatar . '.jpg',
-			    'discord_guilds' => json_encode($guilds)
+                            'discord_guilds' => json_encode($guilds)
                         ], [
                             'id' => $user->id,
                             'login_system' => 'discord'
@@ -137,7 +136,7 @@ if (isset($_GET['callback'])) {
                             'user' => $user->username . '#' . $user->discriminator,
                             'access_level' => $accessRole,
                             'avatar' => 'https://cdn.discordapp.com/avatars/' . $user->id . '/' . $user->avatar . '.jpg',
-			    'discord_guilds' => json_encode($guilds)
+                            'discord_guilds' => json_encode($guilds)
                         ], [
                             'id' => $user->id,
                             'login_system' => 'discord'
@@ -151,7 +150,7 @@ if (isset($_GET['callback'])) {
                             'avatar' => 'https://cdn.discordapp.com/avatars/' . $user->id . '/' . $user->avatar . '.jpg',
                             'expire_timestamp' => time() + $response->expires_in,
                             'login_system' => 'discord',
-			    'discord_guilds' => json_encode($guilds)
+                            'discord_guilds' => json_encode($guilds)
                         ]);
                     } else {
                         $manualdb->insert('users', [
@@ -161,27 +160,28 @@ if (isset($_GET['callback'])) {
                             'avatar' => 'https://cdn.discordapp.com/avatars/' . $user->id . '/' . $user->avatar . '.jpg',
                             'expire_timestamp' => time() + $response->expires_in,
                             'login_system' => 'discord',
-			    'discord_guilds' => json_encode($guilds)
+                            'discord_guilds' => json_encode($guilds)
                         ]);
                     }
                 }
                 setcookie("LoginCookie", $response->access_token, time() + $response->expires_in);
                 setcookie("LoginEngine", 'discord', time() + $response->expires_in);
             }
-        } else {
-            header('Location: .');
-        }
+	}
+    } else {
+        header("Location: .");
     }
+
 }
 if (!empty($_POST['refresh'])) {
     if ($_POST['refresh'] == 'discord') {
         $dbUser = $manualdb->get('users', ['id','session_id', 'access_level', 'discord_guilds'],['id' => $_SESSION['user']->id]);
-	file_put_contents('log.txt', print_r($dbUser['id'], true) . PHP_EOL, FILE_APPEND);
+        file_put_contents('log.txt', print_r($dbUser['id'], true) . PHP_EOL, FILE_APPEND);
         if (empty($dbUser)) {
             $answer = 'false';
         } else {
             $accessLevel = checkAccessLevel($dbUser['id'], json_decode($dbUser['discord_guilds']));
-	    if ($accessLevel == $dbUser['access_level']) {
+            if ($accessLevel == $dbUser['access_level']) {
                 $answer = 'true';
             } elseif (!empty($accessLevel)) {
                 $manualdb->update('users', [
@@ -190,7 +190,7 @@ if (!empty($_POST['refresh'])) {
                     'id' => $dbUser['id']
                 ]);
                 $answer = 'reload';
-	    } else {
+            } else {
                 $manualdb->update('users', [
                     'access_level' => null
                 ], [
@@ -206,13 +206,13 @@ if (!empty($_POST['refresh'])) {
 
 function request($request, $access_token) {
     $info_request = curl_init();
-    curl_setopt_array($info_request, array(
+    curl_setopt_array($info_request, [
         CURLOPT_URL => $request,
-        CURLOPT_HTTPHEADER => array(
+        CURLOPT_HTTPHEADER => [
             "Authorization: Bearer {$access_token}"
-        ),
+        ],
         CURLOPT_RETURNTRANSFER => true
-    ));
+    ]);
     return json_decode(curl_exec($info_request));
     curl_close($info);
 }
