@@ -165,6 +165,9 @@ $noDiscordLogin = true;                                             // true/fals
 $discordBotClientId = 0;
 $discordBotClientSecret = "";
 $discordBotRedirectUri = "https://example.com/discord-callback.php";
+$discordBotToken = "";
+$discordLogLevel = "INFO";					    // Do NOT change unless asked
+
 $guildRoles = [];
 
 $adminUsers = array('admin@example.com', 'Superadmin#13337');       // You can add multiple admins by adding them to the array.

@@ -145,7 +145,6 @@ $discordBotClientId = 0;
 $discordBotClientSecret = "";
 $discordBotRedirectUri = "https://example.com/discord-callback.php";
 $discordBotToken = "";
-$discordLogLevel = "INFO";					    // Do NOT change unless asked
 
 /**
  * Guilds ***Replace values within <>*** *** Match 1,2,3,4 values with access levels in access config
