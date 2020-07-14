@@ -2213,8 +2213,8 @@ function customizePokemonMarker(marker, item, skipNotification) {
         }
     }
 
-    if (item['level'] != null) {
-        var level = item['level']
+    if (item['level'] != null || item['cp_multiplier'] != null) {
+        var level = (item['level'] != null) ? item['level'] : getPokemonLevel(item['cp_multiplier'])
         if (notifiedMinLevel > 0 && level >= notifiedMinLevel) {
             if (!skipNotification) {
                 checkAndCreateSound(item['pokemon_id'])
