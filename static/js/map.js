@@ -191,7 +191,7 @@ var nestLayerGroup = new L.LayerGroup()
  <def> - defense as number
  <sta> - stamnia as number
  */
-var notifyIvTitle = '<pkm> lv<lv> <prc>% (<atk>/<def>/<sta>)'
+var notifyIvTitle = '<pkm> lv <lv> <prc>% (<atk>/<def>/<sta>)'
 var notifyNoIvTitle = '<pkm>'
 
 /*
