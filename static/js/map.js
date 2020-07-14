@@ -2131,8 +2131,9 @@ function getTimeUntil(time) {
 
 function getNotifyText(item) {
     var iv = getIv(item['individual_attack'], item['individual_defense'], item['individual_stamina'])
+    var level = (item['level'] != null) ? item['level'] : getPokemonLevel(item['cp_multiplier'])
     var find = ['<prc>', '<pkm>', '<lv>', '<atk>', '<def>', '<sta>']
-    var replace = [iv ? iv.toFixed(1) : '', item['pokemon_name'], item['level'], item['individual_attack'], item['individual_defense'], item['individual_stamina']]
+    var replace = [iv ? iv.toFixed(1) : '', item['pokemon_name'], level, item['individual_attack'], item['individual_defense'], item['individual_stamina']]
     var ntitle = repArray(iv ? notifyIvTitle : notifyNoIvTitle, find, replace)
     var dist = new Date(item['disappear_time']).toLocaleString([], {
         hour: '2-digit',
