@@ -185,12 +185,13 @@ var nestLayerGroup = new L.LayerGroup()
 /*
  text place holders:
  <pkm> - pokemon name
+ <lv>  - pokemon level
  <prc> - iv in percent without percent symbol
  <atk> - attack as number
  <def> - defense as number
  <sta> - stamnia as number
  */
-var notifyIvTitle = '<pkm> <prc>% (<atk>/<def>/<sta>)'
+var notifyIvTitle = '<pkm> lv<lv> <prc>% (<atk>/<def>/<sta>)'
 var notifyNoIvTitle = '<pkm>'
 
 /*
@@ -2126,8 +2127,8 @@ function getTimeUntil(time) {
 
 function getNotifyText(item) {
     var iv = getIv(item['individual_attack'], item['individual_defense'], item['individual_stamina'])
-    var find = ['<prc>', '<pkm>', '<atk>', '<def>', '<sta>']
-    var replace = [iv ? iv.toFixed(1) : '', item['pokemon_name'], item['individual_attack'], item['individual_defense'], item['individual_stamina']]
+    var find = ['<prc>', '<pkm>', '<lv>', '<atk>', '<def>', '<sta>']
+    var replace = [iv ? iv.toFixed(1) : '', item['pokemon_name'], item['level'], item['individual_attack'], item['individual_defense'], item['individual_stamina']]
     var ntitle = repArray(iv ? notifyIvTitle : notifyNoIvTitle, find, replace)
     var dist = new Date(item['disappear_time']).toLocaleString([], {
         hour: '2-digit',
