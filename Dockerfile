@@ -9,7 +9,7 @@
 FROM thecodingmachine/php:7.2-v1-apache-node10
 
 WORKDIR /var/www/html
-COPY . .
+COPY . /var/www/html
 RUN composer install
 RUN npm install
 RUN npm audit fix
