@@ -32,14 +32,29 @@ if (isset($_GET['action'])) {
     if ($_GET['action'] == 'discord-login') {
         $params = [
             'client_id' => $discordBotClientId,
-	        'redirect_uri' => $discordBotRedirectUri,
-	        'response_type' => 'code',
-	        'scope' => 'identify guilds'
+            'redirect_uri' => $discordBotRedirectUri,
+            'response_type' => 'code',
+            'scope' => 'identify guilds'
         ];
         header('Location: https://discordapp.com/api/oauth2/authorize' . '?' . http_build_query($params));
         die();
+    }
+    if ($_GET['action'] == 'facebook-login') {
+        $fb = new Facebook\Facebook([
+           'app_id' => $facebookAppId,
+           'app_secret' => $facebookAppSecret,
+           'default_graph_version' => 'v2.10',
+        ]);
+
+        $helper = $fb->getRedirectLoginHelper();
+        $permissions = ['email']; // Optional permissions
+        $loginUrl = $helper->getLoginUrl($facebookAppRedirectUri, $permissions);
+
+        header("Location: {$loginUrl}");
+        die();
     } else {
         header("Location: .");
+        die();
     }
 }
 
@@ -74,10 +89,9 @@ if (isset($_GET['callback'])) {
 
                 if (in_array($user->id, $userBlacklist)) {
                     header("Location: ./access-denied.php");
-                    $granted = false;
+                    die();
                 } else {
                     if (in_array($user->id, $userWhitelist)) {
-                        header("Location: .?login=true");
                         $granted = true;
                     } else {
                         foreach ($guilds as $guild) {
@@ -87,11 +101,10 @@ if (isset($_GET['callback'])) {
                                 if ($logFailedLogin) {
                                     logFailure($user->{'username'} . "#" . $user->{'discriminator'} . " has been blocked for being a member of " . $guildName . "\n");
                                 }
-                                header("Location: .?login=false");
+                                header("Location: ./access-denied.php");
                                 die();
                             } else {
                                 if (in_array($uses, $serverWhitelist)) {
-                                    header("Location: .?login=true");
                                     $granted = true;
                                 }
                             }
@@ -145,6 +158,7 @@ if (isset($_GET['callback'])) {
                 } else {
                     if ($manualAccessLevel) {
                         $manualdb->insert('users', [
+                            'session_id' => $response->access_token,
                             'id' => $user->id,
                             'user' => $user->username . '#' . $user->discriminator,
                             'avatar' => 'https://cdn.discordapp.com/avatars/' . $user->id . '/' . $user->avatar . '.png',
@@ -154,6 +168,7 @@ if (isset($_GET['callback'])) {
                         ]);
                     } else {
                         $manualdb->insert('users', [
+                            'session_id' => $response->access_token,
                             'id' => $user->id,
                             'user' => $user->username . '#' . $user->discriminator,
                             'access_level' => $accessRole,
@@ -167,11 +182,130 @@ if (isset($_GET['callback'])) {
                 setcookie("LoginCookie", $response->access_token, time() + $response->expires_in);
                 setcookie("LoginEngine", 'discord', time() + $response->expires_in);
             }
+            if ($granted === true) {
+                header("Location: .?login=true");
+                die();
+            }
 	}
-    } else {
-        header("Location: .");
     }
+    if ($_GET['callback'] == 'facebook') {
+        if ($_GET['code']) {
+            $fb = new Facebook\Facebook([
+                'app_id' => $facebookAppId,
+                'app_secret' => $facebookAppSecret,
+                'default_graph_version' => 'v2.10',
+            ]);
+            $helper = $fb->getRedirectLoginHelper();
 
+            try {
+                $accessToken = $helper->getAccessToken();
+            } catch(Facebook\Exceptions\FacebookResponseException $e) {
+                echo 'Graph returned an error: ' . $e->getMessage();
+                exit;
+            } catch(Facebook\Exceptions\FacebookSDKException $e) {
+                echo 'Facebook SDK returned an error: ' . $e->getMessage();
+                exit;
+            }
+
+            if (! isset($accessToken)) {
+                if ($helper->getError()) {
+                    header('HTTP/1.0 401 Unauthorized');
+                    echo "Error: " . $helper->getError() . "\n";
+                    echo "Error Code: " . $helper->getErrorCode() . "\n";
+                    echo "Error Reason: " . $helper->getErrorReason() . "\n";
+                    echo "Error Description: " . $helper->getErrorDescription() . "\n";
+                } else {
+                    header('HTTP/1.0 400 Bad Request');
+                    echo 'Bad request';
+                }
+                exit;
+            }
+            // The OAuth 2.0 client handler helps us manage access tokens
+            $oAuth2Client = $fb->getOAuth2Client();
+
+            // Get the access token metadata from /debug_token
+            $tokenMetadata = $oAuth2Client->debugToken($accessToken);
+
+            // Validation (these will throw FacebookSDKException's when they fail)
+            //$tokenMetadata->validateAppId($facebookAppId);
+            // If you know the user ID this access token belongs to, you can validate it here
+            //$tokenMetadata->validateUserId('123');
+            $tokenMetadata->validateExpiration();
+
+            if (! $accessToken->isLongLived()) {
+                try {
+                    $accessToken = $oAuth2Client->getLongLivedAccessToken($accessToken);
+                } catch (Facebook\Exceptions\FacebookSDKException $e) {
+                    echo "<p>Error getting long-lived access token: " . $e->getMessage() . "</p>\n\n";
+                    exit;
+                }
+            }
+	    $userToken = $accessToken->getValue();
+
+            try {
+                $response = $fb->get('/me?fields=id,name,picture', $userToken);
+            } catch(Facebook\Exceptions\FacebookResponseException $e) {
+                echo 'Graph returned an error: ' . $e->getMessage();
+                exit;
+            } catch(Facebook\Exceptions\FacebookSDKException $e) {
+                echo 'Facebook SDK returned an error: ' . $e->getMessage();
+                exit;
+            }
+
+            $user = $response->getGraphUser();
+            if ($manualdb->has('users', ['id' => $user['id'], 'login_system' => 'facebook'])) {
+                if ($manualAccessLevel) {
+                    $manualdb->update('users', [
+                        'session_id' => $userToken,
+                        'user' => $user['name'],
+                        'access_level' => $facebookAccessLevel,
+                        'avatar' => $user['picture']['url'],
+                    ], [
+                        'id' => $user['id'],
+                        'login_system' => 'facebook'
+                    ]);
+                } else {
+                    $manualdb->update('users', [
+                        'session_id' => $userToken,
+                        'expire_timestamp' => time() + 86400,
+                        'user' => $user['name'],
+                        'access_level' => $facebookAccessLevel,
+                        'avatar' => $user['picture']['url'],
+                    ], [
+                        'id' => $user['id'],
+                        'login_system' => 'facebook'
+                    ]);
+                }
+            } else {
+                if ($manualAccessLevel) {
+                    $manualdb->insert('users', [
+                        'session_id' => $userToken,
+                        'id' => $user['id'],
+                        'user' => $user['name'],
+                        'access_level' => $facebookAccessLevel,
+                        'avatar' => $user['picture']['url'],
+                        'expire_timestamp' => time() + 86400,
+                        'login_system' => 'facebook'
+                    ]);
+                } else {
+                    $manualdb->insert('users', [
+                        'session_id' => $userToken,
+                        'id' => $user['id'],
+                        'user' => $user['name'],
+                        'access_level' => $facebookAccessLevel,
+                        'avatar' => $user['picture']['url'],
+                        'access_level' => null,
+                        'expire_timestamp' => time() + 86400,
+                        'login_system' => 'facebook'
+                    ]);
+                }
+            }
+            setcookie("LoginCookie", $userToken, time() + 86400);
+            setcookie("LoginEngine", 'facebook', time() + 86400);
+            header("Location: .?login=true");
+            die();
+        }
+    }
 }
 if (!empty($_POST['refresh'])) {
     if ($_POST['refresh'] == 'discord') {

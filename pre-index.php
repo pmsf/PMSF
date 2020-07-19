@@ -1640,6 +1640,7 @@ if (!$noLoadingScreen) {
 	} else {
             echo "<div class='button-container'>
             <button style='background-color: #1877f2' onclick=\"location.href='./login?action=discord-login';\" value='Login with discord'><i class='fab fa-discord'></i>" . i8ln('Login with Discord') . "</button>
+            <button style='background-color: #1877f2' onclick=\"location.href='./login?action=facebook-login';\" value='Login with discord'><i class='fab fa-facebook'></i>" . i8ln('Login with Facebook') . "</button>
         </div>";
         }?>
         </div>
