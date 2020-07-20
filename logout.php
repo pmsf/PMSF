@@ -8,5 +8,6 @@ if (isset($_GET['action'])) {
         die();
     }
 }
+destroyCookiesAndSessions();
 header('Location: .');
 die;
