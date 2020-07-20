@@ -4,7 +4,7 @@ if (! file_exists('config/config.php')) {
     die("<h1>Config file missing</h1><p>Please ensure you have created your config file (<code>config/config.php</code>).</p>");
 }
 include('config/config.php');
-if ($noNativeLogin === false || $noDiscordLogin === false) {
+if ($noNativeLogin === false || $noDiscordLogin === false || $noFacebookLogin === false) {
     if (isset($_COOKIE["LoginCookie"])) {
         if (validateCookie($_COOKIE["LoginCookie"]) === false) {
             header("Location: .");
@@ -380,7 +380,7 @@ if (!$noLoadingScreen) {
         } ?>
         
         <?php
-        if ($noNativeLogin === false || $noDiscordLogin === false) {
+        if ($newAuth === true || !empty($_SESSION['user']->id)) {
             if (!empty($_SESSION['user']->id)) {
                 if ($_SESSION['user']->expire_timestamp < time() && $manualAccessLevel === true) {
                     echo '<i class="fas fa-user-times" title="' . i8ln('User Expired') . '" style="color: red;font-size: 20px;position: relative;float: right;padding: 0 5px;top: 17px;"></i>';
@@ -389,6 +389,14 @@ if (!$noLoadingScreen) {
                 }
             } else {
                 echo "<a href='#' onclick='openAccountModal(event);' style='float:right;padding:0 5px;' title='" . i8ln('Login') . "'><i class='fas fa-user' style='color:white;font-size:20px;vertical-align:middle;'></i></a>";
+            }
+        } else {
+            if (!empty($_SESSION['user']->id)) {
+                if ($_SESSION['user']->expire_timestamp < time() && $manualAccessLevel === true) {
+                    echo '<i class="fas fa-user-times" title="' . i8ln('User Expired') . '" style="color: red;font-size: 20px;position: relative;float: right;padding: 0 5px;top: 17px;"></i>';
+                }
+            } else {
+                echo "<a href='./user' style='float:right;padding:0 5px;' title='" . i8ln('Login') . "'><i class='fas fa-user' style='color:white;font-size:20px;vertical-align:middle;'></i></a>";
             }
         }
         ?>
@@ -1597,10 +1605,10 @@ if (!$noLoadingScreen) {
             </center>
         </div>
         <?php
-        if (($noNativeLogin === false || $noDiscordLogin === false) && !empty($_SESSION['user']->id)) {
+        if (!empty($_SESSION['user']->id)) {
             ?>
             <div><center>
-                <button class="settings" onclick="document.location.href='<?php echo $url = $newAuth ? 'logout?action=discord-logout' : './logout.php';?>'">
+                <button class="settings" onclick="document.location.href='<?php echo $url = $newAuth ? 'logout?action=' . $SESSION['user']->login_system . '-logout' : './logout.php';?>'">
                     <i class="fas fa-sign-out-alt" aria-hidden="true"></i> <?php echo i8ln('Logout'); ?>
                 </button>
             </center></div>
@@ -1625,7 +1633,7 @@ if (!$noLoadingScreen) {
             <?php
         }?>
         <?php
-        if (($noNativeLogin === false || $noDiscordLogin === false) && !empty($_SESSION['user']->id)) {
+        if (($noNativeLogin === false || $noDiscordLogin === false || $noFacebookLogin === false) && !empty($_SESSION['user']->id)) {
             if ($manualAccessLevel) {
                 $time = date("Y-m-d", $_SESSION['user']->expire_timestamp);
                 echo '<div><center><p>';
@@ -1638,10 +1646,14 @@ if (!$noLoadingScreen) {
             }
             echo '<div><center><p>' . i8ln('Logged in as') . ': ' . $_SESSION['user']->user . '</p></center></div><img src="' . $_SESSION['user']->avatar . '" style="height:80px;width:80px;border-radius:50%;border:2px solid;"><br>';
 	} else {
-            echo "<div class='button-container'>
-            <button style='background-color: #1877f2' onclick=\"location.href='./login?action=discord-login';\" value='Login with discord'><i class='fab fa-discord'></i>" . i8ln('Login with Discord') . "</button>
-            <button style='background-color: #1877f2' onclick=\"location.href='./login?action=facebook-login';\" value='Login with discord'><i class='fab fa-facebook'></i>" . i8ln('Login with Facebook') . "</button>
-        </div>";
+            echo "<div class='button-container'>";
+            if ($noDiscordLogin === false) {
+                echo "<button style='background-color: #1877f2' onclick=\"location.href='./login?action=discord-login';\" value='Login with discord'><i class='fab fa-discord'></i>" . i8ln('Login with Discord') . "</button>";
+            }
+            if ($noFacebookLogin === false) {
+	        echo "<button style='background-color: #1877f2' onclick=\"location.href='./login?action=facebook-login';\" value='Login with discord'><i class='fab fa-facebook'></i>" . i8ln('Login with Facebook') . "</button>";
+            }
+            echo "</div>";
         }?>
         </div>
     </div>
@@ -2272,7 +2284,7 @@ if (!$noLoadingScreen) {
     var noAddNewCommunity = <?php echo $noAddNewCommunity === true ? 'true' : 'false' ?>;
     var noDeleteCommunity = <?php echo $noDeleteCommunity === true ? 'true' : 'false' ?>;
     var noEditCommunity = <?php echo $noEditCommunity === true ? 'true' : 'false' ?>;
-    var login = <?php echo $noNativeLogin === false || $noDiscordLogin === false  ? 'true' : 'false' ?>;
+    var login = <?php echo $noNativeLogin === false || $noDiscordLogin === false || $noFacebookLogin === false ? 'true' : 'false' ?>;
     var expireTimestamp = <?php echo isset($_SESSION['user']->expire_timestamp) ? $_SESSION['user']->expire_timestamp : 0 ?>;
     var timestamp = <?php echo time() ?>;
     var noRenamePokestops = <?php echo $noRenamePokestops === true ? 'true' : 'false' ?>;

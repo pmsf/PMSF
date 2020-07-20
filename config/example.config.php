@@ -171,6 +171,11 @@ $guildRoles = [
         ]
     ]
 ];
+$noFacebookLogin = true;
+$facebookAppId = '';						    // Facebook App ID
+$facebookAppSecret = '';					    // Facebook App Secret
+$facebookAppRedirectUri = 'https://Yourdomain.com/login?callback=facebook';	// Callback url make sure this is the same as set in Facebook app config
+$facebookAccessLevel = '1';					    // Accesslevel used in access-config.php
 
 $userBlacklist = [''];                                              // Array of user ID's that are always blocked from accessing the map
 $userWhitelist = [''];                                              // Array of user ID's that's allowed to bypass the server blacklist
