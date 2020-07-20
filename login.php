@@ -47,8 +47,7 @@ if (isset($_GET['action'])) {
         ]);
 
         $helper = $fb->getRedirectLoginHelper();
-        $permissions = ['email']; // Optional permissions
-        $loginUrl = $helper->getLoginUrl($facebookAppRedirectUri, $permissions);
+        $loginUrl = $helper->getLoginUrl($facebookAppRedirectUri);
 
         header("Location: {$loginUrl}");
         die();
@@ -336,6 +335,11 @@ if (!empty($_POST['refresh'])) {
     $answer = json_encode($answer);
     echo $answer;
 }
+// Facebook deauthorization
+if (!empty($_POST['signed_request'])) {
+    $request = parse_signed_request($_POST['signed_request']);
+    $manualdb->delete('users', ['id' => $request['user_id']]);
+}
 
 function request($request, $access_token) {
     $info_request = curl_init();
@@ -371,4 +375,27 @@ function checkAccessLevel ($userId, $guilds) {
         }
     }
     return $accessRole;
+}
+function parse_signed_request($signed_request) {
+    global $facebookAppSecret;
+    list($encoded_sig, $payload) = explode('.', $signed_request, 2);
+
+    $secret = $facebookAppSecret; // Use your app secret here
+
+    // decode the data
+    $sig = base64_url_decode($encoded_sig);
+    $data = json_decode(base64_url_decode($payload), true);
+
+    // confirm the signature
+    $expected_sig = hash_hmac('sha256', $payload, $secret, $raw = true);
+    if ($sig !== $expected_sig) {
+        error_log('Bad Signed JSON signature!');
+        return null;
+    }
+
+    return $data;
+}
+
+function base64_url_decode($input) {
+    return base64_decode(strtr($input, '-_', '+/'));
 }
