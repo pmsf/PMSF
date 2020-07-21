@@ -62,7 +62,11 @@ include('config/config.php');
             validateCookie($_COOKIE["LoginCookie"]);
         }
         if ($noNativeLogin === true && $noDiscordLogin === false && empty($_SESSION['user']->id)) {
-            header("Location: ./discord-login");
+            if ($newAuth) {
+                header("Location: ./login?action=discord-login");
+            } else {
+                header("Location: ./discord-login");
+            }
         } elseif ($noNativeLogin === true && $noDiscordLogin === false && !empty($_SESSION['user']->id) && !in_array(isset($_SESSION['user']->user) ? $_SESSION['user']->user : null, $adminUsers)) {
             header("Location: .?login=true");
         }

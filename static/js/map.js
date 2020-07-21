@@ -468,6 +468,7 @@ function initMap() { // eslint-disable-line no-unused-vars
     createSnow()
     createFireworks()
     createHearts()
+    updateUser()
 
     map.on('moveend', function () {
         updateS2Overlay()
@@ -4813,6 +4814,19 @@ function openRenamePokestopModal(event) { // eslint-disable-line no-unused-vars
     })
 }
 
+function openAccountModal(event) { // eslint-disable-line no-unused-vars
+    $('.ui-dialog').remove()
+    $('.account-modal').clone().dialog({
+        modal: true,
+        maxHeight: 600,
+        buttons: {},
+        title: i8ln('Profile'),
+        classes: {
+            'ui-dialog': 'ui-dialog raid-widget-popup'
+        }
+    })
+}
+
 function openRenameGymModal(event) { // eslint-disable-line no-unused-vars
     $('.ui-dialog').remove()
     var val = $(event.target).data('id')
@@ -7040,6 +7054,7 @@ $(function () {
     window.setInterval(updateMap, queryInterval)
     window.setInterval(updateWeatherOverlay, 60000)
     window.setInterval(updateGeoLocation, 1000)
+    window.setInterval(updateUser, 300000)
 
     createUpdateWorker()
 
@@ -7607,5 +7622,51 @@ function checkAndCreateSound(pokemonId = 0) {
             createjs.Sound.play(pokemonId)
         }
     }
+}
+function updateUser() {
+    var engine = getCookie('LoginEngine')
+    if (engine === '') {
+        return false
+    }
+    loadUser(engine).done(function (result) {
+        if (result === 'reload') {
+            window.location.href = './logout?action=' + engine + '-logout'
+        }
+    })
+}
+function loadUser(engine) {
+    return $.ajax({
+        url: 'login',
+        type: 'POST',
+        timeout: 3600,
+        data: {
+            'refresh': engine
+        },
+        dataType: 'json',
+        cache: false,
+        error: function error() {
+            // Display error toast
+            toastr['error'](i8ln('Manually reload the page'), i8ln('Failed to refresh session'))
+            toastr.options = toastrOptions
+        },
+        complete: function complete() {
+            updateMap()
+        }
+    })
+}
+function getCookie(cname) {
+    var name = cname + '='
+    var decodedCookie = decodeURIComponent(document.cookie)
+    var ca = decodedCookie.split(';')
+    for (var i = 0; i < ca.length; i++) {
+        var c = ca[i]
+        while (c.charAt(0) === ' ') {
+            c = c.substring(1)
+        }
+        if (c.indexOf(name) === 0) {
+            return c.substring(name.length, c.length)
+        }
+    }
+    return ''
 }
 //

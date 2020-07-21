@@ -131,6 +131,7 @@ $imgurCID = "";
 // Login
 //-----------------------------------------------------
 $forcedLogin = false;                                               // Force users to login before they can see map
+$newAuth = false;
 $adminUsers = ['admin@example.com', 'admin2@example.com'];          // You can add multiple admins by adding them to the array.
 $manualAccessLevel = false;
 /* Discord Auth */
@@ -143,6 +144,38 @@ $noDiscordLogin = true;                                             // This will
 $discordBotClientId = 0;
 $discordBotClientSecret = "";
 $discordBotRedirectUri = "https://example.com/discord-callback.php";
+$discordBotToken = "";
+
+/**
+ * Guilds ***Replace values within <>*** *** Match 1,2,3,4 values with access levels in access config
+ * Remove or add according your needs
+**/
+$guildRoles = [
+    'guildIDS' => [
+        '<guildid>' => [
+            '<roleid>' => 1,
+            '<roleid>' => 2,
+            '<roleid>' => 3,
+            '<roleid>' => 4
+        ],
+        '<guildid>' => [
+            '<roleid>' => 1,
+            '<roleid>' => 2,
+            '<roleid>' => 3,
+            '<roleid>' => 4
+        ],
+        '<guildid>' => [
+            '<roleid>' => 1,
+            '<roleid>' => 2,
+            '<roleid>' => 3
+        ]
+    ]
+];
+$noFacebookLogin = true;
+$facebookAppId = '';						    // Facebook App ID
+$facebookAppSecret = '';					    // Facebook App Secret
+$facebookAppRedirectUri = 'https://Yourdomain.com/login?callback=facebook';	// Callback url make sure this is the same as set in Facebook app config
+$facebookAccessLevel = '1';					    // Accesslevel used in access-config.php
 
 $userBlacklist = [''];                                              // Array of user ID's that are always blocked from accessing the map
 $userWhitelist = [''];                                              // Array of user ID's that's allowed to bypass the server blacklist
