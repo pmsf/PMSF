@@ -5242,6 +5242,17 @@
             "color": "#f08030"
           }
         ]
+      },
+      {
+        "nameform": "Galarian",
+        "protoform": "2336",
+        "assetsform": "00",
+        "formtypes": [
+          {
+            "type": "Psychic",
+            "color": "#f85888"
+          }
+        ]
       }
     ]
   },
@@ -5288,6 +5299,21 @@
           {
             "type": "Fire",
             "color": "#f08030"
+          }
+        ]
+      },
+      {
+        "nameform": "Galarian",
+        "protoform": "2337",
+        "assetsform": "00",
+        "formtypes": [
+          {
+            "type": "Psychic",
+            "color": "#f85888"
+          },
+          {
+            "type": "Fairy",
+            "color": "#e898e8"
           }
         ]
       }
@@ -5354,6 +5380,17 @@
             "color": "#f85888"
           }
         ]
+      },
+      {
+        "nameform": "Galarian",
+        "protoform": "2582",
+        "assetsform": "00",
+        "formtypes": [
+          {
+            "type": "Psychic",
+            "color": "#f85888"
+          }
+        ]
       }
     ]
   },
@@ -5413,6 +5450,17 @@
             "type": "Water",
             "color": "#6890f0"
           },
+          {
+            "type": "Psychic",
+            "color": "#f85888"
+          }
+        ]
+      },
+      {
+        "nameform": "Galarian",
+        "protoform": "2583",
+        "assetsform": "00",
+        "formtypes": [
           {
             "type": "Psychic",
             "color": "#f85888"
@@ -6344,6 +6392,21 @@
       {
         "nameform": "Purified",
         "protoform": "1046",
+        "assetsform": "00",
+        "formtypes": [
+          {
+            "type": "Ghost",
+            "color": "#705898"
+          },
+          {
+            "type": "Poison",
+            "color": "#a040a0"
+          }
+        ]
+      },
+      {
+        "nameform": "Costume 2020",
+        "protoform": "2586",
         "assetsform": "00",
         "formtypes": [
           {
@@ -8029,6 +8092,21 @@
             "color": "#e898e8"
           }
         ]
+      },
+      {
+        "nameform": "Galarian",
+        "protoform": "2339",
+        "assetsform": "00",
+        "formtypes": [
+          {
+            "type": "Psychic",
+            "color": "#f85888"
+          },
+          {
+            "type": "Ice",
+            "color": "#98d8d8"
+          }
+        ]
       }
     ]
   },
@@ -8574,6 +8652,24 @@
       {
         "nameform": "Purified",
         "protoform": "324",
+        "assetsform": "00",
+        "baseStamina": 277,
+        "baseAttack": 165,
+        "baseDefense": 174,
+        "formtypes": [
+          {
+            "type": "Water",
+            "color": "#6890f0"
+          },
+          {
+            "type": "Ice",
+            "color": "#98d8d8"
+          }
+        ]
+      },
+      {
+        "nameform": "Costume 2020",
+        "protoform": "2585",
         "assetsform": "00",
         "baseStamina": 277,
         "baseAttack": 165,
@@ -14296,6 +14392,21 @@
           {
             "type": "Water",
             "color": "#6890f0"
+          },
+          {
+            "type": "Rock",
+            "color": "#b8a038"
+          }
+        ]
+      },
+      {
+        "nameform": "Galarian",
+        "protoform": "2340",
+        "assetsform": "00",
+        "formtypes": [
+          {
+            "type": "Ghost",
+            "color": "#705898"
           },
           {
             "type": "Rock",
@@ -34624,6 +34735,21 @@
           {
             "type": "Ghost",
             "color": "#705898"
+          }
+        ]
+      },
+      {
+        "nameform": "Galarian",
+        "protoform": "2344",
+        "assetsform": "00",
+        "formtypes": [
+          {
+            "type": "Ghost",
+            "color": "#705898"
+          },
+          {
+            "type": "Ground",
+            "color": "#e0c068"
           }
         ]
       }

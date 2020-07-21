@@ -279,6 +279,11 @@ var StoreOptions = {
             default: defaultDustAmount,
             type: StoreTypes.Number
         },
+    'showNestAvg':
+        {
+            default: nestAvgDefault,
+            type: StoreTypes.Number
+        },
     'showWeather':
         {
             default: enableWeatherOverlay,

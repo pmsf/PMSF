@@ -323,5 +323,8 @@
   "Dark Mode":"Ciemny Motyw",
   "Quest found":"Quest wykryty",
   "Last seen":"Ostatni skan",
-  "Notify of IV":"Powiadomienia o IV"
+  "Notify of IV":"Powiadomienia o IV",
+  "Membership expires on": "Dostęp wygasa:",
+  "Membership expired on": "Dostęp wygasł:",
+  "Show nest average. ": "Średnia ilość Poków: "
 }

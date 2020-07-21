@@ -20,7 +20,7 @@
     "grunt": "Female",
     "second_reward": "false",
     "encounters":{
-        "first": ["131_00"],
+        "first": ["143_00"],
         "second":["062_00","143_00","282_00"],
         "third":["130_00","143_00","149_00"]
     }
@@ -34,7 +34,7 @@
     "grunt": "Male",
     "second_reward": "false",
     "encounters":{
-        "first": ["013_00","048_00"],
+        "first": ["013_00","048_00","213_00"],
         "second":["014_00","049_00","212_00"],
         "third":["015_00","123_00","212_00"]
     }
@@ -55,7 +55,13 @@
   },
   "10": {
     "type": "Dark",
-    "grunt": "Female"
+    "grunt": "Female",
+    "second_reward": "false",
+    "encounters":{
+        "first": ["434_00"],
+        "second":["302_00","434_00","435_00"],
+        "third":["435_00"]
+    }
   },
   "11": {
     "type": "Dark",
@@ -63,7 +69,13 @@
   },
   "12": {
     "type": "Dragon",
-    "grunt": "Female"
+    "grunt": "Female",
+    "second_reward": "false",
+    "encounters":{
+        "first": ["147_00"],
+        "second":["148_00","330_00"],
+        "third":["148_00","149_00","371_00"]
+    }
   },
   "13": {
     "type": "Dragon",
@@ -82,10 +94,10 @@
     "grunt": "Female",
     "second_reward": "false",
     "encounters":{
-        "first": ["106_00","107_00"],
-        "second":["107_00"],
-        "third":["107_00"]
-	}
+        "first": ["066_00","106_00","107_00"],
+        "second":["066_00","106_00"],
+        "third":["067_00"]
+    }
   },
   "17": {
     "type": "Fighting",
@@ -97,8 +109,8 @@
     "second_reward": "true",
     "encounters":{
         "first": ["037_00","058_00","228_00"],
-        "second":["005_00","038_00","229_00"],
-        "third":["005_00","059_00","229_00"]
+        "second":["038_00","229_00"],
+        "third":["059_00","229_00"]
     }
   },
   "19": {
@@ -128,7 +140,7 @@
     "grunt": "Male",
     "second_reward": "true",
     "encounters":{
-        "first": ["102_00"],
+        "first": ["102_00","387_00"],
         "second":["002_00","044_00","070_00"],
         "third":["045_00","071_00","275_00"]
     }
@@ -142,14 +154,20 @@
     "grunt": "Male",
     "second_reward": "false",
     "encounters":{
-        "first": ["027_00","246_00","328_00"],
+        "first": ["207_00"],
         "second":["105_00","247_00","329_00"],
-        "third":["105_00","330_00"]
+        "third":["330_00","472_00"]
     }
   },
   "26": {
     "type": "Ice",
-    "grunt": "Female"
+    "grunt": "Female",
+    "second_reward": "false",
+    "encounters":{
+        "first": ["459_00"],
+        "second":["459_00","460_00"],
+        "third":["131_00","460_00"]
+    }
   },
   "27": {
     "type": "Ice",
@@ -172,14 +190,20 @@
     "grunt": "Male",
     "second_reward": "false",
     "encounters":{
-        "first": ["137_00"],
-        "second":["233_00"],
+        "first": ["019_00","041_00","137_00"],
+        "second":["020_00","233_00"],
         "third":["143_00","474_00"]
     }
   },
   "32": {
     "type": "Poison",
-    "grunt": "Female"
+    "grunt": "Female",
+    "second_reward": "false",
+    "encounters":{
+        "first": ["029_00","032_00"],
+        "second":["042_00","088_00","089_00"],
+        "third":["030_00","033_00"]
+    }
   },
   "33": {
     "type": "Poison",
@@ -194,7 +218,7 @@
     "grunt": "Male",
     "second_reward": "true",
     "encounters":{
-        "first": ["063_00","202_00","280_00"],
+        "first": ["096_00","202_00"],
         "second":["096_00","097_00","280_00"],
         "third":["064_00","097_00","281_00"]
     }
@@ -208,24 +232,30 @@
     "grunt": "Male",
     "second_reward": "false",
     "encounters":{
-        "first": ["138_00","246_00"],
+        "first": ["138_00", "213_00"],
         "second":["246_00","247_00"],
         "third":["247_00","248_00"]
-	}
+    }
   },
   "38": {
     "type": "Water",
     "grunt": "Female",
     "second_reward": "false",
     "encounters":{
-        "first": ["258_00","318_00"],
+        "first": ["054_00","258_00"],
         "second":["055_00","061_00"],
         "third":["062_00","186_00"]
     }
   },
   "39": {
     "type": "Water",
-    "grunt": "Male"
+    "grunt": "Male",
+    "second_reward": "false",
+    "encounters":{
+        "first": ["129_00"],
+        "second":["129_00"],
+        "third":["129_00"]
+    }
   },
   "40": {
     "type": "Player Team Leader",
@@ -236,8 +266,8 @@
     "grunt": "",
     "second_reward": "false",
     "encounters":{
-        "first": ["127_00"],
-        "second":["105_00","138_00","466_00"],
+        "first": ["088_00"],
+        "second":["068_00","139_00","466_00"],
         "third":["248_00","260_00","389_00"]
     }
   },
@@ -246,7 +276,7 @@
     "grunt": "",
     "second_reward": "false",
     "encounters":{
-        "first": ["303_00"],
+        "first": ["204_00"],
         "second":["006_00","009_00","208_00"],
         "third":["149_00","212_00","373_00"]
     }
@@ -256,9 +286,9 @@
     "grunt": "",
     "second_reward": "false",
     "encounters":{
-        "first": ["374_00"],
+        "first": ["131_00"],
         "second":["103_00","131_00","319_00"],
-        "third":["065_00","228_00","275_00"]
+        "third":["065_00","229_00","275_00"]
     }
   },
   "44": {
@@ -266,7 +296,7 @@
     "grunt": "",
     "second_reward": "false",
     "encounters":{
-        "first": ["244_00"]
+        "first": ["245_00"]
     }
   },
   "45": {
@@ -275,7 +305,13 @@
   },
   "46": {
     "type": "Decoy",
-    "grunt": "Female"
+    "grunt": "Female",
+    "second_reward": "false",
+    "encounters":{
+        "first": ["069_00"],
+        "second":["020_00","070_00","445_00"],
+        "third":["020_00","143_00"]
+    }
   },
   "47": {
     "type": "Ghost",

@@ -216,6 +216,7 @@
     "noLastScan": true,
     "noDarkMode": true,
     "defaultDustAmount": true,
-    "noCatchRates": true
+    "noCatchRates": true,
+    "nestAvgDefault": true
   }
 }
