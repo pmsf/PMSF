@@ -130,12 +130,16 @@ if (isset($_GET['callback'])) {
                         }
                     }
                 }
+                $format = '.png';
+                if (strpos($user->avatar, 'a_') === 0) {
+                    $format = '.gif';
+                }
                 if ($manualdb->has('users', ['id' => $user->id, 'login_system' => 'discord'])) {
                     if ($manualAccessLevel) {
                         $manualdb->update('users', [
                             'session_id' => $response->access_token,
                             'user' => $user->username . '#' . $user->discriminator,
-                            'avatar' => 'https://cdn.discordapp.com/avatars/' . $user->id . '/' . $user->avatar . '.png',
+                            'avatar' => 'https://cdn.discordapp.com/avatars/' . $user->id . '/' . $user->avatar . $format,
                             'discord_guilds' => json_encode($guilds)
                         ], [
                             'id' => $user->id,
@@ -147,7 +151,7 @@ if (isset($_GET['callback'])) {
                             'expire_timestamp' => time() + $response->expires_in,
                             'user' => $user->username . '#' . $user->discriminator,
                             'access_level' => $accessRole,
-                            'avatar' => 'https://cdn.discordapp.com/avatars/' . $user->id . '/' . $user->avatar . '.png',
+                            'avatar' => 'https://cdn.discordapp.com/avatars/' . $user->id . '/' . $user->avatar . $format,
                             'discord_guilds' => json_encode($guilds)
                         ], [
                             'id' => $user->id,
@@ -160,7 +164,7 @@ if (isset($_GET['callback'])) {
                             'session_id' => $response->access_token,
                             'id' => $user->id,
                             'user' => $user->username . '#' . $user->discriminator,
-                            'avatar' => 'https://cdn.discordapp.com/avatars/' . $user->id . '/' . $user->avatar . '.png',
+                            'avatar' => 'https://cdn.discordapp.com/avatars/' . $user->id . '/' . $user->avatar . $format,
                             'expire_timestamp' => time() + $response->expires_in,
                             'login_system' => 'discord',
                             'discord_guilds' => json_encode($guilds)
@@ -171,7 +175,7 @@ if (isset($_GET['callback'])) {
                             'id' => $user->id,
                             'user' => $user->username . '#' . $user->discriminator,
                             'access_level' => $accessRole,
-                            'avatar' => 'https://cdn.discordapp.com/avatars/' . $user->id . '/' . $user->avatar . '.png',
+                            'avatar' => 'https://cdn.discordapp.com/avatars/' . $user->id . '/' . $user->avatar . $format,
                             'expire_timestamp' => time() + $response->expires_in,
                             'login_system' => 'discord',
                             'discord_guilds' => json_encode($guilds)
