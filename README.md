@@ -10,6 +10,7 @@ It supports all the common database engines, including MySQL, MariaDB
 A special Database structure based on Hydro Monocle is needed.
 
 ## Get Started
+[Wiki](https://github.com/pmsf/PMSF/wiki)
 Join our [Discord](https://discord.gg/yGujp8D) channel for more info about installation.
 
 ## Feature Requests
