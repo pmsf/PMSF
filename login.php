@@ -86,6 +86,7 @@ if (isset($_GET['callback'])) {
                 $user = request($user_request, $access_token);
                 $guilds = request($guilds_request, $access_token);
 
+                $granted = false;
                 if (in_array($user->id, $userBlacklist)) {
                     header("Location: ./access-denied.php");
                     die();
@@ -115,7 +116,7 @@ if (isset($_GET['callback'])) {
                     die();
                 }
                 if (!empty($guildRoles)) {
-                    $accessRole = null;
+                    $accessRole = 0;
                     foreach ($guildRoles['guildIDS'] as $guild => $guildRoles) {
                         $isMember = array_search($guild , array_column($guilds, 'id'));
                         if (!empty($isMember)) {
