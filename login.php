@@ -137,7 +137,7 @@ if (isset($_GET['callback'])) {
                 }
 
                 $avatar = 'https://discordapp.com/assets/6debd47ed13483642cf09e832ed0bc1b.png';
-                if ($user->avatar !== '') {
+                if (!empty($user->avatar)) {
                     $avatar = 'https://cdn.discordapp.com/avatars/' . $user->id . '/' . $user->avatar . $format;
                 }
 
