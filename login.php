@@ -29,6 +29,48 @@ $logger->pushHandler(new FirePHPHandler());
 $discord = new DiscordClient(['token' => $discordBotToken, 'logger' => $logger]); // Token is required
 
 if (isset($_GET['action'])) {
+    if ($_GET['action'] == 'force') {
+        $html = '<html>
+        <head>
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <link rel="stylesheet" href="static/dist/css/app.min.css">
+        </head>
+        <body>
+            <h2>' . $title . ' Login Form</h2>
+            <div id="login-force" class="force-modal">
+                 <form class="force-modal-content animate" action="/action_page.php" method="post">
+                     <div class="imgcontainer">
+                         <img src="static/images/pokedex.png" alt="Avatar" class="avatar">
+                     </div>
+                     <div class="force-container">
+                         <label for="uname"><b>Username</b></label>
+                         <input type="text" placeholder="Enter Username" name="uname" required>
+
+                         <label for="psw"><b>Password</b></label>
+                         <input type="password" placeholder="Enter Password" name="psw" required>
+        
+                         <button type="submit" class="force-button">Login</button>
+                         <label>
+                             <input type="checkbox" checked="checked" name="remember"> Remember me
+			 </label>';
+                         if ($noDiscordLogin === false) {
+			     $html .= "<button style='background-color: #1877f2' onclick=\"location.href='./login?action=discord-login';\" value='Login with discord'><i class='fab fa-discord'></i>" . i8ln('Login with Discord') . "</button>";
+			 }
+                         if ($noFacebookLogin === false) {
+                             $html .= "<button style='background-color: #1877f2' onclick=\"location.href='./login?action=facebook-login';\" value='Login with discord'><i class='fab fa-facebook'></i>" . i8ln('Login with Facebook') . "</button>";
+                         }
+                     $html .= '</div>
+
+                     <div class="force=container" style="background-color:#f1f1f1">
+                         <span class="psw">Forgot <a href="#">password?</a></span>
+                     </div>
+                 </form>
+	</div>
+        </body>
+	</html>';
+        echo $html;
+        die();
+    }
     if ($_GET['action'] == 'discord-login') {
         $params = [
             'client_id' => $discordBotClientId,
