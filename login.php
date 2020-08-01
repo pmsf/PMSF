@@ -40,30 +40,35 @@ if (isset($_GET['action'])) {
             <div id="login-force" class="force-modal">
                  <form class="force-modal-content animate" action="/action_page.php" method="post">
                      <div class="imgcontainer">
-                         <img src="static/images/pokedex.png" alt="Avatar" class="avatar">
+                         <i class="fas fa-user" style="font-size:80px"></i>
                      </div>
-                     <div class="force-container">
-                         <label for="uname"><b>Username</b></label>
-                         <input type="text" placeholder="Enter Username" name="uname" required>
+		     <div class="force-container">';
+                         if ($noNativeLogin === false) {
+                             $html .= '<label for="uname"><b>Username</b></label>
+                             <input type="text" placeholder="Enter Username" name="uname" required>
 
-                         <label for="psw"><b>Password</b></label>
-                         <input type="password" placeholder="Enter Password" name="psw" required>
+                             <label for="psw"><b>Password</b></label>
+                             <input type="password" placeholder="Enter Password" name="psw" required>
         
-                         <button type="submit" class="force-button">Login</button>
-                         <label>
-                             <input type="checkbox" checked="checked" name="remember"> Remember me
-			 </label>';
+                             <button type="submit" class="force-button">Login</button>
+                             <label>
+			         <input type="checkbox" checked="checked" name="remember"> Remember me
+                                 <br>
+			     </label>';
+                         }
                          if ($noDiscordLogin === false) {
-			     $html .= "<button style='background-color: #1877f2' onclick=\"location.href='./login?action=discord-login';\" value='Login with discord'><i class='fab fa-discord'></i>" . i8ln('Login with Discord') . "</button>";
+			     $html .= "<button style='background-color: #1877f2; margin: 2px' onclick=\"location.href='./login?action=discord-login';\" value='Login with discord'><i class='fab fa-discord'></i>&nbsp" . i8ln('Login with Discord') . "</button>";
 			 }
                          if ($noFacebookLogin === false) {
-                             $html .= "<button style='background-color: #1877f2' onclick=\"location.href='./login?action=facebook-login';\" value='Login with discord'><i class='fab fa-facebook'></i>" . i8ln('Login with Facebook') . "</button>";
+                             $html .= "<button style='background-color: #1877f2; margin: 2px' onclick=\"location.href='./login?action=facebook-login';\" value='Login with discord'><i class='fab fa-facebook'></i>&nbsp" . i8ln('Login with Facebook') . "</button>";
                          }
                      $html .= '</div>
 
-                     <div class="force=container" style="background-color:#f1f1f1">
-                         <span class="psw">Forgot <a href="#">password?</a></span>
-                     </div>
+                     <div class="force-container" style="background-color:#f1f1f1">';
+                         if ($noNativeLogin === false) {
+			     $html .= '<span class="psw">Forgot <a href="#">password?</a></span>';
+                         }
+                     $html .= '</div>
                  </form>
 	</div>
         </body>
