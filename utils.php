@@ -230,6 +230,7 @@ function destroyCookiesAndSessions()
     
     $manualdb->update("users", [
         "session_id" => null,
+        "avatar" => null,
         "discord_guilds" => null
     ], [
         "id" => $_SESSION['user']->id,

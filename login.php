@@ -114,22 +114,9 @@ if (isset($_GET['callback'])) {
                     header("Location: .?login=false");
                     die();
                 }
-                if (!empty($guildRoles)) {
-                    $accessRole = null;
-                    foreach ($guildRoles['guildIDS'] as $guild => $guildRoles) {
-                        $isMember = array_search($guild , array_column($guilds, 'id'));
-                        if (!empty($isMember)) {
-                            $getMemberDetails = $discord->guild->getGuildMember(['guild.id' => $guild, 'user.id' => intval($user->id)]);
-                            foreach ($getMemberDetails->roles as $role) {
-                                if (array_key_exists($role, $guildRoles)) {
-                                    if ($accessRole < $guildRoles[$role]) {
-                                        $accessRole = $guildRoles[$role];
-                                    }
-                                }
-                            }
-                        }
-                    }
-                }
+
+                $accessRole = checkAccessLevel($user->id, $guilds);
+
                 if ($manualdb->has('users', ['id' => $user->id, 'login_system' => 'discord'])) {
                     if ($manualAccessLevel) {
                         $manualdb->update('users', [
@@ -146,7 +133,7 @@ if (isset($_GET['callback'])) {
                             'session_id' => $response->access_token,
                             'expire_timestamp' => time() + $response->expires_in,
                             'user' => $user->username . '#' . $user->discriminator,
-                            'access_level' => $accessRole,
+                            'access_level' => intval($accessRole),
                             'avatar' => 'https://cdn.discordapp.com/avatars/' . $user->id . '/' . $user->avatar . '.png',
                             'discord_guilds' => json_encode($guilds)
                         ], [
@@ -170,7 +157,7 @@ if (isset($_GET['callback'])) {
                             'session_id' => $response->access_token,
                             'id' => $user->id,
                             'user' => $user->username . '#' . $user->discriminator,
-                            'access_level' => $accessRole,
+                            'access_level' => intval($accessRole),
                             'avatar' => 'https://cdn.discordapp.com/avatars/' . $user->id . '/' . $user->avatar . '.png',
                             'expire_timestamp' => time() + $response->expires_in,
                             'login_system' => 'discord',
@@ -219,16 +206,10 @@ if (isset($_GET['callback'])) {
                 }
                 exit;
             }
-            // The OAuth 2.0 client handler helps us manage access tokens
             $oAuth2Client = $fb->getOAuth2Client();
 
-            // Get the access token metadata from /debug_token
             $tokenMetadata = $oAuth2Client->debugToken($accessToken);
 
-            // Validation (these will throw FacebookSDKException's when they fail)
-            //$tokenMetadata->validateAppId($facebookAppId);
-            // If you know the user ID this access token belongs to, you can validate it here
-            //$tokenMetadata->validateUserId('123');
             $tokenMetadata->validateExpiration();
 
             if (! $accessToken->isLongLived()) {
@@ -335,7 +316,6 @@ if (!empty($_POST['refresh'])) {
     $answer = json_encode($answer);
     echo $answer;
 }
-// Facebook deauthorization
 if (!empty($_POST['signed_request'])) {
     $request = parse_signed_request($_POST['signed_request']);
     $manualdb->delete('users', ['id' => $request['user_id']]);
@@ -360,15 +340,15 @@ function logFailure($logFailure) {
 }
 function checkAccessLevel ($userId, $guilds) {
     global $guildRoles, $discord;
-    $accessRole = null;
+    $accessRole = '';
     foreach ($guildRoles['guildIDS'] as $guild => $guildRoles) {
         $isMember = array_search($guild , array_column($guilds, 'id'));
         if (!empty($isMember)) {
             $getMemberDetails = $discord->guild->getGuildMember(['guild.id' => $guild, 'user.id' => intval($userId)]);
             foreach ($getMemberDetails->roles as $role) {
                 if (array_key_exists($role, $guildRoles)) {
-                    if ($accessRole < $guildRoles[$role]) {
-                        $accessRole = $guildRoles[$role];
+                    if ($accessRole < strval($guildRoles[$role])) {
+                        $accessRole = strval($guildRoles[$role]);
                     }
                 }
             }
@@ -380,13 +360,11 @@ function parse_signed_request($signed_request) {
     global $facebookAppSecret;
     list($encoded_sig, $payload) = explode('.', $signed_request, 2);
 
-    $secret = $facebookAppSecret; // Use your app secret here
+    $secret = $facebookAppSecret;
 
-    // decode the data
     $sig = base64_url_decode($encoded_sig);
     $data = json_decode(base64_url_decode($payload), true);
 
-    // confirm the signature
     $expected_sig = hash_hmac('sha256', $payload, $secret, $raw = true);
     if ($sig !== $expected_sig) {
         error_log('Bad Signed JSON signature!');
