@@ -100,7 +100,7 @@ if (isset($_GET['callback'])) {
                                 if ($logFailedLogin) {
                                     logFailure($user->{'username'} . "#" . $user->{'discriminator'} . " has been blocked for being a member of " . $guildName . "\n");
                                 }
-                                header("Location: ./access-denied.php");
+                                header("Location: .?login=false");
                                 die();
                             } else {
                                 if (in_array($uses, $serverWhitelist)) {

@@ -150,7 +150,6 @@ $userTimezone = date_default_timezone_get();
 //-----------------------------------------------------
 // Login  - You need to create the two tables referenced in sql.sql
 //-----------------------------------------------------
-$newAuth = false;
 $monologPath = 'php://stdout';
 $forcedLogin = false;
 $noNativeLogin = true;                                              // true/false - This will enable the built in login system.
