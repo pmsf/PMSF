@@ -98,7 +98,7 @@ if (isset($_GET['callback'])) {
                             $guildName = $guild->name;
                             if (in_array($uses, $serverBlacklist)) {
                                 if ($logFailedLogin) {
-                                    logFailure($user->{'username'} . "#" . $user->{'discriminator'} . " has been blocked for being a member of " . $guildName . "\n");
+                                    logFailure(strval($user->{'username'}) . "#" . $user->{'discriminator'} . " has been blocked for being a member of " . $guildName . "\n");
                                 }
                                 header("Location: .?login=false");
                                 die();
@@ -121,7 +121,7 @@ if (isset($_GET['callback'])) {
                     if ($manualAccessLevel) {
                         $manualdb->update('users', [
                             'session_id' => $response->access_token,
-                            'user' => $user->username . '#' . $user->discriminator,
+                            'user' => strval($user->username) . '#' . $user->discriminator,
                             'avatar' => 'https://cdn.discordapp.com/avatars/' . $user->id . '/' . $user->avatar . '.png',
                             'discord_guilds' => json_encode($guilds)
                         ], [
@@ -132,7 +132,7 @@ if (isset($_GET['callback'])) {
                         $manualdb->update('users', [
                             'session_id' => $response->access_token,
                             'expire_timestamp' => time() + $response->expires_in,
-                            'user' => $user->username . '#' . $user->discriminator,
+                            'user' => strval($user->username) . '#' . $user->discriminator,
                             'access_level' => intval($accessRole),
                             'avatar' => 'https://cdn.discordapp.com/avatars/' . $user->id . '/' . $user->avatar . '.png',
                             'discord_guilds' => json_encode($guilds)
@@ -146,7 +146,7 @@ if (isset($_GET['callback'])) {
                         $manualdb->insert('users', [
                             'session_id' => $response->access_token,
                             'id' => $user->id,
-                            'user' => $user->username . '#' . $user->discriminator,
+                            'user' => strval($user->username) . '#' . $user->discriminator,
                             'avatar' => 'https://cdn.discordapp.com/avatars/' . $user->id . '/' . $user->avatar . '.png',
                             'expire_timestamp' => time() + $response->expires_in,
                             'login_system' => 'discord',
@@ -156,7 +156,7 @@ if (isset($_GET['callback'])) {
                         $manualdb->insert('users', [
                             'session_id' => $response->access_token,
                             'id' => $user->id,
-                            'user' => $user->username . '#' . $user->discriminator,
+                            'user' => strval($user->username) . '#' . $user->discriminator,
                             'access_level' => intval($accessRole),
                             'avatar' => 'https://cdn.discordapp.com/avatars/' . $user->id . '/' . $user->avatar . '.png',
                             'expire_timestamp' => time() + $response->expires_in,
