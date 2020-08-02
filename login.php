@@ -34,7 +34,7 @@ if (isset($_GET['action'])) {
         <head>
         <meta charset="utf-8">
         <title>' . $title . ' Login</title>
-	<meta name="viewport" content="width=device-width, initial-scale=1">';
+        <meta name="viewport" content="width=device-width, initial-scale=1">';
         if ($faviconPath != "") {
             echo '<link rel="shortcut icon" href="' . $faviconPath . '"
                  type="image/x-icon">';
@@ -54,7 +54,7 @@ if (isset($_GET['action'])) {
 		     <div class="force-container">';
                          if ($noNativeLogin === false) {
                              $html .= "<label for='uname'><b>Username</b></label>
-                             <input type='text' placeholder='Enter Username' name='uname' required>
+                             <input type='email' placeholder='Enter Username' name='uname' required>
 
                              <label for='psw'><b>Password</b></label>
                              <input type='password' placeholder='Enter Password' name='psw' required>
@@ -91,11 +91,15 @@ if (isset($_GET['action'])) {
         if (password_verify($_POST['psw'], $info['password']) === true || password_verify($_POST['psw'], $info['temp_password']) === true) {
 
             $manualdb->update("users", [
-                "Session_ID" => session_id()
+                "session_id" => session_id()
             ], [
                 "user" => $_POST['uname'],
                 "login_system" => 'native'
             ]);
+            if (password_verify($_POST['psw'], $info['temp_password']) === true) {
+                header("Location: ./register?action=password-update&username=" . $_POST['uname'] . "");
+                die();
+            }
             if (password_verify($_POST['psw'], $info['password']) === true) {
                 if (!empty($info['temp_password'])) {
                     $manualdb->update("users", [
@@ -371,6 +375,7 @@ if (isset($_GET['callback'])) {
     }
 }
 if (!empty($_POST['refresh'])) {
+    $answer = '';
     if ($_POST['refresh'] == 'discord') {
         $dbUser = $manualdb->get('users', ['id','session_id', 'access_level', 'discord_guilds'],['id' => $_SESSION['user']->id]);
         if (empty($dbUser)) {
