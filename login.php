@@ -29,44 +29,50 @@ $logger->pushHandler(new FirePHPHandler());
 $discord = new DiscordClient(['token' => $discordBotToken, 'logger' => $logger]); // Token is required
 
 if (isset($_GET['action'])) {
-    if ($_GET['action'] == 'force') {
-        $html = '<html>
+    if ($_GET['action'] == 'login') {
+        $html = '<html lang="' . $locale . '">
         <head>
-        <meta name="viewport" content="width=device-width, initial-scale=1">
-        <link rel="stylesheet" href="static/dist/css/app.min.css">
+        <meta charset="utf-8">
+        <title>' . $title . ' Login</title>
+	<meta name="viewport" content="width=device-width, initial-scale=1">';
+        if ($faviconPath != "") {
+            echo '<link rel="shortcut icon" href="' . $faviconPath . '"
+                 type="image/x-icon">';
+        } else {
+            echo '<link rel="shortcut icon" href="static/appicons/favicon.ico"
+                 type="image/x-icon">';
+        }
+        $html .= '<link rel="stylesheet" href="static/dist/css/app.min.css">
         </head>
         <body>
-            <h2>' . $title . ' Login Form</h2>
+            <h2>' . $title . ' Login</h2>
             <div id="login-force" class="force-modal">
-                 <form class="force-modal-content animate" action="/action_page.php" method="post">
+                 <form class="force-modal-content animate" action="/login?action=native" method="post">
                      <div class="imgcontainer">
                          <i class="fas fa-user" style="font-size:80px"></i>
                      </div>
 		     <div class="force-container">';
                          if ($noNativeLogin === false) {
-                             $html .= '<label for="uname"><b>Username</b></label>
-                             <input type="text" placeholder="Enter Username" name="uname" required>
+                             $html .= "<label for='uname'><b>Username</b></label>
+                             <input type='text' placeholder='Enter Username' name='uname' required>
 
-                             <label for="psw"><b>Password</b></label>
-                             <input type="password" placeholder="Enter Password" name="psw" required>
+                             <label for='psw'><b>Password</b></label>
+                             <input type='password' placeholder='Enter Password' name='psw' required>
         
-                             <button type="submit" class="force-button">Login</button>
-                             <label>
-			         <input type="checkbox" checked="checked" name="remember"> Remember me
-                                 <br>
-			     </label>';
+                             <button type='submit' class='force-button'>Login</button>";
                          }
                          if ($noDiscordLogin === false) {
-			     $html .= "<button style='background-color: #1877f2; margin: 2px' onclick=\"location.href='./login?action=discord-login';\" value='Login with discord'><i class='fab fa-discord'></i>&nbsp" . i8ln('Login with Discord') . "</button>";
+			     $html .= "<button type='button' style='background-color: #1877f2; margin: 2px' onclick=\"location.href='./login?action=discord-login';\" value='Login with discord'><i class='fab fa-discord'></i>&nbsp" . i8ln('Login with Discord') . "</button>";
 			 }
                          if ($noFacebookLogin === false) {
-                             $html .= "<button style='background-color: #1877f2; margin: 2px' onclick=\"location.href='./login?action=facebook-login';\" value='Login with discord'><i class='fab fa-facebook'></i>&nbsp" . i8ln('Login with Facebook') . "</button>";
+                             $html .= "<button type='button' style='background-color: #1877f2; margin: 2px' onclick=\"location.href='./login?action=facebook-login';\" value='Login with discord'><i class='fab fa-facebook'></i>&nbsp" . i8ln('Login with Facebook') . "</button>";
                          }
                      $html .= '</div>
 
                      <div class="force-container" style="background-color:#f1f1f1">';
                          if ($noNativeLogin === false) {
-			     $html .= '<span class="psw">Forgot <a href="#">password?</a></span>';
+                             $html .= "<button type='button' style='background-color: #4CAF50; margin: 2px' onclick=\"location.href='./register?action=account';\" value='Register'><i class='fas fa-user'></i>&nbsp" . i8ln('Register') . "</button>";
+                             $html .= "<button type='button' style='background-color: #4CAF50; margin: 2px' onclick=\"location.href='./register?action=password-reset';\" value='Forgot password?'><i class='fas fa-lock'></i>&nbsp" . i8ln('Forgot Password') . "</button>";
                          }
                      $html .= '</div>
                  </form>
@@ -75,6 +81,36 @@ if (isset($_GET['action'])) {
 	</html>';
         echo $html;
         die();
+    }
+    if ($_GET['action'] == 'native') {
+        $info = $manualdb->query(
+            "SELECT id, user, password, expire_timestamp, temp_password FROM users WHERE user = :user AND login_system = 'native'", [
+                ":user" => $_POST['uname']
+            ]
+        )->fetch();
+        if (password_verify($_POST['psw'], $info['password']) === true || password_verify($_POST['psw'], $info['temp_password']) === true) {
+
+            $manualdb->update("users", [
+                "Session_ID" => session_id()
+            ], [
+                "user" => $_POST['uname'],
+                "login_system" => 'native'
+            ]);
+            if (password_verify($_POST['psw'], $info['password']) === true) {
+                if (!empty($info['temp_password'])) {
+                    $manualdb->update("users", [
+                        "temp_password" => null
+                    ], [
+                        "user" => $_POST['uname'],
+                        "login_system" => 'native'
+                    ]);
+                }
+            }
+            setcookie("LoginCookie", session_id(), time()+60*60*24*7);
+            setcookie("LoginEngine", 'native', time()+60*60*24*7);
+            header("Location: .?login=true");
+            die();
+        }
     }
     if ($_GET['action'] == 'discord-login') {
         $params = [

@@ -11,11 +11,11 @@ if ($noNativeLogin === false || $noDiscordLogin === false || $noFacebookLogin ==
         }
     }
     if (empty($_SESSION['user']->id) && $forcedLogin === true) {
-        header("Location: ./login?action=force");
+        header("Location: ./login?action=login");
 	die();
     }
     if (!empty($_SESSION['user']->updatePwd) && $_SESSION['user']->updatePwd === 1) {
-        header("Location: ./user");
+        header("Location: ./register?action=updatePwd");
         die();
     }
 }
