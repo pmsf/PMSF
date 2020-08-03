@@ -176,7 +176,6 @@ $facebookAppRedirectUri = 'https://Yourdomain.com/login?callback=facebook';	// C
 $facebookAccessLevel = '1';					    // Accesslevel used in access-config.php
 
 $adminUsers = array('admin@example.com', 'Superadmin#13337');       // You can add multiple admins by adding them to the array.
-$manualAccessLevel = false;
 
 /* Blacklist Settings - Only available with Discord login */
 $userBlacklist = [''];                                                                // Array of user ID's that are always blocked from accessing the map

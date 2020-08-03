@@ -132,7 +132,6 @@ $imgurCID = "";
 //-----------------------------------------------------
 $forcedLogin = false;                                               // Force users to login before they can see map
 $adminUsers = ['admin@example.com', 'admin2@example.com'];          // You can add multiple admins by adding them to the array.
-$manualAccessLevel = false;
 /* Discord Auth */
 $noDiscordLogin = true;                                             // This will enable login through discord.
                                                                     // 1. Create a discord bot here -> https://discordapp.com/developers/applications/me

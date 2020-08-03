@@ -382,13 +382,9 @@ if (!$noLoadingScreen) {
         
         <?php
         if (!empty($_SESSION['user']->id)) {
-            if ($_SESSION['user']->expire_timestamp < time() && $manualAccessLevel === true) {
-                echo '<i class="fas fa-user-times" title="' . i8ln('User Expired') . '" style="color: red;font-size: 20px;position: relative;float: right;padding: 0 5px;top: 17px;"></i>';
-            } else {
-                echo "<a href='#' onclick='openAccountModal(event);' style='float:right;padding:0 5px;' title='" . i8ln('Profile') . "'><img src='" .  $_SESSION['user']->avatar . "' style='height:40px;width:40px;border-radius:50%;border:2px solid;margin-top:10px'></a>";
-            }
+            echo "<a href='#' onclick='openAccountModal(event);' style='float:right;padding:0 5px;' title='" . i8ln('Profile') . "'><img src='" .  $_SESSION['user']->avatar . "' style='height:40px;width:40px;border-radius:50%;border:2px solid;margin-top:10px'></a>";
         } else {
-           echo "<a href='#' onclick='openAccountModal(event);' style='float:right;padding:0 5px;' title='" . i8ln('Profile') . "'><i class='fas fa-user' style='color:white;font-size:20px;vertical-align:middle;'></i></a>";
+            echo "<a href='#' onclick='openAccountModal(event);' style='float:right;padding:0 5px;' title='" . i8ln('Profile') . "'><i class='fas fa-user' style='color:white;font-size:20px;vertical-align:middle;'></i></a>";
         }
         ?>
     </header>
@@ -1639,17 +1635,7 @@ if (!$noLoadingScreen) {
             <?php
         }?>
         <?php
-        if (($noNativeLogin === false || $noDiscordLogin === false || $noFacebookLogin === false) && !empty($_SESSION['user']->id)) {
-            if ($manualAccessLevel) {
-                $time = date("Y-m-d", $_SESSION['user']->expire_timestamp);
-                echo '<div><center><p>';
-                if ($_SESSION['user']->expire_timestamp > time()) {
-                    echo "<span style='color: green;'>" . i8ln('Membership expires on') . " {$time}</span>";
-                } else {
-                    echo "<span style='color: red;'>" . i8ln('Membership expired on') . " {$time}</span>";
-                }
-                echo '</p></center></div>';
-            }
+        if (!empty($_SESSION['user']->id) {
             echo '<div><center><p>' . i8ln('Logged in as') . ': ' . $_SESSION['user']->user . '</p></center></div><img src="' . $_SESSION['user']->avatar . '" style="height:80px;width:80px;border-radius:50%;border:2px solid;"><br>';
 	} else {
             echo "<div class='button-container'>";

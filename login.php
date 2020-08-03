@@ -205,52 +205,28 @@ if (isset($_GET['callback'])) {
                 $accessRole = checkAccessLevel($user->id, $guilds);
 
                 if ($manualdb->has('users', ['id' => $user->id, 'login_system' => 'discord'])) {
-                    if ($manualAccessLevel) {
-                        $manualdb->update('users', [
-                            'session_id' => $response->access_token,
-                            'user' => strval($user->username) . '#' . $user->discriminator,
-                            'avatar' => 'https://cdn.discordapp.com/avatars/' . $user->id . '/' . $user->avatar . '.png',
-                            'discord_guilds' => json_encode($guilds)
-                        ], [
-                            'id' => $user->id,
-                            'login_system' => 'discord'
-                        ]);
-                    } else {
-                        $manualdb->update('users', [
-                            'session_id' => $response->access_token,
-                            'expire_timestamp' => time() + $response->expires_in,
-                            'user' => strval($user->username) . '#' . $user->discriminator,
-                            'access_level' => intval($accessRole),
-                            'avatar' => 'https://cdn.discordapp.com/avatars/' . $user->id . '/' . $user->avatar . '.png',
-                            'discord_guilds' => json_encode($guilds)
-                        ], [
-                            'id' => $user->id,
-                            'login_system' => 'discord'
-                        ]);
-                    }
+                    $manualdb->update('users', [
+                        'session_id' => $response->access_token,
+                        'expire_timestamp' => time() + $response->expires_in,
+                        'user' => strval($user->username) . '#' . $user->discriminator,
+                        'access_level' => intval($accessRole),
+                        'avatar' => 'https://cdn.discordapp.com/avatars/' . $user->id . '/' . $user->avatar . '.png',
+                        'discord_guilds' => json_encode($guilds)
+                    ], [
+                        'id' => $user->id,
+                        'login_system' => 'discord'
+                    ]);
                 } else {
-                    if ($manualAccessLevel) {
-                        $manualdb->insert('users', [
-                            'session_id' => $response->access_token,
-                            'id' => $user->id,
-                            'user' => strval($user->username) . '#' . $user->discriminator,
-                            'avatar' => 'https://cdn.discordapp.com/avatars/' . $user->id . '/' . $user->avatar . '.png',
-                            'expire_timestamp' => time() + $response->expires_in,
-                            'login_system' => 'discord',
-                            'discord_guilds' => json_encode($guilds)
-                        ]);
-                    } else {
-                        $manualdb->insert('users', [
-                            'session_id' => $response->access_token,
-                            'id' => $user->id,
-                            'user' => strval($user->username) . '#' . $user->discriminator,
-                            'access_level' => intval($accessRole),
-                            'avatar' => 'https://cdn.discordapp.com/avatars/' . $user->id . '/' . $user->avatar . '.png',
-                            'expire_timestamp' => time() + $response->expires_in,
-                            'login_system' => 'discord',
-                            'discord_guilds' => json_encode($guilds)
-                        ]);
-                    }
+                    $manualdb->insert('users', [
+                        'session_id' => $response->access_token,
+                        'id' => $user->id,
+                        'user' => strval($user->username) . '#' . $user->discriminator,
+                        'access_level' => intval($accessRole),
+                        'avatar' => 'https://cdn.discordapp.com/avatars/' . $user->id . '/' . $user->avatar . '.png',
+                        'expire_timestamp' => time() + $response->expires_in,
+                        'login_system' => 'discord',
+                        'discord_guilds' => json_encode($guilds)
+                    ]);
                 }
                 setcookie("LoginCookie", $response->access_token, time() + $response->expires_in);
                 setcookie("LoginEngine", 'discord', time() + $response->expires_in);
@@ -321,51 +297,27 @@ if (isset($_GET['callback'])) {
 
             $user = $response->getGraphUser();
             if ($manualdb->has('users', ['id' => $user['id'], 'login_system' => 'facebook'])) {
-                if ($manualAccessLevel) {
-                    $manualdb->update('users', [
-                        'session_id' => $userToken,
-                        'user' => $user['name'],
-                        'access_level' => $facebookAccessLevel,
-                        'avatar' => $user['picture']['url'],
-                    ], [
-                        'id' => $user['id'],
-                        'login_system' => 'facebook'
-                    ]);
-                } else {
-                    $manualdb->update('users', [
-                        'session_id' => $userToken,
-                        'expire_timestamp' => time() + 86400,
-                        'user' => $user['name'],
-                        'access_level' => $facebookAccessLevel,
-                        'avatar' => $user['picture']['url'],
-                    ], [
-                        'id' => $user['id'],
-                        'login_system' => 'facebook'
-                    ]);
-                }
+                $manualdb->update('users', [
+                    'session_id' => $userToken,
+                    'expire_timestamp' => time() + 86400,
+                    'user' => $user['name'],
+                    'access_level' => $facebookAccessLevel,
+                    'avatar' => $user['picture']['url'],
+                ], [
+                    'id' => $user['id'],
+                    'login_system' => 'facebook'
+                ]);
             } else {
-                if ($manualAccessLevel) {
-                    $manualdb->insert('users', [
-                        'session_id' => $userToken,
-                        'id' => $user['id'],
-                        'user' => $user['name'],
-                        'access_level' => $facebookAccessLevel,
-                        'avatar' => $user['picture']['url'],
-                        'expire_timestamp' => time() + 86400,
-                        'login_system' => 'facebook'
-                    ]);
-                } else {
-                    $manualdb->insert('users', [
-                        'session_id' => $userToken,
-                        'id' => $user['id'],
-                        'user' => $user['name'],
-                        'access_level' => $facebookAccessLevel,
-                        'avatar' => $user['picture']['url'],
-                        'access_level' => null,
-                        'expire_timestamp' => time() + 86400,
-                        'login_system' => 'facebook'
-                    ]);
-                }
+                $manualdb->insert('users', [
+                    'session_id' => $userToken,
+                    'id' => $user['id'],
+                    'user' => $user['name'],
+                    'access_level' => $facebookAccessLevel,
+                    'avatar' => $user['picture']['url'],
+                    'access_level' => null,
+                    'expire_timestamp' => time() + 86400,
+                    'login_system' => 'facebook'
+                ]);
             }
             setcookie("LoginCookie", $userToken, time() + 86400);
             setcookie("LoginEngine", 'facebook', time() + 86400);
