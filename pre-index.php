@@ -1610,6 +1610,15 @@ if (!$noLoadingScreen) {
                 </button>
             </center></div>
             <?php
+            if ($_SESSION['user']->login_system == 'native') {
+                ?>
+                <div><center>
+                    <button class="settings" onclick="document.location.href='<?php echo 'register?action=password-update&username=' . $_SESSION['user']->user;?>'">
+                        <i class="fas fa-lock" aria-hidden="true"></i> <?php echo i8ln('Change password'); ?>
+                    </button>
+		</center></div>
+            <?php
+            }
         } ?>
         <?php
         if (!$noLocaleSelection) {

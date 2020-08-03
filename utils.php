@@ -116,7 +116,7 @@ function deleteImage($imgurCID, $data)
     return $result;
 }
 
-function generateRandomString($length = 8)
+function generateRandomString($length = 12)
 {
     $characters = '0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ';
     $charactersLength = strlen($characters);
@@ -129,7 +129,7 @@ function generateRandomString($length = 8)
 
 function createUserAccount($user, $password, $newExpireTimestamp)
 {
-    global $manualdb;
+    global $manualdb, $discordUrl, $domainName, $title;
 
     $count = $manualdb->count("users", [
         "user" => $user,
@@ -155,6 +155,28 @@ function createUserAccount($user, $password, $newExpireTimestamp)
             ]);
 
             return true;
+            $subject = "[{$title}] - " . i8ln('Welcome') . "";
+            $message .= i8ln('Dear') . " {$user},<br><br>";
+            $message .= i8ln('Your account has been created') . "<br>";
+            if ($discordUrl) {
+                $message .= i8ln('For support, ask your questions in the ') . "<a href='{$discordUrl}'>" . i8ln('discord guild') . "</a>!<br><br>";
+            }
+            $message .= i8ln('Best Regards') . "<br>" . i8ln('Admin');
+            if ($title) {
+                $message .= " @ {$title}";
+            }
+            !empty($domainName) ? $domainName = $domainName : $domainName = $_SERVER['SERVER_NAME'];
+            $headers = "From: no-reply@{$domainName}" . "\r\n" .
+                "Reply-To: no-reply@{$domainName}" . "\r\n" .
+                'Content-Type: text/html; charset=utf-8' . "\r\n" .
+                'X-Mailer: PHP/' . phpversion();
+
+            $sendMail = mail($user, $subject, $message, $headers);
+
+            if (!$sendMail) {
+                http_response_code(500);
+                die("<h1>Warning</h1><p>The email has not been sent.<br>If you're an user please contact your administrator.<br>If you're an administrator install <i><b>apt-get install sendmail</b></i> and restart your web server and try again.</p><p><a href='.'><i class='fas fa-backward'></i> Back to Map</a> - <a href='./register?action=account'>Retry</a></p>");
+            }
         } else {
             return false;
         }
@@ -292,7 +314,7 @@ function validateCookie($cookie)
         $_SESSION['user'] = new \stdClass();
         $_SESSION['user']->id = $info['id'];
         $_SESSION['user']->user = htmlspecialchars($info['user'], ENT_QUOTES, 'UTF-8');
-        $_SESSION['user']->avatar = !empty($info['avatar']) ? $info['avatar'] : 'https://raw.githubusercontent.com/whitewillem/PogoAssets/resized/no_border/egg5.png';
+        $_SESSION['user']->avatar = !empty($info['avatar']) ? $info['avatar'] : 'data:image/png;base64,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';
         $_SESSION['user']->login_system = $info['login_system'];
         $_SESSION['user']->expire_timestamp = $info['expire_timestamp'];
         $_SESSION['user']->access_level = $info['access_level'];

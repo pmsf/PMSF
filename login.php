@@ -53,8 +53,8 @@ if (isset($_GET['action'])) {
                      </div>
 		     <div class="force-container">';
                          if ($noNativeLogin === false) {
-                             $html .= "<label for='uname'><b>Username</b></label>
-                             <input type='email' placeholder='Enter Username' name='uname' required>
+                             $html .= "<label for='uname'><b>Email address</b></label>
+                             <input type='email' placeholder='Enter Email address' name='uname' required>
 
                              <label for='psw'><b>Password</b></label>
                              <input type='password' placeholder='Enter Password' name='psw' required>
