@@ -123,7 +123,7 @@ if (isset($_GET['action'])) {
             'response_type' => 'code',
             'scope' => 'identify guilds'
         ];
-        header('Location: https://discordapp.com/api/oauth2/authorize' . '?' . http_build_query($params));
+        header('Location: https://discord.com/api/oauth2/authorize' . '?' . http_build_query($params));
         die();
     }
     if ($_GET['action'] == 'facebook-login') {
@@ -147,7 +147,7 @@ if (isset($_GET['action'])) {
 if (isset($_GET['callback'])) {
     if ($_GET['callback'] == 'discord') {
         if ($_GET['code']) {
-            $token_request = 'https://discordapp.com/api/oauth2/token';
+            $token_request = 'https://discord.com/api/oauth2/token';
             $token = curl_init();
             curl_setopt_array($token, [
                 CURLOPT_URL => $token_request,
@@ -167,8 +167,8 @@ if (isset($_GET['callback'])) {
 
             if (isset($response->access_token)) {
                 $access_token = $response->access_token;
-                $user_request = 'https://discordapp.com/api/users/@me';
-                $guilds_request = 'https://discordapp.com/api/users/@me/guilds';
+                $user_request = 'https://discord.com/api/users/@me';
+                $guilds_request = 'https://discord.com/api/users/@me/guilds';
 
                 $user = request($user_request, $access_token);
                 $guilds = request($guilds_request, $access_token);
