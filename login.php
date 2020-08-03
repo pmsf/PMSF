@@ -204,13 +204,23 @@ if (isset($_GET['callback'])) {
 
                 $accessRole = checkAccessLevel($user->id, $guilds);
 
+                $format = '.png';
+                if (strpos($user->avatar, 'a_') === 0) {
+                    $format = '.gif';
+                }
+
+                $avatar = 'https://discordapp.com/assets/6debd47ed13483642cf09e832ed0bc1b.png';
+                if (!empty($user->avatar)) {
+                    $avatar = 'https://cdn.discordapp.com/avatars/' . $user->id . '/' . $user->avatar . $format;
+		}
+
                 if ($manualdb->has('users', ['id' => $user->id, 'login_system' => 'discord'])) {
                     $manualdb->update('users', [
                         'session_id' => $response->access_token,
                         'expire_timestamp' => time() + $response->expires_in,
                         'user' => strval($user->username) . '#' . $user->discriminator,
                         'access_level' => intval($accessRole),
-                        'avatar' => 'https://cdn.discordapp.com/avatars/' . $user->id . '/' . $user->avatar . '.png',
+                        'avatar' => $avatar,
                         'discord_guilds' => json_encode($guilds)
                     ], [
                         'id' => $user->id,
@@ -222,7 +232,7 @@ if (isset($_GET['callback'])) {
                         'id' => $user->id,
                         'user' => strval($user->username) . '#' . $user->discriminator,
                         'access_level' => intval($accessRole),
-                        'avatar' => 'https://cdn.discordapp.com/avatars/' . $user->id . '/' . $user->avatar . '.png',
+                        'avatar' => $avatar,
                         'expire_timestamp' => time() + $response->expires_in,
                         'login_system' => 'discord',
                         'discord_guilds' => json_encode($guilds)
