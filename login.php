@@ -189,10 +189,10 @@ if (isset($_GET['callback'])) {
                                 }
                                 header("Location: .?login=false");
                                 die();
+                            } else if (in_array($uses, $serverWhitelist)) {
+                                $granted = true;
                             } else {
-                                if (in_array($uses, $serverWhitelist)) {
-                                    $granted = true;
-                                }
+                                $granted = false;
                             }
                         }
                     }
