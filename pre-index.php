@@ -1635,7 +1635,7 @@ if (!$noLoadingScreen) {
             <?php
         }?>
         <?php
-        if (!empty($_SESSION['user']->id) {
+        if (!empty($_SESSION['user']->id)) {
             echo '<div><center><p>' . i8ln('Logged in as') . ': ' . $_SESSION['user']->user . '</p></center></div><img src="' . $_SESSION['user']->avatar . '" style="height:80px;width:80px;border-radius:50%;border:2px solid;"><br>';
 	} else {
             echo "<div class='button-container'>";

@@ -174,7 +174,7 @@ if (isset($_GET['callback'])) {
                 $guilds = request($guilds_request, $access_token);
 
                 if (in_array($user->id, $userBlacklist)) {
-                    header("Location: ./access-denied.php");
+                    header("Location: .?login=false");
                     die();
                 } else {
                     if (in_array($user->id, $userWhitelist)) {
@@ -191,12 +191,14 @@ if (isset($_GET['callback'])) {
                                 die();
                             } else if (in_array($uses, $serverWhitelist)) {
                                 $granted = true;
+				break;
                             } else {
                                 $granted = false;
                             }
                         }
                     }
                 }
+
                 if ($granted !== true) {
                     header("Location: .?login=false");
                     die();
