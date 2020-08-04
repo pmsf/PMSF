@@ -131,9 +131,7 @@ $imgurCID = "";
 // Login
 //-----------------------------------------------------
 $forcedLogin = false;                                               // Force users to login before they can see map
-$newAuth = false;
 $adminUsers = ['admin@example.com', 'admin2@example.com'];          // You can add multiple admins by adding them to the array.
-$manualAccessLevel = false;
 /* Discord Auth */
 $noDiscordLogin = true;                                             // This will enable login through discord.
                                                                     // 1. Create a discord bot here -> https://discordapp.com/developers/applications/me
@@ -179,7 +177,6 @@ $facebookAccessLevel = '1';					    // Accesslevel used in access-config.php
 
 $userBlacklist = [''];                                              // Array of user ID's that are always blocked from accessing the map
 $userWhitelist = [''];                                              // Array of user ID's that's allowed to bypass the server blacklist
-$serverWhitelist = [''];                                            // Array of server ID's. Your users will need to be in at least one of them
 $serverBlacklist = [''];                                            // Array of server ID's. A user that's a member of any of these and not in your user whitelist will be blocked
 $logFailedLogin = 'logs/failed_login.log';                          // File location of where to store a log file of blocked users
 

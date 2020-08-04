@@ -29,6 +29,93 @@ $logger->pushHandler(new FirePHPHandler());
 $discord = new DiscordClient(['token' => $discordBotToken, 'logger' => $logger]); // Token is required
 
 if (isset($_GET['action'])) {
+    if ($_GET['action'] == 'login') {
+        $html = '<html lang="' . $locale . '">
+        <head>
+        <meta charset="utf-8">
+        <title>' . $title . ' Login</title>
+        <meta name="viewport" content="width=device-width, initial-scale=1">';
+        if ($faviconPath != "") {
+            echo '<link rel="shortcut icon" href="' . $faviconPath . '"
+                 type="image/x-icon">';
+        } else {
+            echo '<link rel="shortcut icon" href="static/appicons/favicon.ico"
+                 type="image/x-icon">';
+        }
+        $html .= '<link rel="stylesheet" href="static/dist/css/app.min.css">
+        </head>
+        <body>
+            <h2>' . $title . ' Login</h2>
+            <div id="login-force" class="force-modal">
+                 <form class="force-modal-content animate" action="/login?action=native" method="post">
+                     <div class="imgcontainer">
+                         <i class="fas fa-user" style="font-size:80px"></i>
+                     </div>
+		     <div class="force-container">';
+                         if ($noNativeLogin === false) {
+                             $html .= "<label for='uname'><b>Email address</b></label>
+                             <input type='email' placeholder='Enter Email address' name='uname' required>
+
+                             <label for='psw'><b>Password</b></label>
+                             <input type='password' placeholder='Enter Password' name='psw' required>
+        
+                             <button type='submit' class='force-button'>Login</button>";
+                         }
+                         if ($noDiscordLogin === false) {
+			     $html .= "<button type='button' style='background-color: #1877f2; margin: 2px' onclick=\"location.href='./login?action=discord-login';\" value='Login with discord'><i class='fab fa-discord'></i>&nbsp" . i8ln('Login with Discord') . "</button>";
+			 }
+                         if ($noFacebookLogin === false) {
+                             $html .= "<button type='button' style='background-color: #1877f2; margin: 2px' onclick=\"location.href='./login?action=facebook-login';\" value='Login with discord'><i class='fab fa-facebook'></i>&nbsp" . i8ln('Login with Facebook') . "</button>";
+                         }
+                     $html .= '</div>
+
+                     <div class="force-container" style="background-color:#f1f1f1">';
+                         if ($noNativeLogin === false) {
+                             $html .= "<button type='button' style='background-color: #4CAF50; margin: 2px' onclick=\"location.href='./register?action=account';\" value='Register'><i class='fas fa-user'></i>&nbsp" . i8ln('Register') . "</button>";
+                             $html .= "<button type='button' style='background-color: #4CAF50; margin: 2px' onclick=\"location.href='./register?action=password-reset';\" value='Forgot password?'><i class='fas fa-lock'></i>&nbsp" . i8ln('Forgot Password') . "</button>";
+                         }
+                     $html .= '</div>
+                 </form>
+	</div>
+        </body>
+	</html>';
+        echo $html;
+        die();
+    }
+    if ($_GET['action'] == 'native') {
+        $info = $manualdb->query(
+            "SELECT id, user, password, expire_timestamp, temp_password FROM users WHERE user = :user AND login_system = 'native'", [
+                ":user" => $_POST['uname']
+            ]
+        )->fetch();
+        if (password_verify($_POST['psw'], $info['password']) === true || password_verify($_POST['psw'], $info['temp_password']) === true) {
+
+            $manualdb->update("users", [
+                "session_id" => session_id()
+            ], [
+                "user" => $_POST['uname'],
+                "login_system" => 'native'
+            ]);
+            if (password_verify($_POST['psw'], $info['temp_password']) === true) {
+                header("Location: ./register?action=password-update&username=" . $_POST['uname'] . "");
+                die();
+            }
+            if (password_verify($_POST['psw'], $info['password']) === true) {
+                if (!empty($info['temp_password'])) {
+                    $manualdb->update("users", [
+                        "temp_password" => null
+                    ], [
+                        "user" => $_POST['uname'],
+                        "login_system" => 'native'
+                    ]);
+                }
+            }
+            setcookie("LoginCookie", session_id(), time()+60*60*24*7);
+            setcookie("LoginEngine", 'native', time()+60*60*24*7);
+            header("Location: .?login=true");
+            die();
+        }
+    }
     if ($_GET['action'] == 'discord-login') {
         $params = [
             'client_id' => $discordBotClientId,
@@ -36,7 +123,7 @@ if (isset($_GET['action'])) {
             'response_type' => 'code',
             'scope' => 'identify guilds'
         ];
-        header('Location: https://discordapp.com/api/oauth2/authorize' . '?' . http_build_query($params));
+        header('Location: https://discord.com/api/oauth2/authorize' . '?' . http_build_query($params));
         die();
     }
     if ($_GET['action'] == 'facebook-login') {
@@ -60,7 +147,7 @@ if (isset($_GET['action'])) {
 if (isset($_GET['callback'])) {
     if ($_GET['callback'] == 'discord') {
         if ($_GET['code']) {
-            $token_request = 'https://discordapp.com/api/oauth2/token';
+            $token_request = 'https://discord.com/api/oauth2/token';
             $token = curl_init();
             curl_setopt_array($token, [
                 CURLOPT_URL => $token_request,
@@ -80,108 +167,81 @@ if (isset($_GET['callback'])) {
 
             if (isset($response->access_token)) {
                 $access_token = $response->access_token;
-                $user_request = 'https://discordapp.com/api/users/@me';
-                $guilds_request = 'https://discordapp.com/api/users/@me/guilds';
+                $user_request = 'https://discord.com/api/users/@me';
+                $guilds_request = 'https://discord.com/api/users/@me/guilds';
 
                 $user = request($user_request, $access_token);
                 $guilds = request($guilds_request, $access_token);
 
                 if (in_array($user->id, $userBlacklist)) {
-                    header("Location: ./access-denied.php");
+                    header("Location: .?login=false");
                     die();
                 } else {
+                    $whiteListed = false;
                     if (in_array($user->id, $userWhitelist)) {
-                        $granted = true;
+                        $whiteListed = true;
                     } else {
                         foreach ($guilds as $guild) {
                             $uses = $guild->id;
                             $guildName = $guild->name;
                             if (in_array($uses, $serverBlacklist)) {
                                 if ($logFailedLogin) {
-                                    logFailure($user->{'username'} . "#" . $user->{'discriminator'} . " has been blocked for being a member of " . $guildName . "\n");
+                                    logFailure(strval($user->{'username'}) . "#" . $user->{'discriminator'} . " has been blocked for being a member of " . $guildName . "\n");
                                 }
-                                header("Location: ./access-denied.php");
+                                header("Location: .?login=false");
                                 die();
-                            } else {
-                                if (in_array($uses, $serverWhitelist)) {
-                                    $granted = true;
-                                }
+                            } else if (array_key_exists($uses, $guildRoles['guildIDS'])) {
+                                $whiteListed = true;
                             }
                         }
                     }
                 }
-                if ($granted !== true) {
+
+                if ($whiteListed !== true) {
                     header("Location: .?login=false");
                     die();
                 }
-                if (!empty($guildRoles)) {
-                    $accessRole = null;
-                    foreach ($guildRoles['guildIDS'] as $guild => $guildRoles) {
-                        $isMember = array_search($guild , array_column($guilds, 'id'));
-                        if (!empty($isMember)) {
-                            $getMemberDetails = $discord->guild->getGuildMember(['guild.id' => $guild, 'user.id' => intval($user->id)]);
-                            foreach ($getMemberDetails->roles as $role) {
-                                if (array_key_exists($role, $guildRoles)) {
-                                    if ($accessRole < $guildRoles[$role]) {
-                                        $accessRole = $guildRoles[$role];
-                                    }
-                                }
-                            }
-                        }
-                    }
+
+                $accessRole = checkAccessLevel($user->id, $guilds);
+
+                $format = '.png';
+                if (strpos($user->avatar, 'a_') === 0) {
+                    $format = '.gif';
                 }
+
+                $avatar = 'https://discordapp.com/assets/6debd47ed13483642cf09e832ed0bc1b.png';
+                if (!empty($user->avatar)) {
+                    $avatar = 'https://cdn.discordapp.com/avatars/' . $user->id . '/' . $user->avatar . $format;
+		}
+
                 if ($manualdb->has('users', ['id' => $user->id, 'login_system' => 'discord'])) {
-                    if ($manualAccessLevel) {
-                        $manualdb->update('users', [
-                            'session_id' => $response->access_token,
-                            'user' => $user->username . '#' . $user->discriminator,
-                            'avatar' => 'https://cdn.discordapp.com/avatars/' . $user->id . '/' . $user->avatar . '.png',
-                            'discord_guilds' => json_encode($guilds)
-                        ], [
-                            'id' => $user->id,
-                            'login_system' => 'discord'
-                        ]);
-                    } else {
-                        $manualdb->update('users', [
-                            'session_id' => $response->access_token,
-                            'expire_timestamp' => time() + $response->expires_in,
-                            'user' => $user->username . '#' . $user->discriminator,
-                            'access_level' => $accessRole,
-                            'avatar' => 'https://cdn.discordapp.com/avatars/' . $user->id . '/' . $user->avatar . '.png',
-                            'discord_guilds' => json_encode($guilds)
-                        ], [
-                            'id' => $user->id,
-                            'login_system' => 'discord'
-                        ]);
-                    }
+                    $manualdb->update('users', [
+                        'session_id' => $response->access_token,
+                        'expire_timestamp' => time() + $response->expires_in,
+                        'user' => strval($user->username) . '#' . $user->discriminator,
+                        'access_level' => intval($accessRole),
+                        'avatar' => $avatar,
+                        'discord_guilds' => json_encode($guilds)
+                    ], [
+                        'id' => $user->id,
+                        'login_system' => 'discord'
+                    ]);
                 } else {
-                    if ($manualAccessLevel) {
-                        $manualdb->insert('users', [
-                            'session_id' => $response->access_token,
-                            'id' => $user->id,
-                            'user' => $user->username . '#' . $user->discriminator,
-                            'avatar' => 'https://cdn.discordapp.com/avatars/' . $user->id . '/' . $user->avatar . '.png',
-                            'expire_timestamp' => time() + $response->expires_in,
-                            'login_system' => 'discord',
-                            'discord_guilds' => json_encode($guilds)
-                        ]);
-                    } else {
-                        $manualdb->insert('users', [
-                            'session_id' => $response->access_token,
-                            'id' => $user->id,
-                            'user' => $user->username . '#' . $user->discriminator,
-                            'access_level' => $accessRole,
-                            'avatar' => 'https://cdn.discordapp.com/avatars/' . $user->id . '/' . $user->avatar . '.png',
-                            'expire_timestamp' => time() + $response->expires_in,
-                            'login_system' => 'discord',
-                            'discord_guilds' => json_encode($guilds)
-                        ]);
-                    }
+                    $manualdb->insert('users', [
+                        'session_id' => $response->access_token,
+                        'id' => $user->id,
+                        'user' => strval($user->username) . '#' . $user->discriminator,
+                        'access_level' => intval($accessRole),
+                        'avatar' => $avatar,
+                        'expire_timestamp' => time() + $response->expires_in,
+                        'login_system' => 'discord',
+                        'discord_guilds' => json_encode($guilds)
+                    ]);
                 }
                 setcookie("LoginCookie", $response->access_token, time() + $response->expires_in);
                 setcookie("LoginEngine", 'discord', time() + $response->expires_in);
             }
-            if ($granted === true) {
+            if ($whiteListed === true) {
                 header("Location: .?login=true");
                 die();
             }
@@ -219,16 +279,10 @@ if (isset($_GET['callback'])) {
                 }
                 exit;
             }
-            // The OAuth 2.0 client handler helps us manage access tokens
             $oAuth2Client = $fb->getOAuth2Client();
 
-            // Get the access token metadata from /debug_token
             $tokenMetadata = $oAuth2Client->debugToken($accessToken);
 
-            // Validation (these will throw FacebookSDKException's when they fail)
-            //$tokenMetadata->validateAppId($facebookAppId);
-            // If you know the user ID this access token belongs to, you can validate it here
-            //$tokenMetadata->validateUserId('123');
             $tokenMetadata->validateExpiration();
 
             if (! $accessToken->isLongLived()) {
@@ -253,51 +307,27 @@ if (isset($_GET['callback'])) {
 
             $user = $response->getGraphUser();
             if ($manualdb->has('users', ['id' => $user['id'], 'login_system' => 'facebook'])) {
-                if ($manualAccessLevel) {
-                    $manualdb->update('users', [
-                        'session_id' => $userToken,
-                        'user' => $user['name'],
-                        'access_level' => $facebookAccessLevel,
-                        'avatar' => $user['picture']['url'],
-                    ], [
-                        'id' => $user['id'],
-                        'login_system' => 'facebook'
-                    ]);
-                } else {
-                    $manualdb->update('users', [
-                        'session_id' => $userToken,
-                        'expire_timestamp' => time() + 86400,
-                        'user' => $user['name'],
-                        'access_level' => $facebookAccessLevel,
-                        'avatar' => $user['picture']['url'],
-                    ], [
-                        'id' => $user['id'],
-                        'login_system' => 'facebook'
-                    ]);
-                }
+                $manualdb->update('users', [
+                    'session_id' => $userToken,
+                    'expire_timestamp' => time() + 86400,
+                    'user' => $user['name'],
+                    'access_level' => $facebookAccessLevel,
+                    'avatar' => $user['picture']['url'],
+                ], [
+                    'id' => $user['id'],
+                    'login_system' => 'facebook'
+                ]);
             } else {
-                if ($manualAccessLevel) {
-                    $manualdb->insert('users', [
-                        'session_id' => $userToken,
-                        'id' => $user['id'],
-                        'user' => $user['name'],
-                        'access_level' => $facebookAccessLevel,
-                        'avatar' => $user['picture']['url'],
-                        'expire_timestamp' => time() + 86400,
-                        'login_system' => 'facebook'
-                    ]);
-                } else {
-                    $manualdb->insert('users', [
-                        'session_id' => $userToken,
-                        'id' => $user['id'],
-                        'user' => $user['name'],
-                        'access_level' => $facebookAccessLevel,
-                        'avatar' => $user['picture']['url'],
-                        'access_level' => null,
-                        'expire_timestamp' => time() + 86400,
-                        'login_system' => 'facebook'
-                    ]);
-                }
+                $manualdb->insert('users', [
+                    'session_id' => $userToken,
+                    'id' => $user['id'],
+                    'user' => $user['name'],
+                    'access_level' => $facebookAccessLevel,
+                    'avatar' => $user['picture']['url'],
+                    'access_level' => null,
+                    'expire_timestamp' => time() + 86400,
+                    'login_system' => 'facebook'
+                ]);
             }
             setcookie("LoginCookie", $userToken, time() + 86400);
             setcookie("LoginEngine", 'facebook', time() + 86400);
@@ -307,6 +337,7 @@ if (isset($_GET['callback'])) {
     }
 }
 if (!empty($_POST['refresh'])) {
+    $answer = '';
     if ($_POST['refresh'] == 'discord') {
         $dbUser = $manualdb->get('users', ['id','session_id', 'access_level', 'discord_guilds'],['id' => $_SESSION['user']->id]);
         if (empty($dbUser)) {
@@ -335,7 +366,6 @@ if (!empty($_POST['refresh'])) {
     $answer = json_encode($answer);
     echo $answer;
 }
-// Facebook deauthorization
 if (!empty($_POST['signed_request'])) {
     $request = parse_signed_request($_POST['signed_request']);
     $manualdb->delete('users', ['id' => $request['user_id']]);
@@ -360,15 +390,15 @@ function logFailure($logFailure) {
 }
 function checkAccessLevel ($userId, $guilds) {
     global $guildRoles, $discord;
-    $accessRole = null;
+    $accessRole = '';
     foreach ($guildRoles['guildIDS'] as $guild => $guildRoles) {
-        $isMember = array_search($guild , array_column($guilds, 'id'));
-        if (!empty($isMember)) {
+        $isMember = in_array($guild , array_column($guilds, 'id'));
+        if ($isMember) {
             $getMemberDetails = $discord->guild->getGuildMember(['guild.id' => $guild, 'user.id' => intval($userId)]);
             foreach ($getMemberDetails->roles as $role) {
                 if (array_key_exists($role, $guildRoles)) {
-                    if ($accessRole < $guildRoles[$role]) {
-                        $accessRole = $guildRoles[$role];
+                    if ($accessRole < strval($guildRoles[$role])) {
+                        $accessRole = strval($guildRoles[$role]);
                     }
                 }
             }
@@ -380,13 +410,11 @@ function parse_signed_request($signed_request) {
     global $facebookAppSecret;
     list($encoded_sig, $payload) = explode('.', $signed_request, 2);
 
-    $secret = $facebookAppSecret; // Use your app secret here
+    $secret = $facebookAppSecret;
 
-    // decode the data
     $sig = base64_url_decode($encoded_sig);
     $data = json_decode(base64_url_decode($payload), true);
 
-    // confirm the signature
     $expected_sig = hash_hmac('sha256', $payload, $secret, $raw = true);
     if ($sig !== $expected_sig) {
         error_log('Bad Signed JSON signature!');
