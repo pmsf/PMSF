@@ -394,8 +394,8 @@ function checkAccessLevel ($userId, $guilds) {
     global $guildRoles, $discord;
     $accessRole = '';
     foreach ($guildRoles['guildIDS'] as $guild => $guildRoles) {
-        $isMember = array_search($guild , array_column($guilds, 'id'));
-        if (!empty($isMember)) {
+        $isMember = in_array($guild , array_column($guilds, 'id'));
+        if ($isMember) {
             $getMemberDetails = $discord->guild->getGuildMember(['guild.id' => $guild, 'user.id' => intval($userId)]);
             foreach ($getMemberDetails->roles as $role) {
                 if (array_key_exists($role, $guildRoles)) {
