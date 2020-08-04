@@ -119,15 +119,6 @@ if ($_GET['action'] == 'update') {
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.css">
 </head>
 <body>
-    <script>
-        $('#psw, #repsw').on('keyup', function () {
-            if ($('#psw').val() == $('#repsw').val()) {
-                $('#validity').html('Passwords match').css('color', 'green');
-		$(':input[type="submit"]').prop('disabled', false);
-            } else
-                $('#validity').html('Passwords do not match').css('color', 'red');
-        });
-    </script>
     <h2><? $title ?>Login</h2>
     <div id="login-force" class="force-modal">
         <?php
@@ -184,5 +175,16 @@ if ($_GET['action'] == 'update') {
             echo $html;
         } ?>
     </div>
+
+    <script>
+        $('#psw, #repsw').on('keyup', function () {
+            if ($('#psw').val() == $('#repsw').val()) {
+                $('#validity').html('Passwords match').css('color', 'green');
+                $(':input[type="submit"]').prop('disabled', false);
+            } else {
+                $('#validity').html('Passwords do not match').css('color', 'red');
+            }
+        });
+    </script>
 </body>
 </html>
