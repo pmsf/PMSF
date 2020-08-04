@@ -47,8 +47,27 @@ if (isset($_GET['action'])) {
         <body>
             <h2>' . $title . ' Login</h2>
             <div id="login-force" class="force-modal">
-                 <form class="force-modal-content animate" action="/login?action=native" method="post">
-                     <div class="imgcontainer">
+                 <form class="force-modal-content animate" action="/login?action=native" method="post">';
+                 if (!empty($_GET['error'])) {
+                     switch ($_GET['error']) {
+                         case 'no-member-dc':
+                             $html .= "<div id='login-error'>" . i8ln('You are currently not a member of our discord there for access has been denied. Become a member to gain access at ') . $discordUrl . "</div>";
+                             break;
+                         case 'no-account':
+                             $html .= "<div id='login-error'>" . i8ln('We couldn\'t find the account you are trying to use to login.') . "</div>";
+                             break;
+                         case 'password':
+                             $html .= "<div id='login-error'>" . i8ln('Oeps we might need to use the password reset if you can\'t remember.') . "</div>";
+                             break;
+                         case 'blacklisted-member':
+                             $html .= "<div id='login-error'>" . i8ln('Your account is banned for the use of this website please contact the site admin.') . "</div>";
+                             break;
+                         case 'blacklisted-server-dc':
+                             $html .= "<div id='login-error'>" . i8ln('We found you are a member of the following discord server we have blacklisted: ') . $_GET['bl-discord'] . "</div>";
+                             break;
+                     }
+                 }
+                     $html .= '<div class="imgcontainer">
                          <i class="fas fa-user" style="font-size:80px"></i>
                      </div>
 		     <div class="force-container">';
@@ -88,14 +107,11 @@ if (isset($_GET['action'])) {
                 ":user" => $_POST['uname']
             ]
         )->fetch();
+        if (!$info) {
+            header("Location: ./login?action=login&error=no-account");
+            die();
+        }
         if (password_verify($_POST['psw'], $info['password']) === true || password_verify($_POST['psw'], $info['temp_password']) === true) {
-
-            $manualdb->update("users", [
-                "session_id" => session_id()
-            ], [
-                "user" => $_POST['uname'],
-                "login_system" => 'native'
-            ]);
             if (password_verify($_POST['psw'], $info['temp_password']) === true) {
                 header("Location: ./register?action=password-update&username=" . $_POST['uname'] . "");
                 die();
@@ -109,10 +125,22 @@ if (isset($_GET['action'])) {
                         "login_system" => 'native'
                     ]);
                 }
+	    } else {
+                header("Location: ./login?action=login&error=password");
             }
+            $manualdb->update("users", [
+                "session_id" => session_id()
+            ], [
+                "user" => $_POST['uname'],
+                "login_system" => 'native'
+            ]);
+
             setcookie("LoginCookie", session_id(), time()+60*60*24*7);
             setcookie("LoginEngine", 'native', time()+60*60*24*7);
             header("Location: .?login=true");
+            die();
+	} else {
+            header("Location: ./login?action=login&error=password");
             die();
         }
     }
@@ -174,7 +202,7 @@ if (isset($_GET['callback'])) {
                 $guilds = request($guilds_request, $access_token);
 
                 if (in_array($user->id, $userBlacklist)) {
-                    header("Location: .?login=false");
+                    header("Location: ./login?action=login&error=blacklisted-member");
                     die();
                 } else {
                     $whiteListed = false;
@@ -188,7 +216,7 @@ if (isset($_GET['callback'])) {
                                 if ($logFailedLogin) {
                                     logFailure(strval($user->{'username'}) . "#" . $user->{'discriminator'} . " has been blocked for being a member of " . $guildName . "\n");
                                 }
-                                header("Location: .?login=false");
+                                header("Location: ./login?action=login&error=blacklisted-server-db");
                                 die();
                             } else if (array_key_exists($uses, $guildRoles['guildIDS'])) {
                                 $whiteListed = true;
@@ -198,7 +226,7 @@ if (isset($_GET['callback'])) {
                 }
 
                 if ($whiteListed !== true) {
-                    header("Location: .?login=false");
+                    header("Location: ./login?action=login&error=no-member-dc");
                     die();
                 }
 
