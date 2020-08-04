@@ -1619,7 +1619,7 @@ if (!$noLoadingScreen) {
         <?php
         if (!$noLocaleSelection) {
             ?>
-            <div class="form-control switch-container" style="width:40%;left:32%;top:10px;position:relative;">
+            <div class="form-control switch-container" style="top:10px;position:relative;">
                 <select name="language-switch" onchange="location = this.value;">
                     <option selected><?php echo i8ln('select language'); ?></option>
                     <option value="?lang=en"><?php echo i8ln('English'); ?></option>
