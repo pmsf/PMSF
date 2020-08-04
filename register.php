@@ -183,6 +183,7 @@ if ($_GET['action'] == 'update') {
                 $(':input[type="submit"]').prop('disabled', false);
             } else {
                 $('#validity').html('Passwords do not match').css('color', 'red');
+                $(':input[type="submit"]').prop('disabled', true);
             }
         });
     </script>
