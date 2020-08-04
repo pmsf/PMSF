@@ -180,7 +180,6 @@ $adminUsers = array('admin@example.com', 'Superadmin#13337');       // You can a
 /* Blacklist Settings - Only available with Discord login */
 $userBlacklist = [''];                                                                // Array of user ID's that are always blocked from accessing the map
 $userWhitelist = [''];                                              // Array of user ID's that's allowed to bypass the server blacklist
-$serverWhitelist = [''];                                            // Array of server ID's. Your users will need to be in at least one of them
 $serverBlacklist = [''];                                            // Array of server ID's. A user that's a member of any of these and not in your user whitelist will be blocked
 $logFailedLogin = '';                                               // File location of where to store a log file of blocked users
 

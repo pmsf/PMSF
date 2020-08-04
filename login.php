@@ -177,8 +177,9 @@ if (isset($_GET['callback'])) {
                     header("Location: .?login=false");
                     die();
                 } else {
+                    $whiteListed = false;
                     if (in_array($user->id, $userWhitelist)) {
-                        $granted = true;
+                        $whiteListed = true;
                     } else {
                         foreach ($guilds as $guild) {
                             $uses = $guild->id;
@@ -189,17 +190,14 @@ if (isset($_GET['callback'])) {
                                 }
                                 header("Location: .?login=false");
                                 die();
-                            } else if (in_array($uses, $serverWhitelist)) {
-                                $granted = true;
-				break;
-                            } else {
-                                $granted = false;
+                            } else if (array_key_exists($uses, $guildRoles['guildIDS'])) {
+                                $whiteListed = true;
                             }
                         }
                     }
                 }
 
-                if ($granted !== true) {
+                if ($whiteListed !== true) {
                     header("Location: .?login=false");
                     die();
                 }
@@ -243,7 +241,7 @@ if (isset($_GET['callback'])) {
                 setcookie("LoginCookie", $response->access_token, time() + $response->expires_in);
                 setcookie("LoginEngine", 'discord', time() + $response->expires_in);
             }
-            if ($granted === true) {
+            if ($whiteListed === true) {
                 header("Location: .?login=true");
                 die();
             }
