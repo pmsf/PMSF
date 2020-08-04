@@ -1574,7 +1574,7 @@ if (!$noLoadingScreen) {
         if (!empty($_SESSION['user']->id)) { ?>
             <div style="display:flex;">
                 <img src="<?php echo $_SESSION['user']->avatar; ?>" style="height:80px;width:80px;border-radius:50%;border:2px solid;position:relative;top:13px;">
-                <div style="position:relative;left:20px;font-size:17px;top:35px;">
+                <div style="position:relative;left:20px;font-size:13px;top:35px;">
                     <b><?php echo $_SESSION['user']->user; ?></b>
                 </div>
             </div>
@@ -1587,9 +1587,9 @@ if (!$noLoadingScreen) {
             if ($_SESSION['user']->login_system == 'native') {
                 ?>
                 <div>
-                    <button class="settings" onclick="document.location.href='<?php echo 'register?action=password-update&username=' . $_SESSION['user']->user;?>'">
+                    <a style="position:relative;top:18px;left:96px;color:red;cursor:pointer;border:1px solid red;border-radius:8px;" class="settings" onclick="document.location.href='<?php echo 'register?action=password-update&username=' . $_SESSION['user']->user;?>'">
                         <i class="fas fa-lock" aria-hidden="true"></i> <?php echo i8ln('Change password'); ?>
-                    </button>
+                    </a>
                 </div>
                 <?php
             }
