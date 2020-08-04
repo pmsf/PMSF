@@ -216,7 +216,7 @@ if (isset($_GET['callback'])) {
                                 if ($logFailedLogin) {
                                     logFailure(strval($user->{'username'}) . "#" . $user->{'discriminator'} . " has been blocked for being a member of " . $guildName . "\n");
                                 }
-                                header("Location: ./login?action=login&error=blacklisted-server-db");
+                                header("Location: ./login?action=login&error=blacklisted-server-dc&bl-discord=" . $guildName . " ");
                                 die();
                             } else if (array_key_exists($uses, $guildRoles['guildIDS'])) {
                                 $whiteListed = true;
