@@ -3198,30 +3198,34 @@ function addListeners(marker) {
     return marker
 }
 
-function clearMarker( marker ) {
-    if ( marker.rangeCircle ) clearMarker( marker.rangeCircle );
-    markers.removeLayer( marker );
-    markersnotify.removeLayer( marker );
-    delete marker;
+function clearMarker( elem ) {
+    if ( elem.marker.rangeCircle ) {
+      markers.removeLayer( elem.marker.rangeCircle );
+      markersnotify.removeLayer( elem.marker.rangeCircle );
+      delete elem.marker.rangeCircle;
+    }
+    markers.removeLayer( elem.marker );
+    markersnotify.removeLayer( elem.marker );
+    delete elem.marker;
 }
 
 function clearStaleMarkers() {
     $.each(mapData.pokemons, function (key, value) {
         if (((mapData.pokemons[key]['disappear_time'] < new Date().getTime() || ((excludedPokemon.indexOf(mapData.pokemons[key]['pokemon_id']) >= 0 || isTemporaryHidden(mapData.pokemons[key]['pokemon_id']) || ((((mapData.pokemons[key]['individual_attack'] + mapData.pokemons[key]['individual_defense'] + mapData.pokemons[key]['individual_stamina']) / 45 * 100 < minIV) || ((mapType === 'rdm' && mapData.pokemons[key]['level'] < minLevel) || (mapType === 'rocketmap' && !isNaN(minLevel) && (mapData.pokemons[key]['cp_multiplier'] < cpMultiplier[minLevel - 1])))) && !excludedMinIV.includes(mapData.pokemons[key]['pokemon_id'])) || (Store.get('showBigKarp') === true && mapData.pokemons[key]['pokemon_id'] === 129 && (mapData.pokemons[key]['weight'] < 13.14 || mapData.pokemons[key]['weight'] === null)) || (Store.get('showTinyRat') === true && mapData.pokemons[key]['pokemon_id'] === 19 && (mapData.pokemons[key]['weight'] > 2.40 || mapData.pokemons[key]['weight'] === null))) && encounterId !== mapData.pokemons[key]['encounter_id'])) || (encounterId && encounterId === mapData.pokemons[key]['encounter_id'] && mapData.pokemons[key]['disappear_time'] < new Date().getTime()))) {
-            clearMarker( mapData.pokemons[key].marker );
+            clearMarker( mapData.pokemons[key] );
         }
     });
     if (!Store.get('showGyms') && Store.get('showRaids')) {
         $.each(mapData.gyms, function (key, value) {
             if ((((excludedRaidboss.indexOf(Number(mapData.gyms[key]['raid_pokemon_id'])) > -1) && mapData.gyms[key]['raid_pokemon_id'] > 0) && (mapData.gyms[key]['raid_start'] < new Date().getTime() && mapData.gyms[key]['raid_end'] > new Date().getTime())) || ((excludedRaidegg.indexOf(Number(mapData.gyms[key]['raid_level'])) > -1) && mapData.gyms[key]['raid_start'] > new Date().getTime()) || ((excludedRaidegg.indexOf(Number(mapData.gyms[key]['raid_level']) + 5) > -1) && (mapData.gyms[key]['raid_start'] < new Date().getTime() && (mapData.gyms[key]['raid_pokemon_id'] <= 0)))) {
-                clearMarker( mapData.gyms[key].marker );
+                clearMarker( mapData.gyms[key] );
             }
         });
     }
     if (Store.get('showNests')) {
         $.each(mapData.nests, function (key, value) {
             if (Number(mapData.nests[key]['pokemon_avg']) < Store.get('showNestAvg')) {
-                clearMarker( mapData.nests[key].marker );
+                clearMarker( mapData.nests[key] );
             }
         });
     }
