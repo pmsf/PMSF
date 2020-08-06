@@ -95,6 +95,10 @@ $noCustomTileServer = true;                                         // Enable/Di
 $customTileServerAddress = "";                                      // TileServer URL: http://ipAddress:port/tile/klokantech-basic/{z}/{x}/{y}/1/png
 $forcedTileServer = false;
 
+/* Favicon */
+$faviconPath = '';                                                  // Upload favicon.ico to custom folder, leave '' for empty ( $faviconPath = 'custom/favicon.ico'; )
+$appIconPath = 'static/appicons/';
+
 /* Custom Overlay */
 $letItSnow = true;                                                   // Show snow overlay at 24, 25 and 26 December
 $makeItBang = true;                                                  // Show fireworks overlay at 31 December and 1 January
