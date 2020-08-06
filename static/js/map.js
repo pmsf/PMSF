@@ -3201,11 +3201,11 @@ function addListeners(marker) {
 function clearMarker(elem) {
     if (elem.marker.rangeCircle) {
       markers.removeLayer(elem.marker.rangeCircle)
-      markersnotify.removeLayer( elem.marker.rangeCircle )
+      markersnotify.removeLayer(elem.marker.rangeCircle)
       delete elem.marker.rangeCircle
     }
-    markers.removeLayer( elem.marker )
-    markersnotify.removeLayer( elem.marker )
+    markers.removeLayer(elem.marker)
+    markersnotify.removeLayer(elem.marker)
     delete elem.marker
 }
 
