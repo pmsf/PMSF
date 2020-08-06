@@ -138,42 +138,39 @@ $noDiscordLogin = true;                                             // This will
                                                                     // 2. Install composer with "apt-get install composer".
                                                                     // 3. Navigate to your website's root folder and type "composer install" to install the dependencies.
                                                                     // 4. Add your callback-page as a REDIRECT URI to your discord bot. Should be the same as $discordBotRedirectUri.
-                                                                    // 5. Enter Client ID, Client Secret and Redirect URI below.
+                                                                    // 5. Enter Client ID, Client Secret, Token and Redirect URI below.
 $discordBotClientId = 0;
 $discordBotClientSecret = "";
-$discordBotRedirectUri = "https://example.com/discord-callback.php";
+$discordBotRedirectUri = "https://example.com/login?callback=discord";
 $discordBotToken = "";
 
-/**
- * Guilds ***Replace values within <>*** *** Match 1,2,3,4 values with access levels in access config
- * Remove or add according your needs
-**/
+/* Match role-id values with access levels in access config. Remove or add according your needs */
 $guildRoles = [
     'guildIDS' => [
-        '<guildid>' => [
-            '<roleid>' => 1,
-            '<roleid>' => 2,
-            '<roleid>' => 3,
-            '<roleid>' => 4
+        'SERVER-ID-HERE' => [
+            'ROLE-ID-HERE' => 1,
+            'ROLE-ID-HERE' => 2,
+            'ROLE-ID-HERE' => 3,
+            'ROLE-ID-HERE' => 4
         ],
-        '<guildid>' => [
-            '<roleid>' => 1,
-            '<roleid>' => 2,
-            '<roleid>' => 3,
-            '<roleid>' => 4
+        'SERVER-ID-HERE' => [
+            'ROLE-ID-HERE' => 1,
+            'ROLE-ID-HERE' => 2,
+            'ROLE-ID-HERE' => 3,
+            'ROLE-ID-HERE' => 4
         ],
-        '<guildid>' => [
-            '<roleid>' => 1,
-            '<roleid>' => 2,
-            '<roleid>' => 3
+        'SERVER-ID-HERE' => [
+            'ROLE-ID-HERE' => 1,
+            'ROLE-ID-HERE' => 2,
+            'ROLE-ID-HERE' => 3
         ]
     ]
 ];
 $noFacebookLogin = true;
-$facebookAppId = '';						    // Facebook App ID
-$facebookAppSecret = '';					    // Facebook App Secret
-$facebookAppRedirectUri = 'https://Yourdomain.com/login?callback=facebook';	// Callback url make sure this is the same as set in Facebook app config
-$facebookAccessLevel = '1';					    // Accesslevel used in access-config.php
+$facebookAppId = '';                            // Facebook App ID
+$facebookAppSecret = '';                        // Facebook App Secret
+$facebookAppRedirectUri = 'https://Yourdomain.com/login?callback=facebook'; // Callback url make sure this is the same as set in Facebook app config
+$facebookAccessLevel = '1';                     // Accesslevel used in access-config.php
 
 $userBlacklist = [''];                                              // Array of user ID's that are always blocked from accessing the map
 $userWhitelist = [''];                                              // Array of user ID's that's allowed to bypass the server blacklist
