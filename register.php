@@ -110,7 +110,7 @@ if ($_GET['action'] == 'update') {
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.css">
 </head>
 <body>
-    <h2><? $title ?> <?php echo i8ln('Login'?></h2>
+    <h2><? $title ?> <?php echo i8ln('Login'); ?></h2>
     <div id="login-force" class="force-modal">
         <?php
         if ($_GET['action'] == 'account') {
