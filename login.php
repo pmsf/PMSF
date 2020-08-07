@@ -429,8 +429,13 @@ function checkAccessLevel ($userId, $guilds) {
                         $accessRole = strval($guildRoles[$role]);
                     }
                 }
+	    }
+            if ($guildRoles[$guild]) {
+                if ($accessRole < strval($guildRoles[$guild])) {
+                    $accessRole = strval($guildRoles[$guild]);
+                }
             }
-        }
+	}
     }
     return $accessRole;
 }
