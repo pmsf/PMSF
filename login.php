@@ -51,7 +51,7 @@ if (isset($_GET['action'])) {
                  if (!empty($_GET['error'])) {
                      switch ($_GET['error']) {
                          case 'no-member-dc':
-                             $html .= "<div id='login-error'>" . i8ln('You are currently not a member of our Discord server. There for access has been denied.') . " <a href='" . $discordUrl . "'>" . i8ln('Become a member to gain access.') . "</a></div>";
+                             $html .= "<div id='login-error'>" . i8ln('You are currently not a member of our Discord server. Therefor access has been denied.') . " <a href='" . $discordUrl . "'>" . i8ln('Become a member to gain access.') . "</a></div>";
                              break;
                          case 'no-account':
                              $html .= "<div id='login-error'>" . i8ln('We couldn\'t find the account you are trying to use to login.') . "</div>";
