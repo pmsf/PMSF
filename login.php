@@ -33,7 +33,7 @@ if (isset($_GET['action'])) {
         $html = '<html lang="' . $locale . '">
         <head>
             <meta charset="utf-8">
-            <title>' . $title . ' Login</title>
+            <title>' . $title . ' ' . i8ln('Login') . '</title>
             <meta name="viewport" content="width=device-width, initial-scale=1">';
             if ($faviconPath != "") {
                 echo '<link rel="shortcut icon" href="' . $faviconPath . '" type="image/x-icon">';
@@ -70,13 +70,13 @@ if (isset($_GET['action'])) {
                     </div>
                     <div class="force-container">';
                     if ($noNativeLogin === false) {
-                        $html .= "<label for='uname'><b>Email address</b></label>
-                        <input type='email' placeholder='Enter Email address' name='uname' required>
+                        $html .= "<label for='uname'><b>" . i8ln('Email address') . "</b></label>
+                        <input type='email' placeholder='" . i8ln('Enter Email address') . "' name='uname' required>
 
-                        <label for='psw'><b>Password</b></label>
-                        <input type='password' placeholder='Enter Password' name='psw' required>
+                        <label for='psw'><b>" . i8ln('Password') . "</b></label>
+                        <input type='password' placeholder='" . i8ln('Enter Password') . "' name='psw' required>
         
-                        <button type='submit' class='force-button'>Login</button>";
+                        <button type='submit' class='force-button'>" . i8ln('Login') . "</button>";
                     }
                     if ($noDiscordLogin === false) {
                         $html .= "<button type='button' style='background-color: #1877f2; margin: 2px' onclick=\"location.href='./login?action=discord-login';\" value='Login with discord'><i class='fab fa-discord'></i>&nbsp" . i8ln('Login with Discord') . "</button>";

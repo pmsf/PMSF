@@ -78,32 +78,23 @@ if ($_GET['action'] == 'update') {
     <meta name="theme-color" content="#3b3b3b">
     <!-- Fav- & Apple-Touch-Icons -->
     <!-- Favicon -->
-    <link rel="shortcut icon" href="static/appicons/favicon.ico"
-          type="image/x-icon">
+    <link rel="shortcut icon" href="static/appicons/favicon.ico" type="image/x-icon">
     <!-- non-retina iPhone pre iOS 7 -->
-    <link rel="apple-touch-icon" href="static/appicons/114x114.png"
-          sizes="57x57">
+    <link rel="apple-touch-icon" href="static/appicons/114x114.png" sizes="57x57">
     <!-- non-retina iPad pre iOS 7 -->
-    <link rel="apple-touch-icon" href="static/appicons/144x144.png"
-          sizes="72x72">
+    <link rel="apple-touch-icon" href="static/appicons/144x144.png" sizes="72x72">
     <!-- non-retina iPad iOS 7 -->
-    <link rel="apple-touch-icon" href="static/appicons/152x152.png"
-          sizes="76x76">
+    <link rel="apple-touch-icon" href="static/appicons/152x152.png" sizes="76x76">
     <!-- retina iPhone pre iOS 7 -->
-    <link rel="apple-touch-icon" href="static/appicons/114x114.png"
-          sizes="114x114">
+    <link rel="apple-touch-icon" href="static/appicons/114x114.png" sizes="114x114">
     <!-- retina iPhone iOS 7 -->
-    <link rel="apple-touch-icon" href="static/appicons/120x120.png"
-          sizes="120x120">
+    <link rel="apple-touch-icon" href="static/appicons/120x120.png" sizes="120x120">
     <!-- retina iPad pre iOS 7 -->
-    <link rel="apple-touch-icon" href="static/appicons/144x144.png"
-          sizes="144x144">
+    <link rel="apple-touch-icon" href="static/appicons/144x144.png" sizes="144x144">
     <!-- retina iPad iOS 7 -->
-    <link rel="apple-touch-icon" href="static/appicons/152x152.png"
-          sizes="152x152">
+    <link rel="apple-touch-icon" href="static/appicons/152x152.png" sizes="152x152">
     <!-- retina iPhone 6 iOS 7 -->
-    <link rel="apple-touch-icon" href="static/appicons/180x180.png"
-          sizes="180x180">
+    <link rel="apple-touch-icon" href="static/appicons/180x180.png" sizes="180x180">
     <script>
         var token = '<?php echo (!empty($_SESSION['token'])) ? $_SESSION['token'] : ""; ?>';
     </script>
@@ -119,7 +110,7 @@ if ($_GET['action'] == 'update') {
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.css">
 </head>
 <body>
-    <h2><? $title ?>Login</h2>
+    <h2><? $title ?> <?php echo i8ln('Login'?></h2>
     <div id="login-force" class="force-modal">
         <?php
         if ($_GET['action'] == 'account') {
@@ -128,14 +119,17 @@ if ($_GET['action'] == 'update') {
                     <i class="fas fa-user" style="font-size:80px"></i>
                 </div>
                 <div class="force-container">
-                    <label for="uname"><b>Email address</b></label>
-                        <input type="email" placeholder="Enter email address" name="uname" required>
-                    <label for="psw"><b>Password</b></label>
-                        <input type="password" id="psw" name="psw" pattern="(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{8,}" title="Must contain at least one number and one uppercase and lowercase letter, and at least 8 or more characters" required>
-                    <label for="repsw"><b>Retype Password</b></label>
-                        <input type="password" id="repsw" name="repsw" placeholder="Enter Password" required>
-                        <span id="validity"></span>
-                    <button type="submit" class="force-button" disabled>Register</button>
+                    <label for="uname"><b>' . i8ln('Email address') . '</b></label>
+                    <input type="email" placeholder="' . i8ln('Enter email address') . '" name="uname" required>
+
+                    <label for="psw"><b>' . i8ln('Password') . '</b></label>
+                    <input type="password" id="psw" name="psw" pattern="(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{8,}" title="' . i8ln('Must contain at least one number, one uppercase, lowercase letter, and at least 8 or more characters') . '" required>
+
+                    <label for="repsw"><b>' . i8ln('Retype Password') . '</b></label>
+                    <input type="password" id="repsw" name="repsw" placeholder="' . i8ln('Enter Password') . '" required>
+
+                    <span id="validity"></span>
+                    <button type="submit" class="force-button" disabled>' . i8ln('Register') . '</button>
                 </div>
             </form>';
             echo $html;
@@ -146,10 +140,10 @@ if ($_GET['action'] == 'update') {
                     <i class="fas fa-user" style="font-size:80px"></i>
                 </div>
                 <div class="force-container">
-                    <label for="uname"><b>Email address</b></label>
-                        <input type="email" placeholder="Enter Email address" name="uname" required>
+                    <label for="uname"><b>' . i8ln('Email address') . '</b></label>
+                    <input type="email" placeholder="' . i8ln('Enter Email address') . '" name="uname" required>
 
-                    <button type="submit" class="force-button">Reset password</button>
+                    <button type="submit" class="force-button">' . i8ln('Reset password') . '</button>
                 </div>
             </form>';
             echo $html;
@@ -160,16 +154,20 @@ if ($_GET['action'] == 'update') {
                     <i class="fas fa-user" style="font-size:80px"></i>
                 </div>
                 <div class="force-container">
-                    <label for="uname"><b>Email address</b></label>
-                        <input type="text" id="uname" name="uname" value="' . $_GET['username'] . '" readonly>
-                    <label for="prepsw"><b>Password</b></label>
-                        <input type="password" id="prepsw" name="prepsw" placeholder="Enter Password" required>
-                    <label for="psw"><b>New Password</b></label>
-                        <input type="password" id="psw" name="psw" pattern="(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{8,}" title="Must contain at least one number and one uppercase and lowercase letter, and at least 8 or more characters" required>
-                    <label for="repsw"><b>Retype New Password</b></label>
-                        <input type="password" id="repsw" name="repsw" placeholder="Enter Password" required>
-                        <span id="validity"></span>
-                    <button type="submit" class="force-button">Update password</button>
+                    <label for="uname"><b>' . i8ln('Email address') . '</b></label>
+                    <input type="text" id="uname" name="uname" value="' . $_GET['username'] . '" readonly>
+
+                    <label for="prepsw"><b>' . i8ln('Password') . '</b></label>
+                    <input type="password" id="prepsw" name="prepsw" placeholder="' . i8ln('Enter Password') . '" required>
+
+                    <label for="psw"><b>' . i8ln('New Password') . '</b></label>
+                    <input type="password" id="psw" name="psw" pattern="(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{8,}" title="' . i8ln('Must contain at least one number and one uppercase and lowercase letter, and at least 8 or more characters') . '" required>
+
+                    <label for="repsw"><b>' . i8ln('Retype New Password') . '</b></label>
+                    <input type="password" id="repsw" name="repsw" placeholder="' . i8ln('Enter Password') . '" required>
+
+                    <span id="validity"></span>
+                    <button type="submit" class="force-button">' . i8ln('Update password') . '</button>
                 </div>
             </form>';
             echo $html;
