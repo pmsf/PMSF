@@ -57,7 +57,7 @@ if (isset($_GET['action'])) {
                              $html .= "<div id='login-error'>" . i8ln('We couldn\'t find the account you are trying to use to login.') . "</div>";
                              break;
                          case 'password':
-                             $html .= "<div id='login-error'>" . i8ln('Oeps we might need to use the password reset if you can\'t remember.') . "</div>";
+                             $html .= "<div id='login-error'>" . i8ln('Oops we might need to use the password reset if you can\'t remember.') . "</div>";
                              break;
                          case 'blacklisted-member':
                              $html .= "<div id='login-error'>" . i8ln('Your account is banned for the use of this website please contact the site admin.') . "</div>";
