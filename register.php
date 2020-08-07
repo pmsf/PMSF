@@ -5,14 +5,14 @@ include('config/config.php');
 if ($_GET['action'] == 'new') {
     if ($manualdb->has("users", ["user" => $_POST['uname']])) {
         header("Location: ./login?action=login");
-	die();
+        die();
     } else if ($_POST['psw'] == $_POST['repsw']){
-	if (createUserAccount($_POST['uname'], $_POST['psw'], time() + 86400)) {
+        if (createUserAccount($_POST['uname'], $_POST['psw'], time() + 86400)) {
             header("Location: ./login?action=login");
-	    die();
+            die();
         }
         header("Location: .");
-	die();
+        die();
     } else {
         header("Location: .");
         die();
@@ -21,15 +21,15 @@ if ($_GET['action'] == 'new') {
 if ($_GET['action'] == 'reset') {
     if (!$manualdb->has("users", ["user" => $_POST['uname']])) {
         header("Location: ./login?action=login");
-	die();
+        die();
     } else if ($_POST['uname']){
         $randomPwd = generateRandomString();
-	if (resetUserPassword($_POST['uname'], $randomPwd, 0)) {
+        if (resetUserPassword($_POST['uname'], $randomPwd, 0)) {
             header("Location: ./login?action=login");
-	    die();
+            die();
         }
         header("Location: .");
-	die();
+        die();
     } else {
         header("Location: .");
         die();
@@ -45,7 +45,7 @@ if ($_GET['action'] == 'update') {
         if (password_verify($_POST['prepsw'], $info['password']) === true || password_verify($_POST['prepsw'], $info['temp_password']) === true) {
             if (!$manualdb->has("users", ["user" => $_POST['uname'], "login_system" => "native"])) {
                 header("Location: ./login?action=login");
-	        die();
+                die();
             } else if ($_POST['psw'] == $_POST['repsw']){
                 $hashedPwd = password_hash($_POST['psw'], PASSWORD_DEFAULT);
                 $manualdb->update("users", [
@@ -61,7 +61,7 @@ if ($_GET['action'] == 'update') {
                 header("Location: .");
                 die();
             }
-	}
+        }
     }
 }
 ?>
@@ -137,7 +137,7 @@ if ($_GET['action'] == 'update') {
                         <span id="validity"></span>
                     <button type="submit" class="force-button" disabled>Register</button>
                 </div>
-	    </form>';
+            </form>';
             echo $html;
         }
         if ($_GET['action'] == 'password-reset') {
