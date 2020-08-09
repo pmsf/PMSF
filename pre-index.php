@@ -2274,8 +2274,6 @@ if (!$noLoadingScreen) {
     var noAddNewCommunity = <?php echo $noAddNewCommunity === true ? 'true' : 'false' ?>;
     var noDeleteCommunity = <?php echo $noDeleteCommunity === true ? 'true' : 'false' ?>;
     var noEditCommunity = <?php echo $noEditCommunity === true ? 'true' : 'false' ?>;
-    var login = <?php echo $noNativeLogin === false || $noDiscordLogin === false || $noFacebookLogin === false ? 'true' : 'false' ?>;
-    var expireTimestamp = <?php echo isset($_SESSION['user']->expire_timestamp) ? $_SESSION['user']->expire_timestamp : 0 ?>;
     var timestamp = <?php echo time() ?>;
     var noRenamePokestops = <?php echo $noRenamePokestops === true ? 'true' : 'false' ?>;
     var noRenameGyms = <?php echo $noRenameGyms === true ? 'true' : 'false' ?>;

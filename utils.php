@@ -243,34 +243,6 @@ function resetUserPassword($user, $password, $resetType)
     return true;
 }
 
-function updateExpireTimestamp($user, $login_system, $newExpireTimestamp)
-{
-    global $manualdb;
-
-    $manualdb->update("users", [
-        "expire_timestamp" => $newExpireTimestamp
-    ], [
-        "user" => $user,
-        "login_system" => $login_system
-    ]);
-
-    return true;
-}
-
-function updateAccessLevel($user, $login_system, $newAccessLevel)
-{
-    global $manualdb;
-
-    $manualdb->update("users", [
-        "access_level" => $newAccessLevel
-    ], [
-        "user" => $user,
-        "login_system" => $login_system
-    ]);
-
-    return true;
-}
-
 function destroyCookiesAndSessions()
 {
     global $manualdb;
