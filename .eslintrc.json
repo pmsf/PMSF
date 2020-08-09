@@ -217,6 +217,7 @@
     "noDarkMode": true,
     "defaultDustAmount": true,
     "noCatchRates": true,
-    "nestAvgDefault": true
+    "nestAvgDefault": true,
+    "noPvp": true
   }
 }

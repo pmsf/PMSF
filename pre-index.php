@@ -2319,6 +2319,7 @@ if (!$noLoadingScreen) {
     var nestAvgDefault = <?php echo $nestAvgDefault; ?>;
     var noDarkMode = <?php echo $noDarkMode === true ? 'true' : 'false' ?>;
     var noCatchRates = <?php echo $noCatchRates === true ? 'true' : 'false' ?>;
+    var noPvp = <?php echo $noPvp === true ? 'true' : 'false' ?>;
 </script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js"></script>
 <script src="static/dist/js/map.common.min.js"></script>
