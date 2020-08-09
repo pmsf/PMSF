@@ -1437,77 +1437,75 @@ function pokemonLabel(item) {
     '<i class="far fa-share-square" aria-hidden="true" style="position:relative;top:3px;left:0px;color:#26c300;margin-bottom:10px;font-size:18px;"></i>' +
     '</a>'
 
-if (item['pvp_rankings_great_league'] !== undefined && item['pvp_rankings_great_league'] !== null) {
-    contentstring += '<br>'
-    item['pvp_rankings_great_league'] = JSON.parse(item['pvp_rankings_great_league'])
-    contentstring += '<b>Great League:</b>' + '<br>'
-    $.each(item['pvp_rankings_great_league'], function (index, ranking) {
-        let color = ''
-
-        let pokemonName = ''
-        $.each(pokedex[ranking.pokemon]['forms'], function (index, form) {
-            if (ranking.form == form['protoform'] && form['nameform'] !== 'Normal') {
-                pokemonName = form['nameform'] + ' ' + pokedex[ranking.pokemon]['name']
+    if (item['pvp_rankings_great_league'] !== undefined && item['pvp_rankings_great_league'] !== null) {
+        contentstring += '<br>'
+        item['pvp_rankings_great_league'] = JSON.parse(item['pvp_rankings_great_league'])
+        contentstring += '<b>' + i8ln('Great League') + ':</b>' + '<br>'
+        $.each(item['pvp_rankings_great_league'], function (index, ranking) {
+            let color = ''
+    
+            let pokemonName = ''
+            $.each(pokedex[ranking.pokemon]['forms'], function (index, form) {
+                if (ranking.form == form['protoform'] && form['nameform'] !== 'Normal') {
+                    pokemonName = i8ln(form['nameform']) + ' ' + i8ln(pokedex[ranking.pokemon]['name'])
+                }
+            })
+            if (pokemonName === '') {
+                pokemonName = i8ln(pokedex[ranking.pokemon]['name'])
             }
-        })
-        if (pokemonName === '') {
-            pokemonName = pokedex[ranking.pokemon]['name']
-        }
 
-        let infoString
-        if (ranking.rank === null) {
-            infoString = 'CP too high'
-        } else {
-            infoString = '#' + ranking.rank
-        }
-        if (ranking.cp !== null) {
-            infoString += ' @' + ranking.cp + 'CP (Lvl. ' + (ranking.level) + ')'
-        }
-
-        if (ranking.rank == 1) {
-            color = 'color:green'
-        }
-        contentstring += '<small style="font-size: 11px;' + color + '"><b>' + pokemonName + ':</b> ' + infoString + '</small><br>'
-    })
-}
-
-if (item['pvp_rankings_ultra_league'] !== undefined && item['pvp_rankings_ultra_league'] !== null) {
-    contentstring += '<br>'
-    item['pvp_rankings_ultra_league'] = JSON.parse(item['pvp_rankings_ultra_league'])
-    contentstring += '<b>Ultra League:</b>' + '<br>'
-    $.each(item['pvp_rankings_ultra_league'], function (index, ranking) {
-        let color = ''
-
-        let pokemonName = ''
-        $.each(pokedex[ranking.pokemon]['forms'], function (index, form) {
-            if (ranking.form == form['protoform'] && form['nameform'] !== 'Normal') {
-                pokemonName = form['nameform'] + ' ' + pokedex[ranking.pokemon]['name']
+            let infoString
+            if (ranking.rank === null) {
+                infoString = i8ln('CP too high')
+            } else {
+                infoString = '#' + ranking.rank
             }
+            if (ranking.cp !== null) {
+                infoString += ' @' + ranking.cp + i8ln('CP') + ' (' + i8ln('Lvl') + ' ' + (ranking.level) + ')'
+            }
+
+            if (ranking.rank == 1) {
+                color = 'color:green'
+            }
+            contentstring += '<small style="font-size: 11px;' + color + '"><b>' + pokemonName + ':</b> ' + infoString + '</small><br>'
         })
-        if (pokemonName === '') {
-            pokemonName = pokedex[ranking.pokemon]['name']
-        }
+    }
 
-        let infoString
-        if (ranking.rank === null) {
-            infoString = 'CP too high'
-        } else {
-            infoString = '#' + ranking.rank
-        }
-        if (ranking.cp !== null) {
-            infoString += ' @' + ranking.cp + 'CP (Lvl. ' + (ranking.level) + ')'
-        }
+    if (item['pvp_rankings_ultra_league'] !== undefined && item['pvp_rankings_ultra_league'] !== null) {
+        contentstring += '<br>'
+        item['pvp_rankings_ultra_league'] = JSON.parse(item['pvp_rankings_ultra_league'])
+        contentstring += '<b>' + i8ln('Ultra League') + ':</b>' + '<br>'
+        $.each(item['pvp_rankings_ultra_league'], function (index, ranking) {
+            let color = ''
 
-        if (ranking.rank == 1) {
-            color = 'color:green'
-        }
+            let pokemonName = ''
+            $.each(pokedex[ranking.pokemon]['forms'], function (index, form) {
+                if (ranking.form == form['protoform'] && form['nameform'] !== 'Normal') {
+                    pokemonName = i8ln(form['nameform']) + ' ' + i8ln(pokedex[ranking.pokemon]['name'])
+                }
+            })
+            if (pokemonName === '') {
+                pokemonName = i8ln(pokedex[ranking.pokemon]['name'])
+            }
 
-        contentstring += '<small style="font-size: 11px;' + color + '"><b>' + pokemonName + ':</b> ' + infoString + '</small><br>'
+            let infoString
+            if (ranking.rank === null) {
+                infoString = i8ln('CP too high')
+            } else {
+                infoString = '#' + ranking.rank
+            }
+            if (ranking.cp !== null) {
+                infoString += ' @' + ranking.cp + i8ln('CP') + ' (' + i8ln('Lvl') + ' ' + (ranking.level) + ')'
+            }
 
-    })
-}
+            if (ranking.rank == 1) {
+                color = 'color:green'
+            }
 
+            contentstring += '<small style="font-size: 11px;' + color + '"><b>' + pokemonName + ':</b> ' + infoString + '</small><br>'
 
+        })
+    }
 
     contentstring += '</center></div>'
     if (atk != null && def != null && sta != null) {
