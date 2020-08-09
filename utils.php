@@ -303,14 +303,6 @@ function validateCookie($cookie)
     )->fetch();
 
     if (!empty($info['user'])) {
-        if ($manualAccessLevel && $info['access_level'] > 0 && $info['expire_timestamp'] < time()) {
-            $manualdb->update("users", [
-                "access_level" => 0
-            ], [
-                "id" => $info['id']
-            ]);
-            $info['access_level'] = 0;
-        }
         $_SESSION['user'] = new \stdClass();
         $_SESSION['user']->id = $info['id'];
         $_SESSION['user']->user = htmlspecialchars($info['user'], ENT_QUOTES, 'UTF-8');
