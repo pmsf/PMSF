@@ -93,6 +93,7 @@ var locationMarker
 var rangeMarkers = ['pokemon', 'pokestop', 'gym']
 var storeZoom = true
 var moves
+var pokedex
 var weather // eslint-disable-line no-unused-vars
 var boostedMons // eslint-disable-line no-unused-vars
 
@@ -1428,12 +1429,87 @@ function pokemonLabel(item) {
     } else {
         contentstring += '<div style="position:relative;"><center>'
     }
+
     contentstring +=
     '<a href="javascript:void(0)" onclick="javascript:openMapDirections(' + latitude + ', ' + longitude + ')" title="' + i8ln('View in Maps') + '">' +
     '<i class="fas fa-road"></i> ' + coordText + '</a> - ' +
     '<a href="./?lat=' + latitude + '&lon=' + longitude + '&zoom=18&encId=' + encounterId + '">' +
     '<i class="far fa-share-square" aria-hidden="true" style="position:relative;top:3px;left:0px;color:#26c300;margin-bottom:10px;font-size:18px;"></i>' +
-    '</a></center></div>'
+    '</a>'
+
+if (item['pvp_rankings_great_league'] !== undefined && item['pvp_rankings_great_league'] !== null) {
+    contentstring += '<br>'
+    item['pvp_rankings_great_league'] = JSON.parse(item['pvp_rankings_great_league'])
+    contentstring += '<b>Great League:</b>' + '<br>'
+    $.each(item['pvp_rankings_great_league'], function (index, ranking) {
+        let color = ''
+
+        let pokemonName = ''
+        $.each(pokedex[ranking.pokemon]['forms'], function (index, form) {
+            if (ranking.form == form['protoform'] && form['nameform'] !== 'Normal') {
+                pokemonName = form['nameform'] + ' ' + pokedex[ranking.pokemon]['name']
+            }
+        })
+        if (pokemonName === '') {
+            pokemonName = pokedex[ranking.pokemon]['name']
+        }
+
+        let infoString
+        if (ranking.rank === null) {
+            infoString = 'CP too high'
+        } else {
+            infoString = '#' + ranking.rank
+        }
+        if (ranking.cp !== null) {
+            infoString += ' @' + ranking.cp + 'CP (Lvl. ' + (ranking.level) + ')'
+        }
+
+        if (ranking.rank == 1) {
+            color = 'color:green'
+        }
+        contentstring += '<small style="font-size: 11px;' + color + '"><b>' + pokemonName + ':</b> ' + infoString + '</small><br>'
+    })
+}
+
+if (item['pvp_rankings_ultra_league'] !== undefined && item['pvp_rankings_ultra_league'] !== null) {
+    contentstring += '<br>'
+    item['pvp_rankings_ultra_league'] = JSON.parse(item['pvp_rankings_ultra_league'])
+    contentstring += '<b>Ultra League:</b>' + '<br>'
+    $.each(item['pvp_rankings_ultra_league'], function (index, ranking) {
+        let color = ''
+
+        let pokemonName = ''
+        $.each(pokedex[ranking.pokemon]['forms'], function (index, form) {
+            if (ranking.form == form['protoform'] && form['nameform'] !== 'Normal') {
+                pokemonName = form['nameform'] + ' ' + pokedex[ranking.pokemon]['name']
+            }
+        })
+        if (pokemonName === '') {
+            pokemonName = pokedex[ranking.pokemon]['name']
+        }
+
+        let infoString
+        if (ranking.rank === null) {
+            infoString = 'CP too high'
+        } else {
+            infoString = '#' + ranking.rank
+        }
+        if (ranking.cp !== null) {
+            infoString += ' @' + ranking.cp + 'CP (Lvl. ' + (ranking.level) + ')'
+        }
+
+        if (ranking.rank == 1) {
+            color = 'color:green'
+        }
+
+        contentstring += '<small style="font-size: 11px;' + color + '"><b>' + pokemonName + ':</b> ' + infoString + '</small><br>'
+
+    })
+}
+
+
+
+    contentstring += '</center></div>'
     if (atk != null && def != null && sta != null) {
         contentstring += '<br><br><br>'
         if (!noCatchRates) {
@@ -6627,6 +6703,11 @@ $(function () {
     $.getJSON('static/dist/data/moves.min.json').done(function (data) {
         moves = data
     })
+
+    $.getJSON('static/dist/data/pokemon.min.json').done(function (data) {
+        pokedex = data
+    })
+
 
     $.getJSON('static/dist/data/weather.min.json').done(function (data) {
         weather = data.weather

@@ -37,7 +37,9 @@ class RDM extends Scanner
             level,
             capture_1 AS catch_rate_1,
             capture_2 AS catch_rate_2,
-            capture_3 AS catch_rate_3";
+            capture_3 AS catch_rate_3,
+            pvp_rankings_great_league,
+            pvp_rankings_ultra_league";
         }
 
         $conds[] = "lat > :swLat AND lon > :swLng AND lat < :neLat AND lon < :neLng AND expire_timestamp > :time";
@@ -137,7 +139,9 @@ class RDM extends Scanner
             level,
             capture_1 AS catch_rate_1,
             capture_2 AS catch_rate_2,
-            capture_3 AS catch_rate_3";
+            capture_3 AS catch_rate_3,
+            pvp_rankings_great_league,
+            pvp_rankings_ultra_league";
         }
 
         $conds[] = "lat > :swLat AND lon > :swLng AND lat < :neLat AND lon < :neLng AND expire_timestamp > :time";
@@ -236,6 +240,9 @@ class RDM extends Scanner
             $pokemon["individual_attack"] = isset($pokemon["individual_attack"]) ? intval($pokemon["individual_attack"]) : null;
             $pokemon["individual_defense"] = isset($pokemon["individual_defense"]) ? intval($pokemon["individual_defense"]) : null;
             $pokemon["individual_stamina"] = isset($pokemon["individual_stamina"]) ? intval($pokemon["individual_stamina"]) : null;
+
+            $pokemon["pvp_rankings_great_league"] = isset($pokemon["pvp_rankings_great_league"]) ? $pokemon["pvp_rankings_great_league"] : null;
+            $pokemon["pvp_rankings_ultra_league"] = isset($pokemon["pvp_rankings_ultra_league"]) ? $pokemon["pvp_rankings_ultra_league"] : null;
 
             $pokemon["weather_boosted_condition"] = isset($pokemon["weather_boosted_condition"]) ? intval($pokemon["weather_boosted_condition"]) : 0;
 
