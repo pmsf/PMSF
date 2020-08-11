@@ -1440,9 +1440,9 @@ function pokemonLabel(item) {
     if (!noPvp) {
         if (item['pvp_rankings_great_league'] !== undefined && item['pvp_rankings_great_league'] !== null) {
             contentstring += '<br>'
-            item['pvp_rankings_great_league'] = JSON.parse(item['pvp_rankings_great_league'])
             contentstring += '<b>' + i8ln('Great League') + ':</b>' + '<br>'
-            $.each(item['pvp_rankings_great_league'], function (index, ranking) {
+            var greatLeague = JSON.parse(item['pvp_rankings_great_league'])
+            $.each(greatLeague, function (index, ranking) {
                 let pokemonName = ''
                 $.each(pokedex[ranking.pokemon]['forms'], function (index, form) {
                     if (ranking.form == form['protoform'] && form['nameform'] !== 'Normal') {
@@ -1473,9 +1473,9 @@ function pokemonLabel(item) {
 
         if (item['pvp_rankings_ultra_league'] !== undefined && item['pvp_rankings_ultra_league'] !== null) {
             contentstring += '<br>'
-            item['pvp_rankings_ultra_league'] = JSON.parse(item['pvp_rankings_ultra_league'])
             contentstring += '<b>' + i8ln('Ultra League') + ':</b>' + '<br>'
-            $.each(item['pvp_rankings_ultra_league'], function (index, ranking) {
+            var ultraLeague = JSON.parse(item['pvp_rankings_ultra_league'])
+            $.each(ultraLeague, function (index, ranking) {
                 let pokemonName = ''
                 $.each(pokedex[ranking.pokemon]['forms'], function (index, form) {
                     if (ranking.form == form['protoform'] && form['nameform'] !== 'Normal') {
