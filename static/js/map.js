@@ -7632,6 +7632,17 @@ function updateUser() {
         if (result === 'reload') {
             window.location.href = './logout?action=' + engine + '-logout'
         }
+        switch (result) {
+            case 'reload':
+                window.location.href = './logout?action=' + engine + '-logout'
+                break
+            case 'duplicate-login':
+                window.location.href = './login?action=login&error=duplicate-login'
+                break
+            case 'no-id':
+                window.location.href = './login?action=login&error=no-id'
+                break
+        }
     })
 }
 function loadUser(engine) {

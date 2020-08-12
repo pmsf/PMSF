@@ -60,8 +60,28 @@ function validateToken($token)
         return false;
     }
 }
-
-
+function validateDeviceToken()
+{
+    global $manualdb, $allowMultiLogin;
+    if (!empty($_SESSION['user']->id)) {
+        $user = $manualdb->get('users', ['id', 'session_token'], ['id' => $_SESSION['user']->id]);
+        if ($user['session_token'] == $_SESSION['token'] || $allowMultiLogin) {
+            $validity = 'true';
+	} else {
+            $validity ='false';
+            unset($_SESSION);
+            unset($_COOKIE['LoginCookie']);
+            unset($_COOKIE['LoginEngine']);
+            setcookie("LoginCookie", "", time() - 3600);
+            setcookie("LoginEngine", "", time() - 3600);
+            session_destroy();
+            session_write_close();
+        }
+    } else {
+        $validity = 'no_id';
+    }
+    return $validity;
+}
 function sendToWebhook($webhookUrl, $webhook)
 {
     if (is_array($webhookUrl)) {

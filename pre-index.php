@@ -18,6 +18,17 @@ if ($noNativeLogin === false || $noDiscordLogin === false || $noFacebookLogin ==
         header("Location: ./register?action=updatePwd");
         die();
     }
+    if ($_SESSION['token']) {
+        $validity = validateDeviceToken();
+        switch ($validity) {
+            case 'false':
+                header("Location: ./login?action=login&error=duplicate-login");
+                break;
+            case 'no-id':
+                header("Location: ./login?action=login&error=no-id");
+                break;
+        }
+    }
 }
 $zoom        = ! empty($_GET['zoom']) ? $_GET['zoom'] : null;
 $encounterId = ! empty($_GET['encId']) ? $_GET['encId'] : null;

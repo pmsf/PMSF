@@ -63,6 +63,12 @@ if (isset($_GET['action'])) {
                             case 'blacklisted-server-dc':
                                 $html .= "<div id='login-error'>" . i8ln('We found you are a member of the following discord server we have blacklisted: ') . $_GET['bl-discord'] . "</div>";
                                 break;
+                            case 'duplicate-login':
+                                $html .= "<div id='login-error'>" . i8ln('We logged you out because a different device just logged in with the same account.') . "</div>";
+                                break;
+                            case 'no-id':
+                                $html .= "<div id='login-error'>" . i8ln('Something went wrong as we couldn\'t find your session id.') . "</div>";
+                                break;
                         }
                     }
                     $html .= '<div class="imgcontainer">
@@ -126,10 +132,11 @@ if (isset($_GET['action'])) {
                 header("Location: ./login?action=login&error=password");
             }
             $manualdb->update("users", [
-                "session_id" => session_id()
+                'session_token' => $_SESSION['token'],
+                'session_id' => session_id()
             ], [
-                "user" => $_POST['uname'],
-                "login_system" => 'native'
+                'user' => $_POST['uname'],
+                'login_system' => 'native'
             ]);
 
             setcookie("LoginCookie", session_id(), time()+60*60*24*7);
@@ -241,6 +248,7 @@ if (isset($_GET['callback'])) {
 
                 if ($manualdb->has('users', ['id' => $user->id, 'login_system' => 'discord'])) {
                     $manualdb->update('users', [
+                        'session_token' => $_SESSION['token'],
                         'session_id' => $response->access_token,
                         'expire_timestamp' => time() + $response->expires_in,
                         'user' => strval($user->username) . '#' . $user->discriminator,
@@ -253,6 +261,7 @@ if (isset($_GET['callback'])) {
                     ]);
                 } else {
                     $manualdb->insert('users', [
+                        'session_token' => $_SESSION['token'],
                         'session_id' => $response->access_token,
                         'id' => $user->id,
                         'user' => strval($user->username) . '#' . $user->discriminator,
@@ -333,6 +342,7 @@ if (isset($_GET['callback'])) {
             $user = $response->getGraphUser();
             if ($manualdb->has('users', ['id' => $user['id'], 'login_system' => 'facebook'])) {
                 $manualdb->update('users', [
+                    'session_token' => $_SESSION['token'],
                     'session_id' => $userToken,
                     'expire_timestamp' => time() + 86400,
                     'user' => $user['name'],
@@ -344,6 +354,7 @@ if (isset($_GET['callback'])) {
                 ]);
             } else {
                 $manualdb->insert('users', [
+                    'session_token' => $_SESSION['token'],
                     'session_id' => $userToken,
                     'id' => $user['id'],
                     'user' => $user['name'],
@@ -387,6 +398,15 @@ if (!empty($_POST['refresh'])) {
                 $answer = 'reload';
             }
         }
+    }
+    $validity = validateDeviceToken();
+    switch ($validity) {
+        case 'false':
+            $answer = 'duplicate-login';
+            break;
+        case 'no-id':
+            $answer = 'no-id';
+            break;
     }
     $answer = json_encode($answer);
     echo $answer;
