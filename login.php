@@ -6,6 +6,8 @@ use Monolog\Logger;
 use Monolog\Handler\StreamHandler;
 use Monolog\Handler\FirePHPHandler;
 use RestCord\DiscordClient;
+use Patreon\API;
+use Patreon\OAuth;
 
 switch ($discordLogLevel) {
 case "NOTICE":
@@ -63,6 +65,15 @@ if (isset($_GET['action'])) {
                             case 'blacklisted-server-dc':
                                 $html .= "<div id='login-error'>" . i8ln('We found you are a member of the following discord server we have blacklisted: ') . $_GET['bl-discord'] . "</div>";
                                 break;
+                            case 'duplicate-login':
+                                $html .= "<div id='login-error'>" . i8ln('We logged you out because a different device just logged in with the same account.') . "</div>";
+                                break;
+                            case 'no-id':
+                                $html .= "<div id='login-error'>" . i8ln('Something went wrong as we couldn\'t find your session id.') . "</div>";
+                                break;
+                            case 'failed-token':
+                                $html .= "<div id='login-error'>" . i8ln('Something went wrong while verifying external login') . "</div>";
+                                break;
                         }
                     }
                     $html .= '<div class="imgcontainer">
@@ -83,6 +94,9 @@ if (isset($_GET['action'])) {
                     }
                     if ($noFacebookLogin === false) {
                         $html .= "<button type='button' style='background-color: #1877f2; margin: 2px' onclick=\"location.href='./login?action=facebook-login';\" value='Login with discord'><i class='fab fa-facebook'></i>&nbsp" . i8ln('Login with Facebook') . "</button>";
+                    }
+                    if ($noPatreonLogin === false) {
+                        $html .= "<button type='button' style='background-color: #1877f2; margin: 2px' onclick=\"location.href='./login?action=patreon-login';\" value='Login with patreon'><i class='fab fa-patreon'></i>&nbsp" . i8ln('Login with Patreon') . "</button>";
                     }
                     $html .= '</div>
                     <div class="force-container" style="background-color:#f1f1f1">';
@@ -149,6 +163,16 @@ if (isset($_GET['action'])) {
             'scope' => 'identify guilds'
         ];
         header('Location: https://discord.com/api/oauth2/authorize' . '?' . http_build_query($params));
+        die();
+    }
+    if ($_GET['action'] == 'patreon-login') {
+        $params = [
+            'client_id' => $patreonClientId,
+            'redirect_uri' => $patreonCallbackUri,
+	    'response_type' => 'code',
+            'state' => $_SESSION['token']
+        ];
+        header('Location: https://www.patreon.com/oauth2/authorize' . '?' . http_build_query($params));
         die();
     }
     if ($_GET['action'] == 'facebook-login') {
@@ -359,6 +383,60 @@ if (isset($_GET['callback'])) {
             header("Location: .?login=true");
             die();
         }
+    }
+    if ($_GET['callback'] == 'patreon') {
+        if ($_GET['state'] != $_SESSION['token']) {
+            header("Location: ./login?action=login&error=failed-token");
+            die();
+        }
+        $token_request = 'https://www.patreon.com/api/oauth2/token';
+        $token = curl_init();
+        curl_setopt_array($token, [
+            CURLOPT_URL => $token_request,
+            CURLOPT_POST => 1,
+            CURLOPT_POSTFIELDS => [
+                'grant_type' => 'authorization_code',
+                'client_id' => $patreonClientId,
+                'client_secret' => $patreonClientSecret,
+                'redirect_uri' => $patreonCallbackUri,
+                'code' => $_GET['code']
+            ]
+        ]);
+        curl_setopt($token, CURLOPT_RETURNTRANSFER, true);
+
+        $response = json_decode(curl_exec($token));
+        curl_close($token);
+        $api_client = new API($response->access_token);
+        $patreon_user = $api_client->fetch_user();
+
+        if ($manualdb->has('users', ['id' => $patreon_user['data']['id'], 'login_system' => 'patreon'])) {
+            $manualdb->update('users', [
+                'session_token' => $_SESSION['token'],
+                'session_id' => $response->access_token,
+                'expire_timestamp' => time() + $response->expires_in,
+                'user' => strval($patreon_user['data']['attributes']['full_name']),
+                'access_level' => intval(1),
+                'avatar' => $patreon_user['data']['attributes']['image_url']
+            ], [
+                'id' => $patreon_user['data']['id'],
+                'login_system' => 'patreon'
+            ]);
+        } else {
+            $manualdb->insert('users', [
+                'session_token' => $_SESSION['token'],
+                'session_id' => $response->access_token,
+                'id' => $patreon_user['data']['id'],
+                'user' => strval($patreon_user['data']['attributes']['full_name']),
+                'access_level' => intval(1),
+                'avatar' => $patreon_user['data']['attributes']['image_url'],
+                'expire_timestamp' => time() + $response->expires_in,
+                'login_system' => 'patreon'
+            ]);
+        }
+        setcookie("LoginCookie", $response->access_token, time() + $response->expires_in);
+        setcookie("LoginEngine", 'patreon', time() + $response->expires_in);
+        header("Location: .?login=true");
+        die();
     }
 }
 if (!empty($_POST['refresh'])) {
