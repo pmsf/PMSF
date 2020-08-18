@@ -6,7 +6,8 @@ This fork is different is so many ways that its impossible to name them all. Mai
 
 PokeMap Standalone Frontend or PMSF for short is a PHP Map Interface for the RDM Scanner designed to be completely standalone and able to run on any traditional web server. Manual submissions are supported on a Monocle Hydro base database with small additions, have a look at the cleandb.sql and sql.sql for changes.
 
-It supports all the common database engines, including MySQL, MariaDB
+It supports all the common database engines, including MySQL, MariaDB.
+
 A special Database structure based on Hydro Monocle is needed.
 
 ## Get Started
