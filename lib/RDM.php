@@ -601,6 +601,7 @@ class RDM extends Scanner
         raid_pokemon_costume,
         raid_pokemon_cp,
         raid_pokemon_gender,
+        raid_pokemon_evolution,
         ex_raid_eligible AS park
         FROM gym
         WHERE :conditions";
@@ -621,6 +622,7 @@ class RDM extends Scanner
             $gym["pokemon"] = [];
             $gym["raid_pokemon_name"] = empty($raid_pid) ? null : i8ln($this->data[$raid_pid]["name"]);
             $gym["raid_pokemon_costume"] = intval($gym["raid_pokemon_costume"]);
+            $gym["raid_pokemon_evolution"] = intval($gym["raid_pokemon_evolution"]);
             $gym["form"] = intval($gym["raid_pokemon_form"]);
             $gym["latitude"] = floatval($gym["latitude"]);
             $gym["longitude"] = floatval($gym["longitude"]);
@@ -652,6 +654,7 @@ class RDM extends Scanner
                             $gym["raid_pokemon_form"] = null;
                             $gym["raid_pokemon_cp"] = null;
                             $gym["raid_pokemon_gender"] = null;
+                            $gym["raid_pokemon_evolution"] = null;
                             break;
                         }
                     }
@@ -668,6 +671,7 @@ class RDM extends Scanner
                             $gym["raid_pokemon_form"] = null;
                             $gym["raid_pokemon_cp"] = null;
                             $gym["raid_pokemon_gender"] = null;
+                            $gym["raid_pokemon_evolution"] = null;
                             break;
                         }
                     }
