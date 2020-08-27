@@ -1532,7 +1532,7 @@ function gymLabel(item) {
             costumeStr = '_' + item['raid_pokemon_costume']
         }
         var megaStr = ''
-        if (item['raid_pokemon_evolution'] > 0)
+        if (item['raid_pokemon_evolution'] > 0) {
             megaStr = '_' + item['raid_pokemon_evolution']
         }
         if (raidStarted) {
@@ -2275,7 +2275,7 @@ function getGymMarkerIcon(item) {
         costumeStr = '_' + item['raid_pokemon_costume']
     }
     var megaStr = ''
-    if (item['raid_pokemon_evolution'] > 0)
+    if (item['raid_pokemon_evolution'] > 0) {
         megaStr = '_' + item['raid_pokemon_evolution']
     }
     var team = item.team_id
@@ -2421,7 +2421,7 @@ function setupGymMarker(item) {
                 costumeStr = '_' + item['raid_pokemon_costume']
             }
             var megaStr = ''
-            if (item['raid_pokemon_evolution'] > 0)
+            if (item['raid_pokemon_evolution'] > 0) {
                 megaStr = '_' + item['raid_pokemon_evolution']
             }
             icon = iconpath + 'pokemon_icon_' + pokemonidStr + '_' + formStr + costumeStr + megaStr '.png'
@@ -2495,7 +2495,7 @@ function updateGymMarker(item, marker) {
                     costumeStr = '_' + item['raid_pokemon_costume']
                 }
                 var megaStr = ''
-                if (item['raid_pokemon_evolution'] > 0)
+                if (item['raid_pokemon_evolution'] > 0) {
                     megaStr = '_' + item['raid_pokemon_evolution']
                 }
                 icon = iconpath + 'pokemon_icon_' + pokemonidStr + '_' + formStr + costumeStr + megaStr + '.png'
