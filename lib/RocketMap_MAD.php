@@ -400,6 +400,7 @@ class RocketMap_MAD extends RocketMap
             $gym["raid_pokemon_name"] = empty($raid_pid) ? null : i8ln($this->data[$raid_pid]["name"]);
             $gym["raid_pokemon_gender"] = intval($gym["raid_pokemon_gender"]);
             $gym["raid_pokemon_costume"] = intval($gym["raid_pokemon_costume"]);
+            $gym["raid_pokemon_evolution"] = null;
             $gym["form"] = intval($gym["raid_pokemon_form"]);
             $gym["latitude"] = floatval($gym["latitude"]);
             $gym["longitude"] = floatval($gym["longitude"]);
@@ -431,6 +432,7 @@ class RocketMap_MAD extends RocketMap
                             $gym["raid_pokemon_form"] = null;
                             $gym["raid_pokemon_cp"] = null;
                             $gym["raid_pokemon_gender"] = null;
+                            $gym["raid_pokemon_evolution"] = null;
                             break;
                         }
                     }
@@ -447,6 +449,7 @@ class RocketMap_MAD extends RocketMap
                             $gym["raid_pokemon_form"] = null;
                             $gym["raid_pokemon_cp"] = null;
                             $gym["raid_pokemon_gender"] = null;
+                            $gym["raid_pokemon_evolution"] = null;
                             break;
                         }
                     }
