@@ -1884,8 +1884,10 @@ function getGymMarkerIcon(item) {
             hatchedEgg = 'hatched_normal'
         } else if (item['raid_level'] <= 4) {
             hatchedEgg = 'hatched_rare'
-        } else {
+        } else if (item['raid_level'] <= 5) {
             hatchedEgg = 'hatched_legendary'
+        } else {
+            hatchedEgg = 'hatched_mega'
         }
         html = '<div style="position:relative;">' +
             '<img src="static/forts/' + Store.get('gymMarkerStyle') + '/' + teamStr + '.png" style="width:50px;height:auto;"/>' +
@@ -1908,8 +1910,10 @@ function getGymMarkerIcon(item) {
             raidEgg = 'normal'
         } else if (item['raid_level'] <= 4) {
             raidEgg = 'rare'
-        } else {
+        } else if (item['raid_level'] <= 5) {
             raidEgg = 'legendary'
+        } else {
+            raidEgg = 'mega'
         }
         html = '<div style="position:relative;">' +
             '<img src="static/forts/' + Store.get('gymMarkerStyle') + '/' + teamStr + '.png" style="width:50px;height:auto;"/>' +
@@ -1988,8 +1992,10 @@ function setupGymMarker(item) {
                 hatchedEgg = 'hatched_normal'
             } else if (item['raid_level'] <= 4) {
                 hatchedEgg = 'hatched_rare'
-            } else {
+            } else if (item['raid_level'] <= 5) {
                 hatchedEgg = 'hatched_legendary'
+            } else {
+                hatchedEgg = 'hatched_mega'
             }
             icon = 'static/raids/egg_' + hatchedEgg + '.png'
         } else {
@@ -1998,8 +2004,10 @@ function setupGymMarker(item) {
                 raidEgg = 'normal'
             } else if (item['raid_level'] <= 4) {
                 raidEgg = 'rare'
-            } else {
+            } else if (item['raid_level'] <= 5) {
                 raidEgg = 'legendary'
+            } else {
+                raidEgg = 'mega'
             }
             icon = 'static/raids/egg_' + raidEgg + '.png'
             checkAndCreateSound()
@@ -2050,8 +2058,10 @@ function updateGymMarker(item, marker) {
                     hatchedEgg = 'hatched_normal'
                 } else if (item['raid_level'] <= 4) {
                     hatchedEgg = 'hatched_rare'
-                } else {
+                } else if (item['raid_level'] <= 5) {
                     hatchedEgg = 'hatched_legendary'
+                } else {
+                    hatchedEgg = 'hatched_mega'
                 }
                 icon = 'static/raids/egg_' + hatchedEgg + '.png'
             } else {
@@ -2061,8 +2071,10 @@ function updateGymMarker(item, marker) {
                     raidEgg = 'normal'
                 } else if (item['raid_level'] <= 4) {
                     raidEgg = 'rare'
-                } else {
+                } else if (item['raid_level'] <= 5) {
                     raidEgg = 'legendary'
+                } else {
+                    raidEgg = 'mega'
                 }
                 icon = 'static/raids/egg_' + raidEgg + '.png'
             }
