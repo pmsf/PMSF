@@ -1131,8 +1131,10 @@ function gymLabel(item) {
                 hatchedEgg = 'hatched_normal'
             } else if (item['raid_level'] <= 4) {
                 hatchedEgg = 'hatched_rare'
-            } else {
+            } else if (item['raid_level'] <= 5) {
                 hatchedEgg = 'hatched_legendary'
+            } else {
+                hatchedEgg = 'hatched_mega'
             }
             raidIcon = '<img src="static/raids/egg_' + hatchedEgg + '.png" style="width:60px;height:70">'
         } else {
@@ -1141,8 +1143,10 @@ function gymLabel(item) {
                 raidEgg = 'normal'
             } else if (item['raid_level'] <= 4) {
                 raidEgg = 'rare'
-            } else {
+            } else if (item['raid_level'] <= 5) {
                 raidEgg = 'legendary'
+            } else {
+                raidEgg = 'mega'
             }
             raidIcon = '<img src="static/raids/egg_' + raidEgg + '.png">'
         }
