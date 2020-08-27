@@ -826,6 +826,7 @@ if (!$noLoadingScreen) {
                                 <option value="3">3</option>
                                 <option value="4">4</option>
                                 <option value="5">5</option>
+                                <option value="6">6</option>
                             </select>
                         </div>
                         <div class="form-control switch-container" id="max-level-raids-filter-wrapper" style="float:none;height:50px;margin-bottom:5px;">
@@ -836,6 +837,7 @@ if (!$noLoadingScreen) {
                                 <option value="3">3</option>
                                 <option value="4">4</option>
                                 <option value="5">5</option>
+                                <option value="6">6</option>
                             </select>
                         </div>
                         <?php
@@ -1311,6 +1313,7 @@ if (!$noLoadingScreen) {
                             <option value="3">3</option>
                             <option value="4">4</option>
                             <option value="5">5</option>
+                            <option value="6">6</option>
                         </select>
                     </div>';
             }
@@ -1846,6 +1849,7 @@ if (!$noLoadingScreen) {
                 <option value="3">3</option>
                 <option value="4">4</option>
                 <option value="5">5</option>
+                <option value="6">6</option>
             </select>
             <select id="throwTypeList" name="throwTypeList" class="throwTypeList">
                 <option />
