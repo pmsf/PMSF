@@ -5496,7 +5496,7 @@ function processGyms(i, item) {
             }
         }
         // Remove Broken Raid eggs from gym
-        if (excludedRaidegg.indexOf(Number(item['raid_level']) + 5) > -1) {
+        if (excludedRaidegg.indexOf(Number(item['raid_level']) + 6) > -1) {
             if (item['raid_pokemon_id'] <= 0) {
                 if (item['raid_start'] < time) {
                     if (item['raid_end'] > time) {
