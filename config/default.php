@@ -143,7 +143,7 @@ $imgurCID = "";
 $numberOfPokemon = 649;
 $numberOfItem = 1600;
 $numberOfGrunt = 50;
-$numberOfEgg = 10;
+$numberOfEgg = 12;
 
 /* UserTimezone */
 $userTimezone = date_default_timezone_get();

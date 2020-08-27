@@ -1455,6 +1455,7 @@ function gymLabel(item) {
     var form = item['form']
     var freeSlots = item['slots_available']
     var gender = item['raid_pokemon_gender']
+    var evolution = item['raid_pokemon_evolution']
 
     var raidSpawned = item['raid_level'] != null
     var raidStarted = item['raid_pokemon_id'] != null
@@ -1476,6 +1477,19 @@ function gymLabel(item) {
             raidStr += '<br>' + item.raid_pokemon_name
             if (form !== null && form > 0 && item['form_name'] !== 'Normal') {
                 raidStr += ' (' + i8ln(item['form_name']) + ')'
+            }
+            if (evolution !== null && evolution > 0) {
+                switch (evolution) {
+                    case 1:
+                        raidStr += ' Mega'
+                        break
+                    case 2:
+                        raidStr += ' Mega X'
+                        break
+                    case 3:
+                        raidStr += ' Mega Y'
+                        break
+                }
             }
             if (gender > 0) {
                 raidStr += ' ' + genderType[gender - 1]
@@ -1526,8 +1540,10 @@ function gymLabel(item) {
                 hatchedEgg = 'hatched_normal'
             } else if (item['raid_level'] <= 4) {
                 hatchedEgg = 'hatched_rare'
-            } else {
+            } else if (item['raid_level'] <= 5) {
                 hatchedEgg = 'hatched_legendary'
+            } else {
+                hatchedEgg = 'hatched_mega'
             }
             raidIcon = '<img src="static/raids/egg_' + hatchedEgg + '.png" style="height:70px;">'
         } else {
@@ -1536,8 +1552,10 @@ function gymLabel(item) {
                 raidEgg = 'normal'
             } else if (item['raid_level'] <= 4) {
                 raidEgg = 'rare'
-            } else {
+            } else if (item['raid_level'] <= 5) {
                 raidEgg = 'legendary'
+            } else {
+                raidEgg = 'mega'
             }
             raidIcon = '<img src="static/raids/egg_' + raidEgg + '.png" style="height:70px;">'
         }
@@ -2292,8 +2310,10 @@ function getGymMarkerIcon(item) {
             hatchedEgg = 'hatched_normal'
         } else if (item['raid_level'] <= 4) {
             hatchedEgg = 'hatched_rare'
-        } else {
+        } else if (item['raid_level'] <= 5) {
             hatchedEgg = 'hatched_legendary'
+        } else {
+            hatchedEgg = 'hatched_mega'
         }
         html = '<div style="position:relative;">' +
             '<img src="static/forts/' + Store.get('gymMarkerStyle') + '/' + teamStr + '.png" style="width:50px;height:auto;"/>' +
@@ -2316,8 +2336,10 @@ function getGymMarkerIcon(item) {
             raidEgg = 'normal'
         } else if (item['raid_level'] <= 4) {
             raidEgg = 'rare'
-        } else {
+        } else if (item['raid_level'] <= 5) {
             raidEgg = 'legendary'
+        } else {
+            raidEgg = 'mega'
         }
         html = '<div style="position:relative;">' +
             '<img src="static/forts/' + Store.get('gymMarkerStyle') + '/' + teamStr + '.png" style="width:50px;height:auto;"/>' +
@@ -2400,8 +2422,10 @@ function setupGymMarker(item) {
                 hatchedEgg = 'hatched_normal'
             } else if (item['raid_level'] <= 4) {
                 hatchedEgg = 'hatched_rare'
-            } else {
+            } else if (item['raid_level'] <= 5) {
                 hatchedEgg = 'hatched_legendary'
+            } else {
+                hatchedEgg = 'hatched_mega'
             }
             icon = 'static/raids/egg_' + hatchedEgg + '.png'
         } else {
@@ -2410,8 +2434,10 @@ function setupGymMarker(item) {
                 raidEgg = 'normal'
             } else if (item['raid_level'] <= 4) {
                 raidEgg = 'rare'
-            } else {
+            } else if (item['raid_level'] <= 5) {
                 raidEgg = 'legendary'
+            } else {
+                raidEgg = 'mega'
             }
             icon = 'static/raids/egg_' + raidEgg + '.png'
             checkAndCreateSound()
@@ -2467,8 +2493,10 @@ function updateGymMarker(item, marker) {
                     hatchedEgg = 'hatched_normal'
                 } else if (item['raid_level'] <= 4) {
                     hatchedEgg = 'hatched_rare'
-                } else {
+                } else if (item['raid_level'] <= 5) {
                     hatchedEgg = 'hatched_legendary'
+                } else {
+                    hatchedEgg = 'hatched_mega'
                 }
                 icon = 'static/raids/egg_' + hatchedEgg + '.png'
             } else {
@@ -2478,8 +2506,10 @@ function updateGymMarker(item, marker) {
                     raidEgg = 'normal'
                 } else if (item['raid_level'] <= 4) {
                     raidEgg = 'rare'
-                } else {
+                } else if (item['raid_level'] <= 5) {
                     raidEgg = 'legendary'
+                } else {
+                    raidEgg = 'mega'
                 }
                 icon = 'static/raids/egg_' + raidEgg + '.png'
             }
@@ -3214,7 +3244,7 @@ function clearStaleMarkers() {
     })
     if (!Store.get('showGyms') && Store.get('showRaids')) {
         $.each(mapData.gyms, function (key, value) {
-            if ((((excludedRaidboss.indexOf(Number(mapData.gyms[key]['raid_pokemon_id'])) > -1) && mapData.gyms[key]['raid_pokemon_id'] > 0) && (mapData.gyms[key]['raid_start'] < new Date().getTime() && mapData.gyms[key]['raid_end'] > new Date().getTime())) || ((excludedRaidegg.indexOf(Number(mapData.gyms[key]['raid_level'])) > -1) && mapData.gyms[key]['raid_start'] > new Date().getTime()) || ((excludedRaidegg.indexOf(Number(mapData.gyms[key]['raid_level']) + 5) > -1) && (mapData.gyms[key]['raid_start'] < new Date().getTime() && (mapData.gyms[key]['raid_pokemon_id'] <= 0)))) {
+            if ((((excludedRaidboss.indexOf(Number(mapData.gyms[key]['raid_pokemon_id'])) > -1) && mapData.gyms[key]['raid_pokemon_id'] > 0) && (mapData.gyms[key]['raid_start'] < new Date().getTime() && mapData.gyms[key]['raid_end'] > new Date().getTime())) || ((excludedRaidegg.indexOf(Number(mapData.gyms[key]['raid_level'])) > -1) && mapData.gyms[key]['raid_start'] > new Date().getTime()) || ((excludedRaidegg.indexOf(Number(mapData.gyms[key]['raid_level']) + 6) > -1) && (mapData.gyms[key]['raid_start'] < new Date().getTime() && (mapData.gyms[key]['raid_pokemon_id'] <= 0)))) {
                 if (mapData.gyms[key].marker.rangeCircle) {
                     markers.removeLayer(mapData.gyms[key].marker.rangeCircle)
                     markersnotify.removeLayer(mapData.gyms[key].marker.rangeCircle)
@@ -5480,7 +5510,7 @@ function processGyms(i, item) {
             }
         }
         // Remove Broken Raid eggs from gym
-        if (excludedRaidegg.indexOf(Number(item['raid_level']) + 5) > -1) {
+        if (excludedRaidegg.indexOf(Number(item['raid_level']) + 6) > -1) {
             if (item['raid_pokemon_id'] <= 0) {
                 if (item['raid_start'] < time) {
                     if (item['raid_end'] > time) {
@@ -6259,6 +6289,7 @@ function generateRaidBossList() {
     data += '<span class="pokemon-icon-sprite" data-value="egg_3" data-label="Level 3" onclick="pokemonRaidFilter(event);"><span class="egg_3 inner-bg" style="background: url(\'static/raids/egg_rare.png\');background-size:100%"></span><span class="egg-number">3</span></span>'
     data += '<span class="pokemon-icon-sprite" data-value="egg_4" data-label="Level 4" onclick="pokemonRaidFilter(event);"><span class="egg_4 inner-bg" style="background: url(\'static/raids/egg_rare.png\');background-size:100%"></span><span class="egg-number">4</span></span>'
     data += '<span class="pokemon-icon-sprite" data-value="egg_5" data-label="Level 5" onclick="pokemonRaidFilter(event);"><span class="egg_5 inner-bg" style="background: url(\'static/raids/egg_legendary.png\');background-size:100%"></span><span class="egg-number">5</span></span>'
+    data += '<span class="pokemon-icon-sprite" data-value="egg_6" data-label="Level 6" onclick="pokemonRaidFilter(event);"><span class="egg_6 inner-bg" style="background: url(\'static/raids/egg_mega.png\');background-size:100%"></span><span class="egg-number">Mega</span></span>'
     boss.forEach(function (element) {
         var pokemonIdStr = ''
         if (element <= 9) {

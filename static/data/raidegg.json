@@ -25,28 +25,38 @@
     "level": "5"
   },
   "6": {
-    "type": "2",
-    "image_name": "hatched_normal",
-    "level": "1"
+    "type": "1",
+    "image_name": "mega",
+    "level": "6"
   },
   "7": {
     "type": "2",
     "image_name": "hatched_normal",
-    "level": "2"
+    "level": "1"
   },
   "8": {
     "type": "2",
-    "image_name": "hatched_rare",
-    "level": "3"
+    "image_name": "hatched_normal",
+    "level": "2"
   },
   "9": {
     "type": "2",
     "image_name": "hatched_rare",
-    "level": "4"
+    "level": "3"
   },
   "10": {
     "type": "2",
+    "image_name": "hatched_rare",
+    "level": "4"
+  },
+  "11": {
+    "type": "2",
     "image_name": "hatched_legendary",
     "level": "5"
+  },
+  "12": {
+    "type": "2",
+    "image_name": "hatched_mega",
+    "level": "6"
   }
 }
