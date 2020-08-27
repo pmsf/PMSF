@@ -1455,6 +1455,7 @@ function gymLabel(item) {
     var form = item['form']
     var freeSlots = item['slots_available']
     var gender = item['raid_pokemon_gender']
+    var evolution = item['raid_pokemon_evolution']
 
     var raidSpawned = item['raid_level'] != null
     var raidStarted = item['raid_pokemon_id'] != null
@@ -1476,6 +1477,19 @@ function gymLabel(item) {
             raidStr += '<br>' + item.raid_pokemon_name
             if (form !== null && form > 0 && item['form_name'] !== 'Normal') {
                 raidStr += ' (' + i8ln(item['form_name']) + ')'
+            }
+            if (evolution !== null && evolution > 0) {
+                switch (evolution) {
+                    case 1:
+                        raidStr += ' Mega'
+                        break
+                    case 2:
+                        raidStr += ' Mega X'
+                        break
+                    case 3:
+                        raidStr += ' Mega Y'
+                        break
+                }
             }
             if (gender > 0) {
                 raidStr += ' ' + genderType[gender - 1]
