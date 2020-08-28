@@ -2424,7 +2424,7 @@ function setupGymMarker(item) {
             if (item['raid_pokemon_evolution'] > 0) {
                 megaStr = '_' + item['raid_pokemon_evolution']
             }
-            icon = iconpath + 'pokemon_icon_' + pokemonidStr + '_' + formStr + costumeStr + megaStr '.png'
+            icon = iconpath + 'pokemon_icon_' + pokemonidStr + '_' + formStr + costumeStr + megaStr + '.png'
             checkAndCreateSound(item.raid_pokemon_id)
         } else if (item.raid_start <= Date.now()) {
             var hatchedEgg = ''
