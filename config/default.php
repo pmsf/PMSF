@@ -143,13 +143,14 @@ $imgurCID = "";
 $numberOfPokemon = 649;
 $numberOfItem = 1600;
 $numberOfGrunt = 50;
-$numberOfEgg = 10;
+$numberOfEgg = 12;
 
 /* UserTimezone */
 $userTimezone = date_default_timezone_get();
 //-----------------------------------------------------
 // Login  - You need to create the two tables referenced in sql.sql
 //-----------------------------------------------------
+$monologPath = 'php://stdout';
 $forcedLogin = false;
 $noNativeLogin = true;                                              // true/false - This will enable the built in login system.
 $domainName = '';                                                   // If this is empty, reset-password emails will use the domain name taken from the URL.
@@ -163,14 +164,22 @@ $noDiscordLogin = true;                                             // true/fals
 $discordBotClientId = 0;
 $discordBotClientSecret = "";
 $discordBotRedirectUri = "https://example.com/discord-callback.php";
+$discordBotToken = "";
+$discordLogLevel = "INFO";					    // Do NOT change unless asked
+
+$guildRoles = [];
+
+$noFacebookLogin = true;
+$facebookAppId = '';						    // Facebook App ID
+$facebookAppSecret = '';					    // Facebook App Secret
+$facebookAppRedirectUri = 'https://Yourdomain.com/login?callback=facebook';	// Callback url make sure this is the same as set in Facebook app config
+$facebookAccessLevel = '1';					    // Accesslevel used in access-config.php
 
 $adminUsers = array('admin@example.com', 'Superadmin#13337');       // You can add multiple admins by adding them to the array.
-$manualAccessLevel = false;
 
 /* Blacklist Settings - Only available with Discord login */
 $userBlacklist = [''];                                                                // Array of user ID's that are always blocked from accessing the map
 $userWhitelist = [''];                                              // Array of user ID's that's allowed to bypass the server blacklist
-$serverWhitelist = [''];                                            // Array of server ID's. Your users will need to be in at least one of them
 $serverBlacklist = [''];                                            // Array of server ID's. A user that's a member of any of these and not in your user whitelist will be blocked
 $logFailedLogin = '';                                               // File location of where to store a log file of blocked users
 
