@@ -32,15 +32,15 @@ if (isset($_GET['action'])) {
     if ($_GET['action'] == 'login') {
         $html = '<html lang="' . $locale . '">
         <head>
-        <meta charset="utf-8">
-        <title>' . $title . ' ' . i8ln('Login') . '</title>
-        <meta name="viewport" content="width=device-width, initial-scale=1">';
-        if ($faviconPath != "") {
-            echo '<link rel="shortcut icon" href="' . $faviconPath . '" type="image/x-icon">';
-        } else {
-            echo '<link rel="shortcut icon" href="' . $appIconPath . 'favicon.ico" type="image/x-icon">';
-        }
-        $html .= '<link rel="stylesheet" href="static/dist/css/app.min.css">
+            <meta charset="utf-8">
+            <title>' . $title . ' ' . i8ln('Login') . '</title>
+            <meta name="viewport" content="width=device-width, initial-scale=1">';
+            if ($faviconPath != "") {
+                echo '<link rel="shortcut icon" href="' . $faviconPath . '" type="image/x-icon">';
+            } else {
+                echo '<link rel="shortcut icon" href="' . $appIconPath . 'favicon.ico" type="image/x-icon">';
+            }
+            $html .= '<link rel="stylesheet" href="static/dist/css/app.min.css">
         </head>
         <body>
             <h2>' . $title . ' Login</h2>
