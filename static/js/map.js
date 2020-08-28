@@ -1511,29 +1511,14 @@ function gymLabel(item) {
         raidStr += '<a href="javascript:removeGymMarker(\'' + item['gym_id'] + '\')" title="' + i8ln('Hide this Gym') + '"><i class="fas fa-trash-alt" style="font-size:15px;"></i></a>'
 
         var raidForm = item['form']
-        var formStr = ''
-        if (raidForm <= 0 || raidForm == null || raidForm === '0') {
-            formStr = '00'
-        } else {
-            formStr = raidForm
-        }
+        var formStr = (raidForm <= 0 || raidForm == null || raidForm === '0') ? '00' : raidForm
 
         var pokemonid = item['raid_pokemon_id']
-        var pokemonidStr = ''
-        if (pokemonid <= 9) {
-            pokemonidStr = '00' + pokemonid
-        } else if (pokemonid <= 99) {
-            pokemonidStr = '0' + pokemonid
-        } else {
-            pokemonidStr = pokemonid
-        }
-        var costumeStr = ''
-        if (item['raid_pokemon_costume'] > 0) {
-            costumeStr = '_' + item['raid_pokemon_costume']
-        }
-
+        var pokemonidStr = (pokemonid <= 9) ? '00' + pokemonid : ((pokemonid <= 99) ? '0' + pokemonid : pokemonid)
+        var costumeStr = (item['raid_pokemon_costume'] > 0) ? '_' + item['pokemon_costume'] : ''
+        var evolutionStr = (evolution > 0) ? '_' + evolution : ''
         if (raidStarted) {
-            raidIcon = '<img style="width: 70px;" src="' + iconpath + 'pokemon_icon_' + pokemonidStr + '_' + formStr + costumeStr + '.png"/>'
+            raidIcon = '<img style="width: 70px;" src="' + iconpath + 'pokemon_icon_' + pokemonidStr + '_' + formStr + costumeStr + evolutionStr + '.png"/>'
         } else if (item.raid_start <= Date.now()) {
             var hatchedEgg = ''
             if (item['raid_level'] <= 2) {
@@ -1574,13 +1559,7 @@ function gymLabel(item) {
         raidStr += '<i class="fas fa-trophy toggle-ex-gym" onclick="toggleExGym(event);" data-id="' + item['gym_id'] + '"></i>'
     }
 
-    var lastScannedStr = ''
-    if (lastScanned != null) {
-        lastScannedStr =
-            '<div>' +
-            i8ln('Last Scanned') + ': ' + getDateStr(lastScanned) + ' ' + getTimeStr(lastScanned) +
-            '</div>'
-    }
+    var lastScannedStr = (lastScanned != null) ? '<div>' + i8ln('Last Scanned') + ': ' + getDateStr(lastScanned) + ' ' + getTimeStr(lastScanned) + '</div>' : ''
 
     var lastModifiedStr = getDateStr(lastModified) + ' ' + getTimeStr(lastModified)
 
@@ -1592,17 +1571,9 @@ function gymLabel(item) {
     if (url !== null) {
         gymImage = '<img id="' + item['gym_id'] + '"class="gym-image" style="border:3px solid rgba(' + gymColor[teamId] + ')" src="' + url + '" onclick="openFullscreenModal(document.getElementById(\'' + item['gym_id'] + '\').src)">'
     }
-    var teamStr = ''
-    if (teamId === 0) {
-        teamStr = i8ln('Uncontested Gym')
-    } else {
-        teamStr = '<b style="color:rgba(' + gymColor[teamId] + ')">' + i8ln('Team') + ' ' + i8ln(teamName) + '</b><br>'
-    }
+    var teamStr = (teamId === 0) ? i8ln('Uncontested Gym') : '<b style="color:rgba(' + gymColor[teamId] + ')">' + i8ln('Team') + ' ' + i8ln(teamName) + '</b><br>'
     var whatsappLink = ''
-    var exGym = ''
-    if (item.park && item.park !== '0') {
-        exGym = i8ln('%20(EX Gym)')
-    }
+    var exGym = (item.park && item.park !== '0') ? i8ln('%20(EX Gym)') : ''
     if (((!noWhatsappLink) && (raidSpawned && item.raid_end > Date.now())) && (item.raid_pokemon_id > 1 && item.raid_pokemon_id < numberOfPokemon)) {
         whatsappLink = '<a href="whatsapp://send?text=' + encodeURIComponent(item.name) + exGym + '%0ALevel%20' + item.raid_level + '%20' + item.raid_pokemon_name + '%0A%2AStart:%20' + raidStartStr + '%2A%0A%2AEnd:%20' + raidEndStr + '%2A%0AStats:%0Ahttps://pokemongo.gamepress.gg/pokemon/' + item.raid_pokemon_id + '%0AMoves:%0A' + pMove1 + ' / ' + pMove2 + '%0A%0ADirections:%0Ahttps://www.google.com/maps/search/?api=1%26query=' + item.latitude + ',' + item.longitude + '" data-action="share/whatsapp/share"><i class="fab fa-whatsapp" style="position:relative;top:3px;left:5px;color:#26c300;font-size:20px;"></i></a>'
     } else if ((!noWhatsappLink) && (raidSpawned && item.raid_end > Date.now())) {
@@ -2252,47 +2223,22 @@ function getGymMarkerIcon(item) {
     var park = item['park']
     var level = 6 - item['slots_available']
     var raidForm = item['form']
-    var formStr = ''
-    if (raidForm <= 0 || raidForm == null || raidForm === '0') {
-        formStr = '00'
-    } else {
-        formStr = raidForm
-    }
+    var formStr = (raidForm <= 0 || raidForm == null || raidForm === '0') ? '00' : raidForm
+    var evolutionStr = (item['raid_pokemon_evolution'] > 0) ? '_' + item['raid_pokemon_evolution'] : ''
     var pokemonid = item['raid_pokemon_id']
-    var pokemonidStr = ''
-    if (pokemonid <= 9) {
-        pokemonidStr = '00' + pokemonid
-    } else if (pokemonid <= 99) {
-        pokemonidStr = '0' + pokemonid
-    } else {
-        pokemonidStr = pokemonid
-    }
-    var costumeStr = ''
-    if (item['raid_pokemon_costume'] > 0) {
-        costumeStr = '_' + item['raid_pokemon_costume']
-    }
+    var pokemonidStr = (pokemonid <= 9) ? '00' + pokemonid : ((pokemonid <= 99) ? '0' + pokemonid : pokemonid)
+    var costumeStr = (item['raid_pokemon_costume'] > 0) ? '_' + item['raid_pokemon_costume'] : ''
     var team = item.team_id
-    var teamStr = ''
-    if (team === 0 || level === null) {
-        teamStr = gymTypes[item['team_id']]
-    } else {
-        teamStr = gymTypes[item['team_id']] + '_' + level
-    }
-    var exIcon = ''
+    var teamStr = (team === 0 || level === null) ? gymTypes[item['team_id']] : gymTypes[item['team_id']] + '_' + level
     var fortMarker = ''
-    if (((park !== '0' && onlyTriggerGyms === false && park) || triggerGyms.includes(item['gym_id'])) && (noExGyms === false)) {
-        exIcon = '<img src="static/images/ex.png" style="position:absolute;right:25px;bottom:2px;"/>'
-    }
-    var smallExIcon = ''
-    if (((park !== '0' && onlyTriggerGyms === false && park) || triggerGyms.includes(item['gym_id'])) && (noExGyms === false)) {
-        smallExIcon = '<img src="static/images/ex.png" style="width:26px;position:absolute;right:35px;bottom:13px;"/>'
-    }
+    var exIcon = (((park !== '0' && onlyTriggerGyms === false && park) || triggerGyms.includes(item['gym_id'])) && (noExGyms === false)) ? '<img src="static/images/ex.png" style="position:absolute;right:25px;bottom:2px;"/>' : ''
+    var smallExIcon = (((park !== '0' && onlyTriggerGyms === false && park) || triggerGyms.includes(item['gym_id'])) && (noExGyms === false)) ? '<img src="static/images/ex.png" style="width:26px;position:absolute;right:35px;bottom:13px;"/>' : ''
     var html = ''
     if (item['raid_pokemon_id'] != null && item.raid_end > Date.now()) {
         html = '<div style="position:relative;">' +
             '<img src="static/forts/' + Store.get('gymMarkerStyle') + '/' + teamStr + '.png" style="width:50px;height:auto;"/>' +
             exIcon +
-            '<img src="' + iconpath + 'pokemon_icon_' + pokemonidStr + '_' + formStr + costumeStr + '.png" style="width:50px;height:auto;position:absolute;top:-15px;right:0px;"/>' +
+            '<img src="' + iconpath + 'pokemon_icon_' + pokemonidStr + '_' + formStr + costumeStr + evolutionStr + '.png" style="width:50px;height:auto;position:absolute;top:-15px;right:0px;"/>' +
             '</div>'
         if (noRaidTimer === false && Store.get(['showRaidTimer'])) {
             html += '<div><span class="raid-countdown gym-icon-countdown" disappears-at="' + item['raid_end'] + '" end>' + generateRemainingTimer(item['raid_end'], 'end') + '</span></div>'
@@ -2453,6 +2399,7 @@ function updateGymMarker(item, marker) {
     marker.setIcon(getGymMarkerIcon(item))
     marker.setPopupContent(gymLabel(item))
     var raidLevel = item.raid_level
+    var evolutionStr = (item['raid_pokemon_evolution'] > 0) ? '_' + item['raid_pokemon_evolution'] : ''
     if (raidLevel >= Store.get('remember_raid_notify') && item.raid_end > Date.now() && Store.get('remember_raid_notify') !== 0) {
         if (item.last_scanned > (Date.now() - 5 * 60)) {
             var title = 'Raid level: ' + raidLevel
@@ -2465,52 +2412,19 @@ function updateGymMarker(item, marker) {
             var icon
             if (raidStarted) {
                 var raidForm = item['form']
-                var formStr = ''
-                if (raidForm <= 0 || raidForm == null || raidForm === '0') {
-                    formStr = '00'
-                } else {
-                    formStr = raidForm
-                }
+                var formStr = (raidForm <= 0 || raidForm == null || raidForm === '0') ? '00' : raidForm
                 var pokemonid = item.raid_pokemon_id
-                var pokemonidStr = ''
-                if (pokemonid <= 9) {
-                    pokemonidStr = '00' + pokemonid
-                } else if (pokemonid <= 99) {
-                    pokemonidStr = '0' + pokemonid
-                } else {
-                    pokemonidStr = pokemonid
-                }
-                var costumeStr = ''
-                if (item['raid_pokemon_costume'] > 0) {
-                    costumeStr = '_' + item['raid_pokemon_costume']
-                }
+                var pokemonidStr = (pokemonid <= 9) ? '00' + pokemonid : ((pokemonid <= 99) ? '0' + pokemonid : pokemonid)
+                var costumeStr = (item['raid_pokemon_costume'] > 0) ? '_' + item['raid_pokemon_costume'] : ''
 
-                icon = iconpath + 'pokemon_icon_' + pokemonidStr + '_' + formStr + costumeStr + '.png'
+                icon = iconpath + 'pokemon_icon_' + pokemonidStr + '_' + formStr + costumeStr + evolutionStr + '.png'
                 checkAndCreateSound(item.raid_pokemon_id)
             } else if (item.raid_start <= Date.now()) {
-                var hatchedEgg = ''
-                if (item['raid_level'] <= 2) {
-                    hatchedEgg = 'hatched_normal'
-                } else if (item['raid_level'] <= 4) {
-                    hatchedEgg = 'hatched_rare'
-                } else if (item['raid_level'] <= 5) {
-                    hatchedEgg = 'hatched_legendary'
-                } else {
-                    hatchedEgg = 'hatched_mega'
-                }
+                var hatchedEgg = (item['raid_level'] <= 2) ? 'hatched_normal' : ((item['raid_level'] <= 4) ? 'hatched_rare' : ((item['raid_level'] <= 5) ? 'hatched_legendary' : 'hatched_mega'))
                 icon = 'static/raids/egg_' + hatchedEgg + '.png'
             } else {
                 checkAndCreateSound()
-                var raidEgg = ''
-                if (item['raid_level'] <= 2) {
-                    raidEgg = 'normal'
-                } else if (item['raid_level'] <= 4) {
-                    raidEgg = 'rare'
-                } else if (item['raid_level'] <= 5) {
-                    raidEgg = 'legendary'
-                } else {
-                    raidEgg = 'mega'
-                }
+                var raidEgg = (item['raid_level'] <= 2) ? 'normal' : ((item['raid_level'] <= 4) ? 'rare' : ((item['raid_level'] <= 5) ? 'legendary' : 'mega'))
                 icon = 'static/raids/egg_' + raidEgg + '.png'
             }
             sendNotification(title, text, icon, item['latitude'], item['longitude'])
