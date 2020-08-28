@@ -36,11 +36,9 @@ if (isset($_GET['action'])) {
         <title>' . $title . ' Login</title>
         <meta name="viewport" content="width=device-width, initial-scale=1">';
         if ($faviconPath != "") {
-            echo '<link rel="shortcut icon" href="' . $faviconPath . '"
-                 type="image/x-icon">';
+            echo '<link rel="shortcut icon" href="' . $faviconPath . '" type="image/x-icon">';
         } else {
-            echo '<link rel="shortcut icon" href="static/appicons/favicon.ico"
-                 type="image/x-icon">';
+            echo '<link rel="shortcut icon" href="' . $appIconPath . 'favicon.ico" type="image/x-icon">';
         }
         $html .= '<link rel="stylesheet" href="static/dist/css/app.min.css">
         </head>
