@@ -33,7 +33,7 @@ if (isset($_GET['action'])) {
         $html = '<html lang="' . $locale . '">
         <head>
         <meta charset="utf-8">
-        <title>' . $title . ' Login</title>
+        <title>' . $title . ' ' . i8ln('Login') . '</title>
         <meta name="viewport" content="width=device-width, initial-scale=1">';
         if ($faviconPath != "") {
             echo '<link rel="shortcut icon" href="' . $faviconPath . '" type="image/x-icon">';
@@ -45,57 +45,56 @@ if (isset($_GET['action'])) {
         <body>
             <h2>' . $title . ' Login</h2>
             <div id="login-force" class="force-modal">
-                 <form class="force-modal-content animate" action="/login?action=native" method="post">';
-                 if (!empty($_GET['error'])) {
-                     switch ($_GET['error']) {
-                         case 'no-member-dc':
-                             $html .= "<div id='login-error'>" . i8ln('You are currently not a member of our discord there for access has been denied. Become a member to gain access at ') . $discordUrl . "</div>";
-                             break;
-                         case 'no-account':
-                             $html .= "<div id='login-error'>" . i8ln('We couldn\'t find the account you are trying to use to login.') . "</div>";
-                             break;
-                         case 'password':
-                             $html .= "<div id='login-error'>" . i8ln('Oeps we might need to use the password reset if you can\'t remember.') . "</div>";
-                             break;
-                         case 'blacklisted-member':
-                             $html .= "<div id='login-error'>" . i8ln('Your account is banned for the use of this website please contact the site admin.') . "</div>";
-                             break;
-                         case 'blacklisted-server-dc':
-                             $html .= "<div id='login-error'>" . i8ln('We found you are a member of the following discord server we have blacklisted: ') . $_GET['bl-discord'] . "</div>";
-                             break;
-                     }
-                 }
-                     $html .= '<div class="imgcontainer">
-                         <i class="fas fa-user" style="font-size:80px"></i>
-                     </div>
-		     <div class="force-container">';
-                         if ($noNativeLogin === false) {
-                             $html .= "<label for='uname'><b>Email address</b></label>
-                             <input type='email' placeholder='Enter Email address' name='uname' required>
+                <form class="force-modal-content animate" action="/login?action=native" method="post">';
+                    if (!empty($_GET['error'])) {
+                        switch ($_GET['error']) {
+                            case 'no-member-dc':
+                                $html .= "<div id='login-error'>" . i8ln('You are currently not a member of our Discord server. Therefore access has been denied.') . " <a href='" . $discordUrl . "'>" . i8ln('Become a member to gain access.') . "</a></div>";
+                                break;
+                            case 'no-account':
+                                $html .= "<div id='login-error'>" . i8ln('We couldn\'t find the account you are trying to use to login.') . "</div>";
+                                break;
+                            case 'password':
+                                $html .= "<div id='login-error'>" . i8ln('Oops we might need to use the password reset if you can\'t remember.') . "</div>";
+                                break;
+                            case 'blacklisted-member':
+                                $html .= "<div id='login-error'>" . i8ln('Your account is banned for the use of this website please contact the site admin.') . "</div>";
+                                break;
+                            case 'blacklisted-server-dc':
+                                $html .= "<div id='login-error'>" . i8ln('We found you are a member of the following discord server we have blacklisted: ') . $_GET['bl-discord'] . "</div>";
+                                break;
+                        }
+                    }
+                    $html .= '<div class="imgcontainer">
+                    <i class="fas fa-user" style="font-size:80px"></i>
+                    </div>
+                    <div class="force-container">';
+                    if ($noNativeLogin === false) {
+                        $html .= "<label for='uname'><b>" . i8ln('Email address') . "</b></label>
+                        <input type='email' placeholder='" . i8ln('Enter Email address') . "' name='uname' required>
 
-                             <label for='psw'><b>Password</b></label>
-                             <input type='password' placeholder='Enter Password' name='psw' required>
+                        <label for='psw'><b>" . i8ln('Password') . "</b></label>
+                        <input type='password' placeholder='" . i8ln('Enter Password') . "' name='psw' required>
         
-                             <button type='submit' class='force-button'>Login</button>";
-                         }
-                         if ($noDiscordLogin === false) {
-			     $html .= "<button type='button' style='background-color: #1877f2; margin: 2px' onclick=\"location.href='./login?action=discord-login';\" value='Login with discord'><i class='fab fa-discord'></i>&nbsp" . i8ln('Login with Discord') . "</button>";
-			 }
-                         if ($noFacebookLogin === false) {
-                             $html .= "<button type='button' style='background-color: #1877f2; margin: 2px' onclick=\"location.href='./login?action=facebook-login';\" value='Login with discord'><i class='fab fa-facebook'></i>&nbsp" . i8ln('Login with Facebook') . "</button>";
-                         }
-                     $html .= '</div>
-
-                     <div class="force-container" style="background-color:#f1f1f1">';
-                         if ($noNativeLogin === false) {
-                             $html .= "<button type='button' style='background-color: #4CAF50; margin: 2px' onclick=\"location.href='./register?action=account';\" value='Register'><i class='fas fa-user'></i>&nbsp" . i8ln('Register') . "</button>";
-                             $html .= "<button type='button' style='background-color: #4CAF50; margin: 2px' onclick=\"location.href='./register?action=password-reset';\" value='Forgot password?'><i class='fas fa-lock'></i>&nbsp" . i8ln('Forgot Password') . "</button>";
-                         }
-                     $html .= '</div>
-                 </form>
-	</div>
+                        <button type='submit' class='force-button'>" . i8ln('Login') . "</button>";
+                    }
+                    if ($noDiscordLogin === false) {
+                        $html .= "<button type='button' style='background-color: #1877f2; margin: 2px' onclick=\"location.href='./login?action=discord-login';\" value='Login with discord'><i class='fab fa-discord'></i>&nbsp" . i8ln('Login with Discord') . "</button>";
+                    }
+                    if ($noFacebookLogin === false) {
+                        $html .= "<button type='button' style='background-color: #1877f2; margin: 2px' onclick=\"location.href='./login?action=facebook-login';\" value='Login with discord'><i class='fab fa-facebook'></i>&nbsp" . i8ln('Login with Facebook') . "</button>";
+                    }
+                    $html .= '</div>
+                    <div class="force-container" style="background-color:#f1f1f1">';
+                    if ($noNativeLogin === false) {
+                        $html .= "<button type='button' style='background-color: #4CAF50; margin: 2px' onclick=\"location.href='./register?action=account';\" value='Register'><i class='fas fa-user'></i>&nbsp" . i8ln('Register') . "</button>";
+                        $html .= "<button type='button' style='background-color: #4CAF50; margin: 2px' onclick=\"location.href='./register?action=password-reset';\" value='Forgot password?'><i class='fas fa-lock'></i>&nbsp" . i8ln('Forgot Password') . "</button>";
+                    }
+                    $html .= '</div>
+                </form>
+            </div>
         </body>
-	</html>';
+        </html>';
         echo $html;
         die();
     }
@@ -123,7 +122,7 @@ if (isset($_GET['action'])) {
                         "login_system" => 'native'
                     ]);
                 }
-	    } else {
+            } else {
                 header("Location: ./login?action=login&error=password");
             }
             $manualdb->update("users", [
@@ -137,7 +136,7 @@ if (isset($_GET['action'])) {
             setcookie("LoginEngine", 'native', time()+60*60*24*7);
             header("Location: .?login=true");
             die();
-	} else {
+        } else {
             header("Location: ./login?action=login&error=password");
             die();
         }
@@ -238,7 +237,7 @@ if (isset($_GET['callback'])) {
                 $avatar = 'https://discordapp.com/assets/6debd47ed13483642cf09e832ed0bc1b.png';
                 if (!empty($user->avatar)) {
                     $avatar = 'https://cdn.discordapp.com/avatars/' . $user->id . '/' . $user->avatar . $format;
-		}
+                }
 
                 if ($manualdb->has('users', ['id' => $user->id, 'login_system' => 'discord'])) {
                     $manualdb->update('users', [
@@ -271,7 +270,7 @@ if (isset($_GET['callback'])) {
                 header("Location: .?login=true");
                 die();
             }
-	}
+        }
     }
     if ($_GET['callback'] == 'facebook') {
         if ($_GET['code']) {
@@ -319,7 +318,7 @@ if (isset($_GET['callback'])) {
                     exit;
                 }
             }
-	    $userToken = $accessToken->getValue();
+            $userToken = $accessToken->getValue();
 
             try {
                 $response = $fb->get('/me?fields=id,name,picture', $userToken);
@@ -427,8 +426,13 @@ function checkAccessLevel ($userId, $guilds) {
                         $accessRole = strval($guildRoles[$role]);
                     }
                 }
+	    }
+            if ($guildRoles[$guild]) {
+                if ($accessRole < strval($guildRoles[$guild])) {
+                    $accessRole = strval($guildRoles[$guild]);
+                }
             }
-        }
+	}
     }
     return $accessRole;
 }

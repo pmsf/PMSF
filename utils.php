@@ -243,34 +243,6 @@ function resetUserPassword($user, $password, $resetType)
     return true;
 }
 
-function updateExpireTimestamp($user, $login_system, $newExpireTimestamp)
-{
-    global $manualdb;
-
-    $manualdb->update("users", [
-        "expire_timestamp" => $newExpireTimestamp
-    ], [
-        "user" => $user,
-        "login_system" => $login_system
-    ]);
-
-    return true;
-}
-
-function updateAccessLevel($user, $login_system, $newAccessLevel)
-{
-    global $manualdb;
-
-    $manualdb->update("users", [
-        "access_level" => $newAccessLevel
-    ], [
-        "user" => $user,
-        "login_system" => $login_system
-    ]);
-
-    return true;
-}
-
 function destroyCookiesAndSessions()
 {
     global $manualdb;
@@ -303,14 +275,6 @@ function validateCookie($cookie)
     )->fetch();
 
     if (!empty($info['user'])) {
-        if ($manualAccessLevel && $info['access_level'] > 0 && $info['expire_timestamp'] < time()) {
-            $manualdb->update("users", [
-                "access_level" => 0
-            ], [
-                "id" => $info['id']
-            ]);
-            $info['access_level'] = 0;
-        }
         $_SESSION['user'] = new \stdClass();
         $_SESSION['user']->id = $info['id'];
         $_SESSION['user']->user = htmlspecialchars($info['user'], ENT_QUOTES, 'UTF-8');
