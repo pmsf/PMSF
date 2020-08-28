@@ -84,6 +84,7 @@ if ((! $noDiscordLogin || ! $noNativeLogin) && !empty($_SESSION['user']->id)) {
         http_response_code(400);
         die();
     }
+    $debug['0_after_auth'] = microtime(true) - $timing['start'];
 }
 
 // init map
@@ -267,6 +268,7 @@ if (!$noNests) {
         }
     }
 }
+$debug['5_after_nest'] = microtime(true) - $timing['start'];
 
 global $noCommunity;
 if (!$noCommunity) {
@@ -282,6 +284,7 @@ if (!$noCommunity) {
         }
     }
 }
+$debug['6_after_community'] = microtime(true) - $timing['start'];
 
 global $noPortals;
 if (!$noPortals) {
@@ -297,6 +300,7 @@ if (!$noPortals) {
         }
     }
 }
+$debug['7_after_portals'] = microtime(true) - $timing['start'];
 
 global $noPoi;
 if (!$noPoi) {
@@ -312,6 +316,7 @@ if (!$noPoi) {
         }
     }
 }
+$debug['8_after_poi'] = microtime(true) - $timing['start'];
 
 global $noSpawnPoints;
 if (!$noSpawnPoints) {
@@ -327,7 +332,7 @@ if (!$noSpawnPoints) {
         }
     }
 }
-$debug['5_after_spawnpoints'] = microtime(true) - $timing['start'];
+$debug['9_after_spawnpoints'] = microtime(true) - $timing['start'];
 
 global $noLiveScanLocation;
 if (!$noLiveScanLocation) {
@@ -339,9 +344,10 @@ if (!$noLiveScanLocation) {
         }
     }
 }
+$debug['10_after_devices'] = microtime(true) - $timing['start'];
 
 $d['token'] = refreshCsrfToken();
-$debug['6_end'] = microtime(true) - $timing['start'];
+$debug['11_end'] = microtime(true) - $timing['start'];
 
 if ($enableDebug == true) {
     foreach ($debug as $k => $v) {
