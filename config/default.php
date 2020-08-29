@@ -175,6 +175,12 @@ $facebookAppSecret = '';					    // Facebook App Secret
 $facebookAppRedirectUri = 'https://Yourdomain.com/login?callback=facebook';	// Callback url make sure this is the same as set in Facebook app config
 $facebookAccessLevel = '1';					    // Accesslevel used in access-config.php
 
+$noPatreonLogin = false;
+$patreonClientId = '';
+$patreonCreatorAccessToken = '';
+$patreonCallbackUri = 'https://Yourdomain.com/login?callback=patreon';
+$patreonTiers = [];						    // Tier ids can be obtained by clicking the join tier button on patreon and the URL will show you checkout?rid=<NUMBER>
+
 $adminUsers = array('admin@example.com', 'Superadmin#13337');       // You can add multiple admins by adding them to the array.
 
 /* Blacklist Settings - Only available with Discord login */

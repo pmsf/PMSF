@@ -169,7 +169,8 @@ if (isset($_GET['action'])) {
         $params = [
             'client_id' => $patreonClientId,
             'redirect_uri' => $patreonCallbackUri,
-	    'response_type' => 'code',
+            'response_type' => 'code',
+            'scope' => 'identity identity.memberships campaigns.members',
             'state' => $_SESSION['token']
         ];
         header('Location: https://www.patreon.com/oauth2/authorize' . '?' . http_build_query($params));
@@ -285,6 +286,17 @@ if (isset($_GET['callback'])) {
                         'expire_timestamp' => time() + $response->expires_in,
                         'login_system' => 'discord',
                         'discord_guilds' => json_encode($guilds)
+                    ]);
+                }
+                if ($manualdb->has('users', ['linked_account' => $user->id, 'login_system' => 'patreon'])) {
+                    $linked_account = $manualdb->get('users', ['linked_account'],['id' => $user->id]);
+                    $manualdb->update('users', [
+                        'session_token' => null,
+                        'session_id' => null,
+                        'expire_timestamp' => time() - 86400
+                    ], [
+                        'id' => $linked_account['linked_account'],
+                        'login_system' => 'patreon'
                     ]);
                 }
                 setcookie("LoginCookie", $response->access_token, time() + $response->expires_in);
@@ -409,28 +421,53 @@ if (isset($_GET['callback'])) {
         $api_client = new API($response->access_token);
         $patreon_user = $api_client->fetch_user();
 
+        $identity = patreon_call($response->access_token, '/api/oauth2/v2/identity?include=memberships,campaign&fields%5Buser%5D=about,created,email,first_name,full_name,image_url,last_name,social_connections,thumb_url,url,vanity');
+        $identity = json_decode($identity, true);
+        $linked_discord = (!empty($identity['data']['attributes']['social_connections']['discord'])) ? $identity['data']['attributes']['social_connections']['discord']['user_id'] : null;
+        if ($linked_discord && $manualdb->has('users', ['id' => $linked_discord, 'login_system' => 'discord'])) {
+            $manualdb->update('users', [
+                'session_token' => null,
+                'session_id' => null,
+                'expire_timestamp' => time() - 86400,
+                'linked_account' => $identity['data']['id']
+            ], [
+                'id' => $linked_discord,
+                'login_system' => 'discord'
+            ]);
+        }
+	$member = patreon_call($response->access_token, '/api/oauth2/v2/members/' . $patreon_user['data']['relationships']['memberships']['data']['0']['id'] . '?include=currently_entitled_tiers,user&fields%5Bmember%5D=full_name,patron_status&fields%5Btier%5D=title&fields%5Buser%5D=full_name,hide_pledges');
+
+        $member = json_decode($member, true);
+        $accessLevel = null;
+        if ($member['data']['attributes']['patron_status'] == 'active_patron') {
+            if (!empty($member['data']['relationships']['currently_entitled_tiers']['data'])) {
+                $accessLevel = $patreonTiers[$member['data']['relationships']['currently_entitled_tiers']['data'][0]['id']];
+            }
+        }
         if ($manualdb->has('users', ['id' => $patreon_user['data']['id'], 'login_system' => 'patreon'])) {
             $manualdb->update('users', [
                 'session_token' => $_SESSION['token'],
                 'session_id' => $response->access_token,
                 'expire_timestamp' => time() + $response->expires_in,
-                'user' => strval($patreon_user['data']['attributes']['full_name']),
-                'access_level' => intval(1),
-                'avatar' => $patreon_user['data']['attributes']['image_url']
+                'user' => strval($identity['data']['attributes']['full_name']),
+                'access_level' => $accessLevel,
+                'avatar' => $identity['data']['attributes']['image_url'],
+                'linked_account' => $linked_discord
             ], [
-                'id' => $patreon_user['data']['id'],
+                'id' => $identity['data']['id'],
                 'login_system' => 'patreon'
             ]);
         } else {
             $manualdb->insert('users', [
                 'session_token' => $_SESSION['token'],
                 'session_id' => $response->access_token,
-                'id' => $patreon_user['data']['id'],
-                'user' => strval($patreon_user['data']['attributes']['full_name']),
-                'access_level' => intval(1),
-                'avatar' => $patreon_user['data']['attributes']['image_url'],
+                'id' => $identity['data']['id'],
+                'user' => strval($identity['data']['attributes']['full_name']),
+                'access_level' => $accessLevel,
+                'avatar' => $identity['data']['attributes']['image_url'],
                 'expire_timestamp' => time() + $response->expires_in,
-                'login_system' => 'patreon'
+                'login_system' => 'patreon',
+                'linked_account' => $linked_discord
             ]);
         }
         setcookie("LoginCookie", $response->access_token, time() + $response->expires_in);
@@ -534,4 +571,17 @@ function parse_signed_request($signed_request) {
 
 function base64_url_decode($input) {
     return base64_decode(strtr($input, '-_', '+/'));
+}
+function patreon_call($bearer, $api) {
+    $ch = curl_init('https://www.patreon.com' . $api);
+    curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+    curl_setopt($ch, CURLOPT_HTTPHEADER, array(
+        'Content-Type: application/json',
+        'Authorization: Bearer ' . $bearer
+    ));
+
+    $data = curl_exec($ch);
+    curl_close($ch);
+
+    return $data;
 }

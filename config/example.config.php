@@ -172,6 +172,16 @@ $facebookAppSecret = '';                        // Facebook App Secret
 $facebookAppRedirectUri = 'https://Yourdomain.com/login?callback=facebook'; // Callback url make sure this is the same as set in Facebook app config
 $facebookAccessLevel = '1';                     // Accesslevel used in access-config.php
 
+$noPatreonLogin = false;
+$patreonClientId = '';
+$patreonCreatorAccessToken = '';
+$patreonCallbackUri = 'https://Yourdomain.com/login?callback=patreon';
+$patreonTiers = [						    // Tier ids can be obtained by clicking the join tier button on patreon and the URL will show you checkout?rid=<NUMBER>
+	'<NUMBER>' => 1,
+	'<NUMBER>' => 2,
+	'<NUMBER>' => 3
+];
+
 $userBlacklist = [''];                                              // Array of user ID's that are always blocked from accessing the map
 $userWhitelist = [''];                                              // Array of user ID's that's allowed to bypass the server blacklist
 $serverBlacklist = [''];                                            // Array of server ID's. A user that's a member of any of these and not in your user whitelist will be blocked
