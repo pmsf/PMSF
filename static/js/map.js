@@ -1512,7 +1512,6 @@ function gymLabel(item) {
 
         var raidForm = item['form']
         var formStr = (raidForm <= 0 || raidForm == null || raidForm === '0') ? '00' : raidForm
-
         var pokemonid = item['raid_pokemon_id']
         var pokemonidStr = (pokemonid <= 9) ? '00' + pokemonid : ((pokemonid <= 99) ? '0' + pokemonid : pokemonid)
         var costumeStr = (item['raid_pokemon_costume'] > 0) ? '_' + item['pokemon_costume'] : ''
