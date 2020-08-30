@@ -66,37 +66,27 @@ if (strtolower($map) === "rdm") {
     <!-- Favicon -->
     <?php
     if ($faviconPath != "") {
-        echo '<link rel="shortcut icon" href="' . $faviconPath . '"
-             type="image/x-icon">';
+        echo '<link rel="shortcut icon" href="' . $faviconPath . '" type="image/x-icon">';
     } else {
-        echo '<link rel="shortcut icon" href="static/appicons/favicon.ico"
-             type="image/x-icon">';
+        echo '<link rel="shortcut icon" href="' . $appIconPath . 'favicon.ico" type="image/x-icon">';
     }
     ?>
     <!-- non-retina iPhone pre iOS 7 -->
-    <link rel="apple-touch-icon" href="static/appicons/114x114.png"
-          sizes="57x57">
+    <link rel="apple-touch-icon" href="<?php echo $appIconPath; ?>114x114.png" sizes="57x57">
     <!-- non-retina iPad pre iOS 7 -->
-    <link rel="apple-touch-icon" href="static/appicons/144x144.png"
-          sizes="72x72">
+    <link rel="apple-touch-icon" href="<?php echo $appIconPath; ?>144x144.png" sizes="72x72">
     <!-- non-retina iPad iOS 7 -->
-    <link rel="apple-touch-icon" href="static/appicons/152x152.png"
-          sizes="76x76">
+    <link rel="apple-touch-icon" href="<?php echo $appIconPath; ?>152x152.png" sizes="76x76">
     <!-- retina iPhone pre iOS 7 -->
-    <link rel="apple-touch-icon" href="static/appicons/114x114.png"
-          sizes="114x114">
+    <link rel="apple-touch-icon" href="<?php echo $appIconPath; ?>114x114.png" sizes="114x114">
     <!-- retina iPhone iOS 7 -->
-    <link rel="apple-touch-icon" href="static/appicons/120x120.png"
-          sizes="120x120">
+    <link rel="apple-touch-icon" href="<?php echo $appIconPath; ?>120x120.png" sizes="120x120">
     <!-- retina iPad pre iOS 7 -->
-    <link rel="apple-touch-icon" href="static/appicons/144x144.png"
-          sizes="144x144">
+    <link rel="apple-touch-icon" href="<?php echo $appIconPath; ?>144x144.png" sizes="144x144">
     <!-- retina iPad iOS 7 -->
-    <link rel="apple-touch-icon" href="static/appicons/152x152.png"
-          sizes="152x152">
+    <link rel="apple-touch-icon" href="<?php echo $appIconPath; ?>152x152.png" sizes="152x152">
     <!-- retina iPhone 6 iOS 7 -->
-    <link rel="apple-touch-icon" href="static/appicons/180x180.png"
-          sizes="180x180">
+    <link rel="apple-touch-icon" href="<?php echo $appIconPath; ?>180x180.png" sizes="180x180">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/list.js/1.5.0/list.min.js"></script>
     <?php
     function pokemonFilterImages($noPokemonNumbers, $onClick = '', $pokemonToExclude = array(), $num = 0)
