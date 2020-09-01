@@ -1624,7 +1624,9 @@ function getReward(item) {
     } else {
         styleStr = 'position:absolute;height:35px;right:55%;top:85px;'
     }
-    if (item['quest_reward_type'] === 7) {
+    if (item['quest_reward_type'] === 12) {
+        rewardImage = '<img style="' + styleStr + '" src="' + iconpath + 'rewards/reward_mega_energy_' + item['quest_reward_amount'] + '.png"/>'
+    } else if (item['quest_reward_type'] === 7) {
         if (item['quest_pokemon_id'] <= 9) {
             pokemonIdStr = '00' + item['quest_pokemon_id']
         } else if (item['quest_pokemon_id'] <= 99) {
@@ -1880,6 +1882,12 @@ function pokestopLabel(item) {
             str += '<div>' +
             i8ln('Reward') + ': <b>' +
             item['quest_pokemon_name'] +
+            '</b></div>'
+        } else if (item['quest_reward_type'] === 12) {
+            str += '<div>' + 
+            i8ln('Reward') + ': <b>' +
+            item['quest_reward_amount'] + ' ' +
+            i8ln('Mega engergy')
             '</b></div>'
         }
         str += '<a href="javascript:removePokestopMarker(\'' + item['pokestop_id'] + '\')" title="' + i8ln('Hide this Pokéstop') + '"><i class="fas fa-trash-alt" style="font-size:15px;"></i></a>'
@@ -2486,7 +2494,19 @@ function getPokestopMarkerIcon(item) {
             if (!noLures && item['lure_expiration'] > Date.now()) {
                 stopQuestIcon = 'PstopLured_' + item['lure_id'] + '.png'
             }
-            if (item['quest_reward_type'] === 7) {
+            if (item['quest_reward_type'] === 12) {
+                html = '<div style="position:relative;">' +
+                    '<img src="static/forts/' + stopQuestIcon + '" style="width:50px;height:72;top:-35px;right:10px;"/>' +
+                    '<img src="' + iconpath + 'rewards/reward_mega_energy_' + item['quest_reward_amount'] + '.png" style="width:30px;height:auto;position:absolute;top:4px;left:0px;"/>' +
+                    '</div>'
+                stopMarker = L.divIcon({
+                    iconSize: [31, 31],
+                    iconAnchor: [25, 45],
+                    popupAnchor: [0, -35],
+                    className: 'stop-quest-marker',
+                    html: html
+                })
+            } else if (item['quest_reward_type'] === 7) {
                 if (item['quest_pokemon_id'] <= 9) {
                     pokemonIdStr = '00' + item['quest_pokemon_id']
                 } else if (item['quest_pokemon_id'] <= 99) {
@@ -2580,7 +2600,19 @@ function getPokestopMarkerIcon(item) {
         if (!noLures && item['lure_expiration'] > Date.now()) {
             stopQuestIcon = 'PstopLured_' + item['lure_id'] + '.png'
         }
-        if (item['quest_reward_type'] === 7) {
+        if (item['quest_reward_type'] === 12) {
+            html = '<div style="position:relative;">' +
+                '<img src="static/forts/' + stopQuestIcon + '" style="width:50px;height:72;top:-35px;right:10px;"/>' +
+                '<img src="' + iconpath + 'rewards/reward_mega_energy_' + item['quest_reward_amount'] + '.png" style="width:30px;height:auto;position:absolute;top:4px;left:0px;"/>' +
+                '</div>'
+            stopMarker = L.divIcon({
+                iconSize: [31, 31],
+                iconAnchor: [25, 45],
+                popupAnchor: [0, -35],
+                className: 'stop-quest-marker',
+                html: html
+            })
+        } else if (item['quest_reward_type'] === 7) {
             if (item['quest_pokemon_id'] <= 9) {
                 pokemonIdStr = '00' + item['quest_pokemon_id']
             } else if (item['quest_pokemon_id'] <= 99) {
