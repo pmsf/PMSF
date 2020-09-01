@@ -1884,9 +1884,9 @@ function pokestopLabel(item) {
             item['quest_pokemon_name'] +
             '</b></div>'
         } else if (item['quest_reward_type'] === 12) {
-            str += '<div>' + 
+            str += '<div>' +
             i8ln('Reward') + ': <b>' +
-            i8ln('Mega energy')
+            i8ln('Mega energy') +
             '</b></div>'
         }
         str += '<a href="javascript:removePokestopMarker(\'' + item['pokestop_id'] + '\')" title="' + i8ln('Hide this Pokéstop') + '"><i class="fas fa-trash-alt" style="font-size:15px;"></i></a>'
