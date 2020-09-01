@@ -1887,7 +1887,7 @@ function pokestopLabel(item) {
             str += '<div>' + 
             i8ln('Reward') + ': <b>' +
             item['quest_reward_amount'] + ' ' +
-            i8ln('Mega engergy')
+            i8ln('Mega energy')
             '</b></div>'
         }
         str += '<a href="javascript:removePokestopMarker(\'' + item['pokestop_id'] + '\')" title="' + i8ln('Hide this Pokéstop') + '"><i class="fas fa-trash-alt" style="font-size:15px;"></i></a>'
