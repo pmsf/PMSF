@@ -370,6 +370,7 @@ class RocketMap_MAD extends RocketMap
         raid.pokemon_id AS raid_pokemon_id,
         raid.form AS raid_pokemon_form,
         raid.costume AS raid_pokemon_costume,
+        raid.evolution AS raid_pokemon_evolution,
         raid.gender AS raid_pokemon_gender,
         raid.cp AS raid_pokemon_cp,
         raid.move_1 AS raid_pokemon_move_1,
@@ -400,6 +401,7 @@ class RocketMap_MAD extends RocketMap
             $gym["raid_pokemon_name"] = empty($raid_pid) ? null : i8ln($this->data[$raid_pid]["name"]);
             $gym["raid_pokemon_gender"] = intval($gym["raid_pokemon_gender"]);
             $gym["raid_pokemon_costume"] = intval($gym["raid_pokemon_costume"]);
+            $gym["raid_pokemon_evolution"] = intval($gym["raid_pokemon_evolution"]);
             $gym["form"] = intval($gym["raid_pokemon_form"]);
             $gym["latitude"] = floatval($gym["latitude"]);
             $gym["longitude"] = floatval($gym["longitude"]);
@@ -431,6 +433,7 @@ class RocketMap_MAD extends RocketMap
                             $gym["raid_pokemon_form"] = null;
                             $gym["raid_pokemon_cp"] = null;
                             $gym["raid_pokemon_gender"] = null;
+                            $gym["raid_pokemon_evolution"] = null;
                             break;
                         }
                     }
@@ -447,6 +450,7 @@ class RocketMap_MAD extends RocketMap
                             $gym["raid_pokemon_form"] = null;
                             $gym["raid_pokemon_cp"] = null;
                             $gym["raid_pokemon_gender"] = null;
+                            $gym["raid_pokemon_evolution"] = null;
                             break;
                         }
                     }
@@ -646,7 +650,9 @@ class RocketMap_MAD extends RocketMap
         tq.quest_pokemon_form_id AS quest_pokemon_formid,
         json_extract(json_extract(`quest_reward`,'$[*].pokemon_encounter.pokemon_display.is_shiny'),'$[0]') AS quest_pokemon_shiny,
         tq.quest_item_amount AS quest_reward_amount,
-        tq.quest_stardust AS quest_dust_amount
+        tq.quest_stardust AS quest_dust_amount,
+        tq.quest_item_amount AS quest_energy_amount,
+        tq.quest_pokemon_id AS quest_energy_pokemon_id
         FROM pokestop p
         LEFT JOIN trs_quest tq ON tq.GUID = p.pokestop_id
         WHERE :conditions";
@@ -667,6 +673,11 @@ class RocketMap_MAD extends RocketMap
             if ($mon_pid == "0") {
                 $mon_pid = null;
                 $pokestop["quest_pokemon_id"] = null;
+            }
+            $energy_mon_pid = $pokestop["quest_energy_pokemon_id"];
+            if ($energy_mon_pid == "0") {
+                $energy_mon_pid = null;
+                $pokestop["quest_energy_pokemon_id"] = null;
             }
             $grunttype_pid = $pokestop["grunt_type"];
             if ($grunttype_pid == "0") {
@@ -693,6 +704,8 @@ class RocketMap_MAD extends RocketMap
             $pokestop["quest_item_id"] = intval($pokestop["quest_item_id"]);
             $pokestop["quest_reward_amount"] = intval($pokestop["quest_reward_amount"]);
             $pokestop["quest_dust_amount"] = intval($pokestop["quest_dust_amount"]);
+            $pokestop["quest_energy_amount"] = intval($pokestop["quest_energy_amount"]);
+            $pokestop["quest_energy_pokemon_name"] = empty($energy_mon_pid) ? null : i8ln($this->data[$energy_mon_pid]["name"]);
             $pokestop["quest_item_name"] = empty($item_pid) ? null : i8ln($this->items[$item_pid]["name"]);
             $pokestop["quest_pokemon_name"] = empty($mon_pid) ? null : i8ln($this->data[$mon_pid]["name"]);
             $pokestop["quest_condition_info"] = null;
@@ -706,15 +719,16 @@ class RocketMap_MAD extends RocketMap
 
     public function generated_exclude_list($type)
     {
-        global $db;
+        global $db, $userTimezone;
+        $curdate = new \DateTime(null, new \DateTimeZone($userTimezone) );
         if ($type === 'pokemonlist') {
-            $pokestops = $db->query("SELECT distinct quest_pokemon_id FROM trs_quest WHERE quest_pokemon_id > 0 AND DATE(FROM_UNIXTIME(quest_timestamp)) = CURDATE() order by quest_pokemon_id;")->fetchAll(\PDO::FETCH_ASSOC);
+            $pokestops = $db->query("SELECT distinct quest_pokemon_id FROM trs_quest WHERE quest_pokemon_id > 0 AND DATE(FROM_UNIXTIME(quest_timestamp)) = '" . $curdate->format('Y-m-d') . "' AND quest_reward_type = 7 order by quest_pokemon_id;")->fetchAll(\PDO::FETCH_ASSOC);
             $data = array();
             foreach ($pokestops as $pokestop) {
                 $data[] = $pokestop['quest_pokemon_id'];
             }
         } elseif ($type === 'itemlist') {
-            $pokestops = $db->query("SELECT distinct quest_item_id FROM trs_quest WHERE quest_item_id > 0 AND DATE(FROM_UNIXTIME(quest_timestamp)) = CURDATE() order by quest_item_id;")->fetchAll(\PDO::FETCH_ASSOC);
+            $pokestops = $db->query("SELECT distinct quest_item_id FROM trs_quest WHERE quest_item_id > 0 AND DATE(FROM_UNIXTIME(quest_timestamp)) = '" . $curdate->format('Y-m-d') . "' order by quest_item_id;")->fetchAll(\PDO::FETCH_ASSOC);
             $data = array();
             foreach ($pokestops as $pokestop) {
                 $data[] = $pokestop['quest_item_id'];

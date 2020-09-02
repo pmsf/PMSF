@@ -326,7 +326,8 @@ class RDM extends Scanner
                     $dustSQL .= " AND (ST_WITHIN(point(lat,lon),ST_GEOMFROMTEXT('POLYGON(( " . $boundaries . " ))')))";
                 }
             }
-            $conds[] = "(" . $pokemonSQL . " OR " . $itemSQL . ")" . $dustSQL . "";
+            $megaSQL = "OR (quest_reward_type = 12)";
+            $conds[] = "(" . $pokemonSQL . " OR " . $itemSQL . ")" . $dustSQL . $megaSQL . "";
         }
         if (!empty($rocket) && $rocket === 'true') {
             $rocketSQL = '';
@@ -454,6 +455,8 @@ class RDM extends Scanner
         quest_reward_type,
         json_extract(json_extract(`quest_rewards`,'$[*].info.amount'),'$[0]') AS quest_reward_amount,
         json_extract(json_extract(`quest_rewards`,'$[*].info.amount'),'$[0]') AS quest_dust_amount,
+        json_extract(json_extract(`quest_rewards`,'$[*].info.amount'),'$[0]') AS quest_energy_amount,
+        quest_pokemon_id AS quest_energy_pokemon_id,
         json_extract(json_extract(`quest_rewards`,'$[*].info.form_id'),'$[0]') AS quest_pokemon_formid,
         json_extract(json_extract(`quest_rewards`,'$[*].info.shiny'),'$[0]') AS quest_pokemon_shiny
         FROM pokestop
@@ -475,6 +478,11 @@ class RDM extends Scanner
                 $mon_pid = null;
                 $pokestop["quest_pokemon_id"] = null;
             }
+            $energy_mon_pid = $pokestop["quest_energy_pokemon_id"];
+            if ($energy_mon_pid == "0") {
+                $energy_mon_pid = null;
+                $pokestop["quest_energy_pokemon_id"] = null;
+            }
             $grunttype_pid = $pokestop["grunt_type"];
             if ($grunttype_pid == "0") {
                 $grunttype_pid = null;
@@ -492,6 +500,8 @@ class RDM extends Scanner
             $pokestop["quest_item_id"] = intval($pokestop["quest_item_id"]);
             $pokestop["quest_reward_amount"] = intval($pokestop["quest_reward_amount"]);
             $pokestop["quest_dust_amount"] = intval($pokestop["quest_dust_amount"]);
+            $pokestop["quest_energy_amount"] = intval($pokestop["quest_energy_amount"]);
+            $pokestop["quest_energy_pokemon_name"] = empty($energy_mon_pid) ? null : i8ln($this->data[$energy_mon_pid]["name"]);
             $pokestop["url"] = ! empty($pokestop["url"]) ? preg_replace("/^http:/i", "https:", $pokestop["url"]) : null;
             $pokestop["lure_expiration"] = $pokestop["lure_expiration"] * 1000;
             $pokestop["incident_expiration"] = $pokestop["incident_expiration"] * 1000;
@@ -601,6 +611,7 @@ class RDM extends Scanner
         raid_pokemon_costume,
         raid_pokemon_cp,
         raid_pokemon_gender,
+        raid_pokemon_evolution,
         ex_raid_eligible AS park
         FROM gym
         WHERE :conditions";
@@ -621,6 +632,7 @@ class RDM extends Scanner
             $gym["pokemon"] = [];
             $gym["raid_pokemon_name"] = empty($raid_pid) ? null : i8ln($this->data[$raid_pid]["name"]);
             $gym["raid_pokemon_costume"] = intval($gym["raid_pokemon_costume"]);
+            $gym["raid_pokemon_evolution"] = intval($gym["raid_pokemon_evolution"]);
             $gym["form"] = intval($gym["raid_pokemon_form"]);
             $gym["latitude"] = floatval($gym["latitude"]);
             $gym["longitude"] = floatval($gym["longitude"]);
@@ -652,6 +664,7 @@ class RDM extends Scanner
                             $gym["raid_pokemon_form"] = null;
                             $gym["raid_pokemon_cp"] = null;
                             $gym["raid_pokemon_gender"] = null;
+                            $gym["raid_pokemon_evolution"] = null;
                             break;
                         }
                     }
@@ -668,6 +681,7 @@ class RDM extends Scanner
                             $gym["raid_pokemon_form"] = null;
                             $gym["raid_pokemon_cp"] = null;
                             $gym["raid_pokemon_gender"] = null;
+                            $gym["raid_pokemon_evolution"] = null;
                             break;
                         }
                     }
@@ -814,15 +828,16 @@ class RDM extends Scanner
 
     public function generated_exclude_list($type)
     {
-        global $db;
+        global $db, $userTimezone;
+        $curdate = new \DateTime(null, new \DateTimeZone($userTimezone) );
         if ($type === 'pokemonlist') {
-            $pokestops = $db->query("SELECT distinct quest_pokemon_id FROM pokestop WHERE quest_pokemon_id > 0 AND DATE(FROM_UNIXTIME(quest_timestamp)) = CURDATE() order by quest_pokemon_id;")->fetchAll(\PDO::FETCH_ASSOC);
+            $pokestops = $db->query("SELECT distinct quest_pokemon_id FROM pokestop WHERE quest_pokemon_id > 0 AND DATE(FROM_UNIXTIME(quest_timestamp)) = '" . $curdate->format('Y-m-d') . "' AND quest_reward_type = 7 order by quest_pokemon_id;")->fetchAll(\PDO::FETCH_ASSOC);
             $data = array();
             foreach ($pokestops as $pokestop) {
                 $data[] = $pokestop['quest_pokemon_id'];
             }
         } elseif ($type === 'itemlist') {
-            $pokestops = $db->query("SELECT distinct quest_item_id FROM pokestop WHERE quest_item_id > 0 AND DATE(FROM_UNIXTIME(quest_timestamp)) = CURDATE() order by quest_item_id;")->fetchAll(\PDO::FETCH_ASSOC);
+            $pokestops = $db->query("SELECT distinct quest_item_id FROM pokestop WHERE quest_item_id > 0 AND DATE(FROM_UNIXTIME(quest_timestamp)) = '" . $curdate->format('Y-m-d') . "' order by quest_item_id;")->fetchAll(\PDO::FETCH_ASSOC);
             $data = array();
             foreach ($pokestops as $pokestop) {
                 $data[] = $pokestop['quest_item_id'];

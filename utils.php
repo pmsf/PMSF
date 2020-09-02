@@ -116,7 +116,7 @@ function deleteImage($imgurCID, $data)
     return $result;
 }
 
-function generateRandomString($length = 8)
+function generateRandomString($length = 12)
 {
     $characters = '0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ';
     $charactersLength = strlen($characters);
@@ -129,7 +129,7 @@ function generateRandomString($length = 8)
 
 function createUserAccount($user, $password, $newExpireTimestamp)
 {
-    global $manualdb;
+    global $manualdb, $discordUrl, $domainName, $title;
 
     $count = $manualdb->count("users", [
         "user" => $user,
@@ -148,13 +148,35 @@ function createUserAccount($user, $password, $newExpireTimestamp)
             $manualdb->insert("users", [
                 "id" => $getId,
                 "user" => $user,
-                "temp_password" => $hashedPwd,
+                "password" => $hashedPwd,
                 "expire_timestamp" => $newExpireTimestamp,
                 "login_system" => 'native',
-                "access_level" => '0'
+                "access_level" => null
             ]);
 
             return true;
+            $subject = "[{$title}] - " . i8ln('Welcome') . "";
+            $message .= i8ln('Dear') . " {$user},<br><br>";
+            $message .= i8ln('Your account has been created') . "<br>";
+            if ($discordUrl) {
+                $message .= i8ln('For support, ask your questions in the ') . "<a href='{$discordUrl}'>" . i8ln('discord guild') . "</a>!<br><br>";
+            }
+            $message .= i8ln('Best Regards') . "<br>" . i8ln('Admin');
+            if ($title) {
+                $message .= " @ {$title}";
+            }
+            !empty($domainName) ? $domainName = $domainName : $domainName = $_SERVER['SERVER_NAME'];
+            $headers = "From: no-reply@{$domainName}" . "\r\n" .
+                "Reply-To: no-reply@{$domainName}" . "\r\n" .
+                'Content-Type: text/html; charset=utf-8' . "\r\n" .
+                'X-Mailer: PHP/' . phpversion();
+
+            $sendMail = mail($user, $subject, $message, $headers);
+
+            if (!$sendMail) {
+                http_response_code(500);
+                die("<h1>Warning</h1><p>The email has not been sent.<br>If you're an user please contact your administrator.<br>If you're an administrator install <i><b>apt-get install sendmail</b></i> and restart your web server and try again.</p><p><a href='.'><i class='fas fa-backward'></i> Back to Map</a> - <a href='./register?action=account'>Retry</a></p>");
+            }
         } else {
             return false;
         }
@@ -165,7 +187,7 @@ function createUserAccount($user, $password, $newExpireTimestamp)
 
 function resetUserPassword($user, $password, $resetType)
 {
-    global $manualdb;
+    global $manualdb, $domainName, $discordUrl, $title;
     
     $hashedPwd = password_hash($password, PASSWORD_DEFAULT);
     if ($resetType === 0) {
@@ -175,6 +197,31 @@ function resetUserPassword($user, $password, $resetType)
             "user" => $user,
             "login_system" => 'native'
         ]);
+        $subject = "[{$title}] - Password Reset"; 
+        $message .= i8ln('Dear') . " {$user},<br><br>";
+        $message .= i8ln('Your password has been reset') . "<br>";
+        $message .= i8ln('If you haven\'t requested a new password you can ignore this email.') . "<br>";
+        $message .= i8ln('Your old password is still working.') . "<br><br>";
+        $message .= i8ln('New password: ') . " {$password}<br><br>";
+        if ($discordUrl) {
+            $message .= i8ln('For support, ask your questions in the ') . "<a href='{$discordUrl}'>" . i8ln('discord guild') . "</a>!<br><br>";
+        }
+        $message .= i8ln('Best Regards') . "<br>" . i8ln('Admin');
+        if ($title) {
+            $message .= " @ {$title}";
+        }
+        !empty($domainName) ? $domainName = $domainName : $domainName = $_SERVER['SERVER_NAME'];
+        $headers = "From: no-reply@{$domainName}" . "\r\n" .
+            "Reply-To: no-reply@{$domainName}" . "\r\n" .
+            'Content-Type: text/html; charset=utf-8' . "\r\n" .
+            'X-Mailer: PHP/' . phpversion();
+
+        $sendMail = mail($user, $subject, $message, $headers);
+
+        if (!$sendMail) {
+            http_response_code(500);
+            die("<h1>Warning</h1><p>The email has not been sent.<br>If you're an user please contact your administrator.<br>If you're an administrator install <i><b>apt-get install sendmail</b></i> and restart your web server and try again.</p><p><a href='.'><i class='fas fa-backward'></i> Back to Map</a> - <a href='./register?action=password-reset'>Retry</a></p>");
+        }
     } elseif ($resetType === 1) {
         $manualdb->update("users", [
             "password" => null,
@@ -196,40 +243,14 @@ function resetUserPassword($user, $password, $resetType)
     return true;
 }
 
-function updateExpireTimestamp($user, $login_system, $newExpireTimestamp)
-{
-    global $manualdb;
-
-    $manualdb->update("users", [
-        "expire_timestamp" => $newExpireTimestamp
-    ], [
-        "user" => $user,
-        "login_system" => $login_system
-    ]);
-
-    return true;
-}
-
-function updateAccessLevel($user, $login_system, $newAccessLevel)
-{
-    global $manualdb;
-
-    $manualdb->update("users", [
-        "access_level" => $newAccessLevel
-    ], [
-        "user" => $user,
-        "login_system" => $login_system
-    ]);
-
-    return true;
-}
-
 function destroyCookiesAndSessions()
 {
     global $manualdb;
     
     $manualdb->update("users", [
-        "session_id" => null
+        "session_id" => null,
+        "avatar" => null,
+        "discord_guilds" => null
     ], [
         "id" => $_SESSION['user']->id,
         "login_system" => $_SESSION['user']->login_system
@@ -237,7 +258,9 @@ function destroyCookiesAndSessions()
 
     unset($_SESSION);
     unset($_COOKIE['LoginCookie']);
+    unset($_COOKIE['LoginEngine']);
     setcookie("LoginCookie", "", time() - 3600);
+    setcookie("LoginEngine", "", time() - 3600);
     session_destroy();
     session_write_close();
 }
@@ -246,23 +269,16 @@ function validateCookie($cookie)
 {
     global $manualdb, $manualAccessLevel;
     $info = $manualdb->query(
-        "SELECT id, user, password, login_system, expire_timestamp, access_level FROM users WHERE session_id = :session_id", [
+        "SELECT id, user, password, login_system, expire_timestamp, access_level, avatar FROM users WHERE session_id = :session_id", [
             ":session_id" => $cookie
         ]
     )->fetch();
 
     if (!empty($info['user'])) {
-        if ($manualAccessLevel && $info['access_level'] > 0 && $info['expire_timestamp'] < time()) {
-            $manualdb->update("users", [
-                "access_level" => 0
-            ], [
-                "id" => $info['id']
-            ]);
-            $info['access_level'] = 0;
-        }
         $_SESSION['user'] = new \stdClass();
         $_SESSION['user']->id = $info['id'];
-        $_SESSION['user']->user = $info['user'];
+        $_SESSION['user']->user = htmlspecialchars($info['user'], ENT_QUOTES, 'UTF-8');
+        $_SESSION['user']->avatar = !empty($info['avatar']) ? $info['avatar'] : 'static/images/avatar.png';
         $_SESSION['user']->login_system = $info['login_system'];
         $_SESSION['user']->expire_timestamp = $info['expire_timestamp'];
         $_SESSION['user']->access_level = $info['access_level'];

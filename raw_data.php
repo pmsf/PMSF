@@ -26,6 +26,7 @@ $rocket = !empty($_POST['rocket']) ? $_POST['rocket'] : false;
 $raids = !empty($_POST['raids']) ? $_POST['raids'] : false;
 $quests = !empty($_POST['quests']) ? $_POST['quests'] : false;
 $dustamount = isset($_POST['dustamount']) ? $_POST['dustamount'] : false;
+$nestavg = isset($_POST['nestavg']) ? $_POST['nestavg'] : false;
 $reloaddustamount = !empty($_POST['reloaddustamount']) ? $_POST['reloaddustamount'] : false;
 $newportals = !empty($_POST['newportals']) ? $_POST['newportals'] : 0;
 $minIv = isset($_POST['minIV']) ? floatval($_POST['minIV']) : false;
@@ -83,6 +84,7 @@ if ((! $noDiscordLogin || ! $noNativeLogin) && !empty($_SESSION['user']->id)) {
         http_response_code(400);
         die();
     }
+    $debug['0_after_auth'] = microtime(true) - $timing['start'];
 }
 
 // init map
@@ -256,16 +258,17 @@ global $noNests;
 if (!$noNests) {
     if ($d["lastnests"] == "true") {
         if ($lastnests != "true") {
-            $d["nests"] = $manual->get_nests($swLat, $swLng, $neLat, $neLng);
+            $d["nests"] = $manual->get_nests($swLat, $swLng, $neLat, $neLng, 0, 0, 0, 0, 0, $nestavg);
         } else {
             if ($newarea) {
-                $d["nests"] = $manual->get_nests($swLat, $swLng, $neLat, $neLng, 0, $oSwLat, $oSwLng, $oNeLat, $oNeLng);
+                $d["nests"] = $manual->get_nests($swLat, $swLng, $neLat, $neLng, 0, $oSwLat, $oSwLng, $oNeLat, $oNeLng, $nestavg);
             } else {
-                $d["nests"] = $manual->get_nests($swLat, $swLng, $neLat, $neLng, time());
+                $d["nests"] = $manual->get_nests($swLat, $swLng, $neLat, $neLng, time(), 0, 0, 0, 0, $nestavg);
             }
         }
     }
 }
+$debug['5_after_nest'] = microtime(true) - $timing['start'];
 
 global $noCommunity;
 if (!$noCommunity) {
@@ -281,6 +284,7 @@ if (!$noCommunity) {
         }
     }
 }
+$debug['6_after_community'] = microtime(true) - $timing['start'];
 
 global $noPortals;
 if (!$noPortals) {
@@ -296,6 +300,7 @@ if (!$noPortals) {
         }
     }
 }
+$debug['7_after_portals'] = microtime(true) - $timing['start'];
 
 global $noPoi;
 if (!$noPoi) {
@@ -311,6 +316,7 @@ if (!$noPoi) {
         }
     }
 }
+$debug['8_after_poi'] = microtime(true) - $timing['start'];
 
 global $noSpawnPoints;
 if (!$noSpawnPoints) {
@@ -326,7 +332,7 @@ if (!$noSpawnPoints) {
         }
     }
 }
-$debug['5_after_spawnpoints'] = microtime(true) - $timing['start'];
+$debug['9_after_spawnpoints'] = microtime(true) - $timing['start'];
 
 global $noLiveScanLocation;
 if (!$noLiveScanLocation) {
@@ -338,9 +344,10 @@ if (!$noLiveScanLocation) {
         }
     }
 }
+$debug['10_after_devices'] = microtime(true) - $timing['start'];
 
 $d['token'] = refreshCsrfToken();
-$debug['6_end'] = microtime(true) - $timing['start'];
+$debug['11_end'] = microtime(true) - $timing['start'];
 
 if ($enableDebug == true) {
     foreach ($debug as $k => $v) {

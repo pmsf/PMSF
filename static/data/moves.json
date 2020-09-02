@@ -2222,5 +2222,37 @@
     "duration": 0,
     "energy": 0,
     "dps": 0
+  },
+  "341": {
+    "name": "Fly",
+    "type": "Flying",
+    "damage": 0,
+    "duration": 0,
+    "energy": 0,
+    "dps": 0
+  },
+  "342": {
+    "name": "V-create",
+    "type": "Fire",
+    "damage": 0,
+    "duration": 0,
+    "energy": 0,
+    "dps": 0
+  },
+  "343": {
+    "name": "Leaf Storm",
+    "type": "Grass",
+    "damage": 0,
+    "duration": 0,
+    "energy": 0,
+    "dps": 0
+  },
+  "344": {
+    "name": "Tri Attack",
+    "type": "Normal",
+    "damage": 0,
+    "duration": 0,
+    "energy": 0,
+    "dps": 0
   }
 }
