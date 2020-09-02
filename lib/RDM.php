@@ -326,7 +326,7 @@ class RDM extends Scanner
                     $dustSQL .= " AND (ST_WITHIN(point(lat,lon),ST_GEOMFROMTEXT('POLYGON(( " . $boundaries . " ))')))";
                 }
             }
-            $megaSQL = "OR (quest_reward_type = 12)";
+            $megaSQL = " OR (quest_reward_type = 12)";
             $conds[] = "(" . $pokemonSQL . " OR " . $itemSQL . ")" . $dustSQL . $megaSQL . "";
         }
         if (!empty($rocket) && $rocket === 'true') {
