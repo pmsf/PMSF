@@ -456,7 +456,7 @@ class RDM extends Scanner
         json_extract(json_extract(`quest_rewards`,'$[*].info.amount'),'$[0]') AS quest_reward_amount,
         json_extract(json_extract(`quest_rewards`,'$[*].info.amount'),'$[0]') AS quest_dust_amount,
         json_extract(json_extract(`quest_rewards`,'$[*].info.amount'),'$[0]') AS quest_energy_amount,
-        quest_pokemon_id AS quest_energy_pokemon_id
+        quest_pokemon_id AS quest_energy_pokemon_id,
         json_extract(json_extract(`quest_rewards`,'$[*].info.form_id'),'$[0]') AS quest_pokemon_formid,
         json_extract(json_extract(`quest_rewards`,'$[*].info.shiny'),'$[0]') AS quest_pokemon_shiny
         FROM pokestop
