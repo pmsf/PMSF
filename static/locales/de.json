@@ -1295,7 +1295,7 @@
   "EX cells are currently hidden": "EX-Raid Zellen sind momentan versteckt",
   "Gym cells are currently hidden": "Level 12 Zellen sind momentan versteckt",
   "Pokestop cells are currently hidden": "Pokéstop Zellen sind momentan versteckt",
-  "started": "startete",
+  "started": "gestartet",
   "ended": "endete",
   "expired": "abgelaufen",
   "Time Remaining (mins)": "Übrige Zeit (min)",
@@ -1646,5 +1646,7 @@
   "Hide Raidboss": "Boss Filter",
   "Search Level": "Suche nach Level",
   "select language": "Sprache wählen",
-  "German": "Deutsch"
+  "German": "Deutsch",
+  "Mega energy": "Mega Energie",
+  "Profile": "Profil"
 }
