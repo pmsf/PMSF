@@ -10,43 +10,15 @@ It supports all the common database engines, including MySQL, MariaDB
 A special Database structure based on Hydro Monocle is needed.
 
 ## Get Started
-Join our [Discord](https://discord.gg/yGujp8D) channel for more info about installation.
+* [Wiki](https://github.com/pmsf/PMSF/wiki).
 
-## Create your own Sprite Repository
-Image naming convention `pokemon_icon_{XXX}_{YY}.png`
-Where XXX is pokemon id 001 - 807
-Where YY is pokemon form: 00 is normal
+* Join our [Discord](https://discord.gg/yGujp8D) channel for more info about installation.
 
-## Backend settings
-
-* PMSF manual
-```
-$map = "monocle";
-$fork = "pmsf";
-```
-
-* RDM Real device map
-```
-$map = "rdm";
-$fork = "default" OR $fork = "beta";
-```
-
-* MAD Map a Droid 
-```
-$map = "monocle";
-$fork = "mad";
-
-$map = "rocketmap";
-$fork = "mad";
-```
-
-## Webhooks
-Current tested support for
-* [PokeAlarm](https://github.com/PokeAlarm/PokeAlarm)
-* [PoracleJS](https://github.com/KartulUdus/PoracleJS)
+## Feature Requests
+[![Feature Requests](https://feathub.com/pmsf/PMSF?format=svg)](https://feathub.com/pmsf/PMSF)
 
 ## Feedback
-* Create an issue if you have any bugs, suggestions or improvements!
+* Create an issue if you have any bugs or improvements!
 
 * [Discord](https://discord.gg/yGujp8D) channel
 

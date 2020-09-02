@@ -124,6 +124,11 @@ var StoreOptions = {
             default: hideQuestsItem,
             type: StoreTypes.JSON
         },
+    'remember_exclude_grunts':
+        {
+            default: hideGrunts,
+            type: StoreTypes.JSON
+        },
     'showRaids':
         {
             default: enableRaids,
@@ -144,6 +149,16 @@ var StoreOptions = {
             default: maxRaidLevel,
             type: StoreTypes.Number
         },
+    'remember_exclude_raidboss':
+        {
+            default: hideRaidboss,
+            type: StoreTypes.JSON
+        },
+    'remember_exclude_raidegg':
+        {
+            default: hideRaidegg,
+            type: StoreTypes.JSON
+        },
     'showGyms':
         {
             default: enableGyms,
@@ -162,21 +177,6 @@ var StoreOptions = {
     'showPortals':
         {
             default: enablePortals,
-            type: StoreTypes.Boolean
-        },
-    'showInns':
-        {
-            default: enableInns,
-            type: StoreTypes.Boolean
-        },
-    'showFortresses':
-        {
-            default: enableFortresses,
-            type: StoreTypes.Boolean
-        },
-    'showGreenhouses':
-        {
-            default: enableGreenhouses,
             type: StoreTypes.Boolean
         },
     'showPoi':
@@ -254,6 +254,11 @@ var StoreOptions = {
             default: enablePokestops,
             type: StoreTypes.Boolean
         },
+    'showAllPokestops':
+        {
+            default: enableAllPokestops,
+            type: StoreTypes.Boolean
+        },
     'showLures':
         {
             default: enableLured,
@@ -271,7 +276,12 @@ var StoreOptions = {
         },
     'showDustAmount':
         {
-            default: 500,
+            default: defaultDustAmount,
+            type: StoreTypes.Number
+        },
+    'showNestAvg':
+        {
+            default: nestAvgDefault,
             type: StoreTypes.Number
         },
     'showWeather':
@@ -292,6 +302,11 @@ var StoreOptions = {
     'showScanPolygon':
         {
             default: enableScanPolygon,
+            type: StoreTypes.Boolean
+        },
+    'showScanLocation':
+        {
+            default: enableLiveScan,
             type: StoreTypes.Boolean
         },
     'showNestPolygon':
@@ -391,7 +406,7 @@ var StoreOptions = {
         },
     'zoomLevel':
         {
-            default: 16,
+            default: defaultZoom,
             type: StoreTypes.Number
         },
     'icons':
@@ -417,6 +432,16 @@ var StoreOptions = {
     'showRocketTimer':
         {
             default: enableRocketTimer,
+            type: StoreTypes.Boolean
+        },
+    'oldMotd':
+        {
+            default: 'default',
+            type: StoreTypes.String
+        },
+    'darkMode':
+        {
+            default: window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches,
             type: StoreTypes.Boolean
         }
 }
@@ -457,10 +482,7 @@ var mapData = {
     nests: {},
     communities: {},
     portals: {},
-    pois: {},
-    inns: {},
-    fortresses: {},
-    greenhouses: {}
+    pois: {}
 }
 
 function getPokemonSprite(index, sprite, displayHeight, weather = 0, encounterForm = 0, pokemonCostume = 0, attack = 0, defense = 0, stamina = 0) {
@@ -468,7 +490,8 @@ function getPokemonSprite(index, sprite, displayHeight, weather = 0, encounterFo
     var scale = displayHeight / sprite.iconHeight
     // Crop icon just a tiny bit to avoid bleedover from neighbor
     var scaledIconSizeWidth = scale * sprite.iconWidth
-    var scaledWeatherIconSizeWidth = scale * sprite.iconWidth - 10
+    var scaledWeatherIconSizeWidth = scaledIconSizeWidth * 0.6
+    var scaledWeatherIconOffset = scaledIconSizeWidth * 0.2
     var scaledIconCenterOffset = [scale * sprite.iconWidth / 2, scale * sprite.iconHeight / 2]
     var formStr = ''
     if (encounterForm === '0' || encounterForm === null || encounterForm === 0) {
@@ -486,13 +509,14 @@ function getPokemonSprite(index, sprite, displayHeight, weather = 0, encounterFo
     } else {
         pokemonIdStr = pokemonId
     }
+
     var costume = ''
     if (pokemonCostume > 0 && noCostumeIcons === false) {
         costume = '_' + pokemonCostume
     }
     var iv = 100 * (attack + defense + stamina) / 45
     var html = ''
-    if (weather === 0 || boostedMons[weather].indexOf(pokemonId) === -1 || noWeatherIcons) {
+    if (weather === 0 || noWeatherIcons) {
         html = '<img src="' + iconpath + 'pokemon_icon_' + pokemonIdStr + '_' + formStr + costume + '.png" style="width:' + scaledIconSizeWidth + 'px;height:auto;'
         if (iv === 100 && !noIvShadow) {
             html += 'filter:drop-shadow(0 0 10px red)drop-shadow(0 0 10px red);-webkit-filter:drop-shadow(0 0 10px red)drop-shadow(0 0 10px red);'
@@ -504,7 +528,7 @@ function getPokemonSprite(index, sprite, displayHeight, weather = 0, encounterFo
             html += 'filter:drop-shadow(0 0 10px red)drop-shadow(0 0 10px red);-webkit-filter:drop-shadow(0 0 10px red)drop-shadow(0 0 10px red);'
         }
         html += '"/>' +
-        '<img src="static/weather/i-' + weather + '.png" style="width:' + scaledWeatherIconSizeWidth + 'px;height:auto;position:absolute;top:-' + scaledWeatherIconSizeWidth + 'px;right:0px;"/>'
+        '<img src="static/weather/a-' + weather + '.png" style="width:' + scaledWeatherIconSizeWidth + 'px;height:auto;position:absolute;top:-' + scaledWeatherIconOffset + 'px;left:' + scaledWeatherIconSizeWidth + 'px;"/>'
     }
     var pokemonIcon = L.divIcon({
         iconAnchor: scaledIconCenterOffset,

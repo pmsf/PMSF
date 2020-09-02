@@ -45,8 +45,10 @@ cron/*
 /static/sprites-pokemon/
 package-lock.json
 index.php
+user.php
 .DS_Store
 static/.DS_Store
 vendor/*
 composer.lock
 custom/*
+static/css/custom.css

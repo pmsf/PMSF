@@ -1,0 +1,62 @@
+{
+  "1": {
+    "type": "1",
+    "image_name": "normal",
+    "level": "1"
+  },
+  "2": {
+    "type": "1",
+    "image_name": "normal",
+    "level": "2"
+  },
+  "3": {
+    "type": "1",
+    "image_name": "rare",
+    "level": "3"
+  },
+  "4": {
+    "type": "1",
+    "image_name": "rare",
+    "level": "4"
+  },
+  "5": {
+    "type": "1",
+    "image_name": "legendary",
+    "level": "5"
+  },
+  "6": {
+    "type": "1",
+    "image_name": "mega",
+    "level": "6"
+  },
+  "7": {
+    "type": "2",
+    "image_name": "hatched_normal",
+    "level": "1"
+  },
+  "8": {
+    "type": "2",
+    "image_name": "hatched_normal",
+    "level": "2"
+  },
+  "9": {
+    "type": "2",
+    "image_name": "hatched_rare",
+    "level": "3"
+  },
+  "10": {
+    "type": "2",
+    "image_name": "hatched_rare",
+    "level": "4"
+  },
+  "11": {
+    "type": "2",
+    "image_name": "hatched_legendary",
+    "level": "5"
+  },
+  "12": {
+    "type": "2",
+    "image_name": "hatched_mega",
+    "level": "6"
+  }
+}

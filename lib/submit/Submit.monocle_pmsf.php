@@ -7,34 +7,34 @@ class Monocle_PMSF extends Submit
     public function submit_raid($pokemonId, $gymId, $eggTime, $monTime, $loggedUser)
     {
         global $db, $noManualRaids, $noRaids, $sendWebhook, $noDiscordSubmitLogChannel;
-        if ( $noManualRaids === true || $noRaids === true ) {
-            http_response_code( 401 );
+        if ($noManualRaids === true || $noRaids === true) {
+            http_response_code(401);
             die();
         }
-        $raidBosses = json_decode( file_get_contents( "static/dist/data/pokemon.min.json" ), true );
-        if ( $eggTime > 60 ) {
+        $raidBosses = json_decode(file_get_contents("static/dist/data/pokemon.min.json"), true);
+        if ($eggTime > 60) {
             $eggTime = 60;
         }
-        if ( $monTime > 45 ) {
+        if ($monTime > 45) {
             $monTime = 45;
         }
-        if ( $eggTime < 0 ) {
+        if ($eggTime < 0) {
             $eggTime = 0;
         }
-        if ( $monTime < 0 ) {
+        if ($monTime < 0) {
             $monTime = 45;
         }
         $forty_five = 45 * 60;
         $hour       = 3600;
 
-        $gym         = $db->get( "forts", [ 'id', 'name', 'lat', 'lon' ], [ 'external_id' => $gymId ] );
+        $gym         = $db->get("forts", [ 'id', 'name', 'lat', 'lon' ], [ 'external_id' => $gymId ]);
         $gymId       = $gym['id'];
-        $add_seconds = ( $monTime * 60 );
+        $add_seconds = ($monTime * 60);
         $time_spawn  = time() - $forty_five;
         $level       = 0;
-        if ( strpos( $pokemonId, 'egg_' ) !== false ) {
-            $add_seconds = ( $eggTime * 60 );
-            $level       = (int) substr( $pokemonId, 4, 1 );
+        if (strpos($pokemonId, 'egg_') !== false) {
+            $add_seconds = ($eggTime * 60);
+            $level       = (int) substr($pokemonId, 4, 1);
             $time_spawn  = time() + $add_seconds;
         }
         $time_battle = time() + $add_seconds;
@@ -51,7 +51,7 @@ class Monocle_PMSF extends Submit
             'move_2'           => 0,
             'submitted_by'           => $loggedUser
         ];
-        if ( array_key_exists( $pokemonId, $raidBosses ) ) {
+        if (array_key_exists($pokemonId, $raidBosses)) {
             $time_end = time() + $add_seconds;
             // fake the battle start and spawn times cuz rip hashing :(
             $time_battle             = $time_end - $forty_five;
@@ -59,23 +59,23 @@ class Monocle_PMSF extends Submit
             $cols['pokemon_id']      = $pokemonId;
             $cols['move_1']        = null;
             $cols['move_2']        = null;
-            $cols['level']           = array_key_exists('level',$raidBosses[ $pokemonId ]) ? $raidBosses[ $pokemonId ]['level'] : 1;
-            $cols['cp']            = array_key_exists('cp',$raidBosses[ $pokemonId ]) ? $raidBosses[ $pokemonId ]['cp'] : 1;
+            $cols['level']           = array_key_exists('level', $raidBosses[ $pokemonId ]) ? $raidBosses[ $pokemonId ]['level'] : 1;
+            $cols['cp']            = array_key_exists('cp', $raidBosses[ $pokemonId ]) ? $raidBosses[ $pokemonId ]['cp'] : 1;
             $cols['time_spawn']      = $time_spawn;
             $cols['time_battle']     = $time_battle;
             $cols['time_end']        = $time_end;
-        } elseif ( $cols['level'] === 0 ) {
+        } elseif ($cols['level'] === 0) {
             // no boss or egg matched
-            http_response_code( 500 );
+            http_response_code(500);
         }
-        $db->query( 'DELETE FROM raids WHERE fort_id = :gymId', [ ':gymId' => $gymId ] );
-        $db->insert( 'raids', $cols );
-        $db->query( "UPDATE fort_sightings SET updated = :updated WHERE fort_id = :gymId", [
+        $db->query('DELETE FROM raids WHERE fort_id = :gymId', [ ':gymId' => $gymId ]);
+        $db->insert('raids', $cols);
+        $db->query("UPDATE fort_sightings SET updated = :updated WHERE fort_id = :gymId", [
             'updated' => time(),
             ':gymId'  => $gymId
-        ] );
+        ]);
 
-        if ( $sendWebhook === true ) {
+        if ($sendWebhook === true) {
             $webhook = [
                 'message' => [
                     'gym_id'     => $gym['external_id'],
@@ -93,10 +93,10 @@ class Monocle_PMSF extends Submit
                 ],
                 'type'    => 'raid'
             ];
-            if ( strpos( $pokemonId, 'egg_' ) !== false ) {
+            if (strpos($pokemonId, 'egg_') !== false) {
                 $webhook['message']['raid_begin'] = $time_spawn;
             }
-            foreach ( $webhookUrl as $url ) {
+            foreach ($webhookUrl as $url) {
                 sendToWebhook($url, array($webhook));
             }
         }
@@ -105,11 +105,11 @@ class Monocle_PMSF extends Submit
     public function submit_pokemon($lat, $lon, $pokemonId)
     {
         global $db, $noManualPokemon, $noPokemon, $pokemonTimer, $sendWebhook, $noDiscordSubmitLogChannel;
-        if ( $noManualPokemon === true || $noPokemon === true ) {
-            http_response_code( 401 );
+        if ($noManualPokemon === true || $noPokemon === true) {
+            http_response_code(401);
             die();
         }
-        if ( ! empty( $lat ) && ! empty( $lon ) && ! empty( $pokemonId ) ) {
+        if (! empty($lat) && ! empty($lon) && ! empty($pokemonId)) {
             $spawnID = randomNum();
             $pokecols    = [
                 'encounter_id'                  => $spawnID,
@@ -121,9 +121,9 @@ class Monocle_PMSF extends Submit
                 'updated'                   => time(),
                 'weather_boosted_condition'     => 0,
             ];
-            $db->insert( "sightings", $pokecols );
+            $db->insert("sightings", $pokecols);
         }
-        if ( $sendWebhook === true ) {
+        if ($sendWebhook === true) {
             $webhook = [
                 'message' => [
                     'cp'                                => null,
@@ -149,7 +149,7 @@ class Monocle_PMSF extends Submit
                 ],
                 'type'    => 'pokemon'
             ];
-            foreach ( $webhookUrl as $url ) {
+            foreach ($webhookUrl as $url) {
                 sendToWebhook($url, array($webhook));
             }
         }
@@ -158,11 +158,11 @@ class Monocle_PMSF extends Submit
     public function submit_gym($lat, $lon, $gymName, $loggedUser)
     {
         global $db, $noManualGyms, $noGyms, $noDiscordSubmitLogChannel;
-        if ( $noManualGyms === true || $noGyms === true ) {
-            http_response_code( 401 );
+        if ($noManualGyms === true || $noGyms === true) {
+            http_response_code(401);
             die();
         }
-        if ( ! empty( $lat ) && ! empty( $lon ) && ! empty( $gymName ) ) {
+        if (! empty($lat) && ! empty($lon) && ! empty($gymName)) {
             $gymId = randomGymId();
             $cols  = [
                 'external_id' => $gymId,
@@ -171,8 +171,8 @@ class Monocle_PMSF extends Submit
                 'name'        => $gymName,
                 'edited_by'   => $loggedUser
             ];
-            $db->insert( 'forts', $cols );
-            if ( $noDiscordSubmitLogChannel === false ) {
+            $db->insert('forts', $cols);
+            if ($noDiscordSubmitLogChannel === false) {
                 $data = array("content" => '```Added gym with id "' . $gymId . '" and name: "' . $gymName . '"```' . $submitMapUrl . '/?lat=' . $lat . '&lon=' . $lon . '&zoom=18', "username" => $loggedUser);
                 sendToWebhook($discordSubmitLogChannelUrl, ($data));
             }
@@ -182,23 +182,23 @@ class Monocle_PMSF extends Submit
     public function toggle_ex($gymId, $loggedUser)
     {
         global $db, $noToggleExGyms, $noGyms, $noDiscordSubmitLogChannel;
-        if ( $noToggleExGyms === true || $noGyms === true ) {
-            http_response_code( 401 );
+        if ($noToggleExGyms === true || $noGyms === true) {
+            http_response_code(401);
             die();
         }
-        if ( ! empty( $gymId ) ) {
-            $fortName = $db->get( "forts", [ 'name' ], [ 'external_id' => $gymId ] );
-            $fortid = $db->get( "forts", [ 'id' ], [ 'external_id' => $gymId ] );
-            $park = $db->get( "forts", [ 'park' ], [ 'external_id' => $gymId ] );
-            if ( empty($park['park'])) {
+        if (! empty($gymId)) {
+            $fortName = $db->get("forts", [ 'name' ], [ 'external_id' => $gymId ]);
+            $fortid = $db->get("forts", [ 'id' ], [ 'external_id' => $gymId ]);
+            $park = $db->get("forts", [ 'park' ], [ 'external_id' => $gymId ]);
+            if (empty($park['park'])) {
                 $cols = [
                     'park'       => 'Park'
                 ];
                 $where    = [
                     'external_id' => $gymId
                 ];
-                $db->update( "forts", $cols, $where );
-                if ( $noDiscordSubmitLogChannel === false ) {
+                $db->update("forts", $cols, $where);
+                if ($noDiscordSubmitLogChannel === false) {
                     $data = array("content" => '```Marked gym with id "' . $gymId . '" and name: "' . $fortName['name'] . '" as EX eligible```', "username" => $loggedUser);
                     sendToWebhook($discordSubmitLogChannelUrl, ($data));
                 }
@@ -209,8 +209,8 @@ class Monocle_PMSF extends Submit
                 $where    = [
                     'external_id' => $gymId
                 ];
-                $db->update( "forts", $cols, $where );
-                if ( $noDiscordSubmitLogChannel === false ) {
+                $db->update("forts", $cols, $where);
+                if ($noDiscordSubmitLogChannel === false) {
                     $data = array("content" => '```Marked gym with id "' . $gymId . '" and name: "' . $fortName['name'] . '" as non EX eligible```', "username" => $loggedUser);
                     sendToWebhook($discordSubmitLogChannelUrl, ($data));
                 }
@@ -221,30 +221,30 @@ class Monocle_PMSF extends Submit
     public function delete_gym($gymId, $loggedUser)
     {
         global $db, $noDeleteGyms, $noGyms, $noDiscordSubmitLogChannel;
-        if ( $noDeleteGyms === true || $noGyms === true ) {
-            http_response_code( 401 );
+        if ($noDeleteGyms === true || $noGyms === true) {
+            http_response_code(401);
             die();
         }
-        if ( ! empty( $gymId ) ) {
-            $fortid = $db->get( "forts", [ 'id' ], [ 'external_id' => $gymId ] );
-            $fortName = $db->get( "forts", [ 'name' ], [ 'external_id' => $gymId ] );
-            if ( $fortid ) {
-                $db->delete( 'fort_sightings', [
+        if (! empty($gymId)) {
+            $fortid = $db->get("forts", [ 'id' ], [ 'external_id' => $gymId ]);
+            $fortName = $db->get("forts", [ 'name' ], [ 'external_id' => $gymId ]);
+            if ($fortid) {
+                $db->delete('fort_sightings', [
                     "AND" => [
                         'fort_id' => $fortid['id']
                     ]
                 ]);
-                $db->delete( 'raids', [
+                $db->delete('raids', [
                     "AND" => [
                         'fort_id' => $fortid['id']
                     ]
                 ]);
-                $db->delete( 'forts', [
+                $db->delete('forts', [
                     "AND" => [
                         'external_id' => $gymId
                     ]
                 ]);
-                if ( $noDiscordSubmitLogChannel === false ) {
+                if ($noDiscordSubmitLogChannel === false) {
                     $data = array("content" => '```Deleted gym with id "' . $gymId . '" and name: "' . $fortName['name'] . '"```', "username" => $loggedUser);
                     sendToWebhook($discordSubmitLogChannelUrl, ($data));
                 }
@@ -255,11 +255,11 @@ class Monocle_PMSF extends Submit
     public function submit_pokestop($lat, $lon, $pokestopName, $loggedUser)
     {
         global $db, $noManualPokestops, $noPokestops, $noDiscordSubmitLogChannel;
-        if ( $noManualPokestops === true || $noPokestops === true ) {
-            http_response_code( 401 );
+        if ($noManualPokestops === true || $noPokestops === true) {
+            http_response_code(401);
             die();
         }
-        if ( ! empty( $lat ) && ! empty( $lon ) && ! empty( $pokestopName ) ) {
+        if (! empty($lat) && ! empty($lon) && ! empty($pokestopName)) {
             $pokestopId = randomGymId();
             $cols       = [
                 'external_id'              => $pokestopId,
@@ -269,8 +269,8 @@ class Monocle_PMSF extends Submit
                 'updated'                 => time(),
                 'edited_by'            => $loggedUser
             ];
-            $db->insert( "pokestops", $cols );
-            if ( $noDiscordSubmitLogChannel === false ) {
+            $db->insert("pokestops", $cols);
+            if ($noDiscordSubmitLogChannel === false) {
                 $data = array("content" => '```Added pokestop with id "' . $pokestopId . '" and gave it the new name: "' . $pokestopName . '"```' . $submitMapUrl . '/?lat=' . $lat . '&lon=' . $lon . '&zoom=18 ', "username" => $loggedUser);
                 sendToWebhook($discordSubmitLogChannelUrl, ($data));
             }
@@ -280,11 +280,11 @@ class Monocle_PMSF extends Submit
     public function modify_pokestop($pokestopId, $pokestopName, $loggedUser)
     {
         global $db, $noRenamePokestops, $noPokestops, $noDiscordSubmitLogChannel;
-        if ( $noRenamePokestops === true || $noPokestops === true ) {
-            http_response_code( 401 );
+        if ($noRenamePokestops === true || $noPokestops === true) {
+            http_response_code(401);
             die();
         }
-        if ( ! empty( $pokestopName ) && ! empty( $pokestopId ) ) {
+        if (! empty($pokestopName) && ! empty($pokestopId)) {
             $cols     = [
                 'name'        => $pokestopName,
                 'updated'     => time(),
@@ -293,8 +293,8 @@ class Monocle_PMSF extends Submit
             $where    = [
                 'external_id' => $pokestopId
             ];
-            $db->update( "pokestops", $cols, $where );
-            if ( $noDiscordSubmitLogChannel === false ) {
+            $db->update("pokestops", $cols, $where);
+            if ($noDiscordSubmitLogChannel === false) {
                 $data = array("content" => '```Updated pokestop with id "' . $pokestopId . '" and gave it the new name: "' . $pokestopName . '" . ```', "username" => $loggedUser);
                 sendToWebhook($discordSubmitLogChannelUrl, ($data));
             }
@@ -304,18 +304,18 @@ class Monocle_PMSF extends Submit
     public function delete_pokestop($pokestopId, $loggedUser)
     {
         global $db, $noDeletePokestops, $noPokestops, $noDiscordSubmitLogChannel;
-        if ( $noDeletePokestops === true || $noPokestops === true ) {
-            http_response_code( 401 );
+        if ($noDeletePokestops === true || $noPokestops === true) {
+            http_response_code(401);
             die();
         }
-        $pokestopName = $db->get( "pokestops", [ 'name' ], [ 'external_id' => $pokestopId ] );
-        if ( ! empty( $pokestopId ) ) {
-            $db->delete( 'pokestops', [
+        $pokestopName = $db->get("pokestops", [ 'name' ], [ 'external_id' => $pokestopId ]);
+        if (! empty($pokestopId)) {
+            $db->delete('pokestops', [
                 "AND" => [
                     'external_id' => $pokestopId
                 ]
-            ] );
-            if ( $noDiscordSubmitLogChannel === false ) {
+            ]);
+            if ($noDiscordSubmitLogChannel === false) {
                 $data = array("content" => '```Deleted pokestop with id "' . $pokestopId . '" and name: "' . $pokestopName['name'] . '"```', "username" => $loggedUser);
                 sendToWebhook($discordSubmitLogChannelUrl, ($data));
             }
@@ -325,12 +325,12 @@ class Monocle_PMSF extends Submit
     public function convert_pokestop($pokestopId, $loggedUser)
     {
         global $db, $noConvertPokestops, $noPokestops, $noDiscordSubmitLogChannel;
-        if ( $noConvertPokestops === true || $noPokestops === true ) {
-            http_response_code( 401 );
+        if ($noConvertPokestops === true || $noPokestops === true) {
+            http_response_code(401);
             die();
         }
-        $gym = $db->get( "pokestops", [ 'lat', 'lon', 'name', 'url' ], [ 'external_id' => $pokestopId ] );
-        if ( ! empty( $pokestopId ) ) {
+        $gym = $db->get("pokestops", [ 'lat', 'lon', 'name', 'url' ], [ 'external_id' => $pokestopId ]);
+        if (! empty($pokestopId)) {
             $cols     = [
                 'id'  => $pokestopId,
                 'lat'          => $gym['lat'],
@@ -338,13 +338,13 @@ class Monocle_PMSF extends Submit
                 'name'         => $gym['name'],
                 'url'          => $gym['url']
             ];
-            $db->insert( "forts", $cols );
-            $db->delete( 'pokestops', [
+            $db->insert("forts", $cols);
+            $db->delete('pokestops', [
                 "AND" => [
                     'external_id' => $pokestopId
                 ]
-            ] );
-            if ( $noDiscordSubmitLogChannel === false ) {
+            ]);
+            if ($noDiscordSubmitLogChannel === false) {
                 $data = array("content" => '```Converted pokestop with id "' . $pokestopId . '." New Gym: "' . $gym['name'] . '". ```' . $submitMapUrl . '/?lat=' . $gym['lat'] . '&lon=' . $gym['lon'] . '&zoom=18 ', "username" => $loggedUser);
                 sendToWebhook($discordSubmitLogChannelUrl, ($data));
             }
@@ -354,12 +354,12 @@ class Monocle_PMSF extends Submit
     public function submit_quest($pokestopId, $questType, $questTarget, $conditionType, $catchPokemonType, $catchPokemon, $raidLevel, $throwType, $curveThrow, $rewardType, $encounter, $item, $itemAmount, $dust, $loggedUser)
     {
         global $db, $noManualQuests, $noPokestops, $noDiscordSubmitLogChannel;
-        if ( $noManualQuests === true || $noPokestops === true ) {
-            http_response_code( 401 );
+        if ($noManualQuests === true || $noPokestops === true) {
+            http_response_code(401);
             die();
         }
-        $pokestopName = $db->get( "pokestops", [ 'name', 'lat', 'lon', 'url', 'external_id' ], [ 'external_id' => $pokestopId ] );
-        if ( ! empty( $pokestopId ) && ! empty( $questType ) && ! empty( $rewardType ) ) {
+        $pokestopName = $db->get("pokestops", [ 'name', 'lat', 'lon', 'url', 'external_id' ], [ 'external_id' => $pokestopId ]);
+        if (! empty($pokestopId) && ! empty($questType) && ! empty($rewardType)) {
             if ($conditionType === '1') {
                 $jsonCondition = json_encode(array(
                     'info' => array(
@@ -368,7 +368,7 @@ class Monocle_PMSF extends Submit
                     'type' => intval($conditionType)
                     )
                 );
-            } else if ($conditionType === '2') {
+            } elseif ($conditionType === '2') {
                 $jsonCondition = json_encode(array(
                     'info' => array(
                         'pokemon_ids' => $catchPokemon
@@ -376,7 +376,7 @@ class Monocle_PMSF extends Submit
                     'type' => intval($conditionType)
                     )
                 );
-            } else if ($conditionType === '6' || $conditionType === '7') {
+            } elseif ($conditionType === '6' || $conditionType === '7') {
                 $jsonCondition = json_encode(array(
                     'info' => array(
                         'raid_levels' => $raidLevel
@@ -384,7 +384,7 @@ class Monocle_PMSF extends Submit
                     'type' => intval($conditionType)
                     )
                 );
-            } else if ($conditionType === '8') {
+            } elseif ($conditionType === '8') {
                 $jsonCondition = json_encode(array(
                     'info' => array(
                         'throw_type_id' => intval($throwType),
@@ -399,7 +399,7 @@ class Monocle_PMSF extends Submit
                         )
                     );
                 }
-            } else if ($conditionType === '14') {
+            } elseif ($conditionType === '14') {
                 $jsonCondition = json_encode(array(
                     'info' => array(
                         'throw_type_id' => intval($throwType),
@@ -414,7 +414,7 @@ class Monocle_PMSF extends Submit
                         )
                     );
                 }
-            } else if ( ! empty( $conditionType ) ) {
+            } elseif (! empty($conditionType)) {
                 $jsonCondition = json_encode(array(
                     'type' => intval($conditionType)
                     )
@@ -429,14 +429,14 @@ class Monocle_PMSF extends Submit
                     ),
                     'type' => intval($rewardType)
                 ));
-            } else if ($rewardType === '3') {
+            } elseif ($rewardType === '3') {
                 $jsonRewards = json_encode(array(
                     'info' => array(
                         'amount' => intval($dust)
                     ),
                     'type' => intval($rewardType)
                 ));
-            } else if ($rewardType === '7') {
+            } elseif ($rewardType === '7') {
                 $jsonRewards = json_encode(array(
                     'info' => array(
                         'pokemon_id' => intval($encounter),
@@ -460,20 +460,19 @@ class Monocle_PMSF extends Submit
             $where = [
                 'external_id'        => $pokestopId
             ];
-            $db->update( "pokestops", $cols, $where );
-
+            $db->update("pokestops", $cols, $where);
         }
     }
 
     public function convert_portal_pokestop($portalId, $loggedUser)
     {
         global $db, $manualdb, $noPortals, $noDiscordSubmitLogChannel, $submitMapUrl;
-        if ( $noPortals === true ) {
-            http_response_code( 401 );
+        if ($noPortals === true) {
+            http_response_code(401);
             die();
         }
-        $portal = $manualdb->get( "ingress_portals", [ 'lat', 'lon', 'name', 'url' ], [ 'external_id' => $portalId ] );
-        if ( ! empty( $portalId ) ) {
+        $portal = $manualdb->get("ingress_portals", [ 'lat', 'lon', 'name', 'url' ], [ 'external_id' => $portalId ]);
+        if (! empty($portalId)) {
             $cols     = [
                 'external_id'  => $portalId,
                 'lat'          => $portal['lat'],
@@ -482,8 +481,8 @@ class Monocle_PMSF extends Submit
                 'url'          => $portal['url'],
                 'updated'      => time()
             ];
-            $db->insert( "pokestops", $cols );
-            if ( $noDiscordSubmitLogChannel === false ) {
+            $db->insert("pokestops", $cols);
+            if ($noDiscordSubmitLogChannel === false) {
                 $data = array("content" => '```Converted portal with id "' . $portalId . '." New Pokestop: "' . $portal['name'] . '". ```' . $submitMapUrl . '/?lat=' . $portal['lat'] . '&lon=' . $portal['lon'] . '&zoom=18 ', "username" => $loggedUser);
                 sendToWebhook($discordSubmitLogChannelUrl, ($data));
             }
@@ -493,12 +492,12 @@ class Monocle_PMSF extends Submit
     public function convert_portal_gym($portalId, $loggedUser)
     {
         global $db, $manualdb, $noPortals, $noDiscordSubmitLogChannel, $submitMapUrl;
-        if ( $noPortals === true ) {
-            http_response_code( 401 );
+        if ($noPortals === true) {
+            http_response_code(401);
             die();
         }
-        $portal = $manualdb->get( "ingress_portals", [ 'lat', 'lon', 'name', 'url' ], [ 'external_id' => $portalId ] );
-        if ( ! empty( $portalId ) ) {
+        $portal = $manualdb->get("ingress_portals", [ 'lat', 'lon', 'name', 'url' ], [ 'external_id' => $portalId ]);
+        if (! empty($portalId)) {
             $cols     = [
                 'external_id'  => $portalId,
                 'lat'          => $portal['lat'],
@@ -506,8 +505,8 @@ class Monocle_PMSF extends Submit
                 'name'         => $portal['name'],
                 'url'          => $portal['url']
             ];
-            $db->insert( "forts", $cols );
-            if ( $noDiscordSubmitLogChannel === false ) {
+            $db->insert("forts", $cols);
+            if ($noDiscordSubmitLogChannel === false) {
                 $data = array("content" => '```Converted portal with id "' . $portalId . '." New Gym: "' . $portal['name'] . '". ```' . $submitMapUrl . '/?lat=' . $portal['lat'] . '&lon=' . $portal['lon'] . '&zoom=18 ', "username" => $loggedUser);
                 sendToWebhook($discordSubmitLogChannelUrl, ($data));
             }

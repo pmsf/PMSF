@@ -89,7 +89,7 @@
   },
   "22": {
     "prototext": "QUEST_ADD_FRIEND",
-    "text": "Become new friends with {0} "
+    "text": "Make {0} new friends"
   },
   "23": {
     "prototext": "QUEST_TRADE_POKEMON",
@@ -113,10 +113,42 @@
   },
   "29": {
     "prototext": "QUEST_BATTLE_TEAM_ROCKET",
-    "text": "Defeat {0} Team GO Rocket Grunt(s)"
+    "text": "Battle against {0} Team GO Rocket Grunt(s)"
   },
   "30": {
     "prototext": "QUEST_PURIFY_POKEMON",
     "text": "Purify {0} pokémon"
+  },
+  "31": {
+    "prototext": "QUEST_FIND_TEAM_ROCKET",
+    "text": "Find Team Rocket {0} times"
+  },
+  "32": {
+    "prototext": "QUEST_FIRST_GRUNT_OF_THE_DAY",
+    "text": "First Grunt of the day"
+  },
+  "33": {
+    "prototext": "QUEST_BUDDY_FEED",
+    "text": "Give your buddy {0} treat(s)"
+  },
+  "34": {
+    "prototext": "QUEST_BUDDY_EARN_AFFECTION_POINTS",
+    "text": "Earn {0} Heart(s) with your Buddy"
+  },
+  "35": {
+    "prototext": "QUEST_BUDDY_PET",
+    "text": "Play with your Buddy {0} times"
+  },
+  "36": {
+    "prototext": "QUEST_BUDDY_LEVEL",
+    "text": ""
+  },
+  "37": {
+    "prototext": "QUEST_BUDDY_WALK",
+    "text": ""
+  },
+  "38": {
+    "prototext": "QUEST_BUDDY_YATTA",
+    "text": ""
   }
 }

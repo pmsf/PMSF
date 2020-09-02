@@ -22,11 +22,20 @@ module.exports = function (grunt) {
         eslint: {
             src: ['static/js/*.js', '!js/vendor/**/*.js']
         },
-
         babel: {
             options: {
                 sourceMap: true,
                 presets: ['env']
+            },
+            prod: {
+                files: {
+                    'static/dist/js/app.built.js': 'static/js/app.js',
+                    'static/dist/js/map.built.js': 'static/js/map.js',
+                    'static/dist/js/map.common.built.js': 'static/js/map.common.js',
+                    'static/dist/js/mobile.built.js': 'static/js/mobile.js',
+                    'static/dist/js/stats.built.js': 'static/js/stats.js',
+                    'static/dist/js/serviceWorker.built.js': 'static/js/serviceWorker.js'
+                }
             },
             dev: {
                 files: {
@@ -39,28 +48,41 @@ module.exports = function (grunt) {
                 }
             }
         },
-        obfuscator: {
+        javascript_obfuscator: {
             options: {
                 compact: true,
-                controlFlowFlattening: true,
+                controlFlowFlattening: false,
                 controlFlowFlatteningThreshold: 1,
                 deadCodeInjection: false,
                 deadCodeInjectionThreshold: 0.2,
-                debugProtection: true,
-                debugProtectionInterval: true,
-                disableConsoleOutput: true,
-                identifierNamesGenerator: 'mangled',
+                debugProtection: false,
+                debugProtectionInterval: false,
+                disableConsoleOutput: false,
+                domainLock: [],
+                identifierNamesGenerator: 'hexadecimal',
+                identifiersPrefix: '',
+                inputFileName: '',
                 log: false,
                 renameGlobals: false,
+                reservedNames: [],
+                reservedStrings: [],
                 rotateStringArray: true,
+                seed: 0,
                 selfDefending: true,
+                sourceMap: false,
+                sourceMapBaseUrl: '',
+                sourceMapFileName: '',
+                sourceMapMode: 'separate',
+                splitStrings: false,
+                splitStringsChunkLength: 10,
                 stringArray: true,
-                stringArrayEncoding: 'rc4',
-                stringArrayThreshold: 1,
+                stringArrayEncoding: 'base64',
+                stringArrayThreshold: 0.75,
+                target: 'browser',
                 transformObjectKeys: true,
                 unicodeEscapeSequence: false
             },
-            prod: {
+            obfuscator: {
                 files: {
                     'static/dist/js/app.min.js' :'static/js/app.js',
                     'static/dist/js/map.min.js':'static/js/map.js',
@@ -70,7 +92,25 @@ module.exports = function (grunt) {
                     'static/dist/js/serviceWorker.min.js':'static/js/serviceWorker.js'
                 }
             }
-
+        },
+        uglify: {
+            options: {
+                banner: '/*\n <%= pkg.name %> <%= grunt.template.today("yyyy-mm-dd") %> \n*/\n',
+                sourceMap: true,
+                compress: {
+                    unused: false
+                }
+            },
+            prod: {
+                files: {
+                    'static/dist/js/app.min.js': 'static/dist/js/app.built.js',
+                    'static/dist/js/map.min.js': 'static/dist/js/map.built.js',
+                    'static/dist/js/map.common.min.js': 'static/dist/js/map.common.built.js',
+                    'static/dist/js/mobile.min.js': 'static/dist/js/mobile.built.js',
+                    'static/dist/js/stats.min.js': 'static/dist/js/stats.built.js',
+                    'static/dist/js/serviceWorker.min.js': 'static/dist/js/serviceWorker.built.js'
+                }
+            }
         },
         minjson: {
             build: {
@@ -83,6 +123,8 @@ module.exports = function (grunt) {
                     'static/dist/data/rewardtype.min.json': 'static/data/rewardtype.json',
                     'static/dist/data/conditiontype.min.json': 'static/data/conditiontype.json',
                     'static/dist/data/items.min.json': 'static/data/items.json',
+                    'static/dist/data/grunttype.min.json': 'static/data/grunttype.json',
+                    'static/dist/data/raidegg.min.json': 'static/data/raidegg.json',
                     'static/dist/data/searchmarkerstyle.min.json': 'static/data/searchmarkerstyle.json',
                     'static/dist/data/weather.min.json': 'static/data/weather.json',
                     'static/dist/locales/de.min.json': 'static/locales/de.json',
@@ -90,12 +132,14 @@ module.exports = function (grunt) {
                     'static/dist/locales/it.min.json': 'static/locales/it.json',
                     'static/dist/locales/jp.min.json': 'static/locales/jp.json',
                     'static/dist/locales/ko.min.json': 'static/locales/ko.json',
+                    'static/dist/locales/pl.min.json': 'static/locales/pl.json',
                     'static/dist/locales/pt_br.min.json': 'static/locales/pt_br.json',
                     'static/dist/locales/ru.min.json': 'static/locales/ru.json',
                     'static/dist/locales/sp.min.json': 'static/locales/sp.json',
                     'static/dist/locales/zh_cn.min.json': 'static/locales/zh_cn.json',
                     'static/dist/locales/zh_tw.min.json': 'static/locales/zh_tw.json',
-                    'static/dist/locales/zh_hk.min.json': 'static/locales/zh_hk.json'
+                    'static/dist/locales/zh_hk.min.json': 'static/locales/zh_hk.json',
+                    'static/dist/locales/sv.min.json': 'static/locales/sv.json'
                 }
             }
         },
@@ -162,8 +206,9 @@ module.exports = function (grunt) {
         }
     });
 
-    grunt.registerTask('js-build', ['newer:obfuscator']);
+    grunt.registerTask('js-build', ['babel:prod', 'newer:uglify']);
     grunt.registerTask('js-dev', ['babel:dev']);
+    grunt.registerTask('js-obfuscator', ['newer:javascript_obfuscator']);
     grunt.registerTask('css-build', ['newer:sass', 'newer:cssmin']);
     grunt.registerTask('js-lint', ['newer:eslint']);
     grunt.registerTask('json', ['newer:minjson']);
@@ -172,6 +217,7 @@ module.exports = function (grunt) {
 
     grunt.registerTask('build', ['clean', 'js-build', 'css-build', 'json', 'html-build']);
     grunt.registerTask('dev', ['clean', 'js-dev', 'css-build', 'json', 'html-build']);
+    grunt.registerTask('obfuscate', ['clean', 'js-obfuscator', 'css-build', 'json', 'html-build']);
     grunt.registerTask('lint', ['js-lint', 'php-lint']);
     grunt.registerTask('default', ['build', 'watch']);
 

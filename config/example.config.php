@@ -10,7 +10,7 @@ use Medoo\Medoo;
 
 //======================================================================
 // PMSF - CONFIG FILE
-// https://github.com/whitewillem/PMSF
+// https://github.com/pmsf/PMSF
 //======================================================================
 
 //-----------------------------------------------------
@@ -25,8 +25,9 @@ $startingLng = 5.302366;                                           // Starting l
 /* Zoom and Cluster Settings */
 
 $maxLatLng = 1;                                                     // Max latitude and longitude size (1 = ~110km, 0 to disable)
+$defaultZoom = 16;                                                  // Default zoom level for first time users.
 $maxZoomOut = 11;                                                   // Max zoom out level (11 ~= $maxLatLng = 1, 0 to disable, lower = the further you can zoom out)
-$maxZoomIn = 18;                                                    // Max zoom in level 18
+$maxZoomIn = 18;                                                    // Max zoom in level 18, higher values will be loaded from level 18 and auto-scaled
 $disableClusteringAtZoom = 15;                                      // Disable clustering above this value. 0 to disable
 $zoomToBoundsOnClick = 15;                                          // Zoomlevel on clusterClick
 $maxClusterRadius = 30;                                             // The maximum radius that a cluster will cover from the central marker (in pixels).
@@ -53,9 +54,16 @@ $blockIframe = true;                                                // Block you
 /* Map Title + Language */
 
 $title = "POGOmap";                                                 // Title to display in title bar
+$headerTitle = "POGOmap";                                           // Title to display in header
 $locale = "en";                                                     // Display language
+$noLocaleSelection = false;
 $raidmapLogo = '';                                                  // Upload logo to custom folder, leave '' for empty ( $raidmapLogo = 'custom/logo.png'; )
 
+/* Loading screen */
+
+$noLoadingScreen = false;                                           // show loading animation while main page loads.
+$loadingStyle = '';                                                 // Leave blank for default loading icon. Use $loadingStyle = '<img src="static/images/pokeball2.gif" style="height:40px;">';
+                                                                    // for pokeball or custom gif for animated gif; or use your own html.
 /* Google Maps and MapBox are ONLY USED FOR TILE LAYERS */
 
 $gmapsKey = "";
@@ -64,13 +72,19 @@ $mBoxKey = "";
 /* How to use multiple Map Box Keys: */
 
 //$dayOfTheWeek = date('l');
-//If ($dayOfTheWeek === 'Monday' || $dayOfTheWeek === 'Tuesday' || $dayOfTheWeek === 'Wednesday') {
-//    $mapBoxKey = "";
+//if ($dayOfTheWeek === 'Monday' || $dayOfTheWeek === 'Tuesday' || $dayOfTheWeek === 'Wednesday') {
+//    $mBoxKey = "";
 //} else if ($dayOfTheWeek === 'Thursday' || $dayOfTheWeek === 'Friday') {
-//    $mapBoxKey = "";
+//    $mBoxKey = "";
 //} else if ($dayOfTheWeek === 'Saturday' || $dayOfTheWeek === 'Sunday') {
-//    $mapBoxKey = "";
+//    $mBoxKey = "";
 //}
+
+/* Custom Tileserver. Only tested with https://github.com/123FLO321/SwiftTileserverCache */
+
+$noCustomTileServer = true;                                         // Enable/Disable Custom TileServer
+$customTileServerAddress = "";                                      // TileServer URL: http://ipAddress:port/tile/klokantech-basic/{z}/{x}/{y}/1/png
+$forcedTileServer = false;
 
 /* Google Analytics */
 
@@ -84,13 +98,13 @@ $piwikSiteId = "";
 /* Cookie Disclamer */
 $noCookie = true;                                                   // Display a Cookie Disclamer
 
-/* PayPal */
-
+/* header urls */
 $paypalUrl = "";                                                    // PayPal donation URL, leave "" for empty
-
-/* Discord */
-
 $discordUrl = "https://discord.gg/INVITE_LINK";                     // Discord URL, leave "" for empty
+$whatsAppUrl = "";                                                  // WhatsApp URL, leave "" for empty
+$telegramUrl = "";                                                  // Telegram URL, leave "" for empty
+$customUrl = "";                                                    // Custom URL, leave "" for empty
+$customUrlFontIcon = "far fa-smile-beam";                           // Choose a custom icon on: https://fontawesome.com/icons?d=gallery&m=free
 
 /* Worldopole */
 
@@ -100,56 +114,84 @@ $worldopoleUrl = "";                                                // Link to W
 $noStatsToggle = false;                                             // Enables or disables the stats button in the header.
 
 /* MOTD */
-$noMotd = true;
+$noMotd = true;                                                     // Message of the day.
+$showMotdOnlyOnce = false;                                          // Only show motd if user didnt see the current $motdContent yet.
 $motdTitle = "Message of the Day";
 $motdContent = "This is an example MOTD<br>Do whatever you like with it.";
 
 /* Favicon */
 $faviconPath = '';                                                  // Upload favicon.ico to custom folder, leave '' for empty ( $faviconPath = 'custom/favicon.ico'; )
+$appIconPath = 'static/appicons/';
 
 /* IMGBB API */
 $imgurCID = "";
+
+/* UserTimezone */
+#$userTimezone = "Etc/UTC";			                    // If different from server settings set php frontend timezone https://www.php.net/manual/en/timezones.php
 //-----------------------------------------------------
 // Login
 //-----------------------------------------------------
+$forcedLogin = false;                                               // Force users to login before they can see map
+$adminUsers = ['admin@example.com', 'admin2@example.com'];          // You can add multiple admins by adding them to the array.
 /* Discord Auth */
-$forcedDiscordLogin = false;                                        // Force users to login with discord before they can see map
 $noDiscordLogin = true;                                             // This will enable login through discord.
                                                                     // 1. Create a discord bot here -> https://discordapp.com/developers/applications/me
                                                                     // 2. Install composer with "apt-get install composer".
                                                                     // 3. Navigate to your website's root folder and type "composer install" to install the dependencies.
                                                                     // 4. Add your callback-page as a REDIRECT URI to your discord bot. Should be the same as $discordBotRedirectUri.
-                                                                    // 5. Enter Client ID, Client Secret and Redirect URI below.
+                                                                    // 5. Enter Client ID, Client Secret, Token and Redirect URI below.
 $discordBotClientId = 0;
 $discordBotClientSecret = "";
-$discordBotRedirectUri = "https://example.com/discord-callback.php";
+$discordBotRedirectUri = "https://example.com/login?callback=discord";
+$discordBotToken = "";
+
+/* Match role-id values with access levels in access config. Remove or add according your needs */
+$guildRoles = [
+    'guildIDS' => [
+        'SERVER-ID-HERE' => [
+            'ROLE-ID-HERE' => 1,
+            'ROLE-ID-HERE' => 2,
+            'ROLE-ID-HERE' => 3,
+            'ROLE-ID-HERE' => 4
+        ],
+        'SERVER-ID-HERE' => [
+            'ROLE-ID-HERE' => 1,
+            'ROLE-ID-HERE' => 2,
+            'ROLE-ID-HERE' => 3,
+            'ROLE-ID-HERE' => 4
+        ],
+        'SERVER-ID-HERE' => [
+            'ROLE-ID-HERE' => 1,
+            'ROLE-ID-HERE' => 2,
+            'ROLE-ID-HERE' => 3
+        ]
+    ]
+];
+$noFacebookLogin = true;
+$facebookAppId = '';                            // Facebook App ID
+$facebookAppSecret = '';                        // Facebook App Secret
+$facebookAppRedirectUri = 'https://Yourdomain.com/login?callback=facebook'; // Callback url make sure this is the same as set in Facebook app config
+$facebookAccessLevel = '1';                     // Accesslevel used in access-config.php
 
 $userBlacklist = [''];                                              // Array of user ID's that are always blocked from accessing the map
 $userWhitelist = [''];                                              // Array of user ID's that's allowed to bypass the server blacklist
-$serverWhitelist = [''];                                            // Array of server ID's. Your users will need to be in at least one of them
 $serverBlacklist = [''];                                            // Array of server ID's. A user that's a member of any of these and not in your user whitelist will be blocked
 $logFailedLogin = 'logs/failed_login.log';                          // File location of where to store a log file of blocked users
 
 /* Native Auth */
 $noNativeLogin = true;                                              // This will enable the built in login system.
 $domainName = '';                                                   // If this is empty, reset-password emails will use the domain name taken from the URL.
-
-$noSelly = true;                                                    // Enable/Disable Selly Payment system. (WIP, USE AT OWN RISK!)
-$logfile = 'logs/members.log';                                      // Path to log file. Make sure this works as it will be your life saver if your db crashes.
-$daysMembershipPerQuantity = 31;                                    // How many days membership one selly quantity will give.
-$sellyPage = '';                                                    // Link to selly purchase page for membership renewal.
-$sellyWebhookSecret = '';                                           // Add a secret key at https://selly.gg/settings to make sure the payment webhook is sent from selly to prevent fake payments.
-                                                                    // Add the same key to the $sellyWebhookSecret variable.
-$adminUsers = ['admin@example.com', 'admin2@example.com'];          // You can add multiple admins by adding them to the array.
 //-----------------------------------------------------
 // FRONTEND SETTINGS
 //-----------------------------------------------------
+$noDarkMode = false;
 
 /* Marker Settings */
 $noExcludeMinIV = false;
 $noMinIV = false;
 $noMinLevel = false;
 $noHighLevelData = false;
+$noCatchRates = false;
 $noRarityDisplay = false;
 $noWeatherIcons = true;
 $no100IvShadow = false;
@@ -181,28 +223,53 @@ $excludeMinIV = '[131, 143, 147, 148, 149, 248]';                   // [] for em
 $minIV = '0';                                                       // "0" for empty or a number
 $minLevel = '0';                                                    // "0" for empty or a number
 
-$noBigKarp = false;                                                 // BUGGED: Hides ALL Magikarp && the menu setting.
-$noBigKarpSetting = false;
-$noTinyRat = false;                                                 // BUGGED: Hides ALL Rattata && the menu setting.
-$noTinyRatSetting = false;
+$noBigKarp = false;
+$noTinyRat = false;
 
+/* Gyms */
 $noGyms = false;
 $enableGyms = 'false';
+
 $hideGymCoords = false;
+
 $noExEligible = false;
 $exEligible = 'false';
 
+$noTeams = false;
+$noOpenSpot = false;
+$noMinMaxFreeSlots = false;
+$noLastScan = false;
+
+/* Raids */
 $noRaids = false;
 $enableRaids = 'false';
+
+$noActiveRaids = true;
 $activeRaids = 'false';
+
+$noMinMaxRaidLevel = true;
 $minRaidLevel = 1;
 $maxRaidLevel = 5;
+
 $noRaidTimer = false;
 $enableRaidTimer = 'false';
 
+$noRaidbossNumbers = false;
+$hideRaidboss = '[]';
+$excludeRaidboss = [];
+$generateExcludeRaidboss = true;
+
+$noRaideggNumbers = false;
+$hideRaidegg = '[]';
+$excludeRaidegg = [];
+
+/* Pokestops */
 $noPokestops = false;
 $enablePokestops = 'false';
 $hidePokestopCoords = false;
+
+$noAllPokestops = false;
+$enableAllPokestops = 'false';
 
 $noLures = false;
 $enableLured = 'false';
@@ -212,6 +279,11 @@ $enableTeamRocket = 'false';
 $noTeamRocketTimer = false;
 $enableTeamRocketTimer = 'false';
 $noTeamRocketEncounterData = true; // Show/Hide possible rewards. Requires grunttype.json to be up to date.
+$noGrunts = false;
+$noGruntNumbers = false;
+$hideGrunts = '[]';
+$excludeGrunts = [];
+$generateExcludeGrunts = true;
 
 $noQuests = false;
 $enableQuests = 'false';
@@ -219,11 +291,12 @@ $noQuestsItems = false;
 $noQuestsPokemon = false;
 $hideQuestsPokemon = '[]';  					                    // Pokemon ids will default be hidden in the menu every user is able to change this personaly
 $generateExcludeQuestsPokemon = true;                               // Generate $excludeQuestsPokemon based on active quests in database
+$generateExcludeQuestsItem = true;
 $excludeQuestsPokemon = [];					                        // All Pokémon in this array will not be shown in the filter.
 $hideQuestsItem = '[4, 5, 301, 401, 402, 403, 404, 501, 602, 603, 604, 702, 704, 707, 801, 901, 902, 903, 1001, 1002, 1401, 1402, 1402, 1403, 1404, 1405]';    // Item ids "See protos https://github.com/Furtif/POGOProtos/blob/master/src/POGOProtos/Inventory/Item/ItemId.proto"
 $excludeQuestsItem = [4, 5, 301, 401, 402, 403, 404, 501, 602, 603, 604, 702, 704, 707, 801, 901, 902, 903, 1001, 1002, 1401, 1402, 1402, 1403, 1404, 1405];   // All excluded item wil not be shown in the filter.
 $noItemNumbers = false;
-
+$defaultDustAmount = 500;
 // Manual quest hide options
 $hideQuestTypes = [0, 1, 2, 3, 12, 18, 19, 22, 24, 25];
 $hideRewardTypes = [0, 1, 4, 5, 6];
@@ -241,6 +314,13 @@ $enableRanges = 'false';
 $noScanPolygon = true;
 $enableScanPolygon = 'false';
 $geoJSONfile = 'custom/scannerarea.json';			                // path to geoJSON file create your own on http://geojson.io/ adjust filename
+
+$noLiveScanLocation = true;                                         // Show scan devices on the map
+$enableLiveScan = 'false';
+$hideDeviceAfterMinutes = 0;                                        // Hide scan devices from map after x amount of minutes not being updated in database. 0 to disable.
+$deviceOfflineAfterSeconds = 300;                                   // Mark scan devices offline (red color) after x amount of seconds not being updated in database.
+
+$hideDeleted = true;                                                // Hide deleted Pokestop / Gyms from map
 /* Location & Search Settings */
 
 $noSearchLocation = false;
@@ -267,7 +347,7 @@ $notifyIv = '""';                                                   // "" for em
 
 $notifyLevel = '""';                                                // "" for empty or a number
 
-$notifyRaid = 5;                                                    // 1,2,3,4 or 5, 0 to disable
+$notifyRaid = 6;                                                    // 1,2,3,4 or 5, 0 to disable
 
 $notifySound = 'false';
 
@@ -291,7 +371,7 @@ $iconRepos = [["Standard","$iconRepository"],                                   
               ["Another Iconpack","https://AnotherURL.com/some/other/subfolders/"]]; // You May add different iconPacks here so mapusers can switch between them
 
 $noMapStyle = false;
-$mapStyle = 'openstreetmap';                                        // openstreetmap, darkmatter, styleblackandwhite, styletopo, stylesatellite, stylewikipedia
+$mapStyle = 'openstreetmap';                                        // openstreetmap, darkmatter, styleblackandwhite, styletopo, stylesatellite
 
 $noDirectionProvider = false;
 $directionProvider = 'google';                                      // google, waze, apple, bing, google_pin
@@ -323,11 +403,12 @@ $hideIfManual = false;
 $noManualRaids = true;						 			                                // Enable/Disable ManualRaids permanently ( Comment this line if you want to use the block below )
 $noDiscordSubmitLogChannel = true;                                  			        // Send webhooks to discord channel upon submission
 $submitMapUrl = '';
-$discordSubmitLogChannelUrl = 'https://discordapp.com/api/webhooks/<yourCHANNELhere>';  // Sends gym/pokestop submit & pokestop rename directly to discord
-
+$discordSubmitLogChannelUrl = 'https://discordapp.com/api/webhooks/<yourCHANNELhere>';  // Sends gym/pokestop submit & pokestop rename directly to discord can also be an array ['URL', 'URL'] or as many as you like.
+$discordPOISubmitLogChannelUrl = 'https://discordapp.com/api/webhooks/<yourCHANNELhere>';  // Sends gym/pokestop submit & pokestop rename directly to discord can also be an array ['URL', 'URL'] or as many as you like.
 $noManualPokemon = true;
 $pokemonTimer = 900;                                                                    // Time in seconds before a submitted Pokémon despawns. (not used atm)
 $noManualGyms = true;
+$noRenameGyms = true;
 $noManualPokestops = true;
 $noRenamePokestops = true;
 $noConvertPokestops = true;
@@ -341,13 +422,26 @@ $enableNewPortals = 0;                             // O: all, 1: new portals onl
 $noPortals = true;
 $noDeletePortal = true;
 $noConvertPortal = true;
+$markPortalsAsNew = 86400;                         // Time in seconds to mark new imported portals as new ( 86400 for 1 day )
+//-----------------------------------------------------
+// s2 cells
+//-----------------------------------------------------
 $noS2Cells = true;
 $enableS2Cells = 'false';
 $enableLevel13Cells = 'false';
 $enableLevel14Cells = 'false';
 $enableLevel17Cells = 'false';
-$markPortalsAsNew = 86400;                         // Time in seconds to mark new imported portals as new ( 86400 for 1 day )
-$noPoi = true;					                   // Allow users to view POI markers 
+
+$s2Colors = [
+    'red',          // pokestop placement cell with a marker
+    'green',        // 1 more until new gym
+    'orange',       // 2 more until new gym
+    'black'         // Max amount of gyms reached
+];
+//-----------------------------------------------------
+// POI
+//-----------------------------------------------------
+$noPoi = true;					                   // Allow users to view POI markers
 $noAddPoi = true;				                   // Allow to add POI markers (locations eligible for submitting Pokestops/Ingress portals)
 $enablePoi = 'false';
 $noDeletePoi = true;
@@ -408,7 +502,11 @@ $noEditCommunity = true;
 // Nests
 //-----------------------------------------------------
 $noNests = true;
+$noNestsAvg = true;                                                   // true/false
+$nestAvgMax = 50;						      // Nest Average filter maximum
+$nestAvgDefault = 5;                                                  // Nest Average filter default
 $enableNests = 'false';
+$hideNestCoords = false;
 $noManualNests = true;
 $noDeleteNests = true;
 $deleteNestsOlderThan = 42;					                       // days after not updated nests are removed from database by nest cron
@@ -419,20 +517,7 @@ $excludeNestMons = [2,3,5,6,8,9,11,12,14,15,17,18,20,22,24,26,28,29,30,31,32,33,
 $noNestPolygon = true;
 $enableNestPolygon = 'false';
 $nestGeoJSONfile = 'custom/nest.json';			    // path to geoJSON file provided by https://github.com/M4d40/PMSFnestScript
-//-----------------------------------------------
-// HPWU
-//-----------------------------------------------------
-$noInn = true;               // Enable/Disable the option to see inns 
-$enableInn = 'false';        // Enable/Disable inns by default. A user can edit this.
-$noDeleteInn = true;         // Enable/Disable option do delete a inn
 
-$noFortress = true;          // Enable/Disable the option to see fortresses
-$enableFortress = 'false';   // Enable/Disable fortresses by default. A user can edit this
-$noDeleteFortress = true;    // Enable/Disable option do delete a fortress
-
-$noGreenhouse = true;        // Enable/Disable the option to see greenhouses
-$enableGreenhouse = 'false'; // Enable/Disable greenhouses by default. A user can edit this
-$noDeleteGreenhouse = true;  // Enable/Disable option do delete a greenhouse
 //-----------------------------------------------------
 // Areas
 //-----------------------------------------------------
@@ -442,6 +527,7 @@ $areas = [];      // [[latitude,longitude,zoom,"name"],[latitude,longitude,zoom,
 //-----------------------------------------------------
 // Weather Config
 //-----------------------------------------------------
+$noHeaderWeatherIcon = true;
 $noWeatherOverlay = true;
 $enableWeatherOverlay = 'false';
 
@@ -456,6 +542,14 @@ $weatherColors = [
     'black'         // fog
 ];
 
+
+//-----------------------------------------------------
+// Holiday Overlay
+//-----------------------------------------------------
+$letItSnow = true;                                                   // Show snow overlay at 24, 25 and 26 December
+$makeItBang = true;                                                  // Show fireworks overlay at 31 December and 1 January
+$showYourLove = true;                                                // Show valentine overlay at 14 februari
+
 //-----------------------------------------------------
 // DEBUGGING
 //-----------------------------------------------------
@@ -465,35 +559,27 @@ $enableDebug = false;
 //-----------------------------------------------------
 // DATABASE CONFIG
 //-----------------------------------------------------
-$map = "rdm";                                                       // {monocle}/{rdm}/{rocketmap}
-$fork = "default";                                                  // {default/alternate}/{default/beta}/{mad}
-$queryInterval = '2500';                                            // Interval between raw_data requests. Try to lower to increase performance.
+$map = "rdm";                                                       // rdm / rocketmap
+$fork = "default";                                                  // beta / mad
+$queryInterval = '2500';                                            // Interval between raw_data requests.
 
-$db = new Medoo([// required
-    'database_type' => 'mysql',                                    
-    'database_name' => 'Monocle',
+$db = new Medoo([
+    'database_type' => 'mysql',
+    'database_name' => 'scannerdb',
     'server' => '127.0.0.1',
     'username' => 'database_user',
     'password' => 'database_password',
-    'charset' => 'utf8',
-
-    // [optional]
-    //'port' => 5432,                                               // Comment out if not needed, just add // in front!
-    //'socket' => /path/to/socket/,
+    'charset' => 'utf8'
 ]);
 
-//$manualdb = new Medoo([// required
+//$manualdb = new Medoo([
 //    'database_type' => 'mysql',
-//    'database_name' => 'Monocle',
+//    'database_name' => 'manualdb',
 //    'server' => '127.0.0.1',
 //    'username' => 'database_user',
 //    'password' => 'database_password',
-//    'charset' => 'utf8mb4',
-
-    // [optional]
-    //'port' => 5432,                                               // Comment out if not needed, just add // in front!
-    //'socket' => /path/to/socket/,
-//]);                                                               // Dont forget to uncomment this line to use $manualdb :)
+//    'charset' => 'utf8mb4'
+//]);
 
 // DONT EDIT THE CODE BELOW
 if (($noNativeLogin === false || $noDiscordLogin === false) && !empty($_SESSION['user']->user)) {
