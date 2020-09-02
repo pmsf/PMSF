@@ -1886,6 +1886,7 @@ function pokestopLabel(item) {
         } else if (item['quest_reward_type'] === 12) {
             str += '<div>' +
             i8ln('Reward') + ': <b>' +
+            item['quest_energy_amount'] + ' ' + item['quest_energy_pokemon_name'] + ' ' +
             i8ln('Mega energy') +
             '</b></div>'
         }
