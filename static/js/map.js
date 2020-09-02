@@ -5294,7 +5294,15 @@ function processPokestops(i, item, lastMidnight) {
 }
 
 function pokestopMeetsQuestFilter(pokestop, lastMidnight) {
-    if (pokestop['quest_type'] === 0 || lastMidnight > Number(pokestop['quest_timestamp']) || ((pokestop['quest_pokemon_id'] > 0 && questsExcludedPokemon.indexOf(pokestop['quest_pokemon_id']) > -1) || (pokestop['quest_item_id'] > 0 && questsExcludedItem.indexOf(pokestop['quest_item_id']) > -1) || ((pokestop['quest_reward_type'] === 3 && (Number(pokestop['quest_dust_amount']) < Number(Store.get('showDustAmount')))) || (pokestop['quest_reward_type'] === 3 && Store.get('showDustAmount') === 0)))) {
+    if (pokestop['quest_type'] === 0 || lastMidnight > Number(pokestop['quest_timestamp'])) {
+        return false
+    } else if (pokestop['quest_reward_type'] === 7 && pokestop['quest_pokemon_id'] > 0 && questsExcludedPokemon.indexOf(pokestop['quest_pokemon_id']) > -1) {
+        return false
+    } else if (pokestop['quest_reward_type'] === 2 && pokestop['quest_item_id'] > 0 && questsExcludedItem.indexOf(pokestop['quest_item_id']) > -1) {
+        return false
+    } else if (pokestop['quest_reward_type'] === 3 && Number(pokestop['quest_dust_amount']) < Number(Store.get('showDustAmount'))) {
+        return false
+    } else if (pokestop['quest_reward_type'] === 3 && Store.get('showDustAmount') === 0) {
         return false
     } else {
         return true
