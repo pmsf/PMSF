@@ -713,7 +713,7 @@ class RocketMap_MAD extends RocketMap
         global $db, $userTimezone;
         $curdate = new \DateTime(null, new \DateTimeZone($userTimezone) );
         if ($type === 'pokemonlist') {
-            $pokestops = $db->query("SELECT distinct quest_pokemon_id FROM trs_quest WHERE quest_pokemon_id > 0 AND DATE(FROM_UNIXTIME(quest_timestamp)) = '" . $curdate->format('Y-m-d') . "' order by quest_pokemon_id;")->fetchAll(\PDO::FETCH_ASSOC);
+            $pokestops = $db->query("SELECT distinct quest_pokemon_id FROM trs_quest WHERE quest_pokemon_id > 0 AND DATE(FROM_UNIXTIME(quest_timestamp)) = '" . $curdate->format('Y-m-d') . "' AND quest_reward_type = 7 order by quest_pokemon_id;")->fetchAll(\PDO::FETCH_ASSOC);
             $data = array();
             foreach ($pokestops as $pokestop) {
                 $data[] = $pokestop['quest_pokemon_id'];
