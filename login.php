@@ -391,7 +391,7 @@ if (!empty($_POST['refresh'])) {
     if ($_POST['refresh'] == 'native') {
         $dbUser = $manualdb->get('users', ['id','session_id', 'access_level'],['id' => $_SESSION['user']->id]);
         if ($_SESSION['user']->access_level != $dbUser['access_level']) {
-            $answer = 'reload'
+            $answer = 'reload';
         }
     }
     $answer = json_encode($answer);
