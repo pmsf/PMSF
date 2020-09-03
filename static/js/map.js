@@ -3348,6 +3348,9 @@ function loadRawData() {
                     toastr.options = toastrOptions
                     setTimeout(window.location.href = './login?action=login&error=no-id', 5000)
                     break
+                case 413:
+                    toastr['error'](i8ln('This is too much data for me please zoom in.'), i8ln('You got me overwhelmed'))
+                    toastr.options = toastrOptions
             }
         },
         complete: function complete() {
