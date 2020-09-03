@@ -156,6 +156,7 @@ $userTimezone = date_default_timezone_get();
 //-----------------------------------------------------
 $monologPath = 'php://stdout';
 $forcedLogin = false;
+$allowMultiLogin = false;                                           // Allow users to login with multiple devices simulteously.
 $noNativeLogin = true;                                              // true/false - This will enable the built in login system.
 $domainName = '';                                                   // If this is empty, reset-password emails will use the domain name taken from the URL.
 

@@ -37,10 +37,13 @@ function setSessionCsrfToken()
 
 function refreshCsrfToken()
 {
-    global $sessionLifetime;
+    global $sessionLifetime, $manualdb;
     if (time() - $_SESSION['c'] > $sessionLifetime) {
         session_regenerate_id(true);
         generateToken();
+	if (!empty($_SESSION['user']->id)) {
+            $manualdb->update('users', ['session_token' => $_SESSION['token']], ['id' => $_SESSION['user']->id]);
+	}
     }
     return $_SESSION['token'];
 }
@@ -53,11 +56,28 @@ function generateToken()
 
 function validateToken($token)
 {
-    global $enableCsrf;
+    global $enableCsrf, $manualdb, $allowMultiLogin, $forcedLogin;
     if ((!$enableCsrf) || ($enableCsrf && isset($token) && $token === $_SESSION['token'])) {
-        return true;
+        if (!empty($_SESSION['user']->id)) {
+            $user = $manualdb->get('users', ['id', 'session_token'], ['id' => $_SESSION['user']->id]);
+            if ($user['session_token'] == $_SESSION['token'] || $allowMultiLogin) {
+                $validity = 'valid';
+            } else {
+                $validity = 'invalid';
+                unset($_SESSION);
+                unset($_COOKIE['LoginCookie']);
+                unset($_COOKIE['LoginEngine']);
+                setcookie("LoginCookie", "", time() - 3600);
+                setcookie("LoginEngine", "", time() - 3600);
+                session_destroy();
+                session_write_close();
+           }
+	} else if ($forcedLogin) {
+            $validity = 'no-id';
+        }
+        return $validity;
     } else {
-        return false;
+        return 'invalid';
     }
 }
 

@@ -65,27 +65,26 @@ $timestamp = !empty($_POST['timestamp']) ? $_POST['timestamp'] : 0;
 
 $useragent = isset($_SERVER['HTTP_USER_AGENT']) ? $_SERVER['HTTP_USER_AGENT'] : '';
 if (empty($swLat) || empty($swLng) || empty($neLat) || empty($neLng) || preg_match("/curl|libcurl/", $useragent)) {
-    http_response_code(400);
+    http_response_code(403);
     die();
 }
 if ($maxLatLng > 0 && ((($neLat - $swLat) > $maxLatLng) || (($neLng - $swLng) > $maxLatLng))) {
-    http_response_code(400);
+    http_response_code(413);
     die();
 }
-
-if (!validateToken($_POST['token'])) {
-    http_response_code(400);
-    die();
-}
-
-if ((! $noDiscordLogin || ! $noNativeLogin) && !empty($_SESSION['user']->id)) {
-    $info = $manualdb->query("SELECT session_id FROM users WHERE id = :id", [":id" => $_SESSION['user']->id])->fetch();
-    if (empty($_COOKIE["LoginCookie"]) || $info['session_id'] !== $_COOKIE["LoginCookie"]) {
-        http_response_code(400);
-        die();
+$validity = validateToken($_POST['token']);
+if (!empty($validity)) {
+    switch ($validity) {
+        case 'invalid':
+            http_response_code(401);
+            break;
+        case 'no-id':
+            http_response_code(404);
+            break;
     }
-    $debug['0_after_auth'] = microtime(true) - $timing['start'];
 }
+
+$debug['0_after_auth'] = microtime(true) - $timing['start'];
 
 // init map
 if (strtolower($map) === "monocle") {
