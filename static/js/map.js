@@ -3325,9 +3325,9 @@ function loadRawData() {
                 rawDataIsLoading = true
             }
         },
-        error: function(xhr) {
+        error: function (xhr) {
             // Display error toast
-            switch(xhr.status) {
+            switch (xhr.status) {
                 case 400:
                     toastr['error'](i8ln('Please check connectivity or reduce marker settings.'), i8ln('Not Acceptable'))
                     toastr.options = toastrOptions
