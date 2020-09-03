@@ -7,6 +7,16 @@ if (isset($_GET['action'])) {
         header('Location: .');
         die();
     }
+    if ($_GET['action'] == 'facebook-logout') {
+        destroyCookiesAndSessions();
+        header('Location: .');
+        die();
+    }
+    if ($_GET['action'] == 'native-logout') {
+        destroyCookiesAndSessions();
+        header('Location: .');
+        die();
+    }
 }
 destroyCookiesAndSessions();
 header('Location: .');
