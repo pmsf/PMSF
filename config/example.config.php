@@ -121,6 +121,7 @@ $motdContent = "This is an example MOTD<br>Do whatever you like with it.";
 
 /* Favicon */
 $faviconPath = '';                                                  // Upload favicon.ico to custom folder, leave '' for empty ( $faviconPath = 'custom/favicon.ico'; )
+$appIconPath = 'static/appicons/';
 
 /* IMGBB API */
 $imgurCID = "";
@@ -356,7 +357,7 @@ $notifyIv = '""';                                                   // "" for em
 
 $notifyLevel = '""';                                                // "" for empty or a number
 
-$notifyRaid = 5;                                                    // 1,2,3,4 or 5, 0 to disable
+$notifyRaid = 6;                                                    // 1,2,3,4 or 5, 0 to disable
 
 $notifySound = 'false';
 

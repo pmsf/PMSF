@@ -40,7 +40,7 @@ if (isset($_GET['action'])) {
             if ($faviconPath != "") {
                 echo '<link rel="shortcut icon" href="' . $faviconPath . '" type="image/x-icon">';
             } else {
-                echo '<link rel="shortcut icon" href="static/appicons/favicon.ico" type="image/x-icon">';
+                echo '<link rel="shortcut icon" href="' . $appIconPath . 'favicon.ico" type="image/x-icon">';
             }
             $html .= '<link rel="stylesheet" href="static/dist/css/app.min.css">
         </head>
@@ -501,6 +501,12 @@ if (!empty($_POST['refresh'])) {
                 ]);
                 $answer = 'reload';
             }
+        }
+    }
+    if ($_POST['refresh'] == 'native') {
+        $dbUser = $manualdb->get('users', ['id','session_id', 'access_level'],['id' => $_SESSION['user']->id]);
+        if ($_SESSION['user']->access_level != $dbUser['access_level']) {
+            $answer = 'reload';
         }
     }
     $answer = json_encode($answer);

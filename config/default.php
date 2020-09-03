@@ -95,6 +95,10 @@ $noCustomTileServer = true;                                         // Enable/Di
 $customTileServerAddress = "";                                      // TileServer URL: http://ipAddress:port/tile/klokantech-basic/{z}/{x}/{y}/1/png
 $forcedTileServer = false;
 
+/* Favicon */
+$faviconPath = '';                                                  // Upload favicon.ico to custom folder, leave '' for empty ( $faviconPath = 'custom/favicon.ico'; )
+$appIconPath = 'static/appicons/';
+
 /* Custom Overlay */
 $letItSnow = true;                                                   // Show snow overlay at 24, 25 and 26 December
 $makeItBang = true;                                                  // Show fireworks overlay at 31 December and 1 January
@@ -143,7 +147,7 @@ $imgurCID = "";
 $numberOfPokemon = 649;
 $numberOfItem = 1600;
 $numberOfGrunt = 50;
-$numberOfEgg = 10;
+$numberOfEgg = 12;
 
 /* UserTimezone */
 $userTimezone = date_default_timezone_get();
@@ -223,11 +227,10 @@ $noPokemon = false;                                                 // true/fals
 $enablePokemon = 'true';                                            // true/false
 $noPokemonNumbers = false;                                          // true/false
 $noHidePokemon = false;                                             // true/false
-$hidePokemon = '[10, 13, 16, 19, 21, 29, 32, 41, 46, 48, 50, 52, 56, 74, 77, 96, 111, 133,
-                  161, 163, 167, 177, 183, 191, 194, 168]';         // [] for empty
+$hidePokemon = '[]';                                                // [] for empty
 $hidePokemonCoords = false;                                         // true/false
 
-$excludeMinIV = '[131, 143, 147, 148, 149, 248]';                   // [] for empty
+$excludeMinIV = '[]';                                               // [] for empty
 
 $minIV = '0';                                                       // "0" for empty or a number
 $minLevel = '0';                                                    // "0" for empty or a number
@@ -251,7 +254,7 @@ $noActiveRaids = true;
 $activeRaids = 'false';                                             // true/false
 $noMinMaxRaidLevel = true;
 $minRaidLevel = 1;
-$maxRaidLevel = 5;
+$maxRaidLevel = 6;
 $noRaidTimer = false;                                               // true/false
 $enableRaidTimer = 'false';                                         // true/false
 $noRaidbossNumbers = false;
@@ -336,7 +339,7 @@ $enableSpawnArea = 'false';                                         // true/fals
 
 /* Notification Settings */
 
-$notifyPokemon = '[]';                                           // [] for empty
+$notifyPokemon = '[]';                                              // [] for empty
 $notifyRarity = '[]';                                               // "Common", "Uncommon", "Rare", "Very Rare", "Ultra Rare"
 $notifyIv = '""';                                                   // "" for empty or a number
 $notifyLevel = '""';                                                // "" for empty or a number
@@ -395,7 +398,7 @@ $noManualQuests = true;
 // Ingress portals
 //-----------------------------------------------------
 $enablePortals = 'false';
-$enableNewPortals = 0;                                                   // O: all, 1: new portals only
+$enableNewPortals = 0;                                             // O: all, 1: new portals only
 $noPortals = true;
 $noDeletePortal = true;
 $noConvertPortal = true;
