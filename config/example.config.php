@@ -175,6 +175,7 @@ $facebookAccessLevel = '1';                     // Accesslevel used in access-co
 
 $noPatreonLogin = false;
 $patreonClientId = '';
+$patreonClientSecret = '';
 $patreonCreatorAccessToken = '';
 $patreonCallbackUri = 'https://Yourdomain.com/login?callback=patreon';
 $patreonTiers = [						    // Tier ids can be obtained by clicking the join tier button on patreon and the URL will show you checkout?rid=<NUMBER>

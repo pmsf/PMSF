@@ -6,8 +6,6 @@ use Monolog\Logger;
 use Monolog\Handler\StreamHandler;
 use Monolog\Handler\FirePHPHandler;
 use RestCord\DiscordClient;
-use Patreon\API;
-use Patreon\OAuth;
 
 switch ($discordLogLevel) {
 case "NOTICE":
@@ -252,7 +250,7 @@ if (isset($_GET['callback'])) {
                     die();
                 }
 
-                $accessRole = checkAccessLevel($user->id, $guilds);
+                $accessRole = checkAccessLevelDiscord($user->id, $guilds);
 
                 $format = '.png';
                 if (strpos($user->avatar, 'a_') === 0) {
@@ -418,10 +416,9 @@ if (isset($_GET['callback'])) {
 
         $response = json_decode(curl_exec($token));
         curl_close($token);
-        $api_client = new API($response->access_token);
-        $patreon_user = $api_client->fetch_user();
 
         $identity = patreon_call($response->access_token, '/api/oauth2/v2/identity?include=memberships,campaign&fields%5Buser%5D=about,created,email,first_name,full_name,image_url,last_name,social_connections,thumb_url,url,vanity');
+
         $identity = json_decode($identity, true);
         $linked_discord = (!empty($identity['data']['attributes']['social_connections']['discord'])) ? $identity['data']['attributes']['social_connections']['discord']['user_id'] : null;
         if ($linked_discord && $manualdb->has('users', ['id' => $linked_discord, 'login_system' => 'discord'])) {
@@ -429,22 +426,16 @@ if (isset($_GET['callback'])) {
                 'session_token' => null,
                 'session_id' => null,
                 'expire_timestamp' => time() - 86400,
-                'linked_account' => $identity['data']['id']
+                'linked_account' => $identity['data']['relationships']['memberships']['data']['0']['id']
             ], [
                 'id' => $linked_discord,
                 'login_system' => 'discord'
             ]);
         }
-	$member = patreon_call($response->access_token, '/api/oauth2/v2/members/' . $patreon_user['data']['relationships']['memberships']['data']['0']['id'] . '?include=currently_entitled_tiers,user&fields%5Bmember%5D=full_name,patron_status&fields%5Btier%5D=title&fields%5Buser%5D=full_name,hide_pledges');
 
-        $member = json_decode($member, true);
-        $accessLevel = null;
-        if ($member['data']['attributes']['patron_status'] == 'active_patron') {
-            if (!empty($member['data']['relationships']['currently_entitled_tiers']['data'])) {
-                $accessLevel = $patreonTiers[$member['data']['relationships']['currently_entitled_tiers']['data'][0]['id']];
-            }
-        }
-        if ($manualdb->has('users', ['id' => $patreon_user['data']['id'], 'login_system' => 'patreon'])) {
+        $accessLevel = checkAccessLevelPatreon($response->access_token, $identity['data']['relationships']['memberships']['data']['0']['id']);
+
+        if ($manualdb->has('users', ['id' => $identity['data']['relationships']['memberships']['data']['0']['id'], 'login_system' => 'patreon'])) {
             $manualdb->update('users', [
                 'session_token' => $_SESSION['token'],
                 'session_id' => $response->access_token,
@@ -454,14 +445,14 @@ if (isset($_GET['callback'])) {
                 'avatar' => $identity['data']['attributes']['image_url'],
                 'linked_account' => $linked_discord
             ], [
-                'id' => $identity['data']['id'],
+                'id' => $identity['data']['relationships']['memberships']['data']['0']['id'],
                 'login_system' => 'patreon'
             ]);
         } else {
             $manualdb->insert('users', [
                 'session_token' => $_SESSION['token'],
                 'session_id' => $response->access_token,
-                'id' => $identity['data']['id'],
+                'id' => $identity['data']['relationships']['memberships']['data']['0']['id'],
                 'user' => strval($identity['data']['attributes']['full_name']),
                 'access_level' => $accessLevel,
                 'avatar' => $identity['data']['attributes']['image_url'],
@@ -483,7 +474,7 @@ if (!empty($_POST['refresh'])) {
         if (empty($dbUser)) {
             $answer = 'false';
         } else {
-            $accessLevel = checkAccessLevel($dbUser['id'], json_decode($dbUser['discord_guilds']));
+            $accessLevel = checkAccessLevelDiscord($dbUser['id'], json_decode($dbUser['discord_guilds']));
             if ($accessLevel == $dbUser['access_level']) {
                 $answer = 'true';
             } elseif (!empty($accessLevel)) {
@@ -507,6 +498,31 @@ if (!empty($_POST['refresh'])) {
         $dbUser = $manualdb->get('users', ['id','session_id', 'access_level'],['id' => $_SESSION['user']->id]);
         if ($_SESSION['user']->access_level != $dbUser['access_level']) {
             $answer = 'reload';
+        }
+    }
+    if ($_POST['refresh'] == 'patreon') {
+        $dbUser = $manualdb->get('users', ['id','session_id', 'access_level'],['id' => $_SESSION['user']->id]);
+        if (empty($dbUser)) {
+            $answer = 'false';
+        } else {
+            $accessLevel = checkAccessLevelPatreon($dbUser['session_id'], $dbUser['id']);
+            if ($accessLevel == $dbUser['access_level']) {
+                $answer = 'true';
+            } elseif (!empty($accessLevel)) {
+                $manualdb->update('users', [
+                    'access_level' => $accessLevel
+                ], [
+                    'id' => $dbUser['id']
+                ]);
+                $answer = 'reload';
+            } else {
+                $manualdb->update('users', [
+                    'access_level' => null
+                ], [
+                    'id' => $dbUser['id']
+                ]);
+                $answer = 'reload';
+            }
         }
     }
     $answer = json_encode($answer);
@@ -534,7 +550,7 @@ function logFailure($logFailure) {
     global $logFailedLogin;
     file_put_contents($logFailedLogin, $logFailure, FILE_APPEND);
 }
-function checkAccessLevel ($userId, $guilds) {
+function checkAccessLevelDiscord ($userId, $guilds) {
     global $guildRoles, $discord;
     $accessRole = '';
     foreach ($guildRoles['guildIDS'] as $guild => $guildRoles) {
@@ -556,6 +572,19 @@ function checkAccessLevel ($userId, $guilds) {
 	}
     }
     return $accessRole;
+}
+function checkAccessLevelPatreon ($accessToken, $userId) {
+    global $patreonTiers;
+    $member = patreon_call($accessToken, '/api/oauth2/v2/members/' . $userId . '?include=currently_entitled_tiers,user&fields%5Bmember%5D=full_name,patron_status&fields%5Btier%5D=title&fields%5Buser%5D=full_name,hide_pledges');
+
+    $member = json_decode($member, true);
+    $accessLevel = null;
+    if ($member['data']['attributes']['patron_status'] == 'active_patron') {
+        if (!empty($member['data']['relationships']['currently_entitled_tiers']['data'])) {
+            $accessLevel = $patreonTiers[$member['data']['relationships']['currently_entitled_tiers']['data'][0]['id']];
+        }
+    }
+    return $accessLevel;
 }
 function parse_signed_request($signed_request) {
     global $facebookAppSecret;
