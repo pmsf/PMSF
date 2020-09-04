@@ -363,6 +363,11 @@ if (!$noLoadingScreen) {
                  <i class="fab fa-discord" title="' . i8ln('Discord') . '" style="position:relative;vertical-align:middle;color:white;margin-left:10px;font-size:20px;"></i>
                  </a>';
         }
+        if ($patreonUrl != "") {
+            echo '<a href="' . $patreonUrl . '" target="_blank" style="float:right;padding:0 5px;">
+                 <i class="fab fa-patreon" title="' . i8ln('Patreon') . '" style="position:relative;vertical-align:middle;color:white;margin-left:10px;font-size:20px;"></i>
+                 </a>';
+        }
         if ($customUrl != "") {
             echo '<a href="' . $customUrl . '" target="_blank" style="float:right;padding:0 5px;">
                  <i class="' . $customUrlFontIcon . '" style="position:relative;vertical-align:middle;color:white;margin-left:10px;font-size:20px;"></i>

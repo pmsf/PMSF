@@ -72,6 +72,9 @@ if (isset($_GET['action'])) {
                             case 'failed-token':
                                 $html .= "<div id='login-error'>" . i8ln('Something went wrong while verifying external login') . "</div>";
                                 break;
+                            case 'no-member-patreon':
+                                $html .= "<div id='login-error'>" . i8ln('It seems you haven\'t pledged to our patreon. Therefore access has been denied.') . " <a href='" . $patreonUrl . "'>" . i8ln('Pledge at Patreon to gain access.') . "</a></div>";
+                                break;
                         }
                     }
                     $html .= '<div class="imgcontainer">
@@ -434,7 +437,10 @@ if (isset($_GET['callback'])) {
         }
 
         $accessLevel = checkAccessLevelPatreon($response->access_token, $identity['data']['relationships']['memberships']['data']['0']['id']);
-
+        if (empty($accessLevel) && $patreonTierRequired) {
+            header("Location: ./login?action=login&error=no-member-patreon");
+            die();
+        }
         if ($manualdb->has('users', ['id' => $identity['data']['relationships']['memberships']['data']['0']['id'], 'login_system' => 'patreon'])) {
             $manualdb->update('users', [
                 'session_token' => $_SESSION['token'],
