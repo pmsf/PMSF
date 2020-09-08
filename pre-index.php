@@ -732,19 +732,19 @@ if (!$noLoadingScreen) {
                                 <?php
                                 if (! $noQuestsPokemon) {
                                     ?>
-                                    <li><a href="#tabs-1"><?php echo i8ln('Hide Pokémon') ?></a></li>
+                                    <li><a href="#tabs-1"><?php echo i8ln('Pokémon') ?></a></li>
                                     <?php
                                 } ?>
                                 <?php
                                 if (! $noQuestsItems) {
                                     ?>
-                                    <li><a href="#tabs-2"><?php echo i8ln('Hide Items') ?></a></li>
+                                    <li><a href="#tabs-2"><?php echo i8ln('Items') ?></a></li>
                                     <?php
                                 } ?>
                                 <?php
                                 if (! $noQuestsEnergy) {
                                     ?>
-                                    <li><a href="#tabs-3"><?php echo i8ln('Hide Energy') ?></a></li>
+                                    <li><a href="#tabs-3"><?php echo i8ln('Energy') ?></a></li>
                                     <?php
                                 } ?>
                             </ul>
