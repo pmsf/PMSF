@@ -42,7 +42,7 @@ class RocketMap_MAD extends Submit
             http_response_code(401);
             die();
         }
-        $pokestopName = $db->get("pokestop", [ 'name' ], [ 'id' => $pokestopId ]);
+        $pokestopName = $db->get("pokestop", [ 'name' ], [ 'pokestop_id' => $pokestopId ]);
         if (! empty($pokestopId)) {
             $db->delete('trs_quest', [
                 "AND" => [
