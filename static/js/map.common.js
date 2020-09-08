@@ -119,6 +119,11 @@ var StoreOptions = {
             default: hideQuestsPokemon,
             type: StoreTypes.JSON
         },
+    'remember_quests_exclude_energy':
+        {
+            default: hideQuestsEnergy,
+            type: StoreTypes.JSON
+        },
     'remember_quests_exclude_item':
         {
             default: hideQuestsItem,

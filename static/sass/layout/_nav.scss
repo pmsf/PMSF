@@ -535,12 +535,7 @@
         padding:0;
         .form-control{
           float:none;
-          .quest-item-container{
-            box-shadow:none!important;
-            border:1px solid #3b3b3b;
-            max-height:350px!important;
-          }
-          .quest-pokemon-container{
+          .quest-item-container, .quest-pokemon-container, .quest-energy-container {
             box-shadow:none!important;
             border:1px solid #3b3b3b;
             max-height:350px!important;
@@ -707,6 +702,13 @@
   }
   label[for="exclude-quests-item"]{
     .item-list .active {
+      opacity: 0.4;
+      filter: alpha(opacity=40);
+      background: #000;
+    }
+  }
+  label[for="exclude-quests-energy"]{
+    .energy-list .active {
       opacity: 0.4;
       filter: alpha(opacity=40);
       background: #000;
@@ -1049,7 +1051,7 @@
     background: rgba(255, 0, 0, 0.4);
   }
 }
-.pokemon-list {
+.pokemon-list, .energy-list {
   display: -webkit-box;
   display: -ms-flexbox;
   display: -webkit-flex;
@@ -1066,7 +1068,7 @@
     margin: -2px -2px;
     box-sizing: border-box;
   }
-  .pokemon-icon-sprite{
+  .pokemon-icon-sprite, energy-icon-sprite {
     border:1px solid #FFF;
     width: calc( 20% - 2px);
     margin-bottom: 5px;
