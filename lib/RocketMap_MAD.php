@@ -796,6 +796,17 @@ class RocketMap_MAD extends RocketMap
             foreach ($pokestops as $pokestop) {
                 $data[] = $pokestop['quest_pokemon_id'];
             }
+        } elseif ($type === 'energylist') {
+            $pokestops = $db->query("
+                SELECT distinct
+                    quest_pokemon_id AS quest_energy_pokemon_id
+                FROM trs_quest
+                WHERE quest_reward_type = 12;"
+            )->fetchAll(\PDO::FETCH_ASSOC);
+            $data = array();
+            foreach ($pokestops as $pokestop) {
+                $data[] = $pokestop['quest_energy_pokemon_id'];
+            }
         } elseif ($type === 'itemlist') {
             $pokestops = $db->query("SELECT distinct quest_item_id FROM trs_quest WHERE quest_item_id > 0 AND DATE(FROM_UNIXTIME(quest_timestamp)) = '" . $curdate->format('Y-m-d') . "' order by quest_item_id;")->fetchAll(\PDO::FETCH_ASSOC);
             $data = array();
