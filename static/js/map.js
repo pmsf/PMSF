@@ -130,7 +130,6 @@ var cries
 var pokeList = []
 var raidBoss = {} // eslint-disable-line no-unused-vars
 var itemList = []
-var energyList = []
 var gruntList = []
 var questtypeList = []
 var rewardtypeList = []
