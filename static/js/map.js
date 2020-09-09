@@ -1624,7 +1624,9 @@ function getReward(item) {
     } else {
         styleStr = 'position:absolute;height:35px;right:55%;top:85px;'
     }
-    if (item['quest_reward_type'] === 7) {
+    if (item['quest_reward_type'] === 12) {
+        rewardImage = '<img style="' + styleStr + '" src="' + iconpath + 'rewards/reward_mega_energy_' + item['quest_energy_pokemon_id'] + '.png"/>'
+    } else if (item['quest_reward_type'] === 7) {
         if (item['quest_pokemon_id'] <= 9) {
             pokemonIdStr = '00' + item['quest_pokemon_id']
         } else if (item['quest_pokemon_id'] <= 99) {
@@ -1880,6 +1882,12 @@ function pokestopLabel(item) {
             str += '<div>' +
             i8ln('Reward') + ': <b>' +
             item['quest_pokemon_name'] +
+            '</b></div>'
+        } else if (item['quest_reward_type'] === 12) {
+            str += '<div>' +
+            i8ln('Reward') + ': <b>' +
+            item['quest_energy_amount'] + ' ' + item['quest_energy_pokemon_name'] + ' ' +
+            i8ln('Mega energy') +
             '</b></div>'
         }
         str += '<a href="javascript:removePokestopMarker(\'' + item['pokestop_id'] + '\')" title="' + i8ln('Hide this Pokéstop') + '"><i class="fas fa-trash-alt" style="font-size:15px;"></i></a>'
@@ -2486,7 +2494,19 @@ function getPokestopMarkerIcon(item) {
             if (!noLures && item['lure_expiration'] > Date.now()) {
                 stopQuestIcon = 'PstopLured_' + item['lure_id'] + '.png'
             }
-            if (item['quest_reward_type'] === 7) {
+            if (item['quest_reward_type'] === 12) {
+                html = '<div style="position:relative;">' +
+                    '<img src="static/forts/' + stopQuestIcon + '" style="width:50px;height:72;top:-35px;right:10px;"/>' +
+                    '<img src="' + iconpath + 'rewards/reward_mega_energy_' + item['quest_energy_pokemon_id'] + '.png" style="width:30px;height:auto;position:absolute;top:4px;left:0px;"/>' +
+                    '</div>'
+                stopMarker = L.divIcon({
+                    iconSize: [31, 31],
+                    iconAnchor: [25, 45],
+                    popupAnchor: [0, -35],
+                    className: 'stop-quest-marker',
+                    html: html
+                })
+            } else if (item['quest_reward_type'] === 7) {
                 if (item['quest_pokemon_id'] <= 9) {
                     pokemonIdStr = '00' + item['quest_pokemon_id']
                 } else if (item['quest_pokemon_id'] <= 99) {
@@ -2580,7 +2600,19 @@ function getPokestopMarkerIcon(item) {
         if (!noLures && item['lure_expiration'] > Date.now()) {
             stopQuestIcon = 'PstopLured_' + item['lure_id'] + '.png'
         }
-        if (item['quest_reward_type'] === 7) {
+        if (item['quest_reward_type'] === 12) {
+            html = '<div style="position:relative;">' +
+                '<img src="static/forts/' + stopQuestIcon + '" style="width:50px;height:72;top:-35px;right:10px;"/>' +
+                '<img src="' + iconpath + 'rewards/reward_mega_energy_' + item['quest_energy_pokemon_id'] + '.png" style="width:30px;height:auto;position:absolute;top:4px;left:0px;"/>' +
+                '</div>'
+            stopMarker = L.divIcon({
+                iconSize: [31, 31],
+                iconAnchor: [25, 45],
+                popupAnchor: [0, -35],
+                className: 'stop-quest-marker',
+                html: html
+            })
+        } else if (item['quest_reward_type'] === 7) {
             if (item['quest_pokemon_id'] <= 9) {
                 pokemonIdStr = '00' + item['quest_pokemon_id']
             } else if (item['quest_pokemon_id'] <= 99) {
@@ -3424,11 +3456,14 @@ function searchForItem(lat, lon, term, type, field) {
                     })
                     var html = '<li class="search-result ' + type + '" data-lat="' + element.lat + '" data-lon="' + element.lon + '"><div class="left-column" onClick="centerMapOnCoords(event);">'
                     if (sr.hasClass('reward-results')) {
-                        if (element.quest_pokemon_id !== 0) {
+                        if (element.quest_pokemon_id !== 0 && element.quest_reward_type === 7) {
                             html += '<span style="background:url(' + iconpath + 'pokemon_icon_' + pokemonIdStr + '_' + formStr + '.png) no-repeat;" class="i-icon" ></span>'
                         }
                         if (element.quest_item_id !== 0) {
                             html += '<span style="background:url(' + iconpath + 'rewards/reward_' + element.quest_item_id + '_1.png) no-repeat;" class="i-icon" ></span>'
+                        }
+                        if (element.quest_reward_type === 12) {
+                            html += '<span style="background:url(' + iconpath + 'rewards/reward_mega_energy_' + element.quest_energy_pokemon_id + '.png) no-repeat;" class="i-icon" ></span>'
                         }
                     }
                     html += '<div class="cont">'
@@ -5262,7 +5297,15 @@ function processPokestops(i, item, lastMidnight) {
 }
 
 function pokestopMeetsQuestFilter(pokestop, lastMidnight) {
-    if (pokestop['quest_type'] === 0 || lastMidnight > Number(pokestop['quest_timestamp']) || ((pokestop['quest_pokemon_id'] > 0 && questsExcludedPokemon.indexOf(pokestop['quest_pokemon_id']) > -1) || (pokestop['quest_item_id'] > 0 && questsExcludedItem.indexOf(pokestop['quest_item_id']) > -1) || ((pokestop['quest_reward_type'] === 3 && (Number(pokestop['quest_dust_amount']) < Number(Store.get('showDustAmount')))) || (pokestop['quest_reward_type'] === 3 && Store.get('showDustAmount') === 0)))) {
+    if (pokestop['quest_type'] === 0 || lastMidnight > Number(pokestop['quest_timestamp'])) {
+        return false
+    } else if (pokestop['quest_reward_type'] === 7 && pokestop['quest_pokemon_id'] > 0 && questsExcludedPokemon.indexOf(pokestop['quest_pokemon_id']) > -1) {
+        return false
+    } else if (pokestop['quest_reward_type'] === 2 && pokestop['quest_item_id'] > 0 && questsExcludedItem.indexOf(pokestop['quest_item_id']) > -1) {
+        return false
+    } else if (pokestop['quest_reward_type'] === 3 && Number(pokestop['quest_dust_amount']) < Number(Store.get('showDustAmount'))) {
+        return false
+    } else if (pokestop['quest_reward_type'] === 3 && Store.get('showDustAmount') === 0) {
         return false
     } else {
         return true
