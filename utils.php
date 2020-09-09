@@ -56,21 +56,20 @@ function generateToken()
 
 function validateToken($token)
 {
-    global $enableCsrf, $manualdb, $allowMultiLogin, $forcedLogin;
+    global $enableCsrf, $manualdb, $allowMultiLogin, $forcedLogin, $useLoginCookie, $sessionLifetime;
     if ((!$enableCsrf) || ($enableCsrf && isset($token) && $token === $_SESSION['token'])) {
+        $validity = 'valid';
         if (!empty($_SESSION['user']->id)) {
             $user = $manualdb->get('users', ['id', 'session_token'], ['id' => $_SESSION['user']->id]);
             if ($user['session_token'] == $_SESSION['token'] || $allowMultiLogin) {
                 $validity = 'valid';
+            } else if ($user['session_token'] != $_SESSION['token'] && $useLoginCookie && $_COOKIE['LoginSession'] == $user['session_token']) {
+                $manualdb->update('users', ['session_token' => $_SESSION['token']], ['id' => $_COOKIE['LoginCookie']]);
+                setrawcookie("LoginSession", $_SESSION['token'], time() + $sessionLifetime);
+                $validity = 'valid';
             } else {
                 $validity = 'invalid';
-                unset($_SESSION);
-                unset($_COOKIE['LoginCookie']);
-                unset($_COOKIE['LoginEngine']);
-                setcookie("LoginCookie", "", time() - 3600);
-                setcookie("LoginEngine", "", time() - 3600);
-                session_destroy();
-                session_write_close();
+                destroyCookiesAndSessions();
            }
 	} else if ($forcedLogin) {
             $validity = 'no-id';
@@ -279,22 +278,26 @@ function destroyCookiesAndSessions()
     unset($_SESSION);
     unset($_COOKIE['LoginCookie']);
     unset($_COOKIE['LoginEngine']);
+    unset($_COOKIE['LoginSession']);
     setcookie("LoginCookie", "", time() - 3600);
     setcookie("LoginEngine", "", time() - 3600);
+    setcookie("LoginSession", "", time() - 3600);
     session_destroy();
     session_write_close();
 }
 
 function validateCookie($cookie)
 {
-    global $manualdb, $manualAccessLevel;
+    global $manualdb, $manualAccessLevel, $sessionLifetime, $useLoginCookie;
     $info = $manualdb->query(
-        "SELECT id, user, password, login_system, expire_timestamp, access_level, avatar FROM users WHERE session_id = :session_id", [
+        "SELECT id, user, password, login_system, expire_timestamp, access_level, avatar, session_token FROM users WHERE session_id = :session_id", [
             ":session_id" => $cookie
         ]
     )->fetch();
-
     if (!empty($info['user'])) {
+        if ($useLoginCookie && $info['session_token'] == $_COOKIE['LoginSession']) {
+            $manualdb->update('users', ['session_token' => $_SESSION['token']], ['id' => $info['id']]);
+        }
         $_SESSION['user'] = new \stdClass();
         $_SESSION['user']->id = $info['id'];
         $_SESSION['user']->user = htmlspecialchars($info['user'], ENT_QUOTES, 'UTF-8');
@@ -306,19 +309,17 @@ function validateCookie($cookie)
         if (empty($info['password']) && $info['login_system'] == 'native') {
             $_SESSION['user']->updatePwd = 1;
         }
-        setcookie("LoginCookie", $cookie, time() + 60 * 60 * 24 * 7);
+        setcookie("LoginCookie", $cookie, time() + $sessionLifetime);
+        setcookie("LoginEngine", $info['login_system'], time() + $sessionLifetime);
+        setcookie("LoginSession", $_SESSION['token'], time() + $sessionLifetime);
         if (!isset($_SESSION['already_refreshed'])) {
             $_SESSION['already_refreshed'] = true;
             return false;
         } else {
             return true;
         }
-    } elseif (!empty($_SESSION['user']->id)) {
-        destroyCookiesAndSessions();
-        return false;
     } else {
-        unset($_COOKIE['LoginCookie']);
-        setcookie("LoginCookie", "", time() - 3600);
+        destroyCookiesAndSessions();
         return false;
     }
 }
