@@ -3363,17 +3363,39 @@ function loadRawData() {
                 rawDataIsLoading = true
             }
         },
-        error: function error() {
+        error: function (xhr) {
             // Display error toast
-            toastr['error'](i8ln('Please check connectivity or reduce marker settings.'), i8ln('Error getting data'))
-            toastr.options = toastrOptions
+            switch (xhr.status) {
+                case 400:
+                    toastr['error'](i8ln('Please check connectivity or reduce marker settings.'), i8ln('Not Acceptable'))
+                    toastr.options = toastrOptions
+                    setTimeout(window.location.href = './logout', 5000)
+                    break
+                case 401:
+                    toastr['error'](i8ln('Another device just logged in with the same account.'), i8ln('Unauthorized'))
+                    toastr.options = toastrOptions
+                    setTimeout(window.location.href = './login?action=login&error=invalid-token', 5000)
+                    break
+                case 403:
+                    toastr['error'](i8ln('This action is not allowed.'), i8ln('Forbidden'))
+                    toastr.options = toastrOptions
+                    setTimeout(window.location.href = './logout', 5000)
+                    break
+                case 404:
+                    toastr['error'](i8ln('Session tokens haven\'t been found.'), i8ln('Not found'))
+                    toastr.options = toastrOptions
+                    setTimeout(window.location.href = './login?action=login&error=no-id', 5000)
+                    break
+                case 413:
+                    toastr['error'](i8ln('This is too much data for me please zoom in.'), i8ln('You got me overwhelmed'))
+                    toastr.options = toastrOptions
+            }
         },
         complete: function complete() {
             rawDataIsLoading = false
         }
     })
 }
-
 function loadWeather() {
     return $.ajax({
         url: 'weather_data?all',

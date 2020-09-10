@@ -131,7 +131,9 @@ $imgurCID = "";
 //-----------------------------------------------------
 // Login
 //-----------------------------------------------------
+$useLoginCookie = false;					    // Use cookie to restore session after browser is closed.
 $forcedLogin = false;                                               // Force users to login before they can see map
+$allowMultiLogin = false;                                           // Allow users to login with multiple devices simulteously.
 $adminUsers = ['admin@example.com', 'admin2@example.com'];          // You can add multiple admins by adding them to the array.
 /* Discord Auth */
 $noDiscordLogin = true;                                             // This will enable login through discord.

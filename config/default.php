@@ -155,7 +155,9 @@ $userTimezone = date_default_timezone_get();
 // Login  - You need to create the two tables referenced in sql.sql
 //-----------------------------------------------------
 $monologPath = 'php://stdout';
-$forcedLogin = false;
+$useLoginCookie = false;					    // Use cookie to restore session after browser is closed.
+$forcedLogin = false;						    // Users will be forced to login before entering the map.
+$allowMultiLogin = false;                                           // Allow users to login with multiple devices simulteously.
 $noNativeLogin = true;                                              // true/false - This will enable the built in login system.
 $domainName = '';                                                   // If this is empty, reset-password emails will use the domain name taken from the URL.
 
