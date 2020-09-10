@@ -170,6 +170,7 @@
     "noIvShadow": true,
     "hideQuestsPokemon": true,
     "hideQuestsItem": true,
+    "hideQuestsEnergy": true,
     "noQuests": true,
     "noLures": true,
     "noTeamRocket": true,
