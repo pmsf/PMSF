@@ -266,7 +266,7 @@ function destroyCookiesAndSessions()
 {
     global $manualdb;
     
-    if (!empty($_SESSION['user']->id) {
+    if (!empty($_SESSION['user']->id)) {
         $manualdb->update("users", [
             "session_id" => null,
             "avatar" => null,
