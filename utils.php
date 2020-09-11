@@ -266,16 +266,18 @@ function destroyCookiesAndSessions()
 {
     global $manualdb;
     
-    $manualdb->update("users", [
-        "session_id" => null,
-        "avatar" => null,
-        "discord_guilds" => null
-    ], [
-        "id" => $_SESSION['user']->id,
-        "login_system" => $_SESSION['user']->login_system
-    ]);
+    if (!empty($_SESSION['user']->id) {
+        $manualdb->update("users", [
+            "session_id" => null,
+            "avatar" => null,
+            "discord_guilds" => null
+        ], [
+            "id" => $_SESSION['user']->id,
+            "login_system" => $_SESSION['user']->login_system
+        ]);
 
-    unset($_SESSION);
+        unset($_SESSION);
+    }
     unset($_COOKIE['LoginCookie']);
     unset($_COOKIE['LoginEngine']);
     unset($_COOKIE['LoginSession']);
