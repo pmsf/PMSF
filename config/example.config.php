@@ -4,8 +4,6 @@ namespace Config;
 
 // Do not touch this!
 require 'default.php';
-require __DIR__ . '/../Medoo.php';
-
 use Medoo\Medoo;
 
 //======================================================================
