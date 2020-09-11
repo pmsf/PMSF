@@ -75,6 +75,9 @@ if (isset($_GET['action'])) {
                             case 'no-member-patreon':
                                 $html .= "<div id='login-error'>" . i8ln('It seems you haven\'t pledged to our patreon. Therefore access has been denied.') . " <a href='" . $patreonUrl . "'>" . i8ln('Pledge at Patreon to gain access.') . "</a></div>";
                                 break;
+                            case 'invalid-token':
+                                $html .= "<div id='login-error'>" . i8ln('We have logged you out. This might be because of invalid or expired token or your account has been logged in on another device.') . "</div>";
+                                break;
                         }
                     }
                     $html .= '<div class="imgcontainer">
@@ -141,14 +144,19 @@ if (isset($_GET['action'])) {
                 header("Location: ./login?action=login&error=password");
             }
             $manualdb->update("users", [
-                "session_id" => session_id()
+                'session_token' => $_SESSION['token'],
+                'session_id' => session_id(),
+                'last_loggedin' => time()
             ], [
-                "user" => $_POST['uname'],
-                "login_system" => 'native'
+                'user' => $_POST['uname'],
+                'login_system' => 'native'
             ]);
 
-            setcookie("LoginCookie", session_id(), time()+60*60*24*7);
-            setcookie("LoginEngine", 'native', time()+60*60*24*7);
+            setcookie("LoginCookie", session_id(), time() + $sessionLifetime);
+            setcookie("LoginEngine", 'native', time() + $sessionLifetime);
+            if ($useLoginCookie) {
+                setrawcookie("LoginSession", $_SESSION['token'], time() + $sessionLifetime);
+            }
             header("Location: .?login=true");
             die();
         } else {
@@ -267,18 +275,21 @@ if (isset($_GET['callback'])) {
 
                 if ($manualdb->has('users', ['id' => $user->id, 'login_system' => 'discord'])) {
                     $manualdb->update('users', [
+                        'session_token' => $_SESSION['token'],
                         'session_id' => $response->access_token,
                         'expire_timestamp' => time() + $response->expires_in,
                         'user' => strval($user->username) . '#' . $user->discriminator,
                         'access_level' => intval($accessRole),
                         'avatar' => $avatar,
-                        'discord_guilds' => json_encode($guilds)
+                        'discord_guilds' => json_encode($guilds),
+                        'last_loggedin' => time()
                     ], [
                         'id' => $user->id,
                         'login_system' => 'discord'
                     ]);
                 } else {
                     $manualdb->insert('users', [
+                        'session_token' => $_SESSION['token'],
                         'session_id' => $response->access_token,
                         'id' => $user->id,
                         'user' => strval($user->username) . '#' . $user->discriminator,
@@ -286,7 +297,8 @@ if (isset($_GET['callback'])) {
                         'avatar' => $avatar,
                         'expire_timestamp' => time() + $response->expires_in,
                         'login_system' => 'discord',
-                        'discord_guilds' => json_encode($guilds)
+                        'discord_guilds' => json_encode($guilds),
+                        'last_loggedin' => time()
                     ]);
                 }
                 if ($manualdb->has('users', ['linked_account' => $user->id, 'login_system' => 'patreon'])) {
@@ -302,6 +314,9 @@ if (isset($_GET['callback'])) {
                 }
                 setcookie("LoginCookie", $response->access_token, time() + $response->expires_in);
                 setcookie("LoginEngine", 'discord', time() + $response->expires_in);
+                if ($useLoginCookie) {
+                    setrawcookie("LoginSession", $_SESSION['token'], time() + $response->expires_in);
+                }
             }
             if ($whiteListed === true) {
                 header("Location: .?login=true");
@@ -370,29 +385,36 @@ if (isset($_GET['callback'])) {
             $user = $response->getGraphUser();
             if ($manualdb->has('users', ['id' => $user['id'], 'login_system' => 'facebook'])) {
                 $manualdb->update('users', [
+                    'session_token' => $_SESSION['token'],
                     'session_id' => $userToken,
-                    'expire_timestamp' => time() + 86400,
+                    'expire_timestamp' => time() + $sessionLifetime,
                     'user' => $user['name'],
                     'access_level' => $facebookAccessLevel,
                     'avatar' => $user['picture']['url'],
+                    'last_loggedin' => time()
                 ], [
                     'id' => $user['id'],
                     'login_system' => 'facebook'
                 ]);
             } else {
                 $manualdb->insert('users', [
+                    'session_token' => $_SESSION['token'],
                     'session_id' => $userToken,
                     'id' => $user['id'],
                     'user' => $user['name'],
                     'access_level' => $facebookAccessLevel,
                     'avatar' => $user['picture']['url'],
                     'access_level' => null,
-                    'expire_timestamp' => time() + 86400,
-                    'login_system' => 'facebook'
+                    'expire_timestamp' => time() + $sessionLifetime,
+                    'login_system' => 'facebook',
+                    'last_loggedin' => time()
                 ]);
             }
-            setcookie("LoginCookie", $userToken, time() + 86400);
-            setcookie("LoginEngine", 'facebook', time() + 86400);
+            setcookie("LoginCookie", $userToken, time() + $sessionLifetime);
+            setcookie("LoginEngine", 'facebook', time() + $sessionLifetime);
+            if ($useLoginCookie) {
+                setrawcookie("LoginSession", $_SESSION['token'], time() + $sessionLifetime);
+            }
             header("Location: .?login=true");
             die();
         }
@@ -449,7 +471,9 @@ if (isset($_GET['callback'])) {
                 'user' => strval($identity['data']['attributes']['full_name']),
                 'access_level' => $accessLevel,
                 'avatar' => $identity['data']['attributes']['image_url'],
-                'linked_account' => $linked_discord
+                'linked_account' => $linked_discord,
+                'last_loggedin' => time()
+
             ], [
                 'id' => $identity['data']['relationships']['memberships']['data']['0']['id'],
                 'login_system' => 'patreon'
@@ -464,11 +488,16 @@ if (isset($_GET['callback'])) {
                 'avatar' => $identity['data']['attributes']['image_url'],
                 'expire_timestamp' => time() + $response->expires_in,
                 'login_system' => 'patreon',
-                'linked_account' => $linked_discord
+                'linked_account' => $linked_discord,
+                'last_loggedin' => time()
+
             ]);
         }
         setcookie("LoginCookie", $response->access_token, time() + $response->expires_in);
         setcookie("LoginEngine", 'patreon', time() + $response->expires_in);
+        if ($useLoginCookie) {
+            setrawcookie("LoginSession", $_SESSION['token'], time() + $sessionLifetime);
+        }
         header("Location: .?login=true");
         die();
     }
@@ -485,14 +514,16 @@ if (!empty($_POST['refresh'])) {
                 $answer = 'true';
             } elseif (!empty($accessLevel)) {
                 $manualdb->update('users', [
-                    'access_level' => $accessLevel
+                    'access_level' => $accessLevel,
+                    'last_loggedin' => time()
                 ], [
                     'id' => $dbUser['id']
                 ]);
                 $answer = 'reload';
             } else {
                 $manualdb->update('users', [
-                    'access_level' => null
+                    'access_level' => null,
+                    'last_loggedin' => time()
                 ], [
                     'id' => $dbUser['id']
                 ]);

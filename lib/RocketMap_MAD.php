@@ -514,7 +514,7 @@ class RocketMap_MAD extends RocketMap
         return $data;
     }
 
-    public function get_stops($geids, $qpeids, $qieids, $swLat, $swLng, $neLat, $neLng, $tstamp = 0, $oSwLat = 0, $oSwLng = 0, $oNeLat = 0, $oNeLng = 0, $lured = false, $rocket = false, $quests, $dustamount)
+    public function get_stops($geids, $qpeids, $qeeids, $qieids, $swLat, $swLng, $neLat, $neLng, $tstamp = 0, $oSwLat = 0, $oSwLng = 0, $oNeLat = 0, $oNeLng = 0, $lured = false, $rocket = false, $quests, $dustamount)
     {
         $conds = array();
         $params = array();
@@ -537,6 +537,63 @@ class RocketMap_MAD extends RocketMap
 
         if ($lured == "true") {
             $conds[] = "active_fort_modifier IS NOT NULL";
+        }
+        if (!empty($quests) && $quests === 'true') {
+            $pokemonSQL = '';
+            if (count($qpeids)) {
+                $pkmn_in = '';
+                $p = 1;
+                foreach ($qpeids as $qpeid) {
+                    $params[':pqry_' . $p . "_"] = $qpeid;
+                    $pkmn_in .= ':pqry_' . $p . "_,";
+                    $p++;
+                }
+                $pkmn_in = substr($pkmn_in, 0, -1);
+                $pokemonSQL .= "tq.quest_pokemon_id NOT IN ( $pkmn_in ) AND quest_reward_type = 7";
+            } else {
+                $pokemonSQL .= "tq.quest_pokemon_id IS NOT NULL AND quest_reward_type = 7";
+            }
+            $energySQL = '';
+            if (count($qeeids)) {
+                $pkmn_in = '';
+                $p = 1;
+                foreach ($qeeids as $qeeid) {
+                    $params[':eqry_' . $p . "_"] = $qeeid;
+                    $pkmn_in .= ':eqry_' . $p . "_,";
+                    $p++;
+                }
+                $pkmn_in = substr($pkmn_in, 0, -1);
+                $energySQL .= "tq.quest_pokemon_id NOT IN ( $pkmn_in ) AND tq.quest_reward_type = 12";
+            } else {
+                $energySQL .= "tq.quest_reward_type = 12";
+            }
+            $itemSQL = '';
+            if (count($qieids)) {
+                $item_in = '';
+                $i = 1;
+                foreach ($qieids as $qieid) {
+                    $params[':iqry_' . $i . "_"] = $qieid;
+                    $item_in .= ':iqry_' . $i . "_,";
+                    $i++;
+                }
+                $item_in = substr($item_in, 0, -1);
+                $itemSQL .= "tq.quest_item_id NOT IN ( $item_in )";
+            } else {
+                $itemSQL .= "tq.quest_item_id IS NOT NULL";
+            }
+            $dustSQL = '';
+            if (!empty($dustamount) && !is_nan((float)$dustamount) && $dustamount > 0) {
+                $dustSQL .= "OR (quest_reward_type = 3 AND tq.quest_stardust > :amount)";
+                $params[':amount'] = intval($dustamount);
+                $params[':swLat'] = $swLat;
+                $params[':swLng'] = $swLng;
+                $params[':neLat'] = $neLat;
+                $params[':neLng'] = $neLng;
+                if (!$noBoundaries) {
+                    $dustSQL .= " AND (ST_WITHIN(point(latitude,longitude),ST_GEOMFROMTEXT('POLYGON(( " . $boundaries . " ))')))";
+                }
+            }
+            $conds[] = "(" . $pokemonSQL . " OR " . $itemSQL . " OR " . $energySQL . ")" . $dustSQL . "";
         }
         if (!empty($rocket) && $rocket === 'true') {
             $rocketSQL = '';
@@ -565,7 +622,7 @@ class RocketMap_MAD extends RocketMap
         return $this->query_stops($conds, $params);
     }
 
-    public function get_stops_quest($greids, $qpreids, $qireids, $swLat, $swLng, $neLat, $neLng, $tstamp = 0, $oSwLat = 0, $oSwLng = 0, $oNeLat = 0, $oNeLng = 0, $lures, $rocket, $quests, $dustamount, $reloaddustamount)
+    public function get_stops_quest($greids, $qpreids, $qereids, $qireids, $swLat, $swLng, $neLat, $neLng, $tstamp = 0, $oSwLat = 0, $oSwLng = 0, $oNeLat = 0, $oNeLng = 0, $lures, $rocket, $quests, $dustamount, $reloaddustamount)
     {
         $conds = array();
         $params = array();
@@ -589,7 +646,18 @@ class RocketMap_MAD extends RocketMap
                     $p++;
                 }
                 $pkmn_in = substr($pkmn_in, 0, -1);
-                $tmpSQL .= "tq.quest_pokemon_id IN ( $pkmn_in )";
+                $tmpSQL .= "tq.quest_pokemon_id IN ( $pkmn_in ) AND tq.quest_reward_type = 7";
+            }
+            if (count($qereids)) {
+                $pkmn_in = '';
+                $p = 1;
+                foreach ($qereids as $qereid) {
+                    $params[':eqry_' . $p . "_"] = $qereid;
+                    $pkmn_in .= ':eqry_' . $p . "_,";
+                    $p++;
+                }
+                $pkmn_in = substr($pkmn_in, 0, -1);
+                $tmpSQL .= "tq.quest_pokemon_id IN ( $pkmn_in ) AND tq.quest_reward_type = 12";
             }
             if (count($qireids)) {
                 $item_in = '';
@@ -650,7 +718,9 @@ class RocketMap_MAD extends RocketMap
         tq.quest_pokemon_form_id AS quest_pokemon_formid,
         json_extract(json_extract(`quest_reward`,'$[*].pokemon_encounter.pokemon_display.is_shiny'),'$[0]') AS quest_pokemon_shiny,
         tq.quest_item_amount AS quest_reward_amount,
-        tq.quest_stardust AS quest_dust_amount
+        tq.quest_stardust AS quest_dust_amount,
+        tq.quest_item_amount AS quest_energy_amount,
+        tq.quest_pokemon_id AS quest_energy_pokemon_id
         FROM pokestop p
         LEFT JOIN trs_quest tq ON tq.GUID = p.pokestop_id
         WHERE :conditions";
@@ -671,6 +741,11 @@ class RocketMap_MAD extends RocketMap
             if ($mon_pid == "0") {
                 $mon_pid = null;
                 $pokestop["quest_pokemon_id"] = null;
+            }
+            $energy_mon_pid = $pokestop["quest_energy_pokemon_id"];
+            if ($energy_mon_pid == "0") {
+                $energy_mon_pid = null;
+                $pokestop["quest_energy_pokemon_id"] = null;
             }
             $grunttype_pid = $pokestop["grunt_type"];
             if ($grunttype_pid == "0") {
@@ -697,6 +772,9 @@ class RocketMap_MAD extends RocketMap
             $pokestop["quest_item_id"] = intval($pokestop["quest_item_id"]);
             $pokestop["quest_reward_amount"] = intval($pokestop["quest_reward_amount"]);
             $pokestop["quest_dust_amount"] = intval($pokestop["quest_dust_amount"]);
+            $pokestop["quest_energy_amount"] = intval($pokestop["quest_energy_amount"]);
+            $pokestop["quest_energy_pokemon_id"] = intval($pokestop["quest_energy_pokemon_id"]);
+            $pokestop["quest_energy_pokemon_name"] = empty($energy_mon_pid) ? null : i8ln($this->data[$energy_mon_pid]["name"]);
             $pokestop["quest_item_name"] = empty($item_pid) ? null : i8ln($this->items[$item_pid]["name"]);
             $pokestop["quest_pokemon_name"] = empty($mon_pid) ? null : i8ln($this->data[$mon_pid]["name"]);
             $pokestop["quest_condition_info"] = null;
@@ -713,10 +791,21 @@ class RocketMap_MAD extends RocketMap
         global $db, $userTimezone;
         $curdate = new \DateTime(null, new \DateTimeZone($userTimezone) );
         if ($type === 'pokemonlist') {
-            $pokestops = $db->query("SELECT distinct quest_pokemon_id FROM trs_quest WHERE quest_pokemon_id > 0 AND DATE(FROM_UNIXTIME(quest_timestamp)) = '" . $curdate->format('Y-m-d') . "' order by quest_pokemon_id;")->fetchAll(\PDO::FETCH_ASSOC);
+            $pokestops = $db->query("SELECT distinct quest_pokemon_id FROM trs_quest WHERE quest_pokemon_id > 0 AND DATE(FROM_UNIXTIME(quest_timestamp)) = '" . $curdate->format('Y-m-d') . "' AND quest_reward_type = 7 order by quest_pokemon_id;")->fetchAll(\PDO::FETCH_ASSOC);
             $data = array();
             foreach ($pokestops as $pokestop) {
                 $data[] = $pokestop['quest_pokemon_id'];
+            }
+        } elseif ($type === 'energylist') {
+            $pokestops = $db->query("
+                SELECT distinct
+                    quest_pokemon_id AS quest_energy_pokemon_id
+                FROM trs_quest
+                WHERE quest_reward_type = 12;"
+            )->fetchAll(\PDO::FETCH_ASSOC);
+            $data = array();
+            foreach ($pokestops as $pokestop) {
+                $data[] = $pokestop['quest_energy_pokemon_id'];
             }
         } elseif ($type === 'itemlist') {
             $pokestops = $db->query("SELECT distinct quest_item_id FROM trs_quest WHERE quest_item_id > 0 AND DATE(FROM_UNIXTIME(quest_timestamp)) = '" . $curdate->format('Y-m-d') . "' order by quest_item_id;")->fetchAll(\PDO::FETCH_ASSOC);

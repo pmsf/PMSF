@@ -144,6 +144,54 @@ if (strtolower($map) === "rdm") {
         <?php
     }
 
+    function energyFilterImages($noPokemonNumbers, $onClick = '', $energyToExclude = array(), $num = 0)
+    {
+        global $mons, $copyrightSafe, $iconRepository, $numberOfPokemon;
+        if (empty($mons)) {
+            $json = file_get_contents('static/dist/data/pokemon.min.json');
+            $mons = json_decode($json, true);
+        }
+        echo '<div class="energy-list-cont" id="energy-list-cont-' . $num . '">
+        <input type="hidden" class="search-number" value="' . $num . '" />
+        <input class="search search-input" placeholder="' . i8ln("Search Name, ID & Type") . '" />
+        <div class="energy-list list">';
+        $i = 0;
+        $z = 0;
+        foreach ($mons as $k => $pokemon) {
+            $type = '';
+            $name = $pokemon['name'];
+            foreach ($pokemon['types'] as $t) {
+                $type .= i8ln($t['type']);
+            }
+            if (! in_array($k, $energyToExclude)) {
+                if ($k > $numberOfPokemon) {
+                    break;
+                }
+                echo '<span class="energy-icon-sprite" data-value="' . $k . '" onclick="' . $onClick . '">
+                <span style="display:none" class="types">' . $type . '</span>
+                <span style="display:none" class="name">' . i8ln($name) . '</span>
+                <span style="display:none" class="id">' . $k . '</span>';
+                if (! $copyrightSafe) {
+                    echo '<img src="' . $iconRepository . 'rewards/reward_mega_energy_' . $k . '.png" style="width:48px;height:48px;"/>';
+                } else {
+                    echo '<img src="static/icons-safe/pokemon_icon_' . $k . '_00.png" style="width:48px;height:48px;"/>';
+                }
+                if (! $noPokemonNumbers) {
+                    echo "<span class='pokemon-number'>" . $k . "</span>";
+                }
+                echo "</span>";
+            }
+        }
+        echo '</div></div>'; ?>
+        <script>
+            var options = {
+                valueNames: ['name', 'types', 'id']
+            };
+            var energyList = new List('energy-list-cont-<?php echo $num; ?>', options);
+        </script>
+        <?php
+    }
+
     function itemFilterImages($noItemNumbers, $onClick = '', $itemsToExclude = array(), $num = 0)
     {
         global $items, $copyrightSafe, $iconRepository;
@@ -382,7 +430,7 @@ if (!$noLoadingScreen) {
         
         <?php
         if (!empty($_SESSION['user']->id)) {
-            echo "<a href='#' onclick='openAccountModal(event);' style='float:right;padding:0 5px;' title='" . i8ln('Profile') . "'><img src='" .  $_SESSION['user']->avatar . "' style='height:40px;width:40px;border-radius:50%;border:2px solid;margin-top:10px'></a>";
+            echo "<a href='#' onclick='openAccountModal(event);' style='float:right;padding:0 5px;' title='" . i8ln('Profile') . "'><img src='" .  $_SESSION['user']->avatar . "' style='height:40px;width:40px;border-radius:50%;border:2px solid;vertical-align: middle;'></a>";
         } else {
             echo "<a href='#' onclick='openAccountModal(event);' style='float:right;padding:0 5px;' title='" . i8ln('Profile') . "'><i class='fas fa-user' style='color:white;font-size:20px;vertical-align:middle;'></i></a>";
         }
@@ -689,13 +737,19 @@ if (!$noLoadingScreen) {
                                 <?php
                                 if (! $noQuestsPokemon) {
                                     ?>
-                                    <li><a href="#tabs-1"><?php echo i8ln('Hide Pokémon') ?></a></li>
+                                    <li><a href="#tabs-1"><?php echo i8ln('Pokémon') ?></a></li>
                                     <?php
                                 } ?>
                                 <?php
                                 if (! $noQuestsItems) {
                                     ?>
-                                    <li><a href="#tabs-2"><?php echo i8ln('Hide Items') ?></a></li>
+                                    <li><a href="#tabs-2"><?php echo i8ln('Items') ?></a></li>
+                                    <?php
+                                } ?>
+                                <?php
+                                if (! $noQuestsEnergy) {
+                                    ?>
+                                    <li><a href="#tabs-3"><?php echo i8ln('Energy') ?></a></li>
                                     <?php
                                 } ?>
                             </ul>
@@ -740,6 +794,29 @@ if (!$noLoadingScreen) {
                                             <a href="#" class="select-all-item"><?php echo i8ln('All') ?>
                                                 <div>
                                             </a><a href="#" class="hide-all-item"><?php echo i8ln('None') ?> </a>
+                                        </label>
+                                    </div>
+                                </div>
+                                <?php
+                            } ?>
+                            <?php
+                            if (! $noQuestsEnergy) {
+                                ?>
+                                <div id="tabs-3">
+                                    <div class="form-control hide-select-2">
+                                        <label for="exclude-quests-energy">
+                                            <div class="quest-energy-container">
+                                                <input id="exclude-quests-energy" type="text" readonly="true">
+                                                <?php
+                                                    if ($generateExcludeQuestsEnergy === true) {
+                                                        energyFilterImages($noPokemonNumbers, '', array_diff(range(1, $numberOfPokemon), $getList->generated_exclude_list('energylist')), 9);
+                                                    } else {
+                                                        energyFilterImages($noPokemonNumbers, '', $excludeQuestsEnergy, 9);
+                                                    } ?>
+                                            </div>
+                                            <a href="#" class="select-all-energy"><?php echo i8ln('All') ?>
+                                                <div>
+                                            </a><a href="#" class="hide-all-energy"><?php echo i8ln('None') ?> </a>
                                         </label>
                                     </div>
                                 </div>
@@ -1515,7 +1592,7 @@ if (!$noLoadingScreen) {
                 ?>
                 <div class="switch-container">
                     <div>
-                        <center><a class="button" href="<?= $worldopoleUrl ?>"><i class="far fa-chart-bar"></i><?php echo i8ln(' Full Stats') ?></a></center>
+                        <center><a class="button" href="<?= $worldopoleUrl ?>" target="_blank"><i class="far fa-chart-bar"></i><?php echo i8ln(' Full Stats') ?></a></center>
                     </div>
                 </div>
                 <?php
@@ -2232,6 +2309,7 @@ if (!$noLoadingScreen) {
     var enableQuests = <?php echo $noQuests ? 'false' : $enableQuests ?>;
     var hideQuestsPokemon = <?php echo $noQuestsPokemon ? '[]' : $hideQuestsPokemon ?>;
     var hideQuestsItem = <?php echo $noQuestsItems ? '[]' : $hideQuestsItem ?>;
+    var hideQuestsEnergy = <?php echo $noQuestsEnergy ? '[]' : $hideQuestsEnergy ?>;
     var enableNewPortals = <?php echo (($map != "monocle") || ($fork == "alternate")) ? $enableNewPortals : 0 ?>;
     var enableWeatherOverlay = <?php echo ! $noWeatherOverlay ? $enableWeatherOverlay : 'false' ?>;
     var enableSpawnpoints = <?php echo $noSpawnPoints ? 'false' : $enableSpawnPoints ?>;
