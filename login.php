@@ -451,7 +451,8 @@ if (isset($_GET['callback'])) {
                 'session_token' => null,
                 'session_id' => null,
                 'expire_timestamp' => time() - 86400,
-                'linked_account' => $identity['data']['relationships']['memberships']['data']['0']['id']
+                'linked_account' => $identity['data']['relationships']['memberships']['data']['0']['id'],
+                'last_loggedin' => time()
             ], [
                 'id' => $linked_discord,
                 'login_system' => 'discord'
@@ -473,7 +474,6 @@ if (isset($_GET['callback'])) {
                 'avatar' => $identity['data']['attributes']['image_url'],
                 'linked_account' => $linked_discord,
                 'last_loggedin' => time()
-
             ], [
                 'id' => $identity['data']['relationships']['memberships']['data']['0']['id'],
                 'login_system' => 'patreon'
@@ -490,7 +490,6 @@ if (isset($_GET['callback'])) {
                 'login_system' => 'patreon',
                 'linked_account' => $linked_discord,
                 'last_loggedin' => time()
-
             ]);
         }
         setcookie("LoginCookie", $response->access_token, time() + $response->expires_in);
