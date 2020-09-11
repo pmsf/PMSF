@@ -6683,7 +6683,7 @@ $(function () {
         boostedMons = data.boosted_mons
     })
 
-    $.getJSON('static/dist/data/questtype.min.json').done(function (data) {
+    $.getJSON('static/dist/data/questtype.min.json', {_: new Date().getTime()}).done(function (data) {
         $.each(data, function (key, value) {
             questtypeList[key] = value['text']
         })
