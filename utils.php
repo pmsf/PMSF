@@ -156,7 +156,7 @@ function createUserAccount($user, $password, $newExpireTimestamp)
     ]);
 
     if ($count === 0) {
-        $getId = $manualdb->count("users", [
+        $getId = $manualdb->max("users", "id" [
             "login_system" => 'native'
         ]);
 
