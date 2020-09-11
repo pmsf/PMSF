@@ -155,7 +155,9 @@ $userTimezone = date_default_timezone_get();
 // Login  - You need to create the two tables referenced in sql.sql
 //-----------------------------------------------------
 $monologPath = 'php://stdout';
-$forcedLogin = false;
+$useLoginCookie = false;					    // Use cookie to restore session after browser is closed.
+$forcedLogin = false;						    // Users will be forced to login before entering the map.
+$allowMultiLogin = false;                                           // Allow users to login with multiple devices simulteously.
 $noNativeLogin = true;                                              // true/false - This will enable the built in login system.
 $domainName = '';                                                   // If this is empty, reset-password emails will use the domain name taken from the URL.
 
@@ -283,14 +285,18 @@ $noQuests = true;                                                  // true/false
 $enableQuests = 'false';                                            // true/false
 $noQuestsItems = false;
 $noQuestsPokemon = false;
+$noQuestsEnergy = false;
 $hideQuestsPokemon = '[]';  // Pokemon ids
 $generateExcludeQuestsPokemon = true;
 $generateExcludeQuestsItem = true;
+$generateExcludeQuestsEnergy = true;
 $excludeQuestsPokemon = [];  // Pokemon ids
 $hideQuestsItem = '[4, 5, 301, 401, 402, 403, 404, 501, 602, 603, 604, 702, 704, 708, 801, 901, 902, 903, 1001, 1002, 1401, 1402, 1403, 1404, 1405]';    // Item ids "See protos https://github.com/Furtif/POGOProtos/blob/master/src/POGOProtos/Inventory/Item/ItemId.proto"
 $excludeQuestsItem = [4, 5, 301, 401, 402, 403, 404, 501, 602, 603, 604, 702, 704, 708, 801, 901, 902, 903, 1001, 1002, 1401, 1402, 1403, 1404, 1405];
 $noItemNumbers = true;                                             // true/false
 $defaultDustAmount = 500;
+$hideQuestsEnergy = '[]';
+$excludeQuestsEnergy = [];
 // Manual quest hide options
 $hideQuestTypes = [0, 1, 2, 3, 12, 18, 19, 22, 24, 25];
 $hideRewardTypes = [0, 1, 4, 5, 6];

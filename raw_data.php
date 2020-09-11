@@ -65,27 +65,26 @@ $timestamp = !empty($_POST['timestamp']) ? $_POST['timestamp'] : 0;
 
 $useragent = isset($_SERVER['HTTP_USER_AGENT']) ? $_SERVER['HTTP_USER_AGENT'] : '';
 if (empty($swLat) || empty($swLng) || empty($neLat) || empty($neLng) || preg_match("/curl|libcurl/", $useragent)) {
-    http_response_code(400);
+    http_response_code(403);
     die();
 }
 if ($maxLatLng > 0 && ((($neLat - $swLat) > $maxLatLng) || (($neLng - $swLng) > $maxLatLng))) {
-    http_response_code(400);
+    http_response_code(413);
     die();
 }
-
-if (!validateToken($_POST['token'])) {
-    http_response_code(400);
-    die();
-}
-
-if ((! $noDiscordLogin || ! $noNativeLogin) && !empty($_SESSION['user']->id)) {
-    $info = $manualdb->query("SELECT session_id FROM users WHERE id = :id", [":id" => $_SESSION['user']->id])->fetch();
-    if (empty($_COOKIE["LoginCookie"]) || $info['session_id'] !== $_COOKIE["LoginCookie"]) {
-        http_response_code(400);
-        die();
+$validity = validateToken($_POST['token']);
+if (!empty($validity)) {
+    switch ($validity) {
+        case 'invalid':
+            http_response_code(401);
+            break;
+        case 'no-id':
+            http_response_code(404);
+            break;
     }
-    $debug['0_after_auth'] = microtime(true) - $timing['start'];
 }
+
+$debug['0_after_auth'] = microtime(true) - $timing['start'];
 
 // init map
 if (strtolower($map) === "monocle") {
@@ -127,6 +126,8 @@ $qpeids = array();
 $qpreids = array();
 $qieids = array();
 $qireids = array();
+$qeeids = array();
+$qereids = array();
 $geids = array();
 $greids = array();
 $rbeids = array();
@@ -170,36 +171,47 @@ if (!$noPokestops) {
     if ($d["lastpokestops"] == "true") {
         $qpeids = !empty($_POST['qpeids']) ? explode(",", $_POST['qpeids']) : array();
         $qieids = !empty($_POST['qieids']) ? explode(",", $_POST['qieids']) : array();
+        $qeeids = !empty($_POST['qeeids']) ? explode(",", $_POST['qeeids']) : array();
         $geids = !empty($_POST['geids']) ? explode(",", $_POST['geids']) : array();
         if ($lastpokestops != "true") {
-            $d["pokestops"] = $scanner->get_stops($geids, $qpeids, $qieids, $swLat, $swLng, $neLat, $neLng, 0, 0, 0, 0, 0, $lures, $rocket, $quests, $dustamount);
+            $d["pokestops"] = $scanner->get_stops($geids, $qpeids, $qeeids, $qieids, $swLat, $swLng, $neLat, $neLng, 0, 0, 0, 0, 0, $lures, $rocket, $quests, $dustamount);
         } else {
             if ($newarea) {
-                $d["pokestops"] = $scanner->get_stops($geids, $qpeids, $qieids, $swLat, $swLng, $neLat, $neLng, 0, $oSwLat, $oSwLng, $oNeLat, $oNeLng, $lures, $rocket, $quests, $dustamount);
+                $d["pokestops"] = $scanner->get_stops($geids, $qpeids, $qeeids, $qieids, $swLat, $swLng, $neLat, $neLng, 0, $oSwLat, $oSwLng, $oNeLat, $oNeLng, $lures, $rocket, $quests, $dustamount);
             } else {
-                $d["pokestops"] = $scanner->get_stops($geids, $qpeids, $qieids, $swLat, $swLng, $neLat, $neLng, $timestamp, 0, 0, 0, 0, $lures, $rocket, $quests, $dustamount);
+                $d["pokestops"] = $scanner->get_stops($geids, $qpeids, $qeeids, $qieids, $swLat, $swLng, $neLat, $neLng, $timestamp, 0, 0, 0, 0, $lures, $rocket, $quests, $dustamount);
             }
         }
         if ((strtolower($map) === "rdm") || (strtolower($map) === "rocketmap" && strtolower($fork) === "mad")) {
             if ($reloaddustamount == "true") {
-                $d["pokestops"] = array_merge($d["pokestops"], $scanner->get_stops_quest($greids, $qpreids, $qireids, $swLat, $swLng, $neLat, $neLng, 0, $oSwLat, $oSwLng, $oNeLat, $oNeLng, $lures, $rocket, $quests, $dustamount, $reloaddustamount));
+                $d["pokestops"] = array_merge($d["pokestops"], $scanner->get_stops_quest($greids, $qpreids, $qereids, $qireids, $swLat, $swLng, $neLat, $neLng, 0, $oSwLat, $oSwLng, $oNeLat, $oNeLng, $lures, $rocket, $quests, $dustamount, $reloaddustamount));
             }
             if (!empty($_POST['qpreids'])) {
                 $qpreids = !empty($_POST['qpreids']) ? array_unique(explode(",", $_POST['qpreids'])) : array();
 
                 $qpreidsDiff = array_diff($qpreids, $qpeids);
                 if (count($qpreidsDiff)) {
-                    $d["pokestops"] = array_merge($d["pokestops"], $scanner->get_stops_quest($greids, $qpreids, $qireids, $swLat, $swLng, $neLat, $neLng, 0, $oSwLat, $oSwLng, $oNeLat, $oNeLng, $lures, $rocket, $quests, $dustamount, $reloaddustamount));
+                    $d["pokestops"] = array_merge($d["pokestops"], $scanner->get_stops_quest($greids, $qpreids, $qereids, $qireids, $swLat, $swLng, $neLat, $neLng, 0, $oSwLat, $oSwLng, $oNeLat, $oNeLng, $lures, $rocket, $quests, $dustamount, $reloaddustamount));
                 }
 
                 $d["qpreids"] = $qpreids;
+            }
+            if (!empty($_POST['qereids'])) {
+                $qereids = !empty($_POST['qereids']) ? array_unique(explode(",", $_POST['qereids'])) : array();
+
+                $qereidsDiff = array_diff($qereids, $qeeids);
+                if (count($qereidsDiff)) {
+                    $d["pokestops"] = array_merge($d["pokestops"], $scanner->get_stops_quest($greids, $qpreids, $qereids, $qireids, $swLat, $swLng, $neLat, $neLng, 0, $oSwLat, $oSwLng, $oNeLat, $oNeLng, $lures, $rocket, $quests, $dustamount, $reloaddustamount));
+                }
+
+                $d["qereids"] = $qereids;
             }
             if (!empty($_POST['qireids'])) {
                 $qireids = !empty($_POST['qireids']) ? array_unique(explode(",", $_POST['qireids'])) : array();
 
                 $qireidsDiff = array_diff($qireids, $qieids);
                 if (count($qireidsDiff)) {
-                    $d["pokestops"] = array_merge($d["pokestops"], $scanner->get_stops_quest($greids, $qpreids, $qireids, $swLat, $swLng, $neLat, $neLng, 0, $oSwLat, $oSwLng, $oNeLat, $oNeLng, $lures, $rocket, $quests, $dustamount, $reloaddustamount));
+                    $d["pokestops"] = array_merge($d["pokestops"], $scanner->get_stops_quest($greids, $qpreids, $qereids, $qireids, $swLat, $swLng, $neLat, $neLng, 0, $oSwLat, $oSwLng, $oNeLat, $oNeLng, $lures, $rocket, $quests, $dustamount, $reloaddustamount));
                 }
 
                 $d["qireids"] = $qireids;
@@ -209,7 +221,7 @@ if (!$noPokestops) {
 
                 $greidsDiff = array_diff($greids, $geids);
                 if (count($greidsDiff)) {
-                    $d["pokestops"] = array_merge($d["pokestops"], $scanner->get_stops_quest($greids, $qpreids, $qireids, $swLat, $swLng, $neLat, $neLng, 0, $oSwLat, $oSwLng, $oNeLat, $oNeLng, $lures, $rocket, $quests, $dustamount, $reloaddustamount));
+                    $d["pokestops"] = array_merge($d["pokestops"], $scanner->get_stops_quest($greids, $qpreids, $qereids, $qireids, $swLat, $swLng, $neLat, $neLng, 0, $oSwLat, $oSwLng, $oNeLat, $oNeLng, $lures, $rocket, $quests, $dustamount, $reloaddustamount));
                 }
 
                 $d["greids"] = $greids;

@@ -269,7 +269,7 @@ class RDM extends Scanner
         return $data;
     }
 
-    public function get_stops($geids, $qpeids, $qieids, $swLat, $swLng, $neLat, $neLng, $tstamp = 0, $oSwLat = 0, $oSwLng = 0, $oNeLat = 0, $oNeLng = 0, $lures, $rocket, $quests, $dustamount)
+    public function get_stops($geids, $qpeids, $qeeids, $qieids, $swLat, $swLng, $neLat, $neLng, $tstamp = 0, $oSwLat = 0, $oSwLng = 0, $oNeLat = 0, $oNeLng = 0, $lures, $rocket, $quests, $dustamount)
     {
         $conds = array();
         $params = array();
@@ -300,6 +300,20 @@ class RDM extends Scanner
             } else {
                 $pokemonSQL .= "quest_pokemon_id IS NOT NULL";
             }
+            $energySQL = '';
+            if (count($qeeids)) {
+                $pkmn_in = '';
+                $p = 1;
+                foreach ($qeeids as $qeeid) {
+                    $params[':eqry_' . $p . "_"] = $qeeid;
+                    $pkmn_in .= ':eqry_' . $p . "_,";
+                    $p++;
+                }
+                $pkmn_in = substr($pkmn_in, 0, -1);
+                $energySQL .= "json_extract(json_extract(`quest_rewards`,'$[*].info.pokemon_id'),'$[0]') NOT IN ( $pkmn_in ) AND quest_reward_type = 12";
+            } else {
+                $energySQL .= "quest_reward_type = 12";
+            }
             $itemSQL = '';
             if (count($qieids)) {
                 $item_in = '';
@@ -327,7 +341,7 @@ class RDM extends Scanner
                 }
             }
             $megaSQL = " OR (quest_reward_type = 12)";
-            $conds[] = "(" . $pokemonSQL . " OR " . $itemSQL . ")" . $dustSQL . $megaSQL . "";
+            $conds[] = "(" . $pokemonSQL . " OR " . $itemSQL . " OR " . $energySQL . ")" . $dustSQL . "";
         }
         if (!empty($rocket) && $rocket === 'true') {
             $rocketSQL = '';
@@ -364,7 +378,7 @@ class RDM extends Scanner
         return $this->query_stops($conds, $params);
     }
 
-    public function get_stops_quest($greids, $qpreids, $qireids, $swLat, $swLng, $neLat, $neLng, $tstamp = 0, $oSwLat = 0, $oSwLng = 0, $oNeLat = 0, $oNeLng = 0, $lures, $rocket, $quests, $dustamount, $reloaddustamount)
+    public function get_stops_quest($greids, $qpreids, $qereids, $qireids, $swLat, $swLng, $neLat, $neLng, $tstamp = 0, $oSwLat = 0, $oSwLng = 0, $oNeLat = 0, $oNeLng = 0, $lures, $rocket, $quests, $dustamount, $reloaddustamount)
     {
         $conds = array();
         $params = array();
@@ -393,6 +407,17 @@ class RDM extends Scanner
                 }
                 $pkmn_in = substr($pkmn_in, 0, -1);
                 $tmpSQL .= "quest_pokemon_id IN ( $pkmn_in )";
+            }
+            if (count($qereids)) {
+                $pkmn_in = '';
+                $p = 1;
+                foreach ($qereids as $qereid) {
+                    $params[':eqry_' . $p . "_"] = $qereid;
+                    $pkmn_in .= ':eqry_' . $p . "_,";
+                    $p++;
+                }
+                $pkmn_in = substr($pkmn_in, 0, -1);
+                $tmpSQL .= "json_extract(json_extract(`quest_rewards`,'$[*].info.pokemon_id'),'$[0]') IN ( $pkmn_in ) AND quest_reward_type = 12";
             }
             if (count($qireids)) {
                 $item_in = '';
@@ -836,6 +861,17 @@ class RDM extends Scanner
             $data = array();
             foreach ($pokestops as $pokestop) {
                 $data[] = $pokestop['quest_pokemon_id'];
+            }
+        } elseif ($type === 'energylist') {
+            $pokestops = $db->query("
+                SELECT distinct
+                    json_extract(json_extract(`quest_rewards`,'$[*].info.pokemon_id'),'$[0]') AS quest_energy_pokemon_id
+                FROM pokestop
+                WHERE quest_reward_type = 12;"
+            )->fetchAll(\PDO::FETCH_ASSOC);
+            $data = array();
+            foreach ($pokestops as $pokestop) {
+                $data[] = $pokestop['quest_energy_pokemon_id'];
             }
         } elseif ($type === 'itemlist') {
             $pokestops = $db->query("SELECT distinct quest_item_id FROM pokestop WHERE quest_item_id > 0 AND DATE(FROM_UNIXTIME(quest_timestamp)) = '" . $curdate->format('Y-m-d') . "' order by quest_item_id;")->fetchAll(\PDO::FETCH_ASSOC);
