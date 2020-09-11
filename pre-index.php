@@ -4,18 +4,19 @@ if (! file_exists('config/config.php')) {
     die("<h1>Config file missing</h1><p>Please ensure you have created your config file (<code>config/config.php</code>).</p>");
 }
 include('config/config.php');
-if ($noNativeLogin === false || $noDiscordLogin === false) {
+if ($noNativeLogin === false || $noDiscordLogin === false || $noFacebookLogin === false) {
     if (isset($_COOKIE["LoginCookie"])) {
         if (validateCookie($_COOKIE["LoginCookie"]) === false) {
             header("Location: .");
         }
     }
-    if (!empty($_SESSION['user']->updatePwd) && $_SESSION['user']->updatePwd === 1) {
-        header("Location: ./user");
-        die();
-    }
     if (empty($_SESSION['user']->id) && $forcedLogin === true) {
-        header("Location: ./user");
+        header("Location: ./login?action=login");
+	die();
+    }
+    if (!empty($_SESSION['user']->updatePwd) && $_SESSION['user']->updatePwd === 1) {
+        header("Location: ./register?action=updatePwd");
+        die();
     }
 }
 $zoom        = ! empty($_GET['zoom']) ? $_GET['zoom'] : null;
@@ -65,37 +66,27 @@ if (strtolower($map) === "rdm") {
     <!-- Favicon -->
     <?php
     if ($faviconPath != "") {
-        echo '<link rel="shortcut icon" href="' . $faviconPath . '"
-             type="image/x-icon">';
+        echo '<link rel="shortcut icon" href="' . $faviconPath . '" type="image/x-icon">';
     } else {
-        echo '<link rel="shortcut icon" href="static/appicons/favicon.ico"
-             type="image/x-icon">';
+        echo '<link rel="shortcut icon" href="' . $appIconPath . 'favicon.ico" type="image/x-icon">';
     }
     ?>
     <!-- non-retina iPhone pre iOS 7 -->
-    <link rel="apple-touch-icon" href="static/appicons/114x114.png"
-          sizes="57x57">
+    <link rel="apple-touch-icon" href="<?php echo $appIconPath; ?>114x114.png" sizes="57x57">
     <!-- non-retina iPad pre iOS 7 -->
-    <link rel="apple-touch-icon" href="static/appicons/144x144.png"
-          sizes="72x72">
+    <link rel="apple-touch-icon" href="<?php echo $appIconPath; ?>144x144.png" sizes="72x72">
     <!-- non-retina iPad iOS 7 -->
-    <link rel="apple-touch-icon" href="static/appicons/152x152.png"
-          sizes="76x76">
+    <link rel="apple-touch-icon" href="<?php echo $appIconPath; ?>152x152.png" sizes="76x76">
     <!-- retina iPhone pre iOS 7 -->
-    <link rel="apple-touch-icon" href="static/appicons/114x114.png"
-          sizes="114x114">
+    <link rel="apple-touch-icon" href="<?php echo $appIconPath; ?>114x114.png" sizes="114x114">
     <!-- retina iPhone iOS 7 -->
-    <link rel="apple-touch-icon" href="static/appicons/120x120.png"
-          sizes="120x120">
+    <link rel="apple-touch-icon" href="<?php echo $appIconPath; ?>120x120.png" sizes="120x120">
     <!-- retina iPad pre iOS 7 -->
-    <link rel="apple-touch-icon" href="static/appicons/144x144.png"
-          sizes="144x144">
+    <link rel="apple-touch-icon" href="<?php echo $appIconPath; ?>144x144.png" sizes="144x144">
     <!-- retina iPad iOS 7 -->
-    <link rel="apple-touch-icon" href="static/appicons/152x152.png"
-          sizes="152x152">
+    <link rel="apple-touch-icon" href="<?php echo $appIconPath; ?>152x152.png" sizes="152x152">
     <!-- retina iPhone 6 iOS 7 -->
-    <link rel="apple-touch-icon" href="static/appicons/180x180.png"
-          sizes="180x180">
+    <link rel="apple-touch-icon" href="<?php echo $appIconPath; ?>180x180.png" sizes="180x180">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/list.js/1.5.0/list.min.js"></script>
     <?php
     function pokemonFilterImages($noPokemonNumbers, $onClick = '', $pokemonToExclude = array(), $num = 0)
@@ -149,6 +140,54 @@ if (strtolower($map) === "rdm") {
                 valueNames: ['name', 'types', 'id']
             };
             var monList = new List('pokemon-list-cont-<?php echo $num; ?>', options);
+        </script>
+        <?php
+    }
+
+    function energyFilterImages($noPokemonNumbers, $onClick = '', $energyToExclude = array(), $num = 0)
+    {
+        global $mons, $copyrightSafe, $iconRepository, $numberOfPokemon;
+        if (empty($mons)) {
+            $json = file_get_contents('static/dist/data/pokemon.min.json');
+            $mons = json_decode($json, true);
+        }
+        echo '<div class="energy-list-cont" id="energy-list-cont-' . $num . '">
+        <input type="hidden" class="search-number" value="' . $num . '" />
+        <input class="search search-input" placeholder="' . i8ln("Search Name, ID & Type") . '" />
+        <div class="energy-list list">';
+        $i = 0;
+        $z = 0;
+        foreach ($mons as $k => $pokemon) {
+            $type = '';
+            $name = $pokemon['name'];
+            foreach ($pokemon['types'] as $t) {
+                $type .= i8ln($t['type']);
+            }
+            if (! in_array($k, $energyToExclude)) {
+                if ($k > $numberOfPokemon) {
+                    break;
+                }
+                echo '<span class="energy-icon-sprite" data-value="' . $k . '" onclick="' . $onClick . '">
+                <span style="display:none" class="types">' . $type . '</span>
+                <span style="display:none" class="name">' . i8ln($name) . '</span>
+                <span style="display:none" class="id">' . $k . '</span>';
+                if (! $copyrightSafe) {
+                    echo '<img src="' . $iconRepository . 'rewards/reward_mega_energy_' . $k . '.png" style="width:48px;height:48px;"/>';
+                } else {
+                    echo '<img src="static/icons-safe/pokemon_icon_' . $k . '_00.png" style="width:48px;height:48px;"/>';
+                }
+                if (! $noPokemonNumbers) {
+                    echo "<span class='pokemon-number'>" . $k . "</span>";
+                }
+                echo "</span>";
+            }
+        }
+        echo '</div></div>'; ?>
+        <script>
+            var options = {
+                valueNames: ['name', 'types', 'id']
+            };
+            var energyList = new List('energy-list-cont-<?php echo $num; ?>', options);
         </script>
         <?php
     }
@@ -225,7 +264,10 @@ if (strtolower($map) === "rdm") {
             $json = file_get_contents('static/dist/data/raidegg.min.json');
             $egg = json_decode($json, true);
         }
-        echo '<div class="raidegg-list-cont" id="raidegg-list-cont-' . $num . '"><input type="hidden" class="search-number" value="' . $num . '" /><input class="search search-input" placeholder="' . i8ln("Search Level") . '" /><div class="raidegg-list list">';
+        echo '<div class="raidegg-list-cont" id="raidegg-list-cont-' . $num . '">
+        <input type="hidden" class="search-number" value="' . $num . '" />
+        <input class="search search-input" placeholder="' . i8ln("Search Level") . '" />
+        <div class="raidegg-list list">';
         $i = 0;
         $z = 0;
         foreach ($egg as $e => $egg) {
@@ -233,7 +275,9 @@ if (strtolower($map) === "rdm") {
             $eggLevel = $egg['level'];
             $eggType = $egg['type'];
             if (! in_array($e, $raideggToExclude)) {
-                echo '<span class="raidegg-icon-sprite" data-value="' . $e . '" onclick="' . $onClick . '"><span style="display:none" class="level">' . $eggLevel . '</span><img src="static/raids/egg_' . $eggImage . '.png" style="width:48px;"/>';
+                echo '<span class="raidegg-icon-sprite" data-value="' . $e . '" onclick="' . $onClick . '">
+                <span style="display:none" class="level">' . $eggLevel . '</span>
+                <img src="static/raids/egg_' . $eggImage . '.png" style="width:48px;"/>';
                 if (! $noRaideggNumbers) {
                     echo '<span class="raidegg-number">' . $eggLevel . '</span>';
                 }
@@ -380,16 +424,10 @@ if (!$noLoadingScreen) {
         } ?>
         
         <?php
-        if ($noNativeLogin === false || $noDiscordLogin === false) {
-            if (!empty($_SESSION['user']->id)) {
-                if ($_SESSION['user']->expire_timestamp < time() && $manualAccessLevel === true) {
-                    echo '<i class="fas fa-user-times" title="' . i8ln('User Expired') . '" style="color: red;font-size: 20px;position: relative;float: right;padding: 0 5px;top: 17px;"></i>';
-                } else {
-                    echo '<i class="fas fa-user-check" title="' . i8ln('User Logged in') . '" style="color: green;font-size: 20px;position: relative;float: right;padding: 0 5px;top: 17px;"></i>';
-                }
-            } else {
-                echo "<a href='./user' style='float:right;padding:0 5px;' title='" . i8ln('Login') . "'><i class='fas fa-user' style='color:white;font-size:20px;vertical-align:middle;'></i></a>";
-            }
+        if (!empty($_SESSION['user']->id)) {
+            echo "<a href='#' onclick='openAccountModal(event);' style='float:right;padding:0 5px;' title='" . i8ln('Profile') . "'><img src='" .  $_SESSION['user']->avatar . "' style='height:40px;width:40px;border-radius:50%;border:2px solid;vertical-align: middle;'></a>";
+        } else {
+            echo "<a href='#' onclick='openAccountModal(event);' style='float:right;padding:0 5px;' title='" . i8ln('Profile') . "'><i class='fas fa-user' style='color:white;font-size:20px;vertical-align:middle;'></i></a>";
         }
         ?>
     </header>
@@ -694,13 +732,19 @@ if (!$noLoadingScreen) {
                                 <?php
                                 if (! $noQuestsPokemon) {
                                     ?>
-                                    <li><a href="#tabs-1"><?php echo i8ln('Hide Pokémon') ?></a></li>
+                                    <li><a href="#tabs-1"><?php echo i8ln('Pokémon') ?></a></li>
                                     <?php
                                 } ?>
                                 <?php
                                 if (! $noQuestsItems) {
                                     ?>
-                                    <li><a href="#tabs-2"><?php echo i8ln('Hide Items') ?></a></li>
+                                    <li><a href="#tabs-2"><?php echo i8ln('Items') ?></a></li>
+                                    <?php
+                                } ?>
+                                <?php
+                                if (! $noQuestsEnergy) {
+                                    ?>
+                                    <li><a href="#tabs-3"><?php echo i8ln('Energy') ?></a></li>
                                     <?php
                                 } ?>
                             </ul>
@@ -745,6 +789,29 @@ if (!$noLoadingScreen) {
                                             <a href="#" class="select-all-item"><?php echo i8ln('All') ?>
                                                 <div>
                                             </a><a href="#" class="hide-all-item"><?php echo i8ln('None') ?> </a>
+                                        </label>
+                                    </div>
+                                </div>
+                                <?php
+                            } ?>
+                            <?php
+                            if (! $noQuestsEnergy) {
+                                ?>
+                                <div id="tabs-3">
+                                    <div class="form-control hide-select-2">
+                                        <label for="exclude-quests-energy">
+                                            <div class="quest-energy-container">
+                                                <input id="exclude-quests-energy" type="text" readonly="true">
+                                                <?php
+                                                    if ($generateExcludeQuestsEnergy === true) {
+                                                        energyFilterImages($noPokemonNumbers, '', array_diff(range(1, $numberOfPokemon), $getList->generated_exclude_list('energylist')), 9);
+                                                    } else {
+                                                        energyFilterImages($noPokemonNumbers, '', $excludeQuestsEnergy, 9);
+                                                    } ?>
+                                            </div>
+                                            <a href="#" class="select-all-energy"><?php echo i8ln('All') ?>
+                                                <div>
+                                            </a><a href="#" class="hide-all-energy"><?php echo i8ln('None') ?> </a>
                                         </label>
                                     </div>
                                 </div>
@@ -826,6 +893,7 @@ if (!$noLoadingScreen) {
                                 <option value="3">3</option>
                                 <option value="4">4</option>
                                 <option value="5">5</option>
+                                <option value="6">6</option>
                             </select>
                         </div>
                         <div class="form-control switch-container" id="max-level-raids-filter-wrapper" style="float:none;height:50px;margin-bottom:5px;">
@@ -836,6 +904,7 @@ if (!$noLoadingScreen) {
                                 <option value="3">3</option>
                                 <option value="4">4</option>
                                 <option value="5">5</option>
+                                <option value="6">6</option>
                             </select>
                         </div>
                         <?php
@@ -1311,6 +1380,7 @@ if (!$noLoadingScreen) {
                             <option value="3">3</option>
                             <option value="4">4</option>
                             <option value="5">5</option>
+                            <option value="6">6</option>
                         </select>
                     </div>';
             }
@@ -1509,74 +1579,6 @@ if (!$noLoadingScreen) {
             }
             ?>
         </div>
-        <div>
-            <center>
-                <button class="settings"
-                        onclick="confirm('<?php echo i8ln('Are you sure you want to reset settings to default values?') ?>') ? (localStorage.clear(), window.location.reload()) : false">
-                    <i class="fas fa-sync-alt" aria-hidden="true"></i> <?php echo i8ln('Reset Settings') ?>
-                </button>
-            </center>
-        </div>
-        <div>
-            <center>
-                <button class="settings"
-                        onclick="download('<?= addslashes($title) ?>', JSON.stringify(JSON.stringify(localStorage)))">
-                    <i class="fas fa-upload" aria-hidden="true"></i> <?php echo i8ln('Export Settings') ?>
-                </button>
-            </center>
-        </div>
-        <div>
-            <center>
-                <input id="fileInput" type="file" style="display:none;" onchange="openFile(event)"/>
-                <button class="settings"
-                        onclick="document.getElementById('fileInput').click()">
-                    <i class="fas fa-download" aria-hidden="true"></i> <?php echo i8ln('Import Settings') ?>
-                </button>
-            </center>
-        </div>
-        <?php
-        if (($noNativeLogin === false || $noDiscordLogin === false) && !empty($_SESSION['user']->id)) {
-            ?>
-            <div><center>
-                <button class="settings" onclick="document.location.href='logout.php'">
-                    <i class="fas fa-sign-out-alt" aria-hidden="true"></i> <?php echo i8ln('Logout'); ?>
-                </button>
-            </center></div>
-            <?php
-        } ?>
-        <?php
-        if (!$noLocaleSelection) {
-            ?>
-            <div class="form-control switch-container" style="width:40%;left:32%;top:10px;position:relative;">
-                <select name="language-switch" onchange="location = this.value;">
-                    <option selected><?php echo i8ln('select language'); ?></option>
-                    <option value="?lang=en"><?php echo i8ln('English'); ?></option>
-                    <option value="?lang=de"><?php echo i8ln('German'); ?></option>
-                    <option value="?lang=fr"><?php echo i8ln('French'); ?></option>
-                    <option value="?lang=it"><?php echo i8ln('Italian'); ?></option>
-                    <option value="?lang=pl"><?php echo i8ln('Polish'); ?></option>
-                    <option value="?lang=sp"><?php echo i8ln('Spanish'); ?></option>
-                    <option value="?lang=sv"><?php echo i8ln('Swedish'); ?></option>
-                </select>
-            </div>
-            <br><br>
-            <?php
-        }?>
-        <?php
-        if (($noNativeLogin === false || $noDiscordLogin === false) && !empty($_SESSION['user']->id)) {
-            if ($manualAccessLevel) {
-                $time = date("Y-m-d", $_SESSION['user']->expire_timestamp);
-                echo '<div><center><p>';
-                if ($_SESSION['user']->expire_timestamp > time()) {
-                    echo "<span style='color: green;'>" . i8ln('Membership expires on') . " {$time}</span>";
-                } else {
-                    echo "<span style='color: red;'>" . i8ln('Membership expired on') . " {$time}</span>";
-                }
-                echo '</p></center></div>';
-            }
-            echo '<div><center><p>' . i8ln('Logged in as') . ': ' . $_SESSION['user']->user . '</p></center></div><br>';
-        }
-        ?>
     </nav>
     <nav id="stats">
         <div class="switch-container">
@@ -1585,7 +1587,7 @@ if (!$noLoadingScreen) {
                 ?>
                 <div class="switch-container">
                     <div>
-                        <center><a class="button" href="<?= $worldopoleUrl ?>"><i class="far fa-chart-bar"></i><?php echo i8ln(' Full Stats') ?></a></center>
+                        <center><a class="button" href="<?= $worldopoleUrl ?>" target="_blank"><i class="far fa-chart-bar"></i><?php echo i8ln(' Full Stats') ?></a></center>
                     </div>
                 </div>
                 <?php
@@ -1640,9 +1642,86 @@ if (!$noLoadingScreen) {
 
     <div id="map"></div>
     <div class="loader" style="display:none;"></div>
-    <div class="global-raid-modal">
+    <div class="global-raid-modal"></div>
 
+    <div class="account-modal" style="display: none;">
+        <?php
+        if (!empty($_SESSION['user']->id)) { ?>
+            <div style="display:flex;">
+                <img src="<?php echo $_SESSION['user']->avatar; ?>" style="height:80px;width:80px;border-radius:50%;border:2px solid;position:relative;top:13px;">
+                <div style="position:relative;left:20px;font-size:13px;top:35px;">
+                    <b><?php echo $_SESSION['user']->user; ?></b>
+                </div>
+            </div>
+            <div>
+                <a class="settings" style="position: absolute;left: 113px;top: 80px;color: red;cursor: pointer;border: 1px solid red;border-radius: 8px;" onclick="document.location.href='<?php echo 'logout?action=' . $_SESSION['user']->login_system . '-logout';?>'">
+                    <i class="fas fa-sign-out-alt" aria-hidden="true"></i> <?php echo i8ln('Logout'); ?>
+                </a>
+            </div>
+            <?php
+            if ($_SESSION['user']->login_system == 'native') {
+                ?>
+                <div>
+                    <a style="position:relative;top:18px;left:96px;color:red;cursor:pointer;border:1px solid red;border-radius:8px;" class="settings" onclick="document.location.href='<?php echo 'register?action=password-update&username=' . $_SESSION['user']->user;?>'">
+                        <i class="fas fa-lock" aria-hidden="true"></i> <?php echo i8ln('Change password'); ?>
+                    </a>
+                </div>
+                <?php
+            }
+        } else {
+            echo "<div class='button-container'>";
+            if ($noNativeLogin === false) {
+                echo "<div><button style='background-color: #395697;font-size:13px;margin-bottom:0;' onclick=\"location.href='./login?action=login';\" value='Login'><i class='fas fa-user'></i> " . i8ln('Login') . "</button></div>";
+            }
+            if ($noDiscordLogin === false) {
+                echo "<div><button style='background-color: #395697;font-size:13px;margin-bottom:0;' onclick=\"location.href='./login?action=discord-login';\" value='Login with discord'><i class='fab fa-discord'></i> " . i8ln('Login with Discord') . "</button></div>";
+            }
+            if ($noFacebookLogin === false) {
+	        echo "<div><button style='background-color: #395697;font-size:13px;margin-bottom:0;' onclick=\"location.href='./login?action=facebook-login';\" value='Login with facebook'><i class='fab fa-facebook'></i> " . i8ln('Login with Facebook') . "</button></div>";
+            }
+            echo "</div>";
+        } ?>
+
+        <hr style="border: 1px solid #5a5a5aab;">
+
+        <div class="button-container">
+            <div>
+                <button class="settings" onclick="confirm('<?php echo i8ln('Are you sure you want to reset settings to default values?') ?>') ? (localStorage.clear(), window.location.reload()) : false">
+                    <i class="fas fa-sync-alt" aria-hidden="true"></i> <?php echo i8ln('Reset Settings') ?>
+                </button>
+            </div>
+            <div>
+                <button class="settings" onclick="download('<?= addslashes($title) ?>', JSON.stringify(JSON.stringify(localStorage)))">
+                    <i class="fas fa-upload" aria-hidden="true"></i> <?php echo i8ln('Export Settings') ?>
+                </button>
+            </div>
+            <div>
+                <input id="fileInput" type="file" style="display:none;" onchange="openFile(event)"/>
+                <button class="settings" onclick="document.getElementById('fileInput').click()">
+                    <i class="fas fa-download" aria-hidden="true"></i> <?php echo i8ln('Import Settings') ?>
+                </button>
+            </div>
+            <?php
+            if (!$noLocaleSelection) {
+                ?>
+                <div style="top:10px;position:relative;">
+                    <select class="language-select" name="language-switch" onchange="location = this.value;">
+                        <option selected><?php echo i8ln('select language'); ?></option>
+                        <option value="?lang=en"><?php echo i8ln('English'); ?></option>
+                        <option value="?lang=de"><?php echo i8ln('German'); ?></option>
+                        <option value="?lang=fr"><?php echo i8ln('French'); ?></option>
+                        <option value="?lang=it"><?php echo i8ln('Italian'); ?></option>
+                        <option value="?lang=pl"><?php echo i8ln('Polish'); ?></option>
+                        <option value="?lang=sp"><?php echo i8ln('Spanish'); ?></option>
+                        <option value="?lang=sv"><?php echo i8ln('Swedish'); ?></option>
+                    </select>
+                </div>
+                <br><br>
+                <?php
+            }?>
+        </div>
     </div>
+
     <?php if (! $noManualNests) { ?>
         <div class="global-nest-modal" style="display:none;">
             <input type="hidden" name="pokemonID" class="pokemonID"/>
@@ -1837,6 +1916,7 @@ if (!$noLoadingScreen) {
                 <option value="3">3</option>
                 <option value="4">4</option>
                 <option value="5">5</option>
+                <option value="6">6</option>
             </select>
             <select id="throwTypeList" name="throwTypeList" class="throwTypeList">
                 <option />
@@ -2221,6 +2301,7 @@ if (!$noLoadingScreen) {
     var enableQuests = <?php echo $noQuests ? 'false' : $enableQuests ?>;
     var hideQuestsPokemon = <?php echo $noQuestsPokemon ? '[]' : $hideQuestsPokemon ?>;
     var hideQuestsItem = <?php echo $noQuestsItems ? '[]' : $hideQuestsItem ?>;
+    var hideQuestsEnergy = <?php echo $noQuestsEnergy ? '[]' : $hideQuestsEnergy ?>;
     var enableNewPortals = <?php echo (($map != "monocle") || ($fork == "alternate")) ? $enableNewPortals : 0 ?>;
     var enableWeatherOverlay = <?php echo ! $noWeatherOverlay ? $enableWeatherOverlay : 'false' ?>;
     var enableSpawnpoints = <?php echo $noSpawnPoints ? 'false' : $enableSpawnPoints ?>;
@@ -2270,8 +2351,6 @@ if (!$noLoadingScreen) {
     var noAddNewCommunity = <?php echo $noAddNewCommunity === true ? 'true' : 'false' ?>;
     var noDeleteCommunity = <?php echo $noDeleteCommunity === true ? 'true' : 'false' ?>;
     var noEditCommunity = <?php echo $noEditCommunity === true ? 'true' : 'false' ?>;
-    var login = <?php echo $noNativeLogin === false || $noDiscordLogin === false  ? 'true' : 'false' ?>;
-    var expireTimestamp = <?php echo isset($_SESSION['user']->expire_timestamp) ? $_SESSION['user']->expire_timestamp : 0 ?>;
     var timestamp = <?php echo time() ?>;
     var noRenamePokestops = <?php echo $noRenamePokestops === true ? 'true' : 'false' ?>;
     var noRenameGyms = <?php echo $noRenameGyms === true ? 'true' : 'false' ?>;

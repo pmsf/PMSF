@@ -190,8 +190,7 @@ module.exports = function (grunt) {
                     collapseWhitespace: true
                 },
                 files: {
-                    'index.php': 'pre-index.php',
-                    'user.php': 'pre-user.php'
+                    'index.php': 'pre-index.php'
                 }
             }
         },
@@ -201,7 +200,7 @@ module.exports = function (grunt) {
             },
             taskName: {
                 files: [{
-                    src: ['index.php', 'user.php']
+                    src: ['index.php']
                 }]
             }
         }
