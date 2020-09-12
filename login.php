@@ -68,6 +68,10 @@ if (isset($_GET['action'])) {
                                 break;
                             case 'no-id':
                                 $html .= "<div id='login-error'>" . i8ln('Something went wrong as we couldn\'t find your session id.') . "</div>";
+                                break;
+                            case 'access-change':
+                                $html .= "<div id='login-error'>" . i8ln('Your level of access changed while logged in please login again to get the new level of access.') . "</div>";
+                                break;
                         }
                     }
                     $html .= '<div class="imgcontainer">

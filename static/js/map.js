@@ -7713,7 +7713,7 @@ function updateUser() {
     }
     loadUser(engine).done(function (result) {
         if (result === 'reload') {
-            window.location.href = './logout?action=' + engine + '-logout'
+            window.location.href = './logout?action=' + engine + '-logout&reason=change'
         }
     })
 }
