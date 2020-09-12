@@ -326,7 +326,7 @@ class Monocle_PMSF extends Monocle
 
     public function query_gyms($conds, $params)
     {
-        global $db;
+        global $db, $noTeams, $noExEligible;
 
         $query = "SELECT f.external_id AS gym_id,
         fs.last_modified AS last_modified,
@@ -363,14 +363,14 @@ class Monocle_PMSF extends Monocle
                 $raid_pid = null;
                 $gym["raid_pokemon_id"] = null;
             }
-            $gym["team_id"] = intval($gym["team_id"]);
+            $gym["team_id"] = $noTeams ? 0 : intval($gym["team_id"]);
             $gym["pokemon"] = [];
             $gym["raid_pokemon_name"] = empty($raid_pid) ? null : i8ln($this->data[$raid_pid]["name"]);
             $gym["raid_pokemon_gender"] = 0;
             $gym["form"] = intval($gym["raid_pokemon_form"]);
             $gym["latitude"] = floatval($gym["latitude"]);
             $gym["longitude"] = floatval($gym["longitude"]);
-            $gym["slots_available"] = intval($gym["slots_available"]);
+            $gym["slots_available"] = $noTeams ? 0 : intval($gym["slots_available"]);
             $gym["last_modified"] = $gym["last_modified"] * 1000;
             $gym["last_scanned"] = $gym["last_scanned"] * 1000;
             $gym["raid_start"] = $gym["raid_start"] * 1000;
