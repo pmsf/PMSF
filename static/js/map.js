@@ -1425,7 +1425,7 @@ function pokemonLabel(item) {
     if (!noHideSingleMarker) {
         contentstring += ' | <a href="javascript:removePokemonMarker(\'' + encounterId + '\')" title="' + i8ln('Remove this Pokémon from the map') + '"><i class="fas fa-eye-slash" style="font-size:15px;width:20px;"></i></a>'
     }
-    contentString += ' | <a href="javascript:void(0);" onclick="javascript:toggleOtherPokemon(' + id + ');" title="' + i8ln('Toggle display of other Pokémon') + '"><i class="fas fa-search-plus" style="font-size:15px;width:20px;"></i></a>' +
+    contentstring += ' | <a href="javascript:void(0);" onclick="javascript:toggleOtherPokemon(' + id + ');" title="' + i8ln('Toggle display of other Pokémon') + '"><i class="fas fa-search-plus" style="font-size:15px;width:20px;"></i></a>' +
     '</div></center>'
     if (atk != null && def != null && sta != null && noCatchRates) {
         contentstring += '<div style="position:relative;top:55px;"><center>'
