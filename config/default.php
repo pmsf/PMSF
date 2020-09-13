@@ -204,7 +204,7 @@ $noCatchRates = false;
 $noRarityDisplay = false;                                      // true/false
 $noWeatherIcons = true;
 $no100IvShadow = false;
-
+$noHideSingleMarker = false;
 /* Notification Settings */
 $noNotifyPokemon = false;                                       // true/false
 $noNotifyRarity = false;                                        // true/false
