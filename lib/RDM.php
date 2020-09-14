@@ -310,7 +310,7 @@ class RDM extends Scanner
                     $p++;
                 }
                 $pkmn_in = substr($pkmn_in, 0, -1);
-                $energySQL .= "json_extract(json_extract(`quest_rewards`,'$[*].info.pokemon_id'),'$[0]') NOT IN ( $pkmn_in ) AND quest_reward_type = 12";
+                $energySQL .= "(json_extract(json_extract(`quest_rewards`,'$[*].info.pokemon_id'),'$[0]') NOT IN ( $pkmn_in ) AND quest_reward_type = 12)";
             } else {
                 $energySQL .= "quest_reward_type = 12";
             }
@@ -340,8 +340,7 @@ class RDM extends Scanner
                     $dustSQL .= " AND (ST_WITHIN(point(lat,lon),ST_GEOMFROMTEXT('POLYGON(( " . $boundaries . " ))')))";
                 }
             }
-            $megaSQL = " OR (quest_reward_type = 12)";
-            $conds[] = "(" . $pokemonSQL . " OR " . $itemSQL . " OR " . $energySQL . ")" . $dustSQL . "";
+            $conds[] = "(" . $pokemonSQL . " OR " . $itemSQL . " OR " . $energySQL . ")" . $dustSQL;
         }
         if (!empty($rocket) && $rocket === 'true') {
             $rocketSQL = '';
@@ -358,7 +357,7 @@ class RDM extends Scanner
             } else {
                 $rocketSQL .= "grunt_type IS NOT NULL";
             }
-            $conds[] = "" . $rocketSQL . "";
+            $conds[] = $rocketSQL;
         }
         if ($oSwLat != 0) {
             $conds[] = "NOT (lat > :oswLat AND lon > :oswLng AND lat < :oneLat AND lon < :oneLng)";
@@ -417,7 +416,7 @@ class RDM extends Scanner
                     $p++;
                 }
                 $pkmn_in = substr($pkmn_in, 0, -1);
-                $tmpSQL .= "json_extract(json_extract(`quest_rewards`,'$[*].info.pokemon_id'),'$[0]') IN ( $pkmn_in ) AND quest_reward_type = 12";
+                $tmpSQL .= "(json_extract(json_extract(`quest_rewards`,'$[*].info.pokemon_id'),'$[0]') IN ( $pkmn_in ) AND quest_reward_type = 12)";
             }
             if (count($qireids)) {
                 $item_in = '';

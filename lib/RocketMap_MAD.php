@@ -549,9 +549,9 @@ class RocketMap_MAD extends RocketMap
                     $p++;
                 }
                 $pkmn_in = substr($pkmn_in, 0, -1);
-                $pokemonSQL .= "tq.quest_pokemon_id NOT IN ( $pkmn_in ) AND quest_reward_type = 7";
+                $pokemonSQL .= "(tq.quest_pokemon_id NOT IN ( $pkmn_in ) AND tq.quest_reward_type = 7)";
             } else {
-                $pokemonSQL .= "tq.quest_pokemon_id IS NOT NULL AND quest_reward_type = 7";
+                $pokemonSQL .= "tq.quest_reward_type = 7";
             }
             $energySQL = '';
             if (count($qeeids)) {
@@ -563,7 +563,7 @@ class RocketMap_MAD extends RocketMap
                     $p++;
                 }
                 $pkmn_in = substr($pkmn_in, 0, -1);
-                $energySQL .= "tq.quest_pokemon_id NOT IN ( $pkmn_in ) AND tq.quest_reward_type = 12";
+                $energySQL .= "(tq.quest_pokemon_id NOT IN ( $pkmn_in ) AND tq.quest_reward_type = 12)";
             } else {
                 $energySQL .= "tq.quest_reward_type = 12";
             }
@@ -646,7 +646,7 @@ class RocketMap_MAD extends RocketMap
                     $p++;
                 }
                 $pkmn_in = substr($pkmn_in, 0, -1);
-                $tmpSQL .= "tq.quest_pokemon_id IN ( $pkmn_in ) AND tq.quest_reward_type = 7";
+                $tmpSQL .= "(tq.quest_pokemon_id IN ( $pkmn_in ) AND tq.quest_reward_type = 7)";
             }
             if (count($qereids)) {
                 $pkmn_in = '';
@@ -657,7 +657,7 @@ class RocketMap_MAD extends RocketMap
                     $p++;
                 }
                 $pkmn_in = substr($pkmn_in, 0, -1);
-                $tmpSQL .= "tq.quest_pokemon_id IN ( $pkmn_in ) AND tq.quest_reward_type = 12";
+                $tmpSQL .= "(tq.quest_pokemon_id IN ( $pkmn_in ) AND tq.quest_reward_type = 12)";
             }
             if (count($qireids)) {
                 $item_in = '';
