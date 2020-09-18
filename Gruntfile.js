@@ -191,7 +191,8 @@ module.exports = function (grunt) {
                 },
                 files: {
                     'index.php': 'pre-index.php',
-                    'login.php': 'pre-login.php'
+                    'login.php': 'pre-login.php',
+                    'register.php': 'pre-register.php'
                 }
             }
         },
@@ -201,7 +202,7 @@ module.exports = function (grunt) {
             },
             taskName: {
                 files: [{
-                    src: ['index.php', 'login.php']
+                    src: ['index.php', 'login.php', 'register.php']
                 }]
             }
         }
