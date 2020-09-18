@@ -181,7 +181,7 @@ module.exports = function (grunt) {
             }
         },
         phplint: {
-            files: ['**.php', '**/*.php', '!node_modules/**']
+            files: ['**.php', '**/*.php', '!node_modules/**', '!vendor/**']
         },
         htmlmin: {
             dist: {
@@ -190,7 +190,8 @@ module.exports = function (grunt) {
                     collapseWhitespace: true
                 },
                 files: {
-                    'index.php': 'pre-index.php'
+                    'index.php': 'pre-index.php',
+                    'login.php': 'pre-login.php'
                 }
             }
         },
@@ -200,7 +201,7 @@ module.exports = function (grunt) {
             },
             taskName: {
                 files: [{
-                    src: ['index.php']
+                    src: ['index.php', 'login.php']
                 }]
             }
         }
