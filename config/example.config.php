@@ -601,7 +601,7 @@ $db = new Medoo([
 //]);
 
 // DONT EDIT THE CODE BELOW
-if (($noNativeLogin === false || $noDiscordLogin === false) && !empty($_SESSION['user']->user)) {
+if (($noNativeLogin === false || $noDiscordLogin === false || $noFacebookLogin === false || $noPatreonLogin === false) && !empty($_SESSION['user']->user)) {
     if (file_exists('config/access-config.php')) {
         include 'config/access-config.php';
     }
