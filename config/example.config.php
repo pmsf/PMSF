@@ -101,6 +101,7 @@ $paypalUrl = "";                                                    // PayPal do
 $discordUrl = "https://discord.gg/INVITE_LINK";                     // Discord URL, leave "" for empty
 $whatsAppUrl = "";                                                  // WhatsApp URL, leave "" for empty
 $telegramUrl = "";                                                  // Telegram URL, leave "" for empty
+$patreonUrl = "";                                                   // Patreon URL, leave "" for empty
 $customUrl = "";                                                    // Custom URL, leave "" for empty
 $customUrlFontIcon = "far fa-smile-beam";                           // Choose a custom icon on: https://fontawesome.com/icons?d=gallery&m=free
 
@@ -172,6 +173,19 @@ $facebookAppId = '';                            // Facebook App ID
 $facebookAppSecret = '';                        // Facebook App Secret
 $facebookAppRedirectUri = 'https://Yourdomain.com/login?callback=facebook'; // Callback url make sure this is the same as set in Facebook app config
 $facebookAccessLevel = '1';                     // Accesslevel used in access-config.php
+
+$noPatreonLogin = false;
+$patreonClientId = '';
+$patreonClientSecret = '';
+$patreonCreatorAccessToken = '';
+$patreonCallbackUri = 'https://Yourdomain.com/login?callback=patreon';
+
+$patreonTierRequired = true;                                        // Member must have pledged set to false to allow any patreon user to log in.
+$patreonTiers = [						    // Tier ids can be obtained by clicking the join tier button on patreon and the URL will show you checkout?rid=<NUMBER>
+	'<NUMBER>' => 1,
+	'<NUMBER>' => 2,
+	'<NUMBER>' => 3
+];
 
 $userBlacklist = [''];                                              // Array of user ID's that are always blocked from accessing the map
 $userWhitelist = [''];                                              // Array of user ID's that's allowed to bypass the server blacklist
