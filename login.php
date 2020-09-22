@@ -77,6 +77,9 @@ if (isset($_GET['action'])) {
                                 break;
                             case 'invalid-token':
                                 $html .= "<div id='login-error'>" . i8ln('We have logged you out. This might be because of invalid or expired token or your account has been logged in on another device.') . "</div>";
+                            case 'access-change':
+                                $html .= "<div id='login-error'>" . i8ln('Your level of access changed while logged in please login again to get the new level of access.') . "</div>";
+
                                 break;
                         }
                     }
@@ -107,6 +110,10 @@ if (isset($_GET['action'])) {
                     if ($noNativeLogin === false) {
                         $html .= "<button type='button' style='background-color: #4CAF50; margin: 2px' onclick=\"location.href='./register?action=account';\" value='Register'><i class='fas fa-user'></i>&nbsp" . i8ln('Register') . "</button>";
                         $html .= "<button type='button' style='background-color: #4CAF50; margin: 2px' onclick=\"location.href='./register?action=password-reset';\" value='Forgot password?'><i class='fas fa-lock'></i>&nbsp" . i8ln('Forgot Password') . "</button>";
+                    }
+                    if ($noNativeLogin && $noDiscordLogin && $noFacebookLogin) {
+                        header("Location: ./");
+			die();
                     }
                     $html .= '</div>
                 </form>
@@ -643,6 +650,7 @@ function parse_signed_request($signed_request) {
 function base64_url_decode($input) {
     return base64_decode(strtr($input, '-_', '+/'));
 }
+
 function patreon_call($bearer, $api) {
     $ch = curl_init('https://www.patreon.com' . $api);
     curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
@@ -656,3 +664,5 @@ function patreon_call($bearer, $api) {
 
     return $data;
 }
+header("Location: ./");
+die();

@@ -4,8 +4,6 @@ namespace Config;
 
 // Do not touch this!
 require 'default.php';
-require __DIR__ . '/../Medoo.php';
-
 use Medoo\Medoo;
 
 //======================================================================
@@ -211,6 +209,7 @@ $noCatchRates = false;
 $noRarityDisplay = false;
 $noWeatherIcons = true;
 $no100IvShadow = false;
+$noHideSingleMarker = false;
 /* Notification Settings */
 $noNotifyPokemon = false;
 $noNotifyRarity = false;

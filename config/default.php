@@ -11,7 +11,9 @@
 if (!isset($_SESSION)) {
     session_start();
 }
+require 'vendor/autoload.php';
 require_once(__DIR__ . '/../utils.php');
+
 
 $libs[] = "Scanner.php";
 $libs[] = "Monocle.php";
@@ -26,6 +28,7 @@ $libs[] = "search/Search.rocketmap_mad.php";
 $libs[] = "submit/Submit.php";
 $libs[] = "submit/Manual.php";
 $libs[] = "submit/Submit.rdm.php";
+$libs[] = "submit/Submit.rocketmap_mad.php";
 $libs[] = "submit/Submit.monocle_pmsf.php";
 $libs[] = "Manual.php";
 
@@ -212,7 +215,7 @@ $noCatchRates = false;
 $noRarityDisplay = false;                                      // true/false
 $noWeatherIcons = true;
 $no100IvShadow = false;
-
+$noHideSingleMarker = false;
 /* Notification Settings */
 $noNotifyPokemon = false;                                       // true/false
 $noNotifyRarity = false;                                        // true/false
