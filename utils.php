@@ -41,9 +41,9 @@ function refreshCsrfToken()
     if (time() - $_SESSION['c'] > $sessionLifetime) {
         session_regenerate_id(true);
         generateToken();
-	if (!empty($_SESSION['user']->id)) {
+        if (!empty($_SESSION['user']->id)) {
             $manualdb->update('users', ['session_token' => $_SESSION['token']], ['id' => $_SESSION['user']->id]);
-	}
+        }
     }
     return $_SESSION['token'];
 }
@@ -63,7 +63,7 @@ function validateToken($token)
             $user = $manualdb->get('users', ['id', 'session_token'], ['id' => $_SESSION['user']->id]);
             if ($user['session_token'] == $_SESSION['token'] || $allowMultiLogin) {
                 $validity = 'valid';
-            } else if ($user['session_token'] != $_SESSION['token'] && $useLoginCookie && $_COOKIE['LoginSession'] == $user['session_token']) {
+            } elseif ($user['session_token'] != $_SESSION['token'] && $useLoginCookie && $_COOKIE['LoginSession'] == $user['session_token']) {
                 $manualdb->update('users', ['session_token' => $_SESSION['token']], ['id' => $_COOKIE['LoginCookie']]);
                 setrawcookie("LoginSession", $_SESSION['token'], time() + $sessionLifetime);
                 $validity = 'valid';
@@ -71,7 +71,7 @@ function validateToken($token)
                 $validity = 'invalid';
                 destroyCookiesAndSessions();
            }
-	} else if ($forcedLogin) {
+        } elseif ($forcedLogin) {
             $validity = 'no-id';
         }
         return $validity;

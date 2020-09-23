@@ -113,7 +113,7 @@ if (isset($_GET['action'])) {
                     }
                     if ($noNativeLogin && $noDiscordLogin && $noFacebookLogin) {
                         header("Location: ./");
-			die();
+                        die();
                     }
                     $html .= '</div>
                 </form>
@@ -256,7 +256,7 @@ if (isset($_GET['callback'])) {
                                 }
                                 header("Location: ./login?action=login&error=blacklisted-server-dc&bl-discord=" . $guildName . " ");
                                 die();
-                            } else if (array_key_exists($uses, $guildRoles['guildIDS'])) {
+                            } elseif (array_key_exists($uses, $guildRoles['guildIDS'])) {
                                 $whiteListed = true;
                             }
                         }
@@ -606,13 +606,13 @@ function checkAccessLevelDiscord ($userId, $guilds) {
                         $accessRole = strval($guildRoles[$role]);
                     }
                 }
-	    }
+            }
             if ($guildRoles[$guild]) {
                 if ($accessRole < strval($guildRoles[$guild])) {
                     $accessRole = strval($guildRoles[$guild]);
                 }
             }
-	}
+        }
     }
     return $accessRole;
 }
