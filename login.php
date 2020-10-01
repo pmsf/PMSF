@@ -77,6 +77,7 @@ if (isset($_GET['action'])) {
                                 break;
                             case 'invalid-token':
                                 $html .= "<div id='login-error'>" . i8ln('We have logged you out. This might be because of invalid or expired token or your account has been logged in on another device.') . "</div>";
+                                break;
                             case 'access-change':
                                 $html .= "<div id='login-error'>" . i8ln('Your level of access changed while logged in please login again to get the new level of access.') . "</div>";
 
