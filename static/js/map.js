@@ -7716,7 +7716,7 @@ function updateUser() {
         return false
     }
     loadUser(engine).done(function (result) {
-        if (result === 'reload') {
+        if (result.action === 'reload') {
             window.location.href = './logout?action=' + engine + '-logout&reason=change'
         }
     })
@@ -7737,7 +7737,6 @@ function loadUser(engine) {
             toastr.options = toastrOptions
         },
         complete: function complete() {
-            updateMap()
         }
     })
 }
