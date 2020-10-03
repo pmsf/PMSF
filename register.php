@@ -7,9 +7,17 @@ if ($_GET['action'] == 'new') {
         header("Location: ./login?action=login");
         die();
     } else if ($_POST['psw'] == $_POST['repsw']){
-        if (createUserAccount($_POST['uname'], $_POST['psw'], time() + 86400)) {
-            header("Location: ./login?action=login");
-            die();
+        $createUser = createUserAccount($_POST['uname'], $_POST['psw'], time() + 86400);
+        switch ($createUser) {
+            case 'success':
+                header("Location: ./login?action=login");
+                die();
+            case 'error-id':
+                header("Location: ./register?action=account&error-id");
+                die();
+            case 'duplicate':
+                header("Location: ./register?action=account&error=duplicate");
+                die();
         }
         header("Location: .");
         die();
@@ -78,6 +86,13 @@ if ($_GET['action'] == 'update') {
     <meta name="theme-color" content="#3b3b3b">
     <!-- Fav- & Apple-Touch-Icons -->
     <!-- Favicon -->
+    <?php
+    if ($faviconPath != "") {
+        echo '<link rel="shortcut icon" href="' . $faviconPath . '" type="image/x-icon">';
+    } else {
+        echo '<link rel="shortcut icon" href="' . $appIconPath . 'favicon.ico" type="image/x-icon">';
+    }
+    ?>
     <link rel="shortcut icon" href="static/appicons/favicon.ico" type="image/x-icon">
     <!-- non-retina iPhone pre iOS 7 -->
     <link rel="apple-touch-icon" href="static/appicons/114x114.png" sizes="57x57">
@@ -114,8 +129,18 @@ if ($_GET['action'] == 'update') {
     <div id="login-force" class="force-modal">
         <?php
         if ($_GET['action'] == 'account') {
-            $html = '<form class="force-modal-content animate" action="/register?action=new" method="post">
-                <div class="imgcontainer">
+            $html = '<form class="force-modal-content animate" action="/register?action=new" method="post">';
+                if (!empty($_GET['error'])) {
+                    switch ($_GET['error']) {
+                        case 'error-id':
+                            $html .= "<div id='register-error'>" . i8ln('Something went wrong giving your account a numeric id. Please contact your admin') . "</div>";
+                            break;
+                        case 'duplicate':
+                            $html .= "<div id='register-error'>" . i8ln('It looks like we already have a account registered on this email address') . " <a href='/register?action=password-reset'>" . i8ln('Reset password') . "</a></div>";
+                            break;
+                    }
+                }
+                $html .= '<div class="imgcontainer">
                     <i class="fas fa-user" style="font-size:80px"></i>
                 </div>
                 <div class="force-container">
