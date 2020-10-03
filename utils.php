@@ -150,15 +150,14 @@ function createUserAccount($user, $password, $newExpireTimestamp)
 {
     global $manualdb, $discordUrl, $domainName, $title;
 
-    $count = $manualdb->count("users", [
+    $count = $manualdb->has("users", [
         "user" => $user,
         "login_system" => 'native'
     ]);
 
-    if ($count === 0) {
-        $getId = $manualdb->max("users", "id", [
-            "login_system" => 'native'
-        ]);
+    if (!$count) {
+        $getId = $manualdb->query("SELECT TRIM(LEADING '0' FROM MAX(LPAD(`id`, 9, '0'))) FROM `users` WHERE `login_system` = 'native'")->fetchAll();
+        $getId = intval($getId[0][0]);
 
         if (is_int($getId)) {
             $getId++;
@@ -195,12 +194,13 @@ function createUserAccount($user, $password, $newExpireTimestamp)
             if (!$sendMail) {
                 http_response_code(500);
                 die("<h1>Warning</h1><p>The email has not been sent.<br>If you're an user please contact your administrator.<br>If you're an administrator install <i><b>apt-get install sendmail</b></i> and restart your web server and try again.</p><p><a href='.'><i class='fas fa-backward'></i> Back to Map</a> - <a href='./register?action=account'>Retry</a></p>");
+                return 'success';
             }
         } else {
-            return false;
+            return 'error_id';
         }
     } else {
-        return false;
+        return 'duplicate';
     }
 }
 
