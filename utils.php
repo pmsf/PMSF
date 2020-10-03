@@ -1,7 +1,6 @@
 <?php
 
 $localeData = null;
-use Medoo\Medoo;
 
 function i8ln($word)
 {
