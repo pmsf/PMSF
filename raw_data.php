@@ -56,6 +56,7 @@ $d["lastnests"] = !empty($_POST['nests']) ? $_POST['nests'] : false;
 $d["lastcommunities"] = !empty($_POST['communities']) ? $_POST['communities'] : false;
 $d["lastportals"] = !empty($_POST['portals']) ? $_POST['portals'] : false;
 $d["lastpois"] = !empty($_POST['pois']) ? $_POST['pois'] : false;
+$d['token'] = refreshCsrfToken();
 if ($minIv < $prevMinIv || $minLevel < $prevMinLevel) {
     $lastpokemon = false;
 }
@@ -72,7 +73,7 @@ if ($maxLatLng > 0 && ((($neLat - $swLat) > $maxLatLng) || (($neLng - $swLng) > 
     http_response_code(413);
     die();
 }
-$validity = validateToken($_POST['token']);
+$validity = validateToken($d['token']);
 if (!empty($validity)) {
     switch ($validity) {
         case 'invalid':
@@ -358,7 +359,6 @@ if (!$noLiveScanLocation) {
 }
 $debug['10_after_devices'] = microtime(true) - $timing['start'];
 
-$d['token'] = refreshCsrfToken();
 $debug['11_end'] = microtime(true) - $timing['start'];
 
 if ($enableDebug == true) {
