@@ -64,7 +64,7 @@ function validateToken($token)
             if ($user['session_token'] == $_SESSION['token'] || $allowMultiLogin) {
                 $validity = 'valid';
             } elseif ($user['session_token'] != $_SESSION['token'] && $useLoginCookie && $_COOKIE['LoginSession'] == $user['session_token']) {
-                $manualdb->update('users', ['session_token' => $_SESSION['token']], ['id' => $_COOKIE['LoginCookie']]);
+                $manualdb->update('users', ['session_token' => $_SESSION['token']], ['session_id' => $_COOKIE['LoginCookie']]);
                 setrawcookie("LoginSession", $_SESSION['token'], time() + $sessionLifetime);
                 $validity = 'valid';
             } else {
