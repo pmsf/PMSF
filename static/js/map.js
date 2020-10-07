@@ -3371,9 +3371,9 @@ function loadRawData() {
             // Display error toast
             switch (xhr.status) {
                 case 400:
-                    toastr['error'](i8ln('Please check connectivity or reduce marker settings.'), i8ln('Not Acceptable'))
+                    toastr['error'](i8ln('Token not valid, refreshing.'), i8ln('Not Acceptable'))
                     toastr.options = toastrOptions
-                    setTimeout(window.location.href = './logout', 5000)
+                    setTimeout(window.location.href = './', 5000)
                     break
                 case 401:
                     toastr['error'](i8ln('Another device just logged in with the same account.'), i8ln('Unauthorized'))

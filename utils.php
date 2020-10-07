@@ -63,12 +63,12 @@ function validateToken($token)
             $user = $manualdb->get('users', ['id', 'session_token'], ['id' => $_SESSION['user']->id]);
             if ($user['session_token'] == $_SESSION['token'] || $allowMultiLogin) {
                 $validity = 'valid';
-            } elseif ($user['session_token'] != $_SESSION['token'] && $useLoginCookie && $_COOKIE['LoginSession'] == $user['session_token']) {
+            } elseif ($useLoginCookie && $_COOKIE['LoginSession'] == $user['session_token']) {
                 $manualdb->update('users', ['session_token' => $_SESSION['token']], ['session_id' => $_COOKIE['LoginCookie']]);
                 setrawcookie("LoginSession", $_SESSION['token'], time() + $sessionLifetime);
                 $validity = 'valid';
             } else {
-                $validity = 'invalid';
+                $validity = 'invalid-token-login';
                 destroyCookiesAndSessions();
            }
         } elseif ($forcedLogin) {
@@ -76,7 +76,7 @@ function validateToken($token)
         }
         return $validity;
     } else {
-        return 'invalid';
+        return 'invalid-token';
     }
 }
 

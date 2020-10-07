@@ -75,7 +75,10 @@ if ($maxLatLng > 0 && ((($neLat - $swLat) > $maxLatLng) || (($neLng - $swLng) > 
 $validity = validateToken($_POST['token']);
 if (!empty($validity)) {
     switch ($validity) {
-        case 'invalid':
+        case 'invalid-token':
+            http_response_code(400);
+            break;
+        case 'invalid-token-login':
             http_response_code(401);
             break;
         case 'no-id':
