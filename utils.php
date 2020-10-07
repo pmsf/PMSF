@@ -60,10 +60,10 @@ function validateToken($token)
     if ((!$enableCsrf) || ($enableCsrf && isset($token) && $token === $_SESSION['token'])) {
         $validity = 'valid';
         if (!empty($_SESSION['user']->id)) {
-            $user = $manualdb->get('users', ['id', 'session_token'], ['id' => $_SESSION['user']->id]);
+            $user = $manualdb->get('users', ['session_token'], ['id' => $_SESSION['user']->id]);
             if ($user['session_token'] == $_SESSION['token'] || $allowMultiLogin) {
                 $validity = 'valid';
-            } elseif ($user['session_token'] != $_SESSION['token'] && $useLoginCookie && $_COOKIE['LoginSession'] == $user['session_token']) {
+            } elseif ($useLoginCookie && $_COOKIE['LoginSession'] == $user['session_token']) {
                 $manualdb->update('users', ['session_token' => $_SESSION['token']], ['session_id' => $_COOKIE['LoginCookie']]);
                 setrawcookie("LoginSession", $_SESSION['token'], time() + $sessionLifetime);
                 $validity = 'valid';
