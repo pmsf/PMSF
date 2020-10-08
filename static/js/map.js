@@ -3288,6 +3288,7 @@ function loadRawData() {
     var swLng = swPoint.lng
     var neLat = nePoint.lat
     var neLng = nePoint.lng
+	console.log(timestamp)
     return $.ajax({
         url: 'raw_data',
         type: 'POST',

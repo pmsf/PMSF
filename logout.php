@@ -29,6 +29,15 @@ if (isset($_GET['action'])) {
         }
         die();
     }
+    if ($_GET['action'] == 'patreon-logout') {
+        destroyCookiesAndSessions();
+	if ($_GET['reason'] == 'change') {
+            header('Location: ./login?action=login&error=access-change');
+        } else {
+            header('Location: .');
+        }
+        die();
+    }
 }
 destroyCookiesAndSessions();
 header('Location: .');
