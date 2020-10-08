@@ -76,6 +76,7 @@ function validateToken($token)
         }
         return $validity;
     } else {
+        destroyCookiesAndSessions();
         return 'invalid-token';
     }
 }
