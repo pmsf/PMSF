@@ -8,21 +8,27 @@ class RocketMap_MAD extends Search
     {
         global $db, $defaultUnit, $maxSearchResults, $maxSearchNameLength, $numberOfPokemon;
 
-        $conds = array();
-        $params = array();
+        $conds = [];
+        $params = [];
 
         $params[':lat'] = $lat;
         $params[':lon'] = $lon;
 
         $pjson = file_get_contents('static/dist/data/pokemon.min.json');
         $prewardsjson = json_decode($pjson, true);
-        $presids = array();
+        $presids = [];
+        $forms = [];
         foreach ($prewardsjson as $p => $preward) {
             if ($p > $numberOfPokemon) {
                 break;
             }
             if (strpos(strtolower(i8ln($preward['name'])), strtolower($term)) !== false) {
                 $presids[] = $p;
+            }
+            foreach ($preward['forms'] as $f => $v) {
+                if (strpos(strtolower(i8ln($v['nameform'])), strtolower($term)) !== false) {
+                    $forms[] = $v['protoform'];
+                }
             }
         }
         $ijson = file_get_contents('static/dist/data/items.min.json');
@@ -38,6 +44,9 @@ class RocketMap_MAD extends Search
         }
         if (!empty($iresids)) {
             $conds[] = "tq.quest_item_id IN (" . implode(',', $iresids) . ")";
+        }
+        if (!empty($forms)) {
+            $conds[] = "json_extract(json_extract(`quest_reward`,'$[*].pokemon_encounter.pokemon_display.form_value'),'$[0]') IN (" . implode(',', $forms) . ")";
         }
         if (strpos(strtolower(i8ln('Mega')), strtolower($term)) !== false || strpos(strtolower(i8ln('Energy')), strtolower($term)) !== false) {
             $conds[] = "tq.quest_reward_type = 12";
