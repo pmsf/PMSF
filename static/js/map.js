@@ -1206,13 +1206,7 @@ function initSidebar() {
     $('#pokemon-icon-size').val(Store.get('iconSizeModifier'))
     $('#pokemon-icon-notify-size').val(Store.get('iconNotifySizeModifier'))
 
-    var port = ''
-    if (window.location.port.length > 0) {
-        port = ':' + window.location.port
-    }
-    var path = window.location.protocol + '//' + window.location.hostname + port + window.location.pathname
-    var r = new RegExp('^(?:[a-z]+:)?//', 'i')
-    iconpath = r.test(Store.get('icons')) ? Store.get('icons') : path + Store.get('icons')
+    iconpath = Store.get('icons')
 }
 
 function getTypeSpan(type) {
@@ -2452,6 +2446,11 @@ function updateGymMarker(item, marker) {
 function updateGymIcons() {
     $.each(mapData.gyms, function (key, value) {
         mapData.gyms[key]['marker'].setIcon(getGymMarkerIcon(mapData.gyms[key]))
+    })
+}
+function updatePokestopIcons() {
+    $.each(mapData.pokestops, function (key, value) {
+        mapData.pokestops[key]['marker'].setIcon(getPokestopMarkerIcon(mapData.pokestops[key]))
     })
 }
 function getPokestopMarkerIcon(item) {
@@ -6647,19 +6646,10 @@ $(function () {
     })
     $selectIconStyle.on('change', function (e) {
         Store.set('icons', this.value)
-        var port = ''
-        if (window.location.port.length > 0) {
-            port = ':' + window.location.port
-        }
-        var path = window.location.protocol + '//' + window.location.hostname + port + window.location.pathname
-        var r = new RegExp('^(?:[a-z]+:)?//', 'i')
-        iconpath = r.test(Store.get('icons')) ? Store.get('icons') : path + Store.get('icons')
-
+        iconpath = Store.get('icons')
         redrawPokemon(mapData.pokemons)
-        jQuery('label[for="pokestops-switch"]').click()
-        jQuery('label[for="pokestops-switch"]').click()
-        jQuery('label[for="raids-switch"]').click()
-        jQuery('label[for="raids-switch"]').click()
+        updateGymIcons()
+        updatePokestopIcons()
     })
     $selectIconStyle.val(Store.get('icons')).trigger('change')
     pokemonSpritesFilter()
