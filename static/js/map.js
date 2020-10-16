@@ -3491,10 +3491,13 @@ function searchForItem(lat, lon, term, type, field) {
                             html += '<span style="background:url(' + iconpath + 'pokemon_icon_' + pokemonIdStr + '_' + formStr + '.png) no-repeat;" class="i-icon" ></span>'
                         }
                         if (element.quest_item_id !== 0) {
-                            html += '<span style="background:url(' + iconpath + 'rewards/reward_' + element.quest_item_id + '_1.png) no-repeat;" class="i-icon" ></span>'
+                            html += '<span style="background:url(' + iconpath + 'rewards/reward_' + element.quest_item_id + '_' + element.quest_reward_amount + '.png) no-repeat;" class="i-icon" ></span>'
                         }
                         if (element.quest_reward_type === 12) {
                             html += '<span style="background:url(' + iconpath + 'rewards/reward_mega_energy_' + element.quest_energy_pokemon_id + '.png) no-repeat;" class="i-icon" ></span>'
+                        }
+                        if (element.quest_reward_type === 3) {
+                            html += '<span style="background:url(' + iconpath + 'rewards/reward_stardust_' + element.quest_dust_amount + '.png) no-repeat;" class="i-icon" ></span>'
                         }
                     }
                     html += '<div class="cont">'
