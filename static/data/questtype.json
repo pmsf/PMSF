@@ -158,5 +158,9 @@
   "43": {
     "prototext": "",
     "text": "Mega-Evolve {0} Pokemon"
+  },
+  "46": {
+    "prototext": "",
+    "text": "AR-Scan {0} pokéstop(s)"
   }
 }
