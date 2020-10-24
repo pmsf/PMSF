@@ -19087,6 +19087,24 @@
             "color": "#705898"
           }
         ]
+      },
+      {
+        "nameform": "Fall 2020",
+        "protoform": "2668",
+        "assetsform": "00",
+        "baseStamina": 137,
+        "baseAttack": 141,
+        "baseDefense": 136,
+        "formtypes": [
+          {
+            "type": "Dark",
+            "color": "#707070"
+          },
+          {
+            "type": "Ghost",
+            "color": "#705898"
+          }
+        ]
       }
     ]
   },
