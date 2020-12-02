@@ -148,7 +148,7 @@ $noWhatsappLink = true;
 $imgurCID = "";
 
 /* Counts */
-$numberOfPokemon = 649;
+$numberOfPokemon = 721;
 $numberOfItem = 1600;
 $numberOfGrunt = 50;
 $numberOfEgg = 12;
