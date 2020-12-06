@@ -3178,83 +3178,78 @@ function addListeners(marker) {
     return marker
 }
 
-function clearMarker( obj, key )
-{
-  var mm = obj[key]['marker'];
-  if ( mm.rangeCircle )
-    {
-      markers.removeLayer( mm.rangeCircle );
-      markersnotify.removeLayer( mm.rangeCircle );
-      delete mm.rangeCircle;
+function clearMarker(obj, key) {
+    var mm = obj[key]['marker']
+    if (mm.rangeCircle) {
+        markers.removeLayer(mm.rangeCircle)
+        markersnotify.removeLayer(mm.rangeCircle)
+        delete mm.rangeCircle
     }
-  markers.removeLayer( mm );
-  markersnotify.removeLayer( mm );
-  delete obj[key];
+    markers.removeLayer(mm)
+    markersnotify.removeLayer(mm)
+    delete obj[key]
 }
 
-function shouldRemovePokemon( mon, time )
-{
-  time = time || new Date().getTime();
+function shouldRemovePokemon(mon, time) {
+    time = time || new Date().getTime()
 
-  /* Pokemon Despawned. Remove */
-  if ( mon.disappear_time < time ) return true;
-  /* User "focused" on this Pokemon specifically. Do not remove */
-  if ( encounterId && ( encounterId === mon.encounter_id ) ) return false;
+    /* Pokemon Despawned. Remove */
+    if (mon.disappear_time < time) return true
+    /* User "focused" on this Pokemon specifically. Do not remove */
+    if (encounterId && (encounterId === mon.encounter_id)) return false
 
-  var mid = mon.pokemon_id;
+    var mid = mon.pokemon_id
 
-  /* Pokemon was excluded in user settings. Remove */
-  if ( excludedPokemon.includes( mid ) ) return true;
-  /* Pokemon was temporarily hidden. Remove */
-  if ( isTemporaryHidden( mid ) )        return true;
-  /* Pokemon ignores level/iv settings. Do not remove */
-  if ( excludedMinIv.includes( mid ) )   return false;
+    /* Pokemon was excluded in user settings. Remove */
+    if (excludedPokemon.includes(mid)) return true
+    /* Pokemon was temporarily hidden. Remove */
+    if (isTemporaryHidden(mid)) return true
+    /* Pokemon ignores level/iv settings. Do not remove */
+    if (excludedMinIV.includes(mid)) return false
 
-  /* Remove for low level */
-  if ( ( mapType === 'rdm' ) && ( mon.level < minLevel ) ) return true;
-  if ( ( mapType === 'rocketmap' ) && ( ! isNan( minLevel ) ) )
-    {
-      if ( mon.cp_multiplier < cpMultiplier[minLevel - 1] ) return true;
+    /* Remove for low level */
+    if ((mapType === 'rdm') && (mon.level < minLevel)) return true
+    if ((mapType === 'rocketmap') && (!isNaN(minLevel))) {
+        if (mon.cp_multiplier < cpMultiplier[minLevel - 1]) return true
     }
-  /* Remove for low iv */
-  if ( ( ( mon.individual_attack  +
-           mon.individual_defense +
-           mon.individual_stamina
-         ) / 45 * 100
-       ) < minIV
-     ) return true;
+    /* Remove for low iv */
+    var ivs = mon.individual_attack + mon.individual_defense
+    ivs += mon.individual_stamina
+    ivs /= 4500
+    if (ivs < minIV) return true
 
-  /* This settings has a deceptive name.
-   * What it actually does, is "hide magikarp" UNLESS it is big.
-   * So if this setting is activated, and the magikarp is tiny, remove it. */
-  if ( ( Store.get("showBigKarp") === true ) && ( mid === 129 ) &&
-       ( ( mon.weight === null ) || ( mon.weight < 13.14 ) )
-     ) return true;
-  /* Similar to "showBigKarp", "showTinyRat" is deceptively named.
-   * Remove ratatta when they are big. */
-  if ( ( Store.get("showTinyRat") === true ) && ( mid === 19 ) &&
-       ( ( mon.weight === null ) || ( 2.4 < mon.weight ) )
-     ) return true;
+    /* This settings has a deceptive name.
+    * What it actually does, is "hide magikarp" UNLESS it is big.
+    * So if this setting is activated, and the magikarp is tiny, remove it. */
+    if ((Store.get('showBigKarp') === true) && (mid === 129) &&
+        ((mon.weight === null) || (mon.weight < 13.14))) {
+        return true
+    }
+    /* Similar to "showBigKarp", "showTinyRat" is deceptively named.
+    * Remove ratatta when they are big. */
+    if ((Store.get('showTinyRat') === true) && (mid === 19) &&
+        ((mon.weight === null) || (mon.weight > 2.4))) {
+        return true
+    }
 
-  /* Congratulations! You made the cut! */
-  return false;
+    /* Congratulations! You made the cut! */
+    return false
 }
 
 function clearStaleMarkers() {
     /* Cache time so it is not repeatedly fetched foreach marker. */
-    var time = new Date().getTime();
+    var time = new Date().getTime()
     /* Clear Pokemon */
-    $.each( mapData.pokemons, function( key, value ) {
-      if ( shouldRemovePokemon( mapData.pokemons[key], time ) )
-        {
-          clearMarker( mapData.pokemons, key );
+    $.each(mapData.pokemons, function (key, value) {
+        if (shouldRemovePokemon(mapData.pokemons[key], time)) {
+            clearMarker(mapData.pokemons, key)
         }
-    } );
+    })
     /* Clear Gyms/Raids */
     if (!Store.get('showGyms') && Store.get('showRaids')) {
         $.each(mapData.gyms, function (key, value) {
             if ((((excludedRaidboss.indexOf(Number(mapData.gyms[key]['raid_pokemon_id'])) > -1) && mapData.gyms[key]['raid_pokemon_id'] > 0) && (mapData.gyms[key]['raid_start'] < time && mapData.gyms[key]['raid_end'] > time)) || ((excludedRaidegg.indexOf(Number(mapData.gyms[key]['raid_level'])) > -1) && mapData.gyms[key]['raid_start'] > time) || ((excludedRaidegg.indexOf(Number(mapData.gyms[key]['raid_level']) + 6) > -1) && (mapData.gyms[key]['raid_start'] < time && (mapData.gyms[key]['raid_pokemon_id'] <= 0)))) {
-              clearMarker( mapData.gyms, key );
+                clearMarker(mapData.gyms, key)
             }
         })
     }
@@ -3262,7 +3257,7 @@ function clearStaleMarkers() {
     if (Store.get('showNests')) {
         $.each(mapData.nests, function (key, value) {
             if (Number(mapData.nests[key]['pokemon_avg']) < Store.get('showNestAvg')) {
-              clearMarker( mapData.nests, key );
+                clearMarker(mapData.nests, key)
             }
         })
     }
