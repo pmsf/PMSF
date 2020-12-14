@@ -1837,6 +1837,17 @@
             "color": "#f8d030"
           }
         ]
+      },
+      {
+        "nameform": "Adventure hat 2020",
+        "protoform": "2669",
+        "assetsform": "00",
+        "formtypes": [
+          {
+            "type": "Electric",
+            "color": "#f8d030"
+          }
+        ]
       }
     ]
   },
