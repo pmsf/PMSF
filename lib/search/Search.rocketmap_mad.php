@@ -25,12 +25,14 @@ class RocketMap_MAD extends Search
             if (strpos(strtolower(i8ln($preward['name'])), strtolower($term)) !== false) {
                 $presids[] = $p;
             }
-            foreach ($preward['forms'] as $f => $v) {
-                if (strpos(strtolower(i8ln($v['nameform'])), strtolower($term)) !== false) {
-                    $forms[] = $v['protoform'];
-                }
-                if (strpos(strtolower($term), strtolower(i8ln($v['nameform']))) !== false && strpos(strtolower($term), strtolower(i8ln($preward['name']))) !== false) {
-                    $conds[] = "(quest_pokemon_id = " . $p . " AND json_extract(json_extract(`quest_reward`,'$[*].pokemon_encounter.pokemon_display.form_value'),'$[0]') = " . $v['protoform'] . ")";
+            if (isset($preward['forms'])) {
+                foreach ($preward['forms'] as $f => $v) {
+                    if (strpos(strtolower(i8ln($v['nameform'])), strtolower($term)) !== false) {
+                        $forms[] = $v['protoform'];
+                    }
+                    if (strpos(strtolower($term), strtolower(i8ln($v['nameform']))) !== false && strpos(strtolower($term), strtolower(i8ln($preward['name']))) !== false) {
+                        $conds[] = "(quest_pokemon_id = " . $p . " AND json_extract(json_extract(`quest_reward`,'$[*].pokemon_encounter.pokemon_display.form_value'),'$[0]') = " . $v['protoform'] . ")";
+                    }
                 }
             }
         }
