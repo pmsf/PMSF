@@ -6,7 +6,7 @@ This fork is different is so many ways that its impossible to name them all. Mai
 
 PokeMap Standalone Frontend or PMSF for short is a PHP Map Interface for RDM, MAD designed to be completely standalone and able to run on any traditional web server. Manual submissions are supported but no longer maintained.
 
-##Login Support:
+## Login Support:
 ### oAuth:
 Discord
 Patreon
