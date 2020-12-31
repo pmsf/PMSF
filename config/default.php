@@ -11,7 +11,9 @@
 if (!isset($_SESSION)) {
     session_start();
 }
+require 'vendor/autoload.php';
 require_once(__DIR__ . '/../utils.php');
+
 
 $libs[] = "Scanner.php";
 $libs[] = "Monocle.php";
@@ -26,6 +28,7 @@ $libs[] = "search/Search.rocketmap_mad.php";
 $libs[] = "submit/Submit.php";
 $libs[] = "submit/Manual.php";
 $libs[] = "submit/Submit.rdm.php";
+$libs[] = "submit/Submit.rocketmap_mad.php";
 $libs[] = "submit/Submit.monocle_pmsf.php";
 $libs[] = "Manual.php";
 
@@ -121,6 +124,7 @@ $paypalUrl = "";                                                    // PayPal do
 $discordUrl = "https://discord.gg/INVITE_LINK";                     // Discord URL, leave "" for empty
 $whatsAppUrl = "";                                                  // WhatsApp URL, leave "" for empty
 $telegramUrl = "";                                                  // Telegram URL, leave "" for empty
+$patreonUrl = "";                                                   // Patreon URL, leave "" for empty
 $customUrl = "";                                                    // Custom URL, leave "" for empty
 $customUrlFontIcon = "far fa-smile-beam";                           // Choose a custom icon on: https://fontawesome.com/icons?d=gallery&m=free
 
@@ -144,7 +148,7 @@ $noWhatsappLink = true;
 $imgurCID = "";
 
 /* Counts */
-$numberOfPokemon = 649;
+$numberOfPokemon = 721;
 $numberOfItem = 1600;
 $numberOfGrunt = 50;
 $numberOfEgg = 12;
@@ -181,6 +185,15 @@ $facebookAppSecret = '';					    // Facebook App Secret
 $facebookAppRedirectUri = 'https://Yourdomain.com/login?callback=facebook';	// Callback url make sure this is the same as set in Facebook app config
 $facebookAccessLevel = '1';					    // Accesslevel used in access-config.php
 
+$noPatreonLogin = true;
+$patreonClientId = '';
+$patreonCreatorAccessToken = '';
+$patreonClientSecret = '';
+$patreonCallbackUri = 'https://Yourdomain.com/login?callback=patreon';
+
+$patreonTierRequired = true;                                        // Member must have pledged set to false to allow any patreon user to log in.
+$patreonTiers = [];						    // Tier ids can be obtained by clicking the join tier button on patreon and the URL will show you checkout?rid=<NUMBER>
+
 $adminUsers = array('admin@example.com', 'Superadmin#13337');       // You can add multiple admins by adding them to the array.
 
 /* Blacklist Settings - Only available with Discord login */
@@ -202,7 +215,7 @@ $noCatchRates = false;
 $noRarityDisplay = false;                                      // true/false
 $noWeatherIcons = true;
 $no100IvShadow = false;
-
+$noHideSingleMarker = false;
 /* Notification Settings */
 $noNotifyPokemon = false;                                       // true/false
 $noNotifyRarity = false;                                        // true/false

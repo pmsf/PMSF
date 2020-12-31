@@ -141,14 +141,26 @@
   },
   "36": {
     "prototext": "QUEST_BUDDY_LEVEL",
-    "text": ""
+    "text": "Increase your Buddy Level {0} times"
   },
   "37": {
     "prototext": "QUEST_BUDDY_WALK",
-    "text": ""
+    "text": "Earn {0} Friendship points by Walking with your Buddy"
   },
   "38": {
     "prototext": "QUEST_BUDDY_YATTA",
-    "text": ""
+    "text": "Earn {0} Souvenirs from your Buddy"
+  },
+  "39": {
+    "prototext": "",
+    "text": "Use Incense {0} times"
+  },
+  "43": {
+    "prototext": "",
+    "text": "Mega-Evolve {0} Pokemon"
+  },
+  "46": {
+    "prototext": "",
+    "text": "AR-Scan {0} pokéstop(s)"
   }
 }

@@ -1206,13 +1206,7 @@ function initSidebar() {
     $('#pokemon-icon-size').val(Store.get('iconSizeModifier'))
     $('#pokemon-icon-notify-size').val(Store.get('iconNotifySizeModifier'))
 
-    var port = ''
-    if (window.location.port.length > 0) {
-        port = ':' + window.location.port
-    }
-    var path = window.location.protocol + '//' + window.location.hostname + port + window.location.pathname
-    var r = new RegExp('^(?:[a-z]+:)?//', 'i')
-    iconpath = r.test(Store.get('icons')) ? Store.get('icons') : path + Store.get('icons')
+    iconpath = Store.get('icons')
 }
 
 function getTypeSpan(type) {
@@ -1239,6 +1233,21 @@ function openMapDirections(lat, lng) { // eslint-disable-line no-unused-vars
             break
     }
     window.open(url, '_blank')
+}
+
+function copyCoordsToClipboard(coordsElementNode) { // eslint-disable-line no-unused-vars
+    var range
+    var sel
+    try {
+        range = document.createRange()
+        range.selectNodeContents(coordsElementNode)
+        sel = window.getSelection()
+        sel.removeAllRanges()
+        sel.addRange(range)
+        document.execCommand('Copy')
+    } catch (ex) {
+        alert(ex)
+    }
 }
 
 // Converts timestamp to readable String
@@ -1421,9 +1430,11 @@ function pokemonLabel(item) {
         contentstring += '<center><div style="position:relative;">'
     }
     contentstring += '<a href="javascript:excludePokemon(' + id + ')"  title="' + i8ln('Exclude this Pokémon') + '"><i class="fas fa-minus-circle" style="font-size:15px;width:20px;"></i></a>' +
-    ' | <a href="javascript:notifyAboutPokemon(' + id + ')" title="' + i8ln('Notify about this Pokémon') + '"><i class="fas fa-bell" style="font-size:15px;width:20px;"></i></a>' +
-    ' | <a href="javascript:removePokemonMarker(\'' + encounterId + '\')" title="' + i8ln('Remove this Pokémon from the map') + '"><i class="fas fa-trash-alt" style="font-size:15px;width:20px;"></i></a>' +
-    ' | <a href="javascript:void(0);" onclick="javascript:toggleOtherPokemon(' + id + ');" title="' + i8ln('Toggle display of other Pokémon') + '"><i class="fas fa-search-plus" style="font-size:15px;width:20px;"></i></a>' +
+    ' | <a href="javascript:notifyAboutPokemon(' + id + ')" title="' + i8ln('Notify about this Pokémon') + '"><i class="fas fa-bell" style="font-size:15px;width:20px;"></i></a>'
+    if (!noHideSingleMarker) {
+        contentstring += ' | <a href="javascript:removePokemonMarker(\'' + encounterId + '\')" title="' + i8ln('Remove this Pokémon from the map') + '"><i class="fas fa-eye-slash" style="font-size:15px;width:20px;"></i></a>'
+    }
+    contentstring += ' | <a href="javascript:void(0);" onclick="javascript:toggleOtherPokemon(' + id + ');" title="' + i8ln('Toggle display of other Pokémon') + '"><i class="fas fa-search-plus" style="font-size:15px;width:20px;"></i></a>' +
     '</div></center>'
     if (atk != null && def != null && sta != null && noCatchRates) {
         contentstring += '<div style="position:relative;top:55px;"><center>'
@@ -1434,8 +1445,14 @@ function pokemonLabel(item) {
     }
     contentstring +=
     '<a href="javascript:void(0)" onclick="javascript:openMapDirections(' + latitude + ', ' + longitude + ')" title="' + i8ln('View in Maps') + '">' +
-    '<i class="fas fa-road"></i> ' + coordText + '</a> - ' +
-    '<a href="./?lat=' + latitude + '&lon=' + longitude + '&zoom=18&encId=' + encounterId + '">' +
+    '<i class="fas fa-road" style="padding-right:0.25em"></i>' + coordText + '</a>'
+    if (hidePokemonCoords === true) {
+        contentstring += '-'
+    } else {
+        contentstring += ' ' +
+                '<button onclick="copyCoordsToClipboard(this.previousElementSibling);" class="small-tight">' + 'Copy' + '</button> '
+    }
+    contentstring += '<a href="./?lat=' + latitude + '&lon=' + longitude + '&zoom=18&encId=' + encounterId + '">' +
     '<i class="far fa-share-square" aria-hidden="true" style="position:relative;top:3px;left:0px;color:#26c300;margin-bottom:10px;font-size:18px;"></i>' +
     '</a></center></div>'
     if (atk != null && def != null && sta != null) {
@@ -1511,14 +1528,14 @@ function gymLabel(item) {
         var raidEndStr = getTimeStr(item['raid_end'])
         raidStr += '<div>' + i8ln('Start') + ': <b>' + raidStartStr + '</b> <span class="label-countdown" disappears-at="' + item['raid_start'] + '" start>(' + generateRemainingTimer(item['raid_start'], 'start') + ')</span></div>'
         raidStr += '<div>' + i8ln('End') + ': <b>' + raidEndStr + '</b> <span class="label-countdown" disappears-at="' + item['raid_end'] + '" end>(' + generateRemainingTimer(item['raid_end'], 'end') + ')</span></div>'
-
-        raidStr += '<a href="javascript:removeGymMarker(\'' + item['gym_id'] + '\')" title="' + i8ln('Hide this Gym') + '"><i class="fas fa-trash-alt" style="font-size:15px;"></i></a>'
-
+        if (!noHideSingleMarker) {
+            raidStr += '<a href="javascript:removeGymMarker(\'' + item['gym_id'] + '\')" title="' + i8ln('Hide this Gym') + '"><i class="fas fa-eye-slash" style="font-size:15px;"></i></a>'
+        }
         var raidForm = item['form']
         var formStr = (raidForm <= 0 || raidForm == null || raidForm === '0') ? '00' : raidForm
         var pokemonid = item['raid_pokemon_id']
         var pokemonidStr = (pokemonid <= 9) ? '00' + pokemonid : ((pokemonid <= 99) ? '0' + pokemonid : pokemonid)
-        var costumeStr = (item['raid_pokemon_costume'] > 0) ? '_' + item['pokemon_costume'] : ''
+        var costumeStr = (item['raid_pokemon_costume'] > 0) ? '_' + item['raid_pokemon_costume'] : ''
         var evolutionStr = (evolution > 0) ? '_' + evolution : ''
         if (raidStarted) {
             raidIcon = '<img style="width: 70px;" src="' + iconpath + 'pokemon_icon_' + pokemonidStr + '_' + formStr + costumeStr + evolutionStr + '.png"/>'
@@ -1600,7 +1617,14 @@ function gymLabel(item) {
         '<div><b>' + freeSlots + ' ' + i8ln('Free Slots') + '</b></div>' +
         raidStr +
         '<div>' +
-        '<a href="javascript:void(0);" onclick="javascript:openMapDirections(' + latitude + ',' + longitude + ');" title="' + i8ln('View in Maps') + '"><i class="fas fa-road"></i> ' + coordText + '</a> - <a href="./?lat=' + latitude + '&lon=' + longitude + '&zoom=18&gymId=' + item['gym_id'] + '"><i class="far fa-share-square" aria-hidden="true" style="position:relative;top:3px;left:0px;color:#26c300;font-size:20px;"></i></a>' +
+        '<a href="javascript:void(0);" onclick="javascript:openMapDirections(' + latitude + ',' + longitude + ');" title="' + i8ln('View in Maps') + '"><i class="fas fa-road" style="padding-right:0.25em"></i>' + coordText + '</a>'
+    if (hideGymCoords === true) {
+        str += '-'
+    } else {
+        str += ' ' +
+                '<button onclick="copyCoordsToClipboard(this.previousElementSibling);" class="small-tight">' + 'Copy' + '</button> '
+    }
+    str += '<a href="./?lat=' + latitude + '&lon=' + longitude + '&zoom=18&gymId=' + item['gym_id'] + '"><i class="far fa-share-square" aria-hidden="true" style="position:relative;top:3px;left:0px;color:#26c300;font-size:20px;"></i></a>' +
         whatsappLink +
         '</div>' +
         '<div>' +
@@ -1894,7 +1918,9 @@ function pokestopLabel(item) {
             i8ln('Mega energy') +
             '</b></div>'
         }
-        str += '<a href="javascript:removePokestopMarker(\'' + item['pokestop_id'] + '\')" title="' + i8ln('Hide this Pokéstop') + '"><i class="fas fa-trash-alt" style="font-size:15px;"></i></a>'
+        if (!noHideSingleMarker) {
+            str += '<a href="javascript:removePokestopMarker(\'' + item['pokestop_id'] + '\')" title="' + i8ln('Hide this Pokéstop') + '"><i class="fas fa-eye-slash" style="font-size:15px;"></i></a>'
+        }
     } else {
         str += '</div>'
     }
@@ -1982,7 +2008,14 @@ function pokestopLabel(item) {
         coordText = i8ln('Directions')
     }
     str += '<div><center>' +
-        '<a href="javascript:void(0)" onclick="javascript:openMapDirections(' + item['latitude'] + ',' + item['longitude'] + ')" title="' + i8ln('View in Maps') + '"><i class="fas fa-road"></i> ' + coordText + '</a> - <a href="./?lat=' + item['latitude'] + '&lon=' + item['longitude'] + '&zoom=18&stopId=' + item['pokestop_id'] + '"><i class="far fa-share-square" aria-hidden="true" style="position:relative;top:3px;left:0px;color:#26c300;font-size:20px;"></i></a>'
+        '<a href="javascript:void(0)" onclick="javascript:openMapDirections(' + item['latitude'] + ',' + item['longitude'] + ')" title="' + i8ln('View in Maps') + '"><i class="fas fa-road" style="padding-right:0.25em"></i>' + coordText + '</a>'
+    if (hidePokestopCoords === true) {
+        str += '-'
+    } else {
+        str += ' ' +
+                '<button onclick="copyCoordsToClipboard(this.previousElementSibling);" class="small-tight">' + 'Copy' + '</button> '
+    }
+    str += '<a href="./?lat=' + item['latitude'] + '&lon=' + item['longitude'] + '&zoom=18&stopId=' + item['pokestop_id'] + '"><i class="far fa-share-square" aria-hidden="true" style="position:relative;top:3px;left:0px;color:#26c300;font-size:20px;"></i></a>'
     if (!noQuests && !noWhatsappLink && item['quest_type'] !== null && lastMidnight < Number(item['quest_timestamp'])) {
         var quest = getQuest(item)
         var reward = ''
@@ -2450,6 +2483,11 @@ function updateGymIcons() {
         mapData.gyms[key]['marker'].setIcon(getGymMarkerIcon(mapData.gyms[key]))
     })
 }
+function updatePokestopIcons() {
+    $.each(mapData.pokestops, function (key, value) {
+        mapData.pokestops[key]['marker'].setIcon(getPokestopMarkerIcon(mapData.pokestops[key]))
+    })
+}
 function getPokestopMarkerIcon(item) {
     var stopMarker = ''
     var html = ''
@@ -2748,22 +2786,13 @@ function nestLabel(item) {
         $.each(types, function (index, type) {
             typesDisplay += getTypeSpan(type)
         })
-        var pokemonIdStr = ''
-        if (item.pokemon_id <= 9) {
-            pokemonIdStr = '00' + item.pokemon_id
-        } else if (item.pokemon_id <= 99) {
-            pokemonIdStr = '0' + item.pokemon_id
-        } else {
-            pokemonIdStr = item.pokemon_id
-        }
-        var nestName = ''
-        if (item['name'] !== null && item['name'] !== 'Unknown Areaname') {
-            nestName = '<b>' + item['name'] + '</b>'
-        }
-        var pokemonAvg = ''
-        if (item['pokemon_avg'] > 0) {
-            pokemonAvg = '<div>' + i8ln('Nest Pokemon per hour') + ': ' + item['pokemon_avg'].toFixed(2) + '</div>'
-        }
+        var formStr = (item.pokemon_form === 0 || item.pokemon_form === '0' || item.pokemon_form == null) ? '00' : item.pokemon_form
+        var pokemonIdStr = (item.pokemon_id <= 9) ? '00' + item.pokemon_id : (item.pokemon_id <= 99) ? '0' + item.pokemon_id : item.pokemon_id
+        var nestName = (item['name'] !== null && item['name'] !== 'Unknown Areaname') ? '<b>' + item['name'] + '</b>' : ''
+        var pokemonAvg = (item['pokemon_avg'] > 0) ? '<div>' + i8ln('Nest Pokemon per hour') + ': ' + item['pokemon_avg'].toFixed(2) + '</div>' : ''
+        var pokemonCount = (item['pokemon_count'] > 0) ? '<div>' + i8ln('Total nest Pokemon count') + ': ' + item['pokemon_count'] + '</div>' : ''
+        var nestSubmittedBy = (item['nest_submitted_by'] !== null) ? '<div>' + i8ln('Submitted by') + ': ' + item['nest_submitted_by'] + '</div>' : ''
+
         str += '<center>' +
             '<div>' +
             item.pokemon_name + ' - ' +
@@ -2771,9 +2800,11 @@ function nestLabel(item) {
             '</div>' +
             nestName + '<br />' +
             '<div>' +
-            '<img src="' + iconpath + 'pokemon_icon_' + pokemonIdStr + '_00.png" style="width:65px;height:65px;"/>' +
+            '<img src="' + iconpath + 'pokemon_icon_' + pokemonIdStr + '_' + formStr + '.png" style="width:65px;height:65px;"/>' +
             '</div>' +
             pokemonAvg +
+            pokemonCount +
+            nestSubmittedBy +
             '</center>'
     } else {
         str += '<div align="center" class="marker-nests">' +
@@ -2781,8 +2812,8 @@ function nestLabel(item) {
             '</div>' +
             '<center><b>' + i8ln('No Pokemon - Assign One Below') + '</b></center>'
     }
-    if (item.type === 1) {
-        str += '<center><div style="margin-bottom:5px; margin-top:5px;">' + i8ln('As found on thesilphroad.com') + '</div></center>'
+    if (item.type === 0) {
+        str += '<center><div style="margin-bottom:5px; margin-top:5px;">' + i8ln('Found by nestwatcher') + '</div></center>'
     }
     if (!noDeleteNests) {
         str += '<i class="fas fa-trash-alt delete-nest" onclick="deleteNest(event);" data-id="' + item['nest_id'] + '"></i>'
@@ -2795,7 +2826,14 @@ function nestLabel(item) {
         coordText = i8ln('Directions')
     }
     str += '<center><div>' +
-        '<a href="javascript:void(0)" onclick="javascript:openMapDirections(' + item.lat + ',' + item.lon + ')" title="' + i8ln('View in Maps') + '"><i class="fas fa-road"></i> ' + coordText + '</a> - <a href="./?lat=' + item.lat + '&lon=' + item.lon + '&zoom=18"><i class="far fa-share-square" aria-hidden="true" style="position:relative;top:3px;left:0px;color:#26c300;font-size:20px;"></i></a>' +
+        '<a href="javascript:void(0)" onclick="javascript:openMapDirections(' + item.lat + ',' + item.lon + ')" title="' + i8ln('View in Maps') + '"><i class="fas fa-road" style="padding-right:0.25em"></i>' + coordText + '</a>'
+    if (hideNestCoords === true) {
+        str += '-'
+    } else {
+        str += ' ' +
+                '<button onclick="copyCoordsToClipboard(this.previousElementSibling);" class="small-tight">' + 'Copy' + '</button> '
+    }
+    str += '<a href="./?lat=' + item.lat + '&lon=' + item.lon + '&zoom=18"><i class="far fa-share-square" aria-hidden="true" style="position:relative;top:3px;left:0px;color:#26c300;font-size:20px;"></i></a>' +
         '</div></center>'
     if (!noWhatsappLink && item.pokemon_id > 0) {
         str += '<div>' +
@@ -2804,6 +2842,7 @@ function nestLabel(item) {
             '</center>' +
             '</div>'
     }
+    str += '<center><div>' + i8ln('Last Updated') + ': ' + getDateStr(item['updated']) + ' ' + getTimeStr(item['updated']) + '</div></center>'
     return str
 }
 
@@ -3178,44 +3217,86 @@ function addListeners(marker) {
     return marker
 }
 
+function clearMarker(obj, key) {
+    var mm = obj[key]['marker']
+    if (mm.rangeCircle) {
+        markers.removeLayer(mm.rangeCircle)
+        markersnotify.removeLayer(mm.rangeCircle)
+        delete mm.rangeCircle
+    }
+    markers.removeLayer(mm)
+    markersnotify.removeLayer(mm)
+    delete obj[key]
+}
+
+function shouldRemovePokemon(mon, time) {
+    time = time || new Date().getTime()
+
+    /* Pokemon Despawned. Remove */
+    if (mon.disappear_time < time) return true
+    /* User "focused" on this Pokemon specifically. Do not remove */
+    if (encounterId && (encounterId === mon.encounter_id)) return false
+
+    var mid = mon.pokemon_id
+
+    /* Pokemon was excluded in user settings. Remove */
+    if (excludedPokemon.includes(mid)) return true
+    /* Pokemon was temporarily hidden. Remove */
+    if (isTemporaryHidden(mid)) return true
+    /* Pokemon ignores level/iv settings. Do not remove */
+    if (excludedMinIV.includes(mid)) return false
+
+    /* Remove for low level */
+    if ((mapType === 'rdm') && (mon.level < minLevel)) return true
+    if ((mapType === 'rocketmap') && (!isNaN(minLevel))) {
+        if (mon.cp_multiplier < cpMultiplier[minLevel - 1]) return true
+    }
+    /* Remove for low iv */
+    var ivs = mon.individual_attack + mon.individual_defense
+    ivs += mon.individual_stamina
+    ivs /= 4500
+    if (ivs < minIV) return true
+
+    /* This settings has a deceptive name.
+    * What it actually does, is "hide magikarp" UNLESS it is big.
+    * So if this setting is activated, and the magikarp is tiny, remove it. */
+    if ((Store.get('showBigKarp') === true) && (mid === 129) &&
+        ((mon.weight === null) || (mon.weight < 13.14))) {
+        return true
+    }
+    /* Similar to "showBigKarp", "showTinyRat" is deceptively named.
+    * Remove ratatta when they are big. */
+    if ((Store.get('showTinyRat') === true) && (mid === 19) &&
+        ((mon.weight === null) || (mon.weight > 2.4))) {
+        return true
+    }
+
+    /* Congratulations! You made the cut! */
+    return false
+}
+
 function clearStaleMarkers() {
+    /* Cache time so it is not repeatedly fetched foreach marker. */
+    var time = new Date().getTime()
+    /* Clear Pokemon */
     $.each(mapData.pokemons, function (key, value) {
-        if (((mapData.pokemons[key]['disappear_time'] < new Date().getTime() || ((excludedPokemon.indexOf(mapData.pokemons[key]['pokemon_id']) >= 0 || isTemporaryHidden(mapData.pokemons[key]['pokemon_id']) || ((((mapData.pokemons[key]['individual_attack'] + mapData.pokemons[key]['individual_defense'] + mapData.pokemons[key]['individual_stamina']) / 45 * 100 < minIV) || ((mapType === 'rdm' && mapData.pokemons[key]['level'] < minLevel) || (mapType === 'rocketmap' && !isNaN(minLevel) && (mapData.pokemons[key]['cp_multiplier'] < cpMultiplier[minLevel - 1])))) && !excludedMinIV.includes(mapData.pokemons[key]['pokemon_id'])) || (Store.get('showBigKarp') === true && mapData.pokemons[key]['pokemon_id'] === 129 && (mapData.pokemons[key]['weight'] < 13.14 || mapData.pokemons[key]['weight'] === null)) || (Store.get('showTinyRat') === true && mapData.pokemons[key]['pokemon_id'] === 19 && (mapData.pokemons[key]['weight'] > 2.40 || mapData.pokemons[key]['weight'] === null))) && encounterId !== mapData.pokemons[key]['encounter_id'])) || (encounterId && encounterId === mapData.pokemons[key]['encounter_id'] && mapData.pokemons[key]['disappear_time'] < new Date().getTime()))) {
-            if (mapData.pokemons[key].marker.rangeCircle) {
-                markers.removeLayer(mapData.pokemons[key].marker.rangeCircle)
-                markersnotify.removeLayer(mapData.pokemons[key].marker.rangeCircle)
-                delete mapData.pokemons[key].marker.rangeCircle
-            }
-            markers.removeLayer(mapData.pokemons[key].marker)
-            markersnotify.removeLayer(mapData.pokemons[key].marker)
-            delete mapData.pokemons[key]
+        if (shouldRemovePokemon(mapData.pokemons[key], time)) {
+            clearMarker(mapData.pokemons, key)
         }
     })
+    /* Clear Gyms/Raids */
     if (!Store.get('showGyms') && Store.get('showRaids')) {
         $.each(mapData.gyms, function (key, value) {
-            if ((((excludedRaidboss.indexOf(Number(mapData.gyms[key]['raid_pokemon_id'])) > -1) && mapData.gyms[key]['raid_pokemon_id'] > 0) && (mapData.gyms[key]['raid_start'] < new Date().getTime() && mapData.gyms[key]['raid_end'] > new Date().getTime())) || ((excludedRaidegg.indexOf(Number(mapData.gyms[key]['raid_level'])) > -1) && mapData.gyms[key]['raid_start'] > new Date().getTime()) || ((excludedRaidegg.indexOf(Number(mapData.gyms[key]['raid_level']) + 6) > -1) && (mapData.gyms[key]['raid_start'] < new Date().getTime() && (mapData.gyms[key]['raid_pokemon_id'] <= 0)))) {
-                if (mapData.gyms[key].marker.rangeCircle) {
-                    markers.removeLayer(mapData.gyms[key].marker.rangeCircle)
-                    markersnotify.removeLayer(mapData.gyms[key].marker.rangeCircle)
-                    delete mapData.gyms[key].marker.rangeCircle
-                }
-                markers.removeLayer(mapData.gyms[key].marker)
-                markersnotify.removeLayer(mapData.gyms[key].marker)
-                delete mapData.gyms[key]
+            if ((((excludedRaidboss.indexOf(Number(mapData.gyms[key]['raid_pokemon_id'])) > -1) && mapData.gyms[key]['raid_pokemon_id'] > 0) && (mapData.gyms[key]['raid_start'] < time && mapData.gyms[key]['raid_end'] > time)) || ((excludedRaidegg.indexOf(Number(mapData.gyms[key]['raid_level'])) > -1) && mapData.gyms[key]['raid_start'] > time) || ((excludedRaidegg.indexOf(Number(mapData.gyms[key]['raid_level']) + 6) > -1) && (mapData.gyms[key]['raid_start'] < time && (mapData.gyms[key]['raid_pokemon_id'] <= 0)))) {
+                clearMarker(mapData.gyms, key)
             }
         })
     }
+    /* Clear Nests */
     if (Store.get('showNests')) {
         $.each(mapData.nests, function (key, value) {
             if (Number(mapData.nests[key]['pokemon_avg']) < Store.get('showNestAvg')) {
-                if (mapData.nests[key].marker.rangeCircle) {
-                    markers.removeLayer(mapData.nests[key].marker.rangeCircle)
-                    markersnotify.removeLayer(mapData.nests[key].marker.rangeCircle)
-                    delete mapData.nests[key].marker.rangeCircle
-                }
-                markers.removeLayer(mapData.nests[key].marker)
-                markersnotify.removeLayer(mapData.nests[key].marker)
-                delete mapData.nests[key]
+                clearMarker(mapData.nests, key)
             }
         })
     }
@@ -3488,7 +3569,13 @@ function searchForItem(lat, lon, term, type, field) {
                             html += '<span style="background:url(' + iconpath + 'pokemon_icon_' + pokemonIdStr + '_' + formStr + '.png) no-repeat;" class="i-icon" ></span>'
                         }
                         if (element.quest_item_id !== 0) {
-                            html += '<span style="background:url(' + iconpath + 'rewards/reward_' + element.quest_item_id + '_1.png) no-repeat;" class="i-icon" ></span>'
+                            html += '<span style="background:url(' + iconpath + 'rewards/reward_' + element.quest_item_id + '_' + element.quest_reward_amount + '.png) no-repeat;" class="i-icon" ></span>'
+                        }
+                        if (element.quest_reward_type === 12) {
+                            html += '<span style="background:url(' + iconpath + 'rewards/reward_mega_energy_' + element.quest_energy_pokemon_id + '.png) no-repeat;" class="i-icon" ></span>'
+                        }
+                        if (element.quest_reward_type === 3) {
+                            html += '<span style="background:url(' + iconpath + 'rewards/reward_stardust_' + element.quest_dust_amount + '.png) no-repeat;" class="i-icon" ></span>'
                         }
                         if (element.quest_reward_type === 12) {
                             html += '<span style="background:url(' + iconpath + 'rewards/reward_mega_energy_' + element.quest_energy_pokemon_id + '.png) no-repeat;" class="i-icon" ></span>'
@@ -6643,19 +6730,10 @@ $(function () {
     })
     $selectIconStyle.on('change', function (e) {
         Store.set('icons', this.value)
-        var port = ''
-        if (window.location.port.length > 0) {
-            port = ':' + window.location.port
-        }
-        var path = window.location.protocol + '//' + window.location.hostname + port + window.location.pathname
-        var r = new RegExp('^(?:[a-z]+:)?//', 'i')
-        iconpath = r.test(Store.get('icons')) ? Store.get('icons') : path + Store.get('icons')
-
+        iconpath = Store.get('icons')
         redrawPokemon(mapData.pokemons)
-        jQuery('label[for="pokestops-switch"]').click()
-        jQuery('label[for="pokestops-switch"]').click()
-        jQuery('label[for="raids-switch"]').click()
-        jQuery('label[for="raids-switch"]').click()
+        updateGymIcons()
+        updatePokestopIcons()
     })
     $selectIconStyle.val(Store.get('icons')).trigger('change')
     pokemonSpritesFilter()
@@ -6683,7 +6761,7 @@ $(function () {
         boostedMons = data.boosted_mons
     })
 
-    $.getJSON('static/dist/data/questtype.min.json').done(function (data) {
+    $.getJSON('static/dist/data/questtype.min.json', {_: new Date().getTime()}).done(function (data) {
         $.each(data, function (key, value) {
             questtypeList[key] = value['text']
         })
@@ -6919,24 +6997,12 @@ $(function () {
             Store.set('remember_select_exclude_min_iv', excludedMinIV)
         })
         $textMinIV.on('change', function (e) {
-            minIV = parseInt($textMinIV.val(), 10)
-            if (isNaN(minIV) || minIV < 0) {
-                minIV = ''
-            }
-            if (minIV > 100) {
-                minIV = 100
-            }
+            minIV = Math.max(0, Math.min(parseInt($textMinIV.val(), 10) || 0, 100))
             $textMinIV.val(minIV)
             Store.set('remember_text_min_iv', minIV)
         })
         $textMinLevel.on('change', function (e) {
-            minLevel = parseInt($textMinLevel.val(), 10)
-            if (isNaN(minLevel) || minLevel < 0) {
-                minLevel = ''
-            }
-            if (minLevel > 35) {
-                minLevel = 35
-            }
+            minLevel = Math.max(0, Math.min(parseInt($textMinLevel.val(), 10) || 0, 35))
             $textMinLevel.val(minLevel)
             Store.set('remember_text_min_level', minLevel)
         })
@@ -6961,24 +7027,12 @@ $(function () {
             Store.set('remember_select_rarity_notify', notifiedRarity)
         })
         $textPerfectionNotify.on('change', function (e) {
-            notifiedMinPerfection = parseInt($textPerfectionNotify.val(), 10)
-            if (isNaN(notifiedMinPerfection) || notifiedMinPerfection <= 0) {
-                notifiedMinPerfection = ''
-            }
-            if (notifiedMinPerfection > 100) {
-                notifiedMinPerfection = 100
-            }
+            notifiedMinPerfection = Math.max(0, Math.min(parseInt($textPerfectionNotify.val(), 10) || 0, 100))
             $textPerfectionNotify.val(notifiedMinPerfection)
             Store.set('remember_text_perfection_notify', notifiedMinPerfection)
         })
         $textLevelNotify.on('change', function (e) {
-            notifiedMinLevel = parseInt($textLevelNotify.val(), 10)
-            if (isNaN(notifiedMinLevel) || notifiedMinLevel <= 0) {
-                notifiedMinLevel = ''
-            }
-            if (notifiedMinLevel > 35) {
-                notifiedMinLevel = 35
-            }
+            notifiedMinLevel = Math.max(0, Math.min(parseInt($textLevelNotify.val(), 10) || 0, 35))
             $textLevelNotify.val(notifiedMinLevel)
             Store.set('remember_text_level_notify', notifiedMinLevel)
         })
@@ -7712,8 +7766,8 @@ function updateUser() {
         return false
     }
     loadUser(engine).done(function (result) {
-        if (result === 'reload') {
-            window.location.href = './logout?action=' + engine + '-logout'
+        if (result.action === 'reload') {
+            window.location.href = './logout?action=' + engine + '-logout&reason=change'
         }
     })
 }
@@ -7733,7 +7787,6 @@ function loadUser(engine) {
             toastr.options = toastrOptions
         },
         complete: function complete() {
-            updateMap()
         }
     })
 }

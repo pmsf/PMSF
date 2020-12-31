@@ -354,7 +354,7 @@ class RocketMap_MAD extends RocketMap
 
     public function query_gyms($conds, $params, $raids, $gyms, $rbeids, $reeids)
     {
-        global $db;
+        global $db, $noTeams, $noExEligible;
 
         $query = "SELECT gym.gym_id,
         latitude,
@@ -396,7 +396,7 @@ class RocketMap_MAD extends RocketMap
                 $raid_pid = null;
                 $gym["raid_pokemon_id"] = null;
             }
-            $gym["team_id"] = intval($gym["team_id"]);
+            $gym["team_id"] = $noTeams ? 0 : intval($gym["team_id"]);
             $gym["pokemon"] = [];
             $gym["raid_pokemon_name"] = empty($raid_pid) ? null : i8ln($this->data[$raid_pid]["name"]);
             $gym["raid_pokemon_gender"] = intval($gym["raid_pokemon_gender"]);
@@ -409,9 +409,9 @@ class RocketMap_MAD extends RocketMap
             $gym["last_scanned"] = $gym["last_scanned"] * 1000;
             $gym["raid_start"] = $gym["raid_start"] * 1000;
             $gym["raid_end"] = $gym["raid_end"] * 1000;
-            $gym["slots_available"] = intval($gym["slots_available"]);
+            $gym["slots_available"] = $noTeams ? 0 : intval($gym["slots_available"]);
             $gym["url"] = ! empty($gym["url"]) ? preg_replace("/^http:/i", "https:", $gym["url"]) : null;
-            $gym["park"] = intval($gym["park"]);
+            $gym["park"] = $noExEligible ? 0 : intval($gym["park"]);
             if (isset($gym["form"]) && $gym["form"] > 0) {
                 $forms = $this->data[$gym["raid_pokemon_id"]]["forms"];
                 foreach ($forms as $f => $v) {

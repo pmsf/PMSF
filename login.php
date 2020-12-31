@@ -63,11 +63,25 @@ if (isset($_GET['action'])) {
                             case 'blacklisted-server-dc':
                                 $html .= "<div id='login-error'>" . i8ln('We found you are a member of the following discord server we have blacklisted: ') . $_GET['bl-discord'] . "</div>";
                                 break;
-                            case 'invalid-token':
-                                $html .= "<div id='login-error'>" . i8ln('We have logged you out. This might be because of invalid or expired token or your account has been logged in on another device.') . "</div>";
+                            case 'duplicate-login':
+                                $html .= "<div id='login-error'>" . i8ln('We logged you out because a different device just logged in with the same account.') . "</div>";
                                 break;
                             case 'no-id':
                                 $html .= "<div id='login-error'>" . i8ln('Something went wrong as we couldn\'t find your session id.') . "</div>";
+                                break;
+                            case 'failed-token':
+                                $html .= "<div id='login-error'>" . i8ln('Something went wrong while verifying external login') . "</div>";
+                                break;
+                            case 'no-member-patreon':
+                                $html .= "<div id='login-error'>" . i8ln('It seems you haven\'t pledged to our patreon. Therefore access has been denied.') . " <a href='" . $patreonUrl . "'>" . i8ln('Pledge at Patreon to gain access.') . "</a></div>";
+                                break;
+                            case 'invalid-token':
+                                $html .= "<div id='login-error'>" . i8ln('We have logged you out. This might be because of invalid or expired token or your account has been logged in on another device.') . "</div>";
+                                break;
+                            case 'access-change':
+                                $html .= "<div id='login-error'>" . i8ln('Your level of access changed while logged in please login again to get the new level of access.') . "</div>";
+
+                                break;
                         }
                     }
                     $html .= '<div class="imgcontainer">
@@ -87,13 +101,20 @@ if (isset($_GET['action'])) {
                         $html .= "<button type='button' style='background-color: #1877f2; margin: 2px' onclick=\"location.href='./login?action=discord-login';\" value='Login with discord'><i class='fab fa-discord'></i>&nbsp" . i8ln('Login with Discord') . "</button>";
                     }
                     if ($noFacebookLogin === false) {
-                        $html .= "<button type='button' style='background-color: #1877f2; margin: 2px' onclick=\"location.href='./login?action=facebook-login';\" value='Login with discord'><i class='fab fa-facebook'></i>&nbsp" . i8ln('Login with Facebook') . "</button>";
+                        $html .= "<button type='button' style='background-color: #1877f2; margin: 2px' onclick=\"location.href='./login?action=facebook-login';\" value='Login with facebook'><i class='fab fa-facebook'></i>&nbsp" . i8ln('Login with Facebook') . "</button>";
+                    }
+                    if ($noPatreonLogin === false) {
+                        $html .= "<button type='button' style='background-color: #1877f2; margin: 2px' onclick=\"location.href='./login?action=patreon-login';\" value='Login with patreon'><i class='fab fa-patreon'></i>&nbsp" . i8ln('Login with Patreon') . "</button>";
                     }
                     $html .= '</div>
                     <div class="force-container" style="background-color:#f1f1f1">';
                     if ($noNativeLogin === false) {
                         $html .= "<button type='button' style='background-color: #4CAF50; margin: 2px' onclick=\"location.href='./register?action=account';\" value='Register'><i class='fas fa-user'></i>&nbsp" . i8ln('Register') . "</button>";
                         $html .= "<button type='button' style='background-color: #4CAF50; margin: 2px' onclick=\"location.href='./register?action=password-reset';\" value='Forgot password?'><i class='fas fa-lock'></i>&nbsp" . i8ln('Forgot Password') . "</button>";
+                    }
+                    if ($noNativeLogin && $noDiscordLogin && $noFacebookLogin && $noPatreonLogin) {
+                        header("Location: ./");
+                        die();
                     }
                     $html .= '</div>
                 </form>
@@ -161,6 +182,17 @@ if (isset($_GET['action'])) {
         header('Location: https://discord.com/api/oauth2/authorize' . '?' . http_build_query($params));
         die();
     }
+    if ($_GET['action'] == 'patreon-login') {
+        $params = [
+            'client_id' => $patreonClientId,
+            'redirect_uri' => $patreonCallbackUri,
+            'response_type' => 'code',
+            'scope' => 'identity identity.memberships campaigns.members',
+            'state' => $_SESSION['token']
+        ];
+        header('Location: https://www.patreon.com/oauth2/authorize' . '?' . http_build_query($params));
+        die();
+    }
     if ($_GET['action'] == 'facebook-login') {
         $fb = new Facebook\Facebook([
            'app_id' => $facebookAppId,
@@ -225,7 +257,7 @@ if (isset($_GET['callback'])) {
                                 }
                                 header("Location: ./login?action=login&error=blacklisted-server-dc&bl-discord=" . $guildName . " ");
                                 die();
-                            } else if (array_key_exists($uses, $guildRoles['guildIDS'])) {
+                            } elseif (array_key_exists($uses, $guildRoles['guildIDS'])) {
                                 $whiteListed = true;
                             }
                         }
@@ -237,7 +269,7 @@ if (isset($_GET['callback'])) {
                     die();
                 }
 
-                $accessRole = checkAccessLevel($user->id, $guilds);
+                $accessRole = checkAccessLevelDiscord($user->id, $guilds);
 
                 $format = '.png';
                 if (strpos($user->avatar, 'a_') === 0) {
@@ -275,6 +307,17 @@ if (isset($_GET['callback'])) {
                         'login_system' => 'discord',
                         'discord_guilds' => json_encode($guilds),
                         'last_loggedin' => time()
+                    ]);
+                }
+                if ($manualdb->has('users', ['linked_account' => $user->id, 'login_system' => 'patreon'])) {
+                    $linked_account = $manualdb->get('users', ['linked_account'],['id' => $user->id]);
+                    $manualdb->update('users', [
+                        'session_token' => null,
+                        'session_id' => null,
+                        'expire_timestamp' => time() - 86400
+                    ], [
+                        'id' => $linked_account['linked_account'],
+                        'login_system' => 'patreon'
                     ]);
                 }
                 setcookie("LoginCookie", $response->access_token, time() + $response->expires_in);
@@ -384,17 +427,99 @@ if (isset($_GET['callback'])) {
             die();
         }
     }
+    if ($_GET['callback'] == 'patreon') {
+        if ($_GET['state'] != $_SESSION['token']) {
+            header("Location: ./login?action=login&error=failed-token");
+            die();
+        }
+        $token_request = 'https://www.patreon.com/api/oauth2/token';
+        $token = curl_init();
+        curl_setopt_array($token, [
+            CURLOPT_URL => $token_request,
+            CURLOPT_POST => 1,
+            CURLOPT_POSTFIELDS => [
+                'grant_type' => 'authorization_code',
+                'client_id' => $patreonClientId,
+                'client_secret' => $patreonClientSecret,
+                'redirect_uri' => $patreonCallbackUri,
+                'code' => $_GET['code']
+            ]
+        ]);
+        curl_setopt($token, CURLOPT_RETURNTRANSFER, true);
+
+        $response = json_decode(curl_exec($token));
+        curl_close($token);
+
+        $identity = patreon_call($response->access_token, '/api/oauth2/v2/identity?include=memberships,campaign&fields%5Buser%5D=about,created,email,first_name,full_name,image_url,last_name,social_connections,thumb_url,url,vanity');
+
+        $identity = json_decode($identity, true);
+        $linked_discord = (!empty($identity['data']['attributes']['social_connections']['discord'])) ? $identity['data']['attributes']['social_connections']['discord']['user_id'] : null;
+        if ($linked_discord && $manualdb->has('users', ['id' => $linked_discord, 'login_system' => 'discord'])) {
+            $manualdb->update('users', [
+                'session_token' => null,
+                'session_id' => null,
+                'expire_timestamp' => time() - 86400,
+                'linked_account' => $identity['data']['relationships']['memberships']['data']['0']['id'],
+                'last_loggedin' => time()
+            ], [
+                'id' => $linked_discord,
+                'login_system' => 'discord'
+            ]);
+        }
+
+        $accessLevel = checkAccessLevelPatreon($response->access_token, $identity['data']['relationships']['memberships']['data']['0']['id']);
+        if (empty($accessLevel) && $patreonTierRequired) {
+            header("Location: ./login?action=login&error=no-member-patreon");
+            die();
+        }
+        if ($manualdb->has('users', ['id' => $identity['data']['relationships']['memberships']['data']['0']['id'], 'login_system' => 'patreon'])) {
+            $manualdb->update('users', [
+                'session_token' => $_SESSION['token'],
+                'session_id' => $response->access_token,
+                'expire_timestamp' => time() + $response->expires_in,
+                'user' => strval($identity['data']['attributes']['full_name']),
+                'access_level' => $accessLevel,
+                'avatar' => $identity['data']['attributes']['image_url'],
+                'linked_account' => $linked_discord,
+                'last_loggedin' => time()
+            ], [
+                'id' => $identity['data']['relationships']['memberships']['data']['0']['id'],
+                'login_system' => 'patreon'
+            ]);
+        } else {
+            $manualdb->insert('users', [
+                'session_token' => $_SESSION['token'],
+                'session_id' => $response->access_token,
+                'id' => $identity['data']['relationships']['memberships']['data']['0']['id'],
+                'user' => strval($identity['data']['attributes']['full_name']),
+                'access_level' => $accessLevel,
+                'avatar' => $identity['data']['attributes']['image_url'],
+                'expire_timestamp' => time() + $response->expires_in,
+                'login_system' => 'patreon',
+                'linked_account' => $linked_discord,
+                'last_loggedin' => time()
+            ]);
+        }
+        setcookie("LoginCookie", $response->access_token, time() + $response->expires_in);
+        setcookie("LoginEngine", 'patreon', time() + $response->expires_in);
+        if ($useLoginCookie) {
+            setrawcookie("LoginSession", $_SESSION['token'], time() + $sessionLifetime);
+        }
+        header("Location: .?login=true");
+        die();
+    }
 }
 if (!empty($_POST['refresh'])) {
-    $answer = '';
+    header('Content-Type: application/json');
+    $answer = array();
     if ($_POST['refresh'] == 'discord') {
         $dbUser = $manualdb->get('users', ['id','session_id', 'access_level', 'discord_guilds'],['id' => $_SESSION['user']->id]);
         if (empty($dbUser)) {
-            $answer = 'false';
+            $answer['action'] = 'false';
         } else {
-            $accessLevel = checkAccessLevel($dbUser['id'], json_decode($dbUser['discord_guilds']));
+            $accessLevel = checkAccessLevelDiscord($dbUser['id'], json_decode($dbUser['discord_guilds']));
             if ($accessLevel == $dbUser['access_level']) {
-                $answer = 'true';
+                $answer['action'] = 'true';
             } elseif (!empty($accessLevel)) {
                 $manualdb->update('users', [
                     'access_level' => $accessLevel,
@@ -402,7 +527,7 @@ if (!empty($_POST['refresh'])) {
                 ], [
                     'id' => $dbUser['id']
                 ]);
-                $answer = 'reload';
+                $answer['action'] = 'reload';
             } else {
                 $manualdb->update('users', [
                     'access_level' => null,
@@ -410,18 +535,44 @@ if (!empty($_POST['refresh'])) {
                 ], [
                     'id' => $dbUser['id']
                 ]);
-                $answer = 'reload';
+                $answer['action'] = 'reload';
             }
         }
     }
     if ($_POST['refresh'] == 'native') {
         $dbUser = $manualdb->get('users', ['id','session_id', 'access_level'],['id' => $_SESSION['user']->id]);
         if ($_SESSION['user']->access_level != $dbUser['access_level']) {
-            $answer = 'reload';
+            $answer['action'] = 'reload';
         }
     }
-    $answer = json_encode($answer);
-    echo $answer;
+    if ($_POST['refresh'] == 'patreon') {
+        $dbUser = $manualdb->get('users', ['id','session_id', 'access_level'],['id' => $_SESSION['user']->id]);
+        if (empty($dbUser)) {
+            $answer['action'] = 'false';
+        } else {
+            $accessLevel = checkAccessLevelPatreon($dbUser['session_id'], $dbUser['id']);
+            if ($accessLevel == $dbUser['access_level']) {
+                $answer['action'] = 'true';
+            } elseif (!empty($accessLevel)) {
+                $manualdb->update('users', [
+                    'access_level' => $accessLevel
+                ], [
+                    'id' => $dbUser['id']
+                ]);
+                $answer['action'] = 'reload';
+            } else {
+                $manualdb->update('users', [
+                    'access_level' => null
+                ], [
+                    'id' => $dbUser['id']
+                ]);
+                $answer['action'] = 'reload';
+            }
+        }
+    }
+    $json = json_encode($answer);
+    echo $json;
+    die();
 }
 if (!empty($_POST['signed_request'])) {
     $request = parse_signed_request($_POST['signed_request']);
@@ -445,7 +596,7 @@ function logFailure($logFailure) {
     global $logFailedLogin;
     file_put_contents($logFailedLogin, $logFailure, FILE_APPEND);
 }
-function checkAccessLevel ($userId, $guilds) {
+function checkAccessLevelDiscord ($userId, $guilds) {
     global $guildRoles, $discord;
     $accessRole = '';
     foreach ($guildRoles['guildIDS'] as $guild => $guildRoles) {
@@ -458,15 +609,28 @@ function checkAccessLevel ($userId, $guilds) {
                         $accessRole = strval($guildRoles[$role]);
                     }
                 }
-	    }
+            }
             if ($guildRoles[$guild]) {
                 if ($accessRole < strval($guildRoles[$guild])) {
                     $accessRole = strval($guildRoles[$guild]);
                 }
             }
-	}
+        }
     }
     return $accessRole;
+}
+function checkAccessLevelPatreon ($accessToken, $userId) {
+    global $patreonTiers;
+    $member = patreon_call($accessToken, '/api/oauth2/v2/members/' . $userId . '?include=currently_entitled_tiers,user&fields%5Bmember%5D=full_name,patron_status&fields%5Btier%5D=title&fields%5Buser%5D=full_name,hide_pledges');
+
+    $member = json_decode($member, true);
+    $accessLevel = null;
+    if ($member['data']['attributes']['patron_status'] == 'active_patron') {
+        if (!empty($member['data']['relationships']['currently_entitled_tiers']['data'])) {
+            $accessLevel = $patreonTiers[$member['data']['relationships']['currently_entitled_tiers']['data'][0]['id']];
+        }
+    }
+    return $accessLevel;
 }
 function parse_signed_request($signed_request) {
     global $facebookAppSecret;
@@ -489,3 +653,19 @@ function parse_signed_request($signed_request) {
 function base64_url_decode($input) {
     return base64_decode(strtr($input, '-_', '+/'));
 }
+
+function patreon_call($bearer, $api) {
+    $ch = curl_init('https://www.patreon.com' . $api);
+    curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+    curl_setopt($ch, CURLOPT_HTTPHEADER, array(
+        'Content-Type: application/json',
+        'Authorization: Bearer ' . $bearer
+    ));
+
+    $data = curl_exec($ch);
+    curl_close($ch);
+
+    return $data;
+}
+header("Location: ./");
+die();

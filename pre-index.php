@@ -4,7 +4,7 @@ if (! file_exists('config/config.php')) {
     die("<h1>Config file missing</h1><p>Please ensure you have created your config file (<code>config/config.php</code>).</p>");
 }
 include('config/config.php');
-if ($noNativeLogin === false || $noDiscordLogin === false || $noFacebookLogin === false) {
+if ($noNativeLogin === false || $noDiscordLogin === false || $noFacebookLogin === false || $noPatreonLogin === false) {
     if (isset($_COOKIE["LoginCookie"])) {
         if (validateCookie($_COOKIE["LoginCookie"]) === false) {
             header("Location: .");
@@ -409,6 +409,11 @@ if (!$noLoadingScreen) {
         if ($discordUrl != "") {
             echo '<a href="' . $discordUrl . '" target="_blank" style="float:right;padding:0 5px;">
                  <i class="fab fa-discord" title="' . i8ln('Discord') . '" style="position:relative;vertical-align:middle;color:white;margin-left:10px;font-size:20px;"></i>
+                 </a>';
+        }
+        if ($patreonUrl != "") {
+            echo '<a href="' . $patreonUrl . '" target="_blank" style="float:right;padding:0 5px;">
+                 <i class="fab fa-patreon" title="' . i8ln('Patreon') . '" style="position:relative;vertical-align:middle;color:white;margin-left:10px;font-size:20px;"></i>
                  </a>';
         }
         if ($customUrl != "") {
@@ -1671,13 +1676,16 @@ if (!$noLoadingScreen) {
         } else {
             echo "<div class='button-container'>";
             if ($noNativeLogin === false) {
-                echo "<div><button style='background-color: #395697;font-size:13px;margin-bottom:0;' onclick=\"location.href='./login?action=login';\" value='Login'><i class='fas fa-user'></i> " . i8ln('Login') . "</button></div>";
+                echo "<div><button style='background-color: #395697;font-size:13px;margin-bottom:0;' onclick=\"location.href='./login?action=login';\" value='Login'><i class='fas fa-user'></i> " . i8ln('Login with Email') . "</button></div>";
             }
             if ($noDiscordLogin === false) {
                 echo "<div><button style='background-color: #395697;font-size:13px;margin-bottom:0;' onclick=\"location.href='./login?action=discord-login';\" value='Login with discord'><i class='fab fa-discord'></i> " . i8ln('Login with Discord') . "</button></div>";
             }
             if ($noFacebookLogin === false) {
 	        echo "<div><button style='background-color: #395697;font-size:13px;margin-bottom:0;' onclick=\"location.href='./login?action=facebook-login';\" value='Login with facebook'><i class='fab fa-facebook'></i> " . i8ln('Login with Facebook') . "</button></div>";
+            }
+            if ($noPatreonLogin === false) {
+	        echo "<div><button style='background-color: #395697;font-size:13px;margin-bottom:0;' onclick=\"location.href='./login?action=patreon-login';\" value='Login with patreon'><i class='fab fa-patreon'></i> " . i8ln('Login with Patreon') . "</button></div>";
             }
             echo "</div>";
         } ?>
@@ -2396,6 +2404,7 @@ if (!$noLoadingScreen) {
     var nestAvgDefault = <?php echo $nestAvgDefault; ?>;
     var noDarkMode = <?php echo $noDarkMode === true ? 'true' : 'false' ?>;
     var noCatchRates = <?php echo $noCatchRates === true ? 'true' : 'false' ?>;
+    var noHideSingleMarker = <?php echo $noHideSingleMarker === true ? 'true' : 'false' ?>;
 </script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js"></script>
 <script src="static/dist/js/map.common.min.js"></script>

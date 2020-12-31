@@ -218,6 +218,7 @@
     "noDarkMode": true,
     "defaultDustAmount": true,
     "noCatchRates": true,
-    "nestAvgDefault": true
+    "nestAvgDefault": true,
+    "noHideSingleMarker": true
   }
 }

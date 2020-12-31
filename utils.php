@@ -41,9 +41,9 @@ function refreshCsrfToken()
     if (time() - $_SESSION['c'] > $sessionLifetime) {
         session_regenerate_id(true);
         generateToken();
-	if (!empty($_SESSION['user']->id)) {
+        if (!empty($_SESSION['user']->id)) {
             $manualdb->update('users', ['session_token' => $_SESSION['token']], ['id' => $_SESSION['user']->id]);
-	}
+        }
     }
     return $_SESSION['token'];
 }
@@ -60,18 +60,18 @@ function validateToken($token)
     if ((!$enableCsrf) || ($enableCsrf && isset($token) && $token === $_SESSION['token'])) {
         $validity = 'valid';
         if (!empty($_SESSION['user']->id)) {
-            $user = $manualdb->get('users', ['id', 'session_token'], ['id' => $_SESSION['user']->id]);
+            $user = $manualdb->get('users', ['session_token'], ['id' => $_SESSION['user']->id]);
             if ($user['session_token'] == $_SESSION['token'] || $allowMultiLogin) {
                 $validity = 'valid';
-            } else if ($user['session_token'] != $_SESSION['token'] && $useLoginCookie && $_COOKIE['LoginSession'] == $user['session_token']) {
-                $manualdb->update('users', ['session_token' => $_SESSION['token']], ['id' => $_COOKIE['LoginCookie']]);
+            } elseif ($useLoginCookie && $_COOKIE['LoginSession'] == $user['session_token']) {
+                $manualdb->update('users', ['session_token' => $_SESSION['token']], ['session_id' => $_COOKIE['LoginCookie']]);
                 setrawcookie("LoginSession", $_SESSION['token'], time() + $sessionLifetime);
                 $validity = 'valid';
             } else {
                 $validity = 'invalid';
                 destroyCookiesAndSessions();
            }
-	} else if ($forcedLogin) {
+        } elseif ($forcedLogin) {
             $validity = 'no-id';
         }
         return $validity;
@@ -150,15 +150,14 @@ function createUserAccount($user, $password, $newExpireTimestamp)
 {
     global $manualdb, $discordUrl, $domainName, $title;
 
-    $count = $manualdb->count("users", [
+    $count = $manualdb->has("users", [
         "user" => $user,
         "login_system" => 'native'
     ]);
 
-    if ($count === 0) {
-        $getId = $manualdb->count("users", [
-            "login_system" => 'native'
-        ]);
+    if (!$count) {
+        $getId = $manualdb->query("SELECT TRIM(LEADING '0' FROM MAX(LPAD(`id`, 9, '0'))) FROM `users` WHERE `login_system` = 'native'")->fetchAll();
+        $getId = intval($getId[0][0]);
 
         if (is_int($getId)) {
             $getId++;
@@ -195,12 +194,13 @@ function createUserAccount($user, $password, $newExpireTimestamp)
             if (!$sendMail) {
                 http_response_code(500);
                 die("<h1>Warning</h1><p>The email has not been sent.<br>If you're an user please contact your administrator.<br>If you're an administrator install <i><b>apt-get install sendmail</b></i> and restart your web server and try again.</p><p><a href='.'><i class='fas fa-backward'></i> Back to Map</a> - <a href='./register?action=account'>Retry</a></p>");
+                return 'success';
             }
         } else {
-            return false;
+            return 'error_id';
         }
     } else {
-        return false;
+        return 'duplicate';
     }
 }
 

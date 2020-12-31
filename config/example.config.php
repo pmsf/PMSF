@@ -4,8 +4,6 @@ namespace Config;
 
 // Do not touch this!
 require 'default.php';
-require __DIR__ . '/../Medoo.php';
-
 use Medoo\Medoo;
 
 //======================================================================
@@ -103,6 +101,7 @@ $paypalUrl = "";                                                    // PayPal do
 $discordUrl = "https://discord.gg/INVITE_LINK";                     // Discord URL, leave "" for empty
 $whatsAppUrl = "";                                                  // WhatsApp URL, leave "" for empty
 $telegramUrl = "";                                                  // Telegram URL, leave "" for empty
+$patreonUrl = "";                                                   // Patreon URL, leave "" for empty
 $customUrl = "";                                                    // Custom URL, leave "" for empty
 $customUrlFontIcon = "far fa-smile-beam";                           // Choose a custom icon on: https://fontawesome.com/icons?d=gallery&m=free
 
@@ -175,6 +174,19 @@ $facebookAppSecret = '';                        // Facebook App Secret
 $facebookAppRedirectUri = 'https://Yourdomain.com/login?callback=facebook'; // Callback url make sure this is the same as set in Facebook app config
 $facebookAccessLevel = '1';                     // Accesslevel used in access-config.php
 
+$noPatreonLogin = false;
+$patreonClientId = '';
+$patreonClientSecret = '';
+$patreonCreatorAccessToken = '';
+$patreonCallbackUri = 'https://Yourdomain.com/login?callback=patreon';
+
+$patreonTierRequired = true;                                        // Member must have pledged set to false to allow any patreon user to log in.
+$patreonTiers = [						    // Tier ids can be obtained by clicking the join tier button on patreon and the URL will show you checkout?rid=<NUMBER>
+	'<NUMBER>' => 1,
+	'<NUMBER>' => 2,
+	'<NUMBER>' => 3
+];
+
 $userBlacklist = [''];                                              // Array of user ID's that are always blocked from accessing the map
 $userWhitelist = [''];                                              // Array of user ID's that's allowed to bypass the server blacklist
 $serverBlacklist = [''];                                            // Array of server ID's. A user that's a member of any of these and not in your user whitelist will be blocked
@@ -197,6 +209,7 @@ $noCatchRates = false;
 $noRarityDisplay = false;
 $noWeatherIcons = true;
 $no100IvShadow = false;
+$noHideSingleMarker = false;
 /* Notification Settings */
 $noNotifyPokemon = false;
 $noNotifyRarity = false;
@@ -588,7 +601,7 @@ $db = new Medoo([
 //]);
 
 // DONT EDIT THE CODE BELOW
-if (($noNativeLogin === false || $noDiscordLogin === false) && !empty($_SESSION['user']->user)) {
+if (($noNativeLogin === false || $noDiscordLogin === false || $noFacebookLogin === false || $noPatreonLogin === false) && !empty($_SESSION['user']->user)) {
     if (file_exists('config/access-config.php')) {
         include 'config/access-config.php';
     }

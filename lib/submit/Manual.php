@@ -59,7 +59,8 @@ class Manual extends Submit
         if (! empty($pokemonId) && ! empty($nestId)) {
             $cols  = [
                 'pokemon_id' => $pokemonId,
-                'nest_submitted_by' => $loggedUser
+                'nest_submitted_by' => $loggedUser,
+                'type' => 99
             ];
             $where = [
                 'nest_id' => $nestId
@@ -80,7 +81,7 @@ class Manual extends Submit
                 'pokemon_id'     => $pokemonId,
                 'lat'            => $lat,
                 'lon'            => $lon,
-                'type'           => 0,
+                'type'           => 99,
                 'updated'        => time(),
                 'nest_submitted_by'    => $loggedUser
             ];
