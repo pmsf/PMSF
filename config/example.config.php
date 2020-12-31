@@ -143,7 +143,7 @@ $noDiscordLogin = true;                                             // This will
                                                                     // 5. Enter Client ID, Client Secret, Token and Redirect URI below.
 $discordBotClientId = 0;
 $discordBotClientSecret = "";
-$discordBotRedirectUri = "https://example.com/login?callback=discord";
+$discordBotRedirectUri = "https://Yourdomain.com/login?callback=discord";
 $discordBotToken = "";
 
 /* Match role-id values with access levels in access config. Remove or add according your needs */
@@ -173,6 +173,11 @@ $facebookAppId = '';                            // Facebook App ID
 $facebookAppSecret = '';                        // Facebook App Secret
 $facebookAppRedirectUri = 'https://Yourdomain.com/login?callback=facebook'; // Callback url make sure this is the same as set in Facebook app config
 $facebookAccessLevel = '1';                     // Accesslevel used in access-config.php
+
+$noGroupmeLogin = true;
+$groupmeClientId = '';
+$groupmeCallbackUri = 'https://Yourdomain.com/login?callback=groupme';
+$groupmeAccessLevel = '1';
 
 $noPatreonLogin = false;
 $patreonClientId = '';

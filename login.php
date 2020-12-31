@@ -103,6 +103,9 @@ if (isset($_GET['action'])) {
                     if ($noFacebookLogin === false) {
                         $html .= "<button type='button' style='background-color: #1877f2; margin: 2px' onclick=\"location.href='./login?action=facebook-login';\" value='Login with facebook'><i class='fab fa-facebook'></i>&nbsp" . i8ln('Login with Facebook') . "</button>";
                     }
+                    if ($noGroupmeLogin === false) {
+                        $html .= "<button type='button' style='background-color: #1877f2; margin: 2px' onclick=\"location.href='./login?action=groupme-login';\" value='Login with groupme'><i class='fas fa-smile'></i>&nbsp" . i8ln('Login with Groupme') . "</button>";
+                    }
                     if ($noPatreonLogin === false) {
                         $html .= "<button type='button' style='background-color: #1877f2; margin: 2px' onclick=\"location.href='./login?action=patreon-login';\" value='Login with patreon'><i class='fab fa-patreon'></i>&nbsp" . i8ln('Login with Patreon') . "</button>";
                     }
@@ -204,6 +207,10 @@ if (isset($_GET['action'])) {
         $loginUrl = $helper->getLoginUrl($facebookAppRedirectUri);
 
         header("Location: {$loginUrl}");
+        die();
+    }
+    if ($_GET['action'] == 'groupme-login') {
+        header("Location: https://oauth.groupme.com/oauth/authorize?client_id=" . $groupmeClientId);
         die();
     } else {
         header("Location: .");
@@ -426,6 +433,49 @@ if (isset($_GET['callback'])) {
             header("Location: .?login=true");
             die();
         }
+    }
+    if ($_GET['callback'] == 'groupme') {
+        if ($_GET['?access_token']) {
+            $userToken = $_GET['?access_token'];
+            $headers = array();
+            $headers[] = "X-Access-Token: $userToken";
+            $headers[] = 'Content-Type: application/x-www-form-urlencoded; charset=utf-8';
+            $user_request = curl_init();
+                curl_setopt($user_request, CURLOPT_URL,"https://api.groupme.com/v3/users/me");
+                curl_setopt($user_request, CURLOPT_RETURNTRANSFER, true);
+                curl_setopt($user_request, CURLOPT_HTTPHEADER, $headers);
+                $user = curl_exec ($user_request);
+                $user = json_decode($user);
+                $user = $user->response;
+
+            if ($manualdb->has('users', ['id' => $user->user_id, 'login_system' => 'groupme'])) {
+                $manualdb->update('users', [
+                    'session_id' => $userToken,
+                    'expire_timestamp' => time() + 86400,
+                    'user' => $user->name,
+                    'access_level' => $groupmeAccessLevel,
+                    'avatar' => $user->image_url,
+                ], [
+                    'id' => $user->user_id,
+                    'login_system' => 'groupme'
+                ]);
+            } else {
+                $manualdb->insert('users', [
+                    'session_id' => $userToken,
+                    'id' => $user->user_id,
+                    'user' => $user->name,
+                    'access_level' => $groupmeAccessLevel,
+                    'avatar' => $user->image_url,
+                    'access_level' => null,
+                    'expire_timestamp' => time() + 86400,
+                    'login_system' => 'groupme'
+                ]);
+            }
+            setcookie("LoginCookie", $userToken, time() + 86400);
+            setcookie("LoginEngine", 'groupme', time() + 86400);
+            header("Location: .?login=true");
+	    die();
+	}
     }
     if ($_GET['callback'] == 'patreon') {
         if ($_GET['state'] != $_SESSION['token']) {
