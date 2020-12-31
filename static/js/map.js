@@ -6994,12 +6994,24 @@ $(function () {
             Store.set('remember_select_exclude_min_iv', excludedMinIV)
         })
         $textMinIV.on('change', function (e) {
-            minIV = Math.max(0, Math.min(parseInt($textMinIV.val(), 10) || 0, 100))
+            minIV = parseInt($textMinIV.val(), 10)
+            if (isNaN(minIV) || minIV < 0) {
+                minIV = ''
+            }
+            if (minIV > 100) {
+                minIV = 100
+            }
             $textMinIV.val(minIV)
             Store.set('remember_text_min_iv', minIV)
         })
         $textMinLevel.on('change', function (e) {
-            minLevel = Math.max(0, Math.min(parseInt($textMinLevel.val(), 10) || 0, 35))
+            minLevel = parseInt($textMinLevel.val(), 10)
+            if (isNaN(minLevel) || minLevel < 0) {
+                minLevel = ''
+            }
+            if (minLevel > 35) {
+                minLevel = 35
+            }
             $textMinLevel.val(minLevel)
             Store.set('remember_text_min_level', minLevel)
         })
@@ -7024,12 +7036,24 @@ $(function () {
             Store.set('remember_select_rarity_notify', notifiedRarity)
         })
         $textPerfectionNotify.on('change', function (e) {
-            notifiedMinPerfection = Math.max(0, Math.min(parseInt($textPerfectionNotify.val(), 10) || 0, 100))
+            notifiedMinPerfection = parseInt($textPerfectionNotify.val(), 10)
+            if (isNaN(notifiedMinPerfection) || notifiedMinPerfection <= 0) {
+                notifiedMinPerfection = ''
+            }
+            if (notifiedMinPerfection > 100) {
+                notifiedMinPerfection = 100
+            }
             $textPerfectionNotify.val(notifiedMinPerfection)
             Store.set('remember_text_perfection_notify', notifiedMinPerfection)
         })
         $textLevelNotify.on('change', function (e) {
-            notifiedMinLevel = Math.max(0, Math.min(parseInt($textLevelNotify.val(), 10) || 0, 35))
+            notifiedMinLevel = parseInt($textLevelNotify.val(), 10)
+            if (isNaN(notifiedMinLevel) || notifiedMinLevel <= 0) {
+                notifiedMinLevel = ''
+            }
+            if (notifiedMinLevel > 35) {
+                notifiedMinLevel = 35
+            }
             $textLevelNotify.val(notifiedMinLevel)
             Store.set('remember_text_level_notify', notifiedMinLevel)
         })
