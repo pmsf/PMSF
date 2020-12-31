@@ -1837,6 +1837,31 @@
             "color": "#f8d030"
           }
         ]
+      },
+      {
+        "nameform": "Adventure hat 2020",
+        "protoform": "2669",
+        "assetsform": "00",
+        "formtypes": [
+          {
+            "type": "Electric",
+            "color": "#f8d030"
+          }
+        ]
+      },
+      {
+        "nameform": "Winter 2020",
+        "protoform": "2670",
+        "assetsform": "00",
+        "baseStamina": 111,
+        "baseAttack": 112,
+        "baseDefense": 96,
+        "formtypes": [
+          {
+            "type": "Electric",
+            "color": "#f8d030"
+          }
+        ]
       }
     ]
   },
@@ -5391,6 +5416,24 @@
             "color": "#f85888"
           }
         ]
+      },
+      {
+        "nameform": "2020",
+        "protoform": "2673",
+        "assetsform": "00",
+        "baseStamina": 207,
+        "baseAttack": 109,
+        "baseDefense": 98,
+        "formtypes": [
+          {
+            "type": "Water",
+            "color": "#6890f0"
+          },
+          {
+            "type": "Psychic",
+            "color": "#f85888"
+          }
+        ]
       }
     ]
   },
@@ -5461,6 +5504,24 @@
         "protoform": "2583",
         "assetsform": "00",
         "formtypes": [
+          {
+            "type": "Psychic",
+            "color": "#f85888"
+          }
+        ]
+      },
+      {
+        "nameform": "2021",
+        "protoform": "2674",
+        "assetsform": "00",
+        "baseStamina": 216,
+        "baseAttack": 177,
+        "baseDefense": 180,
+        "formtypes": [
+          {
+            "type": "Water",
+            "color": "#6890f0"
+          },
           {
             "type": "Psychic",
             "color": "#f85888"
@@ -14582,6 +14643,24 @@
             "color": "#a890f0"
           }
         ]
+      },
+      {
+        "nameform": "Winter 2020",
+        "protoform": "2671",
+        "assetsform": "00",
+        "baseStamina": 128,
+        "baseAttack": 128,
+        "baseDefense": 90,
+        "formtypes": [
+          {
+            "type": "Ice",
+            "color": "#98d8d8"
+          },
+          {
+            "type": "Flying",
+            "color": "#a890f0"
+          }
+        ]
       }
     ]
   },
@@ -19073,6 +19152,24 @@
       {
         "nameform": "Purified",
         "protoform": "925",
+        "assetsform": "00",
+        "baseStamina": 137,
+        "baseAttack": 141,
+        "baseDefense": 136,
+        "formtypes": [
+          {
+            "type": "Dark",
+            "color": "#707070"
+          },
+          {
+            "type": "Ghost",
+            "color": "#705898"
+          }
+        ]
+      },
+      {
+        "nameform": "Fall 2020",
+        "protoform": "2668",
         "assetsform": "00",
         "baseStamina": 137,
         "baseAttack": 141,
@@ -37590,6 +37687,20 @@
         "nameform": "Purified",
         "protoform": "2233",
         "assetsform": "00",
+        "formtypes": [
+          {
+            "type": "Ice",
+            "color": "#98d8d8"
+          }
+        ]
+      },
+      {
+        "nameform": "Winter 2020",
+        "protoform": "2672",
+        "assetsform": "00",
+        "baseStamina": 146,
+        "baseAttack": 128,
+        "baseDefense": 74,
         "formtypes": [
           {
             "type": "Ice",

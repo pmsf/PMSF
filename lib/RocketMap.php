@@ -209,7 +209,7 @@ class RocketMap extends Scanner
         return $data;
     }
 
-    public function get_stops($geids, $qpeids, $qieids, $swLat, $swLng, $neLat, $neLng, $tstamp = 0, $oSwLat = 0, $oSwLng = 0, $oNeLat = 0, $oNeLng = 0, $lured = false, $rocket = false, $quests, $dustamount)
+    public function get_stops($geids, $qpeids, $qeeids, $qieids, $swLat, $swLng, $neLat, $neLng, $tstamp = 0, $oSwLat = 0, $oSwLng = 0, $oNeLat = 0, $oNeLng = 0, $lured = false, $rocket = false, $quests, $dustamount)
     {
         $conds = array();
         $params = array();
@@ -433,7 +433,7 @@ class RocketMap extends Scanner
 
     public function query_gyms($conds, $params, $raids, $gyms, $rbeids, $reeids)
     {
-        global $db;
+        global $db, $noTeams, $noExEligible;
 
         $query = "SELECT gym.gym_id,
         latitude,
@@ -470,8 +470,8 @@ class RocketMap extends Scanner
                 $raid_pid = null;
                 $gym["raid_pokemon_id"] = null;
             }
-            $gym["park"] = intval($gym["park"]);
-            $gym["team_id"] = intval($gym["team_id"]);
+            $gym["park"] = $noExEligible ? 0 : intval($gym["park"]);
+            $gym["team_id"] = $noTeams ? 0 : intval($gym["team_id"]);
             $gym["pokemon"] = [];
             $gym["raid_pokemon_name"] = empty($raid_pid) ? null : i8ln($this->data[$raid_pid]["name"]);
             $gym["raid_pokemon_gender"] = 0;
@@ -481,7 +481,7 @@ class RocketMap extends Scanner
             $gym["last_scanned"] = $gym["last_scanned"] * 1000;
             $gym["raid_start"] = $gym["raid_start"] * 1000;
             $gym["raid_end"] = $gym["raid_end"] * 1000;
-            $gym["slots_available"] = intval($gym["slots_available"]);
+            $gym["slots_available"] = $noTeams ? 0 : intval($gym["slots_available"]);
             if ((!empty($raids) && $raids === 'true') && (!empty($gyms) && $gyms === 'true')) {
                 if (count($rbeids)) {
                     foreach ($rbeids as $rbeid) {

@@ -4,8 +4,6 @@ namespace Config;
 
 // Do not touch this!
 require 'default.php';
-require __DIR__ . '/../Medoo.php';
-
 use Medoo\Medoo;
 
 //======================================================================
@@ -103,6 +101,7 @@ $paypalUrl = "";                                                    // PayPal do
 $discordUrl = "https://discord.gg/INVITE_LINK";                     // Discord URL, leave "" for empty
 $whatsAppUrl = "";                                                  // WhatsApp URL, leave "" for empty
 $telegramUrl = "";                                                  // Telegram URL, leave "" for empty
+$patreonUrl = "";                                                   // Patreon URL, leave "" for empty
 $customUrl = "";                                                    // Custom URL, leave "" for empty
 $customUrlFontIcon = "far fa-smile-beam";                           // Choose a custom icon on: https://fontawesome.com/icons?d=gallery&m=free
 
@@ -121,6 +120,7 @@ $motdContent = "This is an example MOTD<br>Do whatever you like with it.";
 
 /* Favicon */
 $faviconPath = '';                                                  // Upload favicon.ico to custom folder, leave '' for empty ( $faviconPath = 'custom/favicon.ico'; )
+$appIconPath = 'static/appicons/';
 
 /* IMGBB API */
 $imgurCID = "";
@@ -130,7 +130,9 @@ $imgurCID = "";
 //-----------------------------------------------------
 // Login
 //-----------------------------------------------------
+$useLoginCookie = false;					    // Use cookie to restore session after browser is closed.
 $forcedLogin = false;                                               // Force users to login before they can see map
+$allowMultiLogin = false;                                           // Allow users to login with multiple devices simulteously.
 $adminUsers = ['admin@example.com', 'admin2@example.com'];          // You can add multiple admins by adding them to the array.
 /* Discord Auth */
 $noDiscordLogin = true;                                             // This will enable login through discord.
@@ -141,7 +143,7 @@ $noDiscordLogin = true;                                             // This will
                                                                     // 5. Enter Client ID, Client Secret, Token and Redirect URI below.
 $discordBotClientId = 0;
 $discordBotClientSecret = "";
-$discordBotRedirectUri = "https://example.com/login?callback=discord";
+$discordBotRedirectUri = "https://Yourdomain.com/login?callback=discord";
 $discordBotToken = "";
 
 /* Match role-id values with access levels in access config. Remove or add according your needs */
@@ -172,6 +174,24 @@ $facebookAppSecret = '';                        // Facebook App Secret
 $facebookAppRedirectUri = 'https://Yourdomain.com/login?callback=facebook'; // Callback url make sure this is the same as set in Facebook app config
 $facebookAccessLevel = '1';                     // Accesslevel used in access-config.php
 
+$noGroupmeLogin = true;
+$groupmeClientId = '';
+$groupmeCallbackUri = 'https://Yourdomain.com/login?callback=groupme';
+$groupmeAccessLevel = '1';
+
+$noPatreonLogin = false;
+$patreonClientId = '';
+$patreonClientSecret = '';
+$patreonCreatorAccessToken = '';
+$patreonCallbackUri = 'https://Yourdomain.com/login?callback=patreon';
+
+$patreonTierRequired = true;                                        // Member must have pledged set to false to allow any patreon user to log in.
+$patreonTiers = [						    // Tier ids can be obtained by clicking the join tier button on patreon and the URL will show you checkout?rid=<NUMBER>
+	'<NUMBER>' => 1,
+	'<NUMBER>' => 2,
+	'<NUMBER>' => 3
+];
+
 $userBlacklist = [''];                                              // Array of user ID's that are always blocked from accessing the map
 $userWhitelist = [''];                                              // Array of user ID's that's allowed to bypass the server blacklist
 $serverBlacklist = [''];                                            // Array of server ID's. A user that's a member of any of these and not in your user whitelist will be blocked
@@ -194,6 +214,7 @@ $noCatchRates = false;
 $noRarityDisplay = false;
 $noWeatherIcons = true;
 $no100IvShadow = false;
+$noHideSingleMarker = false;
 /* Notification Settings */
 $noNotifyPokemon = false;
 $noNotifyRarity = false;
@@ -290,10 +311,14 @@ $noQuests = false;
 $enableQuests = 'false';
 $noQuestsItems = false;
 $noQuestsPokemon = false;
+$noQuestsEnergy = false;
 $hideQuestsPokemon = '[]';  					                    // Pokemon ids will default be hidden in the menu every user is able to change this personaly
 $generateExcludeQuestsPokemon = true;                               // Generate $excludeQuestsPokemon based on active quests in database
+$generateExcludeQuestsEnergy = true;                                // Generate $excludeQuestsEnergy based on active quests in database
 $generateExcludeQuestsItem = true;
 $excludeQuestsPokemon = [];					                        // All Pokémon in this array will not be shown in the filter.
+$hideQuestsEnergy = '[]';
+$excludeQuestsEnergy = [];
 $hideQuestsItem = '[4, 5, 301, 401, 402, 403, 404, 501, 602, 603, 604, 702, 704, 707, 801, 901, 902, 903, 1001, 1002, 1401, 1402, 1402, 1403, 1404, 1405]';    // Item ids "See protos https://github.com/Furtif/POGOProtos/blob/master/src/POGOProtos/Inventory/Item/ItemId.proto"
 $excludeQuestsItem = [4, 5, 301, 401, 402, 403, 404, 501, 602, 603, 604, 702, 704, 707, 801, 901, 902, 903, 1001, 1002, 1401, 1402, 1402, 1403, 1404, 1405];   // All excluded item wil not be shown in the filter.
 $noItemNumbers = false;
@@ -348,7 +373,7 @@ $notifyIv = '""';                                                   // "" for em
 
 $notifyLevel = '""';                                                // "" for empty or a number
 
-$notifyRaid = 5;                                                    // 1,2,3,4 or 5, 0 to disable
+$notifyRaid = 6;                                                    // 1,2,3,4 or 5, 0 to disable
 
 $notifySound = 'false';
 
@@ -583,7 +608,7 @@ $db = new Medoo([
 //]);
 
 // DONT EDIT THE CODE BELOW
-if (($noNativeLogin === false || $noDiscordLogin === false) && !empty($_SESSION['user']->user)) {
+if (($noNativeLogin === false || $noDiscordLogin === false || $noFacebookLogin === false || $noPatreonLogin === false) && !empty($_SESSION['user']->user)) {
     if (file_exists('config/access-config.php')) {
         include 'config/access-config.php';
     }

@@ -11,7 +11,9 @@
 if (!isset($_SESSION)) {
     session_start();
 }
+require 'vendor/autoload.php';
 require_once(__DIR__ . '/../utils.php');
+
 
 $libs[] = "Scanner.php";
 $libs[] = "Monocle.php";
@@ -26,6 +28,7 @@ $libs[] = "search/Search.rocketmap_mad.php";
 $libs[] = "submit/Submit.php";
 $libs[] = "submit/Manual.php";
 $libs[] = "submit/Submit.rdm.php";
+$libs[] = "submit/Submit.rocketmap_mad.php";
 $libs[] = "submit/Submit.monocle_pmsf.php";
 $libs[] = "Manual.php";
 
@@ -95,6 +98,10 @@ $noCustomTileServer = true;                                         // Enable/Di
 $customTileServerAddress = "";                                      // TileServer URL: http://ipAddress:port/tile/klokantech-basic/{z}/{x}/{y}/1/png
 $forcedTileServer = false;
 
+/* Favicon */
+$faviconPath = '';                                                  // Upload favicon.ico to custom folder, leave '' for empty ( $faviconPath = 'custom/favicon.ico'; )
+$appIconPath = 'static/appicons/';
+
 /* Custom Overlay */
 $letItSnow = true;                                                   // Show snow overlay at 24, 25 and 26 December
 $makeItBang = true;                                                  // Show fireworks overlay at 31 December and 1 January
@@ -117,6 +124,7 @@ $paypalUrl = "";                                                    // PayPal do
 $discordUrl = "https://discord.gg/INVITE_LINK";                     // Discord URL, leave "" for empty
 $whatsAppUrl = "";                                                  // WhatsApp URL, leave "" for empty
 $telegramUrl = "";                                                  // Telegram URL, leave "" for empty
+$patreonUrl = "";                                                   // Patreon URL, leave "" for empty
 $customUrl = "";                                                    // Custom URL, leave "" for empty
 $customUrlFontIcon = "far fa-smile-beam";                           // Choose a custom icon on: https://fontawesome.com/icons?d=gallery&m=free
 
@@ -140,10 +148,10 @@ $noWhatsappLink = true;
 $imgurCID = "";
 
 /* Counts */
-$numberOfPokemon = 649;
+$numberOfPokemon = 721;
 $numberOfItem = 1600;
 $numberOfGrunt = 50;
-$numberOfEgg = 10;
+$numberOfEgg = 12;
 
 /* UserTimezone */
 $userTimezone = date_default_timezone_get();
@@ -151,7 +159,9 @@ $userTimezone = date_default_timezone_get();
 // Login  - You need to create the two tables referenced in sql.sql
 //-----------------------------------------------------
 $monologPath = 'php://stdout';
-$forcedLogin = false;
+$useLoginCookie = false;					    // Use cookie to restore session after browser is closed.
+$forcedLogin = false;						    // Users will be forced to login before entering the map.
+$allowMultiLogin = false;                                           // Allow users to login with multiple devices simulteously.
 $noNativeLogin = true;                                              // true/false - This will enable the built in login system.
 $domainName = '';                                                   // If this is empty, reset-password emails will use the domain name taken from the URL.
 
@@ -163,7 +173,7 @@ $noDiscordLogin = true;                                             // true/fals
                                                                     // 5. Enter Client ID, Client Secret and Redirect URI below.
 $discordBotClientId = 0;
 $discordBotClientSecret = "";
-$discordBotRedirectUri = "https://example.com/discord-callback.php";
+$discordBotRedirectUri = "https://Yourdomain.com/login?callback=discord";
 $discordBotToken = "";
 $discordLogLevel = "INFO";					    // Do NOT change unless asked
 
@@ -174,6 +184,20 @@ $facebookAppId = '';						    // Facebook App ID
 $facebookAppSecret = '';					    // Facebook App Secret
 $facebookAppRedirectUri = 'https://Yourdomain.com/login?callback=facebook';	// Callback url make sure this is the same as set in Facebook app config
 $facebookAccessLevel = '1';					    // Accesslevel used in access-config.php
+
+$noGroupmeLogin = true;
+$groupmeClientId = '';
+$groupmeCallbackUri = 'https://Yourdomain.com/login?callback=groupme';
+$groupmeAccessLevel = '1';
+
+$noPatreonLogin = true;
+$patreonClientId = '';
+$patreonCreatorAccessToken = '';
+$patreonClientSecret = '';
+$patreonCallbackUri = 'https://Yourdomain.com/login?callback=patreon';
+
+$patreonTierRequired = true;                                        // Member must have pledged set to false to allow any patreon user to log in.
+$patreonTiers = [];						    // Tier ids can be obtained by clicking the join tier button on patreon and the URL will show you checkout?rid=<NUMBER>
 
 $adminUsers = array('admin@example.com', 'Superadmin#13337');       // You can add multiple admins by adding them to the array.
 
@@ -196,7 +220,7 @@ $noCatchRates = false;
 $noRarityDisplay = false;                                      // true/false
 $noWeatherIcons = true;
 $no100IvShadow = false;
-
+$noHideSingleMarker = false;
 /* Notification Settings */
 $noNotifyPokemon = false;                                       // true/false
 $noNotifyRarity = false;                                        // true/false
@@ -217,13 +241,12 @@ $noPokemon = false;                                                 // true/fals
 $enablePokemon = 'true';                                            // true/false
 $noPokemonNumbers = false;                                          // true/false
 $noHidePokemon = false;                                             // true/false
-$hidePokemon = '[10, 13, 16, 19, 21, 29, 32, 41, 46, 48, 50, 52, 56, 74, 77, 96, 111, 133,
-                  161, 163, 167, 177, 183, 191, 194, 168]';         // [] for empty
+$hidePokemon = '[]';                                                // [] for empty
 $hidePokemonCoords = false;                                         // true/false
 
 $noPvp = false;
 
-$excludeMinIV = '[131, 143, 147, 148, 149, 248]';                   // [] for empty
+$excludeMinIV = '[]';                                               // [] for empty
 
 $minIV = '0';                                                       // "0" for empty or a number
 $minLevel = '0';                                                    // "0" for empty or a number
@@ -247,7 +270,7 @@ $noActiveRaids = true;
 $activeRaids = 'false';                                             // true/false
 $noMinMaxRaidLevel = true;
 $minRaidLevel = 1;
-$maxRaidLevel = 5;
+$maxRaidLevel = 6;
 $noRaidTimer = false;                                               // true/false
 $enableRaidTimer = 'false';                                         // true/false
 $noRaidbossNumbers = false;
@@ -282,14 +305,18 @@ $noQuests = true;                                                  // true/false
 $enableQuests = 'false';                                            // true/false
 $noQuestsItems = false;
 $noQuestsPokemon = false;
+$noQuestsEnergy = false;
 $hideQuestsPokemon = '[]';  // Pokemon ids
 $generateExcludeQuestsPokemon = true;
 $generateExcludeQuestsItem = true;
+$generateExcludeQuestsEnergy = true;
 $excludeQuestsPokemon = [];  // Pokemon ids
 $hideQuestsItem = '[4, 5, 301, 401, 402, 403, 404, 501, 602, 603, 604, 702, 704, 708, 801, 901, 902, 903, 1001, 1002, 1401, 1402, 1403, 1404, 1405]';    // Item ids "See protos https://github.com/Furtif/POGOProtos/blob/master/src/POGOProtos/Inventory/Item/ItemId.proto"
 $excludeQuestsItem = [4, 5, 301, 401, 402, 403, 404, 501, 602, 603, 604, 702, 704, 708, 801, 901, 902, 903, 1001, 1002, 1401, 1402, 1403, 1404, 1405];
 $noItemNumbers = true;                                             // true/false
 $defaultDustAmount = 500;
+$hideQuestsEnergy = '[]';
+$excludeQuestsEnergy = [];
 // Manual quest hide options
 $hideQuestTypes = [0, 1, 2, 3, 12, 18, 19, 22, 24, 25];
 $hideRewardTypes = [0, 1, 4, 5, 6];
@@ -332,7 +359,7 @@ $enableSpawnArea = 'false';                                         // true/fals
 
 /* Notification Settings */
 
-$notifyPokemon = '[]';                                           // [] for empty
+$notifyPokemon = '[]';                                              // [] for empty
 $notifyRarity = '[]';                                               // "Common", "Uncommon", "Rare", "Very Rare", "Ultra Rare"
 $notifyIv = '""';                                                   // "" for empty or a number
 $notifyLevel = '""';                                                // "" for empty or a number
@@ -391,7 +418,7 @@ $noManualQuests = true;
 // Ingress portals
 //-----------------------------------------------------
 $enablePortals = 'false';
-$enableNewPortals = 0;                                                   // O: all, 1: new portals only
+$enableNewPortals = 0;                                             // O: all, 1: new portals only
 $noPortals = true;
 $noDeletePortal = true;
 $noConvertPortal = true;

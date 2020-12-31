@@ -1,8 +1,9 @@
 {
     "require": {
         "nesbot/carbon": "^2.35",
-        "restcord/restcord": "^0.4.0",
-        "monolog/monolog": "^2.1",
-        "facebook/graph-sdk": "^5.7"
+        "restcord/restcord": "^0.4.1",
+        "monolog/monolog": "^2.2.0",
+        "facebook/graph-sdk": "^5.7.0",
+        "catfan/medoo": "^1.7.10"
     }
 }

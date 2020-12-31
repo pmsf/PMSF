@@ -8,21 +8,32 @@ class RocketMap_MAD extends Search
     {
         global $db, $defaultUnit, $maxSearchResults, $maxSearchNameLength, $numberOfPokemon;
 
-        $conds = array();
-        $params = array();
+        $conds = [];
+        $params = [];
 
         $params[':lat'] = $lat;
         $params[':lon'] = $lon;
 
         $pjson = file_get_contents('static/dist/data/pokemon.min.json');
         $prewardsjson = json_decode($pjson, true);
-        $presids = array();
+        $presids = [];
+        $forms = [];
         foreach ($prewardsjson as $p => $preward) {
             if ($p > $numberOfPokemon) {
                 break;
             }
             if (strpos(strtolower(i8ln($preward['name'])), strtolower($term)) !== false) {
                 $presids[] = $p;
+            }
+            if (isset($preward['forms'])) {
+                foreach ($preward['forms'] as $f => $v) {
+                    if (strpos(strtolower(i8ln($v['nameform'])), strtolower($term)) !== false) {
+                        $forms[] = $v['protoform'];
+                    }
+                    if (strpos(strtolower($term), strtolower(i8ln($v['nameform']))) !== false && strpos(strtolower($term), strtolower(i8ln($preward['name']))) !== false) {
+                        $conds[] = "(quest_pokemon_id = " . $p . " AND json_extract(json_extract(`quest_reward`,'$[*].pokemon_encounter.pokemon_display.form_value'),'$[0]') = " . $v['protoform'] . ")";
+                    }
+                }
             }
         }
         $ijson = file_get_contents('static/dist/data/items.min.json');
@@ -39,14 +50,27 @@ class RocketMap_MAD extends Search
         if (!empty($iresids)) {
             $conds[] = "tq.quest_item_id IN (" . implode(',', $iresids) . ")";
         }
+        if (!empty($forms)) {
+            $conds[] = "json_extract(json_extract(`quest_reward`,'$[*].pokemon_encounter.pokemon_display.form_value'),'$[0]') IN (" . implode(',', $forms) . ")";
+        }
+        if (strpos(strtolower(i8ln('Stardust')), strtolower($term)) !== false) {
+            $conds[] = "tq.quest_reward_type = 3";
+        }
+        if (strpos(strtolower(i8ln('Mega')), strtolower($term)) !== false || strpos(strtolower(i8ln('Energy')), strtolower($term)) !== false) {
+            $conds[] = "tq.quest_reward_type = 12";
+        }
         $query = "SELECT p.pokestop_id AS id,
         p.name,
         p.latitude AS lat,
         p.longitude AS lon,
         p.image AS url,
         tq.quest_type,
+        tq.quest_reward_type,
         tq.quest_pokemon_id,
+        tq.quest_pokemon_id AS quest_energy_pokemon_id,
         tq.quest_item_id,
+        tq.quest_stardust AS quest_dust_amount,
+        tq.quest_item_amount AS quest_reward_amount,
         json_extract(json_extract(`quest_reward`,'$[*].pokemon_encounter.pokemon_display.form_value'),'$[0]') AS quest_pokemon_formid,
         ROUND(( 3959 * acos( cos( radians(:lat) ) * cos( radians( latitude ) ) * cos( radians( longitude ) - radians(:lon) ) + sin( radians(:lat) ) * sin( radians( latitude ) ) ) ),2) AS distance 
         FROM pokestop p
@@ -68,7 +92,11 @@ class RocketMap_MAD extends Search
         foreach ($rewards as $reward) {
             $reward['pokemon_name'] = !empty($reward['pokemon_name']) ? $prewardsjson[$reward['quest_pokemon_id']]['name'] : null;
             $reward['quest_pokemon_id'] = intval($reward['quest_pokemon_id']);
+            $reward['quest_energy_pokemon_id'] = intval($reward['quest_energy_pokemon_id']);
             $reward['quest_pokemon_formid'] = intval($reward['quest_pokemon_formid']);
+            $reward['quest_reward_type'] = intval($reward['quest_reward_type']);
+            $reward['quest_reward_amount'] = intval($reward['quest_reward_amount']);
+            $reward['quest_dust_amount'] = intval($reward['quest_dust_amount']);
             $reward['item_name'] = !empty($reward['item_name']) ? $irewardsjson[$reward['quest_item_id']]['name'] : null;
             $reward['quest_item_id'] = intval($reward['quest_item_id']);
             $reward['url'] = preg_replace("/^http:/i", "https:", $reward['url']);

@@ -170,6 +170,7 @@
     "noIvShadow": true,
     "hideQuestsPokemon": true,
     "hideQuestsItem": true,
+    "hideQuestsEnergy": true,
     "noQuests": true,
     "noLures": true,
     "noTeamRocket": true,
@@ -218,6 +219,7 @@
     "defaultDustAmount": true,
     "noCatchRates": true,
     "nestAvgDefault": true,
-    "noPvp": true
+    "noPvp": true,
+    "noHideSingleMarker": true
   }
 }
