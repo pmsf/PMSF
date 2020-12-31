@@ -14,10 +14,10 @@ if ($days === 0) {
     $timeNow = date('U');
     $deleteBefore = $timeNow - ($deleteNestsOlderThan * 24 * 60 * 60);
     $manualdb->delete('nests', ['updated[<]' => $deleteBefore]);
-    echo 'outdatet nest deleted';
+    echo 'outdatet nest deleted' . PHP_EOL;
 
     $manualdb->update('nests', ['pokemon_id' => 0, 'updated' => time(),'type' => 0], ['pokemon_id[!]' => 0]);
-    echo 'updated new nests';
+    echo 'updated new nests' . PHP_EOL;
 } else {
-    echo 'No nests migration today. ' . ((($days = 14 - $days)>13)?$days-14:$days) .  'days to go.';
+    echo 'No nests migration today. ' . ((($days = 14 - $days)>13)?$days-14:$days) .  'days to go.' . PHP_EOL;
 }

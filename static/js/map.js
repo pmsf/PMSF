@@ -2751,22 +2751,14 @@ function nestLabel(item) {
         $.each(types, function (index, type) {
             typesDisplay += getTypeSpan(type)
         })
+        var formStr = (item.pokemon_form === 0 || item.pokemon_form === '0' || item.pokemon_form == null) ? '00' : item.pokemon_form
         var pokemonIdStr = ''
-        if (item.pokemon_id <= 9) {
-            pokemonIdStr = '00' + item.pokemon_id
-        } else if (item.pokemon_id <= 99) {
-            pokemonIdStr = '0' + item.pokemon_id
-        } else {
-            pokemonIdStr = item.pokemon_id
-        }
-        var nestName = ''
-        if (item['name'] !== null && item['name'] !== 'Unknown Areaname') {
-            nestName = '<b>' + item['name'] + '</b>'
-        }
-        var pokemonAvg = ''
-        if (item['pokemon_avg'] > 0) {
-            pokemonAvg = '<div>' + i8ln('Nest Pokemon per hour') + ': ' + item['pokemon_avg'].toFixed(2) + '</div>'
-        }
+        var pokemonIdStr = (item.pokemon_id <= 9) ? '00' + item.pokemon_id : (item.pokemon_id <= 99) ? '0' + item.pokemon_id : item.pokemon_id
+        var nestName = (item['name'] !== null && item['name'] !== 'Unknown Areaname') ? '<b>' + item['name'] + '</b>' : ''
+        var pokemonAvg = (item['pokemon_avg'] > 0) ? '<div>' + i8ln('Nest Pokemon per hour') + ': ' + item['pokemon_avg'].toFixed(2) + '</div>' : ''
+        var pokemonCount = (item['pokemon_count'] > 0) ? '<div>' + i8ln('Total nest Pokemon count') + ': ' + item['pokemon_count'] + '</div>' : ''
+        var nestSubmittedBy = (item['nest_submitted_by'] !== null) ? '<div>' + i8ln('Submitted by') + ': ' + item['nest_submitted_by'] + '</div>' : ''
+
         str += '<center>' +
             '<div>' +
             item.pokemon_name + ' - ' +
@@ -2774,9 +2766,11 @@ function nestLabel(item) {
             '</div>' +
             nestName + '<br />' +
             '<div>' +
-            '<img src="' + iconpath + 'pokemon_icon_' + pokemonIdStr + '_00.png" style="width:65px;height:65px;"/>' +
+            '<img src="' + iconpath + 'pokemon_icon_' + pokemonIdStr + '_' + formStr + '.png" style="width:65px;height:65px;"/>' +
             '</div>' +
             pokemonAvg +
+            pokemonCount +
+            nestSubmittedBy +
             '</center>'
     } else {
         str += '<div align="center" class="marker-nests">' +
@@ -2784,8 +2778,8 @@ function nestLabel(item) {
             '</div>' +
             '<center><b>' + i8ln('No Pokemon - Assign One Below') + '</b></center>'
     }
-    if (item.type === 1) {
-        str += '<center><div style="margin-bottom:5px; margin-top:5px;">' + i8ln('As found on thesilphroad.com') + '</div></center>'
+    if (item.type === 0) {
+        str += '<center><div style="margin-bottom:5px; margin-top:5px;">' + i8ln('Found by nestwatcher') + '</div></center>'
     }
     if (!noDeleteNests) {
         str += '<i class="fas fa-trash-alt delete-nest" onclick="deleteNest(event);" data-id="' + item['nest_id'] + '"></i>'
@@ -2807,6 +2801,7 @@ function nestLabel(item) {
             '</center>' +
             '</div>'
     }
+    str += '<center><div>' + i8ln('Last Updated') + ': ' + getDateStr(item['updated']) + ' ' + getTimeStr(item['updated']) + '</div></center>'
     return str
 }
 
