@@ -1235,6 +1235,21 @@ function openMapDirections(lat, lng) { // eslint-disable-line no-unused-vars
     window.open(url, '_blank')
 }
 
+function copyCoordsToClipboard(coordsElementNode) {
+  var range
+  var sel
+  try {
+    range = document.createRange();
+    range.selectNodeContents(coordsElementNode);
+    sel = window.getSelection();
+    sel.removeAllRanges();
+    sel.addRange(range);
+    document.execCommand("Copy"); 
+  } catch (ex){
+    alert(ex)
+  }
+}
+
 // Converts timestamp to readable String
 function getDateStr(t) { // eslint-disable-line no-unused-vars
     var dateStr = 'Unknown'
@@ -1430,8 +1445,14 @@ function pokemonLabel(item) {
     }
     contentstring +=
     '<a href="javascript:void(0)" onclick="javascript:openMapDirections(' + latitude + ', ' + longitude + ')" title="' + i8ln('View in Maps') + '">' +
-    '<i class="fas fa-road"></i> ' + coordText + '</a> - ' +
-    '<a href="./?lat=' + latitude + '&lon=' + longitude + '&zoom=18&encId=' + encounterId + '">' +
+    '<i class="fas fa-road" style="padding-right:0.25em"></i>' + coordText + '</a>'
+    if (hidePokemonCoords === true) {
+        contentstring += '-'
+    } else {
+        contentstring += ' ' +
+                '<button onclick="copyCoordsToClipboard(this.previousElementSibling);" class="small-tight">' + 'Copy' + '</button> '
+    }
+    contentstring += '<a href="./?lat=' + latitude + '&lon=' + longitude + '&zoom=18&encId=' + encounterId + '">' +
     '<i class="far fa-share-square" aria-hidden="true" style="position:relative;top:3px;left:0px;color:#26c300;margin-bottom:10px;font-size:18px;"></i>' +
     '</a></center></div>'
     if (atk != null && def != null && sta != null) {
@@ -1596,7 +1617,14 @@ function gymLabel(item) {
         '<div><b>' + freeSlots + ' ' + i8ln('Free Slots') + '</b></div>' +
         raidStr +
         '<div>' +
-        '<a href="javascript:void(0);" onclick="javascript:openMapDirections(' + latitude + ',' + longitude + ');" title="' + i8ln('View in Maps') + '"><i class="fas fa-road"></i> ' + coordText + '</a> - <a href="./?lat=' + latitude + '&lon=' + longitude + '&zoom=18&gymId=' + item['gym_id'] + '"><i class="far fa-share-square" aria-hidden="true" style="position:relative;top:3px;left:0px;color:#26c300;font-size:20px;"></i></a>' +
+        '<a href="javascript:void(0);" onclick="javascript:openMapDirections(' + latitude + ',' + longitude + ');" title="' + i8ln('View in Maps') + '"><i class="fas fa-road" style="padding-right:0.25em"></i>' + coordText + '</a>'
+    if (hideGymCoords === true) {
+        str += '-'
+    } else {
+        str += ' ' +
+                '<button onclick="copyCoordsToClipboard(this.previousElementSibling);" class="small-tight">' + 'Copy' + '</button> '
+    }
+    str += '<a href="./?lat=' + latitude + '&lon=' + longitude + '&zoom=18&gymId=' + item['gym_id'] + '"><i class="far fa-share-square" aria-hidden="true" style="position:relative;top:3px;left:0px;color:#26c300;font-size:20px;"></i></a>' +
         whatsappLink +
         '</div>' +
         '<div>' +
@@ -1980,7 +2008,14 @@ function pokestopLabel(item) {
         coordText = i8ln('Directions')
     }
     str += '<div><center>' +
-        '<a href="javascript:void(0)" onclick="javascript:openMapDirections(' + item['latitude'] + ',' + item['longitude'] + ')" title="' + i8ln('View in Maps') + '"><i class="fas fa-road"></i> ' + coordText + '</a> - <a href="./?lat=' + item['latitude'] + '&lon=' + item['longitude'] + '&zoom=18&stopId=' + item['pokestop_id'] + '"><i class="far fa-share-square" aria-hidden="true" style="position:relative;top:3px;left:0px;color:#26c300;font-size:20px;"></i></a>'
+        '<a href="javascript:void(0)" onclick="javascript:openMapDirections(' + item['latitude'] + ',' + item['longitude'] + ')" title="' + i8ln('View in Maps') + '"><i class="fas fa-road" style="padding-right:0.25em"></i>' + coordText + '</a>'
+    if (hidePokestopCoords === true) {
+        str += '-'
+    } else {
+        str += ' ' +
+                '<button onclick="copyCoordsToClipboard(this.previousElementSibling);" class="small-tight">' + 'Copy' + '</button> '
+    }
+    str += '<a href="./?lat=' + item['latitude'] + '&lon=' + item['longitude'] + '&zoom=18&stopId=' + item['pokestop_id'] + '"><i class="far fa-share-square" aria-hidden="true" style="position:relative;top:3px;left:0px;color:#26c300;font-size:20px;"></i></a>'
     if (!noQuests && !noWhatsappLink && item['quest_type'] !== null && lastMidnight < Number(item['quest_timestamp'])) {
         var quest = getQuest(item)
         var reward = ''
@@ -2791,7 +2826,14 @@ function nestLabel(item) {
         coordText = i8ln('Directions')
     }
     str += '<center><div>' +
-        '<a href="javascript:void(0)" onclick="javascript:openMapDirections(' + item.lat + ',' + item.lon + ')" title="' + i8ln('View in Maps') + '"><i class="fas fa-road"></i> ' + coordText + '</a> - <a href="./?lat=' + item.lat + '&lon=' + item.lon + '&zoom=18"><i class="far fa-share-square" aria-hidden="true" style="position:relative;top:3px;left:0px;color:#26c300;font-size:20px;"></i></a>' +
+        '<a href="javascript:void(0)" onclick="javascript:openMapDirections(' + item.lat + ',' + item.lon + ')" title="' + i8ln('View in Maps') + '"><i class="fas fa-road" style="padding-right:0.25em"></i>' + coordText + '</a>'
+    if (hideNestCoords === true) {
+        str += '-'
+    } else {
+        str += ' ' +
+                '<button onclick="copyCoordsToClipboard(this.previousElementSibling);" class="small-tight">' + 'Copy' + '</button> '
+    }
+    str += '<a href="./?lat=' + item.lat + '&lon=' + item.lon + '&zoom=18"><i class="far fa-share-square" aria-hidden="true" style="position:relative;top:3px;left:0px;color:#26c300;font-size:20px;"></i></a>' +
         '</div></center>'
     if (!noWhatsappLink && item.pokemon_id > 0) {
         str += '<div>' +
@@ -6910,24 +6952,12 @@ $(function () {
             Store.set('remember_select_exclude_min_iv', excludedMinIV)
         })
         $textMinIV.on('change', function (e) {
-            minIV = parseInt($textMinIV.val(), 10)
-            if (isNaN(minIV) || minIV < 0) {
-                minIV = ''
-            }
-            if (minIV > 100) {
-                minIV = 100
-            }
+            minIV = Math.max(0, Math.min(parseInt($textMinIV.val(), 10) || 0, 100))
             $textMinIV.val(minIV)
             Store.set('remember_text_min_iv', minIV)
         })
         $textMinLevel.on('change', function (e) {
-            minLevel = parseInt($textMinLevel.val(), 10)
-            if (isNaN(minLevel) || minLevel < 0) {
-                minLevel = ''
-            }
-            if (minLevel > 35) {
-                minLevel = 35
-            }
+            minLevel = Math.max(0, Math.min(parseInt($textMinLevel.val(), 10) || 0, 35))
             $textMinLevel.val(minLevel)
             Store.set('remember_text_min_level', minLevel)
         })
@@ -6952,24 +6982,12 @@ $(function () {
             Store.set('remember_select_rarity_notify', notifiedRarity)
         })
         $textPerfectionNotify.on('change', function (e) {
-            notifiedMinPerfection = parseInt($textPerfectionNotify.val(), 10)
-            if (isNaN(notifiedMinPerfection) || notifiedMinPerfection <= 0) {
-                notifiedMinPerfection = ''
-            }
-            if (notifiedMinPerfection > 100) {
-                notifiedMinPerfection = 100
-            }
+            notifiedMinPerfection = Math.max(0, Math.min(parseInt($textPerfectionNotify.val(), 10) || 0, 100))
             $textPerfectionNotify.val(notifiedMinPerfection)
             Store.set('remember_text_perfection_notify', notifiedMinPerfection)
         })
         $textLevelNotify.on('change', function (e) {
-            notifiedMinLevel = parseInt($textLevelNotify.val(), 10)
-            if (isNaN(notifiedMinLevel) || notifiedMinLevel <= 0) {
-                notifiedMinLevel = ''
-            }
-            if (notifiedMinLevel > 35) {
-                notifiedMinLevel = 35
-            }
+            notifiedMinLevel = Math.max(0, Math.min(parseInt($textLevelNotify.val(), 10) || 0, 35))
             $textLevelNotify.val(notifiedMinLevel)
             Store.set('remember_text_level_notify', notifiedMinLevel)
         })

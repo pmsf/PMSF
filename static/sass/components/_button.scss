@@ -51,6 +51,14 @@
     &.big {
       font-size: 1.35em;
     }
+    
+    &.small-tight {
+      font-size: 0.8em;
+      height: 1.5em;
+      line-height: 1.6em;
+      padding: 0 0.5em;
+      margin-top: 0em;
+    }
 
     &.alt {
       background-color: transparent;
