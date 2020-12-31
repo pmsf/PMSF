@@ -3217,44 +3217,86 @@ function addListeners(marker) {
     return marker
 }
 
+function clearMarker(obj, key) {
+    var mm = obj[key]['marker']
+    if (mm.rangeCircle) {
+        markers.removeLayer(mm.rangeCircle)
+        markersnotify.removeLayer(mm.rangeCircle)
+        delete mm.rangeCircle
+    }
+    markers.removeLayer(mm)
+    markersnotify.removeLayer(mm)
+    delete obj[key]
+}
+
+function shouldRemovePokemon(mon, time) {
+    time = time || new Date().getTime()
+
+    /* Pokemon Despawned. Remove */
+    if (mon.disappear_time < time) return true
+    /* User "focused" on this Pokemon specifically. Do not remove */
+    if (encounterId && (encounterId === mon.encounter_id)) return false
+
+    var mid = mon.pokemon_id
+
+    /* Pokemon was excluded in user settings. Remove */
+    if (excludedPokemon.includes(mid)) return true
+    /* Pokemon was temporarily hidden. Remove */
+    if (isTemporaryHidden(mid)) return true
+    /* Pokemon ignores level/iv settings. Do not remove */
+    if (excludedMinIV.includes(mid)) return false
+
+    /* Remove for low level */
+    if ((mapType === 'rdm') && (mon.level < minLevel)) return true
+    if ((mapType === 'rocketmap') && (!isNaN(minLevel))) {
+        if (mon.cp_multiplier < cpMultiplier[minLevel - 1]) return true
+    }
+    /* Remove for low iv */
+    var ivs = mon.individual_attack + mon.individual_defense
+    ivs += mon.individual_stamina
+    ivs /= 4500
+    if (ivs < minIV) return true
+
+    /* This settings has a deceptive name.
+    * What it actually does, is "hide magikarp" UNLESS it is big.
+    * So if this setting is activated, and the magikarp is tiny, remove it. */
+    if ((Store.get('showBigKarp') === true) && (mid === 129) &&
+        ((mon.weight === null) || (mon.weight < 13.14))) {
+        return true
+    }
+    /* Similar to "showBigKarp", "showTinyRat" is deceptively named.
+    * Remove ratatta when they are big. */
+    if ((Store.get('showTinyRat') === true) && (mid === 19) &&
+        ((mon.weight === null) || (mon.weight > 2.4))) {
+        return true
+    }
+
+    /* Congratulations! You made the cut! */
+    return false
+}
+
 function clearStaleMarkers() {
+    /* Cache time so it is not repeatedly fetched foreach marker. */
+    var time = new Date().getTime()
+    /* Clear Pokemon */
     $.each(mapData.pokemons, function (key, value) {
-        if (((mapData.pokemons[key]['disappear_time'] < new Date().getTime() || ((excludedPokemon.indexOf(mapData.pokemons[key]['pokemon_id']) >= 0 || isTemporaryHidden(mapData.pokemons[key]['pokemon_id']) || ((((mapData.pokemons[key]['individual_attack'] + mapData.pokemons[key]['individual_defense'] + mapData.pokemons[key]['individual_stamina']) / 45 * 100 < minIV) || ((mapType === 'rdm' && mapData.pokemons[key]['level'] < minLevel) || (mapType === 'rocketmap' && !isNaN(minLevel) && (mapData.pokemons[key]['cp_multiplier'] < cpMultiplier[minLevel - 1])))) && !excludedMinIV.includes(mapData.pokemons[key]['pokemon_id'])) || (Store.get('showBigKarp') === true && mapData.pokemons[key]['pokemon_id'] === 129 && (mapData.pokemons[key]['weight'] < 13.14 || mapData.pokemons[key]['weight'] === null)) || (Store.get('showTinyRat') === true && mapData.pokemons[key]['pokemon_id'] === 19 && (mapData.pokemons[key]['weight'] > 2.40 || mapData.pokemons[key]['weight'] === null))) && encounterId !== mapData.pokemons[key]['encounter_id'])) || (encounterId && encounterId === mapData.pokemons[key]['encounter_id'] && mapData.pokemons[key]['disappear_time'] < new Date().getTime()))) {
-            if (mapData.pokemons[key].marker.rangeCircle) {
-                markers.removeLayer(mapData.pokemons[key].marker.rangeCircle)
-                markersnotify.removeLayer(mapData.pokemons[key].marker.rangeCircle)
-                delete mapData.pokemons[key].marker.rangeCircle
-            }
-            markers.removeLayer(mapData.pokemons[key].marker)
-            markersnotify.removeLayer(mapData.pokemons[key].marker)
-            delete mapData.pokemons[key]
+        if (shouldRemovePokemon(mapData.pokemons[key], time)) {
+            clearMarker(mapData.pokemons, key)
         }
     })
+    /* Clear Gyms/Raids */
     if (!Store.get('showGyms') && Store.get('showRaids')) {
         $.each(mapData.gyms, function (key, value) {
-            if ((((excludedRaidboss.indexOf(Number(mapData.gyms[key]['raid_pokemon_id'])) > -1) && mapData.gyms[key]['raid_pokemon_id'] > 0) && (mapData.gyms[key]['raid_start'] < new Date().getTime() && mapData.gyms[key]['raid_end'] > new Date().getTime())) || ((excludedRaidegg.indexOf(Number(mapData.gyms[key]['raid_level'])) > -1) && mapData.gyms[key]['raid_start'] > new Date().getTime()) || ((excludedRaidegg.indexOf(Number(mapData.gyms[key]['raid_level']) + 6) > -1) && (mapData.gyms[key]['raid_start'] < new Date().getTime() && (mapData.gyms[key]['raid_pokemon_id'] <= 0)))) {
-                if (mapData.gyms[key].marker.rangeCircle) {
-                    markers.removeLayer(mapData.gyms[key].marker.rangeCircle)
-                    markersnotify.removeLayer(mapData.gyms[key].marker.rangeCircle)
-                    delete mapData.gyms[key].marker.rangeCircle
-                }
-                markers.removeLayer(mapData.gyms[key].marker)
-                markersnotify.removeLayer(mapData.gyms[key].marker)
-                delete mapData.gyms[key]
+            if ((((excludedRaidboss.indexOf(Number(mapData.gyms[key]['raid_pokemon_id'])) > -1) && mapData.gyms[key]['raid_pokemon_id'] > 0) && (mapData.gyms[key]['raid_start'] < time && mapData.gyms[key]['raid_end'] > time)) || ((excludedRaidegg.indexOf(Number(mapData.gyms[key]['raid_level'])) > -1) && mapData.gyms[key]['raid_start'] > time) || ((excludedRaidegg.indexOf(Number(mapData.gyms[key]['raid_level']) + 6) > -1) && (mapData.gyms[key]['raid_start'] < time && (mapData.gyms[key]['raid_pokemon_id'] <= 0)))) {
+                clearMarker(mapData.gyms, key)
             }
         })
     }
+    /* Clear Nests */
     if (Store.get('showNests')) {
         $.each(mapData.nests, function (key, value) {
             if (Number(mapData.nests[key]['pokemon_avg']) < Store.get('showNestAvg')) {
-                if (mapData.nests[key].marker.rangeCircle) {
-                    markers.removeLayer(mapData.nests[key].marker.rangeCircle)
-                    markersnotify.removeLayer(mapData.nests[key].marker.rangeCircle)
-                    delete mapData.nests[key].marker.rangeCircle
-                }
-                markers.removeLayer(mapData.nests[key].marker)
-                markersnotify.removeLayer(mapData.nests[key].marker)
-                delete mapData.nests[key]
+                clearMarker(mapData.nests, key)
             }
         })
     }
