@@ -1235,19 +1235,19 @@ function openMapDirections(lat, lng) { // eslint-disable-line no-unused-vars
     window.open(url, '_blank')
 }
 
-function copyCoordsToClipboard(coordsElementNode) {
-  var range
-  var sel
-  try {
-    range = document.createRange();
-    range.selectNodeContents(coordsElementNode);
-    sel = window.getSelection();
-    sel.removeAllRanges();
-    sel.addRange(range);
-    document.execCommand("Copy"); 
-  } catch (ex){
-    alert(ex)
-  }
+function copyCoordsToClipboard(coordsElementNode) { // eslint-disable-line no-unused-vars
+    var range
+    var sel
+    try {
+        range = document.createRange()
+        range.selectNodeContents(coordsElementNode)
+        sel = window.getSelection()
+        sel.removeAllRanges()
+        sel.addRange(range)
+        document.execCommand('Copy')
+    } catch (ex) {
+        alert(ex)
+    }
 }
 
 // Converts timestamp to readable String
