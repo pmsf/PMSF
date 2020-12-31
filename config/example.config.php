@@ -256,6 +256,7 @@ $noExEligible = false;
 $exEligible = 'false';
 
 $noTeams = false;
+$noInBattle = false;
 $noOpenSpot = false;
 $noMinMaxFreeSlots = false;
 $noLastScan = false;

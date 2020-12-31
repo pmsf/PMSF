@@ -365,6 +365,7 @@ class RocketMap_MAD extends RocketMap
         team_id,
         name,
         url,
+        is_in_battle as in_battle,
         is_ex_raid_eligible AS park,
         raid.level AS raid_level,
         raid.pokemon_id AS raid_pokemon_id,
@@ -410,6 +411,7 @@ class RocketMap_MAD extends RocketMap
             $gym["raid_start"] = $gym["raid_start"] * 1000;
             $gym["raid_end"] = $gym["raid_end"] * 1000;
             $gym["slots_available"] = $noTeams ? 0 : intval($gym["slots_available"]);
+            $gym["in_battle"] = $noInBattle ? 0 : intval($gym["in_battle"]);
             $gym["url"] = ! empty($gym["url"]) ? preg_replace("/^http:/i", "https:", $gym["url"]) : null;
             $gym["park"] = $noExEligible ? 0 : intval($gym["park"]);
             if (isset($gym["form"]) && $gym["form"] > 0) {

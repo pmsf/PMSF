@@ -258,6 +258,7 @@ $hideGymCoords = false;
 $noExEligible = false;                                              // true/false
 $exEligible = 'false';                                              // true/false
 $noTeams = false;
+$noInBattle = false;
 $noOpenSpot = false;
 $noMinMaxFreeSlots = false;
 $noLastScan = false;
