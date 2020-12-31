@@ -239,6 +239,8 @@ $noHidePokemon = false;                                             // true/fals
 $hidePokemon = '[]';                                                // [] for empty
 $hidePokemonCoords = false;                                         // true/false
 
+$noPvp = false;
+
 $excludeMinIV = '[]';                                               // [] for empty
 
 $minIV = '0';                                                       // "0" for empty or a number

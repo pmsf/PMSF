@@ -219,6 +219,7 @@
     "defaultDustAmount": true,
     "noCatchRates": true,
     "nestAvgDefault": true,
+    "noPvp": true,
     "noHideSingleMarker": true
   }
 }
