@@ -2094,6 +2094,10 @@ function addRangeCircle(marker, map, type, teamId) {
             circleColor = teamColor
             range = 80
             break
+        case 'pois':
+            circleColor = '#C233F2'
+            range = 80
+            break
     }
 
     var rangeCircleOpts = {
@@ -2981,16 +2985,19 @@ function setupPoiMarker(item) {
     }
     var html = '<div><span class="' + dot + '" style="width:20px;height:20px;"></span></div>'
     var poiMarkerIcon = L.divIcon({
-        iconSize: [36, 48],
-        iconAnchor: [10, 16],
-        popupAnchor: [8, -10],
+        iconSize: [20, 20],
+        iconAnchor: [18, 18],
+        popupAnchor: [0, -10],
         className: 'marker-poi',
         html: html
     })
     var marker = L.marker([item['lat'], item['lon']], {icon: poiMarkerIcon, zIndexOffset: 1020}).bindPopup(poiLabel(item), {autoPan: false, closeOnClick: false, autoClose: false, virtual: true})
-    markers.addLayer(marker)
-    addListeners(marker)
 
+    markers.addLayer(marker)
+    if (!marker.rangeCircle && isRangeActive(map)) {
+        marker.rangeCircle = addRangeCircle(marker, map, 'pois')
+    }
+    addListeners(marker)
     return marker
 }
 
@@ -5761,6 +5768,7 @@ function updateMap() {
         showInBoundsMarkers(mapData.pokemons, 'pokemon')
         showInBoundsMarkers(mapData.gyms, 'gym')
         showInBoundsMarkers(mapData.pokestops, 'pokestop')
+        showInBoundsMarkers(mapData.pois, 'pois')
         showInBoundsMarkers(mapData.spawnpoints, 'inbound')
 
         clearStaleMarkers()
@@ -7182,6 +7190,8 @@ $(function () {
                     lastportals = false
                 } else if (storageKey === 'showSpawnpoints') {
                     lastspawns = false
+                } else if (storageKey === 'showPoi') {
+                    lastpois = false
                 }
                 updateMap()
             } else {
@@ -7367,7 +7377,7 @@ $(function () {
     $('#spawnpoints-switch').change(function () {
         buildSwitchChangeListener(mapData, ['spawnpoints'], 'showSpawnpoints').bind(this)()
     })
-    $('#ranges-switch').change(buildSwitchChangeListener(mapData, ['gyms', 'pokemons', 'pokestops'], 'showRanges'))
+    $('#ranges-switch').change(buildSwitchChangeListener(mapData, ['gyms', 'pokemons', 'pokestops', 'pois'], 'showRanges'))
 
     $('#scan-area-switch').change(function () {
         Store.set('showScanPolygon', this.checked)
