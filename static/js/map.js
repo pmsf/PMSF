@@ -2778,6 +2778,10 @@ function setupNestMarker(item) {
         className: 'marker-nests',
         html: getNestMarkerIcon
     })
+    if (noNestPolygon === false && Store.get('showNestPolygon') === true) {
+        var polygon = L.polygon(JSON.parse(item['polygon_path']), {color: 'blue'})
+        nestLayerGroup.addLayer(polygon)
+    }
     var marker = L.marker([item['lat'], item['lon']], {icon: nestMarkerIcon, zIndexOffset: 1020, virtal: true}).bindPopup(nestLabel(item), {autoPan: false, closeOnClick: false, autoClose: false})
     markers.addLayer(marker)
     addListeners(marker)
@@ -7251,8 +7255,6 @@ $(function () {
     })
     $('#nests-switch').change(function () {
         if (!this.checked && Store.get('showNestPolygon') === true) {
-            Store.set('showNestPolygon', false)
-            $('#nest-polygon-switch').prop('checked', false)
             nestLayerGroup.clearLayers()
         }
         var options = {
@@ -7388,6 +7390,8 @@ $(function () {
         Store.set('showNestPolygon', this.checked)
         if (this.checked) {
             buildNestPolygons()
+            lastnests = false
+            updateMap()
         } else {
             nestLayerGroup.clearLayers()
         }
