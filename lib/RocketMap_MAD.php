@@ -354,7 +354,7 @@ class RocketMap_MAD extends RocketMap
 
     public function query_gyms($conds, $params, $raids, $gyms, $rbeids, $reeids)
     {
-        global $db, $noTeams, $noExEligible;
+        global $db, $noTeams, $noExEligible, $noInBattle;
 
         $query = "SELECT gym.gym_id,
         latitude,

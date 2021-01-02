@@ -616,7 +616,7 @@ class RDM extends Scanner
 
     public function query_gyms($conds, $params, $raids, $gyms, $rbeids, $reeids)
     {
-        global $db, $noTeams, $noExEligible;
+        global $db, $noTeams, $noExEligible, $noInBattle;
 
         $query = "SELECT id AS gym_id,
         lat AS latitude,
