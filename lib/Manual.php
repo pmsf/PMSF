@@ -73,7 +73,8 @@ class Manual
         pokemon_count,
         pokemon_form,
         type,
-        nest_submitted_by
+        nest_submitted_by,
+        polygon_path
         FROM nests
         WHERE :conditions";
         $query = str_replace(":conditions", join(" AND ", $conds), $query);
@@ -94,6 +95,7 @@ class Manual
                 $etypes = $this->data[$nest["pokemon_id"]]["types"];
                 foreach ($types as $k => $v) {
                     $types[$k]['type'] = i8ln($v['type']);
+                    $types[$k]['color'] = $v['color'];
                     $etypes[$k]['type'] = $v['type'];
                 }
                 $nest["pokemon_types"] = $types;

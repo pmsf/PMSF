@@ -995,7 +995,7 @@ function buildScanPolygons() {
 }
 
 function buildNestPolygons() {
-    if (!Store.get(['showNestPolygon'])) {
+    if (!Store.get(['showNestPolygon']) || !Store.get(['showNests'])) {
         return false
     }
 
@@ -2754,14 +2754,7 @@ function setupPokestopMarker(item) {
 function setupNestMarker(item) {
     var getNestMarkerIcon = ''
     if (item.pokemon_id > 0) {
-        var pokemonIdStr = ''
-        if (item.pokemon_id <= 9) {
-            pokemonIdStr = '00' + item.pokemon_id
-        } else if (item.pokemon_id <= 99) {
-            pokemonIdStr = '0' + item.pokemon_id
-        } else {
-            pokemonIdStr = item.pokemon_id
-        }
+        var pokemonIdStr = (item.pokemon_id <= 9) ? '00' + item.pokemon_id : (item.pokemon_id <= 99) ? '0' + item.pokemon_id : item.pokemon_id
         getNestMarkerIcon = '<div class="marker-nests">' +
             '<img src="static/images/nest-' + item.english_pokemon_types[0].type.toLowerCase() + '.png" style="width:45px;height: auto;"/>' +
             '<img src="' + iconpath + 'pokemon_icon_' + pokemonIdStr + '_00.png" style="position:absolute;width:40px;height:40px;top:6px;left:3px"/>' +
@@ -2778,6 +2771,13 @@ function setupNestMarker(item) {
         className: 'marker-nests',
         html: getNestMarkerIcon
     })
+    if (noNestPolygon === false && Store.get('showNestPolygon') === true) {
+        var polygonColor = item['pokemon_types'][0]['color'] ? item['pokemon_types'][0]['color'] : 'grey'
+        var polygon = L.polygon(JSON.parse(item['polygon_path']), {
+            color: polygonColor
+        })
+        nestLayerGroup.addLayer(polygon)
+    }
     var marker = L.marker([item['lat'], item['lon']], {icon: nestMarkerIcon, zIndexOffset: 1020, virtal: true}).bindPopup(nestLabel(item), {autoPan: false, closeOnClick: false, autoClose: false})
     markers.addLayer(marker)
     addListeners(marker)
@@ -7251,9 +7251,11 @@ $(function () {
     })
     $('#nests-switch').change(function () {
         if (!this.checked && Store.get('showNestPolygon') === true) {
-            Store.set('showNestPolygon', false)
-            $('#nest-polygon-switch').prop('checked', false)
             nestLayerGroup.clearLayers()
+        }
+        Store.set('showNests', this.checked)
+        if (Store.get('showNestPolygon') === true) {
+            buildNestPolygons()
         }
         var options = {
             'duration': 500
@@ -7388,6 +7390,8 @@ $(function () {
         Store.set('showNestPolygon', this.checked)
         if (this.checked) {
             buildNestPolygons()
+            lastnests = false
+            updateMap()
         } else {
             nestLayerGroup.clearLayers()
         }
