@@ -515,7 +515,7 @@ $excludeNestMons = [2,3,5,6,8,9,11,12,14,15,17,18,20,22,24,26,28,29,30,31,32,33,
 
 $noNestPolygon = true;
 $enableNestPolygon = 'false';
-$nestGeoJSONfile = 'custom/nest.json';			    // path to geoJSON file provided by https://github.com/M4d40/PMSFnestScript
+$nestGeoJSONfile = '';			    			    // path to geoJSON file provided by https://github.com/M4d40/PMSFnestScript
 
 //-----------------------------------------------------
 // Areas
