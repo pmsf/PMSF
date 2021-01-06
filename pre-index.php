@@ -824,7 +824,7 @@ if (!$noLoadingScreen) {
                             } ?>
                         </div>
                         <div class="dustslider">
-                <input type="range" min="0" max="2500" value="500" class="slider" id="dustrange">
+                <input type="range" min="0" max="3500" value="500" class="slider" id="dustrange">
                 <p><?php echo i8ln('Show stardust ') ?><span id="dustvalue"></span></p>
                         </div>
                     </div>
