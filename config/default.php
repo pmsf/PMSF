@@ -486,6 +486,7 @@ $noSearchGyms = false;          //Wont work if noSearch = false
 $noSearchManualQuests = false;  //Wont work if noSearch = false
 $noSearchNests = true;
 $noSearchPortals = true;
+$noSearchPokemon = false;
 $defaultUnit = "km";                                            // mi/km
 $maxSearchResults = 10;
 $maxSearchNameLength = 0;	// 0 = Unlimited. Shorten pokestop names in reward search results if longer than this value to prevent UI layout issues

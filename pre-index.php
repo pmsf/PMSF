@@ -2021,6 +2021,9 @@ if (!$noLoadingScreen) {
                         <?php if (! $noQuests && ! $noSearchManualQuests) { ?>
                             <li><a href="#tab-rewards"><img src="static/images/reward.png"/></a></li>
                         <?php }
+                        if (! $noSearchPokemon) { ?>
+                            <li><a href="#tab-pokemon"><img src="static/images/pokeball.png"/></a></li>
+                        <?php }
                         if (! $noSearchNests) { ?>
                             <li><a href="#tab-nests"><img src="static/images/nest.png"/></a></li>
                         <?php }
@@ -2040,6 +2043,14 @@ if (!$noLoadingScreen) {
                                    placeholder="<?php echo i8ln('Enter Reward Name'); ?>"
                                    data-type="reward" class="search-input"/>
                             <ul id="reward-search-results" class="search-results reward-results"></ul>
+                        </div>
+                    <?php } ?>
+                    <?php if (! $noSearchPokemon) { ?>
+                        <div id="tab-pokemon">
+                            <input type="search" id="pokemon-search" name="pokemon-search"
+                                   placeholder="<?php echo i8ln('Enter Pokémon or Type'); ?>"
+                                   data-type="pokemon" class="search-input"/>
+                            <ul id="pokemon-search-results" class="search-results pokemon-results"></ul>
                         </div>
                     <?php } ?>
                     <?php if (! $noSearchNests) { ?>

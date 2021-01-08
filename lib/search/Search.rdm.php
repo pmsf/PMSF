@@ -155,6 +155,54 @@ class RDM extends Search
         return $data;
     }
 
+    public function search_pokemon($lat, $lon, $term)
+    {
+        global $db, $defaultUnit, $maxSearchResults, $noBoundaries, $boundaries, $numberOfPokemon;
+
+        $json = file_get_contents('static/dist/data/pokemon.min.json');
+        $mons = json_decode($json, true);
+        $resids = [];
+        foreach ($mons as $k => $mon) {
+            if ($k > $numberOfPokemon) {
+                break;
+            }
+            if (strpos(strtolower(i8ln($mon['name'])), strtolower($term)) !== false) {
+                $resids[] = $k;
+            } else {
+                foreach ($mon['types'] as $t) {
+                    if (strpos(strtolower(i8ln($t['type'])), strtolower($term)) !== false) {
+                        $resids[] = $k;
+                        break;
+                    }
+                }
+            }
+        }
+
+        if (!$noBoundaries) {
+            $coords = " AND (ST_WITHIN(point(lat,lon),ST_GEOMFROMTEXT('POLYGON(( " . $boundaries . " ))'))) ";
+        } else {
+            $coords = "";
+        }
+
+        if ($db->info()['driver'] === 'pgsql') {
+            $query = "SELECT pokemon_id,lat,lon, 
+            ROUND(cast( 3959 * acos( cos( radians(:lat) ) * cos( radians( lat ) ) * cos( radians( lon ) - radians(:lon) ) + sin( radians(:lat) ) * sin( radians( lat ) ) ) as numeric),2) AS distance 
+            FROM pokemon WHERE expire_timestamp > UNIX_TIMESTAMP(NOW()) AND pokemon_id IN (" . implode(',', $resids) . ") " . $coords . "ORDER BY distance LIMIT " . $maxSearchResults . "";
+        } else {
+            $query = "SELECT pokemon_id,lat,lon, 
+            ROUND(( 3959 * acos( cos( radians(:lat) ) * cos( radians( lat ) ) * cos( radians( lon ) - radians(:lon) ) + sin( radians(:lat) ) * sin( radians( lat ) ) ) ),2) AS distance 
+            FROM pokemon WHERE expire_timestamp > UNIX_TIMESTAMP(NOW()) AND pokemon_id IN (" . implode(',', $resids) . ") " . $coords . "ORDER BY distance LIMIT " . $maxSearchResults . "";
+        }
+        $data = $db->query($query, [ ':lat' => $lat, ':lon' => $lon])->fetchAll();
+        foreach ($data as $k => $p) {
+            $data[$k]['name'] = $mons[$p['pokemon_id']]['name'];
+            if ($defaultUnit === "km") {
+                $data[$k]['distance'] = round($data[$k]['distance'] * 1.60934, 2);
+            }
+        }
+        return $data;
+    }
+
     public function search_portals($lat, $lon, $term)
     {
         global $manualdb, $defaultUnit, $maxSearchResults, $noBoundaries, $boundaries;

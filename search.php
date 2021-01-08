@@ -55,6 +55,9 @@ if ($action === "portals") {
 if ($action === "pokestops") {
     $data["pokestops"] = $search->search($dbname, $lat, $lon, $term);
 }
+if ($action === "pokemon") {
+    $data["pokemon"] = $search->search_pokemon($lat, $lon, $term);
+}
 if ($action === "forts") {
     $data["forts"] = $search->search($dbname, $lat, $lon, $term);
 }
