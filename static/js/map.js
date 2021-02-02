@@ -651,7 +651,7 @@ function initMap() { // eslint-disable-line no-unused-vars
 
         $selectLocationIconMarker.val(Store.get('locationMarkerStyle')).trigger('change')
     })
-    
+
     _mapLoaded = true
 }
 
