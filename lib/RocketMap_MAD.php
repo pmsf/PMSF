@@ -277,7 +277,6 @@ class RocketMap_MAD extends RocketMap
         $weathers = $db->query($query)->fetchAll(\PDO::FETCH_ASSOC);
         $data = array();
         foreach ($weathers as $weather) {
-            $weather['s2_cell_id'] = sprintf("%u", $weather['s2_cell_id']);
             $data["weather_" . $weather['s2_cell_id']] = $weather;
             $data["weather_" . $weather['s2_cell_id']]['condition'] = $data["weather_" . $weather['s2_cell_id']]['gameplay_weather'];
             unset($data["weather_" . $weather['s2_cell_id']]['gameplay_weather']);
