@@ -155,13 +155,49 @@
     "prototext": "QUEST_USE_INCENSE",
     "text": "Use Incense {0} times"
   },
+  "40": {
+    "prototext": "QUEST_BUDDY_FIND_SOUVENIR",
+    "text": "QUEST_BUDDY_FIND_SOUVENIR"
+  },
+  "41": {
+    "prototext": "QUEST_COLLECT_AS_REWARDS",
+    "text": "QUEST_COLLECT_AS_REWARDS"
+  },
+  "42": {
+    "prototext": "QUEST_WALK",
+    "text": "QUEST_WALK"
+  },
   "43": {
     "prototext": "QUEST_MEGA_EVOLVE_POKEMON",
     "text": "Mega-Evolve {0} Pokemon"
   },
+  "44": {
+    "prototext": "QUEST_GET_STARDUST",
+    "text": "QUEST_GET_STARDUST"
+  },
+  "45": {
+    "prototext": "QUEST_MINI_COLLECTION",
+    "text": "QUEST_MINI_COLLECTION"
+  },
   "46": {
     "prototext": "QUEST_GEOTARGETED_AR_SCAN",
     "text": "AR-Scan {0} pokéstop(s)"
+  },
+  "50": {
+    "prototext": "QUEST_BUDDY_EVOLUTION_WALK",
+    "text": "QUEST_BUDDY_EVOLUTION_WALK"
+  },
+  "51": {
+    "prototext": "QUEST_GBL_RANK",
+    "text": "QUEST_GBL_RANK"
+  },
+  "53": {
+    "prototext": "QUEST_CHARGE_ATTACK",
+    "text": "QUEST_CHARGE_ATTACK"
+  },
+  "54": {
+    "prototext": "QUEST_CHANGE_POKEMON_FORM",
+    "text": "QUEST_CHANGE_POKEMON_FORM"
   },
   "55": {
     "prototext": "QUEST_BATTLE_EVENT_NPC",
