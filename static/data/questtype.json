@@ -152,15 +152,19 @@
     "text": "Earn {0} Souvenirs from your Buddy"
   },
   "39": {
-    "prototext": "",
+    "prototext": "QUEST_USE_INCENSE",
     "text": "Use Incense {0} times"
   },
   "43": {
-    "prototext": "",
+    "prototext": "QUEST_MEGA_EVOLVE_POKEMON",
     "text": "Mega-Evolve {0} Pokemon"
   },
   "46": {
-    "prototext": "",
+    "prototext": "QUEST_GEOTARGETED_AR_SCAN",
     "text": "AR-Scan {0} pokéstop(s)"
+  },
+  "55": {
+    "prototext": "QUEST_BATTLE_EVENT_NPC",
+    "text": "QUEST_BATTLE_EVENT_NPC"
   }
 }
