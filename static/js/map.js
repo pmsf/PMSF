@@ -2802,7 +2802,6 @@ function nestLabel(item) {
         var nestName = (item['name'] !== null && item['name'] !== 'Unknown Areaname') ? '<b>' + item['name'] + '</b>' : ''
         var pokemonAvg = (item['pokemon_avg'] > 0) ? '<div>' + i8ln('Nest Pokemon per hour') + ': ' + item['pokemon_avg'].toFixed(2) + '</div>' : ''
         var pokemonCount = (item['pokemon_count'] > 0) ? '<div>' + i8ln('Total nest Pokemon count') + ': ' + item['pokemon_count'] + '</div>' : ''
-        var nestSubmittedBy = (item['nest_submitted_by'] !== null) ? '<div>' + i8ln('Submitted by') + ': ' + item['nest_submitted_by'] + '</div>' : ''
 
         str += '<center>' +
             '<div>' +
@@ -2814,17 +2813,13 @@ function nestLabel(item) {
             '<img src="' + iconpath + 'pokemon_icon_' + pokemonIdStr + '_' + formStr + '.png" style="width:65px;height:65px;"/>' +
             '</div>' +
             pokemonAvg +
-            pokemonCount +
-            nestSubmittedBy +
+            pokemonCount
             '</center>'
     } else {
         str += '<div align="center" class="marker-nests">' +
             '<img src="static/images/nest-empty.png" align"middle" style="width:36px;height: auto;"/>' +
             '</div>' +
             '<center><b>' + i8ln('No Pokemon - Assign One Below') + '</b></center>'
-    }
-    if (item.type === 0) {
-        str += '<center><div style="margin-bottom:5px; margin-top:5px;">' + i8ln('Found by nestwatcher') + '</div></center>'
     }
     if (!noDeleteNests) {
         str += '<i class="fas fa-trash-alt delete-nest" onclick="deleteNest(event);" data-id="' + item['nest_id'] + '"></i>'
