@@ -73,7 +73,6 @@ class Manual
         pokemon_count,
         pokemon_form,
         type,
-        nest_submitted_by,
         polygon_path
         FROM nests
         WHERE :conditions";
