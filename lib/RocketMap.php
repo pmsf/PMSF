@@ -388,7 +388,7 @@ class RocketMap extends Scanner
             $conds[] = "gym.last_scanned > :lastUpdated";
             $params[':lastUpdated'] = date_format($date, 'Y-m-d H:i:s');
         }
-        global $noBoundaries, $boundaries, , $showGymsOutsideBoundaries;
+        global $noBoundaries, $boundaries, $showGymsOutsideBoundaries;
         if (!$noBoundaries && !$showGymsOutsideBoundaries) {
             $conds[] = "(ST_WITHIN(point(latitude,longitude),ST_GEOMFROMTEXT('POLYGON(( " . $boundaries . " ))')))";
         }
