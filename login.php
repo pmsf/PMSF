@@ -63,6 +63,9 @@ if (isset($_GET['action'])) {
                             case 'blacklisted-server-dc':
                                 $html .= "<div id='login-error'>" . i8ln('We found you are a member of the following discord server we have blacklisted: ') . $_GET['bl-discord'] . "</div>";
                                 break;
+                            case 'bad-response-dc':
+                                $html .= "<div id='login-error'>" . i8ln('Something went wrong while receiving Discord information, please try again in a few seconds and contact your admin if the problem persists.') . " (" . $_GET['error-message'] . ")</div>";
+                                break;
                             case 'duplicate-login':
                                 $html .= "<div id='login-error'>" . i8ln('We logged you out because a different device just logged in with the same account.') . "</div>";
                                 break;
@@ -246,7 +249,6 @@ if (isset($_GET['callback'])) {
 
                 $user = request($user_request, $access_token);
                 $guilds = request($guilds_request, $access_token);
-
                 if (in_array($user->id, $userBlacklist)) {
                     header("Location: ./login?action=login&error=blacklisted-member");
                     die();
@@ -256,16 +258,16 @@ if (isset($_GET['callback'])) {
                         $whiteListed = true;
                     } else {
                         foreach ($guilds as $guild) {
-                            $uses = $guild->id;
-                            $guildName = $guild->name;
-                            if (in_array($uses, $serverBlacklist)) {
-                                if ($logFailedLogin) {
-                                    logFailure(strval($user->{'username'}) . "#" . $user->{'discriminator'} . " has been blocked for being a member of " . $guildName . "\n");
+                            if (!empty($guild->id)) {
+                                if (in_array($guild->id, $serverBlacklist)) {
+                                    if ($logFailedLogin) {
+                                        logFailure(strval($user->{'username'}) . "#" . $user->{'discriminator'} . " has been blocked for being a member of " . $guild->name . "\n");
+                                    }
+                                    header("Location: ./login?action=login&error=blacklisted-server-dc&bl-discord=" . $guild->name . " ");
+                                    die();
+                                } elseif (array_key_exists($guild->id, $guildRoles['guildIDS'])) {
+                                    $whiteListed = true;
                                 }
-                                header("Location: ./login?action=login&error=blacklisted-server-dc&bl-discord=" . $guildName . " ");
-                                die();
-                            } elseif (array_key_exists($uses, $guildRoles['guildIDS'])) {
-                                $whiteListed = true;
                             }
                         }
                     }
@@ -332,6 +334,9 @@ if (isset($_GET['callback'])) {
                 if ($useLoginCookie) {
                     setrawcookie("LoginSession", $_SESSION['token'], time() + $response->expires_in);
                 }
+            } else {
+                header("Location: ./login?action=login&error=bad-response-dc&error-message=token");
+                die();
             }
             if ($whiteListed === true) {
                 header("Location: .?login=true");
@@ -474,8 +479,8 @@ if (isset($_GET['callback'])) {
             setcookie("LoginCookie", $userToken, time() + 86400);
             setcookie("LoginEngine", 'groupme', time() + 86400);
             header("Location: .?login=true");
-	    die();
-	}
+            die();
+        }
     }
     if ($_GET['callback'] == 'patreon') {
         if ($_GET['state'] != $_SESSION['token']) {
@@ -638,8 +643,14 @@ function request($request, $access_token) {
         ],
         CURLOPT_RETURNTRANSFER => true
     ]);
-    return json_decode(curl_exec($info_request));
-    curl_close($info);
+    $response = curl_exec($info_request);
+    if (curl_getinfo($info_request, CURLINFO_HTTP_CODE) != 200) {
+        header("Location: ./login?action=login&error=bad-response-dc&error-message=request");
+        die();
+    } else {
+        curl_close($info_request);
+        return json_decode($response);
+    }
 }
 
 function logFailure($logFailure) {
