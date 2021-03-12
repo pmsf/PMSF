@@ -33,10 +33,10 @@ $spiderfyOnMaxZoom = 'true';                                        // Spiderfy 
 
 /* Boundaries */
 $noBoundaries = true;                                               // Enable/Disable boundaries to pull data from. Requires $boundaries to be set.
-$showPokemonsOutsideBoundaries = false ;
-$showGymsOutsideBoundaries = false ;
-$showSpawnsOutsideBoundaries = false ;
-$showStopsOutsideBoundaries = false ;
+$showPokemonsOutsideBoundaries = false;
+$showGymsOutsideBoundaries = false;
+$showSpawnsOutsideBoundaries = false;
+$showStopsOutsideBoundaries = false;
 
 $boundaries = '51.9258236369112 5.4520494625403,
                51.8982915107015 5.4808885738685,
