@@ -2824,7 +2824,7 @@ function nestLabel(item) {
             '<center><b>' + i8ln('No Pokemon - Assign One Below') + '</b></center>'
     }
     if (item.type === 0) {
-        str += '<center><div style="margin-bottom:5px; margin-top:5px;">' + i8ln('Found by nestwatcher') + '</div></center>'
+        str += '<center><div style="margin-bottom:5px; margin-top:5px;">' + i8ln('Found by ') + nestBotName + '</div></center>'
     }
     if (!noDeleteNests) {
         str += '<i class="fas fa-trash-alt delete-nest" onclick="deleteNest(event);" data-id="' + item['nest_id'] + '"></i>'

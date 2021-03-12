@@ -220,6 +220,7 @@
     "noCatchRates": true,
     "nestAvgDefault": true,
     "noHideSingleMarker": true,
-    "noNestPolygon": true
+    "noNestPolygon": true,
+    "nestBotName": true
   }
 }
