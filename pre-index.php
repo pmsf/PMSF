@@ -124,9 +124,9 @@ if (strtolower($map) === "rdm") {
                 <span style="display:none" class="name">' . i8ln($name) . '</span>
                 <span style="display:none" class="id">' . $k . '</span>';
                 if (! $copyrightSafe) {
-                    echo '<img src="' . $iconRepository . 'pokemon_icon_' . $id . '_00.png" style="width:48px;height:48px;"/>';
+                    echo "<img src='" . $iconRepository . "pokemon_icon_" . $id . "_00.png' style='width:48px;height:48px;'/>";
                 } else {
-                    echo '<img src="static/icons-safe/pokemon_icon_' . $id . '_00.png" style="width:48px;height:48px;"/>';
+                    echo "<img src='static/icons-safe/pokemon_icon_" . $id . "_00.png' style='width:48px;height:48px;'/>";
                 }
                 if (! $noPokemonNumbers) {
                     echo "<span class='pokemon-number'>" . $k . "</span>";
@@ -824,7 +824,7 @@ if (!$noLoadingScreen) {
                             } ?>
                         </div>
                         <div class="dustslider">
-                <input type="range" min="0" max="2500" value="500" class="slider" id="dustrange">
+                <input type="range" min="0" max="3500" value="500" class="slider" id="dustrange">
                 <p><?php echo i8ln('Show stardust ') ?><span id="dustvalue"></span></p>
                         </div>
                     </div>
@@ -1553,6 +1553,7 @@ if (!$noLoadingScreen) {
                     <option value="ingame">' . i8ln('In-Game') . '</option>
                     <option value="shield">' . i8ln('Shield') . '</option>
                     <option value="rocketmap">' . i8ln('Rocketmap') . '</option>
+                    <option value="comic">' . i8ln('Comic') . '</option>
                 </select>
             </div>';
             }
@@ -1682,10 +1683,13 @@ if (!$noLoadingScreen) {
                 echo "<div><button style='background-color: #395697;font-size:13px;margin-bottom:0;' onclick=\"location.href='./login?action=discord-login';\" value='Login with discord'><i class='fab fa-discord'></i> " . i8ln('Login with Discord') . "</button></div>";
             }
             if ($noFacebookLogin === false) {
-	        echo "<div><button style='background-color: #395697;font-size:13px;margin-bottom:0;' onclick=\"location.href='./login?action=facebook-login';\" value='Login with facebook'><i class='fab fa-facebook'></i> " . i8ln('Login with Facebook') . "</button></div>";
+                echo "<div><button style='background-color: #395697;font-size:13px;margin-bottom:0;' onclick=\"location.href='./login?action=facebook-login';\" value='Login with facebook'><i class='fab fa-facebook'></i> " . i8ln('Login with Facebook') . "</button></div>";
+            }
+            if ($noGroupmeLogin === false) {
+                echo "<div><button style='background-color: #395697;font-size:13px;margin-bottom:0;' onclick=\"location.href='./login?action=groupme-login';\" value='Login with groupme'><i class='fas fa-smile'></i> " . i8ln('Login with Groupme') . "</button></div>";
             }
             if ($noPatreonLogin === false) {
-	        echo "<div><button style='background-color: #395697;font-size:13px;margin-bottom:0;' onclick=\"location.href='./login?action=patreon-login';\" value='Login with patreon'><i class='fab fa-patreon'></i> " . i8ln('Login with Patreon') . "</button></div>";
+                echo "<div><button style='background-color: #395697;font-size:13px;margin-bottom:0;' onclick=\"location.href='./login?action=patreon-login';\" value='Login with patreon'><i class='fab fa-patreon'></i> " . i8ln('Login with Patreon') . "</button></div>";
             }
             echo "</div>";
         } ?>
@@ -2388,7 +2392,8 @@ if (!$noLoadingScreen) {
     var noRocketTimer = <?php echo $noTeamRocketTimer === true ? 'true' : 'false' ?>;
     var enableRocketTimer = <?php echo $noTeamRocketTimer ? 'false' : $enableTeamRocketTimer ?>;
     var enableNestPolygon = <?php echo $noNestPolygon ? 'false' : $enableNestPolygon ?>;
-    var nestGeoJSONfile = '<?php echo $noNestPolygon ? '' : $nestGeoJSONfile ?>';
+    var noNestPolygon = <?php echo $noNestPolygon === true ? 'true' : 'false' ?>;
+    var nestGeoJSONfile = '<?php echo $noNestPolygon ? '' : !empty($nestGeoJSONfile) ? $nestGeoJSONfile : ''?>';
     var noCostumeIcons = <?php echo $noCostumeIcons === true ? 'true' : 'false' ?>;
     var queryInterval = <?php echo $queryInterval ?>;
     var noInvasionEncounterData = <?php echo $noTeamRocketEncounterData === true ? 'true' : 'false' ?>;
