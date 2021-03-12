@@ -5169,7 +5169,7 @@ function processPokemons(i, item) {
     }
     if (item['disappear_time'] > Date.now() && ((encounterId && encounterId === item['encounter_id']) || (excludedPokemon.indexOf(item['pokemon_id']) < 0 && !isTemporaryHidden(item['pokemon_id'])))) {
         if (item['encounter_id'] in mapData.pokemons) {
-            if ((mapData.pokemons[item['encounter_id']]['individual_attack'] != item['individual_attack']) || (mapData.pokemons[item['encounter_id']]['individual_defense'] != item['individual_defense']) || (mapData.pokemons[item['encounter_id']]['individual_stamina'] != item['individual_stamina'])) {
+            if ((mapData.pokemons[item['encounter_id']]['individual_attack'] !== item['individual_attack']) || (mapData.pokemons[item['encounter_id']]['individual_defense'] !== item['individual_defense']) || (mapData.pokemons[item['encounter_id']]['individual_stamina'] !== item['individual_stamina'])) {
                 // updated information received. delete marker and item from dict
                 if (mapData.pokemons[item['encounter_id']].marker.rangeCircle) {
                     markers.removeLayer(mapData.pokemons[item['encounter_id']].marker.rangeCircle)
