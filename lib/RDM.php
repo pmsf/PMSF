@@ -54,8 +54,8 @@ class RDM extends Scanner
             $params[':oneLat'] = $oNeLat;
             $params[':oneLng'] = $oNeLng;
         }
-        global $noBoundaries, $boundaries;
-        if (!$noBoundaries) {
+        global $noBoundaries, $boundaries, $showPokemonsOutsideBoundaries;
+        if (!$noBoundaries && !$showPokemonsOutsideBoundaries) {
             $conds[] = "(ST_WITHIN(point(lat,lon),ST_GEOMFROMTEXT('POLYGON(( " . $boundaries . " ))')))";
         }
         if ($tstamp > 0) {
@@ -147,8 +147,8 @@ class RDM extends Scanner
         $params[':neLng'] = $neLng;
         $params[':time'] = time();
 
-        global $noBoundaries, $boundaries;
-        if (!$noBoundaries) {
+        global $noBoundaries, $boundaries, $showPokemonsOutsideBoundaries;
+        if (!$noBoundaries && !$showPokemonsOutsideBoundaries) {
             $conds[] = "(ST_WITHIN(point(lat,lon),ST_GEOMFROMTEXT('POLYGON(( " . $boundaries . " ))')))";
         }
         if (count($ids)) {
@@ -278,8 +278,8 @@ class RDM extends Scanner
         $params[':swLng'] = $swLng;
         $params[':neLat'] = $neLat;
         $params[':neLng'] = $neLng;
-        global $noBoundaries, $boundaries, $hideDeleted;
-        if (!$noBoundaries) {
+        global $noBoundaries, $boundaries, $hideDeleted, $showStopsOutsideBoundaries;
+        if (!$noBoundaries && !$showStopsOutsideBoundaries) {
             $conds[] = "(ST_WITHIN(point(lat,lon),ST_GEOMFROMTEXT('POLYGON(( " . $boundaries . " ))')))";
         }
         if ($hideDeleted) {
@@ -565,8 +565,8 @@ class RDM extends Scanner
             $params[':oneLat'] = $oNeLat;
             $params[':oneLng'] = $oNeLng;
         }
-        global $noBoundaries, $boundaries, $hideDeleted;
-        if (!$noBoundaries) {
+        global $noBoundaries, $boundaries, $hideDeleted, $showGymsOutsideBoundaries;
+        if (!$noBoundaries && !$showGymsOutsideBoundaries) {
             $conds[] = "(ST_WITHIN(point(lat,lon),ST_GEOMFROMTEXT('POLYGON(( " . $boundaries . " ))')))";
         }
         if ((!empty($raids) && $raids === 'true') && (!empty($gyms) && $gyms === 'false')) {
@@ -738,8 +738,8 @@ class RDM extends Scanner
             $params[':oneLat'] = $oNeLat;
             $params[':oneLng'] = $oNeLng;
         }
-        global $noBoundaries, $boundaries;
-        if (!$noBoundaries) {
+        global $noBoundaries, $boundaries, $showSpawnsOutsideBoundaries;
+        if (!$noBoundaries && !$showSpawnsOutsideBoundaries) {
             $conds[] = "(ST_WITHIN(point(lat,lon),ST_GEOMFROMTEXT('POLYGON(( " . $boundaries . " ))')))";
         }
         if ($tstamp > 0) {
