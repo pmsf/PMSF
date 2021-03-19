@@ -407,7 +407,7 @@ $iconSize = 0;                                                      // -8, 0, 10
 $noIconNotifySizeModifier = false;                                  // Increase size of notified Pokemon
 
 $noGymStyle = false;
-$gymStyle = 'ingame';                                               // ingame, shield, rocketmap
+$gymStyle = 'ingame';                                               // ingame, shield, rocketmap, comic
 
 $noLocationStyle = false;
 $locationStyle = 'none';                                            // none, google, red, red_animated, blue, blue_animated, yellow, yellow_animated, pokesition, pokeball
