@@ -2254,5 +2254,21 @@
     "duration": 0,
     "energy": 0,
     "dps": 0
+  },
+  "345": {
+    "name": "Gust",
+    "type": "Flying",
+    "damage": 0,
+    "duration": 0,
+    "energy": 0,
+    "dps": 0
+  },
+  "346": {
+    "name": "Incinerate",
+    "type": "Fire",
+    "damage": 0,
+    "duration": 0,
+    "energy": 0,
+    "dps": 0
   }
 }
