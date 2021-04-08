@@ -83,6 +83,10 @@
     "protoname": "ITEM_TROY_DISK_MAGNETIC",
     "name": "Magnetic Lure Module"
   },
+  "505": {
+    "protoname": "ITEM_TROY_DISK_RAINY",
+    "name": "Rainy Lure Module"
+  },
   "602": {
     "protoname": "ITEM_X_ATTACK",
     "name": "X Attack"
