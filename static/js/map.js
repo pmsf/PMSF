@@ -1936,14 +1936,16 @@ function pokestopLabel(item) {
     }
     if (!noLures && item['lure_expiration'] > Date.now()) {
         var lureType = '<img style="padding:5px;position:relative;left:0px;top:12px;height:40px;" src="static/forts/LureModule_' + item['lure_id'] + '.png"/>'
-        if (item['lure_id'] === 1) {
+        if (item['lure_id'] === 501) {
             lureType += i8ln('Normal')
-        } else if (item['lure_id'] === 2) {
+        } else if (item['lure_id'] === 502) {
             lureType += i8ln('Glacial')
-        } else if (item['lure_id'] === 3) {
+        } else if (item['lure_id'] === 503) {
             lureType += i8ln('Mossy')
-        } else if (item['lure_id'] === 4) {
+        } else if (item['lure_id'] === 504) {
             lureType += i8ln('Magnetic')
+        } else if (item['lure_id'] === 505) {
+            lureType += i8ln('Rainy')
         }
         lureEndStr = getTimeStr(item['lure_expiration'])
         str +=
