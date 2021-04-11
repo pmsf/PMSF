@@ -31,8 +31,8 @@ class Monocle_PMSF extends Monocle
             $params[':oneLat'] = $oNeLat;
             $params[':oneLng'] = $oNeLng;
         }
-        global $noBoundaries, $boundaries;
-        if (!$noBoundaries) {
+        global $noBoundaries, $boundaries, $showPokemonsOutsideBoundaries;
+        if (!$noBoundaries && !$showPokemonsOutsideBoundaries) {
             $conds[] = "(ST_WITHIN(point(lat,lon),ST_GEOMFROMTEXT('POLYGON(( " . $boundaries . " ))')))";
         }
         if ($tstamp > 0) {
@@ -102,8 +102,8 @@ class Monocle_PMSF extends Monocle
         $params[':neLng'] = $neLng;
         $params[':time'] = time();
 
-        global $noBoundaries, $boundaries;
-        if (!$noBoundaries) {
+        global $noBoundaries, $boundaries, $showPokemonsOutsideBoundaries;
+        if (!$noBoundaries && !$showPokemonsOutsideBoundaries) {
             $conds[] = "(ST_WITHIN(point(lat,lon),ST_GEOMFROMTEXT('POLYGON(( " . $boundaries . " ))')))";
         }
         if (count($ids)) {
@@ -168,8 +168,8 @@ class Monocle_PMSF extends Monocle
             $params[':oneLng'] = $oNeLng;
         }
 
-        global $noBoundaries, $boundaries;
-        if (!$noBoundaries) {
+        global $noBoundaries, $boundaries, $showStopsOutsideBoundaries;
+        if (!$noBoundaries && !$showStopsOutsideBoundaries) {
             $conds[] = "(ST_WITHIN(point(lat,lon),ST_GEOMFROMTEXT('POLYGON(( " . $boundaries . " ))')))";
         }
 
@@ -309,8 +309,8 @@ class Monocle_PMSF extends Monocle
             $params[':oneLat'] = $oNeLat;
             $params[':oneLng'] = $oNeLng;
         }
-        global $noBoundaries, $boundaries;
-        if (!$noBoundaries) {
+        global $noBoundaries, $boundaries, $showGymsOutsideBoundaries;
+        if (!$noBoundaries && !$showGymsOutsideBoundaries) {
             $conds[] = "(ST_WITHIN(point(f.lat,f.lon),ST_GEOMFROMTEXT('POLYGON(( " . $boundaries . " ))')))";
         }
         if ($tstamp > 0) {

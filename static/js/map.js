@@ -1936,14 +1936,16 @@ function pokestopLabel(item) {
     }
     if (!noLures && item['lure_expiration'] > Date.now()) {
         var lureType = '<img style="padding:5px;position:relative;left:0px;top:12px;height:40px;" src="static/forts/LureModule_' + item['lure_id'] + '.png"/>'
-        if (item['lure_id'] === 1) {
+        if (item['lure_id'] === 501) {
             lureType += i8ln('Normal')
-        } else if (item['lure_id'] === 2) {
+        } else if (item['lure_id'] === 502) {
             lureType += i8ln('Glacial')
-        } else if (item['lure_id'] === 3) {
+        } else if (item['lure_id'] === 503) {
             lureType += i8ln('Mossy')
-        } else if (item['lure_id'] === 4) {
+        } else if (item['lure_id'] === 504) {
             lureType += i8ln('Magnetic')
+        } else if (item['lure_id'] === 505) {
+            lureType += i8ln('Rainy')
         }
         lureEndStr = getTimeStr(item['lure_expiration'])
         str +=
@@ -2824,7 +2826,7 @@ function nestLabel(item) {
             '<center><b>' + i8ln('No Pokemon - Assign One Below') + '</b></center>'
     }
     if (item.type === 0) {
-        str += '<center><div style="margin-bottom:5px; margin-top:5px;">' + i8ln('Found by nestwatcher') + '</div></center>'
+        str += '<center><div style="margin-bottom:5px; margin-top:5px;">' + i8ln('Found by ') + nestBotName + '</div></center>'
     }
     if (!noDeleteNests) {
         str += '<i class="fas fa-trash-alt delete-nest" onclick="deleteNest(event);" data-id="' + item['nest_id'] + '"></i>'
@@ -3539,9 +3541,6 @@ function searchForItem(lat, lon, term, type, field) {
                         }
                         if (element.quest_item_id !== 0) {
                             html += '<span style="background:url(' + iconpath + 'rewards/reward_' + element.quest_item_id + '_' + element.quest_reward_amount + '.png) no-repeat;" class="i-icon" ></span>'
-                        }
-                        if (element.quest_reward_type === 12) {
-                            html += '<span style="background:url(' + iconpath + 'rewards/reward_mega_energy_' + element.quest_energy_pokemon_id + '.png) no-repeat;" class="i-icon" ></span>'
                         }
                         if (element.quest_reward_type === 3) {
                             html += '<span style="background:url(' + iconpath + 'rewards/reward_stardust_' + element.quest_dust_amount + '.png) no-repeat;" class="i-icon" ></span>'
@@ -5170,7 +5169,23 @@ function processPokemons(i, item) {
     if (!Store.get('showPokemon')) {
         return false // in case the checkbox was unchecked in the meantime.
     }
-    if (!(item['encounter_id'] in mapData.pokemons) && item['disappear_time'] > Date.now() && ((encounterId && encounterId === item['encounter_id']) || (excludedPokemon.indexOf(item['pokemon_id']) < 0 && !isTemporaryHidden(item['pokemon_id'])))) {
+    if (item['disappear_time'] > Date.now() && ((encounterId && encounterId === item['encounter_id']) || (excludedPokemon.indexOf(item['pokemon_id']) < 0 && !isTemporaryHidden(item['pokemon_id'])))) {
+        if (item['encounter_id'] in mapData.pokemons) {
+            if ((mapData.pokemons[item['encounter_id']]['individual_attack'] !== item['individual_attack']) || (mapData.pokemons[item['encounter_id']]['individual_defense'] !== item['individual_defense']) || (mapData.pokemons[item['encounter_id']]['individual_stamina'] !== item['individual_stamina'])) {
+                // updated information received. delete marker and item from dict
+                if (mapData.pokemons[item['encounter_id']].marker.rangeCircle) {
+                    markers.removeLayer(mapData.pokemons[item['encounter_id']].marker.rangeCircle)
+                    markersnotify.removeLayer(mapData.pokemons[item['encounter_id']].marker.rangeCircle)
+                    delete mapData.pokemons[item['encounter_id']].marker.rangeCircle
+                }
+                markers.removeLayer(mapData.pokemons[item['encounter_id']].marker)
+                markersnotify.removeLayer(mapData.pokemons[item['encounter_id']].marker)
+                delete mapData.pokemons[item['encounter_id']]
+            } else {
+                // in mapData and appears up to date, skip
+                return true
+            }
+        }
         // add marker to map and item to dict
         if (item.marker) {
             markers.removeLayer(item.marker)
