@@ -95,7 +95,7 @@
 
       .ui-tabs-panel{
         padding:0;
-        .form-control{
+        .form-control-2{
           float:none;
           .pokemon-container{
             box-shadow:none!important;
@@ -123,7 +123,7 @@
       clear:both;
       margin-top:10px;
       margin-bottom:10px;
-      .form-control{
+      .form-control-2{
         margin-bottom:0;
       }
     }
@@ -132,7 +132,7 @@
       display: -webkit-flex;
       display:flex;
       align-items:center;
-      .form-control{
+      .form-control-2{
         label{
           display: -ms-flexbox;
           display: -webkit-flex;
@@ -228,8 +228,8 @@
     }
   }
 
-  .form-control > select,
-  .form-control > span {
+  .form-control-2 > select,
+  .form-control-2 > span {
     float: right;
   }
 
@@ -331,7 +331,7 @@
 
       .ui-tabs-panel{
         padding:0;
-        .form-control-rocket{
+        .form-control-2-rocket{
           float:none;
           .grunts-container{
             box-shadow:none!important;
@@ -360,7 +360,7 @@
       display: -webkit-flex;
       display:flex;
       align-items:center;
-      .form-control-rocket{
+      .form-control-2-rocket{
         label{
           display: -ms-flexbox;
           display: -webkit-flex;
@@ -431,8 +431,8 @@
     }
   }
 
-  .form-control-rocket > select,
-  .form-control-rocket > span {
+  .form-control-2-rocket > select,
+  .form-control-2-rocket > span {
     float: right;
   }
 
@@ -533,7 +533,7 @@
       }
       .ui-tabs-panel{
         padding:0;
-        .form-control{
+        .form-control-2{
           float:none;
           .quest-item-container, .quest-pokemon-container, .quest-energy-container {
             box-shadow:none!important;
@@ -562,7 +562,7 @@
       display: -webkit-flex;
       display:flex;
       align-items:center;
-      .form-control{
+      .form-control-2{
         label{
           display: -ms-flexbox;
           display: -webkit-flex;
@@ -730,8 +730,8 @@
     }
   }
 
-  .form-control > select,
-  .form-control > span {
+  .form-control-2 > select,
+  .form-control-2 > span {
     float: right;
   }
 
@@ -833,7 +833,7 @@
 
       .ui-tabs-panel{
         padding:0;
-        .form-control-raids{
+        .form-control-2-raids{
           float:none;
           .raidboss-container{
             box-shadow:none!important;
@@ -867,7 +867,7 @@
       display: -webkit-flex;
       display:flex;
       align-items:center;
-      .form-control-raidboss{
+      .form-control-2-raidboss{
         label{
           display: -ms-flexbox;
           display: -webkit-flex;
@@ -945,8 +945,8 @@
     }
   }
 
-  .form-control-raids > select,
-  .form-control-raids > span {
+  .form-control-2-raids > select,
+  .form-control-2-raids > span {
     float: right;
   }
 
