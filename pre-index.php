@@ -433,9 +433,9 @@ if (!$noLoadingScreen) {
 
         <?php
         if (!empty($_SESSION['user']->id)) {
-            echo "<a href='#' onclick='openAccountModal(event);' style='float:right;padding:0 5px;' title='" . i8ln('Profile') . "'><img src='" .  $_SESSION['user']->avatar . "' style='height:40px;width:40px;border-radius:50%;border:2px solid;vertical-align: middle;'></a>";
+            echo "<a href='#accountModal' data-bs-toggle='modal' style='float:right;padding:0 5px;' title='" . i8ln('Profile') . "'><img src='" .  $_SESSION['user']->avatar . "' style='height:40px;width:40px;border-radius:50%;border:2px solid;vertical-align: middle;'></a>";
         } else {
-            echo "<a href='#' onclick='openAccountModal(event);' style='float:right;padding:0 5px;' title='" . i8ln('Profile') . "'><i class='fas fa-user' style='color:white;font-size:20px;vertical-align:middle;'></i></a>";
+            echo "<a href='#accountModal' data-bs-toggle='modal' style='float:right;padding:0 5px;' title='" . i8ln('Profile') . "'><i class='fas fa-user' style='color:white;font-size:20px;vertical-align:middle;'></i></a>";
         }
         ?>
     </header>
@@ -1660,90 +1660,6 @@ if (!$noLoadingScreen) {
     <div class="loader" style="display:none;"></div>
     <div class="global-raid-modal"></div>
 
-    <div class="account-modal" style="display: none;">
-        <?php
-        if (!empty($_SESSION['user']->id)) { ?>
-            <div style="display:flex;">
-                <img src="<?php echo $_SESSION['user']->avatar; ?>" style="height:80px;width:80px;border-radius:50%;border:2px solid;position:relative;top:13px;">
-                <div style="position:relative;left:20px;font-size:13px;top:35px;">
-                    <b><?php echo $_SESSION['user']->user; ?></b>
-                </div>
-            </div>
-            <div>
-                <a class="settings" style="position: absolute;left: 113px;top: 80px;color: red;cursor: pointer;border: 1px solid red;border-radius: 8px;" onclick="document.location.href='<?php echo 'logout?action=' . $_SESSION['user']->login_system . '-logout';?>'">
-                    <i class="fas fa-sign-out-alt" aria-hidden="true"></i> <?php echo i8ln('Logout'); ?>
-                </a>
-            </div>
-            <?php
-            if ($_SESSION['user']->login_system == 'native') {
-                ?>
-                <div>
-                    <a style="position:relative;top:18px;left:96px;color:red;cursor:pointer;border:1px solid red;border-radius:8px;" class="settings" onclick="document.location.href='<?php echo 'register?action=password-update&username=' . $_SESSION['user']->user;?>'">
-                        <i class="fas fa-lock" aria-hidden="true"></i> <?php echo i8ln('Change password'); ?>
-                    </a>
-                </div>
-                <?php
-            }
-        } else {
-            echo "<div class='button-container'>";
-            if ($noNativeLogin === false) {
-                echo "<div><button style='background-color: #395697;font-size:13px;margin-bottom:0;' onclick=\"location.href='./login?action=login';\" value='Login'><i class='fas fa-user'></i> " . i8ln('Login with Email') . "</button></div>";
-            }
-            if ($noDiscordLogin === false) {
-                echo "<div><button style='background-color: #395697;font-size:13px;margin-bottom:0;' onclick=\"location.href='./login?action=discord-login';\" value='Login with discord'><i class='fab fa-discord'></i> " . i8ln('Login with Discord') . "</button></div>";
-            }
-            if ($noFacebookLogin === false) {
-                echo "<div><button style='background-color: #395697;font-size:13px;margin-bottom:0;' onclick=\"location.href='./login?action=facebook-login';\" value='Login with facebook'><i class='fab fa-facebook'></i> " . i8ln('Login with Facebook') . "</button></div>";
-            }
-            if ($noGroupmeLogin === false) {
-                echo "<div><button style='background-color: #395697;font-size:13px;margin-bottom:0;' onclick=\"location.href='./login?action=groupme-login';\" value='Login with groupme'><i class='fas fa-smile'></i> " . i8ln('Login with Groupme') . "</button></div>";
-            }
-            if ($noPatreonLogin === false) {
-                echo "<div><button style='background-color: #395697;font-size:13px;margin-bottom:0;' onclick=\"location.href='./login?action=patreon-login';\" value='Login with patreon'><i class='fab fa-patreon'></i> " . i8ln('Login with Patreon') . "</button></div>";
-            }
-            echo "</div>";
-        } ?>
-
-        <hr style="border: 1px solid #5a5a5aab;">
-
-        <div class="button-container">
-            <div>
-                <button class="settings" onclick="confirm('<?php echo i8ln('Are you sure you want to reset settings to default values?') ?>') ? (localStorage.clear(), window.location.reload()) : false">
-                    <i class="fas fa-sync-alt" aria-hidden="true"></i> <?php echo i8ln('Reset Settings') ?>
-                </button>
-            </div>
-            <div>
-                <button class="settings" onclick="download('<?= addslashes($title) ?>', JSON.stringify(JSON.stringify(localStorage)))">
-                    <i class="fas fa-upload" aria-hidden="true"></i> <?php echo i8ln('Export Settings') ?>
-                </button>
-            </div>
-            <div>
-                <input id="fileInput" type="file" style="display:none;" onchange="openFile(event)"/>
-                <button class="settings" onclick="document.getElementById('fileInput').click()">
-                    <i class="fas fa-download" aria-hidden="true"></i> <?php echo i8ln('Import Settings') ?>
-                </button>
-            </div>
-            <?php
-            if (!$noLocaleSelection) {
-                ?>
-                <div style="top:10px;position:relative;">
-                    <select class="language-select" name="language-switch" onchange="location = this.value;">
-                        <option selected><?php echo i8ln('select language'); ?></option>
-                        <option value="?lang=en"><?php echo i8ln('English'); ?></option>
-                        <option value="?lang=de"><?php echo i8ln('German'); ?></option>
-                        <option value="?lang=fr"><?php echo i8ln('French'); ?></option>
-                        <option value="?lang=it"><?php echo i8ln('Italian'); ?></option>
-                        <option value="?lang=pl"><?php echo i8ln('Polish'); ?></option>
-                        <option value="?lang=sp"><?php echo i8ln('Spanish'); ?></option>
-                        <option value="?lang=sv"><?php echo i8ln('Swedish'); ?></option>
-                    </select>
-                </div>
-                <br><br>
-                <?php
-            }?>
-        </div>
-    </div>
-
     <?php if (! $noManualNests) { ?>
         <div class="global-nest-modal" style="display:none;">
             <input type="hidden" name="pokemonID" class="pokemonID"/>
@@ -2434,6 +2350,7 @@ $( document ).ready(function() {
 })
 </script>
     <!-- Modals -->
+    <!-- InfoModal -->
     <div class="modal fade" id="infoModal" tabindex="-1" aria-labelledby="infoModalLabel" aria-hidden="true">
         <div class="modal-dialog modal-xl">
             <div class="modal-content">
@@ -2446,6 +2363,94 @@ $( document ).ready(function() {
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- AccountModal -->
+    <div class="modal fade" id="accountModal" tabindex="-1" aria-labelledby="accountModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="accountModalLabel"><?php echo i8ln('Profile') ?></h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                <?php
+                if (!empty($_SESSION['user']->id)) { ?>
+                    <div style="display:flex;">
+                        <img src="<?php echo $_SESSION['user']->avatar; ?>" style="height:80px;width:80px;border-radius:50%;border:2px solid;position:relative;top:13px;">
+                        <div style="position:relative;left:20px;font-size:13px;top:35px;">
+                            <b><?php echo $_SESSION['user']->user; ?></b>
+                        </div>
+                    </div>
+                    <div>
+                        <a class="settings" style="position: absolute;left: 113px;top: 80px;color: red;cursor: pointer;border: 1px solid red;border-radius: 8px;" onclick="document.location.href='<?php echo 'logout?action=' . $_SESSION['user']->login_system . '-logout';?>'">
+                            <i class="fas fa-sign-out-alt" aria-hidden="true"></i> <?php echo i8ln('Logout'); ?>
+                        </a>
+                    </div>
+                    <?php
+                    if ($_SESSION['user']->login_system == 'native') {
+                        ?>
+                        <div>
+                            <a style="position:relative;top:18px;left:96px;color:red;cursor:pointer;border:1px solid red;border-radius:8px;" class="settings" onclick="document.location.href='<?php echo 'register?action=password-update&username=' . $_SESSION['user']->user;?>'">
+                                <i class="fas fa-lock" aria-hidden="true"></i> <?php echo i8ln('Change password'); ?>
+                            </a>
+                        </div>
+                        <?php
+                    }
+                } else {
+                    echo "<div class='d-grid gap-2'>";
+                    if ($noNativeLogin === false) {
+                        echo "<button class='btn btn-primary' type='button' onclick=\"location.href='./login?action=login';\" value='Login'><i class='fas fa-user'></i> " . i8ln('Login with Email') . "</button>";
+                    }
+                    if ($noDiscordLogin === false) {
+                        echo "<button class='btn btn-primary' type='button' onclick=\"location.href='./login?action=discord-login';\" value='Login with discord'><i class='fab fa-discord'></i> " . i8ln('Login with Discord') . "</button>";
+                    }
+                    if ($noFacebookLogin === false) {
+                        echo "<button class='btn btn-primary' type='button' onclick=\"location.href='./login?action=facebook-login';\" value='Login with facebook'><i class='fab fa-facebook'></i> " . i8ln('Login with Facebook') . "</button>";
+                    }
+                    if ($noGroupmeLogin === false) {
+                        echo "<button class='btn btn-primary' type='button' onclick=\"location.href='./login?action=groupme-login';\" value='Login with groupme'><i class='fas fa-smile'></i> " . i8ln('Login with Groupme') . "</button>";
+                    }
+                    if ($noPatreonLogin === false) {
+                        echo "<button class='btn btn-primary' type='button' onclick=\"location.href='./login?action=patreon-login';\" value='Login with patreon'><i class='fab fa-patreon'></i> " . i8ln('Login with Patreon') . "</button>";
+                    }
+                    echo "</div>";
+                } ?>
+
+                <hr style="border: 1px solid #5a5a5aab;">
+
+                <div class="d-grid gap-2 col-6 mx-auto">
+                        <button class='btn btn-primary' type='button' onclick="confirm('<?php echo i8ln('Are you sure you want to reset settings to default values?') ?>') ? (localStorage.clear(), window.location.reload()) : false">
+                            <i class="fas fa-sync-alt" aria-hidden="true"></i> <?php echo i8ln('Reset Settings') ?>
+                        </button>
+                        <button class='btn btn-primary' type='button' onclick="download('<?= addslashes($title) ?>', JSON.stringify(JSON.stringify(localStorage)))">
+                            <i class="fas fa-upload" aria-hidden="true"></i> <?php echo i8ln('Export Settings') ?>
+                        </button>
+                        <input id="fileInput" type="file" style="display:none;" onchange="openFile(event)"/>
+                        <button class='btn btn-primary' type='button' onclick="document.getElementById('fileInput').click()">
+                            <i class="fas fa-download" aria-hidden="true"></i> <?php echo i8ln('Import Settings') ?>
+                        </button>
+                    <?php
+                    if (!$noLocaleSelection) {
+                        ?>
+                        <div class="btn-group">
+                            <button type="button" class="btn btn-info dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false"><?php echo i8ln('select language'); ?></button>
+                            <ul class="dropdown-menu">
+                                <li><a class="dropdown-item" href="?lang=en"><?php echo i8ln('English'); ?></a></li>
+                                <li><a class="dropdown-item" href="?lang=de"><?php echo i8ln('German'); ?></a></li>
+                                <li><a class="dropdown-item" href="?lang=fr"><?php echo i8ln('French'); ?></a></li>
+                                <li><a class="dropdown-item" href="?lang=it"><?php echo i8ln('Italian'); ?></a></li>
+                                <li><a class="dropdown-item" href="?lang=pl"><?php echo i8ln('Polish'); ?></a></li>
+                                <li><a class="dropdown-item" href="?lang=sp"><?php echo i8ln('Spanish'); ?></a></li>
+                                <li><a class="dropdown-item" href="?lang=sv"><?php echo i8ln('Swedish'); ?></a></li>
+                            </ul>
+                        </div>
+                        <br><br>
+                        <?php
+                    }?>
+                </div>
                 </div>
             </div>
         </div>
