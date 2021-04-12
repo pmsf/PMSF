@@ -1589,7 +1589,7 @@ if (!$noLoadingScreen) {
             ?>
         </div>
     <?php
-    if (! $infoModal) {
+    if (! $noInfoModal) {
         echo '<div class="d-grid gap-2">
         <button type="button" class="btn btn-primary btn-sm" data-bs-toggle="modal" data-bs-target="#infoModal">' . $infoModalTitle . '</button>
         </div>';
