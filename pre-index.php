@@ -1940,75 +1940,11 @@ if (!$noLoadingScreen) {
     <div class="fullscreen-toggle">
         <button class="map-toggle-button" onClick="toggleFullscreenMap();"><i class="fa fa-expand" aria-hidden="true"></i></button>
     </div>
-    <?php if ((! $noGyms || ! $noPokestops) && ! $noSearch) { ?>
+    <?php if ( ! $noSearch) { ?>
         <div class="search-container">
-            <button type="button" class="search-modal-button" data-bs-toggle="modal" data-bs-target="#searchModal"><i class="fas fa-search"
-                                                                                     aria-hidden="true"></i></button>
-
-            <div class="search-modal" style="display:none;">
-                <div id="search-tabs">
-                    <ul>
-                        <?php if (! $noQuests && ! $noSearchManualQuests) { ?>
-                            <li><a href="#tab-rewards"><img src="static/images/reward.png"/></a></li>
-                        <?php }
-                        if (! $noSearchNests) { ?>
-                            <li><a href="#tab-nests"><img src="static/images/nest.png"/></a></li>
-                        <?php }
-                        if (! $noSearchGyms) { ?>
-                            <li><a href="#tab-gym"><img src="static/forts/ingame/Uncontested.png"/></a></li>
-                        <?php }
-                        if (! $noSearchPokestops) { ?>
-                            <li><a href="#tab-pokestop"><img src="static/forts/Pstop.png"/></a></li>
-                        <?php }
-                        if (! $noSearchPortals) { ?>
-                            <li><a href="#tab-portals"><img src="static/images/portal.png"/></a></li>
-            <?php } ?>
-                    </ul>
-                    <?php if (! $noQuests && ! $noSearchManualQuests) { ?>
-                        <div id="tab-rewards">
-                            <input type="search" id="reward-search" name="reward-search"
-                                   placeholder="<?php echo i8ln('Enter Reward Name'); ?>"
-                                   data-type="reward" class="search-input"/>
-                            <ul id="reward-search-results" class="search-results reward-results"></ul>
-                        </div>
-                    <?php } ?>
-                    <?php if (! $noSearchNests) { ?>
-                        <div id="tab-nests">
-                            <input type="search" id="nest-search" name="nest-search"
-                                   placeholder="<?php echo i8ln('Enter nest Pokémon or Type'); ?>"
-                                   data-type="nests" class="search-input"/>
-                            <ul id="nest-search-results" class="search-results nest-results"></ul>
-                        </div>
-                    <?php } ?>
-                    <?php if (! $noSearchGyms) { ?>
-                        <div id="tab-gym">
-                            <input type="search" id="gym-search" name="gym-search"
-                                   placeholder="<?php echo i8ln('Enter Gym Name'); ?>"
-                                   data-type="forts" class="search-input"/>
-                            <ul id="gym-search-results" class="search-results gym-results"></ul>
-                        </div>
-            <?php } ?>
-            <?php if (! $noSearchPokestops) { ?>
-                        <div id="tab-pokestop">
-                            <input type="search" id="pokestop-search" name="pokestop-search"
-                                   placeholder="<?php echo i8ln('Enter Pokéstop Name'); ?>" data-type="pokestops"
-                                   class="search-input"/>
-                            <ul id="pokestop-search-results" class="search-results pokestop-results"></ul>
-                        </div>
-            <?php } ?>
-            <?php if (! $noSearchPortals) { ?>
-                        <div id="tab-portals">
-                            <input type="search" id="portals-search" name="portals-search"
-                                   placeholder="<?php echo i8ln('Enter Portal Name'); ?>" data-type="portals"
-                                   class="search-input"/>
-                            <ul id="portals-search-results" class="search-results portals-results"></ul>
-                        </div>
-            <?php } ?>
-                </div>
-            </div>
+            <button type="button" class="search-modal-button" data-bs-toggle="modal" data-bs-target="#searchModal"><i class="fas fa-search" aria-hidden="true"></i></button>
         </div>
-    <?php } ?>
-    <?php
+    <?php }
     if ((! $noPokemon && ! $noManualPokemon) || (! $noGyms && ! $noManualGyms) || (! $noPokestops && ! $noManualPokestops) || (! $noAddNewNests && ! $noNests) || (!$noAddNewCommunity && ! $noCommunity) || (!$noAddPoi && ! $noPoi)) {
         ?>
         <button class="submit-on-off-button" onclick="$('.submit-on-off-button').toggleClass('on');">
