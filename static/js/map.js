@@ -5110,33 +5110,6 @@ function generateTimerLists() {
         '</select>'
     return html
 }
-function openSearchModal(event) { // eslint-disable-line no-unused-vars
-    $('.ui-dialog').remove()
-    var modal = $('.search-modal')
-    var wwidth = $(window).width()
-    var width = 300
-    if (wwidth > 768) {
-        width = 500
-    }
-    modal.clone().dialog({
-        autoOpen: true,
-        resizable: false,
-        draggable: false,
-        modal: true,
-        title: i8ln('Search...'),
-        classes: {
-            'ui-dialog': 'ui-dialog search-widget-popup'
-        },
-        width: width,
-        buttons: {},
-        open: function (event, ui) {
-            jQuery('input[name="gym-search"], input[name="pokestop-search"], input[name="reward-search"], input[name="nest-search"], input[name="portals-search"]').bind('input', function () {
-                searchAjax($(this))
-            })
-            $('.search-widget-popup #search-tabs').tabs()
-        }
-    })
-}
 
 function openFullscreenModal(image) { // eslint-disable-line no-unused-vars
     var modal = document.getElementById('fullscreenModal')
