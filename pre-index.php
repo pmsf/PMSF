@@ -360,7 +360,9 @@ if (strtolower($map) === "rdm") {
     <link rel="stylesheet" href="node_modules/datatables/media/css/jquery.dataTables.min.css">
     <script src="static/js/vendor/modernizr.custom.js"></script>
     <!-- Bootstrap -->
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-eOJMYsd53ii+scO/bJGFsiCZc+5NDVN2yr8+0RDqr0Ql0h+rP48ckxlpbzKgwra6" crossorigin="anonymous">
+    <link rel="stylesheet" href="node_modules/bootstrap/dist/css/bootstrap.min.css">
+    <script src="node_modules/bootstrap/dist/js/bootstrap.min.js"></script>
+    <link rel="stylesheet" href="node_modules/bootstrap-icons/font/bootstrap-icons.css">
     <!-- Toastr -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.css">
     <!-- Leaflet -->
@@ -382,7 +384,6 @@ if (!$noLoadingScreen) {
     echo $loadingStyle . '&nbsp;' . i8ln('Loading') . '...</p></app-root>';
 } ?>
 <body id="top">
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta3/dist/js/bootstrap.bundle.min.js" integrity="sha384-JEW9xMcG8R+pH31jmWH6WWP0WintQrMb4s7ZOdauHnUtxwoG2vI5DkLtS3qm9Ekf" crossorigin="anonymous"></script>
 <div class="wrapper">
     <!-- Header -->
     <header id="header">
@@ -1941,8 +1942,9 @@ if (!$noLoadingScreen) {
     </div>
     <?php if ((! $noGyms || ! $noPokestops) && ! $noSearch) { ?>
         <div class="search-container">
-            <button class="search-modal-button" onClick="openSearchModal(event);"><i class="fas fa-search"
+            <button type="button" class="search-modal-button" data-bs-toggle="modal" data-bs-target="#searchModal"><i class="fas fa-search"
                                                                                      aria-hidden="true"></i></button>
+
             <div class="search-modal" style="display:none;">
                 <div id="search-tabs">
                     <ul>
@@ -2455,5 +2457,90 @@ $( document ).ready(function() {
             </div>
         </div>
     </div>
+    <!-- Search Modal -->
+    <div class="modal fade" id="searchModal" tabindex="-1" aria-labelledby="searchModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="searchModalLabel"><?php echo i8ln('Search...'); ?></h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <nav>
+                        <div class="nav nav-tabs nav-fill" id="nav-tab" role="tablist">
+                            <?php $firstTab = 1; ?>
+                            <?php if (! $noQuests && ! $noSearchManualQuests) { ?>
+                                <button class="nav-link<?php echo (($firstTab == 1) ? " active" : ""); ?>" id="nav-rewards-tab" data-bs-toggle="tab" data-bs-target="#nav-rewards" type="button" role="tab" aria-controls="nav-rewards" aria-selected="true"><img src="static/images/reward.png" width="30" height="30"/></button>
+                            <?php }
+                            $firstTab++;
+                            if (! $noSearchNests) { ?>
+                                <button class="nav-link<?php echo (($firstTab == 1) ? " active" : ""); ?>" id="nav-nests-tab" data-bs-toggle="tab" data-bs-target="#nav-nests" type="button" role="tab" aria-controls="nav-nests" aria-selected="true"><img src="static/images/nest.png" width="30" height="30"/></button>
+                            <?php }
+                            $firstTab++;
+                            if (! $noSearchGyms) { ?>
+                                <button class="nav-link<?php echo (($firstTab == 1) ? " active" : ""); ?>" id="nav-gyms-tab" data-bs-toggle="tab" data-bs-target="#nav-gyms" type="button" role="tab" aria-controls="nav-gyms" aria-selected="true"><img src="static/forts/ingame/Uncontested.png" width="30" height="30"/></button>
+                            <?php }
+                            $firstTab++;
+                            if (! $noSearchPokestops) { ?>
+                                <button class="nav-link<?php echo (($firstTab == 1) ? " active" : ""); ?>" id="nav-pokestops-tab" data-bs-toggle="tab" data-bs-target="#nav-pokestops" type="button" role="tab" aria-controls="nav-pokestops" aria-selected="true"><img src="static/forts/Pstop.png" width="30" height="30"/></button>
+                            <?php }
+                            $firstTab++;
+                            if (! $noSearchPortals) { ?>
+                                <button class="nav-link<?php echo (($firstTab == 1) ? " active" : ""); ?>" id="nav-portals-tab" data-bs-toggle="tab" data-bs-target="#nav-portals" type="button" role="tab" aria-controls="nav-portals" aria-selected="true"><img src="static/images/portal.png" width="30" height="30"/></button>
+                            <?php } ?>
+                        </div>
+                    </nav>
+                    <div class="tab-content" id="nav-tabContent">
+                        <?php $firstTabContent = 1; ?>
+                        <?php if (! $noQuests && ! $noSearchManualQuests) { ?>
+                            <div class="tab-pane fade<?php echo (($firstTabContent == 1) ? " show active" : ""); ?>" id="nav-rewards" role="tabpanel" aria-labelledby="nav-rewards-tab">
+                                <input type="search" id="reward-search" name="reward-search"
+                                       placeholder="<?php echo i8ln('Enter Reward Name'); ?>"
+                                       data-type="reward" class="search-input"/>
+                                <ul id="reward-search-results" class="search-results reward-results"></ul>
+                            </div>
+                        <?php }
+                        $firstTabContent++;
+                        if (! $noSearchNests) { ?>
+                            <div class="tab-pane fade<?php echo (($firstTabContent == 1) ? " show active" : ""); ?>" id="nav-nests" role="tabpanel" aria-labelledby="nav-nests-tab">
+                                <input type="search" id="nest-search" name="nest-search"
+                                       placeholder="<?php echo i8ln('Enter nest Pokémon or Type'); ?>"
+                                       data-type="nests" class="search-input"/>
+                                <ul id="nest-search-results" class="search-results nest-results"></ul>
+                            </div>
+                        <?php }
+                        $firstTabContent++;
+                        if (! $noSearchGyms) { ?>
+                            <div class="tab-pane fade<?php echo (($firstTabContent == 1) ? " show active" : ""); ?>" id="nav-gyms" role="tabpanel" aria-labelledby="nav-gyms-tab">
+                                <input type="search" id="gym-search" name="gym-search"
+                                       placeholder="<?php echo i8ln('Enter Gym Name'); ?>"
+                                       data-type="forts" class="search-input"/>
+                                <ul id="gym-search-results" class="search-results gym-results"></ul>
+                            </div>
+                        <?php }
+                        $firstTabContent++;
+                        if (! $noSearchPokestops) { ?>
+                            <div class="tab-pane fade<?php echo (($firstTabContent == 1) ? " show active" : ""); ?>" id="nav-pokestops" role="tabpanel" aria-labelledby="nav-pokestops-tab">
+                                <input type="search" id="pokestop-search" name="pokestop-search"
+                                       placeholder="<?php echo i8ln('Enter Pokéstop Name'); ?>" data-type="pokestops"
+                                       class="search-input"/>
+                                <ul id="pokestop-search-results" class="search-results pokestop-results"></ul>
+                            </div>
+                        <?php }
+                        $firstTabContent++;
+                        if (! $noSearchPortals) { ?>
+                            <div class="tab-pane fade<?php echo (($firstTabContent == 1) ? " show active" : ""); ?>" id="nav-portals" role="tabpanel" aria-labelledby="nav-portals-tab">
+                                <input type="search" id="portals-search" name="portals-search"
+                                       placeholder="<?php echo i8ln('Enter Portal Name'); ?>" data-type="portals"
+                                       class="search-input"/>
+                                <ul id="portals-search-results" class="search-results portals-results"></ul>
+                            </div>
+                        <?php } ?>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- End of Modals -->
 </body>
 </html>
