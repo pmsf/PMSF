@@ -2494,7 +2494,7 @@ $( document ).ready(function() {
                         <?php $firstTabContent = 1; ?>
                         <?php if (! $noQuests && ! $noSearchManualQuests) { ?>
                             <div class="tab-pane fade<?php echo (($firstTabContent == 1) ? " show active" : ""); ?>" id="nav-rewards" role="tabpanel" aria-labelledby="nav-rewards-tab">
-                                <input type="search" id="reward-search" name="reward-search"
+                                <input type="search" id="reward-search" oninput="searchAjax($(this))" name="reward-search"
                                        placeholder="<?php echo i8ln('Enter Reward Name'); ?>"
                                        data-type="reward" class="search-input"/>
                                 <ul id="reward-search-results" class="search-results reward-results"></ul>
@@ -2503,7 +2503,7 @@ $( document ).ready(function() {
                         $firstTabContent++;
                         if (! $noSearchNests) { ?>
                             <div class="tab-pane fade<?php echo (($firstTabContent == 1) ? " show active" : ""); ?>" id="nav-nests" role="tabpanel" aria-labelledby="nav-nests-tab">
-                                <input type="search" id="nest-search" name="nest-search"
+                                <input type="search" id="nest-search" oninput="searchAjax($(this))" name="nest-search"
                                        placeholder="<?php echo i8ln('Enter nest Pokémon or Type'); ?>"
                                        data-type="nests" class="search-input"/>
                                 <ul id="nest-search-results" class="search-results nest-results"></ul>
@@ -2512,7 +2512,7 @@ $( document ).ready(function() {
                         $firstTabContent++;
                         if (! $noSearchGyms) { ?>
                             <div class="tab-pane fade<?php echo (($firstTabContent == 1) ? " show active" : ""); ?>" id="nav-gyms" role="tabpanel" aria-labelledby="nav-gyms-tab">
-                                <input type="search" id="gym-search" name="gym-search"
+                                <input type="search" id="gym-search" oninput="searchAjax($(this))" name="gym-search"
                                        placeholder="<?php echo i8ln('Enter Gym Name'); ?>"
                                        data-type="forts" class="search-input"/>
                                 <ul id="gym-search-results" class="search-results gym-results"></ul>
@@ -2521,7 +2521,7 @@ $( document ).ready(function() {
                         $firstTabContent++;
                         if (! $noSearchPokestops) { ?>
                             <div class="tab-pane fade<?php echo (($firstTabContent == 1) ? " show active" : ""); ?>" id="nav-pokestops" role="tabpanel" aria-labelledby="nav-pokestops-tab">
-                                <input type="search" id="pokestop-search" name="pokestop-search"
+                                <input type="search" id="pokestop-search" oninput="searchAjax($(this))" name="pokestop-search"
                                        placeholder="<?php echo i8ln('Enter Pokéstop Name'); ?>" data-type="pokestops"
                                        class="search-input"/>
                                 <ul id="pokestop-search-results" class="search-results pokestop-results"></ul>
@@ -2530,7 +2530,7 @@ $( document ).ready(function() {
                         $firstTabContent++;
                         if (! $noSearchPortals) { ?>
                             <div class="tab-pane fade<?php echo (($firstTabContent == 1) ? " show active" : ""); ?>" id="nav-portals" role="tabpanel" aria-labelledby="nav-portals-tab">
-                                <input type="search" id="portals-search" name="portals-search"
+                                <input type="search" id="portals-search" oninput="searchAjax($(this))" name="portals-search"
                                        placeholder="<?php echo i8ln('Enter Portal Name'); ?>" data-type="portals"
                                        class="search-input"/>
                                 <ul id="portals-search-results" class="search-results portals-results"></ul>
