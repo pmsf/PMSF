@@ -2286,6 +2286,72 @@ if (!$noLoadingScreen) {
         </div>
     </div>
 </div>
+<!-- SubmitModal -->
+<div class="modal fade" id="submitModal" tabindex="-1" aria-labelledby="submitModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-xl">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="submitModalLabel"><?php echo i8ln('Submit Data to Map') ?></h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <nav>
+                    <div class="nav nav-tabs nav-fill" id="nav-tab" role="tablist">
+                        <?php if (! $noManualPokemon && !$noPokemon) { ?>
+                            <button class="nav-link" id="nav-pokemon-tab" data-bs-toggle="tab" data-bs-target="#nav-pokemon" type="button" role="tab" aria-controls="nav-pokemon" aria-selected="true"><img src="static/images/pokeball.png" width="30" height="30"/></button>
+                        <?php }
+                        if (! $noManualGyms && !$noGyms) { ?>
+                            <button class="nav-link" id="nav-gym-tab" data-bs-toggle="tab" data-bs-target="#nav-gym" type="button" role="tab" aria-controls="nav-gym" aria-selected="true"><img src="static/forts/ingame/Uncontested.png" width="30" height="30"/></button>                   <?php }
+                        if (! $noManualPokestops && !$noPokestops) { ?>
+                            <button class="nav-link" id="nav-pokestop-tab" data-bs-toggle="tab" data-bs-target="#nav-pokestop" type="button" role="tab" aria-controls="nav-pokestop" aria-selected="true"><img src="static/forts/Pstop.png" width="30" height="30"/></button>
+                        <?php }
+                        if (! $noAddNewNests && !$noNests) { ?>
+                            <button class="nav-link" id="nav-nest-tab" data-bs-toggle="tab" data-bs-target="#nav-nest" type="button" role="tab" aria-controls="nav-nest" aria-selected="true"><img src="static/images/nest.png" width="30" height="30"/></button>
+                        <?php }
+                        if (! $noAddNewCommunity && !$noCommunity) { ?>
+                            <button class="nav-link" id="nav-community-tab" data-bs-toggle="tab" data-bs-target="#nav-community" type="button" role="tab" aria-controls="nav-community" aria-selected="true"><img src="static/images/community.png" width="30" height="30"/></button>
+                        <?php }
+                        if (! $noAddPoi && !$noPoi) { ?>
+                            <button class="nav-link" id="nav-poi-tab" data-bs-toggle="tab" data-bs-target="#nav-poi" type="button" role="tab" aria-controls="nav-poi" aria-selected="true"><img src="static/images/playground.png" width="30" height="30"/></button>
+                        <?php } ?>
+                     </div>
+                </nav>
+                <div class="tab-content" id="nav-tabContent">
+                    <?php if (! $noManualPokemon && !$noPokemon) { ?>
+                        <div class="tab-pane fade" id="nav-pokemon" role="tabpanel" aria-labelledby="nav-pokemon-tab">
+                pokemon
+                        </div>
+                    <?php }
+                    if (! $noManualGyms && !$noGyms) { ?>
+                        <div class="tab-pane fade" id="nav-gym" role="tabpanel" aria-labelledby="nav-gym-tab">
+                gym
+                        </div>
+                    <?php }
+                    if (! $noManualPokestops && !$noPokestops) { ?>
+                        <div class="tab-pane fade" id="nav-pokestop" role="tabpanel" aria-labelledby="nav-pokestop-tab">
+                pokestop
+                        </div>
+                    <?php }
+                    if (! $noAddNewNests && !$noNests) { ?>
+                        <div class="tab-pane fade" id="nav-nest" role="tabpanel" aria-labelledby="nav-nest-tab">
+                nest
+                        </div>
+                    <?php }
+                    if (! $noAddNewCommunity && !$noCommunity) { ?>
+                        <div class="tab-pane fade" id="nav-community" role="tabpanel" aria-labelledby="nav-community-tab">
+                community
+                        </div>
+                    <?php }
+                    if (! $noAddPoi && !$noPoi) { ?>
+                        <div class="tab-pane fade" id="nav-poi" role="tabpanel" aria-labelledby="nav-poi-tab">
+                poi
+                        </div>
+                    <?php } ?>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
 <!-- End of Modals -->
 
 <!-- Scripts -->
