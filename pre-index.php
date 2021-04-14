@@ -361,7 +361,6 @@ if (strtolower($map) === "rdm") {
     <script src="static/js/vendor/modernizr.custom.js"></script>
     <!-- Bootstrap -->
     <link rel="stylesheet" href="node_modules/bootstrap/dist/css/bootstrap.min.css">
-    <script src="node_modules/bootstrap/dist/js/bootstrap.min.js"></script>
     <link rel="stylesheet" href="node_modules/bootstrap-icons/font/bootstrap-icons.css">
     <!-- Toastr -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.css">
@@ -374,6 +373,8 @@ if (strtolower($map) === "rdm") {
     <link rel="stylesheet" href="node_modules/leaflet.markercluster/dist/MarkerCluster.css" />
     <link rel="stylesheet" href="node_modules/leaflet.markercluster/dist/MarkerCluster.Default.css" />
     <link href='static/css/leaflet.fullscreen.css' rel='stylesheet' />
+    <!-- Flag Icons -->
+    <link rel="stylesheet" href="node_modules/flag-icon-css/css/flag-icon.min.css" />
 </head>
 <?php
 if (!$noLoadingScreen) {
@@ -2094,6 +2095,199 @@ if (!$noLoadingScreen) {
     }
     ?>
 </div>
+<!-- Modals -->
+<!-- InfoModal -->
+<div class="modal fade" id="infoModal" tabindex="-1" aria-labelledby="infoModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-xl">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="infoModalLabel"><?php echo $infoModalTitle; ?></h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <?php echo $infoModalContent; ?>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal"><?php echo i8ln('Close') ?></button>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- AccountModal -->
+<div class="modal fade" id="accountModal" tabindex="-1" aria-labelledby="accountModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="accountModalLabel"><?php echo i8ln('Profile') ?></h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+            <?php
+            if (!empty($_SESSION['user']->id)) { ?>
+                <div style="display:flex;">
+                    <img src="<?php echo $_SESSION['user']->avatar; ?>" style="height:80px;width:80px;border-radius:50%;border:2px solid;position:relative;top:13px;">
+                    <div style="position:relative;left:20px;font-size:13px;top:35px;">
+                        <b><?php echo $_SESSION['user']->user; ?></b>
+                    </div>
+                </div>
+                <div>
+                    <a class="settings" style="position: absolute;left: 113px;top: 80px;color: red;cursor: pointer;border: 1px solid red;border-radius: 8px;" onclick="document.location.href='<?php echo 'logout?action=' . $_SESSION['user']->login_system . '-logout';?>'">
+                        <i class="fas fa-sign-out-alt" aria-hidden="true"></i> <?php echo i8ln('Logout'); ?>
+                    </a>
+                </div>
+                <?php
+                if ($_SESSION['user']->login_system == 'native') {
+                    ?>
+                    <div>
+                        <a style="position:relative;top:18px;left:96px;color:red;cursor:pointer;border:1px solid red;border-radius:8px;" class="settings" onclick="document.location.href='<?php echo 'register?action=password-update&username=' . $_SESSION['user']->user;?>'">
+                            <i class="fas fa-lock" aria-hidden="true"></i> <?php echo i8ln('Change password'); ?>
+                        </a>
+                    </div>
+                    <?php
+                }
+            } else {
+                echo "<div class='d-grid gap-2'>";
+                if ($noNativeLogin === false) {
+                    echo "<button class='btn btn-primary' type='button' onclick=\"location.href='./login?action=login';\" value='Login'><i class='fas fa-user'></i> " . i8ln('Login with Email') . "</button>";
+                }
+                if ($noDiscordLogin === false) {
+                    echo "<button class='btn btn-primary' type='button' onclick=\"location.href='./login?action=discord-login';\" value='Login with discord'><i class='fab fa-discord'></i> " . i8ln('Login with Discord') . "</button>";
+                }
+                if ($noFacebookLogin === false) {
+                    echo "<button class='btn btn-primary' type='button' onclick=\"location.href='./login?action=facebook-login';\" value='Login with facebook'><i class='fab fa-facebook'></i> " . i8ln('Login with Facebook') . "</button>";
+                }
+                if ($noGroupmeLogin === false) {
+                    echo "<button class='btn btn-primary' type='button' onclick=\"location.href='./login?action=groupme-login';\" value='Login with groupme'><i class='fas fa-smile'></i> " . i8ln('Login with Groupme') . "</button>";
+                }
+                if ($noPatreonLogin === false) {
+                    echo "<button class='btn btn-primary' type='button' onclick=\"location.href='./login?action=patreon-login';\" value='Login with patreon'><i class='fab fa-patreon'></i> " . i8ln('Login with Patreon') . "</button>";
+                }
+                echo "</div>";
+            } ?>
+
+            <hr style="border: 1px solid #5a5a5aab;">
+
+            <div class="d-grid gap-2 col-6 mx-auto">
+                    <button class='btn btn-primary' type='button' onclick="confirm('<?php echo i8ln('Are you sure you want to reset settings to default values?') ?>') ? (localStorage.clear(), window.location.reload()) : false">
+                        <i class="fas fa-sync-alt" aria-hidden="true"></i> <?php echo i8ln('Reset Settings') ?>
+                    </button>
+                    <button class='btn btn-primary' type='button' onclick="download('<?= addslashes($title) ?>', JSON.stringify(JSON.stringify(localStorage)))">
+                        <i class="fas fa-upload" aria-hidden="true"></i> <?php echo i8ln('Export Settings') ?>
+                    </button>
+                    <input id="fileInput" type="file" style="display:none;" onchange="openFile(event)"/>
+                    <button class='btn btn-primary' type='button' onclick="document.getElementById('fileInput').click()">
+                        <i class="fas fa-download" aria-hidden="true"></i> <?php echo i8ln('Import Settings') ?>
+                    </button>
+                <?php
+                if (!$noLocaleSelection) {
+                    ?>
+                    <div class="btn-group">
+                        <button type="button" class="btn btn-info dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false"><?php echo i8ln('select language'); ?></button>
+                        <ul class="dropdown-menu">
+                            <li><a class="dropdown-item" href="?lang=en"><span class="flag-icon flag-icon-us"></span><?php echo i8ln('English'); ?></a></li>
+                            <li><a class="dropdown-item" href="?lang=de"><span class="flag-icon flag-icon-de"></span><?php echo i8ln('German'); ?></a></li>
+                            <li><a class="dropdown-item" href="?lang=fr"><span class="flag-icon flag-icon-fr"></span><?php echo i8ln('French'); ?></a></li>
+                            <li><a class="dropdown-item" href="?lang=it"><span class="flag-icon flag-icon-it"></span><?php echo i8ln('Italian'); ?></a></li>
+                            <li><a class="dropdown-item" href="?lang=pl"><span class="flag-icon flag-icon-pl"></span><?php echo i8ln('Polish'); ?></a></li>
+                            <li><a class="dropdown-item" href="?lang=sp"><span class="flag-icon flag-icon-es"></span><?php echo i8ln('Spanish'); ?></a></li>
+                            <li><a class="dropdown-item" href="?lang=sv"><span class="flag-icon flag-icon-se"></span><?php echo i8ln('Swedish'); ?></a></li>
+                            <!-- <li><a class="dropdown-item" href="?lang=zh-cn"><span class="flag-icon flag-icon-cn"></span><?php echo i8ln('Chinese PRC'); ?></a></li>
+                            <li><a class="dropdown-item" href="?lang=zh-hk"><span class="flag-icon flag-icon-hk"></span><?php echo i8ln('Chinese HK'); ?></a></li>
+                            <li><a class="dropdown-item" href="?lang=zh-tw"><span class="flag-icon flag-icon-tw"></span><?php echo i8ln('Chinese Taiwan'); ?></a></li> -->
+                        </ul>
+                    </div>
+                    <?php }?>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- Search Modal -->
+<div class="modal fade" id="searchModal" tabindex="-1" aria-labelledby="searchModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="searchModalLabel"><?php echo i8ln('Search...'); ?></h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <nav>
+                    <div class="nav nav-tabs nav-fill" id="nav-tab" role="tablist">
+                        <?php $firstTab = 1; ?>
+                        <?php if (! $noQuests && ! $noSearchManualQuests) { ?>
+                            <button class="nav-link<?php echo (($firstTab == 1) ? " active" : ""); ?>" id="nav-rewards-tab" data-bs-toggle="tab" data-bs-target="#nav-rewards" type="button" role="tab" aria-controls="nav-rewards" aria-selected="true"><img src="static/images/reward.png" width="30" height="30"/></button>
+                        <?php }
+                        $firstTab++;
+                        if (! $noSearchNests) { ?>
+                            <button class="nav-link<?php echo (($firstTab == 1) ? " active" : ""); ?>" id="nav-nests-tab" data-bs-toggle="tab" data-bs-target="#nav-nests" type="button" role="tab" aria-controls="nav-nests" aria-selected="true"><img src="static/images/nest.png" width="30" height="30"/></button>
+                        <?php }
+                        $firstTab++;
+                        if (! $noSearchGyms) { ?>
+                            <button class="nav-link<?php echo (($firstTab == 1) ? " active" : ""); ?>" id="nav-gyms-tab" data-bs-toggle="tab" data-bs-target="#nav-gyms" type="button" role="tab" aria-controls="nav-gyms" aria-selected="true"><img src="static/forts/ingame/Uncontested.png" width="30" height="30"/></button>
+                        <?php }
+                        $firstTab++;
+                        if (! $noSearchPokestops) { ?>
+                            <button class="nav-link<?php echo (($firstTab == 1) ? " active" : ""); ?>" id="nav-pokestops-tab" data-bs-toggle="tab" data-bs-target="#nav-pokestops" type="button" role="tab" aria-controls="nav-pokestops" aria-selected="true"><img src="static/forts/Pstop.png" width="30" height="30"/></button>
+                        <?php }
+                        $firstTab++;
+                        if (! $noSearchPortals) { ?>
+                            <button class="nav-link<?php echo (($firstTab == 1) ? " active" : ""); ?>" id="nav-portals-tab" data-bs-toggle="tab" data-bs-target="#nav-portals" type="button" role="tab" aria-controls="nav-portals" aria-selected="true"><img src="static/images/portal.png" width="30" height="30"/></button>
+                        <?php } ?>
+                    </div>
+                </nav>
+                <div class="tab-content" id="nav-tabContent">
+                    <?php $firstTabContent = 1; ?>
+                    <?php if (! $noQuests && ! $noSearchManualQuests) { ?>
+                        <div class="tab-pane fade<?php echo (($firstTabContent == 1) ? " show active" : ""); ?>" id="nav-rewards" role="tabpanel" aria-labelledby="nav-rewards-tab">
+                            <input type="search" id="reward-search" oninput="searchAjax($(this))" name="reward-search"
+                                   placeholder="<?php echo i8ln('Enter Reward Name'); ?>"
+                                   data-type="reward" class="search-input"/>
+                            <ul id="reward-search-results" class="search-results reward-results"></ul>
+                        </div>
+                    <?php }
+                    $firstTabContent++;
+                    if (! $noSearchNests) { ?>
+                        <div class="tab-pane fade<?php echo (($firstTabContent == 1) ? " show active" : ""); ?>" id="nav-nests" role="tabpanel" aria-labelledby="nav-nests-tab">
+                            <input type="search" id="nest-search" oninput="searchAjax($(this))" name="nest-search"
+                                   placeholder="<?php echo i8ln('Enter nest Pokémon or Type'); ?>"
+                                   data-type="nests" class="search-input"/>
+                            <ul id="nest-search-results" class="search-results nest-results"></ul>
+                        </div>
+                    <?php }
+                    $firstTabContent++;
+                    if (! $noSearchGyms) { ?>
+                        <div class="tab-pane fade<?php echo (($firstTabContent == 1) ? " show active" : ""); ?>" id="nav-gyms" role="tabpanel" aria-labelledby="nav-gyms-tab">
+                            <input type="search" id="gym-search" oninput="searchAjax($(this))" name="gym-search"
+                                   placeholder="<?php echo i8ln('Enter Gym Name'); ?>"
+                                   data-type="forts" class="search-input"/>
+                            <ul id="gym-search-results" class="search-results gym-results"></ul>
+                        </div>
+                    <?php }
+                    $firstTabContent++;
+                    if (! $noSearchPokestops) { ?>
+                        <div class="tab-pane fade<?php echo (($firstTabContent == 1) ? " show active" : ""); ?>" id="nav-pokestops" role="tabpanel" aria-labelledby="nav-pokestops-tab">
+                            <input type="search" id="pokestop-search" oninput="searchAjax($(this))" name="pokestop-search"
+                                   placeholder="<?php echo i8ln('Enter Pokéstop Name'); ?>" data-type="pokestops"
+                                   class="search-input"/>
+                            <ul id="pokestop-search-results" class="search-results pokestop-results"></ul>
+                        </div>
+                    <?php }
+                    $firstTabContent++;
+                    if (! $noSearchPortals) { ?>
+                        <div class="tab-pane fade<?php echo (($firstTabContent == 1) ? " show active" : ""); ?>" id="nav-portals" role="tabpanel" aria-labelledby="nav-portals-tab">
+                            <input type="search" id="portals-search" oninput="searchAjax($(this))" name="portals-search"
+                                   placeholder="<?php echo i8ln('Enter Portal Name'); ?>" data-type="portals"
+                                   class="search-input"/>
+                            <ul id="portals-search-results" class="search-results portals-results"></ul>
+                        </div>
+                    <?php } ?>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- End of Modals -->
+
 <!-- Scripts -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/babel-polyfill/6.9.1/polyfill.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
@@ -2116,6 +2310,7 @@ if (!$noLoadingScreen) {
 <script src='https://maps.googleapis.com/maps/api/js?key=<?= $gmapsKey ?> ' async defer></script>
 <script src="static/js/vendor/Leaflet.GoogleMutant.js"></script>
 <script src="static/js/vendor/turf.min.js"></script>
+<script src="node_modules/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
 <script>
     var centerLat = <?= $startingLat; ?>;
     var centerLng = <?= $startingLng; ?>;
@@ -2287,196 +2482,5 @@ $( document ).ready(function() {
     initMap()
 })
 </script>
-    <!-- Modals -->
-    <!-- InfoModal -->
-    <div class="modal fade" id="infoModal" tabindex="-1" aria-labelledby="infoModalLabel" aria-hidden="true">
-        <div class="modal-dialog modal-xl">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title" id="infoModalLabel"><?php echo $infoModalTitle; ?></h5>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                </div>
-                <div class="modal-body">
-                    <?php echo $infoModalContent; ?>
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal"><?php echo i8ln('Close') ?></button>
-                </div>
-            </div>
-        </div>
-    </div>
-    <!-- AccountModal -->
-    <div class="modal fade" id="accountModal" tabindex="-1" aria-labelledby="accountModalLabel" aria-hidden="true">
-        <div class="modal-dialog">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title" id="accountModalLabel"><?php echo i8ln('Profile') ?></h5>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                </div>
-                <div class="modal-body">
-                <?php
-                if (!empty($_SESSION['user']->id)) { ?>
-                    <div style="display:flex;">
-                        <img src="<?php echo $_SESSION['user']->avatar; ?>" style="height:80px;width:80px;border-radius:50%;border:2px solid;position:relative;top:13px;">
-                        <div style="position:relative;left:20px;font-size:13px;top:35px;">
-                            <b><?php echo $_SESSION['user']->user; ?></b>
-                        </div>
-                    </div>
-                    <div>
-                        <a class="settings" style="position: absolute;left: 113px;top: 80px;color: red;cursor: pointer;border: 1px solid red;border-radius: 8px;" onclick="document.location.href='<?php echo 'logout?action=' . $_SESSION['user']->login_system . '-logout';?>'">
-                            <i class="fas fa-sign-out-alt" aria-hidden="true"></i> <?php echo i8ln('Logout'); ?>
-                        </a>
-                    </div>
-                    <?php
-                    if ($_SESSION['user']->login_system == 'native') {
-                        ?>
-                        <div>
-                            <a style="position:relative;top:18px;left:96px;color:red;cursor:pointer;border:1px solid red;border-radius:8px;" class="settings" onclick="document.location.href='<?php echo 'register?action=password-update&username=' . $_SESSION['user']->user;?>'">
-                                <i class="fas fa-lock" aria-hidden="true"></i> <?php echo i8ln('Change password'); ?>
-                            </a>
-                        </div>
-                        <?php
-                    }
-                } else {
-                    echo "<div class='d-grid gap-2'>";
-                    if ($noNativeLogin === false) {
-                        echo "<button class='btn btn-primary' type='button' onclick=\"location.href='./login?action=login';\" value='Login'><i class='fas fa-user'></i> " . i8ln('Login with Email') . "</button>";
-                    }
-                    if ($noDiscordLogin === false) {
-                        echo "<button class='btn btn-primary' type='button' onclick=\"location.href='./login?action=discord-login';\" value='Login with discord'><i class='fab fa-discord'></i> " . i8ln('Login with Discord') . "</button>";
-                    }
-                    if ($noFacebookLogin === false) {
-                        echo "<button class='btn btn-primary' type='button' onclick=\"location.href='./login?action=facebook-login';\" value='Login with facebook'><i class='fab fa-facebook'></i> " . i8ln('Login with Facebook') . "</button>";
-                    }
-                    if ($noGroupmeLogin === false) {
-                        echo "<button class='btn btn-primary' type='button' onclick=\"location.href='./login?action=groupme-login';\" value='Login with groupme'><i class='fas fa-smile'></i> " . i8ln('Login with Groupme') . "</button>";
-                    }
-                    if ($noPatreonLogin === false) {
-                        echo "<button class='btn btn-primary' type='button' onclick=\"location.href='./login?action=patreon-login';\" value='Login with patreon'><i class='fab fa-patreon'></i> " . i8ln('Login with Patreon') . "</button>";
-                    }
-                    echo "</div>";
-                } ?>
-
-                <hr style="border: 1px solid #5a5a5aab;">
-
-                <div class="d-grid gap-2 col-6 mx-auto">
-                        <button class='btn btn-primary' type='button' onclick="confirm('<?php echo i8ln('Are you sure you want to reset settings to default values?') ?>') ? (localStorage.clear(), window.location.reload()) : false">
-                            <i class="fas fa-sync-alt" aria-hidden="true"></i> <?php echo i8ln('Reset Settings') ?>
-                        </button>
-                        <button class='btn btn-primary' type='button' onclick="download('<?= addslashes($title) ?>', JSON.stringify(JSON.stringify(localStorage)))">
-                            <i class="fas fa-upload" aria-hidden="true"></i> <?php echo i8ln('Export Settings') ?>
-                        </button>
-                        <input id="fileInput" type="file" style="display:none;" onchange="openFile(event)"/>
-                        <button class='btn btn-primary' type='button' onclick="document.getElementById('fileInput').click()">
-                            <i class="fas fa-download" aria-hidden="true"></i> <?php echo i8ln('Import Settings') ?>
-                        </button>
-                    <?php
-                    if (!$noLocaleSelection) {
-                        ?>
-                        <div class="btn-group">
-                            <button type="button" class="btn btn-info dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false"><?php echo i8ln('select language'); ?></button>
-                            <ul class="dropdown-menu">
-                                <li><a class="dropdown-item" href="?lang=en"><?php echo i8ln('English'); ?></a></li>
-                                <li><a class="dropdown-item" href="?lang=de"><?php echo i8ln('German'); ?></a></li>
-                                <li><a class="dropdown-item" href="?lang=fr"><?php echo i8ln('French'); ?></a></li>
-                                <li><a class="dropdown-item" href="?lang=it"><?php echo i8ln('Italian'); ?></a></li>
-                                <li><a class="dropdown-item" href="?lang=pl"><?php echo i8ln('Polish'); ?></a></li>
-                                <li><a class="dropdown-item" href="?lang=sp"><?php echo i8ln('Spanish'); ?></a></li>
-                                <li><a class="dropdown-item" href="?lang=sv"><?php echo i8ln('Swedish'); ?></a></li>
-                            </ul>
-                        </div>
-                        <br><br>
-                        <?php
-                    }?>
-                </div>
-                </div>
-            </div>
-        </div>
-    </div>
-    <!-- Search Modal -->
-    <div class="modal fade" id="searchModal" tabindex="-1" aria-labelledby="searchModalLabel" aria-hidden="true">
-        <div class="modal-dialog modal-lg">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title" id="searchModalLabel"><?php echo i8ln('Search...'); ?></h5>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                </div>
-                <div class="modal-body">
-                    <nav>
-                        <div class="nav nav-tabs nav-fill" id="nav-tab" role="tablist">
-                            <?php $firstTab = 1; ?>
-                            <?php if (! $noQuests && ! $noSearchManualQuests) { ?>
-                                <button class="nav-link<?php echo (($firstTab == 1) ? " active" : ""); ?>" id="nav-rewards-tab" data-bs-toggle="tab" data-bs-target="#nav-rewards" type="button" role="tab" aria-controls="nav-rewards" aria-selected="true"><img src="static/images/reward.png" width="30" height="30"/></button>
-                            <?php }
-                            $firstTab++;
-                            if (! $noSearchNests) { ?>
-                                <button class="nav-link<?php echo (($firstTab == 1) ? " active" : ""); ?>" id="nav-nests-tab" data-bs-toggle="tab" data-bs-target="#nav-nests" type="button" role="tab" aria-controls="nav-nests" aria-selected="true"><img src="static/images/nest.png" width="30" height="30"/></button>
-                            <?php }
-                            $firstTab++;
-                            if (! $noSearchGyms) { ?>
-                                <button class="nav-link<?php echo (($firstTab == 1) ? " active" : ""); ?>" id="nav-gyms-tab" data-bs-toggle="tab" data-bs-target="#nav-gyms" type="button" role="tab" aria-controls="nav-gyms" aria-selected="true"><img src="static/forts/ingame/Uncontested.png" width="30" height="30"/></button>
-                            <?php }
-                            $firstTab++;
-                            if (! $noSearchPokestops) { ?>
-                                <button class="nav-link<?php echo (($firstTab == 1) ? " active" : ""); ?>" id="nav-pokestops-tab" data-bs-toggle="tab" data-bs-target="#nav-pokestops" type="button" role="tab" aria-controls="nav-pokestops" aria-selected="true"><img src="static/forts/Pstop.png" width="30" height="30"/></button>
-                            <?php }
-                            $firstTab++;
-                            if (! $noSearchPortals) { ?>
-                                <button class="nav-link<?php echo (($firstTab == 1) ? " active" : ""); ?>" id="nav-portals-tab" data-bs-toggle="tab" data-bs-target="#nav-portals" type="button" role="tab" aria-controls="nav-portals" aria-selected="true"><img src="static/images/portal.png" width="30" height="30"/></button>
-                            <?php } ?>
-                        </div>
-                    </nav>
-                    <div class="tab-content" id="nav-tabContent">
-                        <?php $firstTabContent = 1; ?>
-                        <?php if (! $noQuests && ! $noSearchManualQuests) { ?>
-                            <div class="tab-pane fade<?php echo (($firstTabContent == 1) ? " show active" : ""); ?>" id="nav-rewards" role="tabpanel" aria-labelledby="nav-rewards-tab">
-                                <input type="search" id="reward-search" oninput="searchAjax($(this))" name="reward-search"
-                                       placeholder="<?php echo i8ln('Enter Reward Name'); ?>"
-                                       data-type="reward" class="search-input"/>
-                                <ul id="reward-search-results" class="search-results reward-results"></ul>
-                            </div>
-                        <?php }
-                        $firstTabContent++;
-                        if (! $noSearchNests) { ?>
-                            <div class="tab-pane fade<?php echo (($firstTabContent == 1) ? " show active" : ""); ?>" id="nav-nests" role="tabpanel" aria-labelledby="nav-nests-tab">
-                                <input type="search" id="nest-search" oninput="searchAjax($(this))" name="nest-search"
-                                       placeholder="<?php echo i8ln('Enter nest Pokémon or Type'); ?>"
-                                       data-type="nests" class="search-input"/>
-                                <ul id="nest-search-results" class="search-results nest-results"></ul>
-                            </div>
-                        <?php }
-                        $firstTabContent++;
-                        if (! $noSearchGyms) { ?>
-                            <div class="tab-pane fade<?php echo (($firstTabContent == 1) ? " show active" : ""); ?>" id="nav-gyms" role="tabpanel" aria-labelledby="nav-gyms-tab">
-                                <input type="search" id="gym-search" oninput="searchAjax($(this))" name="gym-search"
-                                       placeholder="<?php echo i8ln('Enter Gym Name'); ?>"
-                                       data-type="forts" class="search-input"/>
-                                <ul id="gym-search-results" class="search-results gym-results"></ul>
-                            </div>
-                        <?php }
-                        $firstTabContent++;
-                        if (! $noSearchPokestops) { ?>
-                            <div class="tab-pane fade<?php echo (($firstTabContent == 1) ? " show active" : ""); ?>" id="nav-pokestops" role="tabpanel" aria-labelledby="nav-pokestops-tab">
-                                <input type="search" id="pokestop-search" oninput="searchAjax($(this))" name="pokestop-search"
-                                       placeholder="<?php echo i8ln('Enter Pokéstop Name'); ?>" data-type="pokestops"
-                                       class="search-input"/>
-                                <ul id="pokestop-search-results" class="search-results pokestop-results"></ul>
-                            </div>
-                        <?php }
-                        $firstTabContent++;
-                        if (! $noSearchPortals) { ?>
-                            <div class="tab-pane fade<?php echo (($firstTabContent == 1) ? " show active" : ""); ?>" id="nav-portals" role="tabpanel" aria-labelledby="nav-portals-tab">
-                                <input type="search" id="portals-search" oninput="searchAjax($(this))" name="portals-search"
-                                       placeholder="<?php echo i8ln('Enter Portal Name'); ?>" data-type="portals"
-                                       class="search-input"/>
-                                <ul id="portals-search-results" class="search-results portals-results"></ul>
-                            </div>
-                        <?php } ?>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-    <!-- End of Modals -->
 </body>
 </html>
