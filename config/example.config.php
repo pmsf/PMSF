@@ -60,6 +60,7 @@ $title = "POGOmap";                                                 // Title to 
 $headerTitle = "POGOmap";                                           // Title to display in header
 $locale = "en";                                                     // Display language
 $noLocaleSelection = false;
+$enLocaleFlag = "us";                                               // Change country flag for english in the language changer
 $raidmapLogo = '';                                                  // Upload logo to custom folder, leave '' for empty ( $raidmapLogo = 'custom/logo.png'; )
 
 /* Info Modal */

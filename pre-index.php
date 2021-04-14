@@ -2182,18 +2182,18 @@ if (!$noLoadingScreen) {
                 if (!$noLocaleSelection) {
                     ?>
                     <div class="btn-group">
-                        <button type="button" class="btn btn-info dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false"><?php echo i8ln('select language'); ?></button>
+                        <button type="button" class="btn btn-info dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false"><i class="fas fa-language" aria-hidden="true"></i> <?php echo i8ln('Select Language'); ?></button>
                         <ul class="dropdown-menu">
-                            <li><a class="dropdown-item" href="?lang=en"><span class="flag-icon flag-icon-us"></span><?php echo i8ln('English'); ?></a></li>
-                            <li><a class="dropdown-item" href="?lang=de"><span class="flag-icon flag-icon-de"></span><?php echo i8ln('German'); ?></a></li>
-                            <li><a class="dropdown-item" href="?lang=fr"><span class="flag-icon flag-icon-fr"></span><?php echo i8ln('French'); ?></a></li>
-                            <li><a class="dropdown-item" href="?lang=it"><span class="flag-icon flag-icon-it"></span><?php echo i8ln('Italian'); ?></a></li>
-                            <li><a class="dropdown-item" href="?lang=pl"><span class="flag-icon flag-icon-pl"></span><?php echo i8ln('Polish'); ?></a></li>
-                            <li><a class="dropdown-item" href="?lang=sp"><span class="flag-icon flag-icon-es"></span><?php echo i8ln('Spanish'); ?></a></li>
-                            <li><a class="dropdown-item" href="?lang=sv"><span class="flag-icon flag-icon-se"></span><?php echo i8ln('Swedish'); ?></a></li>
-                            <!-- <li><a class="dropdown-item" href="?lang=zh-cn"><span class="flag-icon flag-icon-cn"></span><?php echo i8ln('Chinese PRC'); ?></a></li>
-                            <li><a class="dropdown-item" href="?lang=zh-hk"><span class="flag-icon flag-icon-hk"></span><?php echo i8ln('Chinese HK'); ?></a></li>
-                            <li><a class="dropdown-item" href="?lang=zh-tw"><span class="flag-icon flag-icon-tw"></span><?php echo i8ln('Chinese Taiwan'); ?></a></li> -->
+                            <li><a class="dropdown-item" href="?lang=en"><span class="flag-icon flag-icon-<?php echo $enLocaleFlag; ?>"></span> <?php echo i8ln('English'); ?></a></li>
+                            <li><a class="dropdown-item" href="?lang=de"><span class="flag-icon flag-icon-de"></span> <?php echo i8ln('German'); ?></a></li>
+                            <li><a class="dropdown-item" href="?lang=fr"><span class="flag-icon flag-icon-fr"></span> <?php echo i8ln('French'); ?></a></li>
+                            <li><a class="dropdown-item" href="?lang=it"><span class="flag-icon flag-icon-it"></span> <?php echo i8ln('Italian'); ?></a></li>
+                            <li><a class="dropdown-item" href="?lang=pl"><span class="flag-icon flag-icon-pl"></span> <?php echo i8ln('Polish'); ?></a></li>
+                            <li><a class="dropdown-item" href="?lang=sp"><span class="flag-icon flag-icon-es"></span> <?php echo i8ln('Spanish'); ?></a></li>
+                            <li><a class="dropdown-item" href="?lang=sv"><span class="flag-icon flag-icon-se"></span> <?php echo i8ln('Swedish'); ?></a></li>
+                            <!-- <li><a class="dropdown-item" href="?lang=zh-cn"><span class="flag-icon flag-icon-cn"></span> <?php echo i8ln('Chinese PRC'); ?></a></li>
+                            <li><a class="dropdown-item" href="?lang=zh-hk"><span class="flag-icon flag-icon-hk"></span> <?php echo i8ln('Chinese HK'); ?></a></li>
+                            <li><a class="dropdown-item" href="?lang=zh-tw"><span class="flag-icon flag-icon-tw"></span> <?php echo i8ln('Chinese Taiwan'); ?></a></li> -->
                         </ul>
                     </div>
                     <?php }?>

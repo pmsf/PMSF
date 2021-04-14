@@ -86,6 +86,13 @@ $title = "PMSF Alt";                                                // Title to 
 $headerTitle = "POGOmap";                                           // Title to display in header
 $locale = "en";                                                     // Display language
 $noLocaleSelection = false;
+$enLocaleFlag = "us";                                               // Change country flag for english in the language changer
+
+/* Info Modal */
+$noInfoModal = true;                                                // Hide infomodal and button
+$infoModalTitle = 'Info';                                           // Infomodal title
+$infoModalContent = 'Your text info here';                          // HTML markup allowed (external html file load $infoModalContent = file_get_contents('custom/modal.html');
+
 /* Loading screen */
 
 $noLoadingScreen = false;                                           // show loading animation while main page loads.
