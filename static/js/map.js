@@ -482,28 +482,19 @@ function initMap() { // eslint-disable-line no-unused-vars
 
     map.on('click', function (e) {
         if ($('.submit-on-off-button').hasClass('on')) {
+            var submitModal = new bootstrap.Modal(document.getElementById("submitModal"),{})
             updateS2Overlay()
             $('.submitLatitude').val(e.latlng.lat)
             $('.submitLongitude').val(e.latlng.lng)
-            $('.ui-dialog').remove()
-            $('.submit-modal').clone().dialog({
-                modal: true,
-                maxHeight: 700,
-                buttons: {},
-                title: i8ln('Submit Data to Map'),
-                classes: {
-                    'ui-dialog': 'ui-dialog submit-widget-popup'
-                },
-                open: function (event, ui) {
-                    $('.submit-widget-popup #submit-tabs').tabs()
-                    $('.submit-widget-popup .pokemon-list-cont').each(function (index) {
-                        $(this).attr('id', 'pokemon-list-cont-6' + index)
-                        var options = {
-                            valueNames: ['name', 'types', 'id']
-                        }
-                        var monList = new List('pokemon-list-cont-6' + index, options) // eslint-disable-line no-unused-vars
-                    })
-                }
+            submitModal.show()
+            $('#submitModal').on('shown.bs.modal', function (event) {
+                $('#submitModal .pokemon-list-cont').each(function (index) {
+                    $(this).attr('id', 'pokemon-list-cont-6' + index)
+                    var options = {
+                        valueNames: ['name', 'types', 'id']
+                    }
+                    var monList = new List('pokemon-list-cont-6' + index, options) // eslint-disable-line no-unused-vars
+                })
             })
         }
     })
@@ -3791,8 +3782,8 @@ function manualGymData(event) { // eslint-disable-line no-unused-vars
 function manualPokemonData(event) { // eslint-disable-line no-unused-vars
     var form = $(event.target).parent().parent().parent()
     var pokemonId = form.find('.pokemonID').val()
-    var lat = $('.submit-modal.ui-dialog-content .submitLatitude').val()
-    var lon = $('.submit-modal.ui-dialog-content .submitLongitude').val()
+    var lat = $('#submitModal .submitLatitude').val()
+    var lon = $('#submitModal .submitLongitude').val()
     var scanArea
     var latlng = turf.point([lon, lat])
     $.each(scanAreas, function (index, poly) {
@@ -3824,7 +3815,7 @@ function manualPokemonData(event) { // eslint-disable-line no-unused-vars
                 complete: function complete() {
                     lastpokemon = false
                     updateMap()
-                    $('.ui-dialog-content').dialog('close')
+                    $('.modal').toggle()
                 }
             })
         }
