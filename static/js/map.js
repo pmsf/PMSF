@@ -482,7 +482,7 @@ function initMap() { // eslint-disable-line no-unused-vars
 
     map.on('click', function (e) {
         if ($('.submit-on-off-button').hasClass('on')) {
-            var submitModal = new bootstrap.Modal(document.getElementById("submitModal"),{})
+            var submitModal = new bootstrap.Modal(document.getElementById('submitModal'), {})
             updateS2Overlay()
             $('.submitLatitude').val(e.latlng.lat)
             $('.submitLongitude').val(e.latlng.lng)
@@ -2901,20 +2901,16 @@ function communityLabel(item) {
         str +=
         '<center><div>' + item.size + ' ' + i8ln('Members') + '</div></center>'
     }
+    str += '<div class="d-grid">'
     if (item.has_invite_url === 1 && (item.invite_url !== '#' || item.invite_url !== undefined)) {
         str +=
-        '<center><div class="button-container">' +
-            '<a class="button" href="' + item.invite_url + '"><i class="fas fa-comments"></i> ' + i8ln('Join Now') +
-            '</a>' +
-        '</div></center>'
+        '<button class="btn btn-primary" onclick="window.location.href=\'' + item.invite_url + '\'" type="button"><i class="fas fa-comments"></i> ' + i8ln('Join Now') + '</button>'
     }
     if (!noEditCommunity) {
         str +=
-        '<center><div class="button-container">' +
-        '<a class="button" onclick="openEditCommunityModal(event);" data-id="' + item.community_id + '" data-title="' + item.title + '" data-description="' + item.description + '" data-invite="' + item.invite_url + '"><i class="fas fa-edit"></i> ' + i8ln('Edit Community') + '</center>' +
-            '</a>' +
-        '</div></center>'
+        '<button class="btn btn-primary" role="button" onclick="openEditCommunityModal(event);" data-id="' + item.community_id + '" data-title="' + item.title + '" data-description="' + item.description + '" data-invite="' + item.invite_url + '"><i class="fas fa-edit"></i> ' + i8ln('Edit Community') + '</button>'
     }
+    str += '</div>'
     if (item.source === 2) {
         str += '<center><div style="margin-bottom:5px; margin-top:5px;">' + i8ln('Join on') + '<a href="https://thesilphroad.com/map#18/' + item.lat + '/' + item.lon + '">thesilphroad.com</a>' + '</div></center>'
     }
@@ -4927,24 +4923,16 @@ function openMarkPoiModal(event) { // eslint-disable-line no-unused-vars
 }
 
 function openEditCommunityModal(event) { // eslint-disable-line no-unused-vars
-    $('.ui-dialog').remove()
+    $('.modal').modal('hide')
     var val = $(event.target).data('id')
     var title = $(event.target).data('title')
     var description = $(event.target).data('description')
     var invite = $(event.target).data('invite')
-    $('.editcommunityid').val(val)
+    $('#editcommunityid').val(val)
     $('#community-name').val(title)
     $('#community-description').val(description)
     $('#community-invite').val(invite)
-    $('.editcommunity-modal').clone().dialog({
-        modal: true,
-        maxHeight: 600,
-        buttons: {},
-        title: i8ln('Edit Community'),
-        classes: {
-            'ui-dialog': 'ui-dialog raid-widget-popup'
-        }
-    })
+    $('#editCommunityModal').modal('show')
 }
 
 function openEditPoiModal(event) { // eslint-disable-line no-unused-vars

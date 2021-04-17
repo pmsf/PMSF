@@ -221,6 +221,7 @@
     "nestAvgDefault": true,
     "noHideSingleMarker": true,
     "noNestPolygon": true,
-    "nestBotName": true
+    "nestBotName": true,
+    "bootstrap": true
   }
 }

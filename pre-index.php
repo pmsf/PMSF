@@ -1698,18 +1698,6 @@ if (!$noLoadingScreen) {
             </div>
         </div>
     <?php } ?>
-    <?php if (! $noEditCommunity) { ?>
-        <div class="editcommunity-modal" style="display: none;">
-            <input type="text" id="community-name" name="community-name" placeholder="<?php echo i8ln('Enter New community Name'); ?>" data-type="community-name" class="search-input">
-            <input type="text" id="community-description" name="community-description" placeholder="<?php echo i8ln('Enter New community Description'); ?>" data-type="community-description" class="search-input">
-            <input type="text" id="community-invite" name="community-invite" placeholder="<?php echo i8ln('Enter New community Invite link'); ?>" data-type="community-invite" class="search-input">
-            <div class="button-container">
-                <button type="button" onclick="editCommunityData(event);" class="editcommunityid">
-                    <i class="fas fa-edit"></i> <?php echo i8ln('Save Changes'); ?>
-                </button>
-            </div>
-        </div>
-    <?php } ?>
     <?php if (! $noEditPoi) { ?>
         <div class="editpoi-modal" style="display: none;">
             <input type="text" id="poi-name" name="poi-name" placeholder="<?php echo i8ln('Enter New POI Name'); ?>" data-type="poi-name" class="search-input">
@@ -2443,6 +2431,28 @@ if (!$noLoadingScreen) {
         </div>
     </div>
 </div>
+<!-- Edit Community Modal -->
+<div class="modal fade" id="editCommunityModal" tabindex="-1" aria-labelledby="editCommunityModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="editCommunityModalLabel"><?php echo i8ln('Edit Community') ?></h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <input type="text" id="community-name" name="community-name" placeholder="<?php echo i8ln('Enter New community Name'); ?>" data-type="community-name" class="search-input">
+                <input type="text" id="community-description" name="community-description" placeholder="<?php echo i8ln('Enter New community Description'); ?>" data-type="community-description" class="search-input">
+                <input type="text" id="community-invite" name="community-invite" placeholder="<?php echo i8ln('Enter New community Invite link'); ?>" data-type="community-invite" class="search-input">
+            </div>
+            <div class="modal-footer">
+                <button type="button" onclick="editCommunityData(event);" class="btn btn-primary" id="editcommunityid">
+                    <i class="fas fa-edit"></i> <?php echo i8ln('Save Changes'); ?>
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+
 <!-- End of Modals -->
 
 <!-- Scripts -->
