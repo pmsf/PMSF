@@ -83,7 +83,9 @@ class Manual extends Submit
                 'lon'            => $lon,
                 'type'           => 99,
                 'updated'        => time(),
-                'nest_submitted_by'    => $loggedUser
+                'nest_submitted_by'    => $loggedUser,
+                'pokemon_count'  => 1,
+                'pokemon_form'   => 0
             ];
             $manualdb->insert("nests", $cols);
         }
@@ -264,11 +266,11 @@ class Manual extends Submit
                 'poi_id'                    => $poiId,
                 'name'                      => $poiName,
                 'description'               => $poiDescription,
-        'notes'                     => $poiNotes,
-        'poiimageurl'               => $poiImageUrl,
-        'poiimagedeletehash'         => $poiImageDeleteHash,
-        'poisurroundingurl'         => $poiSurroundingUrl,
-        'poisurroundingdeletehash'   => $poiSurroundingDeleteHash,
+                'notes'                     => $poiNotes,
+                'poiimageurl'               => $poiImageUrl,
+                'poiimagedeletehash'         => $poiImageDeleteHash,
+                'poisurroundingurl'         => $poiSurroundingUrl,
+                'poisurroundingdeletehash'   => $poiSurroundingDeleteHash,
                 'lat'                       => $lat,
                 'lon'                       => $lon,
                 'status'                    => 1,
@@ -276,10 +278,11 @@ class Manual extends Submit
                 'submitted_by'              => $loggedUser
             ];
             $manualdb->insert("poi", $cols);
+
             if ($noDiscordSubmitLogChannel === false) {
                 $data = array(
-            "username" => $loggedUser,
-            "embeds" => array(array(
+                "username" => $loggedUser,
+                "embeds" => array(array(
                 "color" => 65280,
                 "image" => array(
                     "url" => $poiImageUrl
@@ -315,7 +318,7 @@ class Manual extends Submit
             }
         }
     }
-  
+
     public function modify_poi($poiId, $poiName, $poiDescription, $poiNotes, $poiImage, $poiSurrounding, $loggedUser)
     {
         global $manualdb, $noPoi, $noEditPoi, $noDiscordSubmitLogChannel, $discordPOISubmitLogChannelUrl, $submitMapUrl, $imgurCID;
@@ -350,10 +353,10 @@ class Manual extends Submit
             $poiSurroundingUrl = $info['data']['link'];
             $poiSurroundingDeleteHash = $info['data']['deletehash'];
         };
-        $poiImageUrl			= ! empty($poiImageUrl) ? $poiImageUrl : $Cpoi['poiimageurl'];
-        $poiImageDeleteHash		= ! empty($poiImageDeleteHash) ? $poiImageDeleteHash : $Cpoi['poiimagedeletehash'];
-        $poiSurroundingUrl		= ! empty($poiSurroundingUrl) ? $poiSurroundingUrl : $Cpoi['poisurroundingurl'];
-        $poiSurroundingDeleteHash	= ! empty($poiSurroundingDeleteHash) ? $poiSurroundingDeleteHash : $Cpoi['poisurroundingdeletehash'];
+        $poiImageUrl                = ! empty($poiImageUrl) ? $poiImageUrl : $Cpoi['poiimageurl'];
+        $poiImageDeleteHash         = ! empty($poiImageDeleteHash) ? $poiImageDeleteHash : $Cpoi['poiimagedeletehash'];
+        $poiSurroundingUrl          = ! empty($poiSurroundingUrl) ? $poiSurroundingUrl : $Cpoi['poisurroundingurl'];
+        $poiSurroundingDeleteHash   = ! empty($poiSurroundingDeleteHash) ? $poiSurroundingDeleteHash : $Cpoi['poisurroundingdeletehash'];
         if (! empty($poiId) && ! empty($poiName) && ! empty($poiDescription)) {
             $cols       = [
                 'name'                     => $poiName,
@@ -373,8 +376,8 @@ class Manual extends Submit
             ;
             if ($noDiscordSubmitLogChannel === false) {
                 $data = array(
-            "username" => $loggedUser,
-            "embeds" => array(array(
+                "username" => $loggedUser,
+                "embeds" => array(array(
                 "color" => 15105570,
                 "image" => array(
                     "url" => $poiImageUrl
@@ -434,8 +437,8 @@ class Manual extends Submit
         }
         if ($noDiscordSubmitLogChannel === false) {
             $data = array(
-        "username" => $loggedUser,
-        "embeds" => array(array(
+            "username" => $loggedUser,
+            "embeds" => array(array(
             "color" => 15158332,
             "fields" => array(
                 array(

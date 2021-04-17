@@ -2768,7 +2768,7 @@ function setupNestMarker(item) {
         className: 'marker-nests',
         html: getNestMarkerIcon
     })
-    if (noNestPolygon === false && Store.get('showNestPolygon') === true) {
+    if (noNestPolygon === false && Store.get('showNestPolygon') === true && item['polygon_path'] !== null) {
         var polygonColor = item['pokemon_types'][0]['color'] ? item['pokemon_types'][0]['color'] : 'grey'
         var polygon = L.polygon(JSON.parse(item['polygon_path']), {
             color: polygonColor
@@ -3689,8 +3689,8 @@ function centerMapOnCoords(event) { // eslint-disable-line no-unused-vars
 function manualPokestopData(event) { // eslint-disable-line no-unused-vars
     var form = $(event.target).parent().parent()
     var pokestopName = form.find('[name="pokestop-name"]').val()
-    var lat = $('.submit-modal.ui-dialog-content .submitLatitude').val()
-    var lon = $('.submit-modal.ui-dialog-content .submitLongitude').val()
+    var lat = $('#submitModal .submitLatitude').val()
+    var lon = $('#submitModal .submitLongitude').val()
     var scanArea
     var latlng = turf.point([lon, lat])
     $.each(scanAreas, function (index, poly) {
@@ -3722,13 +3722,13 @@ function manualPokestopData(event) { // eslint-disable-line no-unused-vars
                 complete: function complete() {
                     lastpokestops = false
                     updateMap()
-                    $('.ui-dialog-content').dialog('close')
+                    $('.modal').modal('hide')
                 }
             })
         }
     } else if (scanArea) {
         if (confirm(i8ln('Adding a Pokéstop inside the scan area is not allowed'))) {
-            $('.ui-dialog-content').dialog('close')
+            $('.modal').modal('hide')
         }
     }
 }
@@ -3736,8 +3736,8 @@ function manualPokestopData(event) { // eslint-disable-line no-unused-vars
 function manualGymData(event) { // eslint-disable-line no-unused-vars
     var form = $(event.target).parent().parent()
     var gymName = form.find('[name="gym-name"]').val()
-    var lat = $('.submit-modal.ui-dialog-content .submitLatitude').val()
-    var lon = $('.submit-modal.ui-dialog-content .submitLongitude').val()
+    var lat = $('#submitModal .submitLatitude').val()
+    var lon = $('#submitModal .submitLongitude').val()
     var scanArea
     var latlng = turf.point([lon, lat])
     $.each(scanAreas, function (index, poly) {
@@ -3769,13 +3769,13 @@ function manualGymData(event) { // eslint-disable-line no-unused-vars
                 complete: function complete() {
                     lastgyms = false
                     updateMap()
-                    $('.ui-dialog-content').dialog('close')
+                    $('.modal').modal('hide')
                 }
             })
         }
     } else if (scanArea) {
         if (confirm(i8ln('Adding a Gym inside the scan area is not allowed'))) {
-            $('.ui-dialog-content').dialog('close')
+            $('.modal').modal('hide')
         }
     }
 }
@@ -3815,13 +3815,13 @@ function manualPokemonData(event) { // eslint-disable-line no-unused-vars
                 complete: function complete() {
                     lastpokemon = false
                     updateMap()
-                    $('.modal').toggle()
+                    $('.modal').modal('hide')
                 }
             })
         }
     } else if (scanArea) {
         if (confirm(i8ln('Adding a wild spawn inside the scan area is not allowed'))) {
-            $('.ui-dialog-content').dialog('close')
+            $('.modal').modal('hide')
         }
     }
 }
@@ -4134,8 +4134,8 @@ function deleteNest(event) { // eslint-disable-line no-unused-vars
 function submitNewNest(event) { // eslint-disable-line no-unused-vars
     var cont = $(event.target).parent().parent()
     var pokemonId = cont.find('.pokemonID').val()
-    var lat = $('.submit-modal.ui-dialog-content .submitLatitude').val()
-    var lon = $('.submit-modal.ui-dialog-content .submitLongitude').val()
+    var lat = $('#submitModal .submitLatitude').val()
+    var lon = $('#submitModal .submitLongitude').val()
     if (lat && lat !== '' && lon && lon !== '') {
         if (confirm(i8ln('I confirm this is an new nest'))) {
             return $.ajax({
@@ -4160,7 +4160,7 @@ function submitNewNest(event) { // eslint-disable-line no-unused-vars
                     updateMap()
                     jQuery('label[for="nests-switch"]').click()
                     jQuery('label[for="nests-switch"]').click()
-                    $('.ui-dialog-content').dialog('close')
+                    $('.modal').modal('hide')
                 }
             })
         }
@@ -4296,8 +4296,8 @@ function manualRaidData(event) { // eslint-disable-line no-unused-vars
 }
 function submitNewCommunity(event) { // eslint-disable-line no-unused-vars
     var form = $(event.target).parent().parent()
-    var lat = $('.submit-modal.ui-dialog-content .submitLatitude').val()
-    var lon = $('.submit-modal.ui-dialog-content .submitLongitude').val()
+    var lat = $('#submitModal .submitLatitude').val()
+    var lon = $('#submitModal .submitLongitude').val()
     var communityName = form.find('[name="community-name"]').val()
     var communityDescription = form.find('[name="community-description"]').val()
     var communityInvite = form.find('[name="community-invite"]').val()
@@ -4325,7 +4325,7 @@ function submitNewCommunity(event) { // eslint-disable-line no-unused-vars
                 complete: function complete() {
                     lastcommunities = false
                     updateMap()
-                    $('.ui-dialog-content').dialog('close')
+                    $('.modal').modal('hide')
                 }
             })
         }
@@ -4449,8 +4449,8 @@ function editPoiData(event) { // eslint-disable-line no-unused-vars
 }
 function submitPoi(event) { // eslint-disable-line no-unused-vars
     var form = $(event.target).parent().parent()
-    var lat = $('.submit-modal.ui-dialog-content .submitLatitude').val()
-    var lon = $('.submit-modal.ui-dialog-content .submitLongitude').val()
+    var lat = $('#submitModal .submitLatitude').val()
+    var lon = $('#submitModal .submitLongitude').val()
     var poiName = form.find('[name="poi-name"]').val()
     var poiDescription = form.find('[name="poi-description"]').val()
     var poiNotes = form.find('[name="poi-notes"]').val()
@@ -4494,7 +4494,7 @@ function submitPoi(event) { // eslint-disable-line no-unused-vars
                     lastpois = false
                     updateMap()
                     $('.loader').hide()
-                    $('.ui-dialog-content').dialog('close')
+                    $('.modal').modal('hide')
                 }
             })
         }

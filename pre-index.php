@@ -2210,35 +2210,35 @@ if (!$noLoadingScreen) {
                 <h5 class="modal-title" id="searchModalLabel"><?php echo i8ln('Search...'); ?></h5>
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
+            <nav>
+                <div class="nav nav-tabs nav-fill" id="nav-tab" role="tablist">
+                    <?php $firstTab = 1; ?>
+                    <?php if (! $noQuests && ! $noSearchManualQuests) { ?>
+                        <button class="nav-link<?php echo (($firstTab == 1) ? " active" : ""); ?>" id="nav-rewards-tab" data-bs-toggle="tab" data-bs-target="#nav-rewards" type="button" role="tab" aria-controls="nav-rewards" aria-selected="true"><img src="static/images/reward.png" width="30" height="30"/></button>
+                    <?php
+                    $firstTab++;
+                    }
+                    if (! $noSearchNests) { ?>
+                        <button class="nav-link<?php echo (($firstTab == 1) ? " active" : ""); ?>" id="nav-nests-tab" data-bs-toggle="tab" data-bs-target="#nav-nests" type="button" role="tab" aria-controls="nav-nests" aria-selected="true"><img src="static/images/nest.png" width="30" height="30"/></button>
+                    <?php
+                    $firstTab++;
+                    }
+                    if (! $noSearchGyms) { ?>
+                        <button class="nav-link<?php echo (($firstTab == 1) ? " active" : ""); ?>" id="nav-gyms-tab" data-bs-toggle="tab" data-bs-target="#nav-gyms" type="button" role="tab" aria-controls="nav-gyms" aria-selected="true"><img src="static/forts/ingame/Uncontested.png" width="30" height="30"/></button>
+                    <?php
+                    $firstTab++;
+                    }
+                    if (! $noSearchPokestops) { ?>
+                        <button class="nav-link<?php echo (($firstTab == 1) ? " active" : ""); ?>" id="nav-pokestops-tab" data-bs-toggle="tab" data-bs-target="#nav-pokestops" type="button" role="tab" aria-controls="nav-pokestops" aria-selected="true"><img src="static/forts/Pstop.png" width="30" height="30"/></button>
+                    <?php
+                    $firstTab++;
+                    }
+                    if (! $noSearchPortals) { ?>
+                        <button class="nav-link<?php echo (($firstTab == 1) ? " active" : ""); ?>" id="nav-portals-tab" data-bs-toggle="tab" data-bs-target="#nav-portals" type="button" role="tab" aria-controls="nav-portals" aria-selected="true"><img src="static/images/portal.png" width="30" height="30"/></button>
+                    <?php } ?>
+                </div>
+            </nav>
             <div class="modal-body">
-                <nav>
-                    <div class="nav nav-tabs nav-fill" id="nav-tab" role="tablist">
-                        <?php $firstTab = 1; ?>
-                        <?php if (! $noQuests && ! $noSearchManualQuests) { ?>
-                            <button class="nav-link<?php echo (($firstTab == 1) ? " active" : ""); ?>" id="nav-rewards-tab" data-bs-toggle="tab" data-bs-target="#nav-rewards" type="button" role="tab" aria-controls="nav-rewards" aria-selected="true"><img src="static/images/reward.png" width="30" height="30"/></button>
-                        <?php
-                        $firstTab++;
-                        }
-                        if (! $noSearchNests) { ?>
-                            <button class="nav-link<?php echo (($firstTab == 1) ? " active" : ""); ?>" id="nav-nests-tab" data-bs-toggle="tab" data-bs-target="#nav-nests" type="button" role="tab" aria-controls="nav-nests" aria-selected="true"><img src="static/images/nest.png" width="30" height="30"/></button>
-                        <?php
-                        $firstTab++;
-                        }
-                        if (! $noSearchGyms) { ?>
-                            <button class="nav-link<?php echo (($firstTab == 1) ? " active" : ""); ?>" id="nav-gyms-tab" data-bs-toggle="tab" data-bs-target="#nav-gyms" type="button" role="tab" aria-controls="nav-gyms" aria-selected="true"><img src="static/forts/ingame/Uncontested.png" width="30" height="30"/></button>
-                        <?php
-                        $firstTab++;
-                        }
-                        if (! $noSearchPokestops) { ?>
-                            <button class="nav-link<?php echo (($firstTab == 1) ? " active" : ""); ?>" id="nav-pokestops-tab" data-bs-toggle="tab" data-bs-target="#nav-pokestops" type="button" role="tab" aria-controls="nav-pokestops" aria-selected="true"><img src="static/forts/Pstop.png" width="30" height="30"/></button>
-                        <?php
-                        $firstTab++;
-                        }
-                        if (! $noSearchPortals) { ?>
-                            <button class="nav-link<?php echo (($firstTab == 1) ? " active" : ""); ?>" id="nav-portals-tab" data-bs-toggle="tab" data-bs-target="#nav-portals" type="button" role="tab" aria-controls="nav-portals" aria-selected="true"><img src="static/images/portal.png" width="30" height="30"/></button>
-                        <?php } ?>
-                    </div>
-                </nav>
                 <div class="tab-content" id="nav-tabContent">
                     <?php $firstTabContent = 1; ?>
                     <?php if (! $noQuests && ! $noSearchManualQuests) { ?>
@@ -2358,8 +2358,8 @@ if (!$noLoadingScreen) {
                             <input type="text" id="gym-name" name="gym-name"
                                    placeholder="<?php echo i8ln('Enter Gym Name'); ?>" data-type="forts"
                                    class="search-input">
-                            <div class="button-container">
-                                <button type="button" onclick="manualGymData(event);" class="submitting-gym"><i
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-primary" onclick="manualGymData(event);"><i
                                         class="fas fa-binoculars"></i> <?php echo i8ln('Submit Gym'); ?>
                                 </button>
                             </div>
@@ -2372,8 +2372,8 @@ if (!$noLoadingScreen) {
                             <input type="text" id="pokestop-name" name="pokestop-name"
                                    placeholder="<?php echo i8ln('Enter Pokéstop Name'); ?>" data-type="pokestop"
                                    class="search-input">
-                            <div class="button-container">
-                                <button type="button" onclick="manualPokestopData(event);" class="submitting-pokestop"><i
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-primary" onclick="manualPokestopData(event);"><i
                                         class="fas fa-binoculars"></i> <?php echo i8ln('Submit Pokéstop'); ?>
                                 </button>
                             </div>
@@ -2385,8 +2385,8 @@ if (!$noLoadingScreen) {
                         <div class="tab-pane fade<?php echo (($firstTabContent == 1) ? " show active" : ""); ?>" id="nav-nest" role="tabpanel" aria-labelledby="nav-nest-tab">
                             <input type="hidden" name="pokemonID" class="pokemonID"/>
                             <?php pokemonFilterImages($noPokemonNumbers, 'pokemonSubmitFilter(event)', $excludeNestMons, 7); ?>
-                            <div class="button-container">
-                                <button type="button" onclick="submitNewNest(event);" class="submitting-nest"><i
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-primary" onclick="submitNewNest(event);"><i
                                         class="fas fa-binoculars"></i> <?php echo i8ln('Submit Nest'); ?>
                                 </button>
                             </div>
@@ -2406,8 +2406,8 @@ if (!$noLoadingScreen) {
                                    placeholder="<?php echo i8ln('Whatsapp, Telegram, Discord Link'); ?>" data-type="invite-link"
                                    class="search-input">
                             <h6><center><?php echo i8ln('Link must be valid and start with https://'); ?></center></h6>
-                            <div class="button-container">
-                                <button type="button" onclick="submitNewCommunity(event);" class="submitting-community">
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-primary" onclick="submitNewCommunity(event);">
                                     <i class="fas fa-comments"></i> <?php echo i8ln('Submit Community'); ?>
                                 </button>
                             </div>
@@ -2432,9 +2432,9 @@ if (!$noLoadingScreen) {
                                 </div>
                                 <center><img id='preview-poi-surrounding' name='preview-poi-surrounding' width="50px" height="auto" ></center>
                             <?php } ?>
-                            <div class="button-container">
+                            <div class="modal-footer">
                                 <h6><center><?php echo i8ln('If you submit a POI candidate you agree that your discord username will be shown in the marker label'); ?></center></h6>
-                                <button type="button" onclick="submitPoi(event);" class="submitting-poi"><i class="fas fa-comments"></i> <?php echo i8ln('Submit POI candidate'); ?></button>
+                                <button type="button" class="btn btn-primary" onclick="submitPoi(event);"><i class="fas fa-comments"></i> <?php echo i8ln('Submit POI candidate'); ?></button>
                             </div>
                         </div>
                     <?php } ?>

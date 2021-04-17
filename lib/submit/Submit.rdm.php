@@ -281,9 +281,11 @@ class RDM extends Submit
                 'last_modified_timestamp'  => time(),
                 'enabled'                  => 0,
                 'name'                     => $pokestopName,
-                'updated'                  => time()
+                'updated'                  => time(),
+                'first_seen_timestamp'     => time()
             ];
             $db->insert("pokestop", $cols);
+
             if ($noDiscordSubmitLogChannel === false) {
                 $data = array("content" => '```Added pokestop with id "' . $pokestopId . '" and gave it the new name: "' . $pokestopName . '"```' . $submitMapUrl . '/?lat=' . $lat . '&lon=' . $lon . '&zoom=18 ', "username" => $loggedUser);
                 sendToWebhook($discordSubmitLogChannelUrl, ($data));
