@@ -2302,42 +2302,42 @@ if (!$noLoadingScreen) {
                 <h5 class="modal-title" id="submitModalLabel"><?php echo i8ln('Submit Data to Map') ?></h5>
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
+            <input type="hidden" value="" name="submitLatitude" class="submitLatitude"/>
+            <input type="hidden" value="" name="submitLongitude" class="submitLongitude"/>
+            <nav>
+                <div class="nav nav-tabs nav-fill" id="nav-tab" role="tablist">
+                    <?php $firstTab = 1; ?>
+                    <?php if (! $noManualPokemon && !$noPokemon) { ?>
+                        <button class="nav-link<?php echo (($firstTab == 1) ? " active" : ""); ?>" id="nav-pokemon-tab" data-bs-toggle="tab" data-bs-target="#nav-pokemon" type="button" role="tab" aria-controls="nav-pokemon" aria-selected="true"><img src="static/images/pokeball.png" width="30" height="30"/></button>
+                    <?php
+                    $firstTab++;
+                    }
+                    if (! $noManualGyms && !$noGyms) { ?>
+                        <button class="nav-link<?php echo (($firstTab == 1) ? " active" : ""); ?>" id="nav-gym-tab" data-bs-toggle="tab" data-bs-target="#nav-gym" type="button" role="tab" aria-controls="nav-gym" aria-selected="true"><img src="static/forts/ingame/Uncontested.png" width="30" height="30"/></button>
+                    <?php
+                    $firstTab++;
+                    }
+                    if (! $noManualPokestops && !$noPokestops) { ?>
+                        <button class="nav-link<?php echo (($firstTab == 1) ? " active" : ""); ?>" id="nav-pokestop-tab" data-bs-toggle="tab" data-bs-target="#nav-pokestop" type="button" role="tab" aria-controls="nav-pokestop" aria-selected="true"><img src="static/forts/Pstop.png" width="30" height="30"/></button>
+                    <?php
+                    $firstTab++;
+                    }
+                    if (! $noAddNewNests && !$noNests) { ?>
+                        <button class="nav-link<?php echo (($firstTab == 1) ? " active" : ""); ?>" id="nav-nest-tab" data-bs-toggle="tab" data-bs-target="#nav-nest" type="button" role="tab" aria-controls="nav-nest" aria-selected="true"><img src="static/images/nest.png" width="30" height="30"/></button>
+                    <?php
+                    $firstTab++;
+                    }
+                    if (! $noAddNewCommunity && !$noCommunity) { ?>
+                        <button class="nav-link<?php echo (($firstTab == 1) ? " active" : ""); ?>" id="nav-community-tab" data-bs-toggle="tab" data-bs-target="#nav-community" type="button" role="tab" aria-controls="nav-community" aria-selected="true"><img src="static/images/community.png" width="30" height="30"/></button>
+                    <?php
+                    $firstTab++;
+                    }
+                    if (! $noAddPoi && !$noPoi) { ?>
+                        <button class="nav-link<?php echo (($firstTab == 1) ? " active" : ""); ?>" id="nav-poi-tab" data-bs-toggle="tab" data-bs-target="#nav-poi" type="button" role="tab" aria-controls="nav-poi" aria-selected="true"><img src="static/images/playground.png" width="30" height="30"/></button>
+                    <?php } ?>
+                 </div>
+            </nav>
             <div class="modal-body">
-                <input type="hidden" value="" name="submitLatitude" class="submitLatitude"/>
-                <input type="hidden" value="" name="submitLongitude" class="submitLongitude"/>
-                <nav>
-                    <div class="nav nav-tabs nav-fill" id="nav-tab" role="tablist">
-                        <?php $firstTab = 1; ?>
-                        <?php if (! $noManualPokemon && !$noPokemon) { ?>
-                            <button class="nav-link<?php echo (($firstTab == 1) ? " active" : ""); ?>" id="nav-pokemon-tab" data-bs-toggle="tab" data-bs-target="#nav-pokemon" type="button" role="tab" aria-controls="nav-pokemon" aria-selected="true"><img src="static/images/pokeball.png" width="30" height="30"/></button>
-                        <?php
-                        $firstTab++;
-                        }
-                        if (! $noManualGyms && !$noGyms) { ?>
-                            <button class="nav-link<?php echo (($firstTab == 1) ? " active" : ""); ?>" id="nav-gym-tab" data-bs-toggle="tab" data-bs-target="#nav-gym" type="button" role="tab" aria-controls="nav-gym" aria-selected="true"><img src="static/forts/ingame/Uncontested.png" width="30" height="30"/></button>
-                        <?php
-                        $firstTab++;
-                        }
-                        if (! $noManualPokestops && !$noPokestops) { ?>
-                            <button class="nav-link<?php echo (($firstTab == 1) ? " active" : ""); ?>" id="nav-pokestop-tab" data-bs-toggle="tab" data-bs-target="#nav-pokestop" type="button" role="tab" aria-controls="nav-pokestop" aria-selected="true"><img src="static/forts/Pstop.png" width="30" height="30"/></button>
-                        <?php
-                        $firstTab++;
-                        }
-                        if (! $noAddNewNests && !$noNests) { ?>
-                            <button class="nav-link<?php echo (($firstTab == 1) ? " active" : ""); ?>" id="nav-nest-tab" data-bs-toggle="tab" data-bs-target="#nav-nest" type="button" role="tab" aria-controls="nav-nest" aria-selected="true"><img src="static/images/nest.png" width="30" height="30"/></button>
-                        <?php
-                        $firstTab++;
-                        }
-                        if (! $noAddNewCommunity && !$noCommunity) { ?>
-                            <button class="nav-link<?php echo (($firstTab == 1) ? " active" : ""); ?>" id="nav-community-tab" data-bs-toggle="tab" data-bs-target="#nav-community" type="button" role="tab" aria-controls="nav-community" aria-selected="true"><img src="static/images/community.png" width="30" height="30"/></button>
-                        <?php
-                        $firstTab++;
-                        }
-                        if (! $noAddPoi && !$noPoi) { ?>
-                            <button class="nav-link<?php echo (($firstTab == 1) ? " active" : ""); ?>" id="nav-poi-tab" data-bs-toggle="tab" data-bs-target="#nav-poi" type="button" role="tab" aria-controls="nav-poi" aria-selected="true"><img src="static/images/playground.png" width="30" height="30"/></button>
-                        <?php } ?>
-                     </div>
-                </nav>
                 <div class="tab-content" id="nav-tabContent">
                     <?php $firstTabContent = 1; ?>
                     <?php if (! $noManualPokemon && !$noPokemon) { ?>
@@ -2440,10 +2440,6 @@ if (!$noLoadingScreen) {
                     <?php } ?>
                 </div>
             </div>
-      <div class="modal-footer">
-        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-        <button type="button" class="btn btn-primary">Save changes</button>
-      </div>
         </div>
     </div>
 </div>
