@@ -4513,19 +4513,19 @@ function markPoi(event, poiMarkType) { // eslint-disable-line no-unused-vars
     var confirmText = ''
     var errorText = i8ln('Candidate id got lost somewhere.') + ', ' + i8ln('Error marking candidate')
     if (poiId && poiId !== '') {
-        switch(poiMarkType) {
+        switch (poiMarkType) {
             case '2':
                 confirmText = i8ln('I confirm this candidate is submitted to OPR')
-                break;
+                break
             case '3':
                 confirmText = i8ln('I confirm this candidate is declined by OPR')
-                break;
+                break
             case '4':
                 confirmText = i8ln('I confirm this candidate is declined by OPR but can be resubmitted as candidate')
-                break;
+                break
             case '5':
                 confirmText = i8ln('I confirm this is not a eligible candidate to submit to OPR')
-                break;
+                break
         }
         if (confirm(confirmText)) {
             return $.ajax({
