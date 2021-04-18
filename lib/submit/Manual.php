@@ -202,6 +202,7 @@ class Manual extends Submit
                 'community_id' => $communityId
             ];
             $manualdb->update("communities", $cols, $where);
+
             if ($noDiscordSubmitLogChannel === false) {
                 $data = array("content" => '```Updated community with id "' . $communityId . '" and gave it the new name: "' . $communityName . '" . ```', "username" => $loggedUser);
                 sendToWebhook($discordSubmitLogChannelUrl, ($data));
@@ -326,7 +327,7 @@ class Manual extends Submit
             http_response_code(401);
             die();
         }
-        $CPoi = $manualdb->get("poi", [ "poiimageurl", "poiimagedeletehash", "poisurroundingurl", "poisurroundingdeletehash" ], [ 'poi_id' => $poiId ]);
+        $Cpoi = $manualdb->get("poi", [ "poiimageurl", "poiimagedeletehash", "poisurroundingurl", "poisurroundingdeletehash" ], [ 'poi_id' => $poiId ]);
         if (! empty($poiImage)) {
             if (! empty($Cpoi['poiimagedeletehash'])) {
                 deleteImage($imgurCID, $Cpoi['poiimagedeletehash']);
@@ -468,7 +469,7 @@ class Manual extends Submit
         }
     }
 
-    public function mark_poi_submitted($poiId, $loggedUser)
+    public function mark_poi($poiId, $poiMarkType, $loggedUser)
     {
         global $manualdb, $noPoi, $noDiscordSubmitLogChannel, $discordPOISubmitLogChannelUrl;
         if ($noPoi === true) {
@@ -479,86 +480,27 @@ class Manual extends Submit
         if (! empty($poiId)) {
             $cols     = [
                 'updated'      => time(),
-                'status'       => 2
+                'status'       => $poiMarkType
             ];
             $where    = [
                 'poi_id' => $poiId
             ];
             $manualdb->update("poi", $cols, $where);
             if ($noDiscordSubmitLogChannel === false) {
-                $data = array("content" => '```Marked poi with id "' . $poiId . '." As submitted. PoiName: "' . $poiName['name'] . '". ```', "username" => $loggedUser);
-                sendToWebhook($discordPOISubmitLogChannelUrl, ($data));
-            }
-        }
-    }
-
-    public function mark_poi_declined($poiId, $loggedUser)
-    {
-        global $manualdb, $noPoi, $noDiscordSubmitLogChannel, $discordPOISubmitLogChannelUrl;
-        if ($noPoi === true) {
-            http_response_code(401);
-            die();
-        }
-        $poiName = $manualdb->get("poi", [ 'name' ], [ 'poi_id' => $poiId ]);
-        if (! empty($poiId)) {
-            $cols     = [
-                'updated'      => time(),
-                'status'       => 3
-            ];
-            $where    = [
-                'poi_id' => $poiId
-            ];
-            $manualdb->update("poi", $cols, $where);
-            if ($noDiscordSubmitLogChannel === false) {
-                $data = array("content" => '```Marked poi with id "' . $poiId . '." As declined. PoiName: "' . $poiName['name'] . '". ```', "username" => $loggedUser);
-                sendToWebhook($discordPOISubmitLogChannelUrl, ($data));
-            }
-        }
-    }
-
-    public function mark_poi_resubmit($poiId, $loggedUser)
-    {
-        global $manualdb, $noPoi, $noDiscordSubmitLogChannel, $discordPOISubmitLogChannelUrl;
-        if ($noPoi === true) {
-            http_response_code(401);
-            die();
-        }
-        $poiName = $manualdb->get("poi", [ 'name' ], [ 'poi_id' => $poiId ]);
-        if (! empty($poiId)) {
-            $cols     = [
-                'updated'      => time(),
-                'status'       => 4
-            ];
-            $where    = [
-                'poi_id' => $poiId
-            ];
-            $manualdb->update("poi", $cols, $where);
-            if ($noDiscordSubmitLogChannel === false) {
-                $data = array("content" => '```Marked poi with id "' . $poiId . '." As declined but eligible to be resubmitted. PoiName: "' . $poiName['name'] . '". ```', "username" => $loggedUser);
-                sendToWebhook($discordPOISubmitLogChannelUrl, ($data));
-            }
-        }
-    }
-
-    public function mark_not_candidate($poiId, $loggedUser)
-    {
-        global $manualdb, $noPoi, $noDiscordSubmitLogChannel, $discordPOISubmitLogChannelUrl;
-        if ($noPoi === true) {
-            http_response_code(401);
-            die();
-        }
-        $poiName = $manualdb->get("poi", [ 'name' ], [ 'poi_id' => $poiId ]);
-        if (! empty($poiId)) {
-            $cols     = [
-                'updated'      => time(),
-                'status'       => 5
-            ];
-            $where    = [
-                'poi_id' => $poiId
-            ];
-            $manualdb->update("poi", $cols, $where);
-            if ($noDiscordSubmitLogChannel === false) {
-                $data = array("content" => '```Marked poi with id "' . $poiId . '." As non eligible candidate. PoiName: "' . $poiName['name'] . '". ```', "username" => $loggedUser);
+                switch ($poiMarkType) {
+                    case '2':
+                        $data = array("content" => '```Marked poi with id "' . $poiId . '." As submitted. PoiName: "' . $poiName['name'] . '". ```', "username" => $loggedUser);
+                        break;
+                    case '3':
+                        $data = array("content" => '```Marked poi with id "' . $poiId . '." As declined. PoiName: "' . $poiName['name'] . '". ```', "username" => $loggedUser);
+                        break;
+                    case '4':
+                        $data = array("content" => '```Marked poi with id "' . $poiId . '." As declined but eligible to be resubmitted. PoiName: "' . $poiName['name'] . '". ```', "username" => $loggedUser);
+                        break;
+                    case '5':
+                        $data = array("content" => '```Marked poi with id "' . $poiId . '." As non eligible candidate. PoiName: "' . $poiName['name'] . '". ```', "username" => $loggedUser);
+                        break;
+                }
                 sendToWebhook($discordPOISubmitLogChannelUrl, ($data));
             }
         }

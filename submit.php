@@ -47,6 +47,7 @@ $poiName                = ! empty($_POST['poiName']) ? $_POST['poiName'] : '';
 $poiDescription         = ! empty($_POST['poiDescription']) ? $_POST['poiDescription'] : '';
 $poiNotes               = ! empty($_POST['poiNotes']) ? $_POST['poiNotes'] : '';
 $poiId                  = ! empty($_POST['poiId']) ? $_POST['poiId'] : '';
+$poiMarkType            = ! empty($_POST['poiMarkType']) ? $_POST['poiMarkType'] : '';
 $poiImage               = ! empty($_POST['poiImage']) ? $_POST['poiImage'] : '';
 $poiSurrounding         = ! empty($_POST['poiSurrounding']) ? $_POST['poiSurrounding'] : '';
 
@@ -145,17 +146,8 @@ if ($action === "edit-poi") {
 if ($action === "delete-poi") {
     $submitManual->delete_poi($poiId, $loggedUser);
 }
-if ($action === "markpoisubmitted") {
-    $submitManual->mark_poi_submitted($poiId, $loggedUser);
-}
-if ($action === "markpoideclined") {
-    $submitManual->mark_poi_declined($poiId, $loggedUser);
-}
-if ($action === "markpoiresubmit") {
-    $submitManual->mark_poi_resubmit($poiId, $loggedUser);
-}
-if ($action === "marknotcandidate") {
-    $submitManual->mark_not_candidate($poiId, $loggedUser);
+if ($action === "markpoi") {
+    $submitManual->mark_poi($poiId, $poiMarkType, $loggedUser);
 }
 $jaysson = json_encode($d);
 echo $jaysson;

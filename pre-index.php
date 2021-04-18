@@ -1698,30 +1698,6 @@ if (!$noLoadingScreen) {
             </div>
         </div>
     <?php } ?>
-    <?php if (! $noEditPoi) { ?>
-        <div class="editpoi-modal" style="display: none;">
-            <input type="text" id="poi-name" name="poi-name" placeholder="<?php echo i8ln('Enter New POI Name'); ?>" data-type="poi-name" class="search-input">
-            <input type="text" id="poi-description" name="poi-description" placeholder="<?php echo i8ln('Enter New POI Description'); ?>" data-type="poi-description" class="search-input">
-            <input type="text" id="poi-notes" name="poi-notes"placeholder="<?php echo i8ln('Enter New POI Notes'); ?>" data-type="poi-notes" class="search-input">
-                <?php if (! empty($imgurCID)) {
-                ?>
-                    <div class="upload-button-container">
-                         <button type="button"><i class="fas fa-upload"></i> <?php echo i8ln('Upload POI Image') ?></button>
-                         <input type="file" id="poi-image" name="poi-image" accept="image/*" class="poi-image" data-type="poi-image" class="search-input" onchange='previewPoiImage(event)' >
-                    </div>
-                    <center><img id='preview-poi-image' name='preview-poi-image' width="50px" height="auto"></center>
-                    <div class="upload-button-container">
-                         <button type="button"><i class="fas fa-upload"></i> <?php echo i8ln('Upload POI Surrounding') ?></button>
-                         <input type="file" id="poi-surrounding" name="poi-surrounding" accept="image/*" class="poi-surrounding" data-type="poi-surrounding" class="search-input" onchange='previewPoiSurrounding(event)'>
-                    </div>
-                    <center><img id='preview-poi-surrounding' name='preview-poi-surrounding' width="50px" height="auto"></center>
-                <?php
-            } ?>
-            <div class="button-container">
-                <button type="button" onclick="editPoiData(event);" class="editpoiid"><i class="fas fa-save"></i> <?php echo i8ln('Save Changes'); ?></button>
-            </div>
-        </div>
-    <?php } ?>
     <?php if (! $noPortals) { ?>
         <div class="convert-portal-modal" style="display: none;">
             <div class="button-container">
@@ -1734,16 +1710,7 @@ if (!$noLoadingScreen) {
             </div>
         </div>
     <?php } ?>
-    <?php if (! $noPoi) { ?>
-        <div class="mark-poi-modal" style="display: none;">
-            <div class="button-container">
-                <button type="button" onclick="markPoiSubmitted(event);" class="markpoiid"><i class="fas fa-sync-alt"></i> <?php echo i8ln('Submitted'); ?></button>
-                <button type="button" onclick="markPoiDeclined(event);" class="markpoiid"><i class="fas fa-times"></i> <?php echo i8ln('Declined'); ?></button>
-                <button type="button" onclick="markPoiResubmit(event);" class="markpoiid"><i class="fas fa-times"></i> <?php echo i8ln('Resubmit'); ?></button>
-                <button type="button" onclick="markNotCandidate(event);" class="markpoiid"><i class="fas fa-times"></i> <?php echo i8ln('Not a candidate'); ?></button>
-            </div>
-        </div>
-    <?php } ?>
+
     <?php if (! $noDiscordLogin) { ?>
         <div class="accessdenied-modal" style="display: none;">
             <?php if ($copyrightSafe === false) { ?>
@@ -1756,10 +1723,7 @@ if (!$noLoadingScreen) {
     <?php } ?>
 
 
-    <div id="fullscreenModal" class="modal">
-        <span class="close" onclick="closeFullscreenModal();">&times;</span>
-        <img class="modal-content" id="fullscreenimg">
-    </div>
+
     <?php if (! $noManualQuests) { ?>
         <div class="quest-modal" style="display: none;">
             <input type="hidden" value="" name="questPokestop" class="questPokestop"/>
@@ -1939,151 +1903,24 @@ if (!$noLoadingScreen) {
         <button class="submit-on-off-button" onclick="$('.submit-on-off-button').toggleClass('on');">
             <i class="fas fa-map-marker-alt submit-to-map" aria-hidden="true"></i>
         </button>
-        <div class="submit-modal" style="display:none;">
-            <input type="hidden" value="" name="submitLatitude" class="submitLatitude"/>
-            <input type="hidden" value="" name="submitLongitude" class="submitLongitude"/>
-            <div id="submit-tabs">
-                <ul>
-                    <?php if (! $noManualPokemon && !$noPokemon) {
-            ?>
-                        <li><a href="#tab-pokemon"><img src="static/images/pokeball.png"/></a></li>
-                    <?php
-        } ?>
-                    <?php if (! $noManualGyms && !$noGyms) {
-            ?>
-                        <li><a href="#tab-gym"><img src="static/forts/ingame/Uncontested.png"/></a></li>
-                    <?php
-        } ?>
-                    <?php if (! $noManualPokestops && !$noPokestops) {
-            ?>
-                        <li><a href="#tab-pokestop"><img src="static/forts/Pstop.png"/></a></li>
-                    <?php
-        } ?>
-                    <?php if (! $noAddNewNests && !$noNests) {
-            ?>
-                        <li><a href="#tab-nests"><img src="static/images/nest.png"/></a></li>
-            <?php
-        } ?>
-                    <?php if (! $noAddNewCommunity && !$noCommunity) {
-            ?>
-                        <li><a href="#tab-communities"><img src="static/images/community.png"/></a></li>
-                    <?php
-        } ?>
-                    <?php if (! $noAddPoi && !$noPoi) {
-            ?>
-                        <li><a href="#tab-poi"><img src="static/images/playground.png"/></a></li>
-                    <?php
-        } ?>
-                </ul>
-                <?php if (! $noManualPokemon && !$noPokemon) {
-            ?>
-                    <div id="tab-pokemon">
-                        <input type="hidden" name="pokemonID" class="pokemonID"/>
-                        <?php pokemonFilterImages($noPokemonNumbers, 'pokemonSubmitFilter(event)', $pokemonToExclude, 6); ?>
-                        <div class="button-container">
-                            <button type="button" onclick="manualPokemonData(event);" class="submitting-pokemon">
-                                <i class="fas fa-binoculars"></i> <?php echo i8ln('Submit Pokémon'); ?>
-                            </button>
-                        </div>
-                    </div>
-                <?php
-        } ?>
-                <?php if (! $noManualGyms && !$noGyms) {
-            ?>
-                    <div id="tab-gym">
-                        <input type="text" id="gym-name" name="gym-name"
-                               placeholder="<?php echo i8ln('Enter Gym Name'); ?>" data-type="forts"
-                               class="search-input">
-                        <div class="button-container">
-                            <button type="button" onclick="manualGymData(event);" class="submitting-gym"><i
-                                    class="fas fa-binoculars"></i> <?php echo i8ln('Submit Gym'); ?>
-                            </button>
-                        </div>
-                    </div>
-                <?php
-        } ?>
-                <?php if (! $noManualPokestops && !$noPokestops) {
-            ?>
-                    <div id="tab-pokestop">
-                        <input type="text" id="pokestop-name" name="pokestop-name"
-                               placeholder="<?php echo i8ln('Enter Pokéstop Name'); ?>" data-type="pokestop"
-                               class="search-input">
-                        <div class="button-container">
-                            <button type="button" onclick="manualPokestopData(event);" class="submitting-pokestop"><i
-                                    class="fas fa-binoculars"></i> <?php echo i8ln('Submit Pokéstop'); ?>
-                            </button>
-                        </div>
-                    </div>
-                <?php
-        } ?>
-                <?php if (! $noAddNewNests && !$noNests) {
-            ?>
-                    <div id="tab-nests">
-                        <input type="hidden" name="pokemonID" class="pokemonID"/>
-                        <?php pokemonFilterImages($noPokemonNumbers, 'pokemonSubmitFilter(event)', $excludeNestMons, 7); ?>
-                        <div class="button-container">
-                            <button type="button" onclick="submitNewNest(event);" class="submitting-nest"><i
-                                    class="fas fa-binoculars"></i> <?php echo i8ln('Submit Nest'); ?>
-                            </button>
-                        </div>
-                    </div>
-                <?php
-        } ?>
-                <?php if (! $noAddNewCommunity && !$noCommunity) {
-            ?>
-                    <div id="tab-communities">
-                        <input type="text" name="community-name" class="community-name"
-                               placeholder="<?php echo i8ln('Enter Community Name'); ?>" data-type="name"
-                   class="search-input">
-                        <input type="text" name="community-description" class="community-description"
-                               placeholder="<?php echo i8ln('Enter description'); ?>" data-type="description"
-                   class="search-input">
-                        <input type="text" name="community-invite" class="community-invite"
-                               placeholder="<?php echo i8ln('Whatsapp, Telegram, Discord Link'); ?>" data-type="invite-link"
-                   class="search-input">
-            <h6><center><?php echo i8ln('Link must be valid and start with https://'); ?></center></h6>
-                        <div class="button-container">
-                            <button type="button" onclick="submitNewCommunity(event);" class="submitting-community">
-                                <i class="fas fa-comments"></i> <?php echo i8ln('Submit Community'); ?>
-                            </button>
-                        </div>
-                    </div>
-                <?php
-        } ?>
-                <?php if (! $noAddPoi && !$noPoi) {
-            ?>
-                    <div id="tab-poi">
-                        <input type="text" name="poi-name" class="poi-name"placeholder="<?php echo i8ln('Enter candidate Name'); ?>" data-type="name" class="search-input">
-                        <input type="text" name="poi-description" class="poi-description" placeholder="<?php echo i8ln('Enter candidate description'); ?>" data-type="description" class="search-input">
-                        <input type="text" name="poi-notes" class="poi-notes" placeholder="<?php echo i8ln('Enter field notes'); ?>" data-type="description" class="search-input">
-                        <?php if (! empty($imgurCID)) {
-                ?>
-                            <div class="upload-button-container">
-                                <button type="button"><i class="fas fa-upload"></i> <?php echo i8ln('Upload POI Image') ?></button>
-                                <input type="file" id="poi-image" name="poi-image" accept="image/*" class="poi-image" data-type="poi-image" class="search-input" onchange='previewPoiImage(event)'>
-                            </div>
-                            <center><img id='preview-poi-image' name='preview-poi-image' width="50px" height="auto"></center>
-                            <div class="upload-button-container">
-                                <button type="button"><i class="fas fa-upload"></i> <?php echo i8ln('Upload Surrounding Image') ?></button>
-                                <input type="file" id="poi-surrounding" name="poi-surrounding" accept="image/*" class="poi-surrounding" data-type="poi-surrounding" class="search-input" onchange='previewPoiSurrounding(event)'>
-                            </div>
-                            <center><img id='preview-poi-surrounding' name='preview-poi-surrounding' width="50px" height="auto" ></center>
-                        <?php
-            } ?>
-                        <div class="button-container">
-                            <h6><center><?php echo i8ln('If you submit a POI candidate you agree that your discord username will be shown in the marker label'); ?></center></h6>
-                            <button type="button" onclick="submitPoi(event);" class="submitting-poi"><i class="fas fa-comments"></i> <?php echo i8ln('Submit POI candidate'); ?></button>
-                        </div>
-                    </div>
-                <?php
-        } ?>
+    <?php } ?>
+</div>
+
+<!-- Modals -->
+<!-- FullscreenModal-->
+<div class="modal fade" id="fullscreenModal" tabindex="-1" aria-labelledby="fullscreenModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-xl">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="fullscreenModalLabel"></h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <img class="modal-content" id="fullscreenimg">
             </div>
         </div>
-        <?php
-    }
-    ?>
+    </div>
 </div>
-<!-- Modals -->
 <!-- InfoModal -->
 <div class="modal fade" id="infoModal" tabindex="-1" aria-labelledby="infoModalLabel" aria-hidden="true">
     <div class="modal-dialog modal-xl">
@@ -2096,7 +1933,7 @@ if (!$noLoadingScreen) {
                 <?php echo $infoModalContent; ?>
             </div>
             <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal"><?php echo i8ln('Close') ?></button>
+                <button type="button" class="btn btn-primary" data-bs-dismiss="modal"><?php echo i8ln('Close') ?></button>
             </div>
         </div>
     </div>
@@ -2409,16 +2246,16 @@ if (!$noLoadingScreen) {
                             <input type="text" name="poi-description" class="poi-description" placeholder="<?php echo i8ln('Enter candidate description'); ?>" data-type="description" class="search-input">
                             <input type="text" name="poi-notes" class="poi-notes" placeholder="<?php echo i8ln('Enter field notes'); ?>" data-type="description" class="search-input">
                             <?php if (! empty($imgurCID)) { ?>
-                                <div class="upload-button-container">
-                                    <button type="button"><i class="fas fa-upload"></i> <?php echo i8ln('Upload POI Image') ?></button>
-                                    <input type="file" id="poi-image" name="poi-image" accept="image/*" class="poi-image" data-type="poi-image" class="search-input" onchange='previewPoiImage(event)'>
+                                <div class="d-grid gap-1">
+                                    <label class="btn btn-primary" type="button"><i class="fas fa-upload"></i> <?php echo i8ln('Upload POI Image') ?>
+                                        <input type="file" id="poi-image" name="poi-image" accept="image/*" class="poi-image" data-type="poi-image" class="search-input" onchange='previewPoiImage(event)' hidden>
+                                    </label>
+                                    <img class="rounded mx-auto d-block" id='preview-poi-image' name='preview-poi-image' width="50px" height="auto">
+                                    <label class="btn btn-primary" type="button"><i class="fas fa-upload"></i> <?php echo i8ln('Upload Surrounding Image') ?>
+                                        <input type="file" id="poi-surrounding" name="poi-surrounding" accept="image/*" class="poi-surrounding" data-type="poi-surrounding" class="search-input" onchange='previewPoiSurrounding(event)' hidden>
+                                    </label>
+                                    <img class="rounded mx-auto d-block" id='preview-poi-surrounding' name='preview-poi-surrounding' width="50px" height="auto" >
                                 </div>
-                                <center><img id='preview-poi-image' name='preview-poi-image' width="50px" height="auto"></center>
-                                <div class="upload-button-container">
-                                    <button type="button"><i class="fas fa-upload"></i> <?php echo i8ln('Upload Surrounding Image') ?></button>
-                                    <input type="file" id="poi-surrounding" name="poi-surrounding" accept="image/*" class="poi-surrounding" data-type="poi-surrounding" class="search-input" onchange='previewPoiSurrounding(event)'>
-                                </div>
-                                <center><img id='preview-poi-surrounding' name='preview-poi-surrounding' width="50px" height="auto" ></center>
                             <?php } ?>
                             <div class="modal-footer">
                                 <h6><center><?php echo i8ln('If you submit a POI candidate you agree that your discord username will be shown in the marker label'); ?></center></h6>
@@ -2440,19 +2277,78 @@ if (!$noLoadingScreen) {
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body">
+                <input type="hidden" id="editcommunityid" name="editcommunityid" value=""/>
                 <input type="text" id="community-name" name="community-name" placeholder="<?php echo i8ln('Enter New community Name'); ?>" data-type="community-name" class="search-input">
                 <input type="text" id="community-description" name="community-description" placeholder="<?php echo i8ln('Enter New community Description'); ?>" data-type="community-description" class="search-input">
                 <input type="text" id="community-invite" name="community-invite" placeholder="<?php echo i8ln('Enter New community Invite link'); ?>" data-type="community-invite" class="search-input">
             </div>
             <div class="modal-footer">
-                <button type="button" onclick="editCommunityData(event);" class="btn btn-primary" id="editcommunityid">
-                    <i class="fas fa-edit"></i> <?php echo i8ln('Save Changes'); ?>
+                <button type="button" onclick="editCommunityData(event);" class="btn btn-primary">
+                    <i class="fas fa-save"></i> <?php echo i8ln('Save Changes'); ?>
                 </button>
             </div>
         </div>
     </div>
 </div>
-
+<!-- Edit Poi Modal -->
+<div class="modal fade" id="editPoiModal" tabindex="-1" aria-labelledby="editPoiModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="editPoiModalLabel"><?php echo i8ln('Edit POI') ?></h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <input type="hidden" id="editpoiid" name="editpoiid" value=""/>
+                <input type="text" id="poi-name" name="poi-name" placeholder="<?php echo i8ln('Enter New POI Name'); ?>" data-type="poi-name" class="search-input">
+                <input type="text" id="poi-description" name="poi-description" placeholder="<?php echo i8ln('Enter New POI Description'); ?>" data-type="poi-description" class="search-input">
+                <input type="text" id="poi-notes" name="poi-notes" placeholder="<?php echo i8ln('Enter New POI Notes'); ?>" data-type="poi-notes" class="search-input">
+                    <?php if (! empty($imgurCID)) {
+                    ?>
+                        <div class="d-grid gap-1">
+                            <label class="btn btn-primary" type="button"><i class="fas fa-upload"></i> <?php echo i8ln('Upload POI Image') ?>
+                                <input type="file" id="poi-image" name="poi-image" accept="image/*" class="poi-image" data-type="poi-image" class="search-input" onchange='previewPoiImage(event)' hidden>
+                            </label>
+                            <img class="rounded mx-auto d-block" id='edit-preview-poi-image' name="preview-poi-image" width="50px" height="auto">
+                            <label class="btn btn-primary" type="button"><i class="fas fa-upload"></i> <?php echo i8ln('Upload Surrounding Image') ?>
+                                <input type="file" id="poi-surrounding" name="poi-surrounding" accept="image/*" class="poi-surrounding" data-type="poi-surrounding" class="search-input" onchange='previewPoiSurrounding(event)' hidden>
+                            </label>
+                            <img class="rounded mx-auto d-block" id='edit-preview-poi-surrounding' name="preview-poi-surrounding" width="50px" height="auto" >
+                        </div>
+                    <?php
+                } ?>
+            </div>
+            <div class="modal-footer">
+                <button type="button" onclick="editPoiData(event);" class="btn btn-primary">
+                    <i class="fas fa-save"></i> <?php echo i8ln('Save Changes'); ?>
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- Mark POI Modal -->
+<div class="modal fade" id="markPoiModal" tabindex="-1" aria-labelledby="markPoiModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="markPoiModalLabel"><?php echo i8ln('Mark POI'); ?></h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <div class="d-grid">
+                    <input type="hidden" id="markpoiid" name="markpoiid" value=""/>
+                    <button type="button" class="btn btn-primary btn-sm" id="2" onclick="markPoi(event, this.id);"><i class="fas fa-sync-alt"></i> <?php echo i8ln('Submitted'); ?></button>
+                    <button type="button" class="btn btn-primary btn-sm" id="3" onclick="markPoi(event, this.id);"><i class="fas fa-times"></i> <?php echo i8ln('Declined'); ?></button>
+                    <button type="button" class="btn btn-primary btn-sm" id="4" onclick="markPoi(event, this.id);"><i class="fas fa-times"></i> <?php echo i8ln('Resubmitted'); ?></button>
+                    <button type="button" class="btn btn-primary btn-sm" id="5" onclick="markPoi(event, this.id);"><i class="fas fa-times"></i> <?php echo i8ln('Not a candidate'); ?></button>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-primary" data-bs-dismiss="modal"><?php echo i8ln('Close') ?></button>
+            </div>
+        </div>
+    </div>
+</div>
 <!-- End of Modals -->
 
 <!-- Scripts -->
