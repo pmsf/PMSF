@@ -1,0 +1,30 @@
+.modal-dialog{
+        height:calc(100% - 60px);
+}
+.modal-content{
+  height:100%;
+ }
+.modal-header{
+        height:50px;
+
+}
+.model-footer{
+        height:75px;
+}
+.modal-body {
+height:calc(100% - 125px);
+overflow-y: scroll;     /*give auto it will take based in content */
+}
+.search-input {
+  position: sticky;
+  top: 0;
+  width: calc(100% - 4px);
+  height: 40px;
+  margin-bottom: 5px;
+  padding: 5px;
+  margin-top: 0px;
+  margin-left: 0px;
+  background: rgba(255, 255, 255, 0);
+  margin-right: 0px;
+  border: 1px solid gray;
+}
