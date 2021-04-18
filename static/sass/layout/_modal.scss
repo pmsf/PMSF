@@ -24,7 +24,8 @@ overflow-y: scroll;     /*give auto it will take based in content */
   padding: 5px;
   margin-top: 0px;
   margin-left: 0px;
-  background: rgba(255, 255, 255, 0);
+  background: rgba(255, 255, 255, 1);
   margin-right: 0px;
   border: 1px solid gray;
+  z-index: 1;
 }

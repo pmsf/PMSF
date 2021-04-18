@@ -98,7 +98,7 @@ if (strtolower($map) === "rdm") {
         }
         echo '<div class="pokemon-list-cont" id="pokemon-list-cont-' . $num . '">
         <input type="hidden" class="search-number" value="' . $num . '" />
-        <input class="search search-input" placeholder="' . i8ln("Search Name, ID & Type") . '" />
+        <input type="text" class="search search-input" placeholder="' . i8ln("Search Name, ID & Type") . '" />
         <div class="pokemon-list list">';
         $i = 0;
         $z = 0;
@@ -153,7 +153,7 @@ if (strtolower($map) === "rdm") {
         }
         echo '<div class="energy-list-cont" id="energy-list-cont-' . $num . '">
         <input type="hidden" class="search-number" value="' . $num . '" />
-        <input class="search search-input" placeholder="' . i8ln("Search Name, ID & Type") . '" />
+        <input type="text" class="search search-input" placeholder="' . i8ln("Search Name, ID & Type") . '" />
         <div class="energy-list list">';
         $i = 0;
         $z = 0;
@@ -199,7 +199,7 @@ if (strtolower($map) === "rdm") {
             $json = file_get_contents('static/dist/data/items.min.json');
             $items = json_decode($json, true);
         }
-        echo '<div class="item-list-cont" id="item-list-cont-' . $num . '"><input type="hidden" class="search-number" value="' . $num . '" /><input class="search search-input" placeholder="' . i8ln("Search Name & ID") . '" /><div class="item-list list">';
+        echo '<div class="item-list-cont" id="item-list-cont-' . $num . '"><input type="hidden" class="search-number" value="' . $num . '" /><input type="text" class="search search-input" placeholder="' . i8ln("Search Name & ID") . '" /><div class="item-list list">';
         $i = 0;
         $z = 0;
         foreach ($items as $k => $item) {
@@ -233,7 +233,7 @@ if (strtolower($map) === "rdm") {
             $json = file_get_contents('static/dist/data/grunttype.min.json');
             $grunts = json_decode($json, true);
         }
-        echo '<div class="grunt-list-cont" id="grunt-list-cont-' . $num . '"><input type="hidden" class="search-number" value="' . $num . '" /><input class="search search-input" placeholder="' . i8ln("Search Name & ID") . '" /><div class="grunt-list list">';
+        echo '<div class="grunt-list-cont" id="grunt-list-cont-' . $num . '"><input type="hidden" class="search-number" value="' . $num . '" /><input type="text" class="search search-input" placeholder="' . i8ln("Search Name & ID") . '" /><div class="grunt-list list">';
         $i = 0;
         $z = 0;
         foreach ($grunts as $g => $grunt) {
@@ -266,7 +266,7 @@ if (strtolower($map) === "rdm") {
         }
         echo '<div class="raidegg-list-cont" id="raidegg-list-cont-' . $num . '">
         <input type="hidden" class="search-number" value="' . $num . '" />
-        <input class="search search-input" placeholder="' . i8ln("Search Level") . '" />
+        <input type="text" class="search search-input" placeholder="' . i8ln("Search Level") . '" />
         <div class="raidegg-list list">';
         $i = 0;
         $z = 0;
