@@ -4100,6 +4100,8 @@ function markPortalData(event) { // eslint-disable-line no-unused-vars
                     toastr.options = toastrOptions
                 },
                 complete: function complete() {
+                    jQuery('label[for="portals-switch"]').click()
+                    jQuery('label[for="portals-switch"]').click()
                     lastportals = false
                     updateMap()
                     $('.modal').modal('hide')
