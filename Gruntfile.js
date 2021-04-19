@@ -126,7 +126,6 @@ module.exports = function (grunt) {
                     'static/dist/data/grunttype.min.json': 'static/data/grunttype.json',
                     'static/dist/data/raidegg.min.json': 'static/data/raidegg.json',
                     'static/dist/data/searchmarkerstyle.min.json': 'static/data/searchmarkerstyle.json',
-                    'static/dist/data/weather.min.json': 'static/data/weather.json',
                     'static/dist/locales/de.min.json': 'static/locales/de.json',
                     'static/dist/locales/fr.min.json': 'static/locales/fr.json',
                     'static/dist/locales/it.min.json': 'static/locales/it.json',

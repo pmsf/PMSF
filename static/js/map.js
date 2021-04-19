@@ -97,8 +97,6 @@ var locationMarker
 var rangeMarkers = ['pokemon', 'pokestop', 'gym']
 var storeZoom = true
 var moves
-var weather // eslint-disable-line no-unused-vars
-var boostedMons // eslint-disable-line no-unused-vars
 
 var oSwLat
 var oSwLng
@@ -3410,22 +3408,22 @@ function loadRawData() {
                 case 400:
                     toastr['error'](i8ln('Please check connectivity or reduce marker settings.'), i8ln('Not Acceptable'))
                     toastr.options = toastrOptions
-                    setTimeout(window.location.href = './logout', 5000)
+                    setTimeout(function () { window.location.href = './logout' }, 5000)
                     break
                 case 401:
                     toastr['error'](i8ln('Another device just logged in with the same account.'), i8ln('Unauthorized'))
                     toastr.options = toastrOptions
-                    setTimeout(window.location.href = './login?action=login&error=invalid-token', 5000)
+                    setTimeout(function () { window.location.href = './login?action=login&error=invalid-token' }, 5000)
                     break
                 case 403:
                     toastr['error'](i8ln('This action is not allowed.'), i8ln('Forbidden'))
                     toastr.options = toastrOptions
-                    setTimeout(window.location.href = './logout', 5000)
+                    setTimeout(function () { window.location.href = './logout' }, 5000)
                     break
                 case 404:
                     toastr['error'](i8ln('Session tokens haven\'t been found.'), i8ln('Not found'))
                     toastr.options = toastrOptions
-                    setTimeout(window.location.href = './login?action=login&error=no-id', 5000)
+                    setTimeout(function () { window.location.href = './login?action=login&error=no-id' }, 5000)
                     break
                 case 413:
                     toastr['error'](i8ln('This is too much data for me please zoom in.'), i8ln('You got me overwhelmed'))
@@ -6599,11 +6597,6 @@ $(function () {
 
     $.getJSON('static/dist/data/moves.min.json').done(function (data) {
         moves = data
-    })
-
-    $.getJSON('static/dist/data/weather.min.json').done(function (data) {
-        weather = data.weather
-        boostedMons = data.boosted_mons
     })
 
     $.getJSON('static/dist/data/questtype.min.json', {_: new Date().getTime()}).done(function (data) {
