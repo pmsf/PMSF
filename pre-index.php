@@ -1662,17 +1662,7 @@ if (!$noLoadingScreen) {
     <div class="loader" style="display:none;"></div>
     <div class="global-raid-modal"></div>
 
-    <?php if (! $noManualNests) { ?>
-        <div class="global-nest-modal" style="display:none;">
-            <input type="hidden" name="pokemonID" class="pokemonID"/>
-            <?php pokemonFilterImages($noPokemonNumbers, 'pokemonSubmitFilter(event)', $excludeNestMons, 5); ?>
-            <div class="button-container">
-                <button type="button" onclick="manualNestData(event);" class="submitting-nests"><i
-                        class="fas fa-binoculars"></i> <?php echo i8ln('Submit Nest'); ?>
-                </button>
-            </div>
-        </div>
-    <?php } ?>
+
     <?php if (! $noRenamePokestops) { ?>
         <div class="renamepokestop-modal" style="display: none;">
             <input type="text" id="pokestop-name" name="pokestop-name"
@@ -2349,6 +2339,30 @@ if (!$noLoadingScreen) {
         </div>
     </div>
 </div>
+<!-- Edit Nest Modal -->
+<?php if (! $noManualNests) { ?>
+    <div class="modal fade" id="editNestModal" tabindex="-1" aria-labelledby="editNestModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="editNestModalLabel"><?php echo i8ln('Edit Nest'); ?></h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <input type="hidden" id="editnestid" name="editnestid" value=""/>
+                    <input type="hidden" name="pokemonID" class="pokemonID"/>
+                    <?php pokemonFilterImages($noPokemonNumbers, 'pokemonSubmitFilter(event)', $excludeNestMons, 5); ?>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" onclick="manualNestData(event);" class="btn btn-primary">
+                        <i class="fas fa-binoculars"></i> <?php echo i8ln('Edit Nest'); ?>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+<?php } ?>
+
 <!-- End of Modals -->
 
 <!-- Scripts -->

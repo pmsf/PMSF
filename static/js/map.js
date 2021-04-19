@@ -4166,9 +4166,9 @@ function submitNewNest(event) { // eslint-disable-line no-unused-vars
 }
 
 function manualNestData(event) { // eslint-disable-line no-unused-vars
-    var cont = $(event.target).parent().parent().parent()
-    var nestId = cont.find('.submitting-nests').data('nest')
-    var pokemonId = cont.find('.pokemonID').val()
+    var form = $(event.target).parent().parent().parent()
+    var nestId = form.find('[name="editnestid"]').val()
+    var pokemonId = form.find('.pokemonID').val()
     if (nestId && nestId !== '' && pokemonId && pokemonId !== '') {
         if (confirm(i8ln('I confirm this is an accurate sighting of a quest'))) {
             return $.ajax({
@@ -4192,7 +4192,7 @@ function manualNestData(event) { // eslint-disable-line no-unused-vars
                     updateMap()
                     jQuery('label[for="nests-switch"]').click()
                     jQuery('label[for="nests-switch"]').click()
-                    $('.ui-dialog-content').dialog('close')
+                    $('.modal').modal('hide')
                 }
             })
         }
@@ -4557,27 +4557,10 @@ function markPoi(event, poiMarkType) { // eslint-disable-line no-unused-vars
 }
 
 function openNestModal(event) { // eslint-disable-line no-unused-vars
-    $('.ui-dialog').remove()
+    $('.modal').modal('hide')
     var val = $(event.target).data('id')
-    $('.submitting-nests').attr('data-nest', val)
-    $('.global-nest-modal').clone().dialog({
-        modal: true,
-        maxHeight: 600,
-        title: i8ln('Submit a Nest'),
-        buttons: {},
-        classes: {
-            'ui-dialog': 'ui-dialog nest-widget-popup'
-        },
-        open: function (event, ui) {
-            $('.nest-widget-popup .pokemon-list-cont').each(function (index) {
-                $(this).attr('id', 'pokemon-list-cont-7' + index)
-                var options = {
-                    valueNames: ['name', 'types', 'id']
-                }
-                var monList = new List('pokemon-list-cont-7' + index, options) // eslint-disable-line no-unused-vars
-            })
-        }
-    })
+    $('#editnestid').val(val)
+    $('#editNestModal').modal('show')
 }
 function openRaidModal(event) { // eslint-disable-line no-unused-vars
     $('.ui-dialog').remove()
