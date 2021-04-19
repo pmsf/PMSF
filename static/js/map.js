@@ -2904,7 +2904,7 @@ function communityLabel(item) {
     str += '<div class="d-grid">'
     if (item.has_invite_url === 1 && (item.invite_url !== '#' || item.invite_url !== undefined)) {
         str +=
-        '<button class="btn btn-primary btn-sm" onclick="window.location.href=\'' + item.invite_url + '\'" type="button"><i class="fas fa-comments"></i> ' + i8ln('Join Now') + '</button>'
+        '<button class="btn btn-primary btn-sm" onclick="window.open(\'' + item.invite_url + '\',\'_blank\')" type="button"><i class="fas fa-comments"></i> ' + i8ln('Join Now') + '</button>'
     }
     if (!noEditCommunity) {
         str +=
