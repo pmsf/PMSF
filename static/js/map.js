@@ -2991,7 +2991,9 @@ function portalLabel(item) {
     var str = '<center><div style="font-weight:900;font-size:12px;margin-left:10px;">' + item.name + '</div></center>' +
         '<center><img id="' + item.external_id + '" src="' + item.url + '" align"middle" style="width:175px;height:auto;" onclick="openFullscreenModal(document.getElementById(\'' + item.external_id + '\').src)"/></center>'
     if (!noConvertPortal) {
-        str += '<center><div><a class="button" style="margin-top:0px;margin-bottom:3px;" onclick="openConvertPortalModal(event);" data-id="' + item.external_id + '"><i class="fas fa-sync-alt convert-portal"></i>' + ' ' + i8ln('Convert portal') + '</a></div></center>'
+        str += '<div class="d-grid">' +
+            '<button class="btn btn-primary btn-sm" role="button" onclick="openConvertPortalModal(event);" data-id="' + item.external_id + '"><i class="fas fa-sync-alt convert-portal"></i>' + ' ' + i8ln('Convert portal') + '</button>' +
+            '</div>'
     }
     str += '<center><div>' + i8ln('Last updated') + ': ' + updated + '</div></center>' +
         '<center><div>' + i8ln('Date imported') + ': ' + imported + '</div></center>' +
@@ -4024,11 +4026,24 @@ function convertPokestopData(event) { // eslint-disable-line no-unused-vars
         }
     }
 }
-function convertPortalToPokestopData(event) { // eslint-disable-line no-unused-vars
+
+function convertPortalData(event, targetType) { // eslint-disable-line no-unused-vars
     var form = $(event.target).parent().parent()
-    var portalId = form.find('.convertportalid').val()
+    var portalId = form.find('[name="convertportalid"]').val()
+    var confirmText = ''
+    var errorText = ''
     if (portalId && portalId !== '') {
-        if (confirm(i8ln('I confirm this portal is a pokestop'))) {
+        switch (targetType) {
+            case '1':
+                confirmText = i8ln('I confirm this portal is a pokestop')
+                errorText = i8ln('Portal ID got lost somewhere.') + ',' + i8ln('Error converting to Pokestop')
+                break
+            case '2':
+                confirmText = i8ln('I confirm this portal is a gym')
+                errorText = i8ln('Portal ID got lost somewhere.') + ',' + i8ln('Error converting to Pokestop')
+                break
+        }
+        if (confirm(confirmText)) {
             return $.ajax({
                 url: 'submit',
                 type: 'POST',
@@ -4036,61 +4051,37 @@ function convertPortalToPokestopData(event) { // eslint-disable-line no-unused-v
                 dataType: 'json',
                 cache: false,
                 data: {
-                    'action': 'convertportalpokestop',
-                    'portalId': portalId
+                    'action': 'convertportal',
+                    'portalId': portalId,
+                    'targetType': targetType
                 },
                 error: function error() {
                     // Display error toast
-                    toastr['error'](i8ln('Portal ID got lost somewhere.'), i8ln('Error converting to Pokestop'))
+                    toastr['error'](errorText)
                     toastr.options = toastrOptions
                 },
                 complete: function complete() {
-                    lastgyms = false
-                    jQuery('label[for="pokestops-switch"]').click()
-                    jQuery('label[for="pokestops-switch"]').click()
-                    lastpokestops = false
+                    switch (targetType) {
+                        case '1':
+                            jQuery('label[for="pokestops-switch"]').click()
+                            jQuery('label[for="pokestops-switch"]').click()
+                            lastpokestops = false
+                            break
+                        case '2':
+                            lastgyms = false
+                            break
+                    }
                     updateMap()
-                    $('.ui-dialog-content').dialog('close')
+                    $('.modal').modal('hide')
                 }
             })
         }
     }
 }
-function convertPortalToGymData(event) { // eslint-disable-line no-unused-vars
+
+function markPortalData(event) { // eslint-disable-line no-unused-vars
     var form = $(event.target).parent().parent()
-    var portalId = form.find('.convertportalid').val()
-    if (portalId && portalId !== '') {
-        if (confirm(i8ln('I confirm this portal is a gym'))) {
-            return $.ajax({
-                url: 'submit',
-                type: 'POST',
-                timeout: 300000,
-                dataType: 'json',
-                cache: false,
-                data: {
-                    'action': 'convertportalgym',
-                    'portalId': portalId
-                },
-                error: function error() {
-                    // Display error toast
-                    toastr['error'](i8ln('Portal ID got lost somewhere.'), i8ln('Error converting to Gym'))
-                    toastr.options = toastrOptions
-                },
-                complete: function complete() {
-                    lastgyms = false
-                    jQuery('label[for="pokestops-switch"]').click()
-                    jQuery('label[for="pokestops-switch"]').click()
-                    lastpokestops = false
-                    updateMap()
-                    $('.ui-dialog-content').dialog('close')
-                }
-            })
-        }
-    }
-}
-function markPortalChecked(event) { // eslint-disable-line no-unused-vars
-    var form = $(event.target).parent().parent()
-    var portalId = form.find('.convertportalid').val()
+    var portalId = form.find('[name="convertportalid"]').val()
     if (portalId && portalId !== '') {
         if (confirm(i8ln('I confirm this portal is not a Pokestop or Gym'))) {
             return $.ajax({
@@ -4111,12 +4102,13 @@ function markPortalChecked(event) { // eslint-disable-line no-unused-vars
                 complete: function complete() {
                     lastportals = false
                     updateMap()
-                    $('.ui-dialog-content').dialog('close')
+                    $('.modal').modal('hide')
                 }
             })
         }
     }
 }
+
 function deleteNest(event) { // eslint-disable-line no-unused-vars
     var button = $(event.target)
     var nestid = button.data('id')
@@ -4832,18 +4824,10 @@ function openConvertPokestopModal(event) { // eslint-disable-line no-unused-vars
 }
 
 function openConvertPortalModal(event) { // eslint-disable-line no-unused-vars
-    $('.ui-dialog').remove()
+    $('.modal').modal('hide')
     var val = $(event.target).data('id')
-    $('.convertportalid').val(val)
-    $('.convert-portal-modal').clone().dialog({
-        modal: true,
-        maxHeight: 600,
-        buttons: {},
-        title: i8ln('Convert to Pokestop/Gym'),
-        classes: {
-            'ui-dialog': 'ui-dialog raid-widget-popup'
-        }
-    })
+    $('#convertportalid').val(val)
+    $('#convertPortalModal').modal('show')
 }
 
 function openEditCommunityModal(event) { // eslint-disable-line no-unused-vars

@@ -479,6 +479,53 @@ class RDM extends Submit
         }
     }
 
+    public function convert_portal($portalId, $targetType, $loggedUser)
+    {
+        global $db, $manualdb, $noPortals, $noDiscordSubmitLogChannel, $discordSubmitLogChannelUrl, $submitMapUrl;
+        if ($noPortals === true) {
+            http_response_code(401);
+            die();
+        }
+        switch ($targetType) {
+            case '1':
+                $portal = $manualdb->get("ingress_portals", [ 'lat', 'lon', 'name', 'url' ], [ 'external_id' => $portalId ]);
+                if (! empty($portalId)) {
+                    $cols     = [
+                        'id'       => $portalId,
+                        'lat'      => $portal['lat'],
+                        'lon'      => $portal['lon'],
+                        'name'     => $portal['name'],
+                        'url'      => $portal['url'],
+                        'updated'  => time(),
+                        'enabled'  => 1
+                    ];
+                    $db->insert("pokestop", $cols);
+                    if ($noDiscordSubmitLogChannel === false) {
+                        $data = array("content" => '```Converted portal with id "' . $portalId . '." New Pokestop: "' . $portal['name'] . '". ```' . $submitMapUrl . '/?lat=' . $portal['lat'] . '&lon=' . $portal['lon'] . '&zoom=18 ', "username" => $loggedUser);
+                        sendToWebhook($discordSubmitLogChannelUrl, ($data));
+                    }
+                }
+                break;
+            case '2':
+                $portal = $manualdb->get("ingress_portals", [ 'lat', 'lon', 'name', 'url' ], [ 'external_id' => $portalId ]);
+                if (! empty($portalId)) {
+                    $cols     = [
+                        'id'       => $portalId,
+                        'lat'      => $portal['lat'],
+                        'lon'      => $portal['lon'],
+                        'name'     => $portal['name'],
+                        'url'      => $portal['url'],
+                        'updated'  => time()
+                    ];
+                    $db->insert("gym", $cols);
+                    if ($noDiscordSubmitLogChannel === false) {
+                        $data = array("content" => '```Converted portal with id "' . $portalId . '." New Gym: "' . $portal['name'] . '". ```' . $submitMapUrl . '/?lat=' . $portal['lat'] . '&lon=' . $portal['lon'] . '&zoom=18 ', "username" => $loggedUser);
+                        sendToWebhook($discordSubmitLogChannelUrl, ($data));
+                    }
+                }
+                break;
+        }
+    }
     public function convert_portal_pokestop($portalId, $loggedUser)
     {
         global $db, $manualdb, $noPortals, $noDiscordSubmitLogChannel, $discordSubmitLogChannelUrl, $submitMapUrl;

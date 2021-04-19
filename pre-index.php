@@ -1688,18 +1688,7 @@ if (!$noLoadingScreen) {
             </div>
         </div>
     <?php } ?>
-    <?php if (! $noPortals) { ?>
-        <div class="convert-portal-modal" style="display: none;">
-            <div class="button-container">
-                <button type="button" onclick="convertPortalToPokestopData(event);" class="convertportalid">
-                    <i class="fas fa-sync-alt"></i> <?php echo i8ln('Convert to Pokéstop'); ?></button>
-                <button type="button" onclick="convertPortalToGymData(event);" class="convertportalid">
-                    <i class="fas fa-sync-alt"></i> <?php echo i8ln('Convert to Gym'); ?></button>
-                <button type="button" onclick="markPortalChecked(event);" class="convertportalid">
-                    <i class="fas fa-times"></i> <?php echo i8ln('No Pokéstop or Gym'); ?></button>
-            </div>
-        </div>
-    <?php } ?>
+
 
     <?php if (! $noDiscordLogin) { ?>
         <div class="accessdenied-modal" style="display: none;">
@@ -2377,7 +2366,30 @@ if (!$noLoadingScreen) {
         </div>
     </div>
 <?php } ?>
-
+<!-- Convert Portal Modal -->
+<?php if (! $noPortals) { ?>
+    <div class="modal fade" id="convertPortalModal" tabindex="-1" aria-labelledby="convertPortalModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="convertPortalModalLabel"><?php echo i8ln('Convert to Pokestop/Gym'); ?></h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <div class="d-grid">
+                        <input type="hidden" id="convertportalid" name="convertportalid" value=""/>
+                        <button type="button" class="btn btn-primary btn-sm" id="1" onclick="convertPortalData(event, this.id);"><i class="fas fa-sync-alt"></i> <?php echo i8ln('Convert to Pokéstop'); ?></button>
+                        <button type="button" class="btn btn-primary btn-sm" id="2" onclick="convertPortalData(event, this.id);"><i class="fas fa-sync-alt"></i> <?php echo i8ln('Convert to Gym'); ?></button>
+                        <button type="button" class="btn btn-primary btn-sm" onclick="markPortalData(event);"><i class="fas fa-times"></i> <?php echo i8ln('No Pokéstop or Gym'); ?></button>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-primary" data-bs-dismiss="modal"><?php echo i8ln('Close') ?></button>
+                </div>
+            </div>
+        </div>
+    </div>
+<?php } ?>
 <!-- End of Modals -->
 
 <!-- Scripts -->

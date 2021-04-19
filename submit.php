@@ -39,6 +39,7 @@ $itemAmount             = ! empty($_POST['itemamount']) ? $_POST['itemamount'] :
 $dust                   = ! empty($_POST['dust']) ? $_POST['dust'] : '';
 $nestId                 = ! empty($_POST['nestId']) ? $_POST['nestId'] : '';
 $portalId               = ! empty($_POST['portalId']) ? $_POST['portalId'] : '';
+$targetType             = ! empty($_POST['targetType']) ? $_POST['targetType'] : '';
 $communityId            = ! empty($_POST['communityId']) ? $_POST['communityId'] : '';
 $communityName          = ! empty($_POST['communityName']) ? $_POST['communityName'] : '';
 $communityDescription   = ! empty($_POST['communityDescription']) ? $_POST['communityDescription'] : '';
@@ -107,11 +108,8 @@ if ($action === "convertpokestop") {
 if ($action === "quest") {
     $submit->submit_quest($pokestopId, $questType, $questTarget, $conditionType, $catchPokemonCategory, $catchPokemon, $raidLevel, $throwType, $curveThrow, $rewardType, $encounter, $item, $itemAmount, $dust, $loggedUser);
 }
-if ($action === "convertportalpokestop") {
-    $submit->convert_portal_pokestop($portalId, $loggedUser);
-}
-if ($action === "convertportalgym") {
-    $submit->convert_portal_gym($portalId, $loggedUser);
+if ($action === "convertportal") {
+    $submit->convert_portal($portalId, $targetType, $loggedUser);
 }
 if ($action === "markportal") {
     $submitManual->mark_portal($portalId, $loggedUser);
