@@ -2028,7 +2028,12 @@ if (!$noLoadingScreen) {
             <nav>
                 <div class="nav nav-tabs nav-fill" id="nav-tab" role="tablist">
                     <?php $firstTab = 1; ?>
-                    <?php if (! $noQuests && ! $noSearchManualQuests) { ?>
+                    <?php if (! $noSearchPokemon) { ?>
+                        <button class="nav-link<?php echo (($firstTab == 1) ? " active" : ""); ?>" id="nav-pokemons-tab" data-bs-toggle="tab" data-bs-target="#nav-pokemonss" type="button" role="tab" aria-controls="nav-pokemons" aria-selected="true"><img src="static/images/pokeball.png" width="30" height="30"/></button>
+                    <?php
+                    $firstTab++;
+                    }
+                    if (! $noQuests && ! $noSearchManualQuests) { ?>
                         <button class="nav-link<?php echo (($firstTab == 1) ? " active" : ""); ?>" id="nav-rewards-tab" data-bs-toggle="tab" data-bs-target="#nav-rewards" type="button" role="tab" aria-controls="nav-rewards" aria-selected="true"><img src="static/images/reward.png" width="30" height="30"/></button>
                     <?php
                     $firstTab++;
@@ -2056,7 +2061,17 @@ if (!$noLoadingScreen) {
             <div class="modal-body">
                 <div class="tab-content" id="nav-tabContent">
                     <?php $firstTabContent = 1; ?>
-                    <?php if (! $noQuests && ! $noSearchManualQuests) { ?>
+                    <?php if (! $noSearchPokemon) { ?>
+                        <div class="tab-pane fade<?php echo (($firstTabContent == 1) ? " show active" : ""); ?>" id="nav-pokemons" role="tabpanel" aria-labelledby="nav-pokemons-tab">
+                            <input type="search" id="pokemon-search" oninput="searchAjax($(this))" name="pokemon-search"
+                                   placeholder="<?php echo i8ln('Enter Pokémon or Type'); ?>"
+                                   data-type="pokemon" class="search-input"/>
+                            <ul id="pokemon-search-results" class="search-results pokemon-results"></ul>
+                        </div>
+                    <?php
+                    $firstTabContent++;
+                    }
+                    if (! $noQuests && ! $noSearchManualQuests) { ?>
                         <div class="tab-pane fade<?php echo (($firstTabContent == 1) ? " show active" : ""); ?>" id="nav-rewards" role="tabpanel" aria-labelledby="nav-rewards-tab">
                             <input type="search" id="reward-search" oninput="searchAjax($(this))" name="reward-search"
                                    placeholder="<?php echo i8ln('Enter Reward Name'); ?>"

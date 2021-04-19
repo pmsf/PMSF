@@ -42,7 +42,9 @@ if (strtolower($map) === "rdm") {
     }
     $search = new \Search\RocketMap_MAD();
 }
-
+if ($action === "pokemon") {
+    $data["pokemon"] = $search->search_pokemon($lat, $lon, $term);
+}
 if ($action === "reward") {
     $data["reward"] = $search->search_reward($lat, $lon, $term);
 }
