@@ -25,15 +25,6 @@ if (strtolower($map) === "rdm") {
         $dbname = "gym";
     }
     $search = new \Search\RDM();
-} elseif (strtolower($map) === "monocle") {
-    if (strtolower($fork) === "pmsf") {
-        if ($action === "pokestops") {
-            $dbname = "pokestops";
-        } elseif ($action === "forts") {
-            $dbname = "forts";
-        }
-        $search = new \Search\Monocle_PMSF();
-    }
 } elseif (strtolower($map) === "rocketmap") {
     if ($action === "pokestops") {
         $dbname = "pokestop";

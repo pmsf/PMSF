@@ -16,20 +16,16 @@ require_once(__DIR__ . '/../utils.php');
 
 
 $libs[] = "Scanner.php";
-$libs[] = "Monocle.php";
-$libs[] = "Monocle_PMSF.php";
 $libs[] = "RDM.php";
 $libs[] = "RocketMap.php";
 $libs[] = "RocketMap_MAD.php";
 $libs[] = "search/Search.php";
 $libs[] = "search/Search.rdm.php";
-$libs[] = "search/Search.monocle_pmsf.php";
 $libs[] = "search/Search.rocketmap_mad.php";
 $libs[] = "submit/Submit.php";
 $libs[] = "submit/Manual.php";
 $libs[] = "submit/Submit.rdm.php";
 $libs[] = "submit/Submit.rocketmap_mad.php";
-$libs[] = "submit/Submit.monocle_pmsf.php";
 $libs[] = "Manual.php";
 
 // Include libraries

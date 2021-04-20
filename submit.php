@@ -64,10 +64,6 @@ if (strtolower($map) === "rdm") {
     if (strtolower($fork) === "default" || strtolower($fork) === "beta") {
         $submit = new \Submit\RDM();
     }
-} elseif (strtolower($map) === "monocle") {
-    if (strtolower($fork) === "pmsf") {
-        $submit = new \Submit\Monocle_PMSF();
-    }
 } elseif (strtolower($map) === "rocketmap") {
     if (strtolower($fork) === "mad") {
         $submit = new \Submit\Rocketmap_MAD();
