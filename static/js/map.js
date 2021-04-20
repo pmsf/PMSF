@@ -3981,7 +3981,7 @@ function renamePokestopData(event) { // eslint-disable-line no-unused-vars
 }
 function convertPokestopData(event) { // eslint-disable-line no-unused-vars
     var form = $(event.target).parent().parent()
-    var pokestopId = form.find('.convertpokestopid').val()
+    var pokestopId = form.find('[name="convertpokestopid"]').val()
     if (pokestopId && pokestopId !== '') {
         if (confirm(i8ln('I confirm this pokestop is now a gym'))) {
             return $.ajax({
@@ -4005,7 +4005,7 @@ function convertPokestopData(event) { // eslint-disable-line no-unused-vars
                     jQuery('label[for="pokestops-switch"]').click()
                     lastpokestops = false
                     updateMap()
-                    $('.ui-dialog-content').dialog('close')
+                    $('.modal').modal('hide')
                 }
             })
         }
@@ -4782,18 +4782,10 @@ function openRenameGymModal(event) { // eslint-disable-line no-unused-vars
 }
 
 function openConvertPokestopModal(event) { // eslint-disable-line no-unused-vars
-    $('.ui-dialog').remove()
+    $('.modal').modal('hide')
     var val = $(event.target).data('id')
-    $('.convertpokestopid').val(val)
-    $('.convert-modal').clone().dialog({
-        modal: true,
-        maxHeight: 600,
-        buttons: {},
-        title: i8ln('Convert Pokéstop to Gym'),
-        classes: {
-            'ui-dialog': 'ui-dialog raid-widget-popup'
-        }
-    })
+    $('#convertpokestopid').val(val)
+    $('#convertPokestopModal').modal('show')
 }
 
 function openConvertPortalModal(event) { // eslint-disable-line no-unused-vars
