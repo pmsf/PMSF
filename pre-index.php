@@ -446,59 +446,59 @@ if (!$noLoadingScreen) {
         <div id="nav-accordion">
             <?php
             if (! $noPokemon || ! $noNests) {
-                if (! $noNests) {
-                    ?>
-                <h3><?php echo i8ln('Pokémon &amp; Nests') ?></h3>
+                if (!$noNests && !$noPokemon) { ?>
+                    <h3><?php echo i8ln('Pokémon &amp; Nests') ?></h3>
                 <?php
-                } else {
-                    ?>
-                <h3><?php echo i8ln('Pokémon') ?></h3>
+                } elseif (!$noPokemon) { ?>
+                    <h3><?php echo i8ln('Pokémon') ?></h3>
                 <?php
-                } ?>
+                } elseif (!$noNests) { ?>
+                    <h3><?php echo i8ln('Nests') ?></h3>
+                <?php } ?>
                 <div>
                 <?php
-                if (! $noPokemon) {
+                if (!$noPokemon) {
                     echo '<div class=" form-control-2 switch-container" style="float:none;height:35px;margin-bottom:0px;">
-                    <h3>' . i8ln('Pokémon') . '</h3>
-                    <div class="onoffswitch">
-                        <input id="pokemon-switch" type="checkbox" name="pokemon-switch" class="onoffswitch-checkbox"
-                               checked>
-                        <label class="onoffswitch-label" for="pokemon-switch">
-                            <span class="switch-label" data-on="On" data-off="Off"></span>
-                            <span class="switch-handle"></span>
-                        </label>
-                    </div>
-        </div>';
-                } ?>
-                <?php
-                if (! $noNests) {
-                    echo '<div class="form-control-2 switch-container" style="float:none;height:35px;margin-bottom:0px;">
-                    <h3>' . i8ln('Nests') . '</h3>
-                    <div class="onoffswitch">
-                        <input id="nests-switch" type="checkbox" name="nests-switch"
-                               class="onoffswitch-checkbox" checked>
-                        <label class="onoffswitch-label" for="nests-switch">
-                            <span class="switch-label" data-on="On" data-off="Off"></span>
-                            <span class="switch-handle"></span>
-                        </label>
-                    </div>
-                </div>';
-                } ?>
-                <div id="nest-filter-wrapper" style="display:none">
-                    <?php
-                    if (! $noNestPolygon && ! $noNests) {
-                        echo '<div class="form-control-2 switch-container">
-                        <h3>' . i8ln('Nest Polygon') . '</h3>
+                        <h3>' . i8ln('Pokémon') . '</h3>
                         <div class="onoffswitch">
-                            <input id="nest-polygon-switch" type="checkbox" name="nest-polygon-switch" class="onoffswitch-checkbox">
-                            <label class="onoffswitch-label" for="nest-polygon-switch">
+                            <input id="pokemon-switch" type="checkbox" name="pokemon-switch" class="onoffswitch-checkbox"
+                                   checked>
+                            <label class="onoffswitch-label" for="pokemon-switch">
                                 <span class="switch-label" data-on="On" data-off="Off"></span>
                                 <span class="switch-handle"></span>
                             </label>
                         </div>
                     </div>';
+                } ?>
+                <?php
+                if (!$noNests) {
+                    echo '<div class="form-control-2 switch-container" style="float:none;height:35px;margin-bottom:0px;">
+                        <h3>' . i8ln('Nests') . '</h3>
+                        <div class="onoffswitch">
+                            <input id="nests-switch" type="checkbox" name="nests-switch"
+                                   class="onoffswitch-checkbox" checked>
+                            <label class="onoffswitch-label" for="nests-switch">
+                                <span class="switch-label" data-on="On" data-off="Off"></span>
+                                <span class="switch-handle"></span>
+                            </label>
+                        </div>
+                    </div>';
+                } ?>
+                <div id="nest-filter-wrapper" style="display:none">
+                    <?php
+                    if (!$noNestPolygon && !$noNests) {
+                        echo '<div class="form-control-2 switch-container">
+                            <h3>' . i8ln('Nest Polygon') . '</h3>
+                            <div class="onoffswitch">
+                                <input id="nest-polygon-switch" type="checkbox" name="nest-polygon-switch" class="onoffswitch-checkbox">
+                                <label class="onoffswitch-label" for="nest-polygon-switch">
+                                    <span class="switch-label" data-on="On" data-off="Off"></span>
+                                    <span class="switch-handle"></span>
+                                </label>
+                            </div>
+                        </div>';
                     }
-                    if (! $noNestsAvg && ! $noNests) {
+                    if (!$noNestsAvg && !$noNests) {
                         echo '<div class="nestslider-div">
                                 <input type="range" min="0" max="' . $nestAvgMax . '" value="' . $nestAvgDefault . '" class="nestslider" id="nestrange">
                                 <p>' . i8ln('Show nest average. ') . '<span id="nestavg"></span></p>
@@ -542,20 +542,20 @@ if (!$noLoadingScreen) {
                             <?php
                             if (! $noMinIV) {
                                 echo '<div class="form-control-2" >
-                            <label for="min-iv">
-                                <h3>' . i8ln('Min IV') . '</h3>
-                                <input id="min-iv" type="number" min="0" max="100" name="min-iv" placeholder="' . i8ln('Min IV') . '"/>
-                            </label>
-                        </div>';
+                                    <label for="min-iv">
+                                        <h3>' . i8ln('Min IV') . '</h3>
+                                        <input id="min-iv" type="number" min="0" max="100" name="min-iv" placeholder="' . i8ln('Min IV') . '"/>
+                                    </label>
+                                </div>';
                             } ?>
                             <?php
                             if (! $noMinLevel) {
                                 echo '<div class="form-control-2">
-                            <label for="min-level">
-                                <h3>' . i8ln('Min Lvl') . '</h3>
-                                <input id="min-level" type="number" min="0" max="100" name="min-level" placeholder="' . i8ln('Min Lvl') . '"/>
-                            </label>
-                        </div>';
+                                    <label for="min-level">
+                                        <h3>' . i8ln('Min Lvl') . '</h3>
+                                        <input id="min-level" type="number" min="0" max="100" name="min-level" placeholder="' . i8ln('Min Lvl') . '"/>
+                                    </label>
+                                </div>';
                             } ?>
                         </div>
                         <div id="tabs">
@@ -619,85 +619,82 @@ if (!$noLoadingScreen) {
             ?>
             <?php
             if (! $noPokestops) {
-                if (! $noQuests) {
-                    ?>
-        <h3><?php echo i8ln('Pokéstops &amp; Quests'); ?></h3>
+                if (!$noQuests) { ?>
+                    <h3><?php echo i8ln('Pokéstops &amp; Quests'); ?></h3>
                 <?php
-                } else {
-                    ?>
-        <h3><?php echo i8ln('Pokéstops'); ?></h3>
-                <?php
-                } ?>
-        <div>
+                } else { ?>
+                    <h3><?php echo i8ln('Pokéstops'); ?></h3>
+                <?php } ?>
+                <div>
                 <?php
                 if (! $noPokestops) {
                     echo '<div class="form-control-2 switch-container" style="float:none;height:35px;margin-bottom:0px;">
-                    <h3>' . i8ln('Pokéstops') . '</h3>
-                    <div class="onoffswitch">
-                        <input id="pokestops-switch" type="checkbox" name="pokestops-switch"
-                               class="onoffswitch-checkbox" checked>
-                        <label class="onoffswitch-label" for="pokestops-switch">
-                            <span class="switch-label" data-on="On" data-off="Off"></span>
-                            <span class="switch-handle"></span>
-                        </label>
-                    </div>
-                </div>';
+                        <h3>' . i8ln('Pokéstops') . '</h3>
+                        <div class="onoffswitch">
+                            <input id="pokestops-switch" type="checkbox" name="pokestops-switch"
+                                   class="onoffswitch-checkbox" checked>
+                            <label class="onoffswitch-label" for="pokestops-switch">
+                                <span class="switch-label" data-on="On" data-off="Off"></span>
+                                <span class="switch-handle"></span>
+                            </label>
+                        </div>
+                    </div>';
                 } ?>
-                    <div id="pokestops-filter-wrapper" style="display:none">
+                <div id="pokestops-filter-wrapper" style="display:none">
                 <?php
                 if (! $noAllPokestops) {
                     echo '<div class="form-control-2 switch-container" style="float:none;height:35px;margin-bottom:0px;">
-                    <h3>' . i8ln('All Pokéstops') . '</h3>
-                    <div class="onoffswitch">
-                        <input id="allPokestops-switch" type="checkbox" name="allPokestops-switch" class="onoffswitch-checkbox" checked>
-                        <label class="onoffswitch-label" for="allPokestops-switch">
-                            <span class="switch-label" data-on="On" data-off="Off"></span>
-                            <span class="switch-handle"></span>
-                        </label>
-                    </div>
-                </div>';
+                        <h3>' . i8ln('All Pokéstops') . '</h3>
+                        <div class="onoffswitch">
+                            <input id="allPokestops-switch" type="checkbox" name="allPokestops-switch" class="onoffswitch-checkbox" checked>
+                            <label class="onoffswitch-label" for="allPokestops-switch">
+                                <span class="switch-label" data-on="On" data-off="Off"></span>
+                                <span class="switch-handle"></span>
+                            </label>
+                        </div>
+                    </div>';
                 } ?>
                 <?php
                 if (! $noLures) {
                     echo '<div class="form-control-2 switch-container" style="float:none;height:35px;margin-bottom:0px;">
-                    <h3>' . i8ln('Lures only') . '</h3>
-                    <div class="onoffswitch">
-                        <input id="lures-switch" type="checkbox" name="lures-switch"
-                               class="onoffswitch-checkbox" checked>
-                        <label class="onoffswitch-label" for="lures-switch">
-                            <span class="switch-label" data-on="On" data-off="Off"></span>
-                            <span class="switch-handle"></span>
-                        </label>
-                    </div>
-                </div>';
+                        <h3>' . i8ln('Lures only') . '</h3>
+                        <div class="onoffswitch">
+                            <input id="lures-switch" type="checkbox" name="lures-switch"
+                                   class="onoffswitch-checkbox" checked>
+                            <label class="onoffswitch-label" for="lures-switch">
+                                <span class="switch-label" data-on="On" data-off="Off"></span>
+                                <span class="switch-handle"></span>
+                            </label>
+                        </div>
+                    </div>';
                 } ?>
                 <?php
                 if (! $noTeamRocket) {
                     echo '<div class="form-control-2 switch-container" style="float:none;height:35px;margin-bottom:0px;">
-                    <h3>' . i8ln('Team Rocket only') . '</h3>
-                    <div class="onoffswitch">
-                        <input id="rocket-switch" type="checkbox" name="rocket-switch"
-                               class="onoffswitch-checkbox" checked>
-                        <label class="onoffswitch-label" for="rocket-switch">
-                            <span class="switch-label" data-on="On" data-off="Off"></span>
-                            <span class="switch-handle"></span>
-                        </label>
-                    </div>
-                </div>';
+                        <h3>' . i8ln('Team Rocket only') . '</h3>
+                        <div class="onoffswitch">
+                            <input id="rocket-switch" type="checkbox" name="rocket-switch"
+                                   class="onoffswitch-checkbox" checked>
+                            <label class="onoffswitch-label" for="rocket-switch">
+                                <span class="switch-label" data-on="On" data-off="Off"></span>
+                                <span class="switch-handle"></span>
+                            </label>
+                        </div>
+                    </div>';
                 } ?>
                 <div id="rocket-wrapper" style="display:none">
                     <?php
                     if (! $noTeamRocketTimer && ! $noTeamRocket) {
                         echo '<div class="form-control-2 switch-container" style="float:none;height:35px;margin-bottom:0px;">
-                        <h3>' . i8ln('Team Rocket Timer') . '</h3>
-                        <div class="onoffswitch">
-                        <input id="rocket-timer-switch" type="checkbox" name="rocket-timer-switch" class="onoffswitch-checkbox" checked>
-                        <label class="onoffswitch-label" for="rocket-timer-switch">
-                            <span class="switch-label" data-on="On" data-off="Off"></span>
-                            <span class="switch-handle"></span>
-                        </label>
-                    </div>
-                    </div>';
+                            <h3>' . i8ln('Team Rocket Timer') . '</h3>
+                            <div class="onoffswitch">
+                                <input id="rocket-timer-switch" type="checkbox" name="rocket-timer-switch" class="onoffswitch-checkbox" checked>
+                                <label class="onoffswitch-label" for="rocket-timer-switch">
+                                    <span class="switch-label" data-on="On" data-off="Off"></span>
+                                    <span class="switch-handle"></span>
+                                </label>
+                            </div>
+                        </div>';
                     } ?>
                     <div id="grunt-tabs">
                         <ul>
@@ -726,16 +723,17 @@ if (!$noLoadingScreen) {
                 <?php
                 if (! $noQuests) {
                     echo '<div class="form-control-2 switch-container" style="float:none;height:35px;margin-bottom:0px;">
-                    <h3>' . i8ln('Quests only') . '</h3>
-                    <div class="onoffswitch">
-                        <input id="quests-switch" type="checkbox" name="quests-switch"
-                               class="onoffswitch-checkbox" checked>
-                        <label class="onoffswitch-label" for="quests-switch">
-                            <span class="switch-label" data-on="On" data-off="Off"></span>
-                            <span class="switch-handle"></span>
-                        </label>
-                    </div>
-                    </div>'; ?>
+                        <h3>' . i8ln('Quests only') . '</h3>
+                            <div class="onoffswitch">
+                                <input id="quests-switch" type="checkbox" name="quests-switch"
+                                       class="onoffswitch-checkbox" checked>
+                                <label class="onoffswitch-label" for="quests-switch">
+                                    <span class="switch-label" data-on="On" data-off="Off"></span>
+                                    <span class="switch-handle"></span>
+                                </label>
+                            </div>
+                        </div>';
+                    ?>
                     <div id="quests-filter-wrapper" style="display:none">
                         <div id="quests-tabs">
                             <ul>
@@ -820,7 +818,7 @@ if (!$noLoadingScreen) {
                                                     } ?>
                                             </div>
                                             <a href="#" class="select-all-energy"><?php echo i8ln('All') ?>
-                                                <div>
+                                            <div>
                                             </a><a href="#" class="hide-all-energy"><?php echo i8ln('None') ?> </a>
                                         </label>
                                     </div>
@@ -829,8 +827,8 @@ if (!$noLoadingScreen) {
                             } ?>
                         </div>
                         <div class="dustslider">
-                <input type="range" min="0" max="3500" value="500" class="slider" id="dustrange">
-                <p><?php echo i8ln('Show stardust ') ?><span id="dustvalue"></span></p>
+                            <input type="range" min="0" max="3500" value="500" class="slider" id="dustrange">
+                            <p><?php echo i8ln('Show stardust ') ?><span id="dustvalue"></span></p>
                         </div>
                     </div>
                 <?php
@@ -1865,7 +1863,7 @@ if (!$noLoadingScreen) {
     <div class="fullscreen-toggle">
         <button class="map-toggle-button" onClick="toggleFullscreenMap();"><i class="fa fa-expand" aria-hidden="true"></i></button>
     </div>
-    <?php if ( ! $noSearch) { ?>
+    <?php if (!$noSearch || (!$noSearchPokemons && !$noSearchPokestops && !$noSearchGyms && !$noSearchManualQuests && !$noSearchNests && !$noSearchPortals)) { ?>
         <div class="search-container">
             <button type="button" class="search-modal-button" data-bs-toggle="modal" data-bs-target="#searchModal"><i class="fas fa-search" aria-hidden="true"></i></button>
         </div>
@@ -1894,22 +1892,24 @@ if (!$noLoadingScreen) {
     </div>
 </div>
 <!-- InfoModal -->
-<div class="modal fade" id="infoModal" tabindex="-1" aria-labelledby="infoModalLabel" aria-hidden="true">
-    <div class="modal-dialog modal-xl">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title" id="infoModalLabel"><?php echo $infoModalTitle; ?></h5>
-                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-            </div>
-            <div class="modal-body">
-                <?php echo $infoModalContent; ?>
-            </div>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-primary" data-bs-dismiss="modal"><?php echo i8ln('Close') ?></button>
+<?php if (! $noInfoModal) { ?>
+    <div class="modal fade" id="infoModal" tabindex="-1" aria-labelledby="infoModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-xl">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="infoModalLabel"><?php echo $infoModalTitle; ?></h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <?php echo $infoModalContent; ?>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-primary" data-bs-dismiss="modal"><?php echo i8ln('Close') ?></button>
+                </div>
             </div>
         </div>
     </div>
-</div>
+<?php } ?>
 <!-- AccountModal -->
 <div class="modal fade" id="accountModal" tabindex="-1" aria-labelledby="accountModalLabel" aria-hidden="true">
     <div class="modal-dialog">
@@ -2000,344 +2000,354 @@ if (!$noLoadingScreen) {
     </div>
 </div>
 <!-- Search Modal -->
-<div class="modal fade" id="searchModal" tabindex="-1" aria-labelledby="searchModalLabel" aria-hidden="true">
-    <div class="modal-dialog modal-lg">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title" id="searchModalLabel"><?php echo i8ln('Search...'); ?></h5>
-                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-            </div>
-            <nav>
-                <div class="nav nav-tabs nav-fill" id="nav-tab" role="tablist">
-                    <?php $firstTab = 1; ?>
-                    <?php if (! $noSearchPokemon) { ?>
-                        <button class="nav-link<?php echo (($firstTab == 1) ? " active" : ""); ?>" id="nav-pokemons-tab" data-bs-toggle="tab" data-bs-target="#nav-pokemonss" type="button" role="tab" aria-controls="nav-pokemons" aria-selected="true"><img src="static/images/pokeball.png" width="30" height="30"/></button>
-                    <?php
-                    $firstTab++;
-                    }
-                    if (! $noQuests && ! $noSearchManualQuests) { ?>
-                        <button class="nav-link<?php echo (($firstTab == 1) ? " active" : ""); ?>" id="nav-rewards-tab" data-bs-toggle="tab" data-bs-target="#nav-rewards" type="button" role="tab" aria-controls="nav-rewards" aria-selected="true"><img src="static/images/reward.png" width="30" height="30"/></button>
-                    <?php
-                    $firstTab++;
-                    }
-                    if (! $noSearchNests) { ?>
-                        <button class="nav-link<?php echo (($firstTab == 1) ? " active" : ""); ?>" id="nav-nests-tab" data-bs-toggle="tab" data-bs-target="#nav-nests" type="button" role="tab" aria-controls="nav-nests" aria-selected="true"><img src="static/images/nest.png" width="30" height="30"/></button>
-                    <?php
-                    $firstTab++;
-                    }
-                    if (! $noSearchGyms) { ?>
-                        <button class="nav-link<?php echo (($firstTab == 1) ? " active" : ""); ?>" id="nav-gyms-tab" data-bs-toggle="tab" data-bs-target="#nav-gyms" type="button" role="tab" aria-controls="nav-gyms" aria-selected="true"><img src="static/forts/ingame/Uncontested.png" width="30" height="30"/></button>
-                    <?php
-                    $firstTab++;
-                    }
-                    if (! $noSearchPokestops) { ?>
-                        <button class="nav-link<?php echo (($firstTab == 1) ? " active" : ""); ?>" id="nav-pokestops-tab" data-bs-toggle="tab" data-bs-target="#nav-pokestops" type="button" role="tab" aria-controls="nav-pokestops" aria-selected="true"><img src="static/forts/Pstop.png" width="30" height="30"/></button>
-                    <?php
-                    $firstTab++;
-                    }
-                    if (! $noSearchPortals) { ?>
-                        <button class="nav-link<?php echo (($firstTab == 1) ? " active" : ""); ?>" id="nav-portals-tab" data-bs-toggle="tab" data-bs-target="#nav-portals" type="button" role="tab" aria-controls="nav-portals" aria-selected="true"><img src="static/images/portal.png" width="30" height="30"/></button>
-                    <?php } ?>
+<?php if (!$noSearch || (!$noSearchPokemons && !$noSearchPokestops && !$noSearchGyms && !$noSearchManualQuests && !$noSearchNests && !$noSearchPortals)) { ?>
+    <div class="modal fade" id="searchModal" tabindex="-1" aria-labelledby="searchModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="searchModalLabel"><?php echo i8ln('Search...'); ?></h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
-            </nav>
-            <div class="modal-body">
-                <div class="tab-content" id="nav-tabContent">
-                    <?php $firstTabContent = 1; ?>
-                    <?php if (! $noSearchPokemon) { ?>
-                        <div class="tab-pane fade<?php echo (($firstTabContent == 1) ? " show active" : ""); ?>" id="nav-pokemons" role="tabpanel" aria-labelledby="nav-pokemons-tab">
-                            <input type="search" id="pokemon-search" oninput="searchAjax($(this))" name="pokemon-search"
-                                   placeholder="<?php echo i8ln('Enter Pokémon or Type'); ?>"
-                                   data-type="pokemon" class="search-input"/>
-                            <ul id="pokemon-search-results" class="search-results pokemon-results"></ul>
-                        </div>
-                    <?php
-                    $firstTabContent++;
-                    }
-                    if (! $noQuests && ! $noSearchManualQuests) { ?>
-                        <div class="tab-pane fade<?php echo (($firstTabContent == 1) ? " show active" : ""); ?>" id="nav-rewards" role="tabpanel" aria-labelledby="nav-rewards-tab">
-                            <input type="search" id="reward-search" oninput="searchAjax($(this))" name="reward-search"
-                                   placeholder="<?php echo i8ln('Enter Reward Name'); ?>"
-                                   data-type="reward" class="search-input"/>
-                            <ul id="reward-search-results" class="search-results reward-results"></ul>
-                        </div>
-                    <?php
-                    $firstTabContent++;
-                    }
-                    if (! $noSearchNests) { ?>
-                        <div class="tab-pane fade<?php echo (($firstTabContent == 1) ? " show active" : ""); ?>" id="nav-nests" role="tabpanel" aria-labelledby="nav-nests-tab">
-                            <input type="search" id="nest-search" oninput="searchAjax($(this))" name="nest-search"
-                                   placeholder="<?php echo i8ln('Enter nest Pokémon or Type'); ?>"
-                                   data-type="nests" class="search-input"/>
-                            <ul id="nest-search-results" class="search-results nest-results"></ul>
-                        </div>
-                    <?php
-                    $firstTabContent++;
-                    }
-                    if (! $noSearchGyms) { ?>
-                        <div class="tab-pane fade<?php echo (($firstTabContent == 1) ? " show active" : ""); ?>" id="nav-gyms" role="tabpanel" aria-labelledby="nav-gyms-tab">
-                            <input type="search" id="gym-search" oninput="searchAjax($(this))" name="gym-search"
-                                   placeholder="<?php echo i8ln('Enter Gym Name'); ?>"
-                                   data-type="forts" class="search-input"/>
-                            <ul id="gym-search-results" class="search-results gym-results"></ul>
-                        </div>
-                    <?php
-                    $firstTabContent++;
-                    }
-                    if (! $noSearchPokestops) { ?>
-                        <div class="tab-pane fade<?php echo (($firstTabContent == 1) ? " show active" : ""); ?>" id="nav-pokestops" role="tabpanel" aria-labelledby="nav-pokestops-tab">
-                            <input type="search" id="pokestop-search" oninput="searchAjax($(this))" name="pokestop-search"
-                                   placeholder="<?php echo i8ln('Enter Pokéstop Name'); ?>" data-type="pokestops"
-                                   class="search-input"/>
-                            <ul id="pokestop-search-results" class="search-results pokestop-results"></ul>
-                        </div>
-                    <?php
-                    $firstTabContent++;
-                    }
-                    if (! $noSearchPortals) { ?>
-                        <div class="tab-pane fade<?php echo (($firstTabContent == 1) ? " show active" : ""); ?>" id="nav-portals" role="tabpanel" aria-labelledby="nav-portals-tab">
-                            <input type="search" id="portals-search" oninput="searchAjax($(this))" name="portals-search"
-                                   placeholder="<?php echo i8ln('Enter Portal Name'); ?>" data-type="portals"
-                                   class="search-input"/>
-                            <ul id="portals-search-results" class="search-results portals-results"></ul>
-                        </div>
-                    <?php } ?>
+                <nav>
+                    <div class="nav nav-tabs nav-fill" id="nav-tab" role="tablist">
+                        <?php $firstTab = 1; ?>
+                        <?php if (!$noPokemon && !$noSearchPokemon) { ?>
+                            <button class="nav-link<?php echo (($firstTab == 1) ? " active" : ""); ?>" id="nav-pokemons-tab" data-bs-toggle="tab" data-bs-target="#nav-pokemonss" type="button" role="tab" aria-controls="nav-pokemons" aria-selected="true"><img src="static/images/pokeball.png" width="30" height="30"/></button>
+                        <?php
+                        $firstTab++;
+                        }
+                        if (!$noQuests && !$noSearchManualQuests) { ?>
+                            <button class="nav-link<?php echo (($firstTab == 1) ? " active" : ""); ?>" id="nav-rewards-tab" data-bs-toggle="tab" data-bs-target="#nav-rewards" type="button" role="tab" aria-controls="nav-rewards" aria-selected="true"><img src="static/images/reward.png" width="30" height="30"/></button>
+                        <?php
+                        $firstTab++;
+                        }
+                        if (!$noNests && !$noSearchNests) { ?>
+                            <button class="nav-link<?php echo (($firstTab == 1) ? " active" : ""); ?>" id="nav-nests-tab" data-bs-toggle="tab" data-bs-target="#nav-nests" type="button" role="tab" aria-controls="nav-nests" aria-selected="true"><img src="static/images/nest.png" width="30" height="30"/></button>
+                        <?php
+                        $firstTab++;
+                        }
+                        if (!$noGyms && !$noSearchGyms) { ?>
+                            <button class="nav-link<?php echo (($firstTab == 1) ? " active" : ""); ?>" id="nav-gyms-tab" data-bs-toggle="tab" data-bs-target="#nav-gyms" type="button" role="tab" aria-controls="nav-gyms" aria-selected="true"><img src="static/forts/ingame/Uncontested.png" width="30" height="30"/></button>
+                        <?php
+                        $firstTab++;
+                        }
+                        if (!$noPokestops && !$noSearchPokestops) { ?>
+                            <button class="nav-link<?php echo (($firstTab == 1) ? " active" : ""); ?>" id="nav-pokestops-tab" data-bs-toggle="tab" data-bs-target="#nav-pokestops" type="button" role="tab" aria-controls="nav-pokestops" aria-selected="true"><img src="static/forts/Pstop.png" width="30" height="30"/></button>
+                        <?php
+                        $firstTab++;
+                        }
+                        if (!$noPortals && !$noSearchPortals) { ?>
+                            <button class="nav-link<?php echo (($firstTab == 1) ? " active" : ""); ?>" id="nav-portals-tab" data-bs-toggle="tab" data-bs-target="#nav-portals" type="button" role="tab" aria-controls="nav-portals" aria-selected="true"><img src="static/images/portal.png" width="30" height="30"/></button>
+                        <?php } ?>
+                    </div>
+                </nav>
+                <div class="modal-body">
+                    <div class="tab-content" id="nav-tabContent">
+                        <?php $firstTabContent = 1; ?>
+                        <?php if (!$noPokemon && !$noSearchPokemon) { ?>
+                            <div class="tab-pane fade<?php echo (($firstTabContent == 1) ? " show active" : ""); ?>" id="nav-pokemons" role="tabpanel" aria-labelledby="nav-pokemons-tab">
+                                <input type="search" id="pokemon-search" oninput="searchAjax($(this))" name="pokemon-search"
+                                       placeholder="<?php echo i8ln('Enter Pokémon or Type'); ?>"
+                                       data-type="pokemon" class="search-input"/>
+                                <ul id="pokemon-search-results" class="search-results pokemon-results"></ul>
+                            </div>
+                        <?php
+                        $firstTabContent++;
+                        }
+                        if (!$noQuests && !$noSearchManualQuests) { ?>
+                            <div class="tab-pane fade<?php echo (($firstTabContent == 1) ? " show active" : ""); ?>" id="nav-rewards" role="tabpanel" aria-labelledby="nav-rewards-tab">
+                                <input type="search" id="reward-search" oninput="searchAjax($(this))" name="reward-search"
+                                       placeholder="<?php echo i8ln('Enter Reward Name'); ?>"
+                                       data-type="reward" class="search-input"/>
+                                <ul id="reward-search-results" class="search-results reward-results"></ul>
+                            </div>
+                        <?php
+                        $firstTabContent++;
+                        }
+                        if (!$noNests && !$noSearchNests) { ?>
+                            <div class="tab-pane fade<?php echo (($firstTabContent == 1) ? " show active" : ""); ?>" id="nav-nests" role="tabpanel" aria-labelledby="nav-nests-tab">
+                                <input type="search" id="nest-search" oninput="searchAjax($(this))" name="nest-search"
+                                       placeholder="<?php echo i8ln('Enter nest Pokémon or Type'); ?>"
+                                       data-type="nests" class="search-input"/>
+                                <ul id="nest-search-results" class="search-results nest-results"></ul>
+                            </div>
+                        <?php
+                        $firstTabContent++;
+                        }
+                        if (!$noGyms && !$noSearchGyms) { ?>
+                            <div class="tab-pane fade<?php echo (($firstTabContent == 1) ? " show active" : ""); ?>" id="nav-gyms" role="tabpanel" aria-labelledby="nav-gyms-tab">
+                                <input type="search" id="gym-search" oninput="searchAjax($(this))" name="gym-search"
+                                       placeholder="<?php echo i8ln('Enter Gym Name'); ?>"
+                                       data-type="forts" class="search-input"/>
+                                <ul id="gym-search-results" class="search-results gym-results"></ul>
+                            </div>
+                        <?php
+                        $firstTabContent++;
+                        }
+                        if (!$noPokestops && !$noSearchPokestops) { ?>
+                            <div class="tab-pane fade<?php echo (($firstTabContent == 1) ? " show active" : ""); ?>" id="nav-pokestops" role="tabpanel" aria-labelledby="nav-pokestops-tab">
+                                <input type="search" id="pokestop-search" oninput="searchAjax($(this))" name="pokestop-search"
+                                       placeholder="<?php echo i8ln('Enter Pokéstop Name'); ?>" data-type="pokestops"
+                                       class="search-input"/>
+                                <ul id="pokestop-search-results" class="search-results pokestop-results"></ul>
+                            </div>
+                        <?php
+                        $firstTabContent++;
+                        }
+                        if (!$noPortals && !$noSearchPortals) { ?>
+                            <div class="tab-pane fade<?php echo (($firstTabContent == 1) ? " show active" : ""); ?>" id="nav-portals" role="tabpanel" aria-labelledby="nav-portals-tab">
+                                <input type="search" id="portals-search" oninput="searchAjax($(this))" name="portals-search"
+                                       placeholder="<?php echo i8ln('Enter Portal Name'); ?>" data-type="portals"
+                                       class="search-input"/>
+                                <ul id="portals-search-results" class="search-results portals-results"></ul>
+                            </div>
+                        <?php } ?>
+                    </div>
                 </div>
             </div>
         </div>
     </div>
-</div>
+<?php } ?>
 <!-- SubmitModal -->
-<div class="modal fade" id="submitModal" tabindex="-1" aria-labelledby="submitModalLabel" aria-hidden="true">
-    <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title" id="submitModalLabel"><?php echo i8ln('Submit Data to Map') ?></h5>
-                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-            </div>
-            <input type="hidden" value="" name="submitLatitude" class="submitLatitude"/>
-            <input type="hidden" value="" name="submitLongitude" class="submitLongitude"/>
-            <nav>
-                <div class="nav nav-tabs nav-fill" id="nav-tab" role="tablist">
-                    <?php $firstTab = 1; ?>
-                    <?php if (! $noManualPokemon && !$noPokemon) { ?>
-                        <button class="nav-link<?php echo (($firstTab == 1) ? " active" : ""); ?>" id="nav-pokemon-tab" data-bs-toggle="tab" data-bs-target="#nav-pokemon" type="button" role="tab" aria-controls="nav-pokemon" aria-selected="true"><img src="static/images/pokeball.png" width="30" height="30"/></button>
-                    <?php
-                    $firstTab++;
-                    }
-                    if (! $noManualGyms && !$noGyms) { ?>
-                        <button class="nav-link<?php echo (($firstTab == 1) ? " active" : ""); ?>" id="nav-gym-tab" data-bs-toggle="tab" data-bs-target="#nav-gym" type="button" role="tab" aria-controls="nav-gym" aria-selected="true"><img src="static/forts/ingame/Uncontested.png" width="30" height="30"/></button>
-                    <?php
-                    $firstTab++;
-                    }
-                    if (! $noManualPokestops && !$noPokestops) { ?>
-                        <button class="nav-link<?php echo (($firstTab == 1) ? " active" : ""); ?>" id="nav-pokestop-tab" data-bs-toggle="tab" data-bs-target="#nav-pokestop" type="button" role="tab" aria-controls="nav-pokestop" aria-selected="true"><img src="static/forts/Pstop.png" width="30" height="30"/></button>
-                    <?php
-                    $firstTab++;
-                    }
-                    if (! $noAddNewNests && !$noNests) { ?>
-                        <button class="nav-link<?php echo (($firstTab == 1) ? " active" : ""); ?>" id="nav-nest-tab" data-bs-toggle="tab" data-bs-target="#nav-nest" type="button" role="tab" aria-controls="nav-nest" aria-selected="true"><img src="static/images/nest.png" width="30" height="30"/></button>
-                    <?php
-                    $firstTab++;
-                    }
-                    if (! $noAddNewCommunity && !$noCommunity) { ?>
-                        <button class="nav-link<?php echo (($firstTab == 1) ? " active" : ""); ?>" id="nav-community-tab" data-bs-toggle="tab" data-bs-target="#nav-community" type="button" role="tab" aria-controls="nav-community" aria-selected="true"><img src="static/images/community.png" width="30" height="30"/></button>
-                    <?php
-                    $firstTab++;
-                    }
-                    if (! $noAddPoi && !$noPoi) { ?>
-                        <button class="nav-link<?php echo (($firstTab == 1) ? " active" : ""); ?>" id="nav-poi-tab" data-bs-toggle="tab" data-bs-target="#nav-poi" type="button" role="tab" aria-controls="nav-poi" aria-selected="true"><img src="static/images/playground.png" width="30" height="30"/></button>
-                    <?php } ?>
-                 </div>
-            </nav>
-            <div class="modal-body">
-                <div class="tab-content" id="nav-tabContent">
-                    <?php $firstTabContent = 1; ?>
-                    <?php if (! $noManualPokemon && !$noPokemon) { ?>
-                        <div class="tab-pane fade<?php echo (($firstTabContent == 1) ? " show active" : ""); ?>" id="nav-pokemon" role="tabpanel" aria-labelledby="nav-pokemon-tab">
-                            <input type="hidden" name="pokemonID" class="pokemonID"/>
-                            <?php pokemonFilterImages($noPokemonNumbers, 'pokemonSubmitFilter(event)', $pokemonToExclude, 6); ?>
-                            <div class="modal-footer">
-                                <button type="button" class="btn btn-primary" onclick="manualPokemonData(event);">
-                                    <i class="fas fa-binoculars"></i> <?php echo i8ln('Submit Pokémon'); ?>
-                                </button>
-                            </div>
-                        </div>
-                    <?php
-                    $firstTabContent++;
-                    }
-                    if (! $noManualGyms && !$noGyms) { ?>
-                        <div class="tab-pane fade<?php echo (($firstTabContent == 1) ? " show active" : ""); ?>" id="nav-gym" role="tabpanel" aria-labelledby="nav-gym-tab">
-                            <input type="text" id="gym-name" name="gym-name"
-                                   placeholder="<?php echo i8ln('Enter Gym Name'); ?>" data-type="forts"
-                                   class="search-input">
-                            <div class="modal-footer">
-                                <button type="button" class="btn btn-primary" onclick="manualGymData(event);"><i
-                                        class="fas fa-binoculars"></i> <?php echo i8ln('Submit Gym'); ?>
-                                </button>
-                            </div>
-                        </div>
-                    <?php
-                    $firstTabContent++;
-                    }
-                    if (! $noManualPokestops && !$noPokestops) { ?>
-                        <div class="tab-pane fade<?php echo (($firstTabContent == 1) ? " show active" : ""); ?>" id="nav-pokestop" role="tabpanel" aria-labelledby="nav-pokestop-tab">
-                            <input type="text" id="pokestop-name" name="pokestop-name"
-                                   placeholder="<?php echo i8ln('Enter Pokéstop Name'); ?>" data-type="pokestop"
-                                   class="search-input">
-                            <div class="modal-footer">
-                                <button type="button" class="btn btn-primary" onclick="manualPokestopData(event);"><i
-                                        class="fas fa-binoculars"></i> <?php echo i8ln('Submit Pokéstop'); ?>
-                                </button>
-                            </div>
-                        </div>
-                    <?php
-                    $firstTabContent++;
-                    }
-                    if (! $noAddNewNests && !$noNests) { ?>
-                        <div class="tab-pane fade<?php echo (($firstTabContent == 1) ? " show active" : ""); ?>" id="nav-nest" role="tabpanel" aria-labelledby="nav-nest-tab">
-                            <input type="hidden" name="pokemonID" class="pokemonID"/>
-                            <?php pokemonFilterImages($noPokemonNumbers, 'pokemonSubmitFilter(event)', $excludeNestMons, 7); ?>
-                            <div class="modal-footer">
-                                <button type="button" class="btn btn-primary" onclick="submitNewNest(event);"><i
-                                        class="fas fa-binoculars"></i> <?php echo i8ln('Submit Nest'); ?>
-                                </button>
-                            </div>
-                        </div>
-                    <?php
-                    $firstTabContent++;
-                    }
-                    if (! $noAddNewCommunity && !$noCommunity) { ?>
-                        <div class="tab-pane fade<?php echo (($firstTabContent == 1) ? " show active" : ""); ?>" id="nav-community" role="tabpanel" aria-labelledby="nav-community-tab">
-                            <input type="text" name="community-name" class="community-name"
-                                   placeholder="<?php echo i8ln('Enter Community Name'); ?>" data-type="name"
-                                   class="search-input">
-                            <input type="text" name="community-description" class="community-description"
-                                   placeholder="<?php echo i8ln('Enter description'); ?>" data-type="description"
-                                   class="search-input">
-                            <input type="text" name="community-invite" class="community-invite"
-                                   placeholder="<?php echo i8ln('Whatsapp, Telegram, Discord Link'); ?>" data-type="invite-link"
-                                   class="search-input">
-                            <h6><center><?php echo i8ln('Link must be valid and start with https://'); ?></center></h6>
-                            <div class="modal-footer">
-                                <button type="button" class="btn btn-primary" onclick="submitNewCommunity(event);">
-                                    <i class="fas fa-comments"></i> <?php echo i8ln('Submit Community'); ?>
-                                </button>
-                            </div>
-                        </div>
-                    <?php
-                    $firstTabContent++;
-                    }
-                    if (! $noAddPoi && !$noPoi) { ?>
-                        <div class="tab-pane fade<?php echo (($firstTabContent == 1) ? " show active" : ""); ?>" id="nav-poi" role="tabpanel" aria-labelledby="nav-poi-tab">
-                            <input type="text" name="poi-name" class="poi-name"placeholder="<?php echo i8ln('Enter candidate Name'); ?>" data-type="name" class="search-input">
-                            <input type="text" name="poi-description" class="poi-description" placeholder="<?php echo i8ln('Enter candidate description'); ?>" data-type="description" class="search-input">
-                            <input type="text" name="poi-notes" class="poi-notes" placeholder="<?php echo i8ln('Enter field notes'); ?>" data-type="description" class="search-input">
-                            <?php if (! empty($imgurCID)) { ?>
-                                <div class="d-grid gap-1">
-                                    <label class="btn btn-primary" type="button"><i class="fas fa-upload"></i> <?php echo i8ln('Upload POI Image') ?>
-                                        <input type="file" id="poi-image" name="poi-image" accept="image/*" class="poi-image" data-type="poi-image" class="search-input" onchange='previewPoiImage(event)' hidden>
-                                    </label>
-                                    <img class="rounded mx-auto d-block" id='preview-poi-image' name='preview-poi-image' width="50px" height="auto">
-                                    <label class="btn btn-primary" type="button"><i class="fas fa-upload"></i> <?php echo i8ln('Upload Surrounding Image') ?>
-                                        <input type="file" id="poi-surrounding" name="poi-surrounding" accept="image/*" class="poi-surrounding" data-type="poi-surrounding" class="search-input" onchange='previewPoiSurrounding(event)' hidden>
-                                    </label>
-                                    <img class="rounded mx-auto d-block" id='preview-poi-surrounding' name='preview-poi-surrounding' width="50px" height="auto" >
+<?php if (!$noSubmit || (!$noManualPokemon && !$noManualPokestops && !$noManualGyms && !$noManualQuests && !$noManualNests && !$noAddNewCommunity && !$noAddPoi)) { ?>
+    <div class="modal fade" id="submitModal" tabindex="-1" aria-labelledby="submitModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="submitModalLabel"><?php echo i8ln('Submit Data to Map') ?></h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <input type="hidden" value="" name="submitLatitude" class="submitLatitude"/>
+                <input type="hidden" value="" name="submitLongitude" class="submitLongitude"/>
+                <nav>
+                    <div class="nav nav-tabs nav-fill" id="nav-tab" role="tablist">
+                        <?php $firstTab = 1; ?>
+                        <?php if (! $noManualPokemon && !$noPokemon) { ?>
+                            <button class="nav-link<?php echo (($firstTab == 1) ? " active" : ""); ?>" id="nav-pokemon-tab" data-bs-toggle="tab" data-bs-target="#nav-pokemon" type="button" role="tab" aria-controls="nav-pokemon" aria-selected="true"><img src="static/images/pokeball.png" width="30" height="30"/></button>
+                        <?php
+                        $firstTab++;
+                        }
+                        if (! $noManualGyms && !$noGyms) { ?>
+                            <button class="nav-link<?php echo (($firstTab == 1) ? " active" : ""); ?>" id="nav-gym-tab" data-bs-toggle="tab" data-bs-target="#nav-gym" type="button" role="tab" aria-controls="nav-gym" aria-selected="true"><img src="static/forts/ingame/Uncontested.png" width="30" height="30"/></button>
+                        <?php
+                        $firstTab++;
+                        }
+                        if (! $noManualPokestops && !$noPokestops) { ?>
+                            <button class="nav-link<?php echo (($firstTab == 1) ? " active" : ""); ?>" id="nav-pokestop-tab" data-bs-toggle="tab" data-bs-target="#nav-pokestop" type="button" role="tab" aria-controls="nav-pokestop" aria-selected="true"><img src="static/forts/Pstop.png" width="30" height="30"/></button>
+                        <?php
+                        $firstTab++;
+                        }
+                        if (! $noAddNewNests && !$noNests) { ?>
+                            <button class="nav-link<?php echo (($firstTab == 1) ? " active" : ""); ?>" id="nav-nest-tab" data-bs-toggle="tab" data-bs-target="#nav-nest" type="button" role="tab" aria-controls="nav-nest" aria-selected="true"><img src="static/images/nest.png" width="30" height="30"/></button>
+                        <?php
+                        $firstTab++;
+                        }
+                        if (! $noAddNewCommunity && !$noCommunity) { ?>
+                            <button class="nav-link<?php echo (($firstTab == 1) ? " active" : ""); ?>" id="nav-community-tab" data-bs-toggle="tab" data-bs-target="#nav-community" type="button" role="tab" aria-controls="nav-community" aria-selected="true"><img src="static/images/community.png" width="30" height="30"/></button>
+                        <?php
+                        $firstTab++;
+                        }
+                        if (! $noAddPoi && !$noPoi) { ?>
+                            <button class="nav-link<?php echo (($firstTab == 1) ? " active" : ""); ?>" id="nav-poi-tab" data-bs-toggle="tab" data-bs-target="#nav-poi" type="button" role="tab" aria-controls="nav-poi" aria-selected="true"><img src="static/images/playground.png" width="30" height="30"/></button>
+                        <?php } ?>
+                     </div>
+                </nav>
+                <div class="modal-body">
+                    <div class="tab-content" id="nav-tabContent">
+                        <?php $firstTabContent = 1; ?>
+                        <?php if (! $noManualPokemon && !$noPokemon) { ?>
+                            <div class="tab-pane fade<?php echo (($firstTabContent == 1) ? " show active" : ""); ?>" id="nav-pokemon" role="tabpanel" aria-labelledby="nav-pokemon-tab">
+                                <input type="hidden" name="pokemonID" class="pokemonID"/>
+                                <?php pokemonFilterImages($noPokemonNumbers, 'pokemonSubmitFilter(event)', $pokemonToExclude, 6); ?>
+                                <div class="modal-footer">
+                                    <button type="button" class="btn btn-primary" onclick="manualPokemonData(event);">
+                                        <i class="fas fa-binoculars"></i> <?php echo i8ln('Submit Pokémon'); ?>
+                                    </button>
                                 </div>
-                            <?php } ?>
-                            <div class="modal-footer">
-                                <h6><center><?php echo i8ln('If you submit a POI candidate you agree that your discord username will be shown in the marker label'); ?></center></h6>
-                                <button type="button" class="btn btn-primary" onclick="submitPoi(event);"><i class="fas fa-comments"></i> <?php echo i8ln('Submit POI candidate'); ?></button>
                             </div>
-                        </div>
-                    <?php } ?>
+                        <?php
+                        $firstTabContent++;
+                        }
+                        if (! $noManualGyms && !$noGyms) { ?>
+                            <div class="tab-pane fade<?php echo (($firstTabContent == 1) ? " show active" : ""); ?>" id="nav-gym" role="tabpanel" aria-labelledby="nav-gym-tab">
+                                <input type="text" id="gym-name" name="gym-name"
+                                       placeholder="<?php echo i8ln('Enter Gym Name'); ?>" data-type="forts"
+                                       class="search-input">
+                                <div class="modal-footer">
+                                    <button type="button" class="btn btn-primary" onclick="manualGymData(event);"><i
+                                            class="fas fa-binoculars"></i> <?php echo i8ln('Submit Gym'); ?>
+                                    </button>
+                                </div>
+                            </div>
+                        <?php
+                        $firstTabContent++;
+                        }
+                        if (! $noManualPokestops && !$noPokestops) { ?>
+                            <div class="tab-pane fade<?php echo (($firstTabContent == 1) ? " show active" : ""); ?>" id="nav-pokestop" role="tabpanel" aria-labelledby="nav-pokestop-tab">
+                                <input type="text" id="pokestop-name" name="pokestop-name"
+                                       placeholder="<?php echo i8ln('Enter Pokéstop Name'); ?>" data-type="pokestop"
+                                       class="search-input">
+                                <div class="modal-footer">
+                                    <button type="button" class="btn btn-primary" onclick="manualPokestopData(event);"><i
+                                            class="fas fa-binoculars"></i> <?php echo i8ln('Submit Pokéstop'); ?>
+                                    </button>
+                                </div>
+                            </div>
+                        <?php
+                        $firstTabContent++;
+                        }
+                        if (! $noAddNewNests && !$noNests) { ?>
+                            <div class="tab-pane fade<?php echo (($firstTabContent == 1) ? " show active" : ""); ?>" id="nav-nest" role="tabpanel" aria-labelledby="nav-nest-tab">
+                                <input type="hidden" name="pokemonID" class="pokemonID"/>
+                                <?php pokemonFilterImages($noPokemonNumbers, 'pokemonSubmitFilter(event)', $excludeNestMons, 7); ?>
+                                <div class="modal-footer">
+                                    <button type="button" class="btn btn-primary" onclick="submitNewNest(event);"><i
+                                            class="fas fa-binoculars"></i> <?php echo i8ln('Submit Nest'); ?>
+                                    </button>
+                                </div>
+                            </div>
+                        <?php
+                        $firstTabContent++;
+                        }
+                        if (! $noAddNewCommunity && !$noCommunity) { ?>
+                            <div class="tab-pane fade<?php echo (($firstTabContent == 1) ? " show active" : ""); ?>" id="nav-community" role="tabpanel" aria-labelledby="nav-community-tab">
+                                <input type="text" name="community-name" class="community-name"
+                                       placeholder="<?php echo i8ln('Enter Community Name'); ?>" data-type="name"
+                                       class="search-input">
+                                <input type="text" name="community-description" class="community-description"
+                                       placeholder="<?php echo i8ln('Enter description'); ?>" data-type="description"
+                                       class="search-input">
+                                <input type="text" name="community-invite" class="community-invite"
+                                       placeholder="<?php echo i8ln('Whatsapp, Telegram, Discord Link'); ?>" data-type="invite-link"
+                                       class="search-input">
+                                <h6><center><?php echo i8ln('Link must be valid and start with https://'); ?></center></h6>
+                                <div class="modal-footer">
+                                    <button type="button" class="btn btn-primary" onclick="submitNewCommunity(event);">
+                                        <i class="fas fa-comments"></i> <?php echo i8ln('Submit Community'); ?>
+                                    </button>
+                                </div>
+                            </div>
+                        <?php
+                        $firstTabContent++;
+                        }
+                        if (! $noAddPoi && !$noPoi) { ?>
+                            <div class="tab-pane fade<?php echo (($firstTabContent == 1) ? " show active" : ""); ?>" id="nav-poi" role="tabpanel" aria-labelledby="nav-poi-tab">
+                                <input type="text" name="poi-name" class="poi-name"placeholder="<?php echo i8ln('Enter candidate Name'); ?>" data-type="name" class="search-input">
+                                <input type="text" name="poi-description" class="poi-description" placeholder="<?php echo i8ln('Enter candidate description'); ?>" data-type="description" class="search-input">
+                                <input type="text" name="poi-notes" class="poi-notes" placeholder="<?php echo i8ln('Enter field notes'); ?>" data-type="description" class="search-input">
+                                <?php if (! empty($imgurCID)) { ?>
+                                    <div class="d-grid gap-1">
+                                        <label class="btn btn-primary" type="button"><i class="fas fa-upload"></i> <?php echo i8ln('Upload POI Image') ?>
+                                            <input type="file" id="poi-image" name="poi-image" accept="image/*" class="poi-image" data-type="poi-image" class="search-input" onchange='previewPoiImage(event)' hidden>
+                                        </label>
+                                        <img class="rounded mx-auto d-block" id='preview-poi-image' name='preview-poi-image' width="50px" height="auto">
+                                        <label class="btn btn-primary" type="button"><i class="fas fa-upload"></i> <?php echo i8ln('Upload Surrounding Image') ?>
+                                            <input type="file" id="poi-surrounding" name="poi-surrounding" accept="image/*" class="poi-surrounding" data-type="poi-surrounding" class="search-input" onchange='previewPoiSurrounding(event)' hidden>
+                                        </label>
+                                        <img class="rounded mx-auto d-block" id='preview-poi-surrounding' name='preview-poi-surrounding' width="50px" height="auto" >
+                                    </div>
+                                <?php } ?>
+                                <div class="modal-footer">
+                                    <h6><center><?php echo i8ln('If you submit a POI candidate you agree that your discord username will be shown in the marker label'); ?></center></h6>
+                                    <button type="button" class="btn btn-primary" onclick="submitPoi(event);"><i class="fas fa-comments"></i> <?php echo i8ln('Submit POI candidate'); ?></button>
+                                </div>
+                            </div>
+                        <?php } ?>
+                    </div>
                 </div>
             </div>
         </div>
     </div>
-</div>
+<?php } ?>
 <!-- Edit Community Modal -->
-<div class="modal fade" id="editCommunityModal" tabindex="-1" aria-labelledby="editCommunityModalLabel" aria-hidden="true">
-    <div class="modal-dialog">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title" id="editCommunityModalLabel"><?php echo i8ln('Edit Community') ?></h5>
-                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-            </div>
-            <div class="modal-body">
-                <input type="hidden" id="editcommunityid" name="editcommunityid" value=""/>
-                <input type="text" id="community-name" name="community-name" placeholder="<?php echo i8ln('Enter New community Name'); ?>" data-type="community-name" class="search-input">
-                <input type="text" id="community-description" name="community-description" placeholder="<?php echo i8ln('Enter New community Description'); ?>" data-type="community-description" class="search-input">
-                <input type="text" id="community-invite" name="community-invite" placeholder="<?php echo i8ln('Enter New community Invite link'); ?>" data-type="community-invite" class="search-input">
-            </div>
-            <div class="modal-footer">
-                <button type="button" onclick="editCommunityData(event);" class="btn btn-primary">
-                    <i class="fas fa-save"></i> <?php echo i8ln('Save Changes'); ?>
-                </button>
-            </div>
-        </div>
-    </div>
-</div>
-<!-- Edit Poi Modal -->
-<div class="modal fade" id="editPoiModal" tabindex="-1" aria-labelledby="editPoiModalLabel" aria-hidden="true">
-    <div class="modal-dialog">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title" id="editPoiModalLabel"><?php echo i8ln('Edit POI') ?></h5>
-                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-            </div>
-            <div class="modal-body">
-                <input type="hidden" id="editpoiid" name="editpoiid" value=""/>
-                <input type="text" id="poi-name" name="poi-name" placeholder="<?php echo i8ln('Enter New POI Name'); ?>" data-type="poi-name" class="search-input">
-                <input type="text" id="poi-description" name="poi-description" placeholder="<?php echo i8ln('Enter New POI Description'); ?>" data-type="poi-description" class="search-input">
-                <input type="text" id="poi-notes" name="poi-notes" placeholder="<?php echo i8ln('Enter New POI Notes'); ?>" data-type="poi-notes" class="search-input">
-                    <?php if (! empty($imgurCID)) {
-                    ?>
-                        <div class="d-grid gap-1">
-                            <label class="btn btn-primary" type="button"><i class="fas fa-upload"></i> <?php echo i8ln('Upload POI Image') ?>
-                                <input type="file" id="poi-image" name="poi-image" accept="image/*" class="poi-image" data-type="poi-image" class="search-input" onchange='previewPoiImage(event)' hidden>
-                            </label>
-                            <img class="rounded mx-auto d-block" id='edit-preview-poi-image' name="preview-poi-image" width="50px" height="auto">
-                            <label class="btn btn-primary" type="button"><i class="fas fa-upload"></i> <?php echo i8ln('Upload Surrounding Image') ?>
-                                <input type="file" id="poi-surrounding" name="poi-surrounding" accept="image/*" class="poi-surrounding" data-type="poi-surrounding" class="search-input" onchange='previewPoiSurrounding(event)' hidden>
-                            </label>
-                            <img class="rounded mx-auto d-block" id='edit-preview-poi-surrounding' name="preview-poi-surrounding" width="50px" height="auto" >
-                        </div>
-                    <?php
-                } ?>
-            </div>
-            <div class="modal-footer">
-                <button type="button" onclick="editPoiData(event);" class="btn btn-primary">
-                    <i class="fas fa-save"></i> <?php echo i8ln('Save Changes'); ?>
-                </button>
-            </div>
-        </div>
-    </div>
-</div>
-<!-- Mark POI Modal -->
-<div class="modal fade" id="markPoiModal" tabindex="-1" aria-labelledby="markPoiModalLabel" aria-hidden="true">
-    <div class="modal-dialog">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title" id="markPoiModalLabel"><?php echo i8ln('Mark POI'); ?></h5>
-                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-            </div>
-            <div class="modal-body">
-                <div class="d-grid">
-                    <input type="hidden" id="markpoiid" name="markpoiid" value=""/>
-                    <button type="button" class="btn btn-primary btn-sm" id="2" onclick="markPoi(event, this.id);"><i class="fas fa-sync-alt"></i> <?php echo i8ln('Submitted'); ?></button>
-                    <button type="button" class="btn btn-primary btn-sm" id="3" onclick="markPoi(event, this.id);"><i class="fas fa-times"></i> <?php echo i8ln('Declined'); ?></button>
-                    <button type="button" class="btn btn-primary btn-sm" id="4" onclick="markPoi(event, this.id);"><i class="fas fa-times"></i> <?php echo i8ln('Resubmitted'); ?></button>
-                    <button type="button" class="btn btn-primary btn-sm" id="5" onclick="markPoi(event, this.id);"><i class="fas fa-times"></i> <?php echo i8ln('Not a candidate'); ?></button>
+<?php if (!$noCommunity && !$noEditCommunity) { ?>
+    <div class="modal fade" id="editCommunityModal" tabindex="-1" aria-labelledby="editCommunityModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="editCommunityModalLabel"><?php echo i8ln('Edit Community') ?></h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <input type="hidden" id="editcommunityid" name="editcommunityid" value=""/>
+                    <input type="text" id="community-name" name="community-name" placeholder="<?php echo i8ln('Enter New community Name'); ?>" data-type="community-name" class="search-input">
+                    <input type="text" id="community-description" name="community-description" placeholder="<?php echo i8ln('Enter New community Description'); ?>" data-type="community-description" class="search-input">
+                    <input type="text" id="community-invite" name="community-invite" placeholder="<?php echo i8ln('Enter New community Invite link'); ?>" data-type="community-invite" class="search-input">
+                </div>
+                <div class="modal-footer">
+                    <button type="button" onclick="editCommunityData(event);" class="btn btn-primary">
+                        <i class="fas fa-save"></i> <?php echo i8ln('Save Changes'); ?>
+                    </button>
                 </div>
             </div>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-primary" data-bs-dismiss="modal"><?php echo i8ln('Close') ?></button>
+        </div>
+    </div>
+<?php } ?>
+<!-- Edit Poi Modal -->
+<?php if (!$noPoi && !$noEditPoi) { ?>
+    <div class="modal fade" id="editPoiModal" tabindex="-1" aria-labelledby="editPoiModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="editPoiModalLabel"><?php echo i8ln('Edit POI') ?></h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <input type="hidden" id="editpoiid" name="editpoiid" value=""/>
+                    <input type="text" id="poi-name" name="poi-name" placeholder="<?php echo i8ln('Enter New POI Name'); ?>" data-type="poi-name" class="search-input">
+                    <input type="text" id="poi-description" name="poi-description" placeholder="<?php echo i8ln('Enter New POI Description'); ?>" data-type="poi-description" class="search-input">
+                    <input type="text" id="poi-notes" name="poi-notes" placeholder="<?php echo i8ln('Enter New POI Notes'); ?>" data-type="poi-notes" class="search-input">
+                        <?php if (! empty($imgurCID)) {
+                        ?>
+                            <div class="d-grid gap-1">
+                                <label class="btn btn-primary" type="button"><i class="fas fa-upload"></i> <?php echo i8ln('Upload POI Image') ?>
+                                    <input type="file" id="poi-image" name="poi-image" accept="image/*" class="poi-image" data-type="poi-image" class="search-input" onchange='previewPoiImage(event)' hidden>
+                                </label>
+                                <img class="rounded mx-auto d-block" id='edit-preview-poi-image' name="preview-poi-image" width="50px" height="auto">
+                                <label class="btn btn-primary" type="button"><i class="fas fa-upload"></i> <?php echo i8ln('Upload Surrounding Image') ?>
+                                    <input type="file" id="poi-surrounding" name="poi-surrounding" accept="image/*" class="poi-surrounding" data-type="poi-surrounding" class="search-input" onchange='previewPoiSurrounding(event)' hidden>
+                                </label>
+                                <img class="rounded mx-auto d-block" id='edit-preview-poi-surrounding' name="preview-poi-surrounding" width="50px" height="auto" >
+                            </div>
+                        <?php
+                    } ?>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" onclick="editPoiData(event);" class="btn btn-primary">
+                        <i class="fas fa-save"></i> <?php echo i8ln('Save Changes'); ?>
+                    </button>
+                </div>
             </div>
         </div>
     </div>
-</div>
+<?php } ?>
+<!-- Mark POI Modal -->
+<?php if (!$noPoi && !$noMarkPoi) { ?>
+    <div class="modal fade" id="markPoiModal" tabindex="-1" aria-labelledby="markPoiModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="markPoiModalLabel"><?php echo i8ln('Mark POI'); ?></h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <div class="d-grid">
+                        <input type="hidden" id="markpoiid" name="markpoiid" value=""/>
+                        <button type="button" class="btn btn-primary btn-sm" id="2" onclick="markPoi(event, this.id);"><i class="fas fa-sync-alt"></i> <?php echo i8ln('Submitted'); ?></button>
+                        <button type="button" class="btn btn-primary btn-sm" id="3" onclick="markPoi(event, this.id);"><i class="fas fa-times"></i> <?php echo i8ln('Declined'); ?></button>
+                        <button type="button" class="btn btn-primary btn-sm" id="4" onclick="markPoi(event, this.id);"><i class="fas fa-times"></i> <?php echo i8ln('Resubmitted'); ?></button>
+                        <button type="button" class="btn btn-primary btn-sm" id="5" onclick="markPoi(event, this.id);"><i class="fas fa-times"></i> <?php echo i8ln('Not a candidate'); ?></button>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-primary" data-bs-dismiss="modal"><?php echo i8ln('Close') ?></button>
+                </div>
+            </div>
+        </div>
+    </div>
+<?php } ?>
 <!-- Edit Nest Modal -->
-<?php if (! $noManualNests) { ?>
+<?php if (!$noNests && !$noManualNests) { ?>
     <div class="modal fade" id="editNestModal" tabindex="-1" aria-labelledby="editNestModalLabel" aria-hidden="true">
         <div class="modal-dialog modal-lg">
             <div class="modal-content">
@@ -2360,7 +2370,7 @@ if (!$noLoadingScreen) {
     </div>
 <?php } ?>
 <!-- Convert Portal Modal -->
-<?php if (! $noPortals) { ?>
+<?php if (! $noPortals && !$noConvertPortal) { ?>
     <div class="modal fade" id="convertPortalModal" tabindex="-1" aria-labelledby="convertPortalModalLabel" aria-hidden="true">
         <div class="modal-dialog">
             <div class="modal-content">
@@ -2384,7 +2394,6 @@ if (!$noLoadingScreen) {
     </div>
 <?php } ?>
 <!-- End of Modals -->
-
 <!-- Scripts -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/babel-polyfill/6.9.1/polyfill.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
