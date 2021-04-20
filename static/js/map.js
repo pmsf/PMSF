@@ -4753,18 +4753,10 @@ function openQuestModal(event) { // eslint-disable-line no-unused-vars
             }
         })
     })
-    $('.ui-dialog').remove()
+    $('.modal').modal('hide')
     var val = $(event.target).data('id')
-    $('.questPokestop').val(val)
-    $('.quest-modal').clone().dialog({
-        modal: true,
-        maxHeight: 600,
-        buttons: {},
-        title: i8ln('Submit a Quest'),
-        classes: {
-            'ui-dialog': 'ui-dialog raid-widget-popup'
-        }
-    })
+    $('#questpokestopid').val(val)
+    $('#manualQuestModal').modal('show')
 }
 
 function openRenamePokestopModal(event) { // eslint-disable-line no-unused-vars
