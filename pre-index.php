@@ -1541,15 +1541,7 @@ if (!$noLoadingScreen) {
     <div id="map"></div>
     <div class="loader" style="display:none;"></div>
     <div class="global-raid-modal"></div>
-    <?php if (! $noRenamePokestops) { ?>
-        <div class="renamepokestop-modal" style="display: none;">
-            <input type="text" id="pokestop-name" name="pokestop-name"
-                placeholder="<?php echo i8ln('Enter New Pokéstop Name'); ?>" data-type="pokestop" class="search-input">
-            <div class="button-container">
-                <button type="button" onclick="renamePokestopData(event);" class="renamepokestopid"><i class="fas fa-edit"></i> <?php echo i8ln('Rename Pokéstop'); ?></button>
-            </div>
-        </div>
-    <?php } ?>
+
     <?php if (! $noRenameGyms) { ?>
         <div class="renamegym-modal" style="display: none;">
             <input type="text" id="gym-name" name="gym-name"
@@ -2246,6 +2238,31 @@ if (!$noLoadingScreen) {
                         <button type="button" class="btn btn-primary btn-sm" id="1" onclick="convertPortalData(event, this.id);"><i class="fas fa-sync-alt"></i> <?php echo i8ln('Convert to Pokéstop'); ?></button>
                         <button type="button" class="btn btn-primary btn-sm" id="2" onclick="convertPortalData(event, this.id);"><i class="fas fa-sync-alt"></i> <?php echo i8ln('Convert to Gym'); ?></button>
                         <button type="button" class="btn btn-primary btn-sm" onclick="markPortalData(event);"><i class="fas fa-times"></i> <?php echo i8ln('No Pokéstop or Gym'); ?></button>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-primary" data-bs-dismiss="modal"><?php echo i8ln('Close') ?></button>
+                </div>
+            </div>
+        </div>
+    </div>
+<?php } ?>
+<!-- Rename Pokestop Modal -->
+<?php if (! $noPokestops && ! $noRenamePokestops) { ?>
+    <div class="modal fade" id="renamePokestopModal" tabindex="-1" aria-labelledby="renamePokestopModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="renamePokestopModalLabel"><?php echo i8ln('Rename Pokéstop'); ?></h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <div class="d-grid">
+                        <input type="hidden" id="renamepokestopid" name="renamepokestopid" value=""/>
+                        <input type="text" id="pokestop-name" name="pokestop-name"
+                            placeholder="<?php echo i8ln('Enter New Pokéstop Name'); ?>" data-type="pokestop" class="search-input">
+
+                        <button type="button" class="btn btn-primary btn-sm" onclick="renamePokestopData(event);"><i class="fas fa-edit"></i> <?php echo i8ln('Rename Pokéstop'); ?></button>
                     </div>
                 </div>
                 <div class="modal-footer">

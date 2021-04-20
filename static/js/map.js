@@ -3948,7 +3948,7 @@ function deletePokestop(event) { // eslint-disable-line no-unused-vars
 }
 function renamePokestopData(event) { // eslint-disable-line no-unused-vars
     var form = $(event.target).parent().parent()
-    var pokestopId = form.find('.renamepokestopid').val()
+    var pokestopId = form.find('[name="renamepokestopid"]').val()
     var pokestopName = form.find('[name="pokestop-name"]').val()
     if (pokestopName && pokestopName !== '') {
         if (confirm(i8ln('I confirm this is an accurate new name for this pokestop'))) {
@@ -3973,7 +3973,7 @@ function renamePokestopData(event) { // eslint-disable-line no-unused-vars
                     jQuery('label[for="pokestops-switch"]').click()
                     lastpokestops = false
                     updateMap()
-                    $('.ui-dialog-content').dialog('close')
+                    $('.modal').modal('hide')
                 }
             })
         }
@@ -4768,18 +4768,10 @@ function openQuestModal(event) { // eslint-disable-line no-unused-vars
 }
 
 function openRenamePokestopModal(event) { // eslint-disable-line no-unused-vars
-    $('.ui-dialog').remove()
+    $('.modal').modal('hide')
     var val = $(event.target).data('id')
-    $('.renamepokestopid').val(val)
-    $('.renamepokestop-modal').clone().dialog({
-        modal: true,
-        maxHeight: 600,
-        buttons: {},
-        title: i8ln('Rename Pokéstop'),
-        classes: {
-            'ui-dialog': 'ui-dialog raid-widget-popup'
-        }
-    })
+    $('#renamepokestopid').val(val)
+    $('#renamePokestopModal').modal('show')
 }
 
 function openRenameGymModal(event) { // eslint-disable-line no-unused-vars
