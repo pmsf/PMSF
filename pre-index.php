@@ -1542,15 +1542,7 @@ if (!$noLoadingScreen) {
     <div class="loader" style="display:none;"></div>
     <div class="global-raid-modal"></div>
 
-    <?php if (! $noRenameGyms) { ?>
-        <div class="renamegym-modal" style="display: none;">
-            <input type="text" id="gym-name" name="gym-name"
-                placeholder="<?php echo i8ln('Enter New Gym Name'); ?>" data-type="gym" class="search-input">
-            <div class="button-container">
-                <button type="button" onclick="renameGymData(event);" class="renamegymid"><i class="fas fa-edit"></i> <?php echo i8ln('Rename Gym'); ?></button>
-            </div>
-        </div>
-    <?php } ?>
+
     <?php if (! $noConvertPokestops) { ?>
         <div class="convert-modal" style="display: none;">
              <div class="button-container">
@@ -2263,6 +2255,30 @@ if (!$noLoadingScreen) {
                             placeholder="<?php echo i8ln('Enter New Pokéstop Name'); ?>" data-type="pokestop" class="search-input">
 
                         <button type="button" class="btn btn-primary btn-sm" onclick="renamePokestopData(event);"><i class="fas fa-edit"></i> <?php echo i8ln('Rename Pokéstop'); ?></button>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-primary" data-bs-dismiss="modal"><?php echo i8ln('Close') ?></button>
+                </div>
+            </div>
+        </div>
+    </div>
+<?php } ?>
+<!-- Rename Gym Modal -->
+<?php if (! $noGyms && ! $noRenameGyms) { ?>
+    <div class="modal fade" id="renameGymModal" tabindex="-1" aria-labelledby="renameGymModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="renameGymModalLabel"><?php echo i8ln('Rename Gym'); ?></h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <div class="d-grid">
+                        <input type="hidden" id="renamegymid" name="renamegymid" value=""/>
+                        <input type="text" id="gym-name" name="gym-name"
+                            placeholder="<?php echo i8ln('Enter New Gym Name'); ?>" data-type="gym" class="search-input">
+                        <button type="button" class="btn btn-primary btn-sm" onclick="renameGymData(event);"><i class="fas fa-edit"></i> <?php echo i8ln('Rename Gym'); ?></button>
                     </div>
                 </div>
                 <div class="modal-footer">

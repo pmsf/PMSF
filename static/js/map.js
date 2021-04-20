@@ -3858,7 +3858,7 @@ function deleteGym(event) { // eslint-disable-line no-unused-vars
 }
 function renameGymData(event) { // eslint-disable-line no-unused-vars
     var form = $(event.target).parent().parent()
-    var gymId = form.find('.renamegymid').val()
+    var gymId = form.find('[name="renamegymid"]').val()
     var gymName = form.find('[name="gym-name"]').val()
     if (gymName && gymName !== '') {
         if (confirm(i8ln('I confirm this is an accurate new name for this gym'))) {
@@ -3883,7 +3883,7 @@ function renameGymData(event) { // eslint-disable-line no-unused-vars
                     jQuery('label[for="gyms-switch"]').click()
                     lastgyms = false
                     updateMap()
-                    $('.ui-dialog-content').dialog('close')
+                    $('.modal').modal('hide')
                 }
             })
         }
@@ -4775,18 +4775,10 @@ function openRenamePokestopModal(event) { // eslint-disable-line no-unused-vars
 }
 
 function openRenameGymModal(event) { // eslint-disable-line no-unused-vars
-    $('.ui-dialog').remove()
+    $('.modal').modal('hide')
     var val = $(event.target).data('id')
-    $('.renamegymid').val(val)
-    $('.renamegym-modal').clone().dialog({
-        modal: true,
-        maxHeight: 600,
-        buttons: {},
-        title: i8ln('Rename Gym'),
-        classes: {
-            'ui-dialog': 'ui-dialog raid-widget-popup'
-        }
-    })
+    $('#renamegymid').val(val)
+    $('#renameGymModal').modal('show')
 }
 
 function openConvertPokestopModal(event) { // eslint-disable-line no-unused-vars
