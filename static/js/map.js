@@ -4332,6 +4332,8 @@ function submitNewCommunity(event) { // eslint-disable-line no-unused-vars
                     toastr.options = toastrOptions
                 },
                 complete: function complete() {
+                    jQuery('label[for="communities-switch"]').click()
+                    jQuery('label[for="communities-switch"]').click()
                     lastcommunities = false
                     updateMap()
                     $('.modal').modal('hide')
