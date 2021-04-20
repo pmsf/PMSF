@@ -263,9 +263,6 @@ if (location.search.indexOf('login=true') > 0) {
     $('#nav').load(window.location.href + '#nav')
     window.location.href = '/'
 }
-if (location.search.indexOf('login=false') > 0) {
-    openAccessDeniedModal()
-}
 if (copyrightSafe) {
     Store.set('icons', 'static/icons-safe/')
 } else if (Store.get('icons') === 'static/icons-safe/' || Store.get('icons') === '') {
@@ -301,18 +298,6 @@ function previewPoiSurrounding(event) { // eslint-disable-line no-unused-vars
     }
     reader.readAsDataURL(input.files[0])
     reader.onload = fileLoaded
-}
-function openAccessDeniedModal(event) { // eslint-disable-line no-unused-vars
-    $('.ui-dialog').remove()
-    $('.accessdenied-modal').clone().dialog({
-        modal: true,
-        maxHeight: 600,
-        buttons: {},
-        title: i8ln('Your access is denied'),
-        classes: {
-            'ui-dialog': 'ui-dialog raid-widget-popup'
-        }
-    })
 }
 function formatDate(date) {
     var monthNames = [
