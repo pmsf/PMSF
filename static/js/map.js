@@ -4196,21 +4196,20 @@ function manualNestData(event) { // eslint-disable-line no-unused-vars
 }
 
 function manualQuestData(event) { // eslint-disable-line no-unused-vars
-    var cont = $(event.target).parent().parent()
-    var questType = cont.find('.questTypeList').val()
-    var questTarget = cont.find('.questAmountList').val()
-    var conditionType = cont.find('.conditionTypeList').val()
-    var catchPokemon = cont.find('.pokeCatchList').val()
-    var catchPokemonCategory = cont.find('.typeCatchList').val()
-    var raidLevel = cont.find('.raidLevelList').val()
-    var throwType = cont.find('.throwTypeList').val()
-    var curveThrow = cont.find('.curveThrow').val()
-    var rewardType = cont.find('.rewardTypeList').val()
-    var encounter = cont.find('.pokeQuestList').val()
-    var item = cont.find('.itemQuestList').val()
-    var itemamount = cont.find('.itemAmountList').val()
-    var dust = cont.find('.dustQuestList').val()
-    var pokestopId = cont.find('.questPokestop').val()
+    var questType = $('#questTypeList').val()
+    var questTarget = $('#questAmountSelect').val()
+    var conditionType = $('#conditionTypeList').val()
+    var catchPokemon = $('#pokeCatch').val()
+    var catchPokemonCategory = $('#typeCatch').val()
+    var raidLevel = $('#raidLevel').val()
+    var throwType = $('#throwType').val()
+    var curveThrow = $('#curveThrow').val()
+    var rewardType = $('#rewardTypeList').val()
+    var encounter = $('#pokeReward').val()
+    var item = $('#itemReward').val()
+    var itemamount = $('#itemAmount').val()
+    var dust = $('#dustAmount').val()
+    var pokestopId = $('#questpokestopid').val()
     if (pokestopId && pokestopId !== '') {
         if (confirm(i8ln('I confirm this is an accurate sighting of a quest'))) {
             return $.ajax({
@@ -4246,7 +4245,7 @@ function manualQuestData(event) { // eslint-disable-line no-unused-vars
                     updateMap()
                     jQuery('label[for="pokestops-switch"]').click()
                     jQuery('label[for="pokestops-switch"]').click()
-                    $('.ui-dialog-content').dialog('close')
+                    $('.modal').modal('hide')
                 }
             })
         }
@@ -4577,186 +4576,72 @@ function openRaidModal(event) { // eslint-disable-line no-unused-vars
 function openQuestModal(event) { // eslint-disable-line no-unused-vars
     $('.modal').modal('hide')
     var val = $(event.target).data('id')
-    console.log(val)
     $('#questpokestopid').val(val)
-//    $(function () {
-//        var $questTypeList = $('.quest-modal #questTypeList')
-//        $questTypeList.select2({
-//            placeholder: i8ln('Quest type'),
-//            closeOnSelect: true,
-//            minimumResultsForSearch: Infinity,
-//            maximumSelectionSize: 1
-//        })
-//        $questTypeList.change(function () {
-//            var questType = Number($(this).find('option:selected').val())
-//            if (questType > 0) {
-//                $('.quest-modal #questAmountList').show()
-//            } else {
-//                $('.quest-modal #questAmountList').hide()
-//            }
-//        })
-
-//        var $questAmountList = $('.quest-modal #questAmountList')
-//        $questAmountList.select2({
-//            placeholder: i8ln('Quest target amount'),
-//            closeOnSelect: true,
-//            minimumResultsForSearch: Infinity,
-//            maximumSelectionSize: 1
-//        })
-
-//        var $pokeCatchList = $('.quest-modal #pokeCatchList')
-//        $pokeCatchList.select2({
-//            placeholder: i8ln('Pokémon'),
-//            data: pokeList,
-//            multiple: true,
-//            maximumSelectionSize: 2
-//        })
-
-//        var $pokemonTypes = $('.quest-modal #typeCatchList')
-//        $pokemonTypes.select2({
-//            placeholder: i8ln('Pokémon type'),
-//            minimumResultsForSearch: Infinity,
-//            multiple: true,
-//            maximumSelectionSize: 3
-//        })
-
-//        var $raidLevelList = $('.quest-modal #raidLevelList')
-//        $raidLevelList.select2({
-//            placeholder: i8ln('Raid level'),
-//            closeOnSelect: true,
-//            minimumResultsForSearch: Infinity,
-//            multiple: true,
-//           maximumSelectionSize: 1
-//        })
-
-//        var $throwTypes = $('.quest-modal #throwTypeList')
-//        $throwTypes.select2({
-//            placeholder: i8ln('Throw type'),
-//            closeOnSelect: true,
-//            minimumResultsForSearch: Infinity,
-//            maximumSelectionSize: 1
-//        })
-//        var $curveThrow = $('.quest-modal #curveThrow')
-//        $curveThrow.select2({
-//            placeholder: i8ln('Curve throw'),
-//            closeOnSelect: true,
-//            minimumResultsForSearch: Infinity,
-//            maximumSelectionSize: 1
-//        })
-//        var $conditionTypeList = $('.quest-modal #conditionTypeList')
-//        $conditionTypeList.select2({
-//            placeholder: i8ln('Condition type'),
-//            closeOnSelect: true,
-//            minimumResultsForSearch: Infinity,
-//            maximumSelectionSize: 1
-//        })
-//        $('.quest-modal #pokeCatchList').next('.select2-container').hide()
-//        $('.quest-modal #typeCatchList').next('.select2-container').hide()
-//        $('.quest-modal #raidLevelList').next('.select2-container').hide()
- //       $('.quest-modal #throwTypeList').next('.select2-container').hide()
-  //      $('.quest-modal #curveThrow').next('.select2-container').hide()
-//        $conditionTypeList.change(function () {
-//            var conditionType = Number($(this).find('option:selected').val())
-//            if (conditionType === 1) {
-//                $('.quest-modal #pokeCatchList').next('.select2-container').hide()
-//                $('.quest-modal #typeCatchList').next('.select2-container').show()
-//                $('.quest-modal #raidLevelList').next('.select2-container').hide()
-//                $('.quest-modal #throwTypeList').next('.select2-container').hide()
-//                $('.quest-modal #curveThrow').next('.select2-container').hide()
-//            } else if (conditionType === 2) {
-//                $('.quest-modal #pokeCatchList').next('.select2-container').show()
-//                $('.quest-modal #typeCatchList').next('.select2-container').hide()
-//                $('.quest-modal #raidLevelList').next('.select2-container').hide()
-//                $('.quest-modal #throwTypeList').next('.select2-container').hide()
-//                $('.quest-modal #curveThrow').next('.select2-container').hide()
-//            } else if (conditionType === 7) {
-//                $('.quest-modal #pokeCatchList').next('.select2-container').hide()
-//                $('.quest-modal #typeCatchList').next('.select2-container').hide()
-//                $('.quest-modal #raidLevelList').next('.select2-container').show()
-//                $('.quest-modal #throwTypeList').next('.select2-container').hide()
-//                $('.quest-modal #curveThrow').next('.select2-container').hide()
-//            } else if (conditionType === 8 || conditionType === 14) {
-//                $('.quest-modal #pokeCatchList').next('.select2-container').hide()
-//                $('.quest-modal #typeCatchList').next('.select2-container').hide()
-//                $('.quest-modal #raidLevelList').next('.select2-container').hide()
-//                $('.quest-modal #throwTypeList').next('.select2-container').show()
-//                $('.quest-modal #curveThrow').next('.select2-container').show()
-//            } else {
-//                $('.quest-modal #pokeCatchList').next('.select2-container').hide()
-//                $('.quest-modal #typeCatchList').next('.select2-container').hide()
-//                $('.quest-modal #raidLevelList').next('.select2-container').hide()
-//                $('.quest-modal #throwTypeList').next('.select2-container').hide()
-//                $('.quest-modal #curveThrow').next('.select2-container').hide()
-//            }
-//        })
-//       var $rewardTypeList = $('.quest-modal #rewardTypeList')
-//        $rewardTypeList.select2({
-//            placeholder: i8ln('Reward type'),
-//            closeOnSelect: true,
-//            minimumResultsForSearch: Infinity,
-//            maximumSelectionSize: 1
-//        })
-
-//        var $itemQuestList = $('.quest-modal #itemQuestList')
-//        $itemQuestList.select2({
-//            placeholder: i8ln('Reward Item'),
-//            closeOnSelect: true,
-//            minimumResultsForSearch: Infinity,
-//            maximumSelectionSize: 1
-//        })
-
-//        var $itemAmountList = $('.quest-modal #itemAmountList')
-//        $itemAmountList.select2({
-//            placeholder: i8ln('Reward Amount'),
-//            closeOnSelect: true,
-//            minimumResultsForSearch: Infinity,
-//            maximumSelectionSize: 1
-//        })
-
-//        var $dustQuestList = $('.quest-modal #dustQuestList')
-//        $dustQuestList.select2({
-//            placeholder: i8ln('Stardust amount'),
-//            closeOnSelect: true,
-//            minimumResultsForSearch: Infinity,
-//            maximumSelectionSize: 1
-//        })
-
-//        var $pokeQuestList = $('.quest-modal #pokeQuestList')
-//        $pokeQuestList.select2({
- //           placeholder: i8ln('Pokémon encounter'),
-//            closeOnSelect: true,
-//            maximumSelectionSize: 1
-//        })
-//        $('.quest-modal #itemQuestList').next('.select2-container').hide()
-//        $('.quest-modal #itemAmountList').next('.select2-container').hide()
-//        $('.quest-modal #dustQuestList').next('.select2-container').hide()
-//        $('.quest-modal #pokeQuestList').next('.select2-container').hide()
-
-//        $rewardTypeList.change(function () {
-//            var rewardType = $(this).find('option:selected').val()
-//            if (rewardType === '2') {
-//                $('.quest-modal #itemQuestList').next('.select2-container').show()
-//                $('.quest-modal #itemAmountList').next('.select2-container').show()
-//                $('.quest-modal #dustQuestList').next('.select2-container').hide()
-//                $('.quest-modal #pokeQuestList').next('.select2-container').hide()
-//            } else if (rewardType === '3') {
-//                $('.quest-modal #itemQuestList').next('.select2-container').hide()
-//                $('.quest-modal #itemAmountList').next('.select2-container').hide()
-//                $('.quest-modal #dustQuestList').next('.select2-container').show()
-//                $('.quest-modal #pokeQuestList').next('.select2-container').hide()
-//            } else if (rewardType === '7') {
-//                $('.quest-modal #itemQuestList').next('.select2-container').hide()
-//                $('.quest-modal #itemAmountList').next('.select2-container').hide()
-//                $('.quest-modal #dustQuestList').next('.select2-container').hide()
-//                $('.quest-modal #pokeQuestList').next('.select2-container').show()
-//            } else {
-//                $('.quest-modal #itemQuestList').next('.select2-container').hide()
-//                $('.quest-modal #itemAmountList').next('.select2-container').hide()
-//                $('.quest-modal #dustQuestList').next('.select2-container').hide()
-//                $('.quest-modal #pokeQuestList').next('.select2-container').hide()
-//            }
-//        })
-//    })
+    $(function () {
+        $('#questTypeList').change( function () {
+            if (Number($(this).val()) > 0) {
+                $('#questAmountList').collapse('show')
+            } else {
+                $('#questAmountList').collapse('hide')
+            }
+        })
+        $('#conditionTypeList').change(function () {
+            if ($(this).val() === '1') {
+                $('#pokeCatchList').collapse('hide')
+                $('#typeCatchList').collapse('show')
+                $('#raidLevelList').collapse('hide')
+                $('#throwTypeList').collapse('hide')
+                $('#curveThrow').collapse('hide')
+            } else if ($(this).val() === '2') {
+                $('#pokeCatchList').collapse('show')
+                $('#typeCatchList').collapse('hide')
+                $('#raidLevelList').collapse('hide')
+                $('#throwTypeList').collapse('hide')
+                $('#curveThrow').collapse('hide')
+            } else if ($(this).val() === '7') {
+                $('#pokeCatchList').collapse('hide')
+                $('#typeCatchList').collapse('hide')
+                $('#raidLevelList').collapse('show')
+                $('#throwTypeList').collapse('hide')
+                $('#curveThrow').collapse('hide')
+            } else if ($(this).val() === '8' || $(this).val() === '14') {
+                $('#pokeCatchList').collapse('hide')
+                $('#typeCatchList').collapse('hide')
+                $('#raidLevelList').collapse('hide')
+                $('#throwTypeList').collapse('show')
+                $('#curveThrow').collapse('show')
+            } else {
+                $('#pokeCatchList').collapse('hide')
+                $('#typeCatchList').collapse('hide')
+                $('#raidLevelList').collapse('hide')
+                $('#throwTypeList').collapse('hide')
+                $('#curveThrow').collapse('hide')
+            }
+        })
+        $('#rewardTypeList').change(function () {
+            if ($(this).val() === '2') {
+                $('#itemRewardList').collapse('show')
+                $('#itemAmountList').collapse('show')
+                $('#dustAmountList').collapse('hide')
+                $('#pokeRewardList').collapse('hide')
+            } else if ($(this).val() === '3') {
+                $('#itemRewardList').collapse('hide')
+                $('#itemAmountList').collapse('hide')
+                $('#dustAmountList').collapse('show')
+                $('#pokeRewardList').collapse('hide')
+            } else if ($(this).val() === '7') {
+                $('#itemRewardList').collapse('hide')
+                $('#itemAmountList').collapse('hide')
+                $('#dustAmountList').collapse('hide')
+                $('#pokeRewardList').collapse('show')
+            } else {
+                $('#itemRewardList').collapse('hide')
+                $('#itemAmountList').collapse('hide')
+                $('#dustAmountList').collapse('hide')
+                $('#pokeRewardList').collapse('hide')
+            }
+        })
+    })
 
     $('#manualQuestModal').modal('show')
 }

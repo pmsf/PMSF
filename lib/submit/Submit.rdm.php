@@ -476,6 +476,7 @@ class RDM extends Submit
                 'id'            => $pokestopId
             ];
             $db->update("pokestop", $cols, $where);
+
         }
     }
 
