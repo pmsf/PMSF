@@ -2148,180 +2148,211 @@ if (!$noLoadingScreen) {
 <!-- Manual Quest Modal -->
 <?php if (! $noManualQuests) { ?>
     <div class="modal fade" id="manualQuestModal" tabindex="-1" aria-labelledby="manualQuestModalLabel" aria-hidden="true">
-        <div class="modal-dialog">
+        <div class="modal-dialog modal-lg">
             <div class="modal-content">
                 <div class="modal-header">
                     <h5 class="modal-title" id="manualQuestModalLabel"><?php echo i8ln('Submit a Quest'); ?></h5>
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body quest-modal">
-                    <input type="hidden" name="questpokestopid" class="questpokestopid" value=""/>
-                    <?php
-                        $json   = file_get_contents('static/dist/data/questtype.min.json');
-                        $questtypes  = json_decode($json, true);
+                    <div class="d-grid">
+                        <input type="hidden" id="questpokestopid" name="questpokestopid" value=""/>
+                        <?php
+                            $json   = file_get_contents('static/dist/data/questtype.min.json');
+                            $questtypes  = json_decode($json, true);
 
-                        $json    = file_get_contents('static/dist/data/rewardtype.min.json');
-                        $rewardtypes   = json_decode($json, true);
+                            $json    = file_get_contents('static/dist/data/rewardtype.min.json');
+                            $rewardtypes   = json_decode($json, true);
 
-                        $json    = file_get_contents('static/dist/data/conditiontype.min.json');
-                        $conditiontypes   = json_decode($json, true);
+                            $json    = file_get_contents('static/dist/data/conditiontype.min.json');
+                            $conditiontypes   = json_decode($json, true);
 
-                        $json    = file_get_contents('static/dist/data/pokemon.min.json');
-                        $encounters = json_decode($json, true);
+                            $json    = file_get_contents('static/dist/data/pokemon.min.json');
+                            $encounters = json_decode($json, true);
 
-                        $json    = file_get_contents('static/dist/data/items.min.json');
-                        $items = json_decode($json, true);
-                    ?>
-                    <label for="questTypeList"><?php echo i8ln('Quest'); ?>
-                    <select id="questTypeList" name="questTypeList" class="questTypeList">
-                        <option />
-                        <?php
-                        foreach ($questtypes as $key => $value) {
-                            if (! in_array($key, $hideQuestTypes)) {
-                                ?>
-                                <option value="<?php echo $key; ?>"><?php echo i8ln($value['text']); ?></option>
-                            <?php
-                            }
-                        }
+                            $json    = file_get_contents('static/dist/data/items.min.json');
+                            $items = json_decode($json, true);
                         ?>
-                    </select>
-                    <select id="questAmountList" name="questAmountList" class="questAmountList">
-                        <option />
-                        <option value="1">1</option>
-                        <option value="2">2</option>
-                        <option value="3">3</option>
-                        <option value="4">4</option>
-                        <option value="5">5</option>
-                        <option value="6">6</option>
-                        <option value="7">7</option>
-                        <option value="8">8</option>
-                        <option value="9">9</option>
-                        <option value="10">10</option>
-                    </select>
-                    </label>
-                    <label for="conditionTypeList"><?php echo i8ln('Conditions'); ?>
-                    <select id="conditionTypeList" name="conditionTypeList" class="conditionTypeList">
-                        <option />
-                        <?php
-                        foreach ($conditiontypes as $key => $value) {
-                            if (! in_array($key, $hideConditionTypes)) {
-                                ?>
-                                <option value="<?php echo $key; ?>"><?php echo i8ln($value['text']); ?></option>
+                        <label for="questTypeList"><?php echo i8ln('Quest'); ?>
+                        <select id="questTypeList" name="questTypeList" class="form-select" aria-label="Quest type select">
+                            <option selected><?php echo i8ln('Select Quest type'); ?></option>
                             <?php
+                            foreach ($questtypes as $key => $value) {
+                                if (! in_array($key, $hideQuestTypes)) {
+                                    ?>
+                                    <option value="<?php echo $key; ?>"><?php echo i8ln($value['text']); ?></option>
+                                <?php
+                                }
                             }
-                        }
-                        ?>
-                    </select>
-                    <select id="pokeCatchList" name="pokeCatchList" class="pokeCatchList" multiple></select>
-                    <select id="typeCatchList" name="typeCatchList" class="typeCatchList" multiple>
-                        <option value="1"><?php echo i8ln('Normal'); ?></option>
-                        <option value="2"><?php echo i8ln('Fighting'); ?></option>
-                        <option value="3"><?php echo i8ln('Flying'); ?></option>
-                        <option value="4"><?php echo i8ln('Poison'); ?></option>
-                        <option value="5"><?php echo i8ln('Ground'); ?></option>
-                        <option value="6"><?php echo i8ln('Rock'); ?></option>
-                        <option value="7"><?php echo i8ln('Bug'); ?></option>
-                        <option value="8"><?php echo i8ln('Ghost'); ?></option>
-                        <option value="9"><?php echo i8ln('Steel'); ?></option>
-                        <option value="10"><?php echo i8ln('Fire'); ?></option>
-                        <option value="11"><?php echo i8ln('Water'); ?></option>
-                        <option value="12"><?php echo i8ln('Grass'); ?></option>
-                        <option value="13"><?php echo i8ln('Electric'); ?></option>
-                        <option value="14"><?php echo i8ln('Psychic'); ?></option>
-                        <option value="15"><?php echo i8ln('Ice'); ?></option>
-                        <option value="16"><?php echo i8ln('Dragon'); ?></option>
-                        <option value="17"><?php echo i8ln('Dark'); ?></option>
-                        <option value="18"><?php echo i8ln('Fairy'); ?></option>
-                    </select>
-                    <select id="raidLevelList" name="raidLevelList" class="raidLevelList">
-                        <option value="1">1</option>
-                        <option value="2">2</option>
-                        <option value="3">3</option>
-                        <option value="4">4</option>
-                        <option value="5">5</option>
-                        <option value="6">6</option>
-                    </select>
-                    <select id="throwTypeList" name="throwTypeList" class="throwTypeList">
-                        <option />
-                        <option value="10"><?php echo i8ln('Nice'); ?></option>
-                        <option value="11"><?php echo i8ln('Great'); ?></option>
-                        <option value="12"><?php echo i8ln('Excellent'); ?></option>
-                    </select>
-                    <select id="curveThrow" class="curveThrow" class="curveThrow">
-                        <option />
-                        <option value="0"><?php echo i8ln('Without curve throw'); ?></option>
-                        <option value="1"><?php echo i8ln('With curve throw'); ?></option>
-                    </select>
-                    </label>
-                    <label for="rewardTypeList"><?php echo i8ln('Reward'); ?>
-                    <select id="rewardTypeList" name="rewardTypeList" class="rewardTypeList">
-                        <option />
-                        <?php
-                        foreach ($rewardtypes as $key => $value) {
-                            if (! in_array($key, $hideRewardTypes)) {
-                                ?>
-                                <option value="<?php echo $key; ?>"><?php echo i8ln($value['text']); ?></option>
+                            ?>
+                        </select>
+                        <select id="questAmountList" name="questAmountList" class="form-select" aria-label="Quest amount list">
+                            <option selected><?php echo i8ln('Select target amount'); ?></option>
+                            <option value="1">1</option>
+                            <option value="2">2</option>
+                            <option value="3">3</option>
+                            <option value="4">4</option>
+                            <option value="5">5</option>
+                            <option value="6">6</option>
+                            <option value="7">7</option>
+                            <option value="8">8</option>
+                            <option value="9">9</option>
+                            <option value="10">10</option>
+                        </select>
+                        </label>
+                        <label for="conditionTypeList"><?php echo i8ln('Conditions'); ?>
+                        <select id="conditionTypeList" name="conditionTypeList" class="form-select" aria-label="Condition list">
+                            <option selected><?php echo i8ln('Select Condition'); ?></option>
                             <?php
+                            foreach ($conditiontypes as $key => $value) {
+                                if (! in_array($key, $hideConditionTypes)) {
+                                    ?>
+                                    <option value="<?php echo $key; ?>"><?php echo i8ln($value['text']); ?></option>
+                                <?php
+                                }
                             }
-                        }
-                        ?>
-                    </select>
-                    <select id="pokeQuestList" name="pokeQuestList" class="pokeQuestList">
-                        <option />
-                        <?php
-                        foreach ($encounters as $key => $value) {
-                            if (in_array($key, $showEncounters)) {
+                            ?>
+                        </select>
+                        <div class="collapse" id="pokeCatchList">
+                            <select id="pokeCatchList" name="pokeCatchList" class="form-select" multiple aria-label="Pokemon">
+                                <option selected><?php echo i8ln('Select Pokemon'); ?></option>
+                                <?php
+                                foreach ($encounters as $key => $value) {
+                                    if (in_array($key, $showEncounters)) {
+                                        ?>
+                                        <option value="<?php echo $key; ?>"><?php echo i8ln($value['name']); ?></option>
+                                    <?php
+                                    }
+                                }
                                 ?>
-                                <option value="<?php echo $key; ?>"><?php echo i8ln($value['name']); ?></option>
+                            </select>
+                        </div>
+                        <div class="collapse" id="typeCatchList">
+                            <select id="typeCatchList" name="typeCatchList" class="form-select" multiple aria-label="Type">
+                                <option selected><?php echo i8ln('Select type'); ?></option>
+                                <option value="1"><?php echo i8ln('Normal'); ?></option>
+                                <option value="2"><?php echo i8ln('Fighting'); ?></option>
+                                <option value="3"><?php echo i8ln('Flying'); ?></option>
+                                <option value="4"><?php echo i8ln('Poison'); ?></option>
+                                <option value="5"><?php echo i8ln('Ground'); ?></option>
+                                <option value="6"><?php echo i8ln('Rock'); ?></option>
+                                <option value="7"><?php echo i8ln('Bug'); ?></option>
+                                <option value="8"><?php echo i8ln('Ghost'); ?></option>
+                                <option value="9"><?php echo i8ln('Steel'); ?></option>
+                                <option value="10"><?php echo i8ln('Fire'); ?></option>
+                                <option value="11"><?php echo i8ln('Water'); ?></option>
+                                <option value="12"><?php echo i8ln('Grass'); ?></option>
+                                <option value="13"><?php echo i8ln('Electric'); ?></option>
+                                <option value="14"><?php echo i8ln('Psychic'); ?></option>
+                                <option value="15"><?php echo i8ln('Ice'); ?></option>
+                                <option value="16"><?php echo i8ln('Dragon'); ?></option>
+                                <option value="17"><?php echo i8ln('Dark'); ?></option>
+                                <option value="18"><?php echo i8ln('Fairy'); ?></option>
+                            </select>
+                        </div>
+                        <div class="collapse" id="raidLevelList">
+                            <select id="raidLevelList" name="raidLevelList" class="form-select" aria-label="Level Select">
+                                <option selected><?php echo i8ln('Select Level'); ?></option>
+                                <option value="1">1</option>
+                                <option value="2">2</option>
+                                <option value="3">3</option>
+                                <option value="4">4</option>
+                                <option value="5">5</option>
+                                <option value="6">6</option>
+                            </select>
+                        </div>
+                        <div class="collapse" id="throwTypeList">
+                            <select id="throwTypeList" name="throwTypeList" class="form-select" aria-label="Throw type list">
+                            <option selected><?php echo i8ln('Select throw type'); ?></option>
+                                <option value="10"><?php echo i8ln('Nice'); ?></option>
+                                <option value="11"><?php echo i8ln('Great'); ?></option>
+                                <option value="12"><?php echo i8ln('Excellent'); ?></option>
+                            </select>
+                        </div>
+                        <div class="collapse" id="curveThrow">
+                            <select id="curveThrow" name="curveThrow" class="form-select" aria-label="Curve list">
+                                <option selected><?php echo i8ln('Select curve'); ?></option>
+                                <option value="0"><?php echo i8ln('Without curve throw'); ?></option>
+                                <option value="1"><?php echo i8ln('With curve throw'); ?></option>
+                            </select>
+                        </yydiv>
+                        </label>
+                        <label for="rewardTypeList"><?php echo i8ln('Reward'); ?>
+                        <select id="rewardTypeList" name="rewardTypeList" class="form-select" aria-label="Reward type list">
+                            <option selected><?php echo i8ln('Select reward type'); ?></option>
                             <?php
+                            foreach ($rewardtypes as $key => $value) {
+                                if (! in_array($key, $hideRewardTypes)) {
+                                    ?>
+                                    <option value="<?php echo $key; ?>"><?php echo i8ln($value['text']); ?></option>
+                                <?php
+                                }
                             }
-                        }
-                        ?>
-                    </select>
-                    <select id="itemQuestList" name="itemQuestList" class="itemQuestList">
-                        <option />
-                        <?php
-                        foreach ($items as $key => $value) {
-                            if (in_array($key, $showItems)) {
+                            ?>
+                        </select>
+                        <div class="collapse" id="pokeRewardList">
+                            <select id="pokeRewardList" name="pokeRewardList" class="form-select" aria-label="Pokemon reward list">
+                                <option selected><?php echo i8ln('Select reward pokemon'); ?></option>
+                                <?php
+                                foreach ($encounters as $key => $value) {
+                                    if (in_array($key, $showEncounters)) {
+                                        ?>
+                                        <option value="<?php echo $key; ?>"><?php echo i8ln($value['name']); ?></option>
+                                    <?php
+                                    }
+                                }
                                 ?>
-                                <option value="<?php echo $key; ?>"><?php echo i8ln($value['name']); ?></option>
-                            <?php
-                            }
-                        }
-                        ?>
-                    </select>
-                    <select id="itemAmountList" name="itemAmountList" class="itemAmountList">
-                        <option />
-                        <option value="1">1</option>
-                        <option value="2">2</option>
-                        <option value="3">3</option>
-                        <option value="4">4</option>
-                        <option value="5">5</option>
-                        <option value="6">6</option>
-                        <option value="7">7</option>
-                        <option value="8">8</option>
-                        <option value="9">9</option>
-                        <option value="10">10</option>
-                    </select>
-                    <select id="dustQuestList" name="dustQuestList" class="dustQuestList">
-                        <option />
-                        <option value="200">200</option>
-                        <option value="500">500</option>
-                        <option value="1000">1000</option>
-                        <option value="1500">1500</option>
-                        <option value="2000">2000</option>
-                    </select>
-                    </label>
-                    <div class="button-container">
-                        <button type="button" onclick="manualQuestData(event);" class="submitting-quest"><i
-                                class="fas fa-binoculars"></i> <?php echo i8ln('Submit Quest'); ?>
-                        </button>
+                            </select>
+                        </div>
+                        <div class="collapse" id="itemRewardList">
+                            <select id="itemRewardList" name="itemRewardList" class="form-select" aria-label="Item reward list">
+                                <option selected><?php echo i8ln('Select reward item'); ?></option>
+                                <?php
+                                foreach ($items as $key => $value) {
+                                    if (in_array($key, $showItems)) {
+                                        ?>
+                                        <option value="<?php echo $key; ?>"><?php echo i8ln($value['name']); ?></option>
+                                    <?php
+                                    }
+                                }
+                                ?>
+                            </select>
+                        </div>
+                        <div class="collapse" id="itemAmountList">
+                            <select id="itemAmountList" name="itemAmountList" class="form-select" aria-label="Item amount">
+                                <option selected><?php echo i8ln('Select item amount'); ?></option>
+                                <option value="1">1</option>
+                                <option value="2">2</option>
+                                <option value="3">3</option>
+                                <option value="4">4</option>
+                                <option value="5">5</option>
+                                <option value="6">6</option>
+                                <option value="7">7</option>
+                                <option value="8">8</option>
+                                <option value="9">9</option>
+                                <option value="10">10</option>
+                            </select>
+                        <div class="collapse" id="dustAmountList">
+                            <select id="dustAmountList" name="dustAmountList" class="form-select" aria-label="Stardust amount">
+                                <option selected><?php echo i8ln('Select stardust amount'); ?></option>
+                                <option value="200">200</option>
+                                <option value="500">500</option>
+                                <option value="1000">1000</option>
+                                <option value="1500">1500</option>
+                                <option value="2000">2000</option>
+                            </select>
+                        </div>
+                        </label>
+                        <div class="button-container">
+                            <button type="button" onclick="manualQuestData(event);" class="submitting-quest"><i
+                                    class="fas fa-binoculars"></i> <?php echo i8ln('Submit Quest'); ?>
+                            </button>
+                        </div>
                     </div>
                 </div>
             </div>
         </div>
     </div>
-
 <?php } ?>
 <!-- End of Modals -->
 <!-- Scripts -->
