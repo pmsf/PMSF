@@ -1540,7 +1540,6 @@ if (!$noLoadingScreen) {
 
     <div id="map"></div>
     <div class="loader" style="display:none;"></div>
-    <div class="global-raid-modal"></div>
     <div class="fullscreen-toggle">
         <button class="map-toggle-button" onClick="toggleFullscreenMap();"><i class="fa fa-expand" aria-hidden="true"></i></button>
     </div>
@@ -2348,6 +2347,166 @@ if (!$noLoadingScreen) {
                         </label>
                         <button type="button" class="btn btn-primary btn-sm" onclick="manualQuestData(event);" class="submitting-quest"><i class="fas fa-binoculars"></i> <?php echo i8ln('Submit Quest'); ?></button>
                     </div>
+                </div>
+            </div>
+        </div>
+    </div>
+<?php } ?>
+<!-- Manual Raid Modal -->
+<?php if (! $noGyms && ! $noRaids && ! $noManualRaids) { ?>
+    <div class="modal fade" id="manualRaidModal" tabindex="-1" aria-labelledby="manualRaidModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-xl">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="manualRaidModalLabel"><?php echo i8ln('Submit a Raid Report'); ?></h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <div class="d-grid">
+                        <input type="hidden" id="manualraidgymid" name="manualraidgymid" value=""/>
+                        <div class="switch-container">
+                            <div class="pokemon-list raid-submission">
+                                <input type="hidden" id="manualraidpokemonid" name="manualraidpokemonid" value="">
+                                <span class="pokemon-icon-sprite" data-value="egg_1" data-label="Level 1" onclick="pokemonRaidFilter(event);"><span class="egg_1 inner-bg" style="background: url('static/raids/egg_normal.png');background-size:100%"></span><span class="egg-number">1</span></span>
+                                <!-- Not in game <span class="pokemon-icon-sprite" data-value="egg_2" data-label="Level 2" onclick="pokemonRaidFilter(event);"><span class="egg_2 inner-bg" style="background: url('static/raids/egg_normal.png');background-size:100%"></span><span class="egg-number">2</span></span> -->
+                                <span class="pokemon-icon-sprite" data-value="egg_3" data-label="Level 3" onclick="pokemonRaidFilter(event);"><span class="egg_3 inner-bg" style="background: url('static/raids/egg_rare.png');background-size:100%"></span><span class="egg-number">3</span></span>
+                                <!-- Not in game <span class="pokemon-icon-sprite" data-value="egg_4" data-label="Level 4" onclick="pokemonRaidFilter(event);"><span class="egg_4 inner-bg" style="background: url('static/raids/egg_rare.png');background-size:100%"></span><span class="egg-number">4</span></span> -->
+                                <span class="pokemon-icon-sprite" data-value="egg_5" data-label="Level 5" onclick="pokemonRaidFilter(event);"><span class="egg_5 inner-bg" style="background: url('static/raids/egg_legendary.png');background-size:100%"></span><span class="egg-number">5</span></span>
+                                <span class="pokemon-icon-sprite" data-value="egg_6" data-label="Level 6" onclick="pokemonRaidFilter(event);"><span class="egg_6 inner-bg" style="background: url('static/raids/egg_mega.png');background-size:100%"></span><span class="egg-number">6</span></span>
+                                <?php
+                                $pokemonJson = file_get_contents('static/dist/data/pokemon.min.json');
+                                $pokemon = json_decode($pokemonJson, true);
+                                foreach ($raidBosses as $raidBoss) {
+                                    $pokemonIdStr = '';
+                                    if ($raidBoss <= 9) {
+                                        $pokemonIdStr = '00' . $raidBoss;
+                                    } else if ($raidBoss <= 99) {
+                                        $pokemonIdStr = '0' . $raidBoss;
+                                    } else {
+                                        $pokemonIdStr = $raidBoss;
+                                    }
+                                    echo '<span class="pokemon-icon-sprite" data-value="' . $raidBoss . '" data-label="' . $pokemon[$raidBoss]['name'] . '" onclick="pokemonRaidFilter(event);"><img src="' . $iconRepository . 'pokemon_icon_' . $pokemonIdStr . '_00.png" style="width:48px;height:48px;"/></span>';
+                                } ?>
+                                <div class="mon-name" style="display:none;"></div>
+                                <div class="switch-container timer-cont" style="text-align:center;display:none">
+                                    <h5 class="timer-name" style="margin-bottom:0;"></h5>
+                                    <select id="egg_time" name="egg_time" class="egg_time" style="display:none;">
+                                        <option value="60" selected>60</option>
+                                        <option value="59">59</option>
+                                        <option value="58">58</option>
+                                        <option value="57">57</option>
+                                        <option value="56">56</option>
+                                        <option value="55">55</option>
+                                        <option value="54">54</option>
+                                        <option value="53">53</option>
+                                        <option value="52">52</option>
+                                        <option value="51">51</option>
+                                        <option value="50">50</option>
+                                        <option value="49">49</option>
+                                        <option value="48">48</option>
+                                        <option value="47">47</option>
+                                        <option value="46">46</option>
+                                        <option value="45">45</option>
+                                        <option value="44">44</option>
+                                        <option value="43">43</option>
+                                        <option value="42">42</option>
+                                        <option value="41">41</option>
+                                        <option value="40">40</option>
+                                        <option value="39">39</option>
+                                        <option value="38">38</option>
+                                        <option value="37">37</option>
+                                        <option value="36">36</option>
+                                        <option value="35">35</option>
+                                        <option value="34">34</option>
+                                        <option value="33">33</option>
+                                        <option value="32">32</option>
+                                        <option value="31">31</option>
+                                        <option value="30">30</option>
+                                        <option value="29">29</option>
+                                        <option value="28">28</option>
+                                        <option value="27">27</option>
+                                        <option value="26">26</option>
+                                        <option value="25">25</option>
+                                        <option value="24">24</option>
+                                        <option value="23">23</option>
+                                        <option value="22">22</option>
+                                        <option value="21">21</option>
+                                        <option value="20">20</option>
+                                        <option value="19">19</option>
+                                        <option value="18">18</option>
+                                        <option value="17">17</option>
+                                        <option value="16">16</option>
+                                        <option value="15">15</option>
+                                        <option value="14">14</option>
+                                        <option value="13">13</option>
+                                        <option value="12">12</option>
+                                        <option value="11">11</option>
+                                        <option value="10">10</option>
+                                        <option value="9">9</option>
+                                        <option value="8">8</option>
+                                        <option value="7">7</option>
+                                        <option value="6">6</option>
+                                        <option value="5">5</option>
+                                        <option value="4">4</option>
+                                        <option value="3">3</option>
+                                        <option value="2">2</option>
+                                        <option value="1">1</option>
+                                    </select>
+                                    <select id="mon_time" name="mon_time" class="mon_time" style="display:none;">
+                                        <option value="45" selected>45</option>
+                                        <option value="44">44</option>
+                                        <option value="43">43</option>
+                                        <option value="42">42</option>
+                                        <option value="41">41</option>
+                                        <option value="40">40</option>
+                                        <option value="39">39</option>
+                                        <option value="38">38</option>
+                                        <option value="37">37</option>
+                                        <option value="36">36</option>
+                                        <option value="35">35</option>
+                                        <option value="34">34</option>
+                                        <option value="33">33</option>
+                                        <option value="32">32</option>
+                                        <option value="31">31</option>
+                                        <option value="30">30</option>
+                                        <option value="29">29</option>
+                                        <option value="28">28</option>
+                                        <option value="27">27</option>
+                                        <option value="26">26</option>
+                                        <option value="25">25</option>
+                                        <option value="24">24</option>
+                                        <option value="23">23</option>
+                                        <option value="22">22</option>
+                                        <option value="21">21</option>
+                                        <option value="20">20</option>
+                                        <option value="19">19</option>
+                                        <option value="18">18</option>
+                                        <option value="17">17</option>
+                                        <option value="16">16</option>
+                                        <option value="15">15</option>
+                                        <option value="14">14</option>
+                                        <option value="13">13</option>
+                                        <option value="12">12</option>
+                                        <option value="11">11</option>
+                                        <option value="10">10</option>
+                                        <option value="9">9</option>
+                                        <option value="8">8</option>
+                                        <option value="7">7</option>
+                                        <option value="6">6</option>
+                                        <option value="5">5</option>
+                                        <option value="4">4</option>
+                                        <option value="3">3</option>
+                                        <option value="2">2</option>
+                                        <option value="1">1</option>
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-primary" onclick="manualRaidData(event);"><i class="fas fa-binoculars" style="margin-right:10px;"></i><?php echo i8ln('Submit Raid'); ?></button>
+                    <button type="button" class="btn btn-primary" data-bs-dismiss="modal"><?php echo i8ln('Close') ?></button>
                 </div>
             </div>
         </div>
