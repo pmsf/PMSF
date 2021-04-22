@@ -1557,6 +1557,25 @@ if (!$noLoadingScreen) {
 </div>
 
 <!-- Modals -->
+<!-- Motd Modal -->
+<?php if (! $noMotd) { ?>
+    <div class="modal fade" id="motdModal" tabindex="-1" aria-labelledby="motdModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+                <div class="modal-header">
+                <h5 class="modal-title" id="motdModalLabel"><?php echo $motdTitle; ?></h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <?php echo $motdContent; ?>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-primary" data-bs-dismiss="modal"><?php echo i8ln('Close') ?></button>
+                </div>
+            </div>
+        </div>
+    </div>
+<?php } ?>
 <!-- FullscreenModal-->
 <div class="modal fade" id="fullscreenModal" tabindex="-1" aria-labelledby="fullscreenModalLabel" aria-hidden="true">
     <div class="modal-dialog modal-xl">

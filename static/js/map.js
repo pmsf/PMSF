@@ -3685,7 +3685,6 @@ function centerMapOnCoords(event) { // eslint-disable-line no-unused-vars
     }
     var latlng = new L.LatLng(point.data('lat'), point.data('lon'))
     map.setView(latlng, zoom)
-    $('.ui-dialog-content').dialog('close')
 }
 
 function manualPokestopData(event) { // eslint-disable-line no-unused-vars
@@ -6066,20 +6065,8 @@ $(function () {
     }
     // load MOTD, if set
     if ((motd && !showMotdOnlyOnce) || (motd && showMotdOnlyOnce && Store.get('oldMotd') !== motdContent)) {
-        $.ajax({
-            url: 'motd_data',
-            type: 'POST',
-            dataType: 'json',
-            cache: false,
-            success: function (data) {
-                Store.set('oldMotd', motdContent)
-                // set content of motd banner
-                $('#motd').attr('title', data.title).html(data.content).dialog()
-            },
-            fail: function () {
-                return false
-            }
-        })
+        Store.set('oldMotd', motdContent)
+        $('#motdModal').modal('show')
     }
 })
 
