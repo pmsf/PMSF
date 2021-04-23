@@ -600,7 +600,7 @@ $enableDebug = false;
 // DATABASE CONFIG
 //-----------------------------------------------------
 $map = "rdm";                                                       // rdm / rocketmap
-$fork = "default";                                                  // beta / mad
+$fork = "default";                                                  // default / mad
 $queryInterval = '2500';                                            // Interval between raw_data requests.
 
 $db = new Medoo([
@@ -611,7 +611,16 @@ $db = new Medoo([
     'password' => 'database_password',
     'charset' => 'utf8'
 ]);
-
+//-----------------------------------------------------
+//Manual Database is used for:
+//Login
+//Community markers
+//Ingress Portal markers
+//Nest markers
+//POI markers
+//Clean DB files are to be found in the sql/manualdb folder.
+//Uncomment the section below to use mentioned manual functions.
+//-----------------------------------------------------
 //$manualdb = new Medoo([
 //    'database_type' => 'mysql',
 //    'database_name' => 'manualdb',
@@ -621,7 +630,7 @@ $db = new Medoo([
 //    'charset' => 'utf8mb4'
 //]);
 
-// DONT EDIT THE CODE BELOW
+// DONT EDIT THE CODE BELOW UNLESS YOU KNOW WHAT YOUR ARE DOING
 if (($noNativeLogin === false || $noDiscordLogin === false || $noFacebookLogin === false || $noPatreonLogin === false) && !empty($_SESSION['user']->user)) {
     if (file_exists('config/access-config.php')) {
         include 'config/access-config.php';
