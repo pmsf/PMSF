@@ -1,5 +1,9 @@
 /* Nav */
 
+.offcanvas.left {
+  margin-top: 60px;
+}
+
 #nav {
   @include vendor('transform', 'translateX(-20.50em)');
   @include vendor('transition', ('transform #{_duration(nav)} ease', 'box-shadow #{_duration(nav)} ease', 'visibility #{_duration(nav)}'));

@@ -377,6 +377,7 @@ if (!$noLoadingScreen) {
 <div class="wrapper">
     <!-- Header -->
     <header id="header">
+        <a class="btn btn-link" data-bs-toggle="offcanvas" href="#leftNav" role="button" title="<?php echo i8ln('Options') ?>" aria-controls="leftNav"><i class='fas fa-sliders-h' style='color:white;font-size:20px;vertical-align:middle;pointer-events:none'></i></a>
         <a href="#nav" title="<?php echo i8ln('Options') ?>"></a>
 
         <h1><a href="#"><?= $headerTitle ?><img src="<?= $raidmapLogo ?>" height="35" width="auto" border="0" style="float: right; margin-left: 5px; margin-top: 10px;"></a></h1>
@@ -426,6 +427,155 @@ if (!$noLoadingScreen) {
         ?>
     </header>
     <!-- NAV -->
+    <div class="offcanvas left offcanvas-start" data-bs-scroll="true" data-bs-backdrop="false" tabindex="-1" id="leftNav" aria-labelledby="leftNavLabel">
+        <div class="offcanvas-body left">
+            <div class="accordion accordion-flush" id="accordionNav">
+                <div class="accordion-item">
+                    <h2 class="accordion-header" id="headingItemOne">
+                        <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#navItemOne" aria-expanded="false" aria-controls="navItemOne">
+                            <?php if (! $noNests) { ?>
+                                <h5><?php echo i8ln('Pokémon &amp; Nests') ?></h5>
+                            <?php
+                            } else { ?>
+                                <h5><?php echo i8ln('Pokémon') ?></h5>
+                            <?php } ?>
+                        </button>
+                    </h2>
+                    <div id="navItemOne" class="accordion-collapse collapse" aria-labelledby="navItemOne" data-bs-parent="#accordionNav">
+                        <div class="accordion-body">
+                            <?php
+                            if (! $noPokemon) {
+                                echo '<div class="form-control-2 switch-container" style="float:none;height:35px;margin-bottom:0px;">
+                                    <h5>' . i8ln('Pokémon') . '</h5>
+                                    <div class="onoffswitch">
+                                        <input id="pokemon-switch" type="checkbox" name="pokemon-switch" class="onoffswitch-checkbox"
+                                               checked>
+                                        <label class="onoffswitch-label" for="pokemon-switch">
+                                            <span class="switch-label" data-on="On" data-off="Off"></span>
+                                            <span class="switch-handle"></span>
+                                        </label>
+                                    </div>
+                                </div>';
+                            }
+                            if (! $noNests) {
+                                echo '<div class="form-control-2 switch-container" style="float:none;height:35px;margin-bottom:0px;">
+                                    <h5>' . i8ln('Nests') . '</h5>
+                                    <div class="onoffswitch">
+                                        <input id="nests-switch" type="checkbox" name="nests-switch"
+                                               class="onoffswitch-checkbox" checked>
+                                        <label class="onoffswitch-label" for="nests-switch">
+                                            <span class="switch-label" data-on="On" data-off="Off"></span>
+                                            <span class="switch-handle"></span>
+                                        </label>
+                                    </div>
+                                </div>';
+                            } ?>
+                        </div>
+                    </div>
+                </div>
+                <div class="accordion-item">
+                    <h2 class="accordion-header" id="headingItemTwo">
+                        <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#navItemTwo" aria-expanded="false" aria-controls="navItemTwo">
+                            <?php if (!$noQuests) { ?>
+                                <h5><?php echo i8ln('Pokéstops &amp; Quests'); ?></h5>
+                            <?php
+                            } else { ?>
+                                <h5><?php echo i8ln('Pokéstops'); ?></h5>
+                            <?php } ?>
+                        </button>
+                    </h2>
+                    <div id="navItemTwo" class="accordion-collapse collapse" aria-labelledby="navItemTwo" data-bs-parent="#accordionNav">
+                        <div class="accordion-body">
+Placeholder
+                        </div>
+                    </div>
+                </div>
+                <div class="accordion-item">
+                    <h2 class="accordion-header" id="headingItemThree">
+                        <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#navItemThree" aria-expanded="false" aria-controls="navItemThree">
+                            <?php if (! $noRaids) { ?>
+                                 <h5><?php echo i8ln('Gym &amp; Raid') ?></h5>
+                            <?php
+                            } else { ?>
+                                 <h5><?php echo i8ln('Gym') ?></h5>
+                            <?php } ?>
+                        </button>
+                    </h2>
+                    <div id="navItemThree" class="accordion-collapse collapse" aria-labelledby="navItemThree" data-bs-parent="#accordionNav">
+                        <div class="accordion-body">
+Placeholder
+                        </div>
+                    </div>
+                </div>
+                <div class="accordion-item">
+                    <h2 class="accordion-header" id="headingItemFour">
+                        <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#navItemFour" aria-expanded="false" aria-controls="navItemFour">
+                            <h5><?php echo i8ln('Ingress / S2Cell'); ?></h5>
+                        </button>
+                    </h2>
+                    <div id="navItemFour" class="accordion-collapse collapse" aria-labelledby="navItemFour" data-bs-parent="#accordionNav">
+                        <div class="accordion-body">
+Placeholder
+                        </div>
+                    </div>
+                </div>
+                <div class="accordion-item">
+                    <h2 class="accordion-header" id="headingItemFive">
+                        <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#navItemFive" aria-expanded="false" aria-controls="navItemFive">
+                            <?php if (! $noSearchLocation) { ?>
+                                <h5><?php echo i8ln('Location &amp; Search') ?></h5>
+                            <?php
+                            } else { ?>
+                                <h5><?php echo i8ln('Location') ?></h5>
+                            <?php } ?>
+                        </button>
+                    </h2>
+                    <div id="navItemFive" class="accordion-collapse collapse" aria-labelledby="navItemFive" data-bs-parent="#accordionNav">
+                        <div class="accordion-body">
+Placeholder
+                        </div>
+                    </div>
+                </div>
+                <div class="accordion-item">
+                    <h2 class="accordion-header" id="headingItemSix">
+                        <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#navItemSix" aria-expanded="false" aria-controls="navItemSix">
+                            <h5><?php echo i8ln('Notification') ?></h5>
+                        </button>
+                    </h2>
+                    <div id="navItemFive" class="accordion-collapse collapse" aria-labelledby="navItemSix" data-bs-parent="#accordionNav">
+                        <div class="accordion-body">
+Placeholder
+                        </div>
+                    </div>
+                </div>
+                <div class="accordion-item">
+                    <h2 class="accordion-header" id="headingItemSeven">
+                        <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#navItemSeven" aria-expanded="false" aria-controls="navItemSeven">
+                            <h5><?php echo i8ln('Style') ?></h5>
+                        </button>
+                    </h2>
+                    <div id="navItemSeven" class="accordion-collapse collapse" aria-labelledby="navItemSix" data-bs-parent="#accordionNav">
+                        <div class="accordion-body">
+Placeholder
+                        </div>
+                    </div>
+                </div>
+                <div class="accordion-item">
+                    <h2 class="accordion-header" id="headingItemEight">
+                        <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#navItemEight" aria-expanded="false" aria-controls="navItemEight">
+                            <h5><?php echo i8ln('Areas') ?></h5>
+                        </button>
+                    </h2>
+                    <div id="navItemEight" class="accordion-collapse collapse" aria-labelledby="navItemEight" data-bs-parent="#accordionNav">
+                        <div class="accordion-body">
+Placeholder
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
     <nav id="nav">
         <div id="nav-accordion">
             <?php
@@ -1532,14 +1682,11 @@ if (!$noLoadingScreen) {
             <div id="spawnpointList" style="color: black;"></div>
         </div>
     </nav>
-    <nav id="gym-details">
-        <center><h1><?php echo i8ln('Loading') ?>...</h1></center>
-    </nav>
-
-    <div id="motd" title=""></div>
 
     <div id="map"></div>
+
     <div class="loader" style="display:none;"></div>
+
     <div class="fullscreen-toggle">
         <button class="map-toggle-button" onClick="toggleFullscreenMap();"><i class="fa fa-expand" aria-hidden="true"></i></button>
     </div>
@@ -1555,6 +1702,7 @@ if (!$noLoadingScreen) {
         </button>
     <?php } ?>
 </div>
+
 <!-- Load modals.php -->
 <?php
 include('modals.php');
