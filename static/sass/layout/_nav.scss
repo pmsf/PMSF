@@ -1,7 +1,32 @@
 /* Nav */
 
 .offcanvas.left {
-  margin-top: 60px;
+  margin-top: 56px;
+}
+.offcanvas-body.left {
+  padding: 0px;
+  h2 {
+    margin-left: 0;
+  }
+ }
+ .container.pokemon-container {
+  width: 100%;
+  max-height: 20em;
+  overflow: hidden;
+  overflow-y: scroll;
+}
+button.accordion-button {
+  background-color: white !important;
+}
+.accordion-button:focus {
+  border-color: white !important;
+  box-shadow: none !important
+}
+.select-all, .hide-all {
+    width: 49%;
+}
+button#exclude-pokemon-tab, button#exclude-min-iv-tab {
+  color: #495057 !important;
 }
 
 #nav {

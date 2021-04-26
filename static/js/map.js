@@ -6416,13 +6416,13 @@ $(function () {
         })
 
         // setup the filter lists
-        $selectExclude.select2({
-            placeholder: i8ln('Select Pokémon'),
-            data: pokeList,
-            templateResult: formatState,
-            multiple: true,
-            maximumSelectionSize: 1
-        })
+        //$selectExclude.select2({
+        //    placeholder: i8ln('Select Pokémon'),
+        //    data: pokeList,
+        //    templateResult: formatState,
+        //    multiple: true,
+        //    maximumSelectionSize: 1
+        //})
         $selectPokemonNotify.select2({
             placeholder: i8ln('Select Pokémon'),
             data: pokeList,
@@ -6435,11 +6435,11 @@ $(function () {
             data: [i8ln('Common'), i8ln('Uncommon'), i8ln('Rare'), i8ln('Very Rare'), i8ln('Ultra Rare')],
             templateResult: formatState
         })
-        $selectExcludeMinIV.select2({
-            placeholder: i8ln('Select Pokémon'),
-            data: pokeList,
-            templateResult: formatState
-        })
+        //$selectExcludeMinIV.select2({
+        //    placeholder: i8ln('Select Pokémon'),
+        //    data: pokeList,
+        //    templateResult: formatState
+        //})
         $questsExcludePokemon.select2({
             placeholder: i8ln('Select Pokémon'),
             data: pokeList,
@@ -6580,20 +6580,20 @@ $(function () {
         if (isTouchDevice() && isMobileDevice()) {
             $('.select2-search input').prop('readonly', true)
         }
-        $('#tabs').tabs()
+        //$('#tabs').tabs()
         $('#quests-tabs').tabs()
         $('#raid-tabs').tabs()
     })
 
     $('.select-all').on('click', function (e) {
         e.preventDefault()
-        var parent = $(this).parent()
+        var parent = $(this).parent().parent().parent()
         parent.find('.pokemon-list .pokemon-icon-sprite').addClass('active')
         parent.find('input').val(Array.from(Array(numberOfPokemon + 1).keys()).slice(1).join(',')).trigger('change')
     })
     $('.hide-all').on('click', function (e) {
         e.preventDefault()
-        var parent = $(this).parent()
+        var parent = $(this).parent().parent().parent()
         parent.find('.pokemon-list .pokemon-icon-sprite').removeClass('active')
         parent.find('input').val('').trigger('change')
     })
