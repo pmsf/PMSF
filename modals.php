@@ -153,7 +153,7 @@
                     <div class="nav nav-tabs nav-fill" id="nav-tab" role="tablist">
                         <?php $firstTab = 1; ?>
                         <?php if (!$noPokemon && !$noSearchPokemon) { ?>
-                            <button class="nav-link<?php echo (($firstTab == 1) ? " active" : ""); ?>" id="nav-pokemons-tab" data-bs-toggle="tab" data-bs-target="#nav-pokemonss" type="button" role="tab" aria-controls="nav-pokemons" aria-selected="true"><img src="static/images/pokeball.png" width="30" height="30"/></button>
+                            <button class="nav-link<?php echo (($firstTab == 1) ? " active" : ""); ?>" id="nav-pokemons-tab" data-bs-toggle="tab" data-bs-target="#nav-pokemons" type="button" role="tab" aria-controls="nav-pokemons" aria-selected="true"><img src="static/images/pokeball.png" width="30" height="30"/></button>
                         <?php
                         $firstTab++;
                         }
