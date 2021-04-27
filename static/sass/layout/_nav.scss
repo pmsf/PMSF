@@ -1,5 +1,36 @@
 /* Nav */
 
+
+.form-check-label {
+  position: relative;
+  left: -35px;
+}
+
+.form-check-input {
+  float: right;
+}
+
+.accordion-button:not(.collapsed)::after {
+    background-image: url('/static/images/pokemon.png');
+    filter: brightness(0%);
+    right: 15px;
+    top: -8px;
+    position: relative;
+}
+
+.accordion-button::after {
+    background-image: url('/static/images/pokemon.png');
+    filter: brightness(0%);
+    right: 15px;
+    top: -8px;
+    position: relative;
+}
+
+
+.offcanvas {
+    font-size: 14px;
+}
+
 .offcanvas.left {
   margin-top: 56px;
 }
@@ -22,12 +53,30 @@ button.accordion-button {
   border-color: white !important;
   box-shadow: none !important
 }
-.select-all, .hide-all {
-    width: 49%;
+.select-all, .hide-all, .select-all-grunt, .hide-all-grunt, .select-all-item, .hide-all-item, .select-all-energy, .hide-all-energy {
+    width: 48%;
+    margin: 2px;
 }
-button#exclude-pokemon-tab, button#exclude-min-iv-tab {
+button#exclude-pokemon-tab, button#exclude-min-iv-tab, button#exclude-quest-pokemon-tab, button#exclude-quest-item-tab, button#exclude-quest-energy-tab, button#exclude-rocket-tab {
   color: #495057 !important;
-  line-height: 2;
+  background-color: #f8f9fa;
+  line-height: 1;
+  font-size: 11px;
+  border: 1px solid #d1d1d1;
+}
+
+button#exclude-pokemon-tab.active,
+button#exclude-min-iv-tab.active,
+button#exclude-quest-pokemon-tab.active,
+button#exclude-quest-item-tab.active,
+button#exclude-quest-energy-tab.active,
+button#exclude-rocket-tab.active {
+    background-color: #6c757d;
+    color: #fff !important;
+}
+input.search.search-input {
+    position: relative;
+    height: 31px
 }
 
 #nav {
@@ -1099,9 +1148,10 @@ button#exclude-pokemon-tab, button#exclude-min-iv-tab {
     box-sizing: border-box;
   }
   .pokemon-icon-sprite, energy-icon-sprite {
-    border:1px solid #FFF;
+    border: 1px solid #d6d8d9;
+    background-color: #f7f7f7;
     width: calc( 20% - 2px);
-    margin-bottom: 5px;
+    margin-bottom: 2px;
     margin-left: 1px;
     margin-right: 1px;
     position:relative;
