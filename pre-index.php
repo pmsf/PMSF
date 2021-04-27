@@ -537,7 +537,7 @@ if (!$noLoadingScreen) {
                                                 $firstTabContent++;
                                                 if (! $noExcludeMinIV) { ?>
                                                     <div class="tab-pane fade<?php echo (($firstTabContent == 1) ? " show active" : ""); ?>" id="exclude-min-iv" role="tabpanel" aria-labelledby="exclude-min-iv-tab">
-                                                        <div class="container exclude-min-iv-container">
+                                                        <div class="container pokemon-container">
                                                             <?php pokemonFilterImages($noPokemonNumbers, '', [], 3); ?>
                                                         </div>
                                                         <div class="dropdown-divider"></div>

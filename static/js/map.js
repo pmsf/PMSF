@@ -5889,7 +5889,6 @@ function pokemonRaidFilter(event) { // eslint-disable-line no-unused-vars
 }
 
 function pokemonSpritesFilter() {
-    //jQuery('.pokemon-list').parent().find('.select2').hide()
     loadDefaultImages()
     jQuery('.offcanvas-body.left .pokemon-list .pokemon-icon-sprite').on('click', function () {
         var img = jQuery(this)
@@ -6004,7 +6003,7 @@ function loadDefaultImages() {
             $(this).addClass('active')
         }
     })
-    $('label[for="exclude-min-iv"] .pokemon-icon-sprite').each(function () {
+    $('#exclude-min-iv .pokemon-icon-sprite').each(function () {
         if (eminiv.indexOf($(this).data('value')) !== -1) {
             $(this).addClass('active')
         }
@@ -6275,7 +6274,7 @@ $(function () {
         })
     })
     $selectExclude = $('#exclude-pokemon .search-number')
-    $selectExcludeMinIV = $('#exclude-min-iv')
+    $selectExcludeMinIV = $('#exclude-min-iv .search-number')
     $selectPokemonNotify = $('#notify-pokemon')
     $selectRarityNotify = $('#notify-rarity')
     $textPerfectionNotify = $('#notify-perfection')
@@ -6415,14 +6414,6 @@ $(function () {
             idToPokemon[key] = value['name']
         })
 
-        // setup the filter lists
-        //$selectExclude.select2({
-        //    placeholder: i8ln('Select Pokémon'),
-        //    data: pokeList,
-        //    templateResult: formatState,
-        //    multiple: true,
-        //    maximumSelectionSize: 1
-        //})
         $selectPokemonNotify.select2({
             placeholder: i8ln('Select Pokémon'),
             data: pokeList,
@@ -6435,11 +6426,6 @@ $(function () {
             data: [i8ln('Common'), i8ln('Uncommon'), i8ln('Rare'), i8ln('Very Rare'), i8ln('Ultra Rare')],
             templateResult: formatState
         })
-        //$selectExcludeMinIV.select2({
-        //    placeholder: i8ln('Select Pokémon'),
-        //    data: pokeList,
-        //    templateResult: formatState
-        //})
         $questsExcludePokemon.select2({
             placeholder: i8ln('Select Pokémon'),
             data: pokeList,
@@ -6580,7 +6566,6 @@ $(function () {
         if (isTouchDevice() && isMobileDevice()) {
             $('.select2-search input').prop('readonly', true)
         }
-        //$('#tabs').tabs()
         $('#quests-tabs').tabs()
         $('#raid-tabs').tabs()
     })
