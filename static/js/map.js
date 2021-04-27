@@ -5908,11 +5908,10 @@ function pokemonSpritesFilter() {
 }
 
 function energySpritesFilter() {
-    jQuery('.energy-list').parent().find('.select2').hide()
     loadDefaultImages()
-    jQuery('#nav .energy-list .energy-icon-sprite').on('click', function () {
+    jQuery('.offcanvas-body.left .energy-list .energy-icon-sprite').on('click', function () {
         var img = jQuery(this)
-        var select = jQuery(this).parent().parent().parent().find('.select2-hidden-accessible')
+        var select = jQuery(this).parent().parent().parent().find('.search-number')
         var value = select.val().split(',')
         var id = img.data('value').toString()
         if (img.hasClass('active')) {
@@ -5928,11 +5927,10 @@ function energySpritesFilter() {
 }
 
 function itemSpritesFilter() {
-    jQuery('.item-list').parent().find('.select2').hide()
     loadDefaultImages()
-    jQuery('#nav .item-list .item-icon-sprite').on('click', function () {
+    jQuery('.offcanvas-body.left .item-list .item-icon-sprite').on('click', function () {
         var img = jQuery(this)
-        var select = jQuery(this).parent().parent().parent().find('.select2-hidden-accessible')
+        var select = jQuery(this).parent().parent().parent().find('.search-number')
         var value = select.val().split(',')
         var id = img.data('value').toString()
         if (img.hasClass('active')) {
@@ -5948,11 +5946,10 @@ function itemSpritesFilter() {
 }
 
 function gruntSpritesFilter() {
-    jQuery('.grunt-list').parent().find('.select2').hide()
     loadDefaultImages()
-    jQuery('#nav .grunt-list .grunt-icon-sprite').on('click', function () {
+    jQuery('.offcanvas-body.left .grunt-list .grunt-icon-sprite').on('click', function () {
         var img = jQuery(this)
-        var select = jQuery(this).parent().parent().parent().find('.select2-hidden-accessible')
+        var select = jQuery(this).parent().parent().parent().find('.search-number')
         var value = select.val().split(',')
         var id = img.data('value').toString()
         if (img.hasClass('active')) {
@@ -6013,22 +6010,22 @@ function loadDefaultImages() {
             $(this).addClass('active')
         }
     })
-    $('label[for="exclude-quests-pokemon"] .pokemon-icon-sprite').each(function () {
+    $('#exclude-quests-pokemon .pokemon-icon-sprite').each(function () {
         if (eqp.indexOf($(this).data('value')) !== -1) {
             $(this).addClass('active')
         }
     })
-    $('label[for="exclude-quests-energy"] .energy-icon-sprite').each(function () {
+    $('#exclude-quests-energy .energy-icon-sprite').each(function () {
         if (eqe.indexOf($(this).data('value')) !== -1) {
             $(this).addClass('active')
         }
     })
-    $('label[for="exclude-quests-item"] .item-icon-sprite').each(function () {
+    $('#exclude-quests-item .item-icon-sprite').each(function () {
         if (eqi.indexOf($(this).data('value')) !== -1) {
             $(this).addClass('active')
         }
     })
-    $('label[for="exclude-grunts"] .grunt-icon-sprite').each(function () {
+    $('#exclude-grunts .grunt-icon-sprite').each(function () {
         if (eg.indexOf($(this).data('value')) !== -1) {
             $(this).addClass('active')
         }
@@ -6284,10 +6281,10 @@ $(function () {
     $raidNotify = $('#notify-raid')
     $switchTinyRat = $('#tiny-rat-switch')
     $switchBigKarp = $('#big-karp-switch')
-    $questsExcludePokemon = $('#exclude-quests-pokemon')
-    $questsExcludeItem = $('#exclude-quests-item')
-    $questsExcludeEnergy = $('#exclude-quests-energy')
-    $excludeGrunts = $('#exclude-grunts')
+    $questsExcludePokemon = $('#exclude-quest-pokemon .search-number')
+    $questsExcludeItem = $('#exclude-quest-item .search-number')
+    $questsExcludeEnergy = $('#exclude-quest-energy .search-number')
+    $excludeGrunts = $('#exclude-rocket .search-number')
     $excludeRaidboss = $('#exclude-raidboss')
     $excludeRaidegg = $('#exclude-raidegg')
 
@@ -6334,13 +6331,6 @@ $(function () {
             value['grunt'] = i8ln(value['grunt'])
             idToGrunt[key] = value
         })
-        $excludeGrunts.select2({
-            placeholder: i8ln('Select Grunt'),
-            data: gruntList,
-            templateResult: formatState,
-            multiple: true,
-            maximumSelectionSize: 1
-        })
         $excludeGrunts.on('change', function (e) {
             buffer = excludedGrunts
             excludedGrunts = $excludeGrunts.val().split(',').map(Number).sort(function (a, b) {
@@ -6366,13 +6356,6 @@ $(function () {
             })
             value['name'] = i8ln(value['name'])
             idToItem[key] = value['name']
-        })
-        $questsExcludeItem.select2({
-            placeholder: i8ln('Select Item'),
-            data: itemList,
-            templateResult: formatState,
-            multiple: true,
-            maximumSelectionSize: 1
         })
         $questsExcludeItem.on('change', function (e) {
             buffer = questsExcludedItem
@@ -6425,20 +6408,6 @@ $(function () {
             placeholder: i8ln('Select Rarity'),
             data: [i8ln('Common'), i8ln('Uncommon'), i8ln('Rare'), i8ln('Very Rare'), i8ln('Ultra Rare')],
             templateResult: formatState
-        })
-        $questsExcludePokemon.select2({
-            placeholder: i8ln('Select Pokémon'),
-            data: pokeList,
-            templateResult: formatState,
-            multiple: true,
-            maximumSelectionSize: 1
-        })
-        $questsExcludeEnergy.select2({
-            placeholder: i8ln('Select Pokémon'),
-            data: pokeList,
-            templateResult: formatState,
-            multiple: true,
-            maximumSelectionSize: 1
         })
         $excludeRaidboss.select2({
             placeholder: i8ln('Select Pokémon'),
@@ -6566,7 +6535,6 @@ $(function () {
         if (isTouchDevice() && isMobileDevice()) {
             $('.select2-search input').prop('readonly', true)
         }
-        $('#quests-tabs').tabs()
         $('#raid-tabs').tabs()
     })
 
@@ -6585,42 +6553,42 @@ $(function () {
 
     $('.select-all-energy').on('click', function (e) {
         e.preventDefault()
-        var parent = $(this).parent()
+        var parent = $(this).parent().parent().parent()
         parent.find('.energy-list .energy-icon-sprite').addClass('active')
-        parent.find('input').val(Array.from(Array(numberOfPokemon + 1).keys()).slice(1).join(',')).trigger('change')
+        parent.find('.search-number').val(Array.from(Array(numberOfPokemon + 1).keys()).slice(1).join(',')).trigger('change')
     })
     $('.hide-all-energy').on('click', function (e) {
         e.preventDefault()
-        var parent = $(this).parent()
+        var parent = $(this).parent().parent().parent()
         parent.find('.energy-list .energy-icon-sprite').removeClass('active')
-        parent.find('input').val('').trigger('change')
+        parent.find('.search-number').val('').trigger('change')
     })
 
     $('.select-all-item').on('click', function (e) {
         e.preventDefault()
-        var parent = $(this).parent()
+        var parent = $(this).parent().parent().parent()
         parent.find('.item-list .item-icon-sprite').addClass('active')
-        parent.find('input').val(Array.from(Array(numberOfItem + 1).keys()).slice(1).join(',')).trigger('change')
+        parent.find('.search-number').val(Array.from(Array(numberOfItem + 1).keys()).slice(1).join(',')).trigger('change')
     })
     $('.hide-all-item').on('click', function (e) {
         e.preventDefault()
-        var parent = $(this).parent()
+        var parent = $(this).parent().parent().parent()
         parent.find('.item-list .item-icon-sprite').removeClass('active')
-        parent.find('input').val('').trigger('change')
+        parent.find('.search-number').val('').trigger('change')
     })
 
     $('.select-all-grunt').on('click', function (e) {
         e.preventDefault()
-        var parent = $(this).parent()
+        var parent = $(this).parent().parent().parent()
         parent.find('.grunt-list .grunt-icon-sprite').addClass('active')
-        parent.find('input').val(Array.from(Array(numberOfGrunt + 1).keys()).slice(1).join(',')).trigger('change')
+        parent.find('.search-number').val(Array.from(Array(numberOfGrunt + 1).keys()).slice(1).join(',')).trigger('change')
     })
 
     $('.hide-all-grunt').on('click', function (e) {
         e.preventDefault()
-        var parent = $(this).parent()
+        var parent = $(this).parent().parent().parent()
         parent.find('.grunt-list .grunt-icon-sprite').removeClass('active')
-        parent.find('input').val('').trigger('change')
+        parent.find('.search-number').val('').trigger('change')
     })
 
     $('.select-all-egg').on('click', function (e) {
@@ -6941,11 +6909,11 @@ $(function () {
         Store.set('showAllPokestops', this.checked)
         if (this.checked === true && Store.get('showQuests') === true) {
             Store.set('showQuests', false)
-            jQuery('label[for="quests-switch"]').click()
+            jQuery('#quests-switch').click()
         }
         if (this.checked === true && Store.get('showRocket') === true) {
             Store.set('showRocket', false)
-            jQuery('label[for="rocket-switch"]').click()
+            jQuery('#rocket-switch').click()
         }
         if (this.checked === true && Store.get('showLures') === true) {
             Store.set('showLures', false)
@@ -6967,11 +6935,11 @@ $(function () {
         Store.set('showLures', this.checked)
         if (this.checked === true && Store.get('showQuests') === true) {
             Store.set('showQuests', false)
-            jQuery('label[for="quests-switch"]').click()
+            jQuery('#quests-switch').click()
         }
         if (this.checked === true && Store.get('showRocket') === true) {
             Store.set('showRocket', false)
-            jQuery('label[for="rocket-switch"]').click()
+            jQuery('#rocket-switch').click()
         }
         if (this.checked === true && Store.get('showAllPokestops') === true) {
             Store.set('showAllPokestops', false)
@@ -6992,7 +6960,7 @@ $(function () {
         Store.set('showRocket', this.checked)
         if (this.checked === true && Store.get('showQuests') === true) {
             Store.set('showQuests', false)
-            jQuery('label[for="quests-switch"]').click()
+            jQuery('#quests-switch').click()
         }
         if (this.checked === true && Store.get('showLures') === true) {
             Store.set('showLures', false)
@@ -7031,7 +6999,7 @@ $(function () {
         }
         if (this.checked === true && Store.get('showRocket') === true) {
             Store.set('showRocket', false)
-            jQuery('label[for="rocket-switch"]').click()
+            jQuery('#rocket-switch').click()
         }
         if (this.checked === true && Store.get('showAllPokestops') === true) {
             Store.set('showAllPokestops', false)
