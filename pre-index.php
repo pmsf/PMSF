@@ -521,7 +521,6 @@ if (!$noLoadingScreen) {
                                                 if (! $noHidePokemon) { ?>
                                                     <div class="tab-pane fade<?php echo (($firstTabContent == 1) ? " show active" : ""); ?>" id="exclude-pokemon" role="tabpanel" aria-labelledby="exclude-pokemon-tab">
                                                         <div class="container pokemon-container">
-                                                            <input id="exclude-pokemon-input" type="hidden" readonly="true">
                                                             <?php pokemonFilterImages($noPokemonNumbers, '', [], 2); ?>
                                                         </div>
                                                         <div class="dropdown-divider"></div>
@@ -539,7 +538,6 @@ if (!$noLoadingScreen) {
                                                 if (! $noExcludeMinIV) { ?>
                                                     <div class="tab-pane fade<?php echo (($firstTabContent == 1) ? " show active" : ""); ?>" id="exclude-min-iv" role="tabpanel" aria-labelledby="exclude-min-iv-tab">
                                                         <div class="container exclude-min-iv-container">
-                                                            <input id="exclude-min-iv-input" type="hidden" readonly="true">
                                                             <?php pokemonFilterImages($noPokemonNumbers, '', [], 3); ?>
                                                         </div>
                                                         <div class="dropdown-divider"></div>
