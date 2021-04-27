@@ -325,7 +325,7 @@ function excludePokemon(id) { // eslint-disable-line no-unused-vars
     $selectExclude.val(
         $selectExclude.val().split(',').concat(id).join(',')
     ).trigger('change')
-    $('label[for="exclude-pokemon"] .pokemon-list .pokemon-icon-sprite[data-value="' + id + '"]').addClass('active')
+    $('#exclude-pokemon .pokemon-list .pokemon-icon-sprite[data-value="' + id + '"]').addClass('active')
     clearStaleMarkers()
 }
 
@@ -5889,11 +5889,11 @@ function pokemonRaidFilter(event) { // eslint-disable-line no-unused-vars
 }
 
 function pokemonSpritesFilter() {
-    jQuery('.pokemon-list').parent().find('.select2').hide()
+    //jQuery('.pokemon-list').parent().find('.select2').hide()
     loadDefaultImages()
-    jQuery('#nav .pokemon-list .pokemon-icon-sprite').on('click', function () {
+    jQuery('.offcanvas-body.left .pokemon-list .pokemon-icon-sprite').on('click', function () {
         var img = jQuery(this)
-        var select = jQuery(this).parent().parent().parent().find('.select2-hidden-accessible')
+        var select = jQuery(this).parent().parent().parent().find('.search-number')
         var value = select.val().split(',')
         var id = img.data('value').toString()
         if (img.hasClass('active')) {
@@ -5999,7 +5999,7 @@ function loadDefaultImages() {
     var erb = Store.get('remember_exclude_raidboss')
     var ere = Store.get('remember_exclude_raidegg')
 
-    $('label[for="exclude-pokemon"] .pokemon-icon-sprite').each(function () {
+    $('#exclude-pokemon .pokemon-icon-sprite').each(function () {
         if (ep.indexOf($(this).data('value')) !== -1) {
             $(this).addClass('active')
         }
@@ -6274,7 +6274,7 @@ $(function () {
             scanAreas.push(value)
         })
     })
-    $selectExclude = $('#exclude-pokemon')
+    $selectExclude = $('#exclude-pokemon .search-number')
     $selectExcludeMinIV = $('#exclude-min-iv')
     $selectPokemonNotify = $('#notify-pokemon')
     $selectRarityNotify = $('#notify-rarity')
@@ -6589,13 +6589,13 @@ $(function () {
         e.preventDefault()
         var parent = $(this).parent().parent().parent()
         parent.find('.pokemon-list .pokemon-icon-sprite').addClass('active')
-        parent.find('input').val(Array.from(Array(numberOfPokemon + 1).keys()).slice(1).join(',')).trigger('change')
+        parent.find('.search-number').val(Array.from(Array(numberOfPokemon + 1).keys()).slice(1).join(',')).trigger('change')
     })
     $('.hide-all').on('click', function (e) {
         e.preventDefault()
         var parent = $(this).parent().parent().parent()
         parent.find('.pokemon-list .pokemon-icon-sprite').removeClass('active')
-        parent.find('input').val('').trigger('change')
+        parent.find('.search-number').val('').trigger('change')
     })
 
     $('.select-all-energy').on('click', function (e) {

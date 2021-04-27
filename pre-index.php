@@ -521,7 +521,7 @@ if (!$noLoadingScreen) {
                                                 if (! $noHidePokemon) { ?>
                                                     <div class="tab-pane fade<?php echo (($firstTabContent == 1) ? " show active" : ""); ?>" id="exclude-pokemon" role="tabpanel" aria-labelledby="exclude-pokemon-tab">
                                                         <div class="container pokemon-container">
-                                                            <input id="exclude-pokemon" type="hidden" readonly="true">
+                                                            <input id="exclude-pokemon-input" type="hidden" readonly="true">
                                                             <?php pokemonFilterImages($noPokemonNumbers, '', [], 2); ?>
                                                         </div>
                                                         <div class="dropdown-divider"></div>
@@ -538,14 +538,19 @@ if (!$noLoadingScreen) {
                                                 $firstTabContent++;
                                                 if (! $noExcludeMinIV) { ?>
                                                     <div class="tab-pane fade<?php echo (($firstTabContent == 1) ? " show active" : ""); ?>" id="exclude-min-iv" role="tabpanel" aria-labelledby="exclude-min-iv-tab">
-                                                            <div class="container pokemon-container">
-                                                                <input id="exclude-min-iv" type="hidden" readonly="true">
-                                                                <?php pokemonFilterImages($noPokemonNumbers, '', [], 3); ?>
+                                                        <div class="container exclude-min-iv-container">
+                                                            <input id="exclude-min-iv-input" type="hidden" readonly="true">
+                                                            <?php pokemonFilterImages($noPokemonNumbers, '', [], 3); ?>
+                                                        </div>
+                                                        <div class="dropdown-divider"></div>
+                                                        <div class="row row-cols-2">
+                                                            <div class="col">
+                                                                <a class="btn btn-secondary select-all" href="#"><?php echo i8ln('All') ?></a>
                                                             </div>
-                                                            <div class="dropdown-divider"></div>
-                                                            <a href="#" class="select-all"><?php echo i8ln('All') ?>
-                                                                <div>
-                                                            </a><a href="#" class="hide-all"><?php echo i8ln('None') ?></a>
+                                                            <div class="col">
+                                                                <a class="btn btn-secondary hide-all" href="#"><?php echo i8ln('None') ?></a>
+                                                            </div>
+                                                        </div>
                                                     </div>
                                                 <?php } ?>
                                             </div>
