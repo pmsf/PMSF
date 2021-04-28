@@ -333,7 +333,7 @@ function notifyAboutPokemon(id) { // eslint-disable-line no-unused-vars
     $selectPokemonNotify.val(
         $selectPokemonNotify.val().split(',').concat(id).join(',')
     ).trigger('change')
-    $('label[for="notify-pokemon"] .pokemon-list .pokemon-icon-sprite[data-value="' + id + '"]').addClass('active')
+    $('#notify-pokemon .pokemon-list .pokemon-icon-sprite[data-value="' + id + '"]').addClass('active')
 }
 
 function removePokemonMarker(encounterId) { // eslint-disable-line no-unused-vars
@@ -5964,7 +5964,7 @@ function loadDefaultImages() {
             $(this).addClass('active')
         }
     })
-    $('label[for="notify-pokemon"] .pokemon-icon-sprite').each(function () {
+    $('#notify-pokemon .pokemon-icon-sprite').each(function () {
         if (en.indexOf($(this).data('value')) !== -1) {
             $(this).addClass('active')
         }
@@ -6231,7 +6231,7 @@ $(function () {
     })
     $selectExclude = $('#exclude-pokemon .search-number')
     $selectExcludeMinIV = $('#exclude-min-iv .search-number')
-    $selectPokemonNotify = $('#notify-pokemon')
+    $selectPokemonNotify = $('#notify-pokemon .search-number')
     $selectRarityNotify = $('#notify-rarity')
     $textPerfectionNotify = $('#notify-perfection')
     $textMinIV = $('#min-iv')
@@ -6349,18 +6349,6 @@ $(function () {
             idToPokemon[key] = value['name']
         })
 
-        $selectPokemonNotify.select2({
-            placeholder: i8ln('Select Pokémon'),
-            data: pokeList,
-            templateResult: formatState,
-            multiple: true,
-            maximumSelectionSize: 1
-        })
-        $selectRarityNotify.select2({
-            placeholder: i8ln('Select Rarity'),
-            data: [i8ln('Common'), i8ln('Uncommon'), i8ln('Rare'), i8ln('Very Rare'), i8ln('Ultra Rare')],
-            templateResult: formatState
-        })
         // setup list change behavior now that we have the list to work from
         $selectExclude.on('change', function (e) {
             buffer = excludedPokemon
@@ -6555,11 +6543,6 @@ $(function () {
         var lng = $(this).data('lng')
         var zoom = $(this).data('zoom')
         map.setView(new L.LatLng(lat, lng), zoom)
-    })
-
-    $raidNotify.select2({
-        placeholder: 'Minimum raid level',
-        minimumResultsForSearch: Infinity
     })
 
     $raidNotify.on('change', function () {
