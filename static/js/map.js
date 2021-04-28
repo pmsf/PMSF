@@ -483,11 +483,6 @@ function initMap() { // eslint-disable-line no-unused-vars
     })
     $selectIconSize = $('#pokemon-icon-size')
 
-    $selectIconSize.select2({
-        placeholder: 'Select Icon Size',
-        minimumResultsForSearch: Infinity
-    })
-
     $selectIconSize.on('change', function () {
         Store.set('iconSizeModifier', this.value)
         redrawPokemon(mapData.pokemons)
@@ -495,22 +490,12 @@ function initMap() { // eslint-disable-line no-unused-vars
 
     $selectIconNotifySizeModifier = $('#pokemon-icon-notify-size')
 
-    $selectIconNotifySizeModifier.select2({
-        placeholder: 'Increase Size Of Notified',
-        minimumResultsForSearch: Infinity
-    })
-
     $selectIconNotifySizeModifier.on('change', function () {
         Store.set('iconNotifySizeModifier', this.value)
         redrawPokemon(mapData.pokemons)
     })
 
     $selectTeamGymsOnly = $('#team-gyms-only-switch')
-
-    $selectTeamGymsOnly.select2({
-        placeholder: 'Only Show Gyms For Team',
-        minimumResultsForSearch: Infinity
-    })
 
     $selectTeamGymsOnly.on('change', function () {
         Store.set('showTeamGymsOnly', this.value)
@@ -520,11 +505,6 @@ function initMap() { // eslint-disable-line no-unused-vars
 
     $selectLastUpdateGymsOnly = $('#last-update-gyms-switch')
 
-    $selectLastUpdateGymsOnly.select2({
-        placeholder: 'Only Show Gyms Last Updated',
-        minimumResultsForSearch: Infinity
-    })
-
     $selectLastUpdateGymsOnly.on('change', function () {
         Store.set('showLastUpdatedGymsOnly', this.value)
         lastgyms = false
@@ -532,11 +512,6 @@ function initMap() { // eslint-disable-line no-unused-vars
     })
 
     $selectMinGymLevel = $('#min-level-gyms-filter-switch')
-
-    $selectMinGymLevel.select2({
-        placeholder: 'Minimum Gym Level',
-        minimumResultsForSearch: Infinity
-    })
 
     $selectMinGymLevel.on('change', function () {
         Store.set('minGymLevel', this.value)
@@ -546,11 +521,6 @@ function initMap() { // eslint-disable-line no-unused-vars
 
     $selectMaxGymLevel = $('#max-level-gyms-filter-switch')
 
-    $selectMaxGymLevel.select2({
-        placeholder: 'Maximum Gym Level',
-        minimumResultsForSearch: Infinity
-    })
-
     $selectMaxGymLevel.on('change', function () {
         Store.set('maxGymLevel', this.value)
         lastgyms = false
@@ -559,11 +529,6 @@ function initMap() { // eslint-disable-line no-unused-vars
 
     $selectMinRaidLevel = $('#min-level-raids-filter-switch')
 
-    $selectMinRaidLevel.select2({
-        placeholder: 'Minimum Raid Level',
-        minimumResultsForSearch: Infinity
-    })
-
     $selectMinRaidLevel.on('change', function () {
         Store.set('minRaidLevel', this.value)
         lastgyms = false
@@ -571,11 +536,6 @@ function initMap() { // eslint-disable-line no-unused-vars
     })
 
     $selectMaxRaidLevel = $('#max-level-raids-filter-switch')
-
-    $selectMaxRaidLevel.select2({
-        placeholder: 'Maximum Raid Level',
-        minimumResultsForSearch: Infinity
-    })
 
     $selectMaxRaidLevel.on('change', function () {
         Store.set('maxRaidLevel', this.value)
@@ -5965,11 +5925,10 @@ function gruntSpritesFilter() {
 }
 
 function raideggSpritesFilter() {
-    jQuery('.raidegg-list').parent().find('.select2').hide()
     loadDefaultImages()
-    jQuery('#nav .raidegg-list .raidegg-icon-sprite').on('click', function () {
+    jQuery('.offcanvas-body.left .raidegg-list .raidegg-icon-sprite').on('click', function () {
         var img = jQuery(this)
-        var select = jQuery(this).parent().parent().parent().find('.select2-hidden-accessible')
+        var select = jQuery(this).parent().parent().parent().find('.search-number')
         var value = select.val().split(',')
         var id = img.data('value').toString()
         if (img.hasClass('active')) {
@@ -6030,12 +5989,12 @@ function loadDefaultImages() {
             $(this).addClass('active')
         }
     })
-    $('label[for="exclude-raidboss"] .pokemon-icon-sprite').each(function () {
+    $('#exclude-raidboss .pokemon-icon-sprite').each(function () {
         if (erb.indexOf($(this).data('value')) !== -1) {
             $(this).addClass('active')
         }
     })
-    $('label[for="exclude-raidegg"] .raidegg-icon-sprite').each(function () {
+    $('#exclude-raidegg .raidegg-icon-sprite').each(function () {
         if (ere.indexOf($(this).data('value')) !== -1) {
             $(this).addClass('active')
         }
@@ -6285,8 +6244,8 @@ $(function () {
     $questsExcludeItem = $('#exclude-quest-item .search-number')
     $questsExcludeEnergy = $('#exclude-quest-energy .search-number')
     $excludeGrunts = $('#exclude-rocket .search-number')
-    $excludeRaidboss = $('#exclude-raidboss')
-    $excludeRaidegg = $('#exclude-raidegg')
+    $excludeRaidboss = $('#exclude-raidboss .search-number')
+    $excludeRaidegg = $('#exclude-raidegg .search-number')
 
     $.getJSON('static/dist/data/raidegg.min.json').done(function (data) {
         $.each(data, function (key, value) {
@@ -6295,13 +6254,6 @@ $(function () {
                 level: value['level']
             })
             idToRaidegg[key] = value
-        })
-        $excludeRaidegg.select2({
-            placeholder: i8ln('Select level'),
-            data: raideggList,
-            templateResult: formatState,
-            multiple: true,
-            maximumSelectionSize: 1
         })
         $excludeRaidegg.on('change', function (e) {
             buffer = excludedRaidegg
@@ -6408,13 +6360,6 @@ $(function () {
             placeholder: i8ln('Select Rarity'),
             data: [i8ln('Common'), i8ln('Uncommon'), i8ln('Rare'), i8ln('Very Rare'), i8ln('Ultra Rare')],
             templateResult: formatState
-        })
-        $excludeRaidboss.select2({
-            placeholder: i8ln('Select Pokémon'),
-            data: pokeList,
-            templateResult: formatState,
-            multiple: true,
-            maximumSelectionSize: 1
         })
         // setup list change behavior now that we have the list to work from
         $selectExclude.on('change', function (e) {
@@ -6535,7 +6480,6 @@ $(function () {
         if (isTouchDevice() && isMobileDevice()) {
             $('.select2-search input').prop('readonly', true)
         }
-        $('#raid-tabs').tabs()
     })
 
     $('.select-all').on('click', function (e) {
@@ -6593,16 +6537,16 @@ $(function () {
 
     $('.select-all-egg').on('click', function (e) {
         e.preventDefault()
-        var parent = $(this).parent()
+        var parent = $(this).parent().parent().parent()
         parent.find('.raidegg-list .raidegg-icon-sprite').addClass('active')
-        parent.find('input').val(Array.from(Array(numberOfEgg + 1).keys()).slice(1).join(',')).trigger('change')
+        parent.find('.search-number').val(Array.from(Array(numberOfEgg + 1).keys()).slice(1).join(',')).trigger('change')
     })
 
     $('.hide-all-egg').on('click', function (e) {
         e.preventDefault()
-        var parent = $(this).parent()
+        var parent = $(this).parent().parent().parent()
         parent.find('.raidegg-list .raidegg-icon-sprite').removeClass('active')
-        parent.find('input').val('').trigger('change')
+        parent.find('.search-number').val('').trigger('change')
     })
 
     $('.area-go-to').on('click', function (e) {

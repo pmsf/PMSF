@@ -368,8 +368,8 @@ if (!$noLoadingScreen) {
                             </div>
                         </div>
                     </div>
-                <?php } ?>
-
+                <?php }
+                if (! $noPokestops) { ?>
                     <div class="accordion-item">
                         <h2 class="accordion-header" id="headingItemTwo">
                             <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#navItemTwo" aria-expanded="false" aria-controls="navItemTwo">
@@ -556,28 +556,190 @@ if (!$noLoadingScreen) {
                             </div>
                         </div>
                     </div>
-
-                <div class="accordion-item">
-                    <h2 class="accordion-header" id="headingItemThree">
-                        <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#navItemThree" aria-expanded="false" aria-controls="navItemThree">
-                            <?php if (! $noRaids) { ?>
-                                 <h5><?php echo i8ln('Gym &amp; Raid') ?></h5>
-                            <?php
-                            } else { ?>
-                                 <h5><?php echo i8ln('Gym') ?></h5>
-                            <?php } ?>
-                        </button>
-                    </h2>
-                    <div id="navItemThree" class="accordion-collapse collapse" aria-labelledby="navItemThree" data-bs-parent="#accordionNav">
-                        <div class="accordion-body bg-light">
-                           <div class="card">
-                               <div class="card-body">
-                                   Placeholder
-                               </div>
-                           </div>
+                <?php }
+                if (! $noGyms) { ?>
+                    <div class="accordion-item">
+                        <h2 class="accordion-header" id="headingItemThree">
+                            <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#navItemThree" aria-expanded="false" aria-controls="navItemThree">
+                                <?php if (! $noRaids) { ?>
+                                     <h5><?php echo i8ln('Gym &amp; Raid') ?></h5>
+                                <?php
+                                } else { ?>
+                                     <h5><?php echo i8ln('Gym') ?></h5>
+                                <?php } ?>
+                            </button>
+                        </h2>
+                        <div id="navItemThree" class="accordion-collapse collapse" aria-labelledby="navItemThree" data-bs-parent="#accordionNav">
+                            <div class="accordion-body bg-light">
+                                <div class="card">
+                                    <div class="card-body">
+                                        <?php
+                                        if (! $noRaids) { ?>
+                                            <div class="form form-switch">
+                                                <input class="form-check-input" id="raids-switch" type="checkbox" name="raids-switch">
+                                                <label class="form-check-label" for="raids-switch"><?php echo i8ln('Raids') ?></label>
+                                            </div>
+                                            <div class="dropdown-divider"></div>
+                                            <div id="raids-filter-wrapper" style="display:none">
+                                                <?php
+                                                if (! $noRaidTimer) { ?>
+                                                    <div class="form form-switch">
+                                                        <input class="form-check-input" id="raid-timer-switch" type="checkbox" name="raid-timer-switch">
+                                                        <label class="form-check-label" for="raid-timer-switch"><?php echo i8ln('Raids Timer') ?></label>
+                                                    </div>
+                                                    <div class="dropdown-divider"></div>
+                                                <?php
+                                                }
+                                                if (! $noActiveRaids) { ?>
+                                                    <div class="form form-switch">
+                                                        <input class="form-check-input" id="active-raids-switch" type="checkbox" name="active-raids-switch">
+                                                        <label class="form-check-label" for="active-raids-switch"><?php echo i8ln('Only Active Raids') ?></label>
+                                                    </div>
+                                                    <div class="dropdown-divider"></div>
+                                                <?php
+                                                }
+                                                if (! $noMinMaxRaidLevel) { ?>
+                                                    <div class="form-floating">
+                                                        <select class="form-select" aria-label="min-level-raids-filter" name="min-level-raids-filter-switch" id="min-level-raids-filter-switch">
+                                                            <option value="1">1</option>
+                                                            <option value="2">2</option>
+                                                            <option value="3">3</option>
+                                                            <option value="4">4</option>
+                                                            <option value="5">5</option>
+                                                            <option value="6">6</option>
+                                                        </select>
+                                                        <label for="min-level-raids-filter-switch"><?php echo i8ln('Minimum Raid Level') ?></label>
+                                                    </div>
+                                                    <div class="dropdown-divider"></div>
+                                                    <div class="form-floating">
+                                                        <select class="form-select" aria-label="max-level-raids-filter" name="max-level-raids-filter-switch" id="max-level-raids-filter-switch">
+                                                            <option value="1">1</option>
+                                                            <option value="2">2</option>
+                                                            <option value="3">3</option>
+                                                            <option value="4">4</option>
+                                                            <option value="5">5</option>
+                                                            <option value="6">6</option>
+                                                        </select>
+                                                        <label for="max-level-raids-filter-switch"><?php echo i8ln('Maximum Raid Level') ?></label>
+                                                    </div>
+                                                    <div class="dropdown-divider"></div>
+                                                <?php } ?>
+                                                <ul class="nav nav-tabs nav-fill" id="raidHide" role="tablist">
+                                                    <li class="nav-item" role="presentation">
+                                                        <button class="nav-link active" id="exclude-raidboss-tab" data-bs-toggle="tab" data-bs-target="#exclude-raidboss" type="button" role="tab" aria-controls="exclude-raidboss" aria-selected="false"><?php echo i8ln('Hide Raidboss') ?></button>
+                                                    </li>
+                                                    <li class="nav-item" role="presentation">
+                                                        <button class="nav-link" id="exclude-raidegg-tab" data-bs-toggle="tab" data-bs-target="#exclude-raidegg" type="button" role="tab" aria-controls="exclude-raidegg" aria-selected="false"><?php echo i8ln('Hide Raidegg') ?></button>
+                                                    </li>
+                                                </ul>
+                                                <div class="tab-content" id="raidHideContent">
+                                                    <div class="tab-pane fade show active" id="exclude-raidboss" role="tabpanel" aria-labelledby="exclude-raidboss-tab">
+                                                        <div class="container scroll-container">
+                                                            <?php
+                                                            if ($generateExcludeRaidboss === true) {
+                                                                pokemonFilterImages($noRaidbossNumbers, '', array_diff(range(1, $numberOfPokemon), $getList->generated_exclude_list('raidbosslist')), 11);
+                                                            } else {
+                                                                pokemonFilterImages($noRaidbossNumbers, '', $excludeRaidboss, 11);
+                                                            } ?>
+                                                        </div>
+                                                        <div class="dropdown-divider"></div>
+                                                        <a class="btn btn-secondary select-all" href="#"><?php echo i8ln('All') ?></a>
+                                                        <a class="btn btn-secondary hide-all" href="#"><?php echo i8ln('None') ?></a>
+                                                    </div>
+                                                    <div class="tab-pane fade" id="exclude-raidegg" role="tabpanel" aria-labelledby="exclude-raidegg-tab">
+                                                        <div class="container scroll-container">
+                                                            <?php raideggFilterImages($noRaideggNumbers, '', $excludeRaidegg, 12); ?>
+                                                        </div>
+                                                        <div class="dropdown-divider"></div>
+                                                        <a class="btn btn-secondary select-all-egg" href="#"><?php echo i8ln('All') ?></a>
+                                                        <a class="btn btn-secondary hide-all-egg" href="#"><?php echo i8ln('None') ?></a>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="dropdown-divider"></div>
+                                        <?php } ?>
+                                        <div class="form form-switch">
+                                            <input class="form-check-input" id="gyms-switch" type="checkbox" name="gyms-switch">
+                                            <label class="form-check-label" for="gyms-switch"><?php echo i8ln('Gyms') ?></label>
+                                        </div>
+                                        <div class="dropdown-divider"></div>
+                                        <div id="gyms-filter-wrapper" style="display:none">
+                                            <?php
+                                            if (! $noTeams) { ?>
+                                                <div class="form-floating">
+                                                    <select class="form-select" aria-label="teams-gyms-filter" name="team-gyms-filter-switch" id="team-gyms-only-switch">
+                                                        <option value="0"><?php echo i8ln('All'); ?></option>
+                                                        <option value="1"><?php echo i8ln('Mystic'); ?></option>
+                                                        <option value="2"><?php echo i8ln('Valor'); ?></option>
+                                                        <option value="3"><?php echo i8ln('Instinct'); ?></option>
+                                                    </select>
+                                                    <label for="team-gyms-only-switch"><?php echo i8ln('Team'); ?></label>
+                                                </div>
+                                                <div class="dropdown-divider"></div>
+                                            <?php }
+                                            if (! $noOpenSpot) { ?>
+                                                <div class="form form-switch">
+                                                    <input class="form-check-input" id="open-gyms-only-switch" type="checkbox" name="open-gyms-only-switch">
+                                                    <label class="form-check-label" for="open-gyms-only-switch"><?php echo i8ln('Open Spot') ?></label>
+                                                </div>
+                                                <div class="dropdown-divider"></div>
+                                            <?php }
+                                            if (! $noMinMaxFreeSlots) { ?>
+                                                <div class="form-floating">
+                                                    <select class="form-select" aria-label="min-level-gyms-filter" name="min-level-gyms-filter-switch" id="min-level-gyms-filter-switch">
+                                                        <option value="0">0</option>
+                                                        <option value="1">1</option>
+                                                        <option value="2">2</option>
+                                                        <option value="3">3</option>
+                                                        <option value="4">4</option>
+                                                        <option value="5">5</option>
+                                                        <option value="6">6</option>
+                                                    </select>
+                                                    <label for="min-level-gyms-filter-switch"><?php echo i8ln('Minimum Free Slots'); ?></label>
+                                                </div>
+                                                <div class="dropdown-divider"></div>
+                                                <div class="form-floating">
+                                                    <select class="form-select" aria-label="max-level-gyms-filter" name="max-level-gyms-filter-switch" id="max-level-gyms-filter-switch">
+                                                        <option value="0">0</option>
+                                                        <option value="1">1</option>
+                                                        <option value="2">2</option>
+                                                        <option value="3">3</option>
+                                                        <option value="4">4</option>
+                                                        <option value="5">5</option>
+                                                        <option value="6">6</option>
+                                                    </select>
+                                                    <label for="max-level-gyms-filter-switch"><?php echo i8ln('Maximum Free Slots'); ?></label>
+                                                </div>
+                                                <div class="dropdown-divider"></div>
+                                            <?php }
+                                            if (! $noLastScan) { ?>
+                                                <div class="form-floating">
+                                                    <select class="form-select" aria-label="last-update-gyms-filter" name="last-update-gyms-switch" id="last-update-gyms-switch">
+                                                        <option value="0"><?php echo i8ln('All'); ?></option>
+                                                        <option value="1"><?php echo i8ln('Last Hour'); ?></option>
+                                                        <option value="6"><?php echo i8ln('Last 6 Hours'); ?></option>
+                                                        <option value="12"><?php echo i8ln('Last 12 Hours'); ?></option>
+                                                        <option value="24"><?php echo i8ln('Last 24 Hours'); ?></option>
+                                                        <option value="168"><?php echo i8ln('Last Week'); ?></option>
+                                                    </select>
+                                                    <label for="last-update-gyms-switch"><?php echo i8ln('Last Scan'); ?></label>
+                                                </div>
+                                                <div class="dropdown-divider"></div>
+                                            <?php } ?>
+                                            <div id="gyms-raid-filter-wrapper" style="display:none">
+                                                <div class="form form-switch">
+                                                    <input class="form-check-input" id="ex-eligible-switch" type="checkbox" name="ex-eligible-switch">
+                                                    <label class="form-check-label" for="ex-eligible-switch"><?php echo i8ln('EX Eligible Only') ?></label>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
                         </div>
                     </div>
-                </div>
+                <?php } ?>
+
                 <div class="accordion-item">
                     <h2 class="accordion-header" id="headingItemFour">
                         <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#navItemFour" aria-expanded="false" aria-controls="navItemFour">
