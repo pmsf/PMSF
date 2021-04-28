@@ -822,30 +822,93 @@ if (!$noLoadingScreen) {
                             </div>
                         </div>
                     </div>
-                <?php } ?>
-
-                <div class="accordion-item">
-                    <h2 class="accordion-header" id="headingItemSix">
-                        <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#navItemSix" aria-expanded="false" aria-controls="navItemSix">
-                            <?php if (! $noSearchLocation) { ?>
-                                <h5><?php echo i8ln('Location &amp; Search') ?></h5>
-                            <?php
-                            } else { ?>
-                                <h5><?php echo i8ln('Location') ?></h5>
-                            <?php } ?>
-                        </button>
-                    </h2>
-                    <div id="navItemSix" class="accordion-collapse collapse" aria-labelledby="navItemSix" data-bs-parent="#accordionNav">
-                        <div class="accordion-body bg-light">
-                            <div class="card">
-                                <div class="card-body">
-                                   Placeholder
+                <?php }
+                if (! $noSearchLocation || ! $noNests || ! $noStartMe || ! $noStartLast || ! $noFollowMe || ! $noPokestops || ! $noSpawnPoints || ! $noRanges || ! $noWeatherOverlay || ! $noSpawnArea) { ?>
+                    <div class="accordion-item">
+                        <h2 class="accordion-header" id="headingItemSix">
+                            <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#navItemSix" aria-expanded="false" aria-controls="navItemSix">
+                                <?php if (! $noSearchLocation) { ?>
+                                    <h5><?php echo i8ln('Location &amp; Search') ?></h5>
+                                <?php
+                                } else { ?>
+                                    <h5><?php echo i8ln('Location') ?></h5>
+                                <?php } ?>
+                            </button>
+                        </h2>
+                        <div id="navItemSix" class="accordion-collapse collapse" aria-labelledby="navItemSix" data-bs-parent="#accordionNav">
+                            <div class="accordion-body bg-light">
+                                <div class="card">
+                                    <div class="card-body">
+                                        <?php
+                                        if (! $noWeatherOverlay) { ?>
+                                            <div class="form form-switch">
+                                                <input class="form-check-input" id="weather-switch" type="checkbox" name="weather-switch">
+                                                <label class="form-check-label" for="weather-switch"><?php echo i8ln('Weather Conditions') ?></label>
+                                            </div>
+                                            <div class="dropdown-divider"></div>
+                                        <?php }
+                                        if (! $noSpawnPoints) { ?>
+                                            <div class="form form-switch">
+                                                <input class="form-check-input" id="spawnpoints-switch" type="checkbox" name="spawnpoints-switch">
+                                                <label class="form-check-label" for="spawnpoints-switch"><?php echo i8ln('Spawn Points') ?></label>
+                                            </div>
+                                            <div class="dropdown-divider"></div>
+                                        <?php }
+                                        if (! $noRanges) { ?>
+                                            <div class="form form-switch">
+                                                <input class="form-check-input" id="ranges-switch" type="checkbox" name="ranges-switch">
+                                                <label class="form-check-label" for="ranges-switch"><?php echo i8ln('Ranges') ?></label>
+                                            </div>
+                                            <div class="dropdown-divider"></div>
+                                        <?php }
+                                        if (! $noScanPolygon) { ?>
+                                            <div class="form form-switch">
+                                                <input class="form-check-input" id="scan-area-switch" type="checkbox" name="scan-area-switch">
+                                                <label class="form-check-label" for="scan-area-switch"><?php echo i8ln('Scan Areas') ?></label>
+                                            </div>
+                                            <div class="dropdown-divider"></div>
+                                        <?php }
+                                        if (! $noSearchLocation) { ?>
+                                            <div class="form form-switch">
+                                                <input class="form-check-input" id="scan-location-switch" type="checkbox" name="scan-location-switch">
+                                                <label class="form-check-label" for="scan-location-switch"><?php echo i8ln('Real time scanner location') ?></label>
+                                            </div>
+                                            <div class="dropdown-divider"></div>
+                                        <?php }
+                                        if (! $noSearchLocation) { ?>
+                                            <div class="input-group mb-3" id="search-places">
+                                                <span class="input-group-text" id="next-location"><?php echo i8ln('Search location'); ?></span>
+                                                <input type="text" class="form-control" id="next-location" aria-describedby="next-location">
+                                            </div>
+                                            <ul id="search-places-results" class="search-results places-results"></ul>
+                                            <div class="dropdown-divider"></div>
+                                        <?php }
+                                        if (! $noStartMe) { ?>
+                                            <div class="form form-switch">
+                                                <input class="form-check-input" id="start-at-user-location-switch" type="checkbox" name="start-at-user-location-switch">
+                                                <label class="form-check-label" for="start-at-user-location-switch"><?php echo i8ln('Start map at my position') ?></label>
+                                            </div>
+                                            <div class="dropdown-divider"></div>
+                                        <?php }
+                                        if (! $noStartLast) { ?>
+                                            <div class="form form-switch">
+                                                <input class="form-check-input" id="start-at-last-location-switch" type="checkbox" name="start-at-last-location-switch">
+                                                <label class="form-check-label" for="start-at-last-location-switch"><?php echo i8ln('Start map at last position') ?></label>
+                                            </div>
+                                            <div class="dropdown-divider"></div>
+                                        <?php }
+                                        if (! $noFollowMe) { ?>
+                                            <div class="form form-switch">
+                                                <input class="form-check-input" id="follow-my-location-switch" type="checkbox" name="follow-my-location-switch">
+                                                <label class="form-check-label" for="follow-my-location-switch"><?php echo i8ln('Follow me') ?></label>
+                                            </div>
+                                        <?php } ?>
+                                    </div>
                                 </div>
                             </div>
                         </div>
                     </div>
-                </div>
-
+                <?php } ?>
                 <div class="accordion-item">
                     <h2 class="accordion-header" id="headingItemSeven">
                         <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#navItemSeven" aria-expanded="false" aria-controls="navItemSeven">
