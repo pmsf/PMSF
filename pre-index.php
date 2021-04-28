@@ -579,8 +579,8 @@ if (!$noLoadingScreen) {
                                                 <input class="form-check-input" id="raids-switch" type="checkbox" name="raids-switch">
                                                 <label class="form-check-label" for="raids-switch"><?php echo i8ln('Raids') ?></label>
                                             </div>
-                                            <div class="dropdown-divider"></div>
                                             <div id="raids-filter-wrapper" style="display:none">
+                                                <div class="dropdown-divider"></div>
                                                 <?php
                                                 if (! $noRaidTimer) { ?>
                                                     <div class="form form-switch">
@@ -664,6 +664,7 @@ if (!$noLoadingScreen) {
                                         </div>
                                         <div class="dropdown-divider"></div>
                                         <div id="gyms-filter-wrapper" style="display:none">
+                                            <div class="dropdown-divider"></div>
                                             <?php
                                             if (! $noTeams) { ?>
                                                 <div class="form-floating">
@@ -738,23 +739,94 @@ if (!$noLoadingScreen) {
                             </div>
                         </div>
                     </div>
+                <?php }
+                if (! $noCommunity) { ?>
+                    <div class="accordion-item">
+                        <h2 class="accordion-header" id="headingItemFour">
+                            <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#navItemFour" aria-expanded="false" aria-controls="navItemFour">
+                                <h5><?php echo i8ln('Communities'); ?></h5>
+                            </button>
+                        </h2>
+                        <div id="navItemFour" class="accordion-collapse collapse" aria-labelledby="navItemFour" data-bs-parent="#accordionNav">
+                            <div class="accordion-body bg-light">
+                                <div class="card">
+                                    <div class="card-body">
+                                        <div class="form form-switch">
+                                            <input class="form-check-input" id="communities-switch" type="checkbox" name="communities-switch">
+                                            <label class="form-check-label" for="communities-switch"><?php echo i8ln('Communities') ?></label>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                <?php }
+                if (! $noPortals || ! $noS2Cells || ! $noPoi) { ?>
+                    <div class="accordion-item">
+                        <h2 class="accordion-header" id="headingItemFive">
+                            <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#navItemFive" aria-expanded="false" aria-controls="navItemFive">
+                                <h5><?php echo i8ln('Ingress / S2Cell'); ?></h5>
+                            </button>
+                        </h2>
+                        <div id="navItemFive" class="accordion-collapse collapse" aria-labelledby="navItemFive" data-bs-parent="#accordionNav">
+                            <div class="accordion-body bg-light">
+                                <div class="card">
+                                    <div class="card-body">
+                                        <?php
+                                        if (! $noPortals) { ?>
+                                            <div class="form form-switch">
+                                                <input class="form-check-input" id="communities-switch" type="checkbox" name="communities-switch">
+                                                <label class="form-check-label" for="communities-switch"><?php echo i8ln('Communities') ?></label>
+                                            </div>
+                                            <div class="form-floating" id="new-portals-only-wrapper" style="display:none">
+                                                <select class="form-select" aria-label="new-portals-only-switch" name="new-portals-only-switch" id="new-portals-only-switch">
+                                                    <option value = "0"><?php echo i8ln('All'); ?></option>
+                                                    <option value = "1"><?php echo i8ln('Only new'); ?></option>
+                                                </select>
+                                                <label for="new-portals-only-switch"><?php echo i8ln('Portal age') ?></label>
+                                            </div>
+                                            <div class="dropdown-divider"></div>
+                                        <?php }
+                                        if (! $noPoi) { ?>
+                                            <div class="form form-switch">
+                                                <input class="form-check-input" id="poi-switch" type="checkbox" name="poi-switch">
+                                                <label class="form-check-label" for="poi-switch"><?php echo i8ln('POI') ?></label>
+                                            </div>
+                                            <div class="dropdown-divider"></div>
+                                        <?php }
+                                        if (! $noS2Cells) { ?>
+                                            <div class="form form-switch">
+                                                <input class="form-check-input" id="s2-switch" type="checkbox" name="s2-switch">
+                                                <label class="form-check-label" for="s2-switch"><?php echo i8ln('Show S2 Cells') ?></label>
+                                            </div>
+                                            <div id="s2-switch-wrapper" style="display:none">
+                                                <div class="dropdown-divider"></div>
+                                                <div class="form form-switch">
+                                                    <input class="form-check-input" id="s2-level13-switch" type="checkbox" name="s2-level13-switch">
+                                                    <label class="form-check-label" for="s2-level13-switch"><?php echo i8ln('EX trigger Cells') ?></label>
+                                                </div>
+                                                <div class="dropdown-divider"></div>
+                                                <div class="form form-switch">
+                                                    <input class="form-check-input" id="s2-level14-switch" type="checkbox" name="s2-level14-switch">
+                                                    <label class="form-check-label" for="s2-level14-switch"><?php echo i8ln('Gym placement Cells') ?></label>
+                                                </div>
+                                                <div class="dropdown-divider"></div>
+                                                <div class="form form-switch">
+                                                    <input class="form-check-input" id="s2-level17-switch" type="checkbox" name="s2-level17-switch">
+                                                    <label class="form-check-label" for="s2-level17-switch"><?php echo i8ln('Pokéstop placement Cells') ?></label>
+                                                </div>
+                                            </div>
+                                        <?php } ?>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
                 <?php } ?>
 
                 <div class="accordion-item">
-                    <h2 class="accordion-header" id="headingItemFour">
-                        <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#navItemFour" aria-expanded="false" aria-controls="navItemFour">
-                            <h5><?php echo i8ln('Ingress / S2Cell'); ?></h5>
-                        </button>
-                    </h2>
-                    <div id="navItemFour" class="accordion-collapse collapse" aria-labelledby="navItemFour" data-bs-parent="#accordionNav">
-                        <div class="accordion-body">
-                            Placeholder
-                        </div>
-                    </div>
-                </div>
-                <div class="accordion-item">
-                    <h2 class="accordion-header" id="headingItemFive">
-                        <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#navItemFive" aria-expanded="false" aria-controls="navItemFive">
+                    <h2 class="accordion-header" id="headingItemSix">
+                        <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#navItemSix" aria-expanded="false" aria-controls="navItemSix">
                             <?php if (! $noSearchLocation) { ?>
                                 <h5><?php echo i8ln('Location &amp; Search') ?></h5>
                             <?php
@@ -763,8 +835,8 @@ if (!$noLoadingScreen) {
                             <?php } ?>
                         </button>
                     </h2>
-                    <div id="navItemFive" class="accordion-collapse collapse" aria-labelledby="navItemFive" data-bs-parent="#accordionNav">
-                        <div class="accordion-body">
+                    <div id="navItemSix" class="accordion-collapse collapse" aria-labelledby="navItemSix" data-bs-parent="#accordionNav">
+                        <div class="accordion-body bg-light">
                             <div class="card">
                                 <div class="card-body">
                                    Placeholder
@@ -773,42 +845,58 @@ if (!$noLoadingScreen) {
                         </div>
                     </div>
                 </div>
-                <div class="accordion-item">
-                    <h2 class="accordion-header" id="headingItemSix">
-                        <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#navItemSix" aria-expanded="false" aria-controls="navItemSix">
-                            <h5><?php echo i8ln('Notification') ?></h5>
-                        </button>
-                    </h2>
-                    <div id="navItemSix" class="accordion-collapse collapse" aria-labelledby="navItemSix" data-bs-parent="#accordionNav">
-                        <div class="accordion-body">
-                            Placeholder
-                        </div>
-                    </div>
-                </div>
+
                 <div class="accordion-item">
                     <h2 class="accordion-header" id="headingItemSeven">
                         <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#navItemSeven" aria-expanded="false" aria-controls="navItemSeven">
-                            <h5><?php echo i8ln('Style') ?></h5>
+                            <h5><?php echo i8ln('Notification') ?></h5>
                         </button>
                     </h2>
-                    <div id="navItemSeven" class="accordion-collapse collapse" aria-labelledby="navItemSix" data-bs-parent="#accordionNav">
-                        <div class="accordion-body">
+                    <div id="navItemSeven" class="accordion-collapse collapse" aria-labelledby="navItemSeven" data-bs-parent="#accordionNav">
+                        <div class="accordion-body bg-light">
+                            <div class="card">
+                                <div class="card-body">
                             Placeholder
+                                </div>
+                            </div>
                         </div>
                     </div>
                 </div>
+
                 <div class="accordion-item">
                     <h2 class="accordion-header" id="headingItemEight">
                         <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#navItemEight" aria-expanded="false" aria-controls="navItemEight">
-                            <h5><?php echo i8ln('Areas') ?></h5>
+                            <h5><?php echo i8ln('Style') ?></h5>
                         </button>
                     </h2>
                     <div id="navItemEight" class="accordion-collapse collapse" aria-labelledby="navItemEight" data-bs-parent="#accordionNav">
-                        <div class="accordion-body">
-                         Placeholder
+                        <div class="accordion-body bg-light">
+                            <div class="card">
+                                <div class="card-body">
+                            Placeholder
+                                </div>
+                            </div>
                         </div>
                     </div>
                 </div>
+
+                <div class="accordion-item">
+                    <h2 class="accordion-header" id="headingItemNine">
+                        <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#navItemNive" aria-expanded="false" aria-controls="navItemNine">
+                            <h5><?php echo i8ln('Areas') ?></h5>
+                        </button>
+                    </h2>
+                    <div id="navItemNine" class="accordion-collapse collapse" aria-labelledby="navItemNine" data-bs-parent="#accordionNav">
+                        <div class="accordion-body bg-light">
+                            <div class="card">
+                                <div class="card-body">
+                         Placeholder
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
             </div>
         </div>
     </div>
