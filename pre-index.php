@@ -447,16 +447,15 @@ if (!$noLoadingScreen) {
                                                             } ?>
                                                         </div>
                                                         <div class="dropdown-divider"></div>
-                                                            <a class="btn btn-secondary select-all-grunt" href="#"><?php echo i8ln('All') ?></a>
-                                                            <a class="btn btn-secondary hide-all-grunt" href="#"><?php echo i8ln('None') ?></a>
-                                                        </div>
+                                                        <a class="btn btn-secondary select-all-grunt" href="#"><?php echo i8ln('All') ?></a>
+                                                        <a class="btn btn-secondary hide-all-grunt" href="#"><?php echo i8ln('None') ?></a>
                                                     </div>
                                                 </div>
 </div>
-                                                <div class="dropdown-divider"></div>
                                             </div>
                                             <?php
                                             if (! $noQuests) { ?>
+                                                <div class="dropdown-divider"></div>
                                                 <div class="form form-switch">
                                                     <input class="form-check-input" id="quests-switch" type="checkbox" name="quests-switch">
                                                     <label class="form-check-label" for="quests-switch"><?php echo i8ln('Quest Pokéstops only') ?></label>
