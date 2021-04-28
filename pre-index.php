@@ -417,10 +417,10 @@ if (!$noLoadingScreen) {
                                                     <input class="form-check-input" id="rocket-switch" type="checkbox" name="rocket-switch">
                                                     <label class="form-check-label" for="rocket-switch"><?php echo i8ln('Rocket Pokéstops only') ?></label>
                                                 </div>
-                                                <div class="dropdown-divider"></div>
                                             <?php
                                             } ?>
                                             <div id="rocket-wrapper" style="display:none">
+                                                <div class="dropdown-divider"></div>
                                                 <?php
                                                 if (! $noTeamRocket && ! $noTeamRocketTimer) { ?>
                                                     <div class="form form-switch">
@@ -447,13 +447,8 @@ if (!$noLoadingScreen) {
                                                             } ?>
                                                         </div>
                                                         <div class="dropdown-divider"></div>
-                                                        <div class="row row-cols-2">
-                                                            <div class="col">
-                                                                <a class="btn btn-secondary select-all-grunt" href="#"><?php echo i8ln('All') ?></a>
-                                                            </div>
-                                                            <div class="col">
-                                                                <a class="btn btn-secondary hide-all-grunt" href="#"><?php echo i8ln('None') ?></a>
-                                                            </div>
+                                                            <a class="btn btn-secondary select-all-grunt" href="#"><?php echo i8ln('All') ?></a>
+                                                            <a class="btn btn-secondary hide-all-grunt" href="#"><?php echo i8ln('None') ?></a>
                                                         </div>
                                                     </div>
                                                 </div>
@@ -945,7 +940,7 @@ if (!$noLoadingScreen) {
 
                 <div class="accordion-item">
                     <h2 class="accordion-header" id="headingItemNine">
-                        <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#navItemNive" aria-expanded="false" aria-controls="navItemNine">
+                        <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#navItemNine" aria-expanded="false" aria-controls="navItemNine">
                             <h5><?php echo i8ln('Areas') ?></h5>
                         </button>
                     </h2>
