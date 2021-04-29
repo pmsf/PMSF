@@ -46,8 +46,14 @@
   overflow: hidden;
   overflow-y: scroll;
 }
+.accordion-header {
+  line-height: normal;
+  padding: 1px 0px;
+}
+
 button.accordion-button {
   background-color: white !important;
+  height: 32px;
 }
 .accordion-button:focus {
   border-color: white !important;
