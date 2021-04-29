@@ -333,7 +333,7 @@ function notifyAboutPokemon(id) { // eslint-disable-line no-unused-vars
     $selectPokemonNotify.val(
         $selectPokemonNotify.val().split(',').concat(id).join(',')
     ).trigger('change')
-    $('label[for="notify-pokemon"] .pokemon-list .pokemon-icon-sprite[data-value="' + id + '"]').addClass('active')
+    $('#notify-pokemon .pokemon-list .pokemon-icon-sprite[data-value="' + id + '"]').addClass('active')
 }
 
 function removePokemonMarker(encounterId) { // eslint-disable-line no-unused-vars
@@ -563,20 +563,6 @@ function initMap() { // eslint-disable-line no-unused-vars
 
     $.getJSON('static/dist/data/searchmarkerstyle.min.json').done(function (data) {
         searchMarkerStyles = data
-        var searchMarkerStyleList = []
-
-        $.each(data, function (key, value) {
-            searchMarkerStyleList.push({
-                id: key,
-                text: value.name
-            })
-        })
-
-        $selectLocationIconMarker.select2({
-            placeholder: 'Select Location Marker',
-            data: searchMarkerStyleList,
-            minimumResultsForSearch: Infinity
-        })
 
         $selectLocationIconMarker.on('change', function (e) {
             Store.set('locationMarkerStyle', this.value)
@@ -5964,7 +5950,7 @@ function loadDefaultImages() {
             $(this).addClass('active')
         }
     })
-    $('label[for="notify-pokemon"] .pokemon-icon-sprite').each(function () {
+    $('#notify-pokemon .pokemon-icon-sprite').each(function () {
         if (en.indexOf($(this).data('value')) !== -1) {
             $(this).addClass('active')
         }
@@ -6031,77 +6017,18 @@ $(function () {
     $selectDirectionProvider = $('#direction-provider')
 
     // Load Stylenames, translate entries, and populate lists
-    $.getJSON('static/dist/data/mapstyle.min.json').done(function (data) {
-        var styleList = []
+    $selectStyle.on('change', function (e) {
+        selectedStyle = $selectStyle.val()
 
-        $.each(data, function (key, value) {
-            var googleMaps
-            if (gmapsKey === '') {
-                googleMaps = false
-            } else {
-                googleMaps = true
-            }
-            var googleStyle = value.includes('Google')
-            var mapBox
-            if (mBoxKey === '') {
-                mapBox = false
-            } else {
-                mapBox = true
-            }
-            var mapBoxStyle = value.includes('Mapbox')
-            var customTileServer
-            if (noCustomTileServer) {
-                customTileServer = false
-            } else {
-                customTileServer = true
-            }
-            var customTileServerStyle = value.includes('Tileserver')
-            if (!googleStyle && !mapBoxStyle && !customTileServerStyle) {
-                styleList.push({
-                    id: key,
-                    text: i8ln(value)
-                })
-            } else if (googleMaps && googleStyle) {
-                styleList.push({
-                    id: key,
-                    text: i8ln(value)
-                })
-            } else if (mapBox && mapBoxStyle) {
-                styleList.push({
-                    id: key,
-                    text: i8ln(value)
-                })
-            } else if (customTileServer && customTileServerStyle) {
-                styleList.push({
-                    id: key,
-                    text: i8ln(value)
-                })
-            }
-        })
+        if (_mapLoaded) {
+            setTileLayer(selectedStyle)
+        }
 
-        // setup the stylelist
-        $selectStyle.select2({
-            placeholder: 'Select Style',
-            data: styleList,
-            minimumResultsForSearch: Infinity
-        })
-        $selectStyle.on('change', function (e) {
-            selectedStyle = $selectStyle.val()
-
-            if (_mapLoaded) {
-                setTileLayer(selectedStyle)
-            }
-
-            Store.set('map_style', selectedStyle)
-        })
-
-        // recall saved mapstyle
-        $selectStyle.val(Store.get('map_style')).trigger('change')
+        Store.set('map_style', selectedStyle)
     })
-    $selectDirectionProvider.select2({
-        placeholder: 'Select Provider',
-        minimumResultsForSearch: Infinity
-    })
+
+    // recall saved mapstyle
+    $selectStyle.val(Store.get('map_style')).trigger('change')
 
     $selectDirectionProvider.on('change', function () {
         directionProvider = $selectDirectionProvider.val()
@@ -6127,11 +6054,6 @@ $(function () {
     })
 
     $selectNewPortalsOnly = $('#new-portals-only-switch')
-
-    $selectNewPortalsOnly.select2({
-        placeholder: 'Only Show New Portals',
-        minimumResultsForSearch: Infinity
-    })
 
     $selectNewPortalsOnly.on('change', function () {
         Store.set('showNewPortalsOnly', this.value)
@@ -6160,11 +6082,6 @@ $(function () {
 
     $selectGymMarkerStyle = $('#gym-marker-style')
 
-    $selectGymMarkerStyle.select2({
-        placeholder: 'Select Style',
-        minimumResultsForSearch: Infinity
-    })
-
     $selectGymMarkerStyle.on('change', function (e) {
         Store.set('gymMarkerStyle', this.value)
         updateGymIcons()
@@ -6174,10 +6091,6 @@ $(function () {
 
     $selectIconStyle = $('#icon-style')
 
-    $selectIconStyle.select2({
-        placeholder: 'Select Style',
-        minimumResultsForSearch: Infinity
-    })
     $selectIconStyle.on('change', function (e) {
         Store.set('icons', this.value)
         iconpath = Store.get('icons')
@@ -6231,7 +6144,7 @@ $(function () {
     })
     $selectExclude = $('#exclude-pokemon .search-number')
     $selectExcludeMinIV = $('#exclude-min-iv .search-number')
-    $selectPokemonNotify = $('#notify-pokemon')
+    $selectPokemonNotify = $('#notify-pokemon .search-number')
     $selectRarityNotify = $('#notify-rarity')
     $textPerfectionNotify = $('#notify-perfection')
     $textMinIV = $('#min-iv')
@@ -6349,18 +6262,6 @@ $(function () {
             idToPokemon[key] = value['name']
         })
 
-        $selectPokemonNotify.select2({
-            placeholder: i8ln('Select Pokémon'),
-            data: pokeList,
-            templateResult: formatState,
-            multiple: true,
-            maximumSelectionSize: 1
-        })
-        $selectRarityNotify.select2({
-            placeholder: i8ln('Select Rarity'),
-            data: [i8ln('Common'), i8ln('Uncommon'), i8ln('Rare'), i8ln('Very Rare'), i8ln('Ultra Rare')],
-            templateResult: formatState
-        })
         // setup list change behavior now that we have the list to work from
         $selectExclude.on('change', function (e) {
             buffer = excludedPokemon
@@ -6477,9 +6378,6 @@ $(function () {
         $questsExcludeEnergy.val(Store.get('remember_quests_exclude_energy')).trigger('change')
         $excludeRaidboss.val(Store.get('remember_exclude_raidboss')).trigger('change')
 
-        if (isTouchDevice() && isMobileDevice()) {
-            $('.select2-search input').prop('readonly', true)
-        }
     })
 
     $('.select-all').on('click', function (e) {
@@ -6555,11 +6453,6 @@ $(function () {
         var lng = $(this).data('lng')
         var zoom = $(this).data('zoom')
         map.setView(new L.LatLng(lat, lng), zoom)
-    })
-
-    $raidNotify.select2({
-        placeholder: 'Minimum raid level',
-        minimumResultsForSearch: Infinity
     })
 
     $raidNotify.on('change', function () {

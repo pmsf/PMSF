@@ -98,20 +98,10 @@
         $body.classList.remove('is-loading')
     })
 
-    // Nav.
-    var $nav = document.querySelector('#nav')
-    var $navToggle = document.querySelector('a[href="#nav"]')
-    var $navClose
-
     // Stats.
     var $stats = document.querySelector('#stats')
     var $statsToggle = document.querySelector('a[href="#stats"]')
     var $statsClose
-
-    // Event: Prevent clicks/taps inside the nav from bubbling.
-    addEventsListener($nav, 'click touchend', function (event) {
-        event.stopPropagation()
-    })
 
     if ($stats) {
         // Event: Prevent clicks/taps inside the stats from bubbling.
@@ -120,30 +110,7 @@
         })
     }
 
-    // Event: Hide nav on body click/tap.
-    addEventsListener($body, 'click touchend', function (event) {
-        // on ios safari, when navToggle is clicked,
-        // this function executes too, so if the target
-        // is the toggle button, exit this function
-        if (event.target.matches('a[href="#nav"]')) {
-            return
-        }
-        if ($stats && event.target.matches('a[href="#stats"]')) {
-            return
-        }
-        $nav.classList.remove('visible')
-        if ($stats) {
-            $stats.classList.remove('visible')
-        }
-    })
     // Toggle.
-
-    // Event: Toggle nav on click.
-    $navToggle.addEventListener('click', function (event) {
-        event.preventDefault()
-        event.stopPropagation()
-        $nav.classList.toggle('visible')
-    })
 
     // Event: Toggle stats on click.
     if ($statsToggle) {
@@ -157,11 +124,6 @@
     // Close.
 
     // Create elements.
-    $navClose = document.createElement('a')
-    $navClose.href = '#'
-    $navClose.className = 'close'
-    $navClose.tabIndex = 0
-    $nav.appendChild($navClose)
 
     if ($stats) {
         $statsClose = document.createElement('a')
@@ -171,22 +133,8 @@
         $stats.appendChild($statsClose)
     }
 
-    // Event: Hide on ESC.
-    window.addEventListener('keydown', function (event) {
-        if (event.keyCode === 27) {
-            $nav.classList.remove('visible')
-            if ($stats) {
-                $stats.classList.remove('visible')
-            }
-        }
-    })
 
     // Event: Hide nav on click.
-    $navClose.addEventListener('click', function (event) {
-        event.preventDefault()
-        event.stopPropagation()
-        $nav.classList.remove('visible')
-    })
 
     if ($statsClose) {
         // Event: Hide stats on click.
