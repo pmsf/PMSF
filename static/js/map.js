@@ -6055,11 +6055,6 @@ $(function () {
 
     $selectNewPortalsOnly = $('#new-portals-only-switch')
 
-    $selectNewPortalsOnly.select2({
-        placeholder: 'Only Show New Portals',
-        minimumResultsForSearch: Infinity
-    })
-
     $selectNewPortalsOnly.on('change', function () {
         Store.set('showNewPortalsOnly', this.value)
         lastportals = false
@@ -6383,9 +6378,6 @@ $(function () {
         $questsExcludeEnergy.val(Store.get('remember_quests_exclude_energy')).trigger('change')
         $excludeRaidboss.val(Store.get('remember_exclude_raidboss')).trigger('change')
 
-        if (isTouchDevice() && isMobileDevice()) {
-            $('.select2-search input').prop('readonly', true)
-        }
     })
 
     $('.select-all').on('click', function (e) {
