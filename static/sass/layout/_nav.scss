@@ -66,7 +66,15 @@ button.accordion-button {
     width: 48%;
     margin: 2px;
 }
-button#exclude-pokemon-tab, button#exclude-min-iv-tab, button#exclude-quest-pokemon-tab, button#exclude-quest-item-tab, button#exclude-quest-energy-tab, button#exclude-rocket-tab, button#exclude-raidboss-tab, button#exclude-raidegg-tab, button#notify-pokemon-tab {
+button#exclude-pokemon-tab,
+button#exclude-min-iv-tab,
+button#exclude-quest-pokemon-tab,
+button#exclude-quest-item-tab,
+button#exclude-quest-energy-tab,
+button#exclude-rocket-tab,
+button#exclude-raidboss-tab,
+button#exclude-raidegg-tab,
+button#notify-pokemon-tab {
   color: #495057 !important;
   background-color: #f8f9fa;
   line-height: 1;
@@ -79,7 +87,10 @@ button#exclude-min-iv-tab.active,
 button#exclude-quest-pokemon-tab.active,
 button#exclude-quest-item-tab.active,
 button#exclude-quest-energy-tab.active,
-button#exclude-rocket-tab.active {
+button#exclude-rocket-tab.active,
+button#exclude-raidboss-tab.active,
+button#exclude-raidegg-tab.active,
+button#notify-pokemon-tab.active {
     background-color: #6c757d;
     color: #fff !important;
 }
