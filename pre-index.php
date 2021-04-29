@@ -505,7 +505,7 @@ if (!$noLoadingScreen) {
                                                         </div>
                                                     <?php }
                                                     $firstTabContent++;
-                                                    if (! $noQuestItems) { ?>
+                                                    if (! $noQuestsItems) { ?>
                                                         <div class="tab-pane fade<?php echo (($firstTabContent == 1) ? " show active" : ""); ?>" id="exclude-quest-item" role="tabpanel" aria-labelledby="exclude-quest-item-tab">
                                                             <div class="container scroll-container">
                                                                 <?php
@@ -521,7 +521,7 @@ if (!$noLoadingScreen) {
                                                         </div>
                                                     <?php }
                                                     $firstTabContent++;
-                                                    if (! $noQuestEnergy) { ?>
+                                                    if (! $noQuestsEnergy) { ?>
                                                         <div class="tab-pane fade<?php echo (($firstTabContent == 1) ? " show active" : ""); ?>" id="exclude-quest-energy" role="tabpanel" aria-labelledby="exclude-quest-energy-tab">
                                                             <div class="container scroll-container">
                                                                 <?php
@@ -902,7 +902,8 @@ if (!$noLoadingScreen) {
                             </div>
                         </div>
                     </div>
-                <?php } ?>
+                <?php }
+                if (! $noNotifyPokemon || ! $noNotifyRarity || ! $noNotifyIv || ! $noNotifyLevel || ! $noNotifySound || ! $noNotifyRaid || ! $noNotifyBounce || ! $noNotifyNotification) { ?>
                 <div class="accordion-item">
                     <h2 class="accordion-header" id="headingItemSeven">
                         <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#navItemSeven" aria-expanded="false" aria-controls="navItemSeven">
@@ -914,142 +915,248 @@ if (!$noLoadingScreen) {
                             <div class="card">
                                 <div class="card-body">
                                     <?php
-                                    if (! $noNotifyPokemon || ! $noNotifyRarity || ! $noNotifyIv || ! $noNotifyLevel || ! $noNotifySound || ! $noNotifyRaid || ! $noNotifyBounce || ! $noNotifyNotification) { ?>
+                                    if (! $noNotifyPokemon) { ?>
+                                        <ul class="nav nav-tabs nav-fill" id="notifyPokemon" role="tablist">
+                                            <li class="nav-item" role="presentation">
+                                                <button class="nav-link active" id="notify-pokemon-tab" data-bs-toggle="tab" data-bs-target="#notify-pokemon" type="button" role="tab" aria-controls="notify-pokemon" aria-selected="false"><?php echo i8ln('Notify of Pokémon') ?></button>
+                                            </li>
+                                        </ul>
+                                        <div class="tab-content" id="notifyPokemonContent">
+                                            <div class="tab-pane fade show active" id="notify-pokemon" role="tabpanel" aria-labelledby="notify-pokemon-tab">
+                                                <div class="container scroll-container">
+                                                    <?php pokemonFilterImages($noPokemonNumbers, '', [], 4); ?>
+                                                </div>
+                                                <div class="dropdown-divider"></div>
+                                                <a class="btn btn-secondary select-all notify-pokemon-button" href="#"><?php echo i8ln('All') ?></a>
+                                                <a class="btn btn-secondary hide-all notify-pokemon-button" href="#"><?php echo i8ln('None') ?></a>
+                                            </div>
+                                        </div>
+                                        <div class="dropdown-divider"></div>
+                                    <?php }
+                                    if (! $noNotifyRarity) { ?>
+                                        <div class="form-floating">
+                                            <select class="form-select" multiple aria-label="notify-rarity" name="notify-rarity" id="notify-rarity">
+                                                <option value="Common"><?php echo i8ln('Common'); ?></option>
+                                                <option value="Uncommon"><?php echo i8ln('Uncommon'); ?></option>
+                                                <option value="Rare"><?php echo i8ln('Rare'); ?></option>
+                                                <option value="Very Rare"><?php echo i8ln('Very Rare'); ?></option>
+                                                <option value="Ultra Rare"><?php echo i8ln('Ultra Rare'); ?></option>
+                                            </select>
+                                            <label for="notify-rarity"><?php echo i8ln('Notify of Rarity'); ?></label>
+                                        </div>
+                                        <div class="dropdown-divider"></div>
+                                    <?php }
+                                    if (! $noNotifyIv || ! $noNotifyLevel) { ?>
+                                        <div class="overflow-hidden">
+                                            <div class="row gx-3">
+                                                <?php
+                                                if (! $noNotifyIv) { ?>
+                                                    <div class="col" >
+                                                        <div class="p-1 border bg-light">
+                                                            <input id="notify-perfection" type="number" min="0" max="100" name="notify-perfection"/>
+                                                            <label for="notify-perfection"><?php echo i8ln('Notify of IV') ?></label>
+                                                        </div>
+                                                    </div>
+                                                <?php }
+                                                if (! $noNotifyLevel) { ?>
+                                                    <div class="col">
+                                                        <div class="p-1 border bg-light">
+                                                            <input id="notify-level" type="number" min="0" max="35" name="notify-level"/>
+                                                            <label for="notify-level"><?php echo i8ln('Notify of Level') ?></label>
+                                                        </div>
+                                                    </div>
+                                                <?php } ?>
+                                            </div>
+                                        </div>
+                                        <div class="dropdown-divider"></div>
+                                    <?php }
+                                    if (! $noNotifyRaid) { ?>
+                                        <div class="form-floating">
+                                            <select class="form-select" aria-label="notify-raid" name="notify-raid" id="notify-raid">
+                                                <option value="0"><?php echo i8ln('Disable') ?></option>
+                                                <option value="1">1</option>
+                                                <option value="2">2</option>
+                                                <option value="3">3</option>
+                                                <option value="4">4</option>
+                                                <option value="5">5</option>
+                                                <option value="6">6</option>
+                                            </select>
+                                            <label for="notify-raid"><?php echo i8ln('Notify of Minimum Raid Level') ?></label>
+                                        </div>
+                                        <div class="dropdown-divider"></div>
+                                    <?php }
+                                    if (! $noNotifySound) { ?>
+                                        <div class="form form-switch">
+                                            <input class="form-check-input" id="sound-switch" type="checkbox" name="sound-switch">
+                                            <label class="form-check-label" for="sound-switch"><?php echo i8ln('Notify with sound') ?></label>
+                                        </div>
                                         <?php
-                                        if (! $noNotifyPokemon) { ?>
-                                            <ul class="nav nav-tabs nav-fill" id="notifyPokemon" role="tablist">
-                                                <li class="nav-item" role="presentation">
-                                                    <button class="nav-link active" id="notify-pokemon-tab" data-bs-toggle="tab" data-bs-target="#notify-pokemon" type="button" role="tab" aria-controls="notify-pokemon" aria-selected="false"><?php echo i8ln('Notify of Pokémon') ?></button>
-                                                </li>
-                                            </ul>
-                                            <div class="tab-content" id="notifyPokemonContent">
-                                                <div class="tab-pane fade show active" id="notify-pokemon" role="tabpanel" aria-labelledby="notify-pokemon-tab">
-                                                    <div class="container scroll-container">
-                                                        <?php pokemonFilterImages($noPokemonNumbers, '', [], 4); ?>
-                                                    </div>
-                                                    <div class="dropdown-divider"></div>
-                                                    <a class="btn btn-secondary select-all notify-pokemon-button" href="#"><?php echo i8ln('All') ?></a>
-                                                    <a class="btn btn-secondary hide-all notify-pokemon-button" href="#"><?php echo i8ln('None') ?></a>
+                                        if (! $noCriesSound) { ?>
+                                            <div id="cries-switch-wrapper" style="display:none">
+                                                <div class="dropdown-divider"></div>
+                                                <div class="form form-switch">
+                                                    <input class="form-check-input" id="cries-switch" type="checkbox" name="cries-switch">
+                                                    <label class="form-check-label" for="cries-switch"><?php echo i8ln('Use Pokémon cries') ?></label>
                                                 </div>
                                             </div>
-                                            <div class="dropdown-divider"></div>
                                         <?php }
-                                        if (! $noNotifyRarity) { ?>
-                                            <div class="form-floating">
-                                                <select class="form-select" multiple aria-label="notify-rarity" name="notify-rarity" id="notify-rarity">
-                                                    <option value="Common"><?php echo i8ln('Common'); ?></option>
-                                                    <option value="Uncommon"><?php echo i8ln('Uncommon'); ?></option>
-                                                    <option value="Rare"><?php echo i8ln('Rare'); ?></option>
-                                                    <option value="Very Rare"><?php echo i8ln('Very Rare'); ?></option>
-                                                    <option value="Ultra Rare"><?php echo i8ln('Ultra Rare'); ?></option>
-                                                </select>
-                                                <label for="notify-rarity"><?php echo i8ln('Notify of Rarity'); ?></label>
+                                    }
+                                    if (! $noNotifyBounce) { ?>
+                                        <div class="dropdown-divider"></div>
+                                        <div class="form form-switch">
+                                            <input class="form-check-input" id="bounce-switch" type="checkbox" name="bounce-switch">
+                                            <label class="form-check-label" for="bounce-switch"><?php echo i8ln('Bounce') ?></label>
+                                        </div>
+                                    <?php } ?>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <?php }
+                if (! $noDarkMode || ! $noMapStyle || ! $noDirectionProvider || ! $noIconSize || ! $noIconNotifySizeModifier || ! $noGymStyle || ! $noLocationStyle) { ?>
+                    <div class="accordion-item">
+                        <h2 class="accordion-header" id="headingItemEight">
+                            <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#navItemEight" aria-expanded="false" aria-controls="navItemEight">
+                                <h5><?php echo i8ln('Style') ?></h5>
+                            </button>
+                        </h2>
+                        <div id="navItemEight" class="accordion-collapse collapse" aria-labelledby="navItemEight" data-bs-parent="#accordionNav">
+                            <div class="accordion-body bg-light">
+                                <div class="card">
+                                    <div class="card-body">
+                                        <?php
+                                        if (! $noDarkMode) { ?>
+                                            <div class="form form-switch">
+                                                <input class="form-check-input" id="dark-mode-switch" type="checkbox" name="dark-mode-switch">
+                                                <label class="form-check-label" for="dark-mode-switch"><?php echo i8ln('Dark Mode') ?></label>
                                             </div>
                                             <div class="dropdown-divider"></div>
                                         <?php }
-                                        if (! $noNotifyIv || ! $noNotifyLevel) { ?>
-                                            <div class="overflow-hidden">
-                                                <div class="row gx-3">
+                                        if (! $noMapStyle && ! $forcedTileServer) {
+                                            $mapStyleJson = file_get_contents('static/dist/data/mapstyle.min.json');
+                                            $mapStyles = json_decode($mapStyleJson, true); ?>
+                                            <div class="form-floating">
+                                                <select class="form-select" aria-label="map-style" name="map-style" id="map-style">
                                                     <?php
-                                                    if (! $noNotifyIv) { ?>
-                                                        <div class="col" >
-                                                            <div class="p-1 border bg-light">
-                                                                <input id="notify-perfection" type="number" min="0" max="100" name="notify-perfection"/>
-                                                                <label for="notify-perfection"><?php echo i8ln('Notify of IV') ?></label>
-                                                            </div>
-                                                        </div>
-                                                    <?php }
-                                                    if (! $noNotifyLevel) { ?>
-                                                        <div class="col">
-                                                            <div class="p-1 border bg-light">
-                                                                <input id="notify-level" type="number" min="0" max="35" name="notify-level"/>
-                                                                <label for="notify-level"><?php echo i8ln('Notify of Level') ?></label>
-                                                            </div>
-                                                        </div>
-                                                    <?php } ?>
-                                                </div>
-                                            </div>
-                                            <div class="dropdown-divider"></div>
-                                        <?php }
-                                        if (! $noNotifyRaid) { ?>
-                                            <div class="form-floating">
-                                                <select class="form-select" aria-label="notify-raid" name="notify-raid" id="notify-raid">
-                                                    <option value="0"><?php echo i8ln('Disable') ?></option>
-                                                    <option value="1">1</option>
-                                                    <option value="2">2</option>
-                                                    <option value="3">3</option>
-                                                    <option value="4">4</option>
-                                                    <option value="5">5</option>
-                                                    <option value="6">6</option>
+                                                    foreach ($mapStyles as $k => $mapStyle) {
+                                                        echo '<option value="' . $k  . '">' . i8ln($mapStyle) . '</option>';
+                                                    } ?>
                                                 </select>
-                                                <label for="notify-raid"><?php echo i8ln('Notify of Minimum Raid Level') ?></label>
+                                                <label for="mapstyle"><?php echo i8ln('Map Style') ?></label>
                                             </div>
-                                            <div class="dropdown-divider"></div>
                                         <?php }
-                                        if (! $noNotifySound) { ?>
-                                            <div class="form form-switch">
-                                                <input class="form-check-input" id="sound-switch" type="checkbox" name="sound-switch">
-                                                <label class="form-check-label" for="sound-switch"><?php echo i8ln('Notify with sound') ?></label>
+                                        if (! $noDirectionProvider) { ?>
+                                            <div class="form-floating">
+                                                <select class="form-select" aria-label="direction-provider" name="direction-provider" id="direction-provider">
+                                                    <option value="apple"><?php echo i8ln('Apple') ?></option>
+                                                    <option value="google"><?php echo i8ln('Google (Directions)') ?></option>
+                                                    <option value="goolge-pin"><?php echo i8ln('Google (Pin)') ?></option>
+                                                    <option value="waze"><?php echo i8ln('Waze') ?></option>
+                                                    <option value="bing"><?php echo i8ln('Bing') ?></option>
+                                                    <option value="geouri"><?php echo i8ln('GeoUri') ?></option>
+                                                </select>
+                                                <label for="direction-provider"><?php echo i8ln('Direction Provider') ?></label>
                                             </div>
+                                        <?php }
+                                        if (! $noMultipleRepos && ! $copyrightSafe && (sizeof($iconRepos) > 0)) { ?>
+                                            <div class="form-floating">
+                                                <select class="form-select" aria-label="icon-style" name="icon-style" id="icon-style">
+                                                    <?php
+                                                    $count = sizeof($iconRepos);
+                                                    for ($i = 0; $i <= $count - 1; $i ++) {
+                                                        echo '<option value="' . $iconRepos[$i][1] . '">' . $iconRepos[$i][0] . '</option>';
+                                                    } ?>
+                                                </select>
+                                                <label for="icon-style"><?php echo i8ln('Icon Style') ?></label>
+                                            </div>
+                                        <?php }
+                                        if (! $noIconNotifySizeModifier) { ?>
+                                            <div class="form-floating">
+                                                <select class="form-select" aria-label="pokemon-icon-notify-size" name="pokemon-icon-notify-size" id="pokemon-icon-notify-size">
+                                                    <option value="0"><?php echo i8ln('Disable') ?></option>
+                                                    <option value="15"><?php echo i8ln('Large') ?></option>
+                                                    <option value="30"><?php echo i8ln('X-Large') ?></option>
+                                                    <option value="45"><?php echo i8ln('XX-Large') ?></option>
+                                                </select>
+                                                <label for="pokemon-icon-notify-size"><?php echo i8ln('Increase Notified Icon Size') ?></label>
+                                            </div>
+                                        <?php }
+                                        if (! $noGymStyle) { ?>
+                                            <div class="form-floating">
+                                                <select class="form-select" aria-label="gym-marker-style" name="gym-marker-style" id="gym-marker-style">
+                                                    <option value="ingame"><?php echo i8ln('In-Game') ?></option>
+                                                    <option value="shield"><?php echo i8ln('Shield') ?></option>
+                                                    <option value="rocketmap"><?php echo i8ln('Rocketmap') ?></option>
+                                                    <option value="comic"><?php echo i8ln('Comic') ?></option>
+                                                </select>
+                                                <label for="gym-marker-style"><?php echo i8ln('Gym Marker Style') ?></label>
+                                            </div>
+                                        <?php }
+                                        if (! $noLocationStyle) {
+                                            $markerStyleJson = file_get_contents('static/dist/data/searchmarkerstyle.min.json');
+                                            $markerStyles = json_decode($markerStyleJson, true); ?>
+                                            <div class="form-floating">
+                                                <select class="form-select" aria-label="locationmarker-style" name="locationmarker-style" id="locationmarker-style">
+                                                    <?php
+                                                    foreach ($markerStyles as $k => $markerStyle) {
+                                                        echo '<option value="' . $k  . '">' . i8ln($markerStyle['name']) . '</option>';
+                                                    } ?>
+                                                </select>
+                                                <label for="locationmarker"><?php echo i8ln('Location Icon Marker') ?></label>
+                                            </div>
+                                        <?php } ?>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                <?php }
+                if (! $noAreas && ! empty($quickAreas)) { ?>
+                    <div class="accordion-item">
+                        <h2 class="accordion-header" id="headingItemNine">
+                            <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#navItemNine" aria-expanded="false" aria-controls="navItemNine">
+                                <h5><?php echo i8ln('Areas') ?></h5>
+                            </button>
+                        </h2>
+                        <div id="navItemNine" class="accordion-collapse collapse" aria-labelledby="navItemNine" data-bs-parent="#accordionNav">
+                            <div class="accordion-body bg-light">
+                                <div class="card">
+                                    <div class="card-body">
+                                        <div class="btn-group flex-wrap" role="group" aria-label="Nested area dropdown">
                                             <?php
-                                            if (! $noCriesSound) { ?>
-                                                <div id="cries-switch-wrapper" style="display:none">
-                                                    <div class="dropdown-divider"></div>
-                                                    <div class="form form-switch">
-                                                        <input class="form-check-input" id="cries-switch" type="checkbox" name="cries-switch">
-                                                        <label class="form-check-label" for="cries-switch"><?php echo i8ln('Use Pokémon cries') ?></label>
+                                            foreach ($quickAreas as $name => $areaInfo) {
+                                                if (is_string($areaInfo)) {
+                                                    $areaLatLon = explode(",", $areaInfo);
+                                                    $lat = $areaLatLon[0];
+                                                    $lon = $areaLatLon[1];
+                                                    $zoom = $areaLatLon[2];
+                                                    echo '<a href="" data-lat="' . $lat . '" data-lng="' . $lon . '" data-zoom="' . $zoom . '" class="btn btn-secondary area-go-to">' . $name . '</a>';
+                                                } else if (is_array($areaInfo)) { ?>
+                                                    <div class="btn-group" role="group">
+                                                        <button class="btn btn-secondary dropdown-toggle" type="button" id="<?php echo $name; ?>-dropdown" data-bs-toggle="dropdown" aria-expanded="false">
+                                                            <?php echo $name; ?>
+                                                        </button>
+                                                        <ul class="dropdown-menu" aria-labelledby="<?php echo $name; ?>-dropdown">
+                                                        <?php
+                                                        foreach ($areaInfo as $name => $areaInfo) {
+                                                            $areaLatLon = explode(",", $areaInfo);
+                                                            $lat = $areaLatLon[0];
+                                                            $lon = $areaLatLon[1];
+                                                            $zoom = $areaLatLon[2];
+                                                            echo '<li><a href="" data-lat="' . $lat . '" data-lng="' . $lon . '" data-zoom="' . $zoom . '" class="dropdown-item area-go-to">' . $name . '</a></li>';
+                                                        } ?>
+                                                        </ul>
                                                     </div>
-                                                </div>
-                                            <?php }
-                                        }
-                                        if (! $noNotifyBounce) { ?>
-                                            <div class="dropdown-divider"></div>
-                                            <div class="form form-switch">
-                                                <input class="form-check-input" id="bounce-switch" type="checkbox" name="bounce-switch">
-                                                <label class="form-check-label" for="bounce-switch"><?php echo i8ln('Bounce') ?></label>
-                                            </div>
-                                        <?php }
-                                    } ?>
+                                                <?php }
+                                            } ?>
+                                        </div>
+                                    </div>
                                 </div>
                             </div>
                         </div>
                     </div>
-                </div>
-
-                <div class="accordion-item">
-                    <h2 class="accordion-header" id="headingItemEight">
-                        <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#navItemEight" aria-expanded="false" aria-controls="navItemEight">
-                            <h5><?php echo i8ln('Style') ?></h5>
-                        </button>
-                    </h2>
-                    <div id="navItemEight" class="accordion-collapse collapse" aria-labelledby="navItemEight" data-bs-parent="#accordionNav">
-                        <div class="accordion-body bg-light">
-                            <div class="card">
-                                <div class="card-body">
-                            Placeholder
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="accordion-item">
-                    <h2 class="accordion-header" id="headingItemNine">
-                        <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#navItemNine" aria-expanded="false" aria-controls="navItemNine">
-                            <h5><?php echo i8ln('Areas') ?></h5>
-                        </button>
-                    </h2>
-                    <div id="navItemNine" class="accordion-collapse collapse" aria-labelledby="navItemNine" data-bs-parent="#accordionNav">
-                        <div class="accordion-body bg-light">
-                            <div class="card">
-                                <div class="card-body">
-                         Placeholder
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
+                <?php } ?>
             </div>
         </div>
     </div>

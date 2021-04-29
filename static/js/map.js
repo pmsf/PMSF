@@ -563,20 +563,6 @@ function initMap() { // eslint-disable-line no-unused-vars
 
     $.getJSON('static/dist/data/searchmarkerstyle.min.json').done(function (data) {
         searchMarkerStyles = data
-        var searchMarkerStyleList = []
-
-        $.each(data, function (key, value) {
-            searchMarkerStyleList.push({
-                id: key,
-                text: value.name
-            })
-        })
-
-        $selectLocationIconMarker.select2({
-            placeholder: 'Select Location Marker',
-            data: searchMarkerStyleList,
-            minimumResultsForSearch: Infinity
-        })
 
         $selectLocationIconMarker.on('change', function (e) {
             Store.set('locationMarkerStyle', this.value)
@@ -6031,77 +6017,18 @@ $(function () {
     $selectDirectionProvider = $('#direction-provider')
 
     // Load Stylenames, translate entries, and populate lists
-    $.getJSON('static/dist/data/mapstyle.min.json').done(function (data) {
-        var styleList = []
+    $selectStyle.on('change', function (e) {
+        selectedStyle = $selectStyle.val()
 
-        $.each(data, function (key, value) {
-            var googleMaps
-            if (gmapsKey === '') {
-                googleMaps = false
-            } else {
-                googleMaps = true
-            }
-            var googleStyle = value.includes('Google')
-            var mapBox
-            if (mBoxKey === '') {
-                mapBox = false
-            } else {
-                mapBox = true
-            }
-            var mapBoxStyle = value.includes('Mapbox')
-            var customTileServer
-            if (noCustomTileServer) {
-                customTileServer = false
-            } else {
-                customTileServer = true
-            }
-            var customTileServerStyle = value.includes('Tileserver')
-            if (!googleStyle && !mapBoxStyle && !customTileServerStyle) {
-                styleList.push({
-                    id: key,
-                    text: i8ln(value)
-                })
-            } else if (googleMaps && googleStyle) {
-                styleList.push({
-                    id: key,
-                    text: i8ln(value)
-                })
-            } else if (mapBox && mapBoxStyle) {
-                styleList.push({
-                    id: key,
-                    text: i8ln(value)
-                })
-            } else if (customTileServer && customTileServerStyle) {
-                styleList.push({
-                    id: key,
-                    text: i8ln(value)
-                })
-            }
-        })
+        if (_mapLoaded) {
+            setTileLayer(selectedStyle)
+        }
 
-        // setup the stylelist
-        $selectStyle.select2({
-            placeholder: 'Select Style',
-            data: styleList,
-            minimumResultsForSearch: Infinity
-        })
-        $selectStyle.on('change', function (e) {
-            selectedStyle = $selectStyle.val()
-
-            if (_mapLoaded) {
-                setTileLayer(selectedStyle)
-            }
-
-            Store.set('map_style', selectedStyle)
-        })
-
-        // recall saved mapstyle
-        $selectStyle.val(Store.get('map_style')).trigger('change')
+        Store.set('map_style', selectedStyle)
     })
-    $selectDirectionProvider.select2({
-        placeholder: 'Select Provider',
-        minimumResultsForSearch: Infinity
-    })
+
+    // recall saved mapstyle
+    $selectStyle.val(Store.get('map_style')).trigger('change')
 
     $selectDirectionProvider.on('change', function () {
         directionProvider = $selectDirectionProvider.val()
@@ -6160,11 +6087,6 @@ $(function () {
 
     $selectGymMarkerStyle = $('#gym-marker-style')
 
-    $selectGymMarkerStyle.select2({
-        placeholder: 'Select Style',
-        minimumResultsForSearch: Infinity
-    })
-
     $selectGymMarkerStyle.on('change', function (e) {
         Store.set('gymMarkerStyle', this.value)
         updateGymIcons()
@@ -6174,10 +6096,6 @@ $(function () {
 
     $selectIconStyle = $('#icon-style')
 
-    $selectIconStyle.select2({
-        placeholder: 'Select Style',
-        minimumResultsForSearch: Infinity
-    })
     $selectIconStyle.on('change', function (e) {
         Store.set('icons', this.value)
         iconpath = Store.get('icons')

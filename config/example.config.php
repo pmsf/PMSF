@@ -562,8 +562,26 @@ $nestGeoJSONfile = 'custom/nest.json';                         // path to geoJSO
 // Areas
 //-----------------------------------------------------
 $noAreas = true;
-$areas = [];                                                  // [[latitude,longitude,zoom,"name"],[latitude,longitude,zoom,"name"]]
-
+$quickAreas = [
+    "Newyork" => [
+        "Manhattan" => "lat,lon,zoom",
+        "Brooklyn" => "lat,lon,zoom",
+        "Queens" => "lat,lon,zoom"
+    ],
+    "Los Angeles" => [
+        "Pasadena" => "lat,lon,zoom",
+        "Glendale" => "lat,lon,zoom",
+        "Montebello" => "lat,lon,zoom",
+        "Inglewood" => "lat,lon,zoom",
+        "Santa Monica" => "lat,lon,zoom"
+    ],
+    "Las Vegas" => "lat,lon,zoom",
+    "Albuquerque" => "lat,lon,zoom",
+    "Dallas" => "lat,lon,zoom",
+    "Chicago" => "lat,lon,zoom",
+    "Sacramento" => "lat,lon,zoom",
+    "Denver" => "lat,lon,zoom"
+];
 //-----------------------------------------------------
 // Weather Config
 //-----------------------------------------------------
