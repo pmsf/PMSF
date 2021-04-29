@@ -619,35 +619,37 @@ if (!$noLoadingScreen) {
                                                     </div>
                                                     <div class="dropdown-divider"></div>
                                                 <?php } ?>
-                                                <ul class="nav nav-tabs nav-fill" id="raidHide" role="tablist">
-                                                    <li class="nav-item" role="presentation">
-                                                        <button class="nav-link active" id="exclude-raidboss-tab" data-bs-toggle="tab" data-bs-target="#exclude-raidboss" type="button" role="tab" aria-controls="exclude-raidboss" aria-selected="false"><?php echo i8ln('Hide Raidboss') ?></button>
-                                                    </li>
-                                                    <li class="nav-item" role="presentation">
-                                                        <button class="nav-link" id="exclude-raidegg-tab" data-bs-toggle="tab" data-bs-target="#exclude-raidegg" type="button" role="tab" aria-controls="exclude-raidegg" aria-selected="false"><?php echo i8ln('Hide Raidegg') ?></button>
-                                                    </li>
-                                                </ul>
-                                                <div class="tab-content" id="raidHideContent">
-                                                    <div class="tab-pane fade show active" id="exclude-raidboss" role="tabpanel" aria-labelledby="exclude-raidboss-tab">
-                                                        <div class="container scroll-container">
-                                                            <?php
-                                                            if ($generateExcludeRaidboss === true) {
-                                                                pokemonFilterImages($noRaidbossNumbers, '', array_diff(range(1, $numberOfPokemon), $getList->generated_exclude_list('raidbosslist')), 11);
-                                                            } else {
-                                                                pokemonFilterImages($noRaidbossNumbers, '', $excludeRaidboss, 11);
-                                                            } ?>
+                                                <div class="form-control">
+                                                    <ul class="nav nav-tabs nav-fill" id="raidHide" role="tablist">
+                                                        <li class="nav-item" role="presentation">
+                                                            <button class="nav-link active" id="exclude-raidboss-tab" data-bs-toggle="tab" data-bs-target="#exclude-raidboss" type="button" role="tab" aria-controls="exclude-raidboss" aria-selected="false"><?php echo i8ln('Hide Raidboss') ?></button>
+                                                        </li>
+                                                        <li class="nav-item" role="presentation">
+                                                            <button class="nav-link" id="exclude-raidegg-tab" data-bs-toggle="tab" data-bs-target="#exclude-raidegg" type="button" role="tab" aria-controls="exclude-raidegg" aria-selected="false"><?php echo i8ln('Hide Raidegg') ?></button>
+                                                        </li>
+                                                    </ul>
+                                                    <div class="tab-content" id="raidHideContent">
+                                                        <div class="tab-pane fade show active" id="exclude-raidboss" role="tabpanel" aria-labelledby="exclude-raidboss-tab">
+                                                            <div class="container scroll-container">
+                                                                <?php
+                                                                if ($generateExcludeRaidboss === true) {
+                                                                    pokemonFilterImages($noRaidbossNumbers, '', array_diff(range(1, $numberOfPokemon), $getList->generated_exclude_list('raidbosslist')), 11);
+                                                                } else {
+                                                                    pokemonFilterImages($noRaidbossNumbers, '', $excludeRaidboss, 11);
+                                                                } ?>
+                                                            </div>
+                                                            <div class="dropdown-divider"></div>
+                                                            <a class="btn btn-secondary select-all" href="#"><?php echo i8ln('All') ?></a>
+                                                            <a class="btn btn-secondary hide-all" href="#"><?php echo i8ln('None') ?></a>
                                                         </div>
-                                                        <div class="dropdown-divider"></div>
-                                                        <a class="btn btn-secondary select-all" href="#"><?php echo i8ln('All') ?></a>
-                                                        <a class="btn btn-secondary hide-all" href="#"><?php echo i8ln('None') ?></a>
-                                                    </div>
-                                                    <div class="tab-pane fade" id="exclude-raidegg" role="tabpanel" aria-labelledby="exclude-raidegg-tab">
-                                                        <div class="container scroll-container">
-                                                            <?php raideggFilterImages($noRaideggNumbers, '', $excludeRaidegg, 12); ?>
+                                                        <div class="tab-pane fade" id="exclude-raidegg" role="tabpanel" aria-labelledby="exclude-raidegg-tab">
+                                                            <div class="container scroll-container">
+                                                                <?php raideggFilterImages($noRaideggNumbers, '', $excludeRaidegg, 12); ?>
+                                                            </div>
+                                                            <div class="dropdown-divider"></div>
+                                                            <a class="btn btn-secondary select-all-egg" href="#"><?php echo i8ln('All') ?></a>
+                                                            <a class="btn btn-secondary hide-all-egg" href="#"><?php echo i8ln('None') ?></a>
                                                         </div>
-                                                        <div class="dropdown-divider"></div>
-                                                        <a class="btn btn-secondary select-all-egg" href="#"><?php echo i8ln('All') ?></a>
-                                                        <a class="btn btn-secondary hide-all-egg" href="#"><?php echo i8ln('None') ?></a>
                                                     </div>
                                                 </div>
                                             </div>
