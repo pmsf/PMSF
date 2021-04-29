@@ -6107,14 +6107,6 @@ $(function () {
 })
 
 $(function () {
-    function formatState(state) {
-        if (!state.id) {
-            return state.text
-        }
-        var $state = $('<span><i class="pokemon-raid-sprite n' + state.element.value.toString() + '" style="display: inline-block;position: relative;top: 6px; right: 0px;"></i> ' + state.text + '</span>')
-        return $state
-    }
-
     $.getJSON('static/dist/data/moves.min.json').done(function (data) {
         moves = data
     })
@@ -6377,7 +6369,6 @@ $(function () {
         $questsExcludePokemon.val(Store.get('remember_quests_exclude_pokemon')).trigger('change')
         $questsExcludeEnergy.val(Store.get('remember_quests_exclude_energy')).trigger('change')
         $excludeRaidboss.val(Store.get('remember_exclude_raidboss')).trigger('change')
-
     })
 
     $('.select-all').on('click', function (e) {
