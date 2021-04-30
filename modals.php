@@ -84,7 +84,7 @@
                     <?php
                 }
             } else {
-                echo "<div class='d-grid gap-2'>";
+                echo "<div class='d-grid gap-1'>";
                 if ($noNativeLogin === false) {
                     echo "<button class='btn btn-primary' type='button' onclick=\"location.href='./login?action=login';\" value='Login'><i class='fas fa-user'></i> " . i8ln('Login with Email') . "</button>";
                 }
@@ -105,7 +105,7 @@
 
             <hr style="border: 1px solid #5a5a5aab;">
 
-            <div class="d-grid gap-2 col-6 mx-auto">
+            <div class="d-grid gap-1 col-6 mx-auto">
                     <button class='btn btn-primary' type='button' onclick="confirm('<?php echo i8ln('Are you sure you want to reset settings to default values?') ?>') ? (localStorage.clear(), window.location.reload()) : false">
                         <i class="fas fa-sync-alt" aria-hidden="true"></i> <?php echo i8ln('Reset Settings') ?>
                     </button>

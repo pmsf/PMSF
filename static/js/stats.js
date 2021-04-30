@@ -1,11 +1,4 @@
 function countMarkers(map) { // eslint-disable-line no-unused-vars
-    document.getElementById('stats-ldg-label').innerHTML = ''
-    document.getElementById('stats-pkmn-label').innerHTML = i8ln('Pokémon')
-    document.getElementById('stats-gym-label').innerHTML = i8ln('Gyms')
-    document.getElementById('stats-pkstop-label').innerHTML = i8ln('Pokéstops')
-    document.getElementById('stats-raid-label').innerHTML = i8ln('Raids')
-    document.getElementById('stats-spawnpoint-label').innerHTML = i8ln('Spawnpoints')
-
     var i = 0
     var arenaCount = []
     var arenaTotal = 0
@@ -86,7 +79,7 @@ function countMarkers(map) { // eslint-disable-line no-unused-vars
         pokeStatTable.clear().rows.add(pokeCounts).draw()
     } else {
         pokeStatTable.clear().draw()
-        document.getElementById('pokeStatStatus').innerHTML = '<center>' + i8ln('Pokémon markers are disabled') + '<center>'
+        $('#pokeStatStatus').html('<center>' + i8ln('Pokémon markers are disabled') + '<center>')
         $('#pokemonList_table').dataTable().hide()
     }
 
@@ -120,9 +113,9 @@ function countMarkers(map) { // eslint-disable-line no-unused-vars
             }
         }
         arenaListString += '</table>'
-        document.getElementById('arenaList').innerHTML = arenaListString
+        $('#arenaList').html(arenaListString)
     } else {
-        document.getElementById('arenaList').innerHTML = '<center>' + i8ln('Gym markers are disabled') + '</center>'
+        $('#arenaList').html('<center>' + i8ln('Gym markers are disabled') + '</center>')
     }
 
 
@@ -189,9 +182,9 @@ function countMarkers(map) { // eslint-disable-line no-unused-vars
             }
         }
         raidListString += '</table>'
-        document.getElementById('raidList').innerHTML = raidListString
+        $('#raidList').html(raidListString)
     } else {
-        document.getElementById('raidList').innerHTML = '<center>' + i8ln('Raid markers are disabled') + '</center>'
+        $('#raidList').html('<center>' + i8ln('Raid markers are disabled') + '</center>')
     }
 
 
@@ -281,9 +274,9 @@ function countMarkers(map) { // eslint-disable-line no-unused-vars
             }
         }
         pokestopListString += '</table>'
-        document.getElementById('pokestopList').innerHTML = pokestopListString
+        $('#pokestopList').html(pokestopListString)
     } else {
-        document.getElementById('pokestopList').innerHTML = '<center>' + i8ln('Pokéstop markers are disabled') + '<center>'
+        $('#pokestopList').html('<center>' + i8ln('Pokéstop markers are disabled') + '<center>')
     }
 
 
@@ -320,8 +313,9 @@ function countMarkers(map) { // eslint-disable-line no-unused-vars
             }
         }
         spawnpointListString += '</table>'
-        document.getElementById('spawnpointList').innerHTML = spawnpointListString
+        $('#spawnpointList').html(spawnpointListString)
     } else {
-        document.getElementById('spawnpointList').innerHTML = '<center>' + i8ln('Spawnpoint markers are disabled') + '</center>'
+        $('#spawnpointList').html('<center>' + i8ln('Spawnpoint markers are disabled') + '</center>')
     }
+    $('#loadingSpinner').hide()
 }
