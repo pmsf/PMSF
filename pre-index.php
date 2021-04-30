@@ -1045,13 +1045,13 @@ if (!$noLoadingScreen) {
                                                 <select class="form-select" aria-label="map-style" name="map-style" id="map-style">
                                                     <?php
                                                     foreach ($mapStyles as $k => $mapStyleName) {
-                                                        if (! str_contains($k, 'google') && ! str_contains($k, 'mapbox') && !str_contains($k, 'tileserver')) {
+                                                        if ((strpos($k, 'google') === false ) && (strpos($k, 'mapbox') === false) && (strpos($k, 'tileserver') === false)) {
                                                             echo '<option value="' . $k  . '">' . i8ln($mapStyleName) . '</option>';
-                                                        } else if (str_contains($k, 'google') && ! empty($gmapsKey)) {
+                                                        } else if ((strpos($k, 'google') === true) && ! empty($gmapsKey)) {
                                                             echo '<option value="' . $k  . '">' . i8ln($mapStyleName) . '</option>';
-                                                        } else if (str_contains($k, 'mapbox') && ! empty($mBoxKey)) {
+                                                        } else if ((strpos($k, 'mapbox') === true) && ! empty($mBoxKey)) {
                                                             echo '<option value="' . $k  . '">' . i8ln($mapStyleName) . '</option>';
-                                                        } else if (str_contains($k, 'tileserver') && ! $noCustomTileServer) {
+                                                        } else if ((strpos($k, 'tileserver') === true) && ! $noCustomTileServer) {
                                                             echo '<option value="' . $k  . '">' . i8ln($mapStyleName) . '</option>';
                                                         }
                                                     } ?>
