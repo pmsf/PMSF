@@ -1038,21 +1038,17 @@ if (!$noLoadingScreen) {
                                             </div>
                                             <div class="dropdown-divider"></div>
                                         <?php }
-                                        if (! $noMapStyle && ! $forcedTileServer) {
-                                            $mapStyleJson = file_get_contents('static/dist/data/mapstyle.min.json');
-                                            $mapStyles = json_decode($mapStyleJson, true); ?>
+                                        if (! $noMapStyle && ! $forcedTileServer) { ?>
                                             <div class="form-floating">
                                                 <select class="form-select" aria-label="map-style" name="map-style" id="map-style">
                                                     <?php
-                                                    foreach ($mapStyles as $k => $mapStyleName) {
-                                                        if ((strpos($k, 'google') === false ) && (strpos($k, 'mapbox') === false) && (strpos($k, 'tileserver') === false)) {
-                                                            echo '<option value="' . $k  . '">' . i8ln($mapStyleName) . '</option>';
+                                                    foreach ($mapStyleList as $k => $mapStyleInfo) {
+                                                        if ((strpos($k, 'google') === false ) && (strpos($k, 'mapbox') === false) && ! empty($mapStyleInfo['url'])) {
+                                                            echo '<option value="' . $k  . '">' . i8ln($mapStyleInfo['name']) . '</option>';
                                                         } else if ((strpos($k, 'google') !== false) && ! empty($gmapsKey)) {
-                                                            echo '<option value="' . $k  . '">' . i8ln($mapStyleName) . '</option>';
-                                                        } else if ((strpos($k, 'mapbox') !== false) && ! empty($mBoxKey)) {
-                                                            echo '<option value="' . $k  . '">' . i8ln($mapStyleName) . '</option>';
-                                                        } else if ((strpos($k, 'tileserver') !== false) && ! $noCustomTileServer) {
-                                                            echo '<option value="' . $k  . '">' . i8ln($mapStyleName) . '</option>';
+                                                            echo '<option value="' . $k  . '">' . i8ln($mapStyleInfo['name']) . '</option>';
+                                                        } else if ((strpos($k, 'mapbox') !== false) && ! empty($mapStyleInfo['key'])) {
+                                                            echo '<option value="' . $k  . '">' . i8ln($mapStyleInfo['name']) . '</option>';
                                                         }
                                                     } ?>
                                                 </select>
@@ -1304,7 +1300,7 @@ include('modals.php');
 <script src="node_modules/leaflet.markercluster/dist/leaflet.markercluster.js"></script>
 <script src='static/js/vendor/Leaflet.fullscreen.min.js'></script>
 <script src="static/js/vendor/smoothmarkerbouncing.js"></script>
-<script src='https://maps.googleapis.com/maps/api/js?key=<?= $gmapsKey ?> ' async defer></script>
+<?php echo (!empty($gmapsKey)) ? '<script src="https://maps.googleapis.com/maps/api/js?key=' . $gmapsKey . '" async defer></script>' : ''; ?>
 <script src="static/js/vendor/Leaflet.GoogleMutant.js"></script>
 <script src="static/js/vendor/turf.min.js"></script>
 <script src="node_modules/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
@@ -1328,10 +1324,7 @@ include('modals.php');
     var maxClusterRadius = <?= $maxClusterRadius; ?>;
     var spiderfyOnMaxZoom = <?= $spiderfyOnMaxZoom; ?>;
     var mapStyle = '<?php echo $mapStyle ?>';
-    var gmapsKey = '<?php echo $gmapsKey ?>';
-    var mBoxKey = '<?php echo $mBoxKey ?>';
-    var noCustomTileServer = <?php echo $noCustomTileServer === true ? 'true' : 'false' ?>;
-    var customTileServerAddress = '<?php echo $customTileServerAddress ?>';
+    var mapStyleList = <?php echo json_encode($mapStyleList) ?>;
     var hidePokemon = <?php echo $noHidePokemon ? '[]' : $hidePokemon ?>;
     var excludeMinIV = <?php echo $noExcludeMinIV ? '[]' : $excludeMinIV ?>;
     var minIV = <?php echo $noMinIV ? '""' : $minIV ?>;
