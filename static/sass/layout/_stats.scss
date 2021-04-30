@@ -1,5 +1,22 @@
 /* Stats */
 
+#rightNav {
+  font-size: 14px;
+  margin-top: 56px;
+  .offcanvas-body.right {
+    padding: 0px;
+    h2 {
+      margin-left: 0;
+    }
+  }
+  .card-body {
+    overflow: hidden;
+    overflow-y: auto;
+    max-height: 25em;
+  }
+}
+
+
 #stats {
   @include vendor('transform', 'translateX(25em)');
   @include vendor('transition', ('transform #{_duration(stats)} ease', 'box-shadow #{_duration(stats)} ease', 'visibility #{_duration(stats)}'));

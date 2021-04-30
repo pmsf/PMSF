@@ -177,13 +177,13 @@ if (!$noLoadingScreen) {
 <div class="wrapper">
     <!-- Header -->
     <header id="header">
-        <a class="btn btn-link" data-bs-toggle="offcanvas" href="#leftNav" role="button" title="<?php echo i8ln('Options') ?>" aria-controls="leftNav"><i class='fas fa-sliders-h' style='color:white;font-size:20px;vertical-align:middle;pointer-events:none'></i></a>
+        <a class="btn btn-link" data-bs-toggle="offcanvas" href="#leftNav" role="button" title="<?php echo i8ln('Options') ?>" aria-controls="leftNav"><i class='fas fa-sliders-h'></i></a>
 
         <h1><a href="#"><?= $headerTitle ?><img src="<?= $raidmapLogo ?>" height="35" width="auto" border="0" style="float: right; margin-left: 5px; margin-top: 10px;"></a></h1>
 
         <?php
         if (! $noStatsToggle) {
-            echo '<a href="#stats" id="statsToggle" class="statsNav" title="' . i8ln('Stats') . '" style="float: right;"></a>';
+            echo '<a class="btn btn-link" data-bs-toggle="offcanvas" href="#rightNav" role="button" title="' . i8ln('Options') . '" aria-controls="leftNav"><i class="fas fa-chart-bar"></i></a>';
         }
         if ($paypalUrl != "") {
             echo '<a href="' . $paypalUrl . '" target="_blank" style="float:right;padding:0 5px;">
@@ -1171,59 +1171,88 @@ if (!$noLoadingScreen) {
             </div>
         </div>
     </div>
-
-    <nav id="stats">
-        <div class="switch-container">
+    <div class="offcanvas offcanvas-end" data-bs-scroll="true" data-bs-backdrop="false" tabindex="-1" id="rightNav" aria-labelledby="rightNavLabel">
+        <div class="offcanvas-body right">
             <?php
-            if ($worldopoleUrl !== "") {
-                ?>
-                <div class="switch-container">
-                    <div>
-                        <center><a class="button" href="<?= $worldopoleUrl ?>" target="_blank"><i class="far fa-chart-bar"></i><?php echo i8ln(' Full Stats') ?></a></center>
+            if ($worldopoleUrl !== "") { ?>
+                <div class="card">
+                    <div class="card-header">
+                        <?php echo i8ln(' Full Stats') ?>
+                    </div>
+                    <div class="card-body">
+                        <div class="d-grid gap-2">
+                            <a class="btn btn-secondary" type="button" href="<?= $worldopoleUrl ?>" target="_blank"><i class="far fa-chart-bar"></i><?php echo i8ln('Full Stats') ?></a>
+                        </div>
                     </div>
                 </div>
             <?php } ?>
-            <div class="switch-container">
-                <center><h1 id="stats-ldg-label"><?php echo i8ln('Loading') ?>...</h1></center>
+            <div class="card" id="loadingSpinner">
+                <div class="card-header">
+                    <?php echo i8ln('Loading...') ?>
+                </div>
+                <div class="card-body">
+                    <div class="d-flex justify-content-center">
+                        <div class="spinner-border" role="status">
+                            <span class="visually-hidden">Loading...</span>
+                        </div>
+                    </div>
+                </div>
             </div>
-            <div class="stats-label-container">
-                <center><h1 id="stats-pkmn-label"></h1></center>
+            <div class="card">
+                <div class="card-header">
+                    <?php echo i8ln('Pokémon') ?>
+                </div>
+                <div class="card-body">
+                    <div id="pokemonList" style="color: black;">
+                        <table id="pokemonList_table" class="display" cellspacing="0" width="100%">
+                            <thead>
+                            <tr>
+                                <th><?php echo i8ln('Icon') ?></th>
+                                <th><?php echo i8ln('Name') ?></th>
+                                <th><?php echo i8ln('Count') ?></th>
+                                <th>%</th>
+                            </tr>
+                            </thead>
+                            <tbody></tbody>
+                        </table>
+                        <div id="pokeStatStatus" style="color: black;"></div>
+                    </div>
+                </div>
             </div>
-            <div id="pokemonList" style="color: black;">
-                <table id="pokemonList_table" class="display" cellspacing="0" width="100%">
-                    <thead>
-                    <tr>
-                        <th><?php echo i8ln('Icon') ?></th>
-                        <th><?php echo i8ln('Name') ?></th>
-                        <th><?php echo i8ln('Count') ?></th>
-                        <th>%</th>
-                    </tr>
-                    </thead>
-                    <tbody></tbody>
-                </table>
-                <div id="pokeStatStatus" style="color: black;"></div>
+            <div class="card">
+                <div class="card-header">
+                    <?php echo i8ln('Gyms') ?>
+                </div>
+                <div class="card-body">
+                    <div id="arenaList" style="color: black;"></div>
+                </div>
             </div>
-            <div class="stats-label-container">
-                <center><h1 id="stats-gym-label"></h1></center>
+            <div class="card">
+                <div class="card-header">
+                    <?php echo i8ln('Raids') ?>
+                </div>
+                <div class="card-body">
+                    <div id="raidList" style="color: black;"></div>
+                </div>
             </div>
-            <div id="arenaList" style="color: black;"></div>
-
-            <div class="stats-label-container">
-                <center><h1 id="stats-raid-label"></h1></center>
+            <div class="card">
+                <div class="card-header">
+                    <?php echo i8ln('Pokéstops') ?>
+                </div>
+                <div class="card-body">
+                    <div id="pokestopList" style="color: black;"></div>
+                </div>
             </div>
-            <div id="raidList" style="color: black;"></div>
-
-            <div class="stats-label-container">
-                <center><h1 id="stats-pkstop-label"></h1></center>
+            <div class="card">
+                <div class="card-header">
+                    <?php echo i8ln('Spawnpoints') ?>
+                </div>
+                <div class="card-body">
+                    <div id="spawnpointList" style="color: black;"></div>
+                </div>
             </div>
-            <div id="pokestopList" style="color: black;"></div>
-
-            <div class="stats-label-container">
-                <center><h1 id="stats-spawnpoint-label"></h1></center>
-            </div>
-            <div id="spawnpointList" style="color: black;"></div>
         </div>
-    </nav>
+    </div>
 
     <div id="map"></div>
 

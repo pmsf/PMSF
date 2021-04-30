@@ -5280,7 +5280,7 @@ function updateMap() {
             updatePokestops()
             updatePortals()
 
-            if ($('#stats').hasClass('visible')) {
+            if ($('#rightNav.offcanvas').hasClass('show')) {
                 countMarkers(map)
             }
 
