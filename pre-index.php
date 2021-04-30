@@ -1047,11 +1047,11 @@ if (!$noLoadingScreen) {
                                                     foreach ($mapStyles as $k => $mapStyleName) {
                                                         if ((strpos($k, 'google') === false ) && (strpos($k, 'mapbox') === false) && (strpos($k, 'tileserver') === false)) {
                                                             echo '<option value="' . $k  . '">' . i8ln($mapStyleName) . '</option>';
-                                                        } else if ((strpos($k, 'google') === true) && ! empty($gmapsKey)) {
+                                                        } else if ((strpos($k, 'google') !== false) && ! empty($gmapsKey)) {
                                                             echo '<option value="' . $k  . '">' . i8ln($mapStyleName) . '</option>';
-                                                        } else if ((strpos($k, 'mapbox') === true) && ! empty($mBoxKey)) {
+                                                        } else if ((strpos($k, 'mapbox') !== false) && ! empty($mBoxKey)) {
                                                             echo '<option value="' . $k  . '">' . i8ln($mapStyleName) . '</option>';
-                                                        } else if ((strpos($k, 'tileserver') === true) && ! $noCustomTileServer) {
+                                                        } else if ((strpos($k, 'tileserver') !== false) && ! $noCustomTileServer) {
                                                             echo '<option value="' . $k  . '">' . i8ln($mapStyleName) . '</option>';
                                                         }
                                                     } ?>
