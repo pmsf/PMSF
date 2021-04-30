@@ -6023,11 +6023,14 @@ $(function () {
         if (_mapLoaded) {
             setTileLayer(selectedStyle)
         }
-
+        if (selectedStyle === null) {
+            selectedStyle = 'openstreetmap'
+        }
         Store.set('map_style', selectedStyle)
     })
 
     // recall saved mapstyle
+
     $selectStyle.val(Store.get('map_style')).trigger('change')
 
     $selectDirectionProvider.on('change', function () {

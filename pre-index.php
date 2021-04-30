@@ -1044,8 +1044,16 @@ if (!$noLoadingScreen) {
                                             <div class="form-floating">
                                                 <select class="form-select" aria-label="map-style" name="map-style" id="map-style">
                                                     <?php
-                                                    foreach ($mapStyles as $k => $mapStyle) {
-                                                        echo '<option value="' . $k  . '">' . i8ln($mapStyle) . '</option>';
+                                                    foreach ($mapStyles as $k => $mapStyleName) {
+                                                        if ((strpos($k, 'google') === false ) && (strpos($k, 'mapbox') === false) && (strpos($k, 'tileserver') === false)) {
+                                                            echo '<option value="' . $k  . '">' . i8ln($mapStyleName) . '</option>';
+                                                        } else if ((strpos($k, 'google') !== false) && ! empty($gmapsKey)) {
+                                                            echo '<option value="' . $k  . '">' . i8ln($mapStyleName) . '</option>';
+                                                        } else if ((strpos($k, 'mapbox') !== false) && ! empty($mBoxKey)) {
+                                                            echo '<option value="' . $k  . '">' . i8ln($mapStyleName) . '</option>';
+                                                        } else if ((strpos($k, 'tileserver') !== false) && ! $noCustomTileServer) {
+                                                            echo '<option value="' . $k  . '">' . i8ln($mapStyleName) . '</option>';
+                                                        }
                                                     } ?>
                                                 </select>
                                                 <label for="mapstyle"><?php echo i8ln('Map Style') ?></label>
@@ -1181,7 +1189,7 @@ if (!$noLoadingScreen) {
                     </div>
                     <div class="card-body">
                         <div class="d-grid gap-2">
-                            <a class="btn btn-secondary" type="button" href="<?= $worldopoleUrl ?>" target="_blank"><i class="far fa-chart-bar"></i><?php echo i8ln('Full Stats') ?></a>
+                            <a class="btn btn-secondary" type="button" href="<?= $worldopoleUrl ?>" target="_blank"><i class="far fa-chart-bar"></i> <?php echo i8ln('Full Stats') ?></a>
                         </div>
                     </div>
                 </div>
