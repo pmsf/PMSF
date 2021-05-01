@@ -1301,7 +1301,7 @@ include('modals.php');
 <script src='static/js/vendor/Leaflet.fullscreen.min.js'></script>
 <script src="static/js/vendor/smoothmarkerbouncing.js"></script>
 <?php echo (!empty($gmapsKey)) ? '<script src="https://maps.googleapis.com/maps/api/js?key=' . $gmapsKey . '" async defer></script>' : ''; ?>
-<script src="static/js/vendor/Leaflet.GoogleMutant.js"></script>
+<?php echo (!empty($gmapsKey)) ? '<script src="static/js/vendor/Leaflet.GoogleMutant.js"></script>' : ''; ?>
 <script src="static/js/vendor/turf.min.js"></script>
 <script src="node_modules/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
 <script>

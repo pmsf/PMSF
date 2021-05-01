@@ -386,6 +386,7 @@ function initMap() { // eslint-disable-line no-unused-vars
         worldCopyJump: true,
         updateWhenZooming: false,
         updateWhenIdle: true,
+        attributionControl: false,
         layers: [weatherLayerGroup, exLayerGroup, gymLayerGroup, stopLayerGroup, scanAreaGroup, liveScanGroup, nestLayerGroup]
     })
 
@@ -619,6 +620,7 @@ function setTileLayer(layername) {
         map.removeLayer(getTileLayerConfig(_oldlayer))
     }
     map.addLayer(getTileLayerConfig(layername))
+    $('.gmnoprint, .gm-style-cc').hide()
     _oldlayer = layername
 }
 
@@ -3776,7 +3778,7 @@ function deleteGym(event) { // eslint-disable-line no-unused-vars
 function renameGymData(event) { // eslint-disable-line no-unused-vars
     var form = $(event.target).parent().parent()
     var gymId = form.find('[name="renamegymid"]').val()
-    var gymName = form.find('[name="gym-name"]').val()
+    var gymName = form.find('[name="gym-rename"]').val()
     if (gymName && gymName !== '') {
         if (confirm(i8ln('I confirm this is an accurate new name for this gym'))) {
             return $.ajax({
@@ -3866,7 +3868,7 @@ function deletePokestop(event) { // eslint-disable-line no-unused-vars
 function renamePokestopData(event) { // eslint-disable-line no-unused-vars
     var form = $(event.target).parent().parent()
     var pokestopId = form.find('[name="renamepokestopid"]').val()
-    var pokestopName = form.find('[name="pokestop-name"]').val()
+    var pokestopName = form.find('[name="pokestop-rename"]').val()
     if (pokestopName && pokestopName !== '') {
         if (confirm(i8ln('I confirm this is an accurate new name for this pokestop'))) {
             return $.ajax({

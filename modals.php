@@ -568,7 +568,7 @@
                 <div class="modal-body">
                     <div class="d-grid">
                         <input type="hidden" id="renamepokestopid" name="renamepokestopid" value=""/>
-                        <input type="text" id="pokestop-name" name="pokestop-name"
+                        <input type="text" id="pokestop-rename" name="pokestop-rename"
                             placeholder="<?php echo i8ln('Enter New Pokéstop Name'); ?>" data-type="pokestop" class="search-input">
 
                         <button type="button" class="btn btn-primary btn-sm" onclick="renamePokestopData(event);"><i class="fas fa-edit"></i> <?php echo i8ln('Rename Pokéstop'); ?></button>
@@ -593,7 +593,7 @@
                 <div class="modal-body">
                     <div class="d-grid">
                         <input type="hidden" id="renamegymid" name="renamegymid" value=""/>
-                        <input type="text" id="gym-name" name="gym-name"
+                        <input type="text" id="gym-rename" name="gym-rename"
                             placeholder="<?php echo i8ln('Enter New Gym Name'); ?>" data-type="gym" class="search-input">
                         <button type="button" class="btn btn-primary btn-sm" onclick="renameGymData(event);"><i class="fas fa-edit"></i> <?php echo i8ln('Rename Gym'); ?></button>
                     </div>
