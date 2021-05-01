@@ -474,7 +474,7 @@ $mapStyleList = [
         "key" => "",
         "attribution" => "Tileserver",
         "maxnativezoom" => 18
-    ],
+    ]
 ];
 
 
