@@ -386,6 +386,7 @@ function initMap() { // eslint-disable-line no-unused-vars
         worldCopyJump: true,
         updateWhenZooming: false,
         updateWhenIdle: true,
+        attributionControl: false,
         layers: [weatherLayerGroup, exLayerGroup, gymLayerGroup, stopLayerGroup, scanAreaGroup, liveScanGroup, nestLayerGroup]
     })
 
@@ -579,74 +580,47 @@ function toggleFullscreenMap() { // eslint-disable-line no-unused-vars
     map.toggleFullscreen()
 }
 
-var openstreetmap = L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', { // eslint-disable-line no-unused-vars
-    attribution: '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>',
-    maxZoom: maxZoom,
-    maxNativeZoom: 18
-})
-
-var darkmatter = L.tileLayer('https://cartodb-basemaps-{s}.global.ssl.fastly.net/dark_all/{z}/{x}/{y}.png', { // eslint-disable-line no-unused-vars
-    attribution: '&copy; <a href="https://carto.com/">Carto</a>',
-    maxZoom: maxZoom,
-    maxNativeZoom: 18
-})
-
-var styletopo = L.tileLayer('https://{s}.tile.opentopomap.org/{z}/{x}/{y}.png', { // eslint-disable-line no-unused-vars
-    attribution: '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>',
-    maxZoom: maxZoom,
-    maxNativeZoom: 18
-})
-
-var stylesatellite = L.tileLayer('https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}', { // eslint-disable-line no-unused-vars
-    attribution: 'Tiles &copy; Esri &mdash; Source: Esri, i-cubed, USDA, USGS, AEX, GeoEye, Getmapping, Aerogrid, IGN, IGP, UPR-EGP, and the GIS User Community',
-    maxZoom: maxZoom,
-    maxNativeZoom: 18
-})
-
-var mapbox = L.tileLayer('https://api.mapbox.com/styles/v1/mapbox/streets-v11/tiles/256/{z}/{x}/{y}?access_token=' + mBoxKey, { // eslint-disable-line no-unused-vars
-    attribution: '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>',
-    maxZoom: maxZoom,
-    maxNativeZoom: 18
-})
-
-var mapboxDark = L.tileLayer('https://api.mapbox.com/styles/v1/mapbox/dark-v10/tiles/256/{z}/{x}/{y}?access_token=' + mBoxKey, { // eslint-disable-line no-unused-vars
-    attribution: '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>',
-    maxZoom: maxZoom,
-    maxNativeZoom: 18
-})
-
-var mapboxPogo = L.tileLayer('https://api.mapbox.com/styles/v1/anonymous89/ck2uz9d5t09qm1cl66b9giwun/tiles/256/{z}/{x}/{y}@2x?access_token=' + mBoxKey, { // eslint-disable-line no-unused-vars
-    attribution: '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>',
-    maxZoom: maxZoom,
-    maxNativeZoom: 18
-})
-
-var mapboxPogoDark = L.tileLayer('https://api.mapbox.com/styles/v1/anonymous89/ck2xw3j6h0e0v1dqtlcx9c4od/tiles/256/{z}/{x}/{y}@2x?access_token=' + mBoxKey, { // eslint-disable-line no-unused-vars
-    attribution: '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>',
-    maxZoom: maxZoom,
-    maxNativeZoom: 18
-})
-
-var googlemapssat = L.gridLayer.googleMutant({type: 'satellite'}) // eslint-disable-line no-unused-vars
-
-var googlemapsroad = L.gridLayer.googleMutant({type: 'roadmap'}) // eslint-disable-line no-unused-vars
-
-var tileserver = L.tileLayer(customTileServerAddress, { // eslint-disable-line no-unused-vars
-    attribution: 'Tileserver',
-    maxZoom: maxZoom,
-    maxNativeZoom: 18
-})
-
 // dynamic map style chooses mapboxPogo or mapboxPogoDark depending on client time
 var currentDate = new Date()
 var currentHour = currentDate.getHours()
-var mapboxPogoDynamic = currentHour >= 6 && currentHour < 19 ? mapboxPogo : mapboxPogoDark // eslint-disable-line no-unused-vars
+var mapboxPogoDynamicConfig = currentHour >= 6 && currentHour < 19 ? getTileLayerConfig('mapboxPogo') : getTileLayerConfig('mapboxPogoDark') // eslint-disable-line no-unused-vars
+
+function getTileLayerConfig(selectedStyle) {
+    var tileLayerConfig
+    switch (selectedStyle) {
+        case 'googlemapssat':
+            tileLayerConfig = L.gridLayer.googleMutant({type: 'satellite'})
+            break
+        case 'googlemapsroad':
+            tileLayerConfig = L.gridLayer.googleMutant({type: 'roadmap'})
+            break
+        case 'mapboxPogoDynamic':
+            tileLayerConfig = mapboxPogoDynamicConfig
+            break
+        default:
+            if (selectedStyle.includes('mapbox')) {
+                tileLayerConfig = L.tileLayer(mapStyleList[selectedStyle]['url'] + selectedStyle['key'], {
+                    attribution: mapStyleList[selectedStyle]['attribution'],
+                    maxZoom: maxZoom,
+                    maxNativeZoom: mapStyleList[selectedStyle]['maxnativezoom']
+                })
+                break
+            }
+            tileLayerConfig = L.tileLayer(mapStyleList[selectedStyle]['url'], {
+                attribution: mapStyleList[selectedStyle]['attribution'],
+                maxZoom: maxZoom,
+                maxNativeZoom: mapStyleList[selectedStyle]['maxnativezoom']
+            })
+    }
+    return tileLayerConfig
+}
 
 function setTileLayer(layername) {
-    if (map.hasLayer(window[_oldlayer]) && window[_oldlayer] !== window[layername]) {
-        map.removeLayer(window[_oldlayer])
+    if (map.hasLayer(getTileLayerConfig(_oldlayer)) && getTileLayerConfig(_oldlayer) !== getTileLayerConfig(layername)) {
+        map.removeLayer(getTileLayerConfig(_oldlayer))
     }
-    map.addLayer(window[layername])
+    map.addLayer(getTileLayerConfig(layername))
+    $('.gmnoprint, .gm-style-cc').hide()
     _oldlayer = layername
 }
 
@@ -3804,7 +3778,7 @@ function deleteGym(event) { // eslint-disable-line no-unused-vars
 function renameGymData(event) { // eslint-disable-line no-unused-vars
     var form = $(event.target).parent().parent()
     var gymId = form.find('[name="renamegymid"]').val()
-    var gymName = form.find('[name="gym-name"]').val()
+    var gymName = form.find('[name="gym-rename"]').val()
     if (gymName && gymName !== '') {
         if (confirm(i8ln('I confirm this is an accurate new name for this gym'))) {
             return $.ajax({
@@ -3894,7 +3868,7 @@ function deletePokestop(event) { // eslint-disable-line no-unused-vars
 function renamePokestopData(event) { // eslint-disable-line no-unused-vars
     var form = $(event.target).parent().parent()
     var pokestopId = form.find('[name="renamepokestopid"]').val()
-    var pokestopName = form.find('[name="pokestop-name"]').val()
+    var pokestopName = form.find('[name="pokestop-rename"]').val()
     if (pokestopName && pokestopName !== '') {
         if (confirm(i8ln('I confirm this is an accurate new name for this pokestop'))) {
             return $.ajax({

@@ -94,16 +94,9 @@ $infoModalContent = 'Your text info here';                          // HTML mark
 $noLoadingScreen = false;                                           // show loading animation while main page loads.
 $loadingStyle = '';                                                 // Leave blank for default loading icon. Use '<IMG SRC=static/images/pokeball2.gif>'
                                                                     // for pokeball or custom gif for animated gif; or use your own html.
-/* Google Maps and MapBox are ONLY USED FOR TILE LAYERS */
+/* Google Maps key is ONLY USED FOR TILE LAYERS */
 
 $gmapsKey = "";
-$mBoxKey = "";
-
-/* Custom Tileserver. Only tested with https://github.com/123FLO321/SwiftTileserverCache */
-
-$noCustomTileServer = true;                                         // Enable/Disable Custom TileServer
-$customTileServerAddress = "";                                      // TileServer URL: http://ipAddress:port/tile/klokantech-basic/{z}/{x}/{y}/1/png
-$forcedTileServer = false;
 
 /* Favicon */
 $faviconPath = '';                                                  // Upload favicon.ico to custom folder, leave '' for empty ( $faviconPath = 'custom/favicon.ico'; )
@@ -388,8 +381,102 @@ $iconRepository = 'https://raw.githubusercontent.com/whitewillem/PogoAssets/resi
 $noMultipleRepos = true;
 $iconRepos = [["Standard","$iconRepository"]];
 
+/* Custom Tileserver. Only tested with https://github.com/123FLO321/SwiftTileserverCache */
+
+$noCustomTileServer = true;                                         // Enable/Disable Custom TileServer
+$customTileServerAddress = "";                                      // TileServer URL: http://ipAddress:port/tile/klokantech-basic/{z}/{x}/{y}/1/png
+
 $noMapStyle = false;                                           // true/false
-$mapStyle = 'openstreetmap';                                   // openstreetmap, darkmatter, styleblackandwhite, styletopo, stylesatellite
+$mapStyle = 'openstreetmap';                                   // Set default Map Style
+$forcedTileServer = false;
+
+$mapStyleList = [
+    "openstreetmap" => [
+        "name" => "OpenStreetMap",
+        "url" => "https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png",
+        "key" => "",
+        "attribution" => "&copy; <a href='http://www.openstreetmap.org/copyright'>OpenStreetMap</a>",
+        "maxnativezoom" => 18
+    ],
+    "darkmatter" => [
+        "name" => "Dark Matter",
+        "url" => "https://cartodb-basemaps-{s}.global.ssl.fastly.net/dark_all/{z}/{x}/{y}.png",
+        "key" => "",
+        "attribution" => "&copy; <a href='https://carto.com/'>Carto</a>",
+        "maxnativezoom" => 18
+    ],
+    "styletopo" => [
+        "name" => "ToPo Map",
+        "url" => "https://{s}.tile.opentopomap.org/{z}/{x}/{y}.png",
+        "key" => "",
+        "attribution" => "&copy; <a href='http://www.openstreetmap.org/copyright'>OpenStreetMap</a>",
+        "maxnativezoom" => 18
+    ],
+    "stylesatellite" => [
+        "name" => "Satellite",
+        "url" => "https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}",
+        "key" => "",
+        "attribution" => "Tiles &copy; Esri &mdash; Source: Esri, i-cubed, USDA, USGS, AEX, GeoEye, Getmapping, Aerogrid, IGN, IGP, UPR-EGP, and the GIS User Community",
+        "maxnativezoom" => 18
+    ],
+    "googlemapssat" => [       // DO NOT CHANGE
+        "name" => "Google Maps Satellite",
+        "url" => "",
+        "key" => "",
+        "attribution" => "",
+        "maxnativezoom" => null
+    ],
+    "googlemapsroad" => [      // DO NOT CHANGE
+        "name" => "Google Maps Roadmap",
+        "url" => "",
+        "key" => "",
+        "attribution" => "",
+        "maxnativezoom" => null
+    ],
+    "mapbox" => [
+        "name" => "Mapbox Streets",
+        "url" => "https://api.mapbox.com/styles/v1/mapbox/streets-v11/tiles/256/{z}/{x}/{y}?access_token=",
+        "key" => "",
+        "attribution" => "&copy; <a href='http://www.openstreetmap.org/copyright'>OpenStreetMap</a>",
+        "maxnativezoom" => 18
+    ],
+    "mapboxDark" => [
+        "name" => "Mapbox Dark",
+        "url" => "https://api.mapbox.com/styles/v1/mapbox/dark-v10/tiles/256/{z}/{x}/{y}?access_token=",
+        "key" => "",
+        "attribution" => "&copy; <a href='http://www.openstreetmap.org/copyright'>OpenStreetMap</a>",
+        "maxnativezoom" => 18
+    ],
+    "mapboxPogoDynamic" => [
+        "name" => "Mapbox Pokémon Go Dynamic",
+        "url" => "",
+        "key" => "",
+        "attribution" => "&copy; <a href='http://www.openstreetmap.org/copyright'>OpenStreetMap</a>",
+        "maxnativezoom" => null
+    ],
+    "mapboxPogo" => [
+        "name" => "Mapbox Pokémon Go",
+        "url" => "https://api.mapbox.com/styles/v1/anonymous89/ck2uz9d5t09qm1cl66b9giwun/tiles/256/{z}/{x}/{y}@2x?access_token=",
+        "key" => "",
+        "attribution" => "&copy; <a href='http://www.openstreetmap.org/copyright'>OpenStreetMap</a>",
+        "maxnativezoom" => 18
+    ],
+    "mapboxPogoDark" => [
+        "name" => "Mapbox Pokémon Go Dark",
+        "url" => "https://api.mapbox.com/styles/v1/anonymous89/ck2xw3j6h0e0v1dqtlcx9c4od/tiles/256/{z}/{x}/{y}@2x?access_token=",
+        "key" => "",
+        "attribution" => "&copy; <a href='http://www.openstreetmap.org/copyright'>OpenStreetMap</a>",
+        "maxnativezoom" => 18
+    ],
+    "tileserver" => [
+        "name" => "Tileserver",
+        "url" => "",
+        "key" => "",
+        "attribution" => "Tileserver",
+        "maxnativezoom" => 18
+    ]
+];
+
 
 $noDirectionProvider = false;                                  // true/false
 $directionProvider = 'google';                                 // google, waze, apple, bing, google_pin
