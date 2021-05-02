@@ -145,23 +145,6 @@ var gymTypes = ['Uncontested', 'Mystic', 'Valor', 'Instinct']
 var triggerGyms = Store.get('triggerGyms')
 var onlyTriggerGyms
 var noExGyms
-var toastrOptions = {
-    'closeButton': true,
-    'debug': false,
-    'newestOnTop': true,
-    'progressBar': false,
-    'positionClass': 'toast-top-right',
-    'preventDuplicates': true,
-    'onclick': null,
-    'showDuration': '300',
-    'hideDuration': '1000',
-    'timeOut': '25000',
-    'extendedTimeOut': '1000',
-    'showEasing': 'swing',
-    'hideEasing': 'linear',
-    'showMethod': 'fadeIn',
-    'hideMethod': 'fadeOut'
-}
 
 createjs.Sound.registerSound('static/sounds/ding.mp3', 'ding')
 
@@ -2989,10 +2972,10 @@ function deletePortal(event) { // eslint-disable-line no-unused-vars
                 },
                 error: function error() {
                     // Display error toast
-                    toastr['error'](i8ln('Oops something went wrong.'), i8ln('Error Deleting portal'))
-                    toastr.options = toastrOptions
+                    sendToast('danger', i8ln('Error Deleting portal'), i8ln('Oops something went wrong.'), 'true')
                 },
                 complete: function complete() {
+                    sendToast('success', i8ln('Deleting portal'), i8ln('Deleting portal successful.'), 'true')
                     jQuery('label[for="portals-switch"]').click()
                     jQuery('label[for="portals-switch"]').click()
                 }
@@ -3018,10 +3001,10 @@ function deletePoi(event) { // eslint-disable-line no-unused-vars
                 },
                 error: function error() {
                     // Display error toast
-                    toastr['error'](i8ln('Oops something went wrong.'), i8ln('Error Deleting poi'))
-                    toastr.options = toastrOptions
+                    sendToast('danger', i8ln('Error Deleting poi'), i8ln('Oops something went wrong.'), 'true')
                 },
                 complete: function complete() {
+                    sendToast('success', i8ln('Deleting poi'), i8ln('Deleting portal successful'), 'true')
                     jQuery('label[for="poi-switch"]').click()
                     jQuery('label[for="poi-switch"]').click()
                 }
@@ -3299,8 +3282,7 @@ function loadRawData() {
         cache: false,
         beforeSend: function beforeSend() {
             if (maxLatLng > 0 && (((neLat - swLat) > maxLatLng) || ((neLng - swLng) > maxLatLng))) {
-                toastr['error'](i8ln('Please zoom in to get data.'), i8ln('Max zoom'))
-                toastr.options = toastrOptions
+                sendToast('warning', i8ln('Max zoom'), i8ln('Please zoom in to get data'), 'true')
                 return false
             }
             if (rawDataIsLoading) {
@@ -3313,28 +3295,26 @@ function loadRawData() {
             // Display error toast
             switch (xhr.status) {
                 case 400:
-                    toastr['error'](i8ln('Please check connectivity or reduce marker settings.'), i8ln('Not Acceptable'))
-                    toastr.options = toastrOptions
+                    sendToast('danger', i8ln('Not Acceptable'), i8ln('Please check connectivity or reduce marker settings.'), 'true')
                     setTimeout(function () { window.location.href = './logout' }, 5000)
                     break
                 case 401:
-                    toastr['error'](i8ln('Another device just logged in with the same account.'), i8ln('Unauthorized'))
-                    toastr.options = toastrOptions
+                    sendToast('danger', i8ln('Unauthorized'), i8ln('Another device just logged in with the same account.'), 'true')
                     setTimeout(function () { window.location.href = './login?action=login&error=invalid-token' }, 5000)
                     break
                 case 403:
-                    toastr['error'](i8ln('This action is not allowed.'), i8ln('Forbidden'))
-                    toastr.options = toastrOptions
+                    sendToast('danger', i8ln('Forbidden'), i8ln('This action is not allowed.'), 'true')
                     setTimeout(function () { window.location.href = './logout' }, 5000)
                     break
                 case 404:
-                    toastr['error'](i8ln('Session tokens haven\'t been found.'), i8ln('Not found'))
-                    toastr.options = toastrOptions
+                    sendToast('danger', i8ln('Not found'), i8ln('Session tokens haven\'t been found.'), 'true')
                     setTimeout(function () { window.location.href = './login?action=login&error=no-id' }, 5000)
                     break
                 case 413:
-                    toastr['error'](i8ln('This is too much data for me please zoom in.'), i8ln('You got me overwhelmed'))
-                    toastr.options = toastrOptions
+                    sendToast('danger', i8ln('You got me overwhelmed'), i8ln('This is too much data for me please zoom in.'), 'true')
+                    break
+                default:
+                    sendToast('danger', i8ln('Webserver error'), i8ln('Server went away...'), 'true')
             }
         },
         complete: function complete() {
@@ -3351,8 +3331,7 @@ function loadWeather() {
         cache: false,
         error: function error() {
             // Display error toast
-            toastr['error'](i8ln('Please check connectivity or reduce marker settings.'), i8ln('Error getting weather'))
-            toastr.options = toastrOptions
+            sendToast('danger', i8ln('Error getting weather'), i8ln('Please check connectivity or reduce marker settings.'), 'true')
         },
         complete: function complete() {
 
@@ -3372,8 +3351,7 @@ function loadWeatherCellData(cell) { // eslint-disable-line no-unused-vars
         },
         error: function error() {
             // Display error toast
-            toastr['error'](i8ln('Please check connectivity or reduce marker settings.'), i8ln('Error getting weather'))
-            toastr.options = toastrOptions
+            sendToast('danger', i8ln('Error getting weather'), i8ln('Please check connectivity or reduce marker settings.'), 'true')
         },
         complete: function complete() {
 
@@ -3396,8 +3374,7 @@ function searchForItem(lat, lon, term, type, field) {
             },
             error: function error() {
                 // Display error toast
-                toastr['error'](i8ln('Please check connectivity or reduce marker settings.'), i8ln('Error searching'))
-                toastr.options = toastrOptions
+                sendToast('danger', i8ln('Error searching'), i8ln('Please check connectivity or reduce marker settings.'), 'true')
             }
         }).done(function (data) {
             if (data) {
@@ -3637,10 +3614,10 @@ function manualPokestopData(event) { // eslint-disable-line no-unused-vars
                 },
                 error: function error() {
                     // Display error toast
-                    toastr['error'](i8ln('Please check connectivity or reduce marker settings.'), i8ln('Error Submitting Pokestop'))
-                    toastr.options = toastrOptions
+                    sendToast('danger', i8ln('Error Submitting Pokéstop'), i8ln('Could not submit Pokéstop.'), 'true')
                 },
                 complete: function complete() {
+                    sendToast('success', i8ln('Submitting Pokéstop'), pokestopName + i8ln(' successful submitted.'), 'true')
                     lastpokestops = false
                     updateMap()
                     $('.modal').modal('hide')
@@ -3684,10 +3661,10 @@ function manualGymData(event) { // eslint-disable-line no-unused-vars
                 },
                 error: function error() {
                     // Display error toast
-                    toastr['error'](i8ln('Please check connectivity or reduce marker settings.'), i8ln('Error Submitting Gym'))
-                    toastr.options = toastrOptions
+                    sendToast('danger', i8ln('Error Submitting Gym'), i8ln('Could not submit Gym.'), 'true')
                 },
                 complete: function complete() {
+                    sendToast('danger', i8ln('Submitting Gym'), gymName + i8ln(' successful submitted.'), 'true')
                     lastgyms = false
                     updateMap()
                     $('.modal').modal('hide')
@@ -3730,10 +3707,10 @@ function manualPokemonData(event) { // eslint-disable-line no-unused-vars
                 },
                 error: function error() {
                     // Display error toast
-                    toastr['error'](i8ln('Please check connectivity or reduce marker settings.'), i8ln('Error Submitting Pokemon'))
-                    toastr.options = toastrOptions
+                    sendToast('danger', i8ln('Error Submitting Pokémon'), i8ln('Could not submit Pokémon.'), 'true')
                 },
                 complete: function complete() {
+                    sendToast('success', i8ln('Submitting Pokémon'), pokeList[pokemonId - 1].name + i8ln(' successful submitted.'), 'true')
                     lastpokemon = false
                     updateMap()
                     $('.modal').modal('hide')
@@ -3763,10 +3740,10 @@ function deleteGym(event) { // eslint-disable-line no-unused-vars
                 },
                 error: function error() {
                     // Display error toast
-                    toastr['error'](i8ln('Please check connectivity or reduce marker settings.'), i8ln('Error Deleting Gym'))
-                    toastr.options = toastrOptions
+                    sendToast('danger', i8ln('Error Deleting Gym'), i8ln('Could not delete Gym.'), 'true')
                 },
                 complete: function complete() {
+                    sendToast('success', i8ln('Deleting Gym'), i8ln('Gym successful deleted.'), 'true')
                     jQuery('label[for="gyms-switch"]').click()
                     jQuery('label[for="gyms-switch"]').click()
                     jQuery('#gym-details').removeClass('visible')
@@ -3794,10 +3771,10 @@ function renameGymData(event) { // eslint-disable-line no-unused-vars
                 },
                 error: function error() {
                     // Display error toast
-                    toastr['error'](i8ln('Please check connectivity or reduce marker settings.'), i8ln('Error changing gym name'))
-                    toastr.options = toastrOptions
+                    sendToast('danger', i8ln('Error Gym'), i8ln('Could not rename Gym.'), 'true')
                 },
                 complete: function complete() {
+                    sendToast('success', i8ln('Gym rename'), gymName + i8ln(' renamed'), 'true')
                     jQuery('label[for="gyms-switch"]').click()
                     jQuery('label[for="gyms-switch"]').click()
                     lastgyms = false
@@ -3825,10 +3802,10 @@ function toggleExGym(event) { // eslint-disable-line no-unused-vars
                 },
                 error: function error() {
                     // Display error toast
-                    toastr['error'](i8ln('Please check connectivity or reduce marker settings.'), i8ln('Error marking as EX Gym'))
-                    toastr.options = toastrOptions
+                    sendToast('danger', i8ln('Error EX Gym'), i8ln('Could not change Gym to EX Gym.'), 'true')
                 },
                 complete: function complete() {
+                    sendToast('success', i8ln('Change EX Gym'), i8ln('Successful changed Gym to EX Gym.'), 'true')
                     jQuery('label[for="gyms-switch"]').click()
                     jQuery('label[for="gyms-switch"]').click()
                     jQuery('#gym-details').removeClass('visible')
@@ -3854,10 +3831,10 @@ function deletePokestop(event) { // eslint-disable-line no-unused-vars
                 },
                 error: function error() {
                     // Display error toast
-                    toastr['error'](i8ln('Please check connectivity or reduce marker settings.'), i8ln('Error Deleting Pokestop'))
-                    toastr.options = toastrOptions
+                    sendToast('danger', i8ln('Deleting Pokéstop'), i8ln('Could not delete Pokéstop.'), 'true')
                 },
                 complete: function complete() {
+                    sendToast('success', i8ln('Deleting Pokéstop'), i8ln('Successful deleted Pokéstop.'), 'true')
                     jQuery('label[for="pokestops-switch"]').click()
                     jQuery('label[for="pokestops-switch"]').click()
                 }
@@ -3884,10 +3861,10 @@ function renamePokestopData(event) { // eslint-disable-line no-unused-vars
                 },
                 error: function error() {
                     // Display error toast
-                    toastr['error'](i8ln('Please check connectivity or reduce marker settings.'), i8ln('Error changing Pokestop name'))
-                    toastr.options = toastrOptions
+                    sendToast('danger', i8ln('Rename Pokéstop'), i8ln('Could not rename Pokéstop.'), 'true')
                 },
                 complete: function complete() {
+                    sendToast('success', i8ln('Rename Pokéstop'), pokestopName + i8ln(' renamed'), 'true')
                     jQuery('label[for="pokestops-switch"]').click()
                     jQuery('label[for="pokestops-switch"]').click()
                     lastpokestops = false
@@ -3915,10 +3892,10 @@ function convertPokestopData(event) { // eslint-disable-line no-unused-vars
                 },
                 error: function error() {
                     // Display error toast
-                    toastr['error'](i8ln('Pokéstop ID got lost somewhere.'), i8ln('Error converting Pokéstop'))
-                    toastr.options = toastrOptions
+                    sendToast('danger', i8ln('Error converting Pokéstop'), i8ln('Pokéstop ID got lost somewhere.'), 'true')
                 },
                 complete: function complete() {
+                    sendToast('success', i8ln('Converting Pokéstop'), i8ln('Pokéstop converted to Gym'), 'true')
                     lastgyms = false
                     jQuery('label[for="pokestops-switch"]').click()
                     jQuery('label[for="pokestops-switch"]').click()
@@ -3940,11 +3917,11 @@ function convertPortalData(event, targetType) { // eslint-disable-line no-unused
         switch (targetType) {
             case '1':
                 confirmText = i8ln('I confirm this portal is a pokestop')
-                errorText = i8ln('Portal ID got lost somewhere.') + ',' + i8ln('Error converting to Pokestop')
+                errorText = i8ln('Error converting to Pokestop')
                 break
             case '2':
                 confirmText = i8ln('I confirm this portal is a gym')
-                errorText = i8ln('Portal ID got lost somewhere.') + ',' + i8ln('Error converting to Pokestop')
+                errorText = i8ln('Error converting to Gym')
                 break
         }
         if (confirm(confirmText)) {
@@ -3961,17 +3938,18 @@ function convertPortalData(event, targetType) { // eslint-disable-line no-unused
                 },
                 error: function error() {
                     // Display error toast
-                    toastr['error'](errorText)
-                    toastr.options = toastrOptions
+                    sendToast('danger', errorText, i8ln('Portal ID got lost somewhere.'), 'true')
                 },
                 complete: function complete() {
                     switch (targetType) {
                         case '1':
+                            sendToast('success', i8ln('Convert Portal'), i8ln('Portal successful converted to Pokéstop'), 'true')
                             jQuery('label[for="pokestops-switch"]').click()
                             jQuery('label[for="pokestops-switch"]').click()
                             lastpokestops = false
                             break
                         case '2':
+                            sendToast('success', i8ln('Convert Portal'), i8ln('Portal successful converted to Gym'), 'true')
                             lastgyms = false
                             break
                     }
@@ -3987,7 +3965,7 @@ function markPortalData(event) { // eslint-disable-line no-unused-vars
     var form = $(event.target).parent().parent()
     var portalId = form.find('[name="convertportalid"]').val()
     if (portalId && portalId !== '') {
-        if (confirm(i8ln('I confirm this portal is not a Pokestop or Gym'))) {
+        if (confirm(i8ln('I confirm this portal is not a Pokéstop or Gym'))) {
             return $.ajax({
                 url: 'submit',
                 type: 'POST',
@@ -4000,10 +3978,10 @@ function markPortalData(event) { // eslint-disable-line no-unused-vars
                 },
                 error: function error() {
                     // Display error toast
-                    toastr['error'](i8ln('Portal ID got lost somewhere.'), i8ln('Error marking portal'))
-                    toastr.options = toastrOptions
+                    sendToast('danger', i8ln('Error marking portal'), i8ln('Portal ID got lost somewhere.'), 'true')
                 },
                 complete: function complete() {
+                    sendToast('success', i8ln('Marking portal'), i8ln('Portal marked as not a Pokéstop or Gym'), 'true')
                     jQuery('label[for="portals-switch"]').click()
                     jQuery('label[for="portals-switch"]').click()
                     lastportals = false
@@ -4032,10 +4010,10 @@ function deleteNest(event) { // eslint-disable-line no-unused-vars
                 },
                 error: function error() {
                     // Display error toast
-                    toastr['error'](i8ln('Please check connectivity or reduce marker settings.'), i8ln('Error Deleting nest'))
-                    toastr.options = toastrOptions
+                    sendToast('danger', i8ln('Error Deleting nest'), i8ln('Could not delete Nest'), 'true')
                 },
                 complete: function complete() {
+                    sendToast('success', i8ln('Deleting nest'), i8ln('Successful deleted Nest'), 'true')
                     jQuery('label[for="nests-switch"]').click()
                     jQuery('label[for="nests-switch"]').click()
                 }
@@ -4065,10 +4043,10 @@ function submitNewNest(event) { // eslint-disable-line no-unused-vars
                 },
                 error: function error() {
                     // Display error toast
-                    toastr['error'](i8ln('Please check connectivity or reduce marker settings.'), i8ln('Error Submitting Nest'))
-                    toastr.options = toastrOptions
+                    sendToast('danger', i8ln('Submitting nest'), i8ln('Could not submit Nest'), 'true')
                 },
                 complete: function complete() {
+                    sendToast('success', i8ln('Submitting nest'), pokeList[pokemonId - 1].name + i8ln(' nest successful submitted'), 'true')
                     lastnests = false
                     updateMap()
                     jQuery('label[for="nests-switch"]').click()
@@ -4099,10 +4077,10 @@ function manualNestData(event) { // eslint-disable-line no-unused-vars
                 },
                 error: function error() {
                     // Display error toast
-                    toastr['error'](i8ln('Please check connectivity or reduce marker settings.'), i8ln('Error Submitting Nest'))
-                    toastr.options = toastrOptions
+                    sendToast('danger', i8ln('Submitting nest'), i8ln('Could not change Nest'), 'true')
                 },
                 complete: function complete() {
+                    sendToast('success', i8ln('Submitting nest'), i8ln('Nest changed to ') + pokeList[pokemonId - 1].name, 'true')
                     lastnests = false
                     updateMap()
                     jQuery('label[for="nests-switch"]').click()
@@ -4156,10 +4134,10 @@ function manualQuestData(event) { // eslint-disable-line no-unused-vars
                 },
                 error: function error() {
                     // Display error toast
-                    toastr['error'](i8ln('Please check connectivity or reduce marker settings.'), i8ln('Error Submitting Quest'))
-                    toastr.options = toastrOptions
+                    sendToast('danger', i8ln('Submitting quest'), i8ln('Could not submit quest'), 'true')
                 },
                 complete: function complete() {
+                    sendToast('success', i8ln('Submitting quest'), i8ln('Successful submitted quest'), 'true')
                     lastpokestops = false
                     updateMap()
                     jQuery('label[for="pokestops-switch"]').click()
@@ -4193,10 +4171,10 @@ function manualRaidData(event) { // eslint-disable-line no-unused-vars
                 },
                 error: function error() {
                     // Display error toast
-                    toastr['error'](i8ln('Please check connectivity or reduce marker settings.'), i8ln('Error Submitting Raid'))
-                    toastr.options = toastrOptions
+                    sendToast('danger', i8ln('Submitting raid'), i8ln('Could not submit raid'), 'true')
                 },
                 complete: function complete() {
+                    sendToast('success', i8ln('Submitting raid'), pokeList[pokemonId - 1].name + i8ln(' raid submitted'), 'true')
                     lastgyms = false
                     updateMap()
                     $('.modal').modal('hide')
@@ -4230,10 +4208,10 @@ function submitNewCommunity(event) { // eslint-disable-line no-unused-vars
                 },
                 error: function error() {
                     // Display error toast
-                    toastr['error'](i8ln('Make sure all fields are filled and the invite link is a valid Discord, Telegram or Whatsapp link.'), i8ln('Error Submitting community'))
-                    toastr.options = toastrOptions
+                    sendToast('danger', i8ln('Submitting community'), i8ln('Make sure all fields are filled and the invite link is a valid Discord, Telegram or Whatsapp link.'), 'true')
                 },
                 complete: function complete() {
+                    sendToast('success', i8ln('Submitting community'), communityName + i8ln(' community submitted'), 'true')
                     jQuery('label[for="communities-switch"]').click()
                     jQuery('label[for="communities-switch"]').click()
                     lastcommunities = false
@@ -4268,10 +4246,10 @@ function editCommunityData(event) { // eslint-disable-line no-unused-vars
                 },
                 error: function error() {
                     // Display error toast
-                    toastr['error'](i8ln('No fields are filled or an invalid url is found, please check the form.'), i8ln('Error changing community'))
-                    toastr.options = toastrOptions
+                    sendToast('danger', i8ln('Edit community'), i8ln('Form fields are empty or an invalid url is found, please check the form.'), 'true')
                 },
                 complete: function complete() {
+                    sendToast('success', i8ln('Edit community'), communityName + i8ln(' edit successful'), 'true')
                     jQuery('label[for="communities-switch"]').click()
                     jQuery('label[for="communities-switch"]').click()
                     lastpokestops = false
@@ -4300,10 +4278,10 @@ function deleteCommunity(event) { // eslint-disable-line no-unused-vars
                 },
                 error: function error() {
                     // Display error toast
-                    toastr['error'](i8ln('Oops something went wrong.'), i8ln('Error Deleting community'))
-                    toastr.options = toastrOptions
+                    sendToast('danger', i8ln('Delete community'), i8ln('Oops something went wrong.'), 'true')
                 },
                 complete: function complete() {
+                    sendToast('success', i8ln('Delete community'), i8ln('Community successful deleted'), 'true')
                     jQuery('label[for="communities-switch"]').click()
                     jQuery('label[for="communities-switch"]').click()
                 }
@@ -4352,10 +4330,10 @@ function submitPoi(event) { // eslint-disable-line no-unused-vars
                 },
                 error: function error() {
                     // Display error toast
-                    toastr['error'](i8ln('Make sure all fields are filled.'), i8ln('Error Submitting poi'))
-                    toastr.options = toastrOptions
+                    sendToast('danger', i8ln('Submit POI'), i8ln('Oops something went wrong.'), 'true')
                 },
                 complete: function complete() {
+                    sendToast('success', i8ln('Submit POI'), poiName + i8ln(' successful submitted'), 'true')
                     jQuery('label[for="poi-switch"]').click()
                     jQuery('label[for="poi-switch"]').click()
                     lastpois = false
@@ -4406,10 +4384,10 @@ function editPoiData(event) { // eslint-disable-line no-unused-vars
                 },
                 error: function error() {
                     // Display error toast
-                    toastr['error'](i8ln('Unable to update poi'), i8ln('Error Updating poi'))
-                    toastr.options = toastrOptions
+                    sendToast('danger', i8ln('Edit POI'), i8ln('Oops something went wrong.'), 'true')
                 },
                 complete: function complete() {
+                    sendToast('success', i8ln('Edit POI'), poiName + i8ln(' successful editted'), 'true')
                     jQuery('label[for="poi-switch"]').click()
                     jQuery('label[for="poi-switch"]').click()
                     lastpois = false
@@ -4426,7 +4404,6 @@ function markPoi(event, poiMarkType) { // eslint-disable-line no-unused-vars
     var form = $(event.target).parent()
     var poiId = form.find('[name="markpoiid"]').val()
     var confirmText = ''
-    var errorText = i8ln('Candidate id got lost somewhere.') + ', ' + i8ln('Error marking candidate')
     if (poiId && poiId !== '') {
         switch (poiMarkType) {
             case '2':
@@ -4456,10 +4433,10 @@ function markPoi(event, poiMarkType) { // eslint-disable-line no-unused-vars
                 },
                 error: function error() {
                     // Display error toast
-                    toastr['error'](errorText)
-                    toastr.options = toastrOptions
+                    sendToast('danger', i8ln('Marking POI'), i8ln('Error marking POI'), 'true')
                 },
                 complete: function complete() {
+                    sendToast('success', i8ln('Marking POI'), i8ln('POI marked successful'), 'true')
                     jQuery('label[for="poi-switch"]').click()
                     jQuery('label[for="poi-switch"]').click()
                     lastpois = false
@@ -5249,6 +5226,7 @@ function updateMap() {
             showInBoundsMarkers(mapData.spawnpoints, 'inbound')
 
             clearStaleMarkers()
+            cleanOldToasts()
 
             updateSpawnPoints()
             updatePokestops()
@@ -5530,7 +5508,34 @@ function sendNotification(title, text, icon, lat, lon) {
         })
     }
 }
-
+function sendToast(alertClass, headerText, bodyText, autoHide) {
+    var identifier = Math.floor(Math.random() * 100) + 1
+    var toastStr = '<div id="toast-message-' + identifier + '" class="toast fade" role="alert" data-bs-autohide="' + autoHide + '" data-toast-timestamp="' + timestamp + '" aria-live="assertive" aria-atomic="true">' +
+        '<div class="toast-header ' + identifier + '">' +
+        '<strong class="me-auto">' + headerText + '</strong>' +
+        '<small class="text-muted">just now</small>' +
+        '<button type="button" class="btn-close" data-bs-dismiss="toast" aria-label="Close"></button>' +
+        '</div>' +
+        '<div class="toast-body">' +
+        bodyText +
+        '</div>' +
+        '</div>'
+    $('.toast-container.right-top').append(toastStr)
+    $('#toast-message-' + identifier).toast({
+        animation: true,
+        autohide: true,
+        delay: toastDelay
+    })
+    $('.toast-header.' + identifier).css('background-color', 'var(--bs-' + alertClass + ')')
+    $('#toast-message-' + identifier).toast('show')
+}
+function cleanOldToasts() {
+    $('[id^=toast-message-]').each(function (index, element) {
+        if ($(element).data('toast-timestamp') < (timestamp - (toastDelay / 1000))) {
+            $(element).remove()
+        }
+    })
+}
 function sendToastrPokemonNotification(title, text, icon, lat, lon) {
     var notification = toastr.info(text, title, {
         closeButton: true,
@@ -7032,8 +7037,7 @@ function loadUser(engine) {
         cache: false,
         error: function error() {
             // Display error toast
-            toastr['error'](i8ln('Manually reload the page'), i8ln('Failed to refresh session'))
-            toastr.options = toastrOptions
+            sendToast('danger', i8ln('Failed to refresh session'), i8ln('Manually reload the page.'), 'true')
         },
         complete: function complete() {
         }

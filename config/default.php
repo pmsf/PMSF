@@ -155,6 +155,9 @@ $numberOfEgg = 12;
 
 /* UserTimezone */
 $userTimezone = date_default_timezone_get();
+
+/* Toastr settings */
+$toastDelay = 2000;                                                 // ToastDelay in milliseconds
 //-----------------------------------------------------
 // Login  - You need to create the two tables referenced in sql.sql
 //-----------------------------------------------------

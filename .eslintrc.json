@@ -36,6 +36,7 @@
   },
   "globals": {
     "toastr": true,
+    "toastDelay": true,
     "google": true,
     "mapData": true,
     "Store": true,

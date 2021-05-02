@@ -225,6 +225,12 @@ if (!$noLoadingScreen) {
         }
         ?>
     </header>
+    <!-- Toastr Container -->
+    <div aria-live="polite" aria-atomic="true" class="position-relative">
+        <div class="toast-container right-top position-absolute top-0 end-0 p-3">
+            <!-- Toasts generated in map.js -->
+        </div>
+    </div>
     <!-- NAV -->
     <div class="offcanvas left offcanvas-start" data-bs-scroll="true" data-bs-backdrop="false" tabindex="-1" id="leftNav" aria-labelledby="leftNavLabel">
         <div class="offcanvas-body left">
@@ -1323,6 +1329,7 @@ include('modals.php');
     var zoomToBoundsOnClick = <?= $zoomToBoundsOnClick; ?>;
     var maxClusterRadius = <?= $maxClusterRadius; ?>;
     var spiderfyOnMaxZoom = <?= $spiderfyOnMaxZoom; ?>;
+    var toastDelay = <?= $toastDelay; ?>;
     var mapStyle = '<?php echo $mapStyle ?>';
     var mapStyleList = <?php echo json_encode($mapStyleList) ?>;
     var hidePokemon = <?php echo $noHidePokemon ? '[]' : $hidePokemon ?>;

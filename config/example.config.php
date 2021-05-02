@@ -138,6 +138,9 @@ $imgurCID = "";
 
 /* UserTimezone */
 #$userTimezone = "Etc/UTC";                                         // If different from server settings set php frontend timezone https://www.php.net/manual/en/timezones.php
+
+/* Toastr settings */
+$toastDelay = 2000;                                                 // ToastDelay in milliseconds
 //-----------------------------------------------------
 // Login
 //-----------------------------------------------------
