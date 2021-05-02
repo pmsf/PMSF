@@ -183,7 +183,7 @@ if (!$noLoadingScreen) {
 
         <?php
         if (! $noStatsToggle) {
-            echo '<a class="btn btn-link" data-bs-toggle="offcanvas" href="#rightNav" role="button" title="' . i8ln('Options') . '" aria-controls="leftNav"><i class="fas fa-chart-bar"></i></a>';
+            echo '<a class="btn btn-link" data-bs-toggle="offcanvas" href="#rightNav" role="button" title="' . i8ln('Options') . '" aria-controls="rightNav"><i class="fas fa-chart-bar"></i></a>';
         }
         if ($paypalUrl != "") {
             echo '<a href="' . $paypalUrl . '" target="_blank" style="float:right;padding:0 5px;">
