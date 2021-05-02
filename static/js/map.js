@@ -177,7 +177,7 @@ var nestLayerGroup = new L.LayerGroup()
  <def> - defense as number
  <sta> - stamnia as number
  */
-var notifyIvTitle = '<pkm> lv <lv> <prc>% (<atk>/<def>/<sta>)'
+var notifyIvTitle = '<pkm>, Level: <lv>, IV: <prc>% (<atk>/<def>/<sta>)'
 var notifyNoIvTitle = '<pkm>'
 
 /*
@@ -185,7 +185,7 @@ var notifyNoIvTitle = '<pkm>'
  <dist>  - disappear time
  <udist> - time until disappear
  */
-var notifyText = i8ln('disappears at') + ' <dist> (<udist>)'
+var notifyText = i8ln('Disappears at') + ' <dist> (<udist>)'
 
 var OpenStreetMapProvider = window.GeoSearch.OpenStreetMapProvider
 var searchProvider = new OpenStreetMapProvider()
