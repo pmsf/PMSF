@@ -539,10 +539,11 @@ function initMap() { // eslint-disable-line no-unused-vars
         var position = Store.get('startAtLastLocationPosition')
         var lat = 'lat' in position ? position.lat : centerLat
         var lng = 'lng' in position ? position.lng : centerLng
+        var userzoom = 'zoom' in position ? position.zoom : zoom
 
         var latlng = new L.LatLng(lat, lng)
         locationMarker.setLatLng(latlng)
-        map.setView(latlng)
+        map.setView(latlng, userzoom)
     }
 
     $.getJSON('static/dist/data/searchmarkerstyle.min.json').done(function (data) {
@@ -5196,7 +5197,8 @@ function updateMap() {
         }
         Store.set('startAtLastLocationPosition', {
             lat: position.lat,
-            lng: position.lng
+            lng: position.lng,
+            zoom: map.getZoom()
         })
         // lets try and get the s2 cell id in the middle
         var s2CellCenter = S2.keyToId(S2.latLngToKey(position.lat, position.lng, 10))
