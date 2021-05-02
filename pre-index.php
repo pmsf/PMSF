@@ -187,32 +187,32 @@ if (!$noLoadingScreen) {
         }
         if ($paypalUrl != "") {
             echo '<a href="' . $paypalUrl . '" target="_blank" style="float:right;padding:0 5px;">
-                 <i class="fab fa-paypal" title="' . i8ln('PayPal') . '" style="position:relative;vertical-align:middle;color:white;margin-left:10px;font-size:20px;"></i>
+                 <i class="fab fa-paypal" title="' . i8ln('PayPal') . '" style="position:relative;vertical-align:middle;color:white;margin-left:10px;font-size:1.3em;"></i>
                  </a>';
         }
         if ($telegramUrl != "") {
             echo '<a href="' . $telegramUrl . '" target="_blank" style="float:right;padding:0 5px;">
-                 <i class="fab fa-telegram" title="' . i8ln('Telegram') . '" style="position:relative;vertical-align: middle;color:white;margin-left:10px;font-size:20px;"></i>
+                 <i class="fab fa-telegram" title="' . i8ln('Telegram') . '" style="position:relative;vertical-align: middle;color:white;margin-left:10px;font-size:1.3em;"></i>
                  </a>';
         }
         if ($whatsAppUrl != "") {
             echo '<a href="' . $whatsAppUrl . '" target="_blank" style="float:right;padding:0 5px;">
-                 <i class="fab fa-whatsapp" title="' . i8ln('WhatsApp') . '" style="position:relative;vertical-align:middle;color:white;margin-left:10px;font-size:20px;"></i>
+                 <i class="fab fa-whatsapp" title="' . i8ln('WhatsApp') . '" style="position:relative;vertical-align:middle;color:white;margin-left:10px;font-size:1.3em;"></i>
                  </a>';
         }
         if ($discordUrl != "") {
             echo '<a href="' . $discordUrl . '" target="_blank" style="float:right;padding:0 5px;">
-                 <i class="fab fa-discord" title="' . i8ln('Discord') . '" style="position:relative;vertical-align:middle;color:white;margin-left:10px;font-size:20px;"></i>
+                 <i class="fab fa-discord" title="' . i8ln('Discord') . '" style="position:relative;vertical-align:middle;color:white;margin-left:10px;font-size:1.3em;"></i>
                  </a>';
         }
         if ($patreonUrl != "") {
             echo '<a href="' . $patreonUrl . '" target="_blank" style="float:right;padding:0 5px;">
-                 <i class="fab fa-patreon" title="' . i8ln('Patreon') . '" style="position:relative;vertical-align:middle;color:white;margin-left:10px;font-size:20px;"></i>
+                 <i class="fab fa-patreon" title="' . i8ln('Patreon') . '" style="position:relative;vertical-align:middle;color:white;margin-left:10px;font-size:1.3em;"></i>
                  </a>';
         }
         if ($customUrl != "") {
             echo '<a href="' . $customUrl . '" target="_blank" style="float:right;padding:0 5px;">
-                 <i class="' . $customUrlFontIcon . '" style="position:relative;vertical-align:middle;color:white;margin-left:10px;font-size:20px;"></i>
+                 <i class="' . $customUrlFontIcon . '" style="position:relative;vertical-align:middle;color:white;margin-left:10px;font-size:1.3em;"></i>
                  </a>';
         }
         if (! $noHeaderWeatherIcon) { ?>
@@ -221,7 +221,7 @@ if (!$noLoadingScreen) {
         if (!empty($_SESSION['user']->id)) {
             echo "<a href='#accountModal' data-bs-toggle='modal' style='float:right;padding:0 5px;' title='" . i8ln('Profile') . "'><img src='" .  $_SESSION['user']->avatar . "' style='height:40px;width:40px;border-radius:50%;border:2px solid;vertical-align: middle;'></a>";
         } else {
-            echo "<a href='#accountModal' data-bs-toggle='modal' style='float:right;padding:0 5px;' title='" . i8ln('Profile') . "'><i class='fas fa-user' style='color:white;font-size:20px;vertical-align:middle;'></i></a>";
+            echo "<a href='#accountModal' data-bs-toggle='modal' style='float:right;padding:0 5px;' title='" . i8ln('Profile') . "'><i class='fas fa-user' style='color:white;font-size:1.3em;vertical-align:middle;'></i></a>";
         }
         ?>
     </header>
