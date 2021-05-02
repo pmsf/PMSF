@@ -9,3 +9,14 @@
     padding: 0.1rem 0.50rem;
   }
 }
+.toast-container.right-bottom {
+  z-index: 10001;
+  margin-top: 3em;
+  margin-right: 2em;
+  .toast {
+    background-color: var(--bs-white);
+  }
+  .toast-header {
+    padding: 0.1rem 0.50rem;
+  }
+}

@@ -86,6 +86,7 @@ var rereids = []
 var dustamount
 var reloaddustamount
 var nestavg
+var toastdelayslider
 
 var L
 var map
@@ -122,7 +123,6 @@ var lastUpdateTime
 var lastWeatherUpdateTime
 
 var token
-
 var cries
 
 var pokeList = []
@@ -1060,6 +1060,9 @@ function initSidebar() {
     $('#nest-polygon-switch').prop('checked', Store.get('showNestPolygon'))
     $('#raid-timer-switch').prop('checked', Store.get('showRaidTimer'))
     $('#rocket-timer-switch').prop('checked', Store.get('showRocketTimer'))
+    $('#toast-switch').prop('checked', Store.get('showToast'))
+    $('#toast-delay-slider').val(Store.get('toastPokemonDelay'))
+    $('#toast-switch-wrapper').toggle(Store.get('showToast'))
     $('#sound-switch').prop('checked', Store.get('playSound'))
     $('#cries-switch').prop('checked', Store.get('playCries'))
     $('#cries-switch-wrapper').toggle(Store.get('playSound'))
@@ -5504,7 +5507,7 @@ function sendNotification(title, text, icon, lat, lon) {
         /* Push.js requests the Notification permission automatically if
          * necessary. */
         Push.create(title, notificationDetails).catch(function () {
-            sendToastrPokemonNotification(title, text, icon, lat, lon)
+            sendToastPokemon(title, text, icon, lat, lon)
         })
     }
 }
@@ -5513,7 +5516,6 @@ function sendToast(alertClass, headerText, bodyText, autoHide) {
     var toastStr = '<div id="toast-message-' + identifier + '" class="toast fade" role="alert" data-bs-autohide="' + autoHide + '" data-toast-timestamp="' + timestamp + '" aria-live="assertive" aria-atomic="true">' +
         '<div class="toast-header ' + identifier + '">' +
         '<strong class="me-auto">' + headerText + '</strong>' +
-        '<small class="text-muted">just now</small>' +
         '<button type="button" class="btn-close" data-bs-dismiss="toast" aria-label="Close"></button>' +
         '</div>' +
         '<div class="toast-body">' +
@@ -5529,36 +5531,46 @@ function sendToast(alertClass, headerText, bodyText, autoHide) {
     $('.toast-header.' + identifier).css('background-color', 'var(--bs-' + alertClass + ')')
     $('#toast-message-' + identifier).toast('show')
 }
+function sendToastPokemon(title, text, icon, lat, lon) {
+    if (!Store.get('showToast')) {
+        return false
+    }
+    var identifier = Math.floor(Math.random() * 1000) + 1
+    var toastStr = '<div id="toast-pokemon-' + identifier + '" class="toast fade" role="alert" data-toast-timestamp="' + timestamp + '" aria-live="assertive" aria-atomic="true">' +
+        '<div class="toast-header ' + identifier + '">' +
+        '<strong class="me-auto">' + title + '</strong>' +
+        '<button type="button" class="btn-close" data-bs-dismiss="toast" aria-label="Close"></button>' +
+        '</div>' +
+        '<div class="toast-body">' +
+        '<div class="row">' +
+        '<div class="col-4">' +
+        '<img src="' + icon + '">' +
+        '</div>' +
+        '<div class="col-8">' +
+        text +
+        '</div>' +
+        '</div>' +
+        '</div>' +
+        '</div>'
+    $('.toast-container.right-bottom').append(toastStr)
+    $('#toast-pokemon-' + identifier).toast({
+        animation: true,
+        autohide: (Store.get('toastPokemonDelay') !== 0),
+        delay: Store.get('toastPokemonDelay')
+    })
+    $('.toast-header.' + identifier).css('background-color', 'var(--bs-green)')
+    $('#toast-pokemon-' + identifier).toast('show')
+}
 function cleanOldToasts() {
     $('[id^=toast-message-]').each(function (index, element) {
         if ($(element).data('toast-timestamp') < (timestamp - (toastDelay / 1000))) {
             $(element).remove()
         }
     })
-}
-function sendToastrPokemonNotification(title, text, icon, lat, lon) {
-    var notification = toastr.info(text, title, {
-        closeButton: true,
-        positionClass: 'toast-top-right',
-        preventDuplicates: true,
-        onclick: function () {
-            centerMap(lat, lon, 20)
-        },
-        showDuration: '300',
-        hideDuration: '500',
-        timeOut: '6000',
-        extendedTimeOut: '1500',
-        showEasing: 'swing',
-        hideEasing: 'linear',
-        showMethod: 'fadeIn',
-        hideMethod: 'fadeOut'
-    })
-    notification.removeClass('toast-info')
-    notification.css({
-        'padding-left': '74px',
-        'background-image': `url('${icon}')`,
-        'background-size': '48px',
-        'background-color': '#0c5952'
+    $('[id^=toast-pokemon-]').each(function (index, element) {
+        if ($(element).data('toast-timestamp') < (timestamp - (Store.get('toastPokemonDelay') / 1000))) {
+            $(element).remove()
+        }
     })
 }
 
@@ -5572,7 +5584,7 @@ $(function () {
     Push.config({
         serviceWorker: 'serviceWorker.min.js',
         fallback: function (notification) {
-            sendToastrPokemonNotification(
+            sendToastPokemon(
                 notification.title,
                 notification.body,
                 notification.icon,
@@ -6861,6 +6873,30 @@ $(function () {
             setTimeout(function () { updateMap() }, 2000)
         }
     })
+    $('#toast-switch').change(function () {
+        Store.set('showToast', this.checked)
+        var options = {
+            'duration': 500
+        }
+        var wrapper = $('#toast-switch-wrapper')
+        if (this.checked) {
+            wrapper.show(options)
+        } else {
+            wrapper.hide(options)
+        }
+    })
+    $('#toast-delay-slider').on('input', function () {
+        toastdelayslider = $(this).val()
+        Store.set('toastPokemonDelay', toastdelayslider)
+        if (toastdelayslider === '0') {
+            $('#toast-delay-set').text(i8ln('No auto popup close'))
+            setTimeout(function () { updateMap() }, 2000)
+        } else {
+            $('#toast-delay-set').text(i8ln('Popup autoclose') + ' ' + (toastdelayslider / 1000) + ' ' + i8ln('seconds'))
+            setTimeout(function () { updateMap() }, 2000)
+        }
+    })
+
     $('#sound-switch').change(function () {
         Store.set('playSound', this.checked)
         var options = {

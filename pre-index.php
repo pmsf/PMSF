@@ -151,8 +151,6 @@ if (strtolower($map) === "rdm") {
     <!-- Bootstrap -->
     <link rel="stylesheet" href="node_modules/bootstrap/dist/css/bootstrap.min.css">
     <link rel="stylesheet" href="node_modules/bootstrap-icons/font/bootstrap-icons.css">
-    <!-- Toastr -->
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.css">
     <!-- Leaflet -->
     <link rel="stylesheet" href="node_modules/leaflet/dist/leaflet.css" />
     <link rel="stylesheet" href="static/dist/css/app.min.css">
@@ -228,6 +226,11 @@ if (!$noLoadingScreen) {
     <!-- Toastr Container -->
     <div aria-live="polite" aria-atomic="true" class="position-relative">
         <div class="toast-container right-top position-absolute top-0 end-0 p-3">
+            <!-- Toasts generated in map.js -->
+        </div>
+    </div>
+    <div aria-live="polite" aria-atomic="true" class="position-relative">
+        <div class="toast-container right-bottom position-absolute p-3 top-0 end-0">
             <!-- Toasts generated in map.js -->
         </div>
     </div>
@@ -981,6 +984,21 @@ if (!$noLoadingScreen) {
                                         </div>
                                         <div class="dropdown-divider"></div>
                                     <?php }
+                                    if (! $noNotifyPokemon) { ?>
+                                        <div class="form form-switch">
+                                            <input class="form-check-input" id="toast-switch" type="checkbox" name="toast-switch">
+                                            <label class="form-check-label" for="toast-switch"><?php echo i8ln('Notify with popup') ?></label>
+                                        </div>
+                                        <div id="toast-switch-wrapper" style="display:none">
+                                            <div class="dropdown-divider"></div>
+                                            <div class="toast-slider">
+                                                <label for="toast-delay-slider" class="form-label"><?php echo i8ln('Popup close delay') ?></label>
+                                                <input type="range" class="form-range" min="0" max="20000" step="1000" id="toast-delay-slider">
+                                            </div>
+                                            <span id="toast-delay-set"></span>
+                                        </div>
+                                        <div class="dropdown-divider"></div>
+                                    <?php }
                                     if (! $noNotifyRaid) { ?>
                                         <div class="form-floating">
                                             <select class="form-select" aria-label="notify-raid" name="notify-raid" id="notify-raid">
@@ -1470,7 +1488,6 @@ include('modals.php');
     var noCatchRates = <?php echo $noCatchRates === true ? 'true' : 'false' ?>;
     var noHideSingleMarker = <?php echo $noHideSingleMarker === true ? 'true' : 'false' ?>;
 </script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js"></script>
 <script src="static/dist/js/map.common.min.js"></script>
 <script src="static/dist/js/map.min.js"></script>
 <script src="static/dist/js/stats.min.js"></script>
