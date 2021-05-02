@@ -5548,8 +5548,11 @@ function sendToastPokemon(title, text, icon, lat, lon) {
         '<div class="col-4">' +
         '<img src="' + icon + '">' +
         '</div>' +
-        '<div class="col-8">' +
+        '<div class="col-6">' +
         text +
+        '</div>' +
+        '<div class="col-2" onclick="centerMap(' + lat + ',' + lon + ', 20)">' +
+        '<i class="fas fa-map-marked-alt"</i>' +
         '</div>' +
         '</div>' +
         '</div>' +
