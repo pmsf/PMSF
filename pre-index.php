@@ -1104,6 +1104,17 @@ if (!$noLoadingScreen) {
                                                 <label for="icon-style"><?php echo i8ln('Icon Style') ?></label>
                                             </div>
                                         <?php }
+                                        if (! $noIconSize) { ?>
+                                            <div class="form-floating">
+                                                <select class="form-select" aria-label="pokemon-icon-size" name="pokemon-icon-size" id="pokemon-icon-size">
+                                                    <option value="-8"><?php echo i8ln('Small') ?></option>
+                                                    <option value="0"><?php echo i8ln('Normal') ?></option>
+                                                    <option value="10"><?php echo i8ln('Large') ?></option>
+                                                    <option value="20"><?php echo i8ln('X-Large') ?></option>
+                                                </select>
+                                                <label for="pokemon-icon-size"><?php echo i8ln('Icon Size') ?></label>
+                                            </div>
+                                        <?php }
                                         if (! $noIconNotifySizeModifier) { ?>
                                             <div class="form-floating">
                                                 <select class="form-select" aria-label="pokemon-icon-notify-size" name="pokemon-icon-notify-size" id="pokemon-icon-notify-size">
