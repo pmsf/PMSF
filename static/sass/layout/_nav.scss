@@ -19,7 +19,7 @@
                         box-shadow: none !important
                     }
                     &:not(.collapsed)::after, &::after {
-                        background-image: url('/static/images/pokemon.png');
+                        /* background-image: url('/static/images/pokemon.png'); */
                         filter: brightness(0%);
                         right: 15px;
                         top: -8px;
@@ -28,14 +28,14 @@
                 }
             }
             .form-check-label {
-              position: relative;
-              left: -35px;
+                position: relative;
+                left: -35px;
             }
             .form-check-input {
-              float: right;
+                float: right;
             }
             label {
-              font-size: 14px;
+                font-size: 14px;
             }
             input.search.search-input {
                 position: relative;
@@ -54,13 +54,13 @@
                 margin-bottom: 0px;
             }
             .nav-tabs {
-              border-bottom: unset;
+                border-bottom: unset;
             }
             .container.scroll-container {
-              width: 100%;
-              max-height: 20em;
-              overflow: hidden;
-              overflow-y: scroll;
+                width: 100%;
+                max-height: 20em;
+                overflow: hidden;
+                overflow-y: scroll;
             }
             .select-all, .hide-all,
             .select-all-grunt, .hide-all-grunt,
@@ -75,11 +75,11 @@
             button#exclude-rocket-tab,
             button#exclude-raidboss-tab, button#exclude-raidegg-tab,
             button#notify-pokemon-tab {
-              color: #495057 !important;
-              background-color: #f8f9fa;
-              line-height: 1;
-              font-size: 11px;
-              border: 1px solid #d1d1d1;
+                color: #495057 !important;
+                background-color: #f8f9fa;
+                line-height: 1;
+                font-size: 11px;
+                border: 1px solid #d1d1d1;
             }
             button#exclude-pokemon-tab.active, button#exclude-min-iv-tab.active,
             button#exclude-quest-pokemon-tab.active, button#exclude-quest-item-tab.active, button#exclude-quest-energy-tab.active,
