@@ -72,7 +72,7 @@ class RDM extends Search
         json_extract(json_extract(`quest_rewards`,'$[*].info.amount'),'$[0]') AS quest_dust_amount,
         json_extract(json_extract(`quest_rewards`,'$[*].info.amount'),'$[0]') AS quest_reward_amount,
         json_extract(json_extract(`quest_rewards`,'$[*].info.form_id'),'$[0]') AS quest_pokemon_formid,
-        ROUND(( 3959 * acos( cos( radians(:lat) ) * cos( radians( lat ) ) * cos( radians( lon ) - radians(:lon) ) + sin( radians(:lat) ) * sin( radians( lat ) ) ) ),2) AS distance 
+        ROUND(( 3959 * acos( cos( radians(:lat) ) * cos( radians( lat ) ) * cos( radians( lon ) - radians(:lon) ) + sin( radians(:lat) ) * sin( radians( lat ) ) ) ),2) AS distance
         FROM pokestop
         WHERE :conditions";
         global $noBoundaries, $boundaries;
@@ -125,22 +125,20 @@ class RDM extends Search
                 }
             }
         }
-
+        if (empty($resids)) {
+            http_response_code(404);
+        }
         if (!$noBoundaries) {
             $coords = " AND (ST_WITHIN(point(lat,lon),ST_GEOMFROMTEXT('POLYGON(( " . $boundaries . " ))'))) ";
         } else {
             $coords = "";
         }
 
-        if ($manualdb->info()['driver'] === 'pgsql') {
-            $query = "SELECT nest_id,pokemon_id,lat,lon,
-            ROUND(cast( 3959 * acos( cos( radians(:lat) ) * cos( radians( lat ) ) * cos( radians( lon ) - radians(:lon) ) + sin( radians(:lat) ) * sin( radians( lat ) ) ) as numeric),2) AS distance
-            FROM nests WHERE pokemon_id IN (" . implode(',', $resids) . ") " . $coords . "ORDER BY distance LIMIT " . $maxSearchResults . "";
-        } else {
-            $query = "SELECT nest_id,pokemon_id,lat,lon,
-            ROUND(( 3959 * acos( cos( radians(:lat) ) * cos( radians( lat ) ) * cos( radians( lon ) - radians(:lon) ) + sin( radians(:lat) ) * sin( radians( lat ) ) ) ),2) AS distance
-            FROM nests WHERE pokemon_id IN (" . implode(',', $resids) . ") " . $coords . "ORDER BY distance LIMIT " . $maxSearchResults . "";
-        }
+
+        $query = "SELECT nest_id,pokemon_id,lat,lon,
+        ROUND(( 3959 * acos( cos( radians(:lat) ) * cos( radians( lat ) ) * cos( radians( lon ) - radians(:lon) ) + sin( radians(:lat) ) * sin( radians( lat ) ) ) ),2) AS distance
+        FROM nests WHERE pokemon_id IN (" . implode(',', $resids) . ") " . $coords . "ORDER BY distance LIMIT " . $maxSearchResults . "";
+
         $data = $manualdb->query($query, [ ':lat' => $lat, ':lon' => $lon])->fetchAll();
         foreach ($data as $k => $p) {
             $data[$k]['name'] = $mons[$p['pokemon_id']]['name'];
@@ -173,22 +171,19 @@ class RDM extends Search
                 }
             }
         }
-
+        if (empty($resids)) {
+            http_response_code(404);
+        }
         if (!$noBoundaries) {
             $coords = " AND (ST_WITHIN(point(lat,lon),ST_GEOMFROMTEXT('POLYGON(( " . $boundaries . " ))'))) ";
         } else {
             $coords = "";
         }
 
-        if ($db->info()['driver'] === 'pgsql') {
-            $query = "SELECT pokemon_id,lat,lon,
-            ROUND(cast( 3959 * acos( cos( radians(:lat) ) * cos( radians( lat ) ) * cos( radians( lon ) - radians(:lon) ) + sin( radians(:lat) ) * sin( radians( lat ) ) ) as numeric),2) AS distance
-            FROM pokemon WHERE expire_timestamp > UNIX_TIMESTAMP(NOW()) AND pokemon_id IN (" . implode(',', $resids) . ") " . $coords . "ORDER BY distance LIMIT " . $maxSearchResults . "";
-        } else {
-            $query = "SELECT pokemon_id,lat,lon,
-            ROUND(( 3959 * acos( cos( radians(:lat) ) * cos( radians( lat ) ) * cos( radians( lon ) - radians(:lon) ) + sin( radians(:lat) ) * sin( radians( lat ) ) ) ),2) AS distance
-            FROM pokemon WHERE expire_timestamp > UNIX_TIMESTAMP(NOW()) AND pokemon_id IN (" . implode(',', $resids) . ") " . $coords . "ORDER BY distance LIMIT " . $maxSearchResults . "";
-        }
+        $query = "SELECT pokemon_id,lat,lon,
+        ROUND(( 3959 * acos( cos( radians(:lat) ) * cos( radians( lat ) ) * cos( radians( lon ) - radians(:lon) ) + sin( radians(:lat) ) * sin( radians( lat ) ) ) ),2) AS distance
+        FROM pokemon WHERE expire_timestamp > UNIX_TIMESTAMP(NOW()) AND pokemon_id IN (" . implode(',', $resids) . ") " . $coords . "ORDER BY distance LIMIT " . $maxSearchResults . "";
+
         $data = $db->query($query, [ ':lat' => $lat, ':lon' => $lon])->fetchAll();
         foreach ($data as $k => $p) {
             $data[$k]['name'] = $mons[$p['pokemon_id']]['name'];
@@ -209,15 +204,10 @@ class RDM extends Search
             $coords = "";
         }
 
-        if ($manualdb->info()['driver'] === 'pgsql') {
-            $query = "SELECT id,external_id,name,lat,lon,url,
-            ROUND(cast( 3959 * acos( cos( radians(:lat) ) * cos( radians( lat ) ) * cos( radians( lon ) - radians(:lon) ) + sin( radians(:lat) ) * sin( radians( lat ) ) ) as numeric),2) AS distance
-            FROM ingress_portals WHERE LOWER(name) LIKE :name " . $coords . "ORDER BY distance LIMIT " . $maxSearchResults . "";
-        } else {
-            $query = "SELECT id,name,lat,lon,url,
-            ROUND(( 3959 * acos( cos( radians(:lat) ) * cos( radians( lat ) ) * cos( radians( lon ) - radians(:lon) ) + sin( radians(:lat) ) * sin( radians( lat ) ) ) ),2) AS distance
-            FROM ingress_portals WHERE LOWER(name) LIKE :name " . $coords . "ORDER BY distance LIMIT " . $maxSearchResults . "";
-        }
+        $query = "SELECT id,name,lat,lon,url,
+        ROUND(( 3959 * acos( cos( radians(:lat) ) * cos( radians( lat ) ) * cos( radians( lon ) - radians(:lon) ) + sin( radians(:lat) ) * sin( radians( lat ) ) ) ),2) AS distance
+        FROM ingress_portals WHERE LOWER(name) LIKE :name " . $coords . "ORDER BY distance LIMIT " . $maxSearchResults . "";
+
         $searches = $manualdb->query($query, [ ':name' => "%" . strtolower($term) . "%",  ':lat' => $lat, ':lon' => $lon ])->fetchAll();
 
         $data = array();
@@ -245,15 +235,10 @@ class RDM extends Search
             $coords = "";
         }
 
-        if ($db->info()['driver'] === 'pgsql') {
-            $query = "SELECT id,external_id,name,lat,lon,url,
-            ROUND(cast( 3959 * acos( cos( radians(:lat) ) * cos( radians( lat ) ) * cos( radians( lon ) - radians(:lon) ) + sin( radians(:lat) ) * sin( radians( lat ) ) ) as numeric),2) AS distance
-            FROM " . $dbname . " WHERE LOWER(name) LIKE :name " . $coords . "ORDER BY distance LIMIT " . $maxSearchResults . "";
-        } else {
-            $query = "SELECT id,name,lat,lon,url,
-            ROUND(( 3959 * acos( cos( radians(:lat) ) * cos( radians( lat ) ) * cos( radians( lon ) - radians(:lon) ) + sin( radians(:lat) ) * sin( radians( lat ) ) ) ),2) AS distance
-            FROM " . $dbname . " WHERE LOWER(name) LIKE :name " . $coords . "ORDER BY distance LIMIT " . $maxSearchResults . "";
-        }
+        $query = "SELECT id,name,lat,lon,url,
+        ROUND(( 3959 * acos( cos( radians(:lat) ) * cos( radians( lat ) ) * cos( radians( lon ) - radians(:lon) ) + sin( radians(:lat) ) * sin( radians( lat ) ) ) ),2) AS distance
+        FROM " . $dbname . " WHERE LOWER(name) LIKE :name " . $coords . "ORDER BY distance LIMIT " . $maxSearchResults . "";
+
         $searches = $db->query($query, [ ':name' => "%" . strtolower($term) . "%",  ':lat' => $lat, ':lon' => $lon ])->fetchAll();
 
         $data = array();

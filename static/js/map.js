@@ -3376,9 +3376,13 @@ function searchForItem(lat, lon, term, type, field) {
                 'lat': lat,
                 'lon': lon
             },
-            error: function error() {
+            error: function error(xhr) {
                 // Display error toast
-                sendToast('danger', i8ln('Error searching'), i8ln('Please check connectivity or reduce marker settings.'), 'true')
+                switch (xhr.status) {
+                    case 404:
+                        sendToast('warning', i8ln('Error searching'), i8ln('Could not find any results please try again.'), 'true')
+                        break
+                }
             }
         }).done(function (data) {
             if (data) {
