@@ -458,7 +458,7 @@ function initMap() { // eslint-disable-line no-unused-vars
                 $('#submitModal .pokemon-list-cont').each(function (index) {
                     $(this).attr('id', 'pokemon-list-cont-6' + index)
                     var options = {
-                        valueNames: ['name', 'types', 'id']
+                        valueNames: ['name', 'types', 'id', 'genid', 'forms', 'formid']
                     }
                     var monList = new List('pokemon-list-cont-6' + index, options) // eslint-disable-line no-unused-vars
                 })
