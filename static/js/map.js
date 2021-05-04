@@ -6998,14 +6998,6 @@ $(function () {
         }
     })
 
-    if ($('#nav-accordion').length) {
-        $('#nav-accordion').accordion({
-            active: false,
-            collapsible: true,
-            heightStyle: 'content'
-        })
-    }
-
     // Initialize dataTable in statistics sidebar
     //   - turn off sorting for the 'icon' column
     //   - initially sort 'name' column alphabetically

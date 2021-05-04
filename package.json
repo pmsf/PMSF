@@ -62,7 +62,7 @@
     "grunt-usemin": "https://github.com/pmsf/grunt-usemin/tarball/master",
     "javascript-obfuscator": "0.19.2",
     "jit-grunt": "^0.10.0",
-    "leaflet": "1.7.1",
+    "leaflet": "1.6.0",
     "leaflet-geosearch": "2.7.0",
     "leaflet.markercluster": "https://github.com/pmsf/Leaflet.markercluster/tarball/master",
     "long": "^4.0.0",
