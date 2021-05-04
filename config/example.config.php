@@ -62,6 +62,11 @@ $locale = "en";                                                     // Display l
 $noLocaleSelection = false;
 $raidmapLogo = '';                                                  // Upload logo to custom folder, leave '' for empty ( $raidmapLogo = 'custom/logo.png'; )
 
+/* Info Modal */
+$noInfoModal = true;                                                // Hide infomodal and button
+$infoModalTitle = 'Info';                                           // Infomodal title
+$infoModalContent = 'Your text info here';                          // HTML markup allowed (external html file load $infoModalContent = file_get_contents('custom/modal.html');
+
 /* Loading screen */
 
 $noLoadingScreen = false;                                           // show loading animation while main page loads.
