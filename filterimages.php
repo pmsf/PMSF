@@ -1,7 +1,7 @@
 <?php
     function pokemonFilterImages($noPokemonNumbers, $onClick = '', $pokemonToExclude = array(), $num = 0)
     {
-        global $mons, $copyrightSafe, $iconRepository, $numberOfPokemon;
+        global $mons, $copyrightSafe, $iconRepository, $numberOfPokemon, $pokemonGenSearchString;
         if (empty($mons)) {
             $json = file_get_contents('static/dist/data/pokemon.min.json');
             $mons = json_decode($json, true);
@@ -42,7 +42,7 @@
                 <span style="display:none" class="types">' . $type . '</span>
                 <span style="display:none" class="name">' . i8ln($name) . '</span>
                 <span style="display:none" class="id">' . $k . '</span>
-                <span style="display:none" class="genid">' . i8ln('generation') . $genId . '</span>
+                <span style="display:none" class="genid">' . i8ln($pokemonGenSearchString) . $genId . '</span>
                 <span style="display:none" class="forms">' . $form . '</span>
                 <span style="display:none" class="formid">' . $formId . '</span>';
                 if (! $copyrightSafe) {

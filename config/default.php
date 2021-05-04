@@ -247,6 +247,9 @@ $noPokemonNumbers = false;                                     // true/false
 $noHidePokemon = false;                                        // true/false
 $hidePokemon = '[]';                                           // [] for empty
 $hidePokemonCoords = false;                                    // true/false
+$pokemonReportTime = false;
+$pokemonToExclude = [];
+$pokemonGenSearchString = 'generation';                        // When custom string is used translations do not work.
 
 $excludeMinIV = '[]';                                          // [] for empty
 
@@ -550,8 +553,7 @@ $noMarkPoi = true;
 
 $noDiscordSubmitLogChannel = true;                             // Send webhooks to discord channel upon submission
 
-$pokemonReportTime = false;
-$pokemonToExclude = [];
+
 
 $noDeleteGyms = true;
 $noToggleExGyms = true;
