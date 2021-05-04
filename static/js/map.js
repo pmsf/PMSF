@@ -5990,7 +5990,14 @@ function loadDefaultImages() {
 $(function () {
     if (Push.Permission.has()) {
         console.log('Push has notification permission')
+        $('#pushNotifyIcon').addClass('far fa-bell')
+        $('#pushNotifyIcon').css('color', 'green')
+        $('#pushNotifyIcon').attr('title', 'Push notification granted')
         return
+    } else {
+        $('#pushNotifyIcon').addClass('far fa-bell-slash')
+        $('#pushNotifyIcon').css('color', 'red')
+        $('#pushNotifyIcon').attr('title', 'Push notification denied')
     }
 
     Push.Permission.request()

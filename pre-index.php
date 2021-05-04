@@ -177,49 +177,51 @@ if (!$noLoadingScreen) {
     <header id="header">
         <a class="btn btn-link" data-bs-toggle="offcanvas" href="#leftNav" role="button" title="<?php echo i8ln('Options') ?>" aria-controls="leftNav"><i class='fas fa-sliders-h'></i></a>
 
-        <h1><a href="#"><?= $headerTitle ?><img src="<?= $raidmapLogo ?>" height="35" width="auto" border="0" style="float: right; margin-left: 5px; margin-top: 10px;"></a></h1>
-
+        <h1><a href="#"><?= $headerTitle ?><img src="<?= $raidmapLogo ?>"></a></h1>
         <?php
         if (! $noStatsToggle) {
             echo '<a class="btn btn-link" data-bs-toggle="offcanvas" href="#rightNav" role="button" title="' . i8ln('Options') . '" aria-controls="rightNav"><i class="fas fa-chart-bar"></i></a>';
         }
         if ($paypalUrl != "") {
-            echo '<a href="' . $paypalUrl . '" target="_blank" style="float:right;padding:0 5px;">
-                 <i class="fab fa-paypal" title="' . i8ln('PayPal') . '" style="position:relative;vertical-align:middle;color:white;margin-left:10px;font-size:1.3em;"></i>
+            echo '<a class="config-icon" href="' . $paypalUrl . '" target="_blank">
+                 <i class="fab fa-paypal" title="' . i8ln('PayPal') . '"></i>
                  </a>';
         }
         if ($telegramUrl != "") {
-            echo '<a href="' . $telegramUrl . '" target="_blank" style="float:right;padding:0 5px;">
-                 <i class="fab fa-telegram" title="' . i8ln('Telegram') . '" style="position:relative;vertical-align: middle;color:white;margin-left:10px;font-size:1.3em;"></i>
+            echo '<a class="config-icon" href="' . $telegramUrl . '" target="_blank">
+                 <i class="fab fa-telegram" title="' . i8ln('Telegram') . '"></i>
                  </a>';
         }
         if ($whatsAppUrl != "") {
-            echo '<a href="' . $whatsAppUrl . '" target="_blank" style="float:right;padding:0 5px;">
-                 <i class="fab fa-whatsapp" title="' . i8ln('WhatsApp') . '" style="position:relative;vertical-align:middle;color:white;margin-left:10px;font-size:1.3em;"></i>
+            echo '<a class="config-icon" href="' . $whatsAppUrl . '" target="_blank">
+                 <i class="fab fa-whatsapp" title="' . i8ln('WhatsApp') . '"></i>
                  </a>';
         }
         if ($discordUrl != "") {
-            echo '<a href="' . $discordUrl . '" target="_blank" style="float:right;padding:0 5px;">
-                 <i class="fab fa-discord" title="' . i8ln('Discord') . '" style="position:relative;vertical-align:middle;color:white;margin-left:10px;font-size:1.3em;"></i>
+            echo '<a class="config-icon" href="' . $discordUrl . '" target="_blank">
+                 <i class="fab fa-discord" title="' . i8ln('Discord') . '"></i>
                  </a>';
         }
         if ($patreonUrl != "") {
-            echo '<a href="' . $patreonUrl . '" target="_blank" style="float:right;padding:0 5px;">
-                 <i class="fab fa-patreon" title="' . i8ln('Patreon') . '" style="position:relative;vertical-align:middle;color:white;margin-left:10px;font-size:1.3em;"></i>
+            echo '<a class="config-icon" href="' . $patreonUrl . '" target="_blank">
+                 <i class="fab fa-patreon" title="' . i8ln('Patreon') . '"></i>
                  </a>';
         }
         if ($customUrl != "") {
-            echo '<a href="' . $customUrl . '" target="_blank" style="float:right;padding:0 5px;">
-                 <i class="' . $customUrlFontIcon . '" style="position:relative;vertical-align:middle;color:white;margin-left:10px;font-size:1.3em;"></i>
+            echo '<a class="config-icon" href="' . $customUrl . '" target="_blank">
+                 <i class="' . $customUrlFontIcon . '"></i>
                  </a>';
         }
         if (! $noHeaderWeatherIcon) { ?>
             <div id="currentWeather"></div>
         <?php }
+        if (! $noNotifyNotification) { ?>
+            <i id="pushNotifyIcon" data-bs-toggle="tooltip" title=""></i>
+        <?php }
         if (!empty($_SESSION['user']->id)) {
-            echo "<a href='#accountModal' data-bs-toggle='modal' style='float:right;padding:0 5px;' title='" . i8ln('Profile') . "'><img src='" .  $_SESSION['user']->avatar . "' style='height:40px;width:40px;border-radius:50%;border:2px solid;vertical-align: middle;'></a>";
+            echo "<a href='#accountModal' data-bs-toggle='modal' title='" . i8ln('Profile') . "'><img src='" .  $_SESSION['user']->avatar . "'></a>";
         } else {
-            echo "<a href='#accountModal' data-bs-toggle='modal' style='float:right;padding:0 5px;' title='" . i8ln('Profile') . "'><i class='fas fa-user' style='color:white;font-size:1.3em;vertical-align:middle;'></i></a>";
+            echo "<a href='#accountModal' data-bs-toggle='modal' title='" . i8ln('Profile') . "'><i class='fas fa-user'></i></a>";
         }
         ?>
     </header>
@@ -984,7 +986,7 @@ if (!$noLoadingScreen) {
                                         </div>
                                         <div class="dropdown-divider"></div>
                                     <?php }
-                                    if (! $noNotifyPokemon) { ?>
+                                    if (! $noNotifyNotification) { ?>
                                         <div class="form form-switch">
                                             <input class="form-check-input" id="toast-switch" type="checkbox" name="toast-switch">
                                             <label class="form-check-label" for="toast-switch"><?php echo i8ln('Notify with popup') ?></label>
@@ -1360,7 +1362,7 @@ include('modals.php');
     var notifyLevel = <?php echo $noNotifyLevel ? '""' : $notifyLevel ?>;
     var notifyRaid = <?php echo $noNotifyRaid ? 0 : $notifyRaid ?>;
     var notifyBounce = <?php echo $notifyBounce ?>;
-    var notifyNotification = <?php echo $notifyNotification ?>;
+    var notifyNotification = <?php echo $noNotifyNotification ? 'false' : $notifyNotification ?>;
     var enableRaids = <?php echo $noRaids ? 'false' : $enableRaids ?>;
     var activeRaids = <?php echo $activeRaids ?>;
     var noActiveRaids = <?php echo $noActiveRaids === true ? 'true' : 'false' ?>;

@@ -26,16 +26,30 @@
       line-height: inherit;
       margin: 0;
       padding: 0;
-
+      img {
+        float: right;
+        margin-left: 5px;
+        margin-top: 0.2em;
+        height: 85%;
+        width: auto;
+        border: 0;
+      }
       a {
         font-size: 1.25em;
       }
     }
-
+    .config-icon {
+      float: right;
+      color: white;
+      i {
+        font-size: 25px;
+        padding: 0 0.2em !important;
+      }
+    }
     > a {
       @include vendor('transition', 'color #{_duration(transition)} ease-in-out');
       display: inline-block;
-      padding: 0 0.75em;
+      padding: 0 0.50em;
       color: inherit;
       text-decoration: none;
 
@@ -56,15 +70,32 @@
     }
     a[href="#leftNav"] {
       float: left;
-      margin-top: 1em;
+      margin-top: 1.2em;
       i {
         font-size: 20px;
         pointer-events: none;
       }
     }
+    a[href="#accountModal"] {
+      float: right;
+      padding: 0 0.50em;
+      margin-top: -0.1em;
+      img {
+        height: 40px;
+        width: 40px;
+        border-radius: 50%;
+        border: 2px solid;
+        vertical-align: middle;
+      }
+      i {
+        color: white;
+        font-size: 20px;
+        vertical-align: middle;
+      }
+    }
     a[href="#rightNav"] {
       float: right;
-      margin-top: 1em;
+      margin-top: 1.2em;
       i {
         font-size: 20px;
         pointer-events: none;
@@ -75,8 +106,12 @@
       img {
         height: 42px;
         margin-top: 0.5em;
-        padding: 0 5px;
       }
+    }
+    #pushNotifyIcon {
+      float: right;
+      margin-top: 0.6em;
+      font-size: 25px;
     }
   }
 
