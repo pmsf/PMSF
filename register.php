@@ -118,11 +118,7 @@ if ($_GET['action'] == 'update') {
         echo '<link rel="stylesheet" href="static/css/custom.css?' . time() . '">';
     } ?>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jqueryui/1.12.0/jquery-ui.min.css">
-    <link rel="stylesheet" href="https://cdn.datatables.net/1.10.12/css/jquery.dataTables.css">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
-    <script src="static/js/vendor/modernizr.custom.js"></script>
-    <!-- Toastr -->
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.css">
 </head>
 <body>
     <h2><? $title ?> <?php echo i8ln('Login'); ?></h2>
