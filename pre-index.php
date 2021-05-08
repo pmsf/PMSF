@@ -334,7 +334,7 @@ if (!$noLoadingScreen) {
                                                         $firstTabContent = 1;
                                                         if (! $noHidePokemon) { ?>
                                                             <div class="tab-pane fade<?php echo (($firstTabContent == 1) ? " show active" : ""); ?>" id="exclude-pokemon" role="tabpanel" aria-labelledby="exclude-pokemon-tab">
-                                                                <div class="container scroll-container">
+                                                                <div class="scroll-container">
                                                                     <?php pokemonFilterImages($noPokemonNumbers, '', [], 2); ?>
                                                                 </div>
                                                                 <div class="dropdown-divider"></div>
@@ -345,7 +345,7 @@ if (!$noLoadingScreen) {
                                                         $firstTabContent++;
                                                         if (! $noExcludeMinIV) { ?>
                                                             <div class="tab-pane fade<?php echo (($firstTabContent == 1) ? " show active" : ""); ?>" id="exclude-min-iv" role="tabpanel" aria-labelledby="exclude-min-iv-tab">
-                                                                <div class="container scroll-container">
+                                                                <div class="scroll-container">
                                                                     <?php pokemonFilterImages($noPokemonNumbers, '', [], 3); ?>
                                                                 </div>
                                                                 <div class="dropdown-divider"></div>
@@ -450,7 +450,7 @@ if (!$noLoadingScreen) {
                                                     </ul>
                                                     <div class="tab-content" id="rocketHideContent">
                                                         <div class="tab-pane fade show active" id="exclude-rocket" role="tabpanel" aria-labelledby="exclude-rocket-tab">
-                                                            <div class="container scroll-container">
+                                                            <div class="scroll-container">
                                                                 <?php
                                                                 if ($generateExcludeGrunts === true) {
                                                                     gruntFilterImages($noGruntNumbers, '', array_diff(range(1, $numberOfGrunt), $getList->generated_exclude_list('gruntlist')), 10);
@@ -503,7 +503,7 @@ if (!$noLoadingScreen) {
                                                         $firstTabContent = 1;
                                                         if (! $noQuestsPokemon) { ?>
                                                             <div class="tab-pane fade<?php echo (($firstTabContent == 1) ? " show active" : ""); ?>" id="exclude-quest-pokemon" role="tabpanel" aria-labelledby="exclude-quest-pokemon-tab">
-                                                                <div class="container scroll-container">
+                                                                <div class="scroll-container">
                                                                     <?php
                                                                     if ($generateExcludeQuestsPokemon === true) {
                                                                         pokemonFilterImages($noPokemonNumbers, '', array_diff(range(1, $numberOfPokemon), $getList->generated_exclude_list('pokemonlist')), 8);
@@ -519,7 +519,7 @@ if (!$noLoadingScreen) {
                                                         $firstTabContent++;
                                                         if (! $noQuestsItems) { ?>
                                                             <div class="tab-pane fade<?php echo (($firstTabContent == 1) ? " show active" : ""); ?>" id="exclude-quest-item" role="tabpanel" aria-labelledby="exclude-quest-item-tab">
-                                                                <div class="container scroll-container">
+                                                                <div class="scroll-container">
                                                                     <?php
                                                                     if ($generateExcludeQuestsItem === true) {
                                                                         itemFilterImages($noItemNumbers, '', array_diff(range(1, $numberOfItem), $getList->generated_exclude_list('itemlist')), 9);
@@ -535,7 +535,7 @@ if (!$noLoadingScreen) {
                                                         $firstTabContent++;
                                                         if (! $noQuestsEnergy) { ?>
                                                             <div class="tab-pane fade<?php echo (($firstTabContent == 1) ? " show active" : ""); ?>" id="exclude-quest-energy" role="tabpanel" aria-labelledby="exclude-quest-energy-tab">
-                                                                <div class="container scroll-container">
+                                                                <div class="scroll-container">
                                                                     <?php
                                                                     if ($generateExcludeQuestsEnergy === true) {
                                                                         energyFilterImages($noPokemonNumbers, '', array_diff(range(1, $numberOfPokemon), $getList->generated_exclude_list('energylist')), 9);
@@ -641,7 +641,7 @@ if (!$noLoadingScreen) {
                                                     </ul>
                                                     <div class="tab-content" id="raidHideContent">
                                                         <div class="tab-pane fade show active" id="exclude-raidboss" role="tabpanel" aria-labelledby="exclude-raidboss-tab">
-                                                            <div class="container scroll-container">
+                                                            <div class="scroll-container">
                                                                 <?php
                                                                 if ($generateExcludeRaidboss === true) {
                                                                     pokemonFilterImages($noRaidbossNumbers, '', array_diff(range(1, $numberOfPokemon), $getList->generated_exclude_list('raidbosslist')), 11);
@@ -654,7 +654,7 @@ if (!$noLoadingScreen) {
                                                             <a class="btn btn-secondary hide-all" href="#"><?php echo i8ln('None') ?></a>
                                                         </div>
                                                         <div class="tab-pane fade" id="exclude-raidegg" role="tabpanel" aria-labelledby="exclude-raidegg-tab">
-                                                            <div class="container scroll-container">
+                                                            <div class="scroll-container">
                                                                 <?php raideggFilterImages($noRaideggNumbers, '', $excludeRaidegg, 12); ?>
                                                             </div>
                                                             <div class="dropdown-divider"></div>
@@ -938,7 +938,7 @@ if (!$noLoadingScreen) {
                                             </ul>
                                             <div class="tab-content" id="notifyPokemonContent">
                                                 <div class="tab-pane fade show active" id="notify-pokemon" role="tabpanel" aria-labelledby="notify-pokemon-tab">
-                                                    <div class="container scroll-container">
+                                                    <div class="scroll-container">
                                                         <?php pokemonFilterImages($noPokemonNumbers, '', [], 4); ?>
                                                     </div>
                                                     <div class="dropdown-divider"></div>
