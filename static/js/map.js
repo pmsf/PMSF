@@ -3253,7 +3253,7 @@ function loadRawData() {
         data: {
             'timestamp': timestamp,
             'pokemon': loadPokemon,
-            'loadPokemonStats' : loadPokemonStats,
+            'loadPokemonStats': loadPokemonStats,
             'lastpokemon': lastpokemon,
             'pokestops': loadPokestops,
             'lures': loadLures,
