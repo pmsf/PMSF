@@ -27,7 +27,9 @@ $libs[] = "submit/Manual.php";
 $libs[] = "submit/Submit.rdm.php";
 $libs[] = "submit/Submit.rocketmap_mad.php";
 $libs[] = "Manual.php";
-
+$libs[] = "stats/Stats.php";
+$libs[] = "stats/Stats.rdm.php";
+$libs[] = "stats/Stats.rocketmap_mad.php";
 // Include libraries
 foreach ($libs as $file) {
     include(__DIR__ . '/../lib/' . $file);
@@ -128,12 +130,9 @@ $patreonUrl = "";                                                   // Patreon U
 $customUrl = "";                                                    // Custom URL, leave "" for empty
 $customUrlFontIcon = "far fa-smile-beam";                           // Choose a custom icon on: https://fontawesome.com/icons?d=gallery&m=free
 
-/* Worldopole */
-
-$worldopoleUrl = "";                                                // Link to Worldopole, leave "" for empty
-
-/* StatsToggle */
+/* Stats */
 $noStatsToggle = false;                                             // Enables or disables the stats button in the header.
+$noFullStats = false;                                               // Enables or disables full stats
 
 /* MOTD */
 $noMotd = true;

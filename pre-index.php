@@ -146,10 +146,11 @@ if (strtolower($map) === "rdm") {
     </script>
     <link href="node_modules/leaflet-geosearch/assets/css/leaflet.css" rel="stylesheet" />
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jqueryui/1.12.0/jquery-ui.min.css">
-    <link rel="stylesheet" href="node_modules/datatables/media/css/jquery.dataTables.min.css">
+    <!-- <link rel="stylesheet" href="node_modules/datatables/media/css/jquery.dataTables.min.css"> -->
     <script src="static/js/vendor/modernizr.custom.js"></script>
     <!-- Bootstrap Icons -->
     <link rel="stylesheet" href="node_modules/bootstrap-icons/font/bootstrap-icons.css">
+    <link rel="stylesheet" href="https://cdn.datatables.net/1.10.24/css/dataTables.bootstrap5.min.css">
     <!-- Leaflet -->
     <link rel="stylesheet" href="node_modules/leaflet/dist/leaflet.css" />
     <link rel="stylesheet" href="static/dist/css/app.min.css">
@@ -1213,19 +1214,18 @@ if (!$noLoadingScreen) {
     </div>
     <div class="offcanvas offcanvas-end" data-bs-scroll="true" data-bs-backdrop="false" tabindex="-1" id="rightNav" aria-labelledby="rightNavLabel">
         <div class="offcanvas-body right">
-            <?php
-            if ($worldopoleUrl !== "") { ?>
-                <div class="card">
-                    <div class="card-header">
-                        <?php echo i8ln(' Full Stats') ?>
-                    </div>
-                    <div class="card-body">
-                        <div class="d-grid gap-2">
-                            <a class="btn btn-secondary" type="button" href="<?= $worldopoleUrl ?>" target="_blank"><i class="far fa-chart-bar"></i> <?php echo i8ln('Full Stats') ?></a>
-                        </div>
+            <div class="card">
+                <div class="card-header">
+                    <?php echo i8ln(' Full Stats') ?>
+                </div>
+                <div class="card-body">
+                    <div class="d-grid gap-2">
+                        <button id="fullStatsToggle" type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#statsModal">
+                            <i class="far fa-chart-bar"></i> <?php echo i8ln('Full Stats') ?>
+                        </button>
                     </div>
                 </div>
-            <?php } ?>
+            </div>
             <div class="card" id="loadingSpinner">
                 <div class="card-header">
                     <?php echo i8ln('Loading...') ?>
@@ -1233,7 +1233,7 @@ if (!$noLoadingScreen) {
                 <div class="card-body">
                     <div class="d-flex justify-content-center">
                         <div class="spinner-border" role="status">
-                            <span class="visually-hidden">Loading...</span>
+                            <span class="visually-hidden"><?php echo i8ln('Loading...') ?></span>
                         </div>
                     </div>
                 </div>

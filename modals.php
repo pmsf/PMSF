@@ -973,5 +973,34 @@
         </div>
     </div>
 <?php } ?>
+<!-- Stats Modal -->
+<?php if (! $noFullStats) { ?>
+    <div class="modal fade" id="statsModal" tabindex="-1" aria-labelledby="statsModalLabel" aria-hidden="true" style="padding-top: 3.5em;">
+        <div class="modal-dialog modal-fullscreen-xxl-down" style="height:100% !important;">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="statsModalLabel"><?php echo i8ln('Pokémon'); ?></h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body" style="padding: 0;">
+                    <table id="pokemonTable" class="table table-striped table-bordered">
+                        <thead>
+                            <tr>
+                                <th><?php echo i8ln('ID'); ?></th>
+                                <th><?php echo i8ln('Type'); ?></th>
+                                <th><?php echo i8ln('Pokémon'); ?></th>
+                                <th><?php echo i8ln('Count'); ?></th>
+                                <th>%</th>
+                            </tr>
+                        </thead>
+                    </table>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-danger" data-bs-dismiss="modal"><?php echo i8ln('Close') ?></button>
+                </div>
+            </div>
+        </div>
+    </div>
+<?php } ?>
 <!-- End of Modals -->
 

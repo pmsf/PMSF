@@ -56,6 +56,9 @@ $d["lastnests"] = !empty($_POST['nests']) ? $_POST['nests'] : false;
 $d["lastcommunities"] = !empty($_POST['communities']) ? $_POST['communities'] : false;
 $d["lastportals"] = !empty($_POST['portals']) ? $_POST['portals'] : false;
 $d["lastpois"] = !empty($_POST['pois']) ? $_POST['pois'] : false;
+
+$loadPokemonStats = !empty($_POST['loadPokemonStats']) ? $_POST['loadPokemonStats'] : false;
+
 if ($minIv < $prevMinIv || $minLevel < $prevMinLevel) {
     $lastpokemon = false;
 }
@@ -90,10 +93,12 @@ $debug['0_after_auth'] = microtime(true) - $timing['start'];
 if (strtolower($map) === "rdm") {
     if (strtolower($fork) === "default" || strtolower($fork) === "beta") {
         $scanner = new \Scanner\RDM();
+        $stats = new \Stats\RDM();
     }
 } elseif (strtolower($map) === "rocketmap") {
     if (strtolower($fork) === "mad") {
         $scanner = new \Scanner\RocketMap_MAD();
+        $stats = new \Stats\RocketMap_MAD();
     }
 }
 
@@ -351,6 +356,11 @@ if (!$noLiveScanLocation) {
     }
 }
 $debug['10_after_devices'] = microtime(true) - $timing['start'];
+
+
+if ($loadPokemonStats == "true") {
+    $d["pokemonStats"] = $stats->get_pokemon_stats();
+}
 
 $d['token'] = refreshCsrfToken();
 $debug['11_end'] = microtime(true) - $timing['start'];

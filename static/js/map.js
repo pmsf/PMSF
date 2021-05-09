@@ -260,6 +260,34 @@ if (noRaids && Store.get('showRaids')) {
 if (!noDarkMode && Store.get('darkMode')) {
     enableDarkMode()
 }
+
+var pokemonTable = $('#pokemonTable').DataTable({
+    paging: false,
+    searching: false,
+    info: false,
+    responsive: true,
+    scrollX: false,
+    stateSave: true,
+    stateSaveCallback: function (settings, data) {
+        localStorage.setItem('DataTables_' + settings.sInstance, JSON.stringify(data))
+    },
+    stateLoadCallback: function (settings) {
+        return JSON.parse(localStorage.getItem('DataTables_' + settings.sInstance))
+    },
+    stateDuration: 0,
+    language: {
+        search: i8ln('Search:'),
+        emptyTable: i8ln('Loading...') + ' <i class="fas fa-spinner fa-spin"></i>',
+        info: i8ln('Showing _START_ to _END_ of _TOTAL_ entries'),
+        lengthMenu: i8ln('Show _MENU_ entries'),
+        paginate: {
+            next: i8ln('Next'),
+            previous: i8ln('Previous')
+        }
+    }
+})
+
+
 function previewPoiImage(event) { // eslint-disable-line no-unused-vars
     var form = $(event.target).parent().parent()
     var input = event.target
@@ -3190,6 +3218,7 @@ function showInBoundsMarkers(markersInput, type) {
 
 function loadRawData() {
     var loadPokemon = Store.get('showPokemon')
+    var loadPokemonStats = $('#statsModal').hasClass('show')
     var loadGyms = Store.get('showGyms')
     var loadRaids = Store.get('showRaids')
     var loadPokestops = Store.get('showPokestops')
@@ -3224,6 +3253,7 @@ function loadRawData() {
         data: {
             'timestamp': timestamp,
             'pokemon': loadPokemon,
+            'loadPokemonStats' : loadPokemonStats,
             'lastpokemon': lastpokemon,
             'pokestops': loadPokestops,
             'lures': loadLures,
@@ -4658,6 +4688,36 @@ function processPokemons(i, item) {
         }
     }
 }
+function processPokemonStats(i, item) {
+  var id = ''
+  if (item['pokemon_id'] <= 9) {
+    id = '00' + item['pokemon_id']
+  } else if (item['pokemon_id'] <= 99) {
+    id = '0' + item['pokemon_id']
+  } else {
+    id = item['pokemon_id']
+  }
+  if (item['form'] <= 0) {
+    item['form'] = '00'
+  }
+  var costume = ''
+  if (item['costume'] > 0) {
+    costume = '_' + item['costume']
+  }
+  var pokemon = '<img src="' + iconpath + 'pokemon_icon_' + id + '_' + item['form'] + costume + '.png" style="height:60px;"><br>' + item['name']
+  var types = item['pokemon_types']
+  var typeDisplay = ''
+  $.each(types, function (index, type) {
+    typeDisplay += '<nobr>' + i8ln(type['type']) + ' <img src="static/types/' + type['type'] + '.png" style="height:13px;"></nobr><br>'
+  })
+  pokemonTable.row.add([
+    item['pokemon_id'],
+    typeDisplay,
+    pokemon,
+    item['count'],
+    item['percentage']
+  ])
+}
 function processNests(i, item) {
     if (!Store.get('showNests')) {
         return false
@@ -5305,6 +5365,11 @@ function updateMap() {
                 }, reincludedRaidegg)
             }
             reloaddustamount = false
+
+            pokemonTable.clear()
+            $.each(result.pokemonStats, processPokemonStats)
+            pokemonTable.draw(false)
+
             timestamp = result.timestamp
             lastUpdateTime = Date.now()
             token = result.token
@@ -7000,6 +7065,10 @@ $(function () {
         } else {
             disableDarkMode()
         }
+    })
+
+    $('#fullStatsToggle').on('click', function () {
+        $('#rightNav').offcanvas('hide')
     })
 
     // Initialize dataTable in statistics sidebar
