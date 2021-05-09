@@ -4689,34 +4689,34 @@ function processPokemons(i, item) {
     }
 }
 function processPokemonStats(i, item) {
-  var id = ''
-  if (item['pokemon_id'] <= 9) {
-    id = '00' + item['pokemon_id']
-  } else if (item['pokemon_id'] <= 99) {
-    id = '0' + item['pokemon_id']
-  } else {
-    id = item['pokemon_id']
-  }
-  if (item['form'] <= 0) {
-    item['form'] = '00'
-  }
-  var costume = ''
-  if (item['costume'] > 0) {
-    costume = '_' + item['costume']
-  }
-  var pokemon = '<img src="' + iconpath + 'pokemon_icon_' + id + '_' + item['form'] + costume + '.png" style="height:60px;"><br>' + item['name']
-  var types = item['pokemon_types']
-  var typeDisplay = ''
-  $.each(types, function (index, type) {
-    typeDisplay += '<nobr>' + i8ln(type['type']) + ' <img src="static/types/' + type['type'] + '.png" style="height:13px;"></nobr><br>'
-  })
-  pokemonTable.row.add([
-    item['pokemon_id'],
-    typeDisplay,
-    pokemon,
-    item['count'],
-    item['percentage']
-  ])
+    var id = ''
+    if (item['pokemon_id'] <= 9) {
+        id = '00' + item['pokemon_id']
+    } else if (item['pokemon_id'] <= 99) {
+        id = '0' + item['pokemon_id']
+    } else {
+        id = item['pokemon_id']
+    }
+    if (item['form'] <= 0) {
+        item['form'] = '00'
+    }
+    var costume = ''
+    if (item['costume'] > 0) {
+        costume = '_' + item['costume']
+    }
+    var pokemon = '<img src="' + iconpath + 'pokemon_icon_' + id + '_' + item['form'] + costume + '.png" style="height:60px;"><br>' + item['name']
+    var types = item['pokemon_types']
+    var typeDisplay = ''
+    $.each(types, function (index, type) {
+        typeDisplay += '<nobr>' + i8ln(type['type']) + ' <img src="static/types/' + type['type'] + '.png" style="height:13px;"></nobr><br>'
+    })
+    pokemonTable.row.add([
+        item['pokemon_id'],
+        typeDisplay,
+        pokemon,
+        item['count'],
+        item['percentage']
+    ])
 }
 function processNests(i, item) {
     if (!Store.get('showNests')) {
