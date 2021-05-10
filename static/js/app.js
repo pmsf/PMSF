@@ -16,15 +16,6 @@
             }
     }
 
-    // addEventsListener
-    var addEventsListener = function (o, t, e) {
-        var n
-        var i = t.split(' ')
-        for (n in i) {
-            o.addEventListener(i[n], e)
-        }
-    };
-
     // classList | (c) @remy | github.com/remy/polyfills | rem.mit-license.org
     (function () {
         function t(t) {
