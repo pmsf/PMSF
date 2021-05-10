@@ -1,34 +1,37 @@
-.modal-dialog {
-  height:calc(100% - 60px);
-}
-.modal-content {
-  height:100%;
-}
-.modal-header{
-  height:50px;
-}
-.modal-footer{
-  position: -webkit-sticky;
-  position: sticky;
-  bottom: -25px;
-  height:75px;
-  background-color: white;
-}
-.modal-body {
-  height:calc(100% - 125px);
-  overflow-y: auto;     /*give auto it will take based in content */
+.modal {
+    padding-top: 3.5em;
+    .modal-dialog:not(.modal-fullscreen) {
+        height: calc(100% - 60px);
+        .modal-content {
+            height:100%;
+            .modal-header{
+                height:50px;
+            }
+            .modal-body {
+                height: calc(100% - 125px);
+                overflow-y: auto;     /*give auto it will take based in content */
+            }
+            .modal-footer{
+                position: -webkit-sticky;
+                position: sticky;
+                bottom: -25px;
+                height: 75px;
+                background-color: white;
+            }
+        }
+    }
 }
 .search-input {
-  position: sticky;
-  top: 0;
-  width: calc(100% - 4px);
-  height: 40px;
-  margin-bottom: 5px;
-  padding: 5px;
-  margin-top: 0px;
-  margin-left: 0px;
-  background: rgba(255, 255, 255, 1);
-  margin-right: 0px;
-  border: 1px solid gray;
-  z-index: 1;
+    position: sticky;
+    top: 0;
+    width: calc(100% - 4px);
+    height: 40px;
+    margin-bottom: 5px;
+    padding: 5px;
+    margin-top: 0px;
+    margin-left: 0px;
+    background: rgba(255, 255, 255, 1);
+    margin-right: 0px;
+    border: 1px solid gray;
+    z-index: 1;
 }

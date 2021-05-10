@@ -975,8 +975,8 @@
 <?php } ?>
 <!-- Stats Modal -->
 <?php if (! $noFullStats) { ?>
-    <div class="modal fade" id="statsModal" tabindex="-1" aria-labelledby="statsModalLabel" aria-hidden="true" style="padding-top: 3.5em;">
-        <div class="modal-dialog modal-fullscreen-xxl-down" style="height:100% !important;">
+    <div class="modal fade" id="statsModal" tabindex="-1" aria-labelledby="statsModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-fullscreen">
             <div class="modal-content">
                 <div class="modal-header">
                     <h5 class="modal-title" id="statsModalLabel"><?php echo i8ln('Pokémon'); ?></h5>
