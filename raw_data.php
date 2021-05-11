@@ -87,13 +87,7 @@ if (!empty($validity)) {
 $debug['0_after_auth'] = microtime(true) - $timing['start'];
 
 // init map
-if (strtolower($map) === "monocle") {
-    if (strtolower($fork) === "default") {
-        $scanner = new \Scanner\Monocle();
-    } else {
-        $scanner = new \Scanner\Monocle_PMSF();
-    }
-} elseif (strtolower($map) === "rdm") {
+if (strtolower($map) === "rdm") {
     if (strtolower($fork) === "default" || strtolower($fork) === "beta") {
         $scanner = new \Scanner\RDM();
     }

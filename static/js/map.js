@@ -86,6 +86,7 @@ var rereids = []
 var dustamount
 var reloaddustamount
 var nestavg
+var toastdelayslider
 
 var L
 var map
@@ -97,8 +98,6 @@ var locationMarker
 var rangeMarkers = ['pokemon', 'pokestop', 'gym']
 var storeZoom = true
 var moves
-var weather // eslint-disable-line no-unused-vars
-var boostedMons // eslint-disable-line no-unused-vars
 
 var oSwLat
 var oSwLng
@@ -124,7 +123,6 @@ var lastUpdateTime
 var lastWeatherUpdateTime
 
 var token
-
 var cries
 
 var pokeList = []
@@ -147,23 +145,6 @@ var gymTypes = ['Uncontested', 'Mystic', 'Valor', 'Instinct']
 var triggerGyms = Store.get('triggerGyms')
 var onlyTriggerGyms
 var noExGyms
-var toastrOptions = {
-    'closeButton': true,
-    'debug': false,
-    'newestOnTop': true,
-    'progressBar': false,
-    'positionClass': 'toast-top-right',
-    'preventDuplicates': true,
-    'onclick': null,
-    'showDuration': '300',
-    'hideDuration': '1000',
-    'timeOut': '25000',
-    'extendedTimeOut': '1000',
-    'showEasing': 'swing',
-    'hideEasing': 'linear',
-    'showMethod': 'fadeIn',
-    'hideMethod': 'fadeOut'
-}
 
 createjs.Sound.registerSound('static/sounds/ding.mp3', 'ding')
 
@@ -196,7 +177,7 @@ var nestLayerGroup = new L.LayerGroup()
  <def> - defense as number
  <sta> - stamnia as number
  */
-var notifyIvTitle = '<pkm> lv <lv> <prc>% (<atk>/<def>/<sta>)'
+var notifyIvTitle = '<pkm>, Level: <lv>, IV: <prc>% (<atk>/<def>/<sta>)'
 var notifyNoIvTitle = '<pkm>'
 
 /*
@@ -204,7 +185,7 @@ var notifyNoIvTitle = '<pkm>'
  <dist>  - disappear time
  <udist> - time until disappear
  */
-var notifyText = i8ln('disappears at') + ' <dist> (<udist>)'
+var notifyText = i8ln('Disappears at') + ' <dist> (<udist>)'
 
 var OpenStreetMapProvider = window.GeoSearch.OpenStreetMapProvider
 var searchProvider = new OpenStreetMapProvider()
@@ -265,9 +246,6 @@ if (location.search.indexOf('login=true') > 0) {
     $('#nav').load(window.location.href + '#nav')
     window.location.href = '/'
 }
-if (location.search.indexOf('login=false') > 0) {
-    openAccessDeniedModal()
-}
 if (copyrightSafe) {
     Store.set('icons', 'static/icons-safe/')
 } else if (Store.get('icons') === 'static/icons-safe/' || Store.get('icons') === '') {
@@ -304,18 +282,6 @@ function previewPoiSurrounding(event) { // eslint-disable-line no-unused-vars
     reader.readAsDataURL(input.files[0])
     reader.onload = fileLoaded
 }
-function openAccessDeniedModal(event) { // eslint-disable-line no-unused-vars
-    $('.ui-dialog').remove()
-    $('.accessdenied-modal').clone().dialog({
-        modal: true,
-        maxHeight: 600,
-        buttons: {},
-        title: i8ln('Your access is denied'),
-        classes: {
-            'ui-dialog': 'ui-dialog raid-widget-popup'
-        }
-    })
-}
 function formatDate(date) {
     var monthNames = [
         'January', 'February', 'March',
@@ -342,7 +308,7 @@ function excludePokemon(id) { // eslint-disable-line no-unused-vars
     $selectExclude.val(
         $selectExclude.val().split(',').concat(id).join(',')
     ).trigger('change')
-    $('label[for="exclude-pokemon"] .pokemon-list .pokemon-icon-sprite[data-value="' + id + '"]').addClass('active')
+    $('#exclude-pokemon .pokemon-list .pokemon-icon-sprite[data-value="' + id + '"]').addClass('active')
     clearStaleMarkers()
 }
 
@@ -350,7 +316,7 @@ function notifyAboutPokemon(id) { // eslint-disable-line no-unused-vars
     $selectPokemonNotify.val(
         $selectPokemonNotify.val().split(',').concat(id).join(',')
     ).trigger('change')
-    $('label[for="notify-pokemon"] .pokemon-list .pokemon-icon-sprite[data-value="' + id + '"]').addClass('active')
+    $('#notify-pokemon .pokemon-list .pokemon-icon-sprite[data-value="' + id + '"]').addClass('active')
 }
 
 function removePokemonMarker(encounterId) { // eslint-disable-line no-unused-vars
@@ -403,6 +369,7 @@ function initMap() { // eslint-disable-line no-unused-vars
         worldCopyJump: true,
         updateWhenZooming: false,
         updateWhenIdle: true,
+        attributionControl: false,
         layers: [weatherLayerGroup, exLayerGroup, gymLayerGroup, stopLayerGroup, scanAreaGroup, liveScanGroup, nestLayerGroup]
     })
 
@@ -482,37 +449,23 @@ function initMap() { // eslint-disable-line no-unused-vars
 
     map.on('click', function (e) {
         if ($('.submit-on-off-button').hasClass('on')) {
+            var submitModal = new bootstrap.Modal(document.getElementById('submitModal'), {})
             updateS2Overlay()
             $('.submitLatitude').val(e.latlng.lat)
             $('.submitLongitude').val(e.latlng.lng)
-            $('.ui-dialog').remove()
-            $('.submit-modal').clone().dialog({
-                modal: true,
-                maxHeight: 700,
-                buttons: {},
-                title: i8ln('Submit Data to Map'),
-                classes: {
-                    'ui-dialog': 'ui-dialog submit-widget-popup'
-                },
-                open: function (event, ui) {
-                    $('.submit-widget-popup #submit-tabs').tabs()
-                    $('.submit-widget-popup .pokemon-list-cont').each(function (index) {
-                        $(this).attr('id', 'pokemon-list-cont-6' + index)
-                        var options = {
-                            valueNames: ['name', 'types', 'id']
-                        }
-                        var monList = new List('pokemon-list-cont-6' + index, options) // eslint-disable-line no-unused-vars
-                    })
-                }
+            submitModal.show()
+            $('#submitModal').on('shown.bs.modal', function (event) {
+                $('#submitModal .pokemon-list-cont').each(function (index) {
+                    $(this).attr('id', 'pokemon-list-cont-6' + index)
+                    var options = {
+                        valueNames: ['name', 'types', 'id', 'genid', 'forms', 'formid']
+                    }
+                    var monList = new List('pokemon-list-cont-6' + index, options) // eslint-disable-line no-unused-vars
+                })
             })
         }
     })
     $selectIconSize = $('#pokemon-icon-size')
-
-    $selectIconSize.select2({
-        placeholder: 'Select Icon Size',
-        minimumResultsForSearch: Infinity
-    })
 
     $selectIconSize.on('change', function () {
         Store.set('iconSizeModifier', this.value)
@@ -521,22 +474,12 @@ function initMap() { // eslint-disable-line no-unused-vars
 
     $selectIconNotifySizeModifier = $('#pokemon-icon-notify-size')
 
-    $selectIconNotifySizeModifier.select2({
-        placeholder: 'Increase Size Of Notified',
-        minimumResultsForSearch: Infinity
-    })
-
     $selectIconNotifySizeModifier.on('change', function () {
         Store.set('iconNotifySizeModifier', this.value)
         redrawPokemon(mapData.pokemons)
     })
 
     $selectTeamGymsOnly = $('#team-gyms-only-switch')
-
-    $selectTeamGymsOnly.select2({
-        placeholder: 'Only Show Gyms For Team',
-        minimumResultsForSearch: Infinity
-    })
 
     $selectTeamGymsOnly.on('change', function () {
         Store.set('showTeamGymsOnly', this.value)
@@ -546,11 +489,6 @@ function initMap() { // eslint-disable-line no-unused-vars
 
     $selectLastUpdateGymsOnly = $('#last-update-gyms-switch')
 
-    $selectLastUpdateGymsOnly.select2({
-        placeholder: 'Only Show Gyms Last Updated',
-        minimumResultsForSearch: Infinity
-    })
-
     $selectLastUpdateGymsOnly.on('change', function () {
         Store.set('showLastUpdatedGymsOnly', this.value)
         lastgyms = false
@@ -558,11 +496,6 @@ function initMap() { // eslint-disable-line no-unused-vars
     })
 
     $selectMinGymLevel = $('#min-level-gyms-filter-switch')
-
-    $selectMinGymLevel.select2({
-        placeholder: 'Minimum Gym Level',
-        minimumResultsForSearch: Infinity
-    })
 
     $selectMinGymLevel.on('change', function () {
         Store.set('minGymLevel', this.value)
@@ -572,11 +505,6 @@ function initMap() { // eslint-disable-line no-unused-vars
 
     $selectMaxGymLevel = $('#max-level-gyms-filter-switch')
 
-    $selectMaxGymLevel.select2({
-        placeholder: 'Maximum Gym Level',
-        minimumResultsForSearch: Infinity
-    })
-
     $selectMaxGymLevel.on('change', function () {
         Store.set('maxGymLevel', this.value)
         lastgyms = false
@@ -585,11 +513,6 @@ function initMap() { // eslint-disable-line no-unused-vars
 
     $selectMinRaidLevel = $('#min-level-raids-filter-switch')
 
-    $selectMinRaidLevel.select2({
-        placeholder: 'Minimum Raid Level',
-        minimumResultsForSearch: Infinity
-    })
-
     $selectMinRaidLevel.on('change', function () {
         Store.set('minRaidLevel', this.value)
         lastgyms = false
@@ -597,11 +520,6 @@ function initMap() { // eslint-disable-line no-unused-vars
     })
 
     $selectMaxRaidLevel = $('#max-level-raids-filter-switch')
-
-    $selectMaxRaidLevel.select2({
-        placeholder: 'Maximum Raid Level',
-        minimumResultsForSearch: Infinity
-    })
 
     $selectMaxRaidLevel.on('change', function () {
         Store.set('maxRaidLevel', this.value)
@@ -621,28 +539,15 @@ function initMap() { // eslint-disable-line no-unused-vars
         var position = Store.get('startAtLastLocationPosition')
         var lat = 'lat' in position ? position.lat : centerLat
         var lng = 'lng' in position ? position.lng : centerLng
+        var userzoom = 'zoom' in position ? position.zoom : zoom
 
         var latlng = new L.LatLng(lat, lng)
         locationMarker.setLatLng(latlng)
-        map.setView(latlng)
+        map.setView(latlng, userzoom)
     }
 
     $.getJSON('static/dist/data/searchmarkerstyle.min.json').done(function (data) {
         searchMarkerStyles = data
-        var searchMarkerStyleList = []
-
-        $.each(data, function (key, value) {
-            searchMarkerStyleList.push({
-                id: key,
-                text: value.name
-            })
-        })
-
-        $selectLocationIconMarker.select2({
-            placeholder: 'Select Location Marker',
-            data: searchMarkerStyleList,
-            minimumResultsForSearch: Infinity
-        })
 
         $selectLocationIconMarker.on('change', function (e) {
             Store.set('locationMarkerStyle', this.value)
@@ -659,74 +564,47 @@ function toggleFullscreenMap() { // eslint-disable-line no-unused-vars
     map.toggleFullscreen()
 }
 
-var openstreetmap = L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', { // eslint-disable-line no-unused-vars
-    attribution: '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>',
-    maxZoom: maxZoom,
-    maxNativeZoom: 18
-})
-
-var darkmatter = L.tileLayer('https://cartodb-basemaps-{s}.global.ssl.fastly.net/dark_all/{z}/{x}/{y}.png', { // eslint-disable-line no-unused-vars
-    attribution: '&copy; <a href="https://carto.com/">Carto</a>',
-    maxZoom: maxZoom,
-    maxNativeZoom: 18
-})
-
-var styletopo = L.tileLayer('https://{s}.tile.opentopomap.org/{z}/{x}/{y}.png', { // eslint-disable-line no-unused-vars
-    attribution: '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>',
-    maxZoom: maxZoom,
-    maxNativeZoom: 18
-})
-
-var stylesatellite = L.tileLayer('https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}', { // eslint-disable-line no-unused-vars
-    attribution: 'Tiles &copy; Esri &mdash; Source: Esri, i-cubed, USDA, USGS, AEX, GeoEye, Getmapping, Aerogrid, IGN, IGP, UPR-EGP, and the GIS User Community',
-    maxZoom: maxZoom,
-    maxNativeZoom: 18
-})
-
-var mapbox = L.tileLayer('https://api.mapbox.com/styles/v1/mapbox/streets-v11/tiles/256/{z}/{x}/{y}?access_token=' + mBoxKey, { // eslint-disable-line no-unused-vars
-    attribution: '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>',
-    maxZoom: maxZoom,
-    maxNativeZoom: 18
-})
-
-var mapboxDark = L.tileLayer('https://api.mapbox.com/styles/v1/mapbox/dark-v10/tiles/256/{z}/{x}/{y}?access_token=' + mBoxKey, { // eslint-disable-line no-unused-vars
-    attribution: '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>',
-    maxZoom: maxZoom,
-    maxNativeZoom: 18
-})
-
-var mapboxPogo = L.tileLayer('https://api.mapbox.com/styles/v1/anonymous89/ck2uz9d5t09qm1cl66b9giwun/tiles/256/{z}/{x}/{y}@2x?access_token=' + mBoxKey, { // eslint-disable-line no-unused-vars
-    attribution: '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>',
-    maxZoom: maxZoom,
-    maxNativeZoom: 18
-})
-
-var mapboxPogoDark = L.tileLayer('https://api.mapbox.com/styles/v1/anonymous89/ck2xw3j6h0e0v1dqtlcx9c4od/tiles/256/{z}/{x}/{y}@2x?access_token=' + mBoxKey, { // eslint-disable-line no-unused-vars
-    attribution: '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>',
-    maxZoom: maxZoom,
-    maxNativeZoom: 18
-})
-
-var googlemapssat = L.gridLayer.googleMutant({type: 'satellite'}) // eslint-disable-line no-unused-vars
-
-var googlemapsroad = L.gridLayer.googleMutant({type: 'roadmap'}) // eslint-disable-line no-unused-vars
-
-var tileserver = L.tileLayer(customTileServerAddress, { // eslint-disable-line no-unused-vars
-    attribution: 'Tileserver',
-    maxZoom: maxZoom,
-    maxNativeZoom: 18
-})
-
 // dynamic map style chooses mapboxPogo or mapboxPogoDark depending on client time
 var currentDate = new Date()
 var currentHour = currentDate.getHours()
-var mapboxPogoDynamic = currentHour >= 6 && currentHour < 19 ? mapboxPogo : mapboxPogoDark // eslint-disable-line no-unused-vars
+var mapboxPogoDynamicConfig = currentHour >= 6 && currentHour < 19 ? getTileLayerConfig('mapboxPogo') : getTileLayerConfig('mapboxPogoDark') // eslint-disable-line no-unused-vars
+
+function getTileLayerConfig(selectedStyle) {
+    var tileLayerConfig
+    switch (selectedStyle) {
+        case 'googlemapssat':
+            tileLayerConfig = L.gridLayer.googleMutant({type: 'satellite'})
+            break
+        case 'googlemapsroad':
+            tileLayerConfig = L.gridLayer.googleMutant({type: 'roadmap'})
+            break
+        case 'mapboxPogoDynamic':
+            tileLayerConfig = mapboxPogoDynamicConfig
+            break
+        default:
+            if (selectedStyle.includes('mapbox')) {
+                tileLayerConfig = L.tileLayer(mapStyleList[selectedStyle]['url'] + selectedStyle['key'], {
+                    attribution: mapStyleList[selectedStyle]['attribution'],
+                    maxZoom: maxZoom,
+                    maxNativeZoom: mapStyleList[selectedStyle]['maxnativezoom']
+                })
+                break
+            }
+            tileLayerConfig = L.tileLayer(mapStyleList[selectedStyle]['url'], {
+                attribution: mapStyleList[selectedStyle]['attribution'],
+                maxZoom: maxZoom,
+                maxNativeZoom: mapStyleList[selectedStyle]['maxnativezoom']
+            })
+    }
+    return tileLayerConfig
+}
 
 function setTileLayer(layername) {
-    if (map.hasLayer(window[_oldlayer]) && window[_oldlayer] !== window[layername]) {
-        map.removeLayer(window[_oldlayer])
+    if (map.hasLayer(getTileLayerConfig(_oldlayer)) && getTileLayerConfig(_oldlayer) !== getTileLayerConfig(layername)) {
+        map.removeLayer(getTileLayerConfig(_oldlayer))
     }
-    map.addLayer(window[layername])
+    map.addLayer(getTileLayerConfig(layername))
+    $('.gmnoprint, .gm-style-cc').hide()
     _oldlayer = layername
 }
 
@@ -1183,6 +1061,9 @@ function initSidebar() {
     $('#nest-polygon-switch').prop('checked', Store.get('showNestPolygon'))
     $('#raid-timer-switch').prop('checked', Store.get('showRaidTimer'))
     $('#rocket-timer-switch').prop('checked', Store.get('showRocketTimer'))
+    $('#toast-switch').prop('checked', Store.get('showToast'))
+    $('#toast-delay-slider').val(Store.get('toastPokemonDelay'))
+    $('#toast-switch-wrapper').toggle(Store.get('showToast'))
     $('#sound-switch').prop('checked', Store.get('playSound'))
     $('#cries-switch').prop('checked', Store.get('playCries'))
     $('#cries-switch-wrapper').toggle(Store.get('playSound'))
@@ -1569,7 +1450,7 @@ function gymLabel(item) {
             raidIcon = '<img src="static/raids/egg_' + raidEgg + '.png" style="height:70px;">'
         }
     }
-    if (manualRaids && item['scanArea'] === false) {
+    if (!noRaids && manualRaids && item['scanArea'] === false) {
         raidStr += '<div class="raid-container">' + i8ln('Add raid ') + '<i class="fas fa-binoculars submit-raid" onclick="openRaidModal(event);" data-id="' + item['gym_id'] + '"></i>' +
             '</div>'
     }
@@ -2777,7 +2658,7 @@ function setupNestMarker(item) {
         className: 'marker-nests',
         html: getNestMarkerIcon
     })
-    if (noNestPolygon === false && Store.get('showNestPolygon') === true) {
+    if (noNestPolygon === false && Store.get('showNestPolygon') === true && item['polygon_path'] !== null) {
         var polygonColor = item['pokemon_types'][0]['color'] ? item['pokemon_types'][0]['color'] : 'grey'
         var polygon = L.polygon(JSON.parse(item['polygon_path']), {
             color: polygonColor
@@ -2910,20 +2791,16 @@ function communityLabel(item) {
         str +=
         '<center><div>' + item.size + ' ' + i8ln('Members') + '</div></center>'
     }
+    str += '<div class="d-grid">'
     if (item.has_invite_url === 1 && (item.invite_url !== '#' || item.invite_url !== undefined)) {
         str +=
-        '<center><div class="button-container">' +
-            '<a class="button" href="' + item.invite_url + '"><i class="fas fa-comments"></i> ' + i8ln('Join Now') +
-            '</a>' +
-        '</div></center>'
+        '<button class="btn btn-primary btn-sm" onclick="window.open(\'' + item.invite_url + '\',\'_blank\')" type="button"><i class="fas fa-comments"></i> ' + i8ln('Join Now') + '</button>'
     }
     if (!noEditCommunity) {
         str +=
-        '<center><div class="button-container">' +
-        '<a class="button" onclick="openEditCommunityModal(event);" data-id="' + item.community_id + '" data-title="' + item.title + '" data-description="' + item.description + '" data-invite="' + item.invite_url + '"><i class="fas fa-edit"></i> ' + i8ln('Edit Community') + '</center>' +
-            '</a>' +
-        '</div></center>'
+        '<button class="btn btn-primary btn-sm" role="button" onclick="openEditCommunityModal(event);" data-id="' + item.community_id + '" data-title="' + item.title + '" data-description="' + item.description + '" data-invite="' + item.invite_url + '"><i class="fas fa-edit"></i> ' + i8ln('Edit Community') + '</button>'
     }
+    str += '</div>'
     if (item.source === 2) {
         str += '<center><div style="margin-bottom:5px; margin-top:5px;">' + i8ln('Join on') + '<a href="https://thesilphroad.com/map#18/' + item.lat + '/' + item.lon + '">thesilphroad.com</a>' + '</div></center>'
     }
@@ -3006,7 +2883,9 @@ function portalLabel(item) {
     var str = '<center><div style="font-weight:900;font-size:12px;margin-left:10px;">' + item.name + '</div></center>' +
         '<center><img id="' + item.external_id + '" src="' + item.url + '" align"middle" style="width:175px;height:auto;" onclick="openFullscreenModal(document.getElementById(\'' + item.external_id + '\').src)"/></center>'
     if (!noConvertPortal) {
-        str += '<center><div><a class="button" style="margin-top:0px;margin-bottom:3px;" onclick="openConvertPortalModal(event);" data-id="' + item.external_id + '"><i class="fas fa-sync-alt convert-portal"></i>' + ' ' + i8ln('Convert portal') + '</a></div></center>'
+        str += '<div class="d-grid">' +
+            '<button class="btn btn-primary btn-sm" role="button" onclick="openConvertPortalModal(event);" data-id="' + item.external_id + '"><i class="fas fa-sync-alt convert-portal"></i>' + ' ' + i8ln('Convert portal') + '</button>' +
+            '</div>'
     }
     str += '<center><div>' + i8ln('Last updated') + ': ' + updated + '</div></center>' +
         '<center><div>' + i8ln('Date imported') + ': ' + imported + '</div></center>' +
@@ -3068,12 +2947,14 @@ function poiLabel(item) {
     if (!noDeletePoi) {
         str += '<i class="fas fa-trash-alt delete-poi" onclick="deletePoi(event);" data-id="' + item.poi_id + '"></i>'
     }
+    str += '<div class="d-grid">'
     if (!noEditPoi) {
-        str += '<center><div><button onclick="openEditPoiModal(event);" data-id="' + item.poi_id + '" data-name="' + item.name + '" data-description="' + item.description + '" data-notes="' + item.notes + '" data-poiimage="' + item.poiimageurl + '" data-poisurrounding="' + item.poisurroundingurl + '" class="convertpoi"><i class="fas fa-edit edit-poi"></i> ' + i8ln('Edit POI') + '</button></div></center>'
+        str += '<button class="btn btn-primary btn-sm" role="button" onclick="openEditPoiModal(event);" data-id="' + item.poi_id + '" data-name="' + item.name + '" data-description="' + item.description + '" data-notes="' + item.notes + '" data-poiimage="' + item.poiimageurl + '" data-poisurrounding="' + item.poisurroundingurl + '"><i class="fas fa-edit edit-poi"></i> ' + i8ln('Edit POI') + '</button>'
     }
     if (!noMarkPoi) {
-        str += '<center><div><button onclick="openMarkPoiModal(event);" data-id="' + item.poi_id + '" class="convertpoi"><i class="fas fa-sync-alt convert-poi"></i> ' + i8ln('Mark POI') + '</button></div></center>'
+        str += '<button class="btn btn-primary btn-sm" role="button" onclick="openMarkPoiModal(event);" data-id="' + item.poi_id + '"><i class="fas fa-sync-alt convert-poi"></i> ' + i8ln('Mark POI') + '</button>'
     }
+    str += '</div>'
     str += '<center><a href="javascript:void(0);" onclick="javascript:openMapDirections(' + item.lat + ',' + item.lon + ');" title="' + i8ln('View in Maps') + '"><i class="fas fa-road"></i> ' + item.lat.toFixed(5) + ' , ' + item.lon.toFixed(5) + '</a> - <a href="./?lat=' + item.lat + '&lon=' + item.lon + '&zoom=18"><i class="far fa-share-square" aria-hidden="true" style="position:relative;top:3px;left:0px;color:#26c300;font-size:20px;"></i></a></center>'
     return str
 }
@@ -3082,7 +2963,7 @@ function deletePortal(event) { // eslint-disable-line no-unused-vars
     var button = $(event.target)
     var portalid = button.data('id')
     if (portalid && portalid !== '') {
-        if (confirm(i8ln('I confirm that this portal does not longer exist. This is a permanent deleture'))) {
+        if (confirm(i8ln('I confirm that this portal does not longer exist. This is a permanent removal'))) {
             return $.ajax({
                 url: 'submit',
                 type: 'POST',
@@ -3095,10 +2976,10 @@ function deletePortal(event) { // eslint-disable-line no-unused-vars
                 },
                 error: function error() {
                     // Display error toast
-                    toastr['error'](i8ln('Oops something went wrong.'), i8ln('Error Deleting portal'))
-                    toastr.options = toastrOptions
+                    sendToast('danger', i8ln('Error Deleting portal'), i8ln('Oops something went wrong.'), 'true')
                 },
                 complete: function complete() {
+                    sendToast('success', i8ln('Deleting portal'), i8ln('Deleting portal successful.'), 'true')
                     jQuery('label[for="portals-switch"]').click()
                     jQuery('label[for="portals-switch"]').click()
                 }
@@ -3111,7 +2992,7 @@ function deletePoi(event) { // eslint-disable-line no-unused-vars
     var button = $(event.target)
     var poiid = button.data('id')
     if (poiid && poiid !== '') {
-        if (confirm(i8ln('I confirm that this poi has been accepted through niantic or is not eligible as POI. This is a permanent deleture'))) {
+        if (confirm(i8ln('I confirm that this poi has been accepted through niantic or is not eligible as POI. This is a permanent removal'))) {
             return $.ajax({
                 url: 'submit',
                 type: 'POST',
@@ -3124,10 +3005,10 @@ function deletePoi(event) { // eslint-disable-line no-unused-vars
                 },
                 error: function error() {
                     // Display error toast
-                    toastr['error'](i8ln('Oops something went wrong.'), i8ln('Error Deleting poi'))
-                    toastr.options = toastrOptions
+                    sendToast('danger', i8ln('Error Deleting poi'), i8ln('Oops something went wrong.'), 'true')
                 },
                 complete: function complete() {
+                    sendToast('success', i8ln('Deleting poi'), i8ln('Deleting portal successful'), 'true')
                     jQuery('label[for="poi-switch"]').click()
                     jQuery('label[for="poi-switch"]').click()
                 }
@@ -3405,8 +3286,7 @@ function loadRawData() {
         cache: false,
         beforeSend: function beforeSend() {
             if (maxLatLng > 0 && (((neLat - swLat) > maxLatLng) || ((neLng - swLng) > maxLatLng))) {
-                toastr['error'](i8ln('Please zoom in to get data.'), i8ln('Max zoom'))
-                toastr.options = toastrOptions
+                sendToast('warning', i8ln('Max zoom'), i8ln('Please zoom in to get data'), 'true')
                 return false
             }
             if (rawDataIsLoading) {
@@ -3419,28 +3299,26 @@ function loadRawData() {
             // Display error toast
             switch (xhr.status) {
                 case 400:
-                    toastr['error'](i8ln('Please check connectivity or reduce marker settings.'), i8ln('Not Acceptable'))
-                    toastr.options = toastrOptions
-                    setTimeout(window.location.href = './logout', 5000)
+                    sendToast('danger', i8ln('Not Acceptable'), i8ln('Please check connectivity or reduce marker settings.'), 'true')
+                    setTimeout(function () { window.location.href = './logout' }, 5000)
                     break
                 case 401:
-                    toastr['error'](i8ln('Another device just logged in with the same account.'), i8ln('Unauthorized'))
-                    toastr.options = toastrOptions
-                    setTimeout(window.location.href = './login?action=login&error=invalid-token', 5000)
+                    sendToast('danger', i8ln('Unauthorized'), i8ln('Another device just logged in with the same account.'), 'true')
+                    setTimeout(function () { window.location.href = './login?action=login&error=invalid-token' }, 5000)
                     break
                 case 403:
-                    toastr['error'](i8ln('This action is not allowed.'), i8ln('Forbidden'))
-                    toastr.options = toastrOptions
-                    setTimeout(window.location.href = './logout', 5000)
+                    sendToast('danger', i8ln('Forbidden'), i8ln('This action is not allowed.'), 'true')
+                    setTimeout(function () { window.location.href = './logout' }, 5000)
                     break
                 case 404:
-                    toastr['error'](i8ln('Session tokens haven\'t been found.'), i8ln('Not found'))
-                    toastr.options = toastrOptions
-                    setTimeout(window.location.href = './login?action=login&error=no-id', 5000)
+                    sendToast('danger', i8ln('Not found'), i8ln('Session tokens haven\'t been found.'), 'true')
+                    setTimeout(function () { window.location.href = './login?action=login&error=no-id' }, 5000)
                     break
                 case 413:
-                    toastr['error'](i8ln('This is too much data for me please zoom in.'), i8ln('You got me overwhelmed'))
-                    toastr.options = toastrOptions
+                    sendToast('danger', i8ln('You got me overwhelmed'), i8ln('This is too much data for me please zoom in.'), 'true')
+                    break
+                default:
+                    sendToast('danger', i8ln('Webserver error'), i8ln('Server went away...'), 'true')
             }
         },
         complete: function complete() {
@@ -3457,8 +3335,7 @@ function loadWeather() {
         cache: false,
         error: function error() {
             // Display error toast
-            toastr['error'](i8ln('Please check connectivity or reduce marker settings.'), i8ln('Error getting weather'))
-            toastr.options = toastrOptions
+            sendToast('danger', i8ln('Error getting weather'), i8ln('Please check connectivity or reduce marker settings.'), 'true')
         },
         complete: function complete() {
 
@@ -3478,8 +3355,7 @@ function loadWeatherCellData(cell) { // eslint-disable-line no-unused-vars
         },
         error: function error() {
             // Display error toast
-            toastr['error'](i8ln('Please check connectivity or reduce marker settings.'), i8ln('Error getting weather'))
-            toastr.options = toastrOptions
+            sendToast('danger', i8ln('Error getting weather'), i8ln('Please check connectivity or reduce marker settings.'), 'true')
         },
         complete: function complete() {
 
@@ -3500,10 +3376,13 @@ function searchForItem(lat, lon, term, type, field) {
                 'lat': lat,
                 'lon': lon
             },
-            error: function error() {
+            error: function error(xhr) {
                 // Display error toast
-                toastr['error'](i8ln('Please check connectivity or reduce marker settings.'), i8ln('Error searching'))
-                toastr.options = toastrOptions
+                switch (xhr.status) {
+                    case 404:
+                        sendToast('warning', i8ln('Error searching'), i8ln('Could not find any results please try again.'), 'true')
+                        break
+                }
             }
         }).done(function (data) {
             if (data) {
@@ -3644,6 +3523,25 @@ function searchForItem(lat, lon, term, type, field) {
                     '</li>'
                     sr.append(html)
                 })
+                $.each(data.pokemon, function (i, element) {
+                    var pokemonIdStr = ''
+                    if (element.pokemon_id <= 9) {
+                        pokemonIdStr = '00' + element.pokemon_id
+                    } else if (element.pokemon_id <= 99) {
+                        pokemonIdStr = '0' + element.pokemon_id
+                    } else {
+                        pokemonIdStr = element.pokemon_id
+                    }
+                    var html = '<li class="search-result ' + type + '" data-lat="' + element.lat + '" data-lon="' + element.lon + '"><div class="left-column" onClick="centerMapOnCoords(event);">'
+                    if (sr.hasClass('pokemon-results')) {
+                        html += '<span style="background:url(' + iconpath + 'pokemon_icon_' + pokemonIdStr + '_00.png) no-repeat;" class="i-icon" ></span>'
+                    }
+                    html += '<div class="cont">' +
+                    '<span class="name" style="font-weight:bold">' + element.name + '</span>' + '<span class="distance" style="font-weight:bold">&nbsp;-&#32;' + element.distance + defaultUnit + '</span>' +
+                    '</div></div>' +
+                    '</li>'
+                    sr.append(html)
+                })
             }
         })
     }
@@ -3692,14 +3590,13 @@ function centerMapOnCoords(event) { // eslint-disable-line no-unused-vars
     }
     var latlng = new L.LatLng(point.data('lat'), point.data('lon'))
     map.setView(latlng, zoom)
-    $('.ui-dialog-content').dialog('close')
 }
 
 function manualPokestopData(event) { // eslint-disable-line no-unused-vars
     var form = $(event.target).parent().parent()
     var pokestopName = form.find('[name="pokestop-name"]').val()
-    var lat = $('.submit-modal.ui-dialog-content .submitLatitude').val()
-    var lon = $('.submit-modal.ui-dialog-content .submitLongitude').val()
+    var lat = $('#submitModal .submitLatitude').val()
+    var lon = $('#submitModal .submitLongitude').val()
     var scanArea
     var latlng = turf.point([lon, lat])
     $.each(scanAreas, function (index, poly) {
@@ -3725,19 +3622,19 @@ function manualPokestopData(event) { // eslint-disable-line no-unused-vars
                 },
                 error: function error() {
                     // Display error toast
-                    toastr['error'](i8ln('Please check connectivity or reduce marker settings.'), i8ln('Error Submitting Pokestop'))
-                    toastr.options = toastrOptions
+                    sendToast('danger', i8ln('Error Submitting Pokéstop'), i8ln('Could not submit Pokéstop.'), 'true')
                 },
                 complete: function complete() {
+                    sendToast('success', i8ln('Submitting Pokéstop'), pokestopName + i8ln(' successful submitted.'), 'true')
                     lastpokestops = false
                     updateMap()
-                    $('.ui-dialog-content').dialog('close')
+                    $('.modal').modal('hide')
                 }
             })
         }
     } else if (scanArea) {
         if (confirm(i8ln('Adding a Pokéstop inside the scan area is not allowed'))) {
-            $('.ui-dialog-content').dialog('close')
+            $('.modal').modal('hide')
         }
     }
 }
@@ -3745,8 +3642,8 @@ function manualPokestopData(event) { // eslint-disable-line no-unused-vars
 function manualGymData(event) { // eslint-disable-line no-unused-vars
     var form = $(event.target).parent().parent()
     var gymName = form.find('[name="gym-name"]').val()
-    var lat = $('.submit-modal.ui-dialog-content .submitLatitude').val()
-    var lon = $('.submit-modal.ui-dialog-content .submitLongitude').val()
+    var lat = $('#submitModal .submitLatitude').val()
+    var lon = $('#submitModal .submitLongitude').val()
     var scanArea
     var latlng = turf.point([lon, lat])
     $.each(scanAreas, function (index, poly) {
@@ -3772,27 +3669,27 @@ function manualGymData(event) { // eslint-disable-line no-unused-vars
                 },
                 error: function error() {
                     // Display error toast
-                    toastr['error'](i8ln('Please check connectivity or reduce marker settings.'), i8ln('Error Submitting Gym'))
-                    toastr.options = toastrOptions
+                    sendToast('danger', i8ln('Error Submitting Gym'), i8ln('Could not submit Gym.'), 'true')
                 },
                 complete: function complete() {
+                    sendToast('danger', i8ln('Submitting Gym'), gymName + i8ln(' successful submitted.'), 'true')
                     lastgyms = false
                     updateMap()
-                    $('.ui-dialog-content').dialog('close')
+                    $('.modal').modal('hide')
                 }
             })
         }
     } else if (scanArea) {
         if (confirm(i8ln('Adding a Gym inside the scan area is not allowed'))) {
-            $('.ui-dialog-content').dialog('close')
+            $('.modal').modal('hide')
         }
     }
 }
 function manualPokemonData(event) { // eslint-disable-line no-unused-vars
     var form = $(event.target).parent().parent().parent()
     var pokemonId = form.find('.pokemonID').val()
-    var lat = $('.submit-modal.ui-dialog-content .submitLatitude').val()
-    var lon = $('.submit-modal.ui-dialog-content .submitLongitude').val()
+    var lat = $('#submitModal .submitLatitude').val()
+    var lon = $('#submitModal .submitLongitude').val()
     var scanArea
     var latlng = turf.point([lon, lat])
     $.each(scanAreas, function (index, poly) {
@@ -3818,19 +3715,19 @@ function manualPokemonData(event) { // eslint-disable-line no-unused-vars
                 },
                 error: function error() {
                     // Display error toast
-                    toastr['error'](i8ln('Please check connectivity or reduce marker settings.'), i8ln('Error Submitting Pokemon'))
-                    toastr.options = toastrOptions
+                    sendToast('danger', i8ln('Error Submitting Pokémon'), i8ln('Could not submit Pokémon.'), 'true')
                 },
                 complete: function complete() {
+                    sendToast('success', i8ln('Submitting Pokémon'), pokeList[pokemonId - 1].name + i8ln(' successful submitted.'), 'true')
                     lastpokemon = false
                     updateMap()
-                    $('.ui-dialog-content').dialog('close')
+                    $('.modal').modal('hide')
                 }
             })
         }
     } else if (scanArea) {
         if (confirm(i8ln('Adding a wild spawn inside the scan area is not allowed'))) {
-            $('.ui-dialog-content').dialog('close')
+            $('.modal').modal('hide')
         }
     }
 }
@@ -3838,7 +3735,7 @@ function deleteGym(event) { // eslint-disable-line no-unused-vars
     var button = $(event.target)
     var gymId = button.data('id')
     if (gymId && gymId !== '') {
-        if (confirm(i8ln('I confirm that I want to delete this gym. This is a permanent deleture'))) {
+        if (confirm(i8ln('I confirm that I want to delete this gym. This is a permanent removal'))) {
             return $.ajax({
                 url: 'submit',
                 type: 'POST',
@@ -3851,10 +3748,10 @@ function deleteGym(event) { // eslint-disable-line no-unused-vars
                 },
                 error: function error() {
                     // Display error toast
-                    toastr['error'](i8ln('Please check connectivity or reduce marker settings.'), i8ln('Error Deleting Gym'))
-                    toastr.options = toastrOptions
+                    sendToast('danger', i8ln('Error Deleting Gym'), i8ln('Could not delete Gym.'), 'true')
                 },
                 complete: function complete() {
+                    sendToast('success', i8ln('Deleting Gym'), i8ln('Gym successful deleted.'), 'true')
                     jQuery('label[for="gyms-switch"]').click()
                     jQuery('label[for="gyms-switch"]').click()
                     jQuery('#gym-details').removeClass('visible')
@@ -3865,8 +3762,8 @@ function deleteGym(event) { // eslint-disable-line no-unused-vars
 }
 function renameGymData(event) { // eslint-disable-line no-unused-vars
     var form = $(event.target).parent().parent()
-    var gymId = form.find('.renamegymid').val()
-    var gymName = form.find('[name="gym-name"]').val()
+    var gymId = form.find('[name="renamegymid"]').val()
+    var gymName = form.find('[name="gym-rename"]').val()
     if (gymName && gymName !== '') {
         if (confirm(i8ln('I confirm this is an accurate new name for this gym'))) {
             return $.ajax({
@@ -3882,15 +3779,15 @@ function renameGymData(event) { // eslint-disable-line no-unused-vars
                 },
                 error: function error() {
                     // Display error toast
-                    toastr['error'](i8ln('Please check connectivity or reduce marker settings.'), i8ln('Error changing gym name'))
-                    toastr.options = toastrOptions
+                    sendToast('danger', i8ln('Error Gym'), i8ln('Could not rename Gym.'), 'true')
                 },
                 complete: function complete() {
+                    sendToast('success', i8ln('Gym rename'), gymName + i8ln(' renamed'), 'true')
                     jQuery('label[for="gyms-switch"]').click()
                     jQuery('label[for="gyms-switch"]').click()
                     lastgyms = false
                     updateMap()
-                    $('.ui-dialog-content').dialog('close')
+                    $('.modal').modal('hide')
                 }
             })
         }
@@ -3913,10 +3810,10 @@ function toggleExGym(event) { // eslint-disable-line no-unused-vars
                 },
                 error: function error() {
                     // Display error toast
-                    toastr['error'](i8ln('Please check connectivity or reduce marker settings.'), i8ln('Error marking as EX Gym'))
-                    toastr.options = toastrOptions
+                    sendToast('danger', i8ln('Error EX Gym'), i8ln('Could not change Gym to EX Gym.'), 'true')
                 },
                 complete: function complete() {
+                    sendToast('success', i8ln('Change EX Gym'), i8ln('Successful changed Gym to EX Gym.'), 'true')
                     jQuery('label[for="gyms-switch"]').click()
                     jQuery('label[for="gyms-switch"]').click()
                     jQuery('#gym-details').removeClass('visible')
@@ -3929,7 +3826,7 @@ function deletePokestop(event) { // eslint-disable-line no-unused-vars
     var button = $(event.target)
     var pokestopId = button.data('id')
     if (pokestopId && pokestopId !== '') {
-        if (confirm(i8ln('I confirm that I want to delete this pokestop. This is a permanent deleture'))) {
+        if (confirm(i8ln('I confirm that I want to delete this pokestop. This is a permanent removal'))) {
             return $.ajax({
                 url: 'submit',
                 type: 'POST',
@@ -3942,10 +3839,10 @@ function deletePokestop(event) { // eslint-disable-line no-unused-vars
                 },
                 error: function error() {
                     // Display error toast
-                    toastr['error'](i8ln('Please check connectivity or reduce marker settings.'), i8ln('Error Deleting Pokestop'))
-                    toastr.options = toastrOptions
+                    sendToast('danger', i8ln('Deleting Pokéstop'), i8ln('Could not delete Pokéstop.'), 'true')
                 },
                 complete: function complete() {
+                    sendToast('success', i8ln('Deleting Pokéstop'), i8ln('Successful deleted Pokéstop.'), 'true')
                     jQuery('label[for="pokestops-switch"]').click()
                     jQuery('label[for="pokestops-switch"]').click()
                 }
@@ -3955,8 +3852,8 @@ function deletePokestop(event) { // eslint-disable-line no-unused-vars
 }
 function renamePokestopData(event) { // eslint-disable-line no-unused-vars
     var form = $(event.target).parent().parent()
-    var pokestopId = form.find('.renamepokestopid').val()
-    var pokestopName = form.find('[name="pokestop-name"]').val()
+    var pokestopId = form.find('[name="renamepokestopid"]').val()
+    var pokestopName = form.find('[name="pokestop-rename"]').val()
     if (pokestopName && pokestopName !== '') {
         if (confirm(i8ln('I confirm this is an accurate new name for this pokestop'))) {
             return $.ajax({
@@ -3972,15 +3869,15 @@ function renamePokestopData(event) { // eslint-disable-line no-unused-vars
                 },
                 error: function error() {
                     // Display error toast
-                    toastr['error'](i8ln('Please check connectivity or reduce marker settings.'), i8ln('Error changing Pokestop name'))
-                    toastr.options = toastrOptions
+                    sendToast('danger', i8ln('Rename Pokéstop'), i8ln('Could not rename Pokéstop.'), 'true')
                 },
                 complete: function complete() {
+                    sendToast('success', i8ln('Rename Pokéstop'), pokestopName + i8ln(' renamed'), 'true')
                     jQuery('label[for="pokestops-switch"]').click()
                     jQuery('label[for="pokestops-switch"]').click()
                     lastpokestops = false
                     updateMap()
-                    $('.ui-dialog-content').dialog('close')
+                    $('.modal').modal('hide')
                 }
             })
         }
@@ -3988,7 +3885,7 @@ function renamePokestopData(event) { // eslint-disable-line no-unused-vars
 }
 function convertPokestopData(event) { // eslint-disable-line no-unused-vars
     var form = $(event.target).parent().parent()
-    var pokestopId = form.find('.convertpokestopid').val()
+    var pokestopId = form.find('[name="convertpokestopid"]').val()
     if (pokestopId && pokestopId !== '') {
         if (confirm(i8ln('I confirm this pokestop is now a gym'))) {
             return $.ajax({
@@ -4003,26 +3900,39 @@ function convertPokestopData(event) { // eslint-disable-line no-unused-vars
                 },
                 error: function error() {
                     // Display error toast
-                    toastr['error'](i8ln('Pokéstop ID got lost somewhere.'), i8ln('Error converting Pokéstop'))
-                    toastr.options = toastrOptions
+                    sendToast('danger', i8ln('Error converting Pokéstop'), i8ln('Pokéstop ID got lost somewhere.'), 'true')
                 },
                 complete: function complete() {
+                    sendToast('success', i8ln('Converting Pokéstop'), i8ln('Pokéstop converted to Gym'), 'true')
                     lastgyms = false
                     jQuery('label[for="pokestops-switch"]').click()
                     jQuery('label[for="pokestops-switch"]').click()
                     lastpokestops = false
                     updateMap()
-                    $('.ui-dialog-content').dialog('close')
+                    $('.modal').modal('hide')
                 }
             })
         }
     }
 }
-function convertPortalToPokestopData(event) { // eslint-disable-line no-unused-vars
+
+function convertPortalData(event, targetType) { // eslint-disable-line no-unused-vars
     var form = $(event.target).parent().parent()
-    var portalId = form.find('.convertportalid').val()
+    var portalId = form.find('[name="convertportalid"]').val()
+    var confirmText = ''
+    var errorText = ''
     if (portalId && portalId !== '') {
-        if (confirm(i8ln('I confirm this portal is a pokestop'))) {
+        switch (targetType) {
+            case '1':
+                confirmText = i8ln('I confirm this portal is a pokestop')
+                errorText = i8ln('Error converting to Pokestop')
+                break
+            case '2':
+                confirmText = i8ln('I confirm this portal is a gym')
+                errorText = i8ln('Error converting to Gym')
+                break
+        }
+        if (confirm(confirmText)) {
             return $.ajax({
                 url: 'submit',
                 type: 'POST',
@@ -4030,63 +3940,40 @@ function convertPortalToPokestopData(event) { // eslint-disable-line no-unused-v
                 dataType: 'json',
                 cache: false,
                 data: {
-                    'action': 'convertportalpokestop',
-                    'portalId': portalId
+                    'action': 'convertportal',
+                    'portalId': portalId,
+                    'targetType': targetType
                 },
                 error: function error() {
                     // Display error toast
-                    toastr['error'](i8ln('Portal ID got lost somewhere.'), i8ln('Error converting to Pokestop'))
-                    toastr.options = toastrOptions
+                    sendToast('danger', errorText, i8ln('Portal ID got lost somewhere.'), 'true')
                 },
                 complete: function complete() {
-                    lastgyms = false
-                    jQuery('label[for="pokestops-switch"]').click()
-                    jQuery('label[for="pokestops-switch"]').click()
-                    lastpokestops = false
+                    switch (targetType) {
+                        case '1':
+                            sendToast('success', i8ln('Convert Portal'), i8ln('Portal successful converted to Pokéstop'), 'true')
+                            jQuery('label[for="pokestops-switch"]').click()
+                            jQuery('label[for="pokestops-switch"]').click()
+                            lastpokestops = false
+                            break
+                        case '2':
+                            sendToast('success', i8ln('Convert Portal'), i8ln('Portal successful converted to Gym'), 'true')
+                            lastgyms = false
+                            break
+                    }
                     updateMap()
-                    $('.ui-dialog-content').dialog('close')
+                    $('.modal').modal('hide')
                 }
             })
         }
     }
 }
-function convertPortalToGymData(event) { // eslint-disable-line no-unused-vars
+
+function markPortalData(event) { // eslint-disable-line no-unused-vars
     var form = $(event.target).parent().parent()
-    var portalId = form.find('.convertportalid').val()
+    var portalId = form.find('[name="convertportalid"]').val()
     if (portalId && portalId !== '') {
-        if (confirm(i8ln('I confirm this portal is a gym'))) {
-            return $.ajax({
-                url: 'submit',
-                type: 'POST',
-                timeout: 300000,
-                dataType: 'json',
-                cache: false,
-                data: {
-                    'action': 'convertportalgym',
-                    'portalId': portalId
-                },
-                error: function error() {
-                    // Display error toast
-                    toastr['error'](i8ln('Portal ID got lost somewhere.'), i8ln('Error converting to Gym'))
-                    toastr.options = toastrOptions
-                },
-                complete: function complete() {
-                    lastgyms = false
-                    jQuery('label[for="pokestops-switch"]').click()
-                    jQuery('label[for="pokestops-switch"]').click()
-                    lastpokestops = false
-                    updateMap()
-                    $('.ui-dialog-content').dialog('close')
-                }
-            })
-        }
-    }
-}
-function markPortalChecked(event) { // eslint-disable-line no-unused-vars
-    var form = $(event.target).parent().parent()
-    var portalId = form.find('.convertportalid').val()
-    if (portalId && portalId !== '') {
-        if (confirm(i8ln('I confirm this portal is not a Pokestop or Gym'))) {
+        if (confirm(i8ln('I confirm this portal is not a Pokéstop or Gym'))) {
             return $.ajax({
                 url: 'submit',
                 type: 'POST',
@@ -4099,23 +3986,26 @@ function markPortalChecked(event) { // eslint-disable-line no-unused-vars
                 },
                 error: function error() {
                     // Display error toast
-                    toastr['error'](i8ln('Portal ID got lost somewhere.'), i8ln('Error marking portal'))
-                    toastr.options = toastrOptions
+                    sendToast('danger', i8ln('Error marking portal'), i8ln('Portal ID got lost somewhere.'), 'true')
                 },
                 complete: function complete() {
+                    sendToast('success', i8ln('Marking portal'), i8ln('Portal marked as not a Pokéstop or Gym'), 'true')
+                    jQuery('label[for="portals-switch"]').click()
+                    jQuery('label[for="portals-switch"]').click()
                     lastportals = false
                     updateMap()
-                    $('.ui-dialog-content').dialog('close')
+                    $('.modal').modal('hide')
                 }
             })
         }
     }
 }
+
 function deleteNest(event) { // eslint-disable-line no-unused-vars
     var button = $(event.target)
     var nestid = button.data('id')
     if (nestid && nestid !== '') {
-        if (confirm(i8ln('I confirm that I want to delete this nest. This is a permanent deleture'))) {
+        if (confirm(i8ln('I confirm that I want to delete this nest. This is a permanent removal'))) {
             return $.ajax({
                 url: 'submit',
                 type: 'POST',
@@ -4128,10 +4018,10 @@ function deleteNest(event) { // eslint-disable-line no-unused-vars
                 },
                 error: function error() {
                     // Display error toast
-                    toastr['error'](i8ln('Please check connectivity or reduce marker settings.'), i8ln('Error Deleting nest'))
-                    toastr.options = toastrOptions
+                    sendToast('danger', i8ln('Error Deleting nest'), i8ln('Could not delete Nest'), 'true')
                 },
                 complete: function complete() {
+                    sendToast('success', i8ln('Deleting nest'), i8ln('Successful deleted Nest'), 'true')
                     jQuery('label[for="nests-switch"]').click()
                     jQuery('label[for="nests-switch"]').click()
                 }
@@ -4143,8 +4033,8 @@ function deleteNest(event) { // eslint-disable-line no-unused-vars
 function submitNewNest(event) { // eslint-disable-line no-unused-vars
     var cont = $(event.target).parent().parent()
     var pokemonId = cont.find('.pokemonID').val()
-    var lat = $('.submit-modal.ui-dialog-content .submitLatitude').val()
-    var lon = $('.submit-modal.ui-dialog-content .submitLongitude').val()
+    var lat = $('#submitModal .submitLatitude').val()
+    var lon = $('#submitModal .submitLongitude').val()
     if (lat && lat !== '' && lon && lon !== '') {
         if (confirm(i8ln('I confirm this is an new nest'))) {
             return $.ajax({
@@ -4161,15 +4051,15 @@ function submitNewNest(event) { // eslint-disable-line no-unused-vars
                 },
                 error: function error() {
                     // Display error toast
-                    toastr['error'](i8ln('Please check connectivity or reduce marker settings.'), i8ln('Error Submitting Nest'))
-                    toastr.options = toastrOptions
+                    sendToast('danger', i8ln('Submitting nest'), i8ln('Could not submit Nest'), 'true')
                 },
                 complete: function complete() {
+                    sendToast('success', i8ln('Submitting nest'), pokeList[pokemonId - 1].name + i8ln(' nest successful submitted'), 'true')
                     lastnests = false
                     updateMap()
                     jQuery('label[for="nests-switch"]').click()
                     jQuery('label[for="nests-switch"]').click()
-                    $('.ui-dialog-content').dialog('close')
+                    $('.modal').modal('hide')
                 }
             })
         }
@@ -4177,9 +4067,9 @@ function submitNewNest(event) { // eslint-disable-line no-unused-vars
 }
 
 function manualNestData(event) { // eslint-disable-line no-unused-vars
-    var cont = $(event.target).parent().parent().parent()
-    var nestId = cont.find('.submitting-nests').data('nest')
-    var pokemonId = cont.find('.pokemonID').val()
+    var form = $(event.target).parent().parent().parent()
+    var nestId = form.find('[name="editnestid"]').val()
+    var pokemonId = form.find('.pokemonID').val()
     if (nestId && nestId !== '' && pokemonId && pokemonId !== '') {
         if (confirm(i8ln('I confirm this is an accurate sighting of a quest'))) {
             return $.ajax({
@@ -4195,15 +4085,15 @@ function manualNestData(event) { // eslint-disable-line no-unused-vars
                 },
                 error: function error() {
                     // Display error toast
-                    toastr['error'](i8ln('Please check connectivity or reduce marker settings.'), i8ln('Error Submitting Nest'))
-                    toastr.options = toastrOptions
+                    sendToast('danger', i8ln('Submitting nest'), i8ln('Could not change Nest'), 'true')
                 },
                 complete: function complete() {
+                    sendToast('success', i8ln('Submitting nest'), i8ln('Nest changed to ') + pokeList[pokemonId - 1].name, 'true')
                     lastnests = false
                     updateMap()
                     jQuery('label[for="nests-switch"]').click()
                     jQuery('label[for="nests-switch"]').click()
-                    $('.ui-dialog-content').dialog('close')
+                    $('.modal').modal('hide')
                 }
             })
         }
@@ -4211,21 +4101,20 @@ function manualNestData(event) { // eslint-disable-line no-unused-vars
 }
 
 function manualQuestData(event) { // eslint-disable-line no-unused-vars
-    var cont = $(event.target).parent().parent()
-    var questType = cont.find('.questTypeList').val()
-    var questTarget = cont.find('.questAmountList').val()
-    var conditionType = cont.find('.conditionTypeList').val()
-    var catchPokemon = cont.find('.pokeCatchList').val()
-    var catchPokemonCategory = cont.find('.typeCatchList').val()
-    var raidLevel = cont.find('.raidLevelList').val()
-    var throwType = cont.find('.throwTypeList').val()
-    var curveThrow = cont.find('.curveThrow').val()
-    var rewardType = cont.find('.rewardTypeList').val()
-    var encounter = cont.find('.pokeQuestList').val()
-    var item = cont.find('.itemQuestList').val()
-    var itemamount = cont.find('.itemAmountList').val()
-    var dust = cont.find('.dustQuestList').val()
-    var pokestopId = cont.find('.questPokestop').val()
+    var questType = $('#questTypeList').val()
+    var questTarget = $('#questAmountSelect').val()
+    var conditionType = $('#conditionTypeList').val()
+    var catchPokemon = $('#pokeCatch').val()
+    var catchPokemonCategory = $('#typeCatch').val()
+    var raidLevel = $('#raidLevel').val()
+    var throwType = $('#throwType').val()
+    var curveThrow = $('#curveThrow').val()
+    var rewardType = $('#rewardTypeList').val()
+    var encounter = $('#pokeReward').val()
+    var item = $('#itemReward').val()
+    var itemamount = $('#itemAmount').val()
+    var dust = $('#dustAmount').val()
+    var pokestopId = $('#questpokestopid').val()
     if (pokestopId && pokestopId !== '') {
         if (confirm(i8ln('I confirm this is an accurate sighting of a quest'))) {
             return $.ajax({
@@ -4253,15 +4142,15 @@ function manualQuestData(event) { // eslint-disable-line no-unused-vars
                 },
                 error: function error() {
                     // Display error toast
-                    toastr['error'](i8ln('Please check connectivity or reduce marker settings.'), i8ln('Error Submitting Quest'))
-                    toastr.options = toastrOptions
+                    sendToast('danger', i8ln('Submitting quest'), i8ln('Could not submit quest'), 'true')
                 },
                 complete: function complete() {
+                    sendToast('success', i8ln('Submitting quest'), i8ln('Successful submitted quest'), 'true')
                     lastpokestops = false
                     updateMap()
                     jQuery('label[for="pokestops-switch"]').click()
                     jQuery('label[for="pokestops-switch"]').click()
-                    $('.ui-dialog-content').dialog('close')
+                    $('.modal').modal('hide')
                 }
             })
         }
@@ -4269,11 +4158,10 @@ function manualQuestData(event) { // eslint-disable-line no-unused-vars
 }
 
 function manualRaidData(event) { // eslint-disable-line no-unused-vars
-    var form = $(event.target).parent().parent()
-    var pokemonId = form.find('[name="pokemonId"]').val()
-    gymId = form.find('[name="gymId"]').val()
-    var monTime = form.find('[name="mon_time"]').val()
-    var eggTime = form.find('[name="egg_time"]').val()
+    var pokemonId = $('#manualraidpokemonid').val()
+    gymId = $('#manualraidgymid').val()
+    var monTime = $('#mon_time').val()
+    var eggTime = $('#egg_time').val()
     if (pokemonId && pokemonId !== '' && gymId && gymId !== '' && eggTime && eggTime !== '' && monTime && monTime !== '') {
         if (confirm(i8ln('I confirm this is an accurate sighting of a raid'))) {
             return $.ajax({
@@ -4291,13 +4179,13 @@ function manualRaidData(event) { // eslint-disable-line no-unused-vars
                 },
                 error: function error() {
                     // Display error toast
-                    toastr['error'](i8ln('Please check connectivity or reduce marker settings.'), i8ln('Error Submitting Raid'))
-                    toastr.options = toastrOptions
+                    sendToast('danger', i8ln('Submitting raid'), i8ln('Could not submit raid'), 'true')
                 },
                 complete: function complete() {
+                    sendToast('success', i8ln('Submitting raid'), pokeList[pokemonId - 1].name + i8ln(' raid submitted'), 'true')
                     lastgyms = false
                     updateMap()
-                    $('.ui-dialog-content').dialog('close')
+                    $('.modal').modal('hide')
                 }
             })
         }
@@ -4305,8 +4193,8 @@ function manualRaidData(event) { // eslint-disable-line no-unused-vars
 }
 function submitNewCommunity(event) { // eslint-disable-line no-unused-vars
     var form = $(event.target).parent().parent()
-    var lat = $('.submit-modal.ui-dialog-content .submitLatitude').val()
-    var lon = $('.submit-modal.ui-dialog-content .submitLongitude').val()
+    var lat = $('#submitModal .submitLatitude').val()
+    var lon = $('#submitModal .submitLongitude').val()
     var communityName = form.find('[name="community-name"]').val()
     var communityDescription = form.find('[name="community-description"]').val()
     var communityInvite = form.find('[name="community-invite"]').val()
@@ -4328,49 +4216,24 @@ function submitNewCommunity(event) { // eslint-disable-line no-unused-vars
                 },
                 error: function error() {
                     // Display error toast
-                    toastr['error'](i8ln('Make sure all fields are filled and the invite link is a valid Discord, Telegram or Whatsapp link.'), i8ln('Error Submitting community'))
-                    toastr.options = toastrOptions
+                    sendToast('danger', i8ln('Submitting community'), i8ln('Make sure all fields are filled and the invite link is a valid Discord, Telegram or Whatsapp link.'), 'true')
                 },
                 complete: function complete() {
+                    sendToast('success', i8ln('Submitting community'), communityName + i8ln(' community submitted'), 'true')
+                    jQuery('label[for="communities-switch"]').click()
+                    jQuery('label[for="communities-switch"]').click()
                     lastcommunities = false
                     updateMap()
-                    $('.ui-dialog-content').dialog('close')
+                    $('.modal').modal('hide')
                 }
             })
         }
     }
 }
-function deleteCommunity(event) { // eslint-disable-line no-unused-vars
-    var button = $(event.target)
-    var communityid = button.data('id')
-    if (communityid && communityid !== '') {
-        if (confirm(i8ln('I confirm that I want to delete this community. This is a permanent deleture'))) {
-            return $.ajax({
-                url: 'submit',
-                type: 'POST',
-                timeout: 300000,
-                dataType: 'json',
-                cache: false,
-                data: {
-                    'action': 'delete-community',
-                    'communityId': communityid
-                },
-                error: function error() {
-                    // Display error toast
-                    toastr['error'](i8ln('Oops something went wrong.'), i8ln('Error Deleting community'))
-                    toastr.options = toastrOptions
-                },
-                complete: function complete() {
-                    jQuery('label[for="communities-switch"]').click()
-                    jQuery('label[for="communities-switch"]').click()
-                }
-            })
-        }
-    }
-}
+
 function editCommunityData(event) { // eslint-disable-line no-unused-vars
     var form = $(event.target).parent().parent()
-    var communityId = form.find('.editcommunityid').val()
+    var communityId = form.find('[name="editcommunityid"]').val()
     var communityName = form.find('[name="community-name"]').val()
     var communityDescription = form.find('[name="community-description"]').val()
     var communityInvite = form.find('[name="community-invite"]').val()
@@ -4391,75 +4254,54 @@ function editCommunityData(event) { // eslint-disable-line no-unused-vars
                 },
                 error: function error() {
                     // Display error toast
-                    toastr['error'](i8ln('No fields are filled or an invalid url is found, please check the form.'), i8ln('Error changing community'))
-                    toastr.options = toastrOptions
+                    sendToast('danger', i8ln('Edit community'), i8ln('Form fields are empty or an invalid url is found, please check the form.'), 'true')
                 },
                 complete: function complete() {
+                    sendToast('success', i8ln('Edit community'), communityName + i8ln(' edit successful'), 'true')
                     jQuery('label[for="communities-switch"]').click()
                     jQuery('label[for="communities-switch"]').click()
                     lastpokestops = false
                     updateMap()
-                    $('.ui-dialog-content').dialog('close')
+                    $('.modal').modal('hide')
                 }
             })
         }
     }
 }
-function editPoiData(event) { // eslint-disable-line no-unused-vars
-    var form = $(event.target).parent().parent()
-    var poiId = form.find('.editpoiid').val()
-    var poiName = form.find('[name="poi-name"]').val()
-    var poiDescription = form.find('[name="poi-description"]').val()
-    var poiNotes = form.find('[name="poi-notes"]').val()
-    var poiImage = form.find('[name="preview-poi-image"]').attr('src')
-    var poiSurrounding = form.find('[name="preview-poi-surrounding"]').attr('src')
-    if (typeof poiImage !== 'undefined') {
-        poiImage = poiImage.split(',')[1]
-    } else {
-        poiImage = null
-    }
-    if (typeof poiSurrounding !== 'undefined') {
-        poiSurrounding = poiSurrounding.split(',')[1]
-    } else {
-        poiSurrounding = null
-    }
-    if (poiName && poiName !== '' && poiDescription && poiDescription !== '') {
-        if (confirm(i8ln('I confirm this is an eligible POI location'))) {
-            $('.loader').show()
+
+function deleteCommunity(event) { // eslint-disable-line no-unused-vars
+    var button = $(event.target)
+    var communityid = button.data('id')
+    if (communityid && communityid !== '') {
+        if (confirm(i8ln('I confirm that I want to delete this community. This is a permanent removal'))) {
             return $.ajax({
                 url: 'submit',
                 type: 'POST',
-                timeout: 600000,
+                timeout: 300000,
                 dataType: 'json',
                 cache: false,
                 data: {
-                    'action': 'edit-poi',
-                    'poiId': poiId,
-                    'poiName': poiName,
-                    'poiDescription': poiDescription,
-                    'poiNotes': poiNotes,
-                    'poiImage': poiImage,
-                    'poiSurrounding': poiSurrounding
+                    'action': 'delete-community',
+                    'communityId': communityid
                 },
                 error: function error() {
                     // Display error toast
-                    toastr['error'](i8ln('Unable to update poi'), i8ln('Error Updating poi'))
-                    toastr.options = toastrOptions
+                    sendToast('danger', i8ln('Delete community'), i8ln('Oops something went wrong.'), 'true')
                 },
                 complete: function complete() {
-                    lastpois = false
-                    updateMap()
-                    $('.loader').hide()
-                    $('.ui-dialog-content').dialog('close')
+                    sendToast('success', i8ln('Delete community'), i8ln('Community successful deleted'), 'true')
+                    jQuery('label[for="communities-switch"]').click()
+                    jQuery('label[for="communities-switch"]').click()
                 }
             })
         }
     }
 }
+
 function submitPoi(event) { // eslint-disable-line no-unused-vars
     var form = $(event.target).parent().parent()
-    var lat = $('.submit-modal.ui-dialog-content .submitLatitude').val()
-    var lon = $('.submit-modal.ui-dialog-content .submitLongitude').val()
+    var lat = $('#submitModal .submitLatitude').val()
+    var lon = $('#submitModal .submitLongitude').val()
     var poiName = form.find('[name="poi-name"]').val()
     var poiDescription = form.find('[name="poi-description"]').val()
     var poiNotes = form.find('[name="poi-notes"]').val()
@@ -4496,25 +4338,96 @@ function submitPoi(event) { // eslint-disable-line no-unused-vars
                 },
                 error: function error() {
                     // Display error toast
-                    toastr['error'](i8ln('Make sure all fields are filled.'), i8ln('Error Submitting poi'))
-                    toastr.options = toastrOptions
+                    sendToast('danger', i8ln('Submit POI'), i8ln('Oops something went wrong.'), 'true')
                 },
                 complete: function complete() {
+                    sendToast('success', i8ln('Submit POI'), poiName + i8ln(' successful submitted'), 'true')
+                    jQuery('label[for="poi-switch"]').click()
+                    jQuery('label[for="poi-switch"]').click()
                     lastpois = false
                     updateMap()
                     $('.loader').hide()
-                    $('.ui-dialog-content').dialog('close')
+                    $('.modal').modal('hide')
                 }
             })
         }
     }
 }
 
-function markPoiSubmitted(event) { // eslint-disable-line no-unused-vars
+function editPoiData(event) { // eslint-disable-line no-unused-vars
     var form = $(event.target).parent().parent()
-    var poiId = form.find('.markpoiid').val()
+    var poiId = form.find('[name="editpoiid"]').val()
+    var poiName = form.find('[name="poi-name"]').val()
+    var poiDescription = form.find('[name="poi-description"]').val()
+    var poiNotes = form.find('[name="poi-notes"]').val()
+    var poiImage = form.find('[id="edit-preview-poi-image"]').attr('src')
+    var poiSurrounding = form.find('[id="edit-preview-poi-surrounding"]').attr('src')
+    if (typeof poiImage !== 'undefined') {
+        poiImage = poiImage.split(',')[1]
+    } else {
+        poiImage = null
+    }
+    if (typeof poiSurrounding !== 'undefined') {
+        poiSurrounding = poiSurrounding.split(',')[1]
+    } else {
+        poiSurrounding = null
+    }
+    if (poiName && poiName !== '' && poiDescription && poiDescription !== '') {
+        if (confirm(i8ln('I confirm this is an eligible POI location'))) {
+            $('.loader').show()
+            return $.ajax({
+                url: 'submit',
+                type: 'POST',
+                timeout: 600000,
+                dataType: 'json',
+                cache: false,
+                data: {
+                    'action': 'edit-poi',
+                    'poiId': poiId,
+                    'poiName': poiName,
+                    'poiDescription': poiDescription,
+                    'poiNotes': poiNotes,
+                    'poiImage': poiImage,
+                    'poiSurrounding': poiSurrounding
+                },
+                error: function error() {
+                    // Display error toast
+                    sendToast('danger', i8ln('Edit POI'), i8ln('Oops something went wrong.'), 'true')
+                },
+                complete: function complete() {
+                    sendToast('success', i8ln('Edit POI'), poiName + i8ln(' successful editted'), 'true')
+                    jQuery('label[for="poi-switch"]').click()
+                    jQuery('label[for="poi-switch"]').click()
+                    lastpois = false
+                    updateMap()
+                    $('.loader').hide()
+                    $('.modal').modal('hide')
+                }
+            })
+        }
+    }
+}
+
+function markPoi(event, poiMarkType) { // eslint-disable-line no-unused-vars
+    var form = $(event.target).parent()
+    var poiId = form.find('[name="markpoiid"]').val()
+    var confirmText = ''
     if (poiId && poiId !== '') {
-        if (confirm(i8ln('I confirm this candidate is submitted to OPR'))) {
+        switch (poiMarkType) {
+            case '2':
+                confirmText = i8ln('I confirm this candidate is submitted to OPR')
+                break
+            case '3':
+                confirmText = i8ln('I confirm this candidate is declined by OPR')
+                break
+            case '4':
+                confirmText = i8ln('I confirm this candidate is declined by OPR but can be resubmitted as candidate')
+                break
+            case '5':
+                confirmText = i8ln('I confirm this is not a eligible candidate to submit to OPR')
+                break
+        }
+        if (confirm(confirmText)) {
             return $.ajax({
                 url: 'submit',
                 type: 'POST',
@@ -4522,108 +4435,21 @@ function markPoiSubmitted(event) { // eslint-disable-line no-unused-vars
                 dataType: 'json',
                 cache: false,
                 data: {
-                    'action': 'markpoisubmitted',
+                    'action': 'markpoi',
+                    'poiMarkType': poiMarkType,
                     'poiId': poiId
                 },
                 error: function error() {
                     // Display error toast
-                    toastr['error'](i8ln('Candidate id got lost somewhere.'), i8ln('Error marking candidate'))
-                    toastr.options = toastrOptions
+                    sendToast('danger', i8ln('Marking POI'), i8ln('Error marking POI'), 'true')
                 },
                 complete: function complete() {
+                    sendToast('success', i8ln('Marking POI'), i8ln('POI marked successful'), 'true')
+                    jQuery('label[for="poi-switch"]').click()
+                    jQuery('label[for="poi-switch"]').click()
                     lastpois = false
                     updateMap()
-                    $('.ui-dialog-content').dialog('close')
-                }
-            })
-        }
-    }
-}
-
-function markPoiDeclined(event) { // eslint-disable-line no-unused-vars
-    var form = $(event.target).parent().parent()
-    var poiId = form.find('.markpoiid').val()
-    if (poiId && poiId !== '') {
-        if (confirm(i8ln('I confirm this candidate is declined by OPR'))) {
-            return $.ajax({
-                url: 'submit',
-                type: 'POST',
-                timeout: 300000,
-                dataType: 'json',
-                cache: false,
-                data: {
-                    'action': 'markpoideclined',
-                    'poiId': poiId
-                },
-                error: function error() {
-                    // Display error toast
-                    toastr['error'](i8ln('Candidate id got lost somewhere.'), i8ln('Error marking candidate'))
-                    toastr.options = toastrOptions
-                },
-                complete: function complete() {
-                    lastpois = false
-                    updateMap()
-                    $('.ui-dialog-content').dialog('close')
-                }
-            })
-        }
-    }
-}
-
-function markPoiResubmit(event) { // eslint-disable-line no-unused-vars
-    var form = $(event.target).parent().parent()
-    var poiId = form.find('.markpoiid').val()
-    if (poiId && poiId !== '') {
-        if (confirm(i8ln('I confirm this candidate is declined by OPR but can be resubmitted as candidate'))) {
-            return $.ajax({
-                url: 'submit',
-                type: 'POST',
-                timeout: 300000,
-                dataType: 'json',
-                cache: false,
-                data: {
-                    'action': 'markpoiresubmit',
-                    'poiId': poiId
-                },
-                error: function error() {
-                    // Display error toast
-                    toastr['error'](i8ln('Candidate id got lost somewhere.'), i8ln('Error marking candidate'))
-                    toastr.options = toastrOptions
-                },
-                complete: function complete() {
-                    lastpois = false
-                    updateMap()
-                    $('.ui-dialog-content').dialog('close')
-                }
-            })
-        }
-    }
-}
-
-function markNotCandidate(event) { // eslint-disable-line no-unused-vars
-    var form = $(event.target).parent().parent()
-    var poiId = form.find('.markpoiid').val()
-    if (poiId && poiId !== '') {
-        if (confirm(i8ln('I confirm this is not a eligible candidate to submit to OPR'))) {
-            return $.ajax({
-                url: 'submit',
-                type: 'POST',
-                timeout: 300000,
-                dataType: 'json',
-                cache: false,
-                data: {
-                    'action': 'marknotcandidate',
-                    'poiId': poiId
-                },
-                error: function error() {
-                    // Display error toast
-                    toastr['error'](i8ln('Candidate id got lost somewhere.'), i8ln('Error marking candidate'))
-                    toastr.options = toastrOptions
-                },
-                complete: function complete() {
-                    lastpois = false
-                    updateMap()
-                    $('.ui-dialog-content').dialog('close')
+                    $('.modal').modal('hide')
                 }
             })
         }
@@ -4631,539 +4457,160 @@ function markNotCandidate(event) { // eslint-disable-line no-unused-vars
 }
 
 function openNestModal(event) { // eslint-disable-line no-unused-vars
-    $('.ui-dialog').remove()
+    $('.modal').modal('hide')
     var val = $(event.target).data('id')
-    $('.submitting-nests').attr('data-nest', val)
-    $('.global-nest-modal').clone().dialog({
-        modal: true,
-        maxHeight: 600,
-        title: i8ln('Submit a Nest'),
-        buttons: {},
-        classes: {
-            'ui-dialog': 'ui-dialog nest-widget-popup'
-        },
-        open: function (event, ui) {
-            $('.nest-widget-popup .pokemon-list-cont').each(function (index) {
-                $(this).attr('id', 'pokemon-list-cont-7' + index)
-                var options = {
-                    valueNames: ['name', 'types', 'id']
-                }
-                var monList = new List('pokemon-list-cont-7' + index, options) // eslint-disable-line no-unused-vars
-            })
-        }
-    })
+    $('#editnestid').val(val)
+    $('#editNestModal').modal('show')
 }
 function openRaidModal(event) { // eslint-disable-line no-unused-vars
-    $('.ui-dialog').remove()
+    $('.modal').modal('hide')
     var val = $(event.target).data('id')
-    $('#raidModalGymId').val(val)
-    $('.raid-modal').clone().dialog({
-        modal: true,
-        maxHeight: 600,
-        buttons: {},
-        classes: {
-            'ui-dialog': 'ui-dialog raid-widget-popup'
-        }
-    })
+    $('#manualraidgymid').val(val)
+    $('#manualRaidModal').modal('show')
 }
 
 function openQuestModal(event) { // eslint-disable-line no-unused-vars
-    $(function () {
-        var $questTypeList = $('.quest-modal #questTypeList')
-        $questTypeList.select2({
-            placeholder: i8ln('Quest type'),
-            closeOnSelect: true,
-            minimumResultsForSearch: Infinity,
-            maximumSelectionSize: 1
-        })
-        $questTypeList.change(function () {
-            var questType = Number($(this).find('option:selected').val())
-            if (questType > 0) {
-                $('.quest-modal #questAmountList').show()
-            } else {
-                $('.quest-modal #questAmountList').hide()
-            }
-        })
-
-        var $questAmountList = $('.quest-modal #questAmountList')
-        $questAmountList.select2({
-            placeholder: i8ln('Quest target amount'),
-            closeOnSelect: true,
-            minimumResultsForSearch: Infinity,
-            maximumSelectionSize: 1
-        })
-
-        var $pokeCatchList = $('.quest-modal #pokeCatchList')
-        $pokeCatchList.select2({
-            placeholder: i8ln('Pokémon'),
-            data: pokeList,
-            multiple: true,
-            maximumSelectionSize: 2
-        })
-
-        var $pokemonTypes = $('.quest-modal #typeCatchList')
-        $pokemonTypes.select2({
-            placeholder: i8ln('Pokémon type'),
-            minimumResultsForSearch: Infinity,
-            multiple: true,
-            maximumSelectionSize: 3
-        })
-
-        var $raidLevelList = $('.quest-modal #raidLevelList')
-        $raidLevelList.select2({
-            placeholder: i8ln('Raid level'),
-            closeOnSelect: true,
-            minimumResultsForSearch: Infinity,
-            multiple: true,
-            maximumSelectionSize: 1
-        })
-
-        var $throwTypes = $('.quest-modal #throwTypeList')
-        $throwTypes.select2({
-            placeholder: i8ln('Throw type'),
-            closeOnSelect: true,
-            minimumResultsForSearch: Infinity,
-            maximumSelectionSize: 1
-        })
-        var $curveThrow = $('.quest-modal #curveThrow')
-        $curveThrow.select2({
-            placeholder: i8ln('Curve throw'),
-            closeOnSelect: true,
-            minimumResultsForSearch: Infinity,
-            maximumSelectionSize: 1
-        })
-        var $conditionTypeList = $('.quest-modal #conditionTypeList')
-        $conditionTypeList.select2({
-            placeholder: i8ln('Condition type'),
-            closeOnSelect: true,
-            minimumResultsForSearch: Infinity,
-            maximumSelectionSize: 1
-        })
-        $('.quest-modal #pokeCatchList').next('.select2-container').hide()
-        $('.quest-modal #typeCatchList').next('.select2-container').hide()
-        $('.quest-modal #raidLevelList').next('.select2-container').hide()
-        $('.quest-modal #throwTypeList').next('.select2-container').hide()
-        $('.quest-modal #curveThrow').next('.select2-container').hide()
-        $conditionTypeList.change(function () {
-            var conditionType = Number($(this).find('option:selected').val())
-            if (conditionType === 1) {
-                $('.quest-modal #pokeCatchList').next('.select2-container').hide()
-                $('.quest-modal #typeCatchList').next('.select2-container').show()
-                $('.quest-modal #raidLevelList').next('.select2-container').hide()
-                $('.quest-modal #throwTypeList').next('.select2-container').hide()
-                $('.quest-modal #curveThrow').next('.select2-container').hide()
-            } else if (conditionType === 2) {
-                $('.quest-modal #pokeCatchList').next('.select2-container').show()
-                $('.quest-modal #typeCatchList').next('.select2-container').hide()
-                $('.quest-modal #raidLevelList').next('.select2-container').hide()
-                $('.quest-modal #throwTypeList').next('.select2-container').hide()
-                $('.quest-modal #curveThrow').next('.select2-container').hide()
-            } else if (conditionType === 7) {
-                $('.quest-modal #pokeCatchList').next('.select2-container').hide()
-                $('.quest-modal #typeCatchList').next('.select2-container').hide()
-                $('.quest-modal #raidLevelList').next('.select2-container').show()
-                $('.quest-modal #throwTypeList').next('.select2-container').hide()
-                $('.quest-modal #curveThrow').next('.select2-container').hide()
-            } else if (conditionType === 8 || conditionType === 14) {
-                $('.quest-modal #pokeCatchList').next('.select2-container').hide()
-                $('.quest-modal #typeCatchList').next('.select2-container').hide()
-                $('.quest-modal #raidLevelList').next('.select2-container').hide()
-                $('.quest-modal #throwTypeList').next('.select2-container').show()
-                $('.quest-modal #curveThrow').next('.select2-container').show()
-            } else {
-                $('.quest-modal #pokeCatchList').next('.select2-container').hide()
-                $('.quest-modal #typeCatchList').next('.select2-container').hide()
-                $('.quest-modal #raidLevelList').next('.select2-container').hide()
-                $('.quest-modal #throwTypeList').next('.select2-container').hide()
-                $('.quest-modal #curveThrow').next('.select2-container').hide()
-            }
-        })
-        var $rewardTypeList = $('.quest-modal #rewardTypeList')
-        $rewardTypeList.select2({
-            placeholder: i8ln('Reward type'),
-            closeOnSelect: true,
-            minimumResultsForSearch: Infinity,
-            maximumSelectionSize: 1
-        })
-
-        var $itemQuestList = $('.quest-modal #itemQuestList')
-        $itemQuestList.select2({
-            placeholder: i8ln('Reward Item'),
-            closeOnSelect: true,
-            minimumResultsForSearch: Infinity,
-            maximumSelectionSize: 1
-        })
-
-        var $itemAmountList = $('.quest-modal #itemAmountList')
-        $itemAmountList.select2({
-            placeholder: i8ln('Reward Amount'),
-            closeOnSelect: true,
-            minimumResultsForSearch: Infinity,
-            maximumSelectionSize: 1
-        })
-
-        var $dustQuestList = $('.quest-modal #dustQuestList')
-        $dustQuestList.select2({
-            placeholder: i8ln('Stardust amount'),
-            closeOnSelect: true,
-            minimumResultsForSearch: Infinity,
-            maximumSelectionSize: 1
-        })
-
-        var $pokeQuestList = $('.quest-modal #pokeQuestList')
-        $pokeQuestList.select2({
-            placeholder: i8ln('Pokémon encounter'),
-            closeOnSelect: true,
-            maximumSelectionSize: 1
-        })
-        $('.quest-modal #itemQuestList').next('.select2-container').hide()
-        $('.quest-modal #itemAmountList').next('.select2-container').hide()
-        $('.quest-modal #dustQuestList').next('.select2-container').hide()
-        $('.quest-modal #pokeQuestList').next('.select2-container').hide()
-
-        $rewardTypeList.change(function () {
-            var rewardType = $(this).find('option:selected').val()
-            if (rewardType === '2') {
-                $('.quest-modal #itemQuestList').next('.select2-container').show()
-                $('.quest-modal #itemAmountList').next('.select2-container').show()
-                $('.quest-modal #dustQuestList').next('.select2-container').hide()
-                $('.quest-modal #pokeQuestList').next('.select2-container').hide()
-            } else if (rewardType === '3') {
-                $('.quest-modal #itemQuestList').next('.select2-container').hide()
-                $('.quest-modal #itemAmountList').next('.select2-container').hide()
-                $('.quest-modal #dustQuestList').next('.select2-container').show()
-                $('.quest-modal #pokeQuestList').next('.select2-container').hide()
-            } else if (rewardType === '7') {
-                $('.quest-modal #itemQuestList').next('.select2-container').hide()
-                $('.quest-modal #itemAmountList').next('.select2-container').hide()
-                $('.quest-modal #dustQuestList').next('.select2-container').hide()
-                $('.quest-modal #pokeQuestList').next('.select2-container').show()
-            } else {
-                $('.quest-modal #itemQuestList').next('.select2-container').hide()
-                $('.quest-modal #itemAmountList').next('.select2-container').hide()
-                $('.quest-modal #dustQuestList').next('.select2-container').hide()
-                $('.quest-modal #pokeQuestList').next('.select2-container').hide()
-            }
-        })
-    })
-    $('.ui-dialog').remove()
+    $('.modal').modal('hide')
     var val = $(event.target).data('id')
-    $('.questPokestop').val(val)
-    $('.quest-modal').clone().dialog({
-        modal: true,
-        maxHeight: 600,
-        buttons: {},
-        title: i8ln('Submit a Quest'),
-        classes: {
-            'ui-dialog': 'ui-dialog raid-widget-popup'
-        }
+    $('#questpokestopid').val(val)
+    $(function () {
+        $('#questTypeList').change(function () {
+            if (Number($(this).val()) > 0) {
+                $('#questAmountList').collapse('show')
+            } else {
+                $('#questAmountList').collapse('hide')
+            }
+        })
+        $('#conditionTypeList').change(function () {
+            if ($(this).val() === '1') {
+                $('#pokeCatchList').collapse('hide')
+                $('#typeCatchList').collapse('show')
+                $('#raidLevelList').collapse('hide')
+                $('#throwTypeList').collapse('hide')
+                $('#curveThrow').collapse('hide')
+            } else if ($(this).val() === '2') {
+                $('#pokeCatchList').collapse('show')
+                $('#typeCatchList').collapse('hide')
+                $('#raidLevelList').collapse('hide')
+                $('#throwTypeList').collapse('hide')
+                $('#curveThrow').collapse('hide')
+            } else if ($(this).val() === '7') {
+                $('#pokeCatchList').collapse('hide')
+                $('#typeCatchList').collapse('hide')
+                $('#raidLevelList').collapse('show')
+                $('#throwTypeList').collapse('hide')
+                $('#curveThrow').collapse('hide')
+            } else if ($(this).val() === '8' || $(this).val() === '14') {
+                $('#pokeCatchList').collapse('hide')
+                $('#typeCatchList').collapse('hide')
+                $('#raidLevelList').collapse('hide')
+                $('#throwTypeList').collapse('show')
+                $('#curveThrow').collapse('show')
+            } else {
+                $('#pokeCatchList').collapse('hide')
+                $('#typeCatchList').collapse('hide')
+                $('#raidLevelList').collapse('hide')
+                $('#throwTypeList').collapse('hide')
+                $('#curveThrow').collapse('hide')
+            }
+        })
+        $('#rewardTypeList').change(function () {
+            if ($(this).val() === '2') {
+                $('#itemRewardList').collapse('show')
+                $('#itemAmountList').collapse('show')
+                $('#dustAmountList').collapse('hide')
+                $('#pokeRewardList').collapse('hide')
+            } else if ($(this).val() === '3') {
+                $('#itemRewardList').collapse('hide')
+                $('#itemAmountList').collapse('hide')
+                $('#dustAmountList').collapse('show')
+                $('#pokeRewardList').collapse('hide')
+            } else if ($(this).val() === '7') {
+                $('#itemRewardList').collapse('hide')
+                $('#itemAmountList').collapse('hide')
+                $('#dustAmountList').collapse('hide')
+                $('#pokeRewardList').collapse('show')
+            } else {
+                $('#itemRewardList').collapse('hide')
+                $('#itemAmountList').collapse('hide')
+                $('#dustAmountList').collapse('hide')
+                $('#pokeRewardList').collapse('hide')
+            }
+        })
     })
+
+    $('#manualQuestModal').modal('show')
 }
 
 function openRenamePokestopModal(event) { // eslint-disable-line no-unused-vars
-    $('.ui-dialog').remove()
+    $('.modal').modal('hide')
     var val = $(event.target).data('id')
-    $('.renamepokestopid').val(val)
-    $('.renamepokestop-modal').clone().dialog({
-        modal: true,
-        maxHeight: 600,
-        buttons: {},
-        title: i8ln('Rename Pokéstop'),
-        classes: {
-            'ui-dialog': 'ui-dialog raid-widget-popup'
-        }
-    })
-}
-
-function openAccountModal(event) { // eslint-disable-line no-unused-vars
-    $('.ui-dialog').remove()
-    $('.account-modal').clone().dialog({
-        modal: true,
-        maxHeight: 600,
-        buttons: {},
-        title: i8ln('Profile'),
-        classes: {
-            'ui-dialog': 'ui-dialog raid-widget-popup'
-        }
-    })
+    $('#renamepokestopid').val(val)
+    $('#renamePokestopModal').modal('show')
 }
 
 function openRenameGymModal(event) { // eslint-disable-line no-unused-vars
-    $('.ui-dialog').remove()
+    $('.modal').modal('hide')
     var val = $(event.target).data('id')
-    $('.renamegymid').val(val)
-    $('.renamegym-modal').clone().dialog({
-        modal: true,
-        maxHeight: 600,
-        buttons: {},
-        title: i8ln('Rename Gym'),
-        classes: {
-            'ui-dialog': 'ui-dialog raid-widget-popup'
-        }
-    })
+    $('#renamegymid').val(val)
+    $('#renameGymModal').modal('show')
 }
 
 function openConvertPokestopModal(event) { // eslint-disable-line no-unused-vars
-    $('.ui-dialog').remove()
+    $('.modal').modal('hide')
     var val = $(event.target).data('id')
-    $('.convertpokestopid').val(val)
-    $('.convert-modal').clone().dialog({
-        modal: true,
-        maxHeight: 600,
-        buttons: {},
-        title: i8ln('Convert Pokéstop to Gym'),
-        classes: {
-            'ui-dialog': 'ui-dialog raid-widget-popup'
-        }
-    })
+    $('#convertpokestopid').val(val)
+    $('#convertPokestopModal').modal('show')
 }
 
 function openConvertPortalModal(event) { // eslint-disable-line no-unused-vars
-    $('.ui-dialog').remove()
+    $('.modal').modal('hide')
     var val = $(event.target).data('id')
-    $('.convertportalid').val(val)
-    $('.convert-portal-modal').clone().dialog({
-        modal: true,
-        maxHeight: 600,
-        buttons: {},
-        title: i8ln('Convert to Pokestop/Gym'),
-        classes: {
-            'ui-dialog': 'ui-dialog raid-widget-popup'
-        }
-    })
-}
-
-function openMarkPoiModal(event) { // eslint-disable-line no-unused-vars
-    $('.ui-dialog').remove()
-    var val = $(event.target).data('id')
-    $('.markpoiid').val(val)
-    $('.mark-poi-modal').clone().dialog({
-        modal: true,
-        maxHeight: 600,
-        buttons: {},
-        title: i8ln('Mark POI'),
-        classes: {
-            'ui-dialog': 'ui-dialog raid-widget-popup'
-        }
-    })
+    $('#convertportalid').val(val)
+    $('#convertPortalModal').modal('show')
 }
 
 function openEditCommunityModal(event) { // eslint-disable-line no-unused-vars
-    $('.ui-dialog').remove()
+    $('.modal').modal('hide')
     var val = $(event.target).data('id')
     var title = $(event.target).data('title')
     var description = $(event.target).data('description')
     var invite = $(event.target).data('invite')
-    $('.editcommunityid').val(val)
+    $('#editcommunityid').val(val)
     $('#community-name').val(title)
     $('#community-description').val(description)
     $('#community-invite').val(invite)
-    $('.editcommunity-modal').clone().dialog({
-        modal: true,
-        maxHeight: 600,
-        buttons: {},
-        title: i8ln('Edit Community'),
-        classes: {
-            'ui-dialog': 'ui-dialog raid-widget-popup'
-        }
-    })
+    $('#editCommunityModal').modal('show')
 }
 
 function openEditPoiModal(event) { // eslint-disable-line no-unused-vars
-    $('.ui-dialog').remove()
+    $('.modal').modal('hide')
     var val = $(event.target).data('id')
     var name = $(event.target).data('name')
     var description = $(event.target).data('description')
     var notes = $(event.target).data('notes')
     var poiimageurl = $(event.target).data('poiimage')
     var poisurroundingurl = $(event.target).data('poisurrounding')
-    $('.editpoiid').val(val)
+    $('#editpoiid').val(val)
     $('#poi-name').val(name)
     $('#poi-description').val(description)
     $('#poi-notes').val(notes)
-    $('#preview-poi-image').attr('src', poiimageurl)
-    $('#preview-poi-surrounding').attr('src', poisurroundingurl)
-    $('.editpoi-modal').clone().dialog({
-        modal: true,
-        maxHeight: 600,
-        buttons: {},
-        title: i8ln('Edit POI'),
-        classes: {
-            'ui-dialog': 'ui-dialog raid-widget-popup'
-        }
-    })
+    $('#edit-preview-poi-image').attr('src', poiimageurl)
+    $('#edit-preview-poi-surrounding').attr('src', poisurroundingurl)
+    $('#editPoiModal').modal('show')
 }
 
-function generateRaidModal() {
-    var raidStr = '<form class="raid-modal" style="display:none;" title="' + i8ln('Submit a Raid Report') + '">'
-    raidStr += '<input type="hidden" value="" id="raidModalGymId" name="gymId" autofocus>'
-    raidStr += '<div class=" switch-container">' +
-        generateRaidBossList() +
-        '</div>' +
-        '<div class="mon-name" style="display:none;"></div>' +
-        '<div class="switch-container timer-cont" style="text-align:center;display:none">' +
-        '<h5 class="timer-name" style="margin-bottom:0;"></h5>' +
-        generateTimerLists() +
-        '</div>' +
-        '<button type="button" onclick="manualRaidData(event);" class="submitting-raid"><i class="fas fa-binoculars" style="margin-right:10px;"></i>' + i8ln('Submit Raid') + '</button>' +
-        '<button type="button" onclick="$(\'.ui-dialog-content\').dialog(\'close\');" class="close-modal"><i class="fas fa-times" aria-hidden="true"></i></button>' +
-        '</form>'
-    return raidStr
-}
-
-function generateTimerLists() {
-    var html = '<select name="egg_time" class="egg_time" style="display:none;">' +
-        '<option value="60" selected>60</option>' +
-        '<option value="59">59</option>' +
-        '<option value="58">58</option>' +
-        '<option value="57">57</option>' +
-        '<option value="56">56</option>' +
-        '<option value="55">55</option>' +
-        '<option value="54">54</option>' +
-        '<option value="53">53</option>' +
-        '<option value="52">52</option>' +
-        '<option value="51">51</option>' +
-        '<option value="50">50</option>' +
-        '<option value="49">49</option>' +
-        '<option value="48">48</option>' +
-        '<option value="47">47</option>' +
-        '<option value="46">46</option>' +
-        '<option value="45">45</option>' +
-        '<option value="44">44</option>' +
-        '<option value="43">43</option>' +
-        '<option value="42">42</option>' +
-        '<option value="41">41</option>' +
-        '<option value="40">40</option>' +
-        '<option value="39">39</option>' +
-        '<option value="38">38</option>' +
-        '<option value="37">37</option>' +
-        '<option value="36">36</option>' +
-        '<option value="35">35</option>' +
-        '<option value="34">34</option>' +
-        '<option value="33">33</option>' +
-        '<option value="32">32</option>' +
-        '<option value="31">31</option>' +
-        '<option value="30">30</option>' +
-        '<option value="29">29</option>' +
-        '<option value="28">28</option>' +
-        '<option value="27">27</option>' +
-        '<option value="26">26</option>' +
-        '<option value="25">25</option>' +
-        '<option value="24">24</option>' +
-        '<option value="23">23</option>' +
-        '<option value="22">22</option>' +
-        '<option value="21">21</option>' +
-        '<option value="20">20</option>' +
-        '<option value="19">19</option>' +
-        '<option value="18">18</option>' +
-        '<option value="17">17</option>' +
-        '<option value="16">16</option>' +
-        '<option value="15">15</option>' +
-        '<option value="14">14</option>' +
-        '<option value="13">13</option>' +
-        '<option value="12">12</option>' +
-        '<option value="11">11</option>' +
-        '<option value="10">10</option>' +
-        '<option value="9">9</option>' +
-        '<option value="8">8</option>' +
-        '<option value="7">7</option>' +
-        '<option value="6">6</option>' +
-        '<option value="5">5</option>' +
-        '<option value="4">4</option>' +
-        '<option value="3">3</option>' +
-        '<option value="2">2</option>' +
-        '<option value="1">1</option>' +
-        '</select>' +
-        '<select name="mon_time" class="mon_time" style="display:none;">' +
-        '<option value="45" selected>45</option>' +
-        '<option value="44">44</option>' +
-        '<option value="43">43</option>' +
-        '<option value="42">42</option>' +
-        '<option value="41">41</option>' +
-        '<option value="40">40</option>' +
-        '<option value="39">39</option>' +
-        '<option value="38">38</option>' +
-        '<option value="37">37</option>' +
-        '<option value="36">36</option>' +
-        '<option value="35">35</option>' +
-        '<option value="34">34</option>' +
-        '<option value="33">33</option>' +
-        '<option value="32">32</option>' +
-        '<option value="31">31</option>' +
-        '<option value="30">30</option>' +
-        '<option value="29">29</option>' +
-        '<option value="28">28</option>' +
-        '<option value="27">27</option>' +
-        '<option value="26">26</option>' +
-        '<option value="25">25</option>' +
-        '<option value="24">24</option>' +
-        '<option value="23">23</option>' +
-        '<option value="22">22</option>' +
-        '<option value="21">21</option>' +
-        '<option value="20">20</option>' +
-        '<option value="19">19</option>' +
-        '<option value="18">18</option>' +
-        '<option value="17">17</option>' +
-        '<option value="16">16</option>' +
-        '<option value="15">15</option>' +
-        '<option value="14">14</option>' +
-        '<option value="13">13</option>' +
-        '<option value="12">12</option>' +
-        '<option value="11">11</option>' +
-        '<option value="10">10</option>' +
-        '<option value="9">9</option>' +
-        '<option value="8">8</option>' +
-        '<option value="7">7</option>' +
-        '<option value="6">6</option>' +
-        '<option value="5">5</option>' +
-        '<option value="4">4</option>' +
-        '<option value="3">3</option>' +
-        '<option value="2">2</option>' +
-        '<option value="1">1</option>' +
-        '</select>'
-    return html
-}
-function openSearchModal(event) { // eslint-disable-line no-unused-vars
-    $('.ui-dialog').remove()
-    var modal = $('.search-modal')
-    var wwidth = $(window).width()
-    var width = 300
-    if (wwidth > 768) {
-        width = 500
-    }
-    modal.clone().dialog({
-        autoOpen: true,
-        resizable: false,
-        draggable: false,
-        modal: true,
-        title: i8ln('Search...'),
-        classes: {
-            'ui-dialog': 'ui-dialog search-widget-popup'
-        },
-        width: width,
-        buttons: {},
-        open: function (event, ui) {
-            jQuery('input[name="gym-search"], input[name="pokestop-search"], input[name="reward-search"], input[name="nest-search"], input[name="portals-search"]').bind('input', function () {
-                searchAjax($(this))
-            })
-            $('.search-widget-popup #search-tabs').tabs()
-        }
-    })
+function openMarkPoiModal(event) { // eslint-disable-line no-unused-vars
+    $('.modal').modal('hide')
+    var val = $(event.target).data('id')
+    $('#markpoiid').val(val)
+    $('#markPoiModal').modal('show')
 }
 
 function openFullscreenModal(image) { // eslint-disable-line no-unused-vars
-    var modal = document.getElementById('fullscreenModal')
     var modalImg = document.getElementById('fullscreenimg')
-    modal.style.display = 'block'
+    $('#fullscreenModal').modal('show')
     modalImg.src = image
-    var span = document.getElementsByClassName('close')[0]
-    span.onclick = function () {
-        modal.style.display = 'none'
-    }
-}
-function closeFullscreenModal() { // eslint-disable-line no-unused-vars
-    var modal = document.getElementById('fullscreenModal')
-    modal.style.display = 'none'
 }
 function processPokemons(i, item) {
     if (!Store.get('showPokemon')) {
@@ -5754,7 +5201,8 @@ function updateMap() {
         }
         Store.set('startAtLastLocationPosition', {
             lat: position.lat,
-            lng: position.lng
+            lng: position.lng,
+            zoom: map.getZoom()
         })
         // lets try and get the s2 cell id in the middle
         var s2CellCenter = S2.keyToId(S2.latLngToKey(position.lat, position.lng, 10))
@@ -5764,7 +5212,7 @@ function updateMap() {
                 var currentCell = $('#currentWeather').data('current-cell')
                 if ((currentWeather) && (currentCell !== currentWeather.s2_cell_id)) {
                     $('#currentWeather').data('current-cell', currentWeather.s2_cell_id)
-                    $('#currentWeather').html('<img src="static/weather/' + currentWeather.condition + '.png" alt="" height="55px"">')
+                    $('#currentWeather').html('<img src="static/weather/' + currentWeather.condition + '.png">')
                 } else if (!currentWeather) {
                     $('#currentWeather').data('current-cell', '')
                     $('#currentWeather').html('')
@@ -5787,12 +5235,13 @@ function updateMap() {
             showInBoundsMarkers(mapData.spawnpoints, 'inbound')
 
             clearStaleMarkers()
+            cleanOldToasts()
 
             updateSpawnPoints()
             updatePokestops()
             updatePortals()
 
-            if ($('#stats').hasClass('visible')) {
+            if ($('#rightNav.offcanvas').hasClass('show')) {
                 countMarkers(map)
             }
 
@@ -6064,34 +5513,73 @@ function sendNotification(title, text, icon, lat, lon) {
         /* Push.js requests the Notification permission automatically if
          * necessary. */
         Push.create(title, notificationDetails).catch(function () {
-            sendToastrPokemonNotification(title, text, icon, lat, lon)
+            sendToastPokemon(title, text, icon, lat, lon)
         })
     }
 }
-
-function sendToastrPokemonNotification(title, text, icon, lat, lon) {
-    var notification = toastr.info(text, title, {
-        closeButton: true,
-        positionClass: 'toast-top-right',
-        preventDuplicates: true,
-        onclick: function () {
-            centerMap(lat, lon, 20)
-        },
-        showDuration: '300',
-        hideDuration: '500',
-        timeOut: '6000',
-        extendedTimeOut: '1500',
-        showEasing: 'swing',
-        hideEasing: 'linear',
-        showMethod: 'fadeIn',
-        hideMethod: 'fadeOut'
+function sendToast(alertClass, headerText, bodyText, autoHide) {
+    var identifier = Math.floor(Math.random() * 100) + 1
+    var toastStr = '<div id="toast-message-' + identifier + '" class="toast fade" role="alert" data-bs-autohide="' + autoHide + '" data-toast-timestamp="' + timestamp + '" aria-live="assertive" aria-atomic="true">' +
+        '<div class="toast-header ' + identifier + '">' +
+        '<strong class="me-auto">' + headerText + '</strong>' +
+        '<button type="button" class="btn-close" data-bs-dismiss="toast" aria-label="Close"></button>' +
+        '</div>' +
+        '<div class="toast-body">' +
+        bodyText +
+        '</div>' +
+        '</div>'
+    $('.toast-container.right-top').append(toastStr)
+    $('#toast-message-' + identifier).toast({
+        animation: true,
+        autohide: true,
+        delay: toastDelay
     })
-    notification.removeClass('toast-info')
-    notification.css({
-        'padding-left': '74px',
-        'background-image': `url('${icon}')`,
-        'background-size': '48px',
-        'background-color': '#0c5952'
+    $('.toast-header.' + identifier).css('background-color', 'var(--bs-' + alertClass + ')')
+    $('#toast-message-' + identifier).toast('show')
+}
+function sendToastPokemon(title, text, icon, lat, lon) {
+    if (!Store.get('showToast')) {
+        return false
+    }
+    var identifier = Math.floor(Math.random() * 1000) + 1
+    var toastStr = '<div id="toast-pokemon-' + identifier + '" class="toast fade" role="alert" data-toast-timestamp="' + timestamp + '" aria-live="assertive" aria-atomic="true">' +
+        '<div class="toast-header ' + identifier + '">' +
+        '<strong class="me-auto">' + title + '</strong>' +
+        '<button type="button" class="btn-close" data-bs-dismiss="toast" aria-label="Close"></button>' +
+        '</div>' +
+        '<div class="toast-body">' +
+        '<div class="row">' +
+        '<div class="col-4">' +
+        '<img src="' + icon + '">' +
+        '</div>' +
+        '<div class="col-6">' +
+        text +
+        '</div>' +
+        '<div class="col-2" onclick="centerMap(' + lat + ',' + lon + ', 20)">' +
+        '<i class="fas fa-map-marked-alt"</i>' +
+        '</div>' +
+        '</div>' +
+        '</div>' +
+        '</div>'
+    $('.toast-container.right-bottom').append(toastStr)
+    $('#toast-pokemon-' + identifier).toast({
+        animation: true,
+        autohide: (Store.get('toastPokemonDelay') !== 0),
+        delay: Store.get('toastPokemonDelay')
+    })
+    $('.toast-header.' + identifier).css('background-color', 'var(--bs-green)')
+    $('#toast-pokemon-' + identifier).toast('show')
+}
+function cleanOldToasts() {
+    $('[id^=toast-message-]').each(function (index, element) {
+        if ($(element).data('toast-timestamp') < (timestamp - (toastDelay / 1000))) {
+            $(element).remove()
+        }
+    })
+    $('[id^=toast-pokemon-]').each(function (index, element) {
+        if ($(element).data('toast-timestamp') < (timestamp - (Store.get('toastPokemonDelay') / 1000))) {
+            $(element).remove()
+        }
     })
 }
 
@@ -6105,7 +5593,7 @@ $(function () {
     Push.config({
         serviceWorker: 'serviceWorker.min.js',
         fallback: function (notification) {
-            sendToastrPokemonNotification(
+            sendToastPokemon(
                 notification.title,
                 notification.body,
                 notification.icon,
@@ -6345,38 +5833,12 @@ function pokemonRaidFilter(event) { // eslint-disable-line no-unused-vars
     cont.find('.pokemon-icon-sprite').removeClass('active')
     img.addClass('active')
 }
-function generateRaidBossList() {
-    var boss = raidBossActive
-    var data = '<div class="pokemon-list raid-submission">'
-    data += '<input type="hidden" name="pokemonId" value="">'
-    data += '<span class="pokemon-icon-sprite" data-value="egg_1" data-label="Level 1" onclick="pokemonRaidFilter(event);"><span class="egg_1 inner-bg" style="background: url(\'static/raids/egg_normal.png\');background-size:100%"></span><span class="egg-number">1</span></span>'
-    data += '<span class="pokemon-icon-sprite" data-value="egg_2" data-label="Level 2" onclick="pokemonRaidFilter(event);"><span class="egg_2 inner-bg" style="background: url(\'static/raids/egg_normal.png\');background-size:100%"></span><span class="egg-number">2</span></span>'
-    data += '<span class="pokemon-icon-sprite" data-value="egg_3" data-label="Level 3" onclick="pokemonRaidFilter(event);"><span class="egg_3 inner-bg" style="background: url(\'static/raids/egg_rare.png\');background-size:100%"></span><span class="egg-number">3</span></span>'
-    data += '<span class="pokemon-icon-sprite" data-value="egg_4" data-label="Level 4" onclick="pokemonRaidFilter(event);"><span class="egg_4 inner-bg" style="background: url(\'static/raids/egg_rare.png\');background-size:100%"></span><span class="egg-number">4</span></span>'
-    data += '<span class="pokemon-icon-sprite" data-value="egg_5" data-label="Level 5" onclick="pokemonRaidFilter(event);"><span class="egg_5 inner-bg" style="background: url(\'static/raids/egg_legendary.png\');background-size:100%"></span><span class="egg-number">5</span></span>'
-    data += '<span class="pokemon-icon-sprite" data-value="egg_6" data-label="Level 6" onclick="pokemonRaidFilter(event);"><span class="egg_6 inner-bg" style="background: url(\'static/raids/egg_mega.png\');background-size:100%"></span><span class="egg-number">Mega</span></span>'
-    boss.forEach(function (element) {
-        var pokemonIdStr = ''
-        if (element <= 9) {
-            pokemonIdStr = '00' + element
-        } else if (element <= 99) {
-            pokemonIdStr = '0' + element
-        } else {
-            pokemonIdStr = element
-        }
-        data += '<span class="pokemon-icon-sprite" data-value="' + element + '" data-label="' + pokeList[element - 1].name + '" onclick="pokemonRaidFilter(event);"><img src="' + iconpath + 'pokemon_icon_' + pokemonIdStr + '_00.png" style="width:48px;height:48px;"/></span>'
-    })
-    data += '</div>'
-    return data
-}
-
 
 function pokemonSpritesFilter() {
-    jQuery('.pokemon-list').parent().find('.select2').hide()
     loadDefaultImages()
-    jQuery('#nav .pokemon-list .pokemon-icon-sprite').on('click', function () {
+    jQuery('.offcanvas-body.left .pokemon-list .pokemon-icon-sprite').on('click', function () {
         var img = jQuery(this)
-        var select = jQuery(this).parent().parent().parent().find('.select2-hidden-accessible')
+        var select = jQuery(this).parent().parent().parent().find('.search-number')
         var value = select.val().split(',')
         var id = img.data('value').toString()
         if (img.hasClass('active')) {
@@ -6392,11 +5854,10 @@ function pokemonSpritesFilter() {
 }
 
 function energySpritesFilter() {
-    jQuery('.energy-list').parent().find('.select2').hide()
     loadDefaultImages()
-    jQuery('#nav .energy-list .energy-icon-sprite').on('click', function () {
+    jQuery('.offcanvas-body.left .energy-list .energy-icon-sprite').on('click', function () {
         var img = jQuery(this)
-        var select = jQuery(this).parent().parent().parent().find('.select2-hidden-accessible')
+        var select = jQuery(this).parent().parent().parent().find('.search-number')
         var value = select.val().split(',')
         var id = img.data('value').toString()
         if (img.hasClass('active')) {
@@ -6412,11 +5873,10 @@ function energySpritesFilter() {
 }
 
 function itemSpritesFilter() {
-    jQuery('.item-list').parent().find('.select2').hide()
     loadDefaultImages()
-    jQuery('#nav .item-list .item-icon-sprite').on('click', function () {
+    jQuery('.offcanvas-body.left .item-list .item-icon-sprite').on('click', function () {
         var img = jQuery(this)
-        var select = jQuery(this).parent().parent().parent().find('.select2-hidden-accessible')
+        var select = jQuery(this).parent().parent().parent().find('.search-number')
         var value = select.val().split(',')
         var id = img.data('value').toString()
         if (img.hasClass('active')) {
@@ -6432,11 +5892,10 @@ function itemSpritesFilter() {
 }
 
 function gruntSpritesFilter() {
-    jQuery('.grunt-list').parent().find('.select2').hide()
     loadDefaultImages()
-    jQuery('#nav .grunt-list .grunt-icon-sprite').on('click', function () {
+    jQuery('.offcanvas-body.left .grunt-list .grunt-icon-sprite').on('click', function () {
         var img = jQuery(this)
-        var select = jQuery(this).parent().parent().parent().find('.select2-hidden-accessible')
+        var select = jQuery(this).parent().parent().parent().find('.search-number')
         var value = select.val().split(',')
         var id = img.data('value').toString()
         if (img.hasClass('active')) {
@@ -6452,11 +5911,10 @@ function gruntSpritesFilter() {
 }
 
 function raideggSpritesFilter() {
-    jQuery('.raidegg-list').parent().find('.select2').hide()
     loadDefaultImages()
-    jQuery('#nav .raidegg-list .raidegg-icon-sprite').on('click', function () {
+    jQuery('.offcanvas-body.left .raidegg-list .raidegg-icon-sprite').on('click', function () {
         var img = jQuery(this)
-        var select = jQuery(this).parent().parent().parent().find('.select2-hidden-accessible')
+        var select = jQuery(this).parent().parent().parent().find('.search-number')
         var value = select.val().split(',')
         var id = img.data('value').toString()
         if (img.hasClass('active')) {
@@ -6482,47 +5940,47 @@ function loadDefaultImages() {
     var erb = Store.get('remember_exclude_raidboss')
     var ere = Store.get('remember_exclude_raidegg')
 
-    $('label[for="exclude-pokemon"] .pokemon-icon-sprite').each(function () {
+    $('#exclude-pokemon .pokemon-icon-sprite').each(function () {
         if (ep.indexOf($(this).data('value')) !== -1) {
             $(this).addClass('active')
         }
     })
-    $('label[for="exclude-min-iv"] .pokemon-icon-sprite').each(function () {
+    $('#exclude-min-iv .pokemon-icon-sprite').each(function () {
         if (eminiv.indexOf($(this).data('value')) !== -1) {
             $(this).addClass('active')
         }
     })
-    $('label[for="notify-pokemon"] .pokemon-icon-sprite').each(function () {
+    $('#notify-pokemon .pokemon-icon-sprite').each(function () {
         if (en.indexOf($(this).data('value')) !== -1) {
             $(this).addClass('active')
         }
     })
-    $('label[for="exclude-quests-pokemon"] .pokemon-icon-sprite').each(function () {
+    $('#exclude-quests-pokemon .pokemon-icon-sprite').each(function () {
         if (eqp.indexOf($(this).data('value')) !== -1) {
             $(this).addClass('active')
         }
     })
-    $('label[for="exclude-quests-energy"] .energy-icon-sprite').each(function () {
+    $('#exclude-quests-energy .energy-icon-sprite').each(function () {
         if (eqe.indexOf($(this).data('value')) !== -1) {
             $(this).addClass('active')
         }
     })
-    $('label[for="exclude-quests-item"] .item-icon-sprite').each(function () {
+    $('#exclude-quests-item .item-icon-sprite').each(function () {
         if (eqi.indexOf($(this).data('value')) !== -1) {
             $(this).addClass('active')
         }
     })
-    $('label[for="exclude-grunts"] .grunt-icon-sprite').each(function () {
+    $('#exclude-grunts .grunt-icon-sprite').each(function () {
         if (eg.indexOf($(this).data('value')) !== -1) {
             $(this).addClass('active')
         }
     })
-    $('label[for="exclude-raidboss"] .pokemon-icon-sprite').each(function () {
+    $('#exclude-raidboss .pokemon-icon-sprite').each(function () {
         if (erb.indexOf($(this).data('value')) !== -1) {
             $(this).addClass('active')
         }
     })
-    $('label[for="exclude-raidegg"] .raidegg-icon-sprite').each(function () {
+    $('#exclude-raidegg .raidegg-icon-sprite').each(function () {
         if (ere.indexOf($(this).data('value')) !== -1) {
             $(this).addClass('active')
         }
@@ -6536,7 +5994,14 @@ function loadDefaultImages() {
 $(function () {
     if (Push.Permission.has()) {
         console.log('Push has notification permission')
+        $('#pushNotifyIcon').addClass('far fa-bell')
+        $('#pushNotifyIcon').css('color', 'green')
+        $('#pushNotifyIcon').attr('title', 'Push notification granted')
         return
+    } else {
+        $('#pushNotifyIcon').addClass('far fa-bell-slash')
+        $('#pushNotifyIcon').css('color', 'red')
+        $('#pushNotifyIcon').attr('title', 'Push notification denied')
     }
 
     Push.Permission.request()
@@ -6548,20 +6013,8 @@ $(function () {
     }
     // load MOTD, if set
     if ((motd && !showMotdOnlyOnce) || (motd && showMotdOnlyOnce && Store.get('oldMotd') !== motdContent)) {
-        $.ajax({
-            url: 'motd_data',
-            type: 'POST',
-            dataType: 'json',
-            cache: false,
-            success: function (data) {
-                Store.set('oldMotd', motdContent)
-                // set content of motd banner
-                $('#motd').attr('title', data.title).html(data.content).dialog()
-            },
-            fail: function () {
-                return false
-            }
-        })
+        Store.set('oldMotd', motdContent)
+        $('#motdModal').modal('show')
     }
 })
 
@@ -6571,77 +6024,21 @@ $(function () {
     $selectDirectionProvider = $('#direction-provider')
 
     // Load Stylenames, translate entries, and populate lists
-    $.getJSON('static/dist/data/mapstyle.min.json').done(function (data) {
-        var styleList = []
+    $selectStyle.on('change', function (e) {
+        selectedStyle = $selectStyle.val()
 
-        $.each(data, function (key, value) {
-            var googleMaps
-            if (gmapsKey === '') {
-                googleMaps = false
-            } else {
-                googleMaps = true
-            }
-            var googleStyle = value.includes('Google')
-            var mapBox
-            if (mBoxKey === '') {
-                mapBox = false
-            } else {
-                mapBox = true
-            }
-            var mapBoxStyle = value.includes('Mapbox')
-            var customTileServer
-            if (noCustomTileServer) {
-                customTileServer = false
-            } else {
-                customTileServer = true
-            }
-            var customTileServerStyle = value.includes('Tileserver')
-            if (!googleStyle && !mapBoxStyle && !customTileServerStyle) {
-                styleList.push({
-                    id: key,
-                    text: i8ln(value)
-                })
-            } else if (googleMaps && googleStyle) {
-                styleList.push({
-                    id: key,
-                    text: i8ln(value)
-                })
-            } else if (mapBox && mapBoxStyle) {
-                styleList.push({
-                    id: key,
-                    text: i8ln(value)
-                })
-            } else if (customTileServer && customTileServerStyle) {
-                styleList.push({
-                    id: key,
-                    text: i8ln(value)
-                })
-            }
-        })
-
-        // setup the stylelist
-        $selectStyle.select2({
-            placeholder: 'Select Style',
-            data: styleList,
-            minimumResultsForSearch: Infinity
-        })
-        $selectStyle.on('change', function (e) {
-            selectedStyle = $selectStyle.val()
-
-            if (_mapLoaded) {
-                setTileLayer(selectedStyle)
-            }
-
-            Store.set('map_style', selectedStyle)
-        })
-
-        // recall saved mapstyle
-        $selectStyle.val(Store.get('map_style')).trigger('change')
+        if (_mapLoaded) {
+            setTileLayer(selectedStyle)
+        }
+        if (selectedStyle === null) {
+            selectedStyle = 'openstreetmap'
+        }
+        Store.set('map_style', selectedStyle)
     })
-    $selectDirectionProvider.select2({
-        placeholder: 'Select Provider',
-        minimumResultsForSearch: Infinity
-    })
+
+    // recall saved mapstyle
+
+    $selectStyle.val(Store.get('map_style')).trigger('change')
 
     $selectDirectionProvider.on('change', function () {
         directionProvider = $selectDirectionProvider.val()
@@ -6667,11 +6064,6 @@ $(function () {
     })
 
     $selectNewPortalsOnly = $('#new-portals-only-switch')
-
-    $selectNewPortalsOnly.select2({
-        placeholder: 'Only Show New Portals',
-        minimumResultsForSearch: Infinity
-    })
 
     $selectNewPortalsOnly.on('change', function () {
         Store.set('showNewPortalsOnly', this.value)
@@ -6700,11 +6092,6 @@ $(function () {
 
     $selectGymMarkerStyle = $('#gym-marker-style')
 
-    $selectGymMarkerStyle.select2({
-        placeholder: 'Select Style',
-        minimumResultsForSearch: Infinity
-    })
-
     $selectGymMarkerStyle.on('change', function (e) {
         Store.set('gymMarkerStyle', this.value)
         updateGymIcons()
@@ -6714,10 +6101,6 @@ $(function () {
 
     $selectIconStyle = $('#icon-style')
 
-    $selectIconStyle.select2({
-        placeholder: 'Select Style',
-        minimumResultsForSearch: Infinity
-    })
     $selectIconStyle.on('change', function (e) {
         Store.set('icons', this.value)
         iconpath = Store.get('icons')
@@ -6734,21 +6117,8 @@ $(function () {
 })
 
 $(function () {
-    function formatState(state) {
-        if (!state.id) {
-            return state.text
-        }
-        var $state = $('<span><i class="pokemon-raid-sprite n' + state.element.value.toString() + '" style="display: inline-block;position: relative;top: 6px; right: 0px;"></i> ' + state.text + '</span>')
-        return $state
-    }
-
     $.getJSON('static/dist/data/moves.min.json').done(function (data) {
         moves = data
-    })
-
-    $.getJSON('static/dist/data/weather.min.json').done(function (data) {
-        weather = data.weather
-        boostedMons = data.boosted_mons
     })
 
     $.getJSON('static/dist/data/questtype.min.json', {_: new Date().getTime()}).done(function (data) {
@@ -6774,9 +6144,9 @@ $(function () {
             scanAreas.push(value)
         })
     })
-    $selectExclude = $('#exclude-pokemon')
-    $selectExcludeMinIV = $('#exclude-min-iv')
-    $selectPokemonNotify = $('#notify-pokemon')
+    $selectExclude = $('#exclude-pokemon .search-number')
+    $selectExcludeMinIV = $('#exclude-min-iv .search-number')
+    $selectPokemonNotify = $('#notify-pokemon .search-number')
     $selectRarityNotify = $('#notify-rarity')
     $textPerfectionNotify = $('#notify-perfection')
     $textMinIV = $('#min-iv')
@@ -6785,12 +6155,12 @@ $(function () {
     $raidNotify = $('#notify-raid')
     $switchTinyRat = $('#tiny-rat-switch')
     $switchBigKarp = $('#big-karp-switch')
-    $questsExcludePokemon = $('#exclude-quests-pokemon')
-    $questsExcludeItem = $('#exclude-quests-item')
-    $questsExcludeEnergy = $('#exclude-quests-energy')
-    $excludeGrunts = $('#exclude-grunts')
-    $excludeRaidboss = $('#exclude-raidboss')
-    $excludeRaidegg = $('#exclude-raidegg')
+    $questsExcludePokemon = $('#exclude-quest-pokemon .search-number')
+    $questsExcludeItem = $('#exclude-quest-item .search-number')
+    $questsExcludeEnergy = $('#exclude-quest-energy .search-number')
+    $excludeGrunts = $('#exclude-rocket .search-number')
+    $excludeRaidboss = $('#exclude-raidboss .search-number')
+    $excludeRaidegg = $('#exclude-raidegg .search-number')
 
     $.getJSON('static/dist/data/raidegg.min.json').done(function (data) {
         $.each(data, function (key, value) {
@@ -6799,13 +6169,6 @@ $(function () {
                 level: value['level']
             })
             idToRaidegg[key] = value
-        })
-        $excludeRaidegg.select2({
-            placeholder: i8ln('Select level'),
-            data: raideggList,
-            templateResult: formatState,
-            multiple: true,
-            maximumSelectionSize: 1
         })
         $excludeRaidegg.on('change', function (e) {
             buffer = excludedRaidegg
@@ -6835,13 +6198,6 @@ $(function () {
             value['grunt'] = i8ln(value['grunt'])
             idToGrunt[key] = value
         })
-        $excludeGrunts.select2({
-            placeholder: i8ln('Select Grunt'),
-            data: gruntList,
-            templateResult: formatState,
-            multiple: true,
-            maximumSelectionSize: 1
-        })
         $excludeGrunts.on('change', function (e) {
             buffer = excludedGrunts
             excludedGrunts = $excludeGrunts.val().split(',').map(Number).sort(function (a, b) {
@@ -6867,13 +6223,6 @@ $(function () {
             })
             value['name'] = i8ln(value['name'])
             idToItem[key] = value['name']
-        })
-        $questsExcludeItem.select2({
-            placeholder: i8ln('Select Item'),
-            data: itemList,
-            templateResult: formatState,
-            multiple: true,
-            maximumSelectionSize: 1
         })
         $questsExcludeItem.on('change', function (e) {
             buffer = questsExcludedItem
@@ -6915,52 +6264,6 @@ $(function () {
             idToPokemon[key] = value['name']
         })
 
-        // setup the filter lists
-        $selectExclude.select2({
-            placeholder: i8ln('Select Pokémon'),
-            data: pokeList,
-            templateResult: formatState,
-            multiple: true,
-            maximumSelectionSize: 1
-        })
-        $selectPokemonNotify.select2({
-            placeholder: i8ln('Select Pokémon'),
-            data: pokeList,
-            templateResult: formatState,
-            multiple: true,
-            maximumSelectionSize: 1
-        })
-        $selectRarityNotify.select2({
-            placeholder: i8ln('Select Rarity'),
-            data: [i8ln('Common'), i8ln('Uncommon'), i8ln('Rare'), i8ln('Very Rare'), i8ln('Ultra Rare')],
-            templateResult: formatState
-        })
-        $selectExcludeMinIV.select2({
-            placeholder: i8ln('Select Pokémon'),
-            data: pokeList,
-            templateResult: formatState
-        })
-        $questsExcludePokemon.select2({
-            placeholder: i8ln('Select Pokémon'),
-            data: pokeList,
-            templateResult: formatState,
-            multiple: true,
-            maximumSelectionSize: 1
-        })
-        $questsExcludeEnergy.select2({
-            placeholder: i8ln('Select Pokémon'),
-            data: pokeList,
-            templateResult: formatState,
-            multiple: true,
-            maximumSelectionSize: 1
-        })
-        $excludeRaidboss.select2({
-            placeholder: i8ln('Select Pokémon'),
-            data: pokeList,
-            templateResult: formatState,
-            multiple: true,
-            maximumSelectionSize: 1
-        })
         // setup list change behavior now that we have the list to work from
         $selectExclude.on('change', function (e) {
             buffer = excludedPokemon
@@ -7076,83 +6379,73 @@ $(function () {
         $questsExcludePokemon.val(Store.get('remember_quests_exclude_pokemon')).trigger('change')
         $questsExcludeEnergy.val(Store.get('remember_quests_exclude_energy')).trigger('change')
         $excludeRaidboss.val(Store.get('remember_exclude_raidboss')).trigger('change')
-
-        if (isTouchDevice() && isMobileDevice()) {
-            $('.select2-search input').prop('readonly', true)
-        }
-        $('#tabs').tabs()
-        $('#quests-tabs').tabs()
-        $('#raid-tabs').tabs()
-        if (manualRaids) {
-            $('.global-raid-modal').html(generateRaidModal())
-        }
     })
 
     $('.select-all').on('click', function (e) {
         e.preventDefault()
-        var parent = $(this).parent()
+        var parent = $(this).parent().parent().parent()
         parent.find('.pokemon-list .pokemon-icon-sprite').addClass('active')
-        parent.find('input').val(Array.from(Array(numberOfPokemon + 1).keys()).slice(1).join(',')).trigger('change')
+        parent.find('.search-number').val(Array.from(Array(numberOfPokemon + 1).keys()).slice(1).join(',')).trigger('change')
     })
     $('.hide-all').on('click', function (e) {
         e.preventDefault()
-        var parent = $(this).parent()
+        var parent = $(this).parent().parent().parent()
         parent.find('.pokemon-list .pokemon-icon-sprite').removeClass('active')
-        parent.find('input').val('').trigger('change')
+        parent.find('.search-number').val('').trigger('change')
     })
 
     $('.select-all-energy').on('click', function (e) {
         e.preventDefault()
-        var parent = $(this).parent()
+        var parent = $(this).parent().parent().parent()
         parent.find('.energy-list .energy-icon-sprite').addClass('active')
-        parent.find('input').val(Array.from(Array(numberOfPokemon + 1).keys()).slice(1).join(',')).trigger('change')
+        parent.find('.search-number').val(Array.from(Array(numberOfPokemon + 1).keys()).slice(1).join(',')).trigger('change')
     })
     $('.hide-all-energy').on('click', function (e) {
         e.preventDefault()
-        var parent = $(this).parent()
+        var parent = $(this).parent().parent().parent()
         parent.find('.energy-list .energy-icon-sprite').removeClass('active')
-        parent.find('input').val('').trigger('change')
+        parent.find('.search-number').val('').trigger('change')
     })
 
     $('.select-all-item').on('click', function (e) {
         e.preventDefault()
-        var parent = $(this).parent()
+        var parent = $(this).parent().parent().parent()
         parent.find('.item-list .item-icon-sprite').addClass('active')
-        parent.find('input').val(Array.from(Array(numberOfItem + 1).keys()).slice(1).join(',')).trigger('change')
+        parent.find('.search-number').val(Array.from(Array(numberOfItem + 1).keys()).slice(1).join(',')).trigger('change')
     })
     $('.hide-all-item').on('click', function (e) {
         e.preventDefault()
-        var parent = $(this).parent()
+        var parent = $(this).parent().parent().parent()
         parent.find('.item-list .item-icon-sprite').removeClass('active')
-        parent.find('input').val('').trigger('change')
+        parent.find('.search-number').val('').trigger('change')
     })
 
     $('.select-all-grunt').on('click', function (e) {
         e.preventDefault()
-        var parent = $(this).parent()
+        var parent = $(this).parent().parent().parent()
         parent.find('.grunt-list .grunt-icon-sprite').addClass('active')
-        parent.find('input').val(Array.from(Array(numberOfGrunt + 1).keys()).slice(1).join(',')).trigger('change')
+        parent.find('.search-number').val(Array.from(Array(numberOfGrunt + 1).keys()).slice(1).join(',')).trigger('change')
     })
 
     $('.hide-all-grunt').on('click', function (e) {
         e.preventDefault()
-        var parent = $(this).parent()
+        var parent = $(this).parent().parent().parent()
         parent.find('.grunt-list .grunt-icon-sprite').removeClass('active')
-        parent.find('input').val('').trigger('change')
+        parent.find('.search-number').val('').trigger('change')
     })
 
     $('.select-all-egg').on('click', function (e) {
         e.preventDefault()
-        var parent = $(this).parent()
+        var parent = $(this).parent().parent().parent()
         parent.find('.raidegg-list .raidegg-icon-sprite').addClass('active')
-        parent.find('input').val(Array.from(Array(numberOfEgg + 1).keys()).slice(1).join(',')).trigger('change')
+        parent.find('.search-number').val(Array.from(Array(numberOfEgg + 1).keys()).slice(1).join(',')).trigger('change')
     })
 
     $('.hide-all-egg').on('click', function (e) {
         e.preventDefault()
-        var parent = $(this).parent()
+        var parent = $(this).parent().parent().parent()
         parent.find('.raidegg-list .raidegg-icon-sprite').removeClass('active')
-        parent.find('input').val('').trigger('change')
+        parent.find('.search-number').val('').trigger('change')
     })
 
     $('.area-go-to').on('click', function (e) {
@@ -7161,11 +6454,6 @@ $(function () {
         var lng = $(this).data('lng')
         var zoom = $(this).data('zoom')
         map.setView(new L.LatLng(lat, lng), zoom)
-    })
-
-    $raidNotify.select2({
-        placeholder: 'Minimum raid level',
-        minimumResultsForSearch: Infinity
     })
 
     $raidNotify.on('change', function () {
@@ -7459,11 +6747,11 @@ $(function () {
         Store.set('showAllPokestops', this.checked)
         if (this.checked === true && Store.get('showQuests') === true) {
             Store.set('showQuests', false)
-            jQuery('label[for="quests-switch"]').click()
+            jQuery('#quests-switch').click()
         }
         if (this.checked === true && Store.get('showRocket') === true) {
             Store.set('showRocket', false)
-            jQuery('label[for="rocket-switch"]').click()
+            jQuery('#rocket-switch').click()
         }
         if (this.checked === true && Store.get('showLures') === true) {
             Store.set('showLures', false)
@@ -7485,11 +6773,11 @@ $(function () {
         Store.set('showLures', this.checked)
         if (this.checked === true && Store.get('showQuests') === true) {
             Store.set('showQuests', false)
-            jQuery('label[for="quests-switch"]').click()
+            jQuery('#quests-switch').click()
         }
         if (this.checked === true && Store.get('showRocket') === true) {
             Store.set('showRocket', false)
-            jQuery('label[for="rocket-switch"]').click()
+            jQuery('#rocket-switch').click()
         }
         if (this.checked === true && Store.get('showAllPokestops') === true) {
             Store.set('showAllPokestops', false)
@@ -7510,7 +6798,7 @@ $(function () {
         Store.set('showRocket', this.checked)
         if (this.checked === true && Store.get('showQuests') === true) {
             Store.set('showQuests', false)
-            jQuery('label[for="quests-switch"]').click()
+            jQuery('#quests-switch').click()
         }
         if (this.checked === true && Store.get('showLures') === true) {
             Store.set('showLures', false)
@@ -7549,7 +6837,7 @@ $(function () {
         }
         if (this.checked === true && Store.get('showRocket') === true) {
             Store.set('showRocket', false)
-            jQuery('label[for="rocket-switch"]').click()
+            jQuery('#rocket-switch').click()
         }
         if (this.checked === true && Store.get('showAllPokestops') === true) {
             Store.set('showAllPokestops', false)
@@ -7601,6 +6889,30 @@ $(function () {
             setTimeout(function () { updateMap() }, 2000)
         }
     })
+    $('#toast-switch').change(function () {
+        Store.set('showToast', this.checked)
+        var options = {
+            'duration': 500
+        }
+        var wrapper = $('#toast-switch-wrapper')
+        if (this.checked) {
+            wrapper.show(options)
+        } else {
+            wrapper.hide(options)
+        }
+    })
+    $('#toast-delay-slider').on('input', function () {
+        toastdelayslider = $(this).val()
+        Store.set('toastPokemonDelay', toastdelayslider)
+        if (toastdelayslider === '0') {
+            $('#toast-delay-set').text(i8ln('No auto popup close'))
+            setTimeout(function () { updateMap() }, 2000)
+        } else {
+            $('#toast-delay-set').text(i8ln('Popup autoclose') + ' ' + (toastdelayslider / 1000) + ' ' + i8ln('seconds'))
+            setTimeout(function () { updateMap() }, 2000)
+        }
+    })
+
     $('#sound-switch').change(function () {
         Store.set('playSound', this.checked)
         var options = {
@@ -7690,14 +7002,6 @@ $(function () {
         }
     })
 
-    if ($('#nav-accordion').length) {
-        $('#nav-accordion').accordion({
-            active: false,
-            collapsible: true,
-            heightStyle: 'content'
-        })
-    }
-
     // Initialize dataTable in statistics sidebar
     //   - turn off sorting for the 'icon' column
     //   - initially sort 'name' column alphabetically
@@ -7777,8 +7081,7 @@ function loadUser(engine) {
         cache: false,
         error: function error() {
             // Display error toast
-            toastr['error'](i8ln('Manually reload the page'), i8ln('Failed to refresh session'))
-            toastr.options = toastrOptions
+            sendToast('danger', i8ln('Failed to refresh session'), i8ln('Manually reload the page.'), 'true')
         },
         complete: function complete() {
         }
