@@ -128,6 +128,19 @@
                     background: rgba(255, 0, 0, 0.4);
                 }
             }
+            #notify-pokemon {
+                .pokemon-list .active {
+                    border: 1px solid #0089ff;
+                    background: rgba(0, 114, 255, 0.4);
+                }
+            }
+            #exclude-min-iv {
+                .pokemon-list .active {
+                    border: 1px solid #12940a;
+                    background: rgba(45, 234, 11, 0.4);
+                }
+            }
+
         }
     }
 }
