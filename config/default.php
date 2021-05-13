@@ -382,6 +382,22 @@ $notifyNotification = 'true';                                  // true/false
 $noDarkMode = false;
 
 $copyrightSafe = true;
+$iconRepoArray = [                                             // Multiple Icon repos can be added
+    'Default' => 'static/sprites/',
+    'Icons' => 'https://raw.githubusercontent.com/whitewillem/PogoAssets/resized/icons_large-uicons/'
+];
+$iconFolderArray = [                                           // Default Icon repo to be used
+    'gym' => $iconRepoArray['Default'],
+    'invasion' => $iconRepoArray['Default'],
+    'misc' => $iconRepoArray['Default'],
+    'pokemon' => $iconRepoArray['Icons'],
+    'raid' => $iconRepoArray['Default'],
+    'reward' => $iconRepoArray['Icons'],
+    'team' => $iconRepoArray['Default'],
+    'type' => $iconRepoArray['Default'],
+    'weather' => $iconRepoArray['Default']
+];
+/* Decrecate */
 $noCostumeIcons = true;                                        // Set to true if you $iconRepository doesnt support costume icons. true/false
 $iconRepository = 'https://raw.githubusercontent.com/whitewillem/PogoAssets/resized/icons_large/';
 $noMultipleRepos = true;
