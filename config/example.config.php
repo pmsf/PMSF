@@ -68,11 +68,6 @@ $noInfoModal = true;                                                // Hide info
 $infoModalTitle = 'Info';                                           // Infomodal title
 $infoModalContent = 'Your text info here';                          // HTML markup allowed (external html file load $infoModalContent = file_get_contents('custom/modal.html');
 
-/* Loading screen */
-
-$noLoadingScreen = false;                                           // show loading animation while main page loads.
-$loadingStyle = '';                                                 // Leave blank for default loading icon. Use $loadingStyle = '<img src="static/images/pokeball2.gif" style="height:40px;">';
-                                                                    // for pokeball or custom gif for animated gif; or use your own html.
 /* Google Maps and MapBox are ONLY USED FOR TILE LAYERS */
 
 $gmapsKey = "";

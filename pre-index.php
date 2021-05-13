@@ -163,15 +163,8 @@ if (strtolower($map) === "rdm") {
     <!-- Flag Icons -->
     <link rel="stylesheet" href="node_modules/flag-icon-css/css/flag-icon.min.css" />
 </head>
-<?php
-if (!$noLoadingScreen) {
-    echo '<app-root><p class="spinner" VALIGN="CENTER">';
-    if ($loadingStyle == '') {
-        $loadingStyle = '<i class="fa fas fa-cog fa-spin fa-2x" aria-hidden="true"></i>';
-    }
-    echo $loadingStyle . '&nbsp;' . i8ln('Loading') . '...</p></app-root>';
-} ?>
 <body id="top">
+<div class="loader"></div>
 <div class="wrapper">
     <!-- Header -->
     <header id="header">
@@ -1295,8 +1288,6 @@ if (!$noLoadingScreen) {
     </div>
 
     <div id="map"></div>
-
-    <div class="loader" style="display:none;"></div>
 
     <div class="fullscreen-toggle">
         <button class="map-toggle-button" onClick="toggleFullscreenMap();"><i class="fa fa-expand" aria-hidden="true"></i></button>

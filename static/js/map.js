@@ -586,6 +586,7 @@ function initMap() { // eslint-disable-line no-unused-vars
     })
 
     _mapLoaded = true
+    $('.loader').hide()
 }
 
 function toggleFullscreenMap() { // eslint-disable-line no-unused-vars
