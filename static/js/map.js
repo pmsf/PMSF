@@ -1425,29 +1425,9 @@ function gymLabel(item) {
         if (raidStarted) {
             raidIcon = '<img style="width: 70px;" src="' + iconpath + 'pokemon_icon_' + pokemonidStr + '_' + formStr + costumeStr + evolutionStr + '.png"/>'
         } else if (item.raid_start <= Date.now()) {
-            var hatchedEgg = ''
-            if (item['raid_level'] <= 2) {
-                hatchedEgg = 'hatched_normal'
-            } else if (item['raid_level'] <= 4) {
-                hatchedEgg = 'hatched_rare'
-            } else if (item['raid_level'] <= 5) {
-                hatchedEgg = 'hatched_legendary'
-            } else {
-                hatchedEgg = 'hatched_mega'
-            }
-            raidIcon = '<img src="static/raids/egg_' + hatchedEgg + '.png" style="height:70px;">'
+            raidIcon = '<img src="static/sprites/raid/' + item['raid_level'] + '_h.png" style="height:70px;">'
         } else {
-            var raidEgg = ''
-            if (item['raid_level'] <= 2) {
-                raidEgg = 'normal'
-            } else if (item['raid_level'] <= 4) {
-                raidEgg = 'rare'
-            } else if (item['raid_level'] <= 5) {
-                raidEgg = 'legendary'
-            } else {
-                raidEgg = 'mega'
-            }
-            raidIcon = '<img src="static/raids/egg_' + raidEgg + '.png" style="height:70px;">'
+            raidIcon = '<img src="static/sprites/raid/' + item['raid_level'] + '.png" style="height:70px;">'
         }
     }
     if (!noRaids && manualRaids && item['scanArea'] === false) {
@@ -1748,8 +1728,8 @@ function pokestopLabel(item) {
         stopName = '<b class="pokestop-rocket-name">' + item['pokestop_name'] + '</b>'
         if (item['url'] !== null) {
             stopImage = '<img class="pokestop-rocket-image" id="' + item['pokestop_id'] + '" src="' + item['url'] + '" onclick="openFullscreenModal(document.getElementById(\'' + item['pokestop_id'] + '\').src)"/>' +
-            '<img src="static/forts/teamRocket.png" style="position:absolute;height:30px;left:55%;">' +
-            '<img src="static/grunttype/' + item['grunt_type'] + '.png" style="position:absolute;height:35px;right:55%;top:85px;">'
+            '<img src="static/sprites/misc/teamRocket.png" style="position:absolute;height:30px;left:55%;">' +
+            '<img src="static/sprites/invasion/' + item['grunt_type'] + '.png" style="position:absolute;height:35px;right:55%;top:85px;">'
         }
     } else if (!noQuests && item['quest_type'] !== 0 && lastMidnight < Number(item['quest_timestamp'])) {
         stopName = '<b class="pokestop-quest-name">' + item['pokestop_name'] + '</b>'
@@ -1816,7 +1796,7 @@ function pokestopLabel(item) {
         str += '<div>' + i8ln('Error: Undefined Quest Type') + ': ' + item['quest_type'] + '</div>'
     }
     if (!noLures && item['lure_expiration'] > Date.now()) {
-        var lureType = '<img style="padding:5px;position:relative;left:0px;top:12px;height:40px;" src="static/forts/LureModule_' + item['lure_id'] + '.png"/>'
+        var lureType = '<img style="padding:5px;position:relative;left:0px;top:12px;height:40px;" src="static/sprites/misc/LureModule_' + item['lure_id'] + '.png"/>'
         if (item['lure_id'] === 501) {
             lureType += i8ln('Normal')
         } else if (item['lure_id'] === 502) {
@@ -2186,21 +2166,11 @@ function getGymMarkerIcon(item) {
             html: html
         })
     } else if (item['raid_level'] !== null && item.raid_start <= Date.now() && item.raid_end > Date.now()) {
-        var hatchedEgg = ''
-        if (item['raid_level'] <= 2) {
-            hatchedEgg = 'hatched_normal'
-        } else if (item['raid_level'] <= 4) {
-            hatchedEgg = 'hatched_rare'
-        } else if (item['raid_level'] <= 5) {
-            hatchedEgg = 'hatched_legendary'
-        } else {
-            hatchedEgg = 'hatched_mega'
-        }
         html = '<div style="position:relative;">' +
             '<img src="static/forts/' + Store.get('gymMarkerStyle') + '/' + teamStr + '.png" style="width:50px;height:auto;"/>' +
             exIcon +
             inBattle +
-            '<img src="static/raids/egg_' + hatchedEgg + '.png" style="width:35px;height:auto;position:absolute;top:-11px;right:18px;"/>' +
+            '<img src="static/sprites/raid/' + item['raid_level'] + '_h.png" style="width:35px;height:auto;position:absolute;top:-11px;right:18px;"/>' +
             '</div>'
         if (noRaidTimer === false && Store.get(['showRaidTimer'])) {
             html += '<div><span class="raid-countdown gym-icon-countdown" disappears-at="' + item['raid_end'] + '" end>' + generateRemainingTimer(item['raid_end'], 'end') + '</span></div>'
@@ -2213,21 +2183,11 @@ function getGymMarkerIcon(item) {
             html: html
         })
     } else if (item['raid_level'] !== null && item.raid_end > Date.now()) {
-        var raidEgg = ''
-        if (item['raid_level'] <= 2) {
-            raidEgg = 'normal'
-        } else if (item['raid_level'] <= 4) {
-            raidEgg = 'rare'
-        } else if (item['raid_level'] <= 5) {
-            raidEgg = 'legendary'
-        } else {
-            raidEgg = 'mega'
-        }
         html = '<div style="position:relative;">' +
             '<img src="static/forts/' + Store.get('gymMarkerStyle') + '/' + teamStr + '.png" style="width:50px;height:auto;"/>' +
             exIcon +
             inBattle +
-            '<img src="static/raids/egg_' + raidEgg + '.png" style="width:30px;position:absolute;top:4px;right:15px;"/>' +
+            '<img src="static/sprites/raid/' + item['raid_level'] + '.png" style="width:30px;position:absolute;top:4px;right:15px;"/>' +
             '</div>'
         if (noRaidTimer === false && Store.get(['showRaidTimer'])) {
             html += '<div><span class="raid-countdown gym-icon-countdown" disappears-at="' + item['raid_start'] + '" end>' + generateRemainingTimer(item['raid_start'], 'end') + '</span></div>'
@@ -2301,29 +2261,9 @@ function setupGymMarker(item) {
             icon = iconpath + 'pokemon_icon_' + pokemonidStr + '_' + formStr + costumeStr + '.png'
             checkAndCreateSound(item.raid_pokemon_id)
         } else if (item.raid_start <= Date.now()) {
-            var hatchedEgg = ''
-            if (item['raid_level'] <= 2) {
-                hatchedEgg = 'hatched_normal'
-            } else if (item['raid_level'] <= 4) {
-                hatchedEgg = 'hatched_rare'
-            } else if (item['raid_level'] <= 5) {
-                hatchedEgg = 'hatched_legendary'
-            } else {
-                hatchedEgg = 'hatched_mega'
-            }
-            icon = 'static/raids/egg_' + hatchedEgg + '.png'
+            icon = 'static/sprites/raid/' + item['raid_level'] + '_h.png'
         } else {
-            var raidEgg = ''
-            if (item['raid_level'] <= 2) {
-                raidEgg = 'normal'
-            } else if (item['raid_level'] <= 4) {
-                raidEgg = 'rare'
-            } else if (item['raid_level'] <= 5) {
-                raidEgg = 'legendary'
-            } else {
-                raidEgg = 'mega'
-            }
-            icon = 'static/raids/egg_' + raidEgg + '.png'
+            icon = 'static/sprites/raid/' + item['raid_level'] + '.png'
             checkAndCreateSound()
         }
         sendNotification(title, text, icon, item['latitude'], item['longitude'])
@@ -2358,12 +2298,10 @@ function updateGymMarker(item, marker) {
                 icon = iconpath + 'pokemon_icon_' + pokemonidStr + '_' + formStr + costumeStr + evolutionStr + '.png'
                 checkAndCreateSound(item.raid_pokemon_id)
             } else if (item.raid_start <= Date.now()) {
-                var hatchedEgg = (item['raid_level'] <= 2) ? 'hatched_normal' : ((item['raid_level'] <= 4) ? 'hatched_rare' : ((item['raid_level'] <= 5) ? 'hatched_legendary' : 'hatched_mega'))
-                icon = 'static/raids/egg_' + hatchedEgg + '.png'
+                icon = 'static/sprites/raid/' + item['raid_level'] + '_h.png'
             } else {
                 checkAndCreateSound()
-                var raidEgg = (item['raid_level'] <= 2) ? 'normal' : ((item['raid_level'] <= 4) ? 'rare' : ((item['raid_level'] <= 5) ? 'legendary' : 'mega'))
-                icon = 'static/raids/egg_' + raidEgg + '.png'
+                icon = 'static/sprites/raid/' + item['raid_level'] + '.png'
             }
             sendNotification(title, text, icon, item['latitude'], item['longitude'])
         }
@@ -2392,8 +2330,8 @@ function getPokestopMarkerIcon(item) {
     } else {
         lastMidnight = 0
     }
-    var lureStr = ''
-    var stopQuestIcon = 'PstopQuest.png'
+    var markerStr = '0'
+    var stopQuestIcon = '0_q.png'
     var pokemonIdStr = ''
     var formStr = ''
     var shinyStr = ''
@@ -2403,16 +2341,16 @@ function getPokestopMarkerIcon(item) {
             iconAnchor: [25, 45],
             popupAnchor: [0, -35],
             className: 'stop-marker',
-            html: '<div><img src="static/forts/Pstop.png" style="width:50px;height:72;top:-35px;right:10px;"/></div>'
+            html: '<div><img src="static/sprites/pokestop/0.png" style="width:50px;height:72;top:-35px;right:10px;"/></div>'
         })
     } else if (Store.get(['showAllPokestops']) && !noAllPokestops) {
         if (!noTeamRocket && item['incident_expiration'] > Date.now()) {
             if (!noLures && item['lure_expiration'] > Date.now()) {
-                lureStr = 'Lured_' + item['lure_id']
+                markerStr = item['lure_id']
             }
-            html = '<div style="position:relative;"><img src="static/forts/Pstop' + lureStr + '_rocket.png" style="width:50px;height:72;top:-35px;right:10px;"/>'
+            html = '<div style="position:relative;"><img src="static/sprites/pokestop/' + markerStr + '_i.png" style="width:50px;height:72;top:-35px;right:10px;"/>'
             if (item['grunt_type'] > 0) {
-                html += '<img src="static/grunttype/' + item['grunt_type'] + '.png" style="width:30px;height:auto;position:absolute;top:4px;left:0px;"/></div>'
+                html += '<img src="static/sprites/invasion/' + item['grunt_type'] + '.png" style="width:30px;height:auto;position:absolute;top:4px;left:0px;"/></div>'
             } else {
                 html += '</div>'
             }
@@ -2428,12 +2366,12 @@ function getPokestopMarkerIcon(item) {
             })
         } else if (!noQuests && item['quest_reward_type'] !== null && lastMidnight < Number(item['quest_timestamp'])) {
             if (!noLures && item['lure_expiration'] > Date.now()) {
-                stopQuestIcon = 'PstopLured_' + item['lure_id'] + '.png'
+                stopQuestIcon = item['lure_id'] + '.png'
             }
             if (item['quest_reward_type'] === 12) {
                 html = '<div style="position:relative;">' +
-                    '<img src="static/forts/' + stopQuestIcon + '" style="width:50px;height:72;top:-35px;right:10px;"/>' +
-                    '<img src="' + iconpath + 'rewards/reward_mega_energy_' + item['quest_energy_pokemon_id'] + '.png" style="width:30px;height:auto;position:absolute;top:4px;left:0px;"/>' +
+                    '<img src="static/sprites/pokestop/' + stopQuestIcon + '" style="width:50px;height:72;top:-35px;right:10px;"/>' +
+                    '<img src="' + iconpath + 'reward/mega_resource/' + item['quest_energy_pokemon_id'] + '.png" style="width:30px;height:auto;position:absolute;top:4px;left:0px;"/>' +
                     '</div>'
                 stopMarker = L.divIcon({
                     iconSize: [31, 31],
@@ -2456,10 +2394,10 @@ function getPokestopMarkerIcon(item) {
                     formStr = item['quest_pokemon_formid']
                 }
                 if (item['quest_pokemon_shiny'] === 'true') {
-                    shinyStr = '_shiny'
+                    shinyStr = '_s'
                 }
                 html = '<div style="position:relative;">' +
-                    '<img src="static/forts/' + stopQuestIcon + '" style="width:50px;height:72;top:-35px;right:10px;"/>' +
+                    '<img src="static/sprites/pokestop/' + stopQuestIcon + '" style="width:50px;height:72;top:-35px;right:10px;"/>' +
                     '<img src="' + iconpath + 'pokemon_icon_' + pokemonIdStr + '_' + formStr + shinyStr + '.png" style="width:30px;height:auto;position:absolute;top:4px;left:0px;"/>' +
                     '</div>'
                 stopMarker = L.divIcon({
@@ -2471,7 +2409,7 @@ function getPokestopMarkerIcon(item) {
                 })
             } else if (item['quest_reward_type'] === 3) {
                 html = '<div style="position:relative;">' +
-                    '<img src="static/forts/' + stopQuestIcon + '" style="width:50px;height:72;top:-35px;right:10px;"/>' +
+                    '<img src="static/sprites/pokestop/' + stopQuestIcon + '" style="width:50px;height:72;top:-35px;right:10px;"/>' +
                     '<img src="' + iconpath + 'rewards/reward_stardust_' + item['quest_dust_amount'] + '.png" style="width:30px;height:auto;position:absolute;top:4px;left:0px;"/>' +
                     '</div>'
                 stopMarker = L.divIcon({
@@ -2483,7 +2421,7 @@ function getPokestopMarkerIcon(item) {
                 })
             } else if (item['quest_reward_type'] === 2) {
                 html = '<div style="position:relative;">' +
-                    '<img src="static/forts/' + stopQuestIcon + '" style="width:50px;height:72;top:-35px;right:10px;"/>' +
+                    '<img src="static/sprites/pokestop/' + stopQuestIcon + '" style="width:50px;height:72;top:-35px;right:10px;"/>' +
                     '<img src="' + iconpath + 'rewards/reward_' + item['quest_item_id'] + '_' + item['quest_reward_amount'] + '.png" style="width:30px;height:auto;position:absolute;top:4px;left:0px;"/>' +
                     '</div>'
                 stopMarker = L.divIcon({
@@ -2495,7 +2433,7 @@ function getPokestopMarkerIcon(item) {
                 })
             }
         } else if (!noLures && item['lure_expiration'] > Date.now()) {
-            html = '<div><img src="static/forts/PstopLured_' + item['lure_id'] + '.png" style="width:50px;height:72;top:-35px;right:10px;"/><div>'
+            html = '<div><img src="static/sprites/pokestop/' + item['lure_id'] + '.png" style="width:50px;height:72;top:-35px;right:10px;"/><div>'
             stopMarker = L.divIcon({
                 iconSize: [31, 31],
                 iconAnchor: [25, 45],
@@ -2509,16 +2447,16 @@ function getPokestopMarkerIcon(item) {
                 iconAnchor: [25, 45],
                 popupAnchor: [0, -35],
                 className: 'stop-marker',
-                html: '<div><img src="static/forts/Pstop.png" style="width:50px;height:72;top:-35px;right:10px;"/></div>'
+                html: '<div><img src="static/sprites/pokestop/0.png" style="width:50px;height:72;top:-35px;right:10px;"/></div>'
             })
         }
     } else if (Store.get(['showRocket']) && !noTeamRocket && item['incident_expiration'] > Date.now()) {
         if (!noLures && item['lure_expiration'] > Date.now()) {
-            lureStr = 'Lured_' + item['lure_id']
+            markerStr = 'Lured_' + item['lure_id']
         }
-        html = '<div style="position:relative;"><img src="static/forts/Pstop' + lureStr + '_rocket.png" style="width:50px;height:72;top:-35px;right:10px;"/>'
+        html = '<div style="position:relative;"><img src="static/sprites/pokestop/' + markerStr + '_i.png" style="width:50px;height:72;top:-35px;right:10px;"/>'
         if (item['grunt_type'] > 0) {
-            html += '<img src="static/grunttype/' + item['grunt_type'] + '.png" style="width:30px;height:auto;position:absolute;top:4px;left:0px;"/></div>'
+            html += '<img src="static/sprites/invasion/' + item['grunt_type'] + '.png" style="width:30px;height:auto;position:absolute;top:4px;left:0px;"/></div>'
         } else {
             html += '</div>'
         }
@@ -2534,12 +2472,12 @@ function getPokestopMarkerIcon(item) {
         })
     } else if (Store.get(['showQuests']) && !noQuests && item['quest_reward_type'] !== null && lastMidnight < Number(item['quest_timestamp'])) {
         if (!noLures && item['lure_expiration'] > Date.now()) {
-            stopQuestIcon = 'PstopLured_' + item['lure_id'] + '.png'
+            stopQuestIcon = item['lure_id'] + '.png'
         }
         if (item['quest_reward_type'] === 12) {
             html = '<div style="position:relative;">' +
-                '<img src="static/forts/' + stopQuestIcon + '" style="width:50px;height:72;top:-35px;right:10px;"/>' +
-                '<img src="' + iconpath + 'rewards/reward_mega_energy_' + item['quest_energy_pokemon_id'] + '.png" style="width:30px;height:auto;position:absolute;top:4px;left:0px;"/>' +
+                '<img src="static/sprites/pokestop/' + stopQuestIcon + '" style="width:50px;height:72;top:-35px;right:10px;"/>' +
+                '<img src="' + iconpath + 'reward/mega_resource' + item['quest_energy_pokemon_id'] + '.png" style="width:30px;height:auto;position:absolute;top:4px;left:0px;"/>' +
                 '</div>'
             stopMarker = L.divIcon({
                 iconSize: [31, 31],
@@ -2565,7 +2503,7 @@ function getPokestopMarkerIcon(item) {
                 shinyStr = '_shiny'
             }
             html = '<div style="position:relative;">' +
-                '<img src="static/forts/' + stopQuestIcon + '" style="width:50px;height:72;top:-35px;right:10px;"/>' +
+                '<img src="static/sprites/pokestop/' + stopQuestIcon + '" style="width:50px;height:72;top:-35px;right:10px;"/>' +
                 '<img src="' + iconpath + 'pokemon_icon_' + pokemonIdStr + '_' + formStr + shinyStr + '.png" style="width:30px;height:auto;position:absolute;top:4px;left:0px;"/>' +
                 '</div>'
             stopMarker = L.divIcon({
@@ -2577,8 +2515,8 @@ function getPokestopMarkerIcon(item) {
             })
         } else if (item['quest_reward_type'] === 3) {
             html = '<div style="position:relative;">' +
-                '<img src="static/forts/' + stopQuestIcon + '" style="width:50px;height:72;top:-35px;right:10px;"/>' +
-                '<img src="' + iconpath + 'rewards/reward_stardust_' + item['quest_dust_amount'] + '.png" style="width:30px;height:auto;position:absolute;top:4px;left:0px;"/>' +
+                '<img src="static/sprites/pokestop/' + stopQuestIcon + '" style="width:50px;height:72;top:-35px;right:10px;"/>' +
+                '<img src="' + iconpath + 'reward/stardust/' + item['quest_dust_amount'] + '.png" style="width:30px;height:auto;position:absolute;top:4px;left:0px;"/>' +
                 '</div>'
             stopMarker = L.divIcon({
                 iconSize: [31, 31],
@@ -2589,8 +2527,8 @@ function getPokestopMarkerIcon(item) {
             })
         } else if (item['quest_reward_type'] === 2) {
             html = '<div style="position:relative;">' +
-                '<img src="static/forts/' + stopQuestIcon + '" style="width:50px;height:72;top:-35px;right:10px;"/>' +
-                '<img src="' + iconpath + 'rewards/reward_' + item['quest_item_id'] + '_' + item['quest_reward_amount'] + '.png" style="width:30px;height:auto;position:absolute;top:4px;left:0px;"/>' +
+                '<img src="static/sprites/pokestop/' + stopQuestIcon + '" style="width:50px;height:72;top:-35px;right:10px;"/>' +
+                '<img src="' + iconpath + 'reward/item/' + item['quest_item_id'] + '_a' + item['quest_reward_amount'] + '.png" style="width:30px;height:auto;position:absolute;top:4px;left:0px;"/>' +
                 '</div>'
             stopMarker = L.divIcon({
                 iconSize: [31, 31],
@@ -2601,7 +2539,7 @@ function getPokestopMarkerIcon(item) {
             })
         }
     } else if (Store.get(['showLures']) && !noLures && item['lure_expiration'] > Date.now()) {
-        html = '<div><img src="static/forts/PstopLured_' + item['lure_id'] + '.png" style="width:50px;height:72;top:-35px;right:10px;"/><div>'
+        html = '<div><img src="static/sprites/pokestop/' + item['lure_id'] + '.png" style="width:50px;height:72;top:-35px;right:10px;"/><div>'
         stopMarker = L.divIcon({
             iconSize: [31, 31],
             iconAnchor: [25, 45],
@@ -2615,7 +2553,7 @@ function getPokestopMarkerIcon(item) {
             iconAnchor: [25, 45],
             popupAnchor: [0, -35],
             className: 'stop-marker',
-            html: '<div><img src="static/forts/Pstop.png" style="width:50px;height:72;top:-35px;right:10px;"/></div>'
+            html: '<div><img src="static/sprites/pokestop/0.png" style="width:50px;height:72;top:-35px;right:10px;"/></div>'
         })
     }
     return stopMarker
