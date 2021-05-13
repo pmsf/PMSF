@@ -34,7 +34,7 @@
 </div>
 <!-- InfoModal -->
 <?php if (! $noInfoModal) { ?>
-    <div class="modal fade" id="infoModal" tabindex="-1" aria-labelledby="infoModalLabel" aria-hidden="true">
+    <div class="modal fade" id="infoModal" aria-labelledby="infoModalLabel" aria-hidden="true">
         <div class="modal-dialog modal-xl">
             <div class="modal-content">
                 <div class="modal-header">
