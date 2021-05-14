@@ -516,7 +516,7 @@ function initMap() { // eslint-disable-line no-unused-vars
             })
         }
     })
-    
+
     $('#pokemon-icon-size').on('change', function () {
         Store.set('iconSizeModifier', this.value)
         redrawPokemon(mapData.pokemons)
@@ -4730,41 +4730,41 @@ function processPokemonStats(i, item) {
     ])
 }
 function processRewardStats(i, item) {
-  if (item['quest_pokemon_id'] <= 9) {
-    item['quest_pokemon_id'] = '00' + item['quest_pokemon_id']
-  } else if (item['quest_pokemon_id'] <= 99) {
-    item['quest_pokemon_id'] = '0' + item['quest_pokemon_id']
-  }
-  if (item['quest_pokemon_form'] <= 0) {
-    item['quest_pokemon_form'] = '00'
-  }
-  var reward = ''
-  var type = ''
-
-  if (item['quest_reward_type'] === 12 && item['quest_energy_pokemon_id'] > 0) {
-    reward = '<img src="' + iconpath + 'rewards/reward_mega_energy_' + item['quest_energy_pokemon_id'] + '.png" style="height:60px;">' +
-    '<br>' + item['name']
-    type = i8ln('Mega Energy')
-  } else if (item['quest_reward_type'] === 7 && item['quest_pokemon_id'] > 0) {
-    reward = '<img src="' + iconpath + 'pokemon_icon_' + item['quest_pokemon_id'] + '_' + item['quest_pokemon_form'] + '.png" style="height:60px;">' +
-    '<br>' + item['name']
-    type = i8ln('Pokémon')
-  } else if (item['quest_reward_type'] === 2 && item['quest_item_id'] > 0) {
-    reward = '<img src="' + iconpath + 'rewards/reward_' + item['quest_item_id'] + '_' + item['quest_reward_amount'] + '.png" style="height:60px;">' +
-    '<br>' + item['name']
-    type = i8ln('Item')
-  } else if (item['quest_reward_type'] === 3) {
-    reward = '<img src="' + iconpath + 'rewards/reward_stardust_' + item['quest_reward_amount'] + '.png" style="height:60px;">' +
-    '<br>' + item['name']
-    type = i8ln('Stardust')
-  }
-
-  rewardTable.row.add([
-    type,
-    reward,
-    item['count'],
-    item['percentage']
-  ])
+    if (item['quest_pokemon_id'] <= 9) {
+        item['quest_pokemon_id'] = '00' + item['quest_pokemon_id']
+    } else if (item['quest_pokemon_id'] <= 99) {
+        item['quest_pokemon_id'] = '0' + item['quest_pokemon_id']
+    }
+    if (item['quest_pokemon_form'] <= 0) {
+        item['quest_pokemon_form'] = '00'
+    }
+    var reward = ''
+    var type = ''
+    
+    if (item['quest_reward_type'] === 12 && item['quest_energy_pokemon_id'] > 0) {
+        reward = '<img src="' + iconpath + 'rewards/reward_mega_energy_' + item['quest_energy_pokemon_id'] + '.png" style="height:60px;">' +
+        '<br>' + item['name']
+        type = i8ln('Mega Energy')
+    } else if (item['quest_reward_type'] === 7 && item['quest_pokemon_id'] > 0) {
+        reward = '<img src="' + iconpath + 'pokemon_icon_' + item['quest_pokemon_id'] + '_' + item['quest_pokemon_form'] + '.png" style="height:60px;">' +
+        '<br>' + item['name']
+        type = i8ln('Pokémon')
+    } else if (item['quest_reward_type'] === 2 && item['quest_item_id'] > 0) {
+        reward = '<img src="' + iconpath + 'rewards/reward_' + item['quest_item_id'] + '_' + item['quest_reward_amount'] + '.png" style="height:60px;">' +
+        '<br>' + item['name']
+        type = i8ln('Item')
+    } else if (item['quest_reward_type'] === 3) {
+        reward = '<img src="' + iconpath + 'rewards/reward_stardust_' + item['quest_reward_amount'] + '.png" style="height:60px;">' +
+        '<br>' + item['name']
+        type = i8ln('Stardust')
+    }
+    
+    rewardTable.row.add([
+        type,
+        reward,
+        item['count'],
+        item['percentage']
+    ])
 }
 function processNests(i, item) {
     if (!Store.get('showNests')) {
@@ -6136,9 +6136,7 @@ $(function () {
 })
 
 $(function () {
-    // populate Navbar Style menu
     $selectStyle = $('#map-style')
-    // Load Stylenames, translate entries, and populate lists
     $selectStyle.on('change', function (e) {
         selectedStyle = $selectStyle.val()
         if (_mapLoaded) {
@@ -6149,10 +6147,8 @@ $(function () {
         }
         Store.set('map_style', selectedStyle)
     })
-    // recall saved mapstyle
     $selectStyle.val(Store.get('map_style')).trigger('change')
-    
-    
+
     $selectDirectionProvider = $('#direction-provider')
     $selectDirectionProvider.on('change', function () {
         directionProvider = $selectDirectionProvider.val()
