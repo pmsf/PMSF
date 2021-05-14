@@ -58,6 +58,7 @@ $d["lastportals"] = !empty($_POST['portals']) ? $_POST['portals'] : false;
 $d["lastpois"] = !empty($_POST['pois']) ? $_POST['pois'] : false;
 
 $loadPokemonStats = !empty($_POST['loadPokemonStats']) ? $_POST['loadPokemonStats'] : false;
+$loadRewardStats = !empty($_POST['loadRewardStats']) ? $_POST['loadRewardStats'] : false;
 
 if ($minIv < $prevMinIv || $minLevel < $prevMinLevel) {
     $lastpokemon = false;
@@ -360,6 +361,9 @@ $debug['10_after_devices'] = microtime(true) - $timing['start'];
 
 if ($loadPokemonStats == "true") {
     $d["pokemonStats"] = $stats->get_pokemon_stats();
+}
+if ($loadRewardStats == "true") {
+    $d["rewardStats"] = $stats->get_reward_stats();
 }
 
 $d['token'] = refreshCsrfToken();

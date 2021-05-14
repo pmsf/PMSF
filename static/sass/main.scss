@@ -44,7 +44,6 @@
 @import 'libs/functions';
 @import 'libs/mixins';
 @import 'libs/skel';
-@import url(https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@5.11.2/css/all.min.css);
 
 @include skel-breakpoints((
   xlarge: '(max-width: 1680px)',
@@ -68,26 +67,24 @@
   )
 ));
 
+// Font awesome
+@import url(https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@5.11.2/css/all.min.css);
+
 // Base.
 @import 'base/page';
 @import 'base/typography';
 
-// Component.
-//@import 'components/section';
-//@import 'components/form';
-//@import 'components/box';
+// Components
 @import 'components/icon';
-//@import 'components/image';
-//@import 'components/list';
 @import 'components/table';
 @import 'components/button';
-//@import 'components/grid-demo';
 
-// Layout.
+// Layout
 @import 'abstracts/variables';
 @import 'layout/header';
 @import 'layout/nav';
 @import 'layout/stats';
+@import 'layout/loader';
 @import 'layout/gyms';
 @import 'layout/banner';
 @import 'layout/main';

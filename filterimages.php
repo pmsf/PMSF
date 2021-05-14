@@ -15,7 +15,6 @@
         foreach ($mons as $k => $pokemon) {
             $type = '';
             $form = '';
-            $formId = '';
             $name = $pokemon['name'];
             foreach ($pokemon['types'] as $t) {
                 $type .= i8ln($t['type']);
@@ -23,10 +22,10 @@
             if (!empty($pokemon['forms'])) {
                 foreach ($pokemon['forms'] as $f) {
                     $form .= i8ln($f['nameform']);
-                    $formId .= $f['protoform'];
                 }
             }
             $genId = ($k <= 151) ? '1' : (($k <= 251) ? '2' : (($k <= 386) ? '3' : (($k <= 493) ? '4' : (($k <= 649) ? '5' : (($k <= 721) ? '6' : (($k <= 809) ? '7' : (($k <= 898) ? '8' : '')))))));
+            $genName = ($k <= 151) ? i8ln('Kanto') : (($k <= 251) ? i8ln('Johto') : (($k <= 386) ? i8ln('Hoenn') : (($k <= 493) ? i8ln('Sinnoh') : (($k <= 649) ? i8ln('Unova') : (($k <= 721) ? i8ln('Kalos') : (($k <= 809) ? i8ln('Alola') : (($k <= 898) ? i8ln('Galar') : '')))))));
             if (! in_array($k, $pokemonToExclude)) {
                 if ($k > $numberOfPokemon) {
                     break;
@@ -43,8 +42,8 @@
                 <span style="display:none" class="name">' . i8ln($name) . '</span>
                 <span style="display:none" class="id">' . $k . '</span>
                 <span style="display:none" class="genid">' . i8ln($pokemonGenSearchString) . $genId . '</span>
-                <span style="display:none" class="forms">' . $form . '</span>
-                <span style="display:none" class="formid">' . $formId . '</span>';
+                <span style="display:none" class="genname">' . $genName . '</span>
+                <span style="display:none" class="forms">' . $form . '</span>';
                 if (! $copyrightSafe) {
                     echo "<img src='" . $iconRepository . "pokemon_icon_" . $id . "_00.png' style='width:48px;height:48px;'/>";
                 } else {
@@ -59,7 +58,7 @@
         echo '</div></div>'; ?>
         <script>
             var options = {
-                valueNames: ['name', 'types', 'id', 'genid', 'forms', 'formid']
+                valueNames: ['name', 'types', 'id', 'genid', 'genname', 'forms']
             };
             var monList = new List('pokemon-list-cont-<?php echo $num; ?>', options);
         </script>

@@ -979,28 +979,51 @@
         <div class="modal-dialog modal-fullscreen">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h5 class="modal-title" id="statsModalLabel"><?php echo i8ln('Pokémon'); ?></h5>
+                    <div class="nav nav-tabs nav-fill" id="nav-tab" role="tablist">
+                        <button class="nav-link active" id="nav-pokemon-stats-tab" data-bs-toggle="tab" data-bs-target="#nav-pokemon-stats" type="button" role="tab" aria-controls="nav-pokemon-stats" aria-selected="true">
+                            <img src="static/images/pokemon.png" style="filter: brightness(0.5);" width="30" height="30">
+                        </button>
+                        <button class="nav-link" id="nav-reward-stats-tab" data-bs-toggle="tab" data-bs-target="#nav-reward-stats" type="button" role="tab" aria-controls="nav-reward-stats" aria-selected="true">
+                            <img src="static/images/reward.png" width="30" height="30">
+                        </button>
+                    </div>
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body" style="padding: 0;">
-                    <table id="pokemonTable" class="table table-striped table-bordered">
-                        <thead>
-                            <tr>
-                                <th><?php echo i8ln('ID'); ?></th>
-                                <th><?php echo i8ln('Type'); ?></th>
-                                <th><?php echo i8ln('Pokémon'); ?></th>
-                                <th><?php echo i8ln('Count'); ?></th>
-                                <th>%</th>
-                            </tr>
-                        </thead>
-                    </table>
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-danger" data-bs-dismiss="modal"><?php echo i8ln('Close') ?></button>
+
+                    <div class="tab-content" id="nav-tabContent">
+                        <div class="tab-pane fade show active" id="nav-pokemon-stats" role="tabpanel" aria-labelledby="nav-pokemon-stats-tab">
+                            <table id="pokemonTable" class="table table-striped table-bordered">
+                                <thead>
+                                    <tr>
+                                        <th><?php echo i8ln('ID'); ?></th>
+                                        <th><?php echo i8ln('Type'); ?></th>
+                                        <th><?php echo i8ln('Pokémon'); ?></th>
+                                        <th><?php echo i8ln('Count'); ?></th>
+                                        <th>%</th>
+                                    </tr>
+                                </thead>
+                            </table>
+                        </div>
+                        <div class="tab-pane fade" id="nav-reward-stats" role="tabpanel" aria-labelledby="nav-reward-stats-tab">
+                            <table id="rewardTable" class="table table-striped table-bordered">
+                                <thead>
+                                    <tr>
+                                        <th><?php echo i8ln('Type'); ?></th>
+                                        <th><?php echo i8ln('Reward'); ?></th>
+                                        <th><?php echo i8ln('Count'); ?></th>
+                                        <th>%</th>
+                                    </tr>
+                                </thead>
+                            </table>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
     </div>
 <?php } ?>
 <!-- End of Modals -->
+
+
 

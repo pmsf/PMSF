@@ -71,6 +71,7 @@
     a[href="#leftNav"] {
       float: left;
       margin-top: 1.2em;
+      box-shadow: none;
       i {
         font-size: 20px;
         pointer-events: none;
@@ -96,6 +97,7 @@
     a[href="#rightNav"] {
       float: right;
       margin-top: 1.2em;
+      box-shadow: none;
       i {
         font-size: 20px;
         pointer-events: none;

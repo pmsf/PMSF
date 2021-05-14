@@ -146,11 +146,11 @@ if (strtolower($map) === "rdm") {
     </script>
     <link href="node_modules/leaflet-geosearch/assets/css/leaflet.css" rel="stylesheet" />
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jqueryui/1.12.0/jquery-ui.min.css">
-    <!-- <link rel="stylesheet" href="node_modules/datatables/media/css/jquery.dataTables.min.css"> -->
+    <link rel="stylesheet" href="node_modules/datatables/media/css/jquery.dataTables.min.css">
     <script src="static/js/vendor/modernizr.custom.js"></script>
     <!-- Bootstrap Icons -->
     <link rel="stylesheet" href="node_modules/bootstrap-icons/font/bootstrap-icons.css">
-    <link rel="stylesheet" href="https://cdn.datatables.net/1.10.24/css/dataTables.bootstrap5.min.css">
+    <!--<link rel="stylesheet" href="https://cdn.datatables.net/1.10.24/css/dataTables.bootstrap5.min.css">-->
     <!-- Leaflet -->
     <link rel="stylesheet" href="node_modules/leaflet/dist/leaflet.css" />
     <link rel="stylesheet" href="static/dist/css/app.min.css">
@@ -168,55 +168,55 @@ if (strtolower($map) === "rdm") {
 <div class="wrapper">
     <!-- Header -->
     <header id="header">
-        <a class="btn btn-link" data-bs-toggle="offcanvas" href="#leftNav" role="button" title="<?php echo i8ln('Options') ?>" aria-controls="leftNav"><i class='fas fa-sliders-h'></i></a>
+        <a class="btn btn-link" data-bs-toggle="offcanvas" href="#leftNav" role="button" title="<?php echo i8ln('Options'); ?>" aria-controls="leftNav"><i class='fas fa-sliders-h'></i></a>
 
         <h1><a href="#"><?= $headerTitle ?><img src="<?= $raidmapLogo ?>"></a></h1>
         <?php
-        if (! $noStatsToggle) {
-            echo '<a class="btn btn-link" data-bs-toggle="offcanvas" href="#rightNav" role="button" title="' . i8ln('Options') . '" aria-controls="rightNav"><i class="fas fa-chart-bar"></i></a>';
-        }
-        if ($paypalUrl != "") {
-            echo '<a class="config-icon" href="' . $paypalUrl . '" target="_blank">
-                 <i class="fab fa-paypal" title="' . i8ln('PayPal') . '"></i>
-                 </a>';
-        }
-        if ($telegramUrl != "") {
-            echo '<a class="config-icon" href="' . $telegramUrl . '" target="_blank">
-                 <i class="fab fa-telegram" title="' . i8ln('Telegram') . '"></i>
-                 </a>';
-        }
-        if ($whatsAppUrl != "") {
-            echo '<a class="config-icon" href="' . $whatsAppUrl . '" target="_blank">
-                 <i class="fab fa-whatsapp" title="' . i8ln('WhatsApp') . '"></i>
-                 </a>';
-        }
-        if ($discordUrl != "") {
-            echo '<a class="config-icon" href="' . $discordUrl . '" target="_blank">
-                 <i class="fab fa-discord" title="' . i8ln('Discord') . '"></i>
-                 </a>';
-        }
-        if ($patreonUrl != "") {
-            echo '<a class="config-icon" href="' . $patreonUrl . '" target="_blank">
-                 <i class="fab fa-patreon" title="' . i8ln('Patreon') . '"></i>
-                 </a>';
-        }
-        if ($customUrl != "") {
-            echo '<a class="config-icon" href="' . $customUrl . '" target="_blank">
-                 <i class="' . $customUrlFontIcon . '"></i>
-                 </a>';
-        }
+        if (! $noStatsToggle) { ?>
+            <a class="btn btn-link" data-bs-toggle="offcanvas" href="#rightNav" role="button" title="<?php echo i8ln('Stats'); ?>" aria-controls="rightNav"><i class="fas fa-chart-bar"></i></a>
+        <?php }
+        if ($paypalUrl != "") { ?>
+            <a class="config-icon" href="<?php echo $paypalUrl; ?>" target="_blank">
+                <i class="fab fa-paypal" title="<?php echo i8ln('PayPal'); ?>"></i>
+            </a>
+        <?php }
+        if ($telegramUrl != "") { ?>
+            <a class="config-icon" href="<?php echo $telegramUrl; ?>" target="_blank">
+                <i class="fab fa-telegram" title="<?php echo i8ln('Telegram'); ?>"></i>
+            </a>
+        <?php }
+        if ($whatsAppUrl != "") { ?>
+            <a class="config-icon" href="<?php echo $whatsAppUrl; ?>" target="_blank">
+                <i class="fab fa-whatsapp" title="<?php echo i8ln('WhatsApp'); ?>"></i>
+            </a>
+        <?php }
+        if ($discordUrl != "") { ?>
+            <a class="config-icon" href="<?php echo $discordUrl; ?>" target="_blank">
+                <i class="fab fa-discord" title="<?php echo i8ln('Discord'); ?>"></i>
+            </a>
+        <?php }
+        if ($patreonUrl != "") { ?>
+            <a class="config-icon" href="<?php echo $patreonUrl; ?>" target="_blank">
+                <i class="fab fa-patreon" title="<?php echo i8ln('Patreon'); ?>"></i>
+            </a>
+        <?php }
+        if ($customUrl != "") { ?>
+            <a class="config-icon" href="<?php echo $customUrl; ?>" target="_blank">
+                <i class="<?php echo $customUrlFontIcon; ?>"></i>
+            </a>
+        <?php }
         if (! $noHeaderWeatherIcon) { ?>
             <div id="currentWeather"></div>
         <?php }
         if (! $noNotifyNotification) { ?>
             <i id="pushNotifyIcon" data-bs-toggle="tooltip" title=""></i>
         <?php }
-        if (!empty($_SESSION['user']->id)) {
-            echo "<a href='#accountModal' data-bs-toggle='modal' title='" . i8ln('Profile') . "'><img src='" .  $_SESSION['user']->avatar . "'></a>";
-        } else {
-            echo "<a href='#accountModal' data-bs-toggle='modal' title='" . i8ln('Profile') . "'><i class='fas fa-user'></i></a>";
-        }
-        ?>
+        if (!empty($_SESSION['user']->id)) { ?>
+            <a href="#accountModal" data-bs-toggle="modal" title="<?php echo i8ln('Profile'); ?>"><img src="<?php echo $_SESSION['user']->avatar; ?>"></a>
+            <?php
+        } else { ?>
+            <a href="#accountModal" data-bs-toggle="modal" title="<?php echo i8ln('Profile'); ?>"><i class="fas fa-user"></i></a>
+        <?php } ?>
     </header>
     <!-- Toastr Container -->
     <div aria-live="polite" aria-atomic="true" class="position-relative">
@@ -1213,7 +1213,7 @@ if (strtolower($map) === "rdm") {
                 </div>
                 <div class="card-body">
                     <div class="d-grid gap-2">
-                        <button id="fullStatsToggle" type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#statsModal">
+                        <button id="fullStatsToggle" type="button" class="btn btn-secondary" data-bs-toggle="modal" data-bs-target="#statsModal">
                             <i class="far fa-chart-bar"></i> <?php echo i8ln('Full Stats') ?>
                         </button>
                     </div>

@@ -12,23 +12,11 @@ var $textMinIV
 var $textMinLevel
 var $raidNotify
 var $selectStyle
-var $selectIconSize
-var $selectIconNotifySizeModifier
-var $switchOpenGymsOnly
-var $selectTeamGymsOnly
-var $selectLastUpdateGymsOnly
-var $switchActiveRaids
-var $selectMinGymLevel
-var $selectMaxGymLevel
-var $selectMinRaidLevel
-var $selectMaxRaidLevel
-var $selectNewPortalsOnly
 var $selectGymMarkerStyle
 var $selectLocationIconMarker
 var $switchTinyRat
 var $switchBigKarp
 var $selectDirectionProvider
-var $switchExEligible
 var $questsExcludePokemon
 var $questsExcludeItem
 var $questsExcludeEnergy
@@ -262,8 +250,12 @@ if (!noDarkMode && Store.get('darkMode')) {
 }
 
 var pokemonTable = $('#pokemonTable').DataTable({
-    paging: false,
-    searching: false,
+    paging: true,
+    lengthMenu: [
+        [3, 10, 25, 50, -1],
+        [i8ln('Show 3 rows'), i8ln('Show 10 rows'), i8ln('Show 25 rows'), i8ln('Show 50 rows'), i8ln('Show all rows')]
+    ],
+    searching: true,
     info: false,
     responsive: true,
     scrollX: false,
@@ -276,10 +268,11 @@ var pokemonTable = $('#pokemonTable').DataTable({
     },
     stateDuration: 0,
     language: {
-        search: i8ln('Search:'),
+        search: '',
+        searchPlaceholder: i8ln('Search...'),
         emptyTable: i8ln('Loading...') + ' <i class="fas fa-spinner fa-spin"></i>',
         info: i8ln('Showing _START_ to _END_ of _TOTAL_ entries'),
-        lengthMenu: i8ln('Show _MENU_ entries'),
+        lengthMenu: '_MENU_',
         paginate: {
             next: i8ln('Next'),
             previous: i8ln('Previous')
@@ -287,6 +280,36 @@ var pokemonTable = $('#pokemonTable').DataTable({
     }
 })
 
+var rewardTable = $('#rewardTable').DataTable({
+    paging: true,
+    lengthMenu: [
+        [3, 10, 25, 50, -1],
+        [i8ln('Show 3 rows'), i8ln('Show 10 rows'), i8ln('Show 25 rows'), i8ln('Show 50 rows'), i8ln('Show all rows')]
+    ],
+    searching: true,
+    info: false,
+    responsive: true,
+    scrollX: false,
+    stateSave: true,
+    stateSaveCallback: function (settings, data) {
+        localStorage.setItem('DataTables_' + settings.sInstance, JSON.stringify(data))
+    },
+    stateLoadCallback: function (settings) {
+        return JSON.parse(localStorage.getItem('DataTables_' + settings.sInstance))
+    },
+    stateDuration: 0,
+    language: {
+        search: '',
+        searchPlaceholder: i8ln('Search...'),
+        emptyTable: i8ln('Loading...') + ' <i class="fas fa-spinner fa-spin"></i>',
+        info: i8ln('Showing _START_ to _END_ of _TOTAL_ entries'),
+        lengthMenu: '_MENU_',
+        paginate: {
+            next: i8ln('Next'),
+            previous: i8ln('Previous')
+        }
+    }
+})
 
 function previewPoiImage(event) { // eslint-disable-line no-unused-vars
     var form = $(event.target).parent().parent()
@@ -486,70 +509,55 @@ function initMap() { // eslint-disable-line no-unused-vars
                 $('#submitModal .pokemon-list-cont').each(function (index) {
                     $(this).attr('id', 'pokemon-list-cont-6' + index)
                     var options = {
-                        valueNames: ['name', 'types', 'id', 'genid', 'forms', 'formid']
+                        valueNames: ['name', 'types', 'id', 'genid', 'genname', 'forms']
                     }
                     var monList = new List('pokemon-list-cont-6' + index, options) // eslint-disable-line no-unused-vars
                 })
             })
         }
     })
-    $selectIconSize = $('#pokemon-icon-size')
-
-    $selectIconSize.on('change', function () {
+    
+    $('#pokemon-icon-size').on('change', function () {
         Store.set('iconSizeModifier', this.value)
         redrawPokemon(mapData.pokemons)
     })
 
-    $selectIconNotifySizeModifier = $('#pokemon-icon-notify-size')
-
-    $selectIconNotifySizeModifier.on('change', function () {
+    $('#pokemon-icon-notify-size').on('change', function () {
         Store.set('iconNotifySizeModifier', this.value)
         redrawPokemon(mapData.pokemons)
     })
 
-    $selectTeamGymsOnly = $('#team-gyms-only-switch')
-
-    $selectTeamGymsOnly.on('change', function () {
+    $('#team-gyms-only-switch').on('change', function () {
         Store.set('showTeamGymsOnly', this.value)
         lastgyms = false
         updateMap()
     })
 
-    $selectLastUpdateGymsOnly = $('#last-update-gyms-switch')
-
-    $selectLastUpdateGymsOnly.on('change', function () {
+    $('#last-update-gyms-switch').on('change', function () {
         Store.set('showLastUpdatedGymsOnly', this.value)
         lastgyms = false
         updateMap()
     })
 
-    $selectMinGymLevel = $('#min-level-gyms-filter-switch')
-
-    $selectMinGymLevel.on('change', function () {
+    $('#min-level-gyms-filter-switch').on('change', function () {
         Store.set('minGymLevel', this.value)
         lastgyms = false
         updateMap()
     })
 
-    $selectMaxGymLevel = $('#max-level-gyms-filter-switch')
-
-    $selectMaxGymLevel.on('change', function () {
+    $('#max-level-gyms-filter-switch').on('change', function () {
         Store.set('maxGymLevel', this.value)
         lastgyms = false
         updateMap()
     })
 
-    $selectMinRaidLevel = $('#min-level-raids-filter-switch')
-
-    $selectMinRaidLevel.on('change', function () {
+    $('#min-level-raids-filter-switch').on('change', function () {
         Store.set('minRaidLevel', this.value)
         lastgyms = false
         updateMap()
     })
 
-    $selectMaxRaidLevel = $('#max-level-raids-filter-switch')
-
-    $selectMaxRaidLevel.on('change', function () {
+    $('#max-level-raids-filter-switch').on('change', function () {
         Store.set('maxRaidLevel', this.value)
         lastgyms = false
         updateMap()
@@ -3219,7 +3227,8 @@ function showInBoundsMarkers(markersInput, type) {
 
 function loadRawData() {
     var loadPokemon = Store.get('showPokemon')
-    var loadPokemonStats = $('#statsModal').hasClass('show')
+    var loadPokemonStats = document.getElementById('nav-pokemon-stats-tab').getAttribute('aria-selected')
+    var loadRewardStats = document.getElementById('nav-reward-stats-tab').getAttribute('aria-selected')
     var loadGyms = Store.get('showGyms')
     var loadRaids = Store.get('showRaids')
     var loadPokestops = Store.get('showPokestops')
@@ -3255,6 +3264,7 @@ function loadRawData() {
             'timestamp': timestamp,
             'pokemon': loadPokemon,
             'loadPokemonStats': loadPokemonStats,
+            'loadRewardStats': loadRewardStats,
             'lastpokemon': lastpokemon,
             'pokestops': loadPokestops,
             'lures': loadLures,
@@ -4719,6 +4729,43 @@ function processPokemonStats(i, item) {
         item['percentage']
     ])
 }
+function processRewardStats(i, item) {
+  if (item['quest_pokemon_id'] <= 9) {
+    item['quest_pokemon_id'] = '00' + item['quest_pokemon_id']
+  } else if (item['quest_pokemon_id'] <= 99) {
+    item['quest_pokemon_id'] = '0' + item['quest_pokemon_id']
+  }
+  if (item['quest_pokemon_form'] <= 0) {
+    item['quest_pokemon_form'] = '00'
+  }
+  var reward = ''
+  var type = ''
+
+  if (item['quest_reward_type'] === 12 && item['quest_energy_pokemon_id'] > 0) {
+    reward = '<img src="' + iconpath + 'rewards/reward_mega_energy_' + item['quest_energy_pokemon_id'] + '.png" style="height:60px;">' +
+    '<br>' + item['name']
+    type = i8ln('Mega Energy')
+  } else if (item['quest_reward_type'] === 7 && item['quest_pokemon_id'] > 0) {
+    reward = '<img src="' + iconpath + 'pokemon_icon_' + item['quest_pokemon_id'] + '_' + item['quest_pokemon_form'] + '.png" style="height:60px;">' +
+    '<br>' + item['name']
+    type = i8ln('Pokémon')
+  } else if (item['quest_reward_type'] === 2 && item['quest_item_id'] > 0) {
+    reward = '<img src="' + iconpath + 'rewards/reward_' + item['quest_item_id'] + '_' + item['quest_reward_amount'] + '.png" style="height:60px;">' +
+    '<br>' + item['name']
+    type = i8ln('Item')
+  } else if (item['quest_reward_type'] === 3) {
+    reward = '<img src="' + iconpath + 'rewards/reward_stardust_' + item['quest_reward_amount'] + '.png" style="height:60px;">' +
+    '<br>' + item['name']
+    type = i8ln('Stardust')
+  }
+
+  rewardTable.row.add([
+    type,
+    reward,
+    item['count'],
+    item['percentage']
+  ])
+}
 function processNests(i, item) {
     if (!Store.get('showNests')) {
         return false
@@ -5370,6 +5417,10 @@ function updateMap() {
             pokemonTable.clear()
             $.each(result.pokemonStats, processPokemonStats)
             pokemonTable.draw(false)
+
+            rewardTable.clear()
+            $.each(result.rewardStats, processRewardStats)
+            rewardTable.draw(false)
 
             timestamp = result.timestamp
             lastUpdateTime = Date.now()
@@ -6087,12 +6138,9 @@ $(function () {
 $(function () {
     // populate Navbar Style menu
     $selectStyle = $('#map-style')
-    $selectDirectionProvider = $('#direction-provider')
-
     // Load Stylenames, translate entries, and populate lists
     $selectStyle.on('change', function (e) {
         selectedStyle = $selectStyle.val()
-
         if (_mapLoaded) {
             setTileLayer(selectedStyle)
         }
@@ -6101,45 +6149,36 @@ $(function () {
         }
         Store.set('map_style', selectedStyle)
     })
-
     // recall saved mapstyle
-
     $selectStyle.val(Store.get('map_style')).trigger('change')
-
+    
+    
+    $selectDirectionProvider = $('#direction-provider')
     $selectDirectionProvider.on('change', function () {
         directionProvider = $selectDirectionProvider.val()
         Store.set('directionProvider', directionProvider)
     })
-
     $selectDirectionProvider.val(Store.get('directionProvider')).trigger('change')
 
-    $switchOpenGymsOnly = $('#open-gyms-only-switch')
-
-    $switchOpenGymsOnly.on('change', function () {
+    $('#open-gyms-only-switch').on('change', function () {
         Store.set('showOpenGymsOnly', this.checked)
         lastgyms = false
         updateMap()
     })
 
-    $switchActiveRaids = $('#active-raids-switch')
-
-    $switchActiveRaids.on('change', function () {
+    $('#active-raids-switch').on('change', function () {
         Store.set('activeRaids', this.checked)
         lastgyms = false
         updateMap()
     })
 
-    $selectNewPortalsOnly = $('#new-portals-only-switch')
-
-    $selectNewPortalsOnly.on('change', function () {
+    $('#new-portals-only-switch').on('change', function () {
         Store.set('showNewPortalsOnly', this.value)
         lastportals = false
         updateMap()
     })
 
-    $switchExEligible = $('#ex-eligible-switch')
-
-    $switchExEligible.on('change', function () {
+    $('#ex-eligible-switch').on('change', function () {
         Store.set('exEligible', this.checked)
         lastgyms = false
         $.each(['gyms'], function (d, dType) {
@@ -6157,16 +6196,13 @@ $(function () {
     })
 
     $selectGymMarkerStyle = $('#gym-marker-style')
-
     $selectGymMarkerStyle.on('change', function (e) {
         Store.set('gymMarkerStyle', this.value)
         updateGymIcons()
     })
-
     $selectGymMarkerStyle.val(Store.get('gymMarkerStyle')).trigger('change')
 
     $selectIconStyle = $('#icon-style')
-
     $selectIconStyle.on('change', function (e) {
         Store.set('icons', this.value)
         iconpath = Store.get('icons')
@@ -6175,6 +6211,7 @@ $(function () {
         updatePokestopIcons()
     })
     $selectIconStyle.val(Store.get('icons')).trigger('change')
+
     pokemonSpritesFilter()
     itemSpritesFilter()
     energySpritesFilter()
@@ -6449,67 +6486,67 @@ $(function () {
 
     $('.select-all').on('click', function (e) {
         e.preventDefault()
-        var parent = $(this).parent().parent().parent()
+        var parent = $(this).parent()
         parent.find('.pokemon-list .pokemon-icon-sprite').addClass('active')
         parent.find('.search-number').val(Array.from(Array(numberOfPokemon + 1).keys()).slice(1).join(',')).trigger('change')
     })
     $('.hide-all').on('click', function (e) {
         e.preventDefault()
-        var parent = $(this).parent().parent().parent()
+        var parent = $(this).parent()
         parent.find('.pokemon-list .pokemon-icon-sprite').removeClass('active')
         parent.find('.search-number').val('').trigger('change')
     })
 
     $('.select-all-energy').on('click', function (e) {
         e.preventDefault()
-        var parent = $(this).parent().parent().parent()
+        var parent = $(this).parent()
         parent.find('.energy-list .energy-icon-sprite').addClass('active')
         parent.find('.search-number').val(Array.from(Array(numberOfPokemon + 1).keys()).slice(1).join(',')).trigger('change')
     })
     $('.hide-all-energy').on('click', function (e) {
         e.preventDefault()
-        var parent = $(this).parent().parent().parent()
+        var parent = $(this).parent()
         parent.find('.energy-list .energy-icon-sprite').removeClass('active')
         parent.find('.search-number').val('').trigger('change')
     })
 
     $('.select-all-item').on('click', function (e) {
         e.preventDefault()
-        var parent = $(this).parent().parent().parent()
+        var parent = $(this).parent()
         parent.find('.item-list .item-icon-sprite').addClass('active')
         parent.find('.search-number').val(Array.from(Array(numberOfItem + 1).keys()).slice(1).join(',')).trigger('change')
     })
     $('.hide-all-item').on('click', function (e) {
         e.preventDefault()
-        var parent = $(this).parent().parent().parent()
+        var parent = $(this).parent()
         parent.find('.item-list .item-icon-sprite').removeClass('active')
         parent.find('.search-number').val('').trigger('change')
     })
 
     $('.select-all-grunt').on('click', function (e) {
         e.preventDefault()
-        var parent = $(this).parent().parent().parent()
+        var parent = $(this).parent()
         parent.find('.grunt-list .grunt-icon-sprite').addClass('active')
         parent.find('.search-number').val(Array.from(Array(numberOfGrunt + 1).keys()).slice(1).join(',')).trigger('change')
     })
 
     $('.hide-all-grunt').on('click', function (e) {
         e.preventDefault()
-        var parent = $(this).parent().parent().parent()
+        var parent = $(this).parent()
         parent.find('.grunt-list .grunt-icon-sprite').removeClass('active')
         parent.find('.search-number').val('').trigger('change')
     })
 
     $('.select-all-egg').on('click', function (e) {
         e.preventDefault()
-        var parent = $(this).parent().parent().parent()
+        var parent = $(this).parent()
         parent.find('.raidegg-list .raidegg-icon-sprite').addClass('active')
         parent.find('.search-number').val(Array.from(Array(numberOfEgg + 1).keys()).slice(1).join(',')).trigger('change')
     })
 
     $('.hide-all-egg').on('click', function (e) {
         e.preventDefault()
-        var parent = $(this).parent().parent().parent()
+        var parent = $(this).parent()
         parent.find('.raidegg-list .raidegg-icon-sprite').removeClass('active')
         parent.find('.search-number').val('').trigger('change')
     })
