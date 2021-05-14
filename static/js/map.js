@@ -4740,7 +4740,7 @@ function processRewardStats(i, item) {
     }
     var reward = ''
     var type = ''
-    
+
     if (item['quest_reward_type'] === 12 && item['quest_energy_pokemon_id'] > 0) {
         reward = '<img src="' + iconpath + 'rewards/reward_mega_energy_' + item['quest_energy_pokemon_id'] + '.png" style="height:60px;">' +
         '<br>' + item['name']
@@ -4758,7 +4758,7 @@ function processRewardStats(i, item) {
         '<br>' + item['name']
         type = i8ln('Stardust')
     }
-    
+
     rewardTable.row.add([
         type,
         reward,
