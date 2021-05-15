@@ -175,7 +175,8 @@ module.exports = function (grunt) {
             build: {
                 files: {
                     'static/dist/css/app.min.css': 'static/dist/css/app.built.css',
-                    'static/dist/css/mobile.min.css': 'static/dist/css/mobile.built.css'
+                    'static/dist/css/mobile.min.css': 'static/dist/css/mobile.built.css',
+                    'static/dist/css/custom.min.css': 'static/css/custom.css'
                 }
             }
         },
