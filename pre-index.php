@@ -305,23 +305,23 @@ if (strtolower($map) === "rdm") {
                                                 </div>
                                             </div>
                                             <?php if (! $noHidePokemon && ! $noExcludeMinIV) { ?>
-                                                <div class="form-control" style="position:relative;top:8px;">
-                                                    <ul class="nav nav-tabs nav-fill" id="pokemonHideMin" role="tablist">
-                                                        <?php
-                                                        $firstTab = 1;
-                                                        if (! $noHidePokemon) { ?>
-                                                            <li class="nav-item" role="presentation">
-                                                                <button class="nav-link<?php echo (($firstTab == 1) ? " active" : ""); ?>" id="exclude-pokemon-tab" data-bs-toggle="tab" data-bs-target="#exclude-pokemon" type="button" role="tab" aria-controls="exclude-pokemon" aria-selected="false"><?php echo i8ln('Hide Pokémon') ?></button>
-                                                            </li>
-                                                        <?php
-                                                        $firstTab++;
-                                                        }
-                                                        if (! $noExcludeMinIV) { ?>
-                                                            <li class="nav-item" role="presentation">
-                                                                <button class="nav-link<?php echo (($firstTab == 1) ? " active" : ""); ?>" id="exclude-min-iv-tab" data-bs-toggle="tab" data-bs-target="#exclude-min-iv" type="button" role="tab" aria-controls="exclude-min-iv" aria-selected="false"><?php echo i8ln('Excl. Min IV/Lvl') ?></button>
-                                                            </li>
-                                                        <?php } ?>
-                                                    </ul>
+                                                <ul class="nav nav-tabs nav-fill" id="pokemonHideMin" role="tablist">
+                                                    <?php
+                                                    $firstTab = 1;
+                                                    if (! $noHidePokemon) { ?>
+                                                        <li class="nav-item" role="presentation">
+                                                            <button class="nav-link<?php echo (($firstTab == 1) ? " active" : ""); ?>" id="exclude-pokemon-tab" data-bs-toggle="tab" data-bs-target="#exclude-pokemon" type="button" role="tab" aria-controls="exclude-pokemon" aria-selected="false"><?php echo i8ln('Hide Pokémon') ?></button>
+                                                        </li>
+                                                    <?php
+                                                    $firstTab++;
+                                                    }
+                                                    if (! $noExcludeMinIV) { ?>
+                                                        <li class="nav-item" role="presentation">
+                                                            <button class="nav-link<?php echo (($firstTab == 1) ? " active" : ""); ?>" id="exclude-min-iv-tab" data-bs-toggle="tab" data-bs-target="#exclude-min-iv" type="button" role="tab" aria-controls="exclude-min-iv" aria-selected="false"><?php echo i8ln('Excl. Min IV/Lvl') ?></button>
+                                                        </li>
+                                                    <?php } ?>
+                                                </ul>
+                                                <div class="border with-radius">
                                                     <div class="tab-content" id="pokemonHideMinContent">
                                                         <?php
                                                         $firstTabContent = 1;
@@ -435,7 +435,7 @@ if (strtolower($map) === "rdm") {
                                                     <div class="dropdown-divider"></div>
                                                 <?php
                                                 } ?>
-                                                <div class="form-control">
+                                                <div class="border with-radius">
                                                     <ul class="nav nav-tabs nav-fill" id="rocketHide" role="tablist">
                                                         <li class="nav-item" role="presentation">
                                                             <button class="nav-link active" id="exclude-rocket-tab" data-bs-toggle="tab" data-bs-target="#exclude-rocket" type="button" role="tab" aria-controls="exclude-rocket" aria-selected="false"><?php echo i8ln('Hide Grunts') ?></button>
@@ -469,7 +469,7 @@ if (strtolower($map) === "rdm") {
                                             <?php
                                             } ?>
                                             <div id="quests-filter-wrapper" style="display:none">
-                                                <div class="form-control">
+                                                <div class="border with-radius">
                                                     <ul class="nav nav-tabs nav-fill" id="questHide" role="tablist">
                                                         <?php
                                                         $firstTab = 1;
@@ -623,7 +623,7 @@ if (strtolower($map) === "rdm") {
                                                     </div>
                                                     <div class="dropdown-divider"></div>
                                                 <?php } ?>
-                                                <div class="form-control">
+                                                <div class="border with-radius">
                                                     <ul class="nav nav-tabs nav-fill" id="raidHide" role="tablist">
                                                         <li class="nav-item" role="presentation">
                                                             <button class="nav-link active" id="exclude-raidboss-tab" data-bs-toggle="tab" data-bs-target="#exclude-raidboss" type="button" role="tab" aria-controls="exclude-raidboss" aria-selected="false"><?php echo i8ln('Hide Raidboss') ?></button>
@@ -877,7 +877,7 @@ if (strtolower($map) === "rdm") {
                                             <div class="dropdown-divider"></div>
                                         <?php }
                                         if (! $noSearchLocation) { ?>
-                                            <div class="input-group mb-3" id="search-places">
+                                            <div class="input-group input-group-sm" id="search-places">
                                                 <span class="input-group-text" id="next-location"><?php echo i8ln('Search location'); ?></span>
                                                 <input type="text" class="form-control" id="next-location" aria-describedby="next-location">
                                             </div>
@@ -923,7 +923,7 @@ if (strtolower($map) === "rdm") {
                                 <div class="card-body">
                                     <?php
                                     if (! $noNotifyPokemon) { ?>
-                                        <div class="form-control">
+                                        <div class="border with-radius">
                                             <ul class="nav nav-tabs nav-fill" id="notifyPokemon" role="tablist">
                                                 <li class="nav-item" role="presentation">
                                                     <button class="nav-link active" id="notify-pokemon-tab" data-bs-toggle="tab" data-bs-target="#notify-pokemon" type="button" role="tab" aria-controls="notify-pokemon" aria-selected="false"><?php echo i8ln('Notify of Pokémon') ?></button>

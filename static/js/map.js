@@ -14,8 +14,6 @@ var $raidNotify
 var $selectStyle
 var $selectGymMarkerStyle
 var $selectLocationIconMarker
-var $switchTinyRat
-var $switchBigKarp
 var $selectDirectionProvider
 var $questsExcludePokemon
 var $questsExcludeItem
@@ -141,21 +139,21 @@ var genderType = ['♂', '♀', '⚲']
 var cpMultiplier = [0.094, 0.16639787, 0.21573247, 0.25572005, 0.29024988, 0.3210876, 0.34921268, 0.37523559, 0.39956728, 0.42250001, 0.44310755, 0.46279839, 0.48168495, 0.49985844, 0.51739395, 0.53435433, 0.55079269, 0.56675452, 0.58227891, 0.59740001, 0.61215729, 0.62656713, 0.64065295, 0.65443563, 0.667934, 0.68116492, 0.69414365, 0.70688421, 0.71939909, 0.7317, 0.73776948, 0.74378943, 0.74976104, 0.75568551, 0.76156384, 0.76739717, 0.7731865, 0.77893275, 0.7846369, 0.79030001]
 var throwType = JSON.parse('{"10": "Nice", "11": "Great", "12": "Excellent"}')
 var gruntCharacterTypes = ['unset', 'Team Leader(s)', 'Team GO Rocket Grunt(s)', 'Arlo', 'Cliff', 'Sierra', 'Giovanni']
+
 var weatherLayerGroup = new L.LayerGroup()
 var weatherArray = []
 var weatherPolys = []
 var weatherMarkers = []
 var weatherColors
 var s2Colors
-
 var S2
 var exLayerGroup = new L.LayerGroup()
 var gymLayerGroup = new L.LayerGroup()
 var stopLayerGroup = new L.LayerGroup()
 var scanAreaGroup = new L.LayerGroup()
 var liveScanGroup = new L.LayerGroup()
-var scanAreas = []
 var nestLayerGroup = new L.LayerGroup()
+var scanAreas = []
 /*
  text place holders:
  <pkm> - pokemon name
@@ -4387,7 +4385,7 @@ function submitPoi(event) { // eslint-disable-line no-unused-vars
                     jQuery('label[for="poi-switch"]').click()
                     lastpois = false
                     updateMap()
-                    $('.loader').hide()
+                    $('#loader').hide()
                     $('.modal').modal('hide')
                 }
             })
@@ -4715,16 +4713,23 @@ function processPokemonStats(i, item) {
     if (item['costume'] > 0) {
         costume = '_' + item['costume']
     }
-    var pokemon = '<img src="' + iconpath + 'pokemon_icon_' + id + '_' + item['form'] + costume + '.png" style="height:60px;"><br>' + item['name']
+    var pokemon = '<img src="' + iconpath + 'pokemon_icon_' + id + '_' + item['form'] + costume + '.png" style="width:40px;"><span style="display:none">' + item['name'] + '</span>'
+
     var types = item['pokemon_types']
     var typeDisplay = ''
+
     $.each(types, function (index, type) {
-        typeDisplay += '<nobr>' + i8ln(type['type']) + ' <img src="static/types/' + type['type'] + '.png" style="height:13px;"></nobr><br>'
+        if (index === 0) {
+            typeDisplay += '<nobr>' + i8ln(type['type']) + ' <img src="static/types/' + type['type'] + '.png" style="width:18px;"></nobr><br>'
+        } else {
+            typeDisplay += '<nobr>' + i8ln(type['type']) + ' <img src="static/types/' + type['type'] + '.png" style="width:18px;"></nobr>'
+        }
     })
+ 
     pokemonTable.row.add([
         item['pokemon_id'],
-        typeDisplay,
         pokemon,
+        typeDisplay,
         item['count'],
         item['percentage']
     ])
@@ -4740,22 +4745,23 @@ function processRewardStats(i, item) {
     }
     var reward = ''
     var type = ''
+    var hiddenName = '<span style="display: none;">' + item['name'] + '</span>'
 
     if (item['quest_reward_type'] === 12 && item['quest_energy_pokemon_id'] > 0) {
-        reward = '<img src="' + iconpath + 'rewards/reward_mega_energy_' + item['quest_energy_pokemon_id'] + '.png" style="height:60px;">' +
-        '<br>' + item['name']
+        reward = '<img src="' + iconpath + 'rewards/reward_mega_energy_' + item['quest_energy_pokemon_id'] + '.png" style="width:40px;">' +
+        hiddenName
         type = i8ln('Mega Energy')
     } else if (item['quest_reward_type'] === 7 && item['quest_pokemon_id'] > 0) {
-        reward = '<img src="' + iconpath + 'pokemon_icon_' + item['quest_pokemon_id'] + '_' + item['quest_pokemon_form'] + '.png" style="height:60px;">' +
-        '<br>' + item['name']
+        reward = '<img src="' + iconpath + 'pokemon_icon_' + item['quest_pokemon_id'] + '_' + item['quest_pokemon_form'] + '.png" style="width:40px;">' +
+        hiddenName
         type = i8ln('Pokémon')
     } else if (item['quest_reward_type'] === 2 && item['quest_item_id'] > 0) {
-        reward = '<img src="' + iconpath + 'rewards/reward_' + item['quest_item_id'] + '_' + item['quest_reward_amount'] + '.png" style="height:60px;">' +
+        reward = '<img src="' + iconpath + 'rewards/reward_' + item['quest_item_id'] + '_' + item['quest_reward_amount'] + '.png" style="width:40px;">' +
         '<br>' + item['name']
         type = i8ln('Item')
     } else if (item['quest_reward_type'] === 3) {
-        reward = '<img src="' + iconpath + 'rewards/reward_stardust_' + item['quest_reward_amount'] + '.png" style="height:60px;">' +
-        '<br>' + item['name']
+        reward = '<img src="' + iconpath + 'rewards/reward_stardust_' + item['quest_reward_amount'] + '.png" style="width:40px;">' +
+        hiddenName
         type = i8ln('Stardust')
     }
 
@@ -6252,8 +6258,6 @@ $(function () {
     $textMinLevel = $('#min-level')
     $textLevelNotify = $('#notify-level')
     $raidNotify = $('#notify-raid')
-    $switchTinyRat = $('#tiny-rat-switch')
-    $switchBigKarp = $('#big-karp-switch')
     $questsExcludePokemon = $('#exclude-quest-pokemon .search-number')
     $questsExcludeItem = $('#exclude-quest-item .search-number')
     $questsExcludeEnergy = $('#exclude-quest-energy .search-number')
@@ -6398,12 +6402,12 @@ $(function () {
             $textMinLevel.val(minLevel)
             Store.set('remember_text_min_level', minLevel)
         })
-        $switchTinyRat.on('change', function (e) {
+        $('#tiny-rat-switch').on('change', function (e) {
             Store.set('showTinyRat', this.checked)
             lastpokemon = false
             updateMap()
         })
-        $switchBigKarp.on('change', function (e) {
+        $('#big-karp-switch').on('change', function (e) {
             Store.set('showBigKarp', this.checked)
             lastpokemon = false
             updateMap()
