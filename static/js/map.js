@@ -4385,7 +4385,7 @@ function submitPoi(event) { // eslint-disable-line no-unused-vars
                     jQuery('label[for="poi-switch"]').click()
                     lastpois = false
                     updateMap()
-                    $('#loader').hide()
+                    $('.loader').hide()
                     $('.modal').modal('hide')
                 }
             })
