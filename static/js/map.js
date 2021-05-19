@@ -4725,7 +4725,7 @@ function processPokemonStats(i, item) {
             typeDisplay += '<nobr>' + i8ln(type['type']) + ' <img src="static/types/' + type['type'] + '.png" style="width:18px;"></nobr>'
         }
     })
- 
+
     pokemonTable.row.add([
         item['pokemon_id'],
         pokemon,
