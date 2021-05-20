@@ -6313,7 +6313,6 @@ $(function () {
             updateMap()
             Store.set('remember_exclude_grunts', excludedGrunts)
         })
-        $('#grunt-tabs').tabs()
         // recall saved lists
         $excludeGrunts.val(Store.get('remember_exclude_grunts')).trigger('change')
     })
