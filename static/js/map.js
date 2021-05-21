@@ -3225,8 +3225,6 @@ function showInBoundsMarkers(markersInput, type) {
 
 function loadRawData() {
     var loadPokemon = Store.get('showPokemon')
-    var loadPokemonStats = document.getElementById('nav-pokemon-stats-tab').getAttribute('aria-selected')
-    var loadRewardStats = document.getElementById('nav-reward-stats-tab').getAttribute('aria-selected')
     var loadGyms = Store.get('showGyms')
     var loadRaids = Store.get('showRaids')
     var loadPokestops = Store.get('showPokestops')
@@ -3254,6 +3252,11 @@ function loadRawData() {
     var swLng = swPoint.lng
     var neLat = nePoint.lat
     var neLng = nePoint.lng
+
+    var statsOpen = $('#statsModal').hasClass('show')
+    var loadPokemonStats = $('#nav-pokemon-stats-tab').hasClass('active') && statsOpen ? true : false
+    var loadRewardStats = $('#nav-reward-stats-tab').hasClass('active') && statsOpen ? true : false
+
     return $.ajax({
         url: 'raw_data',
         type: 'POST',
