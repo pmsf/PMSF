@@ -257,10 +257,6 @@ if (strtolower($map) === "rdm") {
                                                 <input class="form-check-input" id="pokemon-switch" type="checkbox" name="pokemon-switch">
                                                 <label class="form-check-label" for="pokemon-switch"><?php echo i8ln('Pokémon') ?></label>
                                             </div>
-                                            <div class="form-check form-switch">
-                                                <input class="form-check-input" type="checkbox" id="flexSwitchCheckDefault">
-                                                <label class="form-check-label" for="flexSwitchCheckDefault">Default switch checkbox input</label>
-                                            </div>
                                             <div class="dropdown-divider"></div>
                                         <?php
                                         }
