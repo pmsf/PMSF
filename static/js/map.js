@@ -1698,7 +1698,7 @@ function pokestopLabel(item) {
         if (item['url'] !== null) {
             stopImage = '<img class="pokestop-rocket-image" id="' + item['pokestop_id'] + '" src="' + item['url'] + '" onclick="openFullscreenModal(document.getElementById(\'' + item['pokestop_id'] + '\').src)"/>' +
             '<img src="static/sprites/misc/teamRocket.png" style="position:absolute;height:30px;left:55%;">' +
-            '<img src="static/sprites/invasion/' + item['grunt_type'] + '.png" style="position:absolute;height:35px;right:55%;top:85px;">'
+            '<img src="' + getIcon(iconpath.invasion, 'invasion', '.png', item['grunt_type']) + '" style="position:absolute;height:35px;right:55%;top:85px;">'
         }
     } else if (!noQuests && item['quest_type'] !== 0 && lastMidnight < Number(item['quest_timestamp'])) {
         stopName = '<b class="pokestop-quest-name">' + item['pokestop_name'] + '</b>'
@@ -2117,7 +2117,7 @@ function getGymMarkerIcon(item) {
     var html = ''
     if (item['raid_pokemon_id'] != null && item.raid_end > Date.now()) {
         html = '<div style="position:relative;">' +
-            '<img src="' + iconpath.gym + teamStr + '.png" style="width:50px;height:auto;"/>' +
+            '<img src="' + getIcon(iconpath.gym, 'gym', '.png', team, level, item['in_battle'], park) + '" style="width:50px;height:auto;"/>' +
             exIcon +
             inBattle +
             '<img src="' + getIcon(iconpath.pokemon, 'pokemon', '.png', pokemonid, evolutionId, formId, costumeId) + '" style="width:50px;height:auto;position:absolute;top:-15px;right:0px;"/>' +
@@ -2134,7 +2134,7 @@ function getGymMarkerIcon(item) {
         })
     } else if (item['raid_level'] !== null && item.raid_start <= Date.now() && item.raid_end > Date.now()) {
         html = '<div style="position:relative;">' +
-            '<img src="' + iconpath.gym + teamStr + '.png" style="width:50px;height:auto;"/>' +
+            '<img src="' + getIcon(iconpath.gym, 'gym', '.png', team, level, item['in_battle'], park) + '" style="width:50px;height:auto;"/>' +
             exIcon +
             inBattle +
             '<img src="static/sprites/raid/' + item['raid_level'] + '_h.png" style="width:35px;height:auto;position:absolute;top:-11px;right:18px;"/>' +
@@ -2151,7 +2151,7 @@ function getGymMarkerIcon(item) {
         })
     } else if (item['raid_level'] !== null && item.raid_end > Date.now()) {
         html = '<div style="position:relative;">' +
-            '<img src="' + iconpath.gym + teamStr + '.png" style="width:50px;height:auto;"/>' +
+            '<img src="' + getIcon(iconpath.gym, 'gym', '.png', team, level, item['in_battle'], park) + '" style="width:50px;height:auto;"/>' +
             exIcon +
             inBattle +
             '<img src="static/sprites/raid/' + item['raid_level'] + '.png" style="width:30px;position:absolute;top:4px;right:15px;"/>' +
@@ -2168,7 +2168,7 @@ function getGymMarkerIcon(item) {
         })
     } else {
         html = '<div>' +
-            '<img src="' + iconpath.gym + teamStr + '.png" style="width:35px;height:auto;"/>' +
+            '<img src="' + getIcon(iconpath.gym, 'gym', '.png', team, level, item['in_battle'], park) + '" style="width:35px;height:auto;"/>' +
             smallExIcon +
             inBattle +
             '</div>'
@@ -2299,7 +2299,7 @@ function getPokestopMarkerIcon(item) {
             }
             html = '<div style="position:relative;"><img src="static/sprites/pokestop/' + markerStr + '_i.png" style="width:50px;height:72;top:-35px;right:10px;"/>'
             if (item['grunt_type'] > 0) {
-                html += '<img src="static/sprites/invasion/' + item['grunt_type'] + '.png" style="width:30px;height:auto;position:absolute;top:4px;left:0px;"/></div>'
+                html += '<img src="' + getIcon(iconpath.invasion, 'invasion', '.png', item['grunt_type']) + '" style="width:30px;height:auto;position:absolute;top:4px;left:0px;"/></div>'
             } else {
                 html += '</div>'
             }
@@ -2394,7 +2394,7 @@ function getPokestopMarkerIcon(item) {
         }
         html = '<div style="position:relative;"><img src="static/sprites/pokestop/' + markerStr + '_i.png" style="width:50px;height:72;top:-35px;right:10px;"/>'
         if (item['grunt_type'] > 0) {
-            html += '<img src="static/sprites/invasion/' + item['grunt_type'] + '.png" style="width:30px;height:auto;position:absolute;top:4px;left:0px;"/></div>'
+            html += '<img src="' + getIcon(iconpath.invasion, 'invasion', '.png', item['grunt_type']) + '" style="width:30px;height:auto;position:absolute;top:4px;left:0px;"/></div>'
         } else {
             html += '</div>'
         }
@@ -5958,9 +5958,6 @@ $(function () {
     iconpath = Store.get('icons')
     $.each(iconpath, function (key, val) {
         var prefix = key
-        if (key === 'gym') {
-            prefix = ''
-        }
         if (!key.includes('Index')) {
             $.getJSON(iconpath[key] + prefix + '/index.json', function (data) {
                 iconpath[key + 'Index'] = data
@@ -5975,7 +5972,7 @@ $(function () {
     $selectGymMarkerStyle.on('change', function (e) {
         var gymIconSet = Store.get('icons')
         gymIconSet.gym = this.value
-        $.getJSON(this.value + '/index.json', function (data) {
+        $.getJSON(this.value + 'gym' + '/index.json', function (data) {
             iconpath['gymIndex'] = data
         }).done(function () {
             Store.set('icons', iconpath)
@@ -6917,8 +6914,29 @@ function getIcon(iconRepo, folder, fileType, iconKeyId, ...varArgs) {
     var requestedIcon = ''
     switch (folder) {
         case 'gym':
+            const teamId = iconKeyId
+            const trainerCount = typeof varArgs[0] === 'undefined' ? [''] : varArgs[0] === 0 ? [''] : ['_t' + varArgs[0], '']
+            const inBattle = typeof varArgs[1] === 'undefined' ? [''] : varArgs[1] === 0 ? [''] : ['_b', '']
+            const isEx = typeof varArgs[2] === 'undefined' ? [''] : varArgs[2] === 0 ? [''] : ['_ex', '']
+            search:
+            for (const trainer of trainerCount) {
+                for (const battle of inBattle) {
+                    for (const ex of isEx) {
+                        requestedIcon = `${teamId}${trainer}${battle}${ex}${fileType}`
+                        if (iconpath['gymIndex'].includes(requestedIcon)) {
+                            icon = requestedIcon
+                            break search
+                        }
+                    }
+                }
+            }
             break
         case 'invasion':
+            const gruntId = iconKeyId
+            requestedIcon = `${gruntId}${fileType}`
+            if (iconpath['invasionIndex'].includes(requestedIcon)) {
+                icon = requestedIcon
+            }
             break
         case 'misc':
             break

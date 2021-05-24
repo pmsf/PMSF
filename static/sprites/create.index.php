@@ -28,6 +28,13 @@ foreach (dirtree($thisFolder) as $k => $dir) {
                 $directory = dirtree($thisFolder . $k . DIRECTORY_SEPARATOR . $ks);
                 file_put_contents($jsonFile, json_encode($directory));
             }
+            foreach ($subdir as $sd => $ssd) {
+                if (is_dir($thisFolder . $k . DIRECTORY_SEPARATOR . $ks . DIRECTORY_SEPARATOR . $sd)) {
+                    $jsonFile = $thisFolder . $k . DIRECTORY_SEPARATOR . $ks . DIRECTORY_SEPARATOR . $sd . DIRECTORY_SEPARATOR . 'index.json';
+                    $directory = dirtree($thisFolder . $k . DIRECTORY_SEPARATOR . $ks . DIRECTORY_SEPARATOR . $sd);
+                    file_put_contents($jsonFile, json_encode($directory));
+                }
+            }
         }
     }
 }
