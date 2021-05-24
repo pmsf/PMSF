@@ -398,16 +398,6 @@ $iconFolderArray = [                                           // Default Icon r
     'type' => 'static/sprites/',
     'weather' => 'static/sprites/'
 ];
-/* Decrecate */
-$noCostumeIcons = true;                                        // Set to true if you $iconRepository doesnt support costume icons. true/false
-$iconRepository = 'https://raw.githubusercontent.com/whitewillem/PogoAssets/resized/icons_large/';
-$noMultipleRepos = true;
-$iconRepos = [["Standard","$iconRepository"]];
-
-/* Custom Tileserver. Only tested with https://github.com/123FLO321/SwiftTileserverCache */
-
-$noCustomTileServer = true;                                         // Enable/Disable Custom TileServer
-$customTileServerAddress = "";                                      // TileServer URL: http://ipAddress:port/tile/klokantech-basic/{z}/{x}/{y}/1/png
 
 $noMapStyle = false;                                           // true/false
 $mapStyle = 'openstreetmap';                                   // Set default Map Style

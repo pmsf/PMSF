@@ -1418,7 +1418,6 @@ include('modals.php');
     var iconSize = <?php echo $iconSize ?>;
     var iconNotifySizeModifier = <?php echo $iconNotifySizeModifier ?>;
     var locationStyle = '<?php echo $locationStyle ?>';
-    //var icons = '<?php echo $copyrightSafe ? 'static/icons-safe/' : $iconRepository ?>';
     var iconFolderArray = <?php echo json_encode($iconFolderArray) ?>;
     var weatherColors = <?php echo json_encode($weatherColors); ?>;
     var s2Colors = <?php echo json_encode($s2Colors); ?>;
