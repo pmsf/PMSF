@@ -248,7 +248,7 @@ if (location.search.indexOf('login=true') > 0) {
 }
 if (copyrightSafe) {
     var setPokemon = Store.get('icons')
-    setPokemon.pokemon = 'static/icons-safe/'
+    setPokemon.pokemon = 'static/sprites/'
     Store.set('icons', setPokemon)
 } else if (Object.prototype.toString.call(Store.get('icons')) === '[object String]' || Store.get('icons') === '') {
     for (const [key, value] of Object.entries(iconFolderArray)) {
@@ -1097,16 +1097,6 @@ function initSidebar() {
 
     $('#pokemon-icon-size').val(Store.get('iconSizeModifier'))
     $('#pokemon-icon-notify-size').val(Store.get('iconNotifySizeModifier'))
-    iconpath = Store.get('icons')
-    $.each(iconpath, function (key, val) {
-        var prefix = key
-        if (key === 'gym') {
-            prefix = ''
-        }
-        $.getJSON(iconpath[key] + prefix + '/index.json', function (data) {
-            iconpath[key + 'Index'] = data
-        })
-    })
 }
 
 function getTypeSpan(type) {
@@ -5965,12 +5955,31 @@ $(function () {
         })
         updateMap()
     })
+    iconpath = Store.get('icons')
+    $.each(iconpath, function (key, val) {
+        var prefix = key
+        if (key === 'gym') {
+            prefix = ''
+        }
+        if (!key.includes('Index')) {
+            $.getJSON(iconpath[key] + prefix + '/index.json', function (data) {
+                iconpath[key + 'Index'] = data
+            }).done(function () {
+                Store.set('icons', iconpath)
+            })
+        }
+    })
 
     $selectGymMarkerStyle = $('#gym-marker-style')
 
     $selectGymMarkerStyle.on('change', function (e) {
         var gymIconSet = Store.get('icons')
         gymIconSet.gym = this.value
+        $.getJSON(this.value + '/index.json', function (data) {
+            iconpath['gymIndex'] = data
+        }).done(function () {
+            Store.set('icons', iconpath)
+        })
         Store.set('icons', gymIconSet)
         iconpath = Store.get('icons')
         updateGymIcons()
@@ -5983,6 +5992,11 @@ $(function () {
     $selectIconStyle.on('change', function (e) {
         var pokeIconSet = Store.get('icons')
         pokeIconSet.pokemon = this.value
+        $.getJSON(this.value + 'pokemon' + '/index.json', function (data) {
+            iconpath['pokemonIndex'] = data
+        }).done(function () {
+            Store.set('icons', iconpath)
+        })
         Store.set('icons', pokeIconSet)
         iconpath = Store.get('icons')
         redrawPokemon(mapData.pokemons)
