@@ -362,6 +362,9 @@ function randomNum()
 }
 
 function getIcon($iconRepo, $folder, $fileType, $iconKeyId, ...$varArgs) {
+    if (is_array($iconRepo)) {
+        $iconRepo = current($iconRepo);
+    }
     $availableArray = checkIndex($iconRepo, $folder);
     $icon = '0.png';
     switch ($folder) {
