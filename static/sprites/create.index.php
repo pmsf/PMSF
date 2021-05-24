@@ -1,5 +1,7 @@
 <?php
-
+if (!php_sapi_name() == "cli") {
+    echo "Script can only be run through CLI";
+}
 $thisFolder = dirname(__FILE__) . DIRECTORY_SEPARATOR;
 /* Create master json file */
 file_put_contents('index.json', json_encode(dirtree($thisFolder)));
