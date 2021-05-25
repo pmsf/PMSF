@@ -1203,7 +1203,7 @@ function pokemonLabel(item) {
     var level = item['level']
 
     $.each(types, function (index, type) {
-        typesDisplay += '<img src="static/sprites/type/' + getKeyByValue(pokemonTypes, type.type) + '.png" style="height:20px;">'
+        typesDisplay += '<img src="' + getIcon(iconpath.type, 'type', '.png', getKeyByValue(pokemonTypes, type.type)) + '" style="height:20px;">'
     })
 
     var details = ''
@@ -1216,10 +1216,10 @@ function pokemonLabel(item) {
             pokemonLevel = getPokemonLevel(cpMultiplier)
         }
         if (pMove1 !== 'unknown') {
-            pMoveType1 = '<img style="position:relative;top:3px;left:2px;height:15px;" src="static/sprites/type/' + getKeyByValue(pokemonTypes, moves[item['move_1']]['type']) + '.png">'
+            pMoveType1 = '<img style="position:relative;top:3px;left:2px;height:15px;" src="' + getIcon(iconpath.type, 'type', '.png', getKeyByValue(pokemonTypes, moves[item['move_1']]['type'])) + '">'
         }
         if (pMove2 !== 'unknown') {
-            pMoveType2 = '<img style="position:relative;top:3px;left:2px;height:15px;" src="static/sprites/type/' + getKeyByValue(pokemonTypes, moves[item['move_2']]['type']) + '.png">'
+            pMoveType2 = '<img style="position:relative;top:3px;left:2px;height:15px;" src="' + getIcon(iconpath.type, 'type', '.png', getKeyByValue(pokemonTypes, moves[item['move_2']]['type'])) + '">'
         }
 
         var catchRates = ''
@@ -7021,14 +7021,14 @@ function getIcon(iconRepo, folder, fileType, iconKeyId, ...varArgs) {
         case 'team':
             const teamId = iconKeyId
             requestedIcon = `${teamId}${fileType}`
-            if (iconpath['team'].includes(requestedIcon)) {
+            if (iconpath['teamIndex'].includes(requestedIcon)) {
                 icon = requestedIcon
             }
             break
         case 'type':
             const typeId = iconKeyId
             requestedIcon = `${typeId}${fileType}`
-            if (iconpath['team'].includes(requestedIcon)) {
+            if (iconpath['typeIndex'].includes(requestedIcon)) {
                 icon = requestedIcon
             }
             break
@@ -7038,7 +7038,7 @@ function getIcon(iconRepo, folder, fileType, iconKeyId, ...varArgs) {
             search:
             for (const severity of severityLevel) {
                 requestedIcon = `${weatherId}${severity}${fileType}`
-                if (iconpath['team'].includes(requestedIcon)) {
+                if (iconpath['weatherIndex'].includes(requestedIcon)) {
                     icon = requestedIcon
                 }
             }
