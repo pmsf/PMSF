@@ -1408,9 +1408,9 @@ function gymLabel(item) {
         if (raidStarted) {
             raidIcon = '<img style="width: 70px;" src="' + getIcon(iconpath.pokemon, 'pokemon', '.png', pokemonid, evolution, form, costume) + '"/>'
         } else if (item.raid_start <= Date.now()) {
-            raidIcon = '<img src="static/sprites/raid/' + item['raid_level'] + '_h.png" style="height:70px;">'
+            raidIcon = '<img src="' + getIcon(iconpath.raid, 'raid', '.png', item['raid_level'], 1) + '" style="height:70px;">'
         } else {
-            raidIcon = '<img src="static/sprites/raid/' + item['raid_level'] + '.png" style="height:70px;">'
+            raidIcon = '<img src="' + getIcon(iconpath.raid, 'raid', '.png', item['raid_level']) + '" style="height:70px;">'
         }
     }
     if (!noRaids && manualRaids && item['scanArea'] === false) {
@@ -2136,7 +2136,7 @@ function getGymMarkerIcon(item) {
             '<img src="' + getIcon(iconpath.gym, 'gym', '.png', team, level, item['in_battle'], park) + '" style="width:50px;height:auto;"/>' +
             exIcon +
             inBattle +
-            '<img src="static/sprites/raid/' + item['raid_level'] + '_h.png" style="width:35px;height:auto;position:absolute;top:-11px;right:18px;"/>' +
+            '<img src="' + getIcon(iconpath.raid, 'raid', '.png', item['raid_level'], 1) + '" style="width:35px;height:auto;position:absolute;top:-11px;right:18px;"/>' +
             '</div>'
         if (noRaidTimer === false && Store.get(['showRaidTimer'])) {
             html += '<div><span class="raid-countdown gym-icon-countdown" disappears-at="' + item['raid_end'] + '" end>' + generateRemainingTimer(item['raid_end'], 'end') + '</span></div>'
@@ -2153,7 +2153,7 @@ function getGymMarkerIcon(item) {
             '<img src="' + getIcon(iconpath.gym, 'gym', '.png', team, level, item['in_battle'], park) + '" style="width:50px;height:auto;"/>' +
             exIcon +
             inBattle +
-            '<img src="static/sprites/raid/' + item['raid_level'] + '.png" style="width:30px;position:absolute;top:4px;right:15px;"/>' +
+            '<img src="' + getIcon(iconpath.raid, 'raid', '.png', item['raid_level']) + '" style="width:30px;position:absolute;top:4px;right:15px;"/>' +
             '</div>'
         if (noRaidTimer === false && Store.get(['showRaidTimer'])) {
             html += '<div><span class="raid-countdown gym-icon-countdown" disappears-at="' + item['raid_start'] + '" end>' + generateRemainingTimer(item['raid_start'], 'end') + '</span></div>'
@@ -2210,9 +2210,9 @@ function setupGymMarker(item) {
             icon = getIcon(iconpath.pokemon, 'pokemon', '.png', pokemonid, evolutionid, formid, costumeid)
             checkAndCreateSound(item.raid_pokemon_id)
         } else if (item.raid_start <= Date.now()) {
-            icon = 'static/sprites/raid/' + item['raid_level'] + '_h.png'
+            icon = getIcon(iconpath.raid, 'raid', '.png', item['raid_level'], 1)
         } else {
-            icon = 'static/sprites/raid/' + item['raid_level'] + '.png'
+            icon = getIcon(iconpath.raid, 'raid', '.png', item['raid_level'])
             checkAndCreateSound()
         }
         sendNotification(title, text, icon, item['latitude'], item['longitude'])
@@ -2245,10 +2245,10 @@ function updateGymMarker(item, marker) {
                 icon = getIcon(iconpath.pokemon, 'pokemon', '.png', pokemonid, evolutionid, formid, costumeid)
                 checkAndCreateSound(item.raid_pokemon_id)
             } else if (item.raid_start <= Date.now()) {
-                icon = 'static/sprites/raid/' + item['raid_level'] + '_h.png'
+                icon = getIcon(iconpath.raid, 'raid', '.png', item['raid_level'], 1)
             } else {
                 checkAndCreateSound()
-                icon = 'static/sprites/raid/' + item['raid_level'] + '.png'
+                icon = getIcon(iconpath.raid, 'raid', '.png', item['raid_level'])
             }
             sendNotification(title, text, icon, item['latitude'], item['longitude'])
         }
@@ -6912,7 +6912,7 @@ function getIcon(iconRepo, folder, fileType, iconKeyId, ...varArgs) {
     var requestedIcon = ''
     switch (folder) {
         case 'gym':
-            const teamId = iconKeyId
+            const gymId = iconKeyId
             const trainerCount = typeof varArgs[0] === 'undefined' ? [''] : varArgs[0] === 0 ? [''] : ['_t' + varArgs[0], '']
             const inBattle = typeof varArgs[1] === 'undefined' ? [''] : varArgs[1] === 0 ? [''] : ['_b', '']
             const isEx = typeof varArgs[2] === 'undefined' ? [''] : varArgs[2] === 0 ? [''] : ['_ex', '']
@@ -6920,7 +6920,7 @@ function getIcon(iconRepo, folder, fileType, iconKeyId, ...varArgs) {
             for (const trainer of trainerCount) {
                 for (const battle of inBattle) {
                     for (const ex of isEx) {
-                        requestedIcon = `${teamId}${trainer}${battle}${ex}${fileType}`
+                        requestedIcon = `${gymId}${trainer}${battle}${ex}${fileType}`
                         if (iconpath['gymIndex'].includes(requestedIcon)) {
                             icon = requestedIcon
                             break search
@@ -6978,6 +6978,19 @@ function getIcon(iconRepo, folder, fileType, iconKeyId, ...varArgs) {
             }
             break
         case 'raid':
+            const eggLevel = iconKeyId
+            const isHatched = typeof varArgs[0] === 'undefined' ? [''] : varArgs[0] === 0 ? [''] : ['_h', '']
+            const ex = typeof varArgs[1] === 'undefined' ? [''] : varArgs[1] === 0 ? [''] : ['_ex', '']
+            search:
+            for (const hatched of isHatched) {
+                for (const e of ex) {
+                    requestedIcon = `${eggLevel}${hatched}${e}${fileType}`
+                    if (iconpath['raidIndex'].includes(requestedIcon)) {
+                        icon = requestedIcon
+                        break search
+                    }
+                }
+            }
             break
         case 'reward/item':
             const itemId = iconKeyId
@@ -7006,10 +7019,29 @@ function getIcon(iconRepo, folder, fileType, iconKeyId, ...varArgs) {
             }
             break
         case 'team':
+            const teamId = iconKeyId
+            requestedIcon = `${teamId}${fileType}`
+            if (iconpath['team'].includes(requestedIcon)) {
+                icon = requestedIcon
+            }
             break
         case 'type':
+            const typeId = iconKeyId
+            requestedIcon = `${typeId}${fileType}`
+            if (iconpath['team'].includes(requestedIcon)) {
+                icon = requestedIcon
+            }
             break
         case 'weather':
+            const weatherId = iconKeyId
+            const severityLevel = typeof varArgs[0] === 'undefined' ? [''] : varArgs[0] === 0 ? [''] : ['_l' + varArgs[0], '']
+            search:
+            for (const severity of severityLevel) {
+                requestedIcon = `${weatherId}${severity}${fileType}`
+                if (iconpath['team'].includes(requestedIcon)) {
+                    icon = requestedIcon
+                }
+            }
             break
     }
     return iconRepo + folder + '/' + icon
