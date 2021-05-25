@@ -309,6 +309,37 @@ var rewardTable = $('#rewardTable').DataTable({
     }
 })
 
+var shinyTable = $('#shinyTable').DataTable({
+    paging: true,
+    lengthMenu: [
+        [3, 10, 25, 50, -1],
+        [i8ln('Show 3 rows'), i8ln('Show 10 rows'), i8ln('Show 25 rows'), i8ln('Show 50 rows'), i8ln('Show all rows')]
+    ],
+    searching: true,
+    info: false,
+    responsive: true,
+    scrollX: false,
+    stateSave: true,
+    stateSaveCallback: function (settings, data) {
+        localStorage.setItem('DataTables_' + settings.sInstance, JSON.stringify(data))
+    },
+    stateLoadCallback: function (settings) {
+        return JSON.parse(localStorage.getItem('DataTables_' + settings.sInstance))
+    },
+    stateDuration: 0,
+    language: {
+        search: '',
+        searchPlaceholder: i8ln('Search...'),
+        emptyTable: i8ln('Loading...') + ' <i class="fas fa-spinner fa-spin"></i>',
+        info: i8ln('Showing _START_ to _END_ of _TOTAL_ entries'),
+        lengthMenu: '_MENU_',
+        paginate: {
+            next: i8ln('Next'),
+            previous: i8ln('Previous')
+        }
+    }
+})
+
 function previewPoiImage(event) { // eslint-disable-line no-unused-vars
     var form = $(event.target).parent().parent()
     var input = event.target
@@ -3254,8 +3285,10 @@ function loadRawData() {
     var neLng = nePoint.lng
 
     var statsOpen = $('#statsModal').hasClass('show')
-    var loadPokemonStats = $('#nav-pokemon-stats-tab').hasClass('active') && statsOpen ? true : false
-    var loadRewardStats = $('#nav-reward-stats-tab').hasClass('active') && statsOpen ? true : false
+    var loadOverviewStats = $('#nav-overview-stats-tab').hasClass('active') && statsOpen
+    var loadPokemonStats = $('#nav-pokemon-stats-tab').hasClass('active') && statsOpen
+    var loadRewardStats = $('#nav-reward-stats-tab').hasClass('active') && statsOpen
+    var loadShinyStats = $('#nav-shiny-stats-tab').hasClass('active') && statsOpen
 
     return $.ajax({
         url: 'raw_data',
@@ -3264,8 +3297,10 @@ function loadRawData() {
         data: {
             'timestamp': timestamp,
             'pokemon': loadPokemon,
+            'loadOverviewStats': loadOverviewStats,
             'loadPokemonStats': loadPokemonStats,
             'loadRewardStats': loadRewardStats,
+            'loadShinyStats': loadShinyStats,
             'lastpokemon': lastpokemon,
             'pokestops': loadPokestops,
             'lures': loadLures,
@@ -4700,6 +4735,36 @@ function processPokemons(i, item) {
         }
     }
 }
+
+function processOverviewStats(i, item) {
+    $('h4.pokemon-count').html(item['pokemon_count'])
+    $('h4.gym-count').html(item['gym_count'])
+    $('h4.raid-count').html(item['raid_count'])
+    $('h4.pokestop-count').html(item['pokestop_count'])
+}
+
+function processTeamStats(i, item) {
+    $('h4.neutral-count').html(item['neutral_count'])
+    $('h4.mystic-count').html(item['mystic_count'])
+    $('h4.valor-count').html(item['valor_count'])
+    $('h4.instinct-count').html(item['instinct_count'])
+}
+
+function processPokestopStats(i, item) {
+    $('h4.quest-count').html(item['quest'])
+    $('h4.rocket-count').html(item['rocket'])
+    $('h4.normal-lure-count').html(item['normal_lure'])
+    $('h4.glacial-lure-count').html(item['glacial_lure'])
+    $('h4.mossy-lure-count').html(item['mossy_lure'])
+    $('h4.magnetic-lure-count').html(item['magnetic_lure'])
+    $('h4.rainy-lure-count').html(item['rainy_lure'])
+}
+
+function processSpawnpointStats(i, item) {
+    $('h4.spawnpoint-total').html(item['total'])
+    $('h4.spawnpoint-found').html(item['found'])
+    $('h4.spawnpoint-missing').html(item['missing'])
+}
 function processPokemonStats(i, item) {
     var id = ''
     if (item['pokemon_id'] <= 9) {
@@ -4773,6 +4838,31 @@ function processRewardStats(i, item) {
         reward,
         item['count'],
         item['percentage']
+    ])
+}
+function processShinyStats(i, item) {
+    if (item['pokemon_id'] <= 9) {
+        item['pokemon_id'] = '00' + item['pokemon_id']
+    } else if (item['pokemon_id'] <= 99) {
+        item['pokemon_id'] = '0' + item['pokemon_id']
+    }
+    if (item['form'] <= 0) {
+        item['form'] = '00'
+    }
+    var costume = ''
+    if (item['costume'] > 0) {
+        costume = '_' + item['costume']
+    }
+    var hiddenName = '<span style="display: none;">' + item['name'] + '</span>'
+    var pokemon = '<img src="' + iconpath + 'pokemon_icon_' + item['pokemon_id'] + '_' + item['form'] + costume + '.png" style="width:40px;">' +
+    hiddenName
+    var rate = item['rate'] + '<br>(' + item['percentage'] + ')'
+    
+    shinyTable.row.add([
+        pokemon,
+        item['shiny_count'],
+        rate,
+        item['sample_size']
     ])
 }
 function processNests(i, item) {
@@ -5423,6 +5513,12 @@ function updateMap() {
             }
             reloaddustamount = false
 
+            // Stats
+            $.each(result.overviewStats, processOverviewStats)
+            $.each(result.teamStats, processTeamStats)
+            $.each(result.pokestopStats, processPokestopStats)
+            $.each(result.spawnpointStats, processSpawnpointStats)
+
             pokemonTable.clear()
             $.each(result.pokemonStats, processPokemonStats)
             pokemonTable.draw(false)
@@ -5430,6 +5526,11 @@ function updateMap() {
             rewardTable.clear()
             $.each(result.rewardStats, processRewardStats)
             rewardTable.draw(false)
+
+            shinyTable.clear()
+            $.each(result.shinyStats, processShinyStats)
+            shinyTable.draw(false)
+            // Stats end
 
             timestamp = result.timestamp
             lastUpdateTime = Date.now()

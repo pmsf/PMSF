@@ -57,8 +57,10 @@ $d["lastcommunities"] = !empty($_POST['communities']) ? $_POST['communities'] : 
 $d["lastportals"] = !empty($_POST['portals']) ? $_POST['portals'] : false;
 $d["lastpois"] = !empty($_POST['pois']) ? $_POST['pois'] : false;
 
+$loadOverviewStats = !empty($_POST['loadOverviewStats']) ? $_POST['loadOverviewStats'] : false;
 $loadPokemonStats = !empty($_POST['loadPokemonStats']) ? $_POST['loadPokemonStats'] : false;
 $loadRewardStats = !empty($_POST['loadRewardStats']) ? $_POST['loadRewardStats'] : false;
+$loadShinyStats = !empty($_POST['loadShinyStats']) ? $_POST['loadShinyStats'] : false;
 
 if ($minIv < $prevMinIv || $minLevel < $prevMinLevel) {
     $lastpokemon = false;
@@ -358,12 +360,20 @@ if (!$noLiveScanLocation) {
 }
 $debug['10_after_devices'] = microtime(true) - $timing['start'];
 
-
+if ($loadOverviewStats == "true") {
+  $d["overviewStats"] = $stats->get_overview_stats();
+  $d["teamStats"] = $stats->get_team_stats();
+  $d["pokestopStats"] = $stats->get_pokestop_stats();
+  $d["spawnpointStats"] = $stats->get_spawnpoint_stats();
+}
 if ($loadPokemonStats == "true") {
     $d["pokemonStats"] = $stats->get_pokemon_stats();
 }
 if ($loadRewardStats == "true") {
     $d["rewardStats"] = $stats->get_reward_stats();
+}
+if ($loadShinyStats == "true") {
+    $d["shinyStats"] = $stats->get_shiny_stats();
 }
 
 $d['token'] = refreshCsrfToken();
