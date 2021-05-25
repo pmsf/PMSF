@@ -5953,6 +5953,14 @@ $(function () {
         })
         updateMap()
     })
+    if (Object.prototype.toString.call(Store.get('icons').gym) === '[object Object]' || Store.get('icons').gym === '') {
+        iconFolderArray['gym'] = iconFolderArray['gym'][Object.keys(iconFolderArray['gym'])[0]]
+        Store.set('icons', iconFolderArray)
+    }
+    if (Object.prototype.toString.call(Store.get('icons').pokemon) === '[object Object]' || Store.get('icons').pokemon === '') {
+        iconFolderArray['pokemon'] = iconFolderArray['pokemon'][Object.keys(iconFolderArray['pokemon'])[0]]
+        Store.set('icons', iconFolderArray)
+    }
     iconpath = Store.get('icons')
     $.each(iconpath, function (key, val) {
         var prefix = key
@@ -5979,7 +5987,6 @@ $(function () {
         iconpath = Store.get('icons')
         updateGymIcons()
     })
-
     $selectGymMarkerStyle.val(Store.get('icons').gym).trigger('change')
 
     $selectIconStyle = $('#icon-style')
