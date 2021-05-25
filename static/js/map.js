@@ -4857,7 +4857,7 @@ function processShinyStats(i, item) {
     var pokemon = '<img src="' + iconpath + 'pokemon_icon_' + item['pokemon_id'] + '_' + item['form'] + costume + '.png" style="width:40px;">' +
     hiddenName
     var rate = item['rate'] + '<br>(' + item['percentage'] + ')'
-    
+
     shinyTable.row.add([
         pokemon,
         item['shiny_count'],
