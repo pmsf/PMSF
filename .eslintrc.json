@@ -28,7 +28,11 @@
       {
         "max": 2
       }
-    ]
+    ],
+    "no-labels": [2, {
+      "allowLoop": true,
+      "allowSwitch": true
+    }]
   },
   "env": {
     "browser": true,
@@ -122,6 +126,8 @@
     "locationStyle": true,
     "gymStyle": true,
     "icons": true,
+    "iconFolderArray": true,
+    "getIcon": true,
     "getIv": true,
     "mapType": true,
     "mapFork": true,

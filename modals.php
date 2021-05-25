@@ -34,7 +34,7 @@
 </div>
 <!-- InfoModal -->
 <?php if (! $noInfoModal) { ?>
-    <div class="modal fade" id="infoModal" tabindex="-1" aria-labelledby="infoModalLabel" aria-hidden="true">
+    <div class="modal fade" id="infoModal" aria-labelledby="infoModalLabel" aria-hidden="true">
         <div class="modal-dialog modal-xl">
             <div class="modal-content">
                 <div class="modal-header">
@@ -168,12 +168,12 @@
                         $firstTab++;
                         }
                         if (!$noGyms && !$noSearchGyms) { ?>
-                            <button class="nav-link<?php echo (($firstTab == 1) ? " active" : ""); ?>" id="nav-gyms-tab" data-bs-toggle="tab" data-bs-target="#nav-gyms" type="button" role="tab" aria-controls="nav-gyms" aria-selected="true"><img src="static/forts/ingame/Uncontested.png" width="30" height="30"/></button>
+                            <button class="nav-link<?php echo (($firstTab == 1) ? " active" : ""); ?>" id="nav-gyms-tab" data-bs-toggle="tab" data-bs-target="#nav-gyms" type="button" role="tab" aria-controls="nav-gyms" aria-selected="true"><img src="static/sprites/gym/ingame/gym/0.png" width="30" height="30"/></button>
                         <?php
                         $firstTab++;
                         }
                         if (!$noPokestops && !$noSearchPokestops) { ?>
-                            <button class="nav-link<?php echo (($firstTab == 1) ? " active" : ""); ?>" id="nav-pokestops-tab" data-bs-toggle="tab" data-bs-target="#nav-pokestops" type="button" role="tab" aria-controls="nav-pokestops" aria-selected="true"><img src="static/forts/Pstop.png" width="30" height="30"/></button>
+                            <button class="nav-link<?php echo (($firstTab == 1) ? " active" : ""); ?>" id="nav-pokestops-tab" data-bs-toggle="tab" data-bs-target="#nav-pokestops" type="button" role="tab" aria-controls="nav-pokestops" aria-selected="true"><img src="static/sprites/pokestop/0.png" width="30" height="30"/></button>
                         <?php
                         $firstTab++;
                         }
@@ -269,12 +269,12 @@
                         $firstTab++;
                         }
                         if (! $noManualGyms && !$noGyms) { ?>
-                            <button class="nav-link<?php echo (($firstTab == 1) ? " active" : ""); ?>" id="nav-gym-tab" data-bs-toggle="tab" data-bs-target="#nav-gym" type="button" role="tab" aria-controls="nav-gym" aria-selected="true"><img src="static/forts/ingame/Uncontested.png" width="30" height="30"/></button>
+                            <button class="nav-link<?php echo (($firstTab == 1) ? " active" : ""); ?>" id="nav-gym-tab" data-bs-toggle="tab" data-bs-target="#nav-gym" type="button" role="tab" aria-controls="nav-gym" aria-selected="true"><img src="static/sprites/gym/ingame/gym/0.png" width="30" height="30"/></button>
                         <?php
                         $firstTab++;
                         }
                         if (! $noManualPokestops && !$noPokestops) { ?>
-                            <button class="nav-link<?php echo (($firstTab == 1) ? " active" : ""); ?>" id="nav-pokestop-tab" data-bs-toggle="tab" data-bs-target="#nav-pokestop" type="button" role="tab" aria-controls="nav-pokestop" aria-selected="true"><img src="static/forts/Pstop.png" width="30" height="30"/></button>
+                            <button class="nav-link<?php echo (($firstTab == 1) ? " active" : ""); ?>" id="nav-pokestop-tab" data-bs-toggle="tab" data-bs-target="#nav-pokestop" type="button" role="tab" aria-controls="nav-pokestop" aria-selected="true"><img src="static/sprites/pokestop/0.png" width="30" height="30"/></button>
                         <?php
                         $firstTab++;
                         }
@@ -828,25 +828,17 @@
                         <div class="switch-container">
                             <div class="pokemon-list raid-submission">
                                 <input type="hidden" id="manualraidpokemonid" name="manualraidpokemonid" value="">
-                                <span class="pokemon-icon-sprite" data-value="egg_1" data-label="Level 1" onclick="pokemonRaidFilter(event);"><span class="egg_1 inner-bg" style="background: url('static/raids/egg_normal.png');background-size:100%"></span><span class="egg-number">1</span></span>
-                                <!-- Not in game <span class="pokemon-icon-sprite" data-value="egg_2" data-label="Level 2" onclick="pokemonRaidFilter(event);"><span class="egg_2 inner-bg" style="background: url('static/raids/egg_normal.png');background-size:100%"></span><span class="egg-number">2</span></span> -->
-                                <span class="pokemon-icon-sprite" data-value="egg_3" data-label="Level 3" onclick="pokemonRaidFilter(event);"><span class="egg_3 inner-bg" style="background: url('static/raids/egg_rare.png');background-size:100%"></span><span class="egg-number">3</span></span>
-                                <!-- Not in game <span class="pokemon-icon-sprite" data-value="egg_4" data-label="Level 4" onclick="pokemonRaidFilter(event);"><span class="egg_4 inner-bg" style="background: url('static/raids/egg_rare.png');background-size:100%"></span><span class="egg-number">4</span></span> -->
-                                <span class="pokemon-icon-sprite" data-value="egg_5" data-label="Level 5" onclick="pokemonRaidFilter(event);"><span class="egg_5 inner-bg" style="background: url('static/raids/egg_legendary.png');background-size:100%"></span><span class="egg-number">5</span></span>
-                                <span class="pokemon-icon-sprite" data-value="egg_6" data-label="Level 6" onclick="pokemonRaidFilter(event);"><span class="egg_6 inner-bg" style="background: url('static/raids/egg_mega.png');background-size:100%"></span><span class="egg-number">6</span></span>
+                                <span class="pokemon-icon-sprite" data-value="egg_1" data-label="Level 1" onclick="pokemonRaidFilter(event);"><span class="egg_1 inner-bg" style="background: url('static/sprites/raid/1.png');background-size:100%"></span><span class="egg-number">1</span></span>
+                                <!-- Not in game <span class="pokemon-icon-sprite" data-value="egg_2" data-label="Level 2" onclick="pokemonRaidFilter(event);"><span class="egg_2 inner-bg" style="background: url('static/sprites/raid/2.png');background-size:100%"></span><span class="egg-number">2</span></span> -->
+                                <span class="pokemon-icon-sprite" data-value="egg_3" data-label="Level 3" onclick="pokemonRaidFilter(event);"><span class="egg_3 inner-bg" style="background: url('static/sprites/raid/3.png');background-size:100%"></span><span class="egg-number">3</span></span>
+                                <!-- Not in game <span class="pokemon-icon-sprite" data-value="egg_4" data-label="Level 4" onclick="pokemonRaidFilter(event);"><span class="egg_4 inner-bg" style="background: url('static/sprites/raid/4.png');background-size:100%"></span><span class="egg-number">4</span></span> -->
+                                <span class="pokemon-icon-sprite" data-value="egg_5" data-label="Level 5" onclick="pokemonRaidFilter(event);"><span class="egg_5 inner-bg" style="background: url('static/sprites/raid/5.png');background-size:100%"></span><span class="egg-number">5</span></span>
+                                <span class="pokemon-icon-sprite" data-value="egg_6" data-label="Level 6" onclick="pokemonRaidFilter(event);"><span class="egg_6 inner-bg" style="background: url('static/sprites/raid/6.png');background-size:100%"></span><span class="egg-number">6</span></span>
                                 <?php
                                 $pokemonJson = file_get_contents('static/dist/data/pokemon.min.json');
                                 $pokemon = json_decode($pokemonJson, true);
                                 foreach ($raidBosses as $raidBoss) {
-                                    $pokemonIdStr = '';
-                                    if ($raidBoss <= 9) {
-                                        $pokemonIdStr = '00' . $raidBoss;
-                                    } else if ($raidBoss <= 99) {
-                                        $pokemonIdStr = '0' . $raidBoss;
-                                    } else {
-                                        $pokemonIdStr = $raidBoss;
-                                    }
-                                    echo '<span class="pokemon-icon-sprite" data-value="' . $raidBoss . '" data-label="' . $pokemon[$raidBoss]['name'] . '" onclick="pokemonRaidFilter(event);"><img src="' . $iconRepository . 'pokemon_icon_' . $pokemonIdStr . '_00.png" style="width:48px;height:48px;"/></span>';
+                                    echo '<span class="pokemon-icon-sprite" data-value="' . $raidBoss . '" data-label="' . $pokemon[$raidBoss]['name'] . '" onclick="pokemonRaidFilter(event);"><img src="' . getIcon($iconFolderArray['pokemon'], 'pokemon/', '.png', $raidBoss) . '" style="width:48px;height:48px;"/></span>';
                                 } ?>
                                 <div class="mon-name" style="display:none;"></div>
                                 <div class="switch-container timer-cont" style="text-align:center;display:none">

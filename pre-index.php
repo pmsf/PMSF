@@ -1044,7 +1044,7 @@ if (!$noLoadingScreen) {
                     </div>
                 </div>
                 <?php }
-                if (! $noDarkMode || ! $noMapStyle || ! $noDirectionProvider || ! $noIconSize || ! $noIconNotifySizeModifier || ! $noGymStyle || ! $noLocationStyle) { ?>
+                if (! $noDarkMode || ! $noMapStyle || ! $noDirectionProvider || ! $noIconSize || ! $noIconNotifySizeModifier || ! $noLocationStyle) { ?>
                     <div class="accordion-item">
                         <h2 class="accordion-header" id="headingItemEight">
                             <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#navItemEight" aria-expanded="false" aria-controls="navItemEight">
@@ -1093,13 +1093,12 @@ if (!$noLoadingScreen) {
                                                 <label for="direction-provider"><?php echo i8ln('Direction Provider') ?></label>
                                             </div>
                                         <?php }
-                                        if (! $noMultipleRepos && ! $copyrightSafe && (sizeof($iconRepos) > 0)) { ?>
+                                        if (! $copyrightSafe && is_array($iconFolderArray['pokemon']) && (sizeof($iconFolderArray['pokemon']) > 0)) { ?>
                                             <div class="form-floating">
                                                 <select class="form-select" aria-label="icon-style" name="icon-style" id="icon-style">
                                                     <?php
-                                                    $count = sizeof($iconRepos);
-                                                    for ($i = 0; $i <= $count - 1; $i ++) {
-                                                        echo '<option value="' . $iconRepos[$i][1] . '">' . $iconRepos[$i][0] . '</option>';
+                                                    foreach ($iconFolderArray['pokemon'] as $name => $repo) {
+                                                        echo '<option value="' . $repo . '">' . $name . '</option>';
                                                     } ?>
                                                 </select>
                                                 <label for="icon-style"><?php echo i8ln('Icon Style') ?></label>
@@ -1127,13 +1126,13 @@ if (!$noLoadingScreen) {
                                                 <label for="pokemon-icon-notify-size"><?php echo i8ln('Increase Notified Icon Size') ?></label>
                                             </div>
                                         <?php }
-                                        if (! $noGymStyle) { ?>
+                                        if (is_array($iconFolderArray['gym']) && (sizeof($iconFolderArray['gym']) > 0)) { ?>
                                             <div class="form-floating">
                                                 <select class="form-select" aria-label="gym-marker-style" name="gym-marker-style" id="gym-marker-style">
-                                                    <option value="ingame"><?php echo i8ln('In-Game') ?></option>
-                                                    <option value="shield"><?php echo i8ln('Shield') ?></option>
-                                                    <option value="rocketmap"><?php echo i8ln('Rocketmap') ?></option>
-                                                    <option value="comic"><?php echo i8ln('Comic') ?></option>
+                                                    <?php
+                                                    foreach ($iconFolderArray['gym'] as $name => $repo) {
+                                                        echo '<option value="' . $repo . '">' . $name . '</option>';
+                                                    } ?>
                                                 </select>
                                                 <label for="gym-marker-style"><?php echo i8ln('Gym Marker Style') ?></label>
                                             </div>
@@ -1419,10 +1418,7 @@ include('modals.php');
     var iconSize = <?php echo $iconSize ?>;
     var iconNotifySizeModifier = <?php echo $iconNotifySizeModifier ?>;
     var locationStyle = '<?php echo $locationStyle ?>';
-    var gymStyle = '<?php echo $gymStyle ?>';
-    var spriteFileLarge = '<?php echo $copyrightSafe ? 'static/icons-safe-1-bigger.png' : 'static/icons-im-1-bigger.png' ?>';
-    var weatherSpritesSrc = '<?php echo $copyrightSafe ? 'static/sprites-safe/' : 'static/sprites-pokemon/' ?>';
-    var icons = '<?php echo $copyrightSafe ? 'static/icons-safe/' : $iconRepository ?>';
+    var iconFolderArray = <?php echo json_encode($iconFolderArray) ?>;
     var weatherColors = <?php echo json_encode($weatherColors); ?>;
     var s2Colors = <?php echo json_encode($s2Colors); ?>;
     var mapType = '<?php echo strtolower($map); ?>';
