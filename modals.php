@@ -1005,7 +1005,7 @@
                                             <div class="col-md-3">
                                                 <div class="list-group">
                                                     <div class="list-group-item">
-                                                        <img src="static/icons-safe/rewards/reward_1_1.png" width="64" height="64" />
+                                                        <img src="static/sprites/reward/item/1.png" width="64" height="64" />
                                                         <h4 class="pokemon-count"><?php echo i8ln('loading...'); ?> <i class="fas fa-spinner fa-spin"></i></h4>
                                                         <p><?php echo i8ln('Pokémon'); ?></p>
                                                     </div>

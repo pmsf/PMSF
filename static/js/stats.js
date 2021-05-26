@@ -52,23 +52,9 @@ function countMarkers(map) { // eslint-disable-line no-unused-vars
 
         for (i = 0; i < pkmnCount.length; i++) {
             if (pkmnCount[i] && pkmnCount[i].Count > 0) {
-                var pokemonIdStr = ''
-                if (pkmnCount[i].ID <= 9) {
-                    pokemonIdStr = '00' + pkmnCount[i].ID
-                } else if (pkmnCount[i].ID <= 99) {
-                    pokemonIdStr = '0' + pkmnCount[i].ID
-                } else {
-                    pokemonIdStr = pkmnCount[i].ID
-                }
-                var formStr = ''
-                if (pkmnCount[i].Form === '0') {
-                    formStr = '00'
-                } else {
-                    formStr = pkmnCount[i].Form
-                }
                 var pkmnPercentage = (pkmnCount[i].Count * 100 / pkmnTotal * 10) / 10
                 pokeCounts.push([
-                    '<img style="height:30px;" src="' + iconpath + 'pokemon_icon_' + pokemonIdStr + '_' + formStr + '.png"/>',
+                    '<img style="height:30px;" src="' + getIcon(iconpath.pokemon, 'pokemon', '.png', pkmnCount[i].ID, 0, pkmnCount[i].Form) + '"/>',
                     '<a href=\'https://pokemon.gameinfo.io/' + languageSite + '/pokemon/' + pkmnCount[i].ID + '\' target=\'_blank\' title=\'' + i8ln('View in Pokédex') + '\' style=\'color: black;\'>' + pkmnCount[i].Name + '</a>',
                     pkmnCount[i].Count,
                     pkmnPercentage.toFixed(2) + '%'
@@ -102,13 +88,13 @@ function countMarkers(map) { // eslint-disable-line no-unused-vars
         for (i = 0; i < arenaCount.length; i++) {
             if (arenaCount[i] > 0) {
                 if (i === 1) {
-                    arenaListString += '<tr><td><img src="static/forts/Mystic.png" style="height:48px;"/></td><td style="vertical-align:middle;">' + i8ln('Mystic') + '</td><td style="vertical-align:middle;">' + arenaCount[i] + '</td><td style="vertical-align:middle;">' + Math.round(arenaCount[i] * 100 / arenaTotal * 10) / 10 + '%</td></tr>'
+                    arenaListString += '<tr><td><img src="' + getIcon(iconpath.gym, 'gym', '.png', '1') + '" style="height:48px;"/></td><td style="vertical-align:middle;">' + i8ln('Mystic') + '</td><td style="vertical-align:middle;">' + arenaCount[i] + '</td><td style="vertical-align:middle;">' + Math.round(arenaCount[i] * 100 / arenaTotal * 10) / 10 + '%</td></tr>'
                 } else if (i === 2) {
-                    arenaListString += '<tr><td><img src="static/forts/Valor.png" style="height:48px;"/></td><td style="vertical-align:middle;">' + i8ln('Valor') + '</td><td style="vertical-align:middle;">' + arenaCount[i] + '</td><td style="vertical-align:middle;">' + Math.round(arenaCount[i] * 100 / arenaTotal * 10) / 10 + '%</td></tr>'
+                    arenaListString += '<tr><td><img src="' + getIcon(iconpath.gym, 'gym', '.png', '2') + '" style="height:48px;"/></td><td style="vertical-align:middle;">' + i8ln('Valor') + '</td><td style="vertical-align:middle;">' + arenaCount[i] + '</td><td style="vertical-align:middle;">' + Math.round(arenaCount[i] * 100 / arenaTotal * 10) / 10 + '%</td></tr>'
                 } else if (i === 3) {
-                    arenaListString += '<tr><td><img src="static/forts/Instinct.png" style="height:48px;"/></td><td style="vertical-align:middle;">' + i8ln('Instinct') + '</td><td style="vertical-align:middle;">' + arenaCount[i] + '</td><td style="vertical-align:middle;">' + Math.round(arenaCount[i] * 100 / arenaTotal * 10) / 10 + '%</td></tr>'
+                    arenaListString += '<tr><td><img src="' + getIcon(iconpath.gym, 'gym', '.png', '3') + '" style="height:48px;"/></td><td style="vertical-align:middle;">' + i8ln('Instinct') + '</td><td style="vertical-align:middle;">' + arenaCount[i] + '</td><td style="vertical-align:middle;">' + Math.round(arenaCount[i] * 100 / arenaTotal * 10) / 10 + '%</td></tr>'
                 } else {
-                    arenaListString += '<tr><td><img src="static/forts/Uncontested.png" style="height:48px;"/></td><td style="vertical-align:middle;">' + i8ln('Uncontested') + '</td><td style="vertical-align:middle;">' + arenaCount[i] + '</td><td style="vertical-align:middle;">' + Math.round(arenaCount[i] * 100 / arenaTotal * 10) / 10 + '%</td></tr>'
+                    arenaListString += '<tr><td><img src="' + getIcon(iconpath.gym, 'gym', '.png', '0') + '" style="height:48px;"/></td><td style="vertical-align:middle;">' + i8ln('Uncontested') + '</td><td style="vertical-align:middle;">' + arenaCount[i] + '</td><td style="vertical-align:middle;">' + Math.round(arenaCount[i] * 100 / arenaTotal * 10) / 10 + '%</td></tr>'
                 }
             }
         }
@@ -125,6 +111,13 @@ function countMarkers(map) { // eslint-disable-line no-unused-vars
             thisRaidIsVisible = currentVisibleMap.contains(thisRaidLocation)
             if (thisRaidIsVisible) {
                 if (mapData.gyms[key]['raid_end'] && mapData.gyms[key]['raid_end'] > Date.now()) {
+                    if (mapData.gyms[key]['raid_level'] === '6') {
+                        if (raidCount[6] === 0 || !raidCount[6]) {
+                            raidCount[6] = 1
+                        } else {
+                            raidCount[6] += 1
+                        }
+                    }
                     if (mapData.gyms[key]['raid_level'] === '5') {
                         if (raidCount[5] === 0 || !raidCount[5]) {
                             raidCount[5] = 1
@@ -169,15 +162,17 @@ function countMarkers(map) { // eslint-disable-line no-unused-vars
         for (i = 0; i < raidCount.length; i++) {
             if (raidCount[i] > 0) {
                 if (i === 1) {
-                    raidListString += '<tr><td><img src="static/raids/egg_normal.png" style="height:48px;"/></td><td style="vertical-align:middle;">1</td><td style="vertical-align:middle;">' + raidCount[i] + '</td><td style="vertical-align:middle;">' + Math.round(raidCount[i] * 100 / raidTotal * 10) / 10 + '%</td></tr>'
+                    raidListString += '<tr><td><img src="' + getIcon(iconpath.raid, 'raid', '.png', '1') + '" style="height:48px;"/></td><td style="vertical-align:middle;">1</td><td style="vertical-align:middle;">' + raidCount[i] + '</td><td style="vertical-align:middle;">' + Math.round(raidCount[i] * 100 / raidTotal * 10) / 10 + '%</td></tr>'
                 } else if (i === 2) {
-                    raidListString += '<tr><td><img src="static/raids/egg_normal.png" style="height:48px;"/></td><td style="vertical-align:middle;">2</td><td style="vertical-align:middle;">' + raidCount[i] + '</td><td style="vertical-align:middle;">' + Math.round(raidCount[i] * 100 / raidTotal * 10) / 10 + '%</td></tr>'
+                    raidListString += '<tr><td><img src="' + getIcon(iconpath.raid, 'raid', '.png', '2') + '" style="height:48px;"/></td><td style="vertical-align:middle;">2</td><td style="vertical-align:middle;">' + raidCount[i] + '</td><td style="vertical-align:middle;">' + Math.round(raidCount[i] * 100 / raidTotal * 10) / 10 + '%</td></tr>'
                 } else if (i === 3) {
-                    raidListString += '<tr><td><img src="static/raids/egg_rare.png" style="height:48px;"/></td><td style="vertical-align:middle;">3</td><td style="vertical-align:middle;">' + raidCount[i] + '</td><td style="vertical-align:middle;">' + Math.round(raidCount[i] * 100 / raidTotal * 10) / 10 + '%</td></tr>'
+                    raidListString += '<tr><td><img src="' + getIcon(iconpath.raid, 'raid', '.png', '3') + '" style="height:48px;"/></td><td style="vertical-align:middle;">3</td><td style="vertical-align:middle;">' + raidCount[i] + '</td><td style="vertical-align:middle;">' + Math.round(raidCount[i] * 100 / raidTotal * 10) / 10 + '%</td></tr>'
                 } else if (i === 4) {
-                    raidListString += '<tr><td><img src="static/raids/egg_rare.png" style="height:48px;"/></td><td style="vertical-align:middle;">4</td><td style="vertical-align:middle;">' + raidCount[i] + '</td><td style="vertical-align:middle;">' + Math.round(raidCount[i] * 100 / raidTotal * 10) / 10 + '%</td></tr>'
+                    raidListString += '<tr><td><img src="' + getIcon(iconpath.raid, 'raid', '.png', '4') + '" style="height:48px;"/></td><td style="vertical-align:middle;">4</td><td style="vertical-align:middle;">' + raidCount[i] + '</td><td style="vertical-align:middle;">' + Math.round(raidCount[i] * 100 / raidTotal * 10) / 10 + '%</td></tr>'
                 } else if (i === 5) {
-                    raidListString += '<tr><td><img src="static/raids/egg_legendary.png" style="height:48px;"/></td><td style="vertical-align:middle;">5</td><td style="vertical-align:middle;">' + raidCount[i] + '</td><td style="vertical-align:middle;">' + Math.round(raidCount[i] * 100 / raidTotal * 10) / 10 + '%</td></tr>'
+                    raidListString += '<tr><td><img src="' + getIcon(iconpath.raid, 'raid', '.png', '5') + '" style="height:48px;"/></td><td style="vertical-align:middle;">5</td><td style="vertical-align:middle;">' + raidCount[i] + '</td><td style="vertical-align:middle;">' + Math.round(raidCount[i] * 100 / raidTotal * 10) / 10 + '%</td></tr>'
+                } else if (i === 6) {
+                    raidListString += '<tr><td><img src="' + getIcon(iconpath.raid, 'raid', '.png', '6') + '" style="height:48px;"/></td><td style="vertical-align:middle;">6</td><td style="vertical-align:middle;">' + raidCount[i] + '</td><td style="vertical-align:middle;">' + Math.round(raidCount[i] * 100 / raidTotal * 10) / 10 + '%</td></tr>'
                 }
             }
         }
@@ -257,19 +252,19 @@ function countMarkers(map) { // eslint-disable-line no-unused-vars
         for (i = 0; i < pokestopCount.length; i++) {
             if (pokestopCount[i] > 0) {
                 if (i === 1) {
-                    pokestopListString += '<tr><td><img src="static/forts/PstopQuest.png" style="height:48px;"/></td><td style="vertical-align:middle;">' + i8ln('Quest') + '</td><td style="vertical-align:middle;">' + pokestopCount[i] + '</td><td style="vertical-align:middle;">' + Math.round(pokestopCount[i] * 100 / pokestopTotal * 10) / 10 + '%</td></tr>'
+                    pokestopListString += '<tr><td><img src="' + getIcon(iconpath.pokestop, 'pokestop', '.png', '0', 0, 1) + '" style="height:48px;"/></td><td style="vertical-align:middle;">' + i8ln('Quest') + '</td><td style="vertical-align:middle;">' + pokestopCount[i] + '</td><td style="vertical-align:middle;">' + Math.round(pokestopCount[i] * 100 / pokestopTotal * 10) / 10 + '%</td></tr>'
                 } else if (i === 2) {
-                    pokestopListString += '<tr><td><img src="static/forts/PstopLured_501.png" style="height:48px;"/></td><td style="vertical-align:middle;">' + i8ln('Normal Lure') + '</td><td style="vertical-align:middle;">' + pokestopCount[i] + '</td><td style="vertical-align:middle;">' + Math.round(pokestopCount[i] * 100 / pokestopTotal * 10) / 10 + '%</td></tr>'
+                    pokestopListString += '<tr><td><img src="' + getIcon(iconpath.pokestop, 'pokestop', '.png', '501') + '" style="height:48px;"/></td><td style="vertical-align:middle;">' + i8ln('Normal Lure') + '</td><td style="vertical-align:middle;">' + pokestopCount[i] + '</td><td style="vertical-align:middle;">' + Math.round(pokestopCount[i] * 100 / pokestopTotal * 10) / 10 + '%</td></tr>'
                 } else if (i === 3) {
-                    pokestopListString += '<tr><td><img src="static/forts/PstopLured_502.png" style="height:48px;"/></td><td style="vertical-align:middle;">' + i8ln('Glacial Lure') + '</td><td style="vertical-align:middle;">' + pokestopCount[i] + '</td><td style="vertical-align:middle;">' + Math.round(pokestopCount[i] * 100 / pokestopTotal * 10) / 10 + '%</td></tr>'
+                    pokestopListString += '<tr><td><img src="' + getIcon(iconpath.pokestop, 'pokestop', '.png', '502') + '" style="height:48px;"/></td><td style="vertical-align:middle;">' + i8ln('Glacial Lure') + '</td><td style="vertical-align:middle;">' + pokestopCount[i] + '</td><td style="vertical-align:middle;">' + Math.round(pokestopCount[i] * 100 / pokestopTotal * 10) / 10 + '%</td></tr>'
                 } else if (i === 4) {
-                    pokestopListString += '<tr><td><img src="static/forts/PstopLured_503.png" style="height:48px;"/></td><td style="vertical-align:middle;">' + i8ln('Mossy Lure') + '</td><td style="vertical-align:middle;">' + pokestopCount[i] + '</td><td style="vertical-align:middle;">' + Math.round(pokestopCount[i] * 100 / pokestopTotal * 10) / 10 + '%</td></tr>'
+                    pokestopListString += '<tr><td><img src="' + getIcon(iconpath.pokestop, 'pokestop', '.png', '503') + '" style="height:48px;"/></td><td style="vertical-align:middle;">' + i8ln('Mossy Lure') + '</td><td style="vertical-align:middle;">' + pokestopCount[i] + '</td><td style="vertical-align:middle;">' + Math.round(pokestopCount[i] * 100 / pokestopTotal * 10) / 10 + '%</td></tr>'
                 } else if (i === 5) {
-                    pokestopListString += '<tr><td><img src="static/forts/PstopLured_504.png" style="height:48px;"/></td><td style="vertical-align:middle;">' + i8ln('Magnetic Lure') + '</td><td style="vertical-align:middle;">' + pokestopCount[i] + '</td><td style="vertical-align:middle;">' + Math.round(pokestopCount[i] * 100 / pokestopTotal * 10) / 10 + '%</td></tr>'
+                    pokestopListString += '<tr><td><img src="' + getIcon(iconpath.pokestop, 'pokestop', '.png', '504') + '" style="height:48px;"/></td><td style="vertical-align:middle;">' + i8ln('Magnetic Lure') + '</td><td style="vertical-align:middle;">' + pokestopCount[i] + '</td><td style="vertical-align:middle;">' + Math.round(pokestopCount[i] * 100 / pokestopTotal * 10) / 10 + '%</td></tr>'
                 } else if (i === 6) {
-                    pokestopListString += '<tr><td><img src="static/forts/PstopLured_505.png" style="height:48px;"/></td><td style="vertical-align:middle;">' + i8ln('Rainy Lure') + '</td><td style="vertical-align:middle;">' + pokestopCount[i] + '</td><td style="vertical-align:middle;">' + Math.round(pokestopCount[i] * 100 / pokestopTotal * 10) / 10 + '%</td></tr>'
+                    pokestopListString += '<tr><td><img src="' + getIcon(iconpath.pokestop, 'pokestop', '.png', '505') + '" style="height:48px;"/></td><td style="vertical-align:middle;">' + i8ln('Rainy Lure') + '</td><td style="vertical-align:middle;">' + pokestopCount[i] + '</td><td style="vertical-align:middle;">' + Math.round(pokestopCount[i] * 100 / pokestopTotal * 10) / 10 + '%</td></tr>'
                 } else if (i === 7) {
-                    pokestopListString += '<tr><td><img src="static/forts/Pstop_rocket.png" style="height:48px;"/></td><td style="vertical-align:middle;">' + i8ln('Team Rocket') + '</td><td style="vertical-align:middle;">' + pokestopCount[i] + '</td><td style="vertical-align:middle;">' + Math.round(pokestopCount[i] * 100 / pokestopTotal * 10) / 10 + '%</td></tr>'
+                    pokestopListString += '<tr><td><img src="' + getIcon(iconpath.pokestop, 'pokestop', '.png', '0', 1) + '" style="height:48px;"/></td><td style="vertical-align:middle;">' + i8ln('Team Rocket') + '</td><td style="vertical-align:middle;">' + pokestopCount[i] + '</td><td style="vertical-align:middle;">' + Math.round(pokestopCount[i] * 100 / pokestopTotal * 10) / 10 + '%</td></tr>'
                 }
             }
         }
