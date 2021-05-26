@@ -4630,31 +4630,17 @@ function processSpawnpointStats(i, item) {
     $('h4.spawnpoint-missing').html(item['missing'])
 }
 function processPokemonStats(i, item) {
-    var id = ''
-    if (item['pokemon_id'] <= 9) {
-        id = '00' + item['pokemon_id']
-    } else if (item['pokemon_id'] <= 99) {
-        id = '0' + item['pokemon_id']
-    } else {
-        id = item['pokemon_id']
-    }
-    if (item['form'] <= 0) {
-        item['form'] = '00'
-    }
-    var costume = ''
-    if (item['costume'] > 0) {
-        costume = '_' + item['costume']
-    }
-    var pokemon = '<img src="' + iconpath + 'pokemon_icon_' + id + '_' + item['form'] + costume + '.png" style="width:40px;"><span style="display:none">' + item['name'] + '</span>'
+    var id = item['pokemon_id']
+    var pokemon = '<img src="' + getIcon(iconpath.pokemon, 'pokemon', '.png', id, 0, item['form'], item['costume']) + '" style="width:40px;"><span style="display:none">' + item['name'] + '</span>'
 
     var types = item['pokemon_types']
     var typeDisplay = ''
 
     $.each(types, function (index, type) {
         if (index === 0) {
-            typeDisplay += '<nobr>' + i8ln(type['type']) + ' <img src="static/types/' + type['type'] + '.png" style="width:18px;"></nobr><br>'
+            typeDisplay += '<nobr>' + i8ln(type['type']) + ' <img src="' + getIcon(iconpath.type, 'type', '.png', getKeyByValue(pokemonTypes, type.type)) + '" style="width:18px;"></nobr><br>'
         } else {
-            typeDisplay += '<nobr>' + i8ln(type['type']) + ' <img src="static/types/' + type['type'] + '.png" style="width:18px;"></nobr>'
+            typeDisplay += '<nobr>' + i8ln(type['type']) + ' <img src="' + getIcon(iconpath.type, 'type', '.png', getKeyByValue(pokemonTypes, type.type)) + '" style="width:18px;"></nobr>'
         }
     })
 
@@ -4680,19 +4666,19 @@ function processRewardStats(i, item) {
     var hiddenName = '<span style="display: none;">' + item['name'] + '</span>'
 
     if (item['quest_reward_type'] === 12 && item['quest_energy_pokemon_id'] > 0) {
-        reward = '<img src="' + iconpath + 'rewards/reward_mega_energy_' + item['quest_energy_pokemon_id'] + '.png" style="width:40px;">' +
+        reward = '<img src="' + getIcon(iconpath.reward, 'reward/mega_resource', '.png', item['quest_energy_pokemon_id']) + '" style="width:40px;">' +
         hiddenName
         type = i8ln('Mega Energy')
     } else if (item['quest_reward_type'] === 7 && item['quest_pokemon_id'] > 0) {
-        reward = '<img src="' + iconpath + 'pokemon_icon_' + item['quest_pokemon_id'] + '_' + item['quest_pokemon_form'] + '.png" style="width:40px;">' +
+        reward = '<img src="' + getIcon(iconpath.pokemon, 'pokemon', '.png', item['quest_pokemon_id'], 0, item['quest_pokemon_form']) + '" style="width:40px;">' +
         hiddenName
         type = i8ln('Pokémon')
     } else if (item['quest_reward_type'] === 2 && item['quest_item_id'] > 0) {
-        reward = '<img src="' + iconpath + 'rewards/reward_' + item['quest_item_id'] + '_' + item['quest_reward_amount'] + '.png" style="width:40px;">' +
+        reward = '<img src="' + getIcon(iconpath.reward, 'reward/item', '.png', item['quest_item_id'], item['quest_reward_amount']) + '" style="width:40px;">' +
         '<br>' + item['name']
         type = i8ln('Item')
     } else if (item['quest_reward_type'] === 3) {
-        reward = '<img src="' + iconpath + 'rewards/reward_stardust_' + item['quest_reward_amount'] + '.png" style="width:40px;">' +
+        reward = '<img src="' + getIcon(iconpath.reward, 'reward/stardust', '.png', item['quest_dust_amount']) + '" style="width:40px;">' +
         hiddenName
         type = i8ln('Stardust')
     }
@@ -4705,20 +4691,8 @@ function processRewardStats(i, item) {
     ])
 }
 function processShinyStats(i, item) {
-    if (item['pokemon_id'] <= 9) {
-        item['pokemon_id'] = '00' + item['pokemon_id']
-    } else if (item['pokemon_id'] <= 99) {
-        item['pokemon_id'] = '0' + item['pokemon_id']
-    }
-    if (item['form'] <= 0) {
-        item['form'] = '00'
-    }
-    var costume = ''
-    if (item['costume'] > 0) {
-        costume = '_' + item['costume']
-    }
     var hiddenName = '<span style="display: none;">' + item['name'] + '</span>'
-    var pokemon = '<img src="' + iconpath + 'pokemon_icon_' + item['pokemon_id'] + '_' + item['form'] + costume + '.png" style="width:40px;">' +
+    var pokemon = '<img src="' + getIcon(iconpath.pokemon, 'pokemon', '.png', item['pokemon_id'], 0, item['form'], item['costume']) + '" style="width:40px;">' +
     hiddenName
     var rate = item['rate'] + '<br>(' + item['percentage'] + ')'
 
