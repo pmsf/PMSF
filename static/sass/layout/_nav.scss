@@ -3,6 +3,7 @@
 #leftNav {
     top: 3.5em;
     max-width: 90%;
+    color: darken(_palette(accent2, bg), 12);
     .offcanvas-body.left {
         padding: 0px;
         #accordionNav {
@@ -18,11 +19,19 @@
                         border-color: white !important;
                         box-shadow: none !important
                     }
-                    &:not(.collapsed)::after, &::after {
-                        /* background-image: url('/static/images/pokemon.png'); */
-                        filter: brightness(0%);
-                        right: 15px;
-                        position: relative;
+                    &:not(.collapsed) {
+                        background: darken(_palette(accent2, bg), 12) !important;
+                        h5 {
+                            color: _palette(accent2, fg);
+                        }
+                    }
+                    &:not(.collapsed)::after {
+                        filter: brightness(100); /* white when open*/
+                        margin-right: 15px;
+                    }
+                    &::after {
+                        filter: brightness(0); /* black when closed*/
+                        margin-right: 15px;
                     }
                     h5 {
                         margin: 0;
@@ -35,32 +44,46 @@
             }
             .form-check-input {
                 float: right;
+                &:focus {
+                    box-shadow: none;
+                }
+                &:not(:checked):focus {
+                    background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='-4 -4 8 8'%3e%3ccircle r='3' fill='rgba%280, 0, 0, 0.25%29'/%3e%3c/svg%3e");
+                    border-color: rgba(0,0,0,.25);
+                }
+                &:checked {
+                    background-color: #3d3d3d;
+                    border-color: #3d3d3d;
+                }
             }
             label {
                 font-size: 14px;
             }
             input.search.search-input {
                 position: relative;
-                height: 31px
+                height: 31px;
+                width: 100%;
+                padding: 12px 20px;
+                margin-bottom: 2px;
+                border: 1px solid rgba(0,0,0,.125);
+                border-radius: 3px;
+                outline: none;
             }
             li.place-result {
                 padding: 5px;
-                border: 1px solid #989696;
+                border: 1px solid rgba(0,0,0,.125);
                 border-top: none;
                 border-radius: 5px;
                 font-size: 13px;
                 cursor: pointer;
-                background-color: #f1efef;
-            }
-            form#search-places {
-                margin-bottom: 0px;
+                background-color: #f8f9fa;
             }
             .nav-tabs {
                 border-bottom: unset;
             }
             .scroll-container {
                 width: 100%;
-                max-height: 20em;
+                max-height: 17em;
                 overflow: hidden;
                 overflow-y: scroll;
             }
@@ -81,52 +104,53 @@
                 background-color: #f8f9fa;
                 line-height: 1;
                 font-size: 11px;
-                border: 1px solid #d1d1d1;
+                border: 1px solid rgba(0, 0, 0, .125);
+                margin: 0;
+                &.active {
+                    background-color: #6c757d;
+                    color: #fff !important;
+                }
             }
-            button#exclude-pokemon-tab.active, button#exclude-min-iv-tab.active,
-            button#exclude-quest-pokemon-tab.active, button#exclude-quest-item-tab.active, button#exclude-quest-energy-tab.active,
-            button#exclude-rocket-tab.active,
-            button#exclude-raidboss-tab.active, button#exclude-raidegg-tab.active,
-            button#notify-pokemon-tab.active {
-                background-color: #6c757d;
-                color: #fff !important;
+            button#exclude-pokemon-tab, button#exclude-min-iv-tab {
+                margin-top: 8px;
             }
             .pokemon-list, .energy-list, .grunt-list, .raidegg-list, .item-list {
-                display: -webkit-box;
-                display: -ms-flexbox;
-                display: -webkit-flex;
-                display: flex;
-                -webkit-flex-flow: row wrap;
-                flex-flow: row wrap;
-                -webkit-align-items:center;
-                align-items: center;
-                text-align:center;
-                max-width: 100%;
-                img {
-                    width: calc(20% - 10px);
-                    padding: 2px;
-                    margin: -2px -2px;
-                    box-sizing: border-box;
-                }
                 .pokemon-icon-sprite, .energy-icon-sprite, .grunt-icon-sprite, .raidegg-icon-sprite, .item-icon-sprite {
-                    border: 1px solid #d6d8d9;
+                    border: 1px solid rgba(0, 0, 0, .125);
+                    border-radius: 2px;
                     background-color: #f7f7f7;
-                    width: calc( 20% - 2px);
-                    margin-bottom: 2px;
-                    margin-left: 1px;
-                    margin-right: 1px;
-                    position:relative;
-                    .inner-bg{
-                        width: 48.13px;
-                        height: 48.13px;
+                    margin: 0px 1px 2px;
+                    width: calc(20% - 2px);
+                    @include breakpoint(xxsmall) {
+                        width: calc(25% - 2px);
+                    }
+                    img {
+                        width: 44px;
+                        height: 44px;
                         display: block;
                         margin: 0 auto;
                     }
+                    &.active {
+                        border: 1px solid red;
+                        background: rgba(255, 0, 0, 0.4);
+                    }
                 }
-                .active {
-                    border: 1px solid red;
-                    background: rgba(255, 0, 0, 0.4);
+            }
+            #notify-pokemon {
+                .pokemon-list .active {
+                    border: 1px solid #0089ff;
+                    background: rgba(0, 114, 255, 0.4);
                 }
+            }
+            #exclude-min-iv {
+                .pokemon-list .active {
+                    border: 1px solid #12940a;
+                    background: rgba(45, 234, 11, 0.4);
+                }
+            }
+            .border.with-radius {
+                border-radius: 4px;
+                padding: 2px;
             }
         }
     }

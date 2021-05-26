@@ -9,13 +9,12 @@
         echo '<div class="pokemon-list-cont" id="pokemon-list-cont-' . $num . '">
         <input type="hidden" class="search-number" value="' . $num . '" />
         <input type="text" class="search search-input" placeholder="' . i8ln("Search Name, ID & Type") . '" />
-        <div class="pokemon-list list">';
+        <div class="pokemon-list list d-flex flex-wrap align-items-center text-center">';
         $i = 0;
         $z = 0;
         foreach ($mons as $k => $pokemon) {
             $type = '';
             $form = '';
-            $formId = '';
             $name = $pokemon['name'];
             foreach ($pokemon['types'] as $t) {
                 $type .= i8ln($t['type']);
@@ -23,10 +22,10 @@
             if (!empty($pokemon['forms'])) {
                 foreach ($pokemon['forms'] as $f) {
                     $form .= i8ln($f['nameform']);
-                    $formId .= $f['protoform'];
                 }
             }
             $genId = ($k <= 151) ? '1' : (($k <= 251) ? '2' : (($k <= 386) ? '3' : (($k <= 493) ? '4' : (($k <= 649) ? '5' : (($k <= 721) ? '6' : (($k <= 809) ? '7' : (($k <= 898) ? '8' : '')))))));
+            $genName = ($k <= 151) ? i8ln('Kanto') : (($k <= 251) ? i8ln('Johto') : (($k <= 386) ? i8ln('Hoenn') : (($k <= 493) ? i8ln('Sinnoh') : (($k <= 649) ? i8ln('Unova') : (($k <= 721) ? i8ln('Kalos') : (($k <= 809) ? i8ln('Alola') : (($k <= 898) ? i8ln('Galar') : '')))))));
             if (! in_array($k, $pokemonToExclude)) {
                 if ($k > $numberOfPokemon) {
                     break;
@@ -36,12 +35,12 @@
                 <span style="display:none" class="name">' . i8ln($name) . '</span>
                 <span style="display:none" class="id">' . $k . '</span>
                 <span style="display:none" class="genid">' . i8ln($pokemonGenSearchString) . $genId . '</span>
-                <span style="display:none" class="forms">' . $form . '</span>
-                <span style="display:none" class="formid">' . $formId . '</span>';
+                <span style="display:none" class="genname">' . $genName . '</span>
+                <span style="display:none" class="forms">' . $form . '</span>';
                 if (! $copyrightSafe) {
-                    echo "<img src='" . getIcon($iconFolderArray['pokemon'], 'pokemon/', '.png', $k) . "' style='width:48px;height:48px;'/>";
+                    echo "<img loading='lazy' src='" . getIcon($iconFolderArray['pokemon'], 'pokemon/', '.png', $k) . "'/>";
                 } else {
-                    echo "<img src='static/icons-safe/pokemon_icon_" . $id . "_00.png' style='width:48px;height:48px;'/>";
+                    echo "<img loading='lazy' src='static/icons-safe/pokemon_icon_" . $id . "_00.png'/>";
                 }
                 if (! $noPokemonNumbers) {
                     echo "<span class='pokemon-number'>" . $k . "</span>";
@@ -52,7 +51,7 @@
         echo '</div></div>'; ?>
         <script>
             var options = {
-                valueNames: ['name', 'types', 'id', 'genid', 'forms', 'formid']
+                valueNames: ['name', 'types', 'id', 'genid', 'genname', 'forms']
             };
             var monList = new List('pokemon-list-cont-<?php echo $num; ?>', options);
         </script>
@@ -68,7 +67,7 @@
         echo '<div class="energy-list-cont" id="energy-list-cont-' . $num . '">
         <input type="hidden" class="search-number" value="' . $num . '" />
         <input type="text" class="search search-input" placeholder="' . i8ln("Search Name, ID & Type") . '" />
-        <div class="energy-list list">';
+        <div class="energy-list list d-flex flex-wrap align-items-center text-center">';
         $i = 0;
         $z = 0;
         foreach ($mons as $k => $pokemon) {
@@ -86,9 +85,9 @@
                 <span style="display:none" class="name">' . i8ln($name) . '</span>
                 <span style="display:none" class="id">' . $k . '</span>';
                 if (! $copyrightSafe) {
-                    echo '<img src="' . getIcon($iconFolderArray['reward'], 'reward/mega_resource/', '.png', $k) . '" style="width:48px;height:48px;"/>';
+                    echo '<img loading="lazy" src="' . getIcon($iconFolderArray['reward'], 'reward/mega_resource/', '.png', $k) . '"/>';
                 } else {
-                    echo '<img src="static/icons-safe/pokemon_icon_' . $k . '_00.png" style="width:48px;height:48px;"/>';
+                    echo '<img loading="lazy" src="static/icons-safe/pokemon_icon_' . $k . '_00.png"/>';
                 }
                 if (! $noPokemonNumbers) {
                     echo "<span class='pokemon-number'>" . $k . "</span>";
@@ -112,7 +111,10 @@
             $json = file_get_contents('static/dist/data/items.min.json');
             $items = json_decode($json, true);
         }
-        echo '<div class="item-list-cont" id="item-list-cont-' . $num . '"><input type="hidden" class="search-number" value="' . $num . '" /><input type="text" class="search search-input" placeholder="' . i8ln("Search Name & ID") . '" /><div class="item-list list">';
+        echo '<div class="item-list-cont" id="item-list-cont-' . $num . '">
+        <input type="hidden" class="search-number" value="' . $num . '" />
+        <input type="text" class="search search-input" placeholder="' . i8ln("Search Name & ID") . '" />
+        <div class="item-list list d-flex flex-wrap align-items-center text-center">';
         $i = 0;
         $z = 0;
         foreach ($items as $k => $item) {
@@ -120,9 +122,15 @@
 
             if (! in_array($k, $itemsToExclude)) {
                 if (! $copyrightSafe) {
-                    echo '<span class="item-icon-sprite" data-value="' . $k . '" onclick="' . $onClick . '"><span style="display:none" class="name">' . i8ln($name) . '</span><span style="display:none" class="id">' . $k . '</span><img src="' . getIcon($iconFolderArray['reward'], 'reward/item/', '.png', $k) . '" style="width:48px;height:48px;"/>';
+                    echo '<span class="item-icon-sprite" data-value="' . $k . '" onclick="' . $onClick . '">
+                    <span style="display:none" class="name">' . i8ln($name) . '</span>
+                    <span style="display:none" class="id">' . $k . '</span>
+                    <img loading="lazy" src="' . getIcon($iconFolderArray['reward'], 'reward/item/', '.png', $k) . '"/>';
                 } else {
-                    echo '<span class="item-icon-sprite" data-value="' . $k . '" onclick="' . $onClick . '"><span style="display:none" class="name">' . i8ln($name) . '</span><span style="display:none" class="id">' . $k . '</span><img src="static/icons-safe/rewards/reward_' . $k . '_1.png" style="width:48px;height:48px;"/>';
+                    echo '<span class="item-icon-sprite" data-value="' . $k . '" onclick="' . $onClick . '">
+                    <span style="display:none" class="name">' . i8ln($name) . '</span>
+                    <span style="display:none" class="id">' . $k . '</span>
+                    <img loading="lazy" src="static/icons-safe/rewards/reward_' . $k . '_1.png"/>';
                 }
                 if (! $noItemNumbers) {
                     echo '<span class="item-number">' . $k . '</span>';
@@ -146,7 +154,10 @@
             $json = file_get_contents('static/dist/data/grunttype.min.json');
             $grunts = json_decode($json, true);
         }
-        echo '<div class="grunt-list-cont" id="grunt-list-cont-' . $num . '"><input type="hidden" class="search-number" value="' . $num . '" /><input type="text" class="search search-input" placeholder="' . i8ln("Search Name & ID") . '" /><div class="grunt-list list">';
+        echo '<div class="grunt-list-cont" id="grunt-list-cont-' . $num . '">
+        <input type="hidden" class="search-number" value="' . $num . '" />
+        <input type="text" class="search search-input" placeholder="' . i8ln("Search Name & ID") . '" />
+        <div class="grunt-list list d-flex flex-wrap align-items-center text-center">';
         $i = 0;
         $z = 0;
         foreach ($grunts as $g => $grunt) {
@@ -154,7 +165,11 @@
             $gender = $grunt['grunt'];
 
             if (! in_array($g, $gruntsToExclude)) {
-                echo '<span class="grunt-icon-sprite" data-value="' . $g . '" onclick="' . $onClick . '"><span style="display:none" class="gender">' . i8ln($gender) . '</span><span style="display:none" class="type">' . i8ln($type) . '</span><span style="display:none" class="id">' . $g . '</span><img src="' . getIcon($iconFolderArray['invasion'], 'invasion/', '.png', $g) . '" style="width:48px;height:48px;"/>';
+                echo '<span class="grunt-icon-sprite" data-value="' . $g . '" onclick="' . $onClick . '">
+                <span style="display:none" class="gender">' . i8ln($gender) . '</span>
+                <span style="display:none" class="type">' . i8ln($type) . '</span>
+                <span style="display:none" class="id">' . $g . '</span>
+                <img loading="lazy" src="' . getIcon($iconFolderArray['invasion'], 'invasion/', '.png', $g) . '"/>';
                 if (! $noGruntNumbers) {
                     echo '<span class="grunt-number">' . $g . '</span>';
                 }
@@ -180,7 +195,7 @@
         echo '<div class="raidegg-list-cont" id="raidegg-list-cont-' . $num . '">
         <input type="hidden" class="search-number" value="' . $num . '" />
         <input type="text" class="search search-input" placeholder="' . i8ln("Search Level") . '" />
-        <div class="raidegg-list list">';
+        <div class="raidegg-list list d-flex flex-wrap align-items-center text-center">';
         $i = 0;
         $z = 0;
         foreach ($egg as $e => $egg) {
@@ -189,7 +204,7 @@
             if (! in_array($e, $raideggToExclude)) {
                 echo '<span class="raidegg-icon-sprite" data-value="' . $e . '" onclick="' . $onClick . '">
                 <span style="display:none" class="level">' . $eggLevel . '</span>
-                <img src="' . getIcon($iconFolderArray['raid'], 'raid/', '.png', $eggLevel, $eggHatched) . '" style="width:48px;"/>';
+                <img loading="lazy" src="' . getIcon($iconFolderArray['raid'], 'raid/', '.png', $eggLevel, $eggHatched) . '"/>';
                 if (! $noRaideggNumbers) {
                     echo '<span class="raidegg-number">' . $eggLevel . '</span>';
                 }

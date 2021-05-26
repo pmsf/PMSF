@@ -145,84 +145,79 @@ if (strtolower($map) === "rdm") {
         var token = '<?php echo (! empty($_SESSION['token'])) ? $_SESSION['token'] : ""; ?>';
     </script>
     <link href="node_modules/leaflet-geosearch/assets/css/leaflet.css" rel="stylesheet" />
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jqueryui/1.12.0/jquery-ui.min.css">
     <link rel="stylesheet" href="node_modules/datatables/media/css/jquery.dataTables.min.css">
     <script src="static/js/vendor/modernizr.custom.js"></script>
+    <!-- Bootstrap -->
+    <link rel="stylesheet" href="node_modules/bootstrap/dist/css/bootstrap.min.css">
     <!-- Bootstrap Icons -->
     <link rel="stylesheet" href="node_modules/bootstrap-icons/font/bootstrap-icons.css">
+    <!--<link rel="stylesheet" href="https://cdn.datatables.net/1.10.24/css/dataTables.bootstrap5.min.css">-->
     <!-- Leaflet -->
     <link rel="stylesheet" href="node_modules/leaflet/dist/leaflet.css" />
     <link rel="stylesheet" href="static/dist/css/app.min.css">
-    <?php if (file_exists('static/css/custom.css')) {
-        echo '<link rel="stylesheet" href="static/css/custom.css?' . time() . '">';
-    } ?>
+    <?php if (file_exists('static/dist/css/custom.min.css')) { ?>
+        <link rel="stylesheet" href="static/dist/css/custom.min.css">
+    <?php } ?>
     <link rel="stylesheet" href="node_modules/leaflet.markercluster/dist/MarkerCluster.css" />
     <link rel="stylesheet" href="node_modules/leaflet.markercluster/dist/MarkerCluster.Default.css" />
     <link href='static/css/leaflet.fullscreen.css' rel='stylesheet' />
     <!-- Flag Icons -->
     <link rel="stylesheet" href="node_modules/flag-icon-css/css/flag-icon.min.css" />
 </head>
-<?php
-if (!$noLoadingScreen) {
-    echo '<app-root><p class="spinner" VALIGN="CENTER">';
-    if ($loadingStyle == '') {
-        $loadingStyle = '<i class="fa fas fa-cog fa-spin fa-2x" aria-hidden="true"></i>';
-    }
-    echo $loadingStyle . '&nbsp;' . i8ln('Loading') . '...</p></app-root>';
-} ?>
 <body id="top">
+<div class="loader"></div>
 <div class="wrapper">
     <!-- Header -->
     <header id="header">
-        <a class="btn btn-link" data-bs-toggle="offcanvas" href="#leftNav" role="button" title="<?php echo i8ln('Options') ?>" aria-controls="leftNav"><i class='fas fa-sliders-h'></i></a>
+        <a class="btn btn-link" data-bs-toggle="offcanvas" href="#leftNav" role="button" title="<?php echo i8ln('Options'); ?>" aria-controls="leftNav"><i class='fas fa-sliders-h'></i></a>
 
         <h1><a href="#"><?= $headerTitle ?><img src="<?= $raidmapLogo ?>"></a></h1>
         <?php
-        if (! $noStatsToggle) {
-            echo '<a class="btn btn-link" data-bs-toggle="offcanvas" href="#rightNav" role="button" title="' . i8ln('Options') . '" aria-controls="rightNav"><i class="fas fa-chart-bar"></i></a>';
-        }
-        if ($paypalUrl != "") {
-            echo '<a class="config-icon" href="' . $paypalUrl . '" target="_blank">
-                 <i class="fab fa-paypal" title="' . i8ln('PayPal') . '"></i>
-                 </a>';
-        }
-        if ($telegramUrl != "") {
-            echo '<a class="config-icon" href="' . $telegramUrl . '" target="_blank">
-                 <i class="fab fa-telegram" title="' . i8ln('Telegram') . '"></i>
-                 </a>';
-        }
-        if ($whatsAppUrl != "") {
-            echo '<a class="config-icon" href="' . $whatsAppUrl . '" target="_blank">
-                 <i class="fab fa-whatsapp" title="' . i8ln('WhatsApp') . '"></i>
-                 </a>';
-        }
-        if ($discordUrl != "") {
-            echo '<a class="config-icon" href="' . $discordUrl . '" target="_blank">
-                 <i class="fab fa-discord" title="' . i8ln('Discord') . '"></i>
-                 </a>';
-        }
-        if ($patreonUrl != "") {
-            echo '<a class="config-icon" href="' . $patreonUrl . '" target="_blank">
-                 <i class="fab fa-patreon" title="' . i8ln('Patreon') . '"></i>
-                 </a>';
-        }
-        if ($customUrl != "") {
-            echo '<a class="config-icon" href="' . $customUrl . '" target="_blank">
-                 <i class="' . $customUrlFontIcon . '"></i>
-                 </a>';
-        }
+        if (! $noStatsToggle) { ?>
+            <a class="btn btn-link" data-bs-toggle="offcanvas" href="#rightNav" role="button" title="<?php echo i8ln('Stats'); ?>" aria-controls="rightNav"><i class="fas fa-chart-bar"></i></a>
+        <?php }
+        if ($paypalUrl != "") { ?>
+            <a class="config-icon" href="<?php echo $paypalUrl; ?>" target="_blank">
+                <i class="fab fa-paypal" title="<?php echo i8ln('PayPal'); ?>"></i>
+            </a>
+        <?php }
+        if ($telegramUrl != "") { ?>
+            <a class="config-icon" href="<?php echo $telegramUrl; ?>" target="_blank">
+                <i class="fab fa-telegram" title="<?php echo i8ln('Telegram'); ?>"></i>
+            </a>
+        <?php }
+        if ($whatsAppUrl != "") { ?>
+            <a class="config-icon" href="<?php echo $whatsAppUrl; ?>" target="_blank">
+                <i class="fab fa-whatsapp" title="<?php echo i8ln('WhatsApp'); ?>"></i>
+            </a>
+        <?php }
+        if ($discordUrl != "") { ?>
+            <a class="config-icon" href="<?php echo $discordUrl; ?>" target="_blank">
+                <i class="fab fa-discord" title="<?php echo i8ln('Discord'); ?>"></i>
+            </a>
+        <?php }
+        if ($patreonUrl != "") { ?>
+            <a class="config-icon" href="<?php echo $patreonUrl; ?>" target="_blank">
+                <i class="fab fa-patreon" title="<?php echo i8ln('Patreon'); ?>"></i>
+            </a>
+        <?php }
+        if ($customUrl != "") { ?>
+            <a class="config-icon" href="<?php echo $customUrl; ?>" target="_blank">
+                <i class="<?php echo $customUrlFontIcon; ?>"></i>
+            </a>
+        <?php }
         if (! $noHeaderWeatherIcon) { ?>
             <div id="currentWeather"></div>
         <?php }
         if (! $noNotifyNotification) { ?>
             <i id="pushNotifyIcon" data-bs-toggle="tooltip" title=""></i>
         <?php }
-        if (!empty($_SESSION['user']->id)) {
-            echo "<a href='#accountModal' data-bs-toggle='modal' title='" . i8ln('Profile') . "'><img src='" .  $_SESSION['user']->avatar . "'></a>";
-        } else {
-            echo "<a href='#accountModal' data-bs-toggle='modal' title='" . i8ln('Profile') . "'><i class='fas fa-user'></i></a>";
-        }
-        ?>
+        if (!empty($_SESSION['user']->id)) { ?>
+            <a href="#accountModal" data-bs-toggle="modal" title="<?php echo i8ln('Profile'); ?>"><img src="<?php echo $_SESSION['user']->avatar; ?>"></a>
+            <?php
+        } else { ?>
+            <a href="#accountModal" data-bs-toggle="modal" title="<?php echo i8ln('Profile'); ?>"><i class="fas fa-user"></i></a>
+        <?php } ?>
     </header>
     <!-- Toastr Container -->
     <div aria-live="polite" aria-atomic="true" class="position-relative">
@@ -258,7 +253,7 @@ if (!$noLoadingScreen) {
                                   <div class="card-body">
                                         <?php
                                         if (! $noPokemon) { ?>
-                                            <div class="form form-switch">
+                                            <div class="form-check form-switch">
                                                 <input class="form-check-input" id="pokemon-switch" type="checkbox" name="pokemon-switch">
                                                 <label class="form-check-label" for="pokemon-switch"><?php echo i8ln('Pokémon') ?></label>
                                             </div>
@@ -266,7 +261,7 @@ if (!$noLoadingScreen) {
                                         <?php
                                         }
                                         if (! $noNests) { ?>
-                                            <div class="form form-switch">
+                                            <div class="form-check form-switch">
                                                 <input class="form-check-input" id="nests-switch" type="checkbox" name="nests-switch">
                                                 <label class="form-check-label" for="nests-switch"><?php echo i8ln('Nests') ?></label>
                                             </div>
@@ -275,7 +270,7 @@ if (!$noLoadingScreen) {
                                         <div id="pokemon-filter-wrapper" style="display:none">
                                             <?php
                                             if (!$noTinyRat) { ?>
-                                                <div class="form form-switch">
+                                                <div class="form-check form-switch">
                                                     <input class="form-check-input" id="tiny-rat-switch" type="checkbox" name="tiny-rat-switch">
                                                     <label class="form-check-label" for="tiny-rat-switch"><?php echo i8ln('Only Tiny Rattata') ?></label>
                                                 </div>
@@ -283,7 +278,7 @@ if (!$noLoadingScreen) {
                                             <?php }
                                             if (!$noBigKarp) {
                                                 ?>
-                                                <div class="form form-switch">
+                                                <div class="form-check form-switch">
                                                     <input class="form-check-input" id="big-karp-switch" type="checkbox" name="big-karp-switch">
                                                     <label class="form-check-label"  for="big-karp-switch"><?php echo i8ln('Only Big Magikarp') ?></label>
                                                 </div>
@@ -311,23 +306,23 @@ if (!$noLoadingScreen) {
                                                 </div>
                                             </div>
                                             <?php if (! $noHidePokemon && ! $noExcludeMinIV) { ?>
-                                                <div class="form-control" style="position:relative;top:8px;">
-                                                    <ul class="nav nav-tabs nav-fill" id="pokemonHideMin" role="tablist">
-                                                        <?php
-                                                        $firstTab = 1;
-                                                        if (! $noHidePokemon) { ?>
-                                                            <li class="nav-item" role="presentation">
-                                                                <button class="nav-link<?php echo (($firstTab == 1) ? " active" : ""); ?>" id="exclude-pokemon-tab" data-bs-toggle="tab" data-bs-target="#exclude-pokemon" type="button" role="tab" aria-controls="exclude-pokemon" aria-selected="false"><?php echo i8ln('Hide Pokémon') ?></button>
-                                                            </li>
-                                                        <?php
-                                                        $firstTab++;
-                                                        }
-                                                        if (! $noExcludeMinIV) { ?>
-                                                            <li class="nav-item" role="presentation">
-                                                                <button class="nav-link<?php echo (($firstTab == 1) ? " active" : ""); ?>" id="exclude-min-iv-tab" data-bs-toggle="tab" data-bs-target="#exclude-min-iv" type="button" role="tab" aria-controls="exclude-min-iv" aria-selected="false"><?php echo i8ln('Excl. Min IV/Lvl') ?></button>
-                                                            </li>
-                                                        <?php } ?>
-                                                    </ul>
+                                                <ul class="nav nav-tabs nav-fill" id="pokemonHideMin" role="tablist">
+                                                    <?php
+                                                    $firstTab = 1;
+                                                    if (! $noHidePokemon) { ?>
+                                                        <li class="nav-item" role="presentation">
+                                                            <button class="nav-link<?php echo (($firstTab == 1) ? " active" : ""); ?>" id="exclude-pokemon-tab" data-bs-toggle="tab" data-bs-target="#exclude-pokemon" type="button" role="tab" aria-controls="exclude-pokemon" aria-selected="false"><?php echo i8ln('Hide Pokémon') ?></button>
+                                                        </li>
+                                                    <?php
+                                                    $firstTab++;
+                                                    }
+                                                    if (! $noExcludeMinIV) { ?>
+                                                        <li class="nav-item" role="presentation">
+                                                            <button class="nav-link<?php echo (($firstTab == 1) ? " active" : ""); ?>" id="exclude-min-iv-tab" data-bs-toggle="tab" data-bs-target="#exclude-min-iv" type="button" role="tab" aria-controls="exclude-min-iv" aria-selected="false"><?php echo i8ln('Excl. Min IV/Lvl') ?></button>
+                                                        </li>
+                                                    <?php } ?>
+                                                </ul>
+                                                <div class="border with-radius">
                                                     <div class="tab-content" id="pokemonHideMinContent">
                                                         <?php
                                                         $firstTabContent = 1;
@@ -361,7 +356,7 @@ if (!$noLoadingScreen) {
                                         <div id="nest-filter-wrapper" style="display:none">
                                             <?php
                                             if (!$noNestPolygon && !$noNests) { ?>
-                                                <div class="form form-switch">
+                                                <div class="form-check form-switch">
                                                     <input class="form-check-input" id="nest-polygon-switch" type="checkbox" name="nest-polygon-switch">
                                                     <label class="form-check-label" for="nest-polygon-switch"><?php echo i8ln('Nest Polygon') ?></label>
                                                 </div>
@@ -398,7 +393,7 @@ if (!$noLoadingScreen) {
                                   <div class="card-body">
                                         <?php
                                         if (! $noPokestops) { ?>
-                                            <div class="form form-switch">
+                                            <div class="form-check form-switch">
                                                 <input class="form-check-input" id="pokestops-switch" type="checkbox" name="pokestops-switch">
                                                 <label class="form-check-label" for="pokestops-switch"><?php echo i8ln('Pokéstops') ?></label>
                                             </div>
@@ -408,7 +403,7 @@ if (!$noLoadingScreen) {
                                         <div id="pokestops-filter-wrapper" style="display:none">
                                             <?php
                                             if (! $noAllPokestops) { ?>
-                                                <div class="form form-switch">
+                                                <div class="form-check form-switch">
                                                     <input class="form-check-input" id="allPokestops-switch" type="checkbox" name="allPokestops-switch">
                                                     <label class="form-check-label" for="allPpokestops-switch"><?php echo i8ln('All Pokéstops') ?></label>
                                                 </div>
@@ -416,7 +411,7 @@ if (!$noLoadingScreen) {
                                             <?php
                                             }
                                             if (! $noLures) { ?>
-                                                <div class="form form-switch">
+                                                <div class="form-check form-switch">
                                                     <input class="form-check-input" id="lures-switch" type="checkbox" name="lures-switch">
                                                     <label class="form-check-label" for="lures-switch"><?php echo i8ln('Lured Pokéstops only') ?></label>
                                                 </div>
@@ -424,7 +419,7 @@ if (!$noLoadingScreen) {
                                             <?php
                                             }
                                             if (! $noTeamRocket) { ?>
-                                                <div class="form form-switch">
+                                                <div class="form-check form-switch">
                                                     <input class="form-check-input" id="rocket-switch" type="checkbox" name="rocket-switch">
                                                     <label class="form-check-label" for="rocket-switch"><?php echo i8ln('Rocket Pokéstops only') ?></label>
                                                 </div>
@@ -434,14 +429,14 @@ if (!$noLoadingScreen) {
                                                 <div class="dropdown-divider"></div>
                                                 <?php
                                                 if (! $noTeamRocket && ! $noTeamRocketTimer) { ?>
-                                                    <div class="form form-switch">
+                                                    <div class="form-check form-switch">
                                                         <input class="form-check-input" id="rocket-timer-switch" type="checkbox" name="rocket-timer-switch">
                                                         <label class="form-check-label" for="rocket-timer-switch"><?php echo i8ln('Rocket Pokéstops timer') ?></label>
                                                     </div>
                                                     <div class="dropdown-divider"></div>
                                                 <?php
                                                 } ?>
-                                                <div class="form-control">
+                                                <div class="border with-radius">
                                                     <ul class="nav nav-tabs nav-fill" id="rocketHide" role="tablist">
                                                         <li class="nav-item" role="presentation">
                                                             <button class="nav-link active" id="exclude-rocket-tab" data-bs-toggle="tab" data-bs-target="#exclude-rocket" type="button" role="tab" aria-controls="exclude-rocket" aria-selected="false"><?php echo i8ln('Hide Grunts') ?></button>
@@ -467,7 +462,7 @@ if (!$noLoadingScreen) {
                                             <?php
                                             if (! $noQuests) { ?>
                                                 <div class="dropdown-divider"></div>
-                                                <div class="form form-switch">
+                                                <div class="form-check form-switch">
                                                     <input class="form-check-input" id="quests-switch" type="checkbox" name="quests-switch">
                                                     <label class="form-check-label" for="quests-switch"><?php echo i8ln('Quest Pokéstops only') ?></label>
                                                 </div>
@@ -475,7 +470,7 @@ if (!$noLoadingScreen) {
                                             <?php
                                             } ?>
                                             <div id="quests-filter-wrapper" style="display:none">
-                                                <div class="form-control">
+                                                <div class="border with-radius">
                                                     <ul class="nav nav-tabs nav-fill" id="questHide" role="tablist">
                                                         <?php
                                                         $firstTab = 1;
@@ -580,7 +575,7 @@ if (!$noLoadingScreen) {
                                     <div class="card-body">
                                         <?php
                                         if (! $noRaids) { ?>
-                                            <div class="form form-switch">
+                                            <div class="form-check form-switch">
                                                 <input class="form-check-input" id="raids-switch" type="checkbox" name="raids-switch">
                                                 <label class="form-check-label" for="raids-switch"><?php echo i8ln('Raids') ?></label>
                                             </div>
@@ -588,7 +583,7 @@ if (!$noLoadingScreen) {
                                                 <div class="dropdown-divider"></div>
                                                 <?php
                                                 if (! $noRaidTimer) { ?>
-                                                    <div class="form form-switch">
+                                                    <div class="form-check form-switch">
                                                         <input class="form-check-input" id="raid-timer-switch" type="checkbox" name="raid-timer-switch">
                                                         <label class="form-check-label" for="raid-timer-switch"><?php echo i8ln('Raids Timer') ?></label>
                                                     </div>
@@ -596,7 +591,7 @@ if (!$noLoadingScreen) {
                                                 <?php
                                                 }
                                                 if (! $noActiveRaids) { ?>
-                                                    <div class="form form-switch">
+                                                    <div class="form-check form-switch">
                                                         <input class="form-check-input" id="active-raids-switch" type="checkbox" name="active-raids-switch">
                                                         <label class="form-check-label" for="active-raids-switch"><?php echo i8ln('Only Active Raids') ?></label>
                                                     </div>
@@ -629,7 +624,7 @@ if (!$noLoadingScreen) {
                                                     </div>
                                                     <div class="dropdown-divider"></div>
                                                 <?php } ?>
-                                                <div class="form-control">
+                                                <div class="border with-radius">
                                                     <ul class="nav nav-tabs nav-fill" id="raidHide" role="tablist">
                                                         <li class="nav-item" role="presentation">
                                                             <button class="nav-link active" id="exclude-raidboss-tab" data-bs-toggle="tab" data-bs-target="#exclude-raidboss" type="button" role="tab" aria-controls="exclude-raidboss" aria-selected="false"><?php echo i8ln('Hide Raidboss') ?></button>
@@ -665,7 +660,7 @@ if (!$noLoadingScreen) {
                                             </div>
                                             <div class="dropdown-divider"></div>
                                         <?php } ?>
-                                        <div class="form form-switch">
+                                        <div class="form-check form-switch">
                                             <input class="form-check-input" id="gyms-switch" type="checkbox" name="gyms-switch">
                                             <label class="form-check-label" for="gyms-switch"><?php echo i8ln('Gyms') ?></label>
                                         </div>
@@ -686,7 +681,7 @@ if (!$noLoadingScreen) {
                                                 <div class="dropdown-divider"></div>
                                             <?php }
                                             if (! $noOpenSpot) { ?>
-                                                <div class="form form-switch">
+                                                <div class="form-check form-switch">
                                                     <input class="form-check-input" id="open-gyms-only-switch" type="checkbox" name="open-gyms-only-switch">
                                                     <label class="form-check-label" for="open-gyms-only-switch"><?php echo i8ln('Open Spot') ?></label>
                                                 </div>
@@ -735,7 +730,7 @@ if (!$noLoadingScreen) {
                                                 <div class="dropdown-divider"></div>
                                             <?php } ?>
                                             <div id="gyms-raid-filter-wrapper" style="display:none">
-                                                <div class="form form-switch">
+                                                <div class="form-check form-switch">
                                                     <input class="form-check-input" id="ex-eligible-switch" type="checkbox" name="ex-eligible-switch">
                                                     <label class="form-check-label" for="ex-eligible-switch"><?php echo i8ln('EX Eligible Only') ?></label>
                                                 </div>
@@ -758,7 +753,7 @@ if (!$noLoadingScreen) {
                             <div class="accordion-body bg-light">
                                 <div class="card">
                                     <div class="card-body">
-                                        <div class="form form-switch">
+                                        <div class="form-check form-switch">
                                             <input class="form-check-input" id="communities-switch" type="checkbox" name="communities-switch">
                                             <label class="form-check-label" for="communities-switch"><?php echo i8ln('Communities') ?></label>
                                         </div>
@@ -781,7 +776,7 @@ if (!$noLoadingScreen) {
                                     <div class="card-body">
                                         <?php
                                         if (! $noPortals) { ?>
-                                            <div class="form form-switch">
+                                            <div class="form-check form-switch">
                                                 <input class="form-check-input" id="portals-switch" type="checkbox" name="portals-switch">
                                                 <label class="form-check-label" for="portals-switch"><?php echo i8ln('Portals') ?></label>
                                             </div>
@@ -795,30 +790,30 @@ if (!$noLoadingScreen) {
                                             <div class="dropdown-divider"></div>
                                         <?php }
                                         if (! $noPoi) { ?>
-                                            <div class="form form-switch">
+                                            <div class="form-check form-switch">
                                                 <input class="form-check-input" id="poi-switch" type="checkbox" name="poi-switch">
                                                 <label class="form-check-label" for="poi-switch"><?php echo i8ln('POI') ?></label>
                                             </div>
                                             <div class="dropdown-divider"></div>
                                         <?php }
                                         if (! $noS2Cells) { ?>
-                                            <div class="form form-switch">
+                                            <div class="form-check form-switch">
                                                 <input class="form-check-input" id="s2-switch" type="checkbox" name="s2-switch">
                                                 <label class="form-check-label" for="s2-switch"><?php echo i8ln('Show S2 Cells') ?></label>
                                             </div>
                                             <div id="s2-switch-wrapper" style="display:none">
                                                 <div class="dropdown-divider"></div>
-                                                <div class="form form-switch">
+                                                <div class="form-check form-switch">
                                                     <input class="form-check-input" id="s2-level13-switch" type="checkbox" name="s2-level13-switch">
                                                     <label class="form-check-label" for="s2-level13-switch"><?php echo i8ln('EX trigger Cells') ?></label>
                                                 </div>
                                                 <div class="dropdown-divider"></div>
-                                                <div class="form form-switch">
+                                                <div class="form-check form-switch">
                                                     <input class="form-check-input" id="s2-level14-switch" type="checkbox" name="s2-level14-switch">
                                                     <label class="form-check-label" for="s2-level14-switch"><?php echo i8ln('Gym placement Cells') ?></label>
                                                 </div>
                                                 <div class="dropdown-divider"></div>
-                                                <div class="form form-switch">
+                                                <div class="form-check form-switch">
                                                     <input class="form-check-input" id="s2-level17-switch" type="checkbox" name="s2-level17-switch">
                                                     <label class="form-check-label" for="s2-level17-switch"><?php echo i8ln('Pokéstop placement Cells') ?></label>
                                                 </div>
@@ -848,42 +843,42 @@ if (!$noLoadingScreen) {
                                     <div class="card-body">
                                         <?php
                                         if (! $noWeatherOverlay) { ?>
-                                            <div class="form form-switch">
+                                            <div class="form-check form-switch">
                                                 <input class="form-check-input" id="weather-switch" type="checkbox" name="weather-switch">
                                                 <label class="form-check-label" for="weather-switch"><?php echo i8ln('Weather Conditions') ?></label>
                                             </div>
                                             <div class="dropdown-divider"></div>
                                         <?php }
                                         if (! $noSpawnPoints) { ?>
-                                            <div class="form form-switch">
+                                            <div class="form-check form-switch">
                                                 <input class="form-check-input" id="spawnpoints-switch" type="checkbox" name="spawnpoints-switch">
                                                 <label class="form-check-label" for="spawnpoints-switch"><?php echo i8ln('Spawn Points') ?></label>
                                             </div>
                                             <div class="dropdown-divider"></div>
                                         <?php }
                                         if (! $noRanges) { ?>
-                                            <div class="form form-switch">
+                                            <div class="form-check form-switch">
                                                 <input class="form-check-input" id="ranges-switch" type="checkbox" name="ranges-switch">
                                                 <label class="form-check-label" for="ranges-switch"><?php echo i8ln('Ranges') ?></label>
                                             </div>
                                             <div class="dropdown-divider"></div>
                                         <?php }
                                         if (! $noScanPolygon) { ?>
-                                            <div class="form form-switch">
+                                            <div class="form-check form-switch">
                                                 <input class="form-check-input" id="scan-area-switch" type="checkbox" name="scan-area-switch">
                                                 <label class="form-check-label" for="scan-area-switch"><?php echo i8ln('Scan Areas') ?></label>
                                             </div>
                                             <div class="dropdown-divider"></div>
                                         <?php }
                                         if (! $noSearchLocation) { ?>
-                                            <div class="form form-switch">
+                                            <div class="form-check form-switch">
                                                 <input class="form-check-input" id="scan-location-switch" type="checkbox" name="scan-location-switch">
                                                 <label class="form-check-label" for="scan-location-switch"><?php echo i8ln('Real time scanner location') ?></label>
                                             </div>
                                             <div class="dropdown-divider"></div>
                                         <?php }
                                         if (! $noSearchLocation) { ?>
-                                            <div class="input-group mb-3" id="search-places">
+                                            <div class="input-group input-group-sm" id="search-places">
                                                 <span class="input-group-text" id="next-location"><?php echo i8ln('Search location'); ?></span>
                                                 <input type="text" class="form-control" id="next-location" aria-describedby="next-location">
                                             </div>
@@ -891,21 +886,21 @@ if (!$noLoadingScreen) {
                                             <div class="dropdown-divider"></div>
                                         <?php }
                                         if (! $noStartMe) { ?>
-                                            <div class="form form-switch">
+                                            <div class="form-check form-switch">
                                                 <input class="form-check-input" id="start-at-user-location-switch" type="checkbox" name="start-at-user-location-switch">
                                                 <label class="form-check-label" for="start-at-user-location-switch"><?php echo i8ln('Start map at my position') ?></label>
                                             </div>
                                             <div class="dropdown-divider"></div>
                                         <?php }
                                         if (! $noStartLast) { ?>
-                                            <div class="form form-switch">
+                                            <div class="form-check form-switch">
                                                 <input class="form-check-input" id="start-at-last-location-switch" type="checkbox" name="start-at-last-location-switch">
                                                 <label class="form-check-label" for="start-at-last-location-switch"><?php echo i8ln('Start map at last position') ?></label>
                                             </div>
                                             <div class="dropdown-divider"></div>
                                         <?php }
                                         if (! $noFollowMe) { ?>
-                                            <div class="form form-switch">
+                                            <div class="form-check form-switch">
                                                 <input class="form-check-input" id="follow-my-location-switch" type="checkbox" name="follow-my-location-switch">
                                                 <label class="form-check-label" for="follow-my-location-switch"><?php echo i8ln('Follow me') ?></label>
                                             </div>
@@ -929,7 +924,7 @@ if (!$noLoadingScreen) {
                                 <div class="card-body">
                                     <?php
                                     if (! $noNotifyPokemon) { ?>
-                                        <div class="form-control">
+                                        <div class="border with-radius">
                                             <ul class="nav nav-tabs nav-fill" id="notifyPokemon" role="tablist">
                                                 <li class="nav-item" role="presentation">
                                                     <button class="nav-link active" id="notify-pokemon-tab" data-bs-toggle="tab" data-bs-target="#notify-pokemon" type="button" role="tab" aria-controls="notify-pokemon" aria-selected="false"><?php echo i8ln('Notify of Pokémon') ?></button>
@@ -986,7 +981,7 @@ if (!$noLoadingScreen) {
                                         <div class="dropdown-divider"></div>
                                     <?php }
                                     if (! $noNotifyNotification) { ?>
-                                        <div class="form form-switch">
+                                        <div class="form-check form-switch">
                                             <input class="form-check-input" id="toast-switch" type="checkbox" name="toast-switch">
                                             <label class="form-check-label" for="toast-switch"><?php echo i8ln('Notify with popup') ?></label>
                                         </div>
@@ -1016,7 +1011,7 @@ if (!$noLoadingScreen) {
                                         <div class="dropdown-divider"></div>
                                     <?php }
                                     if (! $noNotifySound) { ?>
-                                        <div class="form form-switch">
+                                        <div class="form-check form-switch">
                                             <input class="form-check-input" id="sound-switch" type="checkbox" name="sound-switch">
                                             <label class="form-check-label" for="sound-switch"><?php echo i8ln('Notify with sound') ?></label>
                                         </div>
@@ -1024,7 +1019,7 @@ if (!$noLoadingScreen) {
                                         if (! $noCriesSound) { ?>
                                             <div id="cries-switch-wrapper" style="display:none">
                                                 <div class="dropdown-divider"></div>
-                                                <div class="form form-switch">
+                                                <div class="form-check form-switch">
                                                     <input class="form-check-input" id="cries-switch" type="checkbox" name="cries-switch">
                                                     <label class="form-check-label" for="cries-switch"><?php echo i8ln('Use Pokémon cries') ?></label>
                                                 </div>
@@ -1033,7 +1028,7 @@ if (!$noLoadingScreen) {
                                     }
                                     if (! $noNotifyBounce) { ?>
                                         <div class="dropdown-divider"></div>
-                                        <div class="form form-switch">
+                                        <div class="form-check form-switch">
                                             <input class="form-check-input" id="bounce-switch" type="checkbox" name="bounce-switch">
                                             <label class="form-check-label" for="bounce-switch"><?php echo i8ln('Bounce') ?></label>
                                         </div>
@@ -1057,7 +1052,7 @@ if (!$noLoadingScreen) {
                                     <div class="card-body">
                                         <?php
                                         if (! $noDarkMode) { ?>
-                                            <div class="form form-switch">
+                                            <div class="form-check form-switch">
                                                 <input class="form-check-input" id="dark-mode-switch" type="checkbox" name="dark-mode-switch">
                                                 <label class="form-check-label" for="dark-mode-switch"><?php echo i8ln('Dark Mode') ?></label>
                                             </div>
@@ -1212,19 +1207,18 @@ if (!$noLoadingScreen) {
     </div>
     <div class="offcanvas offcanvas-end" data-bs-scroll="true" data-bs-backdrop="false" tabindex="-1" id="rightNav" aria-labelledby="rightNavLabel">
         <div class="offcanvas-body right">
-            <?php
-            if ($worldopoleUrl !== "") { ?>
-                <div class="card">
-                    <div class="card-header">
-                        <?php echo i8ln(' Full Stats') ?>
-                    </div>
-                    <div class="card-body">
-                        <div class="d-grid gap-2">
-                            <a class="btn btn-secondary" type="button" href="<?= $worldopoleUrl ?>" target="_blank"><i class="far fa-chart-bar"></i> <?php echo i8ln('Full Stats') ?></a>
-                        </div>
+            <div class="card">
+                <div class="card-header">
+                    <?php echo i8ln(' Full Stats') ?>
+                </div>
+                <div class="card-body">
+                    <div class="d-grid gap-2">
+                        <button id="fullStatsToggle" type="button" class="btn btn-secondary" data-bs-toggle="modal" data-bs-target="#statsModal">
+                            <i class="far fa-chart-bar"></i> <?php echo i8ln('Full Stats') ?>
+                        </button>
                     </div>
                 </div>
-            <?php } ?>
+            </div>
             <div class="card" id="loadingSpinner">
                 <div class="card-header">
                     <?php echo i8ln('Loading...') ?>
@@ -1232,7 +1226,7 @@ if (!$noLoadingScreen) {
                 <div class="card-body">
                     <div class="d-flex justify-content-center">
                         <div class="spinner-border" role="status">
-                            <span class="visually-hidden">Loading...</span>
+                            <span class="visually-hidden"><?php echo i8ln('Loading...') ?></span>
                         </div>
                     </div>
                 </div>
@@ -1295,8 +1289,6 @@ if (!$noLoadingScreen) {
 
     <div id="map"></div>
 
-    <div class="loader" style="display:none;"></div>
-
     <div class="fullscreen-toggle">
         <button class="map-toggle-button" onClick="toggleFullscreenMap();"><i class="fa fa-expand" aria-hidden="true"></i></button>
     </div>
@@ -1319,8 +1311,7 @@ include('modals.php');
 ?>
 <!-- Scripts -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/babel-polyfill/6.9.1/polyfill.min.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/jqueryui/1.12.0/jquery-ui.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/skel/3.0.1/skel.min.js"></script>
 <script src="node_modules/datatables/media/js/jquery.dataTables.min.js"></script>
 <script src="node_modules/moment/min/moment-with-locales.min.js"></script>

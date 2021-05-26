@@ -27,7 +27,9 @@ $libs[] = "submit/Manual.php";
 $libs[] = "submit/Submit.rdm.php";
 $libs[] = "submit/Submit.rocketmap_mad.php";
 $libs[] = "Manual.php";
-
+$libs[] = "stats/Stats.php";
+$libs[] = "stats/Stats.rdm.php";
+$libs[] = "stats/Stats.rocketmap_mad.php";
 // Include libraries
 foreach ($libs as $file) {
     include(__DIR__ . '/../lib/' . $file);
@@ -89,11 +91,6 @@ $noInfoModal = true;                                                // Hide info
 $infoModalTitle = 'Info';                                           // Infomodal title
 $infoModalContent = 'Your text info here';                          // HTML markup allowed (external html file load $infoModalContent = file_get_contents('custom/modal.html');
 
-/* Loading screen */
-
-$noLoadingScreen = false;                                           // show loading animation while main page loads.
-$loadingStyle = '';                                                 // Leave blank for default loading icon. Use '<IMG SRC=static/images/pokeball2.gif>'
-                                                                    // for pokeball or custom gif for animated gif; or use your own html.
 /* Google Maps key is ONLY USED FOR TILE LAYERS */
 
 $gmapsKey = "";
@@ -128,12 +125,9 @@ $patreonUrl = "";                                                   // Patreon U
 $customUrl = "";                                                    // Custom URL, leave "" for empty
 $customUrlFontIcon = "far fa-smile-beam";                           // Choose a custom icon on: https://fontawesome.com/icons?d=gallery&m=free
 
-/* Worldopole */
-
-$worldopoleUrl = "";                                                // Link to Worldopole, leave "" for empty
-
-/* StatsToggle */
+/* Stats */
 $noStatsToggle = false;                                             // Enables or disables the stats button in the header.
+$noFullStats = false;                                               // Enables or disables full stats
 
 /* MOTD */
 $noMotd = true;

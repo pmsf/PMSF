@@ -9,7 +9,6 @@ class RDM extends Scanner
         global $db;
         $conds = array();
         $params = array();
-        $float = $db->info()['driver'] == 'pgsql' ? "::float" : "";
 
         $select = "pokemon_id,
         expire_timestamp AS disappear_time,
@@ -56,7 +55,7 @@ class RDM extends Scanner
         }
         global $noBoundaries, $boundaries, $showPokemonsOutsideBoundaries;
         if (!$noBoundaries && !$showPokemonsOutsideBoundaries) {
-            $conds[] = "(ST_WITHIN(point(lat,lon),ST_GEOMFROMTEXT('POLYGON(( " . $boundaries . " ))')))";
+            $conds[] = "(ST_WITHIN(point(lat, lon),ST_GEOMFROMTEXT('POLYGON(( " . $boundaries . " ))')))";
         }
         if ($tstamp > 0) {
             $conds[] = "updated > :lastUpdated";
@@ -64,11 +63,11 @@ class RDM extends Scanner
         }
         $tmpSQL = '';
         if (!empty($tinyRat) && $tinyRat === 'true' && ($key = array_search("19", $eids)) === false) {
-            $tmpSQL .= ' OR (pokemon_id = 19 AND weight' . $float . ' < 2.41)';
+            $tmpSQL .= ' OR (pokemon_id = 19 AND weight < 2.41)';
             $eids[] = "19";
         }
         if (!empty($bigKarp) && $bigKarp === 'true' && ($key = array_search("129", $eids)) === false) {
-            $tmpSQL .= ' OR (pokemon_id = 129 AND weight' . $float . ' > 13.13)';
+            $tmpSQL .= ' OR (pokemon_id = 129 AND weight > 13.13)';
             $eids[] = "129";
         }
         if (count($eids)) {
@@ -83,11 +82,10 @@ class RDM extends Scanner
             $conds[] = "(pokemon_id NOT IN ( $pkmn_in )" . $tmpSQL . ")";
         }
         if (!empty($minIv) && !is_nan((float)$minIv) && $minIv != 0) {
-            $minIv = $minIv * .45;
             if (empty($exMinIv)) {
-                $conds[] = '(iv' . $float . ') >= ' . $minIv;
+                $conds[] = 'iv >= ' . $minIv;
             } else {
-                $conds[] = '((iv' . $float . ') >= ' . $minIv . ' OR pokemon_id IN(' . $exMinIv . ') )';
+                $conds[] = '(iv >= ' . $minIv . ' OR pokemon_id IN(' . $exMinIv . '))';
             }
         }
         if (!empty($minLevel) && !is_nan((float)$minLevel) && $minLevel != 0) {
@@ -109,7 +107,6 @@ class RDM extends Scanner
         global $db;
         $conds = array();
         $params = array();
-        $float = $db->info()['driver'] == 'pgsql' ? "::float" : "";
 
         $select = "pokemon_id,
         expire_timestamp AS disappear_time,
@@ -149,16 +146,16 @@ class RDM extends Scanner
 
         global $noBoundaries, $boundaries, $showPokemonsOutsideBoundaries;
         if (!$noBoundaries && !$showPokemonsOutsideBoundaries) {
-            $conds[] = "(ST_WITHIN(point(lat,lon),ST_GEOMFROMTEXT('POLYGON(( " . $boundaries . " ))')))";
+            $conds[] = "(ST_WITHIN(point(lat, lon),ST_GEOMFROMTEXT('POLYGON(( " . $boundaries . " ))')))";
         }
         if (count($ids)) {
             $tmpSQL = '';
             if (!empty($tinyRat) && $tinyRat === 'true' && ($key = array_search("19", $ids)) !== false) {
-                $tmpSQL .= ' OR (pokemon_id = 19 AND weight' . $float . ' < 2.41)';
+                $tmpSQL .= ' OR (pokemon_id = 19 AND weight < 2.41)';
                 unset($ids[$key]);
             }
             if (!empty($bigKarp) && $bigKarp === 'true' && ($key = array_search("129", $ids)) !== false) {
-                $tmpSQL .= ' OR (pokemon_id = 129 AND weight' . $float . ' > 13.13)';
+                $tmpSQL .= ' OR (pokemon_id = 129 AND weight > 13.13)';
                 unset($ids[$key]);
             }
             $pkmn_in = '';
@@ -177,11 +174,10 @@ class RDM extends Scanner
         }
 
         if (!empty($minIv) && !is_nan((float)$minIv) && $minIv != 0) {
-            $minIv = $minIv * .45;
             if (empty($exMinIv)) {
-                $conds[] = '(iv' . $float . ') >= ' . $minIv;
+                $conds[] = '(iv >= ' . $minIv;
             } else {
-                $conds[] = '((iv' . $float . ') >= ' . $minIv . ' OR pokemon_id IN(' . $exMinIv . ') )';
+                $conds[] = '(iv >= ' . $minIv . ' OR pokemon_id IN(' . $exMinIv . '))';
             }
         }
         if (!empty($minLevel) && !is_nan((float)$minLevel) && $minLevel != 0) {
@@ -200,7 +196,7 @@ class RDM extends Scanner
 
         $query = "SELECT :select
         FROM pokemon 
-        WHERE :conditions ORDER BY lat,lon ";
+        WHERE :conditions ORDER BY lat, lon ";
 
         $query = str_replace(":select", $select, $query);
         $query = str_replace(":conditions", '(' . join(" AND ", $conds) . ')' . $encSql, $query);
@@ -280,7 +276,7 @@ class RDM extends Scanner
         $params[':neLng'] = $neLng;
         global $noBoundaries, $boundaries, $hideDeleted, $showStopsOutsideBoundaries;
         if (!$noBoundaries && !$showStopsOutsideBoundaries) {
-            $conds[] = "(ST_WITHIN(point(lat,lon),ST_GEOMFROMTEXT('POLYGON(( " . $boundaries . " ))')))";
+            $conds[] = "(ST_WITHIN(point(lat, lon),ST_GEOMFROMTEXT('POLYGON(( " . $boundaries . " ))')))";
         }
         if ($hideDeleted) {
             $conds[] = "deleted = 0";
@@ -337,7 +333,7 @@ class RDM extends Scanner
                 $params[':neLat'] = $neLat;
                 $params[':neLng'] = $neLng;
                 if (!$noBoundaries) {
-                    $dustSQL .= " AND (ST_WITHIN(point(lat,lon),ST_GEOMFROMTEXT('POLYGON(( " . $boundaries . " ))')))";
+                    $dustSQL .= " AND (ST_WITHIN(point(lat, lon),ST_GEOMFROMTEXT('POLYGON(( " . $boundaries . " ))')))";
                 }
             }
             $megaSQL = " OR (quest_reward_type = 12)";
@@ -390,7 +386,7 @@ class RDM extends Scanner
 
         global $noBoundaries, $boundaries, $hideDeleted;
         if (!$noBoundaries) {
-            $conds[] = "(ST_WITHIN(point(lat,lon),ST_GEOMFROMTEXT('POLYGON(( " . $boundaries . " ))')))";
+            $conds[] = "(ST_WITHIN(point(lat, lon),ST_GEOMFROMTEXT('POLYGON(( " . $boundaries . " ))')))";
         }
         if ($hideDeleted) {
             $conds[] = "deleted = 0";
@@ -567,7 +563,7 @@ class RDM extends Scanner
         }
         global $noBoundaries, $boundaries, $hideDeleted, $showGymsOutsideBoundaries;
         if (!$noBoundaries && !$showGymsOutsideBoundaries) {
-            $conds[] = "(ST_WITHIN(point(lat,lon),ST_GEOMFROMTEXT('POLYGON(( " . $boundaries . " ))')))";
+            $conds[] = "(ST_WITHIN(point(lat, lon),ST_GEOMFROMTEXT('POLYGON(( " . $boundaries . " ))')))";
         }
         if ((!empty($raids) && $raids === 'true') && (!empty($gyms) && $gyms === 'false')) {
             $raidSQL = '';
@@ -740,7 +736,7 @@ class RDM extends Scanner
         }
         global $noBoundaries, $boundaries, $showSpawnsOutsideBoundaries;
         if (!$noBoundaries && !$showSpawnsOutsideBoundaries) {
-            $conds[] = "(ST_WITHIN(point(lat,lon),ST_GEOMFROMTEXT('POLYGON(( " . $boundaries . " ))')))";
+            $conds[] = "(ST_WITHIN(point(lat, lon),ST_GEOMFROMTEXT('POLYGON(( " . $boundaries . " ))')))";
         }
         if ($tstamp > 0) {
             $conds[] = "updated > :lastUpdated";

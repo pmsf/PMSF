@@ -1,16 +1,5 @@
-.toast-container.right-top {
-  z-index: 10001;
-  margin-top: 3em;
-  margin-right: 2em;
-  .toast {
-    background-color: var(--bs-white);
-  }
-  .toast-header {
-    padding: 0.1rem 0.50rem;
-  }
-}
-.toast-container.right-bottom {
-  z-index: 10001;
+.toast-container.right-top, .toast-container.right-bottom {
+  z-index: _misc(z-index-base) + 1;
   margin-top: 3em;
   margin-right: 2em;
   .toast {
