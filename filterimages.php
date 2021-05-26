@@ -1,7 +1,7 @@
 <?php
     function pokemonFilterImages($noPokemonNumbers, $onClick = '', $pokemonToExclude = array(), $num = 0)
     {
-        global $mons, $copyrightSafe, $iconRepository, $numberOfPokemon, $pokemonGenSearchString;
+        global $mons, $copyrightSafe, $iconFolderArray, $numberOfPokemon, $pokemonGenSearchString;
         if (empty($mons)) {
             $json = file_get_contents('static/dist/data/pokemon.min.json');
             $mons = json_decode($json, true);
@@ -30,13 +30,6 @@
                 if ($k > $numberOfPokemon) {
                     break;
                 }
-                if ($k <= 9) {
-                    $id = "00$k";
-                } elseif ($k <= 99) {
-                    $id = "0$k";
-                } else {
-                    $id = $k;
-                }
                 echo '<span class="pokemon-icon-sprite" data-value="' . $k . '" onclick="' . $onClick . '">
                 <span style="display:none" class="types">' . $type . '</span>
                 <span style="display:none" class="name">' . i8ln($name) . '</span>
@@ -45,7 +38,7 @@
                 <span style="display:none" class="genname">' . $genName . '</span>
                 <span style="display:none" class="forms">' . $form . '</span>';
                 if (! $copyrightSafe) {
-                    echo "<img loading='lazy' src='" . $iconRepository . "pokemon_icon_" . $id . "_00.png'/>";
+                    echo "<img loading='lazy' src='" . getIcon($iconFolderArray['pokemon'], 'pokemon/', '.png', $k) . "'/>";
                 } else {
                     echo "<img loading='lazy' src='static/icons-safe/pokemon_icon_" . $id . "_00.png'/>";
                 }
@@ -66,7 +59,7 @@
 
     function energyFilterImages($noPokemonNumbers, $onClick = '', $energyToExclude = array(), $num = 0)
     {
-        global $mons, $copyrightSafe, $iconRepository, $numberOfPokemon;
+        global $mons, $copyrightSafe, $iconFolderArray, $numberOfPokemon;
         if (empty($mons)) {
             $json = file_get_contents('static/dist/data/pokemon.min.json');
             $mons = json_decode($json, true);
@@ -92,7 +85,7 @@
                 <span style="display:none" class="name">' . i8ln($name) . '</span>
                 <span style="display:none" class="id">' . $k . '</span>';
                 if (! $copyrightSafe) {
-                    echo '<img loading="lazy" src="' . $iconRepository . 'rewards/reward_mega_energy_' . $k . '.png"/>';
+                    echo '<img loading="lazy" src="' . getIcon($iconFolderArray['reward'], 'reward/mega_resource/', '.png', $k) . '"/>';
                 } else {
                     echo '<img loading="lazy" src="static/icons-safe/pokemon_icon_' . $k . '_00.png"/>';
                 }
@@ -113,7 +106,7 @@
 
     function itemFilterImages($noItemNumbers, $onClick = '', $itemsToExclude = array(), $num = 0)
     {
-        global $items, $copyrightSafe, $iconRepository;
+        global $items, $copyrightSafe, $iconFolderArray;
         if (empty($items)) {
             $json = file_get_contents('static/dist/data/items.min.json');
             $items = json_decode($json, true);
@@ -132,7 +125,7 @@
                     echo '<span class="item-icon-sprite" data-value="' . $k . '" onclick="' . $onClick . '">
                     <span style="display:none" class="name">' . i8ln($name) . '</span>
                     <span style="display:none" class="id">' . $k . '</span>
-                    <img loading="lazy" src="' . $iconRepository . 'rewards/reward_' . $k . '_1.png"/>';
+                    <img loading="lazy" src="' . getIcon($iconFolderArray['reward'], 'reward/item/', '.png', $k) . '"/>';
                 } else {
                     echo '<span class="item-icon-sprite" data-value="' . $k . '" onclick="' . $onClick . '">
                     <span style="display:none" class="name">' . i8ln($name) . '</span>
@@ -156,7 +149,7 @@
 
     function gruntFilterImages($noGruntNumbers, $onClick = '', $gruntsToExclude = array(), $num = 0)
     {
-        global $grunts;
+        global $grunts, $iconFolderArray;
         if (empty($grunts)) {
             $json = file_get_contents('static/dist/data/grunttype.min.json');
             $grunts = json_decode($json, true);
@@ -176,7 +169,7 @@
                 <span style="display:none" class="gender">' . i8ln($gender) . '</span>
                 <span style="display:none" class="type">' . i8ln($type) . '</span>
                 <span style="display:none" class="id">' . $g . '</span>
-                <img loading="lazy" src="static/grunttype/' . $g . '.png"/>';
+                <img loading="lazy" src="' . getIcon($iconFolderArray['invasion'], 'invasion/', '.png', $g) . '"/>';
                 if (! $noGruntNumbers) {
                     echo '<span class="grunt-number">' . $g . '</span>';
                 }
@@ -194,7 +187,7 @@
 
     function raidEggFilterImages($noRaideggNumbers, $onClick = '', $raideggToExclude = array(), $num = 0)
     {
-        global $raids, $copyrightSafe, $iconRepository;
+        global $raids, $copyrightSafe, $iconFolderArray;
         if (empty($raids)) {
             $json = file_get_contents('static/dist/data/raidegg.min.json');
             $egg = json_decode($json, true);
@@ -206,13 +199,12 @@
         $i = 0;
         $z = 0;
         foreach ($egg as $e => $egg) {
-            $eggImage = $egg['image_name'];
             $eggLevel = $egg['level'];
-            $eggType = $egg['type'];
+            $eggHatched = $egg['type'] === '2' ? true : false;
             if (! in_array($e, $raideggToExclude)) {
                 echo '<span class="raidegg-icon-sprite" data-value="' . $e . '" onclick="' . $onClick . '">
                 <span style="display:none" class="level">' . $eggLevel . '</span>
-                <img loading="lazy" src="static/raids/egg_' . $eggImage . '.png"/>';
+                <img loading="lazy" src="' . getIcon($iconFolderArray['raid'], 'raid/', '.png', $eggLevel, $eggHatched) . '"/>';
                 if (! $noRaideggNumbers) {
                     echo '<span class="raidegg-number">' . $eggLevel . '</span>';
                 }

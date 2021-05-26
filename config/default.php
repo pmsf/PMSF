@@ -376,15 +376,23 @@ $notifyNotification = 'true';                                  // true/false
 $noDarkMode = false;
 
 $copyrightSafe = true;
-$noCostumeIcons = true;                                        // Set to true if you $iconRepository doesnt support costume icons. true/false
-$iconRepository = 'https://raw.githubusercontent.com/whitewillem/PogoAssets/resized/icons_large/';
-$noMultipleRepos = true;
-$iconRepos = [["Standard","$iconRepository"]];
-
-/* Custom Tileserver. Only tested with https://github.com/123FLO321/SwiftTileserverCache */
-
-$noCustomTileServer = true;                                         // Enable/Disable Custom TileServer
-$customTileServerAddress = "";                                      // TileServer URL: http://ipAddress:port/tile/klokantech-basic/{z}/{x}/{y}/1/png
+$iconFolderArray = [                                           // Default Icon repo to be used
+    'gym' => [
+        'Ingame' => 'static/sprites/gym/ingame/',
+        'Rocketmap' => 'static/sprites/gym/rocketmap/',
+        'Shield' => 'static/sprites/gym/shield/',
+        'Comic' => 'static/sprites/gym/comic/'
+    ],
+    'invasion' => 'static/sprites/',
+    'misc' => 'static/sprites/',
+    'pokemon' => 'static/sprites/',                            // String or Array of multiple icon sets
+    'pokestop' => 'static/sprites/',
+    'raid' => 'static/sprites/',
+    'reward' => 'static/sprites/',
+    'team' => 'static/sprites/',
+    'type' => 'static/sprites/',
+    'weather' => 'static/sprites/'
+];
 
 $noMapStyle = false;                                           // true/false
 $mapStyle = 'openstreetmap';                                   // Set default Map Style
@@ -485,9 +493,6 @@ $noIconSize = false;                                           // true/false
 $iconSize = 0;                                                 // -8, 0, 10, 20
 
 $noIconNotifySizeModifier = false;                             // true/false | Increase size of notified Pokemon
-
-$noGymStyle = false;                                           // true/false
-$gymStyle = 'ingame';                                          // ingame, shield
 
 $noLocationStyle = false;                                      // true/false
 $locationStyle = 'none';                                       // none, google, red, red_animated, blue, blue_animated, yellow, yellow_animated, pokesition, pokeball

@@ -395,16 +395,23 @@ $notifyNotification = 'true';
 /* Style Settings */
 
 $copyrightSafe = true;
-$noCostumeIcons = true;                                                              // Set to true if you $iconRepository doesnt support costume icons.
-$iconRepository = '';                                                                // URLs or folder paths are allowed
-$noMultipleRepos = true;                                                             // To enable Multiple icon packs:
-                                                                                     // Each iconpack needs to be in a seperate folder
-                                                                                     // For menu icons, $iconRepository is used always (if $copyrightSafe = false)
-$iconRepos = [["Standard","$iconRepository"],                                        // Multiple Repos in here with the format ["Name","Link_To_Icons"] - Link can be a relative path for an iconfolder or a Link to a Repo.
-              ["Some Icon Pack","path/to/iconpack/"],                                // Example for a pack located on your server at static/icons/pack01/, named "Some Icon Pack" in the Frontend
-              ["Some Other Iconpack","https://website.com/sub/folder/"],             // Example for a pack located on a website
-              ["Another Iconpack","https://AnotherURL.com/some/other/subfolders/"]]; // You May add different iconPacks here so mapusers can switch between them
-
+$iconFolderArray = [                                           // Default Icon repo to be used
+    'gym' => [
+        'Ingame' => 'static/sprites/gym/ingame/',
+        'Rocketmap' => 'static/sprites/gym/rocketmap/',
+        'Shield' => 'static/sprites/gym/shield/',
+        'Comic' => 'static/sprites/gym/comic/'
+    ],
+    'invasion' => 'static/sprites/',
+    'misc' => 'static/sprites/',
+    'pokemon' => 'static/sprites/',                            // String or Array of multiple icon sets
+    'pokestop' => 'static/sprites/',
+    'raid' => 'static/sprites/',
+    'reward' => 'static/sprites/',
+    'team' => 'static/sprites/',
+    'type' => 'static/sprites/',
+    'weather' => 'static/sprites/'
+];
 $noMapStyle = false;
 $mapStyle = 'openstreetmap';                                                         // openstreetmap, darkmatter, styleblackandwhite, styletopo, stylesatellite
 
@@ -415,9 +422,6 @@ $noIconSize = false;
 $iconSize = 0;                                                                       // -8, 0, 10, 20
 
 $noIconNotifySizeModifier = false;                                                   // Increase size of notified Pokemon
-
-$noGymStyle = false;
-$gymStyle = 'ingame';                                                                // ingame, shield, rocketmap, comic
 
 $noLocationStyle = false;
 $locationStyle = 'none';                                                             // none, google, red, red_animated, blue, blue_animated, yellow, yellow_animated, pokesition, pokeball
