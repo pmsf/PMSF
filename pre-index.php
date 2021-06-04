@@ -1090,13 +1090,13 @@ if (strtolower($map) === "rdm") {
                                         <?php }
                                         if (! $copyrightSafe && is_array($iconFolderArray['pokemon']) && (sizeof($iconFolderArray['pokemon']) > 0)) { ?>
                                             <div class="form-floating">
-                                                <select class="form-select" aria-label="icon-style" name="icon-style" id="icon-style">
+                                                <select class="form-select" aria-label="pokemon-icon-style" name="pokemon-icon-style" id="pokemon-icon-style">
                                                     <?php
                                                     foreach ($iconFolderArray['pokemon'] as $name => $repo) {
                                                         echo '<option value="' . $repo . '">' . $name . '</option>';
                                                     } ?>
                                                 </select>
-                                                <label for="icon-style"><?php echo i8ln('Icon Style') ?></label>
+                                                <label for="pokemon-icon-style"><?php echo i8ln('Pokemon Icon Style') ?></label>
                                             </div>
                                         <?php }
                                         if (! $noIconSize) { ?>
@@ -1107,7 +1107,18 @@ if (strtolower($map) === "rdm") {
                                                     <option value="10"><?php echo i8ln('Large') ?></option>
                                                     <option value="20"><?php echo i8ln('X-Large') ?></option>
                                                 </select>
-                                                <label for="pokemon-icon-size"><?php echo i8ln('Icon Size') ?></label>
+                                                <label for="pokemon-icon-size"><?php echo i8ln('Pokemon Markericon Size') ?></label>
+                                            </div>
+                                        <?php }
+                                        if (! $copyrightSafe && is_array($iconFolderArray['reward']) && (sizeof($iconFolderArray['reward']) > 0)) { ?>
+                                            <div class="form-floating">
+                                                <select class="form-select" aria-label="reward-icon-style" name="reward-icon-style" id="reward-icon-style">
+                                                    <?php
+                                                    foreach ($iconFolderArray['reward'] as $name => $repo) {
+                                                        echo '<option value="' . $repo . '">' . $name . '</option>';
+                                                    } ?>
+                                                </select>
+                                                <label for="reward-icon-style"><?php echo i8ln('Reward Icon Style') ?></label>
                                             </div>
                                         <?php }
                                         if (! $noIconNotifySizeModifier) { ?>
