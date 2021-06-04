@@ -5070,16 +5070,29 @@ function processGyms(i, item) {
                 }
             }
         }
+        // Remove Raid eggs if only active
+        if (!noActiveRaids && Store.get('activeRaids') && item.raid_end > Date.now()) {
+            if (((item.raid_pokemon_id === undefined) || (item.raid_pokemon_id === null)) && item.raid_start > Date.now()) {
+                item.raid_end = 0
+                item.raid_level = item.raid_pokemon_cp = item.raid_pokemon_id = item.raid_pokemon_move_1 = item.raid_pokemon_move_1 = item.raid_pokemon_name = null
+            }
+        }
+        // Remove Raids if min max level
+        if (!noMinMaxRaidLevel) {
+            if((raidLevel < Store.get('minRaidLevel') && item.raid_end > Date.now()) || (raidLevel > Store.get('maxRaidLevel') && item.raid_end > Date.now())) {
+                item.raid_end = 0
+                item.raid_level = item.raid_pokemon_cp = item.raid_pokemon_id = item.raid_pokemon_move_1 = item.raid_pokemon_move_1 = item.raid_pokemon_name = null
+            }
+        }
     }
-
-    if (!noActiveRaids && Store.get('activeRaids') && item.raid_end > Date.now()) {
-        if ((item.raid_pokemon_id === undefined) || (item.raid_pokemon_id === null)) {
+    if (!Store.get('showGyms') && !noActiveRaids && Store.get('activeRaids') && item.raid_end > Date.now()) {
+        if (((item.raid_pokemon_id === undefined) || (item.raid_pokemon_id === null)) && item.raid_start > Date.now()) {
             removeGymFromMap(item['gym_id'])
             return true
         }
     }
 
-    if (!noMinMaxRaidLevel) {
+    if (!Store.get('showGyms') && !noMinMaxRaidLevel) {
         if (raidLevel < Store.get('minRaidLevel') && item.raid_end > Date.now()) {
             removeGymFromMap(item['gym_id'])
             return true
