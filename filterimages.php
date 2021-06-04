@@ -38,9 +38,9 @@
                 <span style="display:none" class="genname">' . $genName . '</span>
                 <span style="display:none" class="forms">' . $form . '</span>';
                 if (! $copyrightSafe) {
-                    echo "<img loading='lazy' src='" . getIcon($iconFolderArray['pokemon'], 'pokemon/', '.png', $k) . "'/>";
+                    echo "<img class='pkmnfilter' data-pkmnid='" . $k . "' loading='lazy' src='" . getIcon($iconFolderArray['pokemon'], 'pokemon/', '.png', $k) . "'/>";
                 } else {
-                    echo "<img loading='lazy' src='static/icons-safe/pokemon_icon_" . $id . "_00.png'/>";
+                    echo "<img loading='lazy' src='static/sprites/pokemon/" . $id . ".png'/>";
                 }
                 if (! $noPokemonNumbers) {
                     echo "<span class='pokemon-number'>" . $k . "</span>";
@@ -85,9 +85,9 @@
                 <span style="display:none" class="name">' . i8ln($name) . '</span>
                 <span style="display:none" class="id">' . $k . '</span>';
                 if (! $copyrightSafe) {
-                    echo '<img loading="lazy" src="' . getIcon($iconFolderArray['reward'], 'reward/mega_resource/', '.png', $k) . '"/>';
+                    echo "<img class='rewardfilter' data-megaid='" . $k . "' data-type='mega_resource' loading='lazy' src='" . getIcon($iconFolderArray['reward'], 'reward/mega_resource/', '.png', $k) . "'/>";
                 } else {
-                    echo '<img loading="lazy" src="static/icons-safe/pokemon_icon_' . $k . '_00.png"/>';
+                    echo '<img loading="lazy" src="static/sprites/pokemon/' . $k . '.png"/>';
                 }
                 if (! $noPokemonNumbers) {
                     echo "<span class='pokemon-number'>" . $k . "</span>";
@@ -125,7 +125,7 @@
                     echo '<span class="item-icon-sprite" data-value="' . $k . '" onclick="' . $onClick . '">
                     <span style="display:none" class="name">' . i8ln($name) . '</span>
                     <span style="display:none" class="id">' . $k . '</span>
-                    <img loading="lazy" src="' . getIcon($iconFolderArray['reward'], 'reward/item/', '.png', $k) . '"/>';
+                    <img class="rewardfilter" data-itemid="' . $k . '" data-type="item" loading="lazy" src="' . getIcon($iconFolderArray['reward'], 'reward/item/', '.png', $k) . '"/>';
                 } else {
                     echo '<span class="item-icon-sprite" data-value="' . $k . '" onclick="' . $onClick . '">
                     <span style="display:none" class="name">' . i8ln($name) . '</span>

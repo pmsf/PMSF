@@ -22,6 +22,7 @@ var $excludeGrunts
 var $excludeRaidboss
 var $excludeRaidegg
 var $selectIconStyle
+var $selectRewardIconStyle
 
 var language = document.documentElement.lang === '' ? 'en' : document.documentElement.lang
 var languageSite = 'en'
@@ -5069,16 +5070,29 @@ function processGyms(i, item) {
                 }
             }
         }
+        // Remove Raid eggs if only active
+        if (!noActiveRaids && Store.get('activeRaids') && item.raid_end > Date.now()) {
+            if (((item.raid_pokemon_id === undefined) || (item.raid_pokemon_id === null)) && item.raid_start > Date.now()) {
+                item.raid_end = 0
+                item.raid_level = item.raid_pokemon_cp = item.raid_pokemon_id = item.raid_pokemon_move_1 = item.raid_pokemon_move_1 = item.raid_pokemon_name = null
+            }
+        }
+        // Remove Raids if min max level
+        if (!noMinMaxRaidLevel) {
+            if ((raidLevel < Store.get('minRaidLevel') && item.raid_end > Date.now()) || (raidLevel > Store.get('maxRaidLevel') && item.raid_end > Date.now())) {
+                item.raid_end = 0
+                item.raid_level = item.raid_pokemon_cp = item.raid_pokemon_id = item.raid_pokemon_move_1 = item.raid_pokemon_move_1 = item.raid_pokemon_name = null
+            }
+        }
     }
-
-    if (!noActiveRaids && Store.get('activeRaids') && item.raid_end > Date.now()) {
-        if ((item.raid_pokemon_id === undefined) || (item.raid_pokemon_id === null)) {
+    if (!Store.get('showGyms') && !noActiveRaids && Store.get('activeRaids') && item.raid_end > Date.now()) {
+        if (((item.raid_pokemon_id === undefined) || (item.raid_pokemon_id === null)) && item.raid_start > Date.now()) {
             removeGymFromMap(item['gym_id'])
             return true
         }
     }
 
-    if (!noMinMaxRaidLevel) {
+    if (!Store.get('showGyms') && !noMinMaxRaidLevel) {
         if (raidLevel < Store.get('minRaidLevel') && item.raid_end > Date.now()) {
             removeGymFromMap(item['gym_id'])
             return true
@@ -6146,6 +6160,10 @@ $(function () {
         iconFolderArray['pokemon'] = iconFolderArray['pokemon'][Object.keys(iconFolderArray['pokemon'])[0]]
         Store.set('icons', iconFolderArray)
     }
+    if (Object.prototype.toString.call(Store.get('icons').reward) === '[object Object]' || Store.get('icons').reward === '') {
+        iconFolderArray['reward'] = iconFolderArray['reward'][Object.keys(iconFolderArray['reward'])[0]]
+        Store.set('icons', iconFolderArray)
+    }
     iconpath = Store.get('icons')
     $.each(iconpath, function (key, val) {
         var prefix = key
@@ -6173,14 +6191,20 @@ $(function () {
     })
     $selectGymMarkerStyle.val(Store.get('icons').gym).trigger('change')
 
-    $selectIconStyle = $('#icon-style')
+    $selectIconStyle = $('#pokemon-icon-style')
     $selectIconStyle.on('change', function (e) {
         var pokeIconSet = Store.get('icons')
         pokeIconSet.pokemon = this.value
-        $.getJSON(this.value + 'pokemon' + '/index.json', function (data) {
-            iconpath['pokemonIndex'] = data
+        $.ajax({
+            cache: false,
+            url: this.value + 'pokemon' + '/index.json',
+            dataType: 'json',
+            success: function (data) {
+                iconpath['pokemonIndex'] = data
+            }
         }).done(function () {
             Store.set('icons', iconpath)
+            updateIcons('pkmn')
         })
         Store.set('icons', pokeIconSet)
         iconpath = Store.get('icons')
@@ -6189,6 +6213,28 @@ $(function () {
         updatePokestopIcons()
     })
     $selectIconStyle.val(Store.get('icons').pokemon).trigger('change')
+
+    $selectRewardIconStyle = $('#reward-icon-style')
+    $selectRewardIconStyle.on('change', function (e) {
+        var rewardIconSet = Store.get('icons')
+        rewardIconSet.reward = this.value
+        $.ajax({
+            cache: false,
+            url: this.value + 'reward' + '/index.json',
+            dataType: 'json',
+            success: function (data) {
+                iconpath['rewardIndex'] = data
+            }
+        }).done(function () {
+            Store.set('icons', iconpath)
+            updateIcons('reward')
+        })
+        Store.set('icons', rewardIconSet)
+        iconpath = Store.get('icons')
+        updatePokestopIcons()
+    })
+    $selectRewardIconStyle.val(Store.get('icons').reward).trigger('change')
+
     pokemonSpritesFilter()
     itemSpritesFilter()
     energySpritesFilter()
@@ -7237,7 +7283,39 @@ function getIcon(iconRepo, folder, fileType, iconKeyId, ...varArgs) {
     }
     return iconRepo + folder + '/' + icon
 }
-
+function updateIcons(iconset) {
+    switch (iconset) {
+        case 'pkmn':
+            $('.pkmnfilter').each(function () {
+                var currentImg = $(this).attr('src')
+                var newImg = getIcon(iconpath.pokemon, 'pokemon', '.png', $(this).data('pkmnid'))
+                if (currentImg !== newImg) {
+                    $(this).attr('src', newImg)
+                }
+            })
+            break
+        case 'reward':
+            $('.rewardfilter').each(function () {
+                switch ($(this).data('type')) {
+                    case 'mega_resource':
+                        let currentMegaImg = $(this).attr('src')
+                        let newMegaImg = getIcon(iconpath.reward, 'reward/mega_resource', '.png', $(this).data('megaid'))
+                        if (currentMegaImg !== newMegaImg) {
+                            $(this).attr('src', newMegaImg)
+                        }
+                        break
+                    case 'item':
+                        let currentItemImg = $(this).attr('src')
+                        let newItemImg = getIcon(iconpath.reward, 'reward/item', '.png', $(this).data('itemid'))
+                        if (currentItemImg !== newItemImg) {
+                            $(this).attr('src', newItemImg)
+                        }
+                        break
+                }
+            })
+            break
+    }
+}
 function download(filename, text) { // eslint-disable-line no-unused-vars
     var element = document.createElement('a')
     element.setAttribute('href', 'data:text/plain;charset=utf-8,' + encodeURIComponent(text))
