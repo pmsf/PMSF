@@ -5079,7 +5079,7 @@ function processGyms(i, item) {
         }
         // Remove Raids if min max level
         if (!noMinMaxRaidLevel) {
-            if((raidLevel < Store.get('minRaidLevel') && item.raid_end > Date.now()) || (raidLevel > Store.get('maxRaidLevel') && item.raid_end > Date.now())) {
+            if ((raidLevel < Store.get('minRaidLevel') && item.raid_end > Date.now()) || (raidLevel > Store.get('maxRaidLevel') && item.raid_end > Date.now())) {
                 item.raid_end = 0
                 item.raid_level = item.raid_pokemon_cp = item.raid_pokemon_id = item.raid_pokemon_move_1 = item.raid_pokemon_move_1 = item.raid_pokemon_name = null
             }
