@@ -207,7 +207,8 @@ class Manual
         name,
         url,
         updated,
-        imported
+        imported,
+        checked
         FROM ingress_portals
         WHERE :conditions";
         $query = str_replace(":conditions", join(" AND ", $conds), $query);

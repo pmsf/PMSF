@@ -118,84 +118,81 @@ if ($_GET['action'] == 'update') {
         echo '<link rel="stylesheet" href="static/css/custom.css?' . time() . '">';
     } ?>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jqueryui/1.12.0/jquery-ui.min.css">
-    <link rel="stylesheet" href="https://cdn.datatables.net/1.10.12/css/jquery.dataTables.css">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
-    <script src="static/js/vendor/modernizr.custom.js"></script>
-    <!-- Toastr -->
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.css">
 </head>
 <body>
     <h2><? $title ?> <?php echo i8ln('Login'); ?></h2>
     <div id="login-force" class="force-modal">
         <?php
-        if ($_GET['action'] == 'account') {
-            $html = '<form class="force-modal-content animate" action="/register?action=new" method="post">';
+        if ($_GET['action'] == 'account') { ?>
+            <form class="force-modal-content animate" action="/register?action=new" method="post">
+                <?php
                 if (!empty($_GET['error'])) {
                     switch ($_GET['error']) {
                         case 'error-id':
-                            $html .= "<div id='register-error'>" . i8ln('Something went wrong giving your account a numeric id. Please contact your admin') . "</div>";
+                            echo '<div id="register-error">' . i8ln('Something went wrong giving your account a numeric id. Please contact your admin') . '</div>';
                             break;
                         case 'duplicate':
-                            $html .= "<div id='register-error'>" . i8ln('It looks like we already have a account registered on this email address') . " <a href='/register?action=password-reset'>" . i8ln('Reset password') . "</a></div>";
+                            echo '<div id="register-error">' . i8ln('It looks like we already have a account registered on this email address') . ' <a href="/register?action=password-reset">' . i8ln('Reset password') . '</a></div>';
                             break;
                     }
-                }
-                $html .= '<div class="imgcontainer">
-                    <i class="fas fa-user" style="font-size:80px"></i>
-                </div>
-                <div class="force-container">
-                    <label for="uname"><b>' . i8ln('Email address') . '</b></label>
-                    <input type="email" placeholder="' . i8ln('Enter email address') . '" name="uname" required>
-
-                    <label for="psw"><b>' . i8ln('Password') . '</b></label>
-                    <input type="password" id="psw" name="psw" pattern="(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{8,}" title="' . i8ln('Must contain at least one number, one uppercase, lowercase letter, and at least 8 or more characters') . '" required>
-
-                    <label for="repsw"><b>' . i8ln('Retype Password') . '</b></label>
-                    <input type="password" id="repsw" name="repsw" placeholder="' . i8ln('Enter Password') . '" required>
-
-                    <span id="validity"></span>
-                    <button type="submit" class="force-button" disabled>' . i8ln('Register') . '</button>
-                </div>
-            </form>';
-            echo $html;
-        }
-        if ($_GET['action'] == 'password-reset') {
-            $html = '<form class="force-modal-content animate" action="/register?action=reset" method="post">
+                } ?>
                 <div class="imgcontainer">
                     <i class="fas fa-user" style="font-size:80px"></i>
                 </div>
                 <div class="force-container">
-                    <label for="uname"><b>' . i8ln('Email address') . '</b></label>
-                    <input type="email" placeholder="' . i8ln('Enter Email address') . '" name="uname" required>
+                    <label for="uname"><b><?php echo i8ln('Email address'); ?></b></label>
+                    <input type="email" placeholder="<?php echo i8ln('Enter email address'); ?>" name="uname" required>
 
-                    <button type="submit" class="force-button">' . i8ln('Reset password') . '</button>
+                    <label for="psw"><b><?php echo i8ln('Password'); ?></b></label>
+                    <input type="password" id="psw" name="psw" pattern="(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{8,}" title="<?php echo i8ln('Must contain at least one number, one uppercase, lowercase letter, and at least 8 or more characters'); ?>" required>
+
+                    <label for="repsw"><b><?php echo i8ln('Retype Password'); ?></b></label>
+                    <input type="password" id="repsw" name="repsw" placeholder="<?php echo i8ln('Enter Password'); ?>" required>
+
+                    <span id="validity"></span>
+                    <button type="submit" class="force-button" disabled><?php echo i8ln('Register'); ?></button>
                 </div>
-            </form>';
-            echo $html;
+            </form>
+            <?php
         }
-        if ($_GET['action'] == 'password-update') {
-            $html = '<form class="force-modal-content animate" action="/register?action=update" method="post">
+        if ($_GET['action'] == 'password-reset') { ?>
+            <form class="force-modal-content animate" action="/register?action=reset" method="post">
                 <div class="imgcontainer">
                     <i class="fas fa-user" style="font-size:80px"></i>
                 </div>
                 <div class="force-container">
-                    <label for="uname"><b>' . i8ln('Email address') . '</b></label>
-                    <input type="text" id="uname" name="uname" value="' . $_GET['username'] . '" readonly>
+                    <label for="uname"><b><?php echo i8ln('Email address'); ?></b></label>
+                    <input type="email" placeholder="<?php echo i8ln('Enter Email address'); ?>" name="uname" required>
 
-                    <label for="prepsw"><b>' . i8ln('Password') . '</b></label>
-                    <input type="password" id="prepsw" name="prepsw" placeholder="' . i8ln('Enter Password') . '" required>
+                    <button type="submit" class="force-button"><?php echo i8ln('Reset password'); ?></button>
+                </div>
+            </form>
+            <?php
+        }
+        if ($_GET['action'] == 'password-update') { ?>
+            <form class="force-modal-content animate" action="/register?action=update" method="post">
+                <div class="imgcontainer">
+                    <i class="fas fa-user" style="font-size:80px"></i>
+                </div>
+                <div class="force-container">
+                    <label for="uname"><b><?php echo i8ln('Email address'); ?></b></label>
+                    <input type="text" id="uname" name="uname" value="<?php echo $_GET['username']; ?>" readonly>
 
-                    <label for="psw"><b>' . i8ln('New Password') . '</b></label>
-                    <input type="password" id="psw" name="psw" pattern="(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{8,}" title="' . i8ln('Must contain at least one number and one uppercase and lowercase letter, and at least 8 or more characters') . '" required>
+                    <label for="prepsw"><b><?php echo i8ln('Password'); ?></b></label>
+                    <input type="password" id="prepsw" name="prepsw" placeholder="<?php echo i8ln('Enter Password'); ?>" required>
 
-                    <label for="repsw"><b>' . i8ln('Retype New Password') . '</b></label>
-                    <input type="password" id="repsw" name="repsw" placeholder="' . i8ln('Enter Password') . '" required>
+                    <label for="psw"><b><?php echo i8ln('New Password'); ?></b></label>
+                    <input type="password" id="psw" name="psw" pattern="(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{8,}" title="<?php echo i8ln('Must contain at least one number and one uppercase and lowercase letter, and at least 8 or more characters'); ?>" required>
+
+                    <label for="repsw"><b><?php echo i8ln('Retype New Password'); ?></b></label>
+                    <input type="password" id="repsw" name="repsw" placeholder="<?php echo i8ln('Enter Password'); ?>" required>
 
                     <span id="validity"></span>
-                    <button type="submit" class="force-button">' . i8ln('Update password') . '</button>
+                    <button type="submit" class="force-button"><?php echo i8ln('Update password'); ?></button>
                 </div>
-            </form>';
-            echo $html;
+            </form>
+            <?php
         } ?>
     </div>
 

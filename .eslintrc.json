@@ -36,9 +36,8 @@
   },
   "globals": {
     "toastr": true,
+    "toastDelay": true,
     "google": true,
-    "gmapsKey": true,
-    "mBoxKey": true,
     "mapData": true,
     "Store": true,
     "centerLat": true,
@@ -77,6 +76,7 @@
     "pGoStyleNight": true,
     "moment": false,
     "mapStyle": true,
+    "mapStyleList": true,
     "directionProvider": true,
     "hidePokemon": true,
     "excludeMinIV": true,
@@ -200,8 +200,6 @@
     "numberOfItem": true,
     "numberOfGrunt": true,
     "numberOfEgg": true,
-    "customTileServerAddress": true,
-    "noCustomTileServer": true,
     "forcedTileServer": true,
     "hideRaidboss": true,
     "hideRaidegg": true,
@@ -221,6 +219,7 @@
     "nestAvgDefault": true,
     "noHideSingleMarker": true,
     "noNestPolygon": true,
-    "nestBotName": true
+    "nestBotName": true,
+    "bootstrap": true
   }
 }
