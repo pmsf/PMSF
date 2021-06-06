@@ -353,10 +353,10 @@ function processPokemonStats(i, item) { // eslint-disable-line no-unused-vars
     var typeDisplay = ''
 
     $.each(types, function (index, type) {
+        typeDisplay += '<nobr>' + i8ln(type['type']) + ' <img src="' + getIcon(iconpath.type, 'type', '.png', getKeyByValue(pokemonTypes, type.type)) + '" style="width:18px;"></nobr>'
         if (index === 0) {
             typeDisplay += '<br>'
         }
-        typeDisplay += '<nobr>' + i8ln(type['type']) + ' <img src="' + getIcon(iconpath.type, 'type', '.png', getKeyByValue(pokemonTypes, type.type)) + '" style="width:18px;"></nobr>'
     })
 
     pokemonTable.row.add([
