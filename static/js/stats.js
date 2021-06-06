@@ -314,3 +314,107 @@ function countMarkers(map) { // eslint-disable-line no-unused-vars
     }
     $('#loadingSpinner').hide()
 }
+
+function processOverviewStats(i, item) {
+    $('h4.pokemon-count').html(item['pokemon_count'])
+    $('h4.gym-count').html(item['gym_count'])
+    $('h4.raid-count').html(item['raid_count'])
+    $('h4.pokestop-count').html(item['pokestop_count'])
+}
+
+function processTeamStats(i, item) {
+    $('h4.neutral-count').html(item['neutral_count'])
+    $('h4.mystic-count').html(item['mystic_count'])
+    $('h4.valor-count').html(item['valor_count'])
+    $('h4.instinct-count').html(item['instinct_count'])
+}
+
+function processPokestopStats(i, item) {
+    $('h4.quest-count').html(item['quest'])
+    $('h4.rocket-count').html(item['rocket'])
+    $('h4.normal-lure-count').html(item['normal_lure'])
+    $('h4.glacial-lure-count').html(item['glacial_lure'])
+    $('h4.mossy-lure-count').html(item['mossy_lure'])
+    $('h4.magnetic-lure-count').html(item['magnetic_lure'])
+    $('h4.rainy-lure-count').html(item['rainy_lure'])
+}
+
+function processSpawnpointStats(i, item) {
+    $('h4.spawnpoint-total').html(item['total'])
+    $('h4.spawnpoint-found').html(item['found'])
+    $('h4.spawnpoint-missing').html(item['missing'])
+}
+function processPokemonStats(i, item) {
+    var id = item['pokemon_id']
+    var pokemon = '<img src="' + getIcon(iconpath.pokemon, 'pokemon', '.png', id, 0, item['form'], item['costume']) + '" style="width:40px;"><span style="display:none">' + item['name'] + '</span>'
+
+    var types = item['pokemon_types']
+    var typeDisplay = ''
+
+    $.each(types, function (index, type) {
+        if (index === 0) {
+            typeDisplay += '<nobr>' + i8ln(type['type']) + ' <img src="' + getIcon(iconpath.type, 'type', '.png', getKeyByValue(pokemonTypes, type.type)) + '" style="width:18px;"></nobr><br>'
+        } else {
+            typeDisplay += '<nobr>' + i8ln(type['type']) + ' <img src="' + getIcon(iconpath.type, 'type', '.png', getKeyByValue(pokemonTypes, type.type)) + '" style="width:18px;"></nobr>'
+        }
+    })
+
+    pokemonTable.row.add([
+        item['pokemon_id'],
+        pokemon,
+        typeDisplay,
+        item['count'],
+        item['percentage']
+    ])
+}
+function processRewardStats(i, item) {
+    if (item['quest_pokemon_id'] <= 9) {
+        item['quest_pokemon_id'] = '00' + item['quest_pokemon_id']
+    } else if (item['quest_pokemon_id'] <= 99) {
+        item['quest_pokemon_id'] = '0' + item['quest_pokemon_id']
+    }
+    if (item['quest_pokemon_form'] <= 0) {
+        item['quest_pokemon_form'] = '00'
+    }
+    var reward = ''
+    var type = ''
+    var hiddenName = '<span style="display: none;">' + item['name'] + '</span>'
+
+    if (item['quest_reward_type'] === 12 && item['quest_energy_pokemon_id'] > 0) {
+        reward = '<img src="' + getIcon(iconpath.reward, 'reward/mega_resource', '.png', item['quest_energy_pokemon_id']) + '" style="width:40px;">' +
+        hiddenName
+        type = i8ln('Mega Energy')
+    } else if (item['quest_reward_type'] === 7 && item['quest_pokemon_id'] > 0) {
+        reward = '<img src="' + getIcon(iconpath.pokemon, 'pokemon', '.png', item['quest_pokemon_id'], 0, item['quest_pokemon_form']) + '" style="width:40px;">' +
+        hiddenName
+        type = i8ln('Pokémon')
+    } else if (item['quest_reward_type'] === 2 && item['quest_item_id'] > 0) {
+        reward = '<img src="' + getIcon(iconpath.reward, 'reward/item', '.png', item['quest_item_id'], item['quest_reward_amount']) + '" style="width:40px;">' +
+        '<br>' + item['name']
+        type = i8ln('Item')
+    } else if (item['quest_reward_type'] === 3) {
+        reward = '<img src="' + getIcon(iconpath.reward, 'reward/stardust', '.png', item['quest_dust_amount']) + '" style="width:40px;">' +
+        hiddenName
+        type = i8ln('Stardust')
+    }
+
+    rewardTable.row.add([
+        type,
+        reward,
+        item['count'],
+        item['percentage']
+    ])
+}
+function processShinyStats(i, item) {
+    var hiddenName = '<span style="display: none;">' + item['name'] + '</span>'
+    var pokemon = '<img src="' + getIcon(iconpath.pokemon, 'pokemon', '.png', item['pokemon_id'], 0, item['form'], item['costume']) + '" style="width:40px;">' +
+    hiddenName
+    var rate = item['rate'] + '<br>(' + item['percentage'] + ')'
+
+    shinyTable.row.add([
+        pokemon,
+        item['shiny_count'],
+        rate,
+        item['sample_size']
+    ])
+}
