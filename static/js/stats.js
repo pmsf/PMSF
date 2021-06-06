@@ -315,21 +315,21 @@ function countMarkers(map) { // eslint-disable-line no-unused-vars
     $('#loadingSpinner').hide()
 }
 
-function processOverviewStats(i, item) {
+function processOverviewStats(i, item) { // eslint-disable-line no-unused-vars
     $('h4.pokemon-count').html(item['pokemon_count'])
     $('h4.gym-count').html(item['gym_count'])
     $('h4.raid-count').html(item['raid_count'])
     $('h4.pokestop-count').html(item['pokestop_count'])
 }
 
-function processTeamStats(i, item) {
+function processTeamStats(i, item) { // eslint-disable-line no-unused-vars
     $('h4.neutral-count').html(item['neutral_count'])
     $('h4.mystic-count').html(item['mystic_count'])
     $('h4.valor-count').html(item['valor_count'])
     $('h4.instinct-count').html(item['instinct_count'])
 }
 
-function processPokestopStats(i, item) {
+function processPokestopStats(i, item) { // eslint-disable-line no-unused-vars
     $('h4.quest-count').html(item['quest'])
     $('h4.rocket-count').html(item['rocket'])
     $('h4.normal-lure-count').html(item['normal_lure'])
@@ -339,12 +339,13 @@ function processPokestopStats(i, item) {
     $('h4.rainy-lure-count').html(item['rainy_lure'])
 }
 
-function processSpawnpointStats(i, item) {
+function processSpawnpointStats(i, item) { // eslint-disable-line no-unused-vars
     $('h4.spawnpoint-total').html(item['total'])
     $('h4.spawnpoint-found').html(item['found'])
     $('h4.spawnpoint-missing').html(item['missing'])
 }
-function processPokemonStats(i, item) {
+
+function processPokemonStats(i, item) { // eslint-disable-line no-unused-vars
     var id = item['pokemon_id']
     var pokemon = '<img src="' + getIcon(iconpath.pokemon, 'pokemon', '.png', id, 0, item['form'], item['costume']) + '" style="width:40px;"><span style="display:none">' + item['name'] + '</span>'
 
@@ -353,10 +354,9 @@ function processPokemonStats(i, item) {
 
     $.each(types, function (index, type) {
         if (index === 0) {
-            typeDisplay += '<nobr>' + i8ln(type['type']) + ' <img src="' + getIcon(iconpath.type, 'type', '.png', getKeyByValue(pokemonTypes, type.type)) + '" style="width:18px;"></nobr><br>'
-        } else {
-            typeDisplay += '<nobr>' + i8ln(type['type']) + ' <img src="' + getIcon(iconpath.type, 'type', '.png', getKeyByValue(pokemonTypes, type.type)) + '" style="width:18px;"></nobr>'
+            typeDisplay += '<br>'
         }
+        typeDisplay += '<nobr>' + i8ln(type['type']) + ' <img src="' + getIcon(iconpath.type, 'type', '.png', getKeyByValue(pokemonTypes, type.type)) + '" style="width:18px;"></nobr>'
     })
 
     pokemonTable.row.add([
@@ -367,7 +367,8 @@ function processPokemonStats(i, item) {
         item['percentage']
     ])
 }
-function processRewardStats(i, item) {
+
+function processRewardStats(i, item) { // eslint-disable-line no-unused-vars
     if (item['quest_pokemon_id'] <= 9) {
         item['quest_pokemon_id'] = '00' + item['quest_pokemon_id']
     } else if (item['quest_pokemon_id'] <= 99) {
@@ -405,7 +406,8 @@ function processRewardStats(i, item) {
         item['percentage']
     ])
 }
-function processShinyStats(i, item) {
+
+function processShinyStats(i, item) { // eslint-disable-line no-unused-vars
     var hiddenName = '<span style="display: none;">' + item['name'] + '</span>'
     var pokemon = '<img src="' + getIcon(iconpath.pokemon, 'pokemon', '.png', item['pokemon_id'], 0, item['form'], item['costume']) + '" style="width:40px;">' +
     hiddenName

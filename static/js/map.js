@@ -5111,7 +5111,7 @@ function updateMap() {
             if ($('#rightNav.offcanvas').hasClass('show')) {
                 countMarkers(map)
             }
-            
+
             if ($('#statsModal').hasClass('show')) {
                 if ($('#nav-overview-stats-tab').hasClass('active')) {
                     $.each(result.overviewStats, processOverviewStats)

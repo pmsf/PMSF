@@ -226,6 +226,18 @@
     "noHideSingleMarker": true,
     "noNestPolygon": true,
     "nestBotName": true,
-    "bootstrap": true
+    "bootstrap": true,
+    "pokemonTable": true,
+    "rewardTable": true,
+    "shinyTable": true,
+    "getKeyByValue": true,
+    "pokemonTypes": true,
+    "processOverviewStats": true,
+    "processTeamStats": true,
+    "processPokestopStats": true,
+    "processSpawnpointStats": true,
+    "processPokemonStats": true,
+    "processRewardStats": true,
+    "processShinyStats": true
   }
 }
