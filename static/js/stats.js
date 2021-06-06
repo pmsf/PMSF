@@ -369,34 +369,31 @@ function processPokemonStats(i, item) { // eslint-disable-line no-unused-vars
 }
 
 function processRewardStats(i, item) { // eslint-disable-line no-unused-vars
-    if (item['quest_pokemon_id'] <= 9) {
-        item['quest_pokemon_id'] = '00' + item['quest_pokemon_id']
-    } else if (item['quest_pokemon_id'] <= 99) {
-        item['quest_pokemon_id'] = '0' + item['quest_pokemon_id']
-    }
-    if (item['quest_pokemon_form'] <= 0) {
-        item['quest_pokemon_form'] = '00'
-    }
     var reward = ''
     var type = ''
     var hiddenName = '<span style="display: none;">' + item['name'] + '</span>'
 
-    if (item['quest_reward_type'] === 12 && item['quest_energy_pokemon_id'] > 0) {
-        reward = '<img src="' + getIcon(iconpath.reward, 'reward/mega_resource', '.png', item['quest_energy_pokemon_id']) + '" style="width:40px;">' +
-        hiddenName
-        type = i8ln('Mega Energy')
-    } else if (item['quest_reward_type'] === 7 && item['quest_pokemon_id'] > 0) {
-        reward = '<img src="' + getIcon(iconpath.pokemon, 'pokemon', '.png', item['quest_pokemon_id'], 0, item['quest_pokemon_form']) + '" style="width:40px;">' +
-        hiddenName
-        type = i8ln('Pokémon')
-    } else if (item['quest_reward_type'] === 2 && item['quest_item_id'] > 0) {
-        reward = '<img src="' + getIcon(iconpath.reward, 'reward/item', '.png', item['quest_item_id'], item['quest_reward_amount']) + '" style="width:40px;">' +
-        '<br>' + item['name']
-        type = i8ln('Item')
-    } else if (item['quest_reward_type'] === 3) {
-        reward = '<img src="' + getIcon(iconpath.reward, 'reward/stardust', '.png', item['quest_dust_amount']) + '" style="width:40px;">' +
-        hiddenName
-        type = i8ln('Stardust')
+    switch (item['quest_reward_type']) {
+        case 2:
+            reward = '<img src="' + getIcon(iconpath.reward, 'reward/item', '.png', item['quest_item_id'], item['quest_reward_amount']) + '" style="width:40px;">' +
+            hiddenName
+            type = i8ln('Item')
+            break
+        case 3:
+            reward = '<img src="' + getIcon(iconpath.reward, 'reward/stardust', '.png', item['quest_dust_amount']) + '" style="width:40px;">' +
+            hiddenName
+            type = i8ln('Stardust')
+            break
+        case 7:
+            reward = '<img src="' + getIcon(iconpath.pokemon, 'pokemon', '.png', item['quest_pokemon_id'], 0, item['quest_pokemon_form']) + '" style="width:40px;">' +
+            hiddenName
+            type = i8ln('Pokémon')
+            break
+        case 12:
+            reward = '<img src="' + getIcon(iconpath.reward, 'reward/mega_resource', '.png', item['quest_energy_pokemon_id']) + '" style="width:40px;">' +
+            hiddenName
+            type = i8ln('Mega Energy')
+            break
     }
 
     rewardTable.row.add([

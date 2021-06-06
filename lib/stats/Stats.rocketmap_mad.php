@@ -235,13 +235,13 @@ class RocketMap_MAD extends Stats
         $questReward["percentage"] = round(100 / $total["total"] * $reward["count"], 3) . '%';
         $questReward["quest_reward_type"] = intval($reward["quest_reward_type"]);
         
-        if ($reward["quest_reward_type"] == 12 && $reward["quest_energy_pokemon_id"] > 0) {
+        if ($reward["quest_reward_type"] == 12) {
           $questReward["name"] = i8ln($this->data[$reward['quest_energy_pokemon_id']]["name"]);
           $questReward["quest_reward_amount"] = null;
-        } elseif ($reward["quest_reward_type"] == 7 && $reward["quest_pokemon_id"] > 0) {
+        } elseif ($reward["quest_reward_type"] == 7) {
           $questReward["name"] = i8ln($this->data[$reward['quest_pokemon_id']]["name"]);
           $questReward["quest_reward_amount"] = null;
-        } elseif ($reward["quest_reward_type"] == 2 && $reward["quest_item_id"] > 0) {
+        } elseif ($reward["quest_reward_type"] == 2) {
           $questReward["name"] = i8ln($this->items[$reward['quest_item_id']]["name"]);
           $questReward["quest_reward_amount"] = $reward["quest_item_amount"];
         } elseif ($reward["quest_reward_type"] == 3) {
