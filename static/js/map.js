@@ -1481,14 +1481,21 @@ function getReward(item) {
     } else {
         styleStr = 'position:absolute;height:35px;right:55%;top:85px;'
     }
-    if (item['quest_reward_type'] === 12) {
-        rewardImage = '<img style="' + styleStr + '" src="' + getIcon(iconpath.reward, 'reward/mega_resource', '.png', item['quest_energy_pokemon_id']) + '"/>'
-    } else if (item['quest_reward_type'] === 7) {
-        rewardImage = '<img style="' + styleStr + '" src="' + getIcon(iconpath.pokemon, 'pokemon', '.png', pokemonid, 0, formid, costumeid, shiny) + '"/>'
-    } else if (item['quest_reward_type'] === 3) {
-        rewardImage = '<img style="' + styleStr + '" src="' + getIcon(iconpath.reward, 'reward/stardust', '.png', item['quest_dust_amount']) + '"/>'
-    } else if (item['quest_reward_type'] === 2) {
-        rewardImage = '<img style="' + styleStr + '" src="' + getIcon(iconpath.reward, 'reward/item', '.png', item['quest_item_id'], item['quest_reward_amount']) + '"/>'
+    switch (item['quest_reward_type']) {
+        case 2:
+            rewardImage = '<img style="' + styleStr + '" src="' + getIcon(iconpath.reward, 'reward/item', '.png', item['quest_item_id'], item['quest_reward_amount']) + '"/>'
+            break
+        case 3:
+            rewardImage = '<img style="' + styleStr + '" src="' + getIcon(iconpath.reward, 'reward/stardust', '.png', item['quest_dust_amount']) + '"/>'
+            break
+        case 7:
+            rewardImage = '<img style="' + styleStr + '" src="' + getIcon(iconpath.pokemon, 'pokemon', '.png', pokemonid, 0, formid, costumeid, shiny) + '"/>'
+            break
+        case 12:
+            rewardImage = '<img style="' + styleStr + '" src="' + getIcon(iconpath.reward, 'reward/mega_resource', '.png', item['quest_energy_pokemon_id']) + '"/>'
+            break
+        default:
+            rewardImage = ''
     }
     return rewardImage
 }
@@ -2017,22 +2024,7 @@ function customizePokemonMarker(marker, item, skipNotification) {
     })
 
     var pokemonForm = item['form']
-    var formStr = ''
-    if (pokemonForm === '0' || pokemonForm === null || pokemonForm === 0) {
-        formStr = '00'
-    } else {
-        formStr = pokemonForm
-    }
-
     var pokemonId = item['pokemon_id']
-    var pokemonIdStr = ''
-    if (pokemonId <= 9) {
-        pokemonIdStr = '00' + pokemonId
-    } else if (pokemonId <= 99) {
-        pokemonIdStr = '0' + pokemonId
-    } else {
-        pokemonIdStr = pokemonId
-    }
 
     if (!marker.rangeCircle && isRangeActive(map)) {
         marker.rangeCircle = addRangeCircle(marker, map, 'pokemon')
@@ -2043,7 +2035,7 @@ function customizePokemonMarker(marker, item, skipNotification) {
     if (notifiedPokemon.indexOf(item['pokemon_id']) > -1 || notifiedRarity.indexOf(item['pokemon_rarity']) > -1) {
         if (!skipNotification) {
             checkAndCreateSound(item['pokemon_id'])
-            sendNotification(getNotifyText(item).fav_title, getNotifyText(item).fav_text, iconpath + 'pokemon_icon_' + pokemonIdStr + '_' + formStr + '.png', item['latitude'], item['longitude'])
+            sendNotification(getNotifyText(item).fav_title, getNotifyText(item).fav_text, getIcon(iconpath.pokemon, 'pokemon', '.png', pokemonId, 0, pokemonForm), item['latitude'], item['longitude'])
         }
         if (marker.animationDisabled !== true && Store.get('remember_bounce_notify')) {
             marker.bounce()
@@ -2055,7 +2047,7 @@ function customizePokemonMarker(marker, item, skipNotification) {
         if (notifiedMinPerfection > 0 && perfection >= notifiedMinPerfection) {
             if (!skipNotification) {
                 checkAndCreateSound(item['pokemon_id'])
-                sendNotification(getNotifyText(item).fav_title, getNotifyText(item).fav_text, iconpath + 'pokemon_icon_' + pokemonIdStr + '_' + formStr + '.png', item['latitude'], item['longitude'])
+                sendNotification(getNotifyText(item).fav_title, getNotifyText(item).fav_text, getIcon(iconpath.pokemon, 'pokemon', '.png', pokemonId, 0, pokemonForm), item['latitude'], item['longitude'])
             }
             if (marker.animationDisabled !== true && Store.get('remember_bounce_notify')) {
                 marker.bounce()
@@ -2068,7 +2060,7 @@ function customizePokemonMarker(marker, item, skipNotification) {
         if (notifiedMinLevel > 0 && level >= notifiedMinLevel) {
             if (!skipNotification) {
                 checkAndCreateSound(item['pokemon_id'])
-                sendNotification(getNotifyText(item).fav_title, getNotifyText(item).fav_text, iconpath + 'pokemon_icon_' + pokemonIdStr + '_' + formStr + '.png', item['latitude'], item['longitude'])
+                sendNotification(getNotifyText(item).fav_title, getNotifyText(item).fav_text, getIcon(iconpath.pokemon, 'pokemon', '.png', pokemonId, 0, pokemonForm), item['latitude'], item['longitude'])
             }
             if (marker.animationDisabled !== true && Store.get('remember_bounce_notify')) {
                 marker.bounce()
