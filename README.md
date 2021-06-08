@@ -23,7 +23,7 @@ It supports all the common database engines, including MySQL, MariaDB.
 ## Get Started
 * [Wiki](https://github.com/pmsf/PMSF/wiki).
 
-* Join our [Discord](https://discord.gg/yGujp8D) channel for more info about installation.
+* Join our [Discord](https://discord.gg/JAWztHdqeB) channel for more info about installation.
 
 ## Feature Requests
 [![Feature Requests](https://feathub.com/pmsf/PMSF?format=svg)](https://feathub.com/pmsf/PMSF)
@@ -31,7 +31,7 @@ It supports all the common database engines, including MySQL, MariaDB.
 ## Feedback
 * Create an issue if you have any bugs or improvements!
 
-* [Discord](https://discord.gg/yGujp8D) channel
+* [Discord](https://discord.gg/JAWztHdqeB) channel
 
 ## Thanks
 * Thanks [MAD](https://github.com/Map-A-Droid/MAD) for their Real android Device scanner.
