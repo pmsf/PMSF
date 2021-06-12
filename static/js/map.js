@@ -5719,7 +5719,6 @@ function pokemonRaidFilter(event) { // eslint-disable-line no-unused-vars
 }
 
 function pokemonSpritesFilter() {
-    loadDefaultImages()
     jQuery('.offcanvas-body.left .pokemon-list .pokemon-icon-sprite').on('click', function () {
         var img = jQuery(this)
         var select = jQuery(this).parent().parent().parent().find('.search-number')
@@ -5738,7 +5737,6 @@ function pokemonSpritesFilter() {
 }
 
 function energySpritesFilter() {
-    loadDefaultImages()
     jQuery('.offcanvas-body.left .energy-list .energy-icon-sprite').on('click', function () {
         var img = jQuery(this)
         var select = jQuery(this).parent().parent().parent().find('.search-number')
@@ -5757,7 +5755,6 @@ function energySpritesFilter() {
 }
 
 function itemSpritesFilter() {
-    loadDefaultImages()
     jQuery('.offcanvas-body.left .item-list .item-icon-sprite').on('click', function () {
         var img = jQuery(this)
         var select = jQuery(this).parent().parent().parent().find('.search-number')
@@ -5776,7 +5773,6 @@ function itemSpritesFilter() {
 }
 
 function gruntSpritesFilter() {
-    loadDefaultImages()
     jQuery('.offcanvas-body.left .grunt-list .grunt-icon-sprite').on('click', function () {
         var img = jQuery(this)
         var select = jQuery(this).parent().parent().parent().find('.search-number')
@@ -5795,7 +5791,6 @@ function gruntSpritesFilter() {
 }
 
 function raideggSpritesFilter() {
-    loadDefaultImages()
     jQuery('.offcanvas-body.left .raidegg-list .raidegg-icon-sprite').on('click', function () {
         var img = jQuery(this)
         var select = jQuery(this).parent().parent().parent().find('.search-number')
@@ -6040,6 +6035,7 @@ $(function () {
     })
     $selectRewardIconStyle.val(Store.get('icons').reward).trigger('change')
 
+    loadDefaultImages()
     pokemonSpritesFilter()
     itemSpritesFilter()
     energySpritesFilter()
