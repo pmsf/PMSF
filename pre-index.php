@@ -1220,7 +1220,7 @@ if (strtolower($map) === "rdm") {
         <div class="offcanvas-body right">
             <div class="card">
                 <div class="card-header">
-                    <?php echo i8ln(' Full Stats') ?>
+                    <?php echo i8ln('Full Stats') ?>
                 </div>
                 <div class="card-body">
                     <div class="d-grid gap-2">

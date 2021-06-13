@@ -3470,7 +3470,7 @@ function manualPokestopData(event) { // eslint-disable-line no-unused-vars
                     sendToast('danger', i8ln('Error Submitting Pokéstop'), i8ln('Could not submit Pokéstop.'), 'true')
                 },
                 complete: function complete() {
-                    sendToast('success', i8ln('Submitting Pokéstop'), pokestopName + i8ln(' successful submitted.'), 'true')
+                    sendToast('success', i8ln('Submitting Pokéstop'), pokestopName + ' ' + i8ln('successful submitted.'), 'true')
                     lastpokestops = false
                     updateMap()
                     $('.modal').modal('hide')
@@ -3517,7 +3517,7 @@ function manualGymData(event) { // eslint-disable-line no-unused-vars
                     sendToast('danger', i8ln('Error Submitting Gym'), i8ln('Could not submit Gym.'), 'true')
                 },
                 complete: function complete() {
-                    sendToast('danger', i8ln('Submitting Gym'), gymName + i8ln(' successful submitted.'), 'true')
+                    sendToast('danger', i8ln('Submitting Gym'), gymName + ' ' + i8ln('successful submitted.'), 'true')
                     lastgyms = false
                     updateMap()
                     $('.modal').modal('hide')
@@ -3563,7 +3563,7 @@ function manualPokemonData(event) { // eslint-disable-line no-unused-vars
                     sendToast('danger', i8ln('Error Submitting Pokémon'), i8ln('Could not submit Pokémon.'), 'true')
                 },
                 complete: function complete() {
-                    sendToast('success', i8ln('Submitting Pokémon'), pokeList[pokemonId - 1].name + i8ln(' successful submitted.'), 'true')
+                    sendToast('success', i8ln('Submitting Pokémon'), pokeList[pokemonId - 1].name + ' ' + i8ln('successful submitted.'), 'true')
                     lastpokemon = false
                     updateMap()
                     $('.modal').modal('hide')
@@ -3627,7 +3627,7 @@ function renameGymData(event) { // eslint-disable-line no-unused-vars
                     sendToast('danger', i8ln('Error Gym'), i8ln('Could not rename Gym.'), 'true')
                 },
                 complete: function complete() {
-                    sendToast('success', i8ln('Gym rename'), gymName + i8ln(' renamed'), 'true')
+                    sendToast('success', i8ln('Gym rename'), gymName + ' ' + i8ln('renamed'), 'true')
                     jQuery('label[for="gyms-switch"]').click()
                     jQuery('label[for="gyms-switch"]').click()
                     lastgyms = false
@@ -3717,7 +3717,7 @@ function renamePokestopData(event) { // eslint-disable-line no-unused-vars
                     sendToast('danger', i8ln('Rename Pokéstop'), i8ln('Could not rename Pokéstop.'), 'true')
                 },
                 complete: function complete() {
-                    sendToast('success', i8ln('Rename Pokéstop'), pokestopName + i8ln(' renamed'), 'true')
+                    sendToast('success', i8ln('Rename Pokéstop'), pokestopName + ' ' + i8ln('renamed'), 'true')
                     jQuery('label[for="pokestops-switch"]').click()
                     jQuery('label[for="pokestops-switch"]').click()
                     lastpokestops = false
@@ -3899,7 +3899,7 @@ function submitNewNest(event) { // eslint-disable-line no-unused-vars
                     sendToast('danger', i8ln('Submitting nest'), i8ln('Could not submit Nest'), 'true')
                 },
                 complete: function complete() {
-                    sendToast('success', i8ln('Submitting nest'), pokeList[pokemonId - 1].name + i8ln(' nest successful submitted'), 'true')
+                    sendToast('success', i8ln('Submitting nest'), pokeList[pokemonId - 1].name + ' ' + i8ln('nest successful submitted'), 'true')
                     lastnests = false
                     updateMap()
                     jQuery('label[for="nests-switch"]').click()
@@ -4027,7 +4027,7 @@ function manualRaidData(event) { // eslint-disable-line no-unused-vars
                     sendToast('danger', i8ln('Submitting raid'), i8ln('Could not submit raid'), 'true')
                 },
                 complete: function complete() {
-                    sendToast('success', i8ln('Submitting raid'), pokeList[pokemonId - 1].name + i8ln(' raid submitted'), 'true')
+                    sendToast('success', i8ln('Submitting raid'), pokeList[pokemonId - 1].name + ' ' + i8ln('raid submitted'), 'true')
                     lastgyms = false
                     updateMap()
                     $('.modal').modal('hide')
@@ -4064,7 +4064,7 @@ function submitNewCommunity(event) { // eslint-disable-line no-unused-vars
                     sendToast('danger', i8ln('Submitting community'), i8ln('Make sure all fields are filled and the invite link is a valid Discord, Telegram or Whatsapp link.'), 'true')
                 },
                 complete: function complete() {
-                    sendToast('success', i8ln('Submitting community'), communityName + i8ln(' community submitted'), 'true')
+                    sendToast('success', i8ln('Submitting community'), communityName + ' ' + i8ln('community submitted'), 'true')
                     jQuery('label[for="communities-switch"]').click()
                     jQuery('label[for="communities-switch"]').click()
                     lastcommunities = false
@@ -4102,7 +4102,7 @@ function editCommunityData(event) { // eslint-disable-line no-unused-vars
                     sendToast('danger', i8ln('Edit community'), i8ln('Form fields are empty or an invalid url is found, please check the form.'), 'true')
                 },
                 complete: function complete() {
-                    sendToast('success', i8ln('Edit community'), communityName + i8ln(' edit successful'), 'true')
+                    sendToast('success', i8ln('Edit community'), communityName + ' ' + i8ln('edit successful'), 'true')
                     jQuery('label[for="communities-switch"]').click()
                     jQuery('label[for="communities-switch"]').click()
                     lastpokestops = false
@@ -4186,7 +4186,7 @@ function submitPoi(event) { // eslint-disable-line no-unused-vars
                     sendToast('danger', i8ln('Submit POI'), i8ln('Oops something went wrong.'), 'true')
                 },
                 complete: function complete() {
-                    sendToast('success', i8ln('Submit POI'), poiName + i8ln(' successful submitted'), 'true')
+                    sendToast('success', i8ln('Submit POI'), poiName + ' ' + i8ln('successful submitted'), 'true')
                     jQuery('label[for="poi-switch"]').click()
                     jQuery('label[for="poi-switch"]').click()
                     lastpois = false
@@ -4240,7 +4240,7 @@ function editPoiData(event) { // eslint-disable-line no-unused-vars
                     sendToast('danger', i8ln('Edit POI'), i8ln('Oops something went wrong.'), 'true')
                 },
                 complete: function complete() {
-                    sendToast('success', i8ln('Edit POI'), poiName + i8ln(' successful editted'), 'true')
+                    sendToast('success', i8ln('Edit POI'), poiName + ' ' + i8ln('successful editted'), 'true')
                     jQuery('label[for="poi-switch"]').click()
                     jQuery('label[for="poi-switch"]').click()
                     lastpois = false
