@@ -22,7 +22,6 @@ if (isset($_GET['action'])) {
     }
     if ($_GET['action'] == 'telegram-logout') {
         destroyCookiesAndSessions();
-		setcookie('tg_user', '');
         if ($_GET['reason'] == 'change') {
             header('Location: ./login?action=login&error=access-change');
         } else {

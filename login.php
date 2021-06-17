@@ -221,10 +221,6 @@ if (isset($_GET['action'])) {
     if ($_GET['action'] == 'groupme-login') {
         header("Location: https://oauth.groupme.com/oauth/authorize?client_id=" . $groupmeClientId);
         die();
-    }
-    if ($_GET['action'] == 'telegram-login') {
-        header("Location: telegram-login.php");
-        die();
     } else {
         header("Location: .");
         die();
@@ -599,9 +595,7 @@ if (isset($_GET['callback'])) {
         function saveTelegramUserData($auth_data) {
             global $manualdb,$sessionLifetime,$manualAccessLevel,$useLoginCookie;
             $auth_data_json = json_encode($auth_data);
-            setcookie('tg_user', $auth_data_json);
 
-            $auth_data_json = json_encode($auth_data);
             $user_id = $auth_data['id'];
             $username = (isset($auth_data['username'])?$auth_data['username']:$auth_data['first_name']);
             $count = $manualdb->count("users", [
