@@ -72,6 +72,9 @@ if (isset($_GET['action'])) {
                             case 'no-id':
                                 $html .= "<div id='login-error'>" . i8ln('Something went wrong as we couldn\'t find your session id.') . "</div>";
                                 break;
+                            case 'access-expired':
+                                $html .= "<div id='login-error'>Kirjautuminen epäonnistui! Käyttöoikeus päättynyt. Osallistumalla kartan ylläpitokustannuksiin saat käyttöoikeuden helmikuun 2022 loppuun. Lisätietoja maksun suorittamisesta saa <a href='maksu.php'>täältä</a>.</div>";
+                                break;
                             case 'failed-token':
                                 $html .= "<div id='login-error'>" . i8ln('Something went wrong while verifying external login') . "</div>";
                                 break;
@@ -112,13 +115,16 @@ if (isset($_GET['action'])) {
                     if ($noPatreonLogin === false) {
                         $html .= "<button type='button' style='background-color: #1877f2; margin: 2px' onclick=\"location.href='./login?action=patreon-login';\" value='Login with patreon'><i class='fab fa-patreon'></i>&nbsp" . i8ln('Login with Patreon') . "</button>";
                     }
+                    if ($noTelegramLogin === false) {
+                        $html .= '<script async src="https://telegram.org/js/telegram-widget.js?2" data-telegram-login="'.$telegram_bot_username.'" data-size="large" data-auth-url="login.php?callback=telegram"></script>';
+                    }
                     $html .= '</div>
                     <div class="force-container" style="background-color:#f1f1f1">';
                     if ($noNativeLogin === false) {
                         $html .= "<button type='button' style='background-color: #4CAF50; margin: 2px' onclick=\"location.href='./register?action=account';\" value='Register'><i class='fas fa-user'></i>&nbsp" . i8ln('Register') . "</button>";
                         $html .= "<button type='button' style='background-color: #4CAF50; margin: 2px' onclick=\"location.href='./register?action=password-reset';\" value='Forgot password?'><i class='fas fa-lock'></i>&nbsp" . i8ln('Forgot Password') . "</button>";
                     }
-                    if ($noNativeLogin && $noDiscordLogin && $noFacebookLogin && $noPatreonLogin) {
+                    if ($noNativeLogin && $noDiscordLogin && $noFacebookLogin && $noPatreonLogin && $noTelegramLogin) {
                         header("Location: ./");
                         die();
                     }
@@ -214,6 +220,10 @@ if (isset($_GET['action'])) {
     }
     if ($_GET['action'] == 'groupme-login') {
         header("Location: https://oauth.groupme.com/oauth/authorize?client_id=" . $groupmeClientId);
+        die();
+    }
+    if ($_GET['action'] == 'telegram-login') {
+        header("Location: telegram-login.php");
         die();
     } else {
         header("Location: .");
@@ -561,6 +571,89 @@ if (isset($_GET['callback'])) {
             setrawcookie("LoginSession", $_SESSION['token'], time() + $sessionLifetime);
         }
         header("Location: .?login=true");
+        die();
+    }
+    if ($_GET['callback'] == 'telegram') {
+        function checkTelegramAuthorization($auth_data) {
+            global $telegramBotToken;
+            unset($auth_data['callback']);
+            $check_hash = $auth_data['hash'];
+            unset($auth_data['hash']);
+            $data_check_arr = [];
+            foreach ($auth_data as $key => $value) {
+                $data_check_arr[] = $key . '=' . $value;
+            }
+            sort($data_check_arr);
+            $data_check_string = implode("\n", $data_check_arr);
+            $secret_key = hash('sha256', $telegramBotToken, true);
+            $hash = hash_hmac('sha256', $data_check_string, $secret_key);
+            if (strcmp($hash, $check_hash) !== 0) {
+                throw new Exception('Data is NOT from Telegram');
+            }
+            if ((time() - $auth_data['auth_date']) > 86400) {
+                throw new Exception('Data is outdated');
+            }
+            return $auth_data;
+        }
+
+        function saveTelegramUserData($auth_data) {
+            global $manualdb,$sessionLifetime,$manualAccessLevel,$useLoginCookie;
+            $auth_data_json = json_encode($auth_data);
+            setcookie('tg_user', $auth_data_json);
+
+            $auth_data_json = json_encode($auth_data);
+            $user_id = $auth_data['id'];
+            $username = (isset($auth_data['username'])?$auth_data['username']:$auth_data['first_name']);
+            $count = $manualdb->count("users", [
+                "id" => $user_id,
+                "login_system" => 'telegram'
+            ]);
+
+            if ($count === 0) {
+                if ($manualAccessLevel) {
+                    $manualdb->insert("users", [
+                        "id" => $user_id,
+                        "user" => $username,
+                        "expire_timestamp" => time(),
+                        "login_system" => 'telegram'
+                    ]);
+                } else {
+                    $manualdb->insert("users", [
+                        "id" => $user_id,
+                        "user" => $username,
+                        "expire_timestamp" => time() + 60 * 60 * 24 * 7,
+                        "login_system" => 'telegram'
+                    ]);
+                }
+            }
+
+            $manualdb->update("users", [
+                'user' => $username,
+                'session_token' => $_SESSION['token'],
+                'session_id' => session_id(),
+                'last_loggedin' => time(),
+                'avatar' => (isset($auth_data['photo_url']) ? $auth_data['photo_url'] : '')
+            ], [
+                'id' => $user_id,
+                'login_system' => 'telegram'
+            ]);
+            $_SESSION['user'] = $user_id;
+            setcookie("LoginCookie", session_id(), time() + $sessionLifetime);
+            setcookie("LoginEngine", 'telegram', time() + $sessionLifetime);
+            if ($useLoginCookie) {
+                setrawcookie("LoginSession", $_SESSION['token'], time() + $sessionLifetime);
+            }
+        }
+
+
+        try {
+            $auth_data = checkTelegramAuthorization($_GET);
+            saveTelegramUserData($auth_data);
+        } catch (Exception $e) {
+            die ($e->getMessage());
+        }
+
+        header('Location: .?login=true');
         die();
     }
 }

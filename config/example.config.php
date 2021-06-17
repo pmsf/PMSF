@@ -211,6 +211,11 @@ $userWhitelist = [''];                                              // Array of 
 $serverBlacklist = [''];                                            // Array of server ID's. A user that's a member of any of these and not in your user whitelist will be blocked
 $logFailedLogin = 'logs/failed_login.log';                          // File location of where to store a log file of blocked users
 
+/* Telegram Auth */
+$noTelegramLogin = true;
+$telegramBotToken = '';												// Telegram bot token
+$telegram_bot_username = '';										// Telegram bot username (without @)
+
 /* Native Auth */
 $noNativeLogin = true;                                              // This will enable the built in login system.
 $domainName = '';                                                   // If this is empty, reset-password emails will use the domain name taken from the URL.
@@ -654,7 +659,7 @@ $db = new Medoo([
 //]);
 
 // DONT EDIT THE CODE BELOW UNLESS YOU KNOW WHAT YOUR ARE DOING
-if (($noNativeLogin === false || $noDiscordLogin === false || $noFacebookLogin === false || $noPatreonLogin === false) && !empty($_SESSION['user']->user)) {
+if (($noNativeLogin === false || $noDiscordLogin === false || $noFacebookLogin === false || $noPatreonLogin === false || $noTelegramLogin === false) && !empty($_SESSION['user']->user)) {
     if (file_exists('config/access-config.php')) {
         include 'config/access-config.php';
     }
