@@ -870,7 +870,7 @@ if (strtolower($map) === "rdm") {
                                             </div>
                                             <div class="dropdown-divider"></div>
                                         <?php }
-                                        if (! $noSearchLocation) { ?>
+                                        if (! $noLiveScanLocation) { ?>
                                             <div class="form-check form-switch">
                                                 <input class="form-check-input" id="scan-location-switch" type="checkbox" name="scan-location-switch">
                                                 <label class="form-check-label" for="scan-location-switch"><?php echo i8ln('Real time scanner location') ?></label>
