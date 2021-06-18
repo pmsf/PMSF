@@ -20,7 +20,8 @@ class RocketMap_MAD extends RocketMap
         gender,
         form,
         weather_boosted_condition,
-        costume";
+        costume,
+        seen_type";
         global $noHighLevelData;
         if (!$noHighLevelData) {
             $select .= ",
@@ -122,7 +123,8 @@ class RocketMap_MAD extends RocketMap
         gender,
         form,
         weather_boosted_condition,
-        costume";
+        costume,
+        seen_type";
         global $noHighLevelData;
         if (!$noHighLevelData) {
             $select .= ",
@@ -205,7 +207,7 @@ class RocketMap_MAD extends RocketMap
         $query = "SELECT :select
         FROM pokemon p
         LEFT JOIN trs_spawn ts ON ts.spawnpoint = p.spawnpoint_id
-        WHERE :conditions";
+        WHERE :conditions ORDER BY p.latitude, p.longitude";
 
         $query = str_replace(":select", $select, $query);
         $query = str_replace(":conditions", '(' . join(" AND ", $conds) . ')' . $encSql, $query);
@@ -213,10 +215,27 @@ class RocketMap_MAD extends RocketMap
 
         $data = array();
         $i = 0;
+        $lastlat = 0;
+        $lastlon = 0;
+        $lasti = 0;
 
         foreach ($pokemons as $pokemon) {
-            $pokemon["latitude"] = floatval($pokemon["latitude"]);
-            $pokemon["longitude"] = floatval($pokemon["longitude"]);
+            if ($pokemon['seen_type'] === 'nearby_cell' || $pokemon['seen_type'] === 'nearby_stop') {
+                $pokemon["latitude"] = floatval($pokemon["latitude"]);
+                $pokemon["longitude"] = floatval($pokemon["longitude"]);
+                $lastlat = floatval($pokemon["latitude"]);
+                $lastlon = floatval($pokemon["longitude"]);
+                if (abs($pokemon["latitude"] - $lastlat) < 0.0001 && abs($pokemon["longitude"] - $lastlon) < 0.0001) {
+                    $lasti = $lasti + 1;
+                } else {
+                    $lasti = 0;
+                }
+                $pokemon["latitude"] = $pokemon["latitude"] + 0.0003*cos(deg2rad($lasti*45));
+                $pokemon["longitude"] = $pokemon["longitude"] + 0.0003*sin(deg2rad($lasti*45));
+            } else {
+                $pokemon["latitude"] = floatval($pokemon["latitude"]);
+                $pokemon["longitude"] = floatval($pokemon["longitude"]);
+            }
             $pokemon["expire_timestamp_verified"] = isset($pokemon["expire_timestamp_verified"]) ? 1 : null;
             $pokemon["disappear_time"] = $pokemon["disappear_time"] * 1000;
 

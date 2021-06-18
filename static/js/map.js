@@ -1488,6 +1488,9 @@ function getReward(item) {
         case 3:
             rewardImage = '<img style="' + styleStr + '" src="' + getIcon(iconpath.reward, 'reward/stardust', '.png', item['quest_dust_amount']) + '"/>'
             break
+        case 4:
+            rewardImage = '<img style="' + styleStr + '" src="' + getIcon(iconpath.reward, 'reward/candy', '.png', item['quest_energy_pokemon_id'], item['quest_reward_amount']) + '"/>'
+            break
         case 7:
             rewardImage = '<img style="' + styleStr + '" src="' + getIcon(iconpath.pokemon, 'pokemon', '.png', pokemonid, 0, formid, costumeid, shiny) + '"/>'
             break
@@ -1726,6 +1729,12 @@ function pokestopLabel(item) {
             i8ln('Reward') + ': <b>' +
             item['quest_dust_amount'] + ' ' +
             i8ln('Stardust') +
+            '</b></div>'
+        } else if (item['quest_reward_type'] === 4) {
+            str += '<div>' +
+            i8ln('Reward') + ': <b>' +
+            item['quest_reward_amount'] + 'x ' + item['quest_energy_pokemon_name'] + ' ' +
+            i8ln('Candy') +
             '</b></div>'
         } else if (item['quest_reward_type'] === 7) {
             str += '<div>' +
@@ -2313,6 +2322,18 @@ function getPokestopMarkerIcon(item) {
                     className: 'stop-quest-marker',
                     html: html
                 })
+            } else if (item['quest_reward_type'] === 4) {
+                html = '<div style="position:relative;">' +
+                    '<img src="' + getIcon(iconpath.pokestop, 'pokestop', '.png', markerStr, 0, 1) + '" style="width:50px;height:72;top:-35px;right:10px;"/>' +
+                    '<img src="' + getIcon(iconpath.reward, 'reward/candy', '.png', item['quest_energy_pokemon_id'], item['quest_reward_amount']) + '" style="width:30px;height:auto;position:absolute;top:4px;left:0px;"/>' +
+                    '</div>'
+                stopMarker = L.divIcon({
+                    iconSize: [31, 31],
+                    iconAnchor: [25, 45],
+                    popupAnchor: [0, -35],
+                    className: 'stop-quest-marker',
+                    html: html
+                })
             } else if (item['quest_reward_type'] === 3) {
                 html = '<div style="position:relative;">' +
                     '<img src="' + getIcon(iconpath.pokestop, 'pokestop', '.png', markerStr, 0, 1) + '" style="width:50px;height:72;top:-35px;right:10px;"/>' +
@@ -2400,6 +2421,18 @@ function getPokestopMarkerIcon(item) {
             html = '<div style="position:relative;">' +
                 '<img src="' + getIcon(iconpath.pokestop, 'pokestop', '.png', markerStr, 0, 1) + '" style="width:50px;height:72;top:-35px;right:10px;"/>' +
                 '<img src="' + getIcon(iconpath.pokemon, 'pokemon', '.png', pokemonid, 0, formid, costumeid, shiny) + '" style="width:30px;height:auto;position:absolute;top:4px;left:0px;"/>' +
+                '</div>'
+            stopMarker = L.divIcon({
+                iconSize: [31, 31],
+                iconAnchor: [25, 45],
+                popupAnchor: [0, -35],
+                className: 'stop-quest-marker',
+                html: html
+            })
+        } else if (item['quest_reward_type'] === 4) {
+            html = '<div style="position:relative;">' +
+                '<img src="' + getIcon(iconpath.pokestop, 'pokestop', '.png', markerStr, 0, 1) + '" style="width:50px;height:72;top:-35px;right:10px;"/>' +
+                '<img src="' + getIcon(iconpath.reward, 'reward/candy', '.png', item['quest_energy_pokemon_id'], item['quest_reward_amount']) + '" style="width:30px;height:auto;position:absolute;top:4px;left:0px;"/>' +
                 '</div>'
             stopMarker = L.divIcon({
                 iconSize: [31, 31],
@@ -3265,6 +3298,9 @@ function searchForItem(lat, lon, term, type, field) {
                         }
                         if (element.quest_item_id !== 0) {
                             html += '<span style="background:url(' + iconpath + 'rewards/reward_' + element.quest_item_id + '_' + element.quest_reward_amount + '.png) no-repeat;" class="i-icon" ></span>'
+                        }
+                        if (element.quest_reward_type === 4) {
+                            html += '<span style="background:url(static/images/candy/' + element.quest_energy_pokemon_id + '_a' + element.quest_reward_amount + '.png) no-repeat;" class="i-icon" ></span>'
                         }
                         if (element.quest_reward_type === 3) {
                             html += '<span style="background:url(' + iconpath + 'rewards/reward_stardust_' + element.quest_dust_amount + '.png) no-repeat;" class="i-icon" ></span>'
@@ -7147,6 +7183,18 @@ function getIcon(iconRepo, folder, fileType, iconKeyId, ...varArgs) {
             requestedIcon = `${dustAmount}${fileType}`
             if (iconpath['rewardIndex']['stardust'].includes(requestedIcon)) {
                 icon = requestedIcon
+            }
+            break
+        case 'reward/candy':
+            const pokemonIdCandy = iconKeyId
+            const candyAmount = typeof varArgs[0] === 'undefined' ? [''] : varArgs[0] === 0 ? [''] : ['_a' + varArgs[0], '']
+            search:
+            for (const a of candyAmount) {
+                requestedIcon = `${pokemonIdCandy}${a}${fileType}`
+                if (iconpath['rewardIndex']['candy'].includes(requestedIcon)) {
+                    icon = requestedIcon
+                    break search
+                }
             }
             break
         case 'team':
