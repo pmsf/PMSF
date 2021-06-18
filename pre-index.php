@@ -1220,7 +1220,7 @@ if (strtolower($map) === "rdm") {
         <div class="offcanvas-body right">
             <div class="card">
                 <div class="card-header">
-                    <?php echo i8ln(' Full Stats') ?>
+                    <?php echo i8ln('Full Stats') ?>
                 </div>
                 <div class="card-body">
                     <div class="d-grid gap-2">
@@ -1481,7 +1481,6 @@ include('modals.php');
     var noNestPolygon = <?php echo $noNestPolygon === true ? 'true' : 'false' ?>;
     var nestGeoJSONfile = '<?php echo $noNestPolygon ? '' : (!empty($nestGeoJSONfile) ? $nestGeoJSONfile : '') ?>';
     var nestBotName = '<?php echo $nestBotName ? $nestBotName : 'Bot' ?>';
-    var noCostumeIcons = <?php echo $noCostumeIcons === true ? 'true' : 'false' ?>;
     var queryInterval = <?php echo $queryInterval ?>;
     var noInvasionEncounterData = <?php echo $noTeamRocketEncounterData === true ? 'true' : 'false' ?>;
     var numberOfPokemon = <?php echo $numberOfPokemon; ?>;
