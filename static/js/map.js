@@ -5990,22 +5990,22 @@ function loadDefaultImages() {
             $(this).addClass('active')
         }
     })
-    $('#exclude-quests-pokemon .pokemon-icon-sprite').each(function () {
+    $('#exclude-quest-pokemon .pokemon-icon-sprite').each(function () {
         if (eqp.indexOf($(this).data('value')) !== -1) {
             $(this).addClass('active')
         }
     })
-    $('#exclude-quests-energy .energy-icon-sprite').each(function () {
+    $('#exclude-quest-energy .energy-icon-sprite').each(function () {
         if (eqe.indexOf($(this).data('value')) !== -1) {
             $(this).addClass('active')
         }
     })
-    $('#exclude-quests-item .item-icon-sprite').each(function () {
+    $('#exclude-quest-item .item-icon-sprite').each(function () {
         if (eqi.indexOf($(this).data('value')) !== -1) {
             $(this).addClass('active')
         }
     })
-    $('#exclude-grunts .grunt-icon-sprite').each(function () {
+    $('#exclude-rocket .grunt-icon-sprite').each(function () {
         if (eg.indexOf($(this).data('value')) !== -1) {
             $(this).addClass('active')
         }
