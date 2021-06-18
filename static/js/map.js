@@ -3268,20 +3268,6 @@ function searchForItem(lat, lon, term, type, field) {
                 var sr = par.find('.search-results')
                 sr.html('')
                 $.each(data.reward, function (i, element) {
-                    var pokemonIdStr = ''
-                    if (element.quest_pokemon_id <= 9) {
-                        pokemonIdStr = '00' + element.quest_pokemon_id
-                    } else if (element.quest_pokemon_id <= 99) {
-                        pokemonIdStr = '0' + element.quest_pokemon_id
-                    } else {
-                        pokemonIdStr = element.quest_pokemon_id
-                    }
-                    var formStr = ''
-                    if (element.quest_pokemon_formid === 0) {
-                        formStr = '00'
-                    } else {
-                        formStr = element.quest_pokemon_formid
-                    }
                     var scanArea
                     var latlng = turf.point([element.lon, element.lat])
                     $.each(scanAreas, function (index, poly) {
@@ -3294,19 +3280,19 @@ function searchForItem(lat, lon, term, type, field) {
                     var html = '<li class="search-result ' + type + '" data-lat="' + element.lat + '" data-lon="' + element.lon + '"><div class="left-column" onClick="centerMapOnCoords(event);">'
                     if (sr.hasClass('reward-results')) {
                         if (element.quest_pokemon_id !== 0 && element.quest_reward_type === 7) {
-                            html += '<span style="background:url(' + iconpath + 'pokemon_icon_' + pokemonIdStr + '_' + formStr + '.png) no-repeat;" class="i-icon" ></span>'
+                            html += '<span style="background:url(' + getIcon(iconpath.pokemon, 'pokemon', '.png', element.quest_pokemon_id, 0, element.quest_pokemon_formid) + ') no-repeat;" class="i-icon" ></span>'
                         }
                         if (element.quest_item_id !== 0) {
-                            html += '<span style="background:url(' + iconpath + 'rewards/reward_' + element.quest_item_id + '_' + element.quest_reward_amount + '.png) no-repeat;" class="i-icon" ></span>'
+                            html += '<span style="background:url(' + getIcon(iconpath.reward, 'reward/item', '.png', element.quest_item_id, element.quest_reward_amount) + ') no-repeat;" class="i-icon" ></span>'
                         }
                         if (element.quest_reward_type === 4) {
-                            html += '<span style="background:url(static/images/candy/' + element.quest_energy_pokemon_id + '_a' + element.quest_reward_amount + '.png) no-repeat;" class="i-icon" ></span>'
+                            html += '<span style="background:url(' + getIcon(iconpath.reward, 'reward/candy', '.png', element.quest_energy_pokemon_id, element.quest_reward_amount) + ') no-repeat;" class="i-icon" ></span>'
                         }
                         if (element.quest_reward_type === 3) {
-                            html += '<span style="background:url(' + iconpath + 'rewards/reward_stardust_' + element.quest_dust_amount + '.png) no-repeat;" class="i-icon" ></span>'
+                            html += '<span style="background:url(' + getIcon(iconpath.reward, 'reward/stardust', '.png', element.quest_dust_amount) + ') no-repeat;" class="i-icon" ></span>'
                         }
                         if (element.quest_reward_type === 12) {
-                            html += '<span style="background:url(' + iconpath + 'rewards/reward_mega_energy_' + element.quest_energy_pokemon_id + '.png) no-repeat;" class="i-icon" ></span>'
+                            html += '<span style="background:url(' + getIcon(iconpath.reward, 'reward/mega_resource', '.png', element.quest_energy_pokemon_id) + ') no-repeat;" class="i-icon" ></span>'
                         }
                     }
                     html += '<div class="cont">'
@@ -3386,17 +3372,9 @@ function searchForItem(lat, lon, term, type, field) {
                     sr.append(html)
                 })
                 $.each(data.nests, function (i, element) {
-                    var pokemonIdStr = ''
-                    if (element.pokemon_id <= 9) {
-                        pokemonIdStr = '00' + element.pokemon_id
-                    } else if (element.pokemon_id <= 99) {
-                        pokemonIdStr = '0' + element.pokemon_id
-                    } else {
-                        pokemonIdStr = element.pokemon_id
-                    }
                     var html = '<li class="search-result ' + type + '" data-lat="' + element.lat + '" data-lon="' + element.lon + '"><div class="left-column" onClick="centerMapOnCoords(event);">'
                     if (sr.hasClass('nest-results')) {
-                        html += '<span style="background:url(' + iconpath + 'pokemon_icon_' + pokemonIdStr + '_00.png) no-repeat;" class="i-icon" ></span>'
+                        html += '<span style="background:url(' + getIcon(iconpath.pokemon, 'pokemon', '.png', element.pokemon_id) + ') no-repeat;" class="i-icon" ></span>'
                     }
                     html += '<div class="cont">' +
                     '<span class="name" style="font-weight:bold">' + element.name + '</span>' + '<span class="distance" style="font-weight:bold">&nbsp;-&#32;' + element.distance + defaultUnit + '</span>' +
@@ -3405,17 +3383,9 @@ function searchForItem(lat, lon, term, type, field) {
                     sr.append(html)
                 })
                 $.each(data.pokemon, function (i, element) {
-                    var pokemonIdStr = ''
-                    if (element.pokemon_id <= 9) {
-                        pokemonIdStr = '00' + element.pokemon_id
-                    } else if (element.pokemon_id <= 99) {
-                        pokemonIdStr = '0' + element.pokemon_id
-                    } else {
-                        pokemonIdStr = element.pokemon_id
-                    }
                     var html = '<li class="search-result ' + type + '" data-lat="' + element.lat + '" data-lon="' + element.lon + '"><div class="left-column" onClick="centerMapOnCoords(event);">'
                     if (sr.hasClass('pokemon-results')) {
-                        html += '<span style="background:url(' + iconpath + 'pokemon_icon_' + pokemonIdStr + '_00.png) no-repeat;" class="i-icon" ></span>'
+                        html += '<span style="background:url(' + getIcon(iconpath.pokemon, 'pokemon', '.png', element.pokemon_id) + ') no-repeat;" class="i-icon" ></span>'
                     }
                     html += '<div class="cont">' +
                     '<span class="name" style="font-weight:bold">' + element.name + '</span>' + '<span class="distance" style="font-weight:bold">&nbsp;-&#32;' + element.distance + defaultUnit + '</span>' +
