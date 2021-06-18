@@ -1473,10 +1473,11 @@ function gymLabel(item) {
 
 function getReward(item) {
     var rewardImage
-    var pokemonid = item['quest_pokemon_id']
-    var costumeid = item['quest_pokemon_costumeid']
-    var formid = item['quest_pokemon_formid']
-    var shiny = item['quest_pokemon_shiny']
+    var pokemonid = item['reward_pokemon_id']
+    var costumeid = item['reward_pokemon_costumeid']
+    var genderid = item['reward_pokemon_genderid']
+    var formid = item['reward_pokemon_formid']
+    var shiny = item['reward_pokemon_shiny']
     var styleStr = ''
     if (!noTeamRocket && item['incident_expiration'] > Date.now()) {
         styleStr = 'position:absolute;height:50px;top:60px;'
@@ -1487,19 +1488,19 @@ function getReward(item) {
     }
     switch (item['quest_reward_type']) {
         case 2:
-            rewardImage = '<img style="' + styleStr + '" src="' + getIcon(iconpath.reward, 'reward/item', '.png', item['quest_item_id'], item['quest_reward_amount']) + '"/>'
+            rewardImage = '<img style="' + styleStr + '" src="' + getIcon(iconpath.reward, 'reward/item', '.png', item['reward_item_id'], item['reward_amount']) + '"/>'
             break
         case 3:
-            rewardImage = '<img style="' + styleStr + '" src="' + getIcon(iconpath.reward, 'reward/stardust', '.png', item['quest_dust_amount']) + '"/>'
+            rewardImage = '<img style="' + styleStr + '" src="' + getIcon(iconpath.reward, 'reward/stardust', '.png', item['reward_amount']) + '"/>'
             break
         case 4:
-            rewardImage = '<img style="' + styleStr + '" src="' + getIcon(iconpath.reward, 'reward/candy', '.png', item['quest_energy_pokemon_id'], item['quest_reward_amount']) + '"/>'
+            rewardImage = '<img style="' + styleStr + '" src="' + getIcon(iconpath.reward, 'reward/candy', '.png', item['reward_pokemon_id'], item['reward_amount']) + '"/>'
             break
         case 7:
-            rewardImage = '<img style="' + styleStr + '" src="' + getIcon(iconpath.pokemon, 'pokemon', '.png', pokemonid, 0, formid, costumeid, shiny) + '"/>'
+            rewardImage = '<img style="' + styleStr + '" src="' + getIcon(iconpath.pokemon, 'pokemon', '.png', pokemonid, 0, formid, costumeid, genderid, shiny) + '"/>'
             break
         case 12:
-            rewardImage = '<img style="' + styleStr + '" src="' + getIcon(iconpath.reward, 'reward/mega_resource', '.png', item['quest_energy_pokemon_id']) + '"/>'
+            rewardImage = '<img style="' + styleStr + '" src="' + getIcon(iconpath.reward, 'reward/mega_resource', '.png', item['reward_pokemon_id']) + '"/>'
             break
         default:
             rewardImage = ''
@@ -1725,30 +1726,30 @@ function pokestopLabel(item) {
         if (item['quest_reward_type'] === 2) {
             str += '<div>' +
             i8ln('Reward') + ': <b>' +
-            item['quest_reward_amount'] + ' ' +
-            item['quest_item_name'] +
+            item['reward_amount'] + ' ' +
+            item['reward_item_name'] +
             '</b></div>'
         } else if (item['quest_reward_type'] === 3) {
             str += '<div>' +
             i8ln('Reward') + ': <b>' +
-            item['quest_dust_amount'] + ' ' +
+            item['reward_amount'] + ' ' +
             i8ln('Stardust') +
             '</b></div>'
         } else if (item['quest_reward_type'] === 4) {
             str += '<div>' +
             i8ln('Reward') + ': <b>' +
-            item['quest_reward_amount'] + 'x ' + item['quest_energy_pokemon_name'] + ' ' +
+            item['reward_amount'] + 'x ' + item['reward_pokemon_name'] + ' ' +
             i8ln('Candy') +
             '</b></div>'
         } else if (item['quest_reward_type'] === 7) {
             str += '<div>' +
             i8ln('Reward') + ': <b>' +
-            item['quest_pokemon_name'] +
+            item['reward_pokemon_name'] +
             '</b></div>'
         } else if (item['quest_reward_type'] === 12) {
             str += '<div>' +
             i8ln('Reward') + ': <b>' +
-            item['quest_energy_amount'] + ' ' + item['quest_energy_pokemon_name'] + ' ' +
+            item['reward_amount'] + ' ' + item['reward_pokemon_name'] + ' ' +
             i8ln('Mega energy') +
             '</b></div>'
         }
@@ -1855,12 +1856,12 @@ function pokestopLabel(item) {
     if (!noQuests && !noWhatsappLink && item['quest_type'] !== null && lastMidnight < Number(item['quest_timestamp'])) {
         var quest = getQuest(item)
         var reward = ''
-        if (item['quest_pokemon_id'] > 0) {
-            reward = item['quest_pokemon_name']
-        } else if (item['quest_item_id'] > 0) {
-            reward = item['quest_reward_amount'] + ' ' + item['quest_item_name']
+        if (item['reward_pokemon_id'] > 0) {
+            reward = item['reward_pokemon_name']
+        } else if (item['reward_item_id'] > 0) {
+            reward = item['reward_amount'] + ' ' + item['reward_item_name']
         } else {
-            reward = item['quest_reward_amount'] + ' ' + i8ln('Stardust')
+            reward = item['reward_amount'] + ' ' + i8ln('Stardust')
         }
         str += '<a href="whatsapp://send?text=' + encodeURIComponent(item['pokestop_name']) + '%0A%2AQuest:%20' + quest + '%2A%0A%2AReward:%20' + reward + '%2A%0Ahttps://www.google.com/maps/search/?api=1%26query=' + item['latitude'] + ',' + item['longitude'] + '" data-action="share/whatsapp/share">' +
             '<i class="fab fa-whatsapp" style="position:relative;top:3px;left:5px;color:#26c300;font-size:20px;"></i></a>'
@@ -2264,6 +2265,7 @@ function getPokestopMarkerIcon(item) {
     var pokemonid
     var formid
     var costumeid
+    var genderid
     var shiny
     if (Store.get(['showPokestops']) && !Store.get(['showQuests']) && !Store.get(['showLures']) && !Store.get(['showRocket']) && !Store.get(['showAllPokestops'])) {
         stopMarker = L.divIcon({
@@ -2301,7 +2303,7 @@ function getPokestopMarkerIcon(item) {
             if (item['quest_reward_type'] === 12) {
                 html = '<div style="position:relative;">' +
                     '<img src="' + getIcon(iconpath.pokestop, 'pokestop', '.png', markerStr, 0, 1) + '" style="width:50px;height:72;top:-35px;right:10px;"/>' +
-                    '<img src="' + getIcon(iconpath.reward, 'reward/mega_resource', '.png', item['quest_energy_pokemon_id']) + '" style="width:30px;height:auto;position:absolute;top:4px;left:0px;"/>' +
+                    '<img src="' + getIcon(iconpath.reward, 'reward/mega_resource', '.png', item['reward_pokemon_id']) + '" style="width:30px;height:auto;position:absolute;top:4px;left:0px;"/>' +
                     '</div>'
                 stopMarker = L.divIcon({
                     iconSize: [31, 31],
@@ -2311,13 +2313,14 @@ function getPokestopMarkerIcon(item) {
                     html: html
                 })
             } else if (item['quest_reward_type'] === 7) {
-                pokemonid = item['quest_pokemon_id']
-                formid = item['quest_pokemon_formid']
-                costumeid = item['quest_pokemon_costumeid']
-                shiny = item['quest_pokemon_shiny']
+                pokemonid = item['reward_pokemon_id']
+                formid = item['reward_pokemon_formid']
+                costumeid = item['reward_pokemon_costumeid']
+                genderid = item['reward_pokemon_genderid']
+                shiny = item['reward_pokemon_shiny']
                 html = '<div style="position:relative;">' +
                     '<img src="' + getIcon(iconpath.pokestop, 'pokestop', '.png', markerStr, 0, 1) + '" style="width:50px;height:72;top:-35px;right:10px;"/>' +
-                    '<img src="' + getIcon(iconpath.pokemon, 'pokemon', '.png', pokemonid, 0, formid, costumeid, shiny) + '" style="width:30px;height:auto;position:absolute;top:4px;left:0px;"/>' +
+                    '<img src="' + getIcon(iconpath.pokemon, 'pokemon', '.png', pokemonid, 0, formid, costumeid, genderid, shiny) + '" style="width:30px;height:auto;position:absolute;top:4px;left:0px;"/>' +
                     '</div>'
                 stopMarker = L.divIcon({
                     iconSize: [31, 31],
@@ -2329,7 +2332,7 @@ function getPokestopMarkerIcon(item) {
             } else if (item['quest_reward_type'] === 4) {
                 html = '<div style="position:relative;">' +
                     '<img src="' + getIcon(iconpath.pokestop, 'pokestop', '.png', markerStr, 0, 1) + '" style="width:50px;height:72;top:-35px;right:10px;"/>' +
-                    '<img src="' + getIcon(iconpath.reward, 'reward/candy', '.png', item['quest_energy_pokemon_id'], item['quest_reward_amount']) + '" style="width:30px;height:auto;position:absolute;top:4px;left:0px;"/>' +
+                    '<img src="' + getIcon(iconpath.reward, 'reward/candy', '.png', item['reward_pokemon_id'], item['reward_amount']) + '" style="width:30px;height:auto;position:absolute;top:4px;left:0px;"/>' +
                     '</div>'
                 stopMarker = L.divIcon({
                     iconSize: [31, 31],
@@ -2341,7 +2344,7 @@ function getPokestopMarkerIcon(item) {
             } else if (item['quest_reward_type'] === 3) {
                 html = '<div style="position:relative;">' +
                     '<img src="' + getIcon(iconpath.pokestop, 'pokestop', '.png', markerStr, 0, 1) + '" style="width:50px;height:72;top:-35px;right:10px;"/>' +
-                    '<img src="' + getIcon(iconpath.reward, 'reward/stardust', '.png', item['quest_dust_amount']) + '" style="width:30px;height:auto;position:absolute;top:4px;left:0px;"/>' +
+                    '<img src="' + getIcon(iconpath.reward, 'reward/stardust', '.png', item['reward_amount']) + '" style="width:30px;height:auto;position:absolute;top:4px;left:0px;"/>' +
                     '</div>'
                 stopMarker = L.divIcon({
                     iconSize: [31, 31],
@@ -2353,7 +2356,7 @@ function getPokestopMarkerIcon(item) {
             } else if (item['quest_reward_type'] === 2) {
                 html = '<div style="position:relative;">' +
                     '<img src="' + getIcon(iconpath.pokestop, 'pokestop', '.png', markerStr, 0, 1) + '" style="width:50px;height:72;top:-35px;right:10px;"/>' +
-                    '<img src="' + getIcon(iconpath.reward, 'reward/item', '.png', item['quest_item_id'], item['quest_reward_amount']) + '" style="width:30px;height:auto;position:absolute;top:4px;left:0px;"/>' +
+                    '<img src="' + getIcon(iconpath.reward, 'reward/item', '.png', item['reward_item_id'], item['reward_amount']) + '" style="width:30px;height:auto;position:absolute;top:4px;left:0px;"/>' +
                     '</div>'
                 stopMarker = L.divIcon({
                     iconSize: [31, 31],
@@ -2408,7 +2411,7 @@ function getPokestopMarkerIcon(item) {
         if (item['quest_reward_type'] === 12) {
             html = '<div style="position:relative;">' +
                 '<img src="' + getIcon(iconpath.pokestop, 'pokestop', '.png', markerStr, 0, 1) + '" style="width:50px;height:72;top:-35px;right:10px;"/>' +
-                '<img src="' + getIcon(iconpath.reward, 'reward/mega_resource', '.png', item['quest_energy_pokemon_id']) + '" style="width:30px;height:auto;position:absolute;top:4px;left:0px;"/>' +
+                '<img src="' + getIcon(iconpath.reward, 'reward/mega_resource', '.png', item['reward_pokemon_id']) + '" style="width:30px;height:auto;position:absolute;top:4px;left:0px;"/>' +
                 '</div>'
             stopMarker = L.divIcon({
                 iconSize: [31, 31],
@@ -2418,13 +2421,14 @@ function getPokestopMarkerIcon(item) {
                 html: html
             })
         } else if (item['quest_reward_type'] === 7) {
-            pokemonid = item['quest_pokemon_id']
-            formid = item['quest_pokemon_formid']
-            costumeid = item['quest_pokemon_costumeid']
-            shiny = item['quest_pokemon_shiny']
+            pokemonid = item['reward_pokemon_id']
+            formid = item['reward_pokemon_formid']
+            costumeid = item['reward_pokemon_costumeid']
+            genderid = item['reward_pokemon_genderid']
+            shiny = item['reward_pokemon_shiny']
             html = '<div style="position:relative;">' +
                 '<img src="' + getIcon(iconpath.pokestop, 'pokestop', '.png', markerStr, 0, 1) + '" style="width:50px;height:72;top:-35px;right:10px;"/>' +
-                '<img src="' + getIcon(iconpath.pokemon, 'pokemon', '.png', pokemonid, 0, formid, costumeid, shiny) + '" style="width:30px;height:auto;position:absolute;top:4px;left:0px;"/>' +
+                '<img src="' + getIcon(iconpath.pokemon, 'pokemon', '.png', pokemonid, 0, formid, costumeid, genderid, shiny) + '" style="width:30px;height:auto;position:absolute;top:4px;left:0px;"/>' +
                 '</div>'
             stopMarker = L.divIcon({
                 iconSize: [31, 31],
@@ -2436,7 +2440,7 @@ function getPokestopMarkerIcon(item) {
         } else if (item['quest_reward_type'] === 4) {
             html = '<div style="position:relative;">' +
                 '<img src="' + getIcon(iconpath.pokestop, 'pokestop', '.png', markerStr, 0, 1) + '" style="width:50px;height:72;top:-35px;right:10px;"/>' +
-                '<img src="' + getIcon(iconpath.reward, 'reward/candy', '.png', item['quest_energy_pokemon_id'], item['quest_reward_amount']) + '" style="width:30px;height:auto;position:absolute;top:4px;left:0px;"/>' +
+                '<img src="' + getIcon(iconpath.reward, 'reward/candy', '.png', item['reward_pokemon_id'], item['reward_amount']) + '" style="width:30px;height:auto;position:absolute;top:4px;left:0px;"/>' +
                 '</div>'
             stopMarker = L.divIcon({
                 iconSize: [31, 31],
@@ -2448,7 +2452,7 @@ function getPokestopMarkerIcon(item) {
         } else if (item['quest_reward_type'] === 3) {
             html = '<div style="position:relative;">' +
                 '<img src="' + getIcon(iconpath.pokestop, 'pokestop', '.png', markerStr, 0, 1) + '" style="width:50px;height:72;top:-35px;right:10px;"/>' +
-                '<img src="' + getIcon(iconpath.reward, 'reward/stardust', '.png', item['quest_dust_amount']) + '" style="width:30px;height:auto;position:absolute;top:4px;left:0px;"/>' +
+                '<img src="' + getIcon(iconpath.reward, 'reward/stardust', '.png', item['reward_amount']) + '" style="width:30px;height:auto;position:absolute;top:4px;left:0px;"/>' +
                 '</div>'
             stopMarker = L.divIcon({
                 iconSize: [31, 31],
@@ -2460,7 +2464,7 @@ function getPokestopMarkerIcon(item) {
         } else if (item['quest_reward_type'] === 2) {
             html = '<div style="position:relative;">' +
                 '<img src="' + getIcon(iconpath.pokestop, 'pokestop', '.png', markerStr, 0, 1) + '" style="width:50px;height:72;top:-35px;right:10px;"/>' +
-                '<img src="' + getIcon(iconpath.reward, 'reward/item', '.png', item['quest_item_id'], item['quest_reward_amount']) + '" style="width:30px;height:auto;position:absolute;top:4px;left:0px;"/>' +
+                '<img src="' + getIcon(iconpath.reward, 'reward/item', '.png', item['reward_item_id'], item['reward_amount']) + '" style="width:30px;height:auto;position:absolute;top:4px;left:0px;"/>' +
                 '</div>'
             stopMarker = L.divIcon({
                 iconSize: [31, 31],
@@ -2493,7 +2497,7 @@ function getPokestopMarkerIcon(item) {
 function setupPokestopMarker(item) {
     var pokestopMarkerIcon = getPokestopMarkerIcon(item)
     var marker
-    if (item['quest_pokemon_shiny'] === 'true') {
+    if (item['reward_pokemon_shiny'] === 'true') {
         marker = L.marker([item['latitude'], item['longitude']], {icon: pokestopMarkerIcon, zIndexOffset: 1050, virtual: true}).bindPopup(pokestopLabel(item), {className: 'leaflet-popup-content-wrapper shiny', autoPan: false, closeOnClick: false, autoClose: false})
     } else {
         marker = L.marker([item['latitude'], item['longitude']], {icon: pokestopMarkerIcon, zIndexOffset: 1050, virtual: true}).bindPopup(pokestopLabel(item), {className: 'leaflet-popup-content-wrapper normal', autoPan: false, closeOnClick: false, autoClose: false})
@@ -3285,20 +3289,20 @@ function searchForItem(lat, lon, term, type, field) {
                     })
                     var html = '<li class="search-result ' + type + '" data-lat="' + element.lat + '" data-lon="' + element.lon + '"><div class="left-column" onClick="centerMapOnCoords(event);">'
                     if (sr.hasClass('reward-results')) {
-                        if (element.quest_pokemon_id !== 0 && element.quest_reward_type === 7) {
-                            html += '<span style="background:url(' + getIcon(iconpath.pokemon, 'pokemon', '.png', element.quest_pokemon_id, 0, element.quest_pokemon_formid) + ') no-repeat;" class="i-icon" ></span>'
+                        if (element.reward_pokemon_id !== 0 && element.quest_reward_type === 7) {
+                            html += '<span style="background:url(' + getIcon(iconpath.pokemon, 'pokemon', '.png', element.reward_pokemon_id, 0, element.reward_pokemon_formid) + ') no-repeat;" class="i-icon" ></span>'
                         }
-                        if (element.quest_item_id !== 0) {
-                            html += '<span style="background:url(' + getIcon(iconpath.reward, 'reward/item', '.png', element.quest_item_id, element.quest_reward_amount) + ') no-repeat;" class="i-icon" ></span>'
+                        if (element.reward_item_id !== 0) {
+                            html += '<span style="background:url(' + getIcon(iconpath.reward, 'reward/item', '.png', element.reward_item_id, element.reward_amount) + ') no-repeat;" class="i-icon" ></span>'
                         }
                         if (element.quest_reward_type === 4) {
-                            html += '<span style="background:url(' + getIcon(iconpath.reward, 'reward/candy', '.png', element.quest_energy_pokemon_id, element.quest_reward_amount) + ') no-repeat;" class="i-icon" ></span>'
+                            html += '<span style="background:url(' + getIcon(iconpath.reward, 'reward/candy', '.png', element.reward_pokemon_id, element.reward_amount) + ') no-repeat;" class="i-icon" ></span>'
                         }
                         if (element.quest_reward_type === 3) {
-                            html += '<span style="background:url(' + getIcon(iconpath.reward, 'reward/stardust', '.png', element.quest_dust_amount) + ') no-repeat;" class="i-icon" ></span>'
+                            html += '<span style="background:url(' + getIcon(iconpath.reward, 'reward/stardust', '.png', element.reward_amount) + ') no-repeat;" class="i-icon" ></span>'
                         }
                         if (element.quest_reward_type === 12) {
-                            html += '<span style="background:url(' + getIcon(iconpath.reward, 'reward/mega_resource', '.png', element.quest_energy_pokemon_id) + ') no-repeat;" class="i-icon" ></span>'
+                            html += '<span style="background:url(' + getIcon(iconpath.reward, 'reward/mega_resource', '.png', element.reward_pokemon_id) + ') no-repeat;" class="i-icon" ></span>'
                         }
                     }
                     html += '<div class="cont">'
@@ -4703,15 +4707,15 @@ function processPokestops(i, item, lastMidnight) {
 function pokestopMeetsQuestFilter(pokestop, lastMidnight) {
     if (pokestop['quest_type'] === 0 || lastMidnight > Number(pokestop['quest_timestamp'])) {
         return false
-    } else if (pokestop['quest_reward_type'] === 12 && pokestop['quest_energy_pokemon_id'] > 0 && questsExcludedEnergy.indexOf(pokestop['quest_energy_pokemon_id']) > -1) {
+    } else if (pokestop['quest_reward_type'] === 12 && pokestop['reward_pokemon_id'] > 0 && questsExcludedEnergy.indexOf(pokestop['reward_pokemon_id']) > -1) {
         return false
-    } else if (pokestop['quest_reward_type'] === 4 && pokestop['quest_energy_pokemon_id'] > 0 && questsExcludedCandy.indexOf(pokestop['quest_energy_pokemon_id']) > -1) {
+    } else if (pokestop['quest_reward_type'] === 4 && pokestop['reward_pokemon_id'] > 0 && questsExcludedCandy.indexOf(pokestop['reward_pokemon_id']) > -1) {
         return false
-    } else if (pokestop['quest_reward_type'] === 7 && pokestop['quest_pokemon_id'] > 0 && questsExcludedPokemon.indexOf(pokestop['quest_pokemon_id']) > -1) {
+    } else if (pokestop['quest_reward_type'] === 7 && pokestop['reward_pokemon_id'] > 0 && questsExcludedPokemon.indexOf(pokestop['reward_pokemon_id']) > -1) {
         return false
-    } else if (pokestop['quest_reward_type'] === 2 && pokestop['quest_item_id'] > 0 && questsExcludedItem.indexOf(pokestop['quest_item_id']) > -1) {
+    } else if (pokestop['quest_reward_type'] === 2 && pokestop['reward_item_id'] > 0 && questsExcludedItem.indexOf(pokestop['reward_item_id']) > -1) {
         return false
-    } else if (pokestop['quest_reward_type'] === 3 && Number(pokestop['quest_dust_amount']) < Number(Store.get('showDustAmount'))) {
+    } else if (pokestop['quest_reward_type'] === 3 && Number(pokestop['reward_amount']) < Number(Store.get('showDustAmount'))) {
         return false
     } else if (pokestop['quest_reward_type'] === 3 && Store.get('showDustAmount') === 0) {
         return false

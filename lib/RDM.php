@@ -492,18 +492,17 @@ class RDM extends Scanner
         quest_timestamp,
         quest_target,
         quest_rewards,
-        quest_pokemon_id,
-        quest_item_id,
+        quest_item_id AS reward_item_id,
         json_extract(json_extract(`quest_conditions`,'$[*].type'),'$[0]') AS quest_condition_type,
         json_extract(json_extract(`quest_conditions`,'$[*].type'),'$[1]') AS quest_condition_type_1,
         json_extract(json_extract(`quest_conditions`,'$[*].info'),'$[0]') AS quest_condition_info,
         quest_reward_type,
-        json_extract(json_extract(`quest_rewards`,'$[*].info.amount'),'$[0]') AS quest_reward_amount,
-        json_extract(json_extract(`quest_rewards`,'$[*].info.amount'),'$[0]') AS quest_dust_amount,
-        json_extract(json_extract(`quest_rewards`,'$[*].info.amount'),'$[0]') AS quest_energy_amount,
-        json_extract(json_extract(`quest_rewards`,'$[*].info.pokemon_id'),'$[0]') AS quest_energy_pokemon_id,
-        json_extract(json_extract(`quest_rewards`,'$[*].info.form_id'),'$[0]') AS quest_pokemon_formid,
-        json_extract(json_extract(`quest_rewards`,'$[*].info.shiny'),'$[0]') AS quest_pokemon_shiny
+        json_extract(json_extract(`quest_rewards`,'$[*].info.amount'),'$[0]') AS reward_amount,
+        json_extract(json_extract(`quest_rewards`,'$[*].info.pokemon_id'),'$[0]') AS reward_pokemon_id,
+        json_extract(json_extract(`quest_rewards`,'$[*].info.form_id'),'$[0]') AS reward_pokemon_formid,
+        json_extract(json_extract(`quest_rewards`,'$[*].info.costume_id'),'$[0]') AS reward_pokemon_costumeid,
+        json_extract(json_extract(`quest_rewards`,'$[*].info.gender_id'),'$[0]') AS reward_pokemon_genderid,
+        json_extract(json_extract(`quest_rewards`,'$[*].info.shiny'),'$[0]') AS reward_pokemon_shiny
         FROM pokestop
         WHERE :conditions";
 
@@ -513,20 +512,15 @@ class RDM extends Scanner
         $i = 0;
 
         foreach ($pokestops as $pokestop) {
-            $item_pid = $pokestop["quest_item_id"];
+            $item_pid = $pokestop["reward_item_id"];
             if ($item_pid == "0") {
                 $item_pid = null;
-                $pokestop["quest_item_id"] = null;
+                $pokestop["reward_item_id"] = null;
             }
-            $mon_pid = $pokestop["quest_pokemon_id"];
+            $mon_pid = $pokestop["reward_pokemon_id"];
             if ($mon_pid == "0") {
                 $mon_pid = null;
-                $pokestop["quest_pokemon_id"] = null;
-            }
-            $energy_mon_pid = $pokestop["quest_energy_pokemon_id"];
-            if ($energy_mon_pid == "0") {
-                $energy_mon_pid = null;
-                $pokestop["quest_energy_pokemon_id"] = null;
+                $pokestop["reward_pokemon_id"] = null;
             }
             $grunttype_pid = $pokestop["grunt_type"];
             if ($grunttype_pid == "0") {
@@ -540,20 +534,18 @@ class RDM extends Scanner
             $pokestop["quest_condition_type_1"] = intval($pokestop["quest_condition_type_1"]);
             $pokestop["quest_reward_type"] = intval($pokestop["quest_reward_type"]);
             $pokestop["quest_target"] = intval($pokestop["quest_target"]);
-            $pokestop["quest_pokemon_id"] = intval($pokestop["quest_pokemon_id"]);
-            $pokestop["quest_pokemon_formid"] = intval($pokestop["quest_pokemon_formid"]);
-            $pokestop["quest_item_id"] = intval($pokestop["quest_item_id"]);
-            $pokestop["quest_reward_amount"] = intval($pokestop["quest_reward_amount"]);
-            $pokestop["quest_dust_amount"] = intval($pokestop["quest_dust_amount"]);
-            $pokestop["quest_energy_amount"] = intval($pokestop["quest_energy_amount"]);
-            $pokestop["quest_energy_pokemon_id"] = intval($pokestop["quest_energy_pokemon_id"]);
-            $pokestop["quest_energy_pokemon_name"] = empty($energy_mon_pid) ? null : i8ln($this->data[$energy_mon_pid]["name"]);
+            $pokestop["reward_pokemon_id"] = intval($pokestop["reward_pokemon_id"]);
+            $pokestop["reward_pokemon_name"] = empty($mon_pid) ? null : i8ln($this->data[$mon_pid]["name"]);
+            $pokestop["reward_pokemon_formid"] = intval($pokestop["reward_pokemon_formid"]);
+            $pokestop["reward_pokemon_costumeid"] = intval($pokestop["reward_pokemon_costumeid"]);
+            $pokestop["reward_pokemon_genderid"] = intval($pokestop["reward_pokemon_genderid"]);
+            $pokestop["reward_item_id"] = intval($pokestop["reward_item_id"]);
+            $pokestop["reward_item_name"] = empty($item_pid) ? null : i8ln($this->items[$item_pid]["name"]);
+            $pokestop["reward_amount"] = intval($pokestop["reward_amount"]);
             $pokestop["url"] = ! empty($pokestop["url"]) ? preg_replace("/^http:/i", "https:", $pokestop["url"]) : null;
             $pokestop["lure_expiration"] = $pokestop["lure_expiration"] * 1000;
             $pokestop["incident_expiration"] = $pokestop["incident_expiration"] * 1000;
             $pokestop["lure_id"] = intval($pokestop["lure_id"]);
-            $pokestop["quest_item_name"] = empty($item_pid) ? null : i8ln($this->items[$item_pid]["name"]);
-            $pokestop["quest_pokemon_name"] = empty($mon_pid) ? null : i8ln($this->data[$mon_pid]["name"]);
             $pokestop["grunt_type_name"] = empty($grunttype_pid) ? null : i8ln($this->grunttype[$grunttype_pid]["type"]);
             $pokestop["grunt_type_gender"] = empty($grunttype_pid) ? null : i8ln($this->grunttype[$grunttype_pid]["grunt"]);
             $pokestop["encounters"] = empty($this->grunttype[$grunttype_pid]["encounters"]) ? null : $this->grunttype[$grunttype_pid]["encounters"];

@@ -756,16 +756,19 @@ class RocketMap_MAD extends RocketMap
         tq.quest_type,
         tq.quest_timestamp,
         tq.quest_reward,
-        tq.quest_pokemon_id,
-        tq.quest_item_id,
+        tq.quest_pokemon_id AS reward_pokemon_id,
+        tq.quest_item_id AS reward_item_id,
         tq.quest_task,
         tq.quest_reward_type,
-        tq.quest_pokemon_form_id AS quest_pokemon_formid,
-        json_extract(json_extract(`quest_reward`,'$[*].pokemon_encounter.pokemon_display.is_shiny'),'$[0]') AS quest_pokemon_shiny,
-        tq.quest_item_amount AS quest_reward_amount,
-        tq.quest_stardust AS quest_dust_amount,
-        tq.quest_item_amount AS quest_energy_amount,
-        tq.quest_pokemon_id AS quest_energy_pokemon_id
+        tq.quest_pokemon_form_id AS reward_pokemon_formid,
+        json_extract(json_extract(`quest_reward`,'$[*].pokemon_encounter.pokemon_display.is_shiny'),'$[0]') AS reward_pokemon_shiny,
+        json_extract(json_extract(`quest_reward`,'$[*].pokemon_encounter.pokemon_display.costume_value'),'$[0]') AS reward_pokemon_costumeid,
+        json_extract(json_extract(`quest_reward`,'$[*].pokemon_encounter.pokemon_display.gender_value'),'$[0]') AS reward_pokemon_genderid,
+        tq.quest_item_amount AS reward_item_amount,
+        tq.quest_stardust AS reward_dust_amount,
+        tq.quest_item_amount AS reward_energy_amount,
+        json_extract(json_extract(`quest_reward`,'$[*].candy.amount'),'$[0]') AS reward_candy_amount,
+        json_extract(json_extract(`quest_reward`,'$[*].candy.pokemon_id'),'$[0]') AS reward_candy_pokemon_id
         FROM pokestop p
         LEFT JOIN trs_quest tq ON tq.GUID = p.pokestop_id
         WHERE :conditions";
@@ -777,25 +780,42 @@ class RocketMap_MAD extends RocketMap
         $i = 0;
 
         foreach ($pokestops as $pokestop) {
-            $item_pid = $pokestop["quest_item_id"];
+            $item_pid = $pokestop["reward_item_id"];
             if ($item_pid == "0") {
                 $item_pid = null;
-                $pokestop["quest_item_id"] = null;
+                $pokestop["reward_item_id"] = null;
             }
-            $mon_pid = $pokestop["quest_pokemon_id"];
+            $mon_pid = $pokestop["reward_pokemon_id"];
             if ($mon_pid == "0") {
                 $mon_pid = null;
-                $pokestop["quest_pokemon_id"] = null;
-            }
-            $energy_mon_pid = $pokestop["quest_energy_pokemon_id"];
-            if ($energy_mon_pid == "0") {
-                $energy_mon_pid = null;
-                $pokestop["quest_energy_pokemon_id"] = null;
+                $pokestop["reward_pokemon_id"] = null;
             }
             $grunttype_pid = $pokestop["grunt_type"];
             if ($grunttype_pid == "0") {
                 $grunttype_pid = null;
                 $pokestop["grunt_type"] = null;
+            }
+            switch ($pokestop["quest_reward_type"]) {
+                case 2:
+                    $pokestop["reward_amount"] = intval($pokestop["reward_item_amount"]);
+                    break;
+                case 3:
+                    $pokestop["reward_amount"] = intval($pokestop["reward_dust_amount"]);
+                    break;
+                case 4:
+                    $pokestop["reward_pokemon_id"] = intval($pokestop["reward_candy_pokemon_id"]);
+                    $pokestop["reward_amount"] = intval($pokestop["reward_candy_amount"]);
+                    break;
+                case 7:
+                    $pokestop["reward_pokemon_id"] = intval($pokestop["reward_pokemon_id"]);
+                    break;
+                case 12:
+                    $pokestop["reward_pokemon_id"] = intval($pokestop["reward_pokemon_id"]);
+                    $pokestop["reward_amount"] = intval($pokestop["reward_energy_amount"]);
+                    break;
+                default:
+                    $pokestop["reward_pokemon_id"] = null;
+                    $pokestop["reward_amount"] = null;
             }
             $pokestop["latitude"] = floatval($pokestop["latitude"]);
             $pokestop["longitude"] = floatval($pokestop["longitude"]);
@@ -810,19 +830,15 @@ class RocketMap_MAD extends RocketMap
             $pokestop["quest_type"] = intval($pokestop["quest_type"]);
             $pokestop["quest_condition_type"] = 0;
             $pokestop["quest_condition_type_1"] = 0;
+            $pokestop["quest_condition_info"] = null;
             $pokestop["quest_reward_type"] = intval($pokestop["quest_reward_type"]);
             $pokestop["quest_target"] = 0;
-            $pokestop["quest_pokemon_id"] = intval($pokestop["quest_pokemon_id"]);
-            $pokestop["quest_pokemon_formid"] = intval($pokestop["quest_pokemon_formid"]);
-            $pokestop["quest_item_id"] = intval($pokestop["quest_item_id"]);
-            $pokestop["quest_reward_amount"] = intval($pokestop["quest_reward_amount"]);
-            $pokestop["quest_dust_amount"] = intval($pokestop["quest_dust_amount"]);
-            $pokestop["quest_energy_amount"] = intval($pokestop["quest_energy_amount"]);
-            $pokestop["quest_energy_pokemon_id"] = intval($pokestop["quest_energy_pokemon_id"]);
-            $pokestop["quest_energy_pokemon_name"] = empty($energy_mon_pid) ? null : i8ln($this->data[$energy_mon_pid]["name"]);
-            $pokestop["quest_item_name"] = empty($item_pid) ? null : i8ln($this->items[$item_pid]["name"]);
-            $pokestop["quest_pokemon_name"] = empty($mon_pid) ? null : i8ln($this->data[$mon_pid]["name"]);
-            $pokestop["quest_condition_info"] = null;
+            $pokestop["reward_pokemon_name"] = empty($mon_pid) ? null : i8ln($this->data[$mon_pid]["name"]);
+            $pokestop["reward_pokemon_formid"] = intval($pokestop["reward_pokemon_formid"]);
+            $pokestop["reward_pokemon_costumeid"] = intval($pokestop["reward_pokemon_costumeid"]);
+            $pokestop["reward_pokemon_genderid"] = intval($pokestop["reward_pokemon_genderid"]);
+            $pokestop["reward_item_id"] = intval($pokestop["reward_item_id"]);
+            $pokestop["reward_item_name"] = empty($item_pid) ? null : i8ln($this->items[$item_pid]["name"]);
             $pokestop["last_seen"] = $pokestop["last_seen"] * 1000;
             $data[] = $pokestop;
             unset($pokestops[$i]);
