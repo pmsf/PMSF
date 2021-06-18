@@ -1558,6 +1558,8 @@ function getReward(item) {
             shinyStr = '_shiny'
         }
         rewardImage = '<img style="' + styleStr + '" src="' + iconpath + 'pokemon_icon_' + pokemonIdStr + '_' + formStr + shinyStr + '.png"/>'
+    } else if (item['quest_reward_type'] === 4) {
+        rewardImage = '<img style="' + styleStr + '" src="static/images/candy/' + item['quest_energy_pokemon_id'] + '_a' + item['quest_reward_amount'] + '.png"/>'
     } else if (item['quest_reward_type'] === 3) {
         rewardImage = '<img style="' + styleStr + '" src="' + iconpath + 'rewards/reward_stardust_' + item['quest_dust_amount'] + '.png"/>'
     } else if (item['quest_reward_type'] === 2) {
@@ -1792,6 +1794,12 @@ function pokestopLabel(item) {
             i8ln('Reward') + ': <b>' +
             item['quest_dust_amount'] + ' ' +
             i8ln('Stardust') +
+            '</b></div>'
+        } else if (item['quest_reward_type'] === 4) {
+            str += '<div>' +
+            i8ln('Reward') + ': <b>' +
+            item['quest_reward_amount'] + 'x ' + item['quest_energy_pokemon_name'] + ' ' +
+            i8ln('Candy') +
             '</b></div>'
         } else if (item['quest_reward_type'] === 7) {
             str += '<div>' +
@@ -2469,6 +2477,18 @@ function getPokestopMarkerIcon(item) {
                     className: 'stop-quest-marker',
                     html: html
                 })
+            } else if (item['quest_reward_type'] === 4) {
+                html = '<div style="position:relative;">' +
+                    '<img src="static/forts/' + stopQuestIcon + '" style="width:50px;height:72;top:-35px;right:10px;"/>' +
+                    '<img src="static/images/candy/' + item['quest_energy_pokemon_id'] + '_a' + item['quest_reward_amount'] + '.png" style="width:30px;height:auto;position:absolute;top:4px;left:0px;"/>' +
+                    '</div>'
+                stopMarker = L.divIcon({
+                    iconSize: [31, 31],
+                    iconAnchor: [25, 45],
+                    popupAnchor: [0, -35],
+                    className: 'stop-quest-marker',
+                    html: html
+                })
             } else if (item['quest_reward_type'] === 3) {
                 html = '<div style="position:relative;">' +
                     '<img src="static/forts/' + stopQuestIcon + '" style="width:50px;height:72;top:-35px;right:10px;"/>' +
@@ -2567,6 +2587,18 @@ function getPokestopMarkerIcon(item) {
             html = '<div style="position:relative;">' +
                 '<img src="static/forts/' + stopQuestIcon + '" style="width:50px;height:72;top:-35px;right:10px;"/>' +
                 '<img src="' + iconpath + 'pokemon_icon_' + pokemonIdStr + '_' + formStr + shinyStr + '.png" style="width:30px;height:auto;position:absolute;top:4px;left:0px;"/>' +
+                '</div>'
+            stopMarker = L.divIcon({
+                iconSize: [31, 31],
+                iconAnchor: [25, 45],
+                popupAnchor: [0, -35],
+                className: 'stop-quest-marker',
+                html: html
+            })
+        } else if (item['quest_reward_type'] === 4) {
+            html = '<div style="position:relative;">' +
+                '<img src="static/forts/' + stopQuestIcon + '" style="width:50px;height:72;top:-35px;right:10px;"/>' +
+                '<img src="static/images/candy/' + item['quest_energy_pokemon_id'] + '_a' + item['quest_reward_amount'] + '.png" style="width:30px;height:auto;position:absolute;top:4px;left:0px;"/>' +
                 '</div>'
             stopMarker = L.divIcon({
                 iconSize: [31, 31],
@@ -3420,6 +3452,9 @@ function searchForItem(lat, lon, term, type, field) {
                         }
                         if (element.quest_item_id !== 0) {
                             html += '<span style="background:url(' + iconpath + 'rewards/reward_' + element.quest_item_id + '_' + element.quest_reward_amount + '.png) no-repeat;" class="i-icon" ></span>'
+                        }
+                        if (element.quest_reward_type === 4) {
+                            html += '<span style="background:url(static/images/candy/' + element.quest_energy_pokemon_id + '_a' + element.quest_reward_amount + '.png) no-repeat;" class="i-icon" ></span>'
                         }
                         if (element.quest_reward_type === 3) {
                             html += '<span style="background:url(' + iconpath + 'rewards/reward_stardust_' + element.quest_dust_amount + '.png) no-repeat;" class="i-icon" ></span>'
@@ -5955,22 +5990,22 @@ function loadDefaultImages() {
             $(this).addClass('active')
         }
     })
-    $('#exclude-quests-pokemon .pokemon-icon-sprite').each(function () {
+    $('#exclude-quest-pokemon .pokemon-icon-sprite').each(function () {
         if (eqp.indexOf($(this).data('value')) !== -1) {
             $(this).addClass('active')
         }
     })
-    $('#exclude-quests-energy .energy-icon-sprite').each(function () {
+    $('#exclude-quest-energy .energy-icon-sprite').each(function () {
         if (eqe.indexOf($(this).data('value')) !== -1) {
             $(this).addClass('active')
         }
     })
-    $('#exclude-quests-item .item-icon-sprite').each(function () {
+    $('#exclude-quest-item .item-icon-sprite').each(function () {
         if (eqi.indexOf($(this).data('value')) !== -1) {
             $(this).addClass('active')
         }
     })
-    $('#exclude-grunts .grunt-icon-sprite').each(function () {
+    $('#exclude-rocket .grunt-icon-sprite').each(function () {
         if (eg.indexOf($(this).data('value')) !== -1) {
             $(this).addClass('active')
         }
