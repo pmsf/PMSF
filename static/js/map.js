@@ -7186,11 +7186,11 @@ function getIcon(iconRepo, folder, fileType, iconKeyId, ...varArgs) {
             }
             break
         case 'reward/candy':
-            const pokemonId = iconKeyId
+            const pokemonIdCandy = iconKeyId
             const candyAmount = typeof varArgs[0] === 'undefined' ? [''] : varArgs[0] === 0 ? [''] : ['_a' + varArgs[0], '']
             search:
             for (const a of candyAmount) {
-                requestedIcon = `${pokemonId}${a}${fileType}`
+                requestedIcon = `${pokemonIdCandy}${a}${fileType}`
                 if (iconpath['rewardIndex']['candy'].includes(requestedIcon)) {
                     icon = requestedIcon
                     break search
