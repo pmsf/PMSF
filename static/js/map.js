@@ -7191,7 +7191,7 @@ function getIcon(iconRepo, folder, fileType, iconKeyId, ...varArgs) {
             search:
             for (const a of candyAmount) {
                 requestedIcon = `${pokemonId}${a}${fileType}`
-                if (iconpath['rewardIndex']['item'].includes(requestedIcon)) {
+                if (iconpath['rewardIndex']['candy'].includes(requestedIcon)) {
                     icon = requestedIcon
                     break search
                 }
