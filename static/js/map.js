@@ -18,6 +18,7 @@ var $selectDirectionProvider
 var $questsExcludePokemon
 var $questsExcludeItem
 var $questsExcludeEnergy
+var $questsExcludeCandy
 var $excludeGrunts
 var $excludeRaidboss
 var $excludeRaidegg
@@ -48,6 +49,7 @@ var notifiedRarity = []
 var questsExcludedPokemon = []
 var questsExcludedItem = []
 var questsExcludedEnergy = []
+var questsExcludedCandy = []
 var excludedGrunts = []
 var excludedRaidboss = []
 var excludedRaidegg = []
@@ -64,6 +66,7 @@ var reincludedPokemon = []
 var reincludedQuestsPokemon = []
 var reincludedQuestsItem = []
 var reincludedQuestsEnergy = []
+var reincludedQuestsCandy = []
 var reincludedGrunts = []
 var reincludedRaidboss = []
 var reincludedRaidegg = []
@@ -71,6 +74,7 @@ var reids = []
 var qpreids = []
 var qireids = []
 var qereids = []
+var qcreids = []
 var greids = []
 var rbreids = []
 var rereids = []
@@ -3155,6 +3159,8 @@ function loadRawData() {
             'qieids': String(questsExcludedItem),
             'qereids': String(reincludedQuestsEnergy),
             'qeeids': String(questsExcludedEnergy),
+            'qcreids': String(reincludedQuestsCandy),
+            'qceids': String(questsExcludedCandy),
             'geids': String(excludedGrunts),
             'greids': String(reincludedGrunts),
             'rbeids': String(excludedRaidboss),
@@ -4703,6 +4709,8 @@ function pokestopMeetsQuestFilter(pokestop, lastMidnight) {
         return false
     } else if (pokestop['quest_reward_type'] === 12 && pokestop['reward_pokemon_id'] > 0 && questsExcludedEnergy.indexOf(pokestop['reward_pokemon_id']) > -1) {
         return false
+    } else if (pokestop['quest_reward_type'] === 4 && pokestop['reward_pokemon_id'] > 0 && questsExcludedCandy.indexOf(pokestop['reward_pokemon_id']) > -1) {
+        return false
     } else if (pokestop['quest_reward_type'] === 7 && pokestop['reward_pokemon_id'] > 0 && questsExcludedPokemon.indexOf(pokestop['reward_pokemon_id']) > -1) {
         return false
     } else if (pokestop['quest_reward_type'] === 2 && pokestop['reward_item_id'] > 0 && questsExcludedItem.indexOf(pokestop['reward_item_id']) > -1) {
@@ -5159,6 +5167,7 @@ function updateMap() {
             qpreids = result.qpreids
             qireids = result.qireids
             qereids = result.qereids
+            qcreids = result.qcreids
             greids = result.greids
             rbreids = result.rbreids
             rereids = result.rereids
@@ -5176,6 +5185,11 @@ function updateMap() {
                 reincludedQuestsEnergy = qereids.filter(function (e) {
                     return this.indexOf(e) < 0
                 }, reincludedQuestsEnergy)
+            }
+            if (qcreids instanceof Array) {
+                reincludedQuestsCandy = qcreids.filter(function (e) {
+                    return this.indexOf(e) < 0
+                }, reincludedQuestsCandy)
             }
             if (qireids instanceof Array) {
                 reincludedQuestsItem = qireids.filter(function (e) {
@@ -5764,6 +5778,24 @@ function energySpritesFilter() {
     })
 }
 
+function candySpritesFilter() {
+    jQuery('.offcanvas-body.left .candy-list .candy-icon-sprite').on('click', function () {
+        var img = jQuery(this)
+        var select = jQuery(this).parent().parent().parent().find('.search-number')
+        var value = select.val().split(',')
+        var id = img.data('value').toString()
+        if (img.hasClass('active')) {
+            select.val(value.filter(function (elem) {
+                return elem !== id
+            }).join(',')).trigger('change')
+            img.removeClass('active')
+        } else {
+            select.val((value.concat(id).join(','))).trigger('change')
+            img.addClass('active')
+        }
+    })
+}
+
 function itemSpritesFilter() {
     jQuery('.offcanvas-body.left .item-list .item-icon-sprite').on('click', function () {
         var img = jQuery(this)
@@ -5824,6 +5856,7 @@ function loadDefaultImages() {
     var en = Store.get('remember_select_notify')
     var eqp = Store.get('remember_quests_exclude_pokemon')
     var eqe = Store.get('remember_quests_exclude_energy')
+    var eqc = Store.get('remember_quests_exclude_candy')
     var eqi = Store.get('remember_quests_exclude_item')
     var eg = Store.get('remember_exclude_grunts')
     var erb = Store.get('remember_exclude_raidboss')
@@ -5851,6 +5884,11 @@ function loadDefaultImages() {
     })
     $('#exclude-quest-energy .energy-icon-sprite').each(function () {
         if (eqe.indexOf($(this).data('value')) !== -1) {
+            $(this).addClass('active')
+        }
+    })
+    $('#exclude-quest-candy .candy-icon-sprite').each(function () {
+        if (eqc.indexOf($(this).data('value')) !== -1) {
             $(this).addClass('active')
         }
     })
@@ -6049,6 +6087,7 @@ $(function () {
     pokemonSpritesFilter()
     itemSpritesFilter()
     energySpritesFilter()
+    candySpritesFilter()
     gruntSpritesFilter()
     raideggSpritesFilter()
 })
@@ -6093,6 +6132,7 @@ $(function () {
     $questsExcludePokemon = $('#exclude-quest-pokemon .search-number')
     $questsExcludeItem = $('#exclude-quest-item .search-number')
     $questsExcludeEnergy = $('#exclude-quest-energy .search-number')
+    $questsExcludeCandy = $('#exclude-quest-candy .search-number')
     $excludeGrunts = $('#exclude-rocket .search-number')
     $excludeRaidboss = $('#exclude-raidboss .search-number')
     $excludeRaidegg = $('#exclude-raidegg .search-number')
@@ -6287,6 +6327,18 @@ $(function () {
             updateMap()
             Store.set('remember_quests_exclude_energy', questsExcludedEnergy)
         })
+        $questsExcludeCandy.on('change', function (e) {
+            buffer = questsExcludedCandy
+            questsExcludedCandy = $questsExcludeCandy.val().split(',').map(Number).sort(function (a, b) {
+                return parseInt(a) - parseInt(b)
+            })
+            buffer = buffer.filter(function (e) {
+                return this.indexOf(e) < 0
+            }, questsExcludedCandy)
+            reincludedQuestsCandy = reincludedQuestsCandy.concat(buffer).map(String)
+            updateMap()
+            Store.set('remember_quests_exclude_candy', questsExcludedCandy)
+        })
         $excludeRaidboss.on('change', function (e) {
             buffer = excludedRaidboss
             excludedRaidboss = $excludeRaidboss.val().split(',').map(Number).sort(function (a, b) {
@@ -6312,6 +6364,7 @@ $(function () {
         $raidNotify.val(Store.get('remember_raid_notify')).trigger('change')
         $questsExcludePokemon.val(Store.get('remember_quests_exclude_pokemon')).trigger('change')
         $questsExcludeEnergy.val(Store.get('remember_quests_exclude_energy')).trigger('change')
+        $questsExcludeCandy.val(Store.get('remember_quests_exclude_candy')).trigger('change')
         $excludeRaidboss.val(Store.get('remember_exclude_raidboss')).trigger('change')
     })
 
@@ -6338,6 +6391,19 @@ $(function () {
         e.preventDefault()
         var parent = $(this).parent()
         parent.find('.energy-list .energy-icon-sprite').removeClass('active')
+        parent.find('.search-number').val('').trigger('change')
+    })
+
+    $('.select-all-candy').on('click', function (e) {
+        e.preventDefault()
+        var parent = $(this).parent()
+        parent.find('.candy-list .candy-icon-sprite').addClass('active')
+        parent.find('.search-number').val(Array.from(Array(numberOfPokemon + 1).keys()).slice(1).join(',')).trigger('change')
+    })
+    $('.hide-all-candy').on('click', function (e) {
+        e.preventDefault()
+        var parent = $(this).parent()
+        parent.find('.candy-list .candy-icon-sprite').removeClass('active')
         parent.find('.search-number').val('').trigger('change')
     })
 

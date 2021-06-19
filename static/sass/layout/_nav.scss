@@ -91,12 +91,13 @@
             .select-all-grunt, .hide-all-grunt,
             .select-all-item, .hide-all-item,
             .select-all-energy, .hide-all-energy,
+            .select-all-candy, .hide-all-candy,
             .select-all-egg, .hide-all-egg {
                 width: 48%;
                 margin: 2px;
             }
             button#exclude-pokemon-tab, button#exclude-min-iv-tab,
-            button#exclude-quest-pokemon-tab, button#exclude-quest-item-tab, button#exclude-quest-energy-tab,
+            button#exclude-quest-pokemon-tab, button#exclude-quest-item-tab, button#exclude-quest-energy-tab, button#exclude-quest-candy-tab,
             button#exclude-rocket-tab,
             button#exclude-raidboss-tab, button#exclude-raidegg-tab,
             button#notify-pokemon-tab {
@@ -114,8 +115,8 @@
             button#exclude-pokemon-tab, button#exclude-min-iv-tab {
                 margin-top: 8px;
             }
-            .pokemon-list, .energy-list, .grunt-list, .raidegg-list, .item-list {
-                .pokemon-icon-sprite, .energy-icon-sprite, .grunt-icon-sprite, .raidegg-icon-sprite, .item-icon-sprite {
+            .pokemon-list, .energy-list, .candy-list, .grunt-list, .raidegg-list, .item-list {
+                .pokemon-icon-sprite, .energy-icon-sprite, .candy-icon-sprite, .grunt-icon-sprite, .raidegg-icon-sprite, .item-icon-sprite {
                     border: 1px solid rgba(0, 0, 0, .125);
                     border-radius: 2px;
                     background-color: #f7f7f7;
