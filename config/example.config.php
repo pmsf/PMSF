@@ -246,6 +246,8 @@ $hidePokemonCoords = false;
 
 $pokemonGenSearchString = 'generation';                             // When custom string is used translations do not work.
 
+$noPvp = false;
+
 $excludeMinIV = '[131, 143, 147, 148, 149, 248]';                   // [] for empty
 
 $minIV = '0';                                                       // "0" for empty or a number

@@ -485,10 +485,19 @@ if (strtolower($map) === "rdm") {
                                                             <li class="nav-item" role="presentation">
                                                                 <button class="nav-link<?php echo (($firstTab == 1) ? " active" : ""); ?>" id="exclude-quest-item-tab" data-bs-toggle="tab" data-bs-target="#exclude-quest-item" type="button" role="tab" aria-controls="exclude-quest-item" aria-selected="false"><?php echo i8ln('Items') ?></button>
                                                             </li>
-                                                        <?php }
+                                                        <?php
+                                                        $firstTab++;
+                                                        }
                                                         if (! $noQuestsEnergy) { ?>
                                                             <li class="nav-item" role="presentation">
                                                                 <button class="nav-link<?php echo (($firstTab == 1) ? " active" : ""); ?>" id="exclude-quest-energy-tab" data-bs-toggle="tab" data-bs-target="#exclude-quest-energy" type="button" role="tab" aria-controls="exclude-quest-energy" aria-selected="false"><?php echo i8ln('Energy') ?></button>
+                                                            </li>
+                                                        <?php
+                                                        $firstTab++;
+                                                        }
+                                                        if (! $noQuestsCandy) { ?>
+                                                            <li class="nav-item" role="presentation">
+                                                                <button class="nav-link<?php echo (($firstTab == 1) ? " active" : ""); ?>" id="exclude-quest-candy-tab" data-bs-toggle="tab" data-bs-target="#exclude-quest-candy" type="button" role="tab" aria-controls="exclude-quest-candy" aria-selected="false"><?php echo i8ln('Candy') ?></button>
                                                             </li>
                                                         <?php } ?>
                                                     </ul>
@@ -540,6 +549,22 @@ if (strtolower($map) === "rdm") {
                                                                 <div class="dropdown-divider"></div>
                                                                 <a class="btn btn-secondary select-all-energy" href="#"><?php echo i8ln('All') ?></a>
                                                                 <a class="btn btn-secondary hide-all-energy" href="#"><?php echo i8ln('None') ?></a>
+                                                            </div>
+                                                        <?php }
+                                                        $firstTabContent++;
+                                                        if (! $noQuestsCandy) { ?>
+                                                            <div class="tab-pane fade<?php echo (($firstTabContent == 1) ? " show active" : ""); ?>" id="exclude-quest-candy" role="tabpanel" aria-labelledby="exclude-quest-candy-tab">
+                                                                <div class="scroll-container">
+                                                                    <?php
+                                                                    if ($generateExcludeQuestsCandy === true) {
+                                                                        candyFilterImages($noPokemonNumbers, '', array_diff(range(1, $numberOfPokemon), $getList->generated_exclude_list('candylist')), 13);
+                                                                    } else {
+                                                                        candyFilterImages($noPokemonNumbers, '', $excludeQuestsCandy, 13);
+                                                                    } ?>
+                                                                </div>
+                                                                <div class="dropdown-divider"></div>
+                                                                <a class="btn btn-secondary select-all-candy" href="#"><?php echo i8ln('All') ?></a>
+                                                                <a class="btn btn-secondary hide-all-candy" href="#"><?php echo i8ln('None') ?></a>
                                                             </div>
                                                         <?php } ?>
                                                     </div>
@@ -1403,6 +1428,7 @@ include('modals.php');
     var hideQuestsPokemon = <?php echo $noQuestsPokemon ? '[]' : $hideQuestsPokemon ?>;
     var hideQuestsItem = <?php echo $noQuestsItems ? '[]' : $hideQuestsItem ?>;
     var hideQuestsEnergy = <?php echo $noQuestsEnergy ? '[]' : $hideQuestsEnergy ?>;
+    var hideQuestsCandy = <?php echo $noQuestsCandy ? '[]' : $hideQuestsCandy ?>;
     var enableNewPortals = <?php echo (($map != "monocle") || ($fork == "alternate")) ? $enableNewPortals : 0 ?>;
     var enableWeatherOverlay = <?php echo ! $noWeatherOverlay ? $enableWeatherOverlay : 'false' ?>;
     var enableSpawnpoints = <?php echo $noSpawnPoints ? 'false' : $enableSpawnPoints ?>;
@@ -1495,6 +1521,7 @@ include('modals.php');
     var nestAvgDefault = <?php echo $nestAvgDefault; ?>;
     var noDarkMode = <?php echo $noDarkMode === true ? 'true' : 'false' ?>;
     var noCatchRates = <?php echo $noCatchRates === true ? 'true' : 'false' ?>;
+    var noPvp = <?php echo $noPvp === true ? 'true' : 'false' ?>;
     var noHideSingleMarker = <?php echo $noHideSingleMarker === true ? 'true' : 'false' ?>;
 </script>
 <script src="static/dist/js/map.common.min.js"></script>

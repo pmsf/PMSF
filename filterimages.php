@@ -104,6 +104,50 @@
         </script>
     <?php }
 
+    function candyFilterImages($noPokemonNumbers, $onClick = '', $candyToExclude = array(), $num = 0)
+    {
+        global $mons, $iconFolderArray, $numberOfPokemon;
+        if (empty($mons)) {
+            $json = file_get_contents('static/dist/data/pokemon.min.json');
+            $mons = json_decode($json, true);
+        }
+        echo '<div class="candy-list-cont" id="candy-list-cont-' . $num . '">
+        <input type="hidden" class="search-number" value="' . $num . '" />
+        <input type="text" class="search search-input" placeholder="' . i8ln("Search Name, ID & Type") . '" />
+        <div class="candy-list list d-flex flex-wrap align-items-center text-center">';
+        $i = 0;
+        $z = 0;
+        foreach ($mons as $k => $pokemon) {
+            $type = '';
+            $name = $pokemon['name'];
+            foreach ($pokemon['types'] as $t) {
+                $type .= i8ln($t['type']);
+            }
+            if (! in_array($k, $candyToExclude)) {
+                if ($k > $numberOfPokemon) {
+                    break;
+                }
+                echo '<span class="candy-icon-sprite" data-value="' . $k . '" onclick="' . $onClick . '">
+                <span style="display:none" class="types">' . $type . '</span>
+                <span style="display:none" class="name">' . i8ln($name) . '</span>
+                <span style="display:none" class="id">' . $k . '</span>
+                <img loading="lazy" src="static/sprites/reward/candy/' . $k . '.png"/>';
+                echo "<img class='pkmnfilter' data-pkmnid='" . $k . "' loading='lazy' src='" . getIcon($iconFolderArray['pokemon'], 'pokemon/', '.png', $k) . "'/>";
+                if (! $noPokemonNames) {
+                    echo '<span style="font-size:.5rem;white-space:nowrap;">' . $pokemon['name'] . '</span>';
+                }
+                echo '</span>';
+            }
+        }
+        echo '</div></div>'; ?>
+        <script>
+            var options = {
+                valueNames: ['name', 'types', 'id']
+            };
+            var candyList = new List('candy-list-cont-<?php echo $num; ?>', options);
+        </script>
+    <?php }
+
     function itemFilterImages($noItemNumbers, $onClick = '', $itemsToExclude = array(), $num = 0)
     {
         global $items, $copyrightSafe, $iconFolderArray;

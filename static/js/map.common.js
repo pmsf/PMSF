@@ -124,6 +124,11 @@ var StoreOptions = {
             default: hideQuestsEnergy,
             type: StoreTypes.JSON
         },
+    'remember_quests_exclude_candy':
+        {
+            default: hideQuestsCandy,
+            type: StoreTypes.JSON
+        },
     'remember_quests_exclude_item':
         {
             default: hideQuestsItem,

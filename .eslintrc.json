@@ -177,6 +177,7 @@
     "hideQuestsPokemon": true,
     "hideQuestsItem": true,
     "hideQuestsEnergy": true,
+    "hideQuestsCandy": true,
     "noQuests": true,
     "noLures": true,
     "noTeamRocket": true,
@@ -237,6 +238,8 @@
     "processSpawnpointStats": true,
     "processPokemonStats": true,
     "processRewardStats": true,
-    "processShinyStats": true
+    "processShinyStats": true,
+    "noPvp": true,
+    "noHideSingleMarker": true
   }
 }

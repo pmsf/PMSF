@@ -18,6 +18,7 @@ var $selectDirectionProvider
 var $questsExcludePokemon
 var $questsExcludeItem
 var $questsExcludeEnergy
+var $questsExcludeCandy
 var $excludeGrunts
 var $excludeRaidboss
 var $excludeRaidegg
@@ -48,6 +49,7 @@ var notifiedRarity = []
 var questsExcludedPokemon = []
 var questsExcludedItem = []
 var questsExcludedEnergy = []
+var questsExcludedCandy = []
 var excludedGrunts = []
 var excludedRaidboss = []
 var excludedRaidegg = []
@@ -64,6 +66,7 @@ var reincludedPokemon = []
 var reincludedQuestsPokemon = []
 var reincludedQuestsItem = []
 var reincludedQuestsEnergy = []
+var reincludedQuestsCandy = []
 var reincludedGrunts = []
 var reincludedRaidboss = []
 var reincludedRaidegg = []
@@ -71,6 +74,7 @@ var reids = []
 var qpreids = []
 var qireids = []
 var qereids = []
+var qcreids = []
 var greids = []
 var rbreids = []
 var rereids = []
@@ -89,6 +93,9 @@ var locationMarker
 var rangeMarkers = ['pokemon', 'pokestop', 'gym']
 var storeZoom = true
 var moves
+var pokedex
+var weather // eslint-disable-line no-unused-vars
+var boostedMons // eslint-disable-line no-unused-vars
 
 var oSwLat
 var oSwLng
@@ -1293,6 +1300,7 @@ function pokemonLabel(item) {
     } else {
         contentstring += '<div style="position:relative;"><center>'
     }
+
     contentstring +=
     '<a href="javascript:void(0)" onclick="javascript:openMapDirections(' + latitude + ', ' + longitude + ')" title="' + i8ln('View in Maps') + '">' +
     '<i class="fas fa-road" style="padding-right:0.25em"></i>' + coordText + '</a>'
@@ -1304,7 +1312,77 @@ function pokemonLabel(item) {
     }
     contentstring += '<a href="./?lat=' + latitude + '&lon=' + longitude + '&zoom=18&encId=' + encounterId + '">' +
     '<i class="far fa-share-square" aria-hidden="true" style="position:relative;top:3px;left:0px;color:#26c300;margin-bottom:10px;font-size:18px;"></i>' +
-    '</a></center></div>'
+    '</a>'
+
+    if (!noPvp) {
+        if (item['pvp_rankings_great_league'] !== undefined && item['pvp_rankings_great_league'] !== null) {
+            contentstring += '<br>'
+            contentstring += '<b>' + i8ln('Great League') + ':</b>' + '<br>'
+            var greatLeague = JSON.parse(item['pvp_rankings_great_league'])
+            $.each(greatLeague, function (index, ranking) {
+                let pokemonName = ''
+                $.each(pokedex[ranking.pokemon]['forms'], function (index, form) {
+                    if (ranking.form === form['protoform'] && form['nameform'] !== 'Normal') {
+                        pokemonName = i8ln(form['nameform']) + ' ' + i8ln(pokedex[ranking.pokemon]['name'])
+                    }
+                })
+                if (pokemonName === '') {
+                    pokemonName = i8ln(pokedex[ranking.pokemon]['name'])
+                }
+
+                let infoString
+                if (ranking.rank === null) {
+                    infoString = i8ln('CP too high')
+                } else {
+                    infoString = '#' + ranking.rank
+                }
+                if (ranking.cp !== null) {
+                    infoString += ' @' + ranking.cp + i8ln('CP') + ' (' + i8ln('Lvl') + ' ' + (ranking.level) + ')'
+                }
+
+                let color = ''
+                if (ranking.rank === 1) {
+                    color = 'color:green'
+                }
+                contentstring += '<small style="font-size: 11px;' + color + '"><b>' + pokemonName + ':</b> ' + infoString + '</small><br>'
+            })
+        }
+
+        if (item['pvp_rankings_ultra_league'] !== undefined && item['pvp_rankings_ultra_league'] !== null) {
+            contentstring += '<br>'
+            contentstring += '<b>' + i8ln('Ultra League') + ':</b>' + '<br>'
+            var ultraLeague = JSON.parse(item['pvp_rankings_ultra_league'])
+            $.each(ultraLeague, function (index, ranking) {
+                let pokemonName = ''
+                $.each(pokedex[ranking.pokemon]['forms'], function (index, form) {
+                    if (ranking.form === form['protoform'] && form['nameform'] !== 'Normal') {
+                        pokemonName = i8ln(form['nameform']) + ' ' + i8ln(pokedex[ranking.pokemon]['name'])
+                    }
+                })
+                if (pokemonName === '') {
+                    pokemonName = i8ln(pokedex[ranking.pokemon]['name'])
+                }
+
+                let infoString
+                if (ranking.rank === null) {
+                    infoString = i8ln('CP too high')
+                } else {
+                    infoString = '#' + ranking.rank
+                }
+                if (ranking.cp !== null) {
+                    infoString += ' @' + ranking.cp + i8ln('CP') + ' (' + i8ln('Lvl') + ' ' + (ranking.level) + ')'
+                }
+
+                let color = ''
+                if (ranking.rank === 1) {
+                    color = 'color:green'
+                }
+                contentstring += '<small style="font-size: 11px;' + color + '"><b>' + pokemonName + ':</b> ' + infoString + '</small><br>'
+            })
+        }
+    }
+
+    contentstring += '</center></div>'
     if (atk != null && def != null && sta != null) {
         contentstring += '<br><br><br>'
         if (!noCatchRates) {
@@ -3155,6 +3233,8 @@ function loadRawData() {
             'qieids': String(questsExcludedItem),
             'qereids': String(reincludedQuestsEnergy),
             'qeeids': String(questsExcludedEnergy),
+            'qcreids': String(reincludedQuestsCandy),
+            'qceids': String(questsExcludedCandy),
             'geids': String(excludedGrunts),
             'greids': String(reincludedGrunts),
             'rbeids': String(excludedRaidboss),
@@ -4703,6 +4783,8 @@ function pokestopMeetsQuestFilter(pokestop, lastMidnight) {
         return false
     } else if (pokestop['quest_reward_type'] === 12 && pokestop['reward_pokemon_id'] > 0 && questsExcludedEnergy.indexOf(pokestop['reward_pokemon_id']) > -1) {
         return false
+    } else if (pokestop['quest_reward_type'] === 4 && pokestop['reward_pokemon_id'] > 0 && questsExcludedCandy.indexOf(pokestop['reward_pokemon_id']) > -1) {
+        return false
     } else if (pokestop['quest_reward_type'] === 7 && pokestop['reward_pokemon_id'] > 0 && questsExcludedPokemon.indexOf(pokestop['reward_pokemon_id']) > -1) {
         return false
     } else if (pokestop['quest_reward_type'] === 2 && pokestop['reward_item_id'] > 0 && questsExcludedItem.indexOf(pokestop['reward_item_id']) > -1) {
@@ -5159,6 +5241,7 @@ function updateMap() {
             qpreids = result.qpreids
             qireids = result.qireids
             qereids = result.qereids
+            qcreids = result.qcreids
             greids = result.greids
             rbreids = result.rbreids
             rereids = result.rereids
@@ -5176,6 +5259,11 @@ function updateMap() {
                 reincludedQuestsEnergy = qereids.filter(function (e) {
                     return this.indexOf(e) < 0
                 }, reincludedQuestsEnergy)
+            }
+            if (qcreids instanceof Array) {
+                reincludedQuestsCandy = qcreids.filter(function (e) {
+                    return this.indexOf(e) < 0
+                }, reincludedQuestsCandy)
             }
             if (qireids instanceof Array) {
                 reincludedQuestsItem = qireids.filter(function (e) {
@@ -5764,6 +5852,24 @@ function energySpritesFilter() {
     })
 }
 
+function candySpritesFilter() {
+    jQuery('.offcanvas-body.left .candy-list .candy-icon-sprite').on('click', function () {
+        var img = jQuery(this)
+        var select = jQuery(this).parent().parent().parent().find('.search-number')
+        var value = select.val().split(',')
+        var id = img.data('value').toString()
+        if (img.hasClass('active')) {
+            select.val(value.filter(function (elem) {
+                return elem !== id
+            }).join(',')).trigger('change')
+            img.removeClass('active')
+        } else {
+            select.val((value.concat(id).join(','))).trigger('change')
+            img.addClass('active')
+        }
+    })
+}
+
 function itemSpritesFilter() {
     jQuery('.offcanvas-body.left .item-list .item-icon-sprite').on('click', function () {
         var img = jQuery(this)
@@ -5824,6 +5930,7 @@ function loadDefaultImages() {
     var en = Store.get('remember_select_notify')
     var eqp = Store.get('remember_quests_exclude_pokemon')
     var eqe = Store.get('remember_quests_exclude_energy')
+    var eqc = Store.get('remember_quests_exclude_candy')
     var eqi = Store.get('remember_quests_exclude_item')
     var eg = Store.get('remember_exclude_grunts')
     var erb = Store.get('remember_exclude_raidboss')
@@ -5851,6 +5958,11 @@ function loadDefaultImages() {
     })
     $('#exclude-quest-energy .energy-icon-sprite').each(function () {
         if (eqe.indexOf($(this).data('value')) !== -1) {
+            $(this).addClass('active')
+        }
+    })
+    $('#exclude-quest-candy .candy-icon-sprite').each(function () {
+        if (eqc.indexOf($(this).data('value')) !== -1) {
             $(this).addClass('active')
         }
     })
@@ -6049,6 +6161,7 @@ $(function () {
     pokemonSpritesFilter()
     itemSpritesFilter()
     energySpritesFilter()
+    candySpritesFilter()
     gruntSpritesFilter()
     raideggSpritesFilter()
 })
@@ -6056,6 +6169,15 @@ $(function () {
 $(function () {
     $.getJSON('static/dist/data/moves.min.json').done(function (data) {
         moves = data
+    })
+
+    $.getJSON('static/dist/data/pokemon.min.json').done(function (data) {
+        pokedex = data
+    })
+
+    $.getJSON('static/dist/data/weather.min.json').done(function (data) {
+        weather = data.weather
+        boostedMons = data.boosted_mons
     })
 
     $.getJSON('static/dist/data/questtype.min.json', {_: new Date().getTime()}).done(function (data) {
@@ -6093,6 +6215,7 @@ $(function () {
     $questsExcludePokemon = $('#exclude-quest-pokemon .search-number')
     $questsExcludeItem = $('#exclude-quest-item .search-number')
     $questsExcludeEnergy = $('#exclude-quest-energy .search-number')
+    $questsExcludeCandy = $('#exclude-quest-candy .search-number')
     $excludeGrunts = $('#exclude-rocket .search-number')
     $excludeRaidboss = $('#exclude-raidboss .search-number')
     $excludeRaidegg = $('#exclude-raidegg .search-number')
@@ -6287,6 +6410,18 @@ $(function () {
             updateMap()
             Store.set('remember_quests_exclude_energy', questsExcludedEnergy)
         })
+        $questsExcludeCandy.on('change', function (e) {
+            buffer = questsExcludedCandy
+            questsExcludedCandy = $questsExcludeCandy.val().split(',').map(Number).sort(function (a, b) {
+                return parseInt(a) - parseInt(b)
+            })
+            buffer = buffer.filter(function (e) {
+                return this.indexOf(e) < 0
+            }, questsExcludedCandy)
+            reincludedQuestsCandy = reincludedQuestsCandy.concat(buffer).map(String)
+            updateMap()
+            Store.set('remember_quests_exclude_candy', questsExcludedCandy)
+        })
         $excludeRaidboss.on('change', function (e) {
             buffer = excludedRaidboss
             excludedRaidboss = $excludeRaidboss.val().split(',').map(Number).sort(function (a, b) {
@@ -6312,6 +6447,7 @@ $(function () {
         $raidNotify.val(Store.get('remember_raid_notify')).trigger('change')
         $questsExcludePokemon.val(Store.get('remember_quests_exclude_pokemon')).trigger('change')
         $questsExcludeEnergy.val(Store.get('remember_quests_exclude_energy')).trigger('change')
+        $questsExcludeCandy.val(Store.get('remember_quests_exclude_candy')).trigger('change')
         $excludeRaidboss.val(Store.get('remember_exclude_raidboss')).trigger('change')
     })
 
@@ -6338,6 +6474,19 @@ $(function () {
         e.preventDefault()
         var parent = $(this).parent()
         parent.find('.energy-list .energy-icon-sprite').removeClass('active')
+        parent.find('.search-number').val('').trigger('change')
+    })
+
+    $('.select-all-candy').on('click', function (e) {
+        e.preventDefault()
+        var parent = $(this).parent()
+        parent.find('.candy-list .candy-icon-sprite').addClass('active')
+        parent.find('.search-number').val(Array.from(Array(numberOfPokemon + 1).keys()).slice(1).join(',')).trigger('change')
+    })
+    $('.hide-all-candy').on('click', function (e) {
+        e.preventDefault()
+        var parent = $(this).parent()
+        parent.find('.candy-list .candy-icon-sprite').removeClass('active')
         parent.find('.search-number').val('').trigger('change')
     })
 
