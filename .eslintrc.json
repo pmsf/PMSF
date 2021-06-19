@@ -177,6 +177,7 @@
     "hideQuestsPokemon": true,
     "hideQuestsItem": true,
     "hideQuestsEnergy": true,
+    "hideQuestsCandy": true,
     "noQuests": true,
     "noLures": true,
     "noTeamRocket": true,
