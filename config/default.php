@@ -245,7 +245,9 @@ $pokemonReportTime = false;
 $pokemonToExclude = [];
 $pokemonGenSearchString = 'generation';                        // When custom string is used translations do not work.
 
-$excludeMinIV = '[]';                                          // [] for empty
+$noPvp = false;
+
+$excludeMinIV = '[]';                                               // [] for empty
 
 $minIV = '0';                                                  // "0" for empty or a number
 $minLevel = '0';                                               // "0" for empty or a number

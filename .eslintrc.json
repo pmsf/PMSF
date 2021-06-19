@@ -238,6 +238,8 @@
     "processSpawnpointStats": true,
     "processPokemonStats": true,
     "processRewardStats": true,
-    "processShinyStats": true
+    "processShinyStats": true,
+    "noPvp": true,
+    "noHideSingleMarker": true
   }
 }
