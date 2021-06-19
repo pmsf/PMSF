@@ -419,7 +419,7 @@ var StoreOptions = {
             default: defaultZoom,
             type: StoreTypes.Number
         },
-    'icons':
+    'iconsArray':
         {
             default: iconFolderArray,
             type: StoreTypes.JSON

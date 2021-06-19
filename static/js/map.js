@@ -238,10 +238,10 @@ if (location.search.indexOf('login=true') > 0) {
     window.location.href = '/'
 }
 if (copyrightSafe) {
-    var setPokemon = Store.get('icons')
+    var setPokemon = Store.get('iconsArray')
     setPokemon.pokemon = 'static/sprites/'
     Store.set('icons', setPokemon)
-} else if (Object.prototype.toString.call(Store.get('icons')) === '[object String]' || Store.get('icons') === '') {
+} else if (Object.prototype.toString.call(Store.get('iconsArray')) === '[object String]' || Store.get('iconsArray') === '') {
     for (const [key, value] of Object.entries(iconFolderArray)) {
         if (Object.prototype.toString.call(value) === '[object Object]') {
             iconFolderArray[key] = iconFolderArray[key][Object.keys(iconFolderArray[key])[0]]
@@ -5962,48 +5962,48 @@ $(function () {
         })
         updateMap()
     })
-    if (Object.prototype.toString.call(Store.get('icons').gym) === '[object Object]' || Store.get('icons').gym === '') {
+    if (Object.prototype.toString.call(Store.get('iconsArray').gym) === '[object Object]' || Store.get('iconsArray').gym === '') {
         iconFolderArray['gym'] = iconFolderArray['gym'][Object.keys(iconFolderArray['gym'])[0]]
-        Store.set('icons', iconFolderArray)
+        Store.set('iconsArray', iconFolderArray)
     }
-    if (Object.prototype.toString.call(Store.get('icons').pokemon) === '[object Object]' || Store.get('icons').pokemon === '') {
+    if (Object.prototype.toString.call(Store.get('iconsArray').pokemon) === '[object Object]' || Store.get('iconsArray').pokemon === '') {
         iconFolderArray['pokemon'] = iconFolderArray['pokemon'][Object.keys(iconFolderArray['pokemon'])[0]]
-        Store.set('icons', iconFolderArray)
+        Store.set('iconsArray', iconFolderArray)
     }
-    if (Object.prototype.toString.call(Store.get('icons').reward) === '[object Object]' || Store.get('icons').reward === '') {
+    if (Object.prototype.toString.call(Store.get('iconsArray').reward) === '[object Object]' || Store.get('iconsArray').reward === '') {
         iconFolderArray['reward'] = iconFolderArray['reward'][Object.keys(iconFolderArray['reward'])[0]]
-        Store.set('icons', iconFolderArray)
+        Store.set('iconsArray', iconFolderArray)
     }
-    iconpath = Store.get('icons')
+    iconpath = Store.get('iconsArray')
     $.each(iconpath, function (key, val) {
         var prefix = key
         if (!key.includes('Index')) {
             $.getJSON(iconpath[key] + prefix + '/index.json', function (data) {
                 iconpath[key + 'Index'] = data
             }).done(function () {
-                Store.set('icons', iconpath)
+                Store.set('iconsArray', iconpath)
             })
         }
     })
 
     $selectGymMarkerStyle = $('#gym-marker-style')
     $selectGymMarkerStyle.on('change', function (e) {
-        var gymIconSet = Store.get('icons')
+        var gymIconSet = Store.get('iconsArray')
         gymIconSet.gym = this.value
         $.getJSON(this.value + 'gym' + '/index.json', function (data) {
             iconpath['gymIndex'] = data
         }).done(function () {
-            Store.set('icons', iconpath)
+            Store.set('iconsArray', iconpath)
         })
-        Store.set('icons', gymIconSet)
-        iconpath = Store.get('icons')
+        Store.set('iconsArray', gymIconSet)
+        iconpath = Store.get('iconsArray')
         updateGymIcons()
     })
-    $selectGymMarkerStyle.val(Store.get('icons').gym).trigger('change')
+    $selectGymMarkerStyle.val(Store.get('iconsArray').gym).trigger('change')
 
     $selectIconStyle = $('#pokemon-icon-style')
     $selectIconStyle.on('change', function (e) {
-        var pokeIconSet = Store.get('icons')
+        var pokeIconSet = Store.get('iconsArray')
         pokeIconSet.pokemon = this.value
         $.ajax({
             cache: false,
@@ -6013,20 +6013,20 @@ $(function () {
                 iconpath['pokemonIndex'] = data
             }
         }).done(function () {
-            Store.set('icons', iconpath)
+            Store.set('iconsArray', iconpath)
             updateIcons('pkmn')
         })
-        Store.set('icons', pokeIconSet)
-        iconpath = Store.get('icons')
+        Store.set('iconsArray', pokeIconSet)
+        iconpath = Store.get('iconsArray')
         redrawPokemon(mapData.pokemons)
         updateGymIcons()
         updatePokestopIcons()
     })
-    $selectIconStyle.val(Store.get('icons').pokemon).trigger('change')
+    $selectIconStyle.val(Store.get('iconsArray').pokemon).trigger('change')
 
     $selectRewardIconStyle = $('#reward-icon-style')
     $selectRewardIconStyle.on('change', function (e) {
-        var rewardIconSet = Store.get('icons')
+        var rewardIconSet = Store.get('iconsArray')
         rewardIconSet.reward = this.value
         $.ajax({
             cache: false,
@@ -6036,14 +6036,14 @@ $(function () {
                 iconpath['rewardIndex'] = data
             }
         }).done(function () {
-            Store.set('icons', iconpath)
+            Store.set('iconsArray', iconpath)
             updateIcons('reward')
         })
-        Store.set('icons', rewardIconSet)
-        iconpath = Store.get('icons')
+        Store.set('iconsArray', rewardIconSet)
+        iconpath = Store.get('iconsArray')
         updatePokestopIcons()
     })
-    $selectRewardIconStyle.val(Store.get('icons').reward).trigger('change')
+    $selectRewardIconStyle.val(Store.get('iconsArray').reward).trigger('change')
 
     loadDefaultImages()
     pokemonSpritesFilter()
