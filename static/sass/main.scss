@@ -2,16 +2,14 @@
 @import 'libs/functions';
 @import 'libs/mixins';
 @import 'libs/skel';
-@import url(https://use.fontawesome.com/releases/v5.9.0/css/all.css);
-@import url(https://use.fontawesome.com/releases/v5.9.0/css/brands.css);
-@import url(https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.10/css/select2.min.css);
 
 @include skel-breakpoints((
   xlarge: '(max-width: 1680px)',
   large: '(max-width: 1280px)',
   medium: '(max-width: 980px)',
   small: '(max-width: 736px)',
-  xsmall: '(max-width: 480px)'
+  xsmall: '(max-width: 480px)',
+  xxsmall: '(max-width: 320px)'
 ));
 
 @include skel-layout((
@@ -28,29 +26,23 @@
   )
 ));
 
-// Base.
+// Font awesome
+@import url(https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@5.11.2/css/all.min.css);
 
+// Base.
 @import 'base/page';
 @import 'base/typography';
 
-// Component.
-
-@import 'components/section';
-@import 'components/form';
-@import 'components/box';
+// Components
 @import 'components/icon';
-@import 'components/image';
-@import 'components/list';
 @import 'components/table';
 @import 'components/button';
-@import 'components/grid-demo';
-// @import 'components/overlay';
 
-// Layout.
-@import 'abstracts/variables';
+// Layout
 @import 'layout/header';
 @import 'layout/nav';
 @import 'layout/stats';
+@import 'layout/loader';
 @import 'layout/gyms';
 @import 'layout/banner';
 @import 'layout/main';
@@ -69,3 +61,5 @@
 @import 'layout/fireworks';
 @import 'layout/valentine';
 @import 'layout/login';
+@import 'layout/modal';
+@import 'layout/toast';

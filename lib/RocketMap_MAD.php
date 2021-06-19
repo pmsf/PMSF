@@ -20,7 +20,8 @@ class RocketMap_MAD extends RocketMap
         gender,
         form,
         weather_boosted_condition,
-        costume";
+        costume,
+        seen_type";
         global $noHighLevelData;
         if (!$noHighLevelData) {
             $select .= ",
@@ -55,8 +56,8 @@ class RocketMap_MAD extends RocketMap
             $params[':oneLat'] = $oNeLat;
             $params[':oneLng'] = $oNeLng;
         }
-        global $noBoundaries, $boundaries;
-        if (!$noBoundaries) {
+        global $noBoundaries, $boundaries, $showPokemonsOutsideBoundaries;
+        if (!$noBoundaries && !$showPokemonsOutsideBoundaries) {
             $conds[] = "(ST_WITHIN(point(p.latitude,p.longitude),ST_GEOMFROMTEXT('POLYGON(( " . $boundaries . " ))')))";
         }
         if ($tstamp > 0) {
@@ -122,7 +123,8 @@ class RocketMap_MAD extends RocketMap
         gender,
         form,
         weather_boosted_condition,
-        costume";
+        costume,
+        seen_type";
         global $noHighLevelData;
         if (!$noHighLevelData) {
             $select .= ",
@@ -150,8 +152,8 @@ class RocketMap_MAD extends RocketMap
         $date->setTimestamp(time());
         $params[':time'] = date_format($date, 'Y-m-d H:i:s');
 
-        global $noBoundaries, $boundaries;
-        if (!$noBoundaries) {
+        global $noBoundaries, $boundaries, $showPokemonsOutsideBoundaries;
+        if (!$noBoundaries && !$showPokemonsOutsideBoundaries) {
             $conds[] = "(ST_WITHIN(point(p.latitude,p.longitude),ST_GEOMFROMTEXT('POLYGON(( " . $boundaries . " ))')))";
         }
 
@@ -205,7 +207,7 @@ class RocketMap_MAD extends RocketMap
         $query = "SELECT :select
         FROM pokemon p
         LEFT JOIN trs_spawn ts ON ts.spawnpoint = p.spawnpoint_id
-        WHERE :conditions";
+        WHERE :conditions ORDER BY p.latitude, p.longitude";
 
         $query = str_replace(":select", $select, $query);
         $query = str_replace(":conditions", '(' . join(" AND ", $conds) . ')' . $encSql, $query);
@@ -213,10 +215,27 @@ class RocketMap_MAD extends RocketMap
 
         $data = array();
         $i = 0;
+        $lastlat = 0;
+        $lastlon = 0;
+        $lasti = 0;
 
         foreach ($pokemons as $pokemon) {
-            $pokemon["latitude"] = floatval($pokemon["latitude"]);
-            $pokemon["longitude"] = floatval($pokemon["longitude"]);
+            if ($pokemon['seen_type'] === 'nearby_cell' || $pokemon['seen_type'] === 'nearby_stop') {
+                $pokemon["latitude"] = floatval($pokemon["latitude"]);
+                $pokemon["longitude"] = floatval($pokemon["longitude"]);
+                $lastlat = floatval($pokemon["latitude"]);
+                $lastlon = floatval($pokemon["longitude"]);
+                if (abs($pokemon["latitude"] - $lastlat) < 0.0001 && abs($pokemon["longitude"] - $lastlon) < 0.0001) {
+                    $lasti = $lasti + 1;
+                } else {
+                    $lasti = 0;
+                }
+                $pokemon["latitude"] = $pokemon["latitude"] + 0.0003*cos(deg2rad($lasti*45));
+                $pokemon["longitude"] = $pokemon["longitude"] + 0.0003*sin(deg2rad($lasti*45));
+            } else {
+                $pokemon["latitude"] = floatval($pokemon["latitude"]);
+                $pokemon["longitude"] = floatval($pokemon["longitude"]);
+            }
             $pokemon["expire_timestamp_verified"] = isset($pokemon["expire_timestamp_verified"]) ? 1 : null;
             $pokemon["disappear_time"] = $pokemon["disappear_time"] * 1000;
 
@@ -281,7 +300,6 @@ class RocketMap_MAD extends RocketMap
         $weathers = $db->query($query)->fetchAll(\PDO::FETCH_ASSOC);
         $data = array();
         foreach ($weathers as $weather) {
-            $weather['s2_cell_id'] = sprintf("%u", $weather['s2_cell_id']);
             $data["weather_" . $weather['s2_cell_id']] = $weather;
             $data["weather_" . $weather['s2_cell_id']]['condition'] = $data["weather_" . $weather['s2_cell_id']]['gameplay_weather'];
             unset($data["weather_" . $weather['s2_cell_id']]['gameplay_weather']);
@@ -307,8 +325,8 @@ class RocketMap_MAD extends RocketMap
             $params[':oneLat'] = $oNeLat;
             $params[':oneLng'] = $oNeLng;
         }
-        global $noBoundaries, $boundaries;
-        if (!$noBoundaries) {
+        global $noBoundaries, $boundaries, $showGymsOutsideBoundaries;
+        if (!$noBoundaries && !$showGymsOutsideBoundaries) {
             $conds[] = "(ST_WITHIN(point(latitude,longitude),ST_GEOMFROMTEXT('POLYGON(( " . $boundaries . " ))')))";
         }
         if ((!empty($raids) && $raids === 'true') && (!empty($gyms) && $gyms === 'false')) {
@@ -358,7 +376,7 @@ class RocketMap_MAD extends RocketMap
 
     public function query_gyms($conds, $params, $raids, $gyms, $rbeids, $reeids)
     {
-        global $db, $noTeams, $noExEligible;
+        global $db, $noTeams, $noExEligible, $noInBattle;
 
         $query = "SELECT gym.gym_id,
         latitude,
@@ -369,6 +387,7 @@ class RocketMap_MAD extends RocketMap
         team_id,
         name,
         url,
+        is_in_battle as in_battle,
         is_ex_raid_eligible AS park,
         raid.level AS raid_level,
         raid.pokemon_id AS raid_pokemon_id,
@@ -414,6 +433,7 @@ class RocketMap_MAD extends RocketMap
             $gym["raid_start"] = $gym["raid_start"] * 1000;
             $gym["raid_end"] = $gym["raid_end"] * 1000;
             $gym["slots_available"] = $noTeams ? 0 : intval($gym["slots_available"]);
+            $gym["in_battle"] = $noInBattle ? 0 : intval($gym["in_battle"]);
             $gym["url"] = ! empty($gym["url"]) ? preg_replace("/^http:/i", "https:", $gym["url"]) : null;
             $gym["park"] = $noExEligible ? 0 : intval($gym["park"]);
             if (isset($gym["form"]) && $gym["form"] > 0) {
@@ -483,8 +503,8 @@ class RocketMap_MAD extends RocketMap
             $params[':oneLat'] = $oNeLat;
             $params[':oneLng'] = $oNeLng;
         }
-        global $noBoundaries, $boundaries;
-        if (!$noBoundaries) {
+        global $noBoundaries, $boundaries, $showSpawnsOutsideBoundaries;
+        if (!$noBoundaries && !$showSpawnsOutsideBoundaries) {
             $conds[] = "(ST_WITHIN(point(latitude,longitude),ST_GEOMFROMTEXT('POLYGON(( " . $boundaries . " ))')))";
         }
         if ($tstamp > 0) {
@@ -518,7 +538,7 @@ class RocketMap_MAD extends RocketMap
         return $data;
     }
 
-    public function get_stops($geids, $qpeids, $qeeids, $qieids, $swLat, $swLng, $neLat, $neLng, $tstamp = 0, $oSwLat = 0, $oSwLng = 0, $oNeLat = 0, $oNeLng = 0, $lured = false, $rocket = false, $quests, $dustamount)
+    public function get_stops($geids, $qpeids, $qeeids, $qceids, $qieids, $swLat, $swLng, $neLat, $neLng, $tstamp = 0, $oSwLat = 0, $oSwLng = 0, $oNeLat = 0, $oNeLng = 0, $lured = false, $rocket = false, $quests, $dustamount)
     {
         $conds = array();
         $params = array();
@@ -534,8 +554,8 @@ class RocketMap_MAD extends RocketMap
             $params[':oneLat'] = $oNeLat;
             $params[':oneLng'] = $oNeLng;
         }
-        global $noBoundaries, $boundaries;
-        if (!$noBoundaries) {
+        global $noBoundaries, $boundaries, $showStopsOutsideBoundaries;
+        if (!$noBoundaries && !$showStopsOutsideBoundaries) {
             $conds[] = "(ST_WITHIN(point(latitude,longitude),ST_GEOMFROMTEXT('POLYGON(( " . $boundaries . " ))')))";
         }
 
@@ -571,6 +591,20 @@ class RocketMap_MAD extends RocketMap
             } else {
                 $energySQL .= "tq.quest_reward_type = 12";
             }
+            $candySQL = '';
+            if (count($qceids)) {
+                $pkmn_in = '';
+                $p = 1;
+                foreach ($qceids as $qceid) {
+                    $params[':cqry_' . $p . "_"] = $qceid;
+                    $pkmn_in .= ':cqry_' . $p . "_,";
+                    $p++;
+                }
+                $pkmn_in = substr($pkmn_in, 0, -1);
+                $candySQL .= "tq.quest_pokemon_id NOT IN ( $pkmn_in ) AND tq.quest_reward_type = 4";
+            } else {
+                $energySQL .= "tq.quest_reward_type = 4";
+            }
             $itemSQL = '';
             if (count($qieids)) {
                 $item_in = '';
@@ -587,7 +621,7 @@ class RocketMap_MAD extends RocketMap
             }
             $dustSQL = '';
             if (!empty($dustamount) && !is_nan((float)$dustamount) && $dustamount > 0) {
-                $dustSQL .= "OR (quest_reward_type = 3 AND tq.quest_stardust > :amount)";
+                $dustSQL .= "OR (quest_reward_type = 3 AND tq.quest_stardust >= :amount)";
                 $params[':amount'] = intval($dustamount);
                 $params[':swLat'] = $swLat;
                 $params[':swLng'] = $swLng;
@@ -597,7 +631,7 @@ class RocketMap_MAD extends RocketMap
                     $dustSQL .= " AND (ST_WITHIN(point(latitude,longitude),ST_GEOMFROMTEXT('POLYGON(( " . $boundaries . " ))')))";
                 }
             }
-            $conds[] = "(" . $pokemonSQL . " OR " . $itemSQL . " OR " . $energySQL . ")" . $dustSQL . "";
+            $conds[] = "(" . $pokemonSQL . " OR " . $itemSQL . " OR " . $energySQL . " OR " . $candySQL . ")" . $dustSQL . "";
         }
         if (!empty($rocket) && $rocket === 'true') {
             $rocketSQL = '';
@@ -626,7 +660,7 @@ class RocketMap_MAD extends RocketMap
         return $this->query_stops($conds, $params);
     }
 
-    public function get_stops_quest($greids, $qpreids, $qereids, $qireids, $swLat, $swLng, $neLat, $neLng, $tstamp = 0, $oSwLat = 0, $oSwLng = 0, $oNeLat = 0, $oNeLng = 0, $lures, $rocket, $quests, $dustamount, $reloaddustamount)
+    public function get_stops_quest($greids, $qpreids, $qereids, $qcreids, $qireids, $swLat, $swLng, $neLat, $neLng, $tstamp = 0, $oSwLat = 0, $oSwLng = 0, $oNeLat = 0, $oNeLng = 0, $lures, $rocket, $quests, $dustamount, $reloaddustamount)
     {
         $conds = array();
         $params = array();
@@ -662,6 +696,17 @@ class RocketMap_MAD extends RocketMap
                 }
                 $pkmn_in = substr($pkmn_in, 0, -1);
                 $tmpSQL .= "tq.quest_pokemon_id IN ( $pkmn_in ) AND tq.quest_reward_type = 12";
+            }
+            if (count($qcreids)) {
+                $pkmn_in = '';
+                $p = 1;
+                foreach ($qcreids as $qcreid) {
+                    $params[':cqry_' . $p . "_"] = $qcreid;
+                    $pkmn_in .= ':cqry_' . $p . "_,";
+                    $p++;
+                }
+                $pkmn_in = substr($pkmn_in, 0, -1);
+                $tmpSQL .= "tq.quest_pokemon_id IN ( $pkmn_in ) AND tq.quest_reward_type = 4";
             }
             if (count($qireids)) {
                 $item_in = '';
@@ -715,16 +760,19 @@ class RocketMap_MAD extends RocketMap
         tq.quest_type,
         tq.quest_timestamp,
         tq.quest_reward,
-        tq.quest_pokemon_id,
-        tq.quest_item_id,
+        tq.quest_pokemon_id AS reward_pokemon_id,
+        tq.quest_item_id AS reward_item_id,
         tq.quest_task,
         tq.quest_reward_type,
-        tq.quest_pokemon_form_id AS quest_pokemon_formid,
-        json_extract(json_extract(`quest_reward`,'$[*].pokemon_encounter.pokemon_display.is_shiny'),'$[0]') AS quest_pokemon_shiny,
-        tq.quest_item_amount AS quest_reward_amount,
-        tq.quest_stardust AS quest_dust_amount,
-        tq.quest_item_amount AS quest_energy_amount,
-        tq.quest_pokemon_id AS quest_energy_pokemon_id
+        tq.quest_pokemon_form_id AS reward_pokemon_formid,
+        json_extract(json_extract(`quest_reward`,'$[*].pokemon_encounter.pokemon_display.is_shiny'),'$[0]') AS reward_pokemon_shiny,
+        json_extract(json_extract(`quest_reward`,'$[*].pokemon_encounter.pokemon_display.costume_value'),'$[0]') AS reward_pokemon_costumeid,
+        json_extract(json_extract(`quest_reward`,'$[*].pokemon_encounter.pokemon_display.gender_value'),'$[0]') AS reward_pokemon_genderid,
+        tq.quest_item_amount AS reward_item_amount,
+        tq.quest_stardust AS reward_dust_amount,
+        tq.quest_item_amount AS reward_energy_amount,
+        json_extract(json_extract(`quest_reward`,'$[*].candy.amount'),'$[0]') AS reward_candy_amount,
+        json_extract(json_extract(`quest_reward`,'$[*].candy.pokemon_id'),'$[0]') AS reward_candy_pokemon_id
         FROM pokestop p
         LEFT JOIN trs_quest tq ON tq.GUID = p.pokestop_id
         WHERE :conditions";
@@ -736,25 +784,42 @@ class RocketMap_MAD extends RocketMap
         $i = 0;
 
         foreach ($pokestops as $pokestop) {
-            $item_pid = $pokestop["quest_item_id"];
+            $item_pid = $pokestop["reward_item_id"];
             if ($item_pid == "0") {
                 $item_pid = null;
-                $pokestop["quest_item_id"] = null;
+                $pokestop["reward_item_id"] = null;
             }
-            $mon_pid = $pokestop["quest_pokemon_id"];
+            $mon_pid = $pokestop["reward_pokemon_id"];
             if ($mon_pid == "0") {
                 $mon_pid = null;
-                $pokestop["quest_pokemon_id"] = null;
-            }
-            $energy_mon_pid = $pokestop["quest_energy_pokemon_id"];
-            if ($energy_mon_pid == "0") {
-                $energy_mon_pid = null;
-                $pokestop["quest_energy_pokemon_id"] = null;
+                $pokestop["reward_pokemon_id"] = null;
             }
             $grunttype_pid = $pokestop["grunt_type"];
             if ($grunttype_pid == "0") {
                 $grunttype_pid = null;
                 $pokestop["grunt_type"] = null;
+            }
+            switch ($pokestop["quest_reward_type"]) {
+                case 2:
+                    $pokestop["reward_amount"] = intval($pokestop["reward_item_amount"]);
+                    break;
+                case 3:
+                    $pokestop["reward_amount"] = intval($pokestop["reward_dust_amount"]);
+                    break;
+                case 4:
+                    $pokestop["reward_pokemon_id"] = intval($pokestop["reward_candy_pokemon_id"]);
+                    $pokestop["reward_amount"] = intval($pokestop["reward_candy_amount"]);
+                    break;
+                case 7:
+                    $pokestop["reward_pokemon_id"] = intval($pokestop["reward_pokemon_id"]);
+                    break;
+                case 12:
+                    $pokestop["reward_pokemon_id"] = intval($pokestop["reward_pokemon_id"]);
+                    $pokestop["reward_amount"] = intval($pokestop["reward_energy_amount"]);
+                    break;
+                default:
+                    $pokestop["reward_pokemon_id"] = null;
+                    $pokestop["reward_amount"] = null;
             }
             $pokestop["latitude"] = floatval($pokestop["latitude"]);
             $pokestop["longitude"] = floatval($pokestop["longitude"]);
@@ -764,24 +829,20 @@ class RocketMap_MAD extends RocketMap
             $pokestop["grunt_type_gender"] = empty($grunttype_pid) ? null : i8ln($this->grunttype[$grunttype_pid]["grunt"]);
             $pokestop["encounters"] = empty($this->grunttype[$grunttype_pid]["encounters"]) ? null : $this->grunttype[$grunttype_pid]["encounters"];
             $pokestop["second_reward"] = empty($this->grunttype[$grunttype_pid]["second_reward"]) ? null : $this->grunttype[$grunttype_pid]["second_reward"];
-            $pokestop["lure_id"] = $pokestop["lure_id"] - 500;
+            $pokestop["lure_id"] = intval($pokestop["lure_id"]);
             $pokestop["url"] = ! empty($pokestop["url"]) ? preg_replace("/^http:/i", "https:", $pokestop["url"]) : null;
             $pokestop["quest_type"] = intval($pokestop["quest_type"]);
             $pokestop["quest_condition_type"] = 0;
             $pokestop["quest_condition_type_1"] = 0;
+            $pokestop["quest_condition_info"] = null;
             $pokestop["quest_reward_type"] = intval($pokestop["quest_reward_type"]);
             $pokestop["quest_target"] = 0;
-            $pokestop["quest_pokemon_id"] = intval($pokestop["quest_pokemon_id"]);
-            $pokestop["quest_pokemon_formid"] = intval($pokestop["quest_pokemon_formid"]);
-            $pokestop["quest_item_id"] = intval($pokestop["quest_item_id"]);
-            $pokestop["quest_reward_amount"] = intval($pokestop["quest_reward_amount"]);
-            $pokestop["quest_dust_amount"] = intval($pokestop["quest_dust_amount"]);
-            $pokestop["quest_energy_amount"] = intval($pokestop["quest_energy_amount"]);
-            $pokestop["quest_energy_pokemon_id"] = intval($pokestop["quest_energy_pokemon_id"]);
-            $pokestop["quest_energy_pokemon_name"] = empty($energy_mon_pid) ? null : i8ln($this->data[$energy_mon_pid]["name"]);
-            $pokestop["quest_item_name"] = empty($item_pid) ? null : i8ln($this->items[$item_pid]["name"]);
-            $pokestop["quest_pokemon_name"] = empty($mon_pid) ? null : i8ln($this->data[$mon_pid]["name"]);
-            $pokestop["quest_condition_info"] = null;
+            $pokestop["reward_pokemon_name"] = empty($mon_pid) ? null : i8ln($this->data[$mon_pid]["name"]);
+            $pokestop["reward_pokemon_formid"] = intval($pokestop["reward_pokemon_formid"]);
+            $pokestop["reward_pokemon_costumeid"] = intval($pokestop["reward_pokemon_costumeid"]);
+            $pokestop["reward_pokemon_genderid"] = intval($pokestop["reward_pokemon_genderid"]);
+            $pokestop["reward_item_id"] = intval($pokestop["reward_item_id"]);
+            $pokestop["reward_item_name"] = empty($item_pid) ? null : i8ln($this->items[$item_pid]["name"]);
             $pokestop["last_seen"] = $pokestop["last_seen"] * 1000;
             $data[] = $pokestop;
             unset($pokestops[$i]);
@@ -853,8 +914,7 @@ class RocketMap_MAD extends RocketMap
         }
         global $noBoundaries, $boundaries;
         if (!$noBoundaries) {
-
-            $conds[] = "(ST_WITHIN(currentPos_raw),ST_GEOMFROMTEXT('POLYGON(( " . $boundaries . " ))'))";
+            $conds[] = "(ST_WITHIN(currentPos_raw,ST_GEOMFROMTEXT('POLYGON(( " . $boundaries . " ))')))";
         }
         global $hideDeviceAfterMinutes;
         if ($hideDeviceAfterMinutes > 0) {

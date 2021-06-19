@@ -13,42 +13,44 @@ if (preg_match("/curl|libcurl/", $useragent)) {
     die();
 }
 
-$action 		= ! empty($_POST['action']) ? $_POST['action'] : '';
-$lat    		= ! empty($_POST['lat']) ? $_POST['lat'] : '';
-$lon    		= ! empty($_POST['lon']) ? $_POST['lon'] : '';
-$pokemonId  		= ! empty($_POST['pokemonId']) ? $_POST['pokemonId'] : 0;
-$gymId      		= ! empty($_POST['gymId']) ? $_POST['gymId'] : 0;
-$eggTime    		= ! empty($_POST['eggTime']) ? $_POST['eggTime'] : 0;
-$monTime    		= ! empty($_POST['monTime']) ? $_POST['monTime'] : 0;
-$loggedUser 		= ! empty($_SESSION['user']->user) ? $_SESSION['user']->user : 'NOLOGIN';
-$gymName    		= ! empty($_POST['gymName']) ? $_POST['gymName'] : '';
-$pokestopId 		= ! empty($_POST['pokestopId']) ? $_POST['pokestopId'] : '';
-$pokestopName 		= ! empty($_POST['pokestopName']) ? $_POST['pokestopName'] : '';
-$questType    		= ! empty($_POST['questType']) ? $_POST['questType'] : '';
-$questTarget   		= ! empty($_POST['questTarget']) ? $_POST['questTarget'] : '';
-$conditionType 		= ! empty($_POST['conditionType']) ? $_POST['conditionType'] : '';
-$catchPokemon		= ! empty($_POST['catchPokemon']) ? $_POST['catchPokemon'] : '';
-$catchPokemonCategory	= ! empty($_POST['catchPokemonCategory']) ? $_POST['catchPokemonCategory'] : '';
-$raidLevel   		= ! empty($_POST['raidLevel']) ? $_POST['raidLevel'] : '';
-$throwType   		= ! empty($_POST['throwType']) ? $_POST['throwType'] : '';
-$curveThrow   		= ! empty($_POST['curveThrow']) ? $_POST['curveThrow'] : '';
-$rewardType   		= ! empty($_POST['rewardType']) ? $_POST['rewardType'] : '';
-$encounter   		= ! empty($_POST['encounter']) ? $_POST['encounter'] : '';
-$item   		= ! empty($_POST['item']) ? $_POST['item'] : '';
-$itemAmount   		= ! empty($_POST['itemamount']) ? $_POST['itemamount'] : '1';
-$dust			= ! empty($_POST['dust']) ? $_POST['dust'] : '';
-$nestId     		= ! empty($_POST['nestId']) ? $_POST['nestId'] : '';
-$portalId   		= ! empty($_POST['portalId']) ? $_POST['portalId'] : '';
-$communityId   		= ! empty($_POST['communityId']) ? $_POST['communityId'] : '';
-$communityName 		= ! empty($_POST['communityName']) ? $_POST['communityName'] : '';
-$communityDescription 	= ! empty($_POST['communityDescription']) ? $_POST['communityDescription'] : '';
-$communityInvite 	= ! empty($_POST['communityInvite']) ? $_POST['communityInvite'] : '';
-$poiName		= ! empty($_POST['poiName']) ? $_POST['poiName'] : '';
-$poiDescription		= ! empty($_POST['poiDescription']) ? $_POST['poiDescription'] : '';
-$poiNotes		= ! empty($_POST['poiNotes']) ? $_POST['poiNotes'] : '';
-$poiId			= ! empty($_POST['poiId']) ? $_POST['poiId'] : '';
-$poiImage		= ! empty($_POST['poiImage']) ? $_POST['poiImage'] : '';
-$poiSurrounding		= ! empty($_POST['poiSurrounding']) ? $_POST['poiSurrounding'] : '';
+$action                 = ! empty($_POST['action']) ? $_POST['action'] : '';
+$lat                    = ! empty($_POST['lat']) ? $_POST['lat'] : '';
+$lon                    = ! empty($_POST['lon']) ? $_POST['lon'] : '';
+$pokemonId              = ! empty($_POST['pokemonId']) ? $_POST['pokemonId'] : 0;
+$gymId                  = ! empty($_POST['gymId']) ? $_POST['gymId'] : 0;
+$eggTime                = ! empty($_POST['eggTime']) ? $_POST['eggTime'] : 0;
+$monTime                = ! empty($_POST['monTime']) ? $_POST['monTime'] : 0;
+$loggedUser             = ! empty($_SESSION['user']->user) ? $_SESSION['user']->user : 'NOLOGIN';
+$gymName                = ! empty($_POST['gymName']) ? $_POST['gymName'] : '';
+$pokestopId             = ! empty($_POST['pokestopId']) ? $_POST['pokestopId'] : '';
+$pokestopName           = ! empty($_POST['pokestopName']) ? $_POST['pokestopName'] : '';
+$questType              = ! empty($_POST['questType']) ? $_POST['questType'] : '';
+$questTarget            = ! empty($_POST['questTarget']) ? $_POST['questTarget'] : '';
+$conditionType          = ! empty($_POST['conditionType']) ? $_POST['conditionType'] : '';
+$catchPokemon           = ! empty($_POST['catchPokemon']) ? $_POST['catchPokemon'] : '';
+$catchPokemonCategory   = ! empty($_POST['catchPokemonCategory']) ? $_POST['catchPokemonCategory'] : '';
+$raidLevel              = ! empty($_POST['raidLevel']) ? $_POST['raidLevel'] : '';
+$throwType              = ! empty($_POST['throwType']) ? $_POST['throwType'] : '';
+$curveThrow             = ! empty($_POST['curveThrow']) ? $_POST['curveThrow'] : '';
+$rewardType             = ! empty($_POST['rewardType']) ? $_POST['rewardType'] : '';
+$encounter              = ! empty($_POST['encounter']) ? $_POST['encounter'] : '';
+$item                   = ! empty($_POST['item']) ? $_POST['item'] : '';
+$itemAmount             = ! empty($_POST['itemamount']) ? $_POST['itemamount'] : '1';
+$dust                   = ! empty($_POST['dust']) ? $_POST['dust'] : '';
+$nestId                 = ! empty($_POST['nestId']) ? $_POST['nestId'] : '';
+$portalId               = ! empty($_POST['portalId']) ? $_POST['portalId'] : '';
+$targetType             = ! empty($_POST['targetType']) ? $_POST['targetType'] : '';
+$communityId            = ! empty($_POST['communityId']) ? $_POST['communityId'] : '';
+$communityName          = ! empty($_POST['communityName']) ? $_POST['communityName'] : '';
+$communityDescription   = ! empty($_POST['communityDescription']) ? $_POST['communityDescription'] : '';
+$communityInvite        = ! empty($_POST['communityInvite']) ? $_POST['communityInvite'] : '';
+$poiName                = ! empty($_POST['poiName']) ? $_POST['poiName'] : '';
+$poiDescription         = ! empty($_POST['poiDescription']) ? $_POST['poiDescription'] : '';
+$poiNotes               = ! empty($_POST['poiNotes']) ? $_POST['poiNotes'] : '';
+$poiId                  = ! empty($_POST['poiId']) ? $_POST['poiId'] : '';
+$poiMarkType            = ! empty($_POST['poiMarkType']) ? $_POST['poiMarkType'] : '';
+$poiImage               = ! empty($_POST['poiImage']) ? $_POST['poiImage'] : '';
+$poiSurrounding         = ! empty($_POST['poiSurrounding']) ? $_POST['poiSurrounding'] : '';
 
 // set content type
 header('Content-Type: application/json');
@@ -61,10 +63,6 @@ $d["timestamp"] = $now->getTimestamp();
 if (strtolower($map) === "rdm") {
     if (strtolower($fork) === "default" || strtolower($fork) === "beta") {
         $submit = new \Submit\RDM();
-    }
-} elseif (strtolower($map) === "monocle") {
-    if (strtolower($fork) === "pmsf") {
-        $submit = new \Submit\Monocle_PMSF();
     }
 } elseif (strtolower($map) === "rocketmap") {
     if (strtolower($fork) === "mad") {
@@ -106,11 +104,8 @@ if ($action === "convertpokestop") {
 if ($action === "quest") {
     $submit->submit_quest($pokestopId, $questType, $questTarget, $conditionType, $catchPokemonCategory, $catchPokemon, $raidLevel, $throwType, $curveThrow, $rewardType, $encounter, $item, $itemAmount, $dust, $loggedUser);
 }
-if ($action === "convertportalpokestop") {
-    $submit->convert_portal_pokestop($portalId, $loggedUser);
-}
-if ($action === "convertportalgym") {
-    $submit->convert_portal_gym($portalId, $loggedUser);
+if ($action === "convertportal") {
+    $submit->convert_portal($portalId, $targetType, $loggedUser);
 }
 if ($action === "markportal") {
     $submitManual->mark_portal($portalId, $loggedUser);
@@ -145,17 +140,8 @@ if ($action === "edit-poi") {
 if ($action === "delete-poi") {
     $submitManual->delete_poi($poiId, $loggedUser);
 }
-if ($action === "markpoisubmitted") {
-    $submitManual->mark_poi_submitted($poiId, $loggedUser);
-}
-if ($action === "markpoideclined") {
-    $submitManual->mark_poi_declined($poiId, $loggedUser);
-}
-if ($action === "markpoiresubmit") {
-    $submitManual->mark_poi_resubmit($poiId, $loggedUser);
-}
-if ($action === "marknotcandidate") {
-    $submitManual->mark_not_candidate($poiId, $loggedUser);
+if ($action === "markpoi") {
+    $submitManual->mark_poi($poiId, $poiMarkType, $loggedUser);
 }
 $jaysson = json_encode($d);
 echo $jaysson;

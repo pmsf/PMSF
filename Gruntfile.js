@@ -14,8 +14,7 @@ module.exports = function (grunt) {
             },
             dist: {
                 files: {
-                    'static/dist/css/app.built.css': 'static/sass/main.scss',
-                    'static/dist/css/mobile.built.css': 'static/sass/mobile.scss'
+                    'static/dist/css/app.built.css': 'static/sass/main.scss'
                 }
             }
         },
@@ -32,7 +31,6 @@ module.exports = function (grunt) {
                     'static/dist/js/app.built.js': 'static/js/app.js',
                     'static/dist/js/map.built.js': 'static/js/map.js',
                     'static/dist/js/map.common.built.js': 'static/js/map.common.js',
-                    'static/dist/js/mobile.built.js': 'static/js/mobile.js',
                     'static/dist/js/stats.built.js': 'static/js/stats.js',
                     'static/dist/js/serviceWorker.built.js': 'static/js/serviceWorker.js'
                 }
@@ -42,7 +40,6 @@ module.exports = function (grunt) {
                     'static/dist/js/app.min.js': 'static/js/app.js',
                     'static/dist/js/map.min.js': 'static/js/map.js',
                     'static/dist/js/map.common.min.js': 'static/js/map.common.js',
-                    'static/dist/js/mobile.min.js': 'static/js/mobile.js',
                     'static/dist/js/stats.min.js': 'static/js/stats.js',
                     'static/dist/js/serviceWorker.min.js': 'static/js/serviceWorker.js'
                 }
@@ -87,7 +84,6 @@ module.exports = function (grunt) {
                     'static/dist/js/app.min.js' :'static/js/app.js',
                     'static/dist/js/map.min.js':'static/js/map.js',
                     'static/dist/js/map.common.min.js' : 'static/js/map.common.js',
-                    'static/dist/js/mobile.min.js':'static/js/mobile.js',
                     'static/dist/js/stats.min.js':'static/js/stats.js',
                     'static/dist/js/serviceWorker.min.js':'static/js/serviceWorker.js'
                 }
@@ -106,7 +102,6 @@ module.exports = function (grunt) {
                     'static/dist/js/app.min.js': 'static/dist/js/app.built.js',
                     'static/dist/js/map.min.js': 'static/dist/js/map.built.js',
                     'static/dist/js/map.common.min.js': 'static/dist/js/map.common.built.js',
-                    'static/dist/js/mobile.min.js': 'static/dist/js/mobile.built.js',
                     'static/dist/js/stats.min.js': 'static/dist/js/stats.built.js',
                     'static/dist/js/serviceWorker.min.js': 'static/dist/js/serviceWorker.built.js'
                 }
@@ -126,19 +121,18 @@ module.exports = function (grunt) {
                     'static/dist/data/grunttype.min.json': 'static/data/grunttype.json',
                     'static/dist/data/raidegg.min.json': 'static/data/raidegg.json',
                     'static/dist/data/searchmarkerstyle.min.json': 'static/data/searchmarkerstyle.json',
-                    'static/dist/data/weather.min.json': 'static/data/weather.json',
                     'static/dist/locales/de.min.json': 'static/locales/de.json',
                     'static/dist/locales/fr.min.json': 'static/locales/fr.json',
                     'static/dist/locales/it.min.json': 'static/locales/it.json',
-                    'static/dist/locales/jp.min.json': 'static/locales/jp.json',
-                    'static/dist/locales/ko.min.json': 'static/locales/ko.json',
+                    //'static/dist/locales/jp.min.json': 'static/locales/jp.json',
+                    //'static/dist/locales/ko.min.json': 'static/locales/ko.json',
                     'static/dist/locales/pl.min.json': 'static/locales/pl.json',
-                    'static/dist/locales/pt_br.min.json': 'static/locales/pt_br.json',
-                    'static/dist/locales/ru.min.json': 'static/locales/ru.json',
+                    //'static/dist/locales/pt_br.min.json': 'static/locales/pt_br.json',
+                    //'static/dist/locales/ru.min.json': 'static/locales/ru.json',
                     'static/dist/locales/sp.min.json': 'static/locales/sp.json',
-                    'static/dist/locales/zh_cn.min.json': 'static/locales/zh_cn.json',
-                    'static/dist/locales/zh_tw.min.json': 'static/locales/zh_tw.json',
-                    'static/dist/locales/zh_hk.min.json': 'static/locales/zh_hk.json',
+                    //'static/dist/locales/zh_cn.min.json': 'static/locales/zh_cn.json',
+                    //'static/dist/locales/zh_tw.min.json': 'static/locales/zh_tw.json',
+                    //'static/dist/locales/zh_hk.min.json': 'static/locales/zh_hk.json',
                     'static/dist/locales/sv.min.json': 'static/locales/sv.json'
                 }
             }
@@ -176,7 +170,7 @@ module.exports = function (grunt) {
             build: {
                 files: {
                     'static/dist/css/app.min.css': 'static/dist/css/app.built.css',
-                    'static/dist/css/mobile.min.css': 'static/dist/css/mobile.built.css'
+                    'static/dist/css/custom.min.css': 'static/css/custom.css'
                 }
             }
         },
@@ -190,7 +184,8 @@ module.exports = function (grunt) {
                     collapseWhitespace: true
                 },
                 files: {
-                    'index.php': 'pre-index.php'
+                    'index.php': 'pre-index.php',
+                    'register.php': 'pre-register.php'
                 }
             }
         },
@@ -200,7 +195,7 @@ module.exports = function (grunt) {
             },
             taskName: {
                 files: [{
-                    src: ['index.php']
+                    src: ['index.php', 'register.php']
                 }]
             }
         }

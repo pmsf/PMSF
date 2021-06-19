@@ -28,7 +28,11 @@
       {
         "max": 2
       }
-    ]
+    ],
+    "no-labels": [2, {
+      "allowLoop": true,
+      "allowSwitch": true
+    }]
   },
   "env": {
     "browser": true,
@@ -36,9 +40,8 @@
   },
   "globals": {
     "toastr": true,
+    "toastDelay": true,
     "google": true,
-    "gmapsKey": true,
-    "mBoxKey": true,
     "mapData": true,
     "Store": true,
     "centerLat": true,
@@ -77,6 +80,7 @@
     "pGoStyleNight": true,
     "moment": false,
     "mapStyle": true,
+    "mapStyleList": true,
     "directionProvider": true,
     "hidePokemon": true,
     "excludeMinIV": true,
@@ -122,6 +126,8 @@
     "locationStyle": true,
     "gymStyle": true,
     "icons": true,
+    "iconFolderArray": true,
+    "getIcon": true,
     "getIv": true,
     "mapType": true,
     "mapFork": true,
@@ -171,6 +177,7 @@
     "hideQuestsPokemon": true,
     "hideQuestsItem": true,
     "hideQuestsEnergy": true,
+    "hideQuestsCandy": true,
     "noQuests": true,
     "noLures": true,
     "noTeamRocket": true,
@@ -189,7 +196,6 @@
     "noRocketTimer": true,
     "enableNestPolygon": true,
     "nestGeoJSONfile": true,
-    "noCostumeIcons": true,
     "queryInterval": true,
     "noInvasionEncounterData": true,
     "enableLiveScan": true,
@@ -200,8 +206,6 @@
     "numberOfItem": true,
     "numberOfGrunt": true,
     "numberOfEgg": true,
-    "customTileServerAddress": true,
-    "noCustomTileServer": true,
     "forcedTileServer": true,
     "hideRaidboss": true,
     "hideRaidegg": true,
@@ -219,6 +223,22 @@
     "defaultDustAmount": true,
     "noCatchRates": true,
     "nestAvgDefault": true,
+    "noHideSingleMarker": true,
+    "noNestPolygon": true,
+    "nestBotName": true,
+    "bootstrap": true,
+    "pokemonTable": true,
+    "rewardTable": true,
+    "shinyTable": true,
+    "getKeyByValue": true,
+    "pokemonTypes": true,
+    "processOverviewStats": true,
+    "processTeamStats": true,
+    "processPokestopStats": true,
+    "processSpawnpointStats": true,
+    "processPokemonStats": true,
+    "processRewardStats": true,
+    "processShinyStats": true,
     "noPvp": true,
     "noHideSingleMarker": true
   }

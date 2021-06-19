@@ -8,6 +8,7 @@
 .history
 *.log
 
+
 ## File-based project format:
 *.iws
 
@@ -39,16 +40,14 @@ cron/*
 !cron/example.PMSF
 !cron/nest_cron.php
 !cron/raid_cron.php
-!cron/silph.php
 /static/dist/
-/static/icons-pokemon/
-/static/sprites-pokemon/
 package-lock.json
 index.php
-user.php
+register.php
 .DS_Store
 static/.DS_Store
 vendor/*
 composer.lock
 custom/*
+.cache/*
 static/css/custom.css

@@ -1,0 +1,67 @@
+.modal {
+    padding-top: 3.5em;
+    .modal-dialog:not(.modal-fullscreen) {
+        height: calc(100% - 60px);
+        .modal-content {
+            height:100%;
+            .modal-header {
+                height:50px;
+            }
+            .modal-body {
+                height: calc(100% - 125px);
+                overflow-y: auto;     /*give auto it will take based in content */
+                .pokemon-list {
+                    display: -webkit-box;
+                    display: -ms-flexbox;
+                    display: -webkit-flex;
+                    display: flex;
+                    -webkit-flex-flow: row wrap;
+                    flex-flow: row wrap;
+                    -webkit-align-items:center;
+                    align-items: center;
+                    text-align:center;
+                    max-width: 100%;
+                    img {
+                        width: calc(20% - 10px);
+                        padding: 2px;
+                        margin: -2px -2px;
+                        box-sizing: border-box;
+                    }
+                    .pokemon-icon-sprite {
+                        border: 1px solid #d6d8d9;
+                        background-color: #f7f7f7;
+                        width: calc( 20% - 2px);
+                        margin-bottom: 2px;
+                        margin-left: 1px;
+                        margin-right: 1px;
+                        position:relative;
+                        .inner-bg{
+                            width: 48.13px;
+                            height: 48.13px;
+                            display: block;
+                            margin: 0 auto;
+                        }
+                    }
+                    .active {
+                        border: 1px solid #12940a;
+                        background: rgba(45, 234, 11, 0.4);
+                    }
+                }
+            }
+            .modal-footer {
+                position: -webkit-sticky;
+                position: sticky;
+                bottom: -25px;
+                height: 75px;
+                background-color: white;
+            }
+        }
+    }
+}
+.search-input {
+    position: relative;
+    width: calc(100% - 4px);
+    padding: 5px;
+    border: 1px solid grey;
+}
+
