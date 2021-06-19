@@ -240,14 +240,14 @@ if (location.search.indexOf('login=true') > 0) {
 if (copyrightSafe) {
     var setPokemon = Store.get('iconsArray')
     setPokemon.pokemon = 'static/sprites/'
-    Store.set('icons', setPokemon)
+    Store.set('iconsArray', setPokemon)
 } else if (Object.prototype.toString.call(Store.get('iconsArray')) === '[object String]' || Store.get('iconsArray') === '') {
     for (const [key, value] of Object.entries(iconFolderArray)) {
         if (Object.prototype.toString.call(value) === '[object Object]') {
             iconFolderArray[key] = iconFolderArray[key][Object.keys(iconFolderArray[key])[0]]
         }
     }
-    Store.set('icons', iconFolderArray)
+    Store.set('iconsArray', iconFolderArray)
 }
 if (forcedTileServer) {
     Store.set('map_style', 'tileserver')
