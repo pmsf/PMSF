@@ -100,6 +100,9 @@
                 if ($noPatreonLogin === false) {
                     echo "<button class='btn btn-primary' type='button' onclick=\"location.href='./login?action=patreon-login';\" value='Login with patreon'><i class='fab fa-patreon'></i> " . i8ln('Login with Patreon') . "</button>";
                 }
+                if ($noTelegramLogin === false) {
+                    echo '<script async src="https://telegram.org/js/telegram-widget.js?2" data-telegram-login="'.$telegram_bot_username.'" data-size="large" data-auth-url="login.php?callback=telegram"></script>';
+                }
                 echo "</div>";
             } ?>
 
