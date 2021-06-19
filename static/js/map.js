@@ -6418,67 +6418,67 @@ $(function () {
 
     $('.select-all').on('click', function (e) {
         e.preventDefault()
-        var parent = $(this).parent().parent().parent()
+        var parent = $(this).parent()
         parent.find('.pokemon-list .pokemon-icon-sprite').addClass('active')
         parent.find('.search-number').val(Array.from(Array(numberOfPokemon + 1).keys()).slice(1).join(',')).trigger('change')
     })
     $('.hide-all').on('click', function (e) {
         e.preventDefault()
-        var parent = $(this).parent().parent().parent()
+        var parent = $(this).parent()
         parent.find('.pokemon-list .pokemon-icon-sprite').removeClass('active')
         parent.find('.search-number').val('').trigger('change')
     })
 
     $('.select-all-energy').on('click', function (e) {
         e.preventDefault()
-        var parent = $(this).parent().parent().parent()
+        var parent = $(this).parent()
         parent.find('.energy-list .energy-icon-sprite').addClass('active')
         parent.find('.search-number').val(Array.from(Array(numberOfPokemon + 1).keys()).slice(1).join(',')).trigger('change')
     })
     $('.hide-all-energy').on('click', function (e) {
         e.preventDefault()
-        var parent = $(this).parent().parent().parent()
+        var parent = $(this).parent()
         parent.find('.energy-list .energy-icon-sprite').removeClass('active')
         parent.find('.search-number').val('').trigger('change')
     })
 
     $('.select-all-item').on('click', function (e) {
         e.preventDefault()
-        var parent = $(this).parent().parent().parent()
+        var parent = $(this).parent()
         parent.find('.item-list .item-icon-sprite').addClass('active')
         parent.find('.search-number').val(Array.from(Array(numberOfItem + 1).keys()).slice(1).join(',')).trigger('change')
     })
     $('.hide-all-item').on('click', function (e) {
         e.preventDefault()
-        var parent = $(this).parent().parent().parent()
+        var parent = $(this).parent()
         parent.find('.item-list .item-icon-sprite').removeClass('active')
         parent.find('.search-number').val('').trigger('change')
     })
 
     $('.select-all-grunt').on('click', function (e) {
         e.preventDefault()
-        var parent = $(this).parent().parent().parent()
+        var parent = $(this).parent()
         parent.find('.grunt-list .grunt-icon-sprite').addClass('active')
         parent.find('.search-number').val(Array.from(Array(numberOfGrunt + 1).keys()).slice(1).join(',')).trigger('change')
     })
 
     $('.hide-all-grunt').on('click', function (e) {
         e.preventDefault()
-        var parent = $(this).parent().parent().parent()
+        var parent = $(this).parent()
         parent.find('.grunt-list .grunt-icon-sprite').removeClass('active')
         parent.find('.search-number').val('').trigger('change')
     })
 
     $('.select-all-egg').on('click', function (e) {
         e.preventDefault()
-        var parent = $(this).parent().parent().parent()
+        var parent = $(this).parent()
         parent.find('.raidegg-list .raidegg-icon-sprite').addClass('active')
         parent.find('.search-number').val(Array.from(Array(numberOfEgg + 1).keys()).slice(1).join(',')).trigger('change')
     })
 
     $('.hide-all-egg').on('click', function (e) {
         e.preventDefault()
-        var parent = $(this).parent().parent().parent()
+        var parent = $(this).parent()
         parent.find('.raidegg-list .raidegg-icon-sprite').removeClass('active')
         parent.find('.search-number').val('').trigger('change')
     })
