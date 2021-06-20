@@ -94,8 +94,6 @@ var rangeMarkers = ['pokemon', 'pokestop', 'gym']
 var storeZoom = true
 var moves
 var pokedex
-var weather // eslint-disable-line no-unused-vars
-var boostedMons // eslint-disable-line no-unused-vars
 
 var oSwLat
 var oSwLng
@@ -6175,11 +6173,6 @@ $(function () {
 
     $.getJSON('static/dist/data/pokemon.min.json').done(function (data) {
         pokedex = data
-    })
-
-    $.getJSON('static/dist/data/weather.min.json').done(function (data) {
-        weather = data.weather
-        boostedMons = data.boosted_mons
     })
 
     $.getJSON('static/dist/data/questtype.min.json', {_: new Date().getTime()}).done(function (data) {
