@@ -7378,6 +7378,13 @@ function updateIcons(iconset) {
                             $(this).attr('src', newItemImg)
                         }
                         break
+                    case 'candy':
+                        let currentCandyImg = $(this).attr('src')
+                        let newCandyImg = getIcon(iconpath.reward, 'reward/candy', '.png', $(this).data('candyid'))
+                        if (currentCandyImg !== newCandyImg) {
+                            $(this).attr('src', newCandyImg)
+                        }
+                        break
                 }
             })
             break

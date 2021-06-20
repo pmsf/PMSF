@@ -131,8 +131,8 @@
                 <span style="display:none" class="types">' . $type . '</span>
                 <span style="display:none" class="name">' . i8ln($name) . '</span>
                 <span style="display:none" class="id">' . $k . '</span>
-                <img loading="lazy" src="static/sprites/reward/candy/' . $k . '.png"/>';
-                echo "<img class='pkmnfilter' data-pkmnid='" . $k . "' loading='lazy' src='" . getIcon($iconFolderArray['pokemon'], 'pokemon/', '.png', $k) . "'/>";
+                <img class="rewardfilter" data-type="candy" data-candyid="' . $k . '" loading="lazy" src="static/sprites/reward/candy/' . $k . '.png"/>
+                <img class="pkmnfilter" data-pkmnid="' . $k . '" loading="lazy" src="' . getIcon($iconFolderArray['pokemon'], 'pokemon/', '.png', $k) . '"/>';
                 if (! $noPokemonNames) {
                     echo '<span style="font-size:.5rem;white-space:nowrap;">' . $pokemon['name'] . '</span>';
                 }
