@@ -575,7 +575,7 @@ function getTileLayerConfig(selectedStyle) {
             break
         default:
             if (selectedStyle.includes('mapbox')) {
-                tileLayerConfig = L.tileLayer(mapStyleList[selectedStyle]['url'] + selectedStyle['key'], {
+                tileLayerConfig = L.tileLayer(mapStyleList[selectedStyle]['url'] + mapStyleList[selectedStyle]['key'], {
                     attribution: mapStyleList[selectedStyle]['attribution'],
                     maxZoom: maxZoom,
                     maxNativeZoom: mapStyleList[selectedStyle]['maxnativezoom']
