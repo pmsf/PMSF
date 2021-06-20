@@ -232,7 +232,6 @@
     "shinyTable": true,
     "getKeyByValue": true,
     "pokemonTypes": true,
-    "pokemonTypesEn": true,
     "processOverviewStats": true,
     "processTeamStats": true,
     "processPokestopStats": true,
