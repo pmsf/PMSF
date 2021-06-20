@@ -240,6 +240,7 @@ $iconNotifySizeModifier = 15;                                       // 0, 15, 30
 $noPokemon = false;
 $enablePokemon = 'true';
 $noPokemonNumbers = false;
+$noPokemonNames = false;
 $noHidePokemon = false;
 $hidePokemon = '[10, 13, 16, 19, 21, 29, 32, 41, 46, 48, 50, 52, 56, 74, 77, 96, 111, 133, 161, 163, 167, 177, 183, 191, 194, 168]'; // [] for empty
 $hidePokemonCoords = false;
