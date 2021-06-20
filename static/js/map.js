@@ -2407,6 +2407,7 @@ function getPokestopMarkerIcon(item) {
                 html = '<div style="position:relative;">' +
                     '<img src="' + getIcon(iconpath.pokestop, 'pokestop', '.png', markerStr, 0, 1) + '" style="width:50px;height:72;top:-35px;right:10px;"/>' +
                     '<img src="' + getIcon(iconpath.reward, 'reward/candy', '.png', item['reward_pokemon_id'], item['reward_amount']) + '" style="width:30px;height:auto;position:absolute;top:4px;left:0px;"/>' +
+                    '<img src="' + getIcon(iconpath.pokemon, 'pokemon', '.png', item['reward_pokemon_id']) + '" style="width:25px;height:auto;position:absolute;top:6px;left:10px;"/>' +
                     '</div>'
                 stopMarker = L.divIcon({
                     iconSize: [31, 31],
@@ -2515,6 +2516,7 @@ function getPokestopMarkerIcon(item) {
             html = '<div style="position:relative;">' +
                 '<img src="' + getIcon(iconpath.pokestop, 'pokestop', '.png', markerStr, 0, 1) + '" style="width:50px;height:72;top:-35px;right:10px;"/>' +
                 '<img src="' + getIcon(iconpath.reward, 'reward/candy', '.png', item['reward_pokemon_id'], item['reward_amount']) + '" style="width:30px;height:auto;position:absolute;top:4px;left:0px;"/>' +
+                '<img src="' + getIcon(iconpath.pokemon, 'pokemon', '.png', item['reward_pokemon_id']) + '" style="width:25px;height:auto;position:absolute;top:6px;left:10px;"/>' +
                 '</div>'
             stopMarker = L.divIcon({
                 iconSize: [31, 31],
