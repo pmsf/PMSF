@@ -557,9 +557,9 @@ if (strtolower($map) === "rdm") {
                                                                 <div class="scroll-container">
                                                                     <?php
                                                                     if ($generateExcludeQuestsCandy === true) {
-                                                                        candyFilterImages($noPokemonNumbers, '', array_diff(range(1, $numberOfPokemon), $getList->generated_exclude_list('candylist')), 13);
+                                                                        candyFilterImages($noPokemonNames, '', array_diff(range(1, $numberOfPokemon), $getList->generated_exclude_list('candylist')), 13);
                                                                     } else {
-                                                                        candyFilterImages($noPokemonNumbers, '', $excludeQuestsCandy, 13);
+                                                                        candyFilterImages($noPokemonNames, '', $excludeQuestsCandy, 13);
                                                                     } ?>
                                                                 </div>
                                                                 <div class="dropdown-divider"></div>

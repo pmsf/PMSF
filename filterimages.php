@@ -104,7 +104,7 @@
         </script>
     <?php }
 
-    function candyFilterImages($noPokemonNumbers, $onClick = '', $candyToExclude = array(), $num = 0)
+    function candyFilterImages($noPokemonNames, $onClick = '', $candyToExclude = array(), $num = 0)
     {
         global $mons, $iconFolderArray, $numberOfPokemon;
         if (empty($mons)) {
