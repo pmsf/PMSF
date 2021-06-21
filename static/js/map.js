@@ -3363,10 +3363,10 @@ function searchForItem(lat, lon, term, type, field) {
                     })
                     var html = '<li class="search-result ' + type + '" data-lat="' + element.lat + '" data-lon="' + element.lon + '"><div class="left-column" onClick="centerMapOnCoords(event);">'
                     if (sr.hasClass('reward-results')) {
-                        if (element.reward_pokemon_id !== 0 && element.quest_reward_type === 7) {
+                        if (element.quest_reward_type === 7) {
                             html += '<span style="background:url(' + getIcon(iconpath.pokemon, 'pokemon', '.png', element.reward_pokemon_id, 0, element.reward_pokemon_formid) + ') no-repeat;" class="i-icon" ></span>'
                         }
-                        if (element.reward_item_id !== 0) {
+                        if (element.quest_reward_type === 2) {
                             html += '<span style="background:url(' + getIcon(iconpath.reward, 'reward/item', '.png', element.reward_item_id, element.reward_amount) + ') no-repeat;" class="i-icon" ></span>'
                         }
                         if (element.quest_reward_type === 4) {
