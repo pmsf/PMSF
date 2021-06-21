@@ -1233,12 +1233,11 @@ if (strtolower($map) === "rdm") {
                                 </div>
                             </div>
                         </div>
-                        <?php
-                        if (! $noInfoModal && ! empty($infoModalTitle) && ! empty($infoModalContent)) { ?>
-                            <div class="d-grid gap-2">
-                                <button type="button" class="btn btn-primary btn-sm" data-bs-toggle="modal" data-bs-target="#infoModal"><?php echo $infoModalTitle; ?></button>
-                            </div>
-                        <?php } ?>
+                    </div>
+                <?php }
+                if (! $noInfoModal && ! empty($infoModalTitle) && ! empty($infoModalContent)) { ?>
+                    <div class="d-grid gap-2">
+                        <button type="button" class="btn btn-primary btn-sm" data-bs-toggle="modal" data-bs-target="#infoModal"><?php echo $infoModalTitle; ?></button>
                     </div>
                 <?php } ?>
             </div>
