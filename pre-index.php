@@ -1105,7 +1105,7 @@ if (strtolower($map) === "rdm") {
                                                 <select class="form-select" aria-label="direction-provider" name="direction-provider" id="direction-provider">
                                                     <option value="apple"><?php echo i8ln('Apple') ?></option>
                                                     <option value="google"><?php echo i8ln('Google (Directions)') ?></option>
-                                                    <option value="goolge-pin"><?php echo i8ln('Google (Pin)') ?></option>
+                                                    <option value="google-pin"><?php echo i8ln('Google (Pin)') ?></option>
                                                     <option value="waze"><?php echo i8ln('Waze') ?></option>
                                                     <option value="bing"><?php echo i8ln('Bing') ?></option>
                                                     <option value="geouri"><?php echo i8ln('GeoUri') ?></option>
