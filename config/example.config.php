@@ -322,7 +322,6 @@ $enableQuests = 'false';
 $noQuestsItems = false;
 $noQuestsPokemon = false;
 $noQuestsEnergy = false;
-$noQuestsEnergy = false;
 $noQuestsCandy = false;
 $noQuestsStardust = false;
 $hideQuestsPokemon = '[]';                                                    // Pokemon ids will default be hidden in the menu every user is able to change this personaly
