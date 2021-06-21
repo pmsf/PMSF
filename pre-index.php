@@ -569,11 +569,14 @@ if (strtolower($map) === "rdm") {
                                                         <?php } ?>
                                                     </div>
                                                 </div>
-                                                <div class="dropdown-divider"></div>
-                                                <div class="dustslider">
-                                                    <input type="range" class="form-range" min="0" max="3500" value="500" class="slider" id="dustrange">
-                                                    <p><?php echo i8ln('Show stardust ') ?><span id="dustvalue"></span></p>
-                                                </div>
+                                                <?php
+                                                if (! $noQuestsStardust) { ?>
+                                                    <div class="dropdown-divider"></div>
+                                                    <div class="dustslider">
+                                                        <input type="range" class="form-range" min="0" max="3500" value="500" class="slider" id="dustrange">
+                                                        <p><?php echo i8ln('Show stardust ') ?><span id="dustvalue"></span></p>
+                                                    </div>
+                                                <?php } ?>
                                             </div>
                                         </div>
                                    </div>
