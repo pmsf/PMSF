@@ -45,7 +45,7 @@ class RDM extends Search
             }
         }
         if (!empty($presids)) {
-            $conds[] = "quest_pokemon_id IN (" . implode(',', $presids) . ")";
+            $conds[] = "json_extract(json_extract(`quest_rewards`,'$[*].info.pokemon_id'),'$[0]') IN (" . implode(',', $presids) . ")";
         }
         if (!empty($iresids)) {
             $conds[] = "quest_item_id IN (" . implode(',', $iresids) . ")";
@@ -56,9 +56,13 @@ class RDM extends Search
         if (strpos(strtolower(i8ln('Stardust')), strtolower($term)) !== false) {
             $conds[] = "quest_reward_type = 3";
         }
+        if (strpos(strtolower(i8ln('Candy')), strtolower($term)) !== false) {
+            $conds[] = "quest_reward_type = 4";
+        }
         if (strpos(strtolower(i8ln('Mega')), strtolower($term)) !== false || strpos(strtolower(i8ln('Energy')), strtolower($term)) !== false) {
             $conds[] = "quest_reward_type = 12";
         }
+        
         $query = "SELECT id,
         name,
         lat,
