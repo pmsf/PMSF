@@ -770,7 +770,6 @@ class RocketMap_MAD extends RocketMap
         json_extract(json_extract(`quest_reward`,'$[*].pokemon_encounter.pokemon_display.gender_value'),'$[0]') AS reward_pokemon_genderid,
         tq.quest_item_amount AS reward_item_amount,
         tq.quest_stardust AS reward_dust_amount,
-        tq.quest_item_amount AS reward_energy_amount,
         json_extract(json_extract(`quest_reward`,'$[*].candy.amount'),'$[0]') AS reward_candy_amount,
         json_extract(json_extract(`quest_reward`,'$[*].candy.pokemon_id'),'$[0]') AS reward_candy_pokemon_id
         FROM pokestop p
@@ -815,7 +814,7 @@ class RocketMap_MAD extends RocketMap
                     break;
                 case 12:
                     $pokestop["reward_pokemon_id"] = intval($pokestop["reward_pokemon_id"]);
-                    $pokestop["reward_amount"] = intval($pokestop["reward_energy_amount"]);
+                    $pokestop["reward_amount"] = intval($pokestop["reward_item_amount"]);
                     break;
                 default:
                     $pokestop["reward_pokemon_id"] = null;
