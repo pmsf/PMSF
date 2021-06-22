@@ -557,9 +557,9 @@ if (strtolower($map) === "rdm") {
                                                                 <div class="scroll-container">
                                                                     <?php
                                                                     if ($generateExcludeQuestsCandy === true) {
-                                                                        candyFilterImages($noPokemonNumbers, '', array_diff(range(1, $numberOfPokemon), $getList->generated_exclude_list('candylist')), 13);
+                                                                        candyFilterImages($noPokemonNames, '', array_diff(range(1, $numberOfPokemon), $getList->generated_exclude_list('candylist')), 13);
                                                                     } else {
-                                                                        candyFilterImages($noPokemonNumbers, '', $excludeQuestsCandy, 13);
+                                                                        candyFilterImages($noPokemonNames, '', $excludeQuestsCandy, 13);
                                                                     } ?>
                                                                 </div>
                                                                 <div class="dropdown-divider"></div>
@@ -569,11 +569,14 @@ if (strtolower($map) === "rdm") {
                                                         <?php } ?>
                                                     </div>
                                                 </div>
-                                                <div class="dropdown-divider"></div>
-                                                <div class="dustslider">
-                                                    <input type="range" class="form-range" min="0" max="3500" value="500" class="slider" id="dustrange">
-                                                    <p><?php echo i8ln('Show stardust ') ?><span id="dustvalue"></span></p>
-                                                </div>
+                                                <?php
+                                                if (! $noQuestsStardust) { ?>
+                                                    <div class="dropdown-divider"></div>
+                                                    <div class="dustslider">
+                                                        <input type="range" class="form-range" min="0" max="3500" value="500" class="slider" id="dustrange">
+                                                        <p><?php echo i8ln('Show stardust ') ?><span id="dustvalue"></span></p>
+                                                    </div>
+                                                <?php } ?>
                                             </div>
                                         </div>
                                    </div>
@@ -1105,7 +1108,7 @@ if (strtolower($map) === "rdm") {
                                                 <select class="form-select" aria-label="direction-provider" name="direction-provider" id="direction-provider">
                                                     <option value="apple"><?php echo i8ln('Apple') ?></option>
                                                     <option value="google"><?php echo i8ln('Google (Directions)') ?></option>
-                                                    <option value="goolge-pin"><?php echo i8ln('Google (Pin)') ?></option>
+                                                    <option value="google_pin"><?php echo i8ln('Google (Pin)') ?></option>
                                                     <option value="waze"><?php echo i8ln('Waze') ?></option>
                                                     <option value="bing"><?php echo i8ln('Bing') ?></option>
                                                     <option value="geouri"><?php echo i8ln('GeoUri') ?></option>
@@ -1230,12 +1233,11 @@ if (strtolower($map) === "rdm") {
                                 </div>
                             </div>
                         </div>
-                        <?php
-                        if (! $noInfoModal && ! empty($infoModalTitle) && ! empty($infoModalContent)) { ?>
-                            <div class="d-grid gap-2">
-                                <button type="button" class="btn btn-primary btn-sm" data-bs-toggle="modal" data-bs-target="#infoModal"><?php echo $infoModalTitle; ?></button>
-                            </div>
-                        <?php } ?>
+                    </div>
+                <?php }
+                if (! $noInfoModal && ! empty($infoModalTitle) && ! empty($infoModalContent)) { ?>
+                    <div class="d-grid gap-2">
+                        <button type="button" class="btn btn-primary btn-sm" data-bs-toggle="modal" data-bs-target="#infoModal"><?php echo $infoModalTitle; ?></button>
                     </div>
                 <?php } ?>
             </div>

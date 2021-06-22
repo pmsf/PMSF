@@ -56,6 +56,9 @@ class RocketMap_MAD extends Search
         if (strpos(strtolower(i8ln('Stardust')), strtolower($term)) !== false) {
             $conds[] = "tq.quest_reward_type = 3";
         }
+        if (strpos(strtolower(i8ln('Candy')), strtolower($term)) !== false) {
+            $conds[] = "tq.quest_reward_type = 4";
+        }
         if (strpos(strtolower(i8ln('Mega')), strtolower($term)) !== false || strpos(strtolower(i8ln('Energy')), strtolower($term)) !== false) {
             $conds[] = "tq.quest_reward_type = 12";
         }

@@ -94,8 +94,6 @@ var rangeMarkers = ['pokemon', 'pokestop', 'gym']
 var storeZoom = true
 var moves
 var pokedex
-var weather // eslint-disable-line no-unused-vars
-var boostedMons // eslint-disable-line no-unused-vars
 
 var oSwLat
 var oSwLng
@@ -146,7 +144,7 @@ var noExGyms
 
 createjs.Sound.registerSound('static/sounds/ding.mp3', 'ding')
 
-var pokemonTypes = [i8ln('unset'), i8ln('Normal'), i8ln('Fighting'), i8ln('Flying'), i8ln('Poison'), i8ln('Ground'), i8ln('Rock'), i8ln('Bug'), i8ln('Ghost'), i8ln('Steel'), i8ln('Fire'), i8ln('Water'), i8ln('Grass'), i8ln('Electric'), i8ln('Psychic'), i8ln('Ice'), i8ln('Dragon'), i8ln('Dark'), i8ln('Fairy')]
+var pokemonTypes = ['unset', 'Normal', 'Fighting', 'Flying', 'Poison', 'Ground', 'Rock', 'Bug', 'Ghost', 'Steel', 'Fire', 'Water', 'Grass', 'Electric', 'Psychic', 'Ice', 'Dragon', 'Dark', 'Fairy']
 var genderType = ['♂', '♀', '⚲']
 var cpMultiplier = [0.094, 0.16639787, 0.21573247, 0.25572005, 0.29024988, 0.3210876, 0.34921268, 0.37523559, 0.39956728, 0.42250001, 0.44310755, 0.46279839, 0.48168495, 0.49985844, 0.51739395, 0.53435433, 0.55079269, 0.56675452, 0.58227891, 0.59740001, 0.61215729, 0.62656713, 0.64065295, 0.65443563, 0.667934, 0.68116492, 0.69414365, 0.70688421, 0.71939909, 0.7317, 0.73776948, 0.74378943, 0.74976104, 0.75568551, 0.76156384, 0.76739717, 0.7731865, 0.77893275, 0.7846369, 0.79030001]
 var throwType = JSON.parse('{"10": "Nice", "11": "Great", "12": "Excellent"}')
@@ -575,7 +573,7 @@ function getTileLayerConfig(selectedStyle) {
             break
         default:
             if (selectedStyle.includes('mapbox')) {
-                tileLayerConfig = L.tileLayer(mapStyleList[selectedStyle]['url'] + selectedStyle['key'], {
+                tileLayerConfig = L.tileLayer(mapStyleList[selectedStyle]['url'] + mapStyleList[selectedStyle]['key'], {
                     attribution: mapStyleList[selectedStyle]['attribution'],
                     maxZoom: maxZoom,
                     maxNativeZoom: mapStyleList[selectedStyle]['maxnativezoom']
@@ -1598,15 +1596,15 @@ function getQuest(item) {
                     if (questinfo['pokemon_type_ids'].length > 1) {
                         $.each(questinfo['pokemon_type_ids'], function (index, typeId) {
                             if (index === questinfo['pokemon_type_ids'].length - 2) {
-                                tstr += pokemonTypes[typeId] + ' or '
+                                tstr += i8ln(pokemonTypes[typeId]) + ' or '
                             } else if (index === questinfo['pokemon_type_ids'].length - 1) {
-                                tstr += pokemonTypes[typeId]
+                                tstr += i8ln(pokemonTypes[typeId])
                             } else {
-                                tstr += pokemonTypes[typeId] + ', '
+                                tstr += i8ln(pokemonTypes[typeId]) + ', '
                             }
                         })
                     } else {
-                        tstr = pokemonTypes[questinfo['pokemon_type_ids']]
+                        tstr = i8ln(pokemonTypes[questinfo['pokemon_type_ids']])
                     }
                     if (item['quest_condition_type_1'] === 21) {
                         str = str.replace('Catch {0}', 'Catch {0} different species of')
@@ -2407,6 +2405,7 @@ function getPokestopMarkerIcon(item) {
                 html = '<div style="position:relative;">' +
                     '<img src="' + getIcon(iconpath.pokestop, 'pokestop', '.png', markerStr, 0, 1) + '" style="width:50px;height:72;top:-35px;right:10px;"/>' +
                     '<img src="' + getIcon(iconpath.reward, 'reward/candy', '.png', item['reward_pokemon_id'], item['reward_amount']) + '" style="width:30px;height:auto;position:absolute;top:4px;left:0px;"/>' +
+                    '<img src="' + getIcon(iconpath.pokemon, 'pokemon', '.png', item['reward_pokemon_id']) + '" style="width:25px;height:auto;position:absolute;top:6px;left:10px;"/>' +
                     '</div>'
                 stopMarker = L.divIcon({
                     iconSize: [31, 31],
@@ -2515,6 +2514,7 @@ function getPokestopMarkerIcon(item) {
             html = '<div style="position:relative;">' +
                 '<img src="' + getIcon(iconpath.pokestop, 'pokestop', '.png', markerStr, 0, 1) + '" style="width:50px;height:72;top:-35px;right:10px;"/>' +
                 '<img src="' + getIcon(iconpath.reward, 'reward/candy', '.png', item['reward_pokemon_id'], item['reward_amount']) + '" style="width:30px;height:auto;position:absolute;top:4px;left:0px;"/>' +
+                '<img src="' + getIcon(iconpath.pokemon, 'pokemon', '.png', item['reward_pokemon_id']) + '" style="width:25px;height:auto;position:absolute;top:6px;left:10px;"/>' +
                 '</div>'
             stopMarker = L.divIcon({
                 iconSize: [31, 31],
@@ -3363,10 +3363,10 @@ function searchForItem(lat, lon, term, type, field) {
                     })
                     var html = '<li class="search-result ' + type + '" data-lat="' + element.lat + '" data-lon="' + element.lon + '"><div class="left-column" onClick="centerMapOnCoords(event);">'
                     if (sr.hasClass('reward-results')) {
-                        if (element.reward_pokemon_id !== 0 && element.quest_reward_type === 7) {
+                        if (element.quest_reward_type === 7) {
                             html += '<span style="background:url(' + getIcon(iconpath.pokemon, 'pokemon', '.png', element.reward_pokemon_id, 0, element.reward_pokemon_formid) + ') no-repeat;" class="i-icon" ></span>'
                         }
-                        if (element.reward_item_id !== 0) {
+                        if (element.quest_reward_type === 2) {
                             html += '<span style="background:url(' + getIcon(iconpath.reward, 'reward/item', '.png', element.reward_item_id, element.reward_amount) + ') no-repeat;" class="i-icon" ></span>'
                         }
                         if (element.quest_reward_type === 4) {
@@ -6175,11 +6175,6 @@ $(function () {
         pokedex = data
     })
 
-    $.getJSON('static/dist/data/weather.min.json').done(function (data) {
-        weather = data.weather
-        boostedMons = data.boosted_mons
-    })
-
     $.getJSON('static/dist/data/questtype.min.json', {_: new Date().getTime()}).done(function (data) {
         $.each(data, function (key, value) {
             questtypeList[key] = value['text']
@@ -7374,6 +7369,13 @@ function updateIcons(iconset) {
                         let newItemImg = getIcon(iconpath.reward, 'reward/item', '.png', $(this).data('itemid'))
                         if (currentItemImg !== newItemImg) {
                             $(this).attr('src', newItemImg)
+                        }
+                        break
+                    case 'candy':
+                        let currentCandyImg = $(this).attr('src')
+                        let newCandyImg = getIcon(iconpath.reward, 'reward/candy', '.png', $(this).data('candyid'))
+                        if (currentCandyImg !== newCandyImg) {
+                            $(this).attr('src', newCandyImg)
                         }
                         break
                 }

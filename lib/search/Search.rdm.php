@@ -45,7 +45,7 @@ class RDM extends Search
             }
         }
         if (!empty($presids)) {
-            $conds[] = "quest_pokemon_id IN (" . implode(',', $presids) . ")";
+            $conds[] = "json_extract(json_extract(`quest_rewards`,'$[*].info.pokemon_id'),'$[0]') IN (" . implode(',', $presids) . ")";
         }
         if (!empty($iresids)) {
             $conds[] = "quest_item_id IN (" . implode(',', $iresids) . ")";
@@ -56,10 +56,17 @@ class RDM extends Search
         if (strpos(strtolower(i8ln('Stardust')), strtolower($term)) !== false) {
             $conds[] = "quest_reward_type = 3";
         }
+        if (strpos(strtolower(i8ln('Candy')), strtolower($term)) !== false) {
+            $conds[] = "quest_reward_type = 4";
+        }
         if (strpos(strtolower(i8ln('Mega')), strtolower($term)) !== false || strpos(strtolower(i8ln('Energy')), strtolower($term)) !== false) {
             $conds[] = "quest_reward_type = 12";
         }
+<<<<<<< HEAD
 
+=======
+        
+>>>>>>> ce8ba725ab29b9c1041726386ca3d60dd4f3b571
         $query = "SELECT id,
         name,
         lat,
@@ -71,9 +78,12 @@ class RDM extends Search
         quest_item_id AS reward_item_id,
         json_extract(json_extract(`quest_rewards`,'$[*].info.amount'),'$[0]') AS reward_amount,
         json_extract(json_extract(`quest_rewards`,'$[*].info.form_id'),'$[0]') AS reward_pokemon_formid,
+<<<<<<< HEAD
         json_extract(json_extract(`quest_rewards`,'$[*].info.costume_id'),'$[0]') AS reward_pokemon_costumeid,
         json_extract(json_extract(`quest_rewards`,'$[*].info.gender_id'),'$[0]') AS reward_pokemon_genderid,
         json_extract(json_extract(`quest_rewards`,'$[*].info.shiny'),'$[0]') AS reward_pokemon_shiny,
+=======
+>>>>>>> ce8ba725ab29b9c1041726386ca3d60dd4f3b571
         ROUND(( 3959 * acos( cos( radians(:lat) ) * cos( radians( lat ) ) * cos( radians( lon ) - radians(:lon) ) + sin( radians(:lat) ) * sin( radians( lat ) ) ) ),2) AS distance
         FROM pokestop
         WHERE :conditions";
