@@ -1203,26 +1203,26 @@ if (strtolower($map) === "rdm") {
                                     <div class="card-body">
                                         <div class="btn-group flex-wrap" role="group" aria-label="Nested area dropdown">
                                             <?php
-                                            foreach ($quickAreas as $name => $areaInfo) {
+                                            foreach ($quickAreas as $areaname => $areaInfo) {
                                                 if (is_string($areaInfo)) {
                                                     $areaLatLon = explode(",", $areaInfo);
-                                                    $lat = $areaLatLon[0];
-                                                    $lon = $areaLatLon[1];
-                                                    $zoom = $areaLatLon[2];
-                                                    echo '<a href="" data-lat="' . $lat . '" data-lng="' . $lon . '" data-zoom="' . $zoom . '" class="btn btn-secondary area-go-to">' . $name . '</a>';
+                                                    $arealat = $areaLatLon[0];
+                                                    $arealon = $areaLatLon[1];
+                                                    $areazoom = $areaLatLon[2];
+                                                    echo '<a href="" data-lat="' . $arealat . '" data-lng="' . $arealon . '" data-zoom="' . $areazoom . '" class="btn btn-secondary area-go-to">' . $areaname . '</a>';
                                                 } else if (is_array($areaInfo)) { ?>
                                                     <div class="btn-group" role="group">
-                                                        <button class="btn btn-secondary dropdown-toggle" type="button" id="<?php echo $name; ?>-dropdown" data-bs-toggle="dropdown" aria-expanded="false">
-                                                            <?php echo $name; ?>
+                                                        <button class="btn btn-secondary dropdown-toggle" type="button" id="<?php echo $areaname; ?>-dropdown" data-bs-toggle="dropdown" aria-expanded="false">
+                                                            <?php echo $areaname; ?>
                                                         </button>
-                                                        <ul class="dropdown-menu" aria-labelledby="<?php echo $name; ?>-dropdown">
+                                                        <ul class="dropdown-menu" aria-labelledby="<?php echo $areaname; ?>-dropdown">
                                                         <?php
-                                                        foreach ($areaInfo as $name => $areaInfo) {
+                                                        foreach ($areaInfo as $areaname => $areaInfo) {
                                                             $areaLatLon = explode(",", $areaInfo);
-                                                            $lat = $areaLatLon[0];
-                                                            $lon = $areaLatLon[1];
-                                                            $zoom = $areaLatLon[2];
-                                                            echo '<li><a href="" data-lat="' . $lat . '" data-lng="' . $lon . '" data-zoom="' . $zoom . '" class="dropdown-item area-go-to">' . $name . '</a></li>';
+                                                            $arealat = $areaLatLon[0];
+                                                            $arealon = $areaLatLon[1];
+                                                            $areazoom = $areaLatLon[2];
+                                                            echo '<li><a href="" data-lat="' . $arealat . '" data-lng="' . $arealon . '" data-zoom="' . $areazoom . '" class="dropdown-item area-go-to">' . $areaname . '</a></li>';
                                                         } ?>
                                                         </ul>
                                                     </div>
