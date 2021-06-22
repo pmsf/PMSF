@@ -406,7 +406,7 @@ function processRewardStats(i, item) { // eslint-disable-line no-unused-vars
 
 function processShinyStats(i, item) { // eslint-disable-line no-unused-vars
     var hiddenName = '<span style="display: none;">' + item['name'] + '</span>'
-    var pokemon = '<img src="' + getIcon(iconpath.pokemon, 'pokemon', '.png', item['pokemon_id'], 0, item['form'], item['costume']) + '" style="width:40px;">' +
+    var pokemon = '<img src="' + getIcon(iconpath.pokemon, 'pokemon', '.png', item['pokemon_id'], 0, item['form'], item['costume'], 0, 1) + '" style="width:40px;">' +
     hiddenName
     var rate = item['rate'] + '<br>(' + item['percentage'] + ')'
 
