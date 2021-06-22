@@ -3364,7 +3364,7 @@ function searchForItem(lat, lon, term, type, field) {
                     var html = '<li class="search-result ' + type + '" data-lat="' + element.lat + '" data-lon="' + element.lon + '"><div class="left-column" onClick="centerMapOnCoords(event);">'
                     if (sr.hasClass('reward-results')) {
                         if (element.quest_reward_type === 7) {
-                            html += '<span style="background:url(' + getIcon(iconpath.pokemon, 'pokemon', '.png', element.reward_pokemon_id, 0, element.reward_pokemon_formid) + ') no-repeat;" class="i-icon" ></span>'
+                            html += '<span style="background:url(' + getIcon(iconpath.pokemon, 'pokemon', '.png', element.reward_pokemon_id, 0, element.reward_pokemon_formid, element.reward_pokemon_costumeid, element.reward_pokemon_genderid, element.reward_pokemon_shiny) + ') no-repeat;" class="i-icon" ></span>'
                         }
                         if (element.quest_reward_type === 2) {
                             html += '<span style="background:url(' + getIcon(iconpath.reward, 'reward/item', '.png', element.reward_item_id, element.reward_amount) + ') no-repeat;" class="i-icon" ></span>'
@@ -3381,8 +3381,8 @@ function searchForItem(lat, lon, term, type, field) {
                     }
                     html += '<div class="cont">'
                     if (sr.hasClass('reward-results')) {
-                        if (element.pokemon_name !== null) {
-                            html += '<span class="reward" style="font-weight:bold">' + element.pokemon_name + '</span><span>&nbsp;-&#32;</span>'
+                        if (element.reward_pokemon_name !== null) {
+                            html += '<span class="reward" style="font-weight:bold">' + element.reward_pokemon_name + '</span><span>&nbsp;-&#32;</span>'
                         }
                         if (element.reward_item_name !== null) {
                             html += '<span class="reward" style="font-weight:bold">' + element.reward_item_name + '</span><span>&nbsp;-&#32;</span>'
