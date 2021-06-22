@@ -27,7 +27,9 @@ $libs[] = "submit/Manual.php";
 $libs[] = "submit/Submit.rdm.php";
 $libs[] = "submit/Submit.rocketmap_mad.php";
 $libs[] = "Manual.php";
-
+$libs[] = "stats/Stats.php";
+$libs[] = "stats/Stats.rdm.php";
+$libs[] = "stats/Stats.rocketmap_mad.php";
 // Include libraries
 foreach ($libs as $file) {
     include(__DIR__ . '/../lib/' . $file);
@@ -89,11 +91,6 @@ $noInfoModal = true;                                                // Hide info
 $infoModalTitle = 'Info';                                           // Infomodal title
 $infoModalContent = 'Your text info here';                          // HTML markup allowed (external html file load $infoModalContent = file_get_contents('custom/modal.html');
 
-/* Loading screen */
-
-$noLoadingScreen = false;                                           // show loading animation while main page loads.
-$loadingStyle = '';                                                 // Leave blank for default loading icon. Use '<IMG SRC=static/images/pokeball2.gif>'
-                                                                    // for pokeball or custom gif for animated gif; or use your own html.
 /* Google Maps key is ONLY USED FOR TILE LAYERS */
 
 $gmapsKey = "";
@@ -128,12 +125,9 @@ $patreonUrl = "";                                                   // Patreon U
 $customUrl = "";                                                    // Custom URL, leave "" for empty
 $customUrlFontIcon = "far fa-smile-beam";                           // Choose a custom icon on: https://fontawesome.com/icons?d=gallery&m=free
 
-/* Worldopole */
-
-$worldopoleUrl = "";                                                // Link to Worldopole, leave "" for empty
-
-/* StatsToggle */
+/* Stats */
 $noStatsToggle = false;                                             // Enables or disables the stats button in the header.
+$noFullStats = false;                                               // Enables or disables full stats
 
 /* MOTD */
 $noMotd = true;
@@ -244,6 +238,7 @@ $iconNotifySizeModifier = 15;                                  // 0, 15, 30, 45
 $noPokemon = false;                                            // true/false
 $enablePokemon = 'true';                                       // true/false
 $noPokemonNumbers = false;                                     // true/false
+$noPokemonNames = false;                                       // true/false
 $noHidePokemon = false;                                        // true/false
 $hidePokemon = '[]';                                           // [] for empty
 $hidePokemonCoords = false;                                    // true/false
@@ -251,7 +246,9 @@ $pokemonReportTime = false;
 $pokemonToExclude = [];
 $pokemonGenSearchString = 'generation';                        // When custom string is used translations do not work.
 
-$excludeMinIV = '[]';                                          // [] for empty
+$noPvp = false;
+
+$excludeMinIV = '[]';                                               // [] for empty
 
 $minIV = '0';                                                  // "0" for empty or a number
 $minLevel = '0';                                               // "0" for empty or a number
@@ -312,10 +309,13 @@ $enableQuests = 'false';                                       // true/false
 $noQuestsItems = false;
 $noQuestsPokemon = false;
 $noQuestsEnergy = false;
+$noQuestsCandy = false;
+$noQuestsStardust = false;
 $hideQuestsPokemon = '[]';                                     // Pokemon ids
 $generateExcludeQuestsPokemon = true;
 $generateExcludeQuestsItem = true;
 $generateExcludeQuestsEnergy = true;
+$generateExcludeQuestsCandy = true;
 $excludeQuestsPokemon = [];                                    // Pokemon ids
 $hideQuestsItem = '[4, 5, 301, 401, 402, 403, 404, 501, 602, 603, 604, 702, 704, 708, 801, 901, 902, 903, 1001, 1002, 1401, 1402, 1403, 1404, 1405]';
                                                                // Item ids "See protos https://github.com/Furtif/POGOProtos/blob/master/src/POGOProtos/Inventory/Item/ItemId.proto"
@@ -324,6 +324,8 @@ $noItemNumbers = true;                                         // true/false
 $defaultDustAmount = 500;
 $hideQuestsEnergy = '[]';
 $excludeQuestsEnergy = [];
+$hideQuestsCandy = '[]';
+$excludeQuestsCandy = [];
 
 /* Manual quest hide options */
 $hideQuestTypes = [0, 1, 2, 3, 12, 18, 19, 22, 24, 25];
@@ -382,15 +384,23 @@ $notifyNotification = 'true';                                  // true/false
 $noDarkMode = false;
 
 $copyrightSafe = true;
-$noCostumeIcons = true;                                        // Set to true if you $iconRepository doesnt support costume icons. true/false
-$iconRepository = 'https://raw.githubusercontent.com/whitewillem/PogoAssets/resized/icons_large/';
-$noMultipleRepos = true;
-$iconRepos = [["Standard","$iconRepository"]];
-
-/* Custom Tileserver. Only tested with https://github.com/123FLO321/SwiftTileserverCache */
-
-$noCustomTileServer = true;                                         // Enable/Disable Custom TileServer
-$customTileServerAddress = "";                                      // TileServer URL: http://ipAddress:port/tile/klokantech-basic/{z}/{x}/{y}/1/png
+$iconFolderArray = [                                           // Default Icon repo to be used
+    'gym' => [
+        'Ingame' => 'static/sprites/gym/ingame/',
+        'Rocketmap' => 'static/sprites/gym/rocketmap/',
+        'Shield' => 'static/sprites/gym/shield/',
+        'Comic' => 'static/sprites/gym/comic/'
+    ],
+    'invasion' => 'static/sprites/',
+    'misc' => 'static/sprites/',
+    'pokemon' => 'static/sprites/',                            // String or Array of multiple icon sets
+    'pokestop' => 'static/sprites/',
+    'raid' => 'static/sprites/',
+    'reward' => 'static/sprites/',                             // String or Array of multiple icon sets
+    'team' => 'static/sprites/',
+    'type' => 'static/sprites/',
+    'weather' => 'static/sprites/'
+];
 
 $noMapStyle = false;                                           // true/false
 $mapStyle = 'openstreetmap';                                   // Set default Map Style
@@ -491,9 +501,6 @@ $noIconSize = false;                                           // true/false
 $iconSize = 0;                                                 // -8, 0, 10, 20
 
 $noIconNotifySizeModifier = false;                             // true/false | Increase size of notified Pokemon
-
-$noGymStyle = false;                                           // true/false
-$gymStyle = 'ingame';                                          // ingame, shield
 
 $noLocationStyle = false;                                      // true/false
 $locationStyle = 'none';                                       // none, google, red, red_animated, blue, blue_animated, yellow, yellow_animated, pokesition, pokeball
