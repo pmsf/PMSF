@@ -115,10 +115,10 @@ class RocketMap_MAD extends Search
                     $pokestop["reward_pokemon_id"] = null;
                     $pokestop["reward_amount"] = null;
             }
-            $reward['pokemon_name'] = !empty($reward['pokemon_name']) ? $prewardsjson[$reward['reward_pokemon_id']]['name'] : null;
+            $reward['reward_pokemon_name'] = !empty($reward['reward_pokemon_id']) ? $prewardsjson[$reward['reward_pokemon_id']]['name'] : null;
             $reward['reward_pokemon_formid'] = intval($reward['reward_pokemon_formid']);
             $reward['quest_reward_type'] = intval($reward['quest_reward_type']);
-            $reward['reward_item_name'] = !empty($reward['reward_item_name']) ? $irewardsjson[$reward['reward_item_id']]['name'] : null;
+            $reward['reward_item_name'] = !empty($reward['reward_item_id']) ? $irewardsjson[$reward['reward_item_id']]['name'] : null;
             $reward['reward_item_id'] = intval($reward['quest_item_id']);
             $reward['url'] = preg_replace("/^http:/i", "https:", $reward['url']);
             $reward['name'] = ($maxSearchNameLength > 0) ? htmlspecialchars(substr($reward['name'], 0, $maxSearchNameLength)) : htmlspecialchars($reward['name']);
