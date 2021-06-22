@@ -97,7 +97,7 @@ class RDM extends Search
             $reward['reward_pokemon_shiny'] = intval($reward['reward_pokemon_shiny']);
             $reward['quest_reward_type'] = intval($reward['quest_reward_type']);
             $reward['reward_amount'] = intval($reward['reward_amount']);
-            $reward['item_name'] = !empty($reward['reward_item_id']) ? $irewardsjson[$reward['reward_item_id']]['name'] : null;
+            $reward['reward_item_name'] = !empty($reward['reward_item_id']) ? $irewardsjson[$reward['reward_item_id']]['name'] : null;
             $reward['reward_item_id'] = intval($reward['reward_item_id']);
             $reward['url'] = preg_replace("/^http:/i", "https:", $reward['url']);
             $reward['name'] = ($maxSearchNameLength > 0) ? htmlspecialchars(substr($reward['name'], 0, $maxSearchNameLength)) : htmlspecialchars($reward['name']);
