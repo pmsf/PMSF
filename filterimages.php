@@ -40,7 +40,7 @@
                 if (! $copyrightSafe) {
                     echo "<img class='pkmnfilter' data-pkmnid='" . $k . "' loading='lazy' src='" . getIcon($iconFolderArray['pokemon'], 'pokemon/', '.png', $k) . "'/>";
                 } else {
-                    echo "<img loading='lazy' src='static/sprites/pokemon/" . $id . ".png'/>";
+                    echo "<img loading='lazy' src='static/sprites/pokemon/" . $k . ".png'/>";
                 }
                 if (! $noPokemonNumbers) {
                     echo "<span class='pokemon-number'>" . $k . "</span>";
