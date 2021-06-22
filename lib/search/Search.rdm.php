@@ -62,7 +62,11 @@ class RDM extends Search
         if (strpos(strtolower(i8ln('Mega')), strtolower($term)) !== false || strpos(strtolower(i8ln('Energy')), strtolower($term)) !== false) {
             $conds[] = "quest_reward_type = 12";
         }
+<<<<<<< HEAD
+
+=======
         
+>>>>>>> ce8ba725ab29b9c1041726386ca3d60dd4f3b571
         $query = "SELECT id,
         name,
         lat,
@@ -74,6 +78,12 @@ class RDM extends Search
         quest_item_id AS reward_item_id,
         json_extract(json_extract(`quest_rewards`,'$[*].info.amount'),'$[0]') AS reward_amount,
         json_extract(json_extract(`quest_rewards`,'$[*].info.form_id'),'$[0]') AS reward_pokemon_formid,
+<<<<<<< HEAD
+        json_extract(json_extract(`quest_rewards`,'$[*].info.costume_id'),'$[0]') AS reward_pokemon_costumeid,
+        json_extract(json_extract(`quest_rewards`,'$[*].info.gender_id'),'$[0]') AS reward_pokemon_genderid,
+        json_extract(json_extract(`quest_rewards`,'$[*].info.shiny'),'$[0]') AS reward_pokemon_shiny,
+=======
+>>>>>>> ce8ba725ab29b9c1041726386ca3d60dd4f3b571
         ROUND(( 3959 * acos( cos( radians(:lat) ) * cos( radians( lat ) ) * cos( radians( lon ) - radians(:lon) ) + sin( radians(:lat) ) * sin( radians( lat ) ) ) ),2) AS distance
         FROM pokestop
         WHERE :conditions";
@@ -86,12 +96,15 @@ class RDM extends Search
         $rewards = $db->query($query, $params)->fetchAll(\PDO::FETCH_ASSOC);
         $data = array();
         foreach ($rewards as $reward) {
-            $reward['pokemon_name'] = !empty($reward['reward_pokemon_id']) ? $prewardsjson[$reward['reward_pokemon_id']]['name'] : null;
+            $reward['pokemon_name'] = !empty($reward['pokemon_name']) ? $prewardsjson[$reward['reward_pokemon_id']]['name'] : null;
             $reward['reward_pokemon_id'] = intval($reward['reward_pokemon_id']);
             $reward['reward_pokemon_formid'] = intval($reward['reward_pokemon_formid']);
+            $reward['reward_pokemon_costumeid'] = intval($reward['reward_pokemon_costumeid']);
+            $reward['reward_pokemon_genderid'] = intval($reward['reward_pokemon_genderid']);
+            $reward['reward_pokemon_shiny'] = intval($reward['reward_pokemon_shiny']);
             $reward['quest_reward_type'] = intval($reward['quest_reward_type']);
             $reward['reward_amount'] = intval($reward['reward_amount']);
-            $reward['item_name'] = !empty($reward['reward_item_id']) ? $irewardsjson[$reward['reward_item_id']]['name'] : null;
+            $reward['reward_item_name'] = !empty($reward['reward_item_name']) ? $irewardsjson[$reward['reward_item_id']]['name'] : null;
             $reward['reward_item_id'] = intval($reward['reward_item_id']);
             $reward['url'] = preg_replace("/^http:/i", "https:", $reward['url']);
             $reward['name'] = ($maxSearchNameLength > 0) ? htmlspecialchars(substr($reward['name'], 0, $maxSearchNameLength)) : htmlspecialchars($reward['name']);

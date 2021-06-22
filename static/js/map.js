@@ -245,14 +245,14 @@ if (location.search.indexOf('login=true') > 0) {
 if (copyrightSafe) {
     var setPokemon = Store.get('iconsArray')
     setPokemon.pokemon = 'static/sprites/'
-    Store.set('icons', setPokemon)
+    Store.set('iconsArray', setPokemon)
 } else if (Object.prototype.toString.call(Store.get('iconsArray')) === '[object String]' || Store.get('iconsArray') === '') {
     for (const [key, value] of Object.entries(iconFolderArray)) {
         if (Object.prototype.toString.call(value) === '[object Object]') {
             iconFolderArray[key] = iconFolderArray[key][Object.keys(iconFolderArray[key])[0]]
         }
     }
-    Store.set('icons', iconFolderArray)
+    Store.set('iconsArray', iconFolderArray)
 }
 if (forcedTileServer) {
     Store.set('map_style', 'tileserver')
@@ -3384,8 +3384,8 @@ function searchForItem(lat, lon, term, type, field) {
                         if (element.pokemon_name !== null) {
                             html += '<span class="reward" style="font-weight:bold">' + element.pokemon_name + '</span><span>&nbsp;-&#32;</span>'
                         }
-                        if (element.item_name !== null) {
-                            html += '<span class="reward" style="font-weight:bold">' + element.item_name + '</span><span>&nbsp;-&#32;</span>'
+                        if (element.reward_item_name !== null) {
+                            html += '<span class="reward" style="font-weight:bold">' + element.reward_item_name + '</span><span>&nbsp;-&#32;</span>'
                         }
                     }
                     html += '<span class="name" style="font-weight:bold">' + element.name + '</span>' + '<span class="distance" style="font-weight:bold">&nbsp;-&#32;' + element.distance + defaultUnit + '</span>'
