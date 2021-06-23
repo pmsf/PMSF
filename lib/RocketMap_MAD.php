@@ -603,7 +603,7 @@ class RocketMap_MAD extends RocketMap
                 $pkmn_in = substr($pkmn_in, 0, -1);
                 $candySQL .= "tq.quest_pokemon_id NOT IN ( $pkmn_in ) AND tq.quest_reward_type = 4";
             } else {
-                $energySQL .= "tq.quest_reward_type = 4";
+                $candySQL .= "tq.quest_reward_type = 4";
             }
             $itemSQL = '';
             if (count($qieids)) {
@@ -859,35 +859,35 @@ class RocketMap_MAD extends RocketMap
             $pokestops = $db->query("SELECT distinct quest_pokemon_id FROM trs_quest WHERE quest_pokemon_id > 0 AND DATE(FROM_UNIXTIME(quest_timestamp)) = '" . $curdate->format('Y-m-d') . "' AND quest_reward_type = 7 order by quest_pokemon_id;")->fetchAll(\PDO::FETCH_ASSOC);
             $data = array();
             foreach ($pokestops as $pokestop) {
-                $data[] = $pokestop['quest_pokemon_id'];
+                $data[] = $pokestop['reward_pokemon_id'];
             }
         } elseif ($type === 'energylist') {
             $pokestops = $db->query("
                 SELECT distinct
-                    quest_pokemon_id AS quest_energy_pokemon_id
+                    quest_pokemon_id AS reward_pokemon_id
                 FROM trs_quest
                 WHERE quest_reward_type = 12;"
             )->fetchAll(\PDO::FETCH_ASSOC);
             $data = array();
             foreach ($pokestops as $pokestop) {
-                $data[] = $pokestop['quest_energy_pokemon_id'];
+                $data[] = $pokestop['reward_pokemon_id'];
             }
         } elseif ($type === 'candylist') {
             $pokestops = $db->query("
                 SELECT distinct
-                    quest_pokemon_id AS quest_candy_pokemon_id
+                    quest_pokemon_id AS reward_pokemon_id
                 FROM trs_quest
                 WHERE quest_reward_type = 4;"
             )->fetchAll(\PDO::FETCH_ASSOC);
             $data = array();
             foreach ($pokestops as $pokestop) {
-                $data[] = $pokestop['quest_candy_pokemon_id'];
+                $data[] = $pokestop['reward_pokemon_id'];
             }
         } elseif ($type === 'itemlist') {
             $pokestops = $db->query("SELECT distinct quest_item_id FROM trs_quest WHERE quest_item_id > 0 AND DATE(FROM_UNIXTIME(quest_timestamp)) = '" . $curdate->format('Y-m-d') . "' order by quest_item_id;")->fetchAll(\PDO::FETCH_ASSOC);
             $data = array();
             foreach ($pokestops as $pokestop) {
-                $data[] = $pokestop['quest_item_id'];
+                $data[] = $pokestop['reward_item_id'];
             }
         } elseif ($type === 'gruntlist') {
             $pokestops = $db->query("SELECT distinct incident_grunt_type FROM pokestop WHERE incident_grunt_type > 0 AND incident_expiration > UTC_TIMESTAMP() order by incident_grunt_type;")->fetchAll(\PDO::FETCH_ASSOC);
