@@ -3525,6 +3525,7 @@ function centerMapOnCoords(event) { // eslint-disable-line no-unused-vars
     }
     var latlng = new L.LatLng(point.data('lat'), point.data('lon'))
     map.setView(latlng, zoom)
+    $('.modal').modal('hide')
 }
 
 function manualPokestopData(event) { // eslint-disable-line no-unused-vars

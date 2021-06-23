@@ -840,6 +840,7 @@ class RocketMap_MAD extends RocketMap
             $pokestop["reward_pokemon_formid"] = intval($pokestop["reward_pokemon_formid"]);
             $pokestop["reward_pokemon_costumeid"] = intval($pokestop["reward_pokemon_costumeid"]);
             $pokestop["reward_pokemon_genderid"] = intval($pokestop["reward_pokemon_genderid"]);
+            $pokestop["reward_pokemon_shiny"] = intval($pokestop["reward_pokemon_shiny"]);
             $pokestop["reward_item_id"] = intval($pokestop["reward_item_id"]);
             $pokestop["reward_item_name"] = empty($item_pid) ? null : i8ln($this->items[$item_pid]["name"]);
             $pokestop["last_seen"] = $pokestop["last_seen"] * 1000;
