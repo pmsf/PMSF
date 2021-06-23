@@ -8,4 +8,16 @@
   .toast-header {
     padding: 0.1rem 0.50rem;
   }
+  .toast-body {
+    img {
+      width: 64px;
+      height: auto;
+    }
+    @media only screen and (min-width: 1000px) {
+      img {
+          width: 128px;
+          height: auto;
+      }
+    }
+  }
 }
