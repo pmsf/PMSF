@@ -231,7 +231,7 @@ if (strtolower($map) === "rdm") {
         </div>
     </div>
     <!-- NAV -->
-    <div class="offcanvas left offcanvas-start" data-bs-scroll="true" data-bs-backdrop="false" tabindex="-1" id="leftNav" aria-labelledby="leftNavLabel">
+    <div class="offcanvas left offcanvas-start" data-bs-scroll="true" data-bs-backdrop="true" tabindex="-1" id="leftNav" aria-labelledby="leftNavLabel">
         <div class="offcanvas-body left">
             <div class="accordion accordion-flush" id="accordionNav">
                 <?php
@@ -1243,7 +1243,7 @@ if (strtolower($map) === "rdm") {
             </div>
         </div>
     </div>
-    <div class="offcanvas offcanvas-end" data-bs-scroll="true" data-bs-backdrop="false" tabindex="-1" id="rightNav" aria-labelledby="rightNavLabel">
+    <div class="offcanvas offcanvas-end" data-bs-scroll="true" data-bs-backdrop="true" tabindex="-1" id="rightNav" aria-labelledby="rightNavLabel">
         <div class="offcanvas-body right">
             <div class="card">
                 <div class="card-header">
