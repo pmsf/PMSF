@@ -1,7 +1,7 @@
 <?php
     function pokemonFilterImages($noPokemonNumbers, $onClick = '', $pokemonToExclude = array(), $num = 0)
     {
-        global $mons, $copyrightSafe, $iconFolderArray, $numberOfPokemon, $pokemonGenSearchString;
+        global $mons, $iconFolderArray, $numberOfPokemon, $pokemonGenSearchString;
         if (empty($mons)) {
             $json = file_get_contents('static/dist/data/pokemon.min.json');
             $mons = json_decode($json, true);
@@ -36,12 +36,8 @@
                 <span style="display:none" class="id">' . $k . '</span>
                 <span style="display:none" class="genid">' . i8ln($pokemonGenSearchString) . $genId . '</span>
                 <span style="display:none" class="genname">' . $genName . '</span>
-                <span style="display:none" class="forms">' . $form . '</span>';
-                if (! $copyrightSafe) {
-                    echo "<img class='pkmnfilter' data-pkmnid='" . $k . "' loading='lazy' src='" . getIcon($iconFolderArray['pokemon'], 'pokemon/', '.png', $k) . "'/>";
-                } else {
-                    echo "<img loading='lazy' src='static/sprites/pokemon/" . $k . ".png'/>";
-                }
+                <span style="display:none" class="forms">' . $form . '</span>
+                <img class="pkmnfilter" data-pkmnid="' . $k . '" loading="lazy" src="' . getIcon($iconFolderArray['pokemon'], 'pokemon/', '.png', $k) . '"/>';
                 if (! $noPokemonNumbers) {
                     echo "<span class='pokemon-number'>" . $k . "</span>";
                 }
@@ -59,7 +55,7 @@
 
     function energyFilterImages($noPokemonNumbers, $onClick = '', $energyToExclude = array(), $num = 0)
     {
-        global $mons, $copyrightSafe, $iconFolderArray, $numberOfPokemon;
+        global $mons, $iconFolderArray, $numberOfPokemon;
         if (empty($mons)) {
             $json = file_get_contents('static/dist/data/pokemon.min.json');
             $mons = json_decode($json, true);
@@ -83,12 +79,8 @@
                 echo '<span class="energy-icon-sprite" data-value="' . $k . '" onclick="' . $onClick . '">
                 <span style="display:none" class="types">' . $type . '</span>
                 <span style="display:none" class="name">' . i8ln($name) . '</span>
-                <span style="display:none" class="id">' . $k . '</span>';
-                if (! $copyrightSafe) {
-                    echo "<img class='rewardfilter' data-megaid='" . $k . "' data-type='mega_resource' loading='lazy' src='" . getIcon($iconFolderArray['reward'], 'reward/mega_resource/', '.png', $k) . "'/>";
-                } else {
-                    echo '<img loading="lazy" src="static/sprites/pokemon/' . $k . '.png"/>';
-                }
+                <span style="display:none" class="id">' . $k . '</span>
+                <img class="rewardfilter" data-megaid="' . $k . '" data-type="mega_resource" loading="lazy" src="' . getIcon($iconFolderArray['reward'], 'reward/mega_resource/', '.png', $k) . '"/>';
                 if (! $noPokemonNumbers) {
                     echo "<span class='pokemon-number'>" . $k . "</span>";
                 }
@@ -150,7 +142,7 @@
 
     function itemFilterImages($noItemNumbers, $onClick = '', $itemsToExclude = array(), $num = 0)
     {
-        global $items, $copyrightSafe, $iconFolderArray;
+        global $items, $iconFolderArray;
         if (empty($items)) {
             $json = file_get_contents('static/dist/data/items.min.json');
             $items = json_decode($json, true);
@@ -165,17 +157,10 @@
             $name = $item['name'];
 
             if (! in_array($k, $itemsToExclude)) {
-                if (! $copyrightSafe) {
-                    echo '<span class="item-icon-sprite" data-value="' . $k . '" onclick="' . $onClick . '">
-                    <span style="display:none" class="name">' . i8ln($name) . '</span>
-                    <span style="display:none" class="id">' . $k . '</span>
-                    <img class="rewardfilter" data-itemid="' . $k . '" data-type="item" loading="lazy" src="' . getIcon($iconFolderArray['reward'], 'reward/item/', '.png', $k) . '"/>';
-                } else {
-                    echo '<span class="item-icon-sprite" data-value="' . $k . '" onclick="' . $onClick . '">
-                    <span style="display:none" class="name">' . i8ln($name) . '</span>
-                    <span style="display:none" class="id">' . $k . '</span>
-                    <img loading="lazy" src="static/icons-safe/rewards/reward_' . $k . '_1.png"/>';
-                }
+                echo '<span class="item-icon-sprite" data-value="' . $k . '" onclick="' . $onClick . '">
+                <span style="display:none" class="name">' . i8ln($name) . '</span>
+                <span style="display:none" class="id">' . $k . '</span>
+                <img class="rewardfilter" data-itemid="' . $k . '" data-type="item" loading="lazy" src="' . getIcon($iconFolderArray['reward'], 'reward/item/', '.png', $k) . '"/>';
                 if (! $noItemNumbers) {
                     echo '<span class="item-number">' . $k . '</span>';
                 }
@@ -231,7 +216,7 @@
 
     function raidEggFilterImages($noRaideggNumbers, $onClick = '', $raideggToExclude = array(), $num = 0)
     {
-        global $raids, $copyrightSafe, $iconFolderArray;
+        global $raids, $iconFolderArray;
         if (empty($raids)) {
             $json = file_get_contents('static/dist/data/raidegg.min.json');
             $egg = json_decode($json, true);

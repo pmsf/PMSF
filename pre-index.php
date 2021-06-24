@@ -1116,7 +1116,7 @@ if (strtolower($map) === "rdm") {
                                                 <label for="direction-provider"><?php echo i8ln('Direction Provider') ?></label>
                                             </div>
                                         <?php }
-                                        if (! $copyrightSafe && is_array($iconFolderArray['pokemon']) && (sizeof($iconFolderArray['pokemon']) > 0)) { ?>
+                                        if (is_array($iconFolderArray['pokemon']) && sizeof($iconFolderArray['pokemon']) > 0) { ?>
                                             <div class="form-floating">
                                                 <select class="form-select" aria-label="pokemon-icon-style" name="pokemon-icon-style" id="pokemon-icon-style">
                                                     <?php
@@ -1138,7 +1138,7 @@ if (strtolower($map) === "rdm") {
                                                 <label for="pokemon-icon-size"><?php echo i8ln('Pokemon Markericon Size') ?></label>
                                             </div>
                                         <?php }
-                                        if (! $copyrightSafe && is_array($iconFolderArray['reward']) && (sizeof($iconFolderArray['reward']) > 0)) { ?>
+                                        if (is_array($iconFolderArray['reward']) && sizeof($iconFolderArray['reward']) > 0) { ?>
                                             <div class="form-floating">
                                                 <select class="form-select" aria-label="reward-icon-style" name="reward-icon-style" id="reward-icon-style">
                                                     <?php
@@ -1496,7 +1496,6 @@ include('modals.php');
     var noDeletePortal = <?php echo $noDeletePortal === true ? 'true' : 'false' ?>;
     var noConvertPortal = <?php echo $noConvertPortal === true ? 'true' : 'false' ?>;
     var markPortalsAsNew = <?php echo $markPortalsAsNew ?>;
-    var copyrightSafe = <?php echo $copyrightSafe === true ? 'true' : 'false' ?>;
     var forcedTileServer = <?php echo $forcedTileServer === true ? 'true' : 'false' ?>;
     var noRarityDisplay = <?php echo $noRarityDisplay === true ? 'true' : 'false' ?>;
     var noWeatherIcons = <?php echo $noWeatherIcons === true ? 'true' : 'false' ?>;

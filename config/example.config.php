@@ -399,7 +399,6 @@ $notifyNotification = 'true';
 
 /* Style Settings */
 
-$copyrightSafe = true;
 $iconFolderArray = [                                           // Default Icon repo to be used
     'gym' => [
         'Ingame' => 'static/sprites/gym/ingame/',
