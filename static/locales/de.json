@@ -1649,5 +1649,20 @@
   "German": "Deutsch",
   "Mega energy": "Mega Energie",
   "Profile": "Profil",
-  "Energy": "Energie"
+  "Energy": "Energie",
+  "Overview": "Übersicht",
+  "Teams": "Arenen",
+  "Neutral Gyms": "unbesetzt",
+  "Mystic Gyms": "Team Weisheit",
+  "Valor Gyms": "Team Wagemut",
+  "Instinct Gyms": "Team Intuition",
+  "Field Research": "Feldforschung",
+  "Invasions": "Team Rocket",
+  "Normal Lure": "Lockmodul",
+  "Glacial Lure": "Gletscher-Lockmodul",
+  "Mossy Lure": "Moos-Lockmodul",
+  "Magnetic Lure": "Magnet-Lockmodul",
+  "Rainy Lure": "Regen-Lockmodul",
+  "Timer Found": "Zeit bekannt",
+  "Timer Missing": "Zeit unbekannt"
 }
