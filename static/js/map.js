@@ -446,6 +446,8 @@ function initMap() { // eslint-disable-line no-unused-vars
     createFireworks()
     createHearts()
     updateUser()
+    updateIcons('grunt')
+    updateIcons('raidegg')
 
     map.on('moveend', function () {
         updateS2Overlay()
@@ -7379,6 +7381,24 @@ function updateIcons(iconset) {
                             $(this).attr('src', newCandyImg)
                         }
                         break
+                }
+            })
+            break
+        case 'grunt':
+            $('.gruntfilter').each(function () {
+                var currentImg = $(this).attr('src')
+                var newImg = getIcon(iconpath.invasion, 'invasion', '.png', $(this).data('gruntid'))
+                if (currentImg !== newImg) {
+                    $(this).attr('src', newImg)
+                }
+            })
+            break
+        case 'raidegg':
+            $('.raideggfilter').each(function () {
+                var currentImg = $(this).attr('src')
+                var newImg = getIcon(iconpath.raid, 'raid', '.png', $(this).data('raidegglevel'), $(this).data('raidegghatched'))
+                if (currentImg !== newImg) {
+                    $(this).attr('src', newImg)
                 }
             })
             break
