@@ -89,6 +89,7 @@ var markers
 var markersnotify
 var _oldlayer = 'openstreetmap'
 var rawDataIsLoading = false
+var searchDelay
 var locationMarker
 var rangeMarkers = ['pokemon', 'pokestop', 'gym']
 var storeZoom = true
@@ -3325,161 +3326,164 @@ function loadWeatherCellData(cell) { // eslint-disable-line no-unused-vars
     })
 }
 function searchForItem(lat, lon, term, type, field) {
-    if (term !== '') {
-        $.ajax({
-            url: 'search',
-            type: 'POST',
-            timeout: 300000,
-            dataType: 'json',
-            cache: false,
-            data: {
-                'action': type,
-                'term': term,
-                'lat': lat,
-                'lon': lon
-            },
-            error: function error(xhr) {
-                // Display error toast
-                switch (xhr.status) {
-                    case 404:
-                        sendToast('warning', i8ln('Error searching'), i8ln('Could not find any results please try again.'), 'true')
-                        break
+    clearTimeout(searchDelay)
+    searchDelay = setTimeout(function () {
+        if (term !== '') {
+            $.ajax({
+                url: 'search',
+                type: 'POST',
+                timeout: 300000,
+                dataType: 'json',
+                cache: false,
+                data: {
+                    'action': type,
+                    'term': term,
+                    'lat': lat,
+                    'lon': lon
+                },
+                error: function error(xhr) {
+                    // Display error toast
+                    switch (xhr.status) {
+                        case 404:
+                            sendToast('warning', i8ln('Error searching'), i8ln('Could not find any results please try again.'), 'true')
+                            break
+                    }
                 }
-            }
-        }).done(function (data) {
-            if (data) {
-                var par = field.parent()
-                var sr = par.find('.search-results')
-                sr.html('')
-                $.each(data.reward, function (i, element) {
-                    var scanArea
-                    var latlng = turf.point([element.lon, element.lat])
-                    $.each(scanAreas, function (index, poly) {
-                        var insideScan = turf.booleanPointInPolygon(latlng, poly)
-                        if (insideScan) {
-                            scanArea = insideScan
-                            return false
+            }).done(function (data) {
+                if (data) {
+                    var par = field.parent()
+                    var sr = par.find('.search-results')
+                    sr.html('')
+                    $.each(data.reward, function (i, element) {
+                        var scanArea
+                        var latlng = turf.point([element.lon, element.lat])
+                        $.each(scanAreas, function (index, poly) {
+                            var insideScan = turf.booleanPointInPolygon(latlng, poly)
+                            if (insideScan) {
+                                scanArea = insideScan
+                                return false
+                            }
+                        })
+                        var html = '<li class="search-result ' + type + '" data-lat="' + element.lat + '" data-lon="' + element.lon + '"><div class="left-column" onClick="centerMapOnCoords(event);">'
+                        if (sr.hasClass('reward-results')) {
+                            if (element.quest_reward_type === 7) {
+                                html += '<span style="background:url(' + getIcon(iconpath.pokemon, 'pokemon', '.png', element.reward_pokemon_id, 0, element.reward_pokemon_formid, element.reward_pokemon_costumeid, element.reward_pokemon_genderid, element.reward_pokemon_shiny) + ') no-repeat;" class="i-icon" ></span>'
+                            }
+                            if (element.quest_reward_type === 2) {
+                                html += '<span style="background:url(' + getIcon(iconpath.reward, 'reward/item', '.png', element.reward_item_id, element.reward_amount) + ') no-repeat;" class="i-icon" ></span>'
+                            }
+                            if (element.quest_reward_type === 4) {
+                                html += '<span style="background:url(' + getIcon(iconpath.reward, 'reward/candy', '.png', element.reward_pokemon_id, element.reward_amount) + ') no-repeat;" class="i-icon" ></span>'
+                            }
+                            if (element.quest_reward_type === 3) {
+                                html += '<span style="background:url(' + getIcon(iconpath.reward, 'reward/stardust', '.png', element.reward_amount) + ') no-repeat;" class="i-icon" ></span>'
+                            }
+                            if (element.quest_reward_type === 12) {
+                                html += '<span style="background:url(' + getIcon(iconpath.reward, 'reward/mega_resource', '.png', element.reward_pokemon_id) + ') no-repeat;" class="i-icon" ></span>'
+                            }
                         }
+                        html += '<div class="cont">'
+                        if (sr.hasClass('reward-results')) {
+                            if (element.reward_pokemon_name !== null) {
+                                html += '<span class="reward" style="font-weight:bold">' + element.reward_pokemon_name + '</span><span>&nbsp;-&#32;</span>'
+                            }
+                            if (element.reward_item_name !== null) {
+                                html += '<span class="reward" style="font-weight:bold">' + element.reward_item_name + '</span><span>&nbsp;-&#32;</span>'
+                            }
+                        }
+                        html += '<span class="name" style="font-weight:bold">' + element.name + '</span>' + '<span class="distance" style="font-weight:bold">&nbsp;-&#32;' + element.distance + defaultUnit + '</span>'
+                        html += '</div></div>'
+                        if (sr.hasClass('pokestop-results') && !noManualQuests && !scanArea) {
+                            html += '<div class="right-column"><i class="fas fa-binoculars submit-quests"  onClick="openQuestModal(event);" data-id="' + element.external_id + '"></i></div>'
+                        } else {
+                            html += '<div class="right-column" onClick="centerMapOnCoords(event);"><span style="background:url(' + element.url + ') no-repeat;" class="i-icon" ></span></div>'
+                        }
+                        html += '</li>'
+                        sr.append(html)
                     })
-                    var html = '<li class="search-result ' + type + '" data-lat="' + element.lat + '" data-lon="' + element.lon + '"><div class="left-column" onClick="centerMapOnCoords(event);">'
-                    if (sr.hasClass('reward-results')) {
-                        if (element.quest_reward_type === 7) {
-                            html += '<span style="background:url(' + getIcon(iconpath.pokemon, 'pokemon', '.png', element.reward_pokemon_id, 0, element.reward_pokemon_formid, element.reward_pokemon_costumeid, element.reward_pokemon_genderid, element.reward_pokemon_shiny) + ') no-repeat;" class="i-icon" ></span>'
+                    $.each(data.forts, function (i, element) {
+                        var scanArea
+                        var latlng = turf.point([element.lon, element.lat])
+                        $.each(scanAreas, function (index, poly) {
+                            var insideScan = turf.booleanPointInPolygon(latlng, poly)
+                            if (insideScan) {
+                                scanArea = insideScan
+                                return false
+                            }
+                        })
+                        var html = '<li class="search-result ' + type + '" data-lat="' + element.lat + '" data-lon="' + element.lon + '"><div class="left-column" onClick="centerMapOnCoords(event);">'
+                        if (sr.hasClass('gym-results')) {
+                            html += '<span style="background:url(' + element.url + ') no-repeat;" class="i-icon" ></span>'
                         }
-                        if (element.quest_reward_type === 2) {
-                            html += '<span style="background:url(' + getIcon(iconpath.reward, 'reward/item', '.png', element.reward_item_id, element.reward_amount) + ') no-repeat;" class="i-icon" ></span>'
+                        html += '<div class="cont">' +
+                        '<span class="name" style="font-weight:bold">' + element.name + '</span>' + '<span class="distance" style="font-weight:bold">&nbsp;-&#32;' + element.distance + defaultUnit + '</span>' +
+                        '</div></div>'
+                        if (sr.hasClass('gym-results') && manualRaids && !scanArea) {
+                            html += '<div class="right-column"><i class="fas fa-binoculars submit-raid"  onClick="openRaidModal(event);" data-id="' + element.external_id + '"></i></div>'
                         }
-                        if (element.quest_reward_type === 4) {
-                            html += '<span style="background:url(' + getIcon(iconpath.reward, 'reward/candy', '.png', element.reward_pokemon_id, element.reward_amount) + ') no-repeat;" class="i-icon" ></span>'
-                        }
-                        if (element.quest_reward_type === 3) {
-                            html += '<span style="background:url(' + getIcon(iconpath.reward, 'reward/stardust', '.png', element.reward_amount) + ') no-repeat;" class="i-icon" ></span>'
-                        }
-                        if (element.quest_reward_type === 12) {
-                            html += '<span style="background:url(' + getIcon(iconpath.reward, 'reward/mega_resource', '.png', element.reward_pokemon_id) + ') no-repeat;" class="i-icon" ></span>'
-                        }
-                    }
-                    html += '<div class="cont">'
-                    if (sr.hasClass('reward-results')) {
-                        if (element.reward_pokemon_name !== null) {
-                            html += '<span class="reward" style="font-weight:bold">' + element.reward_pokemon_name + '</span><span>&nbsp;-&#32;</span>'
-                        }
-                        if (element.reward_item_name !== null) {
-                            html += '<span class="reward" style="font-weight:bold">' + element.reward_item_name + '</span><span>&nbsp;-&#32;</span>'
-                        }
-                    }
-                    html += '<span class="name" style="font-weight:bold">' + element.name + '</span>' + '<span class="distance" style="font-weight:bold">&nbsp;-&#32;' + element.distance + defaultUnit + '</span>'
-                    html += '</div></div>'
-                    if (sr.hasClass('pokestop-results') && !noManualQuests && !scanArea) {
-                        html += '<div class="right-column"><i class="fas fa-binoculars submit-quests"  onClick="openQuestModal(event);" data-id="' + element.external_id + '"></i></div>'
-                    } else {
-                        html += '<div class="right-column" onClick="centerMapOnCoords(event);"><span style="background:url(' + element.url + ') no-repeat;" class="i-icon" ></span></div>'
-                    }
-                    html += '</li>'
-                    sr.append(html)
-                })
-                $.each(data.forts, function (i, element) {
-                    var scanArea
-                    var latlng = turf.point([element.lon, element.lat])
-                    $.each(scanAreas, function (index, poly) {
-                        var insideScan = turf.booleanPointInPolygon(latlng, poly)
-                        if (insideScan) {
-                            scanArea = insideScan
-                            return false
-                        }
+                        html += '</li>'
+                        sr.append(html)
                     })
-                    var html = '<li class="search-result ' + type + '" data-lat="' + element.lat + '" data-lon="' + element.lon + '"><div class="left-column" onClick="centerMapOnCoords(event);">'
-                    if (sr.hasClass('gym-results')) {
-                        html += '<span style="background:url(' + element.url + ') no-repeat;" class="i-icon" ></span>'
-                    }
-                    html += '<div class="cont">' +
-                    '<span class="name" style="font-weight:bold">' + element.name + '</span>' + '<span class="distance" style="font-weight:bold">&nbsp;-&#32;' + element.distance + defaultUnit + '</span>' +
-                    '</div></div>'
-                    if (sr.hasClass('gym-results') && manualRaids && !scanArea) {
-                        html += '<div class="right-column"><i class="fas fa-binoculars submit-raid"  onClick="openRaidModal(event);" data-id="' + element.external_id + '"></i></div>'
-                    }
-                    html += '</li>'
-                    sr.append(html)
-                })
-                $.each(data.pokestops, function (i, element) {
-                    var scanArea
-                    var latlng = turf.point([element.lon, element.lat])
-                    $.each(scanAreas, function (index, poly) {
-                        var insideScan = turf.booleanPointInPolygon(latlng, poly)
-                        if (insideScan) {
-                            scanArea = insideScan
-                            return false
+                    $.each(data.pokestops, function (i, element) {
+                        var scanArea
+                        var latlng = turf.point([element.lon, element.lat])
+                        $.each(scanAreas, function (index, poly) {
+                            var insideScan = turf.booleanPointInPolygon(latlng, poly)
+                            if (insideScan) {
+                                scanArea = insideScan
+                                return false
+                            }
+                        })
+                        var html = '<li class="search-result ' + type + '" data-lat="' + element.lat + '" data-lon="' + element.lon + '"><div class="left-column" onClick="centerMapOnCoords(event);">'
+                        if (sr.hasClass('pokestop-results')) {
+                            html += '<span style="background:url(' + element.url + ') no-repeat;" class="i-icon" ></span>'
                         }
+                        html += '<div class="cont">' +
+                        '<span class="name" style="font-weight:bold">' + element.name + '</span>' + '<span class="distance" style="font-weight:bold">&nbsp;-&#32;' + element.distance + defaultUnit + '</span>' +
+                        '</div></div>'
+                        if (sr.hasClass('pokestop-results') && !noManualQuests && !scanArea) {
+                            html += '<div class="right-column"><i class="fas fa-binoculars submit-quests"  onClick="openQuestModal(event);" data-id="' + element.external_id + '"></i></div>'
+                        }
+                        html += '</li>'
+                        sr.append(html)
                     })
-                    var html = '<li class="search-result ' + type + '" data-lat="' + element.lat + '" data-lon="' + element.lon + '"><div class="left-column" onClick="centerMapOnCoords(event);">'
-                    if (sr.hasClass('pokestop-results')) {
-                        html += '<span style="background:url(' + element.url + ') no-repeat;" class="i-icon" ></span>'
-                    }
-                    html += '<div class="cont">' +
-                    '<span class="name" style="font-weight:bold">' + element.name + '</span>' + '<span class="distance" style="font-weight:bold">&nbsp;-&#32;' + element.distance + defaultUnit + '</span>' +
-                    '</div></div>'
-                    if (sr.hasClass('pokestop-results') && !noManualQuests && !scanArea) {
-                        html += '<div class="right-column"><i class="fas fa-binoculars submit-quests"  onClick="openQuestModal(event);" data-id="' + element.external_id + '"></i></div>'
-                    }
-                    html += '</li>'
-                    sr.append(html)
-                })
-                $.each(data.portals, function (i, element) {
-                    var html = '<li class="search-result ' + type + '" data-lat="' + element.lat + '" data-lon="' + element.lon + '"><div class="left-column" onClick="centerMapOnCoords(event);">'
-                    if (sr.hasClass('portals-results')) {
-                        html += '<span style="background:url(' + element.url + ') no-repeat;" class="i-icon" ></span>'
-                    }
-                    html += '<div class="cont">' +
-                    '<span class="name" style="font-weight:bold">' + element.name + '</span>' + '<span class="distance" style="font-weight:bold">&nbsp;-&#32;' + element.distance + defaultUnit + '</span>' +
-                    '</div></div>' +
-                    '</li>'
-                    sr.append(html)
-                })
-                $.each(data.nests, function (i, element) {
-                    var html = '<li class="search-result ' + type + '" data-lat="' + element.lat + '" data-lon="' + element.lon + '"><div class="left-column" onClick="centerMapOnCoords(event);">'
-                    if (sr.hasClass('nest-results')) {
-                        html += '<span style="background:url(' + getIcon(iconpath.pokemon, 'pokemon', '.png', element.pokemon_id) + ') no-repeat;" class="i-icon" ></span>'
-                    }
-                    html += '<div class="cont">' +
-                    '<span class="name" style="font-weight:bold">' + element.name + '</span>' + '<span class="distance" style="font-weight:bold">&nbsp;-&#32;' + element.distance + defaultUnit + '</span>' +
-                    '</div></div>' +
-                    '</li>'
-                    sr.append(html)
-                })
-                $.each(data.pokemon, function (i, element) {
-                    var html = '<li class="search-result ' + type + '" data-lat="' + element.lat + '" data-lon="' + element.lon + '"><div class="left-column" onClick="centerMapOnCoords(event);">'
-                    if (sr.hasClass('pokemon-results')) {
-                        html += '<span style="background:url(' + getIcon(iconpath.pokemon, 'pokemon', '.png', element.pokemon_id) + ') no-repeat;" class="i-icon" ></span>'
-                    }
-                    html += '<div class="cont">' +
-                    '<span class="name" style="font-weight:bold">' + element.name + '</span>' + '<span class="distance" style="font-weight:bold">&nbsp;-&#32;' + element.distance + defaultUnit + '</span>' +
-                    '</div></div>' +
-                    '</li>'
-                    sr.append(html)
-                })
-            }
-        })
-    }
+                    $.each(data.portals, function (i, element) {
+                        var html = '<li class="search-result ' + type + '" data-lat="' + element.lat + '" data-lon="' + element.lon + '"><div class="left-column" onClick="centerMapOnCoords(event);">'
+                        if (sr.hasClass('portals-results')) {
+                            html += '<span style="background:url(' + element.url + ') no-repeat;" class="i-icon" ></span>'
+                        }
+                        html += '<div class="cont">' +
+                        '<span class="name" style="font-weight:bold">' + element.name + '</span>' + '<span class="distance" style="font-weight:bold">&nbsp;-&#32;' + element.distance + defaultUnit + '</span>' +
+                        '</div></div>' +
+                        '</li>'
+                        sr.append(html)
+                    })
+                    $.each(data.nests, function (i, element) {
+                        var html = '<li class="search-result ' + type + '" data-lat="' + element.lat + '" data-lon="' + element.lon + '"><div class="left-column" onClick="centerMapOnCoords(event);">'
+                        if (sr.hasClass('nest-results')) {
+                            html += '<span style="background:url(' + getIcon(iconpath.pokemon, 'pokemon', '.png', element.pokemon_id) + ') no-repeat;" class="i-icon" ></span>'
+                        }
+                        html += '<div class="cont">' +
+                        '<span class="name" style="font-weight:bold">' + element.name + '</span>' + '<span class="distance" style="font-weight:bold">&nbsp;-&#32;' + element.distance + defaultUnit + '</span>' +
+                        '</div></div>' +
+                        '</li>'
+                        sr.append(html)
+                    })
+                    $.each(data.pokemon, function (i, element) {
+                        var html = '<li class="search-result ' + type + '" data-lat="' + element.lat + '" data-lon="' + element.lon + '"><div class="left-column" onClick="centerMapOnCoords(event);">'
+                        if (sr.hasClass('pokemon-results')) {
+                            html += '<span style="background:url(' + getIcon(iconpath.pokemon, 'pokemon', '.png', element.pokemon_id) + ') no-repeat;" class="i-icon" ></span>'
+                        }
+                        html += '<div class="cont">' +
+                        '<span class="name" style="font-weight:bold">' + element.name + '</span>' + '<span class="distance" style="font-weight:bold">&nbsp;-&#32;' + element.distance + defaultUnit + '</span>' +
+                        '</div></div>' +
+                        '</li>'
+                        sr.append(html)
+                    })
+                }
+            })
+        }
+    }, 300)
 }
 
 function searchAjax(field) { // eslint-disable-line no-unused-vars
