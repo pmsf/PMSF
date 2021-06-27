@@ -154,5 +154,8 @@
   },
   "57": {
     "text": "Take {0} snapshot(s) of wild pokémon"
+  },
+  "58": {
+    "text": "QUEST_USE_POKEMON_ITEM"
   }
 }
