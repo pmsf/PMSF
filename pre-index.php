@@ -305,7 +305,7 @@ if (strtolower($map) === "rdm") {
                                                     <?php } ?>
                                                 </div>
                                             </div>
-                                            <?php if (! $noHidePokemon && ! $noExcludeMinIV) { ?>
+                                            <?php if (! $noHidePokemon || ! $noExcludeMinIV) { ?>
                                                 <ul class="nav nav-tabs nav-fill" id="pokemonHideMin" role="tablist">
                                                     <?php
                                                     $firstTab = 1;
