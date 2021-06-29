@@ -63,43 +63,72 @@
     "text": "Days in a row"
   },
   "21": {
-    "prototext": "WITH_UNIQUE_POKEMON",
-    "text": ""
+    "text": "WITH_UNIQUE_POKEMON"
   },
   "22": {
-    "prototext": "WITH_NPC_COMBAT",
-    "text": ""
+    "text": "WITH_NPC_COMBAT"
   },
   "23": {
-    "prototext": "WITH_PVP_COMBAT",
-    "text": ""
+    "text": "WITH_PVP_COMBAT"
   },
   "24": {
-    "prototext": "WITH_LOCATION",
-    "text": ""
+    "text": "WITH_LOCATION"
   },
   "25": {
-    "prototext": "WITH_DISTANCE",
-    "text": ""
+    "text": "WITH_DISTANCE"
   },
   "26": {
-    "prototext": "WITH_POKEMON_ALIGNMENT",
-    "text": ""
+    "text": "WITH_POKEMON_ALIGNMENT"
   },
   "27": {
-    "prototext": "WITH_INVASION_CHARACTER",
-    "text": ""
+    "text": "WITH_INVASION_CHARACTER"
   },
   "28": {
-    "prototext": "WITH_BUDDY",
-    "text": ""
+    "text": "WITH_BUDDY"
   },
   "29": {
-    "prototext": "WITH_BUDDY_INTERESTING_POI",
-    "text": ""
+    "text": "WITH_BUDDY_INTERESTING_POI"
   },
   "30": {
-    "prototext": "WITH_DAILY_BUDDY_EFFECTION",
-    "text": ""
+    "text": "WITH_DAILY_BUDDY_AFFECTION"
+  },
+  "31": {
+    "text": "WITH_POKEMON_LEVEL"
+  },
+  "32": {
+    "text": "WITH_SINGLE_DAY"
+  },
+  "33": {
+    "text": "WITH_UNIQUE_POKEMON_TEAM"
+  },
+  "34": {
+    "text": "WITH_MAX_CP"
+  },
+  "35": {
+    "text": "WITH_LUCKY_POKEMON"
+  },
+  "36": {
+    "text": "WITH_LEGENDARY_POKEMON"
+  },
+  "37": {
+    "text": "WITH_TEMP_EVO_POKEMON"
+  },
+  "38": {
+    "text": "WITH_GBL_RANK"
+  },
+  "39": {
+    "text": "WITH_CATCHES_IN_A_ROW"
+  },
+  "40": {
+    "text": "WITH_ENCOUNTER_TYPE"
+  },
+  "41": {
+    "text": "WITH_COMBAT_TYPE"
+  },
+  "42": {
+    "text": "WITH_GEOTARGETED_POI"
+  },
+  "43": {
+    "text": "WITH_ITEM_TYPE"
   }
 }

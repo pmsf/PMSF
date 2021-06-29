@@ -1,18 +1,18 @@
 {
   "1": {
-    "name": "Pokéball"
+    "name": "Poké Ball"
   },
   "2": {
-    "name": "Greatball"
+    "name": "Great Ball"
   },
   "3": {
-    "name": "Ultraball"
+    "name": "Ultra Ball"
   },
   "4": {
-    "name": "Masterball"
+    "name": "Master Ball"
   },
   "5": {
-    "name": "Premierball"
+    "name": "Premier Ball"
   },
   "101": {
     "name": "Potion"
@@ -39,13 +39,13 @@
     "name": "Incense"
   },
   "402": {
-    "name": "Incense Spicy"
+    "name": "Spicy Incense"
   },
   "403": {
-    "name": "Incense Cool"
+    "name": "Cool Incense"
   },
   "404": {
-    "name": "Incense Floral"
+    "name": "Floral Incense"
   },
   "405": {
     "name": "Mystery Box"
@@ -90,19 +90,22 @@
     "name": "Pinap Berry"
   },
   "706": {
-    "name": "Golden Razz"
+    "name": "Golden Razz Berry"
   },
   "707": {
-    "name": "Golden Pinap"
+    "name": "Golden Pinap Berry"
   },
   "708": {
-    "name": "Silver Pinap"
+    "name": "Silver Pinap Berry"
   },
   "709": {
     "name": "Poffin"
   },
   "801": {
     "name": "Camera"
+  },
+  "802": {
+    "name": "Stickers"
   },
   "901": {
     "name": "Unlimited Incubator"
@@ -146,8 +149,17 @@
   "1202": {
     "name": "Charge TM"
   },
+  "1203": {
+    "name": "Elite Fast TM"
+  },
+  "1204": {
+    "name": "Elite Charge TM"
+  },
   "1301": {
     "name": "Rare Candy"
+  },
+  "1302": {
+    "name": "Rare Candy XL"
   },
   "1401": {
     "name": "Free Raid Pass"
@@ -167,6 +179,12 @@
   "1406": {
     "name": "Team Medallion"
   },
+  "1407": {
+    "name": "Route Maker"
+  },
+  "1408": {
+    "name": "Remote Raid Pass"
+  },
   "1501": {
     "name": "Mysterious Component"
   },
@@ -177,6 +195,12 @@
     "name": "Super Rocket Radar"
   },
   "1600": {
+    "name": "Global Event Ticket"
+  },
+  "1601": {
+    "name": "Global Event Ticket"
+  },
+  "1602": {
     "name": "Global Event Ticket"
   }
 }
