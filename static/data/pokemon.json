@@ -1503,6 +1503,46 @@
             "color": "#f8d030"
           }
         ]
+      },
+      {
+        "nameform": "Kariyushi",
+        "protoform": "2675",
+        "formtypes": [
+          {
+            "type": "Electric",
+            "color": "#f8d030"
+          }
+        ]
+      },
+      {
+        "nameform": "Pop Star",
+        "protoform": "2676",
+        "formtypes": [
+          {
+            "type": "Electric",
+            "color": "#f8d030"
+          }
+        ]
+      },
+      {
+        "nameform": "Rock Star",
+        "protoform": "2677",
+        "formtypes": [
+          {
+            "type": "Electric",
+            "color": "#f8d030"
+          }
+        ]
+      },
+      {
+        "nameform": "5th Anniversary",
+        "protoform": "2678",
+        "formtypes": [
+          {
+            "type": "Electric",
+            "color": "#f8d030"
+          }
+        ]
       }
     ]
   },
