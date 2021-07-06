@@ -1862,6 +1862,62 @@
             "color": "#f8d030"
           }
         ]
+      },
+      {
+        "nameform": "Kariyushi",
+        "protoform": "2675",
+        "assetsform": "00",
+        "baseStamina": 111,
+        "baseAttack": 112,
+        "baseDefense": 96,
+        "formtypes": [
+          {
+            "type": "Electric",
+            "color": "#f8d030"
+          }
+        ]
+      },
+      {
+        "nameform": "Pop Star",
+        "protoform": "2676",
+        "assetsform": "00",
+        "baseStamina": 111,
+        "baseAttack": 112,
+        "baseDefense": 96,
+        "formtypes": [
+          {
+            "type": "Electric",
+            "color": "#f8d030"
+          }
+        ]
+      },
+      {
+        "nameform": "Rock Star",
+        "protoform": "2677",
+        "assetsform": "00",
+        "baseStamina": 111,
+        "baseAttack": 112,
+        "baseDefense": 96,
+        "formtypes": [
+          {
+            "type": "Electric",
+            "color": "#f8d030"
+          }
+        ]
+      },
+      {
+        "nameform": "5th Anniversary",
+        "protoform": "2678",
+        "assetsform": "00",
+        "baseStamina": 111,
+        "baseAttack": 112,
+        "baseDefense": 96,
+        "formtypes": [
+          {
+            "type": "Electric",
+            "color": "#f8d030"
+          }
+        ]
       }
     ]
   },
