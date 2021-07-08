@@ -517,7 +517,7 @@ function getPokemonSprite(index, sprite, displayHeight, weather = 0, encounterFo
         }
         html += '"/>'
     } else if (noWeatherIcons === false) {
-        html = '<img src="' + getIcon(iconpath.pokemon, 'pokemon', '.png', pokemonId, 0, encounterForm, pokemonCostume) + '" style="width:' + scaledIconSizeWidth + 'px;height:auto;'
+        html = '<img loading="lazy" src="' + getIcon(iconpath.pokemon, 'pokemon', '.png', pokemonId, 0, encounterForm, pokemonCostume) + '" style="width:' + scaledIconSizeWidth + 'px;height:auto;'
         if (iv === 100 && !noIvShadow) {
             html += 'filter:drop-shadow(0 0 10px red)drop-shadow(0 0 10px red);-webkit-filter:drop-shadow(0 0 10px red)drop-shadow(0 0 10px red);'
         }
