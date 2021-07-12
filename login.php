@@ -424,7 +424,6 @@ if (isset($_GET['callback'])) {
                     'user' => $user['name'],
                     'access_level' => $facebookAccessLevel,
                     'avatar' => $user['picture']['url'],
-                    'access_level' => null,
                     'expire_timestamp' => time() + $sessionLifetime,
                     'login_system' => 'facebook',
                     'last_loggedin' => time()
