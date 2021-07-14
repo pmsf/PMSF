@@ -470,7 +470,6 @@ if (isset($_GET['callback'])) {
                     'user' => $user->name,
                     'access_level' => $groupmeAccessLevel,
                     'avatar' => $user->image_url,
-                    'access_level' => null,
                     'expire_timestamp' => time() + 86400,
                     'login_system' => 'groupme'
                 ]);
