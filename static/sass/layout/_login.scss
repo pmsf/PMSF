@@ -1,15 +1,17 @@
 body {font-family: Arial, Helvetica, sans-serif;}
 
-/* Full-width input fields */
-input[type=text], input[type=password] {
-  width: 100%;
-  padding: 12px 20px;
-  margin: 8px 0;
-  display: inline-block;
-  border: 1px solid #ccc;
-  box-sizing: border-box;
+.force-container {
+  padding: 16px;
+  /* Full-width input fields */
+  input[type=email], input[type=password] {
+    width: 100%;
+    padding: 12px 20px;
+    margin: 8px 0;
+    display: inline-block;
+    border: 1px solid #ccc;
+    box-sizing: border-box;
+  }
 }
-
 /* Set a style for all buttons */
 .force-button {
   background-color: #4CAF50;
@@ -38,9 +40,7 @@ img.avatar {
   border-radius: 50%;
 }
 
-.force-container {
-  padding: 16px;
-}
+
 
 span.psw {
   padding: 10px 16px;
@@ -97,14 +97,14 @@ span.psw {
   }
 }
 #login-error {
-margin: 10px;
-border: 5px solid #FF0000;
-border-radius: 20px 20px 20px 20px;
-text-align: center;
+  margin: 10px;
+  border: 5px solid #FF0000;
+  border-radius: 20px 20px 20px 20px;
+  text-align: center;
 }
 #register-error {
-margin: 10px;
-border: 5px solid #FF0000;
-border-radius: 20px 20px 20px 20px;
-text-align: center;
+  margin: 10px;
+  border: 5px solid #FF0000;
+  border-radius: 20px 20px 20px 20px;
+  text-align: center;
 }

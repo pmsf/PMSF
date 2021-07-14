@@ -68,11 +68,6 @@ $noInfoModal = true;                                                // Hide info
 $infoModalTitle = 'Info';                                           // Infomodal title
 $infoModalContent = 'Your text info here';                          // HTML markup allowed (external html file load $infoModalContent = file_get_contents('custom/modal.html');
 
-/* Loading screen */
-
-$noLoadingScreen = false;                                           // show loading animation while main page loads.
-$loadingStyle = '';                                                 // Leave blank for default loading icon. Use $loadingStyle = '<img src="static/images/pokeball2.gif" style="height:40px;">';
-                                                                    // for pokeball or custom gif for animated gif; or use your own html.
 /* Google Maps and MapBox are ONLY USED FOR TILE LAYERS */
 
 $gmapsKey = "";
@@ -116,12 +111,9 @@ $patreonUrl = "";                                                   // Patreon U
 $customUrl = "";                                                    // Custom URL, leave "" for empty
 $customUrlFontIcon = "far fa-smile-beam";                           // Choose a custom icon on: https://fontawesome.com/icons?d=gallery&m=free
 
-/* Worldopole */
-
-$worldopoleUrl = "";                                                // Link to Worldopole, leave "" for empty
-
-/* StatsToggle */
+/* Stats */
 $noStatsToggle = false;                                             // Enables or disables the stats button in the header.
+$noFullStats = false;                                               // Enables or disables full stats
 
 /* MOTD */
 $noMotd = true;                                                     // Message of the day.
@@ -248,11 +240,14 @@ $iconNotifySizeModifier = 15;                                       // 0, 15, 30
 $noPokemon = false;
 $enablePokemon = 'true';
 $noPokemonNumbers = false;
+$noPokemonNames = false;
 $noHidePokemon = false;
 $hidePokemon = '[10, 13, 16, 19, 21, 29, 32, 41, 46, 48, 50, 52, 56, 74, 77, 96, 111, 133, 161, 163, 167, 177, 183, 191, 194, 168]'; // [] for empty
 $hidePokemonCoords = false;
 
 $pokemonGenSearchString = 'generation';                             // When custom string is used translations do not work.
+
+$noPvp = false;
 
 $excludeMinIV = '[131, 143, 147, 148, 149, 248]';                   // [] for empty
 
@@ -327,6 +322,8 @@ $enableQuests = 'false';
 $noQuestsItems = false;
 $noQuestsPokemon = false;
 $noQuestsEnergy = false;
+$noQuestsCandy = false;
+$noQuestsStardust = false;
 $hideQuestsPokemon = '[]';                                                    // Pokemon ids will default be hidden in the menu every user is able to change this personaly
 $generateExcludeQuestsPokemon = true;                                         // Generate $excludeQuestsPokemon based on active quests in database
 $generateExcludeQuestsEnergy = true;                                          // Generate $excludeQuestsEnergy based on active quests in database
@@ -403,16 +400,23 @@ $notifyNotification = 'true';
 /* Style Settings */
 
 $copyrightSafe = true;
-$noCostumeIcons = true;                                                              // Set to true if you $iconRepository doesnt support costume icons.
-$iconRepository = '';                                                                // URLs or folder paths are allowed
-$noMultipleRepos = true;                                                             // To enable Multiple icon packs:
-                                                                                     // Each iconpack needs to be in a seperate folder
-                                                                                     // For menu icons, $iconRepository is used always (if $copyrightSafe = false)
-$iconRepos = [["Standard","$iconRepository"],                                        // Multiple Repos in here with the format ["Name","Link_To_Icons"] - Link can be a relative path for an iconfolder or a Link to a Repo.
-              ["Some Icon Pack","path/to/iconpack/"],                                // Example for a pack located on your server at static/icons/pack01/, named "Some Icon Pack" in the Frontend
-              ["Some Other Iconpack","https://website.com/sub/folder/"],             // Example for a pack located on a website
-              ["Another Iconpack","https://AnotherURL.com/some/other/subfolders/"]]; // You May add different iconPacks here so mapusers can switch between them
-
+$iconFolderArray = [                                           // Default Icon repo to be used
+    'gym' => [
+        'Ingame' => 'static/sprites/gym/ingame/',
+        'Rocketmap' => 'static/sprites/gym/rocketmap/',
+        'Shield' => 'static/sprites/gym/shield/',
+        'Comic' => 'static/sprites/gym/comic/'
+    ],
+    'invasion' => 'static/sprites/',
+    'misc' => 'static/sprites/',
+    'pokemon' => 'static/sprites/',                            // String or Array of multiple icon sets
+    'pokestop' => 'static/sprites/',
+    'raid' => 'static/sprites/',
+    'reward' => 'static/sprites/',                             // String or Array of multiple icon sets
+    'team' => 'static/sprites/',
+    'type' => 'static/sprites/',
+    'weather' => 'static/sprites/'
+];
 $noMapStyle = false;
 $mapStyle = 'openstreetmap';                                                         // openstreetmap, darkmatter, styleblackandwhite, styletopo, stylesatellite
 
@@ -423,9 +427,6 @@ $noIconSize = false;
 $iconSize = 0;                                                                       // -8, 0, 10, 20
 
 $noIconNotifySizeModifier = false;                                                   // Increase size of notified Pokemon
-
-$noGymStyle = false;
-$gymStyle = 'ingame';                                                                // ingame, shield, rocketmap, comic
 
 $noLocationStyle = false;
 $locationStyle = 'none';                                                             // none, google, red, red_animated, blue, blue_animated, yellow, yellow_animated, pokesition, pokeball

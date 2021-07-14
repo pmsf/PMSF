@@ -1,57 +1,15 @@
-// Bootstrap
-@import "../../node_modules/bootstrap/scss/functions";
-@import "../../node_modules/bootstrap/scss/variables";
-@import "../../node_modules/bootstrap/scss/mixins";
-@import "../../node_modules/bootstrap/scss/utilities";
-
-@import "../../node_modules/bootstrap/scss/root";
-@import "../../node_modules/bootstrap/scss/reboot";
-@import "../../node_modules/bootstrap/scss/type";
-@import "../../node_modules/bootstrap/scss/images";
-@import "../../node_modules/bootstrap/scss/containers";
-@import "../../node_modules/bootstrap/scss/grid";
-@import "../../node_modules/bootstrap/scss/tables";
-@import "../../node_modules/bootstrap/scss/forms";
-@import "../../node_modules/bootstrap/scss/buttons";
-@import "../../node_modules/bootstrap/scss/transitions";
-@import "../../node_modules/bootstrap/scss/dropdown";
-@import "../../node_modules/bootstrap/scss/button-group";
-@import "../../node_modules/bootstrap/scss/nav";
-@import "../../node_modules/bootstrap/scss/navbar";
-@import "../../node_modules/bootstrap/scss/card";
-@import "../../node_modules/bootstrap/scss/accordion";
-@import "../../node_modules/bootstrap/scss/breadcrumb";
-@import "../../node_modules/bootstrap/scss/pagination";
-@import "../../node_modules/bootstrap/scss/badge";
-@import "../../node_modules/bootstrap/scss/alert";
-@import "../../node_modules/bootstrap/scss/progress";
-@import "../../node_modules/bootstrap/scss/list-group";
-@import "../../node_modules/bootstrap/scss/close";
-@import "../../node_modules/bootstrap/scss/toasts";
-@import "../../node_modules/bootstrap/scss/modal";
-@import "../../node_modules/bootstrap/scss/tooltip";
-@import "../../node_modules/bootstrap/scss/popover";
-@import "../../node_modules/bootstrap/scss/carousel";
-@import "../../node_modules/bootstrap/scss/spinners";
-@import "../../node_modules/bootstrap/scss/offcanvas";
-
-@import "../../node_modules/bootstrap/scss/helpers";
-
-@import "../../node_modules/bootstrap/scss/utilities/api";
-
-
 @import 'libs/vars';
 @import 'libs/functions';
 @import 'libs/mixins';
 @import 'libs/skel';
-@import url(https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@5.11.2/css/all.min.css);
 
 @include skel-breakpoints((
   xlarge: '(max-width: 1680px)',
   large: '(max-width: 1280px)',
   medium: '(max-width: 980px)',
   small: '(max-width: 736px)',
-  xsmall: '(max-width: 480px)'
+  xsmall: '(max-width: 480px)',
+  xxsmall: '(max-width: 320px)'
 ));
 
 @include skel-layout((
@@ -68,26 +26,23 @@
   )
 ));
 
+// Font awesome
+@import url(https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@5.11.2/css/all.min.css);
+
 // Base.
 @import 'base/page';
 @import 'base/typography';
 
-// Component.
-//@import 'components/section';
-//@import 'components/form';
-//@import 'components/box';
+// Components
 @import 'components/icon';
-//@import 'components/image';
-//@import 'components/list';
 @import 'components/table';
 @import 'components/button';
-//@import 'components/grid-demo';
 
-// Layout.
-@import 'abstracts/variables';
+// Layout
 @import 'layout/header';
 @import 'layout/nav';
 @import 'layout/stats';
+@import 'layout/loader';
 @import 'layout/gyms';
 @import 'layout/banner';
 @import 'layout/main';
