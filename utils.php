@@ -76,6 +76,7 @@ function validateToken($token)
         }
         return $validity;
     } else {
+        destroyCookiesAndSessions();
         return 'invalid';
     }
 }
@@ -193,7 +194,7 @@ function createUserAccount($user, $password, $newExpireTimestamp)
 
             if (!$sendMail) {
                 http_response_code(500);
-                die("<h1>Warning</h1><p>The email has not been sent.<br>If you're an user please contact your administrator.<br>If you're an administrator install <i><b>apt-get install sendmail</b></i> and restart your web server and try again.</p><p><a href='.'><i class='fas fa-backward'></i> Back to Map</a> - <a href='./register?action=account'>Retry</a></p>");
+                die("<h1>Warning</h1><p>The email has not been sent.<br>If you're a user, please contact your administrator.<br>If you're an administrator, install <i><b>apt-get install sendmail</b></i>, restart your web server and try again.</p><p><a href='.'><i class='fas fa-backward'></i> Back to Map</a> - <a href='./register?action=account'>Retry</a></p>");
                 return 'success';
             }
         } else {

@@ -1,5 +1,5 @@
 <?php
-    function pokemonFilterImages($noPokemonNumbers, $onClick = '', $pokemonToExclude = array(), $num = 0)
+    function pokemonFilterImages($noPokemonNames, $noPokemonNumbers, $onClick = '', $pokemonToExclude = array(), $num = 0)
     {
         global $mons, $copyrightSafe, $iconFolderArray, $numberOfPokemon, $pokemonGenSearchString;
         if (empty($mons)) {
@@ -38,11 +38,14 @@
                 <span style="display:none" class="genname">' . $genName . '</span>
                 <span style="display:none" class="forms">' . $form . '</span>';
                 if (! $copyrightSafe) {
-                    echo "<img class='pkmnfilter' data-pkmnid='" . $k . "' loading='lazy' src='" . getIcon($iconFolderArray['pokemon'], 'pokemon/', '.png', $k) . "'/>";
+                    echo '<img class="pkmnfilter" data-pkmnid="' . $k . '" loading="lazy" src="' . getIcon($iconFolderArray['pokemon'], 'pokemon/', '.png', $k) . '"/>';
                 } else {
-                    echo "<img loading='lazy' src='static/sprites/pokemon/" . $k . ".png'/>";
+                    echo '<img loading="lazy" src="static/sprites/pokemon/' . $k . '.png"/>';
                 }
-                if (! $noPokemonNumbers) {
+                if (! $noPokemonNames) {
+                    echo '<span style="font-size:.55rem;white-space:nowrap;">' . i8ln($name) . '</span>';
+                }
+                else if (! $noPokemonNumbers) {
                     echo "<span class='pokemon-number'>" . $k . "</span>";
                 }
                 echo "</span>";
@@ -57,7 +60,7 @@
         </script>
     <?php }
 
-    function energyFilterImages($noPokemonNumbers, $onClick = '', $energyToExclude = array(), $num = 0)
+    function energyFilterImages($noPokemonNames, $noPokemonNumbers, $onClick = '', $energyToExclude = array(), $num = 0)
     {
         global $mons, $copyrightSafe, $iconFolderArray, $numberOfPokemon;
         if (empty($mons)) {
@@ -89,7 +92,10 @@
                 } else {
                     echo '<img loading="lazy" src="static/sprites/pokemon/' . $k . '.png"/>';
                 }
-                if (! $noPokemonNumbers) {
+                if (! $noPokemonNames) {
+                    echo '<span style="font-size:.55rem;white-space:nowrap;">' . i8ln($name) . '</span>';
+                }
+                else if (! $noPokemonNumbers) {
                     echo "<span class='pokemon-number'>" . $k . "</span>";
                 }
                 echo "</span>";
@@ -104,7 +110,7 @@
         </script>
     <?php }
 
-    function candyFilterImages($noPokemonNames, $onClick = '', $candyToExclude = array(), $num = 0)
+    function candyFilterImages($noPokemonNames, $noPokemonNumbers, $onClick = '', $candyToExclude = array(), $num = 0)
     {
         global $mons, $iconFolderArray, $numberOfPokemon;
         if (empty($mons)) {
@@ -130,11 +136,18 @@
                 echo '<span class="candy-icon-sprite" data-value="' . $k . '" onclick="' . $onClick . '">
                 <span style="display:none" class="types">' . $type . '</span>
                 <span style="display:none" class="name">' . i8ln($name) . '</span>
-                <span style="display:none" class="id">' . $k . '</span>
-                <img class="rewardfilter" data-type="candy" data-candyid="' . $k . '" loading="lazy" src="static/sprites/reward/candy/' . $k . '.png"/>
-                <img class="pkmnfilter" data-pkmnid="' . $k . '" loading="lazy" src="' . getIcon($iconFolderArray['pokemon'], 'pokemon/', '.png', $k) . '"/>';
+                <span style="display:none" class="id">' . $k . '</span>';
+                if (! $copyrightSafe) {
+                    echo '<img class="rewardfilter" data-type="candy" data-candyid="' . $k . '" loading="lazy" src="static/sprites/reward/candy/' . $k . '.png"/>';
+                    echo '<img class="pkmnfilter" data-pkmnid="' . $k . '" loading="lazy" src="' . getIcon($iconFolderArray['pokemon'], 'pokemon/', '.png', $k) . '"/>';
+                } else {
+                    echo '<img loading="lazy" src="static/sprites/pokemon/' . $k . '.png"/>';
+                }
                 if (! $noPokemonNames) {
-                    echo '<span style="font-size:.5rem;white-space:nowrap;">' . $pokemon['name'] . '</span>';
+                    echo '<span style="font-size:.55rem;white-space:nowrap;">' . i8ln($name) . '</span>';
+                }
+                else if (! $noPokemonNumbers) {
+                    echo "<span class='pokemon-number'>" . $k . "</span>";
                 }
                 echo '</span>';
             }

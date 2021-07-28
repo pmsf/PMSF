@@ -4,7 +4,7 @@ namespace Scanner;
 
 class RocketMap_MAD extends RocketMap
 {
-    public function get_active($eids, $minIv, $minLevel, $exMinIv, $bigKarp, $tinyRat, $swLat, $swLng, $neLat, $neLng, $tstamp = 0, $oSwLat = 0, $oSwLng = 0, $oNeLat = 0, $oNeLng = 0, $encId = 0)
+    public function get_active($eids, $minIv, $minLevel, $exMinIv, $bigKarp, $tinyRat, $gender, $swLat, $swLng, $neLat, $neLng, $tstamp = 0, $oSwLat = 0, $oSwLng = 0, $oNeLat = 0, $oNeLng = 0, $encId = 0)
     {
         global $db;
         $conds = array();
@@ -100,6 +100,9 @@ class RocketMap_MAD extends RocketMap
                 $conds[] = '(cp_multiplier >= ' . $this->cpMultiplier[$minLevel] . ' OR pokemon_id IN(' . $exMinIv . ') )';
             }
         }
+        if (!empty($gender) && ($gender == 1 || $gender == 2)) {
+           $conds[] = 'gender = ' . $gender;
+        }
         $encSql = '';
         if ($encId != 0) {
             $encSql = " OR (encounter_id = " . $encId . " AND p.latitude > '" . $swLat . "' AND p.longitude > '" . $swLng . "' AND p.latitude < '" . $neLat . "' AND p.longitude < '" . $neLng . "' AND disappear_time > '" . $params[':time'] . "')";
@@ -107,7 +110,7 @@ class RocketMap_MAD extends RocketMap
         return $this->query_active($select, $conds, $params, $encSql);
     }
 
-    public function get_active_by_id($ids, $minIv, $minLevel, $exMinIv, $bigKarp, $tinyRat, $swLat, $swLng, $neLat, $neLng)
+    public function get_active_by_id($ids, $minIv, $minLevel, $exMinIv, $bigKarp, $tinyRat, $gender, $swLat, $swLng, $neLat, $neLng)
     {
         global $db;
         $conds = array();
@@ -196,6 +199,9 @@ class RocketMap_MAD extends RocketMap
             } else {
                 $conds[] = '(cp_multiplier >= ' . $this->cpMultiplier[$minLevel] . ' OR pokemon_id IN(' . $exMinIv . ') )';
             }
+        }
+        if (!empty($gender) && ($gender == 1 || $gender == 2)) {
+           $conds[] = 'gender = ' . $gender;
         }
         return $this->query_active($select, $conds, $params);
     }

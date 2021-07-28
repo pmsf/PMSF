@@ -89,6 +89,16 @@ var StoreOptions = {
             default: notifyLevel,
             type: StoreTypes.Number
         },
+    'remember_text_min_gl_rank':
+        {
+            default: minGLRank,
+            type: StoreTypes.Number
+        },
+    'remember_text_min_ul_rank':
+        {
+            default: minULRank,
+            type: StoreTypes.Number
+        },
     'remember_text_min_iv':
         {
             default: minIV,
@@ -214,6 +224,11 @@ var StoreOptions = {
             default: enableLevel14Cells,
             type: StoreTypes.Boolean
         },
+    'showPokemonCells':
+        {
+            default: enableLevel15Cells,
+            type: StoreTypes.Boolean
+        },
     'showStopCells':
         {
             default: enableLevel17Cells,
@@ -258,6 +273,11 @@ var StoreOptions = {
         {
             default: showTinyRat,
             type: StoreTypes.Boolean
+        },
+    'showPokemonGender':
+        {
+            default: showPokemonGender,
+            type: StoreTypes.Number
         },
     'showPokestops':
         {
@@ -394,7 +414,7 @@ var StoreOptions = {
             default: false,
             type: StoreTypes.Boolean
         },
-    'iconSizeModifier':
+    'iconSize':
         {
             default: iconSize,
             type: StoreTypes.Number
@@ -492,6 +512,7 @@ var mapData = {
     pokemons: {},
     gyms: {},
     pokestops: {},
+    lurePokemons: {},
     spawnpoints: {},
     nests: {},
     communities: {},
@@ -534,7 +555,7 @@ function getPokemonSprite(index, sprite, displayHeight, weather = 0, encounterFo
 }
 
 function setupPokemonMarker(item, map, isBounceDisabled) {
-    var iconSize = (12) * (12) * 0.2 + Store.get('iconSizeModifier')
+    var iconSize = Store.get('iconSize')
     if (isNotifiedPokemon(item) === true) {
         iconSize += Store.get('iconNotifySizeModifier')
     }

@@ -174,6 +174,8 @@ $discordBotRedirectUri = "https://Yourdomain.com/login?callback=discord";
 $discordBotToken = "";
 $discordLogLevel = "INFO";                                          // Do NOT change unless asked
 
+$discordUsers = [];
+
 $guildRoles = [];
 
 $noFacebookLogin = true;
@@ -209,6 +211,8 @@ $logFailedLogin = '';                                                         //
 //-----------------------------------------------------
 
 /* Marker Settings */
+$noMinGLRank = false;                                          // true/false
+$noMinULRank = false;                                          // true/false
 $noExcludeMinIV = true;                                        // true/false
 $noMinIV = true;                                               // true/false
 $noMinLevel = true;                                            // true/false
@@ -250,12 +254,17 @@ $noPvp = false;
 
 $excludeMinIV = '[]';                                               // [] for empty
 
+$minGLRank = '0';                                              // "0" for empty or a number
+$minULRank = '0';                                              // "0" for empty or a number
+
 $minIV = '0';                                                  // "0" for empty or a number
 $minLevel = '0';                                               // "0" for empty or a number
 
 $noBigKarp = false;
 $noTinyRat = false;
 
+$noPokemonGender = false;
+$showPokemonGender = 0;                                        // 0 = All, 1 = Male, 2 = Female
 $noGyms = false;                                               // true/false
 $enableGyms = 'false';                                         // true/false
 $hideGymCoords = false;
@@ -317,9 +326,9 @@ $generateExcludeQuestsItem = true;
 $generateExcludeQuestsEnergy = true;
 $generateExcludeQuestsCandy = true;
 $excludeQuestsPokemon = [];                                    // Pokemon ids
-$hideQuestsItem = '[4, 5, 301, 401, 402, 403, 404, 501, 602, 603, 604, 702, 704, 708, 801, 901, 902, 903, 1001, 1002, 1401, 1402, 1403, 1404, 1405]';
+$hideQuestsItem = '[4, 5, 301, 401, 402, 403, 404, 501, 602, 603, 604, 702, 704, 707, 801, 901, 902, 903, 1001, 1002, 1401, 1402, 1403, 1404, 1405]';
                                                                // Item ids "See protos https://github.com/Furtif/POGOProtos/blob/master/src/POGOProtos/Inventory/Item/ItemId.proto"
-$excludeQuestsItem = [4, 5, 301, 401, 402, 403, 404, 501, 602, 603, 604, 702, 704, 708, 801, 901, 902, 903, 1001, 1002, 1401, 1402, 1403, 1404, 1405];
+$excludeQuestsItem = [4, 5, 301, 401, 402, 403, 404, 501, 602, 603, 604, 702, 704, 707, 801, 901, 902, 903, 1001, 1002, 1401, 1402, 1403, 1404, 1405];
 $noItemNumbers = true;                                         // true/false
 $defaultDustAmount = 500;
 $hideQuestsEnergy = '[]';
@@ -540,6 +549,7 @@ $noS2Cells = true;
 $enableS2Cells = 'false';
 $enableLevel13Cells = 'false';
 $enableLevel14Cells = 'false';
+$enableLevel15Cells = 'false';
 $enableLevel17Cells = 'false';
 
 $s2Colors = [

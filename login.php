@@ -82,15 +82,14 @@ if (isset($_GET['action'])) {
                                 $html .= "<div id='login-error'>" . i8ln('We have logged you out. This might be because of invalid or expired token or your account has been logged in on another device.') . "</div>";
                                 break;
                             case 'access-change':
-                                $html .= "<div id='login-error'>" . i8ln('Your level of access changed while logged in please login again to get the new level of access.') . "</div>";
-
+                                $html .= "<div id='login-error'>" . i8ln('Your level of access changed while logged in. Please log in again to get the new level of access.') . "</div>";
                                 break;
                         }
                     }
                     $html .= '<div class="imgcontainer">
                     <i class="fas fa-user" style="font-size:80px"></i>
                     </div>
-                    <div class="force-container">';
+                    <div class="force-container" style="text-align: center;">';
                     if ($noNativeLogin === false) {
                         $html .= "<label for='uname'><b>" . i8ln('Email address') . "</b></label>
                         <input type='email' placeholder='" . i8ln('Enter Email address') . "' name='uname' required>
@@ -239,7 +238,14 @@ if (isset($_GET['callback'])) {
             ]);
             curl_setopt($token, CURLOPT_RETURNTRANSFER, true);
 
-            $response = json_decode(curl_exec($token));
+            $result = curl_exec($token);
+            if (!$result) {
+                error_log(curl_error($token));
+                curl_close($token);
+                die();
+            }
+
+            $response = json_decode($result);
             curl_close($token);
 
             if (isset($response->access_token)) {
@@ -424,6 +430,7 @@ if (isset($_GET['callback'])) {
                     'user' => $user['name'],
                     'access_level' => $facebookAccessLevel,
                     'avatar' => $user['picture']['url'],
+                    'access_level' => null,
                     'expire_timestamp' => time() + $sessionLifetime,
                     'login_system' => 'facebook',
                     'last_loggedin' => time()
@@ -470,6 +477,7 @@ if (isset($_GET['callback'])) {
                     'user' => $user->name,
                     'access_level' => $groupmeAccessLevel,
                     'avatar' => $user->image_url,
+                    'access_level' => null,
                     'expire_timestamp' => time() + 86400,
                     'login_system' => 'groupme'
                 ]);
@@ -634,6 +642,7 @@ if (!empty($_POST['signed_request'])) {
 
 function request($request, $access_token) {
     $info_request = curl_init();
+
     curl_setopt_array($info_request, [
         CURLOPT_URL => $request,
         CURLOPT_HTTPHEADER => [
@@ -643,6 +652,7 @@ function request($request, $access_token) {
     ]);
     $response = curl_exec($info_request);
     if (curl_getinfo($info_request, CURLINFO_HTTP_CODE) != 200) {
+        curl_close($info_request);
         header("Location: ./login?action=login&error=bad-response-dc&error-message=request");
         die();
     } else {
@@ -656,7 +666,7 @@ function logFailure($logFailure) {
     file_put_contents($logFailedLogin, $logFailure, FILE_APPEND);
 }
 function checkAccessLevelDiscord ($userId, $guilds) {
-    global $guildRoles, $discord;
+    global $discordUsers, $guildRoles, $discord;
     $accessRole = '';
     foreach ($guildRoles['guildIDS'] as $guild => $guildRoles) {
         $isMember = in_array($guild , array_column($guilds, 'id'));
@@ -669,11 +679,16 @@ function checkAccessLevelDiscord ($userId, $guilds) {
                     }
                 }
             }
-            if ($guildRoles[$guild]) {
+            if (array_key_exists($guild, $guildRoles)) {
                 if ($accessRole < strval($guildRoles[$guild])) {
                     $accessRole = strval($guildRoles[$guild]);
                 }
             }
+        }
+    }
+    if (array_key_exists($userId, $discordUsers)) {
+        if ($accessRole < strval($discordUsers[$userId])) {
+            $accessRole = strval($discordUsers[$userId]);
         }
     }
     return $accessRole;

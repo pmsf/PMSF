@@ -4,7 +4,7 @@ namespace Scanner;
 
 class RDM extends Scanner
 {
-    public function get_active($eids, $minIv, $minLevel, $exMinIv, $bigKarp, $tinyRat, $swLat, $swLng, $neLat, $neLng, $tstamp = 0, $oSwLat = 0, $oSwLng = 0, $oNeLat = 0, $oNeLng = 0, $encId = 0)
+    public function get_active($eids, $minIv, $minLevel, $exMinIv, $bigKarp, $tinyRat, $gender, $swLat, $swLng, $neLat, $neLng, $tstamp = 0, $oSwLat = 0, $oSwLng = 0, $oNeLat = 0, $oNeLng = 0, $encId = 0)
     {
         global $db;
         $conds = array();
@@ -97,6 +97,9 @@ class RDM extends Scanner
                 $conds[] = '(level >= ' . $minLevel . ' OR pokemon_id IN(' . $exMinIv . ') )';
             }
         }
+        if (!empty($gender) && ($gender == 1 || $gender == 2)) {
+           $conds[] = 'gender = ' . $gender;
+        }
         $encSql = '';
         if ($encId != 0) {
             $encSql = " OR (id = " . $encId . " AND lat > '" . $swLat . "' AND lon > '" . $swLng . "' AND lat < '" . $neLat . "' AND lon < '" . $neLng . "' AND expire_timestamp > '" . $params[':time'] . "')";
@@ -104,7 +107,7 @@ class RDM extends Scanner
         return $this->query_active($select, $conds, $params, $encSql);
     }
 
-    public function get_active_by_id($ids, $minIv, $minLevel, $exMinIv, $bigKarp, $tinyRat, $swLat, $swLng, $neLat, $neLng)
+    public function get_active_by_id($ids, $minIv, $minLevel, $exMinIv, $bigKarp, $tinyRat, $gender, $swLat, $swLng, $neLat, $neLng)
     {
         global $db;
         $conds = array();
@@ -190,6 +193,9 @@ class RDM extends Scanner
             } else {
                 $conds[] = '(level >= ' . $minLevel . ' OR pokemon_id IN(' . $exMinIv . ') )';
             }
+        }
+        if (!empty($gender) && ($gender == 1 || $gender == 2)) {
+           $conds[] = 'gender = ' . $gender;
         }
         return $this->query_active($select, $conds, $params);
     }
@@ -433,7 +439,7 @@ class RDM extends Scanner
                     $p++;
                 }
                 $pkmn_in = substr($pkmn_in, 0, -1);
-                $tmpSQL .= "json_extract(json_extract(`quest_rewards`,'$[*].info.pokemon_id'),'$[0]') IN ( $pkmn_in ) AND quest_reward_type = 12";
+                $tmpSQL .= "quest_pokemon_id IN ( $pkmn_in ) AND quest_reward_type = 12";
             }
             if (count($qcreids)) {
                 $pkmn_in = '';
@@ -444,7 +450,7 @@ class RDM extends Scanner
                     $p++;
                 }
                 $pkmn_in = substr($pkmn_in, 0, -1);
-                $tmpSQL .= "json_extract(json_extract(`quest_rewards`,'$[*].info.pokemon_id'),'$[0]') IN ( $pkmn_in ) AND quest_reward_type = 4";
+                $tmpSQL .= "quest_pokemon_id IN ( $pkmn_in ) AND quest_reward_type = 4";
             }
             if (count($qireids)) {
                 $item_in = '';
@@ -796,7 +802,7 @@ class RDM extends Scanner
     public function get_weather_by_cell_id($cell_id)
     {
         global $db;
-        $query = "SELECT id AS s2_cell_id, gameplay_condition AS gameplay_weather FROM weather WHERE id = :cell_id";
+        $query = "SELECT id AS s2_cell_id, gameplay_condition AS gameplay_weather, updated FROM weather WHERE id = :cell_id";
         $params = [':cell_id' => intval((float)$cell_id)]; // use float to intval because RDM is signed int
         $weather_info = $db->query($query, $params)->fetchAll(\PDO::FETCH_ASSOC);
         if ($weather_info) {
@@ -812,7 +818,7 @@ class RDM extends Scanner
     public function get_weather($updated = null)
     {
         global $db;
-        $query = "SELECT id AS s2_cell_id, gameplay_condition AS gameplay_weather FROM weather";
+        $query = "SELECT id AS s2_cell_id, gameplay_condition AS gameplay_weather, updated FROM weather";
         $weathers = $db->query($query)->fetchAll(\PDO::FETCH_ASSOC);
         $data = array();
         foreach ($weathers as $weather) {
@@ -885,23 +891,13 @@ class RDM extends Scanner
                 $data[] = $pokestop['reward_pokemon_id'];
             }
         } elseif ($type === 'energylist') {
-            $pokestops = $db->query("
-                SELECT distinct
-                    json_extract(json_extract(`quest_rewards`,'$[*].info.pokemon_id'),'$[0]') AS reward_pokemon_id
-                FROM pokestop
-                WHERE quest_reward_type = 12;"
-            )->fetchAll(\PDO::FETCH_ASSOC);
+            $pokestops = $db->query("SELECT distinct quest_pokemon_id AS reward_pokemon_id FROM pokestop WHERE quest_reward_type = 12;")->fetchAll(\PDO::FETCH_ASSOC);
             $data = array();
             foreach ($pokestops as $pokestop) {
                 $data[] = $pokestop['reward_pokemon_id'];
             }
         } elseif ($type === 'candylist') {
-            $pokestops = $db->query("
-                SELECT distinct
-                    json_extract(json_extract(`quest_rewards`,'$[*].info.pokemon_id'),'$[0]') AS reward_pokemon_id
-                FROM pokestop
-                WHERE quest_reward_type = 4;"
-            )->fetchAll(\PDO::FETCH_ASSOC);
+            $pokestops = $db->query("SELECT distinct quest_pokemon_id AS reward_pokemon_id FROM pokestop WHERE quest_reward_type = 4;")->fetchAll(\PDO::FETCH_ASSOC);
             $data = array();
             foreach ($pokestops as $pokestop) {
                 $data[] = $pokestop['reward_pokemon_id'];
