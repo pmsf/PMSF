@@ -96,6 +96,7 @@ var rawDataIsLoading = false
 var searchDelay
 var locationMarker
 var rangeMarkers = ['pokemon', 'pokestop', 'gym']
+var placementRangeMarkers = ['pokestop', 'gym']
 var storeZoom = true
 var moves
 var pokedex
@@ -336,15 +337,17 @@ function notifyAboutPokemon(id) { // eslint-disable-line no-unused-vars
 function removePokemonMarker(encounterId) { // eslint-disable-line no-unused-vars
     if (mapData.pokemons[encounterId].marker.rangeCircle) {
         markers.removeLayer(mapData.pokemons[encounterId].marker.rangeCircle)
-        markersnotify.removeLayer(mapData.pokemons[encounterId].marker.rangeCircle)
         delete mapData.pokemons[encounterId].marker.rangeCircle
     }
     markers.removeLayer(mapData.pokemons[encounterId].marker)
-    markersnotify.removeLayer(mapData.pokemons[encounterId].marker)
     mapData.pokemons[encounterId].hidden = true
 }
 
 function removePokestopMarker(pokestopId) { // eslint-disable-line no-unused-vars
+    if (mapData.pokestops[pokestopId].marker.placementRangeCircle) {
+        markers.removeLayer(mapData.pokestops[pokestopId].marker.placementRangeCircle)
+        delete mapData.pokestops[pokestopId].marker.placementRangeCircle
+    }
     if (mapData.pokestops[pokestopId].marker.rangeCircle) {
         markers.removeLayer(mapData.pokestops[pokestopId].marker.rangeCircle)
         delete mapData.pokestops[pokestopId].marker.rangeCircle
@@ -354,13 +357,15 @@ function removePokestopMarker(pokestopId) { // eslint-disable-line no-unused-var
 }
 
 function removeGymMarker(gymId) { // eslint-disable-line no-unused-vars
+    if (mapData.gyms[gymId].marker.placementRangeCircle) {
+        markers.removeLayer(mapData.gyms[gymId].marker.placementRangeCircle)
+        delete mapData.gyms[gymId].marker.placementRangeCircle
+    }
     if (mapData.gyms[gymId].marker.rangeCircle) {
         markers.removeLayer(mapData.gyms[gymId].marker.rangeCircle)
-        markersnotify.removeLayer(mapData.gyms[gymId].marker.rangeCircle)
         delete mapData.gyms[gymId].marker.rangeCircle
     }
     markers.removeLayer(mapData.gyms[gymId].marker)
-    markersnotify.removeLayer(mapData.gyms[gymId].marker)
     mapData.gyms[gymId].hidden = true
 }
 
@@ -1015,6 +1020,7 @@ function initSidebar() {
     $('#poi-switch').prop('checked', Store.get('showPoi'))
     $('#s2-switch').prop('checked', Store.get('showCells'))
     $('#s2-switch-wrapper').toggle(Store.get('showCells'))
+    $('#placement-ranges-switch').prop('checked', Store.get('showPlacementRanges'))
     $('#s2-level13-switch').prop('checked', Store.get('showExCells'))
     $('#s2-level14-switch').prop('checked', Store.get('showGymCells'))
     $('#s2-level15-switch').prop('checked', Store.get('showPokemonCells'))
@@ -1670,7 +1676,11 @@ function getQuest(item) {
                     str = str.replace('Complete', 'Win')
                     break
                 case 10:
-                    str = str.replace('Complete', 'Use a super effective charged attack in')
+                    if (item['quest_type'] === 53) {
+                        str = str.replace('Charged', 'supereffective Charged')
+                    } else {
+                        str = str.replace('Complete', 'Use a super effective charged attack in')
+                    }
                     break
                 case 11:
                     if (item['quest_type'] === 13) {
@@ -1762,11 +1772,11 @@ function pokestopLabel(item) {
     var incidentEndStr = ''
     var stopName = ''
     var gruntReward = ''
-    var lastMidnight = ''
     if (item['pokestop_name'] === null) {
         item['pokestop_name'] = 'Pokéstop'
     }
     var d = new Date()
+    var lastMidnight = ''
     if (mapFork === 'mad') {
         lastMidnight = d.setHours(0, 0, 0, 0) / 1000
     } else {
@@ -1989,6 +1999,30 @@ function spawnpointLabel(item) {
     return str
 }
 
+function addPlacementRangeCircle(marker, map) {
+    var markerPos = marker.getLatLng()
+    var lat = markerPos.lat
+    var lng = markerPos.lng
+    var circleCenter = L.latLng(lat, lng)
+
+    var rangeCircleOpts = {
+        color: '#999999',
+        radius: 20, // meters
+        strokeWeight: 1,
+        strokeColor: '#999999',
+        strokeOpacity: 0.9,
+        center: circleCenter,
+        fillColor: '#999999',
+        fillOpacity: 0.2
+    }
+
+    var rangeCircle = L.circle(circleCenter, rangeCircleOpts)
+
+    markers.addLayer(rangeCircle)
+
+    return rangeCircle
+}
+
 function addRangeCircle(marker, map, type, teamId) {
     var markerPos = marker.getLatLng()
     var lat = markerPos.lat
@@ -2030,6 +2064,11 @@ function addRangeCircle(marker, map, type, teamId) {
     var rangeCircle = L.circle(circleCenter, rangeCircleOpts)
     markers.addLayer(rangeCircle)
     return rangeCircle
+}
+
+function isPlacementRangeActive(map) {
+    if (map.getZoom() < 17) return false
+    return Store.get('showCells') && Store.get('showPlacementRanges')
 }
 
 function isRangeActive(map) {
@@ -2265,7 +2304,9 @@ function setupGymMarker(item) {
     if (!marker.rangeCircle && isRangeActive(map)) {
         marker.rangeCircle = addRangeCircle(marker, map, 'gym', item['team_id'])
     }
-
+    if (!marker.placementRangeCircle && isPlacementRangeActive(map)) {
+        marker.placementRangeCircle = addPlacementRangeCircle(marker, map)
+    }
 
     var raidLevel = item.raid_level
     if (raidLevel >= Store.get('remember_raid_notify') && item.raid_end > Date.now() && Store.get('remember_raid_notify') !== 0) {
@@ -2599,6 +2640,9 @@ function setupPokestopMarker(item) {
 
     if (!marker.rangeCircle && isRangeActive(map)) {
         marker.rangeCircle = addRangeCircle(marker, map, 'pokestop')
+    }
+    if (!marker.placementRangeCircle && isPlacementRangeActive(map)) {
+        marker.placementRangeCircle = addPlacementRangeCircle(marker, map)
     }
 
     addListeners(marker)
@@ -3108,24 +3152,43 @@ function clearStaleMarkers() {
         if (((mapData.pokemons[key]['disappear_time'] < new Date().getTime() || ((excludedPokemon.indexOf(mapData.pokemons[key]['pokemon_id']) >= 0 || isTemporaryHidden(mapData.pokemons[key]['pokemon_id']) || (pvpFiltered) || ((((mapData.pokemons[key]['individual_attack'] + mapData.pokemons[key]['individual_defense'] + mapData.pokemons[key]['individual_stamina']) / 45 * 100 < minIV) || ((mapType === 'rdm' && mapData.pokemons[key]['level'] < minLevel) || (mapType === 'rocketmap' && !isNaN(minLevel) && (mapData.pokemons[key]['cp_multiplier'] < cpMultiplier[minLevel - 1])))) && !excludedMinIV.includes(mapData.pokemons[key]['pokemon_id'])) || (Store.get('showBigKarp') === true && mapData.pokemons[key]['pokemon_id'] === 129 && (mapData.pokemons[key]['weight'] < 13.14 || mapData.pokemons[key]['weight'] === null)) || (Store.get('showTinyRat') === true && mapData.pokemons[key]['pokemon_id'] === 19 && (mapData.pokemons[key]['weight'] > 2.40 || mapData.pokemons[key]['weight'] === null)) || (Store.get('showPokemonGender') === 1 && mapData.pokemons[key]['gender'] !== '1') || (Store.get('showPokemonGender') === 2 && mapData.pokemons[key]['gender'] !== '2')) && encounterId !== mapData.pokemons[key]['encounter_id'])) || (encounterId && encounterId === mapData.pokemons[key]['encounter_id'] && mapData.pokemons[key]['disappear_time'] < new Date().getTime()))) {
             if (mapData.pokemons[key].marker.rangeCircle) {
                 markers.removeLayer(mapData.pokemons[key].marker.rangeCircle)
-                markersnotify.removeLayer(mapData.pokemons[key].marker.rangeCircle)
                 delete mapData.pokemons[key].marker.rangeCircle
             }
             markers.removeLayer(mapData.pokemons[key].marker)
-            markersnotify.removeLayer(mapData.pokemons[key].marker)
             delete mapData.pokemons[key]
         }
     })
+    if (Store.get('showQuests')) {
+        var d = new Date()
+        var lastMidnight = d.setHours(0, 0, 0, 0) / 1000
+
+        $.each(mapData.pokestops, function (key, value) {
+            if (lastMidnight < Number(mapData.pokestops[key]['quest_timestamp'])) {
+                if (mapData.pokestops[key].marker.rangeCircle) {
+                    markers.removeLayer(mapData.pokestops[key].marker.rangeCircle)
+                    delete mapData.pokestops[key].marker.rangeCircle
+                }
+                if (mapData.pokestops[key].marker.placementRangeCircle) {
+                    markers.removeLayer(mapData.pokestops[key].marker.placementRangeCircle)
+                    delete mapData.pokestops[key].marker.placementRangeCircle
+                }
+                markers.removeLayer(mapData.pokestops[key].marker)
+                delete mapData.pokestops[key]
+            }
+        })
+    }
     if (!Store.get('showGyms') && Store.get('showRaids')) {
         $.each(mapData.gyms, function (key, value) {
             if ((((excludedRaidboss.indexOf(Number(mapData.gyms[key]['raid_pokemon_id'])) > -1) && mapData.gyms[key]['raid_pokemon_id'] > 0) && (mapData.gyms[key]['raid_start'] < new Date().getTime() && mapData.gyms[key]['raid_end'] > new Date().getTime())) || ((excludedRaidegg.indexOf(Number(mapData.gyms[key]['raid_level'])) > -1) && mapData.gyms[key]['raid_start'] > new Date().getTime()) || ((excludedRaidegg.indexOf(Number(mapData.gyms[key]['raid_level']) + 6) > -1) && (mapData.gyms[key]['raid_start'] < new Date().getTime() && (mapData.gyms[key]['raid_pokemon_id'] <= 0)))) {
                 if (mapData.gyms[key].marker.rangeCircle) {
                     markers.removeLayer(mapData.gyms[key].marker.rangeCircle)
-                    markersnotify.removeLayer(mapData.gyms[key].marker.rangeCircle)
                     delete mapData.gyms[key].marker.rangeCircle
                 }
+                if (mapData.gyms[key].marker.placementRangeCircle) {
+                    markers.removeLayer(mapData.gyms[key].marker.placementRangeCircle)
+                    delete mapData.gyms[key].marker.placementRangeCircle
+                }
                 markers.removeLayer(mapData.gyms[key].marker)
-                markersnotify.removeLayer(mapData.gyms[key].marker)
                 delete mapData.gyms[key]
             }
         })
@@ -3135,11 +3198,9 @@ function clearStaleMarkers() {
             if (Number(mapData.nests[key]['pokemon_avg']) < Store.get('showNestAvg')) {
                 if (mapData.nests[key].marker.rangeCircle) {
                     markers.removeLayer(mapData.nests[key].marker.rangeCircle)
-                    markersnotify.removeLayer(mapData.nests[key].marker.rangeCircle)
                     delete mapData.nests[key].marker.rangeCircle
                 }
                 markers.removeLayer(mapData.nests[key].marker)
-                markersnotify.removeLayer(mapData.nests[key].marker)
                 delete mapData.nests[key]
             }
         })
@@ -3159,8 +3220,8 @@ function showInBoundsMarkers(markersInput, type) {
         }
         // marker has an associated range
         if (show && rangeMarkers.indexOf(type) !== -1) {
-            // no range circle yet...let's create one
             if (!marker.rangeCircle) {
+                // no range circle yet...let's create one
                 // but only if range is active
                 if (isRangeActive(map)) {
                     if (type === 'gym') marker.rangeCircle = addRangeCircle(marker, map, type, markersInput[key].team_id)
@@ -3172,8 +3233,26 @@ function showInBoundsMarkers(markersInput, type) {
                     markers.addLayer(marker.rangeCircle)
                 } else {
                     markers.removeLayer(marker.rangeCircle)
-                    markersnotify.removeLayer(marker.rangeCircle)
                     delete marker.rangeCircle
+                }
+            }
+        }
+        if (show && placementRangeMarkers.indexOf(type) !== -1) {
+            if (!marker.placementRangeCircle) {
+                // there's no placement range circle yet... let's create one
+                // but only if range is active
+                if (isPlacementRangeActive(map)) {
+                    marker.placementRangeCircle = addPlacementRangeCircle(marker, map)
+                }
+            } else {
+                // there's already a placement range circle... let's do something with it
+                if (isPlacementRangeActive(map)) {
+                    // display it... placement range is active
+                    markers.addLayer(marker.placementRangeCircle)
+                } else {
+                    // delete it... placement range isn't active
+                    markers.removeLayer(marker.placementRangeCircle)
+                    delete marker.placementRangeCircle
                 }
             }
         }
@@ -3553,7 +3632,7 @@ function centerMapOnCoords(event) { // eslint-disable-line no-unused-vars
         point = point.parent()
         zoom = 18
     } else if (point.hasClass('cont')) {
-        point = point.parent().parent().parent()
+        point = point.parent().parent()
         zoom = 18
     } else if (point.hasClass('name') || point.hasClass('reward')) {
         point = point.parent().parent().parent()
@@ -4606,11 +4685,9 @@ function processPokemons(i, item) {
                 // updated information received. delete marker and item from dict
                 if (mapData.pokemons[item['encounter_id']].marker.rangeCircle) {
                     markers.removeLayer(mapData.pokemons[item['encounter_id']].marker.rangeCircle)
-                    markersnotify.removeLayer(mapData.pokemons[item['encounter_id']].marker.rangeCircle)
                     delete mapData.pokemons[item['encounter_id']].marker.rangeCircle
                 }
                 markers.removeLayer(mapData.pokemons[item['encounter_id']].marker)
-                markersnotify.removeLayer(mapData.pokemons[item['encounter_id']].marker)
                 delete mapData.pokemons[item['encounter_id']]
             } else {
                 // in mapData and appears up to date, skip
@@ -4644,7 +4721,6 @@ function processPokemons(i, item) {
         // add marker to map and item to dict
         if (item.marker) {
             markers.removeLayer(item.marker)
-            markersnotify.removeLayer(item.marker)
         }
         if (!item.hidden) {
             item.marker = setupPokemonMarker(item, map)
@@ -4757,7 +4833,6 @@ function updatePortals() {
         $.each(removePortals, function (key, value) {
             if (mapData.portals[value] && mapData.portals[value].marker) {
                 markers.removeLayer(mapData.portals[value].marker)
-                markersnotify.removeLayer(mapData.portals[value].marker)
                 delete mapData.portals[value]
             }
         })
@@ -4801,6 +4876,9 @@ function processPokestops(i, item, lastMidnight) {
         if (item.marker && item.marker.rangeCircle) {
             markers.removeLayer(item.marker.rangeCircle)
         }
+        if (item.marker && item.marker.placementRangeCircle) {
+            markers.removeLayer(item.marker.placementRangeCircle)
+        }
         if (item.marker) {
             markers.removeLayer(item.marker)
         }
@@ -4823,6 +4901,9 @@ function processPokestops(i, item, lastMidnight) {
             if (item2.marker && item2.marker.rangeCircle) {
                 markers.removeLayer(item2.marker.rangeCircle)
             }
+            if (item2.marker && item2.marker.placementRangeCircle) {
+                markers.removeLayer(item2.marker.placementRangeCircle)
+            }
             markers.removeLayer(item2.marker)
             item.marker = setupPokestopMarker(item)
             mapData.pokestops[item['pokestop_id']] = item
@@ -4830,6 +4911,9 @@ function processPokestops(i, item, lastMidnight) {
         if (!!item['incident_expiration'] !== !!item2['incident_expiration']) {
             if (item2.marker && item2.marker.rangeCircle) {
                 markers.removeLayer(item2.marker.rangeCircle)
+            }
+            if (item2.marker && item2.marker.placementRangeCircle) {
+                markers.removeLayer(item2.marker.placementRangeCircle)
             }
             markers.removeLayer(item2.marker)
             item.marker = setupPokestopMarker(item)
@@ -4890,20 +4974,22 @@ function updatePokestops() {
         if (value['lure_expiration'] > 0 && value['lure_expiration'] < currentTime && value['lure_expiration'] > (currentTime - 300000)) {
             if (value.marker && value.marker.rangeCircle) {
                 markers.removeLayer(value.marker.rangeCircle)
-                markersnotify.removeLayer(value.marker.rangeCircle)
+            }
+            if (value.marker && value.marker.placementRangeCircle) {
+                markers.removeLayer(value.marker.placementRangeCircle)
             }
             markers.removeLayer(value.marker)
-            markersnotify.removeLayer(value.marker)
             value.marker = setupPokestopMarker(value)
         }
         // change Team Rocket pokestop marker to normal when expired.
         if (value['incident_expiration'] > 0 && value['incident_expiration'] < currentTime && value['incident_expiration'] > (currentTime - 300000)) {
             if (value.marker && value.marker.rangeCircle) {
                 markers.removeLayer(value.marker.rangeCircle)
-                markersnotify.removeLayer(value.marker.rangeCircle)
+            }
+            if (value.marker && value.marker.placementRangeCircle) {
+                markers.removeLayer(value.marker.placementRangeCircle)
             }
             markers.removeLayer(value.marker)
-            markersnotify.removeLayer(value.marker)
             value.marker = setupPokestopMarker(value)
         }
     })
@@ -4918,10 +5004,11 @@ function updatePokestops() {
             if (mapData.pokestops[value] && mapData.pokestops[value].marker) {
                 if (mapData.pokestops[value].marker.rangeCircle) {
                     markers.removeLayer(mapData.pokestops[value].marker.rangeCircle)
-                    markersnotify.removeLayer(mapData.pokestops[value].marker.rangeCircle)
+                }
+                if (mapData.pokestops[value].marker.placementRangeCircle) {
+                    markers.removeLayer(mapData.pokestops[value].marker.placementRangeCircle)
                 }
                 markers.removeLayer(mapData.pokestops[value].marker)
-                markersnotify.removeLayer(mapData.pokestops[value].marker)
                 delete mapData.pokestops[value]
             }
         })
@@ -4936,10 +5023,11 @@ function updatePokestops() {
             if (mapData.pokestops[value] && mapData.pokestops[value].marker) {
                 if (mapData.pokestops[value].marker.rangeCircle) {
                     markers.removeLayer(mapData.pokestops[value].marker.rangeCircle)
-                    markersnotify.removeLayer(mapData.pokestops[value].marker.rangeCircle)
+                }
+                if (mapData.pokestops[value].marker.placementRangeCircle) {
+                    markers.removeLayer(mapData.pokestops[value].marker.placementRangeCircle)
                 }
                 markers.removeLayer(mapData.pokestops[value].marker)
-                markersnotify.removeLayer(mapData.pokestops[value].marker)
                 delete mapData.pokestops[value]
             }
         })
@@ -4952,12 +5040,13 @@ function updatePokestops() {
         })
         $.each(removeStops, function (key, value) {
             if (mapData.pokestops[value] && mapData.pokestops[value].marker) {
+                if (mapData.pokestops[value].marker.placementRangeCircle) {
+                    markers.removeLayer(mapData.pokestops[value].marker.placementRangeCircle)
+                }
                 if (mapData.pokestops[value].marker.rangeCircle) {
                     markers.removeLayer(mapData.pokestops[value].marker.rangeCircle)
-                    markersnotify.removeLayer(mapData.pokestops[value].marker.rangeCircle)
                 }
                 markers.removeLayer(mapData.pokestops[value].marker)
-                markersnotify.removeLayer(mapData.pokestops[value].marker)
                 delete mapData.pokestops[value]
             }
         })
@@ -4984,10 +5073,11 @@ function processGyms(i, item) {
         if (mapData.gyms[gymid] && mapData.gyms[gymid].marker) {
             if (mapData.gyms[gymid].marker.rangeCircle) {
                 markers.removeLayer(mapData.gyms[gymid].marker.rangeCircle)
-                markersnotify.removeLayer(mapData.gyms[gymid].marker.rangeCircle)
+            }
+            if (mapData.gyms[gymid].marker.placementRangeCircle) {
+                markers.removeLayer(mapData.gyms[gymid].marker.placementRangeCircle)
             }
             markers.removeLayer(mapData.gyms[gymid].marker)
-            markersnotify.removeLayer(mapData.gyms[gymid].marker)
             delete mapData.gyms[gymid]
         }
     }
@@ -5216,8 +5306,8 @@ function updateSpawnPoints() {
 function updateMap() {
     if (_mapLoaded) {
         var position = map.getCenter()
-        var lastMidnight = ''
         var d = new Date()
+        var lastMidnight = ''
         if (mapFork === 'mad') {
             lastMidnight = d.setHours(0, 0, 0, 0) / 1000
         } else {
@@ -5472,7 +5562,6 @@ function redrawPokemon(pokemonList) {
             var newMarker = setupPokemonMarker(item, map, this.marker.animationDisabled)
             customizePokemonMarker(newMarker, item, skipNotification)
             markers.removeLayer(item.marker)
-            markersnotify.removeLayer(item.marker)
             pokemonList[key].marker = newMarker
         }
     })
@@ -5800,20 +5889,19 @@ function updateGeoLocation() {
                     locationMarker.setLatLng(center)
                     if (Store.get('spawnArea')) {
                         if (locationMarker.rangeCircle) {
-                            markers.removeLayer(locationMarker.rangeCircle)
-                            markersnotify.removeLayer(locationMarker.rangeCircle)
-                            delete locationMarker.rangeCircle
+                            locationMarker.rangeCircle.setLatLng(center)
+                        } else {
+                            var rangeCircleOpts = {
+                                color: '#FF9200',
+                                radius: 35, // meters
+                                center: center,
+                                fillColor: '#FF9200',
+                                fillOpacity: 0.4,
+                                weight: 1
+                            }
+                            locationMarker.rangeCircle = L.circle(center, rangeCircleOpts)
+                            markersnotify.addLayer(locationMarker.rangeCircle)
                         }
-                        var rangeCircleOpts = {
-                            color: '#FF9200',
-                            radius: 35, // meters
-                            center: center,
-                            fillColor: '#FF9200',
-                            fillOpacity: 0.4,
-                            weight: 1
-                        }
-                        locationMarker.rangeCircle = L.circle(center, rangeCircleOpts)
-                        markers.addLayer(locationMarker.rangeCircle)
                     }
                     Store.set('followMyLocationPosition', {
                         lat: lat,
@@ -6152,6 +6240,10 @@ $(function () {
                 if (mapData[dType][key].marker.rangeCircle) {
                     markers.removeLayer(mapData[dType][key].marker.rangeCircle)
                     delete mapData[dType][key].marker.rangeCircle
+                }
+                if (mapData[dType][key].marker.placementRangeCircle) {
+                    markers.removeLayer(mapData[dType][key].marker.placementRangeCircle)
+                    delete mapData[dType][key].marker.placementRangeCircle
                 }
                 markers.removeLayer(mapData[dType][key].marker)
             })
@@ -6696,17 +6788,20 @@ $(function () {
                         // for any marker you're turning off, you'll want to wipe off the range
                         if (data[dType][key].marker.rangeCircle) {
                             markers.removeLayer(data[dType][key].marker.rangeCircle)
-                            markersnotify.removeLayer(data[dType][key].marker.rangeCircle)
                             delete data[dType][key].marker.rangeCircle
                         }
-                        if (storageKey !== 'showRanges') {
+                        if (data[dType][key].marker.placementRangeCircle) {
+                            markers.removeLayer(data[dType][key].marker.placementRangeCircle)
+                            delete data[dType][key].marker.placementRangeCircle
+                        }
+                        if (storageKey !== 'showRanges' && storageKey !== 'showPlacementRanges') {
                             markers.removeLayer(data[dType][key].marker)
-                            markersnotify.removeLayer(data[dType][key].marker)
+                            delete data[dType][key].marker
                         }
                     })
-                    if (storageKey !== 'showRanges') data[dType] = {}
+                    if (storageKey !== 'showRanges' && storageKey !== 'showPlacementRanges') data[dType] = {}
                 })
-                if (storageKey === 'showRanges') {
+                if (storageKey === 'showRanges' || storageKey === 'showPlacementRanges') {
                     updateMap()
                 }
             }
@@ -6889,6 +6984,7 @@ $(function () {
         buildSwitchChangeListener(mapData, ['spawnpoints'], 'showSpawnpoints').bind(this)()
     })
     $('#ranges-switch').change(buildSwitchChangeListener(mapData, ['gyms', 'pokemons', 'pokestops'], 'showRanges'))
+    $('#placement-ranges-switch').change(buildSwitchChangeListener(mapData, ['gyms', 'pokestops'], 'showPlacementRanges'))
 
     $('#scan-area-switch').change(function () {
         Store.set('showScanPolygon', this.checked)
@@ -6927,7 +7023,6 @@ $(function () {
         lastpokestops = false
         $.each(mapData.pokestops, function (key, value) {
             markers.removeLayer(value.marker)
-            markersnotify.removeLayer(value.marker)
             value.marker = setupPokestopMarker(value)
         })
         buildSwitchChangeListener(mapData, ['pokestops'], 'showRocketTimer').bind(this)()
@@ -6965,7 +7060,6 @@ $(function () {
 
         $.each(mapData.pokestops, function (key, value) {
             markers.removeLayer(value.marker)
-            markersnotify.removeLayer(value.marker)
             value.marker = setupPokestopMarker(value)
         })
         return buildSwitchChangeListener(mapData, ['pokestops'], 'showAllPokestops').bind(this)()
@@ -6991,7 +7085,6 @@ $(function () {
 
         $.each(mapData.pokestops, function (key, value) {
             markers.removeLayer(value.marker)
-            markersnotify.removeLayer(value.marker)
             value.marker = setupPokestopMarker(value)
         })
         return buildSwitchChangeListener(mapData, ['pokestops'], 'showLures').bind(this)()
@@ -7026,7 +7119,6 @@ $(function () {
         }
         $.each(mapData.pokestops, function (key, value) {
             markers.removeLayer(value.marker)
-            markersnotify.removeLayer(value.marker)
             value.marker = setupPokestopMarker(value)
         })
         return buildSwitchChangeListener(mapData, ['pokestops'], 'showRocket').bind(this)()
@@ -7061,7 +7153,6 @@ $(function () {
         }
         $.each(mapData.pokestops, function (key, value) {
             markers.removeLayer(value.marker)
-            markersnotify.removeLayer(value.marker)
             value.marker = setupPokestopMarker(value)
         })
         return buildSwitchChangeListener(mapData, ['pokestops'], 'showQuests').bind(this)()
@@ -7183,6 +7274,11 @@ $(function () {
                 wrapper.show(options)
             } else {
                 wrapper.hide(options)
+
+                if (locationMarker.rangeCircle) {
+                    markersnotify.removeLayer(locationMarker.rangeCircle)
+                    delete locationMarker.rangeCircle
+                }
             }
         }
     })
@@ -7190,9 +7286,27 @@ $(function () {
     $('#spawn-area-switch').change(function () {
         Store.set('spawnArea', this.checked)
         if (locationMarker.rangeCircle) {
-            markers.removeLayer(locationMarker.rangeCircle)
             markersnotify.removeLayer(locationMarker.rangeCircle)
             delete locationMarker.rangeCircle
+        }
+        if (this.checked) {
+            var markerPos = locationMarker.getLatLng()
+            var lat = markerPos.lat
+            var lng = markerPos.lng
+            var center = L.latLng(lat, lng)
+
+            var rangeCircleOpts = {
+                color: '#FF9200',
+                radius: 35, // meters
+                center: center,
+                fillColor: '#FF9200',
+                fillOpacity: 0.4,
+                weight: 1
+            }
+
+            locationMarker.rangeCircle = L.circle(center, rangeCircleOpts)
+
+            markersnotify.addLayer(locationMarker.rangeCircle)
         }
     })
 

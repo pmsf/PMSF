@@ -214,6 +214,11 @@ var StoreOptions = {
             default: enableS2Cells,
             type: StoreTypes.Boolean
         },
+    'showPlacementRanges':
+        {
+            default: enablePlacementRanges,
+            type: StoreTypes.Boolean
+        },
     'showExCells':
         {
             default: enableLevel13Cells,

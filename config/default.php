@@ -547,6 +547,8 @@ $markPortalsAsNew = 86400;                                     // Time in second
 //-----------------------------------------------------
 $noS2Cells = true;
 $enableS2Cells = 'false';
+$noPlacementRanges = false;
+$enablePlacementRanges = 'false';
 $enableLevel13Cells = 'false';
 $enableLevel14Cells = 'false';
 $enableLevel15Cells = 'false';

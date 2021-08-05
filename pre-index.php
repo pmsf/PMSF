@@ -897,6 +897,13 @@ if (strtolower($map) === "rdm") {
                                                 <label class="form-check-label" for="s2-switch"><?php echo i8ln('Show S2 Cells') ?></label>
                                             </div>
                                             <div id="s2-switch-wrapper" style="display:none">
+                                                <?php if (! $noPlacementRanges) { ?>
+                                                <div class="dropdown-divider"></div>
+                                                <div class="form-check form-switch">
+                                                    <input class="form-check-input" id="placement-ranges-switch" type="checkbox" name="placement-ranges-switch">
+                                                    <label class="form-check-label" for="placement-ranges-switch"><?php echo i8ln('Placement Ranges') ?></label>
+                                                </div>
+                                                <?php } ?>
                                                 <div class="dropdown-divider"></div>
                                                 <div class="form-check form-switch">
                                                     <input class="form-check-input" id="s2-level13-switch" type="checkbox" name="s2-level13-switch">
@@ -1004,6 +1011,15 @@ if (strtolower($map) === "rdm") {
                                                 <input class="form-check-input" id="follow-my-location-switch" type="checkbox" name="follow-my-location-switch">
                                                 <label class="form-check-label" for="follow-my-location-switch"><?php echo i8ln('Follow me') ?></label>
                                             </div>
+                                            <?php if (! $noSpawnArea) { ?>
+                                            <div id="spawn-area-wrapper" style="display:none">
+                                                <div class="dropdown-divider"></div>
+                                                <div class="form-check form-switch">
+                                                    <input class="form-check-input" id="spawn-area-switch" type="checkbox" name="spawn-area-switch">
+                                                    <label class="form-check-label" for="spawn-area-switch"><?php echo i8ln('Spawn Area') ?></label>
+                                                </div>
+                                            </div>
+                                            <?php } ?>
                                         <?php } ?>
                                     </div>
                                 </div>
@@ -1565,6 +1581,7 @@ include('modals.php');
     var noPortals = <?php echo $noPortals === true ? 'true' : 'false' ?>;
     var noPoi = <?php echo $noPoi === true ? 'true' : 'false' ?>;
     var enableS2Cells = <?php echo $noS2Cells ? 'false' : $enableS2Cells ?>;
+    var enablePlacementRanges = <?php echo $noPlacementRanges ? 'false' : $enablePlacementRanges ?>;
     var enableLevel13Cells = <?php echo $noS2Cells ? 'false' : $enableLevel13Cells ?>;
     var enableLevel14Cells = <?php echo $noS2Cells ? 'false' : $enableLevel14Cells ?>;
     var enableLevel15Cells = <?php echo $noS2Cells ? 'false' : $enableLevel15Cells ?>;
