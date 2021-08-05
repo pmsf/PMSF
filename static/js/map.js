@@ -6794,7 +6794,10 @@ $(function () {
                             markers.removeLayer(data[dType][key].marker.placementRangeCircle)
                             delete data[dType][key].marker.placementRangeCircle
                         }
-                        if (storageKey !== 'showRanges' && storageKey !== 'showPlacementRanges') {
+                        if (storageKey === "showSpawnpoints") {
+                            markersnotify.removeLayer(data[dType][key].marker)
+                            delete data[dType][key].marker
+                        } else if (storageKey !== 'showRanges' && storageKey !== 'showPlacementRanges') {
                             markers.removeLayer(data[dType][key].marker)
                             delete data[dType][key].marker
                         }
