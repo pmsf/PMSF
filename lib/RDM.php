@@ -4,7 +4,7 @@ namespace Scanner;
 
 class RDM extends Scanner
 {
-    public function get_active($eids, $minIv, $minLevel, $exMinIv, $bigKarp, $tinyRat, $gender, $swLat, $swLng, $neLat, $neLng, $tstamp = 0, $oSwLat = 0, $oSwLng = 0, $oNeLat = 0, $oNeLng = 0, $encId = 0)
+    public function get_active($eids, $minIv, $minLevel, $exMinIv, $bigKarp, $tinyRat, $despawnTimeType, $gender, $swLat, $swLng, $neLat, $neLng, $tstamp = 0, $oSwLat = 0, $oSwLng = 0, $oNeLat = 0, $oNeLng = 0, $encId = 0)
     {
         global $db;
         $conds = array();
@@ -97,6 +97,17 @@ class RDM extends Scanner
                 $conds[] = '(level >= ' . $minLevel . ' OR pokemon_id IN(' . $exMinIv . ') )';
             }
         }
+        if (!empty($despawnTimeType)) {
+            if ($despawnTimeType == 1) {
+               $conds[] = 'expire_timestamp_verified = 1';
+            }
+            else if ($despawnTimeType == 2) {
+               $conds[] = '(expire_timestamp_verified = 0 AND spawn_id IS NOT NULL)';
+            }
+            else if ($despawnTimeType == 3) {
+               $conds[] = 'expire_timestamp_verified = 0';
+            }
+        }
         if (!empty($gender) && ($gender == 1 || $gender == 2)) {
            $conds[] = 'gender = ' . $gender;
         }
@@ -107,7 +118,7 @@ class RDM extends Scanner
         return $this->query_active($select, $conds, $params, $encSql);
     }
 
-    public function get_active_by_id($ids, $minIv, $minLevel, $exMinIv, $bigKarp, $tinyRat, $gender, $swLat, $swLng, $neLat, $neLng)
+    public function get_active_by_id($ids, $minIv, $minLevel, $exMinIv, $bigKarp, $tinyRat, $despawnTimeType, $gender, $swLat, $swLng, $neLat, $neLng)
     {
         global $db;
         $conds = array();
@@ -191,6 +202,17 @@ class RDM extends Scanner
                 $conds[] = 'level >= ' . $minLevel;
             } else {
                 $conds[] = '(level >= ' . $minLevel . ' OR pokemon_id IN(' . $exMinIv . ') )';
+            }
+        }
+        if (!empty($despawnTimeType)) {
+            if ($despawnTimeType == 1) {
+               $conds[] = 'expire_timestamp_verified = 1';
+            }
+            else if ($despawnTimeType == 2) {
+               $conds[] = '(expire_timestamp_verified = 0 AND spawn_id IS NOT NULL)';
+            }
+            else if ($despawnTimeType == 3) {
+               $conds[] = 'expire_timestamp_verified = 0';
             }
         }
         if (!empty($gender) && ($gender == 1 || $gender == 2)) {

@@ -288,6 +288,19 @@ if (strtolower($map) === "rdm") {
                                             </div>
                                         <?php
                                         }
+                                        if (! $noDespawnTimeType) { ?>
+                                            <div class="dropdown-divider"></div>
+                                            <div class="form-floating">
+                                                <select class="form-select" aria-label="despawn-time-type-filter" name="despawn-time-type-select" id="despawn-time-type-select">
+                                                    <option value="0"><?php echo i8ln('All') ?></option>
+                                                    <option value="1"><?php echo i8ln('Verified') ?></option>
+                                                    <option value="2"><?php echo i8ln('Unverified') ?></option>
+                                                    <option value="3"><?php echo i8ln('Unverified + Nearby') ?></option>
+                                                </select>
+                                                <label for="despawn-time-type-select"><?php echo i8ln('Despawn Time Type'); ?></label>
+                                            </div>
+                                        <?php
+                                        }
                                         if (! $noPokemonGender) { ?>
                                             <div class="dropdown-divider"></div>
                                             <div class="form-floating">
@@ -1556,6 +1569,7 @@ include('modals.php');
     var onlyTriggerGyms = <?php echo $onlyTriggerGyms === true ? 'true' : 'false' ?>;
     var showBigKarp = <?php echo $noBigKarp === true ? 'true' : 'false' ?>;
     var showTinyRat = <?php echo $noTinyRat === true ? 'true' : 'false' ?>;
+    var showDespawnTimeType = <?php echo $noDespawnTimeType ? 0 : $showDespawnTimeType ?>;
     var showPokemonGender = <?php echo $noPokemonGender ? 0 : $showPokemonGender ?>;
     var hidePokemonCoords = <?php echo $hidePokemonCoords === true ? 'true' : 'false' ?>;
     var hidePokestopCoords = <?php echo $hidePokestopCoords === true ? 'true' : 'false' ?>;

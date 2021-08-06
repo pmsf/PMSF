@@ -1046,6 +1046,7 @@ function initSidebar() {
     $('#missing-iv-only-switch').prop('checked', Store.get('showMissingIVOnly'))
     $('#big-karp-switch').prop('checked', Store.get('showBigKarp'))
     $('#tiny-rat-switch').prop('checked', Store.get('showTinyRat'))
+    $('#despawn-time-type-select').val(Store.get('showDespawnTimeType'))
     $('#pokemon-gender-select').val(Store.get('showPokemonGender'))
     $('#pokestops-switch').prop('checked', Store.get('showPokestops'))
     $('#allPokestops-switch').prop('checked', Store.get('showAllPokestops'))
@@ -3161,20 +3162,24 @@ function clearStaleMarkers() {
                 })
             }
         }
-
         if (
-        mapData.pokemons[key]['disappear_time'] < new Date().getTime()
-        || (
-            (excludedPokemon.indexOf(mapData.pokemons[key]['pokemon_id']) >= 0
-            || isTemporaryHidden(mapData.pokemons[key]['pokemon_id'])
-            || (pvpFiltered)
-            || ((((mapData.pokemons[key]['individual_attack'] + mapData.pokemons[key]['individual_defense'] + mapData.pokemons[key]['individual_stamina']) / 45 * 100 < minIV) || ((mapType === 'rdm' && mapData.pokemons[key]['level'] < minLevel) || (mapType === 'rocketmap' && !isNaN(minLevel) && (mapData.pokemons[key]['cp_multiplier'] < cpMultiplier[minLevel - 1])))) && !excludedMinIV.includes(mapData.pokemons[key]['pokemon_id']) && Store.get('showMissingIVOnly') === false)
-            || (Store.get('showMissingIVOnly') === true && mapData.pokemons[key]['individual_attack'] !== null)
-            || (Store.get('showBigKarp') === true && mapData.pokemons[key]['pokemon_id'] === 129 && (mapData.pokemons[key]['weight'] < 13.14 || mapData.pokemons[key]['weight'] === null))
-            || (Store.get('showTinyRat') === true && mapData.pokemons[key]['pokemon_id'] === 19 && (mapData.pokemons[key]['weight'] > 2.40 || mapData.pokemons[key]['weight'] === null))
-            || (Store.get('showPokemonGender') === 1 && mapData.pokemons[key]['gender'] !== '1')
-            || (Store.get('showPokemonGender') === 2 && mapData.pokemons[key]['gender'] !== '2')
-            ) && encounterId !== mapData.pokemons[key]['encounter_id'])
+            mapData.pokemons[key]['disappear_time'] < new Date().getTime()
+            || (
+                (excludedPokemon.indexOf(mapData.pokemons[key]['pokemon_id']) >= 0
+                    || isTemporaryHidden(mapData.pokemons[key]['pokemon_id'])
+                    || (pvpFiltered)
+                    || ((((mapData.pokemons[key]['individual_attack'] + mapData.pokemons[key]['individual_defense'] + mapData.pokemons[key]['individual_stamina']) / 45 * 100 < minIV) || ((mapType === 'rdm' && mapData.pokemons[key]['level'] < minLevel) || (mapType === 'rocketmap' && !isNaN(minLevel) && (mapData.pokemons[key]['cp_multiplier'] < cpMultiplier[minLevel - 1])))) && !excludedMinIV.includes(mapData.pokemons[key]['pokemon_id']) && Store.get('showMissingIVOnly') === false)
+                    || (Store.get('showMissingIVOnly') === true && mapData.pokemons[key]['individual_attack'] !== null)
+                    || (Store.get('showBigKarp') === true && mapData.pokemons[key]['pokemon_id'] === 129 && (mapData.pokemons[key]['weight'] < 13.14 || mapData.pokemons[key]['weight'] === null))
+                    || (Store.get('showTinyRat') === true && mapData.pokemons[key]['pokemon_id'] === 19 && (mapData.pokemons[key]['weight'] > 2.40 || mapData.pokemons[key]['weight'] === null))
+                    || (Store.get('showDespawnTimeType') === 1 && mapData.pokemons[key]['expire_timestamp_verified'] == 0)
+                    || (Store.get('showDespawnTimeType') === 2 && (mapData.pokemons[key]['expire_timestamp_verified'] > 0 || mapData.pokemons[key]['spawn_id'] === null))
+                    || (Store.get('showDespawnTimeType') === 3 && mapData.pokemons[key]['expire_timestamp_verified'] > 0)
+                    || (Store.get('showPokemonGender') === 1 && mapData.pokemons[key]['gender'] !== '1')
+                    || (Store.get('showPokemonGender') === 2 && mapData.pokemons[key]['gender'] !== '2')
+                )
+                && encounterId !== mapData.pokemons[key]['encounter_id']
+            )
         ) {
             if (mapData.pokemons[key].marker.rangeCircle) {
                 markers.removeLayer(mapData.pokemons[key].marker.rangeCircle)
@@ -3306,6 +3311,7 @@ function loadRawData() {
     var loadMinLevel = Store.get('remember_text_min_level')
     var bigKarp = Boolean(Store.get('showBigKarp'))
     var tinyRat = Boolean(Store.get('showTinyRat'))
+    var despawnTimeType = Store.get('showDespawnTimeType')
     var pokemonGender = Store.get('showPokemonGender')
     var exEligible = Boolean(Store.get('exEligible'))
     var bounds = map.getBounds()
@@ -3373,6 +3379,7 @@ function loadRawData() {
             'prevMinLevel': prevMinLevel,
             'bigKarp': bigKarp,
             'tinyRat': tinyRat,
+            'despawnTimeType': despawnTimeType,
             'pokemonGender': pokemonGender,
             'swLat': swLat,
             'swLng': swLng,
@@ -4715,7 +4722,7 @@ function processPokemons(i, item) {
     }
     if (item['disappear_time'] > Date.now() && ((encounterId && encounterId === item['encounter_id']) || (excludedPokemon.indexOf(item['pokemon_id']) < 0 && !isTemporaryHidden(item['pokemon_id'])))) {
         if (item['encounter_id'] in mapData.pokemons) {
-            if ((mapData.pokemons[item['encounter_id']]['pokemon_id'] !== item['pokemon_id']) || (mapData.pokemons[item['encounter_id']]['individual_attack'] !== item['individual_attack']) || (mapData.pokemons[item['encounter_id']]['individual_defense'] !== item['individual_defense']) || (mapData.pokemons[item['encounter_id']]['individual_stamina'] !== item['individual_stamina'])) {
+            if ((mapData.pokemons[item['encounter_id']]['spawn_id'] !== item['spawn_id']) || (mapData.pokemons[item['encounter_id']]['pokemon_id'] !== item['pokemon_id']) || (mapData.pokemons[item['encounter_id']]['individual_attack'] !== item['individual_attack']) || (mapData.pokemons[item['encounter_id']]['individual_defense'] !== item['individual_defense']) || (mapData.pokemons[item['encounter_id']]['individual_stamina'] !== item['individual_stamina'])) {
                 // updated information received. delete marker and item from dict
                 if (mapData.pokemons[item['encounter_id']].marker.rangeCircle) {
                     markers.removeLayer(mapData.pokemons[item['encounter_id']].marker.rangeCircle)
@@ -4728,32 +4735,34 @@ function processPokemons(i, item) {
                 return true
             }
         }
-        if (minGLRank > 0 || minULRank > 0) {
-            var pvpFiltered = true
-            if (minGLRank > 0 && pvpFiltered) {
-                var greatLeague = JSON.parse(item['pvp_rankings_great_league'])
-                $.each(greatLeague, function (index, ranking) {
-                    if (ranking.rank !== null && ranking.rank <= minGLRank) {
-                        pvpFiltered = false
-                        return false
-                    }
-                })
+        if (encounterId !== item['encounter_id']) {
+            if (minGLRank > 0 || minULRank > 0) {
+                var pvpFiltered = true
+                if (minGLRank > 0 && pvpFiltered) {
+                    var greatLeague = JSON.parse(item['pvp_rankings_great_league'])
+                    $.each(greatLeague, function (index, ranking) {
+                        if (ranking.rank !== null && ranking.rank <= minGLRank) {
+                            pvpFiltered = false
+                            return false // same as 'break'
+                        }
+                    })
+                }
+                if (minULRank > 0 && pvpFiltered) {
+                    var ultraLeague = JSON.parse(item['pvp_rankings_ultra_league'])
+                    $.each(ultraLeague, function (index, ranking) {
+                        if (ranking.rank !== null && ranking.rank <= minULRank) {
+                            pvpFiltered = false
+                            return false // same as 'break'
+                        }
+                    })
+                }
+                if (pvpFiltered) {
+                    return true
+                }
             }
-            if (minULRank > 0 && pvpFiltered) {
-                var ultraLeague = JSON.parse(item['pvp_rankings_ultra_league'])
-                $.each(ultraLeague, function (index, ranking) {
-                    if (ranking.rank !== null && ranking.rank <= minULRank) {
-                        pvpFiltered = false
-                        return false
-                    }
-                })
-            }
-            if (pvpFiltered) {
+            if (Store.get('showMissingIVOnly') === true && item['individual_attack'] !== null) {
                 return true
             }
-        }
-        if (Store.get('showMissingIVOnly') === true && item['individual_attack'] !== null) {
-            return true
         }
 
         // add marker to map and item to dict
@@ -6598,6 +6607,11 @@ $(function () {
         })
         $('#big-karp-switch').on('change', function (e) {
             Store.set('showBigKarp', this.checked)
+            lastpokemon = false
+            updateMap()
+        })
+        $('#despawn-time-type-select').on('change', function (e) {
+            Store.set('showDespawnTimeType', this.value)
             lastpokemon = false
             updateMap()
         })

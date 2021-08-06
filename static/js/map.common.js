@@ -284,6 +284,11 @@ var StoreOptions = {
             default: showTinyRat,
             type: StoreTypes.Boolean
         },
+    'showDespawnTimeType':
+        {
+            default: showDespawnTimeType,
+            type: StoreTypes.Number
+        },
     'showPokemonGender':
         {
             default: showPokemonGender,

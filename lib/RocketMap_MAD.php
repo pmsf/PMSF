@@ -4,7 +4,7 @@ namespace Scanner;
 
 class RocketMap_MAD extends RocketMap
 {
-    public function get_active($eids, $minIv, $minLevel, $exMinIv, $bigKarp, $tinyRat, $gender, $swLat, $swLng, $neLat, $neLng, $tstamp = 0, $oSwLat = 0, $oSwLng = 0, $oNeLat = 0, $oNeLng = 0, $encId = 0)
+    public function get_active($eids, $minIv, $minLevel, $exMinIv, $bigKarp, $tinyRat, $despawnTimeType, $gender, $swLat, $swLng, $neLat, $neLng, $tstamp = 0, $oSwLat = 0, $oSwLng = 0, $oNeLat = 0, $oNeLng = 0, $encId = 0)
     {
         global $db;
         $conds = array();
@@ -100,6 +100,20 @@ class RocketMap_MAD extends RocketMap
                 $conds[] = '(cp_multiplier >= ' . $this->cpMultiplier[$minLevel] . ' OR pokemon_id IN(' . $exMinIv . ') )';
             }
         }
+        if (!empty($despawnTimeType)) {
+// expire_timestamp_verified not available?
+/*
+            if ($despawnTimeType == 1) {
+               $conds[] = 'expire_timestamp_verified = 1';
+            }
+            else if ($despawnTimeType == 2) {
+               $conds[] = '(expire_timestamp_verified = 0 AND spawn_id IS NOT NULL)';
+            }
+            else if ($despawnTimeType == 3) {
+               $conds[] = 'expire_timestamp_verified = 0';
+            }
+*/
+        }
         if (!empty($gender) && ($gender == 1 || $gender == 2)) {
            $conds[] = 'gender = ' . $gender;
         }
@@ -111,7 +125,7 @@ class RocketMap_MAD extends RocketMap
         return $this->query_active($select, $conds, $params, $encSql);
     }
 
-    public function get_active_by_id($ids, $minIv, $minLevel, $exMinIv, $bigKarp, $tinyRat, $gender, $swLat, $swLng, $neLat, $neLng)
+    public function get_active_by_id($ids, $minIv, $minLevel, $exMinIv, $bigKarp, $tinyRat, $despawnTimeType, $gender, $swLat, $swLng, $neLat, $neLng)
     {
         global $db;
         $conds = array();
@@ -200,6 +214,20 @@ class RocketMap_MAD extends RocketMap
             } else {
                 $conds[] = '(cp_multiplier >= ' . $this->cpMultiplier[$minLevel] . ' OR pokemon_id IN(' . $exMinIv . ') )';
             }
+        }
+        if (!empty($despawnTimeType)) {
+// expire_timestamp_verified not available?
+/*
+            if ($despawnTimeType == 1) {
+               $conds[] = 'expire_timestamp_verified = 1';
+            }
+            else if ($despawnTimeType == 2) {
+               $conds[] = '(expire_timestamp_verified = 0 AND spawn_id IS NOT NULL)';
+            }
+            else if ($despawnTimeType == 3) {
+               $conds[] = 'expire_timestamp_verified = 0';
+            }
+*/
         }
         if (!empty($gender) && ($gender == 1 || $gender == 2)) {
            $conds[] = 'gender = ' . $gender;
