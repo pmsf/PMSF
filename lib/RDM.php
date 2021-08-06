@@ -179,7 +179,6 @@ class RDM extends Scanner
                 $conds[] = str_replace("OR", "", $tmpSQL);
             }
         }
-
         if (!empty($minIv) && !is_nan((float)$minIv) && $minIv != 0) {
             if (empty($exMinIv)) {
                 $conds[] = '(iv >= ' . $minIv;
@@ -833,11 +832,12 @@ class RDM extends Scanner
     {
         $conds = array();
         $params = array();
-        $conds[] = "last_lat > :swLat AND last_lon > :swLng AND last_lat < :neLat AND last_lon < :neLng";
-        $params[':swLat'] = $swLat;
-        $params[':swLng'] = $swLng;
-        $params[':neLat'] = $neLat;
-        $params[':neLng'] = $neLng;
+
+//        $conds[] = "last_lat > :swLat AND last_lon > :swLng AND last_lat < :neLat AND last_lon < :neLng";
+//        $params[':swLat'] = $swLat;
+//        $params[':swLng'] = $swLng;
+//        $params[':neLat'] = $neLat;
+//        $params[':neLng'] = $neLng;
         if ($oSwLat != 0) {
             $conds[] = "NOT (last_lat > :oswLat AND last_lon > :oswLng AND last_lat < :oneLat AND last_lon < :oneLng)";
             $params[':oswLat'] = $oSwLat;
@@ -859,14 +859,23 @@ class RDM extends Scanner
     private function query_scanlocation($conds, $params)
     {
         global $db;
-        $query = "SELECT last_lat AS latitude,
-        last_lon AS longitude,
-        last_seen,
-        uuid,
-        instance_name
-        FROM device
-        WHERE :conditions";
-        $query = str_replace(":conditions", join(" AND ", $conds), $query);
+        if (empty($conds)) {
+            $query = "SELECT last_lat AS latitude,
+            last_lon AS longitude,
+            last_seen,
+            uuid,
+            instance_name
+            FROM device";
+        } else {
+            $query = "SELECT last_lat AS latitude,
+            last_lon AS longitude,
+            last_seen,
+            uuid,
+            instance_name
+            FROM device
+            WHERE :conditions";
+            $query = str_replace(":conditions", join(" AND ", $conds), $query);
+        }
         $scanlocations = $db->query($query, $params)->fetchAll(\PDO::FETCH_ASSOC);
         $data = array();
         $i = 0;

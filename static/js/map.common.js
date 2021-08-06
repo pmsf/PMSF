@@ -269,6 +269,11 @@ var StoreOptions = {
             default: enablePokemon,
             type: StoreTypes.Boolean
         },
+    'showMissingIVOnly':
+        {
+            default: false,
+            type: StoreTypes.Boolean
+        },
     'showBigKarp':
         {
             default: showBigKarp,

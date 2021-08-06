@@ -260,6 +260,7 @@ $minULRank = '0';                                              // "0" for empty 
 $minIV = '0';                                                  // "0" for empty or a number
 $minLevel = '0';                                               // "0" for empty or a number
 
+$noMissingIVOnly = true;
 $noBigKarp = false;
 $noTinyRat = false;
 

@@ -264,6 +264,14 @@ if (strtolower($map) === "rdm") {
                                         </div>
                                         <div id="pokemon-filter-wrapper" style="display:none">
                                         <?php
+                                        if (! $noMissingIVOnly) { ?>
+                                            <div class="dropdown-divider"></div>
+                                            <div class="form-check form-switch">
+                                                <input class="form-check-input" id="missing-iv-only-switch" type="checkbox" name="missing-iv-only-switch">
+                                                <label class="form-check-label"  for="missing-iv-only-switch"><?php echo i8ln('Only Missing IV') ?></label>
+                                            </div>
+                                        <?php
+                                        }
                                         if (! $noTinyRat) { ?>
                                             <div class="dropdown-divider"></div>
                                             <div class="form-check form-switch">

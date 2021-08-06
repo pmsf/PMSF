@@ -107,6 +107,7 @@ class RocketMap_MAD extends RocketMap
         if ($encId != 0) {
             $encSql = " OR (encounter_id = " . $encId . " AND p.latitude > '" . $swLat . "' AND p.longitude > '" . $swLng . "' AND p.latitude < '" . $neLat . "' AND p.longitude < '" . $neLng . "' AND disappear_time > '" . $params[':time'] . "')";
         }
+
         return $this->query_active($select, $conds, $params, $encSql);
     }
 
