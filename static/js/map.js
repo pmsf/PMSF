@@ -3168,7 +3168,7 @@ function clearStaleMarkers() {
             (excludedPokemon.indexOf(mapData.pokemons[key]['pokemon_id']) >= 0
             || isTemporaryHidden(mapData.pokemons[key]['pokemon_id'])
             || (pvpFiltered)
-            || (((mapData.pokemons[key]['individual_attack'] + mapData.pokemons[key]['individual_defense'] + mapData.pokemons[key]['individual_stamina']) / 45 * 100 < minIV) || ((mapType === 'rdm' && mapData.pokemons[key]['level'] < minLevel) || (mapType === 'rocketmap' && !isNaN(minLevel) && (mapData.pokemons[key]['cp_multiplier'] < cpMultiplier[minLevel - 1]))) && !excludedMinIV.includes(mapData.pokemons[key]['pokemon_id']))
+            || ((((mapData.pokemons[key]['individual_attack'] + mapData.pokemons[key]['individual_defense'] + mapData.pokemons[key]['individual_stamina']) / 45 * 100 < minIV) || ((mapType === 'rdm' && mapData.pokemons[key]['level'] < minLevel) || (mapType === 'rocketmap' && !isNaN(minLevel) && (mapData.pokemons[key]['cp_multiplier'] < cpMultiplier[minLevel - 1])))) && !excludedMinIV.includes(mapData.pokemons[key]['pokemon_id']) && Store.get('showMissingIVOnly') === false)
             || (Store.get('showMissingIVOnly') === true && mapData.pokemons[key]['individual_attack'] !== null)
             || (Store.get('showBigKarp') === true && mapData.pokemons[key]['pokemon_id'] === 129 && (mapData.pokemons[key]['weight'] < 13.14 || mapData.pokemons[key]['weight'] === null))
             || (Store.get('showTinyRat') === true && mapData.pokemons[key]['pokemon_id'] === 19 && (mapData.pokemons[key]['weight'] > 2.40 || mapData.pokemons[key]['weight'] === null))
@@ -3321,6 +3321,14 @@ function loadRawData() {
     var loadPokemonStats = $('#nav-pokemon-stats-tab').hasClass('active') && statsOpen
     var loadRewardStats = $('#nav-reward-stats-tab').hasClass('active') && statsOpen
     var loadShinyStats = $('#nav-shiny-stats-tab').hasClass('active') && statsOpen
+
+    if (Store.get('showMissingIVOnly') === true) {
+        // Need to ignore the configured IV/Level options if we only want Pokemon missing IV info
+        loadMinIV = 0
+        loadMinLevel = 0
+        prevMinIV = null
+        prevMinLevel = null
+    }
 
     return $.ajax({
         url: 'raw_data',
