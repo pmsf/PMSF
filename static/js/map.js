@@ -3194,7 +3194,7 @@ function clearStaleMarkers() {
         var lastMidnight = d.setHours(0, 0, 0, 0) / 1000
 
         $.each(mapData.pokestops, function (key, value) {
-            if (lastMidnight < Number(mapData.pokestops[key]['quest_timestamp'])) {
+            if (Number(mapData.pokestops[key]['quest_timestamp']) < lastMidnight) {
                 if (mapData.pokestops[key].marker.rangeCircle) {
                     markers.removeLayer(mapData.pokestops[key].marker.rangeCircle)
                     delete mapData.pokestops[key].marker.rangeCircle
@@ -5372,8 +5372,12 @@ function updateMap() {
                 var currentWeather = cellWeather.weather
                 var currentCell = $('#currentWeather').data('current-cell')
                 if ((currentWeather) && (currentCell !== currentWeather.s2_cell_id)) {
+                    var currentTime = new Date()
+                    var currentHourTime = currentTime.setMinutes(0, 0, 0)
+                    var weatherTime = currentWeather.updated * 1000
+
                     $('#currentWeather').data('current-cell', currentWeather.s2_cell_id)
-                    $('#currentWeather').html('<img src="static/weather/' + currentWeather.condition + '.png">')
+                    $('#currentWeather').html('<img src="static/weather/' + currentWeather.condition + (weatherTime >= currentHourTime ? '.png' : '-ood.png') + '">')
                 } else if (!currentWeather) {
                     $('#currentWeather').data('current-cell', '')
                     $('#currentWeather').html('')
