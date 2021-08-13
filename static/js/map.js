@@ -417,17 +417,21 @@ function initMap() { // eslint-disable-line no-unused-vars
         if (this.getZoom() > 13) {
             // hide weather markers
             $.each(weatherMarkers, function (index, marker) {
-                markers.removeLayer(marker)
+                markersnotify.removeLayer(marker)
             })
             // show header weather
             $('#currentWeather').fadeIn()
         } else {
             // show weather markers
             $.each(weatherMarkers, function (index, marker) {
-                markers.addLayer(marker)
+                markersnotify.addLayer(marker)
             })
             // hide header weather
             $('#currentWeather').fadeOut()
+            // reset header weather
+            $('#currentWeather').data('current-cell', '')
+            $('#currentWeather').data('updated', '')
+            $('#currentWeather').html('')
         }
     })
 
@@ -5360,6 +5364,7 @@ function updateMap() {
         } else {
             lastMidnight = 0
         }
+        var currentHourTime = d.setMinutes(0, 0, 0) / 1000
         Store.set('startAtLastLocationPosition', {
             lat: position.lat,
             lng: position.lng,
@@ -5367,19 +5372,20 @@ function updateMap() {
         })
         // lets try and get the s2 cell id in the middle
         var s2CellCenter = S2.keyToId(S2.latLngToKey(position.lat, position.lng, 10))
-        if ((s2CellCenter) && (String(s2CellCenter) !== $('#currentWeather').data('current-cell')) && (map.getZoom() > 13)) {
+        if (s2CellCenter && (String(s2CellCenter) !== $('#currentWeather').data('current-cell') || $('#currentWeather').data('updated') < currentHourTime) && map.getZoom() > 13) {
             loadWeatherCellData(s2CellCenter).done(function (cellWeather) {
                 var currentWeather = cellWeather.weather
-                var currentCell = $('#currentWeather').data('current-cell')
-                if ((currentWeather) && (currentCell !== currentWeather.s2_cell_id)) {
-                    var currentTime = new Date()
-                    var currentHourTime = currentTime.setMinutes(0, 0, 0)
-                    var weatherTime = currentWeather.updated * 1000
+                if (currentWeather) {
+                    var weatherText = weatherTexts[currentWeather.condition]
+                    var boostedTypesText = weatherBoostedTypes[currentWeather.condition]
+                    var markerTitle = "Weather: " + weatherText + (currentWeather.updated >= currentHourTime ? "" : " (Out of date)") + "\nBoosted Types: " + boostedTypesText + "\nLast Updated: " + moment(currentWeather.updated * 1000).format('dddd, Do MMMM Y, HH:mm')
 
                     $('#currentWeather').data('current-cell', currentWeather.s2_cell_id)
-                    $('#currentWeather').html('<img src="static/weather/' + currentWeather.condition + (weatherTime >= currentHourTime ? '.png' : '-ood.png') + '">')
-                } else if (!currentWeather) {
+                    $('#currentWeather').data('updated', currentWeather.updated)
+                    $('#currentWeather').html('<img src="static/weather/' + currentWeather.condition + (currentWeather.updated >= currentHourTime ? '.png' : '-ood.png') + '" title="' + markerTitle + '">')
+                } else {
                     $('#currentWeather').data('current-cell', '')
+                    $('#currentWeather').data('updated', '')
                     $('#currentWeather').html('')
                 }
             })
@@ -5563,7 +5569,7 @@ function drawWeatherOverlay(weather) {
             var markerTitle = "Weather: " + weatherText + (weatherTime >= currentHourTime ? "" : " (Out of date)") + "\nBoosted Types: " + boostedTypesText + "\nLast Updated: " + moment(weatherTime).format('dddd, Do MMMM Y, HH:mm')
             if (map.getZoom() <= 13) {
                 $.each(weatherMarkers, function (index, marker) {
-                    markers.addLayer(marker)
+                    markersnotify.addLayer(marker)
                 })
             }
             weatherArray.push(S2.idToCornerLatLngs(item.s2_cell_id))
@@ -5598,7 +5604,7 @@ function drawWeatherOverlay(weather) {
 function destroyWeatherOverlay() {
     weatherLayerGroup.clearLayers()
     $.each(weatherMarkers, function (idx, marker) {
-        markers.removeLayer(marker)
+        markersnotify.removeLayer(marker)
     })
     weatherPolys = []
     weatherMarkers = []
