@@ -527,7 +527,6 @@ var mapData = {
     pokemons: {},
     gyms: {},
     pokestops: {},
-    lurePokemons: {},
     spawnpoints: {},
     nests: {},
     communities: {},

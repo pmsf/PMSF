@@ -101,18 +101,15 @@ class RocketMap_MAD extends RocketMap
             }
         }
         if (!empty($despawnTimeType)) {
-// expire_timestamp_verified not available?
-/*
             if ($despawnTimeType == 1) {
-               $conds[] = 'expire_timestamp_verified = 1';
+               $conds[] = 'ts.calc_endminsec IS NOT NULL';
             }
             else if ($despawnTimeType == 2) {
-               $conds[] = '(expire_timestamp_verified = 0 AND spawn_id IS NOT NULL)';
+               $conds[] = '(ts.calc_endminsec IS NULL AND spawnpoint_id IS NOT NULL)';
             }
             else if ($despawnTimeType == 3) {
-               $conds[] = 'expire_timestamp_verified = 0';
+               $conds[] = 'ts.calc_endminsec IS NULL';
             }
-*/
         }
         if (!empty($gender) && ($gender == 1 || $gender == 2)) {
            $conds[] = 'gender = ' . $gender;

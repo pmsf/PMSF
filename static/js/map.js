@@ -100,8 +100,6 @@ var placementRangeMarkers = ['pokestop', 'gym']
 var storeZoom = true
 var moves
 var pokedex
-var weather
-var boostedMons
 
 var oSwLat
 var oSwLng
