@@ -37765,5 +37765,85 @@
         "color": "#7038f8"
       }
     ]
+  },
+  "891":{
+    "name":"Kubfu",
+    "types":[
+      {
+        "type": "Fighting",
+        "color": "#c03028"
+      }
+    ]
+  },
+  "892":{
+    "name":"Urshifu",
+    "types":[
+      {
+        "type": "Fighting",
+        "color": "#c03028"
+      }
+    ]
+  },
+  "893":{
+    "name":"Zarude",
+    "types":[
+      {
+        "type": "Dark",
+        "color": "#707070"
+      },
+      {
+        "type": "Grass",
+        "color": "#78c850"
+      }
+    ]
+  },
+  "894":{
+    "name":"Regieleki",
+    "types":[
+      {
+        "type": "Electric",
+        "color": "#f8d030"
+      }
+    ]
+  },
+  "895":{
+    "name":"Regidrago",
+    "types":[
+      {
+        "type": "Dragon",
+        "color": "#7038f8"
+      }
+    ]
+  },
+  "896":{
+    "name":"Glastrier",
+    "types":[
+      {
+        "type": "Ice",
+        "color": "#98d8d8"
+      }
+    ]
+  },
+  "897":{
+    "name":"Spectrier",
+    "types":[
+      {
+        "type": "Ghost",
+        "color": "#705898"
+      }
+    ]
+  },
+  "898":{
+    "name":"Calyrex",
+    "types":[
+      {
+        "type": "Psychic",
+        "color": "#f85888"
+      },
+      {
+        "type": "Grass",
+        "color": "#78c850"
+      }
+    ]
   }
 }

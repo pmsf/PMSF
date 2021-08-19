@@ -1,4 +1,12 @@
 {
+  "0": {
+    "name": "Unknown Move",
+    "type": "",
+    "damage": 0,
+    "duration": 0,
+    "energy": 0,
+    "dps": 0
+  },
   "1": {
     "name": "Thunder Shock",
     "type": "Electric",
@@ -2056,7 +2064,7 @@
     "dps": 0
   },
   "320": {
-    "name": "Charm Fast",
+    "name": "Charm",
     "type": "Fairy",
     "damage": 0,
     "duration": 0,
@@ -2266,6 +2274,54 @@
   "346": {
     "name": "Incinerate",
     "type": "Fire",
+    "damage": 0,
+    "duration": 0,
+    "energy": 0,
+    "dps": 0
+  },
+  "347": {
+    "name": "Dark Void",
+    "type": "Dark",
+    "damage": 0,
+    "duration": 0,
+    "energy": 0,
+    "dps": 0
+  },
+  "348": {
+    "name": "Feather Dance",
+    "type": "Flying",
+    "damage": 0,
+    "duration": 0,
+    "energy": 0,
+    "dps": 0
+  },
+  "349": {
+    "name": "Fiery Dance",
+    "type": "Fire",
+    "damage": 0,
+    "duration": 0,
+    "energy": 0,
+    "dps": 0
+  },
+  "350": {
+    "name": "Fairy Wind",
+    "type": "Fairy",
+    "damage": 0,
+    "duration": 0,
+    "energy": 0,
+    "dps": 0
+  },
+  "351": {
+    "name": "Relic Song",
+    "type": "Normal",
+    "damage": 0,
+    "duration": 0,
+    "energy": 0,
+    "dps": 0
+  },
+  "352": {
+    "name": "Weather Ball Normal",
+    "type": "Normal",
     "damage": 0,
     "duration": 0,
     "energy": 0,
