@@ -5836,7 +5836,7 @@ function createMyLocationButton() {
         locationButton.style.height = '28px'
         locationButton.style.boxShadow = '0 1px 4px rgba(0,0,0,0.3)'
         locationButton.style.cursor = 'pointer'
-        locationButton.style.marginRight = '3px'
+        locationButton.style.marginRight = '0px'
         locationButton.style.padding = '0px'
         locationButton.title = 'My Location'
         locationContainer.appendChild(locationButton)
