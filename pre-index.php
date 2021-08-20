@@ -883,7 +883,7 @@ if (strtolower($map) === "rdm") {
                         </div>
                     </div>
                 <?php }
-                if (! $noPortals || ! $noS2Cells || ! $noPoi) { ?>
+                if (! $noPortals || ! $noPoi || ! $noS2Cells) { ?>
                     <div class="accordion-item">
                         <h2 class="accordion-header" id="headingItemFive">
                             <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#navItemFive" aria-expanded="false" aria-controls="navItemFive">
@@ -964,7 +964,7 @@ if (strtolower($map) === "rdm") {
                         </div>
                     </div>
                 <?php }
-                if (! $noSearchLocation || ! $noNests || ! $noStartMe || ! $noStartLast || ! $noFollowMe || ! $noPokestops || ! $noSpawnPoints || ! $noRanges || ! $noWeatherOverlay || ! $noSpawnArea) { ?>
+                if (! $noWeatherOverlay || ! $noSpawnPoints || ! $noRanges || ! $noScanPolygon || ! $noLiveScanLocation || ! $noSearchLocation || ! $noStartMe || ! $noStartLast || ! $noFollowMe) { ?>
                     <div class="accordion-item">
                         <h2 class="accordion-header" id="headingItemSix">
                             <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#navItemSix" aria-expanded="false" aria-controls="navItemSix">
@@ -1059,7 +1059,7 @@ if (strtolower($map) === "rdm") {
                         </div>
                     </div>
                 <?php }
-                if (! $noNotifyPokemon || ! $noNotifyRarity || ! $noNotifyIv || ! $noNotifyLevel || ! $noNotifySound || ! $noNotifyRaid || ! $noNotifyBounce || ! $noNotifyNotification) { ?>
+                if (! $noNotifyPokemon || ! $noNotifyRarity || ! $noNotifyIv || ! $noNotifyLevel || ! $noNotifyNotification || ! $noNotifyRaid || ! $noNotifySound || ! $noNotifyBounce) { ?>
                 <div class="accordion-item">
                     <h2 class="accordion-header" id="headingItemSeven">
                         <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#navItemSeven" aria-expanded="false" aria-controls="navItemSeven">

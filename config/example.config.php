@@ -114,7 +114,7 @@ $appIconPath = 'static/appicons/';
 $imgurCID = "";
 
 /* Counts */
-$numberOfPokemon = 721;
+$numberOfPokemon = 898;
 $numberOfItem = 1602;
 $numberOfGrunt = 510;
 $numberOfEgg = 12;
@@ -750,7 +750,11 @@ $db = new Medoo([
     'server' => '127.0.0.1',
     'username' => 'database_user',
     'password' => 'database_password',
-    'charset' => 'utf8'
+    'charset' => 'utf8',
+
+    // [optional]
+    'port' => 3306                                                 // Comment out if not needed, just add // in front!
+    //'socket' => /path/to/socket/,
 ]);
 //-----------------------------------------------------
 //Manual Database is used for:
