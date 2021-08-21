@@ -254,19 +254,26 @@ class RocketMap_MAD extends RocketMap
             $pokemon["pokemon_id"] = intval($pokemon["pokemon_id"]);
             $pokemon["pokemon_name"] = i8ln($this->data[$pokemon["pokemon_id"]]['name']);
             $pokemon["pokemon_rarity"] = i8ln($this->data[$pokemon["pokemon_id"]]['rarity']);
-            $types = $this->data[$pokemon["pokemon_id"]]["types"];
-            foreach ($types as $k => $v) {
-                $types[$k]['type'] = $v['type'];
-            }
-            $pokemon["pokemon_types"] = $types;
             $pokemon["cp_multiplier"] = isset($pokemon["cp_multiplier"]) ? floatval($pokemon["cp_multiplier"]) : null;
+
             if (isset($pokemon["form"]) && $pokemon["form"] > 0) {
                 $forms = $this->data[$pokemon["pokemon_id"]]["forms"];
                 foreach ($forms as $f => $v) {
                     if ($pokemon["form"] === $v['protoform']) {
+                        $types = $v['formtypes'];
                         $pokemon["form_name"] = $v['nameform'];
+                        foreach ($v['formtypes'] as $ft => $v) {
+                            $types[$ft]['type'] = $v['type'];
+                        }
+                        $pokemon["pokemon_types"] = $types;
                     }
                 }
+            } else {
+                $types = $this->data[$pokemon["pokemon_id"]]["types"];
+                foreach ($types as $k => $v) {
+                    $types[$k]['type'] = $v['type'];
+                }
+                $pokemon["pokemon_types"] = $types;
             }
             $data[] = $pokemon;
 
