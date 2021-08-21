@@ -28964,7 +28964,7 @@
         "protoform": "2341",
         "formtypes": [
           {
-            "type": "Fire",
+            "type": "Ice",
             "color": "#f08030"
           }
         ]
@@ -36219,6 +36219,188 @@
         "type": "Normal",
         "color": "#8a8a59"
       }
+    ],
+    "forms": [
+      {
+        "nameform": "Normal",
+        "protoform": "2689",
+        "formtypes": [
+          {
+            "type": "Normal",
+            "color": "#e898e8"
+          }
+        ]
+      },
+      {
+        "nameform": "Bug",
+        "protoform": "2690",
+        "formtypes": [
+          {
+            "type": "Bug",
+            "color": "#e898e8"
+          }
+        ]
+      },
+      {
+        "nameform": "Dark",
+        "protoform": "2691",
+        "formtypes": [
+          {
+            "type": "Dark",
+            "color": "#e898e8"
+          }
+        ]
+      },
+      {
+        "nameform": "Dragon",
+        "protoform": "2692",
+        "formtypes": [
+          {
+            "type": "Dragon",
+            "color": "#e898e8"
+          }
+        ]
+      },
+      {
+        "nameform": "Electric",
+        "protoform": "2693",
+        "formtypes": [
+          {
+            "type": "Electric",
+            "color": "#e898e8"
+          }
+        ]
+      },
+      {
+        "nameform": "Fairy",
+        "protoform": "2694",
+        "formtypes": [
+          {
+            "type": "Fairy",
+            "color": "#e898e8"
+          }
+        ]
+      },
+      {
+        "nameform": "Fighting",
+        "protoform": "2695",
+        "formtypes": [
+          {
+            "type": "Fighting",
+            "color": "#e898e8"
+          }
+        ]
+      },
+      {
+        "nameform": "Fire",
+        "protoform": "2696",
+        "formtypes": [
+          {
+            "type": "Fire",
+            "color": "#e898e8"
+          }
+        ]
+      },
+      {
+        "nameform": "Flying",
+        "protoform": "2697",
+        "formtypes": [
+          {
+            "type": "Flying",
+            "color": "#e898e8"
+          }
+        ]
+      },
+      {
+        "nameform": "Ghost",
+        "protoform": "2698",
+        "formtypes": [
+          {
+            "type": "Ghost",
+            "color": "#e898e8"
+          }
+        ]
+      },
+      {
+        "nameform": "Grass",
+        "protoform": "2699",
+        "formtypes": [
+          {
+            "type": "Grass",
+            "color": "#e898e8"
+          }
+        ]
+      },
+      {
+        "nameform": "Ground",
+        "protoform": "2700",
+        "formtypes": [
+          {
+            "type": "Ground",
+            "color": "#e898e8"
+          }
+        ]
+      },
+      {
+        "nameform": "Ice",
+        "protoform": "2701",
+        "formtypes": [
+          {
+            "type": "Ice",
+            "color": "#e898e8"
+          }
+        ]
+      },
+      {
+        "nameform": "Poison",
+        "protoform": "2702",
+        "formtypes": [
+          {
+            "type": "Poison",
+            "color": "#e898e8"
+          }
+        ]
+      },
+      {
+        "nameform": "Psychic",
+        "protoform": "2703",
+        "formtypes": [
+          {
+            "type": "Pshychic",
+            "color": "#e898e8"
+          }
+        ]
+      },
+      {
+        "nameform": "Rock",
+        "protoform": "2704",
+        "formtypes": [
+          {
+            "type": "Rock",
+            "color": "#e898e8"
+          }
+        ]
+      },
+      {
+        "nameform": "Steel",
+        "protoform": "2705",
+        "formtypes": [
+          {
+            "type": "Steel",
+            "color": "#e898e8"
+          }
+        ]
+      },
+      {
+        "nameform": "Water",
+        "protoform": "2706",
+        "formtypes": [
+          {
+            "type": "Water",
+            "color": "#e898e8"
+          }
+        ]
+      }
     ]
   },
   "774":{
@@ -36232,6 +36414,120 @@
       {
         "type": "Flying",
         "color": "#a890f0"
+      }
+    ],
+    "forms": [
+      {
+        "nameform": "Meteor",
+        "protoform": "2707",
+        "formtypes": [
+          {
+            "type": "Rock",
+            "color": "#b8a038"
+          },
+          {
+            "type": "Flying",
+            "color": "#a890f0"
+          }
+        ]
+      },
+      {
+        "nameform": "Blue",
+        "protoform": "2708",
+        "formtypes": [
+          {
+            "type": "Rock",
+            "color": "#b8a038"
+          },
+          {
+            "type": "Flying",
+            "color": "#a890f0"
+          }
+        ]
+      },
+      {
+        "nameform": "Green",
+        "protoform": "2709",
+        "formtypes": [
+          {
+            "type": "Rock",
+            "color": "#b8a038"
+          },
+          {
+            "type": "Flying",
+            "color": "#a890f0"
+          }
+        ]
+      },
+      {
+        "nameform": "Indigo",
+        "protoform": "2710",
+        "formtypes": [
+          {
+            "type": "Rock",
+            "color": "#b8a038"
+          },
+          {
+            "type": "Flying",
+            "color": "#a890f0"
+          }
+        ]
+      },
+      {
+        "nameform": "Orange",
+        "protoform": "2711",
+        "formtypes": [
+          {
+            "type": "Rock",
+            "color": "#b8a038"
+          },
+          {
+            "type": "Flying",
+            "color": "#a890f0"
+          }
+        ]
+      },
+      {
+        "nameform": "Red",
+        "protoform": "2712",
+        "formtypes": [
+          {
+            "type": "Rock",
+            "color": "#b8a038"
+          },
+          {
+            "type": "Flying",
+            "color": "#a890f0"
+          }
+        ]
+      },
+      {
+        "nameform": "Violet",
+        "protoform": "2713",
+        "formtypes": [
+          {
+            "type": "Rock",
+            "color": "#b8a038"
+          },
+          {
+            "type": "Flying",
+            "color": "#a890f0"
+          }
+        ]
+      },
+      {
+        "nameform": "Yellow",
+        "protoform": "2714",
+        "formtypes": [
+          {
+            "type": "Rock",
+            "color": "#b8a038"
+          },
+          {
+            "type": "Flying",
+            "color": "#a890f0"
+          }
+        ]
       }
     ]
   },
@@ -36284,6 +36580,36 @@
       {
         "type": "Fairy",
         "color": "#e898e8"
+      }
+    ],
+    "forms": [
+      {
+        "nameform": "Busted",
+        "protoform": "2715",
+        "formtypes": [
+          {
+            "type": "Ghost",
+            "color": "#705898"
+          },
+          {
+            "type": "Fairy",
+            "color": "#e898e8"
+          }
+        ]
+      },
+      {
+        "nameform": "Disguised",
+        "protoform": "2716",
+        "formtypes": [
+          {
+            "type": "Ghost",
+            "color": "#705898"
+          },
+          {
+            "type": "Fairy",
+            "color": "#e898e8"
+          }
+        ]
       }
     ]
   },
@@ -36573,6 +36899,50 @@
         "type": "Psychic",
         "color": "#f85888"
       }
+    ],
+    "forms": [
+      {
+        "nameform": "Normal",
+        "protoform": "2717",
+        "formtypes": [
+          {
+            "type": "Psychic",
+            "color": "#f85888"
+          },
+          {
+            "type": "Steel",
+            "color": "#78c850"
+          }
+        ]
+      },
+      {
+        "nameform": "Dusk Mane",
+        "protoform": "2718",
+        "formtypes": [
+          {
+            "type": "Psychic",
+            "color": "#f85888"
+          },
+          {
+            "type": "Steel",
+            "color": "#f85888"
+          }
+        ]
+      },
+      {
+        "nameform": "Dawn Wings",
+        "protoform": "2719",
+        "formtypes": [
+          {
+            "type": "Psychic",
+            "color": "#f85888"
+          },
+          {
+            "type": "Ghost",
+            "color": "#f85888"
+          }
+        ]
+      }
     ]
   },
   "801":{
@@ -36586,6 +36956,36 @@
       {
         "type": "Fairy",
         "color": "#e898e8"
+      }
+    ],
+    "forms": [
+      {
+        "nameform": "Normal",
+        "protoform": "2722",
+        "formtypes": [
+          {
+            "type": "Steel",
+            "color": "#b8b8d0"
+          },
+          {
+            "type": "Fairy",
+            "color": "#e898e8"
+          }
+        ]
+      },
+      {
+        "nameform": "Original Color",
+        "protoform": "2723",
+        "formtypes": [
+          {
+            "type": "Steel",
+            "color": "#b8b8d0"
+          },
+          {
+            "type": "Fairy",
+            "color": "#e898e8"
+          }
+        ]
       }
     ]
   },
@@ -36751,6 +37151,7 @@
   },
   "810":{
     "name":"Grookey",
+    "rarity":"",
     "types":[
       {
         "type": "Grass",
@@ -36760,6 +37161,7 @@
   },
   "811":{
     "name":"Thwackey",
+    "rarity":"",
     "types":[
       {
         "type": "Grass",
@@ -36769,6 +37171,7 @@
   },
   "812":{
     "name":"Rillaboom",
+    "rarity":"",
     "types":[
       {
         "type": "Grass",
@@ -36778,6 +37181,7 @@
   },
   "813":{
     "name":"Scorbunny",
+    "rarity":"",
     "types":[
       {
         "type": "Fire",
@@ -36787,6 +37191,7 @@
   },
   "814":{
     "name":"Raboot",
+    "rarity":"",
     "types":[
       {
         "type": "Fire",
@@ -36796,6 +37201,7 @@
   },
   "815":{
     "name":"Cinderace",
+    "rarity":"",
     "types":[
       {
         "type": "Fire",
@@ -36805,6 +37211,7 @@
   },
   "816":{
     "name":"Sobble",
+    "rarity":"",
     "types":[
       {
         "type": "Water",
@@ -36814,6 +37221,7 @@
   },
   "817":{
     "name":"Drizzile",
+    "rarity":"",
     "types":[
       {
         "type": "Water",
@@ -36823,6 +37231,7 @@
   },
   "818":{
     "name":"Inteleon",
+    "rarity":"",
     "types":[
       {
         "type": "Water",
@@ -36832,6 +37241,7 @@
   },
   "819":{
     "name":"Skwovet",
+    "rarity":"",
     "types":[
       {
         "type": "Normal",
@@ -36841,6 +37251,7 @@
   },
   "820":{
     "name":"Greedent",
+    "rarity":"",
     "types":[
       {
         "type": "Normal",
@@ -36850,6 +37261,7 @@
   },
   "821":{
     "name":"Rookidee",
+    "rarity":"",
     "types":[
       {
         "type": "Flying",
@@ -36859,6 +37271,7 @@
   },
   "822":{
     "name":"Corvisquire",
+    "rarity":"",
     "types":[
       {
         "type": "Flying",
@@ -36868,6 +37281,7 @@
   },
   "823":{
     "name":"Corviknight",
+    "rarity":"",
     "types":[
       {
         "type": "Flying",
@@ -36881,6 +37295,7 @@
   },
   "824":{
     "name":"Blipbug",
+    "rarity":"",
     "types":[
       {
         "type": "Bug",
@@ -36890,6 +37305,7 @@
   },
   "825":{
     "name":"Dottler",
+    "rarity":"",
     "types":[
       {
         "type": "Bug",
@@ -36903,6 +37319,7 @@
   },
   "826":{
     "name":"Orbeetle",
+    "rarity":"",
     "types":[
       {
         "type": "Bug",
@@ -36916,6 +37333,7 @@
   },
   "827":{
     "name":"Nickit",
+    "rarity":"",
     "types":[
           {
             "type": "Dark",
@@ -36925,6 +37343,7 @@
   },
   "828":{
     "name":"Thievul",
+    "rarity":"",
     "types":[
           {
             "type": "Dark",
@@ -36934,6 +37353,7 @@
   },
   "829":{
     "name":"Gossifleur",
+    "rarity":"",
     "types":[
       {
         "type": "Grass",
@@ -36943,6 +37363,7 @@
   },
   "830":{
     "name":"Eldegoss",
+    "rarity":"",
     "types":[
       {
         "type": "Grass",
@@ -36952,6 +37373,7 @@
   },
   "831":{
     "name":"Wooloo",
+    "rarity":"",
     "types":[
       {
         "type": "Normal",
@@ -36961,6 +37383,7 @@
   },
   "832":{
     "name":"Dubwool",
+    "rarity":"",
     "types":[
       {
         "type": "Normal",
@@ -36970,6 +37393,7 @@
   },
   "833":{
     "name":"Chewtle",
+    "rarity":"",
     "types":[
       {
         "type": "Water",
@@ -36979,6 +37403,7 @@
   },
   "834":{
     "name":"Drednaw",
+    "rarity":"",
     "types":[
       {
         "type": "Water",
@@ -36992,6 +37417,7 @@
   },
   "835":{
     "name":"Yamper",
+    "rarity":"",
     "types":[
       {
         "type": "Electric",
@@ -37001,6 +37427,7 @@
   },
   "836":{
     "name":"Boltund",
+    "rarity":"",
     "types":[
       {
         "type": "Electric",
@@ -37010,6 +37437,7 @@
   },
   "837":{
     "name":"Rolycoly",
+    "rarity":"",
     "types":[
       {
         "type": "Rock",
@@ -37019,6 +37447,7 @@
   },
   "838":{
     "name":"Carkol",
+    "rarity":"",
     "types":[
       {
         "type": "Rock",
@@ -37032,6 +37461,7 @@
   },
   "839":{
     "name":"Coalossal",
+    "rarity":"",
     "types":[
       {
         "type": "Rock",
@@ -37045,6 +37475,7 @@
   },
   "840":{
     "name":"Applin",
+    "rarity":"",
     "types":[
       {
         "type": "Grass",
@@ -37058,6 +37489,7 @@
   },
   "841":{
     "name":"Flapple",
+    "rarity":"",
     "types":[
       {
         "type": "Grass",
@@ -37071,6 +37503,7 @@
   },
   "842":{
     "name":"Appletun",
+    "rarity":"",
     "types":[
       {
         "type": "Grass",
@@ -37084,6 +37517,7 @@
   },
   "843":{
     "name":"Silicobra",
+    "rarity":"",
     "types":[
       {
         "type": "Ground",
@@ -37093,6 +37527,7 @@
   },
   "844":{
     "name":"Sandaconda",
+    "rarity":"",
     "types":[
       {
         "type": "Ground",
@@ -37102,6 +37537,7 @@
   },
   "845":{
     "name":"Cramorant",
+    "rarity":"",
     "types":[
       {
         "type": "Flying",
@@ -37115,6 +37551,7 @@
   },
   "846":{
     "name":"Arrokuda",
+    "rarity":"",
     "types":[
       {
         "type": "Water",
@@ -37124,6 +37561,7 @@
   },
   "847":{
     "name":"Barraskewda",
+    "rarity":"",
     "types":[
       {
         "type": "Water",
@@ -37133,6 +37571,7 @@
   },
   "848":{
     "name":"Toxel",
+    "rarity":"",
     "types":[
       {
         "type": "Electric",
@@ -37146,6 +37585,7 @@
   },
   "849":{
     "name":"Toxtricity",
+    "rarity":"",
     "types":[
       {
         "type": "Electric",
@@ -37159,6 +37599,7 @@
   },
   "850":{
     "name":"Sizzlipede",
+    "rarity":"",
     "types":[
       {
         "type": "Fire",
@@ -37172,6 +37613,7 @@
   },
   "851":{
     "name":"Centiskorch",
+    "rarity":"",
     "types":[
       {
         "type": "Fire",
@@ -37185,6 +37627,7 @@
   },
   "852":{
     "name":"Clobbopus",
+    "rarity":"",
     "types":[
       {
         "type": "Fighting",
@@ -37194,6 +37637,7 @@
   },
   "853":{
     "name":"Grapploct",
+    "rarity":"",
     "types":[
       {
         "type": "Fighting",
@@ -37203,6 +37647,7 @@
   },
   "854":{
     "name":"Sinistea",
+    "rarity":"",
     "types":[
       {
         "type": "Ghost",
@@ -37212,6 +37657,7 @@
   },
   "855":{
     "name":"Polteageist",
+    "rarity":"",
     "types":[
       {
         "type": "Ghost",
@@ -37221,6 +37667,7 @@
   },
   "856":{
     "name":"Hatenna",
+    "rarity":"",
     "types":[
       {
         "type": "Psychic",
@@ -37230,6 +37677,7 @@
   },
   "857":{
     "name":"Hattrem",
+    "rarity":"",
     "types":[
       {
         "type": "Psychic",
@@ -37239,6 +37687,7 @@
   },
   "858":{
     "name":"Hatterene",
+    "rarity":"",
     "types":[
       {
         "type": "Psychic",
@@ -37252,6 +37701,7 @@
   },
   "859":{
     "name":"Impidimp",
+    "rarity":"",
     "types":[
       {
         "type": "Dark",
@@ -37265,6 +37715,7 @@
   },
   "860":{
     "name":"Morgrem",
+    "rarity":"",
     "types":[
       {
         "type": "Dark",
@@ -37278,6 +37729,7 @@
   },
   "861":{
     "name":"Grimmsnarl",
+    "rarity":"",
     "types":[
       {
         "type": "Dark",
@@ -37291,6 +37743,7 @@
   },
   "862": {
     "name": "Obstagoon",
+    "rarity":"",
     "types": [
       {
         "type": "Dark",
@@ -37348,6 +37801,7 @@
   },
   "863": {
     "name": "Perrserker",
+    "rarity":"",
     "types": [
       {
         "type": "Steel",
@@ -37389,6 +37843,7 @@
   },
   "864":{
     "name":"Cursola",
+    "rarity":"",
     "types":[
       {
         "type": "Ghost",
@@ -37398,6 +37853,7 @@
   },
   "865": {
     "name": "Sirfetch'd",
+    "rarity":"",
     "types": [
       {
         "type": "Fighting",
@@ -37439,6 +37895,7 @@
   },
   "866":{
     "name":"Mr. Rime",
+    "rarity":"",
     "types":[
       {
         "type": "Ice",
@@ -37452,6 +37909,7 @@
   },
   "867":{
     "name":"Runerigus",
+    "rarity":"",
     "types":[
       {
         "type": "Ground",
@@ -37509,6 +37967,7 @@
   },
   "868":{
     "name":"Milcery",
+    "rarity":"",
     "types":[
       {
         "type": "Fairy",
@@ -37518,6 +37977,7 @@
   },
   "869":{
     "name":"Alcremie",
+    "rarity":"",
     "types":[
       {
         "type": "Fairy",
@@ -37527,6 +37987,7 @@
   },
   "870":{
     "name":"Falinks",
+    "rarity":"",
     "types":[
       {
         "type": "Fighting",
@@ -37536,6 +37997,7 @@
   },
   "871":{
     "name":"Pincurchin",
+    "rarity":"",
     "types":[
       {
         "type": "Electric",
@@ -37545,6 +38007,7 @@
   },
   "872":{
     "name":"Snom",
+    "rarity":"",
     "types":[
       {
         "type": "Ice",
@@ -37558,6 +38021,7 @@
   },
   "873":{
     "name":"Frosmoth",
+    "rarity":"",
     "types":[
       {
         "type": "Ice",
@@ -37571,6 +38035,7 @@
   },
   "874":{
     "name":"Stonjourner",
+    "rarity":"",
     "types":[
       {
         "type": "Rock",
@@ -37580,6 +38045,7 @@
   },
   "875":{
     "name":"Eiscue",
+    "rarity":"",
     "types":[
       {
         "type": "Ice",
@@ -37589,6 +38055,7 @@
   },
   "876":{
     "name":"Indeedee",
+    "rarity":"",
     "types":[
       {
         "type": "Psychic",
@@ -37602,6 +38069,7 @@
   },
   "877":{
     "name":"Morpeko",
+    "rarity":"",
     "types":[
       {
         "type": "Electric",
@@ -37615,6 +38083,7 @@
   },
   "878":{
     "name":"Cufant",
+    "rarity":"",
     "types":[
       {
         "type": "Steel",
@@ -37624,6 +38093,7 @@
   },
   "879":{
     "name":"Copperajah",
+    "rarity":"",
     "types":[
       {
         "type": "Steel",
@@ -37633,6 +38103,7 @@
   },
   "880":{
     "name":"Dracozolt",
+    "rarity":"",
     "types":[
       {
         "type": "Electric",
@@ -37646,6 +38117,7 @@
   },
   "881":{
     "name":"Arctozolt",
+    "rarity":"",
     "types":[
       {
         "type": "Electric",
@@ -37659,6 +38131,7 @@
   },
   "882":{
     "name":"Dracovish",
+    "rarity":"",
     "types":[
       {
         "type": "Water",
@@ -37672,6 +38145,7 @@
   },
   "883":{
     "name":"Arctovish",
+    "rarity":"",
     "types":[
       {
         "type": "Water",
@@ -37685,6 +38159,7 @@
   },
   "884":{
     "name":"Duraludon",
+    "rarity":"",
     "types":[
       {
         "type": "Steel",
@@ -37698,6 +38173,7 @@
   },
   "885":{
     "name":"Dreepy",
+    "rarity":"",
     "types":[
       {
         "type": "Dragon",
@@ -37711,6 +38187,7 @@
   },
   "886":{
     "name":"Drakloak",
+    "rarity":"",
     "types":[
       {
         "type": "Dragon",
@@ -37724,6 +38201,7 @@
   },
   "887":{
     "name":"Dragapult",
+    "rarity":"",
     "types":[
       {
         "type": "Dragon",
@@ -37737,15 +38215,43 @@
   },
   "888":{
     "name":"Zacian",
+    "rarity":"",
     "types":[
       {
         "type": "Fairy",
         "color": "#e898e8"
       }
+    ],
+    "forms": [
+      {
+        "nameform": "Crowned Sword",
+        "protoform": "2576",
+        "formtypes": [
+          {
+            "type": "Fairy",
+            "color": "#e898e8"
+          },
+          {
+            "type": "Steel",
+            "color": "#78c850"
+          }
+        ]
+      },
+      {
+        "nameform": "Hero",
+        "protoform": "2577",
+        "formtypes": [
+          {
+            "type": "Fairy",
+            "color": "#e898e8"
+          }
+        ]
+      }
     ]
   },
   "889":{
     "name":"Zamazenta",
+    "rarity":"",
     "types":[
       {
         "type": "Fighting",
@@ -37755,6 +38261,7 @@
   },
   "890":{
     "name":"Eternatus",
+    "rarity":"",
     "types":[
       {
         "type": "Poison",
@@ -37768,6 +38275,7 @@
   },
   "891":{
     "name":"Kubfu",
+    "rarity":"",
     "types":[
       {
         "type": "Fighting",
@@ -37777,15 +38285,39 @@
   },
   "892":{
     "name":"Urshifu",
+    "rarity":"",
     "types":[
       {
         "type": "Fighting",
         "color": "#c03028"
       }
+    ],
+    "forms": [
+      {
+        "nameform": "Single Strike",
+        "protoform": "2723",
+        "formtypes": [
+          {
+            "type": "Fighting",
+            "color": "#c03028"
+          }
+        ]
+      },
+      {
+        "nameform": "Rapid Strike",
+        "protoform": "2724",
+        "formtypes": [
+          {
+            "type": "Fighting",
+            "color": "#c03028"
+          }
+        ]
+      }
     ]
   },
   "893":{
     "name":"Zarude",
+    "rarity":"",
     "types":[
       {
         "type": "Dark",
@@ -37799,6 +38331,7 @@
   },
   "894":{
     "name":"Regieleki",
+    "rarity":"",
     "types":[
       {
         "type": "Electric",
@@ -37808,6 +38341,7 @@
   },
   "895":{
     "name":"Regidrago",
+    "rarity":"",
     "types":[
       {
         "type": "Dragon",
@@ -37817,6 +38351,7 @@
   },
   "896":{
     "name":"Glastrier",
+    "rarity":"",
     "types":[
       {
         "type": "Ice",
@@ -37826,6 +38361,7 @@
   },
   "897":{
     "name":"Spectrier",
+    "rarity":"",
     "types":[
       {
         "type": "Ghost",
@@ -37835,6 +38371,7 @@
   },
   "898":{
     "name":"Calyrex",
+    "rarity":"",
     "types":[
       {
         "type": "Psychic",
@@ -37843,6 +38380,50 @@
       {
         "type": "Grass",
         "color": "#78c850"
+      }
+    ],
+    "forms": [
+      {
+        "nameform": "Normal",
+        "protoform": "2725",
+        "formtypes": [
+          {
+            "type": "Psychic",
+            "color": "#f85888"
+          },
+          {
+            "type": "Grass",
+            "color": "#78c850"
+          }
+        ]
+      },
+      {
+        "nameform": "Ice Rider",
+        "protoform": "2726",
+        "formtypes": [
+          {
+            "type": "Psychic",
+            "color": "#f85888"
+          },
+          {
+            "type": "Ice",
+            "color": "#78c850"
+          }
+        ]
+      },
+      {
+        "nameform": "Shadow Rider",
+        "protoform": "2727",
+        "formtypes": [
+          {
+            "type": "Psychic",
+            "color": "#f85888"
+          },
+          {
+            "type": "Ghost",
+            "color": "#78c850"
+          }
+        ]
       }
     ]
   }
