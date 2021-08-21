@@ -28964,7 +28964,7 @@
         "protoform": "2341",
         "formtypes": [
           {
-            "type": "Fire",
+            "type": "Ice",
             "color": "#f08030"
           }
         ]
@@ -36226,12 +36226,8 @@
         "protoform": "2689",
         "formtypes": [
           {
-            "type": "Fairy",
+            "type": "Normal",
             "color": "#e898e8"
-          },
-          {
-            "type": "Steel",
-            "color": "#78c850"
           }
         ]
       },
@@ -36240,7 +36236,7 @@
         "protoform": "2690",
         "formtypes": [
           {
-            "type": "Fairy",
+            "type": "Bug",
             "color": "#e898e8"
           }
         ]
@@ -36250,7 +36246,7 @@
         "protoform": "2691",
         "formtypes": [
           {
-            "type": "Fairy",
+            "type": "Dark",
             "color": "#e898e8"
           }
         ]
@@ -36260,7 +36256,7 @@
         "protoform": "2692",
         "formtypes": [
           {
-            "type": "Fairy",
+            "type": "Dragon",
             "color": "#e898e8"
           }
         ]
@@ -36270,7 +36266,7 @@
         "protoform": "2693",
         "formtypes": [
           {
-            "type": "Fairy",
+            "type": "Electric",
             "color": "#e898e8"
           }
         ]
@@ -36290,7 +36286,7 @@
         "protoform": "2695",
         "formtypes": [
           {
-            "type": "Fairy",
+            "type": "Fighting",
             "color": "#e898e8"
           }
         ]
@@ -36300,7 +36296,7 @@
         "protoform": "2696",
         "formtypes": [
           {
-            "type": "Fairy",
+            "type": "Fire",
             "color": "#e898e8"
           }
         ]
@@ -36310,7 +36306,7 @@
         "protoform": "2697",
         "formtypes": [
           {
-            "type": "Fairy",
+            "type": "Flying",
             "color": "#e898e8"
           }
         ]
@@ -36320,7 +36316,7 @@
         "protoform": "2698",
         "formtypes": [
           {
-            "type": "Fairy",
+            "type": "Ghost",
             "color": "#e898e8"
           }
         ]
@@ -36330,7 +36326,7 @@
         "protoform": "2699",
         "formtypes": [
           {
-            "type": "Fairy",
+            "type": "Grass",
             "color": "#e898e8"
           }
         ]
@@ -36340,7 +36336,7 @@
         "protoform": "2700",
         "formtypes": [
           {
-            "type": "Fairy",
+            "type": "Ground",
             "color": "#e898e8"
           }
         ]
@@ -36350,7 +36346,7 @@
         "protoform": "2701",
         "formtypes": [
           {
-            "type": "Fairy",
+            "type": "Ice",
             "color": "#e898e8"
           }
         ]
@@ -36360,7 +36356,7 @@
         "protoform": "2702",
         "formtypes": [
           {
-            "type": "Fairy",
+            "type": "Poison",
             "color": "#e898e8"
           }
         ]
@@ -36370,7 +36366,7 @@
         "protoform": "2703",
         "formtypes": [
           {
-            "type": "Fairy",
+            "type": "Pshychic",
             "color": "#e898e8"
           }
         ]
@@ -36380,7 +36376,7 @@
         "protoform": "2704",
         "formtypes": [
           {
-            "type": "Fairy",
+            "type": "Rock",
             "color": "#e898e8"
           }
         ]
@@ -36390,7 +36386,7 @@
         "protoform": "2705",
         "formtypes": [
           {
-            "type": "Fairy",
+            "type": "Steel",
             "color": "#e898e8"
           }
         ]
@@ -36400,7 +36396,7 @@
         "protoform": "2706",
         "formtypes": [
           {
-            "type": "Fairy",
+            "type": "Water",
             "color": "#e898e8"
           }
         ]
@@ -36426,12 +36422,12 @@
         "protoform": "2707",
         "formtypes": [
           {
-            "type": "Fairy",
-            "color": "#e898e8"
+            "type": "Rock",
+            "color": "#b8a038"
           },
           {
-            "type": "Steel",
-            "color": "#78c850"
+            "type": "Flying",
+            "color": "#a890f0"
           }
         ]
       },
@@ -36440,8 +36436,12 @@
         "protoform": "2708",
         "formtypes": [
           {
-            "type": "Fairy",
-            "color": "#e898e8"
+            "type": "Rock",
+            "color": "#b8a038"
+          },
+          {
+            "type": "Flying",
+            "color": "#a890f0"
           }
         ]
       },
@@ -36450,8 +36450,12 @@
         "protoform": "2709",
         "formtypes": [
           {
-            "type": "Fairy",
-            "color": "#e898e8"
+            "type": "Rock",
+            "color": "#b8a038"
+          },
+          {
+            "type": "Flying",
+            "color": "#a890f0"
           }
         ]
       },
@@ -36460,8 +36464,12 @@
         "protoform": "2710",
         "formtypes": [
           {
-            "type": "Fairy",
-            "color": "#e898e8"
+            "type": "Rock",
+            "color": "#b8a038"
+          },
+          {
+            "type": "Flying",
+            "color": "#a890f0"
           }
         ]
       },
@@ -36470,8 +36478,12 @@
         "protoform": "2711",
         "formtypes": [
           {
-            "type": "Fairy",
-            "color": "#e898e8"
+            "type": "Rock",
+            "color": "#b8a038"
+          },
+          {
+            "type": "Flying",
+            "color": "#a890f0"
           }
         ]
       },
@@ -36480,8 +36492,12 @@
         "protoform": "2712",
         "formtypes": [
           {
-            "type": "Fairy",
-            "color": "#e898e8"
+            "type": "Rock",
+            "color": "#b8a038"
+          },
+          {
+            "type": "Flying",
+            "color": "#a890f0"
           }
         ]
       },
@@ -36490,8 +36506,12 @@
         "protoform": "2713",
         "formtypes": [
           {
-            "type": "Fairy",
-            "color": "#e898e8"
+            "type": "Rock",
+            "color": "#b8a038"
+          },
+          {
+            "type": "Flying",
+            "color": "#a890f0"
           }
         ]
       },
@@ -36500,8 +36520,12 @@
         "protoform": "2714",
         "formtypes": [
           {
-            "type": "Fairy",
-            "color": "#e898e8"
+            "type": "Rock",
+            "color": "#b8a038"
+          },
+          {
+            "type": "Flying",
+            "color": "#a890f0"
           }
         ]
       }
@@ -36564,12 +36588,12 @@
         "protoform": "2715",
         "formtypes": [
           {
-            "type": "Fairy",
-            "color": "#e898e8"
+            "type": "Ghost",
+            "color": "#705898"
           },
           {
-            "type": "Steel",
-            "color": "#78c850"
+            "type": "Fairy",
+            "color": "#e898e8"
           }
         ]
       },
@@ -36577,6 +36601,10 @@
         "nameform": "Disguised",
         "protoform": "2716",
         "formtypes": [
+          {
+            "type": "Ghost",
+            "color": "#705898"
+          },
           {
             "type": "Fairy",
             "color": "#e898e8"
@@ -36878,8 +36906,8 @@
         "protoform": "2717",
         "formtypes": [
           {
-            "type": "Fairy",
-            "color": "#e898e8"
+            "type": "Psychic",
+            "color": "#f85888"
           },
           {
             "type": "Steel",
@@ -36892,8 +36920,12 @@
         "protoform": "2718",
         "formtypes": [
           {
-            "type": "Fairy",
-            "color": "#e898e8"
+            "type": "Psychic",
+            "color": "#f85888"
+          },
+          {
+            "type": "Steel",
+            "color": "#f85888"
           }
         ]
       },
@@ -36902,8 +36934,12 @@
         "protoform": "2719",
         "formtypes": [
           {
-            "type": "Fairy",
-            "color": "#e898e8"
+            "type": "Psychic",
+            "color": "#f85888"
+          },
+          {
+            "type": "Ghost",
+            "color": "#f85888"
           }
         ]
       }
@@ -36928,12 +36964,12 @@
         "protoform": "2722",
         "formtypes": [
           {
-            "type": "Fairy",
-            "color": "#e898e8"
+            "type": "Steel",
+            "color": "#b8b8d0"
           },
           {
-            "type": "Steel",
-            "color": "#78c850"
+            "type": "Fairy",
+            "color": "#e898e8"
           }
         ]
       },
@@ -36941,6 +36977,10 @@
         "nameform": "Original Color",
         "protoform": "2723",
         "formtypes": [
+          {
+            "type": "Steel",
+            "color": "#b8b8d0"
+          },
           {
             "type": "Fairy",
             "color": "#e898e8"
@@ -38258,12 +38298,8 @@
         "protoform": "2723",
         "formtypes": [
           {
-            "type": "Fairy",
-            "color": "#e898e8"
-          },
-          {
-            "type": "Steel",
-            "color": "#78c850"
+            "type": "Fighting",
+            "color": "#c03028"
           }
         ]
       },
@@ -38272,8 +38308,8 @@
         "protoform": "2724",
         "formtypes": [
           {
-            "type": "Fairy",
-            "color": "#e898e8"
+            "type": "Fighting",
+            "color": "#c03028"
           }
         ]
       }
@@ -38352,11 +38388,11 @@
         "protoform": "2725",
         "formtypes": [
           {
-            "type": "Fairy",
-            "color": "#e898e8"
+            "type": "Psychic",
+            "color": "#f85888"
           },
           {
-            "type": "Steel",
+            "type": "Grass",
             "color": "#78c850"
           }
         ]
@@ -38366,8 +38402,12 @@
         "protoform": "2726",
         "formtypes": [
           {
-            "type": "Fairy",
-            "color": "#e898e8"
+            "type": "Psychic",
+            "color": "#f85888"
+          },
+          {
+            "type": "Ice",
+            "color": "#78c850"
           }
         ]
       },
@@ -38376,8 +38416,12 @@
         "protoform": "2727",
         "formtypes": [
           {
-            "type": "Fairy",
-            "color": "#e898e8"
+            "type": "Psychic",
+            "color": "#f85888"
+          },
+          {
+            "type": "Ghost",
+            "color": "#78c850"
           }
         ]
       }
