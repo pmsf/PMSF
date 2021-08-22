@@ -95,6 +95,7 @@ class Manual
                 $etypes = $this->data[$nest["pokemon_id"]]["types"];
                 foreach ($types as $k => $v) {
                     $types[$k]['type'] = i8ln($v['type']);
+                    $types[$k]['color'] = $v['color'];
                     $etypes[$k]['type'] = $v['type'];
                 }
                 $nest["pokemon_types"] = $types;
