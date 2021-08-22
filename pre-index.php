@@ -875,7 +875,7 @@ if (!$noLoadingScreen) {
                                             </div>
                                             <div class="dropdown-divider"></div>
                                         <?php }
-                                        if (! $noSearchLocation) { ?>
+                                        if (! $noLiveScanLocation) { ?>
                                             <div class="form form-switch">
                                                 <input class="form-check-input" id="scan-location-switch" type="checkbox" name="scan-location-switch">
                                                 <label class="form-check-label" for="scan-location-switch"><?php echo i8ln('Real time scanner location') ?></label>
@@ -1301,7 +1301,7 @@ if (!$noLoadingScreen) {
     <div class="fullscreen-toggle">
         <button class="map-toggle-button" onClick="toggleFullscreenMap();"><i class="fa fa-expand" aria-hidden="true"></i></button>
     </div>
-    <?php if (!$noSearch || (!$noSearchPokemons && !$noSearchPokestops && !$noSearchGyms && !$noSearchManualQuests && !$noSearchNests && !$noSearchPortals)) { ?>
+    <?php if (!$noSearch || (!$noSearchPokemon && !$noSearchPokestops && !$noSearchGyms && !$noSearchManualQuests && !$noSearchNests && !$noSearchPortals)) { ?>
         <div class="search-container">
             <button type="button" class="search-modal-button" data-bs-toggle="modal" data-bs-target="#searchModal"><i class="fas fa-search" aria-hidden="true"></i></button>
         </div>
