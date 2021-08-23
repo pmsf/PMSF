@@ -384,6 +384,11 @@ function processRewardStats(i, item) { // eslint-disable-line no-unused-vars
             hiddenName
             type = i8ln('Stardust')
             break
+        case 4:
+            reward = '<img src="' + getIcon(iconpath.reward, 'reward/candy', '.png', item['quest_candy_pokemon_id']) + '" style="width:40px;">' +
+            hiddenName
+            type = i8ln('Candy')
+            break
         case 7:
             reward = '<img src="' + getIcon(iconpath.pokemon, 'pokemon', '.png', item['quest_pokemon_id'], 0, item['quest_pokemon_form']) + '" style="width:40px;">' +
             hiddenName

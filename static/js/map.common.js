@@ -56,14 +56,16 @@ var StoreTypes = {
 // set the default parameters for you map here
 }
 var StoreOptions = {
-    'map_style': {
-        default: mapStyle, // roadmap, satellite, hybrid, nolabels_style, dark_style, style_light2, style_pgo, dark_style_nl, style_pgo_day, style_pgo_night, style_pgo_dynamic
-        type: StoreTypes.String
-    },
-    'remember_select_exclude': {
-        default: hidePokemon,
-        type: StoreTypes.JSON
-    },
+    'map_style':
+        {
+            default: mapStyle, // roadmap, satellite, hybrid, nolabels_style, dark_style, style_light2, style_pgo, dark_style_nl, style_pgo_day, style_pgo_night, style_pgo_dynamic
+            type: StoreTypes.String
+        },
+    'remember_select_exclude':
+        {
+            default: hidePokemon,
+            type: StoreTypes.JSON
+        },
     'remember_select_exclude_min_iv':
         {
             default: excludeMinIV,
@@ -87,6 +89,16 @@ var StoreOptions = {
     'remember_text_level_notify':
         {
             default: notifyLevel,
+            type: StoreTypes.Number
+        },
+    'remember_text_min_gl_rank':
+        {
+            default: minGLRank,
+            type: StoreTypes.Number
+        },
+    'remember_text_min_ul_rank':
+        {
+            default: minULRank,
             type: StoreTypes.Number
         },
     'remember_text_min_iv':
@@ -204,6 +216,11 @@ var StoreOptions = {
             default: enableS2Cells,
             type: StoreTypes.Boolean
         },
+    'showPlacementRanges':
+        {
+            default: enablePlacementRanges,
+            type: StoreTypes.Boolean
+        },
     'showExCells':
         {
             default: enableLevel13Cells,
@@ -212,6 +229,11 @@ var StoreOptions = {
     'showGymCells':
         {
             default: enableLevel14Cells,
+            type: StoreTypes.Boolean
+        },
+    'showPokemonCells':
+        {
+            default: enableLevel15Cells,
             type: StoreTypes.Boolean
         },
     'showStopCells':
@@ -249,6 +271,11 @@ var StoreOptions = {
             default: enablePokemon,
             type: StoreTypes.Boolean
         },
+    'showMissingIVOnly':
+        {
+            default: false,
+            type: StoreTypes.Boolean
+        },
     'showBigKarp':
         {
             default: showBigKarp,
@@ -258,6 +285,16 @@ var StoreOptions = {
         {
             default: showTinyRat,
             type: StoreTypes.Boolean
+        },
+    'showDespawnTimeType':
+        {
+            default: showDespawnTimeType,
+            type: StoreTypes.Number
+        },
+    'showPokemonGender':
+        {
+            default: showPokemonGender,
+            type: StoreTypes.Number
         },
     'showPokestops':
         {
@@ -394,7 +431,7 @@ var StoreOptions = {
             default: false,
             type: StoreTypes.Boolean
         },
-    'iconSizeModifier':
+    'iconSize':
         {
             default: iconSize,
             type: StoreTypes.Number
@@ -534,7 +571,7 @@ function getPokemonSprite(index, sprite, displayHeight, weather = 0, encounterFo
 }
 
 function setupPokemonMarker(item, map, isBounceDisabled) {
-    var iconSize = (12) * (12) * 0.2 + Store.get('iconSizeModifier')
+    var iconSize = Store.get('iconSize')
     if (isNotifiedPokemon(item) === true) {
         iconSize += Store.get('iconNotifySizeModifier')
     }

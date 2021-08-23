@@ -305,7 +305,7 @@
                         <?php if (! $noManualPokemon && !$noPokemon) { ?>
                             <div class="tab-pane fade<?php echo (($firstTabContent == 1) ? " show active" : ""); ?>" id="nav-pokemon" role="tabpanel" aria-labelledby="nav-pokemon-tab">
                                 <input type="hidden" name="pokemonID" class="pokemonID"/>
-                                <?php pokemonFilterImages($noPokemonNumbers, 'pokemonSubmitFilter(event)', $pokemonToExclude, 6); ?>
+                                <?php pokemonFilterImages($noPokemonNames, $noPokemonNumbers, 'pokemonSubmitFilter(event)', $pokemonToExclude, 6); ?>
                                 <div class="modal-footer">
                                     <button type="button" class="btn btn-primary" onclick="manualPokemonData(event);">
                                         <i class="fas fa-binoculars"></i> <?php echo i8ln('Submit Pokémon'); ?>
@@ -346,7 +346,7 @@
                         if (! $noAddNewNests && !$noNests) { ?>
                             <div class="tab-pane fade<?php echo (($firstTabContent == 1) ? " show active" : ""); ?>" id="nav-nest" role="tabpanel" aria-labelledby="nav-nest-tab">
                                 <input type="hidden" name="pokemonID" class="pokemonID"/>
-                                <?php pokemonFilterImages($noPokemonNumbers, 'pokemonSubmitFilter(event)', $excludeNestMons, 7); ?>
+                                <?php pokemonFilterImages($noPokemonNames, $noPokemonNumbers, 'pokemonSubmitFilter(event)', $excludeNestMons, 7); ?>
                                 <div class="modal-footer">
                                     <button type="button" class="btn btn-primary" onclick="submitNewNest(event);"><i
                                             class="fas fa-binoculars"></i> <?php echo i8ln('Submit Nest'); ?>
@@ -505,7 +505,7 @@
                 <div class="modal-body">
                     <input type="hidden" id="editnestid" name="editnestid" value=""/>
                     <input type="hidden" name="pokemonID" class="pokemonID"/>
-                    <?php pokemonFilterImages($noPokemonNumbers, 'pokemonSubmitFilter(event)', $excludeNestMons, 5); ?>
+                    <?php pokemonFilterImages($noPokemonNames, $noPokemonNumbers, 'pokemonSubmitFilter(event)', $excludeNestMons, 5); ?>
                 </div>
                 <div class="modal-footer">
                     <button type="button" onclick="manualNestData(event);" class="btn btn-primary">

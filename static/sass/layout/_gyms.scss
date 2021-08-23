@@ -35,11 +35,21 @@
   border-radius: 50px;
   margin: 6px;
 }
-.gym-icon-countdown {
-    background-color: #c7c7c7;
-    color: black;
+.gym-icon-egg-timer {
+    background-color: pink;
+    color: white;
     top: 50px;
     position: absolute;
-    font-weight: 900;
-    border-radius: 10px;
+    font-size: 11px;
+    font-weight: 500;
+    border-radius: .25rem!important;
+}
+.gym-icon-raid-timer {
+    background-color: #ff8c00;
+    color: white;
+    top: 50px;
+    position: absolute;
+    font-size: 11px;
+    font-weight: 500;
+    border-radius: .25rem!important;
 }
