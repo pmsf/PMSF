@@ -1106,10 +1106,6 @@ function initSidebar() {
     $('#pokemon-icon-notify-size').val(Store.get('iconNotifySizeModifier'))
 }
 
-function getTypeSpan(type) {
-    return '<span style="padding: 2px 5px; text-transform: uppercase; color: white; margin-right: 2px; border-radius: 4px; font-size: 0.8em; vertical-align: text-bottom; background-color: ' + type['color'] + ';">' + type['type'] + '</span>'
-}
-
 function openMapDirections(lat, lng) { // eslint-disable-line no-unused-vars
     var url = 'https://www.google.com/maps/dir/?api=1&destination=' + lat + ',' + lng
     switch (directionProvider) {
@@ -1423,9 +1419,9 @@ function gymLabel(item) {
     var lastModified = item['last_modified']
     var name = item['name']
     var url = item['url']
-    var pokemonid = item['raid_pokemon_id']
-    var form = item['form']
     var freeSlots = item['slots_available']
+    var pokemonid = item['raid_pokemon_id']
+    var form = item['raid_pokemon_form']
     var gender = item['raid_pokemon_gender']
     var evolution = item['raid_pokemon_evolution']
     var costume = item['raid_pokemon_costume']
@@ -1448,8 +1444,8 @@ function gymLabel(item) {
                 cpStr = ' CP ' + item.raid_pokemon_cp
             }
             raidStr += '<br>' + item.raid_pokemon_name
-            if (form !== null && form > 0 && item['form_name'] !== 'Normal') {
-                raidStr += ' (' + i8ln(item['form_name']) + ')'
+            if (form !== null && form > 0 && item['raid_pokemon_form_name'] !== 'Normal') {
+                raidStr += ' (' + i8ln(item['raid_pokemon_form_name']) + ')'
             }
             if (evolution !== null && evolution > 0) {
                 switch (evolution) {
@@ -2219,7 +2215,7 @@ function getGymMarkerIcon(item) {
     var level = 6 - item['slots_available']
     var pokemonid = item['raid_pokemon_id']
     var evolutionId = item['raid_pokemon_evolution']
-    var formId = item['form']
+    var formId = item['raid_pokemon_form']
     var costumeId = item['raid_pokemon_costume']
     var team = item.team_id
     var fortMarker = ''
@@ -2237,8 +2233,7 @@ function getGymMarkerIcon(item) {
         if (noRaidTimer === false && Store.get(['showRaidTimer'])) {
             if (item.raid_start > Date.now()) {
                 html += '<div class="gym-icon-egg-timer"><span class="icon-countdown" style="padding: .25rem!important; white-space: nowrap;" disappears-at="' + item['raid_start'] + '" end>' + generateRemainingTimer(item['raid_start'], 'end') + '</span></div>'
-            }
-            else {
+            } else {
                 html += '<div class="gym-icon-raid-timer"><span class="icon-countdown" style="padding: .25rem!important; white-space: nowrap;" disappears-at="' + item['raid_end'] + '" end>' + generateRemainingTimer(item['raid_end'], 'end') + '</span></div>'
             }
         }
@@ -2325,7 +2320,7 @@ function setupGymMarker(item) {
         if (raidStarted) {
             var pokemonid = item.raid_pokemon_id
             var evolutionid = item['raid_pokemon_evolution']
-            var formid = item['form']
+            var formid = item['raid_pokemon_form']
             var costumeid = item['raid_pokemon_costume']
             icon = getIcon(iconpath.pokemon, 'pokemon', '.png', pokemonid, evolutionid, formid, costumeid)
             checkAndCreateSound(item.raid_pokemon_id)
@@ -2359,7 +2354,7 @@ function updateGymMarker(item, marker) {
             if (raidStarted) {
                 var pokemonid = item.raid_pokemon_id
                 var evolutionid = item['raid_pokemon_evolution']
-                var formid = item['form']
+                var formid = item['raid_pokemon_form']
                 var costumeid = item['raid_pokemon_costume']
 
                 icon = getIcon(iconpath.pokemon, 'pokemon', '.png', pokemonid, evolutionid, formid, costumeid)
@@ -2637,6 +2632,13 @@ function getPokestopMarkerIcon(item) {
     return stopMarker
 }
 
+function updatePokestopMarker(item, marker) {
+    marker.setIcon(getPokestopMarkerIcon(item))
+    marker.setPopupContent(pokestopLabel(item))
+
+    return marker
+}
+
 function setupPokestopMarker(item) {
     var pokestopMarkerIcon = getPokestopMarkerIcon(item)
     var marker
@@ -2697,10 +2699,10 @@ function setupNestMarker(item) {
 function nestLabel(item) {
     var str = ''
     if (item.pokemon_id > 0) {
-        var types = item['pokemon_types']
+        var types = item['english_pokemon_types']
         var typesDisplay = ''
         $.each(types, function (index, type) {
-            typesDisplay += getTypeSpan(type)
+            typesDisplay += '<img src="' + getIcon(iconpath.type, 'type', '.png', getKeyByValue(pokemonTypes, type.type)) + '" style="height:20px;top:5px;position:relative;">'
         })
         var formId = item.pokemon_form
         var pokemonId = item.pokemon_id
@@ -3171,22 +3173,22 @@ function clearStaleMarkers() {
             }
         }
         if (
-            mapData.pokemons[key]['disappear_time'] < new Date().getTime()
-            || (
-                (excludedPokemon.indexOf(mapData.pokemons[key]['pokemon_id']) >= 0
-                    || isTemporaryHidden(mapData.pokemons[key]['pokemon_id'])
-                    || (pvpFiltered)
-                    || ((((mapData.pokemons[key]['individual_attack'] + mapData.pokemons[key]['individual_defense'] + mapData.pokemons[key]['individual_stamina']) / 45 * 100 < minIV) || ((mapType === 'rdm' && mapData.pokemons[key]['level'] < minLevel) || (mapType === 'rocketmap' && !isNaN(minLevel) && (mapData.pokemons[key]['cp_multiplier'] < cpMultiplier[minLevel - 1])))) && !excludedMinIV.includes(mapData.pokemons[key]['pokemon_id']) && Store.get('showMissingIVOnly') === false)
-                    || (Store.get('showMissingIVOnly') === true && mapData.pokemons[key]['individual_attack'] !== null)
-                    || (Store.get('showBigKarp') === true && mapData.pokemons[key]['pokemon_id'] === 129 && (mapData.pokemons[key]['weight'] < 13.14 || mapData.pokemons[key]['weight'] === null))
-                    || (Store.get('showTinyRat') === true && mapData.pokemons[key]['pokemon_id'] === 19 && (mapData.pokemons[key]['weight'] > 2.40 || mapData.pokemons[key]['weight'] === null))
-                    || (Store.get('showDespawnTimeType') === 1 && mapData.pokemons[key]['expire_timestamp_verified'] == 0)
-                    || (Store.get('showDespawnTimeType') === 2 && (mapData.pokemons[key]['expire_timestamp_verified'] > 0 || mapData.pokemons[key]['spawn_id'] === null))
-                    || (Store.get('showDespawnTimeType') === 3 && mapData.pokemons[key]['expire_timestamp_verified'] > 0)
-                    || (Store.get('showPokemonGender') === 1 && mapData.pokemons[key]['gender'] !== '1')
-                    || (Store.get('showPokemonGender') === 2 && mapData.pokemons[key]['gender'] !== '2')
-                )
-                && encounterId !== mapData.pokemons[key]['encounter_id']
+            mapData.pokemons[key]['disappear_time'] < new Date().getTime() ||
+            (
+                (excludedPokemon.indexOf(mapData.pokemons[key]['pokemon_id']) >= 0 ||
+                    isTemporaryHidden(mapData.pokemons[key]['pokemon_id']) ||
+                    (pvpFiltered) ||
+                    ((((mapData.pokemons[key]['individual_attack'] + mapData.pokemons[key]['individual_defense'] + mapData.pokemons[key]['individual_stamina']) / 45 * 100 < minIV) || ((mapType === 'rdm' && mapData.pokemons[key]['level'] < minLevel) || (mapType === 'rocketmap' && !isNaN(minLevel) && (mapData.pokemons[key]['cp_multiplier'] < cpMultiplier[minLevel - 1])))) && !excludedMinIV.includes(mapData.pokemons[key]['pokemon_id']) && Store.get('showMissingIVOnly') === false) ||
+                    (Store.get('showMissingIVOnly') === true && mapData.pokemons[key]['individual_attack'] !== null) ||
+                    (Store.get('showBigKarp') === true && mapData.pokemons[key]['pokemon_id'] === 129 && (mapData.pokemons[key]['weight'] < 13.14 || mapData.pokemons[key]['weight'] === null)) ||
+                    (Store.get('showTinyRat') === true && mapData.pokemons[key]['pokemon_id'] === 19 && (mapData.pokemons[key]['weight'] > 2.40 || mapData.pokemons[key]['weight'] === null)) ||
+                    (Store.get('showDespawnTimeType') === 1 && mapData.pokemons[key]['expire_timestamp_verified'] === 0) ||
+                    (Store.get('showDespawnTimeType') === 2 && (mapData.pokemons[key]['expire_timestamp_verified'] > 0 || mapData.pokemons[key]['spawn_id'] === null)) ||
+                    (Store.get('showDespawnTimeType') === 3 && mapData.pokemons[key]['expire_timestamp_verified'] > 0) ||
+                    (Store.get('showPokemonGender') === 1 && mapData.pokemons[key]['gender'] !== '1') ||
+                    (Store.get('showPokemonGender') === 2 && mapData.pokemons[key]['gender'] !== '2')
+                ) &&
+                encounterId !== mapData.pokemons[key]['encounter_id']
             )
         ) {
             if (mapData.pokemons[key].marker.rangeCircle) {
@@ -4914,67 +4916,55 @@ function processPokestops(i, item, lastMidnight) {
         return false
     }
 
+    var removePokestopFromMap = function removePokestopFromMap(pokestopid) {
+        if (mapData.pokestops[pokestopid] && mapData.pokestops[pokestopid].marker) {
+            if (mapData.pokestops[pokestopid].marker.rangeCircle) {
+                markers.removeLayer(mapData.pokestops[pokestopid].marker.rangeCircle)
+            }
+            if (mapData.pokestops[pokestopid].marker.placementRangeCircle) {
+                markers.removeLayer(mapData.pokestops[pokestopid].marker.placementRangeCircle)
+            }
+            markers.removeLayer(mapData.pokestops[pokestopid].marker)
+            delete mapData.pokestops[pokestopid]
+        }
+    }
+
     if (Store.get('showLures') && !item['lure_expiration']) {
+        removePokestopFromMap(item['pokestop_id'])
         return true
     }
 
     if (Store.get('showRocket') && !item['incident_expiration']) {
+        removePokestopFromMap(item['pokestop_id'])
         return true
     }
 
-    if (!mapData.pokestops[item['pokestop_id']]) {
-        // new pokestop, add marker to map and item to dict
-        if (Store.get('showQuests') && !pokestopMeetsQuestFilter(item, lastMidnight)) {
-            return true
-        }
-
-        if (item.marker && item.marker.rangeCircle) {
-            markers.removeLayer(item.marker.rangeCircle)
-        }
-        if (item.marker && item.marker.placementRangeCircle) {
-            markers.removeLayer(item.marker.placementRangeCircle)
-        }
-        if (item.marker) {
-            markers.removeLayer(item.marker)
-        }
-        var latlng = turf.point([item['longitude'], item['latitude']])
-        $.each(scanAreas, function (index, poly) {
-            var insideScan = turf.booleanPointInPolygon(latlng, poly)
-            if (insideScan) {
-                item.scanArea = insideScan
-                return false
-            } else {
-                item.scanArea = insideScan
-            }
-        })
-        item.marker = setupPokestopMarker(item)
-        mapData.pokestops[item['pokestop_id']] = item
-    } else {
-        // change existing pokestop marker to unlured/lured
-        var item2 = mapData.pokestops[item['pokestop_id']]
-        if (!!item['lure_expiration'] !== !!item2['lure_expiration']) {
-            if (item2.marker && item2.marker.rangeCircle) {
-                markers.removeLayer(item2.marker.rangeCircle)
-            }
-            if (item2.marker && item2.marker.placementRangeCircle) {
-                markers.removeLayer(item2.marker.placementRangeCircle)
-            }
-            markers.removeLayer(item2.marker)
-            item.marker = setupPokestopMarker(item)
-            mapData.pokestops[item['pokestop_id']] = item
-        }
-        if (!!item['incident_expiration'] !== !!item2['incident_expiration']) {
-            if (item2.marker && item2.marker.rangeCircle) {
-                markers.removeLayer(item2.marker.rangeCircle)
-            }
-            if (item2.marker && item2.marker.placementRangeCircle) {
-                markers.removeLayer(item2.marker.placementRangeCircle)
-            }
-            markers.removeLayer(item2.marker)
-            item.marker = setupPokestopMarker(item)
-            mapData.pokestops[item['pokestop_id']] = item
-        }
+    if (Store.get('showQuests') && !pokestopMeetsQuestFilter(item, lastMidnight)) {
+        removePokestopFromMap(item['pokestop_id'])
+        return true
     }
+
+    var latlng = turf.point([item['longitude'], item['latitude']])
+    $.each(scanAreas, function (index, poly) {
+        var insideScan = turf.booleanPointInPolygon(latlng, poly)
+        if (insideScan) {
+            item.scanArea = insideScan
+            return false
+        } else {
+            item.scanArea = insideScan
+        }
+    })
+
+    if (item['pokestop_id'] in mapData.pokestops) {
+        // existing pokestop, update marker on map
+        item.marker = updatePokestopMarker(item, mapData.pokestops[item['pokestop_id']].marker)
+    } else {
+        // new pokestop, add marker to map
+        item.marker = setupPokestopMarker(item)
+    }
+
+    mapData.pokestops[item['pokestop_id']] = item
+
     if (stopId && stopId === item['pokestop_id']) {
         if (!item.marker.infoWindowIsOpen) {
             item.marker.openPopup()
@@ -5027,27 +5017,14 @@ function updatePokestops() {
     $.each(mapData.pokestops, function (key, value) {
         // change lured pokestop marker to unlured when expired.
         if (value['lure_expiration'] > 0 && value['lure_expiration'] < currentTime && value['lure_expiration'] > (currentTime - 300000)) {
-            if (value.marker && value.marker.rangeCircle) {
-                markers.removeLayer(value.marker.rangeCircle)
-            }
-            if (value.marker && value.marker.placementRangeCircle) {
-                markers.removeLayer(value.marker.placementRangeCircle)
-            }
-            markers.removeLayer(value.marker)
-            value.marker = setupPokestopMarker(value)
+            value.marker = updatePokestopMarker(value, value.marker)
         }
         // change Team Rocket pokestop marker to normal when expired.
         if (value['incident_expiration'] > 0 && value['incident_expiration'] < currentTime && value['incident_expiration'] > (currentTime - 300000)) {
-            if (value.marker && value.marker.rangeCircle) {
-                markers.removeLayer(value.marker.rangeCircle)
-            }
-            if (value.marker && value.marker.placementRangeCircle) {
-                markers.removeLayer(value.marker.placementRangeCircle)
-            }
-            markers.removeLayer(value.marker)
-            value.marker = setupPokestopMarker(value)
+            value.marker = updatePokestopMarker(value, value.marker)
         }
     })
+
     // remove unlured stops if show lured only is selected
     if (Store.get('showLures')) {
         $.each(mapData.pokestops, function (key, value) {
@@ -5068,6 +5045,8 @@ function updatePokestops() {
             }
         })
     }
+
+    // remove non-rocket stops if show rocket only is selected
     if (Store.get('showRocket')) {
         $.each(mapData.pokestops, function (key, value) {
             if (value['incident_expiration'] < currentTime || excludedGrunts.indexOf(Number(value['grunt_type'])) > -1) {
@@ -5087,6 +5066,8 @@ function updatePokestops() {
             }
         })
     }
+
+    // remove invalid quest stops if show quest only is selected
     if (Store.get('showQuests')) {
         $.each(mapData.pokestops, function (key, value) {
             if (!pokestopMeetsQuestFilter(value, lastMidnight)) {
@@ -5382,7 +5363,7 @@ function updateMap() {
                 if (currentWeather) {
                     var weatherText = weatherTexts[currentWeather.condition]
                     var boostedTypesText = weatherBoostedTypes[currentWeather.condition]
-                    var markerTitle = "Weather: " + weatherText + (currentWeather.updated >= currentHourTime ? "" : " (Out of date)") + "\nBoosted Types: " + boostedTypesText + "\nLast Updated: " + moment(currentWeather.updated * 1000).format('dddd, Do MMMM Y, HH:mm')
+                    var markerTitle = 'Weather: ' + weatherText + (currentWeather.updated >= currentHourTime ? '' : ' (Out of date)') + '\nBoosted Types: ' + boostedTypesText + '\nLast Updated: ' + moment(currentWeather.updated * 1000).format('dddd, Do MMMM Y, HH:mm')
 
                     $('#currentWeather').data('current-cell', currentWeather.s2_cell_id)
                     $('#currentWeather').data('updated', currentWeather.updated)
@@ -5570,7 +5551,7 @@ function drawWeatherOverlay(weather) {
             var currentTime = new Date()
             var currentHourTime = currentTime.setMinutes(0, 0, 0)
             var weatherTime = item.updated * 1000
-            var markerTitle = "Weather: " + weatherText + (weatherTime >= currentHourTime ? "" : " (Out of date)") + "\nBoosted Types: " + boostedTypesText + "\nLast Updated: " + moment(weatherTime).format('dddd, Do MMMM Y, HH:mm')
+            var markerTitle = 'Weather: ' + weatherText + (weatherTime >= currentHourTime ? '' : ' (Out of date)') + '\nBoosted Types: ' + boostedTypesText + '\nLast Updated: ' + moment(weatherTime).format('dddd, Do MMMM Y, HH:mm')
             if (map.getZoom() <= 13) {
                 $.each(weatherMarkers, function (index, marker) {
                     markersnotify.addLayer(marker)
@@ -5646,9 +5627,9 @@ var updateLabelDiffTime = function updateLabelDiffTime() {
         } else {
             timestring = '('
             if (hours > 0) {
-                timestring += hours + 'h'
+                timestring += hours + 'h '
             }
-            timestring += lpad(minutes, 2, 0) + 'm'
+            timestring += lpad(minutes, 2, 0) + 'm '
             timestring += lpad(seconds, 2, 0) + 's'
             timestring += ')'
         }
@@ -6336,14 +6317,19 @@ $(function () {
                 url: iconpath[key] + prefix + '/index.json',
                 dataType: 'json'
             })
-            .done(function (data) {
-                console.log('Successfully loaded initial ' + key + ' Index: ' + iconpath[key] + prefix + '/index.json')
-                iconpath[key + 'Index'] = data
-                Store.set('iconsArray', iconpath)
-            })
-            .fail(function () {
-                console.log('Failed to load initial ' + key + ' Index: ' + iconpath[key] + prefix + '/index.json')
-            })
+                .done(function (data) {
+                    console.log('Successfully loaded initial ' + key + ' Index: ' + iconpath[key] + prefix + '/index.json')
+                    iconpath[key + 'Index'] = data
+                    Store.set('iconsArray', iconpath)
+                    if (key === 'pokemon') {
+                        updateIcons('pkmn')
+                    } else if (key === 'reward') {
+                        updateIcons('reward')
+                    }
+                })
+                .fail(function () {
+                    console.log('Failed to load initial ' + key + ' Index: ' + iconpath[key] + prefix + '/index.json')
+                })
         }
     })
 
@@ -6356,19 +6342,19 @@ $(function () {
             url: this.value + 'gym/index.json',
             dataType: 'json'
         })
-        .done(function (data) {
-            console.log('Successfully loaded Gym Index: ' + newIconSet + 'gym/index.json')
-            iconpath.gym = newIconSet
-            iconpath['gymIndex'] = data
-            Store.set('iconsArray', iconpath)
-            console.log('Now using Gym Index: ' + iconpath.gym + 'gym/index.json')
-            updateGymIcons()
-        })
-        .fail(function () {
+            .done(function (data) {
+                console.log('Successfully loaded Gym Index: ' + newIconSet + 'gym/index.json')
+                iconpath.gym = newIconSet
+                iconpath['gymIndex'] = data
+                Store.set('iconsArray', iconpath)
+                console.log('Now using Gym Index: ' + iconpath.gym + 'gym/index.json')
+                updateGymIcons()
+            })
+            .fail(function () {
                 console.log('Failed to load Gym Index: ' + newIconSet + 'gym/index.json')
-        })
+            })
     })
-    $selectGymMarkerStyle.val(Store.get('iconsArray').gym).trigger('change')
+    $selectGymMarkerStyle.val(Store.get('iconsArray').gym)
 
     $selectIconStyle = $('#pokemon-icon-style')
     $selectIconStyle.on('change', function (e) {
@@ -6379,22 +6365,22 @@ $(function () {
             url: this.value + 'pokemon/index.json',
             dataType: 'json'
         })
-        .done(function (data) {
-            console.log('Successfully loaded Pokemon Index: ' + newIconSet + 'pokemon/index.json')
-            iconpath.pokemon = newIconSet
-            iconpath['pokemonIndex'] = data
-            Store.set('iconsArray', iconpath)
-            console.log('Now using Pokemon Index: ' + iconpath.pokemon + 'pokemon/index.json')
-            updateIcons('pkmn')
-            redrawPokemon(mapData.pokemons)
-            updateGymIcons()
-            updatePokestopIcons()
-        })
-        .fail(function () {
-            console.log('Failed to load Pokemon Index: ' + newIconSet + 'pokemon/index.json')
-        })
+            .done(function (data) {
+                console.log('Successfully loaded Pokemon Index: ' + newIconSet + 'pokemon/index.json')
+                iconpath.pokemon = newIconSet
+                iconpath['pokemonIndex'] = data
+                Store.set('iconsArray', iconpath)
+                console.log('Now using Pokemon Index: ' + iconpath.pokemon + 'pokemon/index.json')
+                updateIcons('pkmn')
+                redrawPokemon(mapData.pokemons)
+                updateGymIcons()
+                updatePokestopIcons()
+            })
+            .fail(function () {
+                console.log('Failed to load Pokemon Index: ' + newIconSet + 'pokemon/index.json')
+            })
     })
-    $selectIconStyle.val(Store.get('iconsArray').pokemon).trigger('change')
+    $selectIconStyle.val(Store.get('iconsArray').pokemon)
 
     $selectRewardIconStyle = $('#reward-icon-style')
     $selectRewardIconStyle.on('change', function (e) {
@@ -6405,20 +6391,20 @@ $(function () {
             url: this.value + 'reward/index.json',
             dataType: 'json'
         })
-        .done(function (data) {
-            console.log('Successfully loaded Reward Index: ' + newIconSet + 'reward/index.json')
-            iconpath.reward = newIconSet
-            iconpath['rewardIndex'] = data
-            Store.set('iconsArray', iconpath)
-            console.log("Now using Reward Index: " + iconpath.reward + 'reward/index.json')
-            updateIcons('reward')
-            updatePokestopIcons()
-        })
-        .fail(function () {
+            .done(function (data) {
+                console.log('Successfully loaded Reward Index: ' + newIconSet + 'reward/index.json')
+                iconpath.reward = newIconSet
+                iconpath['rewardIndex'] = data
+                Store.set('iconsArray', iconpath)
+                console.log('Now using Reward Index: ' + iconpath.reward + 'reward/index.json')
+                updateIcons('reward')
+                updatePokestopIcons()
+            })
+            .fail(function () {
                 console.log('Failed to load Reward Index: ' + newIconSet + 'reward/index.json')
-        })
+            })
     })
-    $selectRewardIconStyle.val(Store.get('iconsArray').reward).trigger('change')
+    $selectRewardIconStyle.val(Store.get('iconsArray').reward)
 
     loadDefaultImages()
     pokemonSpritesFilter()
@@ -6430,12 +6416,46 @@ $(function () {
 })
 
 $(function () {
+    minGLRank = Store.get('remember_text_min_gl_rank')
+    minULRank = Store.get('remember_text_min_ul_rank')
+    minIV = Store.get('remember_text_min_iv')
+    minLevel = Store.get('remember_text_min_level')
+    excludedPokemon = String(Store.get('remember_select_exclude')).split(',').map(Number).sort(function (a, b) {
+        return parseInt(a) - parseInt(b)
+    })
+    excludedMinIV = String(Store.get('remember_select_exclude_min_iv')).split(',').map(Number).sort(function (a, b) {
+        return parseInt(a) - parseInt(b)
+    })
+    excludedRaidboss = String(Store.get('remember_exclude_raidboss')).split(',').map(Number).sort(function (a, b) {
+        return parseInt(a) - parseInt(b)
+    })
+    excludedRaidegg = String(Store.get('remember_exclude_raidegg')).split(',').map(Number).sort(function (a, b) {
+        return parseInt(a) - parseInt(b)
+    })
+    excludedGrunts = String(Store.get('remember_exclude_grunts')).split(',').map(Number).sort(function (a, b) {
+        return parseInt(a) - parseInt(b)
+    })
+    questsExcludedCandy = String(Store.get('remember_quests_exclude_candy')).split(',').map(Number).sort(function (a, b) {
+        return parseInt(a) - parseInt(b)
+    })
+    questsExcludedEnergy = String(Store.get('remember_quests_exclude_energy')).split(',').map(Number).sort(function (a, b) {
+        return parseInt(a) - parseInt(b)
+    })
+    questsExcludedItem = String(Store.get('remember_quests_exclude_item')).split(',').map(Number).sort(function (a, b) {
+        return parseInt(a) - parseInt(b)
+    })
+    questsExcludedPokemon = String(Store.get('remember_quests_exclude_pokemon')).split(',').map(Number).sort(function (a, b) {
+        return parseInt(a) - parseInt(b)
+    })
+    notifiedPokemon = String(Store.get('remember_select_notify')).split(',').map(Number).sort(function (a, b) {
+        return parseInt(a) - parseInt(b)
+    })
+    notifiedRarity = Store.get('remember_select_rarity_notify')
+    notifiedMinPerfection = Store.get('remember_text_perfection_notify')
+    notifiedMinLevel = Store.get('remember_text_level_notify')
+
     $.getJSON('static/dist/data/moves.min.json').done(function (data) {
         moves = data
-    })
-
-    $.getJSON('static/dist/data/pokemon.min.json').done(function (data) {
-        pokedex = data
     })
 
     $.getJSON('static/dist/data/questtype.min.json', {_: new Date().getTime()}).done(function (data) {
@@ -6461,6 +6481,7 @@ $(function () {
             scanAreas.push(value)
         })
     })
+
     $selectExclude = $('#exclude-pokemon .search-number')
     $selectExcludeMinIV = $('#exclude-min-iv .search-number')
     $selectPokemonNotify = $('#notify-pokemon .search-number')
@@ -6502,7 +6523,7 @@ $(function () {
             Store.set('remember_exclude_raidegg', excludedRaidegg)
         })
         // recall saved lists
-        $excludeRaidegg.val(Store.get('remember_exclude_raidegg')).trigger('change')
+        $excludeRaidegg.val(Store.get('remember_exclude_raidegg'))
     })
 
     $.getJSON('static/dist/data/grunttype.min.json').done(function (data) {
@@ -6529,7 +6550,7 @@ $(function () {
             Store.set('remember_exclude_grunts', excludedGrunts)
         })
         // recall saved lists
-        $excludeGrunts.val(Store.get('remember_exclude_grunts')).trigger('change')
+        $excludeGrunts.val(Store.get('remember_exclude_grunts'))
     })
 
     $.getJSON('static/dist/data/items.min.json').done(function (data) {
@@ -6553,10 +6574,12 @@ $(function () {
             updateMap()
             Store.set('remember_quests_exclude_item', questsExcludedItem)
         })
-        $questsExcludeItem.val(Store.get('remember_quests_exclude_item')).trigger('change')
+        $questsExcludeItem.val(Store.get('remember_quests_exclude_item'))
     })
 
     $.getJSON('static/dist/data/pokemon.min.json').done(function (data) {
+        pokedex = data
+
         $.each(data, function (key, value) {
             if (key > numberOfPokemon) {
                 return false
@@ -6591,7 +6614,8 @@ $(function () {
                 return this.indexOf(e) < 0
             }, excludedPokemon)
             reincludedPokemon = reincludedPokemon.concat(buffer).map(String)
-            clearStaleMarkers()
+            lastpokemon = false
+            updateMap()
             Store.set('remember_select_exclude', excludedPokemon)
         })
         $selectExcludeMinIV.on('change', function (e) {
@@ -6603,7 +6627,8 @@ $(function () {
                 return this.indexOf(e) < 0
             }, buffer)
             reincludedPokemon = reincludedPokemon.concat(buffer).map(String)
-            clearStaleMarkers()
+            lastpokemon = false
+            updateMap()
             Store.set('remember_select_exclude_min_iv', excludedMinIV)
         })
         $textMinGLRank.on('change', function (e) {
@@ -6729,21 +6754,21 @@ $(function () {
             Store.set('remember_exclude_raidboss', excludedRaidboss)
         })
         // recall saved lists
-        $selectExclude.val(Store.get('remember_select_exclude')).trigger('change')
-        $selectExcludeMinIV.val(Store.get('remember_select_exclude_min_iv')).trigger('change')
-        $selectPokemonNotify.val(Store.get('remember_select_notify')).trigger('change')
-        $selectRarityNotify.val(Store.get('remember_select_rarity_notify')).trigger('change')
-        $textPerfectionNotify.val(Store.get('remember_text_perfection_notify')).trigger('change')
-        $textLevelNotify.val(Store.get('remember_text_level_notify')).trigger('change')
-        $textMinGLRank.val(Store.get('remember_text_min_gl_rank')).trigger('change')
-        $textMinULRank.val(Store.get('remember_text_min_ul_rank')).trigger('change')
-        $textMinIV.val(Store.get('remember_text_min_iv')).trigger('change')
-        $textMinLevel.val(Store.get('remember_text_min_level')).trigger('change')
-        $raidNotify.val(Store.get('remember_raid_notify')).trigger('change')
-        $questsExcludePokemon.val(Store.get('remember_quests_exclude_pokemon')).trigger('change')
-        $questsExcludeEnergy.val(Store.get('remember_quests_exclude_energy')).trigger('change')
-        $questsExcludeCandy.val(Store.get('remember_quests_exclude_candy')).trigger('change')
-        $excludeRaidboss.val(Store.get('remember_exclude_raidboss')).trigger('change')
+        $selectExclude.val(Store.get('remember_select_exclude'))
+        $selectExcludeMinIV.val(Store.get('remember_select_exclude_min_iv'))
+        $selectPokemonNotify.val(Store.get('remember_select_notify'))
+        $selectRarityNotify.val(Store.get('remember_select_rarity_notify'))
+        $textPerfectionNotify.val(Store.get('remember_text_perfection_notify'))
+        $textLevelNotify.val(Store.get('remember_text_level_notify'))
+        $textMinGLRank.val(Store.get('remember_text_min_gl_rank'))
+        $textMinULRank.val(Store.get('remember_text_min_ul_rank'))
+        $textMinIV.val(Store.get('remember_text_min_iv'))
+        $textMinLevel.val(Store.get('remember_text_min_level'))
+        $raidNotify.val(Store.get('remember_raid_notify'))
+        $questsExcludePokemon.val(Store.get('remember_quests_exclude_pokemon'))
+        $questsExcludeEnergy.val(Store.get('remember_quests_exclude_energy'))
+        $questsExcludeCandy.val(Store.get('remember_quests_exclude_candy'))
+        $excludeRaidboss.val(Store.get('remember_exclude_raidboss'))
     })
 
     $('.select-all').on('click', function (e) {
@@ -6856,7 +6881,7 @@ $(function () {
         return function () {
             Store.set(storageKey, this.checked)
             if (this.checked) {
-                // When switch is turned on we asume it has been off, makes sure we dont end up in limbo
+                // When switch is turned on we assume it has been off, makes sure we dont end up in limbo
                 // Without this there could've been a situation where no markers are on map and only newly modified ones are loaded
                 if (storageKey === 'showPokemon') {
                     lastpokemon = false
@@ -6865,6 +6890,8 @@ $(function () {
                 } else if (storageKey === 'showGyms') {
                     lastgyms = false
                 } else if (storageKey === 'showPokestops') {
+                    lastpokestops = false
+                } else if (storageKey === 'showAllPokestops') {
                     lastpokestops = false
                 } else if (storageKey === 'showLures') {
                     lastpokestops = false
@@ -6890,7 +6917,7 @@ $(function () {
                             markers.removeLayer(data[dType][key].marker.placementRangeCircle)
                             delete data[dType][key].marker.placementRangeCircle
                         }
-                        if (storageKey === "showSpawnpoints") {
+                        if (storageKey === 'showSpawnpoints') {
                             markersnotify.removeLayer(data[dType][key].marker)
                             delete data[dType][key].marker
                         } else if (storageKey !== 'showRanges' && storageKey !== 'showPlacementRanges') {
@@ -6900,7 +6927,8 @@ $(function () {
                     })
                     if (storageKey !== 'showRanges' && storageKey !== 'showPlacementRanges') data[dType] = {}
                 })
-                if (storageKey === 'showRanges' || storageKey === 'showPlacementRanges') {
+                if (storageKey === 'showAllPokestops' || storageKey === 'showLures' || storageKey === 'showRocket' || storageKey === 'showQuests') {
+                    lastpokestops = false
                     updateMap()
                 }
             }
@@ -7113,18 +7141,18 @@ $(function () {
 
     $('#raid-timer-switch').change(function () {
         Store.set('showRaidTimer', this.checked)
-        lastgyms = false
-        buildSwitchChangeListener(mapData, ['gyms'], 'showRaidTimer').bind(this)()
+        $.each(mapData.gyms, function (key, value) {
+            markers.removeLayer(value.marker)
+            value.marker = setupGymMarker(value)
+        })
     })
 
     $('#rocket-timer-switch').change(function () {
         Store.set('showRocketTimer', this.checked)
-        lastpokestops = false
         $.each(mapData.pokestops, function (key, value) {
             markers.removeLayer(value.marker)
             value.marker = setupPokestopMarker(value)
         })
-        buildSwitchChangeListener(mapData, ['pokestops'], 'showRocketTimer').bind(this)()
     })
 
     $('#pokestops-switch').change(function () {
@@ -7154,13 +7182,6 @@ $(function () {
             Store.set('showLures', false)
             $('#lures-switch').prop('checked', false)
         }
-        lastpokestops = false
-        updateMap()
-
-        $.each(mapData.pokestops, function (key, value) {
-            markers.removeLayer(value.marker)
-            value.marker = setupPokestopMarker(value)
-        })
         return buildSwitchChangeListener(mapData, ['pokestops'], 'showAllPokestops').bind(this)()
     })
 
@@ -7179,13 +7200,6 @@ $(function () {
             Store.set('showAllPokestops', false)
             $('#allPokestops-switch').prop('checked', false)
         }
-        lastpokestops = false
-        updateMap()
-
-        $.each(mapData.pokestops, function (key, value) {
-            markers.removeLayer(value.marker)
-            value.marker = setupPokestopMarker(value)
-        })
         return buildSwitchChangeListener(mapData, ['pokestops'], 'showLures').bind(this)()
     })
 
@@ -7208,18 +7222,10 @@ $(function () {
         }
         var rocketWrapper = $('#rocket-wrapper')
         if (this.checked) {
-            lastpokestops = false
             rocketWrapper.show(options)
-            updateMap()
         } else {
-            lastpokestops = false
             rocketWrapper.hide(options)
-            updateMap()
         }
-        $.each(mapData.pokestops, function (key, value) {
-            markers.removeLayer(value.marker)
-            value.marker = setupPokestopMarker(value)
-        })
         return buildSwitchChangeListener(mapData, ['pokestops'], 'showRocket').bind(this)()
     })
 
@@ -7242,18 +7248,10 @@ $(function () {
         }
         var wrapper = $('#quests-filter-wrapper')
         if (this.checked) {
-            lastpokestops = false
             wrapper.show(options)
-            updateMap()
         } else {
-            lastpokestops = false
             wrapper.hide(options)
-            updateMap()
         }
-        $.each(mapData.pokestops, function (key, value) {
-            markers.removeLayer(value.marker)
-            value.marker = setupPokestopMarker(value)
-        })
         return buildSwitchChangeListener(mapData, ['pokestops'], 'showQuests').bind(this)()
     })
 
@@ -7533,12 +7531,12 @@ $(function () {
 function getIcon(iconRepo, folder, fileType, iconKeyId, ...varArgs) {
     var icon = '0.png'
     var requestedIcon = ''
+    var firstTry = true
     switch (folder) {
         case 'gym':
-            if (iconpath['gymIndex'] == undefined) {
-                console.log("No gymIndex? Houston, we have a problem.")
+            if (iconpath['gymIndex'] === undefined) {
+                console.log('No gymIndex? Houston, we have a problem.')
             } else {
-                var firstTry = true
                 const gymId = iconKeyId
                 const trainerCount = typeof varArgs[0] === 'undefined' ? [''] : varArgs[0] === 0 ? [''] : ['_t' + varArgs[0], '']
                 const inBattle = typeof varArgs[1] === 'undefined' ? [''] : varArgs[1] === 0 ? [''] : ['_b', '']
@@ -7550,12 +7548,12 @@ function getIcon(iconRepo, folder, fileType, iconKeyId, ...varArgs) {
                             requestedIcon = `${gymId}${trainer}${battle}${ex}${fileType}`
                             if (iconpath['gymIndex'].includes(requestedIcon)) {
                                 if (!firstTry) {
-                                    console.log("Repo has fallback gym icon! Returning: " + requestedIcon)
+                                    console.log('Repo has fallback gym icon! Returning: ' + requestedIcon)
                                 }
                                 icon = requestedIcon
                                 break search
                             } else {
-                                console.log("Repo is missing " + (firstTry ? "optimal" : "fallback") + " gym icon: " + requestedIcon)
+                                console.log('Repo is missing ' + (firstTry ? 'optimal' : 'fallback') + ' gym icon: ' + requestedIcon)
                             }
                             firstTry = false
                         }
@@ -7564,31 +7562,30 @@ function getIcon(iconRepo, folder, fileType, iconKeyId, ...varArgs) {
             }
             break
         case 'invasion':
-            if (iconpath['invasionIndex'] == undefined) {
-                console.log("No invasionIndex? Houston, we have a problem.")
+            if (iconpath['invasionIndex'] === undefined) {
+                console.log('No invasionIndex? Houston, we have a problem.')
             } else {
                 const gruntId = iconKeyId
                 requestedIcon = `${gruntId}${fileType}`
                 if (iconpath['invasionIndex'].includes(requestedIcon)) {
                     icon = requestedIcon
                 } else {
-                    console.log("Repo is missing invasion icon: " + requestedIcon)
+                    console.log('Repo is missing invasion icon: ' + requestedIcon)
                 }
             }
             break
         case 'misc':
             break
         case 'pokemon':
-            if (iconpath['pokemonIndex'] == undefined) {
-                console.log("No pokemonIndex? Houston, we have a problem.")
+            if (iconpath['pokemonIndex'] === undefined) {
+                console.log('No pokemonIndex? Houston, we have a problem.')
             } else {
-                var firstTry = true
                 const pokemonId = iconKeyId
-                const evolutionId = typeof varArgs[0] === 'undefined' ? [''] : varArgs[0] == 0 ? [''] : ['_e' + varArgs[0], '']
-                const formId = typeof varArgs[1] === 'undefined' ? [''] : varArgs[1] == 0 ? [''] : ['_f' + varArgs[1], '']
-                const costumeId = typeof varArgs[2] === 'undefined' ? [''] : varArgs[2] == 0 ? [''] : ['_c' + varArgs[2], '']
-                const genderId = typeof varArgs[3] === 'undefined' ? [''] : varArgs[3] == 0 ? [''] : ['_g' + varArgs[3], '']
-                const shinyId = typeof varArgs[4] === 'undefined' ? [''] : varArgs[4] == 0 ? [''] : ['_s', '']
+                const evolutionId = typeof varArgs[0] === 'undefined' ? [''] : varArgs[0] === 0 ? [''] : ['_e' + varArgs[0], '']
+                const formId = typeof varArgs[1] === 'undefined' ? [''] : varArgs[1] === 0 ? [''] : ['_f' + varArgs[1], '']
+                const costumeId = typeof varArgs[2] === 'undefined' ? [''] : varArgs[2] === 0 ? [''] : ['_c' + varArgs[2], '']
+                const genderId = typeof varArgs[3] === 'undefined' ? [''] : varArgs[3] === 0 ? [''] : ['_g' + varArgs[3], '']
+                const shinyId = typeof varArgs[4] === 'undefined' ? [''] : varArgs[4] === 0 ? [''] : ['_s', '']
                 search:
                 for (const evolution of evolutionId) {
                     for (const form of formId) {
@@ -7598,12 +7595,12 @@ function getIcon(iconRepo, folder, fileType, iconKeyId, ...varArgs) {
                                     requestedIcon = `${pokemonId}${evolution}${form}${costume}${gender}${shiny}${fileType}`
                                     if (iconpath['pokemonIndex'].includes(requestedIcon)) {
                                         if (!firstTry) {
-                                            console.log("Repo has fallback pokemon icon! Returning: " + requestedIcon)
+                                            console.log('Repo has fallback pokemon icon! Returning: ' + requestedIcon)
                                         }
                                         icon = requestedIcon
                                         break search
                                     } else {
-                                        console.log("Repo is missing " + (firstTry ? "optimal" : "fallback") + " pokemon icon: " + requestedIcon)
+                                        console.log('Repo is missing ' + (firstTry ? 'optimal' : 'fallback') + ' pokemon icon: ' + requestedIcon)
                                     }
                                     firstTry = false
                                 }
@@ -7614,10 +7611,9 @@ function getIcon(iconRepo, folder, fileType, iconKeyId, ...varArgs) {
             }
             break
         case 'pokestop':
-            if (iconpath['pokestopIndex'] == undefined) {
-                console.log("No pokestopIndex? Houston, we have a problem.")
+            if (iconpath['pokestopIndex'] === undefined) {
+                console.log('No pokestopIndex? Houston, we have a problem.')
             } else {
-                var firstTry = true
                 const lureId = iconKeyId
                 const invasionId = typeof varArgs[0] === 'undefined' ? [''] : varArgs[0] === 0 ? [''] : ['_i', '']
                 const questId = typeof varArgs[1] === 'undefined' ? [''] : varArgs[1] === 0 ? [''] : ['_q', '']
@@ -7627,12 +7623,12 @@ function getIcon(iconRepo, folder, fileType, iconKeyId, ...varArgs) {
                         requestedIcon = `${lureId}${invasion}${quest}${fileType}`
                         if (iconpath['pokestopIndex'].includes(requestedIcon)) {
                             if (!firstTry) {
-                                console.log("Repo has fallback pokestop icon! Returning: " + requestedIcon)
+                                console.log('Repo has fallback pokestop icon! Returning: ' + requestedIcon)
                             }
                             icon = requestedIcon
                             break search
                         } else {
-                            console.log("Repo is missing " + (firstTry ? "optimal" : "fallback") + " pokestop icon: " + requestedIcon)
+                            console.log('Repo is missing ' + (firstTry ? 'optimal' : 'fallback') + ' pokestop icon: ' + requestedIcon)
                         }
                         firstTry = false
                     }
@@ -7640,10 +7636,9 @@ function getIcon(iconRepo, folder, fileType, iconKeyId, ...varArgs) {
             }
             break
         case 'raid':
-            if (iconpath['raidIndex'] == undefined) {
-                console.log("No raidIndex? Houston, we have a problem.")
+            if (iconpath['raidIndex'] === undefined) {
+                console.log('No raidIndex? Houston, we have a problem.')
             } else {
-                var firstTry = true
                 const eggLevel = iconKeyId
                 const isHatched = typeof varArgs[0] === 'undefined' ? [''] : varArgs[0] === 0 ? [''] : ['_h', '']
                 const ex = typeof varArgs[1] === 'undefined' ? [''] : varArgs[1] === 0 ? [''] : ['_ex', '']
@@ -7653,12 +7648,12 @@ function getIcon(iconRepo, folder, fileType, iconKeyId, ...varArgs) {
                         requestedIcon = `${eggLevel}${hatched}${e}${fileType}`
                         if (iconpath['raidIndex'].includes(requestedIcon)) {
                             if (!firstTry) {
-                                console.log("Repo has fallback raid icon! Returning: " + requestedIcon)
+                                console.log('Repo has fallback raid icon! Returning: ' + requestedIcon)
                             }
                             icon = requestedIcon
                             break search
                         } else {
-                            console.log("Repo is missing " + (firstTry ? "optimal" : "fallback") + " raid icon: " + requestedIcon)
+                            console.log('Repo is missing ' + (firstTry ? 'optimal' : 'fallback') + ' raid icon: ' + requestedIcon)
                         }
                         firstTry = false
                     }
@@ -7666,12 +7661,11 @@ function getIcon(iconRepo, folder, fileType, iconKeyId, ...varArgs) {
             }
             break
         case 'reward/item':
-            if (iconpath['rewardIndex'] == undefined) {
-                console.log("No rewardIndex? Houston, we have a problem.")
-            } else if (iconpath['rewardIndex']['item'] == undefined) {
-                console.log("No rewardIndex->item? Houston, we have a problem.")
+            if (iconpath['rewardIndex'] === undefined) {
+                console.log('No rewardIndex? Houston, we have a problem.')
+            } else if (iconpath['rewardIndex']['item'] === undefined) {
+                console.log('No rewardIndex->item? Houston, we have a problem.')
             } else {
-                var firstTry = true
                 const itemId = iconKeyId
                 const amount = typeof varArgs[0] === 'undefined' ? [''] : varArgs[0] === 0 ? [''] : ['_a' + varArgs[0], '']
                 search:
@@ -7679,54 +7673,53 @@ function getIcon(iconRepo, folder, fileType, iconKeyId, ...varArgs) {
                     requestedIcon = `${itemId}${a}${fileType}`
                     if (iconpath['rewardIndex']['item'].includes(requestedIcon)) {
                         if (!firstTry) {
-                            console.log("Repo has fallback reward->item icon! Returning: " + requestedIcon)
+                            console.log('Repo has fallback reward->item icon! Returning: ' + requestedIcon)
                         }
                         icon = requestedIcon
                         break search
                     } else {
-                        console.log("Repo is missing " + (firstTry ? "optimal" : "fallback") + " reward->item icon: " + requestedIcon)
+                        console.log('Repo is missing ' + (firstTry ? 'optimal' : 'fallback') + ' reward->item icon: ' + requestedIcon)
                     }
                     firstTry = false
                 }
             }
             break
         case 'reward/mega_resource':
-            if (iconpath['rewardIndex'] == undefined) {
-                console.log("No rewardIndex? Houston, we have a problem.")
-            } else if (iconpath['rewardIndex']['mega_resource'] == undefined) {
-                console.log("No rewardIndex->mega_resource? Houston, we have a problem.")
+            if (iconpath['rewardIndex'] === undefined) {
+                console.log('No rewardIndex? Houston, we have a problem.')
+            } else if (iconpath['rewardIndex']['mega_resource'] === undefined) {
+                console.log('No rewardIndex->mega_resource? Houston, we have a problem.')
             } else {
                 const megaPokemon = iconKeyId
                 requestedIcon = `${megaPokemon}${fileType}`
                 if (iconpath['rewardIndex']['mega_resource'].includes(requestedIcon)) {
                     icon = requestedIcon
                 } else {
-                    console.log("Repo is missing reward->mega_resource icon: " + requestedIcon)
+                    console.log('Repo is missing reward->mega_resource icon: ' + requestedIcon)
                 }
             }
             break
         case 'reward/stardust':
-            if (iconpath['rewardIndex'] == undefined) {
-                console.log("No rewardIndex? Houston, we have a problem.")
-            } else if (iconpath['rewardIndex']['stardust'] == undefined) {
-                console.log("No rewardIndex->stardust? Houston, we have a problem.")
+            if (iconpath['rewardIndex'] === undefined) {
+                console.log('No rewardIndex? Houston, we have a problem.')
+            } else if (iconpath['rewardIndex']['stardust'] === undefined) {
+                console.log('No rewardIndex->stardust? Houston, we have a problem.')
             } else {
                 const dustAmount = iconKeyId
                 requestedIcon = `${dustAmount}${fileType}`
                 if (iconpath['rewardIndex']['stardust'].includes(requestedIcon)) {
                     icon = requestedIcon
                 } else {
-                    console.log("Repo is missing reward->stardust icon: " + requestedIcon)
+                    console.log('Repo is missing reward->stardust icon: ' + requestedIcon)
                 }
             }
             break
         case 'reward/candy':
-            if (iconpath['rewardIndex'] == undefined) {
-                console.log("No rewardIndex? Houston, we have a problem.")
-            } else if (iconpath['rewardIndex']['candy'] == undefined) {
-                console.log("No rewardIndex->candy? Houston, we have a problem.")
+            if (iconpath['rewardIndex'] === undefined) {
+                console.log('No rewardIndex? Houston, we have a problem.')
+            } else if (iconpath['rewardIndex']['candy'] === undefined) {
+                console.log('No rewardIndex->candy? Houston, we have a problem.')
             } else {
-                var firstTry = true
                 const pokemonIdCandy = iconKeyId
                 const candyAmount = typeof varArgs[0] === 'undefined' ? [''] : varArgs[0] === 0 ? [''] : ['_a' + varArgs[0], '']
                 search:
@@ -7734,48 +7727,47 @@ function getIcon(iconRepo, folder, fileType, iconKeyId, ...varArgs) {
                     requestedIcon = `${pokemonIdCandy}${a}${fileType}`
                     if (iconpath['rewardIndex']['candy'].includes(requestedIcon)) {
                         if (!firstTry) {
-                            console.log("Repo has fallback reward->candy icon! Returning: " + requestedIcon)
+                            console.log('Repo has fallback reward->candy icon! Returning: ' + requestedIcon)
                         }
                         icon = requestedIcon
                         break search
                     } else {
-                        console.log("Repo is missing " + (firstTry ? "optimal" : "fallback") + " reward->candy icon: " + requestedIcon)
+                        console.log('Repo is missing ' + (firstTry ? 'optimal' : 'fallback') + ' reward->candy icon: ' + requestedIcon)
                     }
                     firstTry = false
                 }
             }
             break
         case 'team':
-            if (iconpath['teamIndex'] == undefined) {
-                console.log("No teamIndex? Houston, we have a problem.")
+            if (iconpath['teamIndex'] === undefined) {
+                console.log('No teamIndex? Houston, we have a problem.')
             } else {
                 const teamId = iconKeyId
                 requestedIcon = `${teamId}${fileType}`
                 if (iconpath['teamIndex'].includes(requestedIcon)) {
                     icon = requestedIcon
                 } else {
-                    console.log("Repo is missing team icon: " + requestedIcon)
+                    console.log('Repo is missing team icon: ' + requestedIcon)
                 }
             }
             break
         case 'type':
-            if (iconpath['typeIndex'] == undefined) {
-                console.log("No typeIndex? Houston, we have a problem.")
+            if (iconpath['typeIndex'] === undefined) {
+                console.log('No typeIndex? Houston, we have a problem.')
             } else {
                 const typeId = iconKeyId
                 requestedIcon = `${typeId}${fileType}`
                 if (iconpath['typeIndex'].includes(requestedIcon)) {
                     icon = requestedIcon
                 } else {
-                    console.log("Repo is missing type icon: " + requestedIcon)
+                    console.log('Repo is missing type icon: ' + requestedIcon)
                 }
             }
             break
         case 'weather':
-            if (iconpath['weatherIndex'] == undefined) {
-                console.log("No weatherIndex? Houston, we have a problem.")
+            if (iconpath['weatherIndex'] === undefined) {
+                console.log('No weatherIndex? Houston, we have a problem.')
             } else {
-                var firstTry = true
                 const weatherId = iconKeyId
                 const severityLevel = typeof varArgs[0] === 'undefined' ? [''] : varArgs[0] === 0 ? [''] : ['_l' + varArgs[0], '']
                 search:
@@ -7783,12 +7775,12 @@ function getIcon(iconRepo, folder, fileType, iconKeyId, ...varArgs) {
                     requestedIcon = `${weatherId}${severity}${fileType}`
                     if (iconpath['weatherIndex'].includes(requestedIcon)) {
                         if (!firstTry) {
-                            console.log("Repo has fallback weather icon! Returning: " + requestedIcon)
+                            console.log('Repo has fallback weather icon! Returning: ' + requestedIcon)
                         }
                         icon = requestedIcon
                         break search
                     } else {
-                        console.log("Repo is missing " + (firstTry ? "optimal" : "fallback") + " weather icon: " + requestedIcon)
+                        console.log('Repo is missing ' + (firstTry ? 'optimal' : 'fallback') + ' weather icon: ' + requestedIcon)
                     }
                     firstTry = false
                 }

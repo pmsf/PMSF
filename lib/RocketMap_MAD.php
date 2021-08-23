@@ -213,22 +213,20 @@ class RocketMap_MAD extends RocketMap
             }
         }
         if (!empty($despawnTimeType)) {
-// expire_timestamp_verified not available?
-/*
             if ($despawnTimeType == 1) {
-               $conds[] = 'expire_timestamp_verified = 1';
+               $conds[] = 'ts.calc_endminsec IS NOT NULL';
             }
             else if ($despawnTimeType == 2) {
-               $conds[] = '(expire_timestamp_verified = 0 AND spawn_id IS NOT NULL)';
+               $conds[] = '(ts.calc_endminsec IS NULL AND spawnpoint_id IS NOT NULL)';
             }
             else if ($despawnTimeType == 3) {
-               $conds[] = 'expire_timestamp_verified = 0';
+               $conds[] = 'ts.calc_endminsec IS NULL';
             }
-*/
         }
         if (!empty($gender) && ($gender == 1 || $gender == 2)) {
            $conds[] = 'gender = ' . $gender;
         }
+
         return $this->query_active($select, $conds, $params);
     }
 
@@ -268,7 +266,7 @@ class RocketMap_MAD extends RocketMap
                 $pokemon["latitude"] = floatval($pokemon["latitude"]);
                 $pokemon["longitude"] = floatval($pokemon["longitude"]);
             }
-            $pokemon["expire_timestamp_verified"] = isset($pokemon["expire_timestamp_verified"]) ? 1 : null;
+            $pokemon["expire_timestamp_verified"] = isset($pokemon["expire_timestamp_verified"]) ? 1 : 0;
             $pokemon["disappear_time"] = $pokemon["disappear_time"] * 1000;
 
             $pokemon["weight"] = isset($pokemon["weight"]) ? floatval($pokemon["weight"]) : null;
@@ -284,24 +282,34 @@ class RocketMap_MAD extends RocketMap
             $pokemon["weather_boosted_condition"] = intval($pokemon["weather_boosted_condition"]);
 
             $pokemon["pokemon_id"] = intval($pokemon["pokemon_id"]);
+            $pokemon["form"] = intval($pokemon["form"]);
+            $pokemon["costume"] = intval($pokemon["costume"]);
+            $pokemon["gender"] = intval($pokemon["gender"]);
             $pokemon["pokemon_name"] = i8ln($this->data[$pokemon["pokemon_id"]]['name']);
             $pokemon["pokemon_rarity"] = i8ln($this->data[$pokemon["pokemon_id"]]['rarity']);
-            $types = $this->data[$pokemon["pokemon_id"]]["types"];
-            foreach ($types as $k => $v) {
-                $types[$k]['type'] = $v['type'];
-            }
-            $pokemon["pokemon_types"] = $types;
             $pokemon["cp_multiplier"] = isset($pokemon["cp_multiplier"]) ? floatval($pokemon["cp_multiplier"]) : null;
+
             if (isset($pokemon["form"]) && $pokemon["form"] > 0) {
                 $forms = $this->data[$pokemon["pokemon_id"]]["forms"];
                 foreach ($forms as $f => $v) {
-                    if ($pokemon["form"] === $v['protoform']) {
+                    if ($pokemon["form"] === intval($v['protoform'])) {
+                        $types = $v['formtypes'];
                         $pokemon["form_name"] = $v['nameform'];
+                        foreach ($v['formtypes'] as $ft => $v) {
+                            $types[$ft]['type'] = $v['type'];
+                        }
+                        $pokemon["pokemon_types"] = $types;
                     }
                 }
+            } else {
+                $types = $this->data[$pokemon["pokemon_id"]]["types"];
+                foreach ($types as $k => $v) {
+                    $types[$k]['type'] = $v['type'];
+                }
+                $pokemon["pokemon_types"] = $types;
             }
-            $data[] = $pokemon;
 
+            $data[] = $pokemon;
             unset($pokemons[$i]);
             $i++;
         }
@@ -454,25 +462,25 @@ class RocketMap_MAD extends RocketMap
             $gym["team_id"] = $noTeams ? 0 : intval($gym["team_id"]);
             $gym["pokemon"] = [];
             $gym["raid_pokemon_name"] = empty($raid_pid) ? null : i8ln($this->data[$raid_pid]["name"]);
-            $gym["raid_pokemon_gender"] = intval($gym["raid_pokemon_gender"]);
+            $gym["raid_pokemon_form"] = intval($gym["raid_pokemon_form"]);
             $gym["raid_pokemon_costume"] = intval($gym["raid_pokemon_costume"]);
             $gym["raid_pokemon_evolution"] = intval($gym["raid_pokemon_evolution"]);
-            $gym["form"] = intval($gym["raid_pokemon_form"]);
+            $gym["raid_pokemon_gender"] = intval($gym["raid_pokemon_gender"]);
             $gym["latitude"] = floatval($gym["latitude"]);
             $gym["longitude"] = floatval($gym["longitude"]);
+            $gym["slots_available"] = $noTeams ? 0 : intval($gym["slots_available"]);
+            $gym["in_battle"] = $noInBattle ? 0 : intval($gym["in_battle"]);
             $gym["last_modified"] = $gym["last_modified"] * 1000;
             $gym["last_scanned"] = $gym["last_scanned"] * 1000;
             $gym["raid_start"] = $gym["raid_start"] * 1000;
             $gym["raid_end"] = $gym["raid_end"] * 1000;
-            $gym["slots_available"] = $noTeams ? 0 : intval($gym["slots_available"]);
-            $gym["in_battle"] = $noInBattle ? 0 : intval($gym["in_battle"]);
             $gym["url"] = ! empty($gym["url"]) ? preg_replace("/^http:/i", "https:", $gym["url"]) : null;
             $gym["park"] = $noExEligible ? 0 : intval($gym["park"]);
-            if (isset($gym["form"]) && $gym["form"] > 0) {
+            if (isset($gym["raid_pokemon_form"]) && $gym["raid_pokemon_form"] > 0) {
                 $forms = $this->data[$gym["raid_pokemon_id"]]["forms"];
                 foreach ($forms as $f => $v) {
-                    if ($gym["raid_pokemon_form"] === $v['protoform']) {
-                        $gym["form_name"] = $v['nameform'];
+                    if ($gym["raid_pokemon_form"] === intval($v['protoform'])) {
+                        $gym["raid_pokemon_form_name"] = $v['nameform'];
                     }
                 }
             }
@@ -487,6 +495,7 @@ class RocketMap_MAD extends RocketMap
                             $gym["raid_pokemon_move_1"] = null;
                             $gym["raid_pokemon_move_2"] = null;
                             $gym["raid_pokemon_form"] = null;
+                            $gym["raid_pokemon_costume"] = null;
                             $gym["raid_pokemon_cp"] = null;
                             $gym["raid_pokemon_gender"] = null;
                             $gym["raid_pokemon_evolution"] = null;
@@ -504,6 +513,7 @@ class RocketMap_MAD extends RocketMap
                             $gym["raid_pokemon_move_1"] = null;
                             $gym["raid_pokemon_move_2"] = null;
                             $gym["raid_pokemon_form"] = null;
+                            $gym["raid_pokemon_costume"] = null;
                             $gym["raid_pokemon_cp"] = null;
                             $gym["raid_pokemon_gender"] = null;
                             $gym["raid_pokemon_evolution"] = null;

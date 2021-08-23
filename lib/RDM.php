@@ -256,10 +256,12 @@ class RDM extends Scanner
                 $pokemon["latitude"] = floatval($pokemon["latitude"]);
                 $pokemon["longitude"] = floatval($pokemon["longitude"]);
             }
+            $pokemon["expire_timestamp_verified"] = intval($pokemon["expire_timestamp_verified"]);
             $pokemon["disappear_time"] = $pokemon["disappear_time"] * 1000;
 
             $pokemon["weight"] = isset($pokemon["weight"]) ? floatval($pokemon["weight"]) : null;
             $pokemon["height"] = isset($pokemon["height"]) ? floatval($pokemon["height"]) : null;
+
             $pokemon["individual_attack"] = isset($pokemon["individual_attack"]) ? intval($pokemon["individual_attack"]) : null;
             $pokemon["individual_defense"] = isset($pokemon["individual_defense"]) ? intval($pokemon["individual_defense"]) : null;
             $pokemon["individual_stamina"] = isset($pokemon["individual_stamina"]) ? intval($pokemon["individual_stamina"]) : null;
@@ -270,12 +272,16 @@ class RDM extends Scanner
             $pokemon["weather_boosted_condition"] = isset($pokemon["weather_boosted_condition"]) ? intval($pokemon["weather_boosted_condition"]) : 0;
 
             $pokemon["pokemon_id"] = intval($pokemon["pokemon_id"]);
+            $pokemon["form"] = intval($pokemon["form"]);
+            $pokemon["costume"] = intval($pokemon["costume"]);
+            $pokemon["gender"] = intval($pokemon["gender"]);
             $pokemon["pokemon_name"] = i8ln($this->data[$pokemon["pokemon_id"]]['name']);
             $pokemon["pokemon_rarity"] = i8ln($this->data[$pokemon["pokemon_id"]]['rarity']);
+
             if (isset($pokemon["form"]) && $pokemon["form"] > 0) {
                 $forms = $this->data[$pokemon["pokemon_id"]]["forms"];
                 foreach ($forms as $f => $v) {
-                    if ($pokemon["form"] === $v['protoform']) {
+                    if ($pokemon["form"] === intval($v['protoform'])) {
                         $types = $v['formtypes'];
                         $pokemon["form_name"] = $v['nameform'];
                         foreach ($v['formtypes'] as $ft => $v) {
@@ -705,9 +711,10 @@ class RDM extends Scanner
             $gym["team_id"] = $noTeams ? 0 : intval($gym["team_id"]);
             $gym["pokemon"] = [];
             $gym["raid_pokemon_name"] = empty($raid_pid) ? null : i8ln($this->data[$raid_pid]["name"]);
+            $gym["raid_pokemon_form"] = intval($gym["raid_pokemon_form"]);
             $gym["raid_pokemon_costume"] = intval($gym["raid_pokemon_costume"]);
             $gym["raid_pokemon_evolution"] = intval($gym["raid_pokemon_evolution"]);
-            $gym["form"] = intval($gym["raid_pokemon_form"]);
+            $gym["raid_pokemon_gender"] = intval($gym["raid_pokemon_gender"]);
             $gym["latitude"] = floatval($gym["latitude"]);
             $gym["longitude"] = floatval($gym["longitude"]);
             $gym["slots_available"] = $noTeams ? 0 : intval($gym["slots_available"]);
@@ -718,11 +725,11 @@ class RDM extends Scanner
             $gym["raid_end"] = $gym["raid_end"] * 1000;
             $gym["url"] = ! empty($gym["url"]) ? preg_replace("/^http:/i", "https:", $gym["url"]) : null;
             $gym["park"] = $noExEligible ? 0 : intval($gym["park"]);
-            if (isset($gym["form"]) && $gym["form"] > 0) {
+            if (isset($gym["raid_pokemon_form"]) && $gym["raid_pokemon_form"] > 0) {
                 $forms = $this->data[$gym["raid_pokemon_id"]]["forms"];
                 foreach ($forms as $f => $v) {
-                    if ($gym["raid_pokemon_form"] === $v['protoform']) {
-                        $gym["form_name"] = $v['nameform'];
+                    if ($gym["raid_pokemon_form"] === intval($v['protoform'])) {
+                        $gym["raid_pokemon_form_name"] = $v['nameform'];
                     }
                 }
             }
@@ -737,6 +744,7 @@ class RDM extends Scanner
                             $gym["raid_pokemon_move_1"] = null;
                             $gym["raid_pokemon_move_2"] = null;
                             $gym["raid_pokemon_form"] = null;
+                            $gym["raid_pokemon_costume"] = null;
                             $gym["raid_pokemon_cp"] = null;
                             $gym["raid_pokemon_gender"] = null;
                             $gym["raid_pokemon_evolution"] = null;
@@ -754,6 +762,7 @@ class RDM extends Scanner
                             $gym["raid_pokemon_move_1"] = null;
                             $gym["raid_pokemon_move_2"] = null;
                             $gym["raid_pokemon_form"] = null;
+                            $gym["raid_pokemon_costume"] = null;
                             $gym["raid_pokemon_cp"] = null;
                             $gym["raid_pokemon_gender"] = null;
                             $gym["raid_pokemon_evolution"] = null;
