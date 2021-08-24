@@ -125,7 +125,7 @@
     "enableStartLast": true,
     "enableFollowMe": true,
     "enableSpawnArea": true,
-    "iconSize": true,
+    "pokemonIconSize": true,
     "iconNotifySizeModifier": true,
     "locationStyle": true,
     "gymStyle": true,
@@ -245,6 +245,7 @@
     "processRewardStats": true,
     "processShinyStats": true,
     "noPvp": true,
-    "noHideSingleMarker": true
+    "noHideSingleMarker": true,
+    "enableJSDebug": true
   }
 }

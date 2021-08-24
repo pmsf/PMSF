@@ -488,7 +488,7 @@ function initMap() { // eslint-disable-line no-unused-vars
     })
 
     $('#pokemon-icon-size').on('change', function () {
-        Store.set('iconSize', this.value)
+        Store.set('pokemonIconSize', this.value)
         redrawPokemon(mapData.pokemons)
     })
 
@@ -1102,7 +1102,7 @@ function initSidebar() {
         })
     }
 
-    $('#pokemon-icon-size').val(Store.get('iconSize'))
+    $('#pokemon-icon-size').val(Store.get('pokemonIconSize'))
     $('#pokemon-icon-notify-size').val(Store.get('iconNotifySizeModifier'))
 }
 
@@ -5817,7 +5817,7 @@ function createMyLocationButton() {
         locationButton.style.height = '28px'
         locationButton.style.boxShadow = '0 1px 4px rgba(0,0,0,0.3)'
         locationButton.style.cursor = 'pointer'
-        locationButton.style.marginRight = '0px'
+        locationButton.style.marginRight = '3px'
         locationButton.style.padding = '0px'
         locationButton.title = 'My Location'
         locationContainer.appendChild(locationButton)
@@ -6311,14 +6311,18 @@ $(function () {
     $.each(iconpath, function (key, val) {
         var prefix = key
         if (!key.includes('Index')) {
-            console.log('Attempting to load initial ' + key + ' Index: ' + iconpath[key] + prefix + '/index.json')
+            if (enableJSDebug) {
+                console.log('Attempting to load initial ' + key + ' Index: ' + iconpath[key] + prefix + '/index.json')
+            }
             $.ajax({
                 cache: false,
                 url: iconpath[key] + prefix + '/index.json',
                 dataType: 'json'
             })
                 .done(function (data) {
-                    console.log('Successfully loaded initial ' + key + ' Index: ' + iconpath[key] + prefix + '/index.json')
+                    if (enableJSDebug) {
+                        console.log('Successfully loaded initial ' + key + ' Index: ' + iconpath[key] + prefix + '/index.json')
+                    }
                     iconpath[key + 'Index'] = data
                     Store.set('iconsArray', iconpath)
                     if (key === 'pokemon') {
@@ -6328,7 +6332,9 @@ $(function () {
                     }
                 })
                 .fail(function () {
-                    console.log('Failed to load initial ' + key + ' Index: ' + iconpath[key] + prefix + '/index.json')
+                    if (enableJSDebug) {
+                        console.log('Failed to load initial ' + key + ' Index: ' + iconpath[key] + prefix + '/index.json')
+                    }
                 })
         }
     })
@@ -6336,22 +6342,30 @@ $(function () {
     $selectGymMarkerStyle = $('#gym-marker-style')
     $selectGymMarkerStyle.on('change', function (e) {
         var newIconSet = this.value
-        console.log('Attempting to load Gym Index: ' + newIconSet + 'gym/index.json')
+        if (enableJSDebug) {
+            console.log('Attempting to load Gym Index: ' + newIconSet + 'gym/index.json')
+        }
         $.ajax({
             cache: false,
             url: this.value + 'gym/index.json',
             dataType: 'json'
         })
             .done(function (data) {
-                console.log('Successfully loaded Gym Index: ' + newIconSet + 'gym/index.json')
+                if (enableJSDebug) {
+                    console.log('Successfully loaded Gym Index: ' + newIconSet + 'gym/index.json')
+                }
                 iconpath.gym = newIconSet
                 iconpath['gymIndex'] = data
                 Store.set('iconsArray', iconpath)
-                console.log('Now using Gym Index: ' + iconpath.gym + 'gym/index.json')
+                if (enableJSDebug) {
+                    console.log('Now using Gym Index: ' + iconpath.gym + 'gym/index.json')
+                }
                 updateGymIcons()
             })
             .fail(function () {
-                console.log('Failed to load Gym Index: ' + newIconSet + 'gym/index.json')
+                if (enableJSDebug) {
+                    console.log('Failed to load Gym Index: ' + newIconSet + 'gym/index.json')
+                }
             })
     })
     $selectGymMarkerStyle.val(Store.get('iconsArray').gym)
@@ -6359,25 +6373,33 @@ $(function () {
     $selectIconStyle = $('#pokemon-icon-style')
     $selectIconStyle.on('change', function (e) {
         var newIconSet = this.value
-        console.log('Attempting to load Pokemon Index: ' + newIconSet + 'pokemon/index.json')
+        if (enableJSDebug) {
+            console.log('Attempting to load Pokemon Index: ' + newIconSet + 'pokemon/index.json')
+        }
         $.ajax({
             cache: false,
             url: this.value + 'pokemon/index.json',
             dataType: 'json'
         })
             .done(function (data) {
-                console.log('Successfully loaded Pokemon Index: ' + newIconSet + 'pokemon/index.json')
+                if (enableJSDebug) {
+                    console.log('Successfully loaded Pokemon Index: ' + newIconSet + 'pokemon/index.json')
+                }
                 iconpath.pokemon = newIconSet
                 iconpath['pokemonIndex'] = data
                 Store.set('iconsArray', iconpath)
-                console.log('Now using Pokemon Index: ' + iconpath.pokemon + 'pokemon/index.json')
+                if (enableJSDebug) {
+                    console.log('Now using Pokemon Index: ' + iconpath.pokemon + 'pokemon/index.json')
+                }
                 updateIcons('pkmn')
                 redrawPokemon(mapData.pokemons)
                 updateGymIcons()
                 updatePokestopIcons()
             })
             .fail(function () {
-                console.log('Failed to load Pokemon Index: ' + newIconSet + 'pokemon/index.json')
+                if (enableJSDebug) {
+                    console.log('Failed to load Pokemon Index: ' + newIconSet + 'pokemon/index.json')
+                }
             })
     })
     $selectIconStyle.val(Store.get('iconsArray').pokemon)
@@ -6385,23 +6407,31 @@ $(function () {
     $selectRewardIconStyle = $('#reward-icon-style')
     $selectRewardIconStyle.on('change', function (e) {
         var newIconSet = this.value
-        console.log('Attempting to load Reward Index: ' + newIconSet + 'reward/index.json')
+        if (enableJSDebug) {
+            console.log('Attempting to load Reward Index: ' + newIconSet + 'reward/index.json')
+        }
         $.ajax({
             cache: false,
             url: this.value + 'reward/index.json',
             dataType: 'json'
         })
             .done(function (data) {
-                console.log('Successfully loaded Reward Index: ' + newIconSet + 'reward/index.json')
+                if (enableJSDebug) {
+                    console.log('Successfully loaded Reward Index: ' + newIconSet + 'reward/index.json')
+                }
                 iconpath.reward = newIconSet
                 iconpath['rewardIndex'] = data
                 Store.set('iconsArray', iconpath)
-                console.log('Now using Reward Index: ' + iconpath.reward + 'reward/index.json')
+                if (enableJSDebug) {
+                    console.log('Now using Reward Index: ' + iconpath.reward + 'reward/index.json')
+                }
                 updateIcons('reward')
                 updatePokestopIcons()
             })
             .fail(function () {
-                console.log('Failed to load Reward Index: ' + newIconSet + 'reward/index.json')
+                if (enableJSDebug) {
+                    console.log('Failed to load Reward Index: ' + newIconSet + 'reward/index.json')
+                }
             })
     })
     $selectRewardIconStyle.val(Store.get('iconsArray').reward)
@@ -7535,7 +7565,9 @@ function getIcon(iconRepo, folder, fileType, iconKeyId, ...varArgs) {
     switch (folder) {
         case 'gym':
             if (iconpath['gymIndex'] === undefined) {
-                console.log('No gymIndex? Houston, we have a problem.')
+                if (enableJSDebug) {
+                    console.log('No gymIndex? Houston, we have a problem.')
+                }
             } else {
                 const gymId = iconKeyId
                 const trainerCount = typeof varArgs[0] === 'undefined' ? [''] : varArgs[0] === 0 ? [''] : ['_t' + varArgs[0], '']
@@ -7548,12 +7580,16 @@ function getIcon(iconRepo, folder, fileType, iconKeyId, ...varArgs) {
                             requestedIcon = `${gymId}${trainer}${battle}${ex}${fileType}`
                             if (iconpath['gymIndex'].includes(requestedIcon)) {
                                 if (!firstTry) {
-                                    console.log('Repo has fallback gym icon! Returning: ' + requestedIcon)
+                                    if (enableJSDebug) {
+                                        console.log('Repo has fallback gym icon! Returning: ' + requestedIcon)
+                                    }
                                 }
                                 icon = requestedIcon
                                 break search
                             } else {
-                                console.log('Repo is missing ' + (firstTry ? 'optimal' : 'fallback') + ' gym icon: ' + requestedIcon)
+                                if (enableJSDebug) {
+                                    console.log('Repo is missing ' + (firstTry ? 'optimal' : 'fallback') + ' gym icon: ' + requestedIcon)
+                                }
                             }
                             firstTry = false
                         }
@@ -7563,14 +7599,18 @@ function getIcon(iconRepo, folder, fileType, iconKeyId, ...varArgs) {
             break
         case 'invasion':
             if (iconpath['invasionIndex'] === undefined) {
-                console.log('No invasionIndex? Houston, we have a problem.')
+                if (enableJSDebug) {
+                    console.log('No invasionIndex? Houston, we have a problem.')
+                }
             } else {
                 const gruntId = iconKeyId
                 requestedIcon = `${gruntId}${fileType}`
                 if (iconpath['invasionIndex'].includes(requestedIcon)) {
                     icon = requestedIcon
                 } else {
-                    console.log('Repo is missing invasion icon: ' + requestedIcon)
+                    if (enableJSDebug) {
+                        console.log('Repo is missing invasion icon: ' + requestedIcon)
+                    }
                 }
             }
             break
@@ -7578,7 +7618,9 @@ function getIcon(iconRepo, folder, fileType, iconKeyId, ...varArgs) {
             break
         case 'pokemon':
             if (iconpath['pokemonIndex'] === undefined) {
-                console.log('No pokemonIndex? Houston, we have a problem.')
+                if (enableJSDebug) {
+                    console.log('No pokemonIndex? Houston, we have a problem.')
+                }
             } else {
                 const pokemonId = iconKeyId
                 const evolutionId = typeof varArgs[0] === 'undefined' ? [''] : varArgs[0] === 0 ? [''] : ['_e' + varArgs[0], '']
@@ -7595,12 +7637,16 @@ function getIcon(iconRepo, folder, fileType, iconKeyId, ...varArgs) {
                                     requestedIcon = `${pokemonId}${evolution}${form}${costume}${gender}${shiny}${fileType}`
                                     if (iconpath['pokemonIndex'].includes(requestedIcon)) {
                                         if (!firstTry) {
-                                            console.log('Repo has fallback pokemon icon! Returning: ' + requestedIcon)
+                                            if (enableJSDebug) {
+                                                console.log('Repo has fallback pokemon icon! Returning: ' + requestedIcon)
+                                            }
                                         }
                                         icon = requestedIcon
                                         break search
                                     } else {
-                                        console.log('Repo is missing ' + (firstTry ? 'optimal' : 'fallback') + ' pokemon icon: ' + requestedIcon)
+                                        if (enableJSDebug) {
+                                            console.log('Repo is missing ' + (firstTry ? 'optimal' : 'fallback') + ' pokemon icon: ' + requestedIcon)
+                                        }
                                     }
                                     firstTry = false
                                 }
@@ -7612,7 +7658,9 @@ function getIcon(iconRepo, folder, fileType, iconKeyId, ...varArgs) {
             break
         case 'pokestop':
             if (iconpath['pokestopIndex'] === undefined) {
-                console.log('No pokestopIndex? Houston, we have a problem.')
+                if (enableJSDebug) {
+                    console.log('No pokestopIndex? Houston, we have a problem.')
+                }
             } else {
                 const lureId = iconKeyId
                 const invasionId = typeof varArgs[0] === 'undefined' ? [''] : varArgs[0] === 0 ? [''] : ['_i', '']
@@ -7623,12 +7671,16 @@ function getIcon(iconRepo, folder, fileType, iconKeyId, ...varArgs) {
                         requestedIcon = `${lureId}${invasion}${quest}${fileType}`
                         if (iconpath['pokestopIndex'].includes(requestedIcon)) {
                             if (!firstTry) {
-                                console.log('Repo has fallback pokestop icon! Returning: ' + requestedIcon)
+                                if (enableJSDebug) {
+                                    console.log('Repo has fallback pokestop icon! Returning: ' + requestedIcon)
+                                }
                             }
                             icon = requestedIcon
                             break search
                         } else {
-                            console.log('Repo is missing ' + (firstTry ? 'optimal' : 'fallback') + ' pokestop icon: ' + requestedIcon)
+                            if (enableJSDebug) {
+                                console.log('Repo is missing ' + (firstTry ? 'optimal' : 'fallback') + ' pokestop icon: ' + requestedIcon)
+                            }
                         }
                         firstTry = false
                     }
@@ -7637,7 +7689,9 @@ function getIcon(iconRepo, folder, fileType, iconKeyId, ...varArgs) {
             break
         case 'raid':
             if (iconpath['raidIndex'] === undefined) {
-                console.log('No raidIndex? Houston, we have a problem.')
+                if (enableJSDebug) {
+                    console.log('No raidIndex? Houston, we have a problem.')
+                }
             } else {
                 const eggLevel = iconKeyId
                 const isHatched = typeof varArgs[0] === 'undefined' ? [''] : varArgs[0] === 0 ? [''] : ['_h', '']
@@ -7648,12 +7702,16 @@ function getIcon(iconRepo, folder, fileType, iconKeyId, ...varArgs) {
                         requestedIcon = `${eggLevel}${hatched}${e}${fileType}`
                         if (iconpath['raidIndex'].includes(requestedIcon)) {
                             if (!firstTry) {
-                                console.log('Repo has fallback raid icon! Returning: ' + requestedIcon)
+                                if (enableJSDebug) {
+                                    console.log('Repo has fallback raid icon! Returning: ' + requestedIcon)
+                                }
                             }
                             icon = requestedIcon
                             break search
                         } else {
-                            console.log('Repo is missing ' + (firstTry ? 'optimal' : 'fallback') + ' raid icon: ' + requestedIcon)
+                            if (enableJSDebug) {
+                                console.log('Repo is missing ' + (firstTry ? 'optimal' : 'fallback') + ' raid icon: ' + requestedIcon)
+                            }
                         }
                         firstTry = false
                     }
@@ -7662,9 +7720,13 @@ function getIcon(iconRepo, folder, fileType, iconKeyId, ...varArgs) {
             break
         case 'reward/item':
             if (iconpath['rewardIndex'] === undefined) {
-                console.log('No rewardIndex? Houston, we have a problem.')
+                if (enableJSDebug) {
+                    console.log('No rewardIndex? Houston, we have a problem.')
+                }
             } else if (iconpath['rewardIndex']['item'] === undefined) {
-                console.log('No rewardIndex->item? Houston, we have a problem.')
+                if (enableJSDebug) {
+                    console.log('No rewardIndex->item? Houston, we have a problem.')
+                }
             } else {
                 const itemId = iconKeyId
                 const amount = typeof varArgs[0] === 'undefined' ? [''] : varArgs[0] === 0 ? [''] : ['_a' + varArgs[0], '']
@@ -7673,12 +7735,16 @@ function getIcon(iconRepo, folder, fileType, iconKeyId, ...varArgs) {
                     requestedIcon = `${itemId}${a}${fileType}`
                     if (iconpath['rewardIndex']['item'].includes(requestedIcon)) {
                         if (!firstTry) {
-                            console.log('Repo has fallback reward->item icon! Returning: ' + requestedIcon)
+                            if (enableJSDebug) {
+                                console.log('Repo has fallback reward->item icon! Returning: ' + requestedIcon)
+                            }
                         }
                         icon = requestedIcon
                         break search
                     } else {
-                        console.log('Repo is missing ' + (firstTry ? 'optimal' : 'fallback') + ' reward->item icon: ' + requestedIcon)
+                        if (enableJSDebug) {
+                            console.log('Repo is missing ' + (firstTry ? 'optimal' : 'fallback') + ' reward->item icon: ' + requestedIcon)
+                        }
                     }
                     firstTry = false
                 }
@@ -7686,39 +7752,55 @@ function getIcon(iconRepo, folder, fileType, iconKeyId, ...varArgs) {
             break
         case 'reward/mega_resource':
             if (iconpath['rewardIndex'] === undefined) {
-                console.log('No rewardIndex? Houston, we have a problem.')
+                if (enableJSDebug) {
+                    console.log('No rewardIndex? Houston, we have a problem.')
+                }
             } else if (iconpath['rewardIndex']['mega_resource'] === undefined) {
-                console.log('No rewardIndex->mega_resource? Houston, we have a problem.')
+                if (enableJSDebug) {
+                    console.log('No rewardIndex->mega_resource? Houston, we have a problem.')
+                }
             } else {
                 const megaPokemon = iconKeyId
                 requestedIcon = `${megaPokemon}${fileType}`
                 if (iconpath['rewardIndex']['mega_resource'].includes(requestedIcon)) {
                     icon = requestedIcon
                 } else {
-                    console.log('Repo is missing reward->mega_resource icon: ' + requestedIcon)
+                    if (enableJSDebug) {
+                        console.log('Repo is missing reward->mega_resource icon: ' + requestedIcon)
+                    }
                 }
             }
             break
         case 'reward/stardust':
             if (iconpath['rewardIndex'] === undefined) {
-                console.log('No rewardIndex? Houston, we have a problem.')
+                if (enableJSDebug) {
+                    console.log('No rewardIndex? Houston, we have a problem.')
+                }
             } else if (iconpath['rewardIndex']['stardust'] === undefined) {
-                console.log('No rewardIndex->stardust? Houston, we have a problem.')
+                if (enableJSDebug) {
+                    console.log('No rewardIndex->stardust? Houston, we have a problem.')
+                }
             } else {
                 const dustAmount = iconKeyId
                 requestedIcon = `${dustAmount}${fileType}`
                 if (iconpath['rewardIndex']['stardust'].includes(requestedIcon)) {
                     icon = requestedIcon
                 } else {
-                    console.log('Repo is missing reward->stardust icon: ' + requestedIcon)
+                    if (enableJSDebug) {
+                        console.log('Repo is missing reward->stardust icon: ' + requestedIcon)
+                    }
                 }
             }
             break
         case 'reward/candy':
             if (iconpath['rewardIndex'] === undefined) {
-                console.log('No rewardIndex? Houston, we have a problem.')
+                if (enableJSDebug) {
+                    console.log('No rewardIndex? Houston, we have a problem.')
+                }
             } else if (iconpath['rewardIndex']['candy'] === undefined) {
-                console.log('No rewardIndex->candy? Houston, we have a problem.')
+                if (enableJSDebug) {
+                    console.log('No rewardIndex->candy? Houston, we have a problem.')
+                }
             } else {
                 const pokemonIdCandy = iconKeyId
                 const candyAmount = typeof varArgs[0] === 'undefined' ? [''] : varArgs[0] === 0 ? [''] : ['_a' + varArgs[0], '']
@@ -7727,12 +7809,16 @@ function getIcon(iconRepo, folder, fileType, iconKeyId, ...varArgs) {
                     requestedIcon = `${pokemonIdCandy}${a}${fileType}`
                     if (iconpath['rewardIndex']['candy'].includes(requestedIcon)) {
                         if (!firstTry) {
-                            console.log('Repo has fallback reward->candy icon! Returning: ' + requestedIcon)
+                            if (enableJSDebug) {
+                                console.log('Repo has fallback reward->candy icon! Returning: ' + requestedIcon)
+                            }
                         }
                         icon = requestedIcon
                         break search
                     } else {
-                        console.log('Repo is missing ' + (firstTry ? 'optimal' : 'fallback') + ' reward->candy icon: ' + requestedIcon)
+                        if (enableJSDebug) {
+                            console.log('Repo is missing ' + (firstTry ? 'optimal' : 'fallback') + ' reward->candy icon: ' + requestedIcon)
+                        }
                     }
                     firstTry = false
                 }
@@ -7740,33 +7826,43 @@ function getIcon(iconRepo, folder, fileType, iconKeyId, ...varArgs) {
             break
         case 'team':
             if (iconpath['teamIndex'] === undefined) {
-                console.log('No teamIndex? Houston, we have a problem.')
+                if (enableJSDebug) {
+                    console.log('No teamIndex? Houston, we have a problem.')
+                }
             } else {
                 const teamId = iconKeyId
                 requestedIcon = `${teamId}${fileType}`
                 if (iconpath['teamIndex'].includes(requestedIcon)) {
                     icon = requestedIcon
                 } else {
-                    console.log('Repo is missing team icon: ' + requestedIcon)
+                    if (enableJSDebug) {
+                        console.log('Repo is missing team icon: ' + requestedIcon)
+                    }
                 }
             }
             break
         case 'type':
             if (iconpath['typeIndex'] === undefined) {
-                console.log('No typeIndex? Houston, we have a problem.')
+                if (enableJSDebug) {
+                    console.log('No typeIndex? Houston, we have a problem.')
+                }
             } else {
                 const typeId = iconKeyId
                 requestedIcon = `${typeId}${fileType}`
                 if (iconpath['typeIndex'].includes(requestedIcon)) {
                     icon = requestedIcon
                 } else {
-                    console.log('Repo is missing type icon: ' + requestedIcon)
+                    if (enableJSDebug) {
+                        console.log('Repo is missing type icon: ' + requestedIcon)
+                    }
                 }
             }
             break
         case 'weather':
             if (iconpath['weatherIndex'] === undefined) {
-                console.log('No weatherIndex? Houston, we have a problem.')
+                if (enableJSDebug) {
+                    console.log('No weatherIndex? Houston, we have a problem.')
+                }
             } else {
                 const weatherId = iconKeyId
                 const severityLevel = typeof varArgs[0] === 'undefined' ? [''] : varArgs[0] === 0 ? [''] : ['_l' + varArgs[0], '']
@@ -7775,12 +7871,16 @@ function getIcon(iconRepo, folder, fileType, iconKeyId, ...varArgs) {
                     requestedIcon = `${weatherId}${severity}${fileType}`
                     if (iconpath['weatherIndex'].includes(requestedIcon)) {
                         if (!firstTry) {
-                            console.log('Repo has fallback weather icon! Returning: ' + requestedIcon)
+                            if (enableJSDebug) {
+                                console.log('Repo has fallback weather icon! Returning: ' + requestedIcon)
+                            }
                         }
                         icon = requestedIcon
                         break search
                     } else {
-                        console.log('Repo is missing ' + (firstTry ? 'optimal' : 'fallback') + ' weather icon: ' + requestedIcon)
+                        if (enableJSDebug) {
+                            console.log('Repo is missing ' + (firstTry ? 'optimal' : 'fallback') + ' weather icon: ' + requestedIcon)
+                        }
                     }
                     firstTry = false
                 }

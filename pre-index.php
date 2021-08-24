@@ -1570,7 +1570,7 @@ include('modals.php');
     var enableStartLast = <?php echo (! $noStartLast && $enableStartMe === 'false') ? $enableStartLast : 'false' ?>;
     var enableFollowMe = <?php echo $noFollowMe ? 'false' : $enableFollowMe ?>;
     var enableSpawnArea = <?php echo $noSpawnArea ? 'false' : $enableSpawnArea ?>;
-    var iconSize = <?php echo $iconSize ?>;
+    var pokemonIconSize = <?php echo $pokemonIconSize ?>;
     var iconNotifySizeModifier = <?php echo $iconNotifySizeModifier ?>;
     var locationStyle = '<?php echo $locationStyle ?>';
     var iconFolderArray = <?php echo json_encode($iconFolderArray) ?>;
@@ -1654,6 +1654,7 @@ include('modals.php');
     var noCatchRates = <?php echo $noCatchRates === true ? 'true' : 'false' ?>;
     var noPvp = <?php echo $noPvp === true ? 'true' : 'false' ?>;
     var noHideSingleMarker = <?php echo $noHideSingleMarker === true ? 'true' : 'false' ?>;
+    var enableJSDebug = <?php echo $enableJSDebug === true ? 'true' : 'false' ?>;
 </script>
 <script src="static/dist/js/map.common.min.js"></script>
 <script src="static/dist/js/map.min.js"></script>

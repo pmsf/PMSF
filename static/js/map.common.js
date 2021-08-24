@@ -431,9 +431,9 @@ var StoreOptions = {
             default: false,
             type: StoreTypes.Boolean
         },
-    'iconSize':
+    'pokemonIconSize':
         {
-            default: iconSize,
+            default: pokemonIconSize,
             type: StoreTypes.Number
         },
     'iconNotifySizeModifier':
@@ -571,7 +571,7 @@ function getPokemonSprite(index, sprite, displayHeight, weather = 0, encounterFo
 }
 
 function setupPokemonMarker(item, map, isBounceDisabled) {
-    var iconSize = Store.get('iconSize')
+    var iconSize = Store.get('pokemonIconSize')
     if (isNotifiedPokemon(item) === true) {
         iconSize += Store.get('iconNotifySizeModifier')
     }

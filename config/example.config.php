@@ -517,7 +517,7 @@ $noDirectionProvider = false;                                       // true/fals
 $directionProvider = 'google';                                      // google, waze, apple, bing, google_pin
 
 $noIconSize = false;                                                // true/false
-$iconSize = 30;                                                     // 20 = Small, 30 = Normal, 45 = Large, 60 = X-Large
+$pokemonIconSize = 30;                                              // 20 = Small, 30 = Normal, 45 = Large, 60 = X-Large
 
 $noIconNotifySizeModifier = false;                                  // true/false | Increase size of notified Pokemon
 $iconNotifySizeModifier = 15;                                       // 0, 15, 30, 45
@@ -735,6 +735,7 @@ $showYourLove = false;                                              // Show vale
 
 // Do not enable unless requested
 $enableDebug = false;                                               // true/false
+$enableJSDebug = false;                                             // true/false
 
 //-----------------------------------------------------
 // DATABASE CONFIG
