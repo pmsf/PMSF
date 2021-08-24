@@ -554,21 +554,21 @@ if (strtolower($map) === "rdm") {
                                                                     <button class="nav-link<?php echo (($firstTab == 1) ? " active" : ""); ?>" id="exclude-quest-pokemon-tab" data-bs-toggle="tab" data-bs-target="#exclude-quest-pokemon" type="button" role="tab" aria-controls="exclude-quest-pokemon" aria-selected="false"><?php echo i8ln('Pokémon') ?></button>
                                                                 </li>
                                                             <?php
-                                                            $firstTab++;
+                                                                $firstTab++;
                                                             }
                                                             if (! $noQuestsItems) { ?>
                                                                 <li class="nav-item" role="presentation">
                                                                     <button class="nav-link<?php echo (($firstTab == 1) ? " active" : ""); ?>" id="exclude-quest-item-tab" data-bs-toggle="tab" data-bs-target="#exclude-quest-item" type="button" role="tab" aria-controls="exclude-quest-item" aria-selected="false"><?php echo i8ln('Items') ?></button>
                                                                 </li>
                                                             <?php
-                                                            $firstTab++;
+                                                                $firstTab++;
                                                             }
                                                             if (! $noQuestsEnergy) { ?>
                                                                 <li class="nav-item" role="presentation">
                                                                     <button class="nav-link<?php echo (($firstTab == 1) ? " active" : ""); ?>" id="exclude-quest-energy-tab" data-bs-toggle="tab" data-bs-target="#exclude-quest-energy" type="button" role="tab" aria-controls="exclude-quest-energy" aria-selected="false"><?php echo i8ln('Energy') ?></button>
                                                                 </li>
                                                             <?php
-                                                            $firstTab++;
+                                                                $firstTab++;
                                                             }
                                                             if (! $noQuestsCandy) { ?>
                                                                 <li class="nav-item" role="presentation">
@@ -593,8 +593,9 @@ if (strtolower($map) === "rdm") {
                                                                     <a class="btn btn-secondary select-all" href="#"><?php echo i8ln('All') ?></a>
                                                                     <a class="btn btn-secondary hide-all" href="#"><?php echo i8ln('None') ?></a>
                                                                 </div>
-                                                            <?php }
-                                                            $firstTabContent++;
+                                                            <?php
+                                                                $firstTabContent++;
+                                                            }
                                                             if (! $noQuestsItems) { ?>
                                                                 <div class="tab-pane fade<?php echo (($firstTabContent == 1) ? " show active" : ""); ?>" id="exclude-quest-item" role="tabpanel" aria-labelledby="exclude-quest-item-tab">
                                                                     <div class="scroll-container">
@@ -609,8 +610,9 @@ if (strtolower($map) === "rdm") {
                                                                     <a class="btn btn-secondary select-all-item" href="#"><?php echo i8ln('All') ?></a>
                                                                     <a class="btn btn-secondary hide-all-item" href="#"><?php echo i8ln('None') ?></a>
                                                                 </div>
-                                                            <?php }
-                                                            $firstTabContent++;
+                                                            <?php
+                                                                $firstTabContent++;
+                                                            }
                                                             if (! $noQuestsEnergy) { ?>
                                                                 <div class="tab-pane fade<?php echo (($firstTabContent == 1) ? " show active" : ""); ?>" id="exclude-quest-energy" role="tabpanel" aria-labelledby="exclude-quest-energy-tab">
                                                                     <div class="scroll-container">
@@ -625,8 +627,9 @@ if (strtolower($map) === "rdm") {
                                                                     <a class="btn btn-secondary select-all-energy" href="#"><?php echo i8ln('All') ?></a>
                                                                     <a class="btn btn-secondary hide-all-energy" href="#"><?php echo i8ln('None') ?></a>
                                                                 </div>
-                                                            <?php }
-                                                            $firstTabContent++;
+                                                            <?php
+                                                                $firstTabContent++;
+                                                            }
                                                             if (! $noQuestsCandy) { ?>
                                                                 <div class="tab-pane fade<?php echo (($firstTabContent == 1) ? " show active" : ""); ?>" id="exclude-quest-candy" role="tabpanel" aria-labelledby="exclude-quest-candy-tab">
                                                                     <div class="scroll-container">
