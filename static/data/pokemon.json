@@ -38257,6 +38257,32 @@
         "type": "Fighting",
         "color": "#b8b8d0"
       }
+    ],
+    "forms": [
+      {
+        "nameform": "Crowned Shield",
+        "protoform": "2578",
+        "formtypes": [
+          {
+            "type": "Fighting",
+            "color": "#b8b8d0"
+          },
+          {
+            "type": "Steel",
+            "color": "#78c850"
+          }
+        ]
+      },
+      {
+        "nameform": "Hero",
+        "protoform": "2579",
+        "formtypes": [
+          {
+            "type": "Fighting",
+            "color": "#b8b8d0"
+          }
+        ]
+      }
     ]
   },
   "890":{
