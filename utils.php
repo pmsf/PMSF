@@ -435,11 +435,11 @@ function getIcon($iconRepo, $folder, $fileType, $iconKeyId, ...$varArgs) {
             $quest = isset($varArgs[1]) ? '_q' : '';
             if (array_search($lureId . $invasion . $quest . $fileType, $availableArray) !== false) {
                 $icon = $lureId . $invasion . $quest . $fileType;
-            } else if (array_search($lureId . $invasion . $fileType, $availableArray) !== false) {
+            } elseif (array_search($lureId . $invasion . $fileType, $availableArray) !== false) {
                 $icon = $lureId . $invasion . $fileType;
-            } else if (array_search($lureId . $quest . $fileType, $availableArray) !== false) {
+            } elseif (array_search($lureId . $quest . $fileType, $availableArray) !== false) {
                 $icon = $lureId . $quest . $fileType;
-            } else if (array_search($lureId . $fileType, $availableArray) !== false) {
+            } elseif (array_search($lureId . $fileType, $availableArray) !== false) {
                 $icon = $lureId . $fileType;
             }
             break;
@@ -469,7 +469,7 @@ function getIcon($iconRepo, $folder, $fileType, $iconKeyId, ...$varArgs) {
             $amount = isset($varArgs[0]) ? "_a{$varArgs[0]}" : '';
             if (array_search($itemId . $amount . $fileType, $availableArray) !== false) {
                 $icon = $itemId . $amount . $fileType;
-            } else if (array_search($itemId . $fileType, $availableArray) !== false) {
+            } elseif (array_search($itemId . $fileType, $availableArray) !== false) {
                 $icon = $itemId . $fileType;
             }
             break;
@@ -507,7 +507,7 @@ function getIcon($iconRepo, $folder, $fileType, $iconKeyId, ...$varArgs) {
             $severityLevel = isset($varArgs[0]) ? "_l{$varArgs[0]}" : '';
             if (array_search($weatherId . $severityLevel . $fileType, $availableArray) !== false) {
                 $icon = $weatherId . $severityLevel . $fileType;
-            } else if (array_search($weatherId . $fileType, $availableArray) !== false) {
+            } elseif (array_search($weatherId . $fileType, $availableArray) !== false) {
                 $icon = $weatherId . $fileType;
             }
             break;
@@ -522,7 +522,7 @@ function checkIndex($repo, $subfolder = '') {
     $indexFile = '.cache/' . preg_replace('~[/:]~', '_', $repo) . preg_replace('~[/:]~', '_', $subfolder) . 'index.json';
     if (isset($checkIndexCache[$indexFile])) {
         $index = $checkIndexCache[$indexFile];
-    } else if (file_exists($indexFile) && (filemtime($indexFile) > (time() - 60 * 120))) {
+    } elseif (file_exists($indexFile) && (filemtime($indexFile) > (time() - 60 * 120))) {
         $index = file_get_contents($indexFile);
         $checkIndexCache[$indexFile] = $index;
     } else {

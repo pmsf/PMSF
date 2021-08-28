@@ -243,7 +243,7 @@ if (strtolower($map) === "rdm") {
                                 if (! $noPokemon && ! $noNests) { ?>
                                     <h5><?php echo i8ln('Pokémon &amp; Nests') ?></h5>
                                 <?php
-                                } else if (! $noPokemon) { ?>
+                                } elseif (! $noPokemon) { ?>
                                     <h5><?php echo i8ln('Pokémon') ?></h5>
                                 <?php
                                 } else { ?>
@@ -601,9 +601,9 @@ if (strtolower($map) === "rdm") {
                                                                     <div class="scroll-container">
                                                                         <?php
                                                                         if ($generateExcludeQuestsItem === true) {
-                                                                            itemFilterImages($noItemNumbers, '', array_diff(range(1, $numberOfItem), $getList->generated_exclude_list('itemlist')), 9);
+                                                                            itemFilterImages($noItemNames, $noItemNumbers, '', array_diff(range(1, $numberOfItem), $getList->generated_exclude_list('itemlist')), 9);
                                                                         } else {
-                                                                            itemFilterImages($noItemNumbers, '', $excludeQuestsItem, 9);
+                                                                            itemFilterImages($noItemNames, $noItemNumbers, '', $excludeQuestsItem, 9);
                                                                         } ?>
                                                                     </div>
                                                                     <div class="dropdown-divider"></div>
@@ -672,7 +672,7 @@ if (strtolower($map) === "rdm") {
                                 <?php if (! $noGyms && ! $noRaids) { ?>
                                      <h5><?php echo i8ln('Gyms &amp; Raids') ?></h5>
                                 <?php
-                                } else if (! $noGyms) { ?>
+                                } elseif (! $noGyms) { ?>
                                      <h5><?php echo i8ln('Gyms') ?></h5>
                                 <?php
                                 } else { ?>
@@ -1216,9 +1216,9 @@ if (strtolower($map) === "rdm") {
                                                     foreach ($mapStyleList as $k => $mapStyleInfo) {
                                                         if ((strpos($k, 'google') === false ) && (strpos($k, 'mapbox') === false) && ! empty($mapStyleInfo['url'])) {
                                                             echo '<option value="' . $k  . '">' . i8ln($mapStyleInfo['name']) . '</option>';
-                                                        } else if ((strpos($k, 'google') !== false) && ! empty($gmapsKey)) {
+                                                        } elseif ((strpos($k, 'google') !== false) && ! empty($gmapsKey)) {
                                                             echo '<option value="' . $k  . '">' . i8ln($mapStyleInfo['name']) . '</option>';
-                                                        } else if ((strpos($k, 'mapbox') !== false) && ! empty($mapStyleInfo['key'])) {
+                                                        } elseif ((strpos($k, 'mapbox') !== false) && ! empty($mapStyleInfo['key'])) {
                                                             echo '<option value="' . $k  . '">' . i8ln($mapStyleInfo['name']) . '</option>';
                                                         }
                                                     } ?>
@@ -1333,7 +1333,7 @@ if (strtolower($map) === "rdm") {
                                                     $arealon = $areaLatLon[1];
                                                     $areazoom = $areaLatLon[2];
                                                     echo '<a href="" data-lat="' . $arealat . '" data-lng="' . $arealon . '" data-zoom="' . $areazoom . '" class="btn btn-secondary area-go-to">' . $areaname . '</a>';
-                                                } else if (is_array($areaInfo)) { ?>
+                                                } elseif (is_array($areaInfo)) { ?>
                                                     <div class="btn-group" role="group">
                                                         <button class="btn btn-secondary dropdown-toggle" type="button" id="<?php echo $areaname; ?>-dropdown" data-bs-toggle="dropdown" aria-expanded="false">
                                                             <?php echo $areaname; ?>

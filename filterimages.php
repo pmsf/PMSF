@@ -10,8 +10,6 @@
         <input type="hidden" class="search-number" value="' . $num . '" />
         <input type="text" class="search search-input" placeholder="' . i8ln("Search Name, ID & Type") . '" />
         <div class="pokemon-list list d-flex flex-wrap align-items-center text-center">';
-        $i = 0;
-        $z = 0;
         foreach ($mons as $k => $pokemon) {
             $type = '';
             $form = '';
@@ -44,8 +42,7 @@
                 }
                 if (! $noPokemonNames) {
                     echo '<span style="font-size:.55rem;white-space:nowrap;">' . i8ln($name) . '</span>';
-                }
-                else if (! $noPokemonNumbers) {
+                } elseif (! $noPokemonNumbers) {
                     echo "<span class='pokemon-number'>" . $k . "</span>";
                 }
                 echo "</span>";
@@ -71,8 +68,6 @@
         <input type="hidden" class="search-number" value="' . $num . '" />
         <input type="text" class="search search-input" placeholder="' . i8ln("Search Name, ID & Type") . '" />
         <div class="energy-list list d-flex flex-wrap align-items-center text-center">';
-        $i = 0;
-        $z = 0;
         foreach ($mons as $k => $pokemon) {
             $type = '';
             $name = $pokemon['name'];
@@ -94,8 +89,7 @@
                 }
                 if (! $noPokemonNames) {
                     echo '<span style="font-size:.55rem;white-space:nowrap;">' . i8ln($name) . '</span>';
-                }
-                else if (! $noPokemonNumbers) {
+                } elseif (! $noPokemonNumbers) {
                     echo "<span class='pokemon-number'>" . $k . "</span>";
                 }
                 echo "</span>";
@@ -121,8 +115,6 @@
         <input type="hidden" class="search-number" value="' . $num . '" />
         <input type="text" class="search search-input" placeholder="' . i8ln("Search Name, ID & Type") . '" />
         <div class="candy-list list d-flex flex-wrap align-items-center text-center">';
-        $i = 0;
-        $z = 0;
         foreach ($mons as $k => $pokemon) {
             $type = '';
             $name = $pokemon['name'];
@@ -145,8 +137,7 @@
                 }
                 if (! $noPokemonNames) {
                     echo '<span style="font-size:.55rem;white-space:nowrap;">' . i8ln($name) . '</span>';
-                }
-                else if (! $noPokemonNumbers) {
+                } elseif (! $noPokemonNumbers) {
                     echo "<span class='pokemon-number'>" . $k . "</span>";
                 }
                 echo '</span>';
@@ -161,7 +152,7 @@
         </script>
     <?php }
 
-    function itemFilterImages($noItemNumbers, $onClick = '', $itemsToExclude = array(), $num = 0)
+    function itemFilterImages($noItemNames, $noItemNumbers, $onClick = '', $itemsToExclude = array(), $num = 0)
     {
         global $items, $copyrightSafe, $iconFolderArray;
         if (empty($items)) {
@@ -172,8 +163,6 @@
         <input type="hidden" class="search-number" value="' . $num . '" />
         <input type="text" class="search search-input" placeholder="' . i8ln("Search Name & ID") . '" />
         <div class="item-list list d-flex flex-wrap align-items-center text-center">';
-        $i = 0;
-        $z = 0;
         foreach ($items as $k => $item) {
             $name = $item['name'];
 
@@ -189,7 +178,9 @@
                     <span style="display:none" class="id">' . $k . '</span>
                     <img loading="lazy" src="static/icons-safe/rewards/reward_' . $k . '_1.png"/>';
                 }
-                if (! $noItemNumbers) {
+                if (! $noItemNames) {
+                    echo '<span style="font-size:.55rem;white-space:nowrap;">' . i8ln($name) . '</span>';
+                } elseif (! $noItemNumbers) {
                     echo '<span class="item-number">' . $k . '</span>';
                 }
                 echo "</span>";
@@ -215,8 +206,6 @@
         <input type="hidden" class="search-number" value="' . $num . '" />
         <input type="text" class="search search-input" placeholder="' . i8ln("Search Name & ID") . '" />
         <div class="grunt-list list d-flex flex-wrap align-items-center text-center">';
-        $i = 0;
-        $z = 0;
         foreach ($grunts as $g => $grunt) {
             $type = $grunt['type'];
             $gender = $grunt['grunt'];
@@ -253,8 +242,6 @@
         <input type="hidden" class="search-number" value="' . $num . '" />
         <input type="text" class="search search-input" placeholder="' . i8ln("Search Level") . '" />
         <div class="raidegg-list list d-flex flex-wrap align-items-center text-center">';
-        $i = 0;
-        $z = 0;
         foreach ($egg as $e => $egg) {
             $eggLevel = $egg['level'];
             $eggHatched = $egg['type'] === '2' ? true : false;

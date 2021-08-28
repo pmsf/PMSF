@@ -100,11 +100,9 @@ class RDM extends Scanner
         if (!empty($despawnTimeType)) {
             if ($despawnTimeType == 1) {
                $conds[] = 'expire_timestamp_verified = 1';
-            }
-            else if ($despawnTimeType == 2) {
+            } elseif ($despawnTimeType == 2) {
                $conds[] = '(expire_timestamp_verified = 0 AND spawn_id IS NOT NULL)';
-            }
-            else if ($despawnTimeType == 3) {
+            } elseif ($despawnTimeType == 3) {
                $conds[] = 'expire_timestamp_verified = 0';
             }
         }
@@ -207,11 +205,9 @@ class RDM extends Scanner
         if (!empty($despawnTimeType)) {
             if ($despawnTimeType == 1) {
                $conds[] = 'expire_timestamp_verified = 1';
-            }
-            else if ($despawnTimeType == 2) {
+            } elseif ($despawnTimeType == 2) {
                $conds[] = '(expire_timestamp_verified = 0 AND spawn_id IS NOT NULL)';
-            }
-            else if ($despawnTimeType == 3) {
+            } elseif ($despawnTimeType == 3) {
                $conds[] = 'expire_timestamp_verified = 0';
             }
         }
