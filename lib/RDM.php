@@ -466,7 +466,7 @@ class RDM extends Scanner
                     $p++;
                 }
                 $pkmn_in = substr($pkmn_in, 0, -1);
-                $tmpSQL .= "quest_pokemon_id IN ( $pkmn_in ) AND quest_reward_type = 12";
+                $tmpSQL .= "json_extract(json_extract(`quest_rewards`,'$[*].info.pokemon_id'),'$[0]') IN ( $pkmn_in ) AND quest_reward_type = 12";
             }
             if (count($qcreids)) {
                 $pkmn_in = '';
@@ -477,7 +477,7 @@ class RDM extends Scanner
                     $p++;
                 }
                 $pkmn_in = substr($pkmn_in, 0, -1);
-                $tmpSQL .= "quest_pokemon_id IN ( $pkmn_in ) AND quest_reward_type = 4";
+                $tmpSQL .= "json_extract(json_extract(`quest_rewards`,'$[*].info.pokemon_id'),'$[0]') IN ( $pkmn_in ) AND quest_reward_type = 4";
             }
             if (count($qireids)) {
                 $item_in = '';
@@ -931,13 +931,13 @@ class RDM extends Scanner
                 $data[] = $pokestop['reward_pokemon_id'];
             }
         } elseif ($type === 'energylist') {
-            $pokestops = $db->query("SELECT distinct quest_pokemon_id AS reward_pokemon_id FROM pokestop WHERE quest_reward_type = 12;")->fetchAll(\PDO::FETCH_ASSOC);
+            $pokestops = $db->query("SELECT distinct json_extract(json_extract(`quest_rewards`,'$[*].info.pokemon_id'),'$[0]') AS reward_pokemon_id FROM pokestop WHERE quest_reward_type = 12;")->fetchAll(\PDO::FETCH_ASSOC);
             $data = array();
             foreach ($pokestops as $pokestop) {
                 $data[] = $pokestop['reward_pokemon_id'];
             }
         } elseif ($type === 'candylist') {
-            $pokestops = $db->query("SELECT distinct quest_pokemon_id AS reward_pokemon_id FROM pokestop WHERE quest_reward_type = 4;")->fetchAll(\PDO::FETCH_ASSOC);
+            $pokestops = $db->query("SELECT distinct json_extract(json_extract(`quest_rewards`,'$[*].info.pokemon_id'),'$[0]') AS reward_pokemon_id FROM pokestop WHERE quest_reward_type = 4;")->fetchAll(\PDO::FETCH_ASSOC);
             $data = array();
             foreach ($pokestops as $pokestop) {
                 $data[] = $pokestop['reward_pokemon_id'];
