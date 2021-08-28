@@ -144,13 +144,16 @@
     "text": "QUEST_GBL_RANK"
   },
   "53": {
-    "text": "QUEST_CHARGE_ATTACK"
+    "text": "Use {0} Charged Attack(s)"
   },
   "54": {
     "text": "QUEST_CHANGE_POKEMON_FORM"
   },
   "55": {
     "text": "QUEST_BATTLE_EVENT_NPC"
+  },
+  "56": {
+    "text": "QUEST_EARN_FORT_POWER_UP_POINTS"
   },
   "57": {
     "text": "Take {0} snapshot(s) of wild pokémon"
