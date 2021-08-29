@@ -248,7 +248,7 @@
             if (! in_array($e, $raideggToExclude)) {
                 echo '<span class="raidegg-icon-sprite" data-value="' . $e . '" onclick="' . $onClick . '">
                 <span style="display:none" class="level">' . $eggLevel . '</span>
-                <img loading="lazy" src="' . getIcon($iconFolderArray['raid'], 'raid/', '.png', $eggLevel, $eggHatched) . '"/>';
+                <img loading="lazy" src="' . getIcon($iconFolderArray['raid'], 'raid/egg/', '.png', $eggLevel, $eggHatched) . '"/>';
                 if (! $noRaideggNumbers) {
                     echo '<span class="raidegg-number">' . $eggLevel . '</span>';
                 }

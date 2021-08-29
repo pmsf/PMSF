@@ -1482,9 +1482,9 @@ function gymLabel(item) {
         if (raidStarted) {
             raidIcon = '<img style="width: 70px;" src="' + getIcon(iconpath.pokemon, 'pokemon', '.png', pokemonid, evolution, form, costume) + '"/>'
         } else if (item.raid_start <= Date.now()) {
-            raidIcon = '<img src="' + getIcon(iconpath.raid, 'raid', '.png', item['raid_level'], 1) + '" style="height:70px;">'
+            raidIcon = '<img src="' + getIcon(iconpath.raid, 'raid/egg', '.png', item['raid_level'], 1) + '" style="height:70px;">'
         } else {
-            raidIcon = '<img src="' + getIcon(iconpath.raid, 'raid', '.png', item['raid_level']) + '" style="height:70px;">'
+            raidIcon = '<img src="' + getIcon(iconpath.raid, 'raid/egg', '.png', item['raid_level']) + '" style="height:70px;">'
         }
     }
     if (!noRaids && manualRaids && item['scanArea'] === false) {
@@ -2360,10 +2360,10 @@ function updateGymMarker(item, marker) {
                 icon = getIcon(iconpath.pokemon, 'pokemon', '.png', pokemonid, evolutionid, formid, costumeid)
                 checkAndCreateSound(item.raid_pokemon_id)
             } else if (item.raid_start <= Date.now()) {
-                icon = getIcon(iconpath.raid, 'raid', '.png', item['raid_level'], 1)
+                icon = getIcon(iconpath.raid, 'raid/egg', '.png', item['raid_level'], 1)
             } else {
                 checkAndCreateSound()
-                icon = getIcon(iconpath.raid, 'raid', '.png', item['raid_level'])
+                icon = getIcon(iconpath.raid, 'raid/egg', '.png', item['raid_level'])
             }
             sendNotification(title, text, icon, item['latitude'], item['longitude'])
         }
