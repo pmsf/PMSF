@@ -7687,7 +7687,7 @@ function getIcon(iconRepo, folder, fileType, iconKeyId, ...varArgs) {
                 }
             }
             break
-        case 'raid':
+        case 'raid/egg':
             if (iconpath['raidIndex'] === undefined) {
                 if (enableJSDebug) {
                     console.log('No raidIndex? Houston, we have a problem.')
