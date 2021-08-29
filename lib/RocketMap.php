@@ -86,23 +86,6 @@ class RocketMap extends Scanner
                 $conds[] = '(cp_multiplier >= ' . $this->cpMultiplier[$minLevel] . ' OR pokemon_id IN(' . $exMinIv . ') )';
             }
         }
-        if (!empty($despawnTimeType)) {
-// expire_timestamp_verified not available?
-/*
-            if ($despawnTimeType == 1) {
-               $conds[] = 'expire_timestamp_verified = 1';
-            }
-            else if ($despawnTimeType == 2) {
-               $conds[] = '(expire_timestamp_verified = 0 AND spawn_id IS NOT NULL)';
-            }
-            else if ($despawnTimeType == 3) {
-               $conds[] = 'expire_timestamp_verified = 0';
-            }
-*/
-        }
-        if (!empty($gender) && ($gender == 1 || $gender == 2)) {
-           $conds[] = 'gender = ' . $gender;
-        }
         $encSql = '';
         if ($encId != 0) {
             $encSql = " OR (encounter_id = " . $encId . " AND latitude > '" . $swLat . "' AND longitude > '" . $swLng . "' AND latitude < '" . $neLat . "' AND longitude < '" . $neLng . "' AND disappear_time > '" . $params[':time'] . "')";
@@ -178,23 +161,7 @@ class RocketMap extends Scanner
                 $conds[] = '(cp_multiplier >= ' . $this->cpMultiplier[$minLevel] . ' OR pokemon_id IN(' . $exMinIv . ') )';
             }
         }
-        if (!empty($despawnTimeType)) {
-// expire_timestamp_verified not available?
-/*
-            if ($despawnTimeType == 1) {
-               $conds[] = 'expire_timestamp_verified = 1';
-            }
-            else if ($despawnTimeType == 2) {
-               $conds[] = '(expire_timestamp_verified = 0 AND spawn_id IS NOT NULL)';
-            }
-            else if ($despawnTimeType == 3) {
-               $conds[] = 'expire_timestamp_verified = 0';
-            }
-*/
-        }
-        if (!empty($gender) && ($gender == 1 || $gender == 2)) {
-           $conds[] = 'gender = ' . $gender;
-        }
+
         return $this->query_active($select, $conds, $params);
     }
 

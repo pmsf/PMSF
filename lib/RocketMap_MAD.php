@@ -103,11 +103,9 @@ class RocketMap_MAD extends RocketMap
         if (!empty($despawnTimeType)) {
             if ($despawnTimeType == 1) {
                $conds[] = 'ts.calc_endminsec IS NOT NULL';
-            }
-            else if ($despawnTimeType == 2) {
+            } elseif ($despawnTimeType == 2) {
                $conds[] = '(ts.calc_endminsec IS NULL AND spawnpoint_id IS NOT NULL)';
-            }
-            else if ($despawnTimeType == 3) {
+            } elseif ($despawnTimeType == 3) {
                $conds[] = 'ts.calc_endminsec IS NULL';
             }
         }
@@ -215,11 +213,9 @@ class RocketMap_MAD extends RocketMap
         if (!empty($despawnTimeType)) {
             if ($despawnTimeType == 1) {
                $conds[] = 'ts.calc_endminsec IS NOT NULL';
-            }
-            else if ($despawnTimeType == 2) {
+            } elseif ($despawnTimeType == 2) {
                $conds[] = '(ts.calc_endminsec IS NULL AND spawnpoint_id IS NOT NULL)';
-            }
-            else if ($despawnTimeType == 3) {
+            } elseif ($despawnTimeType == 3) {
                $conds[] = 'ts.calc_endminsec IS NULL';
             }
         }
