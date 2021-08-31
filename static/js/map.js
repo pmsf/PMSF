@@ -7707,14 +7707,14 @@ function getIcon(iconRepo, folder, fileType, iconKeyId, ...varArgs) {
                         if (iconpath['raidIndex']['egg'].includes(requestedIcon)) {
                             if (!firstTry) {
                                 if (enableJSDebug) {
-                                    console.log('Repo has fallback raid icon! Returning: ' + requestedIcon)
+                                    console.log('Repo has fallback raid->egg icon! Returning: ' + requestedIcon)
                                 }
                             }
                             icon = requestedIcon
                             break search
                         } else {
                             if (enableJSDebug) {
-                                console.log('Repo is missing ' + (firstTry ? 'optimal' : 'fallback') + ' raid icon: ' + requestedIcon)
+                                console.log('Repo is missing ' + (firstTry ? 'optimal' : 'fallback') + ' raid->egg icon: ' + requestedIcon)
                             }
                         }
                         firstTry = false
