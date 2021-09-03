@@ -30,7 +30,7 @@
   "dependencies": {
     "babel-core": "^6.26.3",
     "babel-preset-env": "^1.7.0",
-    "bootstrap": "^5.0.2",
+    "bootstrap": "5.0.2",
     "bootstrap-icons": "^1.4.1",
     "clean": "^4.0.2",
     "datatables": "1.10.18",
@@ -60,7 +60,7 @@
     "grunt-sass": "^3.1.0",
     "grunt-unused": "latest",
     "grunt-usemin": "https://github.com/pmsf/grunt-usemin/tarball/master",
-    "javascript-obfuscator": "0.19.2",
+    "javascript-obfuscator": "2.19.0",
     "jit-grunt": "^0.10.0",
     "leaflet": "1.6.0",
     "leaflet-geosearch": "2.7.0",
@@ -69,6 +69,7 @@
     "moment": "2.29.0",
     "node-sass": "^6.0.1",
     "phplint": "^2.0.5",
+    "@popperjs/core": "^2.10.1",
     "push.js": "^1.0.12"
   }
 }
