@@ -443,7 +443,7 @@ function getIcon($iconRepo, $folder, $fileType, $iconKeyId, ...$varArgs) {
                 $icon = $lureId . $fileType;
             }
             break;
-        case 'raid/':
+        case 'raid/egg/':
             /* varArgs hatched ex */
             $eggLevel = $iconKeyId;
             $hatched = isset($varArgs[0]) ? ($varArgs[0] === true ? ["_h", ''] : ['']) : [''];
