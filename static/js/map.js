@@ -5522,6 +5522,12 @@ function updateS2Overlay() {
         } else if (Store.get('showExCells') && (map.getZoom() <= 10)) {
             exLayerGroup.clearLayers()
         }
+        if (Store.get('showPokemonCells') && (map.getZoom() > 11)) {
+            pokemonLayerGroup.clearLayers()
+            showS2Cells(15, {color: 'black', weight: 3, dashOffset: '2', dashArray: '2 6'})
+        } else if (Store.get('showPokemonCells') && (map.getZoom() <= 11)) {
+            pokemonLayerGroup.clearLayers()
+        }
         if (Store.get('showStopCells') && (map.getZoom() > 14)) {
             stopLayerGroup.clearLayers()
             showS2Cells(17, {color: 'black'})
@@ -5533,12 +5539,6 @@ function updateS2Overlay() {
             showS2Cells(14, {color: 'black', weight: 3, dashOffset: '4', dashArray: '2 6'})
         } else if (Store.get('showGymCells') && (map.getZoom() <= 11)) {
             gymLayerGroup.clearLayers()
-        }
-        if (Store.get('showPokemonCells') && (map.getZoom() > 11)) {
-            pokemonLayerGroup.clearLayers()
-            showS2Cells(15, {color: 'black', weight: 3, dashOffset: '2', dashArray: '2 6'})
-        } else if (Store.get('showPokemonCells') && (map.getZoom() <= 11)) {
-            pokemonLayerGroup.clearLayers()
         }
     }
 }
