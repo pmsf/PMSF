@@ -1482,9 +1482,9 @@ function gymLabel(item) {
         if (raidStarted) {
             raidIcon = '<img style="width: 70px;" src="' + getIcon(iconpath.pokemon, 'pokemon', '.png', pokemonid, evolution, form, costume) + '"/>'
         } else if (item.raid_start <= Date.now()) {
-            raidIcon = '<img src="' + getIcon(iconpath.raid, 'raid', '.png', item['raid_level'], 1) + '" style="height:70px;">'
+            raidIcon = '<img src="' + getIcon(iconpath.raid, 'raid/egg', '.png', item['raid_level'], 1) + '" style="height:70px;">'
         } else {
-            raidIcon = '<img src="' + getIcon(iconpath.raid, 'raid', '.png', item['raid_level']) + '" style="height:70px;">'
+            raidIcon = '<img src="' + getIcon(iconpath.raid, 'raid/egg', '.png', item['raid_level']) + '" style="height:70px;">'
         }
     }
     if (!noRaids && manualRaids && item['scanArea'] === false) {
@@ -2249,7 +2249,7 @@ function getGymMarkerIcon(item) {
             '<img src="' + getIcon(iconpath.gym, 'gym', '.png', team, level, item['in_battle'], park) + '" style="width:50px;height:auto;"/>' +
             exIcon +
             inBattle +
-            '<img src="' + getIcon(iconpath.raid, 'raid', '.png', item['raid_level'], 1) + '" style="width:35px;height:auto;position:absolute;top:-11px;right:18px;"/>' +
+            '<img src="' + getIcon(iconpath.raid, 'raid/egg', '.png', item['raid_level'], 1) + '" style="width:35px;height:auto;position:absolute;top:-11px;right:18px;"/>' +
             '</div>'
         if (noRaidTimer === false && Store.get(['showRaidTimer'])) {
             html += '<div class="gym-icon-raid-timer"><span class="icon-countdown" style="padding: .25rem!important; white-space: nowrap;" disappears-at="' + item['raid_end'] + '" end>' + generateRemainingTimer(item['raid_end'], 'end') + '</span></div>'
@@ -2266,7 +2266,7 @@ function getGymMarkerIcon(item) {
             '<img src="' + getIcon(iconpath.gym, 'gym', '.png', team, level, item['in_battle'], park) + '" style="width:50px;height:auto;"/>' +
             exIcon +
             inBattle +
-            '<img src="' + getIcon(iconpath.raid, 'raid', '.png', item['raid_level']) + '" style="width:30px;position:absolute;top:4px;right:15px;"/>' +
+            '<img src="' + getIcon(iconpath.raid, 'raid/egg', '.png', item['raid_level']) + '" style="width:30px;position:absolute;top:4px;right:15px;"/>' +
             '</div>'
         if (noRaidTimer === false && Store.get(['showRaidTimer'])) {
             html += '<div class="gym-icon-egg-timer"><span class="icon-countdown" style="padding: .25rem!important; white-space: nowrap;" disappears-at="' + item['raid_start'] + '" end>' + generateRemainingTimer(item['raid_start'], 'end') + '</span></div>'
@@ -2325,9 +2325,9 @@ function setupGymMarker(item) {
             icon = getIcon(iconpath.pokemon, 'pokemon', '.png', pokemonid, evolutionid, formid, costumeid)
             checkAndCreateSound(item.raid_pokemon_id)
         } else if (item.raid_start <= Date.now()) {
-            icon = getIcon(iconpath.raid, 'raid', '.png', item['raid_level'], 1)
+            icon = getIcon(iconpath.raid, 'raid/egg', '.png', item['raid_level'], 1)
         } else {
-            icon = getIcon(iconpath.raid, 'raid', '.png', item['raid_level'])
+            icon = getIcon(iconpath.raid, 'raid/egg', '.png', item['raid_level'])
             checkAndCreateSound()
         }
         sendNotification(title, text, icon, item['latitude'], item['longitude'])
@@ -2360,10 +2360,10 @@ function updateGymMarker(item, marker) {
                 icon = getIcon(iconpath.pokemon, 'pokemon', '.png', pokemonid, evolutionid, formid, costumeid)
                 checkAndCreateSound(item.raid_pokemon_id)
             } else if (item.raid_start <= Date.now()) {
-                icon = getIcon(iconpath.raid, 'raid', '.png', item['raid_level'], 1)
+                icon = getIcon(iconpath.raid, 'raid/egg', '.png', item['raid_level'], 1)
             } else {
                 checkAndCreateSound()
-                icon = getIcon(iconpath.raid, 'raid', '.png', item['raid_level'])
+                icon = getIcon(iconpath.raid, 'raid/egg', '.png', item['raid_level'])
             }
             sendNotification(title, text, icon, item['latitude'], item['longitude'])
         }
@@ -7687,10 +7687,14 @@ function getIcon(iconRepo, folder, fileType, iconKeyId, ...varArgs) {
                 }
             }
             break
-        case 'raid':
+        case 'raid/egg':
             if (iconpath['raidIndex'] === undefined) {
                 if (enableJSDebug) {
                     console.log('No raidIndex? Houston, we have a problem.')
+                }
+            } else if (iconpath['raidIndex']['egg'] === undefined) {
+                if (enableJSDebug) {
+                    console.log('No raidIndex->egg? Houston, we have a problem.')
                 }
             } else {
                 const eggLevel = iconKeyId
@@ -7700,17 +7704,17 @@ function getIcon(iconRepo, folder, fileType, iconKeyId, ...varArgs) {
                 for (const hatched of isHatched) {
                     for (const e of ex) {
                         requestedIcon = `${eggLevel}${hatched}${e}${fileType}`
-                        if (iconpath['raidIndex'].includes(requestedIcon)) {
+                        if (iconpath['raidIndex']['egg'].includes(requestedIcon)) {
                             if (!firstTry) {
                                 if (enableJSDebug) {
-                                    console.log('Repo has fallback raid icon! Returning: ' + requestedIcon)
+                                    console.log('Repo has fallback raid->egg icon! Returning: ' + requestedIcon)
                                 }
                             }
                             icon = requestedIcon
                             break search
                         } else {
                             if (enableJSDebug) {
-                                console.log('Repo is missing ' + (firstTry ? 'optimal' : 'fallback') + ' raid icon: ' + requestedIcon)
+                                console.log('Repo is missing ' + (firstTry ? 'optimal' : 'fallback') + ' raid->egg icon: ' + requestedIcon)
                             }
                         }
                         firstTry = false
