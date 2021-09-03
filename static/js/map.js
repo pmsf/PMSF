@@ -1186,6 +1186,7 @@ function pokemonLabel(item) {
     var id = item['pokemon_id']
     var latitude = item['latitude']
     var longitude = item['longitude']
+    var firstSeen = item['first_seen_timestamp']
     var disappearTime = item['disappear_time']
     var reportTime = disappearTime - 1800000
     var atk = item['individual_attack']
@@ -1278,18 +1279,23 @@ function pokemonLabel(item) {
     contentstring +=
         '</center></div>' +
         '<div><img src="' + getIcon(iconpath.pokemon, 'pokemon', '.png', id, 0, form, costume, gender) + '" style="width:50px;margin-top:10px;"/>'
-    if (item['expire_timestamp_verified'] > 0) {
+    if (firstSeen > 0) {
         contentstring += '<b style="top:-20px;position:relative;">' +
+            '<i class="fas fa-history"></i>' + ' ' + getTimeStr(firstSeen) +
+            '</b><br>'
+    }
+    if (item['expire_timestamp_verified'] > 0) {
+        contentstring += '<b style="top:-20px;position:relative;left:50px;">' +
             '<i class="far fa-clock"></i>' + ' ' + getTimeStr(disappearTime) +
             ' <span class="label-countdown" disappears-at="' + disappearTime + '">(00m00s)</span>' +
             ' <i class="fas fa-check-square" style="color:#28b728;" title="' + i8ln('Despawntime verified') + '"></i>' +
             '</b></div>'
     } else if (pokemonReportTime === true) {
-        contentstring += '<b style="top:-20px;position:relative;">' +
+        contentstring += '<b style="top:-20px;position:relative;left:50px;">' +
             ' <i class="far fa-clock"></i>' + ' ' + getTimeStr(reportTime) +
             '</b></div>'
     } else {
-        contentstring += '<b style="top:-20px;position:relative;">' +
+        contentstring += '<b style="top:-20px;position:relative;left:50px">' +
             ' <i class="far fa-clock"></i>' + ' ' + getTimeStr(disappearTime) +
             ' <span class="label-countdown" disappears-at="' + disappearTime + '">(00m00s)</span>' +
             ' <i class="fas fa-question" style="color:red;" title="' + i8ln('Despawntime not verified') + '"></i>' +

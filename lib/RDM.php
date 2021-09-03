@@ -20,6 +20,7 @@ class RDM extends Scanner
         form,
         weather AS weather_boosted_condition,
         costume,
+        first_seen_timestamp,
         expire_timestamp_verified";
 
         global $noHighLevelData;
@@ -132,6 +133,7 @@ class RDM extends Scanner
         form,
         weather AS weather_boosted_condition,
         costume,
+        first_seen_timestamp,
         expire_timestamp_verified";
 
         global $noHighLevelData;
@@ -222,7 +224,7 @@ class RDM extends Scanner
         global $db;
 
         $query = "SELECT :select
-        FROM pokemon 
+        FROM pokemon
         WHERE :conditions ORDER BY lat, lon ";
 
         $query = str_replace(":select", $select, $query);
@@ -233,7 +235,7 @@ class RDM extends Scanner
         $lastlat = 0;
         $lastlon = 0;
         $lasti = 0;
-        
+
         foreach ($pokemons as $pokemon) {
             // Jitter pokemon when they have no spawn_id
             if (empty($pokemon['spawn_id'])) {
@@ -253,6 +255,7 @@ class RDM extends Scanner
                 $pokemon["longitude"] = floatval($pokemon["longitude"]);
             }
             $pokemon["expire_timestamp_verified"] = intval($pokemon["expire_timestamp_verified"]);
+            $pokemon["first_seen_timestamp"] = intval($pokemon["first_seen_timestamp"] * 1000);
             $pokemon["disappear_time"] = $pokemon["disappear_time"] * 1000;
 
             $pokemon["weight"] = isset($pokemon["weight"]) ? floatval($pokemon["weight"]) : null;

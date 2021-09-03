@@ -263,6 +263,7 @@ class RocketMap_MAD extends RocketMap
                 $pokemon["longitude"] = floatval($pokemon["longitude"]);
             }
             $pokemon["expire_timestamp_verified"] = isset($pokemon["expire_timestamp_verified"]) ? 1 : 0;
+            $pokemon["first_seen_timestamp"] = null;
             $pokemon["disappear_time"] = $pokemon["disappear_time"] * 1000;
 
             $pokemon["weight"] = isset($pokemon["weight"]) ? floatval($pokemon["weight"]) : null;
