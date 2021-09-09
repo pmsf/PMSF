@@ -8,7 +8,7 @@
 
 FROM thecodingmachine/php:7.4-v3-apache-node10
 
-RUN git clone -b develop https://github.com/pmsf/PMSF.git .
+RUN git clone -b main https://github.com/pmsf/PMSF.git .
 RUN composer install
 RUN npm install
 RUN npm audit fix
