@@ -404,6 +404,13 @@ function getIcon($iconRepo, $folder, $fileType, $iconKeyId, ...$varArgs) {
             /* No varArgs */
             $icon = '0.png';
             break;
+        case 'nest/':
+            /* No varArgs */
+            $typeId = $iconKeyId;
+            if (array_search($typeId . $fileType, $availableArray) !== false) {
+                $icon = $typeId . $fileType;
+            }
+            break;
         case 'pokemon/':
             /* varArgs order = evolution, form, costume, gender, shiny */
             $pokemonId = $iconKeyId;

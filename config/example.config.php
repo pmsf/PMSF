@@ -414,6 +414,7 @@ $iconFolderArray = [                                                // Default I
     ],
     'invasion' => 'static/sprites/',                                // String of icon set
     'misc' => 'static/sprites/',                                    // String of icon set
+    'nest' => 'static/sprites/',                                    // String of icon set
     'pokemon' => 'static/sprites/',                                 // String or Array of multiple icon sets
     'pokestop' => 'static/sprites/',                                // String of icon set
     'raid' => 'static/sprites/',                                    // String of icon set
