@@ -564,39 +564,47 @@
     "grunt": "Male"
   },
   "500": {
-    "type": "LenTao9",
+    "type": "Event NPC 0",
     "grunt": ""
   },
   "501": {
-    "type": "oneslapguy",
+    "type": "Event NPC 1",
     "grunt": ""
   },
   "502": {
-    "type": "DieCurryWurst",
+    "type": "Event NPC 2",
     "grunt": ""
   },
   "503": {
-    "type": "DieCurryWurst",
+    "type": "Event NPC 3",
     "grunt": ""
   },
   "504": {
-    "type": "Juanevoli",
+    "type": "Event NPC 4",
+    "grunt": ""
+  },
+  "505": {
+    "type": "Event NPC 5",
     "grunt": ""
   },
   "506": {
-    "type": "CashmereFeline",
+    "type": "Event NPC 6",
     "grunt": ""
   },
   "507": {
-    "type": "enjoyryde",
+    "type": "Event NPC 7",
+    "grunt": ""
+  },
+  "508": {
+    "type": "Event NPC 8",
     "grunt": ""
   },
   "509": {
-    "type": "Telli997",
+    "type": "Event NPC 9",
     "grunt": ""
   },
   "510": {
-    "type": "malibuleo",
+    "type": "Event NPC 10",
     "grunt": ""
   }
 }
