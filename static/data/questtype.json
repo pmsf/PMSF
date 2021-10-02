@@ -193,7 +193,7 @@
   },
   "53": {
     "prototext": "QUEST_CHARGE_ATTACK",
-    "text": "QUEST_CHARGE_ATTACK"
+    "text": "Use {0} Charged Attack(s)"
   },
   "54": {
     "prototext": "QUEST_CHANGE_POKEMON_FORM",
