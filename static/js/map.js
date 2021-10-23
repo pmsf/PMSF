@@ -6391,6 +6391,9 @@ $(function () {
                 redrawPokemon(mapData.pokemons)
                 updateGymIcons()
                 updatePokestopIcons()
+                if (Store.get('showNests')) {
+                    lastnests = false
+                }
             })
             .fail(function () {
                 if (enableJSDebug) {
