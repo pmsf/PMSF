@@ -34,7 +34,7 @@
 </div>
 <!-- InfoModal -->
 <?php if (! $noInfoModal) { ?>
-    <div class="modal fade" id="infoModal" tabindex="-1" aria-labelledby="infoModalLabel" aria-hidden="true">
+    <div class="modal fade" id="infoModal" aria-labelledby="infoModalLabel" aria-hidden="true">
         <div class="modal-dialog modal-xl">
             <div class="modal-content">
                 <div class="modal-header">
@@ -123,11 +123,17 @@
                         <button type="button" class="btn btn-info dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false"><i class="fas fa-language" aria-hidden="true"></i> <?php echo i8ln('Select Language'); ?></button>
                         <ul class="dropdown-menu">
                             <li><a class="dropdown-item" href="?lang=en"><span class="flag-icon flag-icon-<?php echo $enLocaleFlag; ?>"></span> <?php echo i8ln('English'); ?></a></li>
+                            <div class="dropdown-divider"></div>
                             <li><a class="dropdown-item" href="?lang=de"><span class="flag-icon flag-icon-de"></span> <?php echo i8ln('German'); ?></a></li>
+                            <div class="dropdown-divider"></div>
                             <li><a class="dropdown-item" href="?lang=fr"><span class="flag-icon flag-icon-fr"></span> <?php echo i8ln('French'); ?></a></li>
+                            <div class="dropdown-divider"></div>
                             <li><a class="dropdown-item" href="?lang=it"><span class="flag-icon flag-icon-it"></span> <?php echo i8ln('Italian'); ?></a></li>
+                            <div class="dropdown-divider"></div>
                             <li><a class="dropdown-item" href="?lang=pl"><span class="flag-icon flag-icon-pl"></span> <?php echo i8ln('Polish'); ?></a></li>
+                            <div class="dropdown-divider"></div>
                             <li><a class="dropdown-item" href="?lang=sp"><span class="flag-icon flag-icon-es"></span> <?php echo i8ln('Spanish'); ?></a></li>
+                            <div class="dropdown-divider"></div>
                             <li><a class="dropdown-item" href="?lang=sv"><span class="flag-icon flag-icon-se"></span> <?php echo i8ln('Swedish'); ?></a></li>
                             <!-- <li><a class="dropdown-item" href="?lang=zh-cn"><span class="flag-icon flag-icon-cn"></span> <?php echo i8ln('Chinese PRC'); ?></a></li>
                             <li><a class="dropdown-item" href="?lang=zh-hk"><span class="flag-icon flag-icon-hk"></span> <?php echo i8ln('Chinese HK'); ?></a></li>
@@ -168,12 +174,12 @@
                         $firstTab++;
                         }
                         if (!$noGyms && !$noSearchGyms) { ?>
-                            <button class="nav-link<?php echo (($firstTab == 1) ? " active" : ""); ?>" id="nav-gyms-tab" data-bs-toggle="tab" data-bs-target="#nav-gyms" type="button" role="tab" aria-controls="nav-gyms" aria-selected="true"><img src="static/forts/ingame/Uncontested.png" width="30" height="30"/></button>
+                            <button class="nav-link<?php echo (($firstTab == 1) ? " active" : ""); ?>" id="nav-gyms-tab" data-bs-toggle="tab" data-bs-target="#nav-gyms" type="button" role="tab" aria-controls="nav-gyms" aria-selected="true"><img src="static/sprites/gym/ingame/gym/0.png" width="30" height="30"/></button>
                         <?php
                         $firstTab++;
                         }
                         if (!$noPokestops && !$noSearchPokestops) { ?>
-                            <button class="nav-link<?php echo (($firstTab == 1) ? " active" : ""); ?>" id="nav-pokestops-tab" data-bs-toggle="tab" data-bs-target="#nav-pokestops" type="button" role="tab" aria-controls="nav-pokestops" aria-selected="true"><img src="static/forts/Pstop.png" width="30" height="30"/></button>
+                            <button class="nav-link<?php echo (($firstTab == 1) ? " active" : ""); ?>" id="nav-pokestops-tab" data-bs-toggle="tab" data-bs-target="#nav-pokestops" type="button" role="tab" aria-controls="nav-pokestops" aria-selected="true"><img src="static/sprites/pokestop/0.png" width="30" height="30"/></button>
                         <?php
                         $firstTab++;
                         }
@@ -269,12 +275,12 @@
                         $firstTab++;
                         }
                         if (! $noManualGyms && !$noGyms) { ?>
-                            <button class="nav-link<?php echo (($firstTab == 1) ? " active" : ""); ?>" id="nav-gym-tab" data-bs-toggle="tab" data-bs-target="#nav-gym" type="button" role="tab" aria-controls="nav-gym" aria-selected="true"><img src="static/forts/ingame/Uncontested.png" width="30" height="30"/></button>
+                            <button class="nav-link<?php echo (($firstTab == 1) ? " active" : ""); ?>" id="nav-gym-tab" data-bs-toggle="tab" data-bs-target="#nav-gym" type="button" role="tab" aria-controls="nav-gym" aria-selected="true"><img src="static/sprites/gym/ingame/gym/0.png" width="30" height="30"/></button>
                         <?php
                         $firstTab++;
                         }
                         if (! $noManualPokestops && !$noPokestops) { ?>
-                            <button class="nav-link<?php echo (($firstTab == 1) ? " active" : ""); ?>" id="nav-pokestop-tab" data-bs-toggle="tab" data-bs-target="#nav-pokestop" type="button" role="tab" aria-controls="nav-pokestop" aria-selected="true"><img src="static/forts/Pstop.png" width="30" height="30"/></button>
+                            <button class="nav-link<?php echo (($firstTab == 1) ? " active" : ""); ?>" id="nav-pokestop-tab" data-bs-toggle="tab" data-bs-target="#nav-pokestop" type="button" role="tab" aria-controls="nav-pokestop" aria-selected="true"><img src="static/sprites/pokestop/0.png" width="30" height="30"/></button>
                         <?php
                         $firstTab++;
                         }
@@ -299,7 +305,7 @@
                         <?php if (! $noManualPokemon && !$noPokemon) { ?>
                             <div class="tab-pane fade<?php echo (($firstTabContent == 1) ? " show active" : ""); ?>" id="nav-pokemon" role="tabpanel" aria-labelledby="nav-pokemon-tab">
                                 <input type="hidden" name="pokemonID" class="pokemonID"/>
-                                <?php pokemonFilterImages($noPokemonNumbers, 'pokemonSubmitFilter(event)', $pokemonToExclude, 6); ?>
+                                <?php pokemonFilterImages($noPokemonNames, $noPokemonNumbers, 'pokemonSubmitFilter(event)', $pokemonToExclude, 6); ?>
                                 <div class="modal-footer">
                                     <button type="button" class="btn btn-primary" onclick="manualPokemonData(event);">
                                         <i class="fas fa-binoculars"></i> <?php echo i8ln('Submit Pokémon'); ?>
@@ -340,7 +346,7 @@
                         if (! $noAddNewNests && !$noNests) { ?>
                             <div class="tab-pane fade<?php echo (($firstTabContent == 1) ? " show active" : ""); ?>" id="nav-nest" role="tabpanel" aria-labelledby="nav-nest-tab">
                                 <input type="hidden" name="pokemonID" class="pokemonID"/>
-                                <?php pokemonFilterImages($noPokemonNumbers, 'pokemonSubmitFilter(event)', $excludeNestMons, 7); ?>
+                                <?php pokemonFilterImages($noPokemonNames, $noPokemonNumbers, 'pokemonSubmitFilter(event)', $excludeNestMons, 7); ?>
                                 <div class="modal-footer">
                                     <button type="button" class="btn btn-primary" onclick="submitNewNest(event);"><i
                                             class="fas fa-binoculars"></i> <?php echo i8ln('Submit Nest'); ?>
@@ -499,7 +505,7 @@
                 <div class="modal-body">
                     <input type="hidden" id="editnestid" name="editnestid" value=""/>
                     <input type="hidden" name="pokemonID" class="pokemonID"/>
-                    <?php pokemonFilterImages($noPokemonNumbers, 'pokemonSubmitFilter(event)', $excludeNestMons, 5); ?>
+                    <?php pokemonFilterImages($noPokemonNames, $noPokemonNumbers, 'pokemonSubmitFilter(event)', $excludeNestMons, 5); ?>
                 </div>
                 <div class="modal-footer">
                     <button type="button" onclick="manualNestData(event);" class="btn btn-primary">
@@ -828,25 +834,17 @@
                         <div class="switch-container">
                             <div class="pokemon-list raid-submission">
                                 <input type="hidden" id="manualraidpokemonid" name="manualraidpokemonid" value="">
-                                <span class="pokemon-icon-sprite" data-value="egg_1" data-label="Level 1" onclick="pokemonRaidFilter(event);"><span class="egg_1 inner-bg" style="background: url('static/raids/egg_normal.png');background-size:100%"></span><span class="egg-number">1</span></span>
-                                <!-- Not in game <span class="pokemon-icon-sprite" data-value="egg_2" data-label="Level 2" onclick="pokemonRaidFilter(event);"><span class="egg_2 inner-bg" style="background: url('static/raids/egg_normal.png');background-size:100%"></span><span class="egg-number">2</span></span> -->
-                                <span class="pokemon-icon-sprite" data-value="egg_3" data-label="Level 3" onclick="pokemonRaidFilter(event);"><span class="egg_3 inner-bg" style="background: url('static/raids/egg_rare.png');background-size:100%"></span><span class="egg-number">3</span></span>
-                                <!-- Not in game <span class="pokemon-icon-sprite" data-value="egg_4" data-label="Level 4" onclick="pokemonRaidFilter(event);"><span class="egg_4 inner-bg" style="background: url('static/raids/egg_rare.png');background-size:100%"></span><span class="egg-number">4</span></span> -->
-                                <span class="pokemon-icon-sprite" data-value="egg_5" data-label="Level 5" onclick="pokemonRaidFilter(event);"><span class="egg_5 inner-bg" style="background: url('static/raids/egg_legendary.png');background-size:100%"></span><span class="egg-number">5</span></span>
-                                <span class="pokemon-icon-sprite" data-value="egg_6" data-label="Level 6" onclick="pokemonRaidFilter(event);"><span class="egg_6 inner-bg" style="background: url('static/raids/egg_mega.png');background-size:100%"></span><span class="egg-number">6</span></span>
+                                <span class="pokemon-icon-sprite" data-value="egg_1" data-label="Level 1" onclick="pokemonRaidFilter(event);"><span class="egg_1 inner-bg" style="background: url('static/sprites/raid/1.png');background-size:100%"></span><span class="egg-number">1</span></span>
+                                <!-- Not in game <span class="pokemon-icon-sprite" data-value="egg_2" data-label="Level 2" onclick="pokemonRaidFilter(event);"><span class="egg_2 inner-bg" style="background: url('static/sprites/raid/2.png');background-size:100%"></span><span class="egg-number">2</span></span> -->
+                                <span class="pokemon-icon-sprite" data-value="egg_3" data-label="Level 3" onclick="pokemonRaidFilter(event);"><span class="egg_3 inner-bg" style="background: url('static/sprites/raid/3.png');background-size:100%"></span><span class="egg-number">3</span></span>
+                                <!-- Not in game <span class="pokemon-icon-sprite" data-value="egg_4" data-label="Level 4" onclick="pokemonRaidFilter(event);"><span class="egg_4 inner-bg" style="background: url('static/sprites/raid/4.png');background-size:100%"></span><span class="egg-number">4</span></span> -->
+                                <span class="pokemon-icon-sprite" data-value="egg_5" data-label="Level 5" onclick="pokemonRaidFilter(event);"><span class="egg_5 inner-bg" style="background: url('static/sprites/raid/5.png');background-size:100%"></span><span class="egg-number">5</span></span>
+                                <span class="pokemon-icon-sprite" data-value="egg_6" data-label="Level 6" onclick="pokemonRaidFilter(event);"><span class="egg_6 inner-bg" style="background: url('static/sprites/raid/6.png');background-size:100%"></span><span class="egg-number">6</span></span>
                                 <?php
                                 $pokemonJson = file_get_contents('static/dist/data/pokemon.min.json');
                                 $pokemon = json_decode($pokemonJson, true);
                                 foreach ($raidBosses as $raidBoss) {
-                                    $pokemonIdStr = '';
-                                    if ($raidBoss <= 9) {
-                                        $pokemonIdStr = '00' . $raidBoss;
-                                    } else if ($raidBoss <= 99) {
-                                        $pokemonIdStr = '0' . $raidBoss;
-                                    } else {
-                                        $pokemonIdStr = $raidBoss;
-                                    }
-                                    echo '<span class="pokemon-icon-sprite" data-value="' . $raidBoss . '" data-label="' . $pokemon[$raidBoss]['name'] . '" onclick="pokemonRaidFilter(event);"><img src="' . $iconRepository . 'pokemon_icon_' . $pokemonIdStr . '_00.png" style="width:48px;height:48px;"/></span>';
+                                    echo '<span class="pokemon-icon-sprite" data-value="' . $raidBoss . '" data-label="' . $pokemon[$raidBoss]['name'] . '" onclick="pokemonRaidFilter(event);"><img src="' . getIcon($iconFolderArray['pokemon'], 'pokemon/', '.png', $raidBoss) . '" style="width:48px;height:48px;"/></span>';
                                 } ?>
                                 <div class="mon-name" style="display:none;"></div>
                                 <div class="switch-container timer-cont" style="text-align:center;display:none">
@@ -973,5 +971,278 @@
         </div>
     </div>
 <?php } ?>
+<!-- Stats Modal -->
+<?php if (! $noFullStats) { ?>
+    <div class="modal fade" id="statsModal" tabindex="-1" aria-labelledby="statsModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-fullscreen">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <div class="nav nav-tabs nav-fill" id="nav-tab" role="tablist">
+                        <button class="nav-link active" id="nav-overview-stats-tab" data-bs-toggle="tab" data-bs-target="#nav-overview-stats" type="button" role="tab" aria-controls="nav-overview-stats" aria-selected="true">
+                            <i class="fas fa-tachometer-alt" style="color:black;font-size:28px;"></i>
+                        </button>
+                        <button class="nav-link" id="nav-pokemon-stats-tab" data-bs-toggle="tab" data-bs-target="#nav-pokemon-stats" type="button" role="tab" aria-controls="nav-pokemon-stats" aria-selected="true">
+                            <img src="static/images/pokemon.png" style="filter: brightness(0.5);" width="30" height="30">
+                        </button>
+                        <button class="nav-link" id="nav-reward-stats-tab" data-bs-toggle="tab" data-bs-target="#nav-reward-stats" type="button" role="tab" aria-controls="nav-reward-stats" aria-selected="true">
+                            <img src="static/images/reward.png" width="30" height="30">
+                        </button>
+                        <button class="nav-link" id="nav-shiny-stats-tab" data-bs-toggle="tab" data-bs-target="#nav-shiny-stats" type="button" role="tab" aria-controls="nav-shiny-stats" aria-selected="true">
+                            <img src="static/images/stats/sparkles.png" width="30" height="30">
+                        </button>
+                    </div>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body" style="padding: 0;">
+                    <div class="tab-content" id="nav-tabContent">
+                        <div class="tab-pane fade show active" id="nav-overview-stats" role="tabpanel" aria-labelledby="nav-overview-stats-tab">
+                            <!-- Overview -->
+                            <div class="card text-center p-0 m-4">
+                                <div class="card-header text-light"><?php echo i8ln('Overview'); ?></div>
+                                <div class="card-body bg-light">
+                                    <div class="container">
+                                        <div class="row">
+                                            <div class="col-md-3">
+                                                <div class="list-group">
+                                                    <div class="list-group-item">
+                                                        <img src="static/sprites/reward/item/1.png" width="64" height="64" />
+                                                        <h4 class="pokemon-count"><?php echo i8ln('loading...'); ?> <i class="fas fa-spinner fa-spin"></i></h4>
+                                                        <p><?php echo i8ln('Pokémon'); ?></p>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="col-md-3">
+                                                <div class="list-group">
+                                                    <div class="list-group-item">
+                                                        <img src="static/images/stats/neutral.png" width="64" height="64" />
+                                                        <h4 class="gym-count"><?php echo i8ln('loading...'); ?> <i class="fas fa-spinner fa-spin"></i></h4>
+                                                        <p><?php echo i8ln('Gyms'); ?></p>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="col-md-3">
+                                                <div class="list-group">
+                                                    <div class="list-group-item">
+                                                        <img src="static/images/stats/raid.png" width="64" height="64" />
+                                                        <h4 class="raid-count"><?php echo i8ln('loading...'); ?> <i class="fas fa-spinner fa-spin"></i></h4>
+                                                        <p><?php echo i8ln('Raids'); ?></p>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="col-md-3">
+                                                <div class="list-group">
+                                                    <div class="list-group-item">
+                                                        <img src="static/images/stats/pokestop.png" width="64" height="64" />
+                                                        <h4 class="pokestop-count"><?php echo i8ln('loading...'); ?> <i class="fas fa-spinner fa-spin"></i></h4>
+                                                        <p><?php echo i8ln('Pokéstops'); ?></p>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <!-- Teams -->
+                            <div class="card text-center p-0 m-4">
+                                <div class="card-header text-light"><?php echo i8ln('Teams'); ?></div>
+                                <div class="card-body bg-light">
+                                    <div class="container">
+                                        <div class="row">
+                                            <div class="col-md-3">
+                                                <div class="list-group">
+                                                    <div class="list-group-item neutral">
+                                                        <img src="static/images/stats/neutral.png" width="64" height="64" />
+                                                        <h4 class="neutral-count"><?php echo i8ln('loading...'); ?> <i class="fas fa-spinner fa-spin"></i></h4>
+                                                        <p><?php echo i8ln('Neutral Gyms'); ?></p>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="col-md-3">
+                                                <div class="list-group">
+                                                    <div class="list-group-item mystic">
+                                                        <img src="static/images/stats/mystic.png" width="64" height="64" />
+                                                        <h4 class="mystic-count"><?php echo i8ln('loading...'); ?> <i class="fas fa-spinner fa-spin"></i></h4>
+                                                        <p><?php echo i8ln('Mystic Gyms'); ?></p>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="col-md-3">
+                                                <div class="list-group">
+                                                    <div class="list-group-item valor">
+                                                        <img src="static/images/stats/valor.png" width="64" height="64" />
+                                                        <h4 class="valor-count"><?php echo i8ln('loading...'); ?> <i class="fas fa-spinner fa-spin"></i></h4>
+                                                        <p><?php echo i8ln('Valor Gyms'); ?></p>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="col-md-3">
+                                                <div class="list-group">
+                                                    <div class="list-group-item instinct">
+                                                        <img src="static/images/stats/instinct.png" width="64" height="64" />
+                                                        <h4 class="instinct-count"><?php echo i8ln('loading...'); ?> <i class="fas fa-spinner fa-spin"></i></h4>
+                                                        <p><?php echo i8ln('Instinct Gyms'); ?></p>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <!-- Pokéstops -->
+                            <div class="card text-center p-0 m-4">
+                                <div class="card-header text-light"><?php echo i8ln('Pokéstops'); ?></div>
+                                <div class="card-body bg-light">
+                                    <div class="container">
+                                        <div class="row">
+                                            <div class="col-md-3">
+                                                <div class="list-group">
+                                                    <div class="list-group-item">
+                                                        <img src="static/images/stats/quest.png" width="64" height="64" />
+                                                        <h4 class="quest-count"><?php echo i8ln('Loading...'); ?> <i class="fas fa-spinner fa-spin"></i></h4>
+                                                        <p><?php echo i8ln('Field Research'); ?></p>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="col-md-3">
+                                                <div class="list-group">
+                                                    <div class="list-group-item">
+                                                        <img src="static/images/stats/rocket.png" width="64" height="64" />
+                                                        <h4 class="rocket-count"><?php echo i8ln('Loading...'); ?> <i class="fas fa-spinner fa-spin"></i></h4>
+                                                        <p><?php echo i8ln('Invasions'); ?></p>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="col-md-3">
+                                                <div class="list-group">
+                                                    <div class="list-group-item">
+                                                        <img src="static/images/stats/lure.png" width="64" height="64" />
+                                                        <h4 class="normal-lure-count"><?php echo i8ln('Loading...'); ?> <i class="fas fa-spinner fa-spin"></i></h4>
+                                                        <p><?php echo i8ln('Normal Lure'); ?></p>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="col-md-3">
+                                                <div class="list-group">
+                                                    <div class="list-group-item">
+                                                        <img src="static/images/stats/glacial-lure.png" width="64" height="64" />
+                                                        <h4 class="glacial-lure-count"><?php echo i8ln('Loading...'); ?> <i class="fas fa-spinner fa-spin"></i></h4>
+                                                        <p><?php echo i8ln('Glacial Lure'); ?></p>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="col-md-3">
+                                                <div class="list-group">
+                                                    <div class="list-group-item">
+                                                        <img src="static/images/stats/mossy-lure.png" width="64" height="64" />
+                                                        <h4 class="mossy-lure-count"><?php echo i8ln('Loading...'); ?> <i class="fas fa-spinner fa-spin"></i></h4>
+                                                        <p><?php echo i8ln('Mossy Lure'); ?></p>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="col-md-3">
+                                                <div class="list-group">
+                                                    <div class="list-group-item">
+                                                        <img src="static/images/stats/magnetic-lure.png" width="64" height="64" />
+                                                        <h4 class="magnetic-lure-count"><?php echo i8ln('Loading...'); ?> <i class="fas fa-spinner fa-spin"></i></h4>
+                                                        <p><?php echo i8ln('Magnetic Lure'); ?></p>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="col-md-3">
+                                                <div class="list-group">
+                                                    <div class="list-group-item">
+                                                        <img src="static/images/stats/rainy-lure.png" width="64" height="64" />
+                                                        <h4 class="rainy-lure-count"><?php echo i8ln('Loading...'); ?> <i class="fas fa-spinner fa-spin"></i></h4>
+                                                        <p><?php echo i8ln('Rainy Lure'); ?></p>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <!-- Spawnpoints -->
+                            <div class="card text-center p-0 m-4">
+                                <div class="card-header text-light"><?php echo i8ln('Spawnpoints'); ?></div>
+                                <div class="card-body bg-light">
+                                    <div class="container">
+                                        <div class="row">
+                                            <div class="col-md-4">
+                                                <div class="list-group">
+                                                    <div class="list-group-item">
+                                                        <img src="static/images/stats/spawnpoint.png" width="64" height="64" />
+                                                        <h4 class="spawnpoint-total"><?php echo i8ln('Loading...'); ?> <i class="fas fa-spinner fa-spin"></i></h4>
+                                                        <p><?php echo i8ln('Total'); ?></p>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="col-md-4">
+                                                <div class="list-group">
+                                                    <div class="list-group-item">
+                                                        <img src="static/images/stats/found.png" width="64" height="64" />
+                                                        <h4 class="spawnpoint-found"><?php echo i8ln('Loading...'); ?> <i class="fas fa-spinner fa-spin"></i></h4>
+                                                        <p><?php echo i8ln('Timer Found'); ?></p>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="col-md-4">
+                                                <div class="list-group">
+                                                    <div class="list-group-item">
+                                                        <img src="static/images/stats/missing.png" width="64" height="64" />
+                                                        <h4 class="spawnpoint-missing"><?php echo i8ln('Loading...'); ?> <i class="fas fa-spinner fa-spin"></i></h4>
+                                                        <p><?php echo i8ln('Timer Missing'); ?></p>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="tab-pane fade" id="nav-pokemon-stats" role="tabpanel" aria-labelledby="nav-pokemon-stats-tab">
+                            <table id="pokemonTable" class="table table-striped table-bordered">
+                                <thead>
+                                    <tr>
+                                        <th><?php echo i8ln('ID'); ?></th>
+                                        <th><?php echo i8ln('Pokémon'); ?></th>
+                                        <th><?php echo i8ln('Type'); ?></th>
+                                        <th><?php echo i8ln('Count'); ?></th>
+                                        <th>%</th>
+                                    </tr>
+                                </thead>
+                            </table>
+                        </div>
+                        <div class="tab-pane fade" id="nav-reward-stats" role="tabpanel" aria-labelledby="nav-reward-stats-tab">
+                            <table id="rewardTable" class="table table-striped table-bordered">
+                                <thead>
+                                    <tr>
+                                        <th><?php echo i8ln('Type'); ?></th>
+                                        <th><?php echo i8ln('Reward'); ?></th>
+                                        <th><?php echo i8ln('Count'); ?></th>
+                                        <th>%</th>
+                                    </tr>
+                                </thead>
+                            </table>
+                        </div>
+                        <div class="tab-pane fade" id="nav-shiny-stats" role="tabpanel" aria-labelledby="nav-shiny-stats-tab">
+                            <table id="shinyTable" class="table table-striped table-bordered">
+                                <thead>
+                                    <tr>
+                                        <th><?php echo i8ln('Pokémon'); ?></th>
+                                        <th><?php echo i8ln('Shiny Count'); ?></th>
+                                        <th><?php echo i8ln('Shiny Rate'); ?></th>
+                                        <th><?php echo i8ln('Sample Size'); ?></th>
+                                    </tr>
+                                </thead>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+<?php } ?>
 <!-- End of Modals -->
+
+
 

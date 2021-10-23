@@ -12,7 +12,7 @@ class RocketMap extends Scanner
         $this->setCpMultiplier();
     }
 
-    public function get_active($eids, $minIv, $minLevel, $exMinIv, $bigKarp, $tinyRat, $swLat, $swLng, $neLat, $neLng, $tstamp = 0, $oSwLat = 0, $oSwLng = 0, $oNeLat = 0, $oNeLng = 0, $encId = 0)
+    public function get_active($eids, $minIv, $minLevel, $exMinIv, $bigKarp, $tinyRat, $despawnTimeType, $gender, $swLat, $swLng, $neLat, $neLng, $tstamp = 0, $oSwLat = 0, $oSwLng = 0, $oNeLat = 0, $oNeLng = 0, $encId = 0)
     {
         global $db;
         $conds = array();
@@ -93,7 +93,7 @@ class RocketMap extends Scanner
         return $this->query_active($select, $conds, $params, $encSql);
     }
 
-    public function get_active_by_id($ids, $minIv, $minLevel, $exMinIv, $bigKarp, $tinyRat, $swLat, $swLng, $neLat, $neLng)
+    public function get_active_by_id($ids, $minIv, $minLevel, $exMinIv, $bigKarp, $tinyRat, $despawnTimeType, $gender, $swLat, $swLng, $neLat, $neLng)
     {
         global $db;
         $conds = array();
@@ -161,6 +161,7 @@ class RocketMap extends Scanner
                 $conds[] = '(cp_multiplier >= ' . $this->cpMultiplier[$minLevel] . ' OR pokemon_id IN(' . $exMinIv . ') )';
             }
         }
+
         return $this->query_active($select, $conds, $params);
     }
 
@@ -190,26 +191,44 @@ class RocketMap extends Scanner
             $pokemon["individual_attack"] = isset($pokemon["individual_attack"]) ? intval($pokemon["individual_attack"]) : null;
             $pokemon["individual_defense"] = isset($pokemon["individual_defense"]) ? intval($pokemon["individual_defense"]) : null;
             $pokemon["individual_stamina"] = isset($pokemon["individual_stamina"]) ? intval($pokemon["individual_stamina"]) : null;
-            $pokemon['expire_timestamp_verified'] = null;
+            $pokemon['expire_timestamp_verified'] = 0;
             $pokemon["weather_boosted_condition"] = intval($pokemon["weather_boosted_condition"]);
 
             $pokemon["pokemon_id"] = intval($pokemon["pokemon_id"]);
+            $pokemon["form"] = intval($pokemon["form"]);
+            $pokemon["costume"] = intval($pokemon["costume"]);
+            $pokemon["gender"] = intval($pokemon["gender"]);
             $pokemon["pokemon_name"] = i8ln($this->data[$pokemon["pokemon_id"]]['name']);
             $pokemon["pokemon_rarity"] = i8ln($this->data[$pokemon["pokemon_id"]]['rarity']);
-            $types = $this->data[$pokemon["pokemon_id"]]["types"];
-            foreach ($types as $k => $v) {
-                $types[$k]['type'] = $v['type'];
-            }
-            $pokemon["pokemon_types"] = $types;
-            $data[] = $pokemon;
 
+            if (isset($pokemon["form"]) && $pokemon["form"] > 0) {
+                $forms = $this->data[$pokemon["pokemon_id"]]["forms"];
+                foreach ($forms as $f => $v) {
+                    if ($pokemon["form"] === intval($v['protoform'])) {
+                        $types = $v['formtypes'];
+                        $pokemon["form_name"] = $v['nameform'];
+                        foreach ($v['formtypes'] as $ft => $v) {
+                            $types[$ft]['type'] = $v['type'];
+                        }
+                        $pokemon["pokemon_types"] = $types;
+                    }
+                }
+            } else {
+                $types = $this->data[$pokemon["pokemon_id"]]["types"];
+                foreach ($types as $k => $v) {
+                    $types[$k]['type'] = $v['type'];
+                }
+                $pokemon["pokemon_types"] = $types;
+            }
+
+            $data[] = $pokemon;
             unset($pokemons[$i]);
             $i++;
         }
         return $data;
     }
 
-    public function get_stops($geids, $qpeids, $qeeids, $qieids, $swLat, $swLng, $neLat, $neLng, $tstamp = 0, $oSwLat = 0, $oSwLng = 0, $oNeLat = 0, $oNeLng = 0, $lured = false, $rocket = false, $quests, $dustamount)
+    public function get_stops($geids, $qpeids, $qeeids, $qceids, $qieids, $swLat, $swLng, $neLat, $neLng, $tstamp = 0, $oSwLat = 0, $oSwLng = 0, $oNeLat = 0, $oNeLng = 0, $lured = false, $rocket = false, $quests, $dustamount)
     {
         $conds = array();
         $params = array();
@@ -470,18 +489,30 @@ class RocketMap extends Scanner
                 $raid_pid = null;
                 $gym["raid_pokemon_id"] = null;
             }
-            $gym["park"] = $noExEligible ? 0 : intval($gym["park"]);
             $gym["team_id"] = $noTeams ? 0 : intval($gym["team_id"]);
             $gym["pokemon"] = [];
             $gym["raid_pokemon_name"] = empty($raid_pid) ? null : i8ln($this->data[$raid_pid]["name"]);
+            $gym["raid_pokemon_form"] = 0;
+            $gym["raid_pokemon_costume"] = 0;
+            $gym["raid_pokemon_evolution"] = 0;
             $gym["raid_pokemon_gender"] = 0;
             $gym["latitude"] = floatval($gym["latitude"]);
             $gym["longitude"] = floatval($gym["longitude"]);
+            $gym["slots_available"] = $noTeams ? 0 : intval($gym["slots_available"]);
             $gym["last_modified"] = $gym["last_modified"] * 1000;
+            $gym["in_battle"] = 0;
             $gym["last_scanned"] = $gym["last_scanned"] * 1000;
             $gym["raid_start"] = $gym["raid_start"] * 1000;
             $gym["raid_end"] = $gym["raid_end"] * 1000;
-            $gym["slots_available"] = $noTeams ? 0 : intval($gym["slots_available"]);
+            $gym["park"] = $noExEligible ? 0 : intval($gym["park"]);
+            if (isset($gym["raid_pokemon_form"]) && $gym["raid_pokemon_form"] > 0) {
+                $forms = $this->data[$gym["raid_pokemon_id"]]["forms"];
+                foreach ($forms as $f => $v) {
+                    if ($gym["raid_pokemon_form"] === intval($v['protoform'])) {
+                        $gym["raid_pokemon_form_name"] = $v['nameform'];
+                    }
+                }
+            }
             if ((!empty($raids) && $raids === 'true') && (!empty($gyms) && $gyms === 'true')) {
                 if (count($rbeids)) {
                     foreach ($rbeids as $rbeid) {
@@ -493,8 +524,10 @@ class RocketMap extends Scanner
                             $gym["raid_pokemon_move_1"] = null;
                             $gym["raid_pokemon_move_2"] = null;
                             $gym["raid_pokemon_form"] = null;
+                            $gym["raid_pokemon_costume"] = null;
                             $gym["raid_pokemon_cp"] = null;
                             $gym["raid_pokemon_gender"] = null;
+                            $gym["raid_pokemon_evolution"] = null;
                             break;
                         }
                     }
@@ -509,8 +542,10 @@ class RocketMap extends Scanner
                             $gym["raid_pokemon_move_1"] = null;
                             $gym["raid_pokemon_move_2"] = null;
                             $gym["raid_pokemon_form"] = null;
+                            $gym["raid_pokemon_costume"] = null;
                             $gym["raid_pokemon_cp"] = null;
                             $gym["raid_pokemon_gender"] = null;
+                            $gym["raid_pokemon_evolution"] = null;
                             break;
                         }
                     }

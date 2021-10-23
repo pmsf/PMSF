@@ -56,14 +56,16 @@ var StoreTypes = {
 // set the default parameters for you map here
 }
 var StoreOptions = {
-    'map_style': {
-        default: mapStyle, // roadmap, satellite, hybrid, nolabels_style, dark_style, style_light2, style_pgo, dark_style_nl, style_pgo_day, style_pgo_night, style_pgo_dynamic
-        type: StoreTypes.String
-    },
-    'remember_select_exclude': {
-        default: hidePokemon,
-        type: StoreTypes.JSON
-    },
+    'map_style':
+        {
+            default: mapStyle, // roadmap, satellite, hybrid, nolabels_style, dark_style, style_light2, style_pgo, dark_style_nl, style_pgo_day, style_pgo_night, style_pgo_dynamic
+            type: StoreTypes.String
+        },
+    'remember_select_exclude':
+        {
+            default: hidePokemon,
+            type: StoreTypes.JSON
+        },
     'remember_select_exclude_min_iv':
         {
             default: excludeMinIV,
@@ -87,6 +89,16 @@ var StoreOptions = {
     'remember_text_level_notify':
         {
             default: notifyLevel,
+            type: StoreTypes.Number
+        },
+    'remember_text_min_gl_rank':
+        {
+            default: minGLRank,
+            type: StoreTypes.Number
+        },
+    'remember_text_min_ul_rank':
+        {
+            default: minULRank,
             type: StoreTypes.Number
         },
     'remember_text_min_iv':
@@ -122,6 +134,11 @@ var StoreOptions = {
     'remember_quests_exclude_energy':
         {
             default: hideQuestsEnergy,
+            type: StoreTypes.JSON
+        },
+    'remember_quests_exclude_candy':
+        {
+            default: hideQuestsCandy,
             type: StoreTypes.JSON
         },
     'remember_quests_exclude_item':
@@ -199,6 +216,11 @@ var StoreOptions = {
             default: enableS2Cells,
             type: StoreTypes.Boolean
         },
+    'showPlacementRanges':
+        {
+            default: enablePlacementRanges,
+            type: StoreTypes.Boolean
+        },
     'showExCells':
         {
             default: enableLevel13Cells,
@@ -207,6 +229,11 @@ var StoreOptions = {
     'showGymCells':
         {
             default: enableLevel14Cells,
+            type: StoreTypes.Boolean
+        },
+    'showPokemonCells':
+        {
+            default: enableLevel15Cells,
             type: StoreTypes.Boolean
         },
     'showStopCells':
@@ -244,6 +271,11 @@ var StoreOptions = {
             default: enablePokemon,
             type: StoreTypes.Boolean
         },
+    'showMissingIVOnly':
+        {
+            default: false,
+            type: StoreTypes.Boolean
+        },
     'showBigKarp':
         {
             default: showBigKarp,
@@ -253,6 +285,16 @@ var StoreOptions = {
         {
             default: showTinyRat,
             type: StoreTypes.Boolean
+        },
+    'showDespawnTimeType':
+        {
+            default: showDespawnTimeType,
+            type: StoreTypes.Number
+        },
+    'showPokemonGender':
+        {
+            default: showPokemonGender,
+            type: StoreTypes.Number
         },
     'showPokestops':
         {
@@ -389,9 +431,9 @@ var StoreOptions = {
             default: false,
             type: StoreTypes.Boolean
         },
-    'iconSizeModifier':
+    'pokemonIconSize':
         {
-            default: iconSize,
+            default: pokemonIconSize,
             type: StoreTypes.Number
         },
     'iconNotifySizeModifier':
@@ -414,20 +456,15 @@ var StoreOptions = {
             default: directionProvider,
             type: StoreTypes.String
         },
-    'gymMarkerStyle':
-        {
-            default: gymStyle,
-            type: StoreTypes.String
-        },
     'zoomLevel':
         {
             default: defaultZoom,
             type: StoreTypes.Number
         },
-    'icons':
+    'iconsArray':
         {
-            default: icons,
-            type: StoreTypes.String
+            default: iconFolderArray,
+            type: StoreTypes.JSON
         },
     'triggerGyms':
         {
@@ -492,7 +529,6 @@ var mapData = {
     pokemons: {},
     gyms: {},
     pokestops: {},
-    lurePokemons: {},
     spawnpoints: {},
     nests: {},
     communities: {},
@@ -500,7 +536,7 @@ var mapData = {
     pois: {}
 }
 
-function getPokemonSprite(index, sprite, displayHeight, weather = 0, encounterForm = 0, pokemonCostume = 0, attack = 0, defense = 0, stamina = 0) {
+function getPokemonSprite(index, sprite, displayHeight, weather = 0, encounterForm = 0, pokemonCostume = 0, attack = 0, defense = 0, stamina = 0, gender = 0) {
     displayHeight = Math.max(displayHeight, 3)
     var scale = displayHeight / sprite.iconHeight
     // Crop icon just a tiny bit to avoid bleedover from neighbor
@@ -508,37 +544,17 @@ function getPokemonSprite(index, sprite, displayHeight, weather = 0, encounterFo
     var scaledWeatherIconSizeWidth = scaledIconSizeWidth * 0.6
     var scaledWeatherIconOffset = scaledIconSizeWidth * 0.2
     var scaledIconCenterOffset = [scale * sprite.iconWidth / 2, scale * sprite.iconHeight / 2]
-    var formStr = ''
-    if (encounterForm === '0' || encounterForm === null || encounterForm === 0) {
-        formStr = '00'
-    } else {
-        formStr = encounterForm
-    }
-
     var pokemonId = index + 1
-    var pokemonIdStr = ''
-    if (pokemonId <= 9) {
-        pokemonIdStr = '00' + pokemonId
-    } else if (pokemonId <= 99) {
-        pokemonIdStr = '0' + pokemonId
-    } else {
-        pokemonIdStr = pokemonId
-    }
-
-    var costume = ''
-    if (pokemonCostume > 0 && noCostumeIcons === false) {
-        costume = '_' + pokemonCostume
-    }
     var iv = 100 * (attack + defense + stamina) / 45
     var html = ''
     if (weather === 0 || noWeatherIcons) {
-        html = '<img src="' + iconpath + 'pokemon_icon_' + pokemonIdStr + '_' + formStr + costume + '.png" style="width:' + scaledIconSizeWidth + 'px;height:auto;'
+        html = '<img src="' + getIcon(iconpath.pokemon, 'pokemon', '.png', pokemonId, 0, encounterForm, pokemonCostume, gender) + '" style="width:' + scaledIconSizeWidth + 'px;height:auto;'
         if (iv === 100 && !noIvShadow) {
             html += 'filter:drop-shadow(0 0 10px red)drop-shadow(0 0 10px red);-webkit-filter:drop-shadow(0 0 10px red)drop-shadow(0 0 10px red);'
         }
         html += '"/>'
     } else if (noWeatherIcons === false) {
-        html = '<img src="' + iconpath + 'pokemon_icon_' + pokemonIdStr + '_' + formStr + costume + '.png" style="width:' + scaledIconSizeWidth + 'px;height:auto;'
+        html = '<img src="' + getIcon(iconpath.pokemon, 'pokemon', '.png', pokemonId, 0, encounterForm, pokemonCostume, gender) + '" style="width:' + scaledIconSizeWidth + 'px;height:auto;'
         if (iv === 100 && !noIvShadow) {
             html += 'filter:drop-shadow(0 0 10px red)drop-shadow(0 0 10px red);-webkit-filter:drop-shadow(0 0 10px red)drop-shadow(0 0 10px red);'
         }
@@ -555,7 +571,7 @@ function getPokemonSprite(index, sprite, displayHeight, weather = 0, encounterFo
 }
 
 function setupPokemonMarker(item, map, isBounceDisabled) {
-    var iconSize = (12) * (12) * 0.2 + Store.get('iconSizeModifier')
+    var iconSize = Store.get('pokemonIconSize')
     if (isNotifiedPokemon(item) === true) {
         iconSize += Store.get('iconNotifySizeModifier')
     }
@@ -564,7 +580,7 @@ function setupPokemonMarker(item, map, isBounceDisabled) {
     var attack = item['individual_attack']
     var defense = item['individual_defense']
     var stamina = item['individual_stamina']
-    var icon = getPokemonSprite(pokemonIndex, pokemonSprites, iconSize, item['weather_boosted_condition'], item['form'], item['costume'], item['individual_attack'], item['individual_defense'], item['individual_stamina'])
+    var icon = getPokemonSprite(pokemonIndex, pokemonSprites, iconSize, item['weather_boosted_condition'], item['form'], item['costume'], item['individual_attack'], item['individual_defense'], item['individual_stamina'], item['gender'])
 
     var animationDisabled = false
     if (isBounceDisabled === true) {

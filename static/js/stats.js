@@ -52,23 +52,9 @@ function countMarkers(map) { // eslint-disable-line no-unused-vars
 
         for (i = 0; i < pkmnCount.length; i++) {
             if (pkmnCount[i] && pkmnCount[i].Count > 0) {
-                var pokemonIdStr = ''
-                if (pkmnCount[i].ID <= 9) {
-                    pokemonIdStr = '00' + pkmnCount[i].ID
-                } else if (pkmnCount[i].ID <= 99) {
-                    pokemonIdStr = '0' + pkmnCount[i].ID
-                } else {
-                    pokemonIdStr = pkmnCount[i].ID
-                }
-                var formStr = ''
-                if (pkmnCount[i].Form === '0') {
-                    formStr = '00'
-                } else {
-                    formStr = pkmnCount[i].Form
-                }
                 var pkmnPercentage = (pkmnCount[i].Count * 100 / pkmnTotal * 10) / 10
                 pokeCounts.push([
-                    '<img style="height:30px;" src="' + iconpath + 'pokemon_icon_' + pokemonIdStr + '_' + formStr + '.png"/>',
+                    '<img style="height:30px;" src="' + getIcon(iconpath.pokemon, 'pokemon', '.png', pkmnCount[i].ID, 0, pkmnCount[i].Form) + '"/>',
                     '<a href=\'https://pokemon.gameinfo.io/' + languageSite + '/pokemon/' + pkmnCount[i].ID + '\' target=\'_blank\' title=\'' + i8ln('View in Pokédex') + '\' style=\'color: black;\'>' + pkmnCount[i].Name + '</a>',
                     pkmnCount[i].Count,
                     pkmnPercentage.toFixed(2) + '%'
@@ -102,13 +88,13 @@ function countMarkers(map) { // eslint-disable-line no-unused-vars
         for (i = 0; i < arenaCount.length; i++) {
             if (arenaCount[i] > 0) {
                 if (i === 1) {
-                    arenaListString += '<tr><td><img src="static/forts/Mystic.png" style="height:48px;"/></td><td style="vertical-align:middle;">' + i8ln('Mystic') + '</td><td style="vertical-align:middle;">' + arenaCount[i] + '</td><td style="vertical-align:middle;">' + Math.round(arenaCount[i] * 100 / arenaTotal * 10) / 10 + '%</td></tr>'
+                    arenaListString += '<tr><td><img src="' + getIcon(iconpath.gym, 'gym', '.png', '1') + '" style="height:48px;"/></td><td style="vertical-align:middle;">' + i8ln('Mystic') + '</td><td style="vertical-align:middle;">' + arenaCount[i] + '</td><td style="vertical-align:middle;">' + Math.round(arenaCount[i] * 100 / arenaTotal * 10) / 10 + '%</td></tr>'
                 } else if (i === 2) {
-                    arenaListString += '<tr><td><img src="static/forts/Valor.png" style="height:48px;"/></td><td style="vertical-align:middle;">' + i8ln('Valor') + '</td><td style="vertical-align:middle;">' + arenaCount[i] + '</td><td style="vertical-align:middle;">' + Math.round(arenaCount[i] * 100 / arenaTotal * 10) / 10 + '%</td></tr>'
+                    arenaListString += '<tr><td><img src="' + getIcon(iconpath.gym, 'gym', '.png', '2') + '" style="height:48px;"/></td><td style="vertical-align:middle;">' + i8ln('Valor') + '</td><td style="vertical-align:middle;">' + arenaCount[i] + '</td><td style="vertical-align:middle;">' + Math.round(arenaCount[i] * 100 / arenaTotal * 10) / 10 + '%</td></tr>'
                 } else if (i === 3) {
-                    arenaListString += '<tr><td><img src="static/forts/Instinct.png" style="height:48px;"/></td><td style="vertical-align:middle;">' + i8ln('Instinct') + '</td><td style="vertical-align:middle;">' + arenaCount[i] + '</td><td style="vertical-align:middle;">' + Math.round(arenaCount[i] * 100 / arenaTotal * 10) / 10 + '%</td></tr>'
+                    arenaListString += '<tr><td><img src="' + getIcon(iconpath.gym, 'gym', '.png', '3') + '" style="height:48px;"/></td><td style="vertical-align:middle;">' + i8ln('Instinct') + '</td><td style="vertical-align:middle;">' + arenaCount[i] + '</td><td style="vertical-align:middle;">' + Math.round(arenaCount[i] * 100 / arenaTotal * 10) / 10 + '%</td></tr>'
                 } else {
-                    arenaListString += '<tr><td><img src="static/forts/Uncontested.png" style="height:48px;"/></td><td style="vertical-align:middle;">' + i8ln('Uncontested') + '</td><td style="vertical-align:middle;">' + arenaCount[i] + '</td><td style="vertical-align:middle;">' + Math.round(arenaCount[i] * 100 / arenaTotal * 10) / 10 + '%</td></tr>'
+                    arenaListString += '<tr><td><img src="' + getIcon(iconpath.gym, 'gym', '.png', '0') + '" style="height:48px;"/></td><td style="vertical-align:middle;">' + i8ln('Uncontested') + '</td><td style="vertical-align:middle;">' + arenaCount[i] + '</td><td style="vertical-align:middle;">' + Math.round(arenaCount[i] * 100 / arenaTotal * 10) / 10 + '%</td></tr>'
                 }
             }
         }
@@ -125,6 +111,13 @@ function countMarkers(map) { // eslint-disable-line no-unused-vars
             thisRaidIsVisible = currentVisibleMap.contains(thisRaidLocation)
             if (thisRaidIsVisible) {
                 if (mapData.gyms[key]['raid_end'] && mapData.gyms[key]['raid_end'] > Date.now()) {
+                    if (mapData.gyms[key]['raid_level'] === '6') {
+                        if (raidCount[6] === 0 || !raidCount[6]) {
+                            raidCount[6] = 1
+                        } else {
+                            raidCount[6] += 1
+                        }
+                    }
                     if (mapData.gyms[key]['raid_level'] === '5') {
                         if (raidCount[5] === 0 || !raidCount[5]) {
                             raidCount[5] = 1
@@ -169,15 +162,17 @@ function countMarkers(map) { // eslint-disable-line no-unused-vars
         for (i = 0; i < raidCount.length; i++) {
             if (raidCount[i] > 0) {
                 if (i === 1) {
-                    raidListString += '<tr><td><img src="static/raids/egg_normal.png" style="height:48px;"/></td><td style="vertical-align:middle;">1</td><td style="vertical-align:middle;">' + raidCount[i] + '</td><td style="vertical-align:middle;">' + Math.round(raidCount[i] * 100 / raidTotal * 10) / 10 + '%</td></tr>'
+                    raidListString += '<tr><td><img src="' + getIcon(iconpath.raid, 'raid/egg', '.png', '1') + '" style="height:48px;"/></td><td style="vertical-align:middle;">1</td><td style="vertical-align:middle;">' + raidCount[i] + '</td><td style="vertical-align:middle;">' + Math.round(raidCount[i] * 100 / raidTotal * 10) / 10 + '%</td></tr>'
                 } else if (i === 2) {
-                    raidListString += '<tr><td><img src="static/raids/egg_normal.png" style="height:48px;"/></td><td style="vertical-align:middle;">2</td><td style="vertical-align:middle;">' + raidCount[i] + '</td><td style="vertical-align:middle;">' + Math.round(raidCount[i] * 100 / raidTotal * 10) / 10 + '%</td></tr>'
+                    raidListString += '<tr><td><img src="' + getIcon(iconpath.raid, 'raid/egg', '.png', '2') + '" style="height:48px;"/></td><td style="vertical-align:middle;">2</td><td style="vertical-align:middle;">' + raidCount[i] + '</td><td style="vertical-align:middle;">' + Math.round(raidCount[i] * 100 / raidTotal * 10) / 10 + '%</td></tr>'
                 } else if (i === 3) {
-                    raidListString += '<tr><td><img src="static/raids/egg_rare.png" style="height:48px;"/></td><td style="vertical-align:middle;">3</td><td style="vertical-align:middle;">' + raidCount[i] + '</td><td style="vertical-align:middle;">' + Math.round(raidCount[i] * 100 / raidTotal * 10) / 10 + '%</td></tr>'
+                    raidListString += '<tr><td><img src="' + getIcon(iconpath.raid, 'raid/egg', '.png', '3') + '" style="height:48px;"/></td><td style="vertical-align:middle;">3</td><td style="vertical-align:middle;">' + raidCount[i] + '</td><td style="vertical-align:middle;">' + Math.round(raidCount[i] * 100 / raidTotal * 10) / 10 + '%</td></tr>'
                 } else if (i === 4) {
-                    raidListString += '<tr><td><img src="static/raids/egg_rare.png" style="height:48px;"/></td><td style="vertical-align:middle;">4</td><td style="vertical-align:middle;">' + raidCount[i] + '</td><td style="vertical-align:middle;">' + Math.round(raidCount[i] * 100 / raidTotal * 10) / 10 + '%</td></tr>'
+                    raidListString += '<tr><td><img src="' + getIcon(iconpath.raid, 'raid/egg', '.png', '4') + '" style="height:48px;"/></td><td style="vertical-align:middle;">4</td><td style="vertical-align:middle;">' + raidCount[i] + '</td><td style="vertical-align:middle;">' + Math.round(raidCount[i] * 100 / raidTotal * 10) / 10 + '%</td></tr>'
                 } else if (i === 5) {
-                    raidListString += '<tr><td><img src="static/raids/egg_legendary.png" style="height:48px;"/></td><td style="vertical-align:middle;">5</td><td style="vertical-align:middle;">' + raidCount[i] + '</td><td style="vertical-align:middle;">' + Math.round(raidCount[i] * 100 / raidTotal * 10) / 10 + '%</td></tr>'
+                    raidListString += '<tr><td><img src="' + getIcon(iconpath.raid, 'raid/egg', '.png', '5') + '" style="height:48px;"/></td><td style="vertical-align:middle;">5</td><td style="vertical-align:middle;">' + raidCount[i] + '</td><td style="vertical-align:middle;">' + Math.round(raidCount[i] * 100 / raidTotal * 10) / 10 + '%</td></tr>'
+                } else if (i === 6) {
+                    raidListString += '<tr><td><img src="' + getIcon(iconpath.raid, 'raid/egg', '.png', '6') + '" style="height:48px;"/></td><td style="vertical-align:middle;">6</td><td style="vertical-align:middle;">' + raidCount[i] + '</td><td style="vertical-align:middle;">' + Math.round(raidCount[i] * 100 / raidTotal * 10) / 10 + '%</td></tr>'
                 }
             }
         }
@@ -257,19 +252,19 @@ function countMarkers(map) { // eslint-disable-line no-unused-vars
         for (i = 0; i < pokestopCount.length; i++) {
             if (pokestopCount[i] > 0) {
                 if (i === 1) {
-                    pokestopListString += '<tr><td><img src="static/forts/PstopQuest.png" style="height:48px;"/></td><td style="vertical-align:middle;">' + i8ln('Quest') + '</td><td style="vertical-align:middle;">' + pokestopCount[i] + '</td><td style="vertical-align:middle;">' + Math.round(pokestopCount[i] * 100 / pokestopTotal * 10) / 10 + '%</td></tr>'
+                    pokestopListString += '<tr><td><img src="' + getIcon(iconpath.pokestop, 'pokestop', '.png', '0', 0, 1) + '" style="height:48px;"/></td><td style="vertical-align:middle;">' + i8ln('Quest') + '</td><td style="vertical-align:middle;">' + pokestopCount[i] + '</td><td style="vertical-align:middle;">' + Math.round(pokestopCount[i] * 100 / pokestopTotal * 10) / 10 + '%</td></tr>'
                 } else if (i === 2) {
-                    pokestopListString += '<tr><td><img src="static/forts/PstopLured_501.png" style="height:48px;"/></td><td style="vertical-align:middle;">' + i8ln('Normal Lure') + '</td><td style="vertical-align:middle;">' + pokestopCount[i] + '</td><td style="vertical-align:middle;">' + Math.round(pokestopCount[i] * 100 / pokestopTotal * 10) / 10 + '%</td></tr>'
+                    pokestopListString += '<tr><td><img src="' + getIcon(iconpath.pokestop, 'pokestop', '.png', '501') + '" style="height:48px;"/></td><td style="vertical-align:middle;">' + i8ln('Normal Lure') + '</td><td style="vertical-align:middle;">' + pokestopCount[i] + '</td><td style="vertical-align:middle;">' + Math.round(pokestopCount[i] * 100 / pokestopTotal * 10) / 10 + '%</td></tr>'
                 } else if (i === 3) {
-                    pokestopListString += '<tr><td><img src="static/forts/PstopLured_502.png" style="height:48px;"/></td><td style="vertical-align:middle;">' + i8ln('Glacial Lure') + '</td><td style="vertical-align:middle;">' + pokestopCount[i] + '</td><td style="vertical-align:middle;">' + Math.round(pokestopCount[i] * 100 / pokestopTotal * 10) / 10 + '%</td></tr>'
+                    pokestopListString += '<tr><td><img src="' + getIcon(iconpath.pokestop, 'pokestop', '.png', '502') + '" style="height:48px;"/></td><td style="vertical-align:middle;">' + i8ln('Glacial Lure') + '</td><td style="vertical-align:middle;">' + pokestopCount[i] + '</td><td style="vertical-align:middle;">' + Math.round(pokestopCount[i] * 100 / pokestopTotal * 10) / 10 + '%</td></tr>'
                 } else if (i === 4) {
-                    pokestopListString += '<tr><td><img src="static/forts/PstopLured_503.png" style="height:48px;"/></td><td style="vertical-align:middle;">' + i8ln('Mossy Lure') + '</td><td style="vertical-align:middle;">' + pokestopCount[i] + '</td><td style="vertical-align:middle;">' + Math.round(pokestopCount[i] * 100 / pokestopTotal * 10) / 10 + '%</td></tr>'
+                    pokestopListString += '<tr><td><img src="' + getIcon(iconpath.pokestop, 'pokestop', '.png', '503') + '" style="height:48px;"/></td><td style="vertical-align:middle;">' + i8ln('Mossy Lure') + '</td><td style="vertical-align:middle;">' + pokestopCount[i] + '</td><td style="vertical-align:middle;">' + Math.round(pokestopCount[i] * 100 / pokestopTotal * 10) / 10 + '%</td></tr>'
                 } else if (i === 5) {
-                    pokestopListString += '<tr><td><img src="static/forts/PstopLured_504.png" style="height:48px;"/></td><td style="vertical-align:middle;">' + i8ln('Magnetic Lure') + '</td><td style="vertical-align:middle;">' + pokestopCount[i] + '</td><td style="vertical-align:middle;">' + Math.round(pokestopCount[i] * 100 / pokestopTotal * 10) / 10 + '%</td></tr>'
+                    pokestopListString += '<tr><td><img src="' + getIcon(iconpath.pokestop, 'pokestop', '.png', '504') + '" style="height:48px;"/></td><td style="vertical-align:middle;">' + i8ln('Magnetic Lure') + '</td><td style="vertical-align:middle;">' + pokestopCount[i] + '</td><td style="vertical-align:middle;">' + Math.round(pokestopCount[i] * 100 / pokestopTotal * 10) / 10 + '%</td></tr>'
                 } else if (i === 6) {
-                    pokestopListString += '<tr><td><img src="static/forts/PstopLured_505.png" style="height:48px;"/></td><td style="vertical-align:middle;">' + i8ln('Rainy Lure') + '</td><td style="vertical-align:middle;">' + pokestopCount[i] + '</td><td style="vertical-align:middle;">' + Math.round(pokestopCount[i] * 100 / pokestopTotal * 10) / 10 + '%</td></tr>'
+                    pokestopListString += '<tr><td><img src="' + getIcon(iconpath.pokestop, 'pokestop', '.png', '505') + '" style="height:48px;"/></td><td style="vertical-align:middle;">' + i8ln('Rainy Lure') + '</td><td style="vertical-align:middle;">' + pokestopCount[i] + '</td><td style="vertical-align:middle;">' + Math.round(pokestopCount[i] * 100 / pokestopTotal * 10) / 10 + '%</td></tr>'
                 } else if (i === 7) {
-                    pokestopListString += '<tr><td><img src="static/forts/Pstop_rocket.png" style="height:48px;"/></td><td style="vertical-align:middle;">' + i8ln('Team Rocket') + '</td><td style="vertical-align:middle;">' + pokestopCount[i] + '</td><td style="vertical-align:middle;">' + Math.round(pokestopCount[i] * 100 / pokestopTotal * 10) / 10 + '%</td></tr>'
+                    pokestopListString += '<tr><td><img src="' + getIcon(iconpath.pokestop, 'pokestop', '.png', '0', 1) + '" style="height:48px;"/></td><td style="vertical-align:middle;">' + i8ln('Team Rocket') + '</td><td style="vertical-align:middle;">' + pokestopCount[i] + '</td><td style="vertical-align:middle;">' + Math.round(pokestopCount[i] * 100 / pokestopTotal * 10) / 10 + '%</td></tr>'
                 }
             }
         }
@@ -318,4 +313,112 @@ function countMarkers(map) { // eslint-disable-line no-unused-vars
         $('#spawnpointList').html('<center>' + i8ln('Spawnpoint markers are disabled') + '</center>')
     }
     $('#loadingSpinner').hide()
+}
+
+function processOverviewStats(i, item) { // eslint-disable-line no-unused-vars
+    $('h4.pokemon-count').html(item['pokemon_count'])
+    $('h4.gym-count').html(item['gym_count'])
+    $('h4.raid-count').html(item['raid_count'])
+    $('h4.pokestop-count').html(item['pokestop_count'])
+}
+
+function processTeamStats(i, item) { // eslint-disable-line no-unused-vars
+    $('h4.neutral-count').html(item['neutral_count'])
+    $('h4.mystic-count').html(item['mystic_count'])
+    $('h4.valor-count').html(item['valor_count'])
+    $('h4.instinct-count').html(item['instinct_count'])
+}
+
+function processPokestopStats(i, item) { // eslint-disable-line no-unused-vars
+    $('h4.quest-count').html(item['quest'])
+    $('h4.rocket-count').html(item['rocket'])
+    $('h4.normal-lure-count').html(item['normal_lure'])
+    $('h4.glacial-lure-count').html(item['glacial_lure'])
+    $('h4.mossy-lure-count').html(item['mossy_lure'])
+    $('h4.magnetic-lure-count').html(item['magnetic_lure'])
+    $('h4.rainy-lure-count').html(item['rainy_lure'])
+}
+
+function processSpawnpointStats(i, item) { // eslint-disable-line no-unused-vars
+    $('h4.spawnpoint-total').html(item['total'])
+    $('h4.spawnpoint-found').html(item['found'])
+    $('h4.spawnpoint-missing').html(item['missing'])
+}
+
+function processPokemonStats(i, item) { // eslint-disable-line no-unused-vars
+    var id = item['pokemon_id']
+    var pokemon = '<img src="' + getIcon(iconpath.pokemon, 'pokemon', '.png', id, 0, item['form'], item['costume']) + '" style="width:40px;"><span style="display:none">' + item['name'] + '</span>'
+
+    var types = item['pokemon_types']
+    var typeDisplay = ''
+
+    $.each(types, function (index, type) {
+        typeDisplay += '<nobr>' + i8ln(type['type']) + ' <img src="' + getIcon(iconpath.type, 'type', '.png', getKeyByValue(pokemonTypes, type.type)) + '" style="width:18px;"></nobr>'
+        if (index === 0) {
+            typeDisplay += '<br>'
+        }
+    })
+
+    pokemonTable.row.add([
+        item['pokemon_id'],
+        pokemon,
+        typeDisplay,
+        item['count'],
+        item['percentage']
+    ])
+}
+
+function processRewardStats(i, item) { // eslint-disable-line no-unused-vars
+    var reward = ''
+    var type = ''
+    var hiddenName = '<span style="display: none;">' + item['name'] + '</span>'
+
+    switch (item['quest_reward_type']) {
+        case 2:
+            reward = '<img src="' + getIcon(iconpath.reward, 'reward/item', '.png', item['quest_item_id'], item['quest_reward_amount']) + '" style="width:40px;">' +
+            hiddenName
+            type = i8ln('Item')
+            break
+        case 3:
+            reward = '<img src="' + getIcon(iconpath.reward, 'reward/stardust', '.png', item['quest_dust_amount']) + '" style="width:40px;">' +
+            hiddenName
+            type = i8ln('Stardust')
+            break
+        case 4:
+            reward = '<img src="' + getIcon(iconpath.reward, 'reward/candy', '.png', item['quest_candy_pokemon_id']) + '" style="width:40px;">' +
+            hiddenName
+            type = i8ln('Candy')
+            break
+        case 7:
+            reward = '<img src="' + getIcon(iconpath.pokemon, 'pokemon', '.png', item['quest_pokemon_id'], 0, item['quest_pokemon_form']) + '" style="width:40px;">' +
+            hiddenName
+            type = i8ln('Pokémon')
+            break
+        case 12:
+            reward = '<img src="' + getIcon(iconpath.reward, 'reward/mega_resource', '.png', item['quest_energy_pokemon_id']) + '" style="width:40px;">' +
+            hiddenName
+            type = i8ln('Mega Energy')
+            break
+    }
+
+    rewardTable.row.add([
+        type,
+        reward,
+        item['count'],
+        item['percentage']
+    ])
+}
+
+function processShinyStats(i, item) { // eslint-disable-line no-unused-vars
+    var hiddenName = '<span style="display: none;">' + item['name'] + '</span>'
+    var pokemon = '<img src="' + getIcon(iconpath.pokemon, 'pokemon', '.png', item['pokemon_id'], 0, item['form'], item['costume'], 0, 1) + '" style="width:40px;">' +
+    hiddenName
+    var rate = item['rate'] + '<br>(' + item['percentage'] + ')'
+
+    shinyTable.row.add([
+        pokemon,
+        item['shiny_count'],
+        rate,
+        item['sample_size']
+    ])
 }
