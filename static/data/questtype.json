@@ -144,6 +144,7 @@
     "text": "QUEST_GBL_RANK"
   },
   "53": {
+    "prototext": "QUEST_CHARGE_ATTACK",
     "text": "Use {0} Charged Attack(s)"
   },
   "54": {
