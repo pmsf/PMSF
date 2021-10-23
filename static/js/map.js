@@ -2669,12 +2669,12 @@ function setupNestMarker(item) {
         var pokemonId = item.pokemon_id
         var formId = item.pokemon_form
         getNestMarkerIcon = '<div class="marker-nests">' +
-            '<img src="static/images/nest-' + item.english_pokemon_types[0].type.toLowerCase() + '.png" style="width:45px;height: auto;"/>' +
+            '<img src="' + getIcon(iconpath.nest, 'nest', '.png', getKeyByValue(pokemonTypes, item.english_pokemon_types[0].type)) + '" style="width:45px;height: auto;"/>' +
             '<img src="' + getIcon(iconpath.pokemon, 'pokemon', '.png', pokemonId, 0, formId) + '" style="position:absolute;width:40px;height:40px;top:6px;left:3px"/>' +
             '</div>'
     } else {
         getNestMarkerIcon = '<div class="marker-nests">' +
-            '<img src="static/images/nest-empty.png" style="width:36px;height:auto;"/>' +
+            '<img src="' + getIcon(iconpath.nest, 'nest', '.png', 0) + '" style="width:36px;height:auto;"/>' +
             '</div>'
     }
     var nestMarkerIcon = L.divIcon({
@@ -2728,7 +2728,7 @@ function nestLabel(item) {
             '</center>'
     } else {
         str += '<div align="center" class="marker-nests">' +
-            '<img src="static/images/nest-empty.png" align"middle" style="width:36px;height: auto;"/>' +
+            '<img src="' + getIcon(iconpath.nest, 'nest', '.png', 0) + '" align"middle" style="width:36px;height: auto;"/>' +
             '</div>' +
             '<center><b>' + i8ln('No Pokemon - Assign One Below') + '</b></center>'
     }
@@ -6397,6 +6397,9 @@ $(function () {
                 redrawPokemon(mapData.pokemons)
                 updateGymIcons()
                 updatePokestopIcons()
+                if (Store.get('showNests')) {
+                    lastnests = false
+                }
             })
             .fail(function () {
                 if (enableJSDebug) {
@@ -7612,6 +7615,23 @@ function getIcon(iconRepo, folder, fileType, iconKeyId, ...varArgs) {
                 } else {
                     if (enableJSDebug) {
                         console.log('Repo is missing invasion icon: ' + requestedIcon)
+                    }
+                }
+            }
+            break
+        case 'nest':
+            if (iconpath['nestIndex'] === undefined) {
+                if (enableJSDebug) {
+                    console.log('No nestIndex? Houston, we have a problem.')
+                }
+            } else {
+                const typeId = iconKeyId
+                requestedIcon = `${typeId}${fileType}`
+                if (iconpath['nestIndex'].includes(requestedIcon)) {
+                    icon = requestedIcon
+                } else {
+                    if (enableJSDebug) {
+                        console.log('Repo is missing nest icon: ' + requestedIcon)
                     }
                 }
             }
