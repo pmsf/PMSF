@@ -62,6 +62,7 @@ $showPokemonsOutsideBoundaries = false;
 $showGymsOutsideBoundaries = false;
 $showSpawnsOutsideBoundaries = false;
 $showStopsOutsideBoundaries = false;
+
 $boundaries = '51.9258236369112 5.4520494625403,
                51.8982915107015 5.4808885738685,
                51.8715904160174 5.4630357906653,
@@ -71,7 +72,7 @@ $boundaries = '51.9258236369112 5.4520494625403,
                51.8635345916882 5.1952440426185,
                51.9033756353006 5.2254564449622,
                51.9304812498708 5.4032976314857,
-               51.9258236369112 5.4520494625403';
+               51.9258236369112 5.4520494625403';                   // First and last coords have to be the same!
 
 /* Anti scrape Settings */
 $enableCsrf = true;                                                 // Don't disable this unless you know why you need to :)
@@ -85,24 +86,16 @@ $headerTitle = "POGOmap";                                           // Title to 
 $locale = "en";                                                     // Display language
 $noLocaleSelection = false;
 $enLocaleFlag = "us";                                               // Change country flag for english in the language changer
+$raidmapLogo = '';                                                  // Upload logo to custom folder, leave '' for empty ( $raidmapLogo = 'custom/logo.png'; )
 
 /* Info Modal */
 $noInfoModal = true;                                                // Hide infomodal and button
-$infoModalTitle = 'Info';                                           // Infomodal title
-$infoModalContent = 'Your text info here';                          // HTML markup allowed (external html file load $infoModalContent = file_get_contents('custom/modal.html');
+$infoModalTitle = '';                                               // Infomodal title
+$infoModalContent = '';                                             // HTML markup allowed (external html file load $infoModalContent = file_get_contents('custom/modal.html');
 
 /* Google Maps key is ONLY USED FOR TILE LAYERS */
 
 $gmapsKey = "";
-
-/* Favicon */
-$faviconPath = '';                                                  // Upload favicon.ico to custom folder, leave '' for empty ( $faviconPath = 'custom/favicon.ico'; )
-$appIconPath = 'static/appicons/';
-
-/* Custom Overlay */
-$letItSnow = true;                                                  // Show snow overlay at 24, 25 and 26 December
-$makeItBang = true;                                                 // Show fireworks overlay at 31 December and 1 January
-$showYourLove = true;
 
 /* Google Analytics */
 
@@ -118,7 +111,7 @@ $noCookie = true;                                                   // Display a
 
 /* header urls */
 $paypalUrl = "";                                                    // PayPal donation URL, leave "" for empty
-$discordUrl = "https://discord.gg/INVITE_LINK";                     // Discord URL, leave "" for empty
+$discordUrl = "";                                                   // Discord URL, leave "" for empty
 $whatsAppUrl = "";                                                  // WhatsApp URL, leave "" for empty
 $telegramUrl = "";                                                  // Telegram URL, leave "" for empty
 $patreonUrl = "";                                                   // Patreon URL, leave "" for empty
@@ -130,13 +123,17 @@ $noStatsToggle = false;                                             // Enables o
 $noFullStats = false;                                               // Enables or disables full stats
 
 /* MOTD */
-$noMotd = true;
-$showMotdOnlyOnce = false;
+$noMotd = true;                                                     // Message of the day.
+$showMotdOnlyOnce = false;                                          // Only show motd if user didnt see the current $motdContent yet.
 $motdTitle = "";
 $motdContent = "";
 
 /* Share links */
 $noWhatsappLink = true;
+
+/* Favicon */
+$faviconPath = '';                                                  // Upload favicon.ico to custom folder, leave '' for empty ( $faviconPath = 'custom/favicon.ico'; )
+$appIconPath = 'static/appicons/';
 
 /* IMGBB API */
 $imgurCID = "";
@@ -152,180 +149,205 @@ $userTimezone = date_default_timezone_get();
 
 /* Toastr settings */
 $toastDelay = 2000;                                                 // ToastDelay in milliseconds
+
 //-----------------------------------------------------
 // Login  - You need to create the two tables referenced in sql.sql
 //-----------------------------------------------------
+
 $monologPath = 'php://stdout';
 $useLoginCookie = false;                                            // Use cookie to restore session after browser is closed.
-$forcedLogin = false;                                               // Users will be forced to login before entering the map.
+$forcedLogin = false;                                               // Force users to login before they can see map.
 $allowMultiLogin = false;                                           // Allow users to login with multiple devices simulteously.
-$noNativeLogin = true;                                              // true/false - This will enable the built in login system.
-$domainName = '';                                                   // If this is empty, reset-password emails will use the domain name taken from the URL.
 
-$noDiscordLogin = true;                                             // true/false - This will enable login through discord.
+/* Discord Auth */
+$noDiscordLogin = true;                                             // true/false | This will enable login through discord.
                                                                     // 1. Create a discord bot here -> https://discordapp.com/developers/applications/me
                                                                     // 2. Install composer with "apt-get install composer".
                                                                     // 3. Navigate to your website's root folder and type "composer install" to install the dependencies.
                                                                     // 4. Add your callback-page as a REDIRECT URI to your discord bot. Should be the same as $discordBotRedirectUri.
-                                                                    // 5. Enter Client ID, Client Secret and Redirect URI below.
+                                                                    // 5. Enter Client ID, Client Secret, Redirect URI and Token below.
 $discordBotClientId = 0;
 $discordBotClientSecret = "";
-$discordBotRedirectUri = "https://Yourdomain.com/login?callback=discord";
+$discordBotRedirectUri = "";
 $discordBotToken = "";
 $discordLogLevel = "INFO";                                          // Do NOT change unless asked
 
+/* Give certain users certain access levels. */
+$discordUsers = [];
+
+/* Match role-id values with access levels in access config. Remove or add according your needs */
+
 $guildRoles = [];
 
-$noFacebookLogin = true;
-$facebookAppId = '';                                                          // Facebook App ID
-$facebookAppSecret = '';                                                      // Facebook App Secret
-$facebookAppRedirectUri = 'https://Yourdomain.com/login?callback=facebook';   // Callback url make sure this is the same as set in Facebook app config
-$facebookAccessLevel = '1';                                                   // Accesslevel used in access-config.php
 
-$noGroupmeLogin = true;
+/* Facebook Auth */
+$noFacebookLogin = true;                                            // true/false
+$facebookAppId = '';                                                // Facebook App ID
+$facebookAppSecret = '';                                            // Facebook App Secret
+$facebookAppRedirectUri = '';                                       // Callback url make sure this is the same as set in Facebook app config
+$facebookAccessLevel = '1';                                         // Accesslevel used in access-config.php
+
+/* Groupme Auth */
+$noGroupmeLogin = true;                                             // true/false
 $groupmeClientId = '';
-$groupmeCallbackUri = 'https://Yourdomain.com/login?callback=groupme';
+$groupmeCallbackUri = '';
 $groupmeAccessLevel = '1';
 
-$noPatreonLogin = true;
+/* Patreon Auth */
+$noPatreonLogin = true;                                             // true/false
 $patreonClientId = '';
-$patreonCreatorAccessToken = '';
 $patreonClientSecret = '';
-$patreonCallbackUri = 'https://Yourdomain.com/login?callback=patreon';
+$patreonCreatorAccessToken = '';
+$patreonCallbackUri = '';
 
-$patreonTierRequired = true;                                                  // Member must have pledged set to false to allow any patreon user to log in.
-$patreonTiers = [];                                                           // Tier ids can be obtained by clicking the join tier button on patreon and the URL will show you checkout?rid=<NUMBER>
-
-$adminUsers = array('admin@example.com', 'Superadmin#13337');                 // You can add multiple admins by adding them to the array.
+$patreonTierRequired = true;                                        // Member must have pledged set to false to allow any patreon user to log in.
+$patreonTiers = [];                                                 // Tier ids can be obtained by clicking the join tier button on patreon and the URL will show you checkout?rid=<NUMBER>
 
 /* Blacklist Settings - Only available with Discord login */
-$userBlacklist = [''];                                                        // Array of user ID's that are always blocked from accessing the map
-$userWhitelist = [''];                                                        // Array of user ID's that's allowed to bypass the server blacklist
-$serverBlacklist = [''];                                                      // Array of server ID's. A user that's a member of any of these and not in your user whitelist will be blocked
-$logFailedLogin = '';                                                         // File location of where to store a log file of blocked users
+$userBlacklist = [''];                                              // Array of user ID's that are always blocked from accessing the map
+$userWhitelist = [''];                                              // Array of user ID's that's allowed to bypass the server blacklist
+$serverBlacklist = [''];                                            // Array of server ID's. A user that's a member of any of these and not in your user whitelist will be blocked
+$logFailedLogin = '';                                               // File location of where to store a log file of blocked users
+
+/* Native Auth */
+$noNativeLogin = true;                                              // This will enable the built in login system.
+$domainName = '';                                                   // If this is empty, reset-password emails will use the domain name taken from the URL.
+$adminUsers = [];                                                   // You can add multiple admins by adding them to the array.
 
 //-----------------------------------------------------
 // FRONTEND SETTINGS
 //-----------------------------------------------------
 
 /* Marker Settings */
-$noExcludeMinIV = true;                                        // true/false
-$noMinIV = true;                                               // true/false
-$noMinLevel = true;                                            // true/false
-$noHighLevelData = true;                                       // true/false
-$noCatchRates = false;
-$noRarityDisplay = false;                                      // true/false
-$noWeatherIcons = true;
-$no100IvShadow = false;
-$noHideSingleMarker = false;
+$noMinGLRank = false;                                               // true/false
+$noMinULRank = false;                                               // true/false
+$noExcludeMinIV = true;                                             // true/false
+$noMinIV = true;                                                    // true/false
+$noMinLevel = true;                                                 // true/false
+$noHighLevelData = true;                                            // true/false
+$noCatchRates = false;                                              // true/false
+$noRarityDisplay = false;                                           // true/false
+$noWeatherIcons = true;                                             // true/false
+$no100IvShadow = false;                                             // true/false
+$noHideSingleMarker = false;                                        // true/false
 
 /* Notification Settings */
-$noNotifyPokemon = false;                                      // true/false
-$noNotifyRarity = false;                                       // true/false
-$noNotifyIv = false;                                           // true/false
-$noNotifyLevel = false;                                        // true/false
-$noNotifyRaid = false;                                         // true/false
-$noNotifySound = false;                                        // true/false
-$noCriesSound = false;                                         // true/false
-$noNotifyBounce = false;                                       // true/false
-$noNotifyNotification = false;                                 // true/false
-
-/* Style Settings */
-$iconNotifySizeModifier = 15;                                  // 0, 15, 30, 45
+$noNotifyPokemon = false;                                           // true/false
+$noNotifyRarity = false;                                            // true/false
+$noNotifyIv = false;                                                // true/false
+$noNotifyLevel = false;                                             // true/false
+$noNotifyRaid = false;                                              // true/false
+$noNotifySound = false;                                             // true/false
+$noCriesSound = false;                                              // true/false
+$noNotifyBounce = false;                                            // true/false
+$noNotifyNotification = false;                                      // true/false
 
 /* Marker Settings */
-
-$noPokemon = false;                                            // true/false
-$enablePokemon = 'true';                                       // true/false
-$noPokemonNumbers = false;                                     // true/false
-$noPokemonNames = false;                                       // true/false
-$noHidePokemon = false;                                        // true/false
-$hidePokemon = '[]';                                           // [] for empty
-$hidePokemonCoords = false;                                    // true/false
-$pokemonReportTime = false;
+$noPokemon = true;                                                  // true/false
+$enablePokemon = 'false';                                           // true/false
+$noPokemonNames = false;                                            // true/false
+$noPokemonNumbers = false;                                          // true/false
+$noHidePokemon = false;                                             // true/false
+$hidePokemon = '[]';                                                // [] for empty
+$hidePokemonCoords = false;                                         // true/false
+$pokemonReportTime = false;                                         // true/false
 $pokemonToExclude = [];
-$pokemonGenSearchString = 'generation';                        // When custom string is used translations do not work.
 
-$noPvp = false;
+$pokemonGenSearchString = 'generation';                             // When custom string is used translations do not work.
+
+$noPvp = false;                                                     // true/false
 
 $excludeMinIV = '[]';                                               // [] for empty
 
-$minIV = '0';                                                  // "0" for empty or a number
-$minLevel = '0';                                               // "0" for empty or a number
+$minGLRank = '0';                                                   // "0" for empty or a number
+$minULRank = '0';                                                   // "0" for empty or a number
 
-$noBigKarp = false;
-$noTinyRat = false;
+$minIV = '0';                                                       // "0" for empty or a number
+$minLevel = '0';                                                    // "0" for empty or a number
 
-$noGyms = false;                                               // true/false
-$enableGyms = 'false';                                         // true/false
-$hideGymCoords = false;
-$noExEligible = false;                                         // true/false
-$exEligible = 'false';                                         // true/false
-$noTeams = false;
-$noInBattle = false;
-$noOpenSpot = false;
-$noMinMaxFreeSlots = false;
-$noLastScan = false;
+$noMissingIVOnly = true;                                            // true/false
+$noBigKarp = false;                                                 // true/false
+$noTinyRat = false;                                                 // true/false
+$noDespawnTimeType = true;                                          // true/false
+$showDespawnTimeType = 0;                                           // 0 = All, 1 = Verified, 2 = Unverified, 3 = Unverified + Nearby (Nearby = no spawn point)
+$noPokemonGender = false;                                           // true/false
+$showPokemonGender = 0;                                             // 0 = All, 1 = Male, 2 = Female
 
-$noRaids = false;                                              // true/false
-$enableRaids = 'false';                                        // true/false
-$noActiveRaids = true;
-$activeRaids = 'false';                                        // true/false
-$noMinMaxRaidLevel = true;
+/* Gyms */
+$noGyms = false;                                                    // true/false
+$enableGyms = 'false';                                              // true/false
+$hideGymCoords = false;                                             // true/false
+$noExEligible = false;                                              // true/false
+$exEligible = 'false';                                              // true/false
+$noTeams = false;                                                   // true/false
+$noInBattle = false;                                                // true/false
+$noOpenSpot = false;                                                // true/false
+$noMinMaxFreeSlots = false;                                         // true/false
+$noLastScan = false;                                                // true/false
+
+/* Raids */
+$noRaids = false;                                                   // true/false
+$enableRaids = 'false';                                             // true/false
+$noActiveRaids = true;                                              // true/false
+$activeRaids = 'false';                                             // true/false
+$noMinMaxRaidLevel = true;                                          // true/false
 $minRaidLevel = 1;
 $maxRaidLevel = 6;
-$noRaidTimer = false;                                          // true/false
-$enableRaidTimer = 'false';                                    // true/false
-$noRaidbossNumbers = false;
+$noRaidTimer = false;                                               // true/false
+$enableRaidTimer = 'false';                                         // true/false
+$noRaidbossNames = false;                                           // true/false
+$noRaidbossNumbers = false;                                         // true/false
 $hideRaidboss = '[]';
 $excludeRaidboss = [];
-$noRaideggNumbers = false;
+$generateExcludeRaidboss = true;                                    // true/false
+$noRaideggNumbers = false;                                          // true/false
 $hideRaidegg = '[]';
 $excludeRaidegg = [];
-$generateExcludeRaidboss = true;
 
-$noPokestops = false;                                          // true/false
-$enablePokestops = 'false';                                    // true/false
-$hidePokestopCoords = false;
-$noAllPokestops = false;
-$enableAllPokestops = 'false';
+/* Pokestops */
+$noPokestops = false;                                               // true/false
+$enablePokestops = 'false';                                         // true/false
+$hidePokestopCoords = false;                                        // true/false
 
-$noLures = false;                                              // true/false
-$enableLured = 'false';                                        // true/false
+$noAllPokestops = false;                                            // true/false
+$enableAllPokestops = 'false';                                      // true/false
 
-$noTeamRocket = false;
-$noTeamRocketTimer = false;                                    // true/false
-$enableTeamRocketTimer = 'false';                              // true/false
-$enableTeamRocket = 'false';
-$noTeamRocketEncounterData = true;
-$noGrunts = false;
-$noGruntNumbers = false;
+$noLures = false;                                                   // true/false
+$enableLured = 'false';                                             // true/false
+
+$noTeamRocket = false;                                              // true/false
+$enableTeamRocket = 'false';                                        // true/false
+$noTeamRocketTimer = false;                                         // true/false
+$enableTeamRocketTimer = 'false';                                   // true/false
+$noTeamRocketEncounterData = true;                                  // true/false | Show/Hide possible rewards. Requires grunttype.json to be up to date.
+$noGrunts = false;                                                  // true/false
+$noGruntNumbers = false;                                            // true/false
 $hideGrunts = '[]';
 $excludeGrunts = [];
-$generateExcludeGrunts = true;
+$generateExcludeGrunts = true;                                      // true/false
 
-$noQuests = true;                                              // true/false
-$enableQuests = 'false';                                       // true/false
-$noQuestsItems = false;
-$noQuestsPokemon = false;
-$noQuestsEnergy = false;
-$noQuestsCandy = false;
-$noQuestsStardust = false;
-$hideQuestsPokemon = '[]';                                     // Pokemon ids
-$generateExcludeQuestsPokemon = true;
-$generateExcludeQuestsItem = true;
-$generateExcludeQuestsEnergy = true;
-$generateExcludeQuestsCandy = true;
-$excludeQuestsPokemon = [];                                    // Pokemon ids
-$hideQuestsItem = '[4, 5, 301, 401, 402, 403, 404, 501, 602, 603, 604, 702, 704, 708, 801, 901, 902, 903, 1001, 1002, 1401, 1402, 1403, 1404, 1405]';
-                                                               // Item ids "See protos https://github.com/Furtif/POGOProtos/blob/master/src/POGOProtos/Inventory/Item/ItemId.proto"
-$excludeQuestsItem = [4, 5, 301, 401, 402, 403, 404, 501, 602, 603, 604, 702, 704, 708, 801, 901, 902, 903, 1001, 1002, 1401, 1402, 1403, 1404, 1405];
-$noItemNumbers = true;                                         // true/false
+$noQuests = true;                                                   // true/false
+$enableQuests = 'false';                                            // true/false
+$noQuestsPokemon = false;                                           // true/false
+$noQuestsItems = false;                                             // true/false
+$noQuestsEnergy = false;                                            // true/false
+$noQuestsCandy = false;                                             // true/false
+$noQuestsStardust = false;                                          // true/false
+$noItemNames = false;                                                // true/false
+$noItemNumbers = true;                                              // true/false
 $defaultDustAmount = 500;
+$hideQuestsPokemon = '[]';                                          // Pokemon ids will default be hidden in the menu every user is able to change this personaly
+$excludeQuestsPokemon = [];                                         // All Pokémon in this array will not be shown in the filter.
+$generateExcludeQuestsPokemon = true;                               // Generate $excludeQuestsPokemon based on active quests in database
+$hideQuestsItem = '[4, 5, 301, 401, 402, 403, 404, 501, 602, 603, 604, 702, 704, 707, 801, 901, 902, 903, 1001, 1002, 1401, 1402, 1403, 1404, 1405]'; // Item ids "See protos https://github.com/Furtif/POGOProtos/blob/master/src/POGOProtos/Inventory/Item/ItemId.proto"
+$excludeQuestsItem = [4, 5, 301, 401, 402, 403, 404, 501, 602, 603, 604, 702, 704, 707, 801, 901, 902, 903, 1001, 1002, 1401, 1402, 1403, 1404, 1405]; // All excluded item wil not be shown in the filter.
+$generateExcludeQuestsItem = true;                                  // Generate $excludeQuestsItems based on active quests in database
 $hideQuestsEnergy = '[]';
 $excludeQuestsEnergy = [];
+$generateExcludeQuestsEnergy = true;                                // Generate $excludeQuestsEnergy based on active quests in database
 $hideQuestsCandy = '[]';
 $excludeQuestsCandy = [];
+$generateExcludeQuestsCandy = true;                                 // Generate $excludeQuestsCandy based on active quests in database
 
 /* Manual quest hide options */
 $hideQuestTypes = [0, 1, 2, 3, 12, 18, 19, 22, 24, 25];
@@ -336,75 +358,74 @@ $hideConditionTypes = [0, 4, 5, 11, 12, 13, 16, 17, 19, 20];
 $showEncounters = [201];
 $showItems = [1, 2, 3, 101, 102, 103, 104, 201, 202, 701, 703, 705, 706, 707, 1301];
 
-$noSpawnPoints = true;                                         // true/false
-$enableSpawnPoints = 'false';                                  // true/false
+$noSpawnPoints = true;                                              // true/false
+$enableSpawnPoints = 'false';                                       // true/false
 
-$noRanges = false;                                             // true/false
-$enableRanges = 'false';                                       // true/false
+$noRanges = false;                                                  // true/false
+$enableRanges = 'false';                                            // true/false
 
-$noScanPolygon = true;
-$enableScanPolygon = 'false';
-$geoJSONfile = 'custom/scannerarea.json';                      // path to geoJSON file create your own on http://geojson.io/ adjust filename
+$noScanPolygon = true;                                              // true/false
+$enableScanPolygon = 'false';                                       // true/false
+$geoJSONfile = 'custom/scannerarea.json';                           // path to geoJSON file create your own on http://geojson.io/ adjust filename
 
-$noLiveScanLocation = true;                                    // Show scan devices on the map
-$enableLiveScan = 'false';
-$hideDeviceAfterMinutes = 0;                                   // Hide scan devices from map after x amount of minutes not being updated in database. 0 to disable.
-$deviceOfflineAfterSeconds = 300;                              // Mark scan devices offline (red color) after x amount of seconds not being updated in database.
+$noLiveScanLocation = true;                                         // Show scan devices on the map
+$enableLiveScan = 'false';                                          // true/false
+$hideDeviceAfterMinutes = 0;                                        // Hide scan devices from map after x amount of minutes not being updated in database. 0 to disable.
+$deviceOfflineAfterSeconds = 300;                                   // Mark scan devices offline (red color) after x amount of seconds not being updated in database.
 
-$hideDeleted = true;
+$hideDeleted = true;                                                // true/false | Hide deleted Pokestop / Gyms from map
+
 /* Location & Search Settings */
+$noSearchLocation = false;                                          // true/false
 
-$noSearchLocation = false;                                     // true/false
+$noStartMe = false;                                                 // true/false
+$enableStartMe = 'false';                                           // true/false
 
-$noStartMe = false;                                            // true/false
-$enableStartMe = 'false';                                      // true/false
+$noStartLast = false;                                               // true/false
+$enableStartLast = 'false';                                         // true/false
 
-$noStartLast = false;                                          // true/false
-$enableStartLast = 'false';                                    // true/false
+$noFollowMe = false;                                                // true/false
+$enableFollowMe = 'false';                                          // true/false
 
-$noFollowMe = false;                                           // true/false
-$enableFollowMe = 'false';                                     // true/false
-
-$noSpawnArea = false;                                          // true/false
-$enableSpawnArea = 'false';                                    // true/false
+$noSpawnArea = false;                                               // true/false
+$enableSpawnArea = 'false';                                         // true/false
 
 /* Notification Settings */
-
-$notifyPokemon = '[]';                                         // [] for empty
-$notifyRarity = '[]';                                          // "Common", "Uncommon", "Rare", "Very Rare", "Ultra Rare"
-$notifyIv = '""';                                              // "" for empty or a number
-$notifyLevel = '""';                                           // "" for empty or a number
-$notifyRaid = 5;                                               // O to disable
-$notifySound = 'false';                                        // true/false
-$criesSound = 'false';                                         // true/false
-$notifyBounce = 'true';                                        // true/false
-$notifyNotification = 'true';                                  // true/false
+$notifyPokemon = '[]';                                              // [] for empty
+$notifyRarity = '[]';                                               // "Common", "Uncommon", "Rare", "Very Rare", "Ultra Rare"
+$notifyIv = '""';                                                   // "" for empty or a number
+$notifyLevel = '""';                                                // "" for empty or a number
+$notifyRaid = 0;                                                    // 1,2,3,4,5 or 6 - 0 to disable
+$notifySound = 'false';                                             // true/false
+$criesSound = 'false';                                              // true/false
+$notifyBounce = 'true';                                             // true/false
+$notifyNotification = 'true';                                       // true/false
 
 /* Style Settings */
-$noDarkMode = false;
+$noDarkMode = false;                                                // true/false
 
-$copyrightSafe = true;
-$iconFolderArray = [                                           // Default Icon repo to be used
-    'gym' => [
+$copyrightSafe = true;                                              // true/false
+$iconFolderArray = [                                                // Default Icon repo to be used
+    'gym' => [                                                      // String or Array of multiple icon sets
         'Ingame' => 'static/sprites/gym/ingame/',
         'Rocketmap' => 'static/sprites/gym/rocketmap/',
         'Shield' => 'static/sprites/gym/shield/',
         'Comic' => 'static/sprites/gym/comic/'
     ],
-    'invasion' => 'static/sprites/',
-    'misc' => 'static/sprites/',
-    'pokemon' => 'static/sprites/',                            // String or Array of multiple icon sets
-    'pokestop' => 'static/sprites/',
-    'raid' => 'static/sprites/',
-    'reward' => 'static/sprites/',                             // String or Array of multiple icon sets
-    'team' => 'static/sprites/',
-    'type' => 'static/sprites/',
-    'weather' => 'static/sprites/'
+    'invasion' => 'static/sprites/',                                // String of icon set
+    'misc' => 'static/sprites/',                                    // String of icon set
+    'pokemon' => 'static/sprites/',                                 // String or Array of multiple icon sets
+    'pokestop' => 'static/sprites/',                                // String of icon set
+    'raid' => 'static/sprites/',                                    // String of icon set
+    'reward' => 'static/sprites/',                                  // String or Array of multiple icon sets
+    'team' => 'static/sprites/',                                    // String of icon set
+    'type' => 'static/sprites/',                                    // String of icon set
+    'weather' => 'static/sprites/'                                  // String of icon set
 ];
 
-$noMapStyle = false;                                           // true/false
-$mapStyle = 'openstreetmap';                                   // Set default Map Style
-$forcedTileServer = false;
+$noMapStyle = false;                                                // true/false
+$mapStyle = 'openstreetmap';                                        // Set default Map Style
+$forcedTileServer = false;                                          // true/false
 
 $mapStyleList = [
     "openstreetmap" => [
@@ -493,54 +514,66 @@ $mapStyleList = [
     ]
 ];
 
+$noDirectionProvider = false;                                       // true/false
+$directionProvider = 'google';                                      // google, waze, apple, bing, google_pin
 
-$noDirectionProvider = false;                                  // true/false
-$directionProvider = 'google';                                 // google, waze, apple, bing, google_pin
+$noIconSize = false;                                                // true/false
+$pokemonIconSize = 30;                                              // 20 = Small, 30 = Normal, 45 = Large, 60 = X-Large
 
-$noIconSize = false;                                           // true/false
-$iconSize = 0;                                                 // -8, 0, 10, 20
+$noIconNotifySizeModifier = false;                                  // true/false | Increase size of notified Pokemon
+$iconNotifySizeModifier = 15;                                       // 0, 15, 30, 45
 
-$noIconNotifySizeModifier = false;                             // true/false | Increase size of notified Pokemon
+$noLocationStyle = false;                                           // true/false
+$locationStyle = 'none';                                            // none, google, red, red_animated, blue, blue_animated, yellow, yellow_animated, pokesition, pokeball
 
-$noLocationStyle = false;                                      // true/false
-$locationStyle = 'none';                                       // none, google, red, red_animated, blue, blue_animated, yellow, yellow_animated, pokesition, pokeball
-
-$triggerGyms = '[]';                                           // Add Gyms that the OSM-Query doesn't take care of like '["gym_id", "gym_id"]'
-$onlyTriggerGyms = false;                                      // Only show EX-Gyms that are defined in $triggerGyms
-$noExGyms = false;                                             // Do not display EX-Gyms on the map
+$triggerGyms = '[]';                                                // Add Gyms that the OSM-Query doesn't take care of like '["gym_id", "gym_id"]'
+$onlyTriggerGyms = false;                                           // Only show EX-Gyms that are defined in $triggerGyms
+$noExGyms = false;                                                  // Do not display EX-Gyms on the map
 
 //-----------------------------------------------------
 // Manual Submissions
+// In order to make Manual Raids and Quests work you need to have the $geoJSONfile set to a valid geoJSON.json file
 //-----------------------------------------------------
-$noSubmit = true;
-$hideIfManual = false;
-$noManualRaids = true;
-$noManualPokemon = true;
-$pokemonTimer = 900;                                           // Time in seconds before a submitted Pokémon despawns.
-$noManualGyms = true;
-$noRenameGyms = true;
-$noManualPokestops = true;
-$noRenamePokestops = true;
-$noConvertPokestops = true;
-$noManualQuests = true;
+
+$noSubmit = true;                                                   // true/false
+$hideIfManual = false;                                              // true/false
+$noManualRaids = true;                                              // true/false | Enable/Disable ManualRaids permanently ( Comment this line if you want to use the block below )
+$noDiscordSubmitLogChannel = true;                                  // Send webhooks to discord channel upon submission
+$submitMapUrl = '';
+$discordSubmitLogChannelUrl = '';                                   // Sends gym/pokestop submit & pokestop rename directly to discord can also be an array ['URL', 'URL'] or as many as you like.
+$discordPOISubmitLogChannelUrl = '';                                // Sends gym/pokestop submit & pokestop rename directly to discord can also be an array ['URL', 'URL'] or as many as you like.
+$noManualPokemon = true;                                            // true/false
+$pokemonTimer = 900;                                                // Time in seconds before a submitted Pokémon despawns. (not used atm)
+$noManualGyms = true;                                               // true/false
+$noRenameGyms = true;                                               // true/false
+$noManualPokestops = true;                                          // true/false
+$noRenamePokestops = true;                                          // true/false
+$noConvertPokestops = true;                                         // true/false
+$noManualQuests = true;                                             // true/false
 
 //-----------------------------------------------------
 // Ingress portals
 //-----------------------------------------------------
-$enablePortals = 'false';
-$enableNewPortals = 0;                                         // O: all, 1: new portals only
-$noPortals = true;
-$noDeletePortal = true;
-$noConvertPortal = true;
-$markPortalsAsNew = 86400;                                     // Time in seconds to mark new imported portals as new ( 86400 for 1 day )
+
+$enablePortals = 'false';                                           // true/false
+$enableNewPortals = 0;                                              // O: all, 1: new portals only
+$noPortals = true;                                                  // true/false
+$noDeletePortal = true;                                             // true/false
+$noConvertPortal = true;                                            // true/false
+$markPortalsAsNew = 86400;                                          // Time in seconds to mark new imported portals as new ( 86400 for 1 day )
+
 //-----------------------------------------------------
 // s2 cells
 //-----------------------------------------------------
-$noS2Cells = true;
-$enableS2Cells = 'false';
-$enableLevel13Cells = 'false';
-$enableLevel14Cells = 'false';
-$enableLevel17Cells = 'false';
+
+$noS2Cells = true;                                                  // true/false
+$enableS2Cells = 'false';                                           // true/false
+$noPlacementRanges = false;                                         // true/false
+$enablePlacementRanges = 'false';                                   // true/false
+$enableLevel13Cells = 'false';                                      // true/false
+$enableLevel14Cells = 'false';                                      // true/false
+$enableLevel15Cells = 'false';                                      // true/false
+$enableLevel17Cells = 'false';                                      // true/false
 
 $s2Colors = [
     'red',          // pokestop placement cell with a marker
@@ -548,37 +581,37 @@ $s2Colors = [
     'orange',       // 2 more until new gym
     'black'         // Max amount of gyms reached
 ];
+
 //-----------------------------------------------------
 // POI
 //-----------------------------------------------------
-$noPoi = true;
-$noAddPoi = true;
-$enablePoi = 'false';
-$noDeletePoi = true;
-$noEditPoi = true;
-$noMarkPoi = true;
 
-$noDiscordSubmitLogChannel = true;                             // Send webhooks to discord channel upon submission
+$noPoi = true;                                                      // true/false | Allow users to view POI markers
+$noAddPoi = true;                                                   // true/false | Allow to add POI markers (locations eligible for submitting Pokestops/Ingress portals)
+$enablePoi = 'false';                                               // true/false
+$noDeletePoi = true;                                                // true/false
+$noEditPoi = true;                                                  // true/false
+$noMarkPoi = true;                                                  // true/false
 
-
-
-$noDeleteGyms = true;
-$noToggleExGyms = true;
-$noDeletePokestops = true;
+$noDeleteGyms = true;                                               // true/false
+$noToggleExGyms = true;                                             // true/false
+$noDeletePokestops = true;                                          // true/false
 
 $raidBosses = [];
 
-$sendWebhook = false;
-$webhookUrl = null;                                            //['url-1','url-2']
+$sendWebhook = false;                                               // true/false | Sends Raids & Pokémon. Needs a 3th party program like pokealarm.
+$webhookUrl = null;                                                 //['url-1','url-2']
+
 //---------------------------------------------------
 // Quest Webhooks
 //---------------------------------------------------
-$sendQuestWebhook = false;                                     // Experimental use only
-$questWebhookUrl = null;                                       // Experimental use only
-$webhookSystem = [''];                                         // Supported are either 'pokealarm' or 'poracle'
+
+$sendQuestWebhook = false;                                          // Experimental use only
+$questWebhookUrl = null;                                            // Experimental use only
+$webhookSystem = [''];                                              // Supported are either 'pokealarm' or 'poracle'
 
 $manualFiveStar = [
-    'webhook' => false,
+    'webhook' => false,                                             // If set to false no webhooks will be send on raid_cron.php
     'pokemon_id' => 391,
     'cp' => 0,
     'move_1' => null,
@@ -590,76 +623,64 @@ $manualFiveStar = [
 // Search
 //-----------------------------------------------------
 
-$noSearch = false;
-$noSearchPokestops = true;
-$noSearchGyms = false;
-$noSearchManualQuests = false;
-$noSearchNests = true;
-$noSearchPortals = true;
-$noSearchPokemon = true;
-$defaultUnit = "km";                                           // mi/km
-$maxSearchResults = 10;
-$maxSearchNameLength = 0;                                      // 0 = Unlimited. Shorten pokestop names in reward search results if longer than this value to prevent UI layout issues
+$noSearch = false;                                                  // true/false
+$noSearchPokestops = true;                                          // true/false
+$noSearchGyms = false;                                              // true/false
+$noSearchManualQuests = false;                                      // true/false
+$noSearchNests = true;                                              // true/false
+$noSearchPortals = true;                                            // true/false
+$noSearchPokemon = true;                                            // true/false
+$defaultUnit = "km";                                                // mi/km
+$maxSearchResults = 10;                                             //Max number of search results
+$maxSearchNameLength = 0;                                           // 0 = Unlimited. Shorten pokestop names in reward search results if longer than this value to prevent UI layout issues
+
 //-----------------------------------------------------
 // Community
 //-----------------------------------------------------
-$noCommunity = true;
-$enableCommunities = 'false';
-$noAddNewCommunity = true;
-$noDeleteCommunity = true;
-$noEditCommunity = true;
+
+$noCommunity = true;                                                // true/false
+$enableCommunities = 'false';                                       // true/false
+$noAddNewCommunity = true;                                          // true/false
+$noDeleteCommunity = true;                                          // true/false
+$noEditCommunity = true;                                            // true/false
+
 //-----------------------------------------------------
 // Nests
 //-----------------------------------------------------
-$noNests = true;                                               // true/false
-$noNestsAvg = true;                                            // true/false
-$nestAvgMax = 50;
-$nestAvgDefault = 5;
-$enableNests = 'false';                                        // true/false
-$hideNestCoords = false;
-$noManualNests = true;
-$noDeleteNests = true;
-$deleteNestsOlderThan = 42;                                    // days after not updated nests are removed from database by nest cron
+
+$noNests = true;                                                    // true/false
+$noNestsAvg = true;                                                 // true/false
+$nestAvgMax = 50;                                                   // Nest Average filter maximum
+$nestAvgDefault = 5;                                                // Nest Average filter default
+$enableNests = 'false';                                             // true/false
+$hideNestCoords = false;                                            // true/false
+$noManualNests = true;                                              // true/false
+$noDeleteNests = true;                                              // true/false
+$deleteNestsOlderThan = 42;                                         // days after not updated nests are removed from database by nest cron
 $nestBotName = "NestBot";
-$migrationDay = strtotime('5 April 2018');                     // Adjust day value after non consitent 14 day migration
-$noAddNewNests = false;
+$migrationDay = strtotime('5 April 2018');                          // Adjust day value after non consitent 14 day migration
+$noAddNewNests = false;                                             // true/false
 $excludeNestMons = [2,3,5,6,8,9,11,12,14,15,17,18,20,22,24,26,28,29,30,31,32,33,34,36,38,40,42,44,45,49,51,53,55,57,59,61,62,64,65,67,68,70,71,73,75,76,78,80,82,83,85,87,88,89,91,93,94,97,99,101,103,105,106,107,108,109,110,112,113,114,115,117,119,121,122,128,130,131,132,134,135,136,137,139,142,143,144,145,146,147,148,149,150,151,153,154,156,157,159,160,161,162,163,164,165,166,167,168,169,171,172,173,174,175,176,177,178,179,180,181,182,183,184,186,187,188,189,191,192,194,195,196,197,199,201,204,205,207,208,210,212,214,217,218,219,221,222,223,224,225,228,229,230,232,233,235,236,237,238,239,240,241,242,243,244,245,246,247,248,249,250,251,253,254,256,257,259,260,262,263,264,265,266,267,268,269,270,271,272,274,275,276,277,279,280,281,282,284,286,287,288,289,290,291,292,293,294,295,297,298,301,303,304,305,306,308,310,313,314,316,317,319,321,323,324,326,327,328,329,330,331,332,334,335,336,337,338,339,340,342,344,346,348,349,350,351,352,354,356,357,358,359,360,361,362,363,364,365,366,367,368,369,371,372,373,374,375,376,377,378,379,380,381,382,383,384,385,386];
 
-$noNestPolygon = true;
-$enableNestPolygon = 'false';
-$nestGeoJSONfile = '';                                         // path to geoJSON file provided by https://github.com/M4d40/PMSFnestScript
+$noNestPolygon = true;                                              // true/false
+$enableNestPolygon = 'false';                                       // true/false
+$nestGeoJSONfile = '';                                              // path to geoJSON file provided by https://github.com/M4d40/PMSFnestScript
 
 //-----------------------------------------------------
 // Areas
 //-----------------------------------------------------
 
-$noAreas = true;
-$quickAreas = [
-    "Newyork" => [
-        "Manhattan" => "lat,lon,zoom",
-        "Brooklyn" => "lat,lon,zoom",
-        "Queens" => "lat,lon,zoom"
-    ],
-    "Los Angeles" => [
-        "Pasadena" => "lat,lon,zoom",
-        "Glendale" => "lat,lon,zoom",
-        "Montebello" => "lat,lon,zoom",
-        "Inglewood" => "lat,lon,zoom",
-        "Santa Monica" => "lat,lon,zoom"
-    ],
-    "Las Vegas" => "lat,lon,zoom",
-    "Albuquerque" => "lat,lon,zoom",
-    "Dallas" => "lat,lon,zoom",
-    "Chicago" => "lat,lon,zoom",
-    "Sacramento" => "lat,lon,zoom",
-    "Denver" => "lat,lon,zoom"
-];
+$noAreas = true;                                                    // true/false
+$quickAreas = [];
+
+
 //-----------------------------------------------------
 // Weather Config
 //-----------------------------------------------------
-$noHeaderWeatherIcon = true;
-$noWeatherOverlay = true;                                      // true/false
-$enableWeatherOverlay = 'false';                               // true/false
+
+$noHeaderWeatherIcon = true;                                        // true/false
+$noWeatherOverlay = true;                                           // true/false
+$enableWeatherOverlay = 'false';                                    // true/false
 
 $weather = [
     0 => null,
@@ -673,27 +694,36 @@ $weather = [
 ];
 
 $weatherColors = [
-    'grey',
-    '#fdfd96',
-    'darkblue',
-    'grey',
-    'darkgrey',
-    'purple',
-    'white',
-    'black'
+    'grey',         // no weather
+    '#fdfd96',      // clear
+    'darkblue',     // rain
+    'grey',         // partly cloudy
+    'darkgrey',     // cloudy
+    'purple',       // windy
+    'white',        // snow
+    'black'         // fog
 ];
+
+//-----------------------------------------------------
+// Holiday Overlay
+//-----------------------------------------------------
+
+$letItSnow = false;                                                 // Show snow overlay between 24th and 26th December
+$makeItBang = false;                                                // Show fireworks overlay between 31st December and 1st January
+$showYourLove = false;                                              // Show valentine overlay on 14th February
 
 //-----------------------------------------------------
 // DEBUGGING
 //-----------------------------------------------------
 
 // Do not enable unless requested
-
-$enableDebug = false;
+$enableDebug = false;                                               // true/false
+$enableJSDebug = false;                                             // true/false
 
 //-----------------------------------------------------
 // DATABASE CONFIG
 //-----------------------------------------------------
-$map = "rdm";                                                  // rdm, rocketmap
-$fork = "default";                                             // default, mad
-$queryInterval = '5000';                                       // Interval between raw_data requests.
+
+$map = "rdm";                                                       // rdm / rocketmap
+$fork = "default";                                                  // default / mad
+$queryInterval = '5000';                                            // Interval between raw_data requests.

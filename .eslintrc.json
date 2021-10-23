@@ -84,10 +84,14 @@
     "directionProvider": true,
     "hidePokemon": true,
     "excludeMinIV": true,
+    "minGLRank": true,
+    "minULRank": true,
     "minIV": true,
     "minLevel": true,
     "showBigKarp": true,
     "showTinyRat": true,
+    "showDespawnTimeType": true,
+    "showPokemonGender": true,
     "hidePokemonCoords": true,
     "hidePokestopCoords": true,
     "hideGymCoords": true,
@@ -121,7 +125,7 @@
     "enableStartLast": true,
     "enableFollowMe": true,
     "enableSpawnArea": true,
-    "iconSize": true,
+    "pokemonIconSize": true,
     "iconNotifySizeModifier": true,
     "locationStyle": true,
     "gymStyle": true,
@@ -165,8 +169,10 @@
     "noPortals": false,
     "noS2Cells": true,
     "enableS2Cells": true,
+    "enablePlacementRanges": true,
     "enableLevel13Cells": true,
     "enableLevel14Cells": true,
+    "enableLevel15Cells": true,
     "enableLevel17Cells": true,
     "copyrightSafe": true,
     "iconpath": true,
@@ -239,6 +245,7 @@
     "processRewardStats": true,
     "processShinyStats": true,
     "noPvp": true,
-    "noHideSingleMarker": true
+    "noHideSingleMarker": true,
+    "enableJSDebug": true
   }
 }
