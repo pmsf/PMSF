@@ -56,6 +56,12 @@ $d["lastnests"] = !empty($_POST['nests']) ? $_POST['nests'] : false;
 $d["lastcommunities"] = !empty($_POST['communities']) ? $_POST['communities'] : false;
 $d["lastportals"] = !empty($_POST['portals']) ? $_POST['portals'] : false;
 $d["lastpois"] = !empty($_POST['pois']) ? $_POST['pois'] : false;
+
+$loadOverviewStats = !empty($_POST['loadOverviewStats']) ? $_POST['loadOverviewStats'] : false;
+$loadPokemonStats = !empty($_POST['loadPokemonStats']) ? $_POST['loadPokemonStats'] : false;
+$loadRewardStats = !empty($_POST['loadRewardStats']) ? $_POST['loadRewardStats'] : false;
+$loadShinyStats = !empty($_POST['loadShinyStats']) ? $_POST['loadShinyStats'] : false;
+
 if ($minIv < $prevMinIv || $minLevel < $prevMinLevel) {
     $lastpokemon = false;
 }
@@ -90,10 +96,12 @@ $debug['0_after_auth'] = microtime(true) - $timing['start'];
 if (strtolower($map) === "rdm") {
     if (strtolower($fork) === "default" || strtolower($fork) === "beta") {
         $scanner = new \Scanner\RDM();
+        $stats = new \Stats\RDM();
     }
 } elseif (strtolower($map) === "rocketmap") {
     if (strtolower($fork) === "mad") {
         $scanner = new \Scanner\RocketMap_MAD();
+        $stats = new \Stats\RocketMap_MAD();
     }
 }
 
@@ -122,6 +130,8 @@ $qieids = array();
 $qireids = array();
 $qeeids = array();
 $qereids = array();
+$qceids = array();
+$qcreids = array();
 $geids = array();
 $greids = array();
 $rbeids = array();
@@ -166,26 +176,27 @@ if (!$noPokestops) {
         $qpeids = !empty($_POST['qpeids']) ? explode(",", $_POST['qpeids']) : array();
         $qieids = !empty($_POST['qieids']) ? explode(",", $_POST['qieids']) : array();
         $qeeids = !empty($_POST['qeeids']) ? explode(",", $_POST['qeeids']) : array();
+        $qceids = !empty($_POST['qceids']) ? explode(",", $_POST['qceids']) : array();
         $geids = !empty($_POST['geids']) ? explode(",", $_POST['geids']) : array();
         if ($lastpokestops != "true") {
-            $d["pokestops"] = $scanner->get_stops($geids, $qpeids, $qeeids, $qieids, $swLat, $swLng, $neLat, $neLng, 0, 0, 0, 0, 0, $lures, $rocket, $quests, $dustamount);
+            $d["pokestops"] = $scanner->get_stops($geids, $qpeids, $qeeids, $qceids, $qieids, $swLat, $swLng, $neLat, $neLng, 0, 0, 0, 0, 0, $lures, $rocket, $quests, $dustamount);
         } else {
             if ($newarea) {
-                $d["pokestops"] = $scanner->get_stops($geids, $qpeids, $qeeids, $qieids, $swLat, $swLng, $neLat, $neLng, 0, $oSwLat, $oSwLng, $oNeLat, $oNeLng, $lures, $rocket, $quests, $dustamount);
+                $d["pokestops"] = $scanner->get_stops($geids, $qpeids, $qeeids, $qceids, $qieids, $swLat, $swLng, $neLat, $neLng, 0, $oSwLat, $oSwLng, $oNeLat, $oNeLng, $lures, $rocket, $quests, $dustamount);
             } else {
-                $d["pokestops"] = $scanner->get_stops($geids, $qpeids, $qeeids, $qieids, $swLat, $swLng, $neLat, $neLng, $timestamp, 0, 0, 0, 0, $lures, $rocket, $quests, $dustamount);
+                $d["pokestops"] = $scanner->get_stops($geids, $qpeids, $qeeids, $qceids, $qieids, $swLat, $swLng, $neLat, $neLng, $timestamp, 0, 0, 0, 0, $lures, $rocket, $quests, $dustamount);
             }
         }
         if ((strtolower($map) === "rdm") || (strtolower($map) === "rocketmap" && strtolower($fork) === "mad")) {
             if ($reloaddustamount == "true") {
-                $d["pokestops"] = array_merge($d["pokestops"], $scanner->get_stops_quest($greids, $qpreids, $qereids, $qireids, $swLat, $swLng, $neLat, $neLng, 0, $oSwLat, $oSwLng, $oNeLat, $oNeLng, $lures, $rocket, $quests, $dustamount, $reloaddustamount));
+                $d["pokestops"] = array_merge($d["pokestops"], $scanner->get_stops_quest($greids, $qpreids, $qereids, $qcreids, $qireids, $swLat, $swLng, $neLat, $neLng, 0, $oSwLat, $oSwLng, $oNeLat, $oNeLng, $lures, $rocket, $quests, $dustamount, $reloaddustamount));
             }
             if (!empty($_POST['qpreids'])) {
                 $qpreids = !empty($_POST['qpreids']) ? array_unique(explode(",", $_POST['qpreids'])) : array();
 
                 $qpreidsDiff = array_diff($qpreids, $qpeids);
                 if (count($qpreidsDiff)) {
-                    $d["pokestops"] = array_merge($d["pokestops"], $scanner->get_stops_quest($greids, $qpreids, $qereids, $qireids, $swLat, $swLng, $neLat, $neLng, 0, $oSwLat, $oSwLng, $oNeLat, $oNeLng, $lures, $rocket, $quests, $dustamount, $reloaddustamount));
+                    $d["pokestops"] = array_merge($d["pokestops"], $scanner->get_stops_quest($greids, $qpreids, $qereids, $qcreids, $qireids, $swLat, $swLng, $neLat, $neLng, 0, $oSwLat, $oSwLng, $oNeLat, $oNeLng, $lures, $rocket, $quests, $dustamount, $reloaddustamount));
                 }
 
                 $d["qpreids"] = $qpreids;
@@ -195,17 +206,27 @@ if (!$noPokestops) {
 
                 $qereidsDiff = array_diff($qereids, $qeeids);
                 if (count($qereidsDiff)) {
-                    $d["pokestops"] = array_merge($d["pokestops"], $scanner->get_stops_quest($greids, $qpreids, $qereids, $qireids, $swLat, $swLng, $neLat, $neLng, 0, $oSwLat, $oSwLng, $oNeLat, $oNeLng, $lures, $rocket, $quests, $dustamount, $reloaddustamount));
+                    $d["pokestops"] = array_merge($d["pokestops"], $scanner->get_stops_quest($greids, $qpreids, $qereids, $qcreids, $qireids, $swLat, $swLng, $neLat, $neLng, 0, $oSwLat, $oSwLng, $oNeLat, $oNeLng, $lures, $rocket, $quests, $dustamount, $reloaddustamount));
                 }
 
                 $d["qereids"] = $qereids;
+            }
+            if (!empty($_POST['qcreids'])) {
+                $qcreids = !empty($_POST['qcreids']) ? array_unique(explode(",", $_POST['qcreids'])) : array();
+
+                $qcreidsDiff = array_diff($qcreids, $qceids);
+                if (count($qcreidsDiff)) {
+                    $d["pokestops"] = array_merge($d["pokestops"], $scanner->get_stops_quest($greids, $qpreids, $qereids, $qcreids, $qireids, $swLat, $swLng, $neLat, $neLng, 0, $oSwLat, $oSwLng, $oNeLat, $oNeLng, $lures, $rocket, $quests, $dustamount, $reloaddustamount));
+                }
+
+                $d["qcreids"] = $qcreids;
             }
             if (!empty($_POST['qireids'])) {
                 $qireids = !empty($_POST['qireids']) ? array_unique(explode(",", $_POST['qireids'])) : array();
 
                 $qireidsDiff = array_diff($qireids, $qieids);
                 if (count($qireidsDiff)) {
-                    $d["pokestops"] = array_merge($d["pokestops"], $scanner->get_stops_quest($greids, $qpreids, $qereids, $qireids, $swLat, $swLng, $neLat, $neLng, 0, $oSwLat, $oSwLng, $oNeLat, $oNeLng, $lures, $rocket, $quests, $dustamount, $reloaddustamount));
+                    $d["pokestops"] = array_merge($d["pokestops"], $scanner->get_stops_quest($greids, $qpreids, $qereids, $qcreids, $qireids, $swLat, $swLng, $neLat, $neLng, 0, $oSwLat, $oSwLng, $oNeLat, $oNeLng, $lures, $rocket, $quests, $dustamount, $reloaddustamount));
                 }
 
                 $d["qireids"] = $qireids;
@@ -215,7 +236,7 @@ if (!$noPokestops) {
 
                 $greidsDiff = array_diff($greids, $geids);
                 if (count($greidsDiff)) {
-                    $d["pokestops"] = array_merge($d["pokestops"], $scanner->get_stops_quest($greids, $qpreids, $qereids, $qireids, $swLat, $swLng, $neLat, $neLng, 0, $oSwLat, $oSwLng, $oNeLat, $oNeLng, $lures, $rocket, $quests, $dustamount, $reloaddustamount));
+                    $d["pokestops"] = array_merge($d["pokestops"], $scanner->get_stops_quest($greids, $qpreids, $qereids, $qcreids, $qireids, $swLat, $swLng, $neLat, $neLng, 0, $oSwLat, $oSwLng, $oNeLat, $oNeLng, $lures, $rocket, $quests, $dustamount, $reloaddustamount));
                 }
 
                 $d["greids"] = $greids;
@@ -351,6 +372,22 @@ if (!$noLiveScanLocation) {
     }
 }
 $debug['10_after_devices'] = microtime(true) - $timing['start'];
+
+if ($loadOverviewStats == "true") {
+  $d["overviewStats"] = $stats->get_overview_stats();
+  $d["teamStats"] = $stats->get_team_stats();
+  $d["pokestopStats"] = $stats->get_pokestop_stats();
+  $d["spawnpointStats"] = $stats->get_spawnpoint_stats();
+}
+if ($loadPokemonStats == "true") {
+    $d["pokemonStats"] = $stats->get_pokemon_stats();
+}
+if ($loadRewardStats == "true") {
+    $d["rewardStats"] = $stats->get_reward_stats();
+}
+if ($loadShinyStats == "true") {
+    $d["shinyStats"] = $stats->get_shiny_stats();
+}
 
 $d['token'] = refreshCsrfToken();
 $debug['11_end'] = microtime(true) - $timing['start'];

@@ -28,7 +28,11 @@
       {
         "max": 2
       }
-    ]
+    ],
+    "no-labels": [2, {
+      "allowLoop": true,
+      "allowSwitch": true
+    }]
   },
   "env": {
     "browser": true,
@@ -122,13 +126,14 @@
     "locationStyle": true,
     "gymStyle": true,
     "icons": true,
+    "iconFolderArray": true,
+    "getIcon": true,
     "getIv": true,
     "mapType": true,
     "mapFork": true,
     "triggerGyms": true,
     "i8ln": false,
     "languageSite": true,
-    "boostedMons": true,
     "exEligible": true,
     "motd": true,
     "showMotdOnlyOnce": true,
@@ -171,6 +176,7 @@
     "hideQuestsPokemon": true,
     "hideQuestsItem": true,
     "hideQuestsEnergy": true,
+    "hideQuestsCandy": true,
     "noQuests": true,
     "noLures": true,
     "noTeamRocket": true,
@@ -189,7 +195,6 @@
     "noRocketTimer": true,
     "enableNestPolygon": true,
     "nestGeoJSONfile": true,
-    "noCostumeIcons": true,
     "queryInterval": true,
     "noInvasionEncounterData": true,
     "enableLiveScan": true,
@@ -220,6 +225,20 @@
     "noHideSingleMarker": true,
     "noNestPolygon": true,
     "nestBotName": true,
-    "bootstrap": true
+    "bootstrap": true,
+    "pokemonTable": true,
+    "rewardTable": true,
+    "shinyTable": true,
+    "getKeyByValue": true,
+    "pokemonTypes": true,
+    "processOverviewStats": true,
+    "processTeamStats": true,
+    "processPokestopStats": true,
+    "processSpawnpointStats": true,
+    "processPokemonStats": true,
+    "processRewardStats": true,
+    "processShinyStats": true,
+    "noPvp": true,
+    "noHideSingleMarker": true
   }
 }
