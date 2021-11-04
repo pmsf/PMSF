@@ -1722,6 +1722,9 @@ function getQuest(item) {
                 case 25:
                     str = str.replace('{0} pokémon', 'pokémon caught ' + questinfo['distance'] + 'km apart')
                     break
+                case 26:
+                    str = str.replace('pokémon', 'shadow Pokémon')
+                    break
                 case 27:
                     var gstr = ''
                     $.each(questinfo['character_category_ids'], function (index, charId) {
