@@ -313,33 +313,6 @@ if (strtolower($map) === "rdm") {
                                             </div>
                                         <?php
                                         }
-                                        if (! $noMinGLRank || ! $noMinULRank) { ?>
-                                            <div class="dropdown-divider"></div>
-                                            <div class="overflow-hidden">
-                                                <div class="row gx-3">
-                                                <?php
-                                                if (! $noMinGLRank) { ?>
-                                                    <div class="col" >
-                                                        <div class="p-1 border bg-light">
-                                                            <input id="min-gl-rank" type="number" min="0" max="100" name="min-gl-rank"/>
-                                                            <label for="min-gl-rank"><?php echo i8ln('Min GLR') ?></label>
-                                                        </div>
-                                                    </div>
-                                                <?php
-                                                }
-                                                if (! $noMinULRank) { ?>
-                                                    <div class="col">
-                                                        <div class="p-1 border bg-light">
-                                                            <input id="min-ul-rank" type="number" min="0" max="100" name="min-ul-rank"/>
-                                                            <label for="min-ul-rank"><?php echo i8ln('Min ULR') ?></label>
-                                                        </div>
-                                                    </div>
-                                                <?php
-                                                } ?>
-                                                </div>
-                                            </div>
-                                        <?php
-                                        }
                                         if (! $noMinIV || ! $noMinLevel) { ?>
                                             <div class="dropdown-divider"></div>
                                             <div class="overflow-hidden">
@@ -414,6 +387,48 @@ if (strtolower($map) === "rdm") {
                                                 } ?>
                                                 </div>
                                             </div>
+                                        <?php
+                                        }
+                                        if (! $noPvp) {
+                                            if (! $noMinGLRank || ! $noMinULRank) { ?>
+                                                <div class="dropdown-divider"></div>
+                                                <div class="overflow-hidden">
+                                                    <div class="row gx-3">
+                                                    <?php
+                                                    if (! $noMinGLRank) { ?>
+                                                        <div class="col" >
+                                                            <div class="p-1 border bg-light">
+                                                                <input id="min-gl-rank" type="number" min="0" max="100" name="min-gl-rank"/>
+                                                                <label for="min-gl-rank"><?php echo i8ln('Min GLR') ?></label>
+                                                            </div>
+                                                        </div>
+                                                    <?php
+                                                    }
+                                                    if (! $noMinULRank) { ?>
+                                                        <div class="col">
+                                                            <div class="p-1 border bg-light">
+                                                                <input id="min-ul-rank" type="number" min="0" max="100" name="min-ul-rank"/>
+                                                                <label for="min-ul-rank"><?php echo i8ln('Min ULR') ?></label>
+                                                            </div>
+                                                        </div>
+                                                    <?php
+                                                    } ?>
+                                                    </div>
+                                                </div>
+                                            <?php
+                                            }
+                                            if (! $noPvpRankingMethod) { ?>
+                                                <div class="dropdown-divider"></div>
+                                                <div class="form-floating">
+                                                    <select class="form-select" aria-label="pvp-ranking-method-filter" name="pvp-ranking-method-select" id="pvp-ranking-method-select">
+                                                        <option value="competition"><?php echo i8ln('Competition (1,2,2,4,5)') ?></option>
+                                                        <option value="dense"><?php echo i8ln('Dense (1,2,2,3,4)') ?></option>
+                                                        <option value="ordinal"><?php echo i8ln('Ordinal (1,2,3,4,5)') ?></option>
+                                                    </select>
+                                                    <label for="pvp-ranking-method-select"><?php echo i8ln('PVP Ranking Method'); ?></label>
+                                                </div>
+                                            <?php
+                                            } ?>
                                         <?php
                                         } ?>
                                         </div>
