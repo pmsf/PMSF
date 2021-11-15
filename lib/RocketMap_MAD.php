@@ -473,6 +473,7 @@ class RocketMap_MAD extends RocketMap
             $gym["raid_end"] = $gym["raid_end"] * 1000;
             $gym["url"] = ! empty($gym["url"]) ? preg_replace("/^http:/i", "https:", $gym["url"]) : null;
             $gym["park"] = $noExEligible ? 0 : intval($gym["park"]);
+            $gym["ar_scan_eligible"] = 0;
             if (isset($gym["raid_pokemon_form"]) && $gym["raid_pokemon_form"] > 0) {
                 $forms = $this->data[$gym["raid_pokemon_id"]]["forms"];
                 foreach ($forms as $f => $v) {
@@ -883,6 +884,7 @@ class RocketMap_MAD extends RocketMap
             $pokestop["reward_item_id"] = intval($pokestop["reward_item_id"]);
             $pokestop["reward_item_name"] = empty($item_pid) ? null : i8ln($this->items[$item_pid]["name"]);
             $pokestop["last_seen"] = $pokestop["last_seen"] * 1000;
+            $pokestop["ar_scan_eligible"] = 0;
             $data[] = $pokestop;
             unset($pokestops[$i]);
             $i++;

@@ -505,6 +505,7 @@ class RocketMap extends Scanner
             $gym["raid_start"] = $gym["raid_start"] * 1000;
             $gym["raid_end"] = $gym["raid_end"] * 1000;
             $gym["park"] = $noExEligible ? 0 : intval($gym["park"]);
+            $gym["ar_scan_eligible"] = 0;
             if (isset($gym["raid_pokemon_form"]) && $gym["raid_pokemon_form"] > 0) {
                 $forms = $this->data[$gym["raid_pokemon_id"]]["forms"];
                 foreach ($forms as $f => $v) {

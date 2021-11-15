@@ -229,6 +229,7 @@ $noCatchRates = false;                                              // true/fals
 $noRarityDisplay = false;                                           // true/false
 $noWeatherIcons = true;                                             // true/false
 $no100IvShadow = false;                                             // true/false
+$noRank1Shadow = false;                                             // true/false
 $noHideSingleMarker = false;                                        // true/false
 
 /* Notification Settings */
@@ -256,6 +257,8 @@ $pokemonToExclude = [];
 $pokemonGenSearchString = 'generation';                             // When custom string is used translations do not work.
 
 $noPvp = false;                                                     // true/false
+$noPvpRankingMethod = false;                                        // true/false
+$pvpRankingMethod = 'competition';                                  // 'competition', 'dense', 'ordinal'
 
 $excludeMinIV = '[131, 143, 147, 148, 149, 248]';                   // [] for empty
 
@@ -334,7 +337,7 @@ $noQuestsEnergy = false;                                            // true/fals
 $noQuestsCandy = false;                                             // true/false
 $noQuestsStardust = false;                                          // true/false
 $noItemNames = false;                                               // true/false
-$noItemNumbers = true;                                              // true/false
+$noItemNumbers = false;                                             // true/false
 $defaultDustAmount = 500;
 $hideQuestsPokemon = '[]';                                          // Pokemon ids will default be hidden in the menu every user is able to change this personaly
 $excludeQuestsPokemon = [];                                         // All Pokémon in this array will not be shown in the filter.
