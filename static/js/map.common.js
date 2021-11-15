@@ -612,7 +612,7 @@ function getPokemonMarkerIcon(item) {
             })
         }
     }
-    var html = '<img src="' + getIcon(iconpath.pokemon, 'pokemon', '.png', item['pokemon_id'], 0, item['form'], item['costume']) + '" style="width:' + scaledIconSizeWidth + 'px;height:auto;'
+    var html = '<img src="' + getIcon(iconpath.pokemon, 'pokemon', '.png', item['pokemon_id'], 0, item['form'], item['costume'], item['gender']) + '" style="width:' + scaledIconSizeWidth + 'px;height:auto;'
     if (iv === 100 && !noIvShadow) {
         html += 'filter:drop-shadow(0 0 10px red)drop-shadow(0 0 10px red);-webkit-filter:drop-shadow(0 0 10px red)drop-shadow(0 0 10px red);'
     } else if (greatLeagueBestRank === 1 && greatLeagueBestCP >= 1350) {
