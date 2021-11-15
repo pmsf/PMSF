@@ -229,6 +229,7 @@ $noCatchRates = false;                                              // true/fals
 $noRarityDisplay = false;                                           // true/false
 $noWeatherIcons = true;                                             // true/false
 $no100IvShadow = false;                                             // true/false
+$noRank1Shadow = false;                                             // true/false
 $noHideSingleMarker = false;                                        // true/false
 
 /* Notification Settings */
@@ -256,6 +257,8 @@ $pokemonToExclude = [];
 $pokemonGenSearchString = 'generation';                             // When custom string is used translations do not work.
 
 $noPvp = false;                                                     // true/false
+$noPvpRankingMethod = false;                                        // true/false
+$pvpRankingMethod = 'competition';                                  // 'competition', 'dense', 'ordinal'
 
 $excludeMinIV = '[]';                                               // [] for empty
 
