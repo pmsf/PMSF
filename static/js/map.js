@@ -4952,7 +4952,6 @@ function processPokemons(i, item) {
                         let level = ((item['level'] != null) ? item['level'] : getPokemonLevel(item['cp_multiplier']))
                         pvpFiltered = (iv < minIV || level < minLevel)
                     }
-
                 }
                 if (pvpFiltered) {
                     return true
@@ -7807,7 +7806,7 @@ function getIcon(iconRepo, folder, fileType, iconKeyId, ...varArgs) {
             }
             break
         case 'nest':
-            if (iconpath['nestIndex'] === undefined) {
+            if (iconpath['nestIndex'] === undefined || iconpath['nestIndex'] === null) {
                 if (enableJSDebug) {
                     console.log('No nestIndex? Houston, we have a problem.')
                 }

@@ -5,7 +5,7 @@ This fork is different is so many ways that its impossible to name them all. Mai
 > Current Version 2.0 - Second release! with OpenStreetMap engine
 
 PokeMap Standalone Frontend or PMSF for short is a PHP Map Interface for RDM, MAD designed to be completely standalone and able to run on any traditional web server. Manual submissions are supported but no longer maintained.
- 
+
 ## Login Support:
 ### oAuth:
 * Discord
@@ -24,8 +24,7 @@ It supports all the common database engines, including MySQL, MariaDB.
 * [Wiki](https://github.com/pmsf/PMSF/wiki).
 
 * Join our [Discord](https://discord.gg/JAWztHdqeB) channel for more info about installation.
- 
- 
+
 ## Feature Requests
 [![Feature Requests](https://feathub.com/pmsf/PMSF?format=svg)](https://feathub.com/pmsf/PMSF)
 
