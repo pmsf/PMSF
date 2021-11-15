@@ -1645,6 +1645,7 @@ include('modals.php');
     var noRarityDisplay = <?php echo $noRarityDisplay === true ? 'true' : 'false' ?>;
     var noWeatherIcons = <?php echo $noWeatherIcons === true ? 'true' : 'false' ?>;
     var noIvShadow = <?php echo $no100IvShadow === true ? 'true' : 'false' ?>;
+    var noRankShadow = <?php echo $noRank1Shadow === true ? 'true' : 'false' ?>;
     var noRaidTimer = <?php echo $noRaidTimer === true ? 'true' : 'false' ?>;
     var enableRaidTimer = <?php echo $noRaidTimer ? 'false' : $enableRaidTimer ?>;
     var noRocketTimer = <?php echo $noTeamRocketTimer === true ? 'true' : 'false' ?>;
@@ -1668,6 +1669,7 @@ include('modals.php');
     var noDarkMode = <?php echo $noDarkMode === true ? 'true' : 'false' ?>;
     var noCatchRates = <?php echo $noCatchRates === true ? 'true' : 'false' ?>;
     var noPvp = <?php echo $noPvp === true ? 'true' : 'false' ?>;
+    var pvpRankingMethod = '<?php echo $pvpRankingMethod ?>';
     var noHideSingleMarker = <?php echo $noHideSingleMarker === true ? 'true' : 'false' ?>;
     var enableJSDebug = <?php echo $enableJSDebug === true ? 'true' : 'false' ?>;
 </script>
