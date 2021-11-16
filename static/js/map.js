@@ -2393,7 +2393,6 @@ function updatePokestopIcons() {
 
 function getPokestopMarkerIcon(item) {
     var stopMarker = ''
-    var html = ''
     var d = new Date()
     var lastMidnight = ''
     if (mapFork === 'mad') {
@@ -2401,142 +2400,70 @@ function getPokestopMarkerIcon(item) {
     } else {
         lastMidnight = 0
     }
+
     var markerStr = '0'
+    if (!noLures && item['lure_expiration'] > Date.now()) {
+        markerStr = item['lure_id']
+    }
     var pokemonid
     var formid
     var costumeid
     var genderid
     var shiny
-    if (Store.get(['showPokestops']) && !Store.get(['showQuests']) && !Store.get(['showLures']) && !Store.get(['showRocket']) && !Store.get(['showAllPokestops'])) {
-        stopMarker = L.divIcon({
-            iconSize: [31, 31],
-            iconAnchor: [25, 45],
-            popupAnchor: [0, -35],
-            className: 'stop-marker',
-            html: '<div><img src="' + getIcon(iconpath.pokestop, 'pokestop', '.png', markerStr) + '" style="width:50px;height:72;top:-35px;right:10px;"/></div>'
-        })
-    } else if (Store.get(['showAllPokestops']) && !noAllPokestops) {
-        if (!noTeamRocket && item['incident_expiration'] > Date.now()) {
-            if (!noLures && item['lure_expiration'] > Date.now()) {
-                markerStr = item['lure_id']
-            }
-            html = '<div style="position:relative;"><img src="' + getIcon(iconpath.pokestop, 'pokestop', '.png', markerStr, 1) + '" style="width:50px;height:72;top:-35px;right:10px;"/>'
-            if (item['grunt_type'] > 0) {
-                html += '<img src="' + getIcon(iconpath.invasion, 'invasion', '.png', item['grunt_type']) + '" style="width:30px;height:auto;position:absolute;top:4px;left:0px;"/></div>'
-            } else {
-                html += '</div>'
-            }
-            if (noRocketTimer === false && Store.get(['showRocketTimer'])) {
-                html += '<div class="pokestop-icon-rocket-timer"><span class="icon-countdown" style="padding: .25rem!important; white-space: nowrap;" disappears-at="' + item['incident_expiration'] + '"> </span></div>'
-            }
-            stopMarker = L.divIcon({
-                iconSize: [31, 31],
-                iconAnchor: [25, 45],
-                popupAnchor: [0, -35],
-                className: 'stop-rocket-marker',
-                html: html
-            })
-        } else if (!noQuests && item['quest_reward_type'] !== null && lastMidnight < Number(item['quest_timestamp'])) {
-            if (!noLures && item['lure_expiration'] > Date.now()) {
-                markerStr = item['lure_id']
-            }
-            if (item['quest_reward_type'] === 12) {
-                html = '<div style="position:relative;">' +
-                    '<img src="' + getIcon(iconpath.pokestop, 'pokestop', '.png', markerStr, 0, 1) + '" style="width:50px;height:72;top:-35px;right:10px;"/>' +
-                    '<img src="' + getIcon(iconpath.reward, 'reward/mega_resource', '.png', item['reward_pokemon_id']) + '" style="width:30px;height:auto;position:absolute;top:4px;left:0px;"/>' +
-                    '</div>'
-                stopMarker = L.divIcon({
-                    iconSize: [31, 31],
-                    iconAnchor: [25, 45],
-                    popupAnchor: [0, -35],
-                    className: 'stop-quest-marker',
-                    html: html
-                })
-            } else if (item['quest_reward_type'] === 7) {
-                pokemonid = item['reward_pokemon_id']
-                formid = item['reward_pokemon_formid']
-                costumeid = item['reward_pokemon_costumeid']
-                genderid = item['reward_pokemon_genderid']
-                shiny = item['reward_pokemon_shiny']
-                html = '<div style="position:relative;">' +
-                    '<img src="' + getIcon(iconpath.pokestop, 'pokestop', '.png', markerStr, 0, 1) + '" style="width:50px;height:72;top:-35px;right:10px;"/>' +
-                    '<img src="' + getIcon(iconpath.pokemon, 'pokemon', '.png', pokemonid, 0, formid, costumeid, genderid, shiny) + '" style="width:30px;height:auto;position:absolute;top:4px;left:0px;"/>' +
-                    '</div>'
-                stopMarker = L.divIcon({
-                    iconSize: [31, 31],
-                    iconAnchor: [25, 45],
-                    popupAnchor: [0, -35],
-                    className: 'stop-quest-marker',
-                    html: html
-                })
-            } else if (item['quest_reward_type'] === 4) {
-                html = '<div style="position:relative;">' +
-                    '<img src="' + getIcon(iconpath.pokestop, 'pokestop', '.png', markerStr, 0, 1) + '" style="width:50px;height:72;top:-35px;right:10px;"/>' +
-                    '<img src="' + getIcon(iconpath.reward, 'reward/candy', '.png', item['reward_pokemon_id'], item['reward_amount']) + '" style="width:30px;height:auto;position:absolute;top:4px;left:0px;"/>' +
-                    '<img src="' + getIcon(iconpath.pokemon, 'pokemon', '.png', item['reward_pokemon_id']) + '" style="width:25px;height:auto;position:absolute;top:6px;left:10px;"/>' +
-                    '</div>'
-                stopMarker = L.divIcon({
-                    iconSize: [31, 31],
-                    iconAnchor: [25, 45],
-                    popupAnchor: [0, -35],
-                    className: 'stop-quest-marker',
-                    html: html
-                })
-            } else if (item['quest_reward_type'] === 3) {
-                html = '<div style="position:relative;">' +
-                    '<img src="' + getIcon(iconpath.pokestop, 'pokestop', '.png', markerStr, 0, 1) + '" style="width:50px;height:72;top:-35px;right:10px;"/>' +
-                    '<img src="' + getIcon(iconpath.reward, 'reward/stardust', '.png', item['reward_amount']) + '" style="width:30px;height:auto;position:absolute;top:4px;left:0px;"/>' +
-                    '</div>'
-                stopMarker = L.divIcon({
-                    iconSize: [31, 31],
-                    iconAnchor: [25, 45],
-                    popupAnchor: [0, -35],
-                    className: 'stop-quest-marker',
-                    html: html
-                })
-            } else if (item['quest_reward_type'] === 2) {
-                html = '<div style="position:relative;">' +
-                    '<img src="' + getIcon(iconpath.pokestop, 'pokestop', '.png', markerStr, 0, 1) + '" style="width:50px;height:72;top:-35px;right:10px;"/>' +
-                    '<img src="' + getIcon(iconpath.reward, 'reward/item', '.png', item['reward_item_id'], item['reward_amount']) + '" style="width:30px;height:auto;position:absolute;top:4px;left:0px;"/>' +
-                    '</div>'
-                stopMarker = L.divIcon({
-                    iconSize: [31, 31],
-                    iconAnchor: [25, 45],
-                    popupAnchor: [0, -35],
-                    className: 'stop-quest-marker',
-                    html: html
-                })
-            }
-        } else if (!noLures && item['lure_expiration'] > Date.now()) {
-            html = '<div><img src="' + getIcon(iconpath.pokestop, 'pokestop', '.png', item['lure_id']) + '" style="width:50px;height:72;top:-35px;right:10px;"/><div>'
-            stopMarker = L.divIcon({
-                iconSize: [31, 31],
-                iconAnchor: [25, 45],
-                popupAnchor: [0, -35],
-                className: 'stop-lured-marker',
-                html: html
-            })
-        } else {
-            stopMarker = L.divIcon({
-                iconSize: [31, 31],
-                iconAnchor: [25, 45],
-                popupAnchor: [0, -35],
-                className: 'stop-marker',
-                html: '<div><img src="' + getIcon(iconpath.pokestop, 'pokestop', '.png', markerStr) + '" style="width:50px;height:72;top:-35px;right:10px;"/></div>'
-            })
-        }
-    } else if (Store.get(['showRocket']) && !noTeamRocket && item['incident_expiration'] > Date.now()) {
-        if (!noLures && item['lure_expiration'] > Date.now()) {
-            markerStr = 'Lured_' + item['lure_id']
-        }
-        html = '<div style="position:relative;"><img src="' + getIcon(iconpath.pokestop, 'pokestop', '.png', markerStr, 1) + '" style="width:50px;height:72;top:-35px;right:10px;"/>'
+
+    var hasRocket = item['incident_expiration'] > Date.now();
+    var hasQuest = item['quest_reward_type'] !== null && lastMidnight < Number(item['quest_timestamp']);
+
+    var showRocket = false;
+    var showQuest = false;
+    var showLures = false;
+
+    //TODO also factor in the "no*" stuff.
+    if (Store.get(['showQuests']) || Store.get(['showAllPokestops'])){
+       showQuest = true;
+    }
+    if (Store.get(['showRocket']) || Store.get(['showAllPokestops'])){
+       showRocket = true;
+    }
+    if (Store.get(['showLures']) || Store.get(['showAllPokestops'])){
+       showLures = true;
+    }
+
+    var html = '<div style="position:relative;">'
+    if (hasRocket){
+        html += '<img src="' + getIcon(iconpath.pokestop, 'pokestop', '.png', markerStr, 1) + '" style="width:50px;height:72;top:-35px;right:10px;"/>'
         if (item['grunt_type'] > 0) {
-            html += '<img src="' + getIcon(iconpath.invasion, 'invasion', '.png', item['grunt_type']) + '" style="width:30px;height:auto;position:absolute;top:4px;left:0px;"/></div>'
-        } else {
-            html += '</div>'
+            html += '<img src="' + getIcon(iconpath.invasion, 'invasion', '.png', item['grunt_type']) + '" style="width:25px;height:auto;position:absolute;top:12px;left:-2px;"/>'
         }
+    } else {
+        html += '<img src="' + getIcon(iconpath.pokestop, 'pokestop', '.png', markerStr, 0, 1) + '" style="width:50px;height:72;top:-35px;right:10px;"/>' +
+    }
+
+    if (hasQuest) {
+        if (item['quest_reward_type'] === 12) {
+            html += '<img src="' + getIcon(iconpath.reward, 'reward/mega_resource', '.png', item['reward_pokemon_id']) + '" style="width:40px;height:auto;position:absolute;top:-25px;left:5px;"/>'
+        } else if (item['quest_reward_type'] === 7) {
+            pokemonid = item['reward_pokemon_id']
+            formid = item['reward_pokemon_formid']
+            costumeid = item['reward_pokemon_costumeid']
+            genderid = item['reward_pokemon_genderid']
+            shiny = item['reward_pokemon_shiny']
+            html += '<img src="' + getIcon(iconpath.pokemon, 'pokemon', '.png', pokemonid, 0, formid, costumeid, genderid, shiny) + '" style="width:40px;height:auto;position:absolute;top:-25px;left:5px;"/>' 
+        } else if (item['quest_reward_type'] === 4) {
+            html += '<img src="' + getIcon(iconpath.reward, 'reward/candy', '.png', item['reward_pokemon_id'], item['reward_amount']) + '" style="width:30px;height:auto;position:absolute;top:-20px;left:10px;"/>' +
+                '<img src="' + getIcon(iconpath.pokemon, 'pokemon', '.png', item['reward_pokemon_id']) + '" style="width:25px;height:auto;position:absolute;top:-18px;left:20px;"/>'
+        } else if (item['quest_reward_type'] === 3) {
+            html += '<img src="' + getIcon(iconpath.reward, 'reward/stardust', '.png', item['reward_amount']) + '" style="width:30px;height:auto;position:absolute;top:-20px;left:10px;"/>' +
+        } else if (item['quest_reward_type'] === 2) {
+            html += '<img src="' + getIcon(iconpath.reward, 'reward/item', '.png', item['reward_item_id'], item['reward_amount']) + '" style="width:30px;height:auto;position:absolute;top:-20px;left:10px;"/>' 
+        }
+    }
+
+    html += "</div>"
+
+    if (hasRocket){
         if (noRocketTimer === false && Store.get(['showRocketTimer'])) {
-            html += '<div class="pokestop-icon-rocket-timer"><span class="icon-countdown" style="padding: .25rem!important; white-space: nowrap;" disappears-at="' + item['incident_expiration'] + '"> </span></div>'
+                html += '<div class="pokestop-icon-rocket-timer"><span class="icon-countdown" style="padding: .25rem!important; white-space: nowrap;" disappears-at="' + item['incident_expiration'] + '"> </span></div>'
         }
         stopMarker = L.divIcon({
             iconSize: [31, 31],
@@ -2545,95 +2472,16 @@ function getPokestopMarkerIcon(item) {
             className: 'stop-rocket-marker',
             html: html
         })
-    } else if (Store.get(['showQuests']) && !noQuests && item['quest_reward_type'] !== null && lastMidnight < Number(item['quest_timestamp'])) {
-        if (!noLures && item['lure_expiration'] > Date.now()) {
-            markerStr = item['lure_id']
-        }
-        if (item['quest_reward_type'] === 12) {
-            html = '<div style="position:relative;">' +
-                '<img src="' + getIcon(iconpath.pokestop, 'pokestop', '.png', markerStr, 0, 1) + '" style="width:50px;height:72;top:-35px;right:10px;"/>' +
-                '<img src="' + getIcon(iconpath.reward, 'reward/mega_resource', '.png', item['reward_pokemon_id']) + '" style="width:30px;height:auto;position:absolute;top:4px;left:0px;"/>' +
-                '</div>'
-            stopMarker = L.divIcon({
-                iconSize: [31, 31],
-                iconAnchor: [25, 45],
-                popupAnchor: [0, -35],
-                className: 'stop-quest-marker',
-                html: html
-            })
-        } else if (item['quest_reward_type'] === 7) {
-            pokemonid = item['reward_pokemon_id']
-            formid = item['reward_pokemon_formid']
-            costumeid = item['reward_pokemon_costumeid']
-            genderid = item['reward_pokemon_genderid']
-            shiny = item['reward_pokemon_shiny']
-            html = '<div style="position:relative;">' +
-                '<img src="' + getIcon(iconpath.pokestop, 'pokestop', '.png', markerStr, 0, 1) + '" style="width:50px;height:72;top:-35px;right:10px;"/>' +
-                '<img src="' + getIcon(iconpath.pokemon, 'pokemon', '.png', pokemonid, 0, formid, costumeid, genderid, shiny) + '" style="width:30px;height:auto;position:absolute;top:4px;left:0px;"/>' +
-                '</div>'
-            stopMarker = L.divIcon({
-                iconSize: [31, 31],
-                iconAnchor: [25, 45],
-                popupAnchor: [0, -35],
-                className: 'stop-quest-marker',
-                html: html
-            })
-        } else if (item['quest_reward_type'] === 4) {
-            html = '<div style="position:relative;">' +
-                '<img src="' + getIcon(iconpath.pokestop, 'pokestop', '.png', markerStr, 0, 1) + '" style="width:50px;height:72;top:-35px;right:10px;"/>' +
-                '<img src="' + getIcon(iconpath.reward, 'reward/candy', '.png', item['reward_pokemon_id'], item['reward_amount']) + '" style="width:30px;height:auto;position:absolute;top:4px;left:0px;"/>' +
-                '<img src="' + getIcon(iconpath.pokemon, 'pokemon', '.png', item['reward_pokemon_id']) + '" style="width:25px;height:auto;position:absolute;top:6px;left:10px;"/>' +
-                '</div>'
-            stopMarker = L.divIcon({
-                iconSize: [31, 31],
-                iconAnchor: [25, 45],
-                popupAnchor: [0, -35],
-                className: 'stop-quest-marker',
-                html: html
-            })
-        } else if (item['quest_reward_type'] === 3) {
-            html = '<div style="position:relative;">' +
-                '<img src="' + getIcon(iconpath.pokestop, 'pokestop', '.png', markerStr, 0, 1) + '" style="width:50px;height:72;top:-35px;right:10px;"/>' +
-                '<img src="' + getIcon(iconpath.reward, 'reward/stardust', '.png', item['reward_amount']) + '" style="width:30px;height:auto;position:absolute;top:4px;left:0px;"/>' +
-                '</div>'
-            stopMarker = L.divIcon({
-                iconSize: [31, 31],
-                iconAnchor: [25, 45],
-                popupAnchor: [0, -35],
-                className: 'stop-quest-marker',
-                html: html
-            })
-        } else if (item['quest_reward_type'] === 2) {
-            html = '<div style="position:relative;">' +
-                '<img src="' + getIcon(iconpath.pokestop, 'pokestop', '.png', markerStr, 0, 1) + '" style="width:50px;height:72;top:-35px;right:10px;"/>' +
-                '<img src="' + getIcon(iconpath.reward, 'reward/item', '.png', item['reward_item_id'], item['reward_amount']) + '" style="width:30px;height:auto;position:absolute;top:4px;left:0px;"/>' +
-                '</div>'
-            stopMarker = L.divIcon({
-                iconSize: [31, 31],
-                iconAnchor: [25, 45],
-                popupAnchor: [0, -35],
-                className: 'stop-quest-marker',
-                html: html
-            })
-        }
-    } else if (Store.get(['showLures']) && !noLures && item['lure_expiration'] > Date.now()) {
-        html = '<div><img src="' + getIcon(iconpath.pokestop, 'pokestop', '.png', item['lure_id']) + '" style="width:50px;height:72;top:-35px;right:10px;"/><div>'
-        stopMarker = L.divIcon({
-            iconSize: [31, 31],
-            iconAnchor: [25, 45],
-            popupAnchor: [0, -35],
-            className: 'stop-lured-marker',
-            html: html
-        })
     } else {
         stopMarker = L.divIcon({
             iconSize: [31, 31],
             iconAnchor: [25, 45],
             popupAnchor: [0, -35],
             className: 'stop-marker',
-            html: '<div><img src="' + getIcon(iconpath.pokestop, 'pokestop', '.png', markerStr) + '" style="width:50px;height:72;top:-35px;right:10px;"/></div>'
+            html: html
         })
     }
+
     return stopMarker
 }
 
