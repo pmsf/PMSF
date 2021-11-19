@@ -1278,25 +1278,22 @@ function pokemonLabel(item) {
     }
     contentstring +=
         '</center></div>' +
-        '<div><img src="' + getIcon(iconpath.pokemon, 'pokemon', '.png', id, 0, form, costume, gender) + '" style="width:50px;margin-top:10px;"/>'
+        '<div><img src="' + getIcon(iconpath.pokemon, 'pokemon', '.png', id, 0, form, costume, gender) + '" style="width:50px;margin-top:10px;"/>' +
+        '<b style="position:absolute;top:55px;left:72px;">'
     if (firstSeen > 0) {
-        contentstring += '<b style="top:-20px;position:relative;">' +
-            '<i class="fas fa-history"></i>' + ' ' + getTimeStr(firstSeen) +
-            '</b><br>'
+        contentstring += '<i class="fas fa-history"></i>' + ' ' + getTimeStr(firstSeen) +
+            '<br>'
     }
     if (item['expire_timestamp_verified'] > 0) {
-        contentstring += '<b style="top:-20px;position:relative;left:50px;">' +
-            '<i class="far fa-clock"></i>' + ' ' + getTimeStr(disappearTime) +
+        contentstring += '<i class="far fa-clock"></i>' + ' ' + getTimeStr(disappearTime) +
             ' <span class="label-countdown" disappears-at="' + disappearTime + '">(00m00s)</span>' +
             ' <i class="fas fa-check-square" style="color:#28b728;" title="' + i8ln('Despawntime verified') + '"></i>' +
             '</b></div>'
     } else if (pokemonReportTime === true) {
-        contentstring += '<b style="top:-20px;position:relative;left:50px;">' +
-            ' <i class="far fa-clock"></i>' + ' ' + getTimeStr(reportTime) +
+        contentstring += ' <i class="far fa-clock"></i>' + ' ' + getTimeStr(reportTime) +
             '</b></div>'
     } else {
-        contentstring += '<b style="top:-20px;position:relative;left:50px">' +
-            ' <i class="far fa-clock"></i>' + ' ' + getTimeStr(disappearTime) +
+        contentstring += ' <i class="far fa-clock"></i>' + ' ' + getTimeStr(disappearTime) +
             ' <span class="label-countdown" disappears-at="' + disappearTime + '">(00m00s)</span>' +
             ' <i class="fas fa-question" style="color:red;" title="' + i8ln('Despawntime not verified') + '"></i>' +
             '</b></div>'
@@ -2178,7 +2175,7 @@ function customizePokemonMarker(marker, item, skipNotification) {
         marker.rangeCircle = addRangeCircle(marker, map, 'pokemon')
     }
 
-    marker.bindPopup(pokemonLabel(item), {autoPan: false, closeOnClick: false, autoClose: false})
+    marker.bindPopup(pokemonLabel(item), {autoPan: false, closeOnClick: false, autoClose: false, minWidth: 200})
 
     if (notifiedPokemon.indexOf(item['pokemon_id']) > -1 || notifiedRarity.indexOf(item['pokemon_rarity']) > -1) {
         if (!skipNotification) {
