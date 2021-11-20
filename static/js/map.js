@@ -3190,8 +3190,8 @@ function clearStaleMarkers() {
                     (Store.get('showDespawnTimeType') === 1 && mapData.pokemons[key]['expire_timestamp_verified'] === 0) ||
                     (Store.get('showDespawnTimeType') === 2 && (mapData.pokemons[key]['expire_timestamp_verified'] > 0 || mapData.pokemons[key]['spawn_id'] === null)) ||
                     (Store.get('showDespawnTimeType') === 3 && mapData.pokemons[key]['expire_timestamp_verified'] > 0) ||
-                    (Store.get('showPokemonGender') === 1 && mapData.pokemons[key]['gender'] !== '1') ||
-                    (Store.get('showPokemonGender') === 2 && mapData.pokemons[key]['gender'] !== '2')
+                    (Store.get('showPokemonGender') === 1 && mapData.pokemons[key]['gender'] !== 1) ||
+                    (Store.get('showPokemonGender') === 2 && mapData.pokemons[key]['gender'] !== 2)
                 ) &&
                 encounterId !== mapData.pokemons[key]['encounter_id']
             )
