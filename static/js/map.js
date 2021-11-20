@@ -3006,6 +3006,18 @@ function setupScanLocationMarker(item) {
 
     addListeners(marker)
 
+    var rangeCircleOpts = {
+        color: '#2ECC71',
+        radius: 70, // meters
+        center: [item['latitude'], item['longitude']],
+        fillColor: '#2ECC71',
+        fillOpacity: 0.2,
+        weight: 1
+    }
+
+    marker.rangeCircle = L.circle([item['latitude'], item['longitude']], rangeCircleOpts)
+    liveScanGroup.addLayer(marker.rangeCircle)
+
     return marker
 }
 
