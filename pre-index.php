@@ -1368,6 +1368,7 @@ if (strtolower($map) === "rdm") {
     </div>
     <div class="offcanvas offcanvas-end" data-bs-scroll="true" data-bs-backdrop="true" tabindex="-1" id="rightNav" aria-labelledby="rightNavLabel">
         <div class="offcanvas-body right">
+            <?php if (! $noFullStats ) { ?>
             <div class="card">
                 <div class="card-header">
                     <?php echo i8ln('Full Stats') ?>
@@ -1380,6 +1381,7 @@ if (strtolower($map) === "rdm") {
                     </div>
                 </div>
             </div>
+            <?php } ?>
             <div class="card" id="loadingSpinner">
                 <div class="card-header">
                     <?php echo i8ln('Loading...') ?>
