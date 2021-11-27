@@ -234,7 +234,7 @@ class RocketMap_MAD extends Stats
         $questReward["quest_pokemon_form"] = intval($reward["quest_pokemon_form"]);
         $questReward["quest_pokemon_costume"] = intval($reward["quest_pokemon_costume"]);
         $questReward["quest_item_id"] = intval($reward["quest_item_id"]);
-        $questReward["count"] = reward["count"];
+        $questReward["count"] = $reward["count"];
         $questReward["percentage"] = round(100 / $total["total"] * $reward["count"], 3) . '%';
         $questReward["quest_reward_type"] = intval($reward["quest_reward_type"]);
         
