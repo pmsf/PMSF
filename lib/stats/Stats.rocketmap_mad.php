@@ -165,9 +165,9 @@ class RocketMap_MAD extends Stats
       $data = array();
       foreach ($mons as $mon) {
         $pokemon["name"] = i8ln($this->data[$mon['pokemon_id']]["name"]);
-        $pokemon["pokemon_id"] = $mon["pokemon_id"];
-        $pokemon["form"] = $mon["form"];
-        $pokemon["costume"] = $mon["costume"];
+        $pokemon["pokemon_id"] = intval($mon["pokemon_id"]);
+        $pokemon["form"] = intval($mon["form"]);
+        $pokemon["costume"] = intval($mon["costume"]);
         $pokemon["count"] = $mon["count"];
         $pokemon["percentage"] = round(100 / $total["total"] * $mon["count"], 3) . '%';
         if (isset($mon["form"]) && $mon["form"] > 0) {
@@ -229,12 +229,12 @@ class RocketMap_MAD extends Stats
 
       $data = array();
       foreach ($rewards as $reward) {
-        $questReward["quest_pokemon_id"] = $reward["quest_pokemon_id"];
-        $questReward["quest_energy_pokemon_id"] = $reward["quest_energy_pokemon_id"];
-        $questReward["quest_pokemon_form"] = $reward["quest_pokemon_form"];
-        $questReward["quest_pokemon_costume"] = $reward["quest_pokemon_costume"];
-        $questReward["quest_item_id"] = $reward["quest_item_id"];
-        $questReward["count"] = $reward["count"];
+        $questReward["quest_pokemon_id"] = intval($reward["quest_pokemon_id"]);
+        $questReward["quest_energy_pokemon_id"] = intval($reward["quest_energy_pokemon_id"]);
+        $questReward["quest_pokemon_form"] = intval($reward["quest_pokemon_form"]);
+        $questReward["quest_pokemon_costume"] = intval($reward["quest_pokemon_costume"]);
+        $questReward["quest_item_id"] = intval($reward["quest_item_id"]);
+        $questReward["count"] = reward["count"];
         $questReward["percentage"] = round(100 / $total["total"] * $reward["count"], 3) . '%';
         $questReward["quest_reward_type"] = intval($reward["quest_reward_type"]);
         
@@ -287,9 +287,9 @@ class RocketMap_MAD extends Stats
       foreach ($shinys as $shiny) {
         $pokemon["name"] = i8ln($this->data[$shiny['pokemon_id']]["name"]);
         $pokemon["shiny_count"] = $shiny["shiny_count"];
-        $pokemon["pokemon_id"] = $shiny["pokemon_id"];
-        $pokemon["form"] = $shiny["form"];
-        $pokemon["costume"] = $shiny["costume"];
+        $pokemon["pokemon_id"] = intval($shiny["pokemon_id"]);
+        $pokemon["form"] = intval($shiny["form"]);
+        $pokemon["costume"] = intval($shiny["costume"]);
         $pokemon["rate"] = '1/' . round($shiny["sample_size"] / $shiny['shiny_count']);
         $pokemon["percentage"] = round(100 / $shiny["sample_size"] * $shiny["shiny_count"], 3) . '%';
         $pokemon["sample_size"] = $shiny['sample_size'];
