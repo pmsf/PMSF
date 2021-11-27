@@ -209,13 +209,14 @@ class RocketMap_MAD extends Stats
           tq.quest_pokemon_id, 
           tq.quest_pokemon_id AS quest_energy_pokemon_id,
           tq.quest_pokemon_form_id AS quest_pokemon_form,
+          tq.quest_pokemon_costume_id AS quest_pokemon_costume,
           tq.quest_item_amount AS quest_item_amount,
           tq.quest_stardust AS quest_dust_amount,
           tq.quest_reward_type AS quest_reward_type
         FROM trs_quest tq
         LEFT JOIN pokestop p ON p.pokestop_id = tq.GUID
         WHERE tq.quest_timestamp >= UNIX_TIMESTAMP(CURDATE()) $geofenceSQL
-        GROUP BY tq.quest_reward_type, tq.quest_item_id, tq.quest_stardust, tq.quest_item_amount, tq.quest_pokemon_id, tq.quest_pokemon_form_id"
+        GROUP BY tq.quest_reward_type, tq.quest_item_id, tq.quest_stardust, tq.quest_item_amount, tq.quest_pokemon_id, tq.quest_pokemon_form_id, tq.quest_pokemon_costume_id"
       );
 
       $total = $db->query("
@@ -229,7 +230,9 @@ class RocketMap_MAD extends Stats
       $data = array();
       foreach ($rewards as $reward) {
         $questReward["quest_pokemon_id"] = $reward["quest_pokemon_id"];
+        $questReward["quest_energy_pokemon_id"] = $reward["quest_energy_pokemon_id"];
         $questReward["quest_pokemon_form"] = $reward["quest_pokemon_form"];
+        $questReward["quest_pokemon_costume"] = $reward["quest_pokemon_costume"];
         $questReward["quest_item_id"] = $reward["quest_item_id"];
         $questReward["count"] = $reward["count"];
         $questReward["percentage"] = round(100 / $total["total"] * $reward["count"], 3) . '%';
@@ -237,7 +240,7 @@ class RocketMap_MAD extends Stats
         
         if ($reward["quest_reward_type"] == 12) {
           $questReward["name"] = i8ln($this->data[$reward['quest_energy_pokemon_id']]["name"]);
-          $questReward["quest_reward_amount"] = null;
+          $questReward["quest_reward_amount"] = $reward["quest_item_amount"];
         } elseif ($reward["quest_reward_type"] == 7) {
           $questReward["name"] = i8ln($this->data[$reward['quest_pokemon_id']]["name"]);
           $questReward["quest_reward_amount"] = null;
