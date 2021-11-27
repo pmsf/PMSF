@@ -1,22 +1,22 @@
 {
   "1": {
     "type": "Blanche",
-    "grunt": ""
+    "grunt": "Female"
   },
   "2": {
     "type": "Candela",
-    "grunt": ""
+    "grunt": "Female"
   },
   "3": {
     "type": "Spark",
-    "grunt": ""
+    "grunt": "Male"
   },
   "4": {
-    "type": "",
+    "type": "Grunt",
     "grunt": "Male"
   },
   "5": {
-    "type": "",
+    "type": "Grunt",
     "grunt": "Female",
     "second_reward": "false",
     "encounters": {
@@ -30,6 +30,7 @@
       ],
       "third": [
         "130",
+        "143",
         "149"
       ]
     }
@@ -41,21 +42,20 @@
   "7": {
     "type": "Bug",
     "grunt": "Male",
-    "second_reward": "false",
+    "second_reward": "true",
     "encounters": {
       "first": [
-        "213",
-        "347",
-        "451"
+        "13",
+        "49"
       ],
       "second": [
-        "49",
-        "127",
-        "212"
+        "14",
+        "15",
+        "451"
       ],
       "third": [
-        "15",
-        "123",
+        "127",
+        "205",
         "212"
       ]
     }
@@ -74,16 +74,17 @@
     "second_reward": "true",
     "encounters": {
       "first": [
-        "198",
+        "228",
         "261"
       ],
       "second": [
-        "262",
-        "302"
+        "274",
+        "302",
+        "332"
       ],
       "third": [
         "275",
-        "332"
+        "319"
       ]
     }
   },
@@ -100,10 +101,13 @@
         "147"
       ],
       "second": [
-        "148"
+        "148",
+        "330"
       ],
       "third": [
-        "130"
+        "148",
+        "149",
+        "330"
       ]
     }
   },
@@ -117,14 +121,16 @@
     "second_reward": "false",
     "encounters": {
       "first": [
-        "209"
+        "209",
+        "280"
       ],
       "second": [
         "209",
-        "210"
+        "281"
       ],
       "third": [
-        "210"
+        "210",
+        "281"
       ]
     }
   },
@@ -138,11 +144,12 @@
     "second_reward": "false",
     "encounters": {
       "first": [
-        "66",
-        "296"
+        "106",
+        "107"
       ],
       "second": [
-        "67"
+        "66",
+        "296"
       ],
       "third": [
         "106",
@@ -161,17 +168,14 @@
     "second_reward": "true",
     "encounters": {
       "first": [
-        "37",
-        "126",
-        "228"
+        "4",
+        "37"
       ],
       "second": [
-        "38",
-        "126",
-        "229"
+        "5",
+        "126"
       ],
       "third": [
-        "5",
         "38",
         "59"
       ]
@@ -188,6 +192,7 @@
     "encounters": {
       "first": [
         "41",
+        "198",
         "396"
       ],
       "second": [
@@ -195,9 +200,8 @@
         "397"
       ],
       "third": [
-        "130",
-        "149",
-        "169"
+        "169",
+        "398"
       ]
     }
   },
@@ -215,19 +219,16 @@
     "second_reward": "true",
     "encounters": {
       "first": [
-        "43",
-        "114",
-        "187"
+        "331",
+        "387"
       ],
       "second": [
-        "44",
-        "114",
-        "188"
+        "2",
+        "114"
       ],
       "third": [
         "45",
-        "71",
-        "275"
+        "182"
       ]
     }
   },
@@ -241,14 +242,15 @@
     "second_reward": "false",
     "encounters": {
       "first": [
-        "50",
-        "220"
+        "27",
+        "104"
       ],
       "second": [
-        "105",
-        "329"
+        "28",
+        "51"
       ],
       "third": [
+        "105",
         "330",
         "472"
       ]
@@ -260,13 +262,12 @@
     "second_reward": "true",
     "encounters": {
       "first": [
-        "363",
-        "459"
+        "220",
+        "363"
       ],
       "second": [
         "91",
-        "220",
-        "364"
+        "459"
       ],
       "third": [
         "131",
@@ -293,37 +294,39 @@
   "31": {
     "type": "Normal",
     "grunt": "Male",
-    "second_reward": "false",
+    "second_reward": "true",
     "encounters": {
       "first": [
-        "216"
+        "19",
+        "216",
+        "399"
       ],
       "second": [
         "20",
-        "233"
+        "400"
       ],
       "third": [
-        "143",
-        "474"
+        "20",
+        "217",
+        "400"
       ]
     }
   },
   "32": {
     "type": "Poison",
     "grunt": "Female",
-    "second_reward": "false",
+    "second_reward": "true",
     "encounters": {
       "first": [
-        "29",
-        "88",
-        "451"
+        "30",
+        "32",
+        "41"
       ],
       "second": [
-        "030",
-        "033"
+        "33",
+        "110"
       ],
       "third": [
-        "30",
         "89",
         "110"
       ]
@@ -340,21 +343,19 @@
   "35": {
     "type": "Psychic",
     "grunt": "Male",
-    "second_reward": "false",
+    "second_reward": "true",
     "encounters": {
       "first": [
-        "79",
-        "202"
+        "63",
+        "280"
       ],
       "second": [
-        "64",
-        "96",
-        "281"
+        "375"
       ],
       "third": [
+        "65",
         "97",
-        "103",
-        "281"
+        "375"
       ]
     }
   },
@@ -368,13 +369,11 @@
     "second_reward": "true",
     "encounters": {
       "first": [
-        "299",
-        "304"
+        "246"
       ],
       "second": [
-        "246",
-        "247",
-        "305"
+        "345",
+        "347"
       ],
       "third": [
         "247",
@@ -385,20 +384,19 @@
   "38": {
     "type": "Water",
     "grunt": "Female",
-    "second_reward": "false",
+    "second_reward": "true",
     "encounters": {
       "first": [
-        "60",
-        "116",
-        "363"
+        "54",
+        "258"
       ],
       "second": [
-        "195",
-        "259"
+        "8",
+        "90"
       ],
       "third": [
-        "62",
-        "186"
+        "80",
+        "199"
       ]
     }
   },
@@ -414,7 +412,8 @@
         "129"
       ],
       "third": [
-        "129"
+        "129",
+        "130"
       ]
     }
   },
@@ -424,69 +423,71 @@
   },
   "41": {
     "type": "Executive Cliff",
-    "grunt": "",
+    "grunt": "Male",
     "second_reward": "false",
     "encounters": {
       "first": [
-        "273"
+        "88"
       ],
       "second": [
-        "62",
-        "99",
-        "297"
+        "3",
+        "68",
+        "169"
       ],
       "third": [
-        "248",
-        "389"
+        "6",
+        "59",
+        "248"
       ]
     }
   },
   "42": {
     "type": "Executive Arlo",
-    "grunt": "",
+    "grunt": "Male",
     "second_reward": "false",
     "encounters": {
       "first": [
-        "48"
+        "207"
       ],
       "second": [
-        "169",
-        "310"
+        "131",
+        "303",
+        "346"
       ],
       "third": [
-        "45",
+        "143",
         "212",
-        "462"
+        "282"
       ]
     }
   },
   "43": {
     "type": "Executive Sierra",
-    "grunt": "",
+    "grunt": "Female",
     "second_reward": "false",
     "encounters": {
       "first": [
-        "215"
+        "29"
       ],
       "second": [
-        "181",
-        "210",
-        "472"
+        "15",
+        "45",
+        "80"
       ],
       "third": [
-        "229",
-        "230",
-        "452"
+        "31",
+        "105",
+        "229"
       ]
     }
   },
   "44": {
     "type": "Giovanni or Decoy",
-    "grunt": "",
+    "grunt": "Male",
     "second_reward": "false",
     "encounters": {
       "first": [
-        "146"
+        "249"
       ],
       "second": [],
       "third": []
@@ -499,18 +500,18 @@
   "46": {
     "type": "Decoy",
     "grunt": "Female",
-    "second_reward": "false",
+    "second_reward": "true",
     "encounters": {
       "first": [
-        "069_00"
+        "69"
       ],
       "second": [
-        "020_00",
-        "070_00"
+        "20",
+        "70"
       ],
       "third": [
-        "020_00",
-        "143_00"
+        "20",
+        "143"
       ]
     }
   },
@@ -525,42 +526,47 @@
     "encounters": {
       "first": [
         "200",
-        "353",
-        "355"
+        "302"
       ],
       "second": [
-        "354",
-        "356"
+        "302",
+        "353"
       ],
       "third": [
         "302",
-        "354",
-        "477"
+        "354"
       ]
     }
   },
   "49": {
     "type": "Electric",
     "grunt": "Female",
-    "second_reward": "false",
+    "second_reward": "true",
     "encounters": {
       "first": [
-        "125",
-        "179",
+        "81",
         "309"
       ],
       "second": [
-        "125",
-        "180"
+        "82",
+        "125"
       ],
       "third": [
-        "125",
+        "82",
         "181"
       ]
     }
   },
   "50": {
     "type": "Electric",
+    "grunt": "Male"
+  },
+  "53": {
+    "type": "Gruntb",
+    "grunt": "Female"
+  },
+  "54": {
+    "type": "Gruntb",
     "grunt": "Male"
   },
   "500": {
