@@ -255,7 +255,7 @@ if (copyrightSafe) {
     var setPokemon = Store.get('iconsArray')
     setPokemon.pokemon = 'static/sprites/'
     Store.set('iconsArray', setPokemon)
-} else if (Object.prototype.toString.call(Store.get('iconsArray')) === '[object String]' || Store.get('iconsArray') === '') {
+} else {
     for (const [key, value] of Object.entries(iconFolderArray)) {
         if (Object.prototype.toString.call(value) === '[object Object]') {
             iconFolderArray[key] = iconFolderArray[key][Object.keys(iconFolderArray[key])[0]]
@@ -1186,6 +1186,7 @@ function pokemonLabel(item) {
     var id = item['pokemon_id']
     var latitude = item['latitude']
     var longitude = item['longitude']
+    var firstSeen = item['first_seen_timestamp']
     var disappearTime = item['disappear_time']
     var reportTime = disappearTime - 1800000
     var atk = item['individual_attack']
@@ -1277,20 +1278,22 @@ function pokemonLabel(item) {
     }
     contentstring +=
         '</center></div>' +
-        '<div><img src="' + getIcon(iconpath.pokemon, 'pokemon', '.png', id, 0, form, costume, gender) + '" style="width:50px;margin-top:10px;"/>'
+        '<div><img src="' + getIcon(iconpath.pokemon, 'pokemon', '.png', id, 0, form, costume, gender) + '" style="width:50px;margin-top:10px;"/>' +
+        '<b style="position:absolute;top:55px;left:72px;">'
+    if (firstSeen > 0) {
+        contentstring += '<i class="fas fa-history"></i>' + ' ' + getTimeStr(firstSeen) +
+            '<br>'
+    }
     if (item['expire_timestamp_verified'] > 0) {
-        contentstring += '<b style="top:-20px;position:relative;">' +
-            '<i class="far fa-clock"></i>' + ' ' + getTimeStr(disappearTime) +
+        contentstring += '<i class="far fa-clock"></i>' + ' ' + getTimeStr(disappearTime) +
             ' <span class="label-countdown" disappears-at="' + disappearTime + '">(00m00s)</span>' +
             ' <i class="fas fa-check-square" style="color:#28b728;" title="' + i8ln('Despawntime verified') + '"></i>' +
             '</b></div>'
     } else if (pokemonReportTime === true) {
-        contentstring += '<b style="top:-20px;position:relative;">' +
-            ' <i class="far fa-clock"></i>' + ' ' + getTimeStr(reportTime) +
+        contentstring += ' <i class="far fa-clock"></i>' + ' ' + getTimeStr(reportTime) +
             '</b></div>'
     } else {
-        contentstring += '<b style="top:-20px;position:relative;">' +
-            ' <i class="far fa-clock"></i>' + ' ' + getTimeStr(disappearTime) +
+        contentstring += ' <i class="far fa-clock"></i>' + ' ' + getTimeStr(disappearTime) +
             ' <span class="label-countdown" disappears-at="' + disappearTime + '">(00m00s)</span>' +
             ' <i class="fas fa-question" style="color:red;" title="' + i8ln('Despawntime not verified') + '"></i>' +
             '</b></div>'
@@ -1715,6 +1718,9 @@ function getQuest(item) {
                     break
                 case 25:
                     str = str.replace('{0} pokémon', 'pokémon caught ' + questinfo['distance'] + 'km apart')
+                    break
+                case 26:
+                    str = str.replace('pokémon', 'shadow Pokémon')
                     break
                 case 27:
                     var gstr = ''
@@ -2169,7 +2175,7 @@ function customizePokemonMarker(marker, item, skipNotification) {
         marker.rangeCircle = addRangeCircle(marker, map, 'pokemon')
     }
 
-    marker.bindPopup(pokemonLabel(item), {autoPan: false, closeOnClick: false, autoClose: false})
+    marker.bindPopup(pokemonLabel(item), {autoPan: false, closeOnClick: false, autoClose: false, minWidth: 200})
 
     if (notifiedPokemon.indexOf(item['pokemon_id']) > -1 || notifiedRarity.indexOf(item['pokemon_rarity']) > -1) {
         if (!skipNotification) {
@@ -2663,12 +2669,12 @@ function setupNestMarker(item) {
         var pokemonId = item.pokemon_id
         var formId = item.pokemon_form
         getNestMarkerIcon = '<div class="marker-nests">' +
-            '<img src="static/images/nest-' + item.english_pokemon_types[0].type.toLowerCase() + '.png" style="width:45px;height: auto;"/>' +
+            '<img src="' + getIcon(iconpath.nest, 'nest', '.png', getKeyByValue(pokemonTypes, item.english_pokemon_types[0].type)) + '" style="width:45px;height: auto;"/>' +
             '<img src="' + getIcon(iconpath.pokemon, 'pokemon', '.png', pokemonId, 0, formId) + '" style="position:absolute;width:40px;height:40px;top:6px;left:3px"/>' +
             '</div>'
     } else {
         getNestMarkerIcon = '<div class="marker-nests">' +
-            '<img src="static/images/nest-empty.png" style="width:36px;height:auto;"/>' +
+            '<img src="' + getIcon(iconpath.nest, 'nest', '.png', 0) + '" style="width:36px;height:auto;"/>' +
             '</div>'
     }
     var nestMarkerIcon = L.divIcon({
@@ -2722,7 +2728,7 @@ function nestLabel(item) {
             '</center>'
     } else {
         str += '<div align="center" class="marker-nests">' +
-            '<img src="static/images/nest-empty.png" align"middle" style="width:36px;height: auto;"/>' +
+            '<img src="' + getIcon(iconpath.nest, 'nest', '.png', 0) + '" align"middle" style="width:36px;height: auto;"/>' +
             '</div>' +
             '<center><b>' + i8ln('No Pokemon - Assign One Below') + '</b></center>'
     }
@@ -3181,8 +3187,8 @@ function clearStaleMarkers() {
                     (Store.get('showDespawnTimeType') === 1 && mapData.pokemons[key]['expire_timestamp_verified'] === 0) ||
                     (Store.get('showDespawnTimeType') === 2 && (mapData.pokemons[key]['expire_timestamp_verified'] > 0 || mapData.pokemons[key]['spawn_id'] === null)) ||
                     (Store.get('showDespawnTimeType') === 3 && mapData.pokemons[key]['expire_timestamp_verified'] > 0) ||
-                    (Store.get('showPokemonGender') === 1 && mapData.pokemons[key]['gender'] !== '1') ||
-                    (Store.get('showPokemonGender') === 2 && mapData.pokemons[key]['gender'] !== '2')
+                    (Store.get('showPokemonGender') === 1 && mapData.pokemons[key]['gender'] !== 1) ||
+                    (Store.get('showPokemonGender') === 2 && mapData.pokemons[key]['gender'] !== 2)
                 ) &&
                 encounterId !== mapData.pokemons[key]['encounter_id']
             )
@@ -6391,6 +6397,9 @@ $(function () {
                 redrawPokemon(mapData.pokemons)
                 updateGymIcons()
                 updatePokestopIcons()
+                if (Store.get('showNests')) {
+                    lastnests = false
+                }
             })
             .fail(function () {
                 if (enableJSDebug) {
@@ -7606,6 +7615,23 @@ function getIcon(iconRepo, folder, fileType, iconKeyId, ...varArgs) {
                 } else {
                     if (enableJSDebug) {
                         console.log('Repo is missing invasion icon: ' + requestedIcon)
+                    }
+                }
+            }
+            break
+        case 'nest':
+            if (iconpath['nestIndex'] === undefined) {
+                if (enableJSDebug) {
+                    console.log('No nestIndex? Houston, we have a problem.')
+                }
+            } else {
+                const typeId = iconKeyId
+                requestedIcon = `${typeId}${fileType}`
+                if (iconpath['nestIndex'].includes(requestedIcon)) {
+                    icon = requestedIcon
+                } else {
+                    if (enableJSDebug) {
+                        console.log('Repo is missing nest icon: ' + requestedIcon)
                     }
                 }
             }

@@ -380,7 +380,7 @@ function processRewardStats(i, item) { // eslint-disable-line no-unused-vars
             type = i8ln('Item')
             break
         case 3:
-            reward = '<img src="' + getIcon(iconpath.reward, 'reward/stardust', '.png', item['quest_dust_amount']) + '" style="width:40px;">' +
+            reward = '<img src="' + getIcon(iconpath.reward, 'reward/stardust', '.png', item['quest_reward_amount']) + '" style="width:40px;">' +
             hiddenName
             type = i8ln('Stardust')
             break
@@ -390,12 +390,12 @@ function processRewardStats(i, item) { // eslint-disable-line no-unused-vars
             type = i8ln('Candy')
             break
         case 7:
-            reward = '<img src="' + getIcon(iconpath.pokemon, 'pokemon', '.png', item['quest_pokemon_id'], 0, item['quest_pokemon_form']) + '" style="width:40px;">' +
+            reward = '<img src="' + getIcon(iconpath.pokemon, 'pokemon', '.png', item['quest_pokemon_id'], 0, item['quest_pokemon_form'], item['quest_pokemon_costume']) + '" style="width:40px;">' +
             hiddenName
             type = i8ln('Pokémon')
             break
         case 12:
-            reward = '<img src="' + getIcon(iconpath.reward, 'reward/mega_resource', '.png', item['quest_energy_pokemon_id']) + '" style="width:40px;">' +
+            reward = '<img src="' + getIcon(iconpath.reward, 'reward/mega_resource', '.png', item['quest_energy_pokemon_id'], item['quest_reward_amount']) + '" style="width:40px;">' +
             hiddenName
             type = i8ln('Mega Energy')
             break

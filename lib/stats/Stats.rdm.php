@@ -165,9 +165,9 @@ class RDM extends Stats
       $data = array();
       foreach ($mons as $mon) {
         $pokemon["name"] = i8ln($this->data[$mon['pokemon_id']]["name"]);
-        $pokemon["pokemon_id"] = $mon["pokemon_id"];
-        $pokemon["form"] = $mon["form"];
-        $pokemon["costume"] = $mon["costume"];
+        $pokemon["pokemon_id"] = intval($mon["pokemon_id"]);
+        $pokemon["form"] = intval($mon["form"]);
+        $pokemon["costume"] = intval($mon["costume"]);
         $pokemon["count"] = $mon["count"];
         $pokemon["percentage"] = round(100 / $total["total"] * $mon["count"], 3) . '%';
         if (isset($mon["form"]) && $mon["form"] > 0) {
@@ -209,21 +209,23 @@ class RDM extends Stats
           quest_pokemon_id,
           json_extract(json_extract(`quest_rewards`,'$[*].info.pokemon_id'),'$[0]') AS quest_energy_pokemon_id,
           json_extract(json_extract(`quest_rewards`,'$[*].info.form_id'),'$[0]') AS quest_pokemon_form,
+          json_extract(json_extract(`quest_rewards`,'$[*].info.costume_id'),'$[0]') AS quest_pokemon_costume,
           json_extract(json_extract(`quest_rewards`,'$[*].info.amount'),'$[0]') AS quest_reward_amount,
           quest_reward_type
         FROM pokestop
         WHERE quest_reward_type IS NOT NULL $geofenceSQL
-        GROUP BY quest_reward_type, quest_item_id, quest_reward_amount, quest_pokemon_id, quest_pokemon_form"
+        GROUP BY quest_reward_type, quest_item_id, quest_reward_amount, quest_pokemon_id, quest_pokemon_form, quest_pokemon_costume"
       );
       $total = $db->query("SELECT COUNT(*) AS total FROM pokestop WHERE quest_reward_type IS NOT NULL $geofenceSQL")->fetch();
 
       $data = array();
       foreach ($rewards as $reward) {
-        $questReward["quest_pokemon_id"] = $reward["quest_pokemon_id"];
-        $questReward["quest_energy_pokemon_id"] = $reward["quest_energy_pokemon_id"];
-        $questReward["quest_pokemon_form"] = $reward["quest_pokemon_form"];
-        $questReward["quest_item_id"] = $reward["quest_item_id"];
-        $questReward["quest_reward_amount"] = $reward["quest_reward_amount"];
+        $questReward["quest_pokemon_id"] = intval($reward["quest_pokemon_id"]);
+        $questReward["quest_energy_pokemon_id"] = intval($reward["quest_energy_pokemon_id"]);
+        $questReward["quest_pokemon_form"] = intval($reward["quest_pokemon_form"]);
+        $questReward["quest_pokemon_costume"] = intval($reward["quest_pokemon_costume"]);
+        $questReward["quest_item_id"] = intval($reward["quest_item_id"]);
+        $questReward["quest_reward_amount"] = intval($reward["quest_reward_amount"]);
         $questReward["quest_reward_type"] = intval($reward["quest_reward_type"]);
         $questReward["count"] = $reward["count"];
         $questReward["percentage"] = round(100 / $total["total"] * $reward["count"], 3) . '%';
@@ -267,9 +269,9 @@ class RDM extends Stats
       foreach ($shinys as $shiny) {
         $pokemon["name"] = i8ln($this->data[$shiny['pokemon_id']]["name"]);
         $pokemon["shiny_count"] = $shiny["shiny_count"];
-        $pokemon["pokemon_id"] = $shiny["pokemon_id"];
-        $pokemon["form"] = $shiny["form"];
-        $pokemon["costume"] = $shiny["costume"];
+        $pokemon["pokemon_id"] = intval($shiny["pokemon_id"]);
+        $pokemon["form"] = intval($shiny["form"]);
+        $pokemon["costume"] = intval($shiny["costume"]);
         $pokemon["rate"] = '1/' . round($shiny["sample_size"] / $shiny['shiny_count']);
         $pokemon["percentage"] = round(100 / $shiny["sample_size"] * $shiny["shiny_count"], 3) . '%';
         $pokemon["sample_size"] = $shiny['sample_size'];
