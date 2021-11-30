@@ -1595,7 +1595,7 @@ function getReward(item) {
             rewardImage = '<img style="' + styleStr + '" src="' + getIcon(iconpath.pokemon, 'pokemon', '.png', pokemonid, 0, formid, costumeid, genderid, shiny) + '"/>'
             break
         case 12:
-            rewardImage = '<img style="' + styleStr + '" src="' + getIcon(iconpath.reward, 'reward/mega_resource', '.png', item['reward_pokemon_id']) + '"/>'
+            rewardImage = '<img style="' + styleStr + '" src="' + getIcon(iconpath.reward, 'reward/mega_resource', '.png', item['reward_pokemon_id'], item['reward_amount']) + '"/>'
             break
         default:
             rewardImage = ''
@@ -7755,9 +7755,9 @@ function getIcon(iconRepo, folder, fileType, iconKeyId, ...varArgs) {
                 }
             } else {
                 const itemId = iconKeyId
-                const amount = typeof varArgs[0] === 'undefined' ? [''] : varArgs[0] === 0 ? [''] : ['_a' + varArgs[0], '']
+                const itemAmount = typeof varArgs[0] === 'undefined' ? [''] : varArgs[0] === 0 ? [''] : ['_a' + varArgs[0], '']
                 search:
-                for (const a of amount) {
+                for (const a of itemAmount) {
                     requestedIcon = `${itemId}${a}${fileType}`
                     if (iconpath['rewardIndex']['item'].includes(requestedIcon)) {
                         if (!firstTry) {
@@ -7787,13 +7787,25 @@ function getIcon(iconRepo, folder, fileType, iconKeyId, ...varArgs) {
                 }
             } else {
                 const megaPokemon = iconKeyId
-                requestedIcon = `${megaPokemon}${fileType}`
-                if (iconpath['rewardIndex']['mega_resource'].includes(requestedIcon)) {
-                    icon = requestedIcon
-                } else {
-                    if (enableJSDebug) {
-                        console.log('Repo is missing reward->mega_resource icon: ' + requestedIcon)
+                const megaAmount = typeof varArgs[0] === 'undefined' ? [''] : varArgs[0] === 0 ? [''] : ['_a' + varArgs[0], '']
+                search:
+                for (const a of megaAmount) {
+                    requestedIcon = `${megaPokemon}${a}${fileType}`
+
+                    if (iconpath['rewardIndex']['mega_resource'].includes(requestedIcon)) {
+                        if (!firstTry) {
+                            if (enableJSDebug) {
+                                console.log('Repo has fallback reward->mega_resource icon: ' + requestedIcon)
+                            }
+                        }
+                        icon = requestedIcon
+                        break search
+                    } else {
+                        if (enableJSDebug) {
+                            console.log('Repo is missing ' + (firstTry ? 'optimal' : 'fallback') + ' reward->mega_resource icon: ' + requestedIcon)
+                        }
                     }
+                    firstTry = false
                 }
             }
             break
