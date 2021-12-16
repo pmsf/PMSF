@@ -130,5 +130,8 @@
   },
   "43": {
     "text": "WITH_ITEM_TYPE"
+  },
+  "44": {
+    "text": "WITH_RAID_ELAPSED_TIME"
   }
 }
