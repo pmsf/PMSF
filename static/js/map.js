@@ -1595,7 +1595,7 @@ function getReward(item) {
             rewardImage = '<img style="' + styleStr + '" src="' + getIcon(iconpath.pokemon, 'pokemon', '.png', pokemonid, 0, formid, costumeid, genderid, shiny) + '"/>'
             break
         case 12:
-            rewardImage = '<img style="' + styleStr + '" src="' + getIcon(iconpath.reward, 'reward/mega_resource', '.png', item['reward_pokemon_id']) + '"/>'
+            rewardImage = '<img style="' + styleStr + '" src="' + getIcon(iconpath.reward, 'reward/mega_resource', '.png', item['reward_pokemon_id'], item['reward_amount']) + '"/>'
             break
         default:
             rewardImage = ''
@@ -2441,7 +2441,7 @@ function getPokestopMarkerIcon(item) {
             if (item['quest_reward_type'] === 12) {
                 html = '<div style="position:relative;">' +
                     '<img src="' + getIcon(iconpath.pokestop, 'pokestop', '.png', markerStr, 0, 1) + '" style="width:50px;height:72;top:-35px;right:10px;"/>' +
-                    '<img src="' + getIcon(iconpath.reward, 'reward/mega_resource', '.png', item['reward_pokemon_id']) + '" style="width:30px;height:auto;position:absolute;top:4px;left:0px;"/>' +
+                    '<img src="' + getIcon(iconpath.reward, 'reward/mega_resource', '.png', item['reward_pokemon_id'], item['reward_amount']) + '" style="width:30px;height:auto;position:absolute;top:4px;left:0px;"/>' +
                     '</div>'
                 stopMarker = L.divIcon({
                     iconSize: [31, 31],
@@ -2550,7 +2550,7 @@ function getPokestopMarkerIcon(item) {
         if (item['quest_reward_type'] === 12) {
             html = '<div style="position:relative;">' +
                 '<img src="' + getIcon(iconpath.pokestop, 'pokestop', '.png', markerStr, 0, 1) + '" style="width:50px;height:72;top:-35px;right:10px;"/>' +
-                '<img src="' + getIcon(iconpath.reward, 'reward/mega_resource', '.png', item['reward_pokemon_id']) + '" style="width:30px;height:auto;position:absolute;top:4px;left:0px;"/>' +
+                '<img src="' + getIcon(iconpath.reward, 'reward/mega_resource', '.png', item['reward_pokemon_id'], item['reward_amount']) + '" style="width:30px;height:auto;position:absolute;top:4px;left:0px;"/>' +
                 '</div>'
             stopMarker = L.divIcon({
                 iconSize: [31, 31],
@@ -3556,7 +3556,7 @@ function searchForItem(lat, lon, term, type, field) {
                                 html += '<span style="background:url(' + getIcon(iconpath.reward, 'reward/stardust', '.png', element.reward_amount) + ') no-repeat;" class="i-icon" ></span>'
                             }
                             if (element.quest_reward_type === 12) {
-                                html += '<span style="background:url(' + getIcon(iconpath.reward, 'reward/mega_resource', '.png', element.reward_pokemon_id) + ') no-repeat;" class="i-icon" ></span>'
+                                html += '<span style="background:url(' + getIcon(iconpath.reward, 'reward/mega_resource', '.png', element.reward_pokemon_id, element.reward_amount) + ') no-repeat;" class="i-icon" ></span>'
                             }
                         }
                         html += '<div class="cont">'
@@ -7756,9 +7756,9 @@ function getIcon(iconRepo, folder, fileType, iconKeyId, ...varArgs) {
                 }
             } else {
                 const itemId = iconKeyId
-                const amount = typeof varArgs[0] === 'undefined' ? [''] : varArgs[0] === 0 ? [''] : ['_a' + varArgs[0], '']
+                const itemAmount = typeof varArgs[0] === 'undefined' ? [''] : varArgs[0] === 0 ? [''] : ['_a' + varArgs[0], '']
                 search:
-                for (const a of amount) {
+                for (const a of itemAmount) {
                     requestedIcon = `${itemId}${a}${fileType}`
                     if (iconpath['rewardIndex']['item'].includes(requestedIcon)) {
                         if (!firstTry) {
@@ -7788,13 +7788,25 @@ function getIcon(iconRepo, folder, fileType, iconKeyId, ...varArgs) {
                 }
             } else {
                 const megaPokemon = iconKeyId
-                requestedIcon = `${megaPokemon}${fileType}`
-                if (iconpath['rewardIndex']['mega_resource'].includes(requestedIcon)) {
-                    icon = requestedIcon
-                } else {
-                    if (enableJSDebug) {
-                        console.log('Repo is missing reward->mega_resource icon: ' + requestedIcon)
+                const megaAmount = typeof varArgs[0] === 'undefined' ? [''] : varArgs[0] === 0 ? [''] : ['_a' + varArgs[0], '']
+                search:
+                for (const a of megaAmount) {
+                    requestedIcon = `${megaPokemon}${a}${fileType}`
+
+                    if (iconpath['rewardIndex']['mega_resource'].includes(requestedIcon)) {
+                        if (!firstTry) {
+                            if (enableJSDebug) {
+                                console.log('Repo has fallback reward->mega_resource icon: ' + requestedIcon)
+                            }
+                        }
+                        icon = requestedIcon
+                        break search
+                    } else {
+                        if (enableJSDebug) {
+                            console.log('Repo is missing ' + (firstTry ? 'optimal' : 'fallback') + ' reward->mega_resource icon: ' + requestedIcon)
+                        }
                     }
+                    firstTry = false
                 }
             }
             break
