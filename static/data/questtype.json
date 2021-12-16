@@ -161,5 +161,8 @@
   },
   "58": {
     "text": "QUEST_USE_POKEMON_ITEM"
+  },
+  "59": {
+    "text": "Open {0} gift(s)"
   }
 }
