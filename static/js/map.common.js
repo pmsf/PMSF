@@ -56,14 +56,16 @@ var StoreTypes = {
 // set the default parameters for you map here
 }
 var StoreOptions = {
-    'map_style': {
-        default: mapStyle, // roadmap, satellite, hybrid, nolabels_style, dark_style, style_light2, style_pgo, dark_style_nl, style_pgo_day, style_pgo_night, style_pgo_dynamic
-        type: StoreTypes.String
-    },
-    'remember_select_exclude': {
-        default: hidePokemon,
-        type: StoreTypes.JSON
-    },
+    'map_style':
+        {
+            default: mapStyle, // roadmap, satellite, hybrid, nolabels_style, dark_style, style_light2, style_pgo, dark_style_nl, style_pgo_day, style_pgo_night, style_pgo_dynamic
+            type: StoreTypes.String
+        },
+    'remember_select_exclude':
+        {
+            default: hidePokemon,
+            type: StoreTypes.JSON
+        },
     'remember_select_exclude_min_iv':
         {
             default: excludeMinIV,
@@ -87,6 +89,16 @@ var StoreOptions = {
     'remember_text_level_notify':
         {
             default: notifyLevel,
+            type: StoreTypes.Number
+        },
+    'remember_text_min_gl_rank':
+        {
+            default: minGLRank,
+            type: StoreTypes.Number
+        },
+    'remember_text_min_ul_rank':
+        {
+            default: minULRank,
             type: StoreTypes.Number
         },
     'remember_text_min_iv':
@@ -204,6 +216,11 @@ var StoreOptions = {
             default: enableS2Cells,
             type: StoreTypes.Boolean
         },
+    'showPlacementRanges':
+        {
+            default: enablePlacementRanges,
+            type: StoreTypes.Boolean
+        },
     'showExCells':
         {
             default: enableLevel13Cells,
@@ -212,6 +229,11 @@ var StoreOptions = {
     'showGymCells':
         {
             default: enableLevel14Cells,
+            type: StoreTypes.Boolean
+        },
+    'showPokemonCells':
+        {
+            default: enableLevel15Cells,
             type: StoreTypes.Boolean
         },
     'showStopCells':
@@ -249,6 +271,11 @@ var StoreOptions = {
             default: enablePokemon,
             type: StoreTypes.Boolean
         },
+    'showMissingIVOnly':
+        {
+            default: false,
+            type: StoreTypes.Boolean
+        },
     'showBigKarp':
         {
             default: showBigKarp,
@@ -258,6 +285,16 @@ var StoreOptions = {
         {
             default: showTinyRat,
             type: StoreTypes.Boolean
+        },
+    'showDespawnTimeType':
+        {
+            default: showDespawnTimeType,
+            type: StoreTypes.Number
+        },
+    'showPokemonGender':
+        {
+            default: showPokemonGender,
+            type: StoreTypes.Number
         },
     'showPokestops':
         {
@@ -394,9 +431,9 @@ var StoreOptions = {
             default: false,
             type: StoreTypes.Boolean
         },
-    'iconSizeModifier':
+    'pokemonIconSize':
         {
-            default: iconSize,
+            default: pokemonIconSize,
             type: StoreTypes.Number
         },
     'iconNotifySizeModifier':
@@ -499,7 +536,7 @@ var mapData = {
     pois: {}
 }
 
-function getPokemonSprite(index, sprite, displayHeight, weather = 0, encounterForm = 0, pokemonCostume = 0, attack = 0, defense = 0, stamina = 0) {
+function getPokemonSprite(index, sprite, displayHeight, weather = 0, encounterForm = 0, pokemonCostume = 0, attack = 0, defense = 0, stamina = 0, gender = 0) {
     displayHeight = Math.max(displayHeight, 3)
     var scale = displayHeight / sprite.iconHeight
     // Crop icon just a tiny bit to avoid bleedover from neighbor
@@ -511,13 +548,13 @@ function getPokemonSprite(index, sprite, displayHeight, weather = 0, encounterFo
     var iv = 100 * (attack + defense + stamina) / 45
     var html = ''
     if (weather === 0 || noWeatherIcons) {
-        html = '<img src="' + getIcon(iconpath.pokemon, 'pokemon', '.png', pokemonId, 0, encounterForm, pokemonCostume) + '" style="width:' + scaledIconSizeWidth + 'px;height:auto;'
+        html = '<img src="' + getIcon(iconpath.pokemon, 'pokemon', '.png', pokemonId, 0, encounterForm, pokemonCostume, gender) + '" style="width:' + scaledIconSizeWidth + 'px;height:auto;'
         if (iv === 100 && !noIvShadow) {
             html += 'filter:drop-shadow(0 0 10px red)drop-shadow(0 0 10px red);-webkit-filter:drop-shadow(0 0 10px red)drop-shadow(0 0 10px red);'
         }
         html += '"/>'
     } else if (noWeatherIcons === false) {
-        html = '<img src="' + getIcon(iconpath.pokemon, 'pokemon', '.png', pokemonId, 0, encounterForm, pokemonCostume) + '" style="width:' + scaledIconSizeWidth + 'px;height:auto;'
+        html = '<img src="' + getIcon(iconpath.pokemon, 'pokemon', '.png', pokemonId, 0, encounterForm, pokemonCostume, gender) + '" style="width:' + scaledIconSizeWidth + 'px;height:auto;'
         if (iv === 100 && !noIvShadow) {
             html += 'filter:drop-shadow(0 0 10px red)drop-shadow(0 0 10px red);-webkit-filter:drop-shadow(0 0 10px red)drop-shadow(0 0 10px red);'
         }
@@ -534,7 +571,7 @@ function getPokemonSprite(index, sprite, displayHeight, weather = 0, encounterFo
 }
 
 function setupPokemonMarker(item, map, isBounceDisabled) {
-    var iconSize = (12) * (12) * 0.2 + Store.get('iconSizeModifier')
+    var iconSize = Store.get('pokemonIconSize')
     if (isNotifiedPokemon(item) === true) {
         iconSize += Store.get('iconNotifySizeModifier')
     }
@@ -543,7 +580,7 @@ function setupPokemonMarker(item, map, isBounceDisabled) {
     var attack = item['individual_attack']
     var defense = item['individual_defense']
     var stamina = item['individual_stamina']
-    var icon = getPokemonSprite(pokemonIndex, pokemonSprites, iconSize, item['weather_boosted_condition'], item['form'], item['costume'], item['individual_attack'], item['individual_defense'], item['individual_stamina'])
+    var icon = getPokemonSprite(pokemonIndex, pokemonSprites, iconSize, item['weather_boosted_condition'], item['form'], item['costume'], item['individual_attack'], item['individual_defense'], item['individual_stamina'], item['gender'])
 
     var animationDisabled = false
     if (isBounceDisabled === true) {

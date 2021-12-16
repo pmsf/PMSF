@@ -162,17 +162,17 @@ function countMarkers(map) { // eslint-disable-line no-unused-vars
         for (i = 0; i < raidCount.length; i++) {
             if (raidCount[i] > 0) {
                 if (i === 1) {
-                    raidListString += '<tr><td><img src="' + getIcon(iconpath.raid, 'raid', '.png', '1') + '" style="height:48px;"/></td><td style="vertical-align:middle;">1</td><td style="vertical-align:middle;">' + raidCount[i] + '</td><td style="vertical-align:middle;">' + Math.round(raidCount[i] * 100 / raidTotal * 10) / 10 + '%</td></tr>'
+                    raidListString += '<tr><td><img src="' + getIcon(iconpath.raid, 'raid/egg', '.png', '1') + '" style="height:48px;"/></td><td style="vertical-align:middle;">1</td><td style="vertical-align:middle;">' + raidCount[i] + '</td><td style="vertical-align:middle;">' + Math.round(raidCount[i] * 100 / raidTotal * 10) / 10 + '%</td></tr>'
                 } else if (i === 2) {
-                    raidListString += '<tr><td><img src="' + getIcon(iconpath.raid, 'raid', '.png', '2') + '" style="height:48px;"/></td><td style="vertical-align:middle;">2</td><td style="vertical-align:middle;">' + raidCount[i] + '</td><td style="vertical-align:middle;">' + Math.round(raidCount[i] * 100 / raidTotal * 10) / 10 + '%</td></tr>'
+                    raidListString += '<tr><td><img src="' + getIcon(iconpath.raid, 'raid/egg', '.png', '2') + '" style="height:48px;"/></td><td style="vertical-align:middle;">2</td><td style="vertical-align:middle;">' + raidCount[i] + '</td><td style="vertical-align:middle;">' + Math.round(raidCount[i] * 100 / raidTotal * 10) / 10 + '%</td></tr>'
                 } else if (i === 3) {
-                    raidListString += '<tr><td><img src="' + getIcon(iconpath.raid, 'raid', '.png', '3') + '" style="height:48px;"/></td><td style="vertical-align:middle;">3</td><td style="vertical-align:middle;">' + raidCount[i] + '</td><td style="vertical-align:middle;">' + Math.round(raidCount[i] * 100 / raidTotal * 10) / 10 + '%</td></tr>'
+                    raidListString += '<tr><td><img src="' + getIcon(iconpath.raid, 'raid/egg', '.png', '3') + '" style="height:48px;"/></td><td style="vertical-align:middle;">3</td><td style="vertical-align:middle;">' + raidCount[i] + '</td><td style="vertical-align:middle;">' + Math.round(raidCount[i] * 100 / raidTotal * 10) / 10 + '%</td></tr>'
                 } else if (i === 4) {
-                    raidListString += '<tr><td><img src="' + getIcon(iconpath.raid, 'raid', '.png', '4') + '" style="height:48px;"/></td><td style="vertical-align:middle;">4</td><td style="vertical-align:middle;">' + raidCount[i] + '</td><td style="vertical-align:middle;">' + Math.round(raidCount[i] * 100 / raidTotal * 10) / 10 + '%</td></tr>'
+                    raidListString += '<tr><td><img src="' + getIcon(iconpath.raid, 'raid/egg', '.png', '4') + '" style="height:48px;"/></td><td style="vertical-align:middle;">4</td><td style="vertical-align:middle;">' + raidCount[i] + '</td><td style="vertical-align:middle;">' + Math.round(raidCount[i] * 100 / raidTotal * 10) / 10 + '%</td></tr>'
                 } else if (i === 5) {
-                    raidListString += '<tr><td><img src="' + getIcon(iconpath.raid, 'raid', '.png', '5') + '" style="height:48px;"/></td><td style="vertical-align:middle;">5</td><td style="vertical-align:middle;">' + raidCount[i] + '</td><td style="vertical-align:middle;">' + Math.round(raidCount[i] * 100 / raidTotal * 10) / 10 + '%</td></tr>'
+                    raidListString += '<tr><td><img src="' + getIcon(iconpath.raid, 'raid/egg', '.png', '5') + '" style="height:48px;"/></td><td style="vertical-align:middle;">5</td><td style="vertical-align:middle;">' + raidCount[i] + '</td><td style="vertical-align:middle;">' + Math.round(raidCount[i] * 100 / raidTotal * 10) / 10 + '%</td></tr>'
                 } else if (i === 6) {
-                    raidListString += '<tr><td><img src="' + getIcon(iconpath.raid, 'raid', '.png', '6') + '" style="height:48px;"/></td><td style="vertical-align:middle;">6</td><td style="vertical-align:middle;">' + raidCount[i] + '</td><td style="vertical-align:middle;">' + Math.round(raidCount[i] * 100 / raidTotal * 10) / 10 + '%</td></tr>'
+                    raidListString += '<tr><td><img src="' + getIcon(iconpath.raid, 'raid/egg', '.png', '6') + '" style="height:48px;"/></td><td style="vertical-align:middle;">6</td><td style="vertical-align:middle;">' + raidCount[i] + '</td><td style="vertical-align:middle;">' + Math.round(raidCount[i] * 100 / raidTotal * 10) / 10 + '%</td></tr>'
                 }
             }
         }
@@ -380,17 +380,22 @@ function processRewardStats(i, item) { // eslint-disable-line no-unused-vars
             type = i8ln('Item')
             break
         case 3:
-            reward = '<img src="' + getIcon(iconpath.reward, 'reward/stardust', '.png', item['quest_dust_amount']) + '" style="width:40px;">' +
+            reward = '<img src="' + getIcon(iconpath.reward, 'reward/stardust', '.png', item['quest_reward_amount']) + '" style="width:40px;">' +
             hiddenName
             type = i8ln('Stardust')
             break
+        case 4:
+            reward = '<img src="' + getIcon(iconpath.reward, 'reward/candy', '.png', item['quest_candy_pokemon_id']) + '" style="width:40px;">' +
+            hiddenName
+            type = i8ln('Candy')
+            break
         case 7:
-            reward = '<img src="' + getIcon(iconpath.pokemon, 'pokemon', '.png', item['quest_pokemon_id'], 0, item['quest_pokemon_form']) + '" style="width:40px;">' +
+            reward = '<img src="' + getIcon(iconpath.pokemon, 'pokemon', '.png', item['quest_pokemon_id'], 0, item['quest_pokemon_form'], item['quest_pokemon_costume']) + '" style="width:40px;">' +
             hiddenName
             type = i8ln('Pokémon')
             break
         case 12:
-            reward = '<img src="' + getIcon(iconpath.reward, 'reward/mega_resource', '.png', item['quest_energy_pokemon_id']) + '" style="width:40px;">' +
+            reward = '<img src="' + getIcon(iconpath.reward, 'reward/mega_resource', '.png', item['quest_energy_pokemon_id'], item['quest_reward_amount']) + '" style="width:40px;">' +
             hiddenName
             type = i8ln('Mega Energy')
             break

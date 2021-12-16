@@ -1,6 +1,7 @@
 <?php
 
 $localeData = null;
+$checkIndexCache = array();
 
 function i8ln($word)
 {
@@ -76,6 +77,7 @@ function validateToken($token)
         }
         return $validity;
     } else {
+        destroyCookiesAndSessions();
         return 'invalid';
     }
 }
@@ -193,7 +195,7 @@ function createUserAccount($user, $password, $newExpireTimestamp)
 
             if (!$sendMail) {
                 http_response_code(500);
-                die("<h1>Warning</h1><p>The email has not been sent.<br>If you're an user please contact your administrator.<br>If you're an administrator install <i><b>apt-get install sendmail</b></i> and restart your web server and try again.</p><p><a href='.'><i class='fas fa-backward'></i> Back to Map</a> - <a href='./register?action=account'>Retry</a></p>");
+                die("<h1>Warning</h1><p>The email has not been sent.<br>If you're a user, please contact your administrator.<br>If you're an administrator, install <i><b>apt-get install sendmail</b></i>, restart your web server and try again.</p><p><a href='.'><i class='fas fa-backward'></i> Back to Map</a> - <a href='./register?action=account'>Retry</a></p>");
                 return 'success';
             }
         } else {
@@ -375,14 +377,14 @@ function getIcon($iconRepo, $folder, $fileType, $iconKeyId, ...$varArgs) {
             $battle = isset($varArgs[1]) ? ['_b', ''] : [''];
             $ex = isset($varArgs[2]) ? ['_ex', ''] : [''];
             $requestedIcon = $teamId . (isset($trainerCount[0]) ? $trainerCount[0] : '') . (isset($battle[0]) ? $battle[0] : '') . (isset($ex[0]) ? $ex[0] : '');
-            if (array_search($requestedIcon, $availableArray)) {
+            if (array_search($requestedIcon, $availableArray) !== false) {
                 $icon = $availableArray[array_search($requestedIcon, $availableArray)];
             } else {
                 foreach ($trainerCount as $trainer) {
                     foreach ($battle as $b) {
                         foreach ($ex as $e) {
                             $searchIcon = $teamId . $trainer . $b . $e . $fileType;
-                            if (array_search($searchIcon, $availableArray)) {
+                            if (array_search($searchIcon, $availableArray) !== false) {
                                 $icon = $searchIcon;
                                 break 3;
                             }
@@ -394,13 +396,20 @@ function getIcon($iconRepo, $folder, $fileType, $iconKeyId, ...$varArgs) {
         case 'invasion/':
             /* No varArgs */
             $gruntId = $iconKeyId;
-            if (array_search($gruntId . $fileType, $availableArray)) {
-                $icon = $availableArray[array_search($gruntId . $fileType, $availableArray)];
+            if (array_search($gruntId . $fileType, $availableArray) !== false) {
+                $icon = $gruntId . $fileType;
             }
             break;
         case 'misc/':
             /* No varArgs */
             $icon = '0.png';
+            break;
+        case 'nest/':
+            /* No varArgs */
+            $typeId = $iconKeyId;
+            if (array_search($typeId . $fileType, $availableArray) !== false) {
+                $icon = $typeId . $fileType;
+            }
             break;
         case 'pokemon/':
             /* varArgs order = evolution, form, costume, gender, shiny */
@@ -411,14 +420,14 @@ function getIcon($iconRepo, $folder, $fileType, $iconKeyId, ...$varArgs) {
             $genderId = isset($varArgs[3]) ? ["_g{$varArgs[3]}", ''] : [''];
             $shinyId = isset($varArgs[4]) ? ["_s", ''] : [''];
             $requestedIcon = $pokemonId . (isset($evolutionId[0]) ? $evolutionId[0] : '') . (isset($formId[0]) ? $formId[0] : '') . (isset($costumeId[0]) ? $costumeId[0] : '') . (isset($genderId[0]) ? $genderId[0] : '') . (isset($shinyId[0]) ? $shinyId[0] : '') . $fileType;
-            if (array_search($requestedIcon, $availableArray)) {
-                $icon = $availableArray[array_search($requestedIcon, $availableArray)];
+            if (array_search($requestedIcon, $availableArray) !== false) {
+                $icon = $requestedIcon;
             } else {
                 /* dont care about costume, gender, shiny if requestedIcon is not available for now*/
                 foreach ($evolutionId as $evolution) {
                     foreach ($formId as $form) {
                         $searchIcon = $pokemonId . $evolution . $form . $fileType;
-                        if (array_search($searchIcon, $availableArray)) {
+                        if (array_search($searchIcon, $availableArray) !== false) {
                             $icon = $searchIcon;
                             break 2;
                         }
@@ -431,31 +440,29 @@ function getIcon($iconRepo, $folder, $fileType, $iconKeyId, ...$varArgs) {
             $lureId = $iconKeyId;
             $invasion = isset($varArgs[0]) ? '_i' : '';
             $quest = isset($varArgs[1]) ? '_q' : '';
-            $requestedIcon = $lureId . $invasion . $quest . $fileType;
-            if (array_search($requestedIcon, $availableArray)) {
-                $icon = $availableArray[array_search($requestedIcon, $availableArray)];
-            } else if (array_search($lureId . $invasion . $fileType, $availableArray)) {
-                $icon = $availableArray[array_search($lureId . $invasion . $fileType, $availableArray)];
-            } else if (array_search($lureId . $quest . $fileType, $availableArray)) {
-                $icon = $availableArray[array_search($lureId . $quest . $fileType, $availableArray)];
-            } else if (array_search($lureId . $fileType, $availableArray)) {
-                $icon = $availableArray[array_search($lureId . $fileType, $availableArray)];
+            if (array_search($lureId . $invasion . $quest . $fileType, $availableArray) !== false) {
+                $icon = $lureId . $invasion . $quest . $fileType;
+            } elseif (array_search($lureId . $invasion . $fileType, $availableArray) !== false) {
+                $icon = $lureId . $invasion . $fileType;
+            } elseif (array_search($lureId . $quest . $fileType, $availableArray) !== false) {
+                $icon = $lureId . $quest . $fileType;
+            } elseif (array_search($lureId . $fileType, $availableArray) !== false) {
+                $icon = $lureId . $fileType;
             }
             break;
-        case 'raid/':
+        case 'raid/egg/':
             /* varArgs hatched ex */
             $eggLevel = $iconKeyId;
             $hatched = isset($varArgs[0]) ? ($varArgs[0] === true ? ["_h", ''] : ['']) : [''];
             $ex = isset($varArgs[1]) ? ["_ex{$varArgs[0]}", ''] : [''];
             $requestedIcon = $eggLevel . (isset($hatched[0]) ? $hatched[0] : '') . (isset($ex[0]) ? $ex[0] : '') . $fileType;
-
-            if (array_search($requestedIcon, $availableArray)) {
-                $icon = $availableArray[array_search($requestedIcon, $availableArray)];
+            if (array_search($requestedIcon, $availableArray) !== false) {
+                $icon = $requestedIcon;
             } else {
                 foreach ($hatched as $hatch) {
                     foreach ($ex as $e) {
                         $searchIcon = $eggLevel . $hatch . $e . $fileType;
-                        if (array_search($searchIcon, $availableArray)) {
+                        if (array_search($searchIcon, $availableArray) !== false) {
                             $icon = $searchIcon;
                             break 2;
                         }
@@ -467,50 +474,48 @@ function getIcon($iconRepo, $folder, $fileType, $iconKeyId, ...$varArgs) {
             /* varArgs amount */
             $itemId = $iconKeyId;
             $amount = isset($varArgs[0]) ? "_a{$varArgs[0]}" : '';
-            $requestedIcon = $itemId . $amount . $fileType;
-            if (array_search($requestedIcon, $availableArray)) {
-                $icon = $availableArray[array_search($requestedIcon, $availableArray)];
-            } else if (array_search($itemId . $fileType, $availableArray)) {
-                $icon = $availableArray[array_search($itemId . $fileType, $availableArray)];
+            if (array_search($itemId . $amount . $fileType, $availableArray) !== false) {
+                $icon = $itemId . $amount . $fileType;
+            } elseif (array_search($itemId . $fileType, $availableArray) !== false) {
+                $icon = $itemId . $fileType;
             }
             break;
         case 'reward/mega_resource/':
             /* No varArgs */
             $pokemonId = $iconKeyId;
-            if (array_search($pokemonId . $fileType, $availableArray)) {
-                $icon = $availableArray[array_search($pokemonId . $fileType, $availableArray)];
+            if (array_search($pokemonId . $fileType, $availableArray) !== false) {
+                $icon = $pokemonId . $fileType;
             }
             break;
         case 'reward/stardust/':
             /* No varArgs*/
             $amount = $iconKeyId;
-            if (array_search($amount . $fileType, $availableArray)) {
-                $icon = $availableArray[array_search($amount . $fileType, $availableArray)];
+            if (array_search($amount . $fileType, $availableArray) !== false) {
+                $icon = $amount . $fileType;
             }
             break;
         case 'team/':
             /* No varArgs*/
             $teamId = $iconKeyId;
-            if (array_search($teamId . $fileType, $availableArray)) {
-                $icon = $availableArray[array_search($teamId . $fileType, $availableArray)];
+            if (array_search($teamId . $fileType, $availableArray) !== false) {
+                $icon = $teamId . $fileType;
             }
             break;
         case 'type/':
             /* No varArgs*/
             $typeId = $iconKeyId;
-            if (array_search($typeId . $fileType, $availableArray)) {
-                $icon = $availableArray[array_search($typeId . $fileType, $availableArray)];
+            if (array_search($typeId . $fileType, $availableArray) !== false) {
+                $icon = $typeId . $fileType;
             }
             break;
         case 'weather/':
             /* varArgs severity*/
             $weatherId = $iconKeyId;
             $severityLevel = isset($varArgs[0]) ? "_l{$varArgs[0]}" : '';
-            $requestedIcon = $weatherId . $severityLevel . $fileType;
-            if (array_search($requestedIcon, $availableArray)) {
-                $icon = $availableArray[array_search($requestedIcon, $availableArray)];
-            } else if (array_search($weatherId . $fileType, $availableArray)) {
-                $icon = $availableArray[array_search($weatherId . $fileType, $availableArray)];
+            if (array_search($weatherId . $severityLevel . $fileType, $availableArray) !== false) {
+                $icon = $weatherId . $severityLevel . $fileType;
+            } elseif (array_search($weatherId . $fileType, $availableArray) !== false) {
+                $icon = $weatherId . $fileType;
             }
             break;
     }
@@ -522,11 +527,15 @@ function checkIndex($repo, $subfolder = '') {
         mkdir('.cache', 0744);
     }
     $indexFile = '.cache/' . preg_replace('~[/:]~', '_', $repo) . preg_replace('~[/:]~', '_', $subfolder) . 'index.json';
-    if (file_exists($indexFile) && (filemtime($indexFile) > (time() - 60 * 120))) {
+    if (isset($checkIndexCache[$indexFile])) {
+        $index = $checkIndexCache[$indexFile];
+    } elseif (file_exists($indexFile) && (filemtime($indexFile) > (time() - 60 * 120))) {
         $index = file_get_contents($indexFile);
+        $checkIndexCache[$indexFile] = $index;
     } else {
         $index = file_get_contents($repo . $subfolder . 'index.json');
         file_put_contents($indexFile, $index);
+        $checkIndexCache[$indexFile] = $index;
     }
     return json_decode($index);
 }

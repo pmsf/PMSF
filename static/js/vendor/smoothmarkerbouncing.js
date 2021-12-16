@@ -642,9 +642,11 @@
             function makeMoveStep(step) {
 
                 /* Reset icon's cssText */
-                icon.style.cssText = baseIconCssText
-                    + 'z-index: ' + marker._zIndex + ';'
-                    + transform + ': ' + motion.iconMoveTransforms[step];
+                if (icon) {
+                    icon.style.cssText = baseIconCssText
+                        + 'z-index: ' + marker._zIndex + ';'
+                        + transform + ': ' + motion.iconMoveTransforms[step];
+                }
 
                 /* Reset shadow's cssText */
                 if (shadow) {
@@ -663,10 +665,12 @@
             function makeMoveStepNo3D(step) {
 
                 /* Reset icon's cssText */
-                icon.style.cssText = baseIconCssText
-                    + 'z-index: ' + marker._zIndex + ';';
-                icon.style.left = motion.iconMovePoints[step][0] + 'px';
-                icon.style.top  = motion.iconMovePoints[step][1] + 'px';
+                if (icon) {
+                    icon.style.cssText = baseIconCssText
+                        + 'z-index: ' + marker._zIndex + ';';
+                    icon.style.left = motion.iconMovePoints[step][0] + 'px';
+                    icon.style.top  = motion.iconMovePoints[step][1] + 'px';
+                }
 
                 /* Reset shadow's cssText */
                 if (shadow) {
@@ -684,9 +688,11 @@
             function makeResizeStep(step) {
 
                 /* Reset icon's cssText */
-                icon.style.cssText = baseIconCssText
-                    + 'z-index: ' + marker._zIndex + ';'
-                    + transform + ': ' + motion.iconResizeTransforms[step];
+                if (icon) {
+                    icon.style.cssText = baseIconCssText
+                        + 'z-index: ' + marker._zIndex + ';'
+                        + transform + ': ' + motion.iconResizeTransforms[step];
+                }
 
                 /* Reset shadow's cssText */
                 if (shadow && shadowAngle != null) {
