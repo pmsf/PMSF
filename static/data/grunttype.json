@@ -13,7 +13,23 @@
   },
   "4": {
     "type": "Grunt",
-    "grunt": "Male"
+    "grunt": "Male",
+    "second_reward": "true",
+    "encounters": {
+      "first": [
+        "152",
+        "155",
+        "158"
+      ],
+      "second": [
+        "153",
+        "159"
+      ],
+      "third": [
+        "157",
+        "160"
+      ]
+    }
   },
   "5": {
     "type": "Grunt",
@@ -353,7 +369,19 @@
   },
   "39": {
     "type": "Water",
-    "grunt": "Male"
+    "grunt": "Male",
+    "second_reward": "false",
+    "encounters": {
+      "first": [
+        "129"
+      ],
+      "second": [
+        "129"
+      ],
+      "third": [
+        "129"
+      ]
+    }
   },
   "40": {
     "type": "Player Team Leader",
@@ -476,12 +504,164 @@
     "type": "Electric",
     "grunt": "Male"
   },
+  "51": {
+    "type": "Balloon Grunt",
+    "grunt": "Female"
+  },
+  "52": {
+    "type": "Balloon Grunt",
+    "grunt": "Male"
+  },
   "53": {
     "type": "Gruntb",
     "grunt": "Female"
   },
   "54": {
     "type": "Gruntb",
+    "grunt": "Male"
+  },
+  "55": {
+    "type": "Bug Balloon",
+    "grunt": "Female"
+  },
+  "56": {
+    "type": "Bug Balloon",
+    "grunt": "Male"
+  },
+  "57": {
+    "type": "Dark Balloon",
+    "grunt": "Female"
+  },
+  "58": {
+    "type": "Dark Balloon",
+    "grunt": "Male"
+  },
+  "59": {
+    "type": "Dragon Balloon",
+    "grunt": "Female"
+  },
+  "60": {
+    "type": "Dragon Balloon",
+    "grunt": "Male"
+  },
+  "61": {
+    "type": "Fairy Balloon",
+    "grunt": "Female"
+  },
+  "62": {
+    "type": "Fairy Balloon",
+    "grunt": "Male"
+  },
+  "63": {
+    "type": "Fighting Balloon",
+    "grunt": "Female"
+  },
+  "64": {
+    "type": "Fighting Balloon",
+    "grunt": "Male"
+  },
+  "65": {
+    "type": "Fire Balloon",
+    "grunt": "Female"
+  },
+  "66": {
+    "type": "Fire Balloon",
+    "grunt": "Male"
+  },
+  "67": {
+    "type": "Flying Balloon",
+    "grunt": "Female"
+  },
+  "68": {
+    "type": "Flying Balloon",
+    "grunt": "Male"
+  },
+  "69": {
+    "type": "Grass Balloon",
+    "grunt": "Female"
+  },
+  "70": {
+    "type": "Grass Balloon",
+    "grunt": "Male"
+  },
+  "71": {
+    "type": "Ground Balloon",
+    "grunt": "Female"
+  },
+  "72": {
+    "type": "Ground Balloon",
+    "grunt": "Male"
+  },
+  "73": {
+    "type": "Ice Balloon",
+    "grunt": "Female"
+  },
+  "74": {
+    "type": "Ice Balloon",
+    "grunt": "Male"
+  },
+  "75": {
+    "type": "Metal Balloon",
+    "grunt": "Female"
+  },
+  "76": {
+    "type": "Metal Balloon",
+    "grunt": "Male"
+  },
+  "77": {
+    "type": "Normal Balloon",
+    "grunt": "Female"
+  },
+  "78": {
+    "type": "Normal Balloon",
+    "grunt": "Male"
+  },
+  "79": {
+    "type": "Poison Balloon",
+    "grunt": "Female"
+  },
+  "80": {
+    "type": "Poison Balloon",
+    "grunt": "Male"
+  },
+  "81": {
+    "type": "Psychic Balloon",
+    "grunt": "Female"
+  },
+  "82": {
+    "type": "Psychic Balloon",
+    "grunt": "Male"
+  },
+  "83": {
+    "type": "Rock Balloon",
+    "grunt": "Female"
+  },
+  "84": {
+    "type": "Rock Balloon",
+    "grunt": "Male"
+  },
+  "85": {
+    "type": "Water Balloon",
+    "grunt": "Female"
+  },
+  "86": {
+    "type": "Water Balloon",
+    "grunt": "Male"
+  },
+  "87": {
+    "type": "Ghost Balloon",
+    "grunt": "Female"
+  },
+  "88": {
+    "type": "Ghost Balloon",
+    "grunt": "Male"
+  },
+  "89": {
+    "type": "Electric Balloon",
+    "grunt": "Female"
+  },
+  "90": {
+    "type": "Electric Balloon",
     "grunt": "Male"
   },
   "500": {
@@ -527,5 +707,17 @@
   "510": {
     "type": "Event NPC 10",
     "grunt": ""
+  },
+  "511": {
+    "type": "Event Blanche",
+    "grunt": "Female"
+  },
+  "512": {
+    "type": "Event Candela",
+    "grunt": "Female"
+  },
+  "513": {
+    "type": "Event Spark",
+    "grunt": "Male"
   }
 }
