@@ -13,7 +13,25 @@
   },
   "4": {
     "type": "Grunt",
-    "grunt": "Male"
+    "grunt": "Male",
+    "second_reward": "true",
+    "encounters": {
+      "first": [
+        "152",
+        "155",
+        "158"
+      ],
+      "second": [
+        "153",
+        "156",
+        "159"
+      ],
+      "third": [
+        "154",
+        "157",
+        "160"
+      ]
+    }
   },
   "5": {
     "type": "Grunt",
@@ -42,7 +60,7 @@
   "7": {
     "type": "Bug",
     "grunt": "Male",
-    "second_reward": "true",
+    "second_reward": "false",
     "encounters": {
       "first": [
         "13",
@@ -70,7 +88,7 @@
   "10": {
     "type": "Dark",
     "grunt": "Female",
-    "second_reward": "true",
+    "second_reward": "false",
     "encounters": {
       "first": [
         "228",
@@ -168,15 +186,13 @@
     "encounters": {
       "first": [
         "4",
-        "37"
+        "155"
       ],
       "second": [
-        "5",
-        "126"
+        "156"
       ],
       "third": [
-        "38",
-        "59"
+        "6"
       ]
     }
   },
@@ -218,16 +234,14 @@
     "second_reward": "true",
     "encounters": {
       "first": [
-        "331",
-        "387"
+        "1",
+        "152"
       ],
       "second": [
-        "2",
-        "114"
+        "153"
       ],
       "third": [
-        "45",
-        "182"
+        "3"
       ]
     }
   },
@@ -242,16 +256,14 @@
     "encounters": {
       "first": [
         "27",
-        "104"
+        "449"
       ],
       "second": [
         "28",
-        "51"
+        "449"
       ],
       "third": [
-        "105",
-        "330",
-        "472"
+        "450"
       ]
     }
   },
@@ -296,17 +308,13 @@
     "second_reward": "true",
     "encounters": {
       "first": [
-        "19",
-        "216",
-        "399"
+        "293"
       ],
       "second": [
-        "20",
-        "400"
+        "294"
       ],
       "third": [
-        "20",
-        "217",
+        "295",
         "400"
       ]
     }
@@ -353,8 +361,7 @@
       ],
       "third": [
         "65",
-        "97",
-        "375"
+        "97"
       ]
     }
   },
@@ -386,16 +393,14 @@
     "second_reward": "true",
     "encounters": {
       "first": [
-        "54",
-        "258"
+        "7",
+        "158"
       ],
       "second": [
-        "8",
-        "90"
+        "159"
       ],
       "third": [
-        "80",
-        "199"
+        "9"
       ]
     }
   },
@@ -426,17 +431,17 @@
     "second_reward": "false",
     "encounters": {
       "first": [
-        "88"
+        "216"
       ],
       "second": [
-        "3",
-        "68",
-        "169"
+        "105",
+        "139",
+        "466"
       ],
       "third": [
-        "6",
-        "59",
-        "248"
+        "248",
+        "260",
+        "389"
       ]
     }
   },
@@ -446,17 +451,17 @@
     "second_reward": "false",
     "encounters": {
       "first": [
-        "207"
+        "371"
       ],
       "second": [
-        "131",
-        "303",
-        "346"
+        "6",
+        "9",
+        "208"
       ],
       "third": [
-        "143",
+        "149",
         "212",
-        "282"
+        "373"
       ]
     }
   },
@@ -466,17 +471,17 @@
     "second_reward": "false",
     "encounters": {
       "first": [
-        "29"
+        "60"
       ],
       "second": [
-        "15",
-        "45",
-        "80"
+        "103",
+        "131",
+        "319"
       ],
       "third": [
-        "31",
-        "105",
-        "229"
+        "229",
+        "260",
+        "275"
       ]
     }
   },
@@ -543,21 +548,27 @@
     "second_reward": "true",
     "encounters": {
       "first": [
-        "81",
-        "309"
+        "100"
       ],
       "second": [
-        "82",
-        "125"
+        "100",
+        "101"
       ],
       "third": [
-        "82",
-        "181"
+        "101"
       ]
     }
   },
   "50": {
     "type": "Electric",
+    "grunt": "Male"
+  },
+  "51": {
+    "type": "Balloon Grunt",
+    "grunt": "Female"
+  },
+  "52": {
+    "type": "Balloon Grunt",
     "grunt": "Male"
   },
   "53": {
@@ -566,6 +577,150 @@
   },
   "54": {
     "type": "Gruntb",
+    "grunt": "Male"
+  },
+  "55": {
+    "type": "Bug Balloon",
+    "grunt": "Female"
+  },
+  "56": {
+    "type": "Bug Balloon",
+    "grunt": "Male"
+  },
+  "57": {
+    "type": "Dark Balloon",
+    "grunt": "Female"
+  },
+  "58": {
+    "type": "Dark Balloon",
+    "grunt": "Male"
+  },
+  "59": {
+    "type": "Dragon Balloon",
+    "grunt": "Female"
+  },
+  "60": {
+    "type": "Dragon Balloon",
+    "grunt": "Male"
+  },
+  "61": {
+    "type": "Fairy Balloon",
+    "grunt": "Female"
+  },
+  "62": {
+    "type": "Fairy Balloon",
+    "grunt": "Male"
+  },
+  "63": {
+    "type": "Fighting Balloon",
+    "grunt": "Female"
+  },
+  "64": {
+    "type": "Fighting Balloon",
+    "grunt": "Male"
+  },
+  "65": {
+    "type": "Fire Balloon",
+    "grunt": "Female"
+  },
+  "66": {
+    "type": "Fire Balloon",
+    "grunt": "Male"
+  },
+  "67": {
+    "type": "Flying Balloon",
+    "grunt": "Female"
+  },
+  "68": {
+    "type": "Flying Balloon",
+    "grunt": "Male"
+  },
+  "69": {
+    "type": "Grass Balloon",
+    "grunt": "Female"
+  },
+  "70": {
+    "type": "Grass Balloon",
+    "grunt": "Male"
+  },
+  "71": {
+    "type": "Ground Balloon",
+    "grunt": "Female"
+  },
+  "72": {
+    "type": "Ground Balloon",
+    "grunt": "Male"
+  },
+  "73": {
+    "type": "Ice Balloon",
+    "grunt": "Female"
+  },
+  "74": {
+    "type": "Ice Balloon",
+    "grunt": "Male"
+  },
+  "75": {
+    "type": "Metal Balloon",
+    "grunt": "Female"
+  },
+  "76": {
+    "type": "Metal Balloon",
+    "grunt": "Male"
+  },
+  "77": {
+    "type": "Normal Balloon",
+    "grunt": "Female"
+  },
+  "78": {
+    "type": "Normal Balloon",
+    "grunt": "Male"
+  },
+  "79": {
+    "type": "Poison Balloon",
+    "grunt": "Female"
+  },
+  "80": {
+    "type": "Poison Balloon",
+    "grunt": "Male"
+  },
+  "81": {
+    "type": "Psychic Balloon",
+    "grunt": "Female"
+  },
+  "82": {
+    "type": "Psychic Balloon",
+    "grunt": "Male"
+  },
+  "83": {
+    "type": "Rock Balloon",
+    "grunt": "Female"
+  },
+  "84": {
+    "type": "Rock Balloon",
+    "grunt": "Male"
+  },
+  "85": {
+    "type": "Water Balloon",
+    "grunt": "Female"
+  },
+  "86": {
+    "type": "Water Balloon",
+    "grunt": "Male"
+  },
+  "87": {
+    "type": "Ghost Balloon",
+    "grunt": "Female"
+  },
+  "88": {
+    "type": "Ghost Balloon",
+    "grunt": "Male"
+  },
+  "89": {
+    "type": "Electric Balloon",
+    "grunt": "Female"
+  },
+  "90": {
+    "type": "Electric Balloon",
     "grunt": "Male"
   },
   "500": {
@@ -611,5 +766,17 @@
   "510": {
     "type": "Event NPC 10",
     "grunt": ""
+  },
+  "511": {
+    "type": "Event Blanche",
+    "grunt": "Female"
+  },
+  "512": {
+    "type": "Event Candela",
+    "grunt": "Female"
+  },
+  "513": {
+    "type": "Event Spark",
+    "grunt": "Male"
   }
 }
