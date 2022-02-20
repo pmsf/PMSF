@@ -2422,5 +2422,13 @@
     "duration": 0,
     "energy": 0,
     "dps": 0
+  },
+  "365": {
+    "name": "Luster Purge",
+    "type": "Psychic",
+    "damage": 0,
+    "duration": 0,
+    "energy": 0,
+    "dps": 0
   }
 }
