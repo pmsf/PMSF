@@ -116,7 +116,7 @@ $imgurCID = "";
 /* Counts */
 $numberOfPokemon = 898;
 $numberOfItem = 1602;
-$numberOfGrunt = 510;
+$numberOfGrunt = 523;
 $numberOfEgg = 12;
 
 /* UserTimezone */
