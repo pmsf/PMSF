@@ -4,7 +4,7 @@ namespace Scanner;
 
 class RocketMap_MAD extends RocketMap
 {
-    public function get_active($eids, $minIv, $minLevel, $exMinIv, $bigKarp, $tinyRat, $despawnTimeType, $gender, $swLat, $swLng, $neLat, $neLng, $tstamp = 0, $oSwLat = 0, $oSwLng = 0, $oNeLat = 0, $oNeLng = 0, $encId = 0)
+    public function get_active($eids, $minIv, $minLevel, $exMinIv, $bigKarp, $tinyRat, $spawnType, $despawnTimeType, $gender, $swLat, $swLng, $neLat, $neLng, $tstamp = 0, $oSwLat = 0, $oSwLng = 0, $oNeLat = 0, $oNeLng = 0, $encId = 0)
     {
         global $db;
         $conds = array();
@@ -100,6 +100,19 @@ class RocketMap_MAD extends RocketMap
                 $conds[] = '(cp_multiplier >= ' . $this->cpMultiplier[$minLevel] . ' OR pokemon_id IN(' . $exMinIv . ') )';
             }
         }
+        if (!empty($spawnType)) {
+            if ($spawnType == 1) { // Wild + Nearby (Pokestop)
+               $conds[] = '(spawnpoint_id IS NOT NULL OR pokestop_id IS NOT NULL)';
+            } elseif ($spawnType == 2) { // Wild
+               $conds[] = 'spawnpoint_id IS NOT NULL';
+            } elseif ($spawnType == 3) { // Nearby (Pokestop + Other)
+               $conds[] = 'spawnpoint_id IS NULL';
+            } elseif ($spawnType == 4) { // Nearby (Pokestop)
+               $conds[] = '(spawnpoint_id IS NULL AND pokestop_id IS NOT NULL)';
+            } elseif ($spawnType == 5) { // Nearby (Other)
+               $conds[] = '(spawnpoint_id IS NULL AND pokestop_id IS NULL)';
+            }
+        }
         if (!empty($despawnTimeType)) {
             if ($despawnTimeType == 1) {
                $conds[] = 'ts.calc_endminsec IS NOT NULL';
@@ -120,7 +133,7 @@ class RocketMap_MAD extends RocketMap
         return $this->query_active($select, $conds, $params, $encSql);
     }
 
-    public function get_active_by_id($ids, $minIv, $minLevel, $exMinIv, $bigKarp, $tinyRat, $despawnTimeType, $gender, $swLat, $swLng, $neLat, $neLng)
+    public function get_active_by_id($ids, $minIv, $minLevel, $exMinIv, $bigKarp, $tinyRat, $spawnType, $despawnTimeType, $gender, $swLat, $swLng, $neLat, $neLng)
     {
         global $db;
         $conds = array();
@@ -208,6 +221,19 @@ class RocketMap_MAD extends RocketMap
                 $conds[] = 'cp_multiplier >= ' . $this->cpMultiplier[$minLevel];
             } else {
                 $conds[] = '(cp_multiplier >= ' . $this->cpMultiplier[$minLevel] . ' OR pokemon_id IN(' . $exMinIv . ') )';
+            }
+        }
+        if (!empty($spawnType)) {
+            if ($spawnType == 1) { // Wild + Nearby (Pokestop)
+               $conds[] = '(spawnpoint_id IS NOT NULL OR pokestop_id IS NOT NULL)';
+            } elseif ($spawnType == 2) { // Wild
+               $conds[] = 'spawnpoint_id IS NOT NULL';
+            } elseif ($spawnType == 3) { // Nearby (Pokestop + Other)
+               $conds[] = 'spawnpoint_id IS NULL';
+            } elseif ($spawnType == 4) { // Nearby (Pokestop)
+               $conds[] = '(spawnpoint_id IS NULL AND pokestop_id IS NOT NULL)';
+            } elseif ($spawnType == 5) { // Nearby (Other)
+               $conds[] = '(spawnpoint_id IS NULL AND pokestop_id IS NULL)';
             }
         }
         if (!empty($despawnTimeType)) {

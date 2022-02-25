@@ -1060,6 +1060,7 @@ function initSidebar() {
     $('#missing-iv-only-switch').prop('checked', Store.get('showMissingIVOnly'))
     $('#big-karp-switch').prop('checked', Store.get('showBigKarp'))
     $('#tiny-rat-switch').prop('checked', Store.get('showTinyRat'))
+    $('#spawn-type-select').val(Store.get('showSpawnType'))
     $('#despawn-time-type-select').val(Store.get('showDespawnTimeType'))
     $('#pokemon-gender-select').val(Store.get('showPokemonGender'))
     $('#pokestops-switch').prop('checked', Store.get('showPokestops'))
@@ -3231,6 +3232,7 @@ function clearStaleMarkers() {
     $.each(mapData.pokemons, function (key, value) {
         var pvpFiltered = false
         var ivFiltered = false
+        var spawnTypeFiltered = false
 
         if (minGLRank > 0 || minULRank > 0) {
             pvpFiltered = true
@@ -3308,6 +3310,28 @@ function clearStaleMarkers() {
                 ivFiltered = (iv < minIV || level < minLevel)
             }
         }
+
+        switch(Store.get('showSpawnType')) {
+            case 0: // All
+                spawnTypeFiltered = false
+                break
+            case 1: // Wild + Nearby (Pokestop)
+                spawnTypeFiltered = (mapData.pokemons[key]['spawn_id'] === null && mapData.pokemons[key]['pokestop_id'] === null)
+                break
+            case 2: // Wild
+                spawnTypeFiltered = (mapData.pokemons[key]['spawn_id'] === null)
+                break
+            case 3: // Nearby (Pokestop + Other)
+                spawnTypeFiltered = (mapData.pokemons[key]['spawn_id'] !== null)
+                break
+            case 4: // Nearby (Pokestop)
+                spawnTypeFiltered = (mapData.pokemons[key]['spawn_id'] !== null || mapData.pokemons[key]['pokestop_id'] === null)
+                break
+            case 5: // Nearby (Other)
+                spawnTypeFiltered = (mapData.pokemons[key]['spawn_id'] !== null || mapData.pokemons[key]['pokestop_id'] !== null)
+                break
+        }
+
         if (
             mapData.pokemons[key]['disappear_time'] < new Date().getTime() ||
             (
@@ -3315,6 +3339,7 @@ function clearStaleMarkers() {
                     isTemporaryHidden(mapData.pokemons[key]['pokemon_id']) ||
                     (pvpFiltered) ||
                     (ivFiltered) ||
+                    (spawnTypeFiltered) ||
                     (Store.get('showMissingIVOnly') === true && mapData.pokemons[key]['individual_attack'] !== null) ||
                     (Store.get('showBigKarp') === true && mapData.pokemons[key]['pokemon_id'] === 129 && (mapData.pokemons[key]['weight'] < 13.14 || mapData.pokemons[key]['weight'] === null)) ||
                     (Store.get('showTinyRat') === true && mapData.pokemons[key]['pokemon_id'] === 19 && (mapData.pokemons[key]['weight'] > 2.40 || mapData.pokemons[key]['weight'] === null)) ||
@@ -3457,6 +3482,7 @@ function loadRawData() {
     var loadMinLevel = Store.get('remember_text_min_level')
     var bigKarp = Boolean(Store.get('showBigKarp'))
     var tinyRat = Boolean(Store.get('showTinyRat'))
+    var spawnType = Store.get('showSpawnType')
     var despawnTimeType = Store.get('showDespawnTimeType')
     var pokemonGender = Store.get('showPokemonGender')
     var exEligible = Boolean(Store.get('exEligible'))
@@ -3533,6 +3559,7 @@ function loadRawData() {
             'prevMinLevel': prevMinLevel,
             'bigKarp': bigKarp,
             'tinyRat': tinyRat,
+            'spawnType': spawnType,
             'despawnTimeType': despawnTimeType,
             'pokemonGender': pokemonGender,
             'swLat': swLat,
@@ -6889,6 +6916,11 @@ $(function () {
         })
         $('#big-karp-switch').on('change', function (e) {
             Store.set('showBigKarp', this.checked)
+            lastpokemon = false
+            updateMap()
+        })
+        $('#spawn-type-select').on('change', function (e) {
+            Store.set('showSpawnType', this.value)
             lastpokemon = false
             updateMap()
         })

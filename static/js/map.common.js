@@ -286,6 +286,11 @@ var StoreOptions = {
             default: showTinyRat,
             type: StoreTypes.Boolean
         },
+    'showSpawnType':
+        {
+            default: showSpawnType,
+            type: StoreTypes.Number
+        },
     'showDespawnTimeType':
         {
             default: showDespawnTimeType,
