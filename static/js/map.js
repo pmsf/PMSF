@@ -1882,38 +1882,71 @@ function pokestopLabel(item) {
             i8ln('Quest') + ': <b>' +
             i8ln(questStr) +
             '</b></div>'
-        var questRewards = JSON.parse(item['quest_rewards'])
-        for (var i = 0; i < questRewards.length; i++) {
-            var questReward = questRewards[i]
-            if (questReward['type'] === 2) {
+        if (item['quest_rewards'] === undefined || item['quest_rewards'] === null) {
+            if (item['quest_reward_type'] === 2) {
                 str += '<div>' +
                 i8ln('Reward') + ': <b>' +
-                questReward['info']['amount'] + ' ' +
-                i8ln(idToItem[questReward['info']['item_id']]) +
+                item['reward_amount'] + ' ' +
+                item['reward_item_name'] +
                 '</b></div>'
-            } else if (questReward['type'] === 3) {
+            } else if (item['quest_reward_type'] === 3) {
                 str += '<div>' +
                 i8ln('Reward') + ': <b>' +
-                questReward['info']['amount'] + ' ' +
+                item['reward_amount'] + ' ' +
                 i8ln('Stardust') +
                 '</b></div>'
-            } else if (questReward['type'] === 4) {
+            } else if (item['quest_reward_type'] === 4) {
                 str += '<div>' +
                 i8ln('Reward') + ': <b>' +
-                questReward['info']['amount'] + 'x ' + i8ln(idToPokemon[questReward['info']['pokemon_id']]) + ' ' +
+                item['reward_amount'] + 'x ' + item['reward_pokemon_name'] + ' ' +
                 i8ln('Candy') +
                 '</b></div>'
-            } else if (questReward['type'] === 7) {
+            } else if (item['quest_reward_type'] === 7) {
                 str += '<div>' +
                 i8ln('Reward') + ': <b>' +
-                i8ln(idToPokemon[questReward['info']['pokemon_id']]) +
+                item['reward_pokemon_name'] +
                 '</b></div>'
-            } else if (questReward['type'] === 12) {
+            } else if (item['quest_reward_type'] === 12) {
                 str += '<div>' +
                 i8ln('Reward') + ': <b>' +
-                questReward['info']['amount'] + ' ' + i8ln(idToPokemon[questReward['info']['pokemon_id']]) + ' ' +
+                item['reward_amount'] + ' ' + item['reward_pokemon_name'] + ' ' +
                 i8ln('Mega energy') +
                 '</b></div>'
+            }
+        } else {
+            var questRewards = JSON.parse(item['quest_rewards'])
+            for (var i = 0; i < questRewards.length; i++) {
+                var questReward = questRewards[i]
+                if (questReward['type'] === 2) {
+                    str += '<div>' +
+                    i8ln('Reward') + ': <b>' +
+                    questReward['info']['amount'] + ' ' +
+                    i8ln(idToItem[questReward['info']['item_id']]) +
+                    '</b></div>'
+                } else if (questReward['type'] === 3) {
+                    str += '<div>' +
+                    i8ln('Reward') + ': <b>' +
+                    questReward['info']['amount'] + ' ' +
+                    i8ln('Stardust') +
+                    '</b></div>'
+                } else if (questReward['type'] === 4) {
+                    str += '<div>' +
+                    i8ln('Reward') + ': <b>' +
+                    questReward['info']['amount'] + 'x ' + i8ln(idToPokemon[questReward['info']['pokemon_id']]) + ' ' +
+                    i8ln('Candy') +
+                    '</b></div>'
+                } else if (questReward['type'] === 7) {
+                    str += '<div>' +
+                    i8ln('Reward') + ': <b>' +
+                    i8ln(idToPokemon[questReward['info']['pokemon_id']]) +
+                    '</b></div>'
+                } else if (questReward['type'] === 12) {
+                    str += '<div>' +
+                    i8ln('Reward') + ': <b>' +
+                    questReward['info']['amount'] + ' ' + i8ln(idToPokemon[questReward['info']['pokemon_id']]) + ' ' +
+                    i8ln('Mega energy') +
+                    '</b></div>'
+                }
             }
         }
         if (!noHideSingleMarker) {
