@@ -4,7 +4,7 @@ namespace Scanner;
 
 class RDM extends Scanner
 {
-    public function get_active($eids, $minIv, $minLevel, $exMinIv, $bigKarp, $tinyRat, $spawnType, $despawnTimeType, $gender, $swLat, $swLng, $neLat, $neLng, $tstamp = 0, $oSwLat = 0, $oSwLng = 0, $oNeLat = 0, $oNeLng = 0, $encId = 0)
+    public function get_active($eids, $minIv, $minLevel, $exMinIv, $bigKarp, $tinyRat, $seenType, $despawnTimeType, $gender, $swLat, $swLng, $neLat, $neLng, $tstamp = 0, $oSwLat = 0, $oSwLng = 0, $oNeLat = 0, $oNeLng = 0, $encId = 0)
     {
         global $db;
         $conds = array();
@@ -99,16 +99,16 @@ class RDM extends Scanner
                 $conds[] = '(level >= ' . $minLevel . ' OR pokemon_id IN(' . $exMinIv . ') )';
             }
         }
-        if (!empty($spawnType)) {
-            if ($spawnType == 1) { // Wild + Nearby (Pokestop)
+        if (!empty($seenType)) {
+            if ($seenType == 1) { // Wild + Nearby (Pokestop)
                $conds[] = '(spawn_id IS NOT NULL OR pokestop_id IS NOT NULL)';
-            } elseif ($spawnType == 2) { // Wild
+            } elseif ($seenType == 2) { // Wild
                $conds[] = 'spawn_id IS NOT NULL';
-            } elseif ($spawnType == 3) { // Nearby (Pokestop + Other)
+            } elseif ($seenType == 3) { // Nearby (Pokestop + Other)
                $conds[] = 'spawn_id IS NULL';
-            } elseif ($spawnType == 4) { // Nearby (Pokestop)
+            } elseif ($seenType == 4) { // Nearby (Pokestop)
                $conds[] = '(spawn_id IS NULL AND pokestop_id IS NOT NULL)';
-            } elseif ($spawnType == 5) { // Nearby (Other)
+            } elseif ($seenType == 5) { // Nearby (Other)
                $conds[] = '(spawn_id IS NULL AND pokestop_id IS NULL)';
             }
         }
@@ -131,7 +131,7 @@ class RDM extends Scanner
         return $this->query_active($select, $conds, $params, $encSql);
     }
 
-    public function get_active_by_id($ids, $minIv, $minLevel, $exMinIv, $bigKarp, $tinyRat, $spawnType, $despawnTimeType, $gender, $swLat, $swLng, $neLat, $neLng)
+    public function get_active_by_id($ids, $minIv, $minLevel, $exMinIv, $bigKarp, $tinyRat, $seenType, $despawnTimeType, $gender, $swLat, $swLng, $neLat, $neLng)
     {
         global $db;
         $conds = array();
@@ -219,16 +219,16 @@ class RDM extends Scanner
                 $conds[] = '(level >= ' . $minLevel . ' OR pokemon_id IN(' . $exMinIv . ') )';
             }
         }
-        if (!empty($spawnType)) {
-            if ($spawnType == 1) { // Wild + Nearby (Pokestop)
+        if (!empty($seenType)) {
+            if ($seenType == 1) { // Wild + Nearby (Pokestop)
                $conds[] = '(spawn_id IS NOT NULL OR pokestop_id IS NOT NULL)';
-            } elseif ($spawnType == 2) { // Wild
+            } elseif ($seenType == 2) { // Wild
                $conds[] = 'spawn_id IS NOT NULL';
-            } elseif ($spawnType == 3) { // Nearby (Pokestop + Other)
+            } elseif ($seenType == 3) { // Nearby (Pokestop + Other)
                $conds[] = 'spawn_id IS NULL';
-            } elseif ($spawnType == 4) { // Nearby (Pokestop)
+            } elseif ($seenType == 4) { // Nearby (Pokestop)
                $conds[] = '(spawn_id IS NULL AND pokestop_id IS NOT NULL)';
-            } elseif ($spawnType == 5) { // Nearby (Other)
+            } elseif ($seenType == 5) { // Nearby (Other)
                $conds[] = '(spawn_id IS NULL AND pokestop_id IS NULL)';
             }
         }

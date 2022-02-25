@@ -288,10 +288,10 @@ if (strtolower($map) === "rdm") {
                                             </div>
                                         <?php
                                         }
-                                        if (! $noSpawnType) { ?>
+                                        if (! $noSeenType) { ?>
                                             <div class="dropdown-divider"></div>
                                             <div class="form-floating">
-                                                <select class="form-select" aria-label="spawn-type-filter" name="spawn-type-select" id="spawn-type-select">
+                                                <select class="form-select" aria-label="seen-type-filter" name="seen-type-select" id="seen-type-select">
                                                     <option value="0"><?php echo i8ln('All') ?></option>
                                                     <option value="1"><?php echo i8ln('Wild + Nearby (Pokestop)') ?></option>
                                                     <option value="2"><?php echo i8ln('Wild') ?></option>
@@ -299,7 +299,7 @@ if (strtolower($map) === "rdm") {
                                                     <option value="4"><?php echo i8ln('Nearby (Pokestop)') ?></option>
                                                     <option value="5"><?php echo i8ln('Nearby (Other)') ?></option>
                                                 </select>
-                                                <label for="spawn-type-select"><?php echo i8ln('Spawn Type'); ?></label>
+                                                <label for="seen-type-select"><?php echo i8ln('Seen Type'); ?></label>
                                             </div>
                                         <?php
                                         }
@@ -1615,7 +1615,7 @@ include('modals.php');
     var onlyTriggerGyms = <?php echo $onlyTriggerGyms === true ? 'true' : 'false' ?>;
     var showBigKarp = <?php echo $noBigKarp === true ? 'true' : 'false' ?>;
     var showTinyRat = <?php echo $noTinyRat === true ? 'true' : 'false' ?>;
-    var showSpawnType = <?php echo $noSpawnType ? 0 : $showSpawnType ?>;
+    var showSeenType = <?php echo $noSeenType ? 0 : $showSeenType ?>;
     var showDespawnTimeType = <?php echo $noDespawnTimeType ? 0 : $showDespawnTimeType ?>;
     var showPokemonGender = <?php echo $noPokemonGender ? 0 : $showPokemonGender ?>;
     var hidePokemonCoords = <?php echo $hidePokemonCoords === true ? 'true' : 'false' ?>;

@@ -271,8 +271,8 @@ $minLevel = '0';                                                    // "0" for e
 $noMissingIVOnly = true;                                            // true/false
 $noBigKarp = false;                                                 // true/false
 $noTinyRat = false;                                                 // true/false
-$noSpawnType = true;                                                // true/false
-$showSpawnType = 0;                                                 // 0 = All, 1 = Wild + Nearby (Pokestop), 2 = Wild, 3 = Nearby (Pokestop + Other), 4 = Nearby (Pokestop), 5 = Nearby (Other)
+$noSeenType = true;                                                 // true/false
+$showSeenType = 0;                                                  // 0 = All, 1 = Wild + Nearby (Pokestop), 2 = Wild, 3 = Nearby (Pokestop + Other), 4 = Nearby (Pokestop), 5 = Nearby (Other)
 $noDespawnTimeType = true;                                          // true/false
 $showDespawnTimeType = 0;                                           // 0 = All, 1 = Verified, 2 = Unverified, 3 = Unverified + Nearby (Nearby = no spawn point)
 $noPokemonGender = false;                                           // true/false

@@ -286,9 +286,9 @@ var StoreOptions = {
             default: showTinyRat,
             type: StoreTypes.Boolean
         },
-    'showSpawnType':
+    'showSeenType':
         {
-            default: showSpawnType,
+            default: showSeenType,
             type: StoreTypes.Number
         },
     'showDespawnTimeType':
