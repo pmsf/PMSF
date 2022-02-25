@@ -64,6 +64,7 @@ var prevMinIV = null
 var prevMinLevel = null
 var onlyPokemon = 0
 var directionProvider
+var hidePokemonForms = []
 
 var buffer = []
 var reincludedPokemon = []
@@ -342,6 +343,11 @@ function notifyAboutPokemon(id) { // eslint-disable-line no-unused-vars
         $selectPokemonNotify.val().split(',').concat(id).join(',')
     ).trigger('change')
     $('#notify-pokemon .pokemon-list .pokemon-icon-sprite[data-value="' + id + '"]').addClass('active')
+}
+
+function hidePokemonForm(form) { // eslint-disable-line no-unused-vars
+    hidePokemonForms.push(form)
+    clearStaleMarkers()
 }
 
 function removePokemonMarker(encounterId) { // eslint-disable-line no-unused-vars
@@ -1321,6 +1327,9 @@ function pokemonLabel(item) {
     } else {
         contentstring += '<center><div style="position:relative;">'
     }
+    if (form > 0) {
+        contentstring += '<a href="javascript:hidePokemonForm(' + form + ')"  title="' + i8ln('Hide this Pokémon Form') + '"><i class="fas fa-times-circle" style="font-size:15px;width:20px;"></i></a> | '
+    }
     contentstring += '<a href="javascript:excludePokemon(' + id + ')"  title="' + i8ln('Exclude this Pokémon') + '"><i class="fas fa-minus-circle" style="font-size:15px;width:20px;"></i></a>' +
     ' | <a href="javascript:notifyAboutPokemon(' + id + ')" title="' + i8ln('Notify about this Pokémon') + '"><i class="fas fa-bell" style="font-size:15px;width:20px;"></i></a>'
     if (!noHideSingleMarker) {
@@ -1873,35 +1882,39 @@ function pokestopLabel(item) {
             i8ln('Quest') + ': <b>' +
             i8ln(questStr) +
             '</b></div>'
-        if (item['quest_reward_type'] === 2) {
-            str += '<div>' +
-            i8ln('Reward') + ': <b>' +
-            item['reward_amount'] + ' ' +
-            item['reward_item_name'] +
-            '</b></div>'
-        } else if (item['quest_reward_type'] === 3) {
-            str += '<div>' +
-            i8ln('Reward') + ': <b>' +
-            item['reward_amount'] + ' ' +
-            i8ln('Stardust') +
-            '</b></div>'
-        } else if (item['quest_reward_type'] === 4) {
-            str += '<div>' +
-            i8ln('Reward') + ': <b>' +
-            item['reward_amount'] + 'x ' + item['reward_pokemon_name'] + ' ' +
-            i8ln('Candy') +
-            '</b></div>'
-        } else if (item['quest_reward_type'] === 7) {
-            str += '<div>' +
-            i8ln('Reward') + ': <b>' +
-            item['reward_pokemon_name'] +
-            '</b></div>'
-        } else if (item['quest_reward_type'] === 12) {
-            str += '<div>' +
-            i8ln('Reward') + ': <b>' +
-            item['reward_amount'] + ' ' + item['reward_pokemon_name'] + ' ' +
-            i8ln('Mega energy') +
-            '</b></div>'
+        var questRewards = JSON.parse(item['quest_rewards'])
+        for (var i = 0; i < questRewards.length; i++) {
+            var questReward = questRewards[i]
+            if (questReward['type'] === 2) {
+                str += '<div>' +
+                i8ln('Reward') + ': <b>' +
+                questReward['info']['amount'] + ' ' +
+                i8ln(idToItem[questReward['info']['item_id']]) +
+                '</b></div>'
+            } else if (questReward['type'] === 3) {
+                str += '<div>' +
+                i8ln('Reward') + ': <b>' +
+                questReward['info']['amount'] + ' ' +
+                i8ln('Stardust') +
+                '</b></div>'
+            } else if (questReward['type'] === 4) {
+                str += '<div>' +
+                i8ln('Reward') + ': <b>' +
+                questReward['info']['amount'] + 'x ' + i8ln(idToPokemon[questReward['info']['pokemon_id']]) + ' ' +
+                i8ln('Candy') +
+                '</b></div>'
+            } else if (questReward['type'] === 7) {
+                str += '<div>' +
+                i8ln('Reward') + ': <b>' +
+                i8ln(idToPokemon[questReward['info']['pokemon_id']]) +
+                '</b></div>'
+            } else if (questReward['type'] === 12) {
+                str += '<div>' +
+                i8ln('Reward') + ': <b>' +
+                questReward['info']['amount'] + ' ' + i8ln(idToPokemon[questReward['info']['pokemon_id']]) + ' ' +
+                i8ln('Mega energy') +
+                '</b></div>'
+            }
         }
         if (!noHideSingleMarker) {
             str += '<a href="javascript:removePokestopMarker(\'' + item['pokestop_id'] + '\')" title="' + i8ln('Hide this Pokéstop') + '"><i class="fas fa-eye-slash" style="font-size:15px;"></i></a>'
@@ -1999,8 +2012,7 @@ function pokestopLabel(item) {
     if (hidePokestopCoords === true) {
         str += '-'
     } else {
-        str += ' ' +
-                '<button onclick="copyCoordsToClipboard(this.previousElementSibling);" class="small-tight">' + 'Copy' + '</button> '
+        str += ' ' + '<button onclick="copyCoordsToClipboard(this.previousElementSibling);" class="small-tight">' + 'Copy' + '</button> '
     }
     str += '<a href="./?lat=' + item['latitude'] + '&lon=' + item['longitude'] + '&zoom=18&stopId=' + item['pokestop_id'] + '"><i class="far fa-share-square" aria-hidden="true" style="position:relative;top:3px;left:0px;color:#26c300;font-size:20px;"></i></a>'
     if (!noQuests && !noWhatsappLink && item['quest_type'] !== null && lastMidnight < Number(item['quest_timestamp'])) {
@@ -3336,6 +3348,7 @@ function clearStaleMarkers() {
             mapData.pokemons[key]['disappear_time'] < new Date().getTime() ||
             (
                 (excludedPokemon.indexOf(mapData.pokemons[key]['pokemon_id']) >= 0 ||
+                    hidePokemonForms.indexOf(mapData.pokemons[key]['form']) >= 0 ||
                     isTemporaryHidden(mapData.pokemons[key]['pokemon_id']) ||
                     (pvpFiltered) ||
                     (ivFiltered) ||
@@ -5429,15 +5442,29 @@ function processGyms(i, item) {
 
     if (!noLastScan && Store.get('showLastUpdatedGymsOnly')) {
         var now = new Date()
-        if (item.last_scanned == null) {
-            if (Store.get('showLastUpdatedGymsOnly') * 3600 * 1000 + item.last_modified < now.getTime() && (item.raid_end === undefined || item.raid_end < Date.now())) {
-                removeGymFromMap(item['gym_id'])
-                return true
+        if (Store.get('showLastUpdatedGymsOnly') > 0) {
+            if (item.last_scanned == null) {
+                if (Store.get('showLastUpdatedGymsOnly') * 3600 * 1000 + item.last_modified < now.getTime() && (item.raid_end === undefined || item.raid_end < Date.now())) {
+                    removeGymFromMap(item['gym_id'])
+                    return true
+                }
+            } else {
+                if (Store.get('showLastUpdatedGymsOnly') * 3600 * 1000 + item.last_scanned < now.getTime() && (item.raid_end === undefined || item.raid_end < Date.now())) {
+                    removeGymFromMap(item['gym_id'])
+                    return true
+                }
             }
         } else {
-            if (Store.get('showLastUpdatedGymsOnly') * 3600 * 1000 + item.last_scanned < now.getTime() && (item.raid_end === undefined || item.raid_end < Date.now())) {
-                removeGymFromMap(item['gym_id'])
-                return true
+            if (item.last_scanned == null) {
+                if (Math.abs(Store.get('showLastUpdatedGymsOnly')) * 3600 * 1000 + item.last_modified >= now.getTime()) {
+                    removeGymFromMap(item['gym_id'])
+                    return true
+                }
+            } else {
+                if (Math.abs(Store.get('showLastUpdatedGymsOnly')) * 3600 * 1000 + item.last_scanned >= now.getTime()) {
+                    removeGymFromMap(item['gym_id'])
+                    return true
+                }
             }
         }
     }

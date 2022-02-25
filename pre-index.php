@@ -783,6 +783,11 @@ if (strtolower($map) === "rdm") {
                                                     <option value="12"><?php echo i8ln('Last 12 Hours'); ?></option>
                                                     <option value="24"><?php echo i8ln('Last 24 Hours'); ?></option>
                                                     <option value="168"><?php echo i8ln('Last Week'); ?></option>
+                                                    <option value="-1"><?php echo i8ln('Not Last Hour'); ?></option>
+                                                    <option value="-6"><?php echo i8ln('Not Last 6 Hours'); ?></option>
+                                                    <option value="-12"><?php echo i8ln('Not Last 12 Hours'); ?></option>
+                                                    <option value="-24"><?php echo i8ln('Not Last 24 Hours'); ?></option>
+                                                    <option value="-168"><?php echo i8ln('Not Last Week'); ?></option>
                                                 </select>
                                                 <label for="last-update-gyms-switch"><?php echo i8ln('Last Scan'); ?></label>
                                             </div>
