@@ -549,7 +549,7 @@ class RDM extends Scanner
 
     public function query_stops($conds, $params)
     {
-        global $db;
+        global $db, $noArEligible;
 
         $query = "SELECT id AS pokestop_id,
         lat AS latitude,
@@ -604,7 +604,7 @@ class RDM extends Scanner
             $pokestop["latitude"] = floatval($pokestop["latitude"]);
             $pokestop["longitude"] = floatval($pokestop["longitude"]);
             $pokestop["url"] = ! empty($pokestop["url"]) ? preg_replace("/^http:/i", "https:", $pokestop["url"]) : null;
-            $pokestop["ar_scan_eligible"] = intval($pokestop["ar_scan_eligible"]);
+            $pokestop["ar_scan_eligible"] = $noArEligible ? 0 : intval($pokestop["ar_scan_eligible"]);
             $pokestop["quest_type"] = intval($pokestop["quest_type"]);
             $pokestop["quest_condition_type"] = intval($pokestop["quest_condition_type"]);
             $pokestop["quest_condition_type_1"] = intval($pokestop["quest_condition_type_1"]);
@@ -704,7 +704,7 @@ class RDM extends Scanner
 
     public function query_gyms($conds, $params, $raids, $gyms, $rbeids, $reeids)
     {
-        global $db, $noTeams, $noExEligible, $noInBattle;
+        global $db, $noTeams, $noExEligible, $noArEligible, $noInBattle;
 
         $query = "SELECT id AS gym_id,
         lat AS latitude,
@@ -760,7 +760,7 @@ class RDM extends Scanner
             $gym["last_scanned"] = $gym["last_scanned"] * 1000;
             $gym["raid_start"] = $gym["raid_start"] * 1000;
             $gym["raid_end"] = $gym["raid_end"] * 1000;
-            $gym["ar_scan_eligible"] = intval($gym["ar_scan_eligible"]);
+            $gym["ar_scan_eligible"] = $noArEligible ? 0 : intval($gym["ar_scan_eligible"]);
             $gym["park"] = $noExEligible ? 0 : intval($gym["park"]);
             if (isset($gym["raid_pokemon_form"]) && $gym["raid_pokemon_form"] > 0) {
                 $forms = $this->data[$gym["raid_pokemon_id"]]["forms"];

@@ -439,7 +439,7 @@ class RocketMap_MAD extends RocketMap
 
     public function query_gyms($conds, $params, $raids, $gyms, $rbeids, $reeids)
     {
-        global $db, $noTeams, $noExEligible, $noInBattle;
+        global $db, $noTeams, $noExEligible, $noArEligible, $noInBattle;
 
         $query = "SELECT gym.gym_id,
         latitude,
@@ -452,6 +452,7 @@ class RocketMap_MAD extends RocketMap
         url,
         is_in_battle as in_battle,
         is_ex_raid_eligible AS park,
+        is_ar_scan_eligible AS ar_scan_eligible,
         raid.level AS raid_level,
         raid.pokemon_id AS raid_pokemon_id,
         raid.form AS raid_pokemon_form,
@@ -499,7 +500,7 @@ class RocketMap_MAD extends RocketMap
             $gym["raid_end"] = $gym["raid_end"] * 1000;
             $gym["url"] = ! empty($gym["url"]) ? preg_replace("/^http:/i", "https:", $gym["url"]) : null;
             $gym["park"] = $noExEligible ? 0 : intval($gym["park"]);
-            $gym["ar_scan_eligible"] = 0;
+            $gym["ar_scan_eligible"] = $noArEligible ? 0 : intval($gym["ar_scan_eligible"]);
             if (isset($gym["raid_pokemon_form"]) && $gym["raid_pokemon_form"] > 0) {
                 $forms = $this->data[$gym["raid_pokemon_id"]]["forms"];
                 foreach ($forms as $f => $v) {
@@ -811,7 +812,7 @@ class RocketMap_MAD extends RocketMap
 
     public function query_stops($conds, $params)
     {
-        global $db;
+        global $db, $noArEligible;
 
         $query = "SELECT Unix_timestamp(Convert_tz(lure_expiration, '+00:00', @@global.time_zone)) AS lure_expiration,
         Unix_timestamp(Convert_tz(incident_expiration, '+00:00', @@global.time_zone)) AS incident_expiration,
@@ -822,6 +823,7 @@ class RocketMap_MAD extends RocketMap
         image AS url,
         longitude,
         active_fort_modifier AS lure_id,
+        is_ar_scan_eligible AS ar_scan_eligible,
         incident_grunt_type AS grunt_type,
         tq.quest_type,
         tq.quest_timestamp,
@@ -910,7 +912,7 @@ class RocketMap_MAD extends RocketMap
             $pokestop["reward_item_id"] = intval($pokestop["reward_item_id"]);
             $pokestop["reward_item_name"] = empty($item_pid) ? null : i8ln($this->items[$item_pid]["name"]);
             $pokestop["last_seen"] = $pokestop["last_seen"] * 1000;
-            $pokestop["ar_scan_eligible"] = 0;
+            $pokestop["ar_scan_eligible"] = $noArEligible ? 0 : intval($pokestop["ar_scan_eligible"]);
             $data[] = $pokestop;
             unset($pokestops[$i]);
             $i++;

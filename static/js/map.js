@@ -34,6 +34,7 @@ var shinyTable
 var language = document.documentElement.lang === '' ? 'en' : document.documentElement.lang
 var languageSite = 'en'
 var idToPokemon = {}
+var idToForm = {}
 var idToItem = {}
 var idToGrunt = {}
 var idToRaidegg = {}
@@ -1828,6 +1829,19 @@ function getQuest(item) {
     return str
 }
 
+function getPokemonName(pokemon_id, form_id) {
+    var pokemonName = idToPokemon[pokemon_id]
+
+    if (form_id > 0) {
+        var formName = idToForm[form_id]
+        if (length(formName) > 0) {
+            pokemonName += ' (' + formName + ')'
+        }
+    }
+
+    return pokemonName
+}
+
 function pokestopLabel(item) {
     var str
     var stopImage = ''
@@ -1904,7 +1918,7 @@ function pokestopLabel(item) {
             } else if (item['quest_reward_type'] === 7) {
                 str += '<div>' +
                 i8ln('Reward') + ': <b>' +
-                item['reward_pokemon_name'] +
+                getPokemonName(item['reward_pokemon_id'], item['reward_pokemon_formid']) +
                 '</b></div>'
             } else if (item['quest_reward_type'] === 12) {
                 str += '<div>' +
@@ -1932,18 +1946,18 @@ function pokestopLabel(item) {
                 } else if (questReward['type'] === 4) {
                     str += '<div>' +
                     i8ln('Reward') + ': <b>' +
-                    questReward['info']['amount'] + 'x ' + i8ln(idToPokemon[questReward['info']['pokemon_id']]) + ' ' +
+                    questReward['info']['amount'] + 'x ' + idToPokemon[questReward['info']['pokemon_id']] + ' ' +
                     i8ln('Candy') +
                     '</b></div>'
                 } else if (questReward['type'] === 7) {
                     str += '<div>' +
                     i8ln('Reward') + ': <b>' +
-                    i8ln(idToPokemon[questReward['info']['pokemon_id']]) +
+                    getPokemonName(questReward['info']['pokemon_id'], questReward['info']['form_id']) +
                     '</b></div>'
                 } else if (questReward['type'] === 12) {
                     str += '<div>' +
                     i8ln('Reward') + ': <b>' +
-                    questReward['info']['amount'] + ' ' + i8ln(idToPokemon[questReward['info']['pokemon_id']]) + ' ' +
+                    questReward['info']['amount'] + ' ' + idToPokemon[questReward['info']['pokemon_id']] + ' ' +
                     i8ln('Mega energy') +
                     '</b></div>'
                 }
@@ -6898,6 +6912,11 @@ $(function () {
                 cp: value['cp'] !== undefined ? value['cp'] : 1
             })
             value['name'] = i8ln(value['name'])
+            $.each(value['forms'], function (key, pokemonForm) {
+                if (pokemonForm['nameform'] != 'Normal') {
+                    idToForm[pokemonForm['protoform']] = i8ln(pokemonForm['nameform'])
+                }
+            })
             value['rarity'] = i8ln(value['rarity'])
             $.each(value['types'], function (key, pokemonType) {
                 _types.push({

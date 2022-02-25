@@ -284,6 +284,7 @@ $enableGyms = 'false';                                              // true/fals
 $hideGymCoords = false;                                             // true/false
 $noExEligible = false;                                              // true/false
 $exEligible = 'false';                                              // true/false
+$noArEligible = false;                                              // true/false
 $noTeams = false;                                                   // true/false
 $noInBattle = false;                                                // true/false
 $noOpenSpot = false;                                                // true/false
