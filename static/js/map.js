@@ -1834,7 +1834,7 @@ function getPokemonName(pokemon_id, form_id) {
 
     if (form_id > 0) {
         var formName = idToForm[form_id]
-        if (length(formName) > 0) {
+        if (formName && formName.length > 0) {
             pokemonName += ' (' + formName + ')'
         }
     }
