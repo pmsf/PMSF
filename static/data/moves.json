@@ -2072,7 +2072,7 @@
     "dps": 0
   },
   "321": {
-    "name": "Giga impact",
+    "name": "Giga Impact",
     "type": "Normal",
     "damage": 0,
     "duration": 0,
@@ -2104,7 +2104,7 @@
     "dps": 0
   },
   "325": {
-    "name": "Lock-on",
+    "name": "Lock-On",
     "type": "Normal",
     "damage": 0,
     "duration": 0,
@@ -2240,7 +2240,7 @@
     "dps": 0
   },
   "342": {
-    "name": "V-create",
+    "name": "V-Create",
     "type": "Fire",
     "damage": 0,
     "duration": 0,

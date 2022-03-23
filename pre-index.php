@@ -1478,7 +1478,7 @@ include('modals.php');
 <script src="https://cdnjs.cloudflare.com/ajax/libs/skel/3.0.1/skel.min.js"></script>
 <script src="node_modules/datatables/media/js/jquery.dataTables.min.js"></script>
 <script src="node_modules/moment/min/moment-with-locales.min.js"></script>
-<script src="https://code.createjs.com/soundjs-0.6.2.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/SoundJS/1.0.2/soundjs.min.js"></script>
 <script src="node_modules/push.js/bin/push.min.js"></script>
 <script src="node_modules/long/dist/long.js"></script>
 <script src="node_modules/leaflet/dist/leaflet.js"></script>
