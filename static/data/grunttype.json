@@ -291,11 +291,11 @@
     "grunt": "Male"
   },
   "28": {
-    "type": "Metal",
+    "type": "Steel",
     "grunt": "Female"
   },
   "29": {
-    "type": "Metal",
+    "type": "Steel",
     "grunt": "Male"
   },
   "30": {
@@ -661,11 +661,11 @@
     "grunt": "Male"
   },
   "75": {
-    "type": "Metal Balloon",
+    "type": "Steel Balloon",
     "grunt": "Female"
   },
   "76": {
-    "type": "Metal Balloon",
+    "type": "Steel Balloon",
     "grunt": "Male"
   },
   "77": {
