@@ -255,6 +255,16 @@ if (copyrightSafe) {
     var setPokemon = Store.get('iconsArray')
     setPokemon.pokemon = 'static/sprites/'
     Store.set('iconsArray', setPokemon)
+} else if (localStorage.hasOwnProperty('iconsArray')) {
+    var oldIconsArray = Store.get('iconsArray')
+    for (const [key, value] of Object.entries(iconFolderArray)) {
+        if (Object.prototype.toString.call(value) === '[object String]') {
+            oldIconsArray[key] = iconFolderArray[key]
+        } else if ((key in oldIconsArray === false) || (Object.values(iconFolderArray[key]).includes(oldIconsArray[key]) === false)) {
+            oldIconsArray[key] = iconFolderArray[key][Object.keys(iconFolderArray[key])[0]]
+        }
+    }
+    Store.set('iconsArray', oldIconsArray)
 } else {
     for (const [key, value] of Object.entries(iconFolderArray)) {
         if (Object.prototype.toString.call(value) === '[object Object]') {
