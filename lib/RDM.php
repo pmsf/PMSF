@@ -25,6 +25,17 @@ class RDM extends Scanner
 
         global $noHighLevelData;
         if (!$noHighLevelData) {
+            $db_version = $db->get('metadata',['value'],['key'=>'DB_VERSION']);
+            if (intval($db_version['value']) < 80) {
+                $rdmpvp = ",
+                pvp_rankings_great_league,
+                pvp_rankings_ultra_league";
+            } else {
+                $rdmpvp = ",
+                json_extract(`pvp`,'$.great') AS pvp_rankings_great_league,
+                json_extract(`pvp`,'$.ultra') AS pvp_rankings_ultra_league";
+            }
+
             $select .= ",
             weight,
             size AS height,
@@ -37,9 +48,9 @@ class RDM extends Scanner
             level,
             capture_1 AS catch_rate_1,
             capture_2 AS catch_rate_2,
-            capture_3 AS catch_rate_3,
-            pvp_rankings_great_league,
-            pvp_rankings_ultra_league";
+            capture_3 AS catch_rate_3
+            $rdmpvp
+            ";
         }
 
         $conds[] = "lat > :swLat AND lon > :swLng AND lat < :neLat AND lon < :neLng AND expire_timestamp > :time";
@@ -138,6 +149,17 @@ class RDM extends Scanner
 
         global $noHighLevelData;
         if (!$noHighLevelData) {
+            $db_version = $db->get('metadata',['value'],['key'=>'DB_VERSION']);
+            if (intval($db_version['value']) < 80) {
+                $rdmpvp = ",
+                pvp_rankings_great_league,
+                pvp_rankings_ultra_league";
+            } else {
+                $rdmpvp = ",
+                json_extract(`pvp`,'$.great') AS pvp_rankings_great_league,
+                json_extract(`pvp`,'$.ultra') AS pvp_rankings_ultra_league";
+            }
+
             $select .= ",
             weight,
             size AS height,
@@ -150,9 +172,9 @@ class RDM extends Scanner
             level,
             capture_1 AS catch_rate_1,
             capture_2 AS catch_rate_2,
-            capture_3 AS catch_rate_3,
-            pvp_rankings_great_league,
-            pvp_rankings_ultra_league";
+            capture_3 AS catch_rate_3
+            $rdmpvp
+            ";
         }
 
         $conds[] = "lat > :swLat AND lon > :swLng AND lat < :neLat AND lon < :neLng AND expire_timestamp > :time";
