@@ -1542,6 +1542,16 @@
             "color": "#f8d030"
           }
         ]
+      },
+      {
+        "nameform": "Flying Okinawa",
+        "protoform": "2736",
+        "formtypes": [
+          {
+            "type": "Electric",
+            "color": "#f8d030"
+          }
+        ]
       }
     ]
   },
@@ -34203,6 +34213,208 @@
         "type": "Bug",
         "color": "#a8b820"
       }
+    ],
+    "forms": [
+      {
+        "nameform": "Archipelago",
+        "protoform": "2745",
+        "formtypes": [
+          {
+            "type": "Bug",
+            "color": "#a8b820"
+          }
+        ]
+      },
+      {
+        "nameform": "Continental",
+        "protoform": "2746",
+        "formtypes": [
+          {
+            "type": "Bug",
+            "color": "#a8b820"
+          }
+        ]
+      },
+      {
+        "nameform": "Elegant",
+        "protoform": "2747",
+        "formtypes": [
+          {
+            "type": "Bug",
+            "color": "#a8b820"
+          }
+        ]
+      },
+      {
+        "nameform": "Fancy",
+        "protoform": "2748",
+        "formtypes": [
+          {
+            "type": "Bug",
+            "color": "#a8b820"
+          }
+        ]
+      },
+      {
+        "nameform": "Garden",
+        "protoform": "2749",
+        "formtypes": [
+          {
+            "type": "Bug",
+            "color": "#a8b820"
+          }
+        ]
+      },
+      {
+        "nameform": "High Plains",
+        "protoform": "2750",
+        "formtypes": [
+          {
+            "type": "Bug",
+            "color": "#a8b820"
+          }
+        ]
+      },
+      {
+        "nameform": "Icy Snow",
+        "protoform": "2751",
+        "formtypes": [
+          {
+            "type": "Bug",
+            "color": "#a8b820"
+          }
+        ]
+      },
+      {
+        "nameform": "Jungle",
+        "protoform": "2752",
+        "formtypes": [
+          {
+            "type": "Bug",
+            "color": "#a8b820"
+          }
+        ]
+      },
+      {
+        "nameform": "Marine",
+        "protoform": "2753",
+        "formtypes": [
+          {
+            "type": "Bug",
+            "color": "#a8b820"
+          }
+        ]
+      },
+      {
+        "nameform": "Meadow",
+        "protoform": "2754",
+        "formtypes": [
+          {
+            "type": "Bug",
+            "color": "#a8b820"
+          }
+        ]
+      },
+      {
+        "nameform": "Modern",
+        "protoform": "2755",
+        "formtypes": [
+          {
+            "type": "Bug",
+            "color": "#a8b820"
+          }
+        ]
+      },
+      {
+        "nameform": "Monsoon",
+        "protoform": "2756",
+        "formtypes": [
+          {
+            "type": "Bug",
+            "color": "#a8b820"
+          }
+        ]
+      },
+      {
+        "nameform": "Ocean",
+        "protoform": "2757",
+        "formtypes": [
+          {
+            "type": "Bug",
+            "color": "#a8b820"
+          }
+        ]
+      },
+      {
+        "nameform": "Pokeball",
+        "protoform": "2758",
+        "formtypes": [
+          {
+            "type": "Bug",
+            "color": "#a8b820"
+          }
+        ]
+      },
+      {
+        "nameform": "Polar",
+        "protoform": "2759",
+        "formtypes": [
+          {
+            "type": "Bug",
+            "color": "#a8b820"
+          }
+        ]
+      },
+      {
+        "nameform": "River",
+        "protoform": "2760",
+        "formtypes": [
+          {
+            "type": "Bug",
+            "color": "#a8b820"
+          }
+        ]
+      },
+      {
+        "nameform": "Sandstorm",
+        "protoform": "2761",
+        "formtypes": [
+          {
+            "type": "Bug",
+            "color": "#a8b820"
+          }
+        ]
+      },
+      {
+        "nameform": "Savanna",
+        "protoform": "2762",
+        "formtypes": [
+          {
+            "type": "Bug",
+            "color": "#a8b820"
+          }
+        ]
+      },
+      {
+        "nameform": "Sun",
+        "protoform": "2763",
+        "formtypes": [
+          {
+            "type": "Bug",
+            "color": "#a8b820"
+          }
+        ]
+      },
+      {
+        "nameform": "Tundra",
+        "protoform": "2764",
+        "formtypes": [
+          {
+            "type": "Bug",
+            "color": "#a8b820"
+          }
+        ]
+      }
     ]
   },
   "665": {
@@ -34212,6 +34424,208 @@
       {
         "type": "Bug",
         "color": "#a8b820"
+      }
+    ],
+    "forms": [
+      {
+        "nameform": "Archipelago",
+        "protoform": "2765",
+        "formtypes": [
+          {
+            "type": "Bug",
+            "color": "#a8b820"
+          }
+        ]
+      },
+      {
+        "nameform": "Continental",
+        "protoform": "2766",
+        "formtypes": [
+          {
+            "type": "Bug",
+            "color": "#a8b820"
+          }
+        ]
+      },
+      {
+        "nameform": "Elegant",
+        "protoform": "2767",
+        "formtypes": [
+          {
+            "type": "Bug",
+            "color": "#a8b820"
+          }
+        ]
+      },
+      {
+        "nameform": "Fancy",
+        "protoform": "2768",
+        "formtypes": [
+          {
+            "type": "Bug",
+            "color": "#a8b820"
+          }
+        ]
+      },
+      {
+        "nameform": "Garden",
+        "protoform": "2769",
+        "formtypes": [
+          {
+            "type": "Bug",
+            "color": "#a8b820"
+          }
+        ]
+      },
+      {
+        "nameform": "High Plains",
+        "protoform": "2770",
+        "formtypes": [
+          {
+            "type": "Bug",
+            "color": "#a8b820"
+          }
+        ]
+      },
+      {
+        "nameform": "Icy Snow",
+        "protoform": "2771",
+        "formtypes": [
+          {
+            "type": "Bug",
+            "color": "#a8b820"
+          }
+        ]
+      },
+      {
+        "nameform": "Jungle",
+        "protoform": "2772",
+        "formtypes": [
+          {
+            "type": "Bug",
+            "color": "#a8b820"
+          }
+        ]
+      },
+      {
+        "nameform": "Marine",
+        "protoform": "2773",
+        "formtypes": [
+          {
+            "type": "Bug",
+            "color": "#a8b820"
+          }
+        ]
+      },
+      {
+        "nameform": "Meadow",
+        "protoform": "2774",
+        "formtypes": [
+          {
+            "type": "Bug",
+            "color": "#a8b820"
+          }
+        ]
+      },
+      {
+        "nameform": "Modern",
+        "protoform": "2775",
+        "formtypes": [
+          {
+            "type": "Bug",
+            "color": "#a8b820"
+          }
+        ]
+      },
+      {
+        "nameform": "Monsoon",
+        "protoform": "2776",
+        "formtypes": [
+          {
+            "type": "Bug",
+            "color": "#a8b820"
+          }
+        ]
+      },
+      {
+        "nameform": "Ocean",
+        "protoform": "2777",
+        "formtypes": [
+          {
+            "type": "Bug",
+            "color": "#a8b820"
+          }
+        ]
+      },
+      {
+        "nameform": "Pokeball",
+        "protoform": "2778",
+        "formtypes": [
+          {
+            "type": "Bug",
+            "color": "#a8b820"
+          }
+        ]
+      },
+      {
+        "nameform": "Polar",
+        "protoform": "2779",
+        "formtypes": [
+          {
+            "type": "Bug",
+            "color": "#a8b820"
+          }
+        ]
+      },
+      {
+        "nameform": "River",
+        "protoform": "2780",
+        "formtypes": [
+          {
+            "type": "Bug",
+            "color": "#a8b820"
+          }
+        ]
+      },
+      {
+        "nameform": "Sandstorm",
+        "protoform": "2781",
+        "formtypes": [
+          {
+            "type": "Bug",
+            "color": "#a8b820"
+          }
+        ]
+      },
+      {
+        "nameform": "Savanna",
+        "protoform": "2782",
+        "formtypes": [
+          {
+            "type": "Bug",
+            "color": "#a8b820"
+          }
+        ]
+      },
+      {
+        "nameform": "Sun",
+        "protoform": "2783",
+        "formtypes": [
+          {
+            "type": "Bug",
+            "color": "#a8b820"
+          }
+        ]
+      },
+      {
+        "nameform": "Tundra",
+        "protoform": "2784",
+        "formtypes": [
+          {
+            "type": "Bug",
+            "color": "#a8b820"
+          }
+        ]
       }
     ]
   },
@@ -36087,6 +36501,18 @@
         "type": "Rock",
         "color": "#b8a038"
       }
+    ],
+    "forms": [
+      {
+        "nameform": "Dusk",
+        "protoform": "2737",
+        "formtypes": [
+          {
+            "type": "Rock",
+            "color": "#b8a038"
+          }
+        ]
+      }
     ]
   },
   "745": {
@@ -36690,7 +37116,7 @@
     ],
     "forms": [
       {
-        "nameform": "Meteor",
+        "nameform": "Meteor Blue",
         "protoform": "2707",
         "formtypes": [
           {
@@ -36790,6 +37216,90 @@
       {
         "nameform": "Yellow",
         "protoform": "2714",
+        "formtypes": [
+          {
+            "type": "Flying",
+            "color": "#a890f0"
+          },
+          {
+            "type": "Rock",
+            "color": "#b8a038"
+          }
+        ]
+      },
+      {
+        "nameform": "Meteor Green",
+        "protoform": "2739",
+        "formtypes": [
+          {
+            "type": "Flying",
+            "color": "#a890f0"
+          },
+          {
+            "type": "Rock",
+            "color": "#b8a038"
+          }
+        ]
+      },
+      {
+        "nameform": "Meteor Indigo",
+        "protoform": "2740",
+        "formtypes": [
+          {
+            "type": "Flying",
+            "color": "#a890f0"
+          },
+          {
+            "type": "Rock",
+            "color": "#b8a038"
+          }
+        ]
+      },
+      {
+        "nameform": "Meteor Orange",
+        "protoform": "2741",
+        "formtypes": [
+          {
+            "type": "Flying",
+            "color": "#a890f0"
+          },
+          {
+            "type": "Rock",
+            "color": "#b8a038"
+          }
+        ]
+      },
+      {
+        "nameform": "Meteor Red",
+        "protoform": "2742",
+        "formtypes": [
+          {
+            "type": "Flying",
+            "color": "#a890f0"
+          },
+          {
+            "type": "Rock",
+            "color": "#b8a038"
+          }
+        ]
+      },
+      {
+        "nameform": "Meteor Violet",
+        "protoform": "2743",
+        "formtypes": [
+          {
+            "type": "Flying",
+            "color": "#a890f0"
+          },
+          {
+            "type": "Rock",
+            "color": "#b8a038"
+          }
+        ]
+      },
+      {
+        "nameform": "Meteor Yellow",
+        "protoform": "2744",
         "formtypes": [
           {
             "type": "Flying",
