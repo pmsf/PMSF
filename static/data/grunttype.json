@@ -42,7 +42,7 @@
   "7": {
     "type": "Bug",
     "grunt": "Male",
-    "second_reward": "false",
+    "second_reward": "true",
     "encounters": {
       "first": [
         "13",
@@ -54,6 +54,7 @@
       ],
       "third": [
         "127",
+        "205",
         "212"
       ]
     }
@@ -125,7 +126,8 @@
       ],
       "second": [
         "209",
-        "210"
+        "210",
+        "281"
       ],
       "third": [
         "210",
@@ -164,7 +166,7 @@
   "18": {
     "type": "Fire",
     "grunt": "Female",
-    "second_reward": "false",
+    "second_reward": "true",
     "encounters": {
       "first": [
         "4",
@@ -217,7 +219,7 @@
   "23": {
     "type": "Grass",
     "grunt": "Male",
-    "second_reward": "false",
+    "second_reward": "true",
     "encounters": {
       "first": [
         "152",
@@ -259,7 +261,8 @@
     "second_reward": "false",
     "encounters": {
       "first": [
-        "27"
+        "27",
+        "220"
       ],
       "second": [
         "28",
@@ -292,7 +295,7 @@
   "31": {
     "type": "Normal",
     "grunt": "Male",
-    "second_reward": "false",
+    "second_reward": "true",
     "encounters": {
       "first": [
         "19",
@@ -312,14 +315,15 @@
   "32": {
     "type": "Poison",
     "grunt": "Female",
-    "second_reward": "false",
+    "second_reward": "true",
     "encounters": {
       "first": [
         "32",
         "41"
       ],
       "second": [
-        "33"
+        "33",
+        "110"
       ],
       "third": [
         "89",
@@ -350,6 +354,7 @@
       ],
       "third": [
         "65",
+        "97",
         "203"
       ]
     }
@@ -373,14 +378,15 @@
         "347"
       ],
       "third": [
-        "247"
+        "247",
+        "248"
       ]
     }
   },
   "38": {
     "type": "Water",
     "grunt": "Female",
-    "second_reward": "false",
+    "second_reward": "true",
     "encounters": {
       "first": [
         "158",
