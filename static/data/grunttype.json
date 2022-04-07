@@ -94,15 +94,13 @@
   "12": {
     "type": "Dragon",
     "grunt": "Female",
-    "second_reward": "false",
+    "second_reward": "true",
     "encounters": {
       "first": [
         "147"
       ],
       "second": [
-        "103",
-        "148",
-        "330"
+        "103"
       ],
       "third": [
         "148",
@@ -266,7 +264,6 @@
       ],
       "second": [
         "28",
-        "361",
         "459"
       ],
       "third": [
@@ -318,6 +315,7 @@
     "second_reward": "true",
     "encounters": {
       "first": [
+        "30",
         "32",
         "41"
       ],
@@ -342,7 +340,7 @@
   "35": {
     "type": "Psychic",
     "grunt": "Male",
-    "second_reward": "false",
+    "second_reward": "true",
     "encounters": {
       "first": [
         "203",
@@ -354,8 +352,7 @@
       ],
       "third": [
         "65",
-        "97",
-        "203"
+        "97"
       ]
     }
   },
