@@ -217,17 +217,16 @@
   "23": {
     "type": "Grass",
     "grunt": "Male",
-    "second_reward": "true",
+    "second_reward": "false",
     "encounters": {
       "first": [
-        "152",
-        "331"
+        "102"
       ],
       "second": [
-        "332"
+        "102"
       ],
       "third": [
-        "154"
+        "102"
       ]
     }
   },
@@ -292,20 +291,16 @@
   "31": {
     "type": "Normal",
     "grunt": "Male",
-    "second_reward": "true",
+    "second_reward": "false",
     "encounters": {
       "first": [
-        "19",
-        "399"
+        "293"
       ],
       "second": [
-        "20",
-        "294",
-        "400"
+        "293"
       ],
       "third": [
-        "295",
-        "400"
+        "293"
       ]
     }
   },
