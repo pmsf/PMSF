@@ -94,7 +94,7 @@
   "12": {
     "type": "Dragon",
     "grunt": "Female",
-    "second_reward": "true",
+    "second_reward": "false",
     "encounters": {
       "first": [
         "147"
@@ -217,16 +217,17 @@
   "23": {
     "type": "Grass",
     "grunt": "Male",
-    "second_reward": "false",
+    "second_reward": "true",
     "encounters": {
       "first": [
-        "102"
+        "152",
+        "331"
       ],
       "second": [
-        "102"
+        "332"
       ],
       "third": [
-        "102"
+        "154"
       ]
     }
   },
@@ -255,7 +256,7 @@
   "26": {
     "type": "Ice",
     "grunt": "Female",
-    "second_reward": "false",
+    "second_reward": "true",
     "encounters": {
       "first": [
         "27",
@@ -291,16 +292,20 @@
   "31": {
     "type": "Normal",
     "grunt": "Male",
-    "second_reward": "false",
+    "second_reward": "true",
     "encounters": {
       "first": [
-        "293"
+        "19",
+        "399"
       ],
       "second": [
-        "293"
+        "20",
+        "294",
+        "400"
       ],
       "third": [
-        "293"
+        "295",
+        "400"
       ]
     }
   },
