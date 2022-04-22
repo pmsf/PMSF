@@ -90,6 +90,7 @@
     "minLevel": true,
     "showBigKarp": true,
     "showTinyRat": true,
+    "showSeenType": true,
     "showDespawnTimeType": true,
     "showPokemonGender": true,
     "hidePokemonCoords": true,
@@ -179,6 +180,7 @@
     "noRarityDisplay": true,
     "noWeatherIcons": true,
     "noIvShadow": true,
+    "noRankShadow": true,
     "hideQuestsPokemon": true,
     "hideQuestsItem": true,
     "hideQuestsEnergy": true,
@@ -246,6 +248,7 @@
     "processShinyStats": true,
     "noPvp": true,
     "noHideSingleMarker": true,
-    "enableJSDebug": true
+    "enableJSDebug": true,
+    "pvpRankingMethod": true
   }
 }

@@ -36,20 +36,22 @@
   margin: 6px;
 }
 .gym-icon-egg-timer {
-    background-color: pink;
+    background-color: #F98795;
     color: white;
+    left: -3px;
     top: 50px;
     position: absolute;
     font-size: 11px;
-    font-weight: 500;
+    border: 1px solid white;
     border-radius: .25rem!important;
 }
 .gym-icon-raid-timer {
-    background-color: #ff8c00;
+    background-color: #FF7836;
     color: white;
+    left: -3px;
     top: 50px;
     position: absolute;
     font-size: 11px;
-    font-weight: 500;
+    border: 1px solid white;
     border-radius: .25rem!important;
 }

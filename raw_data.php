@@ -36,6 +36,7 @@ $prevMinLevel = !empty($_POST['prevMinLevel']) ? $_POST['prevMinLevel'] : false;
 $exMinIv = !empty($_POST['exMinIV']) ? $_POST['exMinIV'] : '';
 $bigKarp = !empty($_POST['bigKarp']) ? $_POST['bigKarp'] : false;
 $tinyRat = !empty($_POST['tinyRat']) ? $_POST['tinyRat'] : false;
+$seenType = !empty($_POST['seenType']) ? $_POST['seenType'] : 0;
 $despawnTimeType = !empty($_POST['despawnTimeType']) ? $_POST['despawnTimeType'] : 0;
 $pokemonGender = !empty($_POST['pokemonGender']) ? $_POST['pokemonGender'] : 0;
 $lastpokemon = !empty($_POST['lastpokemon']) ? $_POST['lastpokemon'] : false;
@@ -148,12 +149,12 @@ if (!$noPokemon) {
     if ($d["lastpokemon"] == "true") {
         $eids = !empty($_POST['eids']) ? explode(",", $_POST['eids']) : array();
         if ($lastpokemon != 'true') {
-            $d["pokemons"] = $scanner->get_active($eids, $minIv, $minLevel, $exMinIv, $bigKarp, $tinyRat, $despawnTimeType, $pokemonGender, $swLat, $swLng, $neLat, $neLng, 0, 0, 0, 0, 0, $enc_id);
+            $d["pokemons"] = $scanner->get_active($eids, $minIv, $minLevel, $exMinIv, $bigKarp, $tinyRat, $seenType, $despawnTimeType, $pokemonGender, $swLat, $swLng, $neLat, $neLng, 0, 0, 0, 0, 0, $enc_id);
         } else {
             if ($newarea) {
-                $d["pokemons"] = $scanner->get_active($eids, $minIv, $minLevel, $exMinIv, $bigKarp, $tinyRat, $despawnTimeType, $pokemonGender, $swLat, $swLng, $neLat, $neLng, 0, $oSwLat, $oSwLng, $oNeLat, $oNeLng, $enc_id);
+                $d["pokemons"] = $scanner->get_active($eids, $minIv, $minLevel, $exMinIv, $bigKarp, $tinyRat, $seenType, $despawnTimeType, $pokemonGender, $swLat, $swLng, $neLat, $neLng, 0, $oSwLat, $oSwLng, $oNeLat, $oNeLng, $enc_id);
             } else {
-                $d["pokemons"] = $scanner->get_active($eids, $minIv, $minLevel, $exMinIv, $bigKarp, $tinyRat, $despawnTimeType, $pokemonGender, $swLat, $swLng, $neLat, $neLng, $timestamp, 0, 0, 0, 0, $enc_id);
+                $d["pokemons"] = $scanner->get_active($eids, $minIv, $minLevel, $exMinIv, $bigKarp, $tinyRat, $seenType, $despawnTimeType, $pokemonGender, $swLat, $swLng, $neLat, $neLng, $timestamp, 0, 0, 0, 0, $enc_id);
             }
         }
         $d["preMinIV"] = $minIv;
@@ -163,7 +164,7 @@ if (!$noPokemon) {
 
             $reidsDiff = array_diff($reids, $eids);
             if (count($reidsDiff)) {
-                $d["pokemons"] = array_merge($d["pokemons"], $scanner->get_active_by_id($reidsDiff, $minIv, $minLevel, $exMinIv, $bigKarp, $tinyRat, $despawnTimeType, $pokemonGender, $swLat, $swLng, $neLat, $neLng));
+                $d["pokemons"] = array_merge($d["pokemons"], $scanner->get_active_by_id($reidsDiff, $minIv, $minLevel, $exMinIv, $bigKarp, $tinyRat, $seenType, $despawnTimeType, $pokemonGender, $swLat, $swLng, $neLat, $neLng));
             }
 
             $d["reids"] = $reids;

@@ -288,6 +288,21 @@ if (strtolower($map) === "rdm") {
                                             </div>
                                         <?php
                                         }
+                                        if (! $noSeenType) { ?>
+                                            <div class="dropdown-divider"></div>
+                                            <div class="form-floating">
+                                                <select class="form-select" aria-label="seen-type-filter" name="seen-type-select" id="seen-type-select">
+                                                    <option value="0"><?php echo i8ln('All') ?></option>
+                                                    <option value="1"><?php echo i8ln('Wild + Nearby (Pokestop)') ?></option>
+                                                    <option value="2"><?php echo i8ln('Wild') ?></option>
+                                                    <option value="3"><?php echo i8ln('Nearby (Pokestop + Other)') ?></option>
+                                                    <option value="4"><?php echo i8ln('Nearby (Pokestop)') ?></option>
+                                                    <option value="5"><?php echo i8ln('Nearby (Other)') ?></option>
+                                                </select>
+                                                <label for="seen-type-select"><?php echo i8ln('Seen Type'); ?></label>
+                                            </div>
+                                        <?php
+                                        }
                                         if (! $noDespawnTimeType) { ?>
                                             <div class="dropdown-divider"></div>
                                             <div class="form-floating">
@@ -310,33 +325,6 @@ if (strtolower($map) === "rdm") {
                                                     <option value="2"><?php echo i8ln('Female') ?></option>
                                                 </select>
                                                 <label for="pokemon-gender-select"><?php echo i8ln('Gender'); ?></label>
-                                            </div>
-                                        <?php
-                                        }
-                                        if (! $noMinGLRank || ! $noMinULRank) { ?>
-                                            <div class="dropdown-divider"></div>
-                                            <div class="overflow-hidden">
-                                                <div class="row gx-3">
-                                                <?php
-                                                if (! $noMinGLRank) { ?>
-                                                    <div class="col" >
-                                                        <div class="p-1 border bg-light">
-                                                            <input id="min-gl-rank" type="number" min="0" max="100" name="min-gl-rank"/>
-                                                            <label for="min-gl-rank"><?php echo i8ln('Min GLR') ?></label>
-                                                        </div>
-                                                    </div>
-                                                <?php
-                                                }
-                                                if (! $noMinULRank) { ?>
-                                                    <div class="col">
-                                                        <div class="p-1 border bg-light">
-                                                            <input id="min-ul-rank" type="number" min="0" max="100" name="min-ul-rank"/>
-                                                            <label for="min-ul-rank"><?php echo i8ln('Min ULR') ?></label>
-                                                        </div>
-                                                    </div>
-                                                <?php
-                                                } ?>
-                                                </div>
                                             </div>
                                         <?php
                                         }
@@ -414,6 +402,48 @@ if (strtolower($map) === "rdm") {
                                                 } ?>
                                                 </div>
                                             </div>
+                                        <?php
+                                        }
+                                        if (! $noPvp) {
+                                            if (! $noMinGLRank || ! $noMinULRank) { ?>
+                                                <div class="dropdown-divider"></div>
+                                                <div class="overflow-hidden">
+                                                    <div class="row gx-3">
+                                                    <?php
+                                                    if (! $noMinGLRank) { ?>
+                                                        <div class="col" >
+                                                            <div class="p-1 border bg-light">
+                                                                <input id="min-gl-rank" type="number" min="0" max="100" name="min-gl-rank"/>
+                                                                <label for="min-gl-rank"><?php echo i8ln('Min GLR') ?></label>
+                                                            </div>
+                                                        </div>
+                                                    <?php
+                                                    }
+                                                    if (! $noMinULRank) { ?>
+                                                        <div class="col">
+                                                            <div class="p-1 border bg-light">
+                                                                <input id="min-ul-rank" type="number" min="0" max="100" name="min-ul-rank"/>
+                                                                <label for="min-ul-rank"><?php echo i8ln('Min ULR') ?></label>
+                                                            </div>
+                                                        </div>
+                                                    <?php
+                                                    } ?>
+                                                    </div>
+                                                </div>
+                                            <?php
+                                            }
+                                            if (! $noPvpRankingMethod) { ?>
+                                                <div class="dropdown-divider"></div>
+                                                <div class="form-floating">
+                                                    <select class="form-select" aria-label="pvp-ranking-method-filter" name="pvp-ranking-method-select" id="pvp-ranking-method-select">
+                                                        <option value="competition"><?php echo i8ln('Competition (1,2,2,4,5)') ?></option>
+                                                        <option value="dense"><?php echo i8ln('Dense (1,2,2,3,4)') ?></option>
+                                                        <option value="ordinal"><?php echo i8ln('Ordinal (1,2,3,4,5)') ?></option>
+                                                    </select>
+                                                    <label for="pvp-ranking-method-select"><?php echo i8ln('PVP Ranking Method'); ?></label>
+                                                </div>
+                                            <?php
+                                            } ?>
                                         <?php
                                         } ?>
                                         </div>
@@ -753,6 +783,11 @@ if (strtolower($map) === "rdm") {
                                                     <option value="12"><?php echo i8ln('Last 12 Hours'); ?></option>
                                                     <option value="24"><?php echo i8ln('Last 24 Hours'); ?></option>
                                                     <option value="168"><?php echo i8ln('Last Week'); ?></option>
+                                                    <option value="-1"><?php echo i8ln('Not Last Hour'); ?></option>
+                                                    <option value="-6"><?php echo i8ln('Not Last 6 Hours'); ?></option>
+                                                    <option value="-12"><?php echo i8ln('Not Last 12 Hours'); ?></option>
+                                                    <option value="-24"><?php echo i8ln('Not Last 24 Hours'); ?></option>
+                                                    <option value="-168"><?php echo i8ln('Not Last Week'); ?></option>
                                                 </select>
                                                 <label for="last-update-gyms-switch"><?php echo i8ln('Last Scan'); ?></label>
                                             </div>
@@ -1585,6 +1620,7 @@ include('modals.php');
     var onlyTriggerGyms = <?php echo $onlyTriggerGyms === true ? 'true' : 'false' ?>;
     var showBigKarp = <?php echo $noBigKarp === true ? 'true' : 'false' ?>;
     var showTinyRat = <?php echo $noTinyRat === true ? 'true' : 'false' ?>;
+    var showSeenType = <?php echo $noSeenType ? 0 : $showSeenType ?>;
     var showDespawnTimeType = <?php echo $noDespawnTimeType ? 0 : $showDespawnTimeType ?>;
     var showPokemonGender = <?php echo $noPokemonGender ? 0 : $showPokemonGender ?>;
     var hidePokemonCoords = <?php echo $hidePokemonCoords === true ? 'true' : 'false' ?>;
@@ -1632,6 +1668,7 @@ include('modals.php');
     var noRarityDisplay = <?php echo $noRarityDisplay === true ? 'true' : 'false' ?>;
     var noWeatherIcons = <?php echo $noWeatherIcons === true ? 'true' : 'false' ?>;
     var noIvShadow = <?php echo $no100IvShadow === true ? 'true' : 'false' ?>;
+    var noRankShadow = <?php echo $noRank1Shadow === true ? 'true' : 'false' ?>;
     var noRaidTimer = <?php echo $noRaidTimer === true ? 'true' : 'false' ?>;
     var enableRaidTimer = <?php echo $noRaidTimer ? 'false' : $enableRaidTimer ?>;
     var noRocketTimer = <?php echo $noTeamRocketTimer === true ? 'true' : 'false' ?>;
@@ -1655,6 +1692,7 @@ include('modals.php');
     var noDarkMode = <?php echo $noDarkMode === true ? 'true' : 'false' ?>;
     var noCatchRates = <?php echo $noCatchRates === true ? 'true' : 'false' ?>;
     var noPvp = <?php echo $noPvp === true ? 'true' : 'false' ?>;
+    var pvpRankingMethod = '<?php echo $pvpRankingMethod ?>';
     var noHideSingleMarker = <?php echo $noHideSingleMarker === true ? 'true' : 'false' ?>;
     var enableJSDebug = <?php echo $enableJSDebug === true ? 'true' : 'false' ?>;
 </script>

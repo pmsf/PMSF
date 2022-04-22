@@ -12,7 +12,7 @@ class RocketMap extends Scanner
         $this->setCpMultiplier();
     }
 
-    public function get_active($eids, $minIv, $minLevel, $exMinIv, $bigKarp, $tinyRat, $despawnTimeType, $gender, $swLat, $swLng, $neLat, $neLng, $tstamp = 0, $oSwLat = 0, $oSwLng = 0, $oNeLat = 0, $oNeLng = 0, $encId = 0)
+    public function get_active($eids, $minIv, $minLevel, $exMinIv, $bigKarp, $tinyRat, $seenType, $despawnTimeType, $gender, $swLat, $swLng, $neLat, $neLng, $tstamp = 0, $oSwLat = 0, $oSwLng = 0, $oNeLat = 0, $oNeLng = 0, $encId = 0)
     {
         global $db;
         $conds = array();
@@ -93,7 +93,7 @@ class RocketMap extends Scanner
         return $this->query_active($select, $conds, $params, $encSql);
     }
 
-    public function get_active_by_id($ids, $minIv, $minLevel, $exMinIv, $bigKarp, $tinyRat, $despawnTimeType, $gender, $swLat, $swLng, $neLat, $neLng)
+    public function get_active_by_id($ids, $minIv, $minLevel, $exMinIv, $bigKarp, $tinyRat, $seenType, $despawnTimeType, $gender, $swLat, $swLng, $neLat, $neLng)
     {
         global $db;
         $conds = array();
@@ -505,6 +505,7 @@ class RocketMap extends Scanner
             $gym["raid_start"] = $gym["raid_start"] * 1000;
             $gym["raid_end"] = $gym["raid_end"] * 1000;
             $gym["park"] = $noExEligible ? 0 : intval($gym["park"]);
+            $gym["ar_scan_eligible"] = 0;
             if (isset($gym["raid_pokemon_form"]) && $gym["raid_pokemon_form"] > 0) {
                 $forms = $this->data[$gym["raid_pokemon_id"]]["forms"];
                 foreach ($forms as $f => $v) {

@@ -229,6 +229,7 @@ $noCatchRates = false;                                              // true/fals
 $noRarityDisplay = false;                                           // true/false
 $noWeatherIcons = true;                                             // true/false
 $no100IvShadow = false;                                             // true/false
+$noRank1Shadow = false;                                             // true/false
 $noHideSingleMarker = false;                                        // true/false
 
 /* Notification Settings */
@@ -256,6 +257,8 @@ $pokemonToExclude = [];
 $pokemonGenSearchString = 'generation';                             // When custom string is used translations do not work.
 
 $noPvp = false;                                                     // true/false
+$noPvpRankingMethod = false;                                        // true/false
+$pvpRankingMethod = 'competition';                                  // 'competition', 'dense', 'ordinal'
 
 $excludeMinIV = '[131, 143, 147, 148, 149, 248]';                   // [] for empty
 
@@ -268,6 +271,8 @@ $minLevel = '0';                                                    // "0" for e
 $noMissingIVOnly = true;                                            // true/false
 $noBigKarp = false;                                                 // true/false
 $noTinyRat = false;                                                 // true/false
+$noSeenType = true;                                                 // true/false
+$showSeenType = 0;                                                  // 0 = All, 1 = Wild + Nearby (Pokestop), 2 = Wild, 3 = Nearby (Pokestop + Other), 4 = Nearby (Pokestop), 5 = Nearby (Other)
 $noDespawnTimeType = true;                                          // true/false
 $showDespawnTimeType = 0;                                           // 0 = All, 1 = Verified, 2 = Unverified, 3 = Unverified + Nearby (Nearby = no spawn point)
 $noPokemonGender = false;                                           // true/false
@@ -279,6 +284,7 @@ $enableGyms = 'false';                                              // true/fals
 $hideGymCoords = false;                                             // true/false
 $noExEligible = false;                                              // true/false
 $exEligible = 'false';                                              // true/false
+$noArEligible = false;                                              // true/false
 $noTeams = false;                                                   // true/false
 $noInBattle = false;                                                // true/false
 $noOpenSpot = false;                                                // true/false
@@ -334,7 +340,7 @@ $noQuestsEnergy = false;                                            // true/fals
 $noQuestsCandy = false;                                             // true/false
 $noQuestsStardust = false;                                          // true/false
 $noItemNames = false;                                               // true/false
-$noItemNumbers = true;                                              // true/false
+$noItemNumbers = false;                                             // true/false
 $defaultDustAmount = 500;
 $hideQuestsPokemon = '[]';                                          // Pokemon ids will default be hidden in the menu every user is able to change this personaly
 $excludeQuestsPokemon = [];                                         // All Pokémon in this array will not be shown in the filter.
