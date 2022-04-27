@@ -25,6 +25,17 @@ class RDM extends Scanner
 
         global $noHighLevelData;
         if (!$noHighLevelData) {
+            $db_version = $db->get('metadata',['value'],['key'=>'DB_VERSION']);
+            if (intval($db_version['value']) < 80) {
+                $rdmpvp = ",
+                pvp_rankings_great_league,
+                pvp_rankings_ultra_league";
+            } else {
+                $rdmpvp = ",
+                json_extract(`pvp`,'$.great') AS pvp_rankings_great_league,
+                json_extract(`pvp`,'$.ultra') AS pvp_rankings_ultra_league";
+            }
+
             $select .= ",
             weight,
             size AS height,
@@ -37,9 +48,9 @@ class RDM extends Scanner
             level,
             capture_1 AS catch_rate_1,
             capture_2 AS catch_rate_2,
-            capture_3 AS catch_rate_3,
-            pvp_rankings_great_league,
-            pvp_rankings_ultra_league";
+            capture_3 AS catch_rate_3
+            $rdmpvp
+            ";
         }
 
         $conds[] = "lat > :swLat AND lon > :swLng AND lat < :neLat AND lon < :neLng AND expire_timestamp > :time";
@@ -138,6 +149,17 @@ class RDM extends Scanner
 
         global $noHighLevelData;
         if (!$noHighLevelData) {
+            $db_version = $db->get('metadata',['value'],['key'=>'DB_VERSION']);
+            if (intval($db_version['value']) < 80) {
+                $rdmpvp = ",
+                pvp_rankings_great_league,
+                pvp_rankings_ultra_league";
+            } else {
+                $rdmpvp = ",
+                json_extract(`pvp`,'$.great') AS pvp_rankings_great_league,
+                json_extract(`pvp`,'$.ultra') AS pvp_rankings_ultra_league";
+            }
+
             $select .= ",
             weight,
             size AS height,
@@ -150,9 +172,9 @@ class RDM extends Scanner
             level,
             capture_1 AS catch_rate_1,
             capture_2 AS catch_rate_2,
-            capture_3 AS catch_rate_3,
-            pvp_rankings_great_league,
-            pvp_rankings_ultra_league";
+            capture_3 AS catch_rate_3
+            $rdmpvp
+            ";
         }
 
         $conds[] = "lat > :swLat AND lon > :swLng AND lat < :neLat AND lon < :neLng AND expire_timestamp > :time";
@@ -516,6 +538,11 @@ class RDM extends Scanner
     public function query_stops($conds, $params)
     {
         global $db;
+        $db_version = $db->get('metadata',['value'],['key'=>'DB_VERSION']);
+        $rdmgrunts = "";
+        if (intval($db_version['value']) >= 81) {
+            $rdmgrunts = " LEFT JOIN (SELECT * FROM (SELECT `pokestop_id` AS pokestop_id_incident, `character` AS grunt_type, `expiration` AS incident_expire_timestamp FROM incident WHERE `expiration` > UNIX_TIMESTAMP() ORDER BY `character`) AS i_sorted GROUP BY i_sorted.`pokestop_id_incident`) AS i ON i.`pokestop_id_incident` = p.`id` ";
+        }
 
         $query = "SELECT id AS pokestop_id,
         lat AS latitude,
@@ -542,7 +569,8 @@ class RDM extends Scanner
         json_extract(json_extract(`quest_rewards`,'$[*].info.costume_id'),'$[0]') AS reward_pokemon_costumeid,
         json_extract(json_extract(`quest_rewards`,'$[*].info.gender_id'),'$[0]') AS reward_pokemon_genderid,
         json_extract(json_extract(`quest_rewards`,'$[*].info.shiny'),'$[0]') AS reward_pokemon_shiny
-        FROM pokestop
+        FROM pokestop p
+        $rdmgrunts
         WHERE :conditions";
 
         $query = str_replace(":conditions", join(" AND ", $conds), $query);
@@ -948,7 +976,12 @@ class RDM extends Scanner
                 $data[] = $pokestop['reward_item_id'];
             }
         } elseif ($type === 'gruntlist') {
-            $pokestops = $db->query("SELECT distinct grunt_type FROM pokestop WHERE grunt_type > 0 AND incident_expire_timestamp > UNIX_TIMESTAMP() order by grunt_type;")->fetchAll(\PDO::FETCH_ASSOC);
+            $db_version = $db->get('metadata',['value'],['key'=>'DB_VERSION']);
+            if (intval($db_version['value']) >= 81) {
+                $pokestops = $db->query("SELECT distinct `character` AS grunt_type FROM incident WHERE `expiration` > UNIX_TIMESTAMP() ORDER BY `character`;")->fetchAll(\PDO::FETCH_ASSOC);
+            } else {
+                $pokestops = $db->query("SELECT distinct grunt_type FROM pokestop WHERE grunt_type > 0 AND incident_expire_timestamp > UNIX_TIMESTAMP() order by grunt_type;")->fetchAll(\PDO::FETCH_ASSOC);
+			}
             $data = array();
             foreach ($pokestops as $pokestop) {
                 $data[] = $pokestop['grunt_type'];

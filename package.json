@@ -66,8 +66,8 @@
     "leaflet-geosearch": "2.7.0",
     "leaflet.markercluster": "https://github.com/pmsf/Leaflet.markercluster/tarball/master",
     "long": "^4.0.0",
-    "moment": "2.29.0",
-    "node-sass": "^6.0.1",
+    "moment": "2.29.2",
+    "node-sass": "^7.0.0",
     "phplint": "^2.0.5",
     "@popperjs/core": "^2.10.1",
     "push.js": "^1.0.12"
