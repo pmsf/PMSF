@@ -111,6 +111,13 @@ function countMarkers(map) { // eslint-disable-line no-unused-vars
             thisRaidIsVisible = currentVisibleMap.contains(thisRaidLocation)
             if (thisRaidIsVisible) {
                 if (mapData.gyms[key]['raid_end'] && mapData.gyms[key]['raid_end'] > Date.now()) {
+                    if (mapData.gyms[key]['raid_level'] === '7') {
+                        if (raidCount[7] === 0 || !raidCount[7]) {
+                            raidCount[7] = 1
+                        } else {
+                            raidCount[7] += 1
+                        }
+                    }
                     if (mapData.gyms[key]['raid_level'] === '6') {
                         if (raidCount[6] === 0 || !raidCount[6]) {
                             raidCount[6] = 1
@@ -173,6 +180,8 @@ function countMarkers(map) { // eslint-disable-line no-unused-vars
                     raidListString += '<tr><td><img src="' + getIcon(iconpath.raid, 'raid/egg', '.png', '5') + '" style="height:48px;"/></td><td style="vertical-align:middle;">5</td><td style="vertical-align:middle;">' + raidCount[i] + '</td><td style="vertical-align:middle;">' + Math.round(raidCount[i] * 100 / raidTotal * 10) / 10 + '%</td></tr>'
                 } else if (i === 6) {
                     raidListString += '<tr><td><img src="' + getIcon(iconpath.raid, 'raid/egg', '.png', '6') + '" style="height:48px;"/></td><td style="vertical-align:middle;">6</td><td style="vertical-align:middle;">' + raidCount[i] + '</td><td style="vertical-align:middle;">' + Math.round(raidCount[i] * 100 / raidTotal * 10) / 10 + '%</td></tr>'
+                } else if (i === 7) {
+                    raidListString += '<tr><td><img src="' + getIcon(iconpath.raid, 'raid/egg', '.png', '7') + '" style="height:48px;"/></td><td style="vertical-align:middle;">7</td><td style="vertical-align:middle;">' + raidCount[i] + '</td><td style="vertical-align:middle;">' + Math.round(raidCount[i] * 100 / raidTotal * 10) / 10 + '%</td></tr>'
                 }
             }
         }
