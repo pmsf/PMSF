@@ -727,6 +727,7 @@
                                     <option value="4">4</option>
                                     <option value="5">5</option>
                                     <option value="6">6</option>
+                                    <option value="7">7</option>
                                 </select>
                             </div>
                             <div class="collapse" id="throwTypeList">
@@ -834,12 +835,13 @@
                         <div class="switch-container">
                             <div class="pokemon-list raid-submission">
                                 <input type="hidden" id="manualraidpokemonid" name="manualraidpokemonid" value="">
-                                <span class="pokemon-icon-sprite" data-value="egg_1" data-label="Level 1" onclick="pokemonRaidFilter(event);"><span class="egg_1 inner-bg" style="background: url('static/sprites/raid/1.png');background-size:100%"></span><span class="egg-number">1</span></span>
-                                <!-- Not in game <span class="pokemon-icon-sprite" data-value="egg_2" data-label="Level 2" onclick="pokemonRaidFilter(event);"><span class="egg_2 inner-bg" style="background: url('static/sprites/raid/2.png');background-size:100%"></span><span class="egg-number">2</span></span> -->
-                                <span class="pokemon-icon-sprite" data-value="egg_3" data-label="Level 3" onclick="pokemonRaidFilter(event);"><span class="egg_3 inner-bg" style="background: url('static/sprites/raid/3.png');background-size:100%"></span><span class="egg-number">3</span></span>
-                                <!-- Not in game <span class="pokemon-icon-sprite" data-value="egg_4" data-label="Level 4" onclick="pokemonRaidFilter(event);"><span class="egg_4 inner-bg" style="background: url('static/sprites/raid/4.png');background-size:100%"></span><span class="egg-number">4</span></span> -->
-                                <span class="pokemon-icon-sprite" data-value="egg_5" data-label="Level 5" onclick="pokemonRaidFilter(event);"><span class="egg_5 inner-bg" style="background: url('static/sprites/raid/5.png');background-size:100%"></span><span class="egg-number">5</span></span>
-                                <span class="pokemon-icon-sprite" data-value="egg_6" data-label="Level 6" onclick="pokemonRaidFilter(event);"><span class="egg_6 inner-bg" style="background: url('static/sprites/raid/6.png');background-size:100%"></span><span class="egg-number">6</span></span>
+                                <span class="pokemon-icon-sprite" data-value="egg_1" data-label="Level 1" onclick="pokemonRaidFilter(event);"><span class="egg_1 inner-bg" style="background: url('static/sprites/raid/egg/1.png');background-size:100%"></span><span class="egg-number">1</span></span>
+                                <!-- Not in game <span class="pokemon-icon-sprite" data-value="egg_2" data-label="Level 2" onclick="pokemonRaidFilter(event);"><span class="egg_2 inner-bg" style="background: url('static/sprites/raid/egg/2.png');background-size:100%"></span><span class="egg-number">2</span></span> -->
+                                <span class="pokemon-icon-sprite" data-value="egg_3" data-label="Level 3" onclick="pokemonRaidFilter(event);"><span class="egg_3 inner-bg" style="background: url('static/sprites/raid/egg/3.png');background-size:100%"></span><span class="egg-number">3</span></span>
+                                <!-- Not in game <span class="pokemon-icon-sprite" data-value="egg_4" data-label="Level 4" onclick="pokemonRaidFilter(event);"><span class="egg_4 inner-bg" style="background: url('static/sprites/raid/egg/4.png');background-size:100%"></span><span class="egg-number">4</span></span> -->
+                                <span class="pokemon-icon-sprite" data-value="egg_5" data-label="Level 5" onclick="pokemonRaidFilter(event);"><span class="egg_5 inner-bg" style="background: url('static/sprites/raid/egg/5.png');background-size:100%"></span><span class="egg-number">5</span></span>
+                                <span class="pokemon-icon-sprite" data-value="egg_6" data-label="Level 6" onclick="pokemonRaidFilter(event);"><span class="egg_6 inner-bg" style="background: url('static/sprites/raid/egg/6.png');background-size:100%"></span><span class="egg-number">6</span></span>
+                                <span class="pokemon-icon-sprite" data-value="egg_7" data-label="Level 7" onclick="pokemonRaidFilter(event);"><span class="egg_7 inner-bg" style="background: url('static/sprites/raid/egg/7.png');background-size:100%"></span><span class="egg-number">7</span></span>
                                 <?php
                                 $pokemonJson = file_get_contents('static/dist/data/pokemon.min.json');
                                 $pokemon = json_decode($pokemonJson, true);

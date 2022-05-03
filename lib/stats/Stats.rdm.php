@@ -81,6 +81,12 @@ class RDM extends Stats
     {
       global $db, $noBoundaries, $boundaries;
 
+      $db_version = $db->get('metadata',['value'],['key'=>'DB_VERSION']);
+      $rdmgrunts = "";
+      if (intval($db_version['value']) >= 81) {
+          $rdmgrunts = " LEFT JOIN (SELECT * FROM (SELECT `pokestop_id` AS pokestop_id_incident, `character` AS grunt_type, `expiration` AS incident_expire_timestamp FROM incident WHERE `expiration` > UNIX_TIMESTAMP() ORDER BY `character`) AS i_sorted GROUP BY i_sorted.`pokestop_id_incident`) AS i ON i.`pokestop_id_incident` = p.`id` ";
+      }
+
       $geofenceSQL = '';
       if (!$noBoundaries) {
           $geofenceSQL = " WHERE (ST_WITHIN(point(lat, lon), ST_GEOMFROMTEXT('POLYGON(( " . $boundaries . " ))')))";
@@ -95,7 +101,8 @@ class RDM extends Stats
           SUM(lure_expire_timestamp > UNIX_TIMESTAMP() AND lure_id = 503) AS mossy_lure,
           SUM(lure_expire_timestamp > UNIX_TIMESTAMP() AND lure_id = 504) AS magnetic_lure,
           SUM(lure_expire_timestamp > UNIX_TIMESTAMP() AND lure_id = 505) AS rainy_lure
-        FROM pokestop
+        FROM pokestop p
+		$rdmgrunts
         $geofenceSQL"
       )->fetch();
 
