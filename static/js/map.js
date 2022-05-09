@@ -3359,79 +3359,80 @@ function loadRawData() {
         prevMinLevel = null
     }
 
+    var data = {
+        'timestamp': timestamp,
+        'pokemon': loadPokemon,
+        'loadOverviewStats': loadOverviewStats,
+        'loadPokemonStats': loadPokemonStats,
+        'loadRewardStats': loadRewardStats,
+        'loadShinyStats': loadShinyStats,
+        'lastpokemon': lastpokemon,
+        'pokestops': loadPokestops,
+        'lures': loadLures,
+        'rocket': loadRocket,
+        'quests': loadQuests,
+        'dustamount': loadDustamount,
+        'reloaddustamount': reloaddustamount,
+        'nestavg': loadNestAvg,
+        'nests': loadNests,
+        'lastnests': lastnests,
+        'communities': loadCommunities,
+        'lastcommunities': lastcommunities,
+        'portals': loadPortals,
+        'pois': loadPois,
+        'lastpois': lastpois,
+        'newportals': loadNewPortalsOnly,
+        'lastportals': lastportals,
+        'lastpokestops': lastpokestops,
+        'gyms': loadGyms,
+        'raids': loadRaids,
+        'lastgyms': lastgyms,
+        'exEligible': exEligible,
+        'lastslocs': lastslocs,
+        'spawnpoints': loadSpawnpoints,
+        'lastspawns': lastspawns,
+        'scanlocations': loadScanLocation,
+        'minIV': loadMinIV,
+        'prevMinIV': prevMinIV,
+        'minLevel': loadMinLevel,
+        'prevMinLevel': prevMinLevel,
+        'bigKarp': bigKarp,
+        'tinyRat': tinyRat,
+        'despawnTimeType': despawnTimeType,
+        'pokemonGender': pokemonGender,
+        'swLat': swLat,
+        'swLng': swLng,
+        'neLat': neLat,
+        'neLng': neLng,
+        'oSwLat': oSwLat,
+        'oSwLng': oSwLng,
+        'oNeLat': oNeLat,
+        'oNeLng': oNeLng,
+        'reids': String(reincludedPokemon),
+        'eids': String(excludedPokemon),
+        'exMinIV': String(excludedMinIV),
+        'qpreids': String(reincludedQuestsPokemon),
+        'qpeids': String(questsExcludedPokemon),
+        'qireids': String(reincludedQuestsItem),
+        'qieids': String(questsExcludedItem),
+        'qereids': String(reincludedQuestsEnergy),
+        'qeeids': String(questsExcludedEnergy),
+        'qcreids': String(reincludedQuestsCandy),
+        'qceids': String(questsExcludedCandy),
+        'geids': String(excludedGrunts),
+        'greids': String(reincludedGrunts),
+        'rbeids': String(excludedRaidboss),
+        'rbreids': String(reincludedRaidboss),
+        'reeids': String(excludedRaidegg),
+        'rereids': String(reincludedRaidegg),
+        'token': token,
+        'encId': encounterId
+    }
     return $.ajax({
         url: 'raw_data',
         type: 'POST',
         timeout: 300000,
-        data: {
-            'timestamp': timestamp,
-            'pokemon': loadPokemon,
-            'loadOverviewStats': loadOverviewStats,
-            'loadPokemonStats': loadPokemonStats,
-            'loadRewardStats': loadRewardStats,
-            'loadShinyStats': loadShinyStats,
-            'lastpokemon': lastpokemon,
-            'pokestops': loadPokestops,
-            'lures': loadLures,
-            'rocket': loadRocket,
-            'quests': loadQuests,
-            'dustamount': loadDustamount,
-            'reloaddustamount': reloaddustamount,
-            'nestavg': loadNestAvg,
-            'nests': loadNests,
-            'lastnests': lastnests,
-            'communities': loadCommunities,
-            'lastcommunities': lastcommunities,
-            'portals': loadPortals,
-            'pois': loadPois,
-            'lastpois': lastpois,
-            'newportals': loadNewPortalsOnly,
-            'lastportals': lastportals,
-            'lastpokestops': lastpokestops,
-            'gyms': loadGyms,
-            'raids': loadRaids,
-            'lastgyms': lastgyms,
-            'exEligible': exEligible,
-            'lastslocs': lastslocs,
-            'spawnpoints': loadSpawnpoints,
-            'lastspawns': lastspawns,
-            'scanlocations': loadScanLocation,
-            'minIV': loadMinIV,
-            'prevMinIV': prevMinIV,
-            'minLevel': loadMinLevel,
-            'prevMinLevel': prevMinLevel,
-            'bigKarp': bigKarp,
-            'tinyRat': tinyRat,
-            'despawnTimeType': despawnTimeType,
-            'pokemonGender': pokemonGender,
-            'swLat': swLat,
-            'swLng': swLng,
-            'neLat': neLat,
-            'neLng': neLng,
-            'oSwLat': oSwLat,
-            'oSwLng': oSwLng,
-            'oNeLat': oNeLat,
-            'oNeLng': oNeLng,
-            'reids': String(reincludedPokemon),
-            'eids': String(excludedPokemon),
-            'exMinIV': String(excludedMinIV),
-            'qpreids': String(reincludedQuestsPokemon),
-            'qpeids': String(questsExcludedPokemon),
-            'qireids': String(reincludedQuestsItem),
-            'qieids': String(questsExcludedItem),
-            'qereids': String(reincludedQuestsEnergy),
-            'qeeids': String(questsExcludedEnergy),
-            'qcreids': String(reincludedQuestsCandy),
-            'qceids': String(questsExcludedCandy),
-            'geids': String(excludedGrunts),
-            'greids': String(reincludedGrunts),
-            'rbeids': String(excludedRaidboss),
-            'rbreids': String(reincludedRaidboss),
-            'reeids': String(excludedRaidegg),
-            'rereids': String(reincludedRaidegg),
-            'token': token,
-            'encId': encounterId
-        },
+        data: data,
         dataType: 'json',
         cache: false,
         beforeSend: function beforeSend() {
@@ -3474,7 +3475,40 @@ function loadRawData() {
         complete: function complete() {
             rawDataIsLoading = false
         }
-    })
+    }).done(function(result){
+            oSwLat = result.oSwLat
+            oSwLng = result.oSwLng
+            oNeLat = result.oNeLat
+            oNeLng = result.oNeLng
+
+            if (!data.lastgyms){
+                lastgyms = result.lastgyms
+            }
+            if (!data.lastpokestops){
+                lastpokestops = result.lastpokestops
+            }
+            if (!data.lastpokemon){
+                lastpokemon = result.lastpokemon
+            }
+            if (!data.lastslocs) {
+                lastslocs = result.lastslocs
+            }
+            if (!data.lastspawns) {
+                lastspawns = result.lastspawns
+            }
+            if (!data.lastnests){
+                lastnests = result.lastnests
+            }
+            if (!data.lastcommunities) {
+                lastcommunities = result.lastcommunities
+            }
+            if (!data.lastportals){
+                lastportals = result.lastportals
+            }
+            if (!data.lastpois) {
+                lastpois = result.lastpois
+            }
+        })
 }
 function loadWeather() {
     return $.ajax({
@@ -4162,8 +4196,8 @@ function submitNewNest(event) { // eslint-disable-line no-unused-vars
     var pokemonId = cont.find('.pokemonID').val()
     var lat = $('#submitModal .submitLatitude').val()
     var lon = $('#submitModal .submitLongitude').val()
-    if (lat && lat !== '' && lon && lon !== '') {
-        if (confirm(i8ln('I confirm this is an new nest'))) {
+    if (pokemonId && lat && lat !== '' && lon && lon !== '') {
+        if (confirm(i8ln('I confirm this is a new nest'))) {
             return $.ajax({
                 url: 'submit',
                 type: 'POST',
@@ -4184,8 +4218,6 @@ function submitNewNest(event) { // eslint-disable-line no-unused-vars
                     sendToast('success', i8ln('Submitting nest'), pokeList[pokemonId - 1].name + ' ' + i8ln('nest successful submitted'), 'true')
                     lastnests = false
                     updateMap()
-                    jQuery('label[for="nests-switch"]').click()
-                    jQuery('label[for="nests-switch"]').click()
                     $('.modal').modal('hide')
                 }
             })
@@ -4198,7 +4230,7 @@ function manualNestData(event) { // eslint-disable-line no-unused-vars
     var nestId = form.find('[name="editnestid"]').val()
     var pokemonId = form.find('.pokemonID').val()
     if (nestId && nestId !== '' && pokemonId && pokemonId !== '') {
-        if (confirm(i8ln('I confirm this is an accurate sighting of a quest'))) {
+        if (confirm(i8ln('I confirm the edit to this nest is accurate'))) {
             return $.ajax({
                 url: 'submit',
                 type: 'POST',
@@ -4218,8 +4250,6 @@ function manualNestData(event) { // eslint-disable-line no-unused-vars
                     sendToast('success', i8ln('Submitting nest'), i8ln('Nest changed to ') + pokeList[pokemonId - 1].name, 'true')
                     lastnests = false
                     updateMap()
-                    jQuery('label[for="nests-switch"]').click()
-                    jQuery('label[for="nests-switch"]').click()
                     $('.modal').modal('hide')
                 }
             })
@@ -5437,21 +5467,6 @@ function updateMap() {
                     shinyTable.draw(false)
                 }
             }
-
-            oSwLat = result.oSwLat
-            oSwLng = result.oSwLng
-            oNeLat = result.oNeLat
-            oNeLng = result.oNeLng
-
-            lastgyms = result.lastgyms
-            lastpokestops = result.lastpokestops
-            lastpokemon = result.lastpokemon
-            lastslocs = result.lastslocs
-            lastspawns = result.lastspawns
-            lastnests = result.lastnests
-            lastcommunities = result.lastcommunities
-            lastportals = result.lastportals
-            lastpois = result.lastpois
 
             prevMinIV = result.preMinIV
             prevMinLevel = result.preMinLevel
