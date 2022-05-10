@@ -2454,5 +2454,13 @@
     "duration": 0,
     "energy": 0,
     "dps": 0
+  },
+  "369": {
+    "name": "Seed Flare",
+    "type": "Grass",
+    "damage": 0,
+    "duration": 0,
+    "energy": 0,
+    "dps": 0
   }
 }
