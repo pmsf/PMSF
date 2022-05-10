@@ -94,7 +94,7 @@
   "12": {
     "type": "Dragon",
     "grunt": "Female",
-    "second_reward": "false",
+    "second_reward": "true",
     "encounters": {
       "first": [
         "147"
@@ -256,7 +256,7 @@
   "26": {
     "type": "Ice",
     "grunt": "Female",
-    "second_reward": "true",
+    "second_reward": "false",
     "encounters": {
       "first": [
         "27",
