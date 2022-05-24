@@ -326,7 +326,7 @@ class RDM extends Scanner
         return $data;
     }
 
-    public function get_stops($geids, $qpeids, $qeeids, $qceids, $qieids, $swLat, $swLng, $neLat, $neLng, $tstamp = 0, $oSwLat = 0, $oSwLng = 0, $oNeLat = 0, $oNeLng = 0, $lures, $rocket, $quests, $dustamount)
+    public function get_stops($geids, $qpeids, $qeeids, $qceids, $qieids, $swLat, $swLng, $neLat, $neLng, $tstamp = 0, $oSwLat = 0, $oSwLng = 0, $oNeLat = 0, $oNeLng = 0, $lures, $rocket, $quests, $dustamount, $quests_with_ar)
     {
         $conds = array();
         $params = array();
@@ -336,6 +336,7 @@ class RDM extends Scanner
         $params[':neLat'] = $neLat;
         $params[':neLng'] = $neLng;
         global $noBoundaries, $boundaries, $hideDeleted, $showStopsOutsideBoundaries;
+        $ar_string = ($quests_with_ar === true) ? "" : "alternative_";
         if (!$noBoundaries && !$showStopsOutsideBoundaries) {
             $conds[] = "(ST_WITHIN(point(lat, lon),ST_GEOMFROMTEXT('POLYGON(( " . $boundaries . " ))')))";
         }
@@ -353,9 +354,9 @@ class RDM extends Scanner
                     $p++;
                 }
                 $pkmn_in = substr($pkmn_in, 0, -1);
-                $pokemonSQL .= "quest_pokemon_id NOT IN ( $pkmn_in ) AND quest_reward_type = 7";
+                $pokemonSQL .= $ar_string."quest_pokemon_id NOT IN ( $pkmn_in ) AND ".$ar_string."quest_reward_type = 7";
             } else {
-                $pokemonSQL .= "quest_reward_type = 7";
+                $pokemonSQL .= $ar_string."quest_reward_type = 7";
             }
             $energySQL = '';
             if (count($qeeids)) {
@@ -367,9 +368,9 @@ class RDM extends Scanner
                     $p++;
                 }
                 $pkmn_in = substr($pkmn_in, 0, -1);
-                $energySQL .= "quest_pokemon_id NOT IN ( $pkmn_in ) AND quest_reward_type = 12";
+                $energySQL .= $ar_string."quest_pokemon_id NOT IN ( $pkmn_in ) AND ".$ar_string."quest_reward_type = 12";
             } else {
-                $energySQL .= "quest_reward_type = 12";
+                $energySQL .= $ar_string."quest_reward_type = 12";
             }
             $candySQL = '';
             if (count($qceids)) {
@@ -381,9 +382,9 @@ class RDM extends Scanner
                     $p++;
                 }
                 $pkmn_in = substr($pkmn_in, 0, -1);
-                $candySQL .= "quest_pokemon_id NOT IN ( $pkmn_in ) AND quest_reward_type = 4";
+                $candySQL .= $ar_string."quest_pokemon_id NOT IN ( $pkmn_in ) AND ".$ar_string."quest_reward_type = 4";
             } else {
-                $candySQL .= "quest_reward_type = 4";
+                $candySQL .= $ar_string."quest_reward_type = 4";
             }
             $itemSQL = '';
             if (count($qieids)) {
@@ -395,13 +396,13 @@ class RDM extends Scanner
                     $i++;
                 }
                 $item_in = substr($item_in, 0, -1);
-                $itemSQL .= "quest_item_id NOT IN ( $item_in )";
+                $itemSQL .= $ar_string."quest_item_id NOT IN ( $item_in )";
             } else {
-                $itemSQL .= "quest_item_id IS NOT NULL";
+                $itemSQL .= $ar_string."quest_item_id IS NOT NULL";
             }
             $dustSQL = '';
             if (!empty($dustamount) && !is_nan((float)$dustamount) && $dustamount > 0) {
-                $dustSQL .= "OR (quest_reward_type = 3 AND json_extract(json_extract(`quest_rewards`,'$[*].info.amount'),'$[0]') >= :amount) AND lat > :swLat AND lon > :swLng AND lat < :neLat AND lon < :neLng";
+                $dustSQL .= "OR (".$ar_string."quest_reward_type = 3 AND json_extract(json_extract(`".$ar_string."quest_rewards`,'$[*].info.amount'),'$[0]') >= :amount) AND lat > :swLat AND lon > :swLng AND lat < :neLat AND lon < :neLng";
                 $params[':amount'] = intval($dustamount);
                 $params[':swLat'] = $swLat;
                 $params[':swLng'] = $swLng;
@@ -445,10 +446,10 @@ class RDM extends Scanner
             $conds[] = "updated > :lastUpdated";
             $params[':lastUpdated'] = $tstamp;
         }
-        return $this->query_stops($conds, $params);
+        return $this->query_stops($conds, $params, $quests_with_ar);
     }
 
-    public function get_stops_quest($greids, $qpreids, $qereids, $qcreids, $qireids, $swLat, $swLng, $neLat, $neLng, $tstamp = 0, $oSwLat = 0, $oSwLng = 0, $oNeLat = 0, $oNeLng = 0, $lures, $rocket, $quests, $dustamount, $reloaddustamount)
+    public function get_stops_quest($greids, $qpreids, $qereids, $qcreids, $qireids, $swLat, $swLng, $neLat, $neLng, $tstamp = 0, $oSwLat = 0, $oSwLng = 0, $oNeLat = 0, $oNeLng = 0, $lures, $rocket, $quests, $dustamount, $reloaddustamount, $quests_with_ar)
     {
         $conds = array();
         $params = array();
@@ -459,6 +460,7 @@ class RDM extends Scanner
         $params[':neLng'] = $neLng;
 
         global $noBoundaries, $boundaries, $hideDeleted;
+        $ar_string = ($quests_with_ar === true) ? "" : "alternative_";
         if (!$noBoundaries) {
             $conds[] = "(ST_WITHIN(point(lat, lon),ST_GEOMFROMTEXT('POLYGON(( " . $boundaries . " ))')))";
         }
@@ -476,7 +478,7 @@ class RDM extends Scanner
                     $p++;
                 }
                 $pkmn_in = substr($pkmn_in, 0, -1);
-                $tmpSQL .= "quest_pokemon_id IN ( $pkmn_in ) AND quest_reward_type = 7";
+                $tmpSQL .= $ar_string."quest_pokemon_id IN ( $pkmn_in ) AND ".$ar_string."quest_reward_type = 7";
             }
             if (count($qereids)) {
                 $pkmn_in = '';
@@ -487,7 +489,7 @@ class RDM extends Scanner
                     $p++;
                 }
                 $pkmn_in = substr($pkmn_in, 0, -1);
-                $tmpSQL .= "json_extract(json_extract(`quest_rewards`,'$[*].info.pokemon_id'),'$[0]') IN ( $pkmn_in ) AND quest_reward_type = 12";
+                $tmpSQL .= "json_extract(json_extract(`".$ar_string."quest_rewards`,'$[*].info.pokemon_id'),'$[0]') IN ( $pkmn_in ) AND ".$ar_string."quest_reward_type = 12";
             }
             if (count($qcreids)) {
                 $pkmn_in = '';
@@ -498,7 +500,7 @@ class RDM extends Scanner
                     $p++;
                 }
                 $pkmn_in = substr($pkmn_in, 0, -1);
-                $tmpSQL .= "json_extract(json_extract(`quest_rewards`,'$[*].info.pokemon_id'),'$[0]') IN ( $pkmn_in ) AND quest_reward_type = 4";
+                $tmpSQL .= "json_extract(json_extract(`".$ar_string."quest_rewards`,'$[*].info.pokemon_id'),'$[0]') IN ( $pkmn_in ) AND ".$ar_string."quest_reward_type = 4";
             }
             if (count($qireids)) {
                 $item_in = '';
@@ -509,10 +511,10 @@ class RDM extends Scanner
                     $i++;
                 }
                 $item_in = substr($item_in, 0, -1);
-                $tmpSQL .= "quest_item_id IN ( $item_in )";
+                $tmpSQL .= $ar_string."quest_item_id IN ( $item_in )";
             }
             if ($reloaddustamount == "true") {
-                $tmpSQL .= "(quest_reward_type = 3 AND json_extract(json_extract(`quest_rewards`,'$[*].info.amount'),'$[0]') > :amount)";
+                $tmpSQL .= "(".$ar_string."quest_reward_type = 3 AND json_extract(json_extract(`".$ar_string."quest_rewards`,'$[*].info.amount'),'$[0]') > :amount)";
                 $params[':amount'] = intval($dustamount);
             }
             $conds[] = $tmpSQL;
@@ -532,10 +534,10 @@ class RDM extends Scanner
             }
             $conds[] = $tmpSQL;
         }
-        return $this->query_stops($conds, $params);
+        return $this->query_stops($conds, $params, $quests_with_ar);
     }
 
-    public function query_stops($conds, $params)
+    public function query_stops($conds, $params, $quests_with_ar)
     {
         global $db;
         $db_version = $db->get('metadata',['value'],['key'=>'DB_VERSION']);
@@ -544,6 +546,7 @@ class RDM extends Scanner
             $rdmgrunts = " LEFT JOIN (SELECT * FROM (SELECT `pokestop_id` AS pokestop_id_incident, `character` AS grunt_type, `expiration` AS incident_expire_timestamp FROM incident WHERE `expiration` > UNIX_TIMESTAMP() ORDER BY `character`) AS i_sorted GROUP BY i_sorted.`pokestop_id_incident`) AS i ON i.`pokestop_id_incident` = p.`id` ";
         }
 
+        $ar_string = ($quests_with_ar === true) ? "" : "alternative_";
         $query = "SELECT id AS pokestop_id,
         lat AS latitude,
         lon AS longitude,
@@ -554,21 +557,21 @@ class RDM extends Scanner
         incident_expire_timestamp AS incident_expiration,
         lure_id,
         grunt_type,
-        quest_type,
-        quest_timestamp,
-        quest_target,
-        quest_rewards,
-        quest_item_id AS reward_item_id,
-        json_extract(json_extract(`quest_conditions`,'$[*].type'),'$[0]') AS quest_condition_type,
-        json_extract(json_extract(`quest_conditions`,'$[*].type'),'$[1]') AS quest_condition_type_1,
-        json_extract(json_extract(`quest_conditions`,'$[*].info'),'$[0]') AS quest_condition_info,
-        quest_reward_type,
-        json_extract(json_extract(`quest_rewards`,'$[*].info.amount'),'$[0]') AS reward_amount,
-        json_extract(json_extract(`quest_rewards`,'$[*].info.pokemon_id'),'$[0]') AS reward_pokemon_id,
-        json_extract(json_extract(`quest_rewards`,'$[*].info.form_id'),'$[0]') AS reward_pokemon_formid,
-        json_extract(json_extract(`quest_rewards`,'$[*].info.costume_id'),'$[0]') AS reward_pokemon_costumeid,
-        json_extract(json_extract(`quest_rewards`,'$[*].info.gender_id'),'$[0]') AS reward_pokemon_genderid,
-        json_extract(json_extract(`quest_rewards`,'$[*].info.shiny'),'$[0]') AS reward_pokemon_shiny
+        ".$ar_string."quest_type AS quest_type,
+        ".$ar_string."quest_timestamp AS quest_timestamp,
+        ".$ar_string."quest_target AS quest_target,
+        ".$ar_string."quest_rewards AS quest_rewards,
+        ".$ar_string."quest_item_id AS reward_item_id,
+        json_extract(json_extract(`".$ar_string."quest_conditions`,'$[*].type'),'$[0]') AS quest_condition_type,
+        json_extract(json_extract(`".$ar_string."quest_conditions`,'$[*].type'),'$[1]') AS quest_condition_type_1,
+        json_extract(json_extract(`".$ar_string."quest_conditions`,'$[*].info'),'$[0]') AS quest_condition_info,
+        ".$ar_string."quest_reward_type AS quest_reward_type,
+        json_extract(json_extract(`".$ar_string."quest_rewards`,'$[*].info.amount'),'$[0]') AS reward_amount,
+        json_extract(json_extract(`".$ar_string."quest_rewards`,'$[*].info.pokemon_id'),'$[0]') AS reward_pokemon_id,
+        json_extract(json_extract(`".$ar_string."quest_rewards`,'$[*].info.form_id'),'$[0]') AS reward_pokemon_formid,
+        json_extract(json_extract(`".$ar_string."quest_rewards`,'$[*].info.costume_id'),'$[0]') AS reward_pokemon_costumeid,
+        json_extract(json_extract(`".$ar_string."quest_rewards`,'$[*].info.gender_id'),'$[0]') AS reward_pokemon_genderid,
+        json_extract(json_extract(`".$ar_string."quest_rewards`,'$[*].info.shiny'),'$[0]') AS reward_pokemon_shiny
         FROM pokestop p
         $rdmgrunts
         WHERE :conditions";
@@ -952,25 +955,25 @@ class RDM extends Scanner
         global $db, $userTimezone;
         $curdate = new \DateTime(null, new \DateTimeZone($userTimezone) );
         if ($type === 'pokemonlist') {
-            $pokestops = $db->query("SELECT distinct quest_pokemon_id AS reward_pokemon_id FROM pokestop WHERE quest_pokemon_id > 0 AND DATE(FROM_UNIXTIME(quest_timestamp)) = '" . $curdate->format('Y-m-d') . "' AND quest_reward_type = 7 order by quest_pokemon_id;")->fetchAll(\PDO::FETCH_ASSOC);
+            $pokestops = $db->query("SELECT distinct quest_pokemon_id AS reward_pokemon_id FROM pokestop WHERE quest_pokemon_id > 0 AND DATE(FROM_UNIXTIME(quest_timestamp)) = '" . $curdate->format('Y-m-d') . "' AND quest_reward_type = 7 UNION SELECT distinct alternative_quest_pokemon_id AS reward_pokemon_id FROM pokestop WHERE alternative_quest_pokemon_id > 0 AND DATE(FROM_UNIXTIME(alternative_quest_timestamp)) = '" . $curdate->format('Y-m-d') . "' AND alternative_quest_reward_type = 7 ORDER BY reward_pokemon_id;")->fetchAll(\PDO::FETCH_ASSOC);
             $data = array();
             foreach ($pokestops as $pokestop) {
                 $data[] = $pokestop['reward_pokemon_id'];
             }
         } elseif ($type === 'energylist') {
-            $pokestops = $db->query("SELECT distinct json_extract(json_extract(`quest_rewards`,'$[*].info.pokemon_id'),'$[0]') AS reward_pokemon_id FROM pokestop WHERE quest_reward_type = 12;")->fetchAll(\PDO::FETCH_ASSOC);
+            $pokestops = $db->query("SELECT distinct json_extract(json_extract(`quest_rewards`,'$[*].info.pokemon_id'),'$[0]') AS reward_pokemon_id FROM pokestop WHERE quest_reward_type = 12 UNION SELECT distinct json_extract(json_extract(`alternative_quest_rewards`,'$[*].info.pokemon_id'),'$[0]') AS reward_pokemon_id FROM pokestop WHERE alternative_quest_reward_type = 12;")->fetchAll(\PDO::FETCH_ASSOC);
             $data = array();
             foreach ($pokestops as $pokestop) {
                 $data[] = $pokestop['reward_pokemon_id'];
             }
         } elseif ($type === 'candylist') {
-            $pokestops = $db->query("SELECT distinct json_extract(json_extract(`quest_rewards`,'$[*].info.pokemon_id'),'$[0]') AS reward_pokemon_id FROM pokestop WHERE quest_reward_type = 4;")->fetchAll(\PDO::FETCH_ASSOC);
+            $pokestops = $db->query("SELECT distinct json_extract(json_extract(`quest_rewards`,'$[*].info.pokemon_id'),'$[0]') AS reward_pokemon_id FROM pokestop WHERE quest_reward_type = 4 UNION SELECT distinct json_extract(json_extract(`alternative_quest_rewards`,'$[*].info.pokemon_id'),'$[0]') AS reward_pokemon_id FROM pokestop WHERE alternative_quest_reward_type = 4;")->fetchAll(\PDO::FETCH_ASSOC);
             $data = array();
             foreach ($pokestops as $pokestop) {
                 $data[] = $pokestop['reward_pokemon_id'];
             }
         } elseif ($type === 'itemlist') {
-            $pokestops = $db->query("SELECT distinct quest_item_id AS reward_item_id FROM pokestop WHERE quest_item_id > 0 AND DATE(FROM_UNIXTIME(quest_timestamp)) = '" . $curdate->format('Y-m-d') . "' order by quest_item_id;")->fetchAll(\PDO::FETCH_ASSOC);
+            $pokestops = $db->query("SELECT distinct quest_item_id AS reward_item_id FROM pokestop WHERE quest_item_id > 0 AND DATE(FROM_UNIXTIME(quest_timestamp)) = '" . $curdate->format('Y-m-d') . "' UNION SELECT distinct alternative_quest_item_id AS reward_item_id FROM pokestop WHERE alternative_quest_item_id > 0 AND DATE(FROM_UNIXTIME(alternative_quest_timestamp)) = '" . $curdate->format('Y-m-d') . "' ORDER BY reward_item_id;")->fetchAll(\PDO::FETCH_ASSOC);
             $data = array();
             foreach ($pokestops as $pokestop) {
                 $data[] = $pokestop['reward_item_id'];

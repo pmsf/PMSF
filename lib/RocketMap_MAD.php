@@ -577,7 +577,7 @@ class RocketMap_MAD extends RocketMap
         return $data;
     }
 
-    public function get_stops($geids, $qpeids, $qeeids, $qceids, $qieids, $swLat, $swLng, $neLat, $neLng, $tstamp = 0, $oSwLat = 0, $oSwLng = 0, $oNeLat = 0, $oNeLng = 0, $lured = false, $rocket = false, $quests, $dustamount)
+    public function get_stops($geids, $qpeids, $qeeids, $qceids, $qieids, $swLat, $swLng, $neLat, $neLng, $tstamp = 0, $oSwLat = 0, $oSwLng = 0, $oNeLat = 0, $oNeLng = 0, $lured = false, $rocket = false, $quests, $dustamount, $quests_with_ar)
     {
         $conds = array();
         $params = array();
@@ -696,10 +696,10 @@ class RocketMap_MAD extends RocketMap
             $conds[] = "last_updated > :lastUpdated";
             $params[':lastUpdated'] = date_format($date, 'Y-m-d H:i:s');
         }
-        return $this->query_stops($conds, $params);
+        return $this->query_stops($conds, $params, $quests_with_ar);
     }
 
-    public function get_stops_quest($greids, $qpreids, $qereids, $qcreids, $qireids, $swLat, $swLng, $neLat, $neLng, $tstamp = 0, $oSwLat = 0, $oSwLng = 0, $oNeLat = 0, $oNeLng = 0, $lures, $rocket, $quests, $dustamount, $reloaddustamount)
+    public function get_stops_quest($greids, $qpreids, $qereids, $qcreids, $qireids, $swLat, $swLng, $neLat, $neLng, $tstamp = 0, $oSwLat = 0, $oSwLng = 0, $oNeLat = 0, $oNeLng = 0, $lures, $rocket, $quests, $dustamount, $reloaddustamount, $quests_with_ar)
     {
         $conds = array();
         $params = array();
@@ -779,10 +779,10 @@ class RocketMap_MAD extends RocketMap
             }
             $conds[] = "" . $rocketSQL . "";
         }
-        return $this->query_stops($conds, $params);
+        return $this->query_stops($conds, $params, $quests_with_ar);
     }
 
-    public function query_stops($conds, $params)
+    public function query_stops($conds, $params, $quests_with_ar)
     {
         global $db;
 

@@ -16,6 +16,7 @@ $term = ! empty($_POST['term']) ? $_POST['term'] : '';
 $action = ! empty($_POST['action']) ? $_POST['action'] : '';
 $lat = ! empty($_POST['lat']) ? $_POST['lat'] : '';
 $lon = ! empty($_POST['lon']) ? $_POST['lon'] : '';
+$quests_with_ar = (!empty($_POST['quests_with_ar']) && $_POST['quests_with_ar'] == "false") ? false : true;
 
 $dbname = '';
 if (strtolower($map) === "rdm") {
@@ -37,7 +38,7 @@ if ($action === "pokemon") {
     $data["pokemon"] = $search->search_pokemon($lat, $lon, $term);
 }
 if ($action === "reward") {
-    $data["reward"] = $search->search_reward($lat, $lon, $term);
+    $data["reward"] = $search->search_reward($lat, $lon, $term, $quests_with_ar);
 }
 if ($action === "nests") {
     $data["nests"] = $search->search_nests($lat, $lon, $term);

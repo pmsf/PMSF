@@ -282,6 +282,10 @@ if (noRaids && Store.get('showRaids')) {
 if (!noDarkMode && Store.get('darkMode')) {
     enableDarkMode()
 }
+if (noQuestsARTaskToggle) {
+    Store.set('showQuestsWithTaskAR', true)
+}
+
 
 function previewPoiImage(event) { // eslint-disable-line no-unused-vars
     var form = $(event.target).parent().parent()
@@ -1066,6 +1070,7 @@ function initSidebar() {
     $('#lures-switch').prop('checked', Store.get('showLures'))
     $('#rocket-switch').prop('checked', Store.get('showRocket'))
     $('#quests-switch').prop('checked', Store.get('showQuests'))
+    $('#quests-with_ar').prop('checked', Store.get('showQuestsWithTaskAR'))
     $('#quests-filter-wrapper').toggle(Store.get('showQuests'))
     $('#dustvalue').text(Store.get('showDustAmount'))
     $('#dustrange').val(Store.get('showDustAmount'))
@@ -3321,6 +3326,7 @@ function loadRawData() {
     var loadLures = Store.get('showLures')
     var loadRocket = Store.get('showRocket')
     var loadQuests = Store.get('showQuests')
+    var showQuestsWithTaskAR = Store.get('showQuestsWithTaskAR')
     var loadDustamount = Store.get('showDustAmount')
     var loadNestAvg = Store.get('showNestAvg')
     var loadNests = Store.get('showNests')
@@ -3375,6 +3381,7 @@ function loadRawData() {
             'lures': loadLures,
             'rocket': loadRocket,
             'quests': loadQuests,
+            'quests_with_ar': showQuestsWithTaskAR,
             'dustamount': loadDustamount,
             'reloaddustamount': reloaddustamount,
             'nestavg': loadNestAvg,
@@ -3516,6 +3523,7 @@ function searchForItem(lat, lon, term, type, field) {
     clearTimeout(searchDelay)
     searchDelay = setTimeout(function () {
         if (term !== '') {
+            var showQuestsWithTaskAR = Store.get('showQuestsWithTaskAR')
             $.ajax({
                 url: 'search',
                 type: 'POST',
@@ -3526,7 +3534,8 @@ function searchForItem(lat, lon, term, type, field) {
                     'action': type,
                     'term': term,
                     'lat': lat,
-                    'lon': lon
+                    'lon': lon,
+                    'quests_with_ar' : showQuestsWithTaskAR
                 },
                 error: function error(xhr) {
                     // Display error toast
@@ -6945,6 +6954,8 @@ $(function () {
                     lastpokestops = false
                 } else if (storageKey === 'showQuests') {
                     lastpokestops = false
+                } else if (storageKey === 'showQuestsWithTaskAR') {
+                    lastpokestops = false
                 } else if (storageKey === 'showPortals') {
                     lastportals = false
                 } else if (storageKey === 'showSpawnpoints') {
@@ -6973,7 +6984,7 @@ $(function () {
                     })
                     if (storageKey !== 'showRanges' && storageKey !== 'showPlacementRanges') data[dType] = {}
                 })
-                if (storageKey === 'showAllPokestops' || storageKey === 'showLures' || storageKey === 'showRocket' || storageKey === 'showQuests') {
+                if (storageKey === 'showAllPokestops' || storageKey === 'showLures' || storageKey === 'showRocket' || storageKey === 'showQuests' || storageKey === 'showQuestsWithTaskAR') {
                     lastpokestops = false
                     updateMap()
                 }
@@ -7299,6 +7310,14 @@ $(function () {
             wrapper.hide(options)
         }
         return buildSwitchChangeListener(mapData, ['pokestops'], 'showQuests').bind(this)()
+    })
+
+    $('#quests-with_ar').change(function () {
+        Store.set('showQuestsWithTaskAR', this.checked)
+        var options = {
+            'duration': 1000
+        }
+        return buildSwitchChangeListener(mapData, ['pokestops'], 'showQuestsWithTaskAR').bind(this)()
     })
 
     $('#dustrange').on('input', function () {

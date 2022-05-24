@@ -228,7 +228,7 @@ class RocketMap extends Scanner
         return $data;
     }
 
-    public function get_stops($geids, $qpeids, $qeeids, $qceids, $qieids, $swLat, $swLng, $neLat, $neLng, $tstamp = 0, $oSwLat = 0, $oSwLng = 0, $oNeLat = 0, $oNeLng = 0, $lured = false, $rocket = false, $quests, $dustamount)
+    public function get_stops($geids, $qpeids, $qeeids, $qceids, $qieids, $swLat, $swLng, $neLat, $neLng, $tstamp = 0, $oSwLat = 0, $oSwLng = 0, $oNeLat = 0, $oNeLng = 0, $lured = false, $rocket = false, $quests, $dustamount, $quests_with_ar)
     {
         $conds = array();
         $params = array();
@@ -264,10 +264,10 @@ class RocketMap extends Scanner
             $params[':lastUpdated'] = date_format($date, 'Y-m-d H:i:s');
         }
 
-        return $this->query_stops($conds, $params);
+        return $this->query_stops($conds, $params, $quests_with_ar);
     }
 
-    public function query_stops($conds, $params)
+    public function query_stops($conds, $params, $quests_with_ar)
     {
         global $db;
 

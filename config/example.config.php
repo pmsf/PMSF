@@ -328,6 +328,7 @@ $generateExcludeGrunts = true;                                      // true/fals
 
 $noQuests = false;                                                  // true/false
 $enableQuests = 'false';                                            // true/false
+$noQuestsARTaskToggle = true;                                       // true/false
 $noQuestsPokemon = false;                                           // true/false
 $noQuestsItems = false;                                             // true/false
 $noQuestsEnergy = false;                                            // true/false
