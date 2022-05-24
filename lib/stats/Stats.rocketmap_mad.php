@@ -119,7 +119,7 @@ class RocketMap_MAD extends Stats
 
       $geofenceSQL = '';
       if (!$noBoundaries) {
-          $geofenceSQL = " AND (ST_WITHIN(point(latitude, longitude), ST_GEOMFROMTEXT('POLYGON(( " . $boundaries . " ))')))";
+          $geofenceSQL = " WHERE (ST_WITHIN(point(latitude, longitude), ST_GEOMFROMTEXT('POLYGON(( " . $boundaries . " ))')))";
       }
 
       $spawnpoints = $db->query("
