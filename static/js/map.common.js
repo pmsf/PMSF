@@ -321,6 +321,11 @@ var StoreOptions = {
             default: enableQuests,
             type: StoreTypes.Boolean
         },
+    'showQuestsWithTaskAR':
+        {
+            default: true,
+            type: StoreTypes.Boolean
+        },
     'showDustAmount':
         {
             default: defaultDustAmount,

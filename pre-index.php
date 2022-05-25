@@ -543,6 +543,15 @@ if (strtolower($map) === "rdm") {
                                                     <input class="form-check-input" id="quests-switch" type="checkbox" name="quests-switch">
                                                     <label class="form-check-label" for="quests-switch"><?php echo i8ln('Quest Pokéstops only') ?></label>
                                                 </div>
+                                            <?php
+                                            if (! $noQuestsARTaskToggle) { ?>
+                                                <div class="dropdown-divider"></div>
+                                                <div class="form-check form-switch">
+                                                    <input class="form-check-input" id="quests-with_ar" type="checkbox" name="quests-with_ar">
+                                                    <label class="form-check-label" for="quests-with_ar"><?php echo i8ln('With AR-Scan Task') ?></label>
+                                                </div>
+                                            <?php
+                                            } ?>
                                                 <div id="quests-filter-wrapper" style="display:none">
                                                     <div class="dropdown-divider"></div>
                                                     <div class="border with-radius">
@@ -1551,6 +1560,7 @@ include('modals.php');
     var enableLured = <?php echo $noLures ? 'false' : $enableLured ?>;
     var enableRocket = <?php echo $noTeamRocket ? 'false' : $enableTeamRocket ?>;
     var noQuests = <?php echo $noQuests === true ? 'true' : 'false' ?>;
+    var noQuestsARTaskToggle = <?php echo $noQuestsARTaskToggle === true ? 'true' : 'false' ?>;
     var noLures = <?php echo $noLures === true ? 'true' : 'false' ?>;
     var noTeamRocket = <?php echo $noTeamRocket === true ? 'true' : 'false' ?>;
     var hideGrunts = <?php echo $noTeamRocket ? '[]' : $hideGrunts ?>;
