@@ -6935,7 +6935,7 @@ $(function () {
     function buildSwitchChangeListener(data, dataType, storageKey) {
         return function () {
             Store.set(storageKey, this.checked)
-            if (this.checked) {
+            if (this.checked && storageKey !== 'showQuestsWithTaskAR') {
                 // When switch is turned on we assume it has been off, makes sure we dont end up in limbo
                 // Without this there could've been a situation where no markers are on map and only newly modified ones are loaded
                 if (storageKey === 'showPokemon') {
@@ -6953,8 +6953,6 @@ $(function () {
                 } else if (storageKey === 'showRocket') {
                     lastpokestops = false
                 } else if (storageKey === 'showQuests') {
-                    lastpokestops = false
-                } else if (storageKey === 'showQuestsWithTaskAR') {
                     lastpokestops = false
                 } else if (storageKey === 'showPortals') {
                     lastportals = false
