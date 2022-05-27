@@ -123,7 +123,7 @@
     "text": "QUEST_COLLECT_AS_REWARDS"
   },
   "42": {
-    "text": "QUEST_WALK"
+    "text": "Walk {0} km"
   },
   "43": {
     "text": "Mega-Evolve {0} Pokemon"
@@ -154,7 +154,7 @@
     "text": "QUEST_BATTLE_EVENT_NPC"
   },
   "56": {
-    "text": "QUEST_EARN_FORT_POWER_UP_POINTS"
+    "text": "Earn {0} points powering up a Pokéstop or Gym"
   },
   "57": {
     "text": "Take {0} snapshot(s) of wild pokémon"
