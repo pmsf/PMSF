@@ -1552,6 +1552,16 @@
             "color": "#f8d030"
           }
         ]
+      },
+      {
+        "nameform": "GoFest 2022",
+        "protoform": "2805",
+        "formtypes": [
+          {
+            "type": "Electric",
+            "color": "#f8d030"
+          }
+        ]
       }
     ]
   },
@@ -3270,6 +3280,16 @@
             "color": "#f08030"
           }
         ]
+      },
+      {
+        "nameform": "Hisuian",
+        "protoform": "2792",
+        "formtypes": [
+          {
+            "type": "Fire",
+            "color": "#f08030"
+          }
+        ]
       }
     ]
   },
@@ -3306,6 +3326,16 @@
       {
         "nameform": "Purified",
         "protoform": "285",
+        "formtypes": [
+          {
+            "type": "Fire",
+            "color": "#f08030"
+          }
+        ]
+      },
+      {
+        "nameform": "Hisuian",
+        "protoform": "2793",
         "formtypes": [
           {
             "type": "Fire",
@@ -7772,6 +7802,20 @@
             "color": "#98d8d8"
           }
         ]
+      },
+      {
+        "nameform": "Galarian",
+        "protoform": "2801",
+        "formtypes": [
+          {
+            "type": "Flying",
+            "color": "#a890f0"
+          },
+          {
+            "type": "Ice",
+            "color": "#98d8d8"
+          }
+        ]
       }
     ]
   },
@@ -7830,6 +7874,20 @@
             "color": "#a890f0"
           }
         ]
+      },
+      {
+        "nameform": "Galarian",
+        "protoform": "2800",
+        "formtypes": [
+          {
+            "type": "Electric",
+            "color": "#f8d030"
+          },
+          {
+            "type": "Flying",
+            "color": "#a890f0"
+          }
+        ]
       }
     ]
   },
@@ -7878,6 +7936,20 @@
       {
         "nameform": "Purified",
         "protoform": "838",
+        "formtypes": [
+          {
+            "type": "Fire",
+            "color": "#f08030"
+          },
+          {
+            "type": "Flying",
+            "color": "#a890f0"
+          }
+        ]
+      },
+      {
+        "nameform": "Galarian",
+        "protoform": "2799",
         "formtypes": [
           {
             "type": "Fire",
@@ -8384,6 +8456,16 @@
       {
         "nameform": "Purified",
         "protoform": "1135",
+        "formtypes": [
+          {
+            "type": "Fire",
+            "color": "#f08030"
+          }
+        ]
+      },
+      {
+        "nameform": "Hisuian",
+        "protoform": "2786",
         "formtypes": [
           {
             "type": "Fire",
@@ -11404,6 +11486,20 @@
             "color": "#6890f0"
           }
         ]
+      },
+      {
+        "nameform": "Hisuian",
+        "protoform": "2788",
+        "formtypes": [
+          {
+            "type": "Poison",
+            "color": "#a040a0"
+          },
+          {
+            "type": "Water",
+            "color": "#6890f0"
+          }
+        ]
       }
     ]
   },
@@ -11626,6 +11722,20 @@
       {
         "nameform": "Purified",
         "protoform": "799",
+        "formtypes": [
+          {
+            "type": "Dark",
+            "color": "#707070"
+          },
+          {
+            "type": "Ice",
+            "color": "#98d8d8"
+          }
+        ]
+      },
+      {
+        "nameform": "Hisuian",
+        "protoform": "2794",
         "formtypes": [
           {
             "type": "Dark",
@@ -26692,6 +26802,16 @@
             "color": "#6890f0"
           }
         ]
+      },
+      {
+        "nameform": "Hisuian",
+        "protoform": "2787",
+        "formtypes": [
+          {
+            "type": "Water",
+            "color": "#6890f0"
+          }
+        ]
       }
     ]
   },
@@ -28880,6 +29000,16 @@
             "color": "#78c850"
           }
         ]
+      },
+      {
+        "nameform": "Hisuian",
+        "protoform": "2789",
+        "formtypes": [
+          {
+            "type": "Grass",
+            "color": "#78c850"
+          }
+        ]
       }
     ]
   },
@@ -28906,6 +29036,16 @@
       {
         "nameform": "Blue Striped",
         "protoform": "137",
+        "formtypes": [
+          {
+            "type": "Water",
+            "color": "#6890f0"
+          }
+        ]
+      },
+      {
+        "nameform": "White Striped",
+        "protoform": "2804",
         "formtypes": [
           {
             "type": "Water",
@@ -29986,6 +30126,16 @@
             "color": "#707070"
           }
         ]
+      },
+      {
+        "nameform": "Hisuian",
+        "protoform": "2796",
+        "formtypes": [
+          {
+            "type": "Dark",
+            "color": "#707070"
+          }
+        ]
       }
     ]
   },
@@ -30022,6 +30172,16 @@
       {
         "nameform": "Purified",
         "protoform": "2113",
+        "formtypes": [
+          {
+            "type": "Dark",
+            "color": "#707070"
+          }
+        ]
+      },
+      {
+        "nameform": "Hisuian",
+        "protoform": "2797",
         "formtypes": [
           {
             "type": "Dark",
@@ -32886,6 +33046,20 @@
             "color": "#8a8a59"
           }
         ]
+      },
+      {
+        "nameform": "Hisuian",
+        "protoform": "2798",
+        "formtypes": [
+          {
+            "type": "Flying",
+            "color": "#a890f0"
+          },
+          {
+            "type": "Normal",
+            "color": "#8a8a59"
+          }
+        ]
       }
     ]
   },
@@ -35737,6 +35911,18 @@
         "type": "Dragon",
         "color": "#7038f8"
       }
+    ],
+    "forms": [
+      {
+        "nameform": "Hisuian",
+        "protoform": "2790",
+        "formtypes": [
+          {
+            "type": "Dragon",
+            "color": "#7038f8"
+          }
+        ]
+      }
     ]
   },
   "706": {
@@ -35746,6 +35932,18 @@
       {
         "type": "Dragon",
         "color": "#7038f8"
+      }
+    ],
+    "forms": [
+      {
+        "nameform": "Hisuian",
+        "protoform": "2791",
+        "formtypes": [
+          {
+            "type": "Dragon",
+            "color": "#7038f8"
+          }
+        ]
       }
     ]
   },
@@ -35952,6 +36150,18 @@
       {
         "type": "Ice",
         "color": "#98d8d8"
+      }
+    ],
+    "forms": [
+      {
+        "nameform": "Hisuian",
+        "protoform": "2795",
+        "formtypes": [
+          {
+            "type": "Ice",
+            "color": "#98d8d8"
+          }
+        ]
       }
     ]
   },
@@ -36198,6 +36408,22 @@
       {
         "type": "Grass",
         "color": "#78c850"
+      }
+    ],
+    "forms": [
+      {
+        "nameform": "Hisuian",
+        "protoform": "2785",
+        "formtypes": [
+          {
+            "type": "Ghost",
+            "color": "#705898"
+          },
+          {
+            "type": "Grass",
+            "color": "#78c850"
+          }
+        ]
       }
     ]
   },
@@ -39520,6 +39746,53 @@
             "color": "#f85888"
           }
         ]
+      }
+    ]
+  },
+  "899": {
+    "name": "Wyrdeer",
+    "rarity": "",
+    "types": []
+  },
+  "900": {
+    "name": "Kleavor",
+    "rarity": "",
+    "types": []
+  },
+  "901": {
+    "name": "Ursaluna",
+    "rarity": "",
+    "types": []
+  },
+  "902": {
+    "name": "Basculegion",
+    "rarity": "",
+    "types": []
+  },
+  "903": {
+    "name": "Sneasler",
+    "rarity": "",
+    "types": []
+  },
+  "904": {
+    "name": "Overqwil",
+    "rarity": "",
+    "types": []
+  },
+  "905": {
+    "name": "Enamorus",
+    "rarity": "",
+    "types": [],
+    "forms": [
+      {
+        "nameform": "Incarnate",
+        "protoform": "2802",
+        "formtypes": []
+      },
+      {
+        "nameform": "Therian",
+        "protoform": "2803",
+        "formtypes": []
       }
     ]
   }
