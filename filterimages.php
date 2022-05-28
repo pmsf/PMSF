@@ -22,8 +22,8 @@
                     $form .= i8ln($f['nameform']);
                 }
             }
-            $genId = ($k <= 151) ? '1' : (($k <= 251) ? '2' : (($k <= 386) ? '3' : (($k <= 493) ? '4' : (($k <= 649) ? '5' : (($k <= 721) ? '6' : (($k <= 809) ? '7' : (($k <= 898) ? '8' : '')))))));
-            $genName = ($k <= 151) ? i8ln('Kanto') : (($k <= 251) ? i8ln('Johto') : (($k <= 386) ? i8ln('Hoenn') : (($k <= 493) ? i8ln('Sinnoh') : (($k <= 649) ? i8ln('Unova') : (($k <= 721) ? i8ln('Kalos') : (($k <= 809) ? i8ln('Alola') : (($k <= 898) ? i8ln('Galar') : '')))))));
+            $genId = ($k <= 151) ? '1' : (($k <= 251) ? '2' : (($k <= 386) ? '3' : (($k <= 493) ? '4' : (($k <= 649) ? '5' : (($k <= 721) ? '6' : (($k <= 809) ? '7' : (($k <= 905) ? '8' : '')))))));
+            $genName = ($k <= 151) ? i8ln('Kanto') : (($k <= 251) ? i8ln('Johto') : (($k <= 386) ? i8ln('Hoenn') : (($k <= 493) ? i8ln('Sinnoh') : (($k <= 649) ? i8ln('Unova') : (($k <= 721) ? i8ln('Kalos') : (($k <= 809) ? i8ln('Alola') : (($k <= 905) ? i8ln('Galar') : '')))))));
             if (! in_array($k, $pokemonToExclude)) {
                 if ($k > $numberOfPokemon) {
                     break;
