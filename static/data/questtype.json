@@ -164,5 +164,11 @@
   },
   "59": {
     "text": "Open {0} gift(s)"
+  },
+  "60": {
+    "text": "QUEST_EARN_XP"
+  },
+  "61": {
+    "text": "QUEST_BATTLE_PLAYER_TEAM_LEADER"
   }
 }
