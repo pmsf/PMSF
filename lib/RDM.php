@@ -952,28 +952,44 @@ class RDM extends Scanner
 
     public function generated_exclude_list($type)
     {
-        global $db, $userTimezone;
+        global $db, $userTimezone, $noQuestsARTaskToggle;
         $curdate = new \DateTime(null, new \DateTimeZone($userTimezone) );
         if ($type === 'pokemonlist') {
-            $pokestops = $db->query("SELECT distinct quest_pokemon_id AS reward_pokemon_id FROM pokestop WHERE quest_pokemon_id > 0 AND DATE(FROM_UNIXTIME(quest_timestamp)) = '" . $curdate->format('Y-m-d') . "' AND quest_reward_type = 7 UNION SELECT distinct alternative_quest_pokemon_id AS reward_pokemon_id FROM pokestop WHERE alternative_quest_pokemon_id > 0 AND DATE(FROM_UNIXTIME(alternative_quest_timestamp)) = '" . $curdate->format('Y-m-d') . "' AND alternative_quest_reward_type = 7 ORDER BY reward_pokemon_id;")->fetchAll(\PDO::FETCH_ASSOC);
+            if ($noQuestsARTaskToggle) {
+                $pokestops = $db->query("SELECT distinct quest_pokemon_id AS reward_pokemon_id FROM pokestop WHERE quest_pokemon_id > 0 AND DATE(FROM_UNIXTIME(quest_timestamp)) = '" . $curdate->format('Y-m-d') . "' AND quest_reward_type = 7 order by quest_pokemon_id;")->fetchAll(\PDO::FETCH_ASSOC);
+            } else {
+                $pokestops = $db->query("SELECT distinct quest_pokemon_id AS reward_pokemon_id FROM pokestop WHERE quest_pokemon_id > 0 AND DATE(FROM_UNIXTIME(quest_timestamp)) = '" . $curdate->format('Y-m-d') . "' AND quest_reward_type = 7 UNION SELECT distinct alternative_quest_pokemon_id AS reward_pokemon_id FROM pokestop WHERE alternative_quest_pokemon_id > 0 AND DATE(FROM_UNIXTIME(alternative_quest_timestamp)) = '" . $curdate->format('Y-m-d') . "' AND alternative_quest_reward_type = 7 ORDER BY reward_pokemon_id;")->fetchAll(\PDO::FETCH_ASSOC);
+            }
             $data = array();
             foreach ($pokestops as $pokestop) {
                 $data[] = $pokestop['reward_pokemon_id'];
             }
         } elseif ($type === 'energylist') {
-            $pokestops = $db->query("SELECT distinct json_extract(json_extract(`quest_rewards`,'$[*].info.pokemon_id'),'$[0]') AS reward_pokemon_id FROM pokestop WHERE quest_reward_type = 12 UNION SELECT distinct json_extract(json_extract(`alternative_quest_rewards`,'$[*].info.pokemon_id'),'$[0]') AS reward_pokemon_id FROM pokestop WHERE alternative_quest_reward_type = 12;")->fetchAll(\PDO::FETCH_ASSOC);
+            if ($noQuestsARTaskToggle) {
+                $pokestops = $db->query("SELECT distinct json_extract(json_extract(`quest_rewards`,'$[*].info.pokemon_id'),'$[0]') AS reward_pokemon_id FROM pokestop WHERE quest_reward_type = 12;")->fetchAll(\PDO::FETCH_ASSOC);
+            } else {
+                $pokestops = $db->query("SELECT distinct json_extract(json_extract(`quest_rewards`,'$[*].info.pokemon_id'),'$[0]') AS reward_pokemon_id FROM pokestop WHERE quest_reward_type = 12 UNION SELECT distinct json_extract(json_extract(`alternative_quest_rewards`,'$[*].info.pokemon_id'),'$[0]') AS reward_pokemon_id FROM pokestop WHERE alternative_quest_reward_type = 12;")->fetchAll(\PDO::FETCH_ASSOC);
+            }
             $data = array();
             foreach ($pokestops as $pokestop) {
                 $data[] = $pokestop['reward_pokemon_id'];
             }
         } elseif ($type === 'candylist') {
-            $pokestops = $db->query("SELECT distinct json_extract(json_extract(`quest_rewards`,'$[*].info.pokemon_id'),'$[0]') AS reward_pokemon_id FROM pokestop WHERE quest_reward_type = 4 UNION SELECT distinct json_extract(json_extract(`alternative_quest_rewards`,'$[*].info.pokemon_id'),'$[0]') AS reward_pokemon_id FROM pokestop WHERE alternative_quest_reward_type = 4;")->fetchAll(\PDO::FETCH_ASSOC);
+            if ($noQuestsARTaskToggle) {
+                $pokestops = $db->query("SELECT distinct json_extract(json_extract(`quest_rewards`,'$[*].info.pokemon_id'),'$[0]') AS reward_pokemon_id FROM pokestop WHERE quest_reward_type = 4;")->fetchAll(\PDO::FETCH_ASSOC);
+            } else {
+                $pokestops = $db->query("SELECT distinct json_extract(json_extract(`quest_rewards`,'$[*].info.pokemon_id'),'$[0]') AS reward_pokemon_id FROM pokestop WHERE quest_reward_type = 4 UNION SELECT distinct json_extract(json_extract(`alternative_quest_rewards`,'$[*].info.pokemon_id'),'$[0]') AS reward_pokemon_id FROM pokestop WHERE alternative_quest_reward_type = 4;")->fetchAll(\PDO::FETCH_ASSOC);
+            }
             $data = array();
             foreach ($pokestops as $pokestop) {
                 $data[] = $pokestop['reward_pokemon_id'];
             }
         } elseif ($type === 'itemlist') {
-            $pokestops = $db->query("SELECT distinct quest_item_id AS reward_item_id FROM pokestop WHERE quest_item_id > 0 AND DATE(FROM_UNIXTIME(quest_timestamp)) = '" . $curdate->format('Y-m-d') . "' UNION SELECT distinct alternative_quest_item_id AS reward_item_id FROM pokestop WHERE alternative_quest_item_id > 0 AND DATE(FROM_UNIXTIME(alternative_quest_timestamp)) = '" . $curdate->format('Y-m-d') . "' ORDER BY reward_item_id;")->fetchAll(\PDO::FETCH_ASSOC);
+            if ($noQuestsARTaskToggle) {
+                $pokestops = $db->query("SELECT distinct quest_item_id AS reward_item_id FROM pokestop WHERE quest_item_id > 0 AND DATE(FROM_UNIXTIME(quest_timestamp)) = '" . $curdate->format('Y-m-d') . "' order by quest_item_id;")->fetchAll(\PDO::FETCH_ASSOC);
+            } else {
+                $pokestops = $db->query("SELECT distinct quest_item_id AS reward_item_id FROM pokestop WHERE quest_item_id > 0 AND DATE(FROM_UNIXTIME(quest_timestamp)) = '" . $curdate->format('Y-m-d') . "' UNION SELECT distinct alternative_quest_item_id AS reward_item_id FROM pokestop WHERE alternative_quest_item_id > 0 AND DATE(FROM_UNIXTIME(alternative_quest_timestamp)) = '" . $curdate->format('Y-m-d') . "' ORDER BY reward_item_id;")->fetchAll(\PDO::FETCH_ASSOC);
+            }
             $data = array();
             foreach ($pokestops as $pokestop) {
                 $data[] = $pokestop['reward_item_id'];
@@ -984,7 +1000,7 @@ class RDM extends Scanner
                 $pokestops = $db->query("SELECT distinct `character` AS grunt_type FROM incident WHERE `expiration` > UNIX_TIMESTAMP() ORDER BY `character`;")->fetchAll(\PDO::FETCH_ASSOC);
             } else {
                 $pokestops = $db->query("SELECT distinct grunt_type FROM pokestop WHERE grunt_type > 0 AND incident_expire_timestamp > UNIX_TIMESTAMP() order by grunt_type;")->fetchAll(\PDO::FETCH_ASSOC);
-			}
+            }
             $data = array();
             foreach ($pokestops as $pokestop) {
                 $data[] = $pokestop['grunt_type'];
