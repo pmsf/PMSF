@@ -1,5 +1,5 @@
 <?php
-/* Define access levels. (must match authbot config)*/
+/* Define access levels. (must match $guildRoles from config)*/
 $userLevel = 1;
 $raidLevel = 2;
 $questLevel = 3;
