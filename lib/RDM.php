@@ -711,7 +711,7 @@ class RDM extends Scanner
         raid_battle_timestamp AS raid_start,
         updated AS last_scanned,
         raid_pokemon_id,
-        availble_slots AS slots_available,
+        available_slots AS slots_available,
         team_id,
         raid_level,
         raid_pokemon_move_1,
