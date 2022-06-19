@@ -245,7 +245,7 @@ class RDM extends Stats
           json_extract(json_extract(`quest_rewards`,'$[*].info.amount'),'$[0]') AS quest_reward_amount,
           quest_reward_type
         FROM pokestop
-        WHERE quest_reward_type IS NOT NULL
+        WHERE quest_reward_type IS NOT NULL $geofenceSQL
       UNION ALL
         SELECT
           alternative_quest_item_id AS quest_item_id,
@@ -256,7 +256,7 @@ class RDM extends Stats
           json_extract(json_extract(`alternative_quest_rewards`,'$[*].info.amount'),'$[0]') AS quest_reward_amount,
           alternative_quest_reward_type AS quest_reward_type
         FROM pokestop
-        WHERE alternative_quest_reward_type IS NOT NULL
+        WHERE alternative_quest_reward_type IS NOT NULL $geofenceSQL
       ) combined
       GROUP BY quest_reward_type, quest_item_id, quest_reward_amount, quest_pokemon_id, quest_pokemon_form, quest_pokemon_costume
       ORDER BY quest_reward_type, quest_item_id, CAST(quest_reward_amount AS UNSIGNED), quest_pokemon_id, quest_pokemon_form, quest_pokemon_costume;");
