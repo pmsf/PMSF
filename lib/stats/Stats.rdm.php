@@ -79,12 +79,17 @@ class RDM extends Stats
 
     public function get_pokestop_stats()
     {
-      global $db, $noBoundaries, $boundaries;
+      global $db, $noBoundaries, $boundaries, $noQuestsARTaskToggle;
 
       $db_version = $db->get('metadata',['value'],['key'=>'DB_VERSION']);
       $rdmgrunts = "";
       if (intval($db_version['value']) >= 81) {
           $rdmgrunts = " LEFT JOIN (SELECT * FROM (SELECT `pokestop_id` AS pokestop_id_incident, `character` AS grunt_type, `expiration` AS incident_expire_timestamp FROM incident WHERE `expiration` > UNIX_TIMESTAMP() ORDER BY `character`) AS i_sorted GROUP BY i_sorted.`pokestop_id_incident`) AS i ON i.`pokestop_id_incident` = p.`id` ";
+      }
+
+      $alternative_quests = "";
+      if (!$noQuestsARTaskToggle) {
+          $alternative_quests = " SUM(alternative_quest_type IS NOT NULL) AS alternative_quest, ";
       }
 
       $geofenceSQL = '';
@@ -95,6 +100,7 @@ class RDM extends Stats
       $pokestops = $db->query("
         SELECT
           SUM(quest_type IS NOT NULL) AS quest,
+          $alternative_quests
           SUM(incident_expire_timestamp > UNIX_TIMESTAMP()) AS rocket,
           SUM(lure_expire_timestamp > UNIX_TIMESTAMP() AND lure_id = 501) AS normal_lure,
           SUM(lure_expire_timestamp > UNIX_TIMESTAMP() AND lure_id = 502) AS glacial_lure,
@@ -102,13 +108,13 @@ class RDM extends Stats
           SUM(lure_expire_timestamp > UNIX_TIMESTAMP() AND lure_id = 504) AS magnetic_lure,
           SUM(lure_expire_timestamp > UNIX_TIMESTAMP() AND lure_id = 505) AS rainy_lure
         FROM pokestop p
-		$rdmgrunts
+        $rdmgrunts
         $geofenceSQL"
       )->fetch();
 
       $data = array();
 
-      $pokestop['quest'] = $pokestops['quest'];
+      $pokestop['quest'] = ($noQuestsARTaskToggle) ? $pokestops['quest'] : ($pokestops['quest'] + $pokestops['alternative_quest']);
       $pokestop['rocket'] = $pokestops['rocket'];
       $pokestop['normal_lure'] = $pokestops['normal_lure'];
       $pokestop['glacial_lure'] = $pokestops['glacial_lure'];
@@ -202,17 +208,18 @@ class RDM extends Stats
 
     public function get_reward_stats()
     {
-      global $db, $noBoundaries, $boundaries;
+      global $db, $noBoundaries, $boundaries, $noQuestsARTaskToggle;
 
       $geofenceSQL = '';
       if (!$noBoundaries) {
           $geofenceSQL = " AND (ST_WITHIN(point(lat, lon), ST_GEOMFROMTEXT('POLYGON(( " . $boundaries . " ))')))";
       }
 
+      if ($noQuestsARTaskToggle) {
       $rewards = $db->query("
-        SELECT 
+        SELECT
           COUNT(*) as count,
-          quest_item_id, 
+          quest_item_id,
           quest_pokemon_id,
           json_extract(json_extract(`quest_rewards`,'$[*].info.pokemon_id'),'$[0]') AS quest_energy_pokemon_id,
           json_extract(json_extract(`quest_rewards`,'$[*].info.form_id'),'$[0]') AS quest_pokemon_form,
@@ -221,9 +228,40 @@ class RDM extends Stats
           quest_reward_type
         FROM pokestop
         WHERE quest_reward_type IS NOT NULL $geofenceSQL
-        GROUP BY quest_reward_type, quest_item_id, quest_reward_amount, quest_pokemon_id, quest_pokemon_form, quest_pokemon_costume"
-      );
-      $total = $db->query("SELECT COUNT(*) AS total FROM pokestop WHERE quest_reward_type IS NOT NULL $geofenceSQL")->fetch();
+        GROUP BY quest_reward_type, quest_item_id, quest_reward_amount, quest_pokemon_id, quest_pokemon_form, quest_pokemon_costume
+        ORDER BY quest_reward_type, quest_item_id, CAST(quest_reward_amount AS UNSIGNED), quest_pokemon_id, quest_pokemon_form, quest_pokemon_costume;");
+        $total = $db->query("SELECT COUNT(quest_reward_type) AS total FROM pokestop WHERE quest_reward_type IS NOT NULL $geofenceSQL")->fetch();
+      } else {
+      $rewards = $db->query("
+      SELECT COUNT(*) as count, quest_item_id, quest_pokemon_id,quest_energy_pokemon_id, quest_pokemon_form, quest_pokemon_costume, quest_reward_amount, quest_reward_type
+      FROM
+      (
+        SELECT
+          quest_item_id,
+          quest_pokemon_id,
+          json_extract(json_extract(`quest_rewards`,'$[*].info.pokemon_id'),'$[0]') AS quest_energy_pokemon_id,
+          json_extract(json_extract(`quest_rewards`,'$[*].info.form_id'),'$[0]') AS quest_pokemon_form,
+          json_extract(json_extract(`quest_rewards`,'$[*].info.costume_id'),'$[0]') AS quest_pokemon_costume,
+          json_extract(json_extract(`quest_rewards`,'$[*].info.amount'),'$[0]') AS quest_reward_amount,
+          quest_reward_type
+        FROM pokestop
+        WHERE quest_reward_type IS NOT NULL
+      UNION ALL
+        SELECT
+          alternative_quest_item_id AS quest_item_id,
+          alternative_quest_pokemon_id AS quest_pokemon_id,
+          json_extract(json_extract(`alternative_quest_rewards`,'$[*].info.pokemon_id'),'$[0]') AS quest_energy_pokemon_id,
+          json_extract(json_extract(`alternative_quest_rewards`,'$[*].info.form_id'),'$[0]') AS quest_pokemon_form,
+          json_extract(json_extract(`alternative_quest_rewards`,'$[*].info.costume_id'),'$[0]') AS quest_pokemon_costume,
+          json_extract(json_extract(`alternative_quest_rewards`,'$[*].info.amount'),'$[0]') AS quest_reward_amount,
+          alternative_quest_reward_type AS quest_reward_type
+        FROM pokestop
+        WHERE alternative_quest_reward_type IS NOT NULL
+      ) combined
+      GROUP BY quest_reward_type, quest_item_id, quest_reward_amount, quest_pokemon_id, quest_pokemon_form, quest_pokemon_costume
+      ORDER BY quest_reward_type, quest_item_id, CAST(quest_reward_amount AS UNSIGNED), quest_pokemon_id, quest_pokemon_form, quest_pokemon_costume;");
+      $total = $db->query("SELECT (COUNT(quest_reward_type)+COUNT(alternative_quest_reward_type)) AS total FROM pokestop WHERE quest_reward_type IS NOT NULL OR alternative_quest_reward_type IS NOT NULL $geofenceSQL")->fetch();
+      }
 
       $data = array();
       foreach ($rewards as $reward) {
