@@ -2462,5 +2462,13 @@
     "duration": 0,
     "energy": 0,
     "dps": 0
+  },
+  "370": {
+    "name": "Obstruct",
+    "type": "Dark",
+    "damage": 0,
+    "duration": 0,
+    "energy": 0,
+    "dps": 0
   }
 }
