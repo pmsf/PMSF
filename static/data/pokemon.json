@@ -39752,47 +39752,128 @@
   "899": {
     "name": "Wyrdeer",
     "rarity": "",
-    "types": []
+    "types": [
+      {
+        "type": "Normal",
+        "color": "#8a8a59"
+      },
+      {
+        "type": "Psychic",
+        "color": "#f85888"
+      }
+    ]
   },
   "900": {
     "name": "Kleavor",
     "rarity": "",
-    "types": []
+    "types": [
+      {
+        "type": "Bug",
+        "color": "#a8b820"
+      },
+      {
+        "type": "Rock",
+        "color": "#b8a038"
+      }
+    ]
   },
   "901": {
     "name": "Ursaluna",
     "rarity": "",
-    "types": []
+    "types": [
+      {
+        "type": "Ground",
+        "color": "#e0c068"
+      },
+      {
+        "type": "Normal",
+        "color": "#8a8a59"
+      }
+    ]
   },
   "902": {
     "name": "Basculegion",
     "rarity": "",
-    "types": []
+    "types": [
+      {
+        "type": "Ghost",
+        "color": "#705898"
+      },
+      {
+        "type": "Water",
+        "color": "#6890f0"
+      }
+    ]
   },
   "903": {
     "name": "Sneasler",
     "rarity": "",
-    "types": []
+    "types": [
+      {
+        "type": "Fighting",
+        "color": "#c03028"
+      },
+      {
+        "type": "Poison",
+        "color": "#a040a0"
+      }
+    ]
   },
   "904": {
     "name": "Overqwil",
     "rarity": "",
-    "types": []
+    "types": [
+      {
+        "type": "Dark",
+        "color": "#707070"
+      },
+      {
+        "type": "Poison",
+        "color": "#a040a0"
+      }
+    ]
   },
   "905": {
     "name": "Enamorus",
     "rarity": "",
-    "types": [],
+    "types": [
+      {
+        "type": "Fairy",
+        "color": "#e898e8"
+      },
+      {
+        "type": "Flying",
+        "color": "#a890f0"
+      }
+    ],
     "forms": [
       {
         "nameform": "Incarnate",
         "protoform": "2802",
-        "formtypes": []
+        "formtypes": [
+          {
+            "type": "Fairy",
+            "color": "#e898e8"
+          },
+          {
+            "type": "Flying",
+            "color": "#a890f0"
+          }
+        ]
       },
       {
         "nameform": "Therian",
         "protoform": "2803",
-        "formtypes": []
+        "formtypes": [
+          {
+            "type": "Fairy",
+            "color": "#e898e8"
+          },
+          {
+            "type": "Flying",
+            "color": "#a890f0"
+          }
+        ]
       }
     ]
   }
