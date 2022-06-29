@@ -25,15 +25,14 @@ class RDM extends Scanner
 
         global $noHighLevelData;
         if (!$noHighLevelData) {
-            $db_version = $db->get('metadata',['value'],['key'=>'DB_VERSION']);
-            if (intval($db_version['value']) < 80) {
-                $rdmpvp = ",
-                pvp_rankings_great_league,
-                pvp_rankings_ultra_league";
-            } else {
-                $rdmpvp = ",
+            if ($this->columnExists("pokemon","pvp")) {
+                $rdmPvP = ",
                 json_extract(`pvp`,'$.great') AS pvp_rankings_great_league,
                 json_extract(`pvp`,'$.ultra') AS pvp_rankings_ultra_league";
+            } else {
+                $rdmPvP = ",
+                pvp_rankings_great_league,
+                pvp_rankings_ultra_league";
             }
 
             $select .= ",
@@ -49,7 +48,7 @@ class RDM extends Scanner
             capture_1 AS catch_rate_1,
             capture_2 AS catch_rate_2,
             capture_3 AS catch_rate_3
-            $rdmpvp
+            $rdmPvP
             ";
         }
 
@@ -149,15 +148,14 @@ class RDM extends Scanner
 
         global $noHighLevelData;
         if (!$noHighLevelData) {
-            $db_version = $db->get('metadata',['value'],['key'=>'DB_VERSION']);
-            if (intval($db_version['value']) < 80) {
-                $rdmpvp = ",
-                pvp_rankings_great_league,
-                pvp_rankings_ultra_league";
-            } else {
-                $rdmpvp = ",
+            if ($this->columnExists("pokemon","pvp")) {
+                $rdmPvP = ",
                 json_extract(`pvp`,'$.great') AS pvp_rankings_great_league,
                 json_extract(`pvp`,'$.ultra') AS pvp_rankings_ultra_league";
+            } else {
+                $rdmPvP = ",
+                pvp_rankings_great_league,
+                pvp_rankings_ultra_league";
             }
 
             $select .= ",
@@ -173,7 +171,7 @@ class RDM extends Scanner
             capture_1 AS catch_rate_1,
             capture_2 AS catch_rate_2,
             capture_3 AS catch_rate_3
-            $rdmpvp
+            $rdmPvP
             ";
         }
 
@@ -540,11 +538,7 @@ class RDM extends Scanner
     public function query_stops($conds, $params, $quests_with_ar)
     {
         global $db;
-        $db_version = $db->get('metadata',['value'],['key'=>'DB_VERSION']);
-        $rdmgrunts = "";
-        if (intval($db_version['value']) >= 81) {
-            $rdmgrunts = " LEFT JOIN (SELECT * FROM (SELECT `pokestop_id` AS pokestop_id_incident, `character` AS grunt_type, `expiration` AS incident_expire_timestamp FROM incident WHERE `expiration` > UNIX_TIMESTAMP() ORDER BY `character`) AS i_sorted GROUP BY i_sorted.`pokestop_id_incident`) AS i ON i.`pokestop_id_incident` = p.`id` ";
-        }
+        $rdmGrunts = ($this->columnExists("pokestop","grunt_type")) ? "" : " LEFT JOIN (SELECT `pokestop_id` AS pokestop_id_incident, MIN(`character`) AS grunt_type, `expiration` AS incident_expire_timestamp FROM incident WHERE `expiration` > UNIX_TIMESTAMP() GROUP BY `pokestop_id_incident`) AS i ON i.`pokestop_id_incident` = p.`id` ";
 
         $ar_string = ($quests_with_ar === true) ? "" : "alternative_";
         $query = "SELECT id AS pokestop_id,
@@ -573,7 +567,7 @@ class RDM extends Scanner
         json_extract(json_extract(`".$ar_string."quest_rewards`,'$[*].info.gender_id'),'$[0]') AS reward_pokemon_genderid,
         json_extract(json_extract(`".$ar_string."quest_rewards`,'$[*].info.shiny'),'$[0]') AS reward_pokemon_shiny
         FROM pokestop p
-        $rdmgrunts
+        $rdmGrunts
         WHERE :conditions";
 
         $query = str_replace(":conditions", join(" AND ", $conds), $query);
@@ -701,6 +695,8 @@ class RDM extends Scanner
     {
         global $db, $noTeams, $noExEligible, $noInBattle;
 
+        $rdmAvailableSlots = ($this->columnExists("gym","available_slots")) ? "available_slots" : "availble_slots";
+
         $query = "SELECT id AS gym_id,
         lat AS latitude,
         lon AS longitude,
@@ -711,7 +707,7 @@ class RDM extends Scanner
         raid_battle_timestamp AS raid_start,
         updated AS last_scanned,
         raid_pokemon_id,
-        available_slots AS slots_available,
+        $rdmAvailableSlots AS slots_available,
         team_id,
         raid_level,
         raid_pokemon_move_1,
@@ -995,11 +991,10 @@ class RDM extends Scanner
                 $data[] = $pokestop['reward_item_id'];
             }
         } elseif ($type === 'gruntlist') {
-            $db_version = $db->get('metadata',['value'],['key'=>'DB_VERSION']);
-            if (intval($db_version['value']) >= 81) {
-                $pokestops = $db->query("SELECT distinct `character` AS grunt_type FROM incident WHERE `expiration` > UNIX_TIMESTAMP() ORDER BY `character`;")->fetchAll(\PDO::FETCH_ASSOC);
-            } else {
+            if ($this->columnExists("pokestop","grunt_type")) {
                 $pokestops = $db->query("SELECT distinct grunt_type FROM pokestop WHERE grunt_type > 0 AND incident_expire_timestamp > UNIX_TIMESTAMP() order by grunt_type;")->fetchAll(\PDO::FETCH_ASSOC);
+            } else {
+                $pokestops = $db->query("SELECT distinct `character` AS grunt_type FROM incident WHERE `expiration` > UNIX_TIMESTAMP() ORDER BY `character`;")->fetchAll(\PDO::FETCH_ASSOC);
             }
             $data = array();
             foreach ($pokestops as $pokestop) {
