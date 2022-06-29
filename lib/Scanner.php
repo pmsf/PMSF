@@ -20,6 +20,20 @@ class Scanner
     public $moves = [];
 
     /**
+     * columnExists()
+     * Used for backward compatibility (backend agnostic)
+     * Returns true if column exists in table
+     */
+    public function columnExists($table = '', $column = '')
+    {
+        global $db;
+        if (empty($table) || empty($column)) {
+            return false;
+        }
+        return (count($db->query("SHOW COLUMNS FROM `$table` WHERE LOWER(`Field`) = LOWER('$column');")->fetchAll(\PDO::FETCH_ASSOC)) > 0) ? true : false;
+    }
+
+    /**
      * Scanner constructor.
      * Loads in the JSON arrays for Pokemon and moves
      */
