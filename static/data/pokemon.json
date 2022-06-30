@@ -39775,6 +39775,22 @@
         "type": "Rock",
         "color": "#b8a038"
       }
+    ],
+    "forms": [
+      {
+        "nameform": "Normal",
+        "protoform": "2806",
+        "formtypes": [
+          {
+            "type": "Bug",
+            "color": "#a8b820"
+          },
+          {
+            "type": "Rock",
+            "color": "#b8a038"
+          }
+        ]
+      }
     ]
   },
   "901": {
@@ -39788,6 +39804,22 @@
       {
         "type": "Normal",
         "color": "#8a8a59"
+      }
+    ],
+    "forms": [
+      {
+        "nameform": "Normal",
+        "protoform": "2807",
+        "formtypes": [
+          {
+            "type": "Ground",
+            "color": "#e0c068"
+          },
+          {
+            "type": "Normal",
+            "color": "#8a8a59"
+          }
+        ]
       }
     ]
   },
