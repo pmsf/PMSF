@@ -142,7 +142,7 @@ $imgurCID = "";
 $numberOfPokemon = 905;
 $numberOfItem = 1602;
 $numberOfGrunt = 523;
-$numberOfEgg = 14;
+$numberOfEgg = 16;
 
 /* UserTimezone */
 $userTimezone = date_default_timezone_get();
@@ -292,7 +292,7 @@ $noActiveRaids = true;                                              // true/fals
 $activeRaids = 'false';                                             // true/false
 $noMinMaxRaidLevel = true;                                          // true/false
 $minRaidLevel = 1;
-$maxRaidLevel = 7;
+$maxRaidLevel = 8;
 $noRaidTimer = false;                                               // true/false
 $enableRaidTimer = 'false';                                         // true/false
 $noRaidbossNames = false;                                           // true/false
@@ -328,6 +328,7 @@ $generateExcludeGrunts = true;                                      // true/fals
 
 $noQuests = true;                                                   // true/false
 $enableQuests = 'false';                                            // true/false
+$noQuestsARTaskToggle = true;                                       // true/false
 $noQuestsPokemon = false;                                           // true/false
 $noQuestsItems = false;                                             // true/false
 $noQuestsEnergy = false;                                            // true/false

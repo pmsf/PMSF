@@ -282,6 +282,10 @@ if (noRaids && Store.get('showRaids')) {
 if (!noDarkMode && Store.get('darkMode')) {
     enableDarkMode()
 }
+if (noQuestsARTaskToggle) {
+    Store.set('showQuestsWithTaskAR', true)
+}
+
 
 function previewPoiImage(event) { // eslint-disable-line no-unused-vars
     var form = $(event.target).parent().parent()
@@ -1066,6 +1070,7 @@ function initSidebar() {
     $('#lures-switch').prop('checked', Store.get('showLures'))
     $('#rocket-switch').prop('checked', Store.get('showRocket'))
     $('#quests-switch').prop('checked', Store.get('showQuests'))
+    $('#quests-with_ar').prop('checked', Store.get('showQuestsWithTaskAR'))
     $('#quests-filter-wrapper').toggle(Store.get('showQuests'))
     $('#dustvalue').text(Store.get('showDustAmount'))
     $('#dustrange').val(Store.get('showDustAmount'))
@@ -3233,7 +3238,7 @@ function clearStaleMarkers() {
     }
     if (!Store.get('showGyms') && Store.get('showRaids')) {
         $.each(mapData.gyms, function (key, value) {
-            if ((((excludedRaidboss.indexOf(Number(mapData.gyms[key]['raid_pokemon_id'])) > -1) && mapData.gyms[key]['raid_pokemon_id'] > 0) && (mapData.gyms[key]['raid_start'] < new Date().getTime() && mapData.gyms[key]['raid_end'] > new Date().getTime())) || ((excludedRaidegg.indexOf(Number(mapData.gyms[key]['raid_level'])) > -1) && mapData.gyms[key]['raid_start'] > new Date().getTime()) || ((excludedRaidegg.indexOf(Number(mapData.gyms[key]['raid_level']) + 7) > -1) && (mapData.gyms[key]['raid_start'] < new Date().getTime() && (mapData.gyms[key]['raid_pokemon_id'] <= 0)))) {
+            if ((((excludedRaidboss.indexOf(Number(mapData.gyms[key]['raid_pokemon_id'])) > -1) && mapData.gyms[key]['raid_pokemon_id'] > 0) && (mapData.gyms[key]['raid_start'] < new Date().getTime() && mapData.gyms[key]['raid_end'] > new Date().getTime())) || ((excludedRaidegg.indexOf(Number(mapData.gyms[key]['raid_level'])) > -1) && mapData.gyms[key]['raid_start'] > new Date().getTime()) || ((excludedRaidegg.indexOf(Number(mapData.gyms[key]['raid_level']) + 8) > -1) && (mapData.gyms[key]['raid_start'] < new Date().getTime() && (mapData.gyms[key]['raid_pokemon_id'] <= 0)))) {
                 if (mapData.gyms[key].marker.rangeCircle) {
                     markers.removeLayer(mapData.gyms[key].marker.rangeCircle)
                     delete mapData.gyms[key].marker.rangeCircle
@@ -3321,6 +3326,7 @@ function loadRawData() {
     var loadLures = Store.get('showLures')
     var loadRocket = Store.get('showRocket')
     var loadQuests = Store.get('showQuests')
+    var showQuestsWithTaskAR = Store.get('showQuestsWithTaskAR')
     var loadDustamount = Store.get('showDustAmount')
     var loadNestAvg = Store.get('showNestAvg')
     var loadNests = Store.get('showNests')
@@ -3375,6 +3381,7 @@ function loadRawData() {
             'lures': loadLures,
             'rocket': loadRocket,
             'quests': loadQuests,
+            'quests_with_ar': showQuestsWithTaskAR,
             'dustamount': loadDustamount,
             'reloaddustamount': reloaddustamount,
             'nestavg': loadNestAvg,
@@ -3516,6 +3523,7 @@ function searchForItem(lat, lon, term, type, field) {
     clearTimeout(searchDelay)
     searchDelay = setTimeout(function () {
         if (term !== '') {
+            var showQuestsWithTaskAR = Store.get('showQuestsWithTaskAR')
             $.ajax({
                 url: 'search',
                 type: 'POST',
@@ -3526,7 +3534,8 @@ function searchForItem(lat, lon, term, type, field) {
                     'action': type,
                     'term': term,
                     'lat': lat,
-                    'lon': lon
+                    'lon': lon,
+                    'quests_with_ar' : showQuestsWithTaskAR
                 },
                 error: function error(xhr) {
                     // Display error toast
@@ -5164,7 +5173,7 @@ function processGyms(i, item) {
             }
         }
         // Remove Broken Raid eggs from gym
-        if (excludedRaidegg.indexOf(Number(item['raid_level']) + 7) > -1) {
+        if (excludedRaidegg.indexOf(Number(item['raid_level']) + 8) > -1) {
             if (item['raid_pokemon_id'] <= 0) {
                 if (item['raid_start'] < time) {
                     if (item['raid_end'] > time) {
@@ -6926,7 +6935,7 @@ $(function () {
     function buildSwitchChangeListener(data, dataType, storageKey) {
         return function () {
             Store.set(storageKey, this.checked)
-            if (this.checked) {
+            if (this.checked && storageKey !== 'showQuestsWithTaskAR') {
                 // When switch is turned on we assume it has been off, makes sure we dont end up in limbo
                 // Without this there could've been a situation where no markers are on map and only newly modified ones are loaded
                 if (storageKey === 'showPokemon') {
@@ -6973,7 +6982,7 @@ $(function () {
                     })
                     if (storageKey !== 'showRanges' && storageKey !== 'showPlacementRanges') data[dType] = {}
                 })
-                if (storageKey === 'showAllPokestops' || storageKey === 'showLures' || storageKey === 'showRocket' || storageKey === 'showQuests') {
+                if (storageKey === 'showAllPokestops' || storageKey === 'showLures' || storageKey === 'showRocket' || storageKey === 'showQuests' || storageKey === 'showQuestsWithTaskAR') {
                     lastpokestops = false
                     updateMap()
                 }
@@ -7299,6 +7308,14 @@ $(function () {
             wrapper.hide(options)
         }
         return buildSwitchChangeListener(mapData, ['pokestops'], 'showQuests').bind(this)()
+    })
+
+    $('#quests-with_ar').change(function () {
+        Store.set('showQuestsWithTaskAR', this.checked)
+        var options = {
+            'duration': 1000
+        }
+        return buildSwitchChangeListener(mapData, ['pokestops'], 'showQuestsWithTaskAR').bind(this)()
     })
 
     $('#dustrange').on('input', function () {
