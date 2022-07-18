@@ -25,14 +25,14 @@ function countMarkers(map) { // eslint-disable-line no-unused-vars
             thisPokeIsVisible = currentVisibleMap.contains(thisPokeLocation)
             if (thisPokeIsVisible) {
                 pkmnTotal++
-                if ((mapData.pokemons[key]['form'] === '0') && (pkmnCount[mapData.pokemons[key]['pokemon_id']] === 0 || !pkmnCount[mapData.pokemons[key]['pokemon_id']])) {
+                if ((mapData.pokemons[key]['form'] === 0) && (pkmnCount[mapData.pokemons[key]['pokemon_id']] === 0 || !pkmnCount[mapData.pokemons[key]['pokemon_id']])) {
                     pkmnCount[mapData.pokemons[key]['pokemon_id']] = {
                         'ID': mapData.pokemons[key]['pokemon_id'],
                         'Form': mapData.pokemons[key]['form'],
                         'Count': 1,
                         'Name': i8ln(mapData.pokemons[key]['pokemon_name'])
                     }
-                } else if (mapData.pokemons[key]['form'] === '0') {
+                } else if (mapData.pokemons[key]['form'] === 0) {
                     pkmnCount[mapData.pokemons[key]['pokemon_id']].Count += 1
                 }
                 if ((mapData.pokemons[key]['form'] > 0) && (pkmnCount[mapData.pokemons[key]['form']] === 0 || !pkmnCount[mapData.pokemons[key]['form']])) {
