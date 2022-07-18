@@ -543,6 +543,15 @@ if (strtolower($map) === "rdm") {
                                                     <input class="form-check-input" id="quests-switch" type="checkbox" name="quests-switch">
                                                     <label class="form-check-label" for="quests-switch"><?php echo i8ln('Quest Pokéstops only') ?></label>
                                                 </div>
+                                            <?php
+                                            if (! $noQuestsARTaskToggle) { ?>
+                                                <div class="dropdown-divider"></div>
+                                                <div class="form-check form-switch">
+                                                    <input class="form-check-input" id="quests-with_ar" type="checkbox" name="quests-with_ar">
+                                                    <label class="form-check-label" for="quests-with_ar"><?php echo i8ln('With AR-Scan Task') ?></label>
+                                                </div>
+                                            <?php
+                                            } ?>
                                                 <div id="quests-filter-wrapper" style="display:none">
                                                     <div class="dropdown-divider"></div>
                                                     <div class="border with-radius">
@@ -799,6 +808,7 @@ if (strtolower($map) === "rdm") {
                                                     <option value="5">5</option>
                                                     <option value="6">6</option>
                                                     <option value="7">7</option>
+                                                    <option value="8">8</option>
                                                 </select>
                                                 <label for="min-level-raids-filter-switch"><?php echo i8ln('Minimum Raid Level') ?></label>
                                             </div>
@@ -812,6 +822,7 @@ if (strtolower($map) === "rdm") {
                                                     <option value="5">5</option>
                                                     <option value="6">6</option>
                                                     <option value="7">7</option>
+                                                    <option value="8">8</option>
                                                 </select>
                                                 <label for="max-level-raids-filter-switch"><?php echo i8ln('Maximum Raid Level') ?></label>
                                             </div>
@@ -843,7 +854,7 @@ if (strtolower($map) === "rdm") {
                                                     </div>
                                                     <div class="tab-pane fade" id="exclude-raidegg" role="tabpanel" aria-labelledby="exclude-raidegg-tab">
                                                         <div class="scroll-container">
-                                                            <?php raideggFilterImages($noRaideggNumbers, '', $excludeRaidegg, 14); ?>
+                                                            <?php raideggFilterImages($noRaideggNumbers, '', $excludeRaidegg, 16); ?>
                                                         </div>
                                                         <div class="dropdown-divider"></div>
                                                         <a class="btn btn-secondary select-all-egg" href="#"><?php echo i8ln('All') ?></a>
@@ -1159,6 +1170,7 @@ if (strtolower($map) === "rdm") {
                                                 <option value="5">5</option>
                                                 <option value="6">6</option>
                                                 <option value="7">7</option>
+                                                <option value="8">8</option>
                                             </select>
                                             <label for="notify-raid"><?php echo i8ln('Notify of Minimum Raid Level') ?></label>
                                         </div>
@@ -1551,6 +1563,7 @@ include('modals.php');
     var enableLured = <?php echo $noLures ? 'false' : $enableLured ?>;
     var enableRocket = <?php echo $noTeamRocket ? 'false' : $enableTeamRocket ?>;
     var noQuests = <?php echo $noQuests === true ? 'true' : 'false' ?>;
+    var noQuestsARTaskToggle = <?php echo $noQuestsARTaskToggle === true ? 'true' : 'false' ?>;
     var noLures = <?php echo $noLures === true ? 'true' : 'false' ?>;
     var noTeamRocket = <?php echo $noTeamRocket === true ? 'true' : 'false' ?>;
     var hideGrunts = <?php echo $noTeamRocket ? '[]' : $hideGrunts ?>;

@@ -4,7 +4,7 @@ namespace Search;
 
 class RocketMap_MAD extends Search
 {
-    public function search_reward($lat, $lon, $term)
+    public function search_reward($lat, $lon, $term, $quests_with_ar)
     {
         global $db, $defaultUnit, $maxSearchResults, $maxSearchNameLength, $numberOfPokemon;
 

@@ -25,14 +25,14 @@ function countMarkers(map) { // eslint-disable-line no-unused-vars
             thisPokeIsVisible = currentVisibleMap.contains(thisPokeLocation)
             if (thisPokeIsVisible) {
                 pkmnTotal++
-                if ((mapData.pokemons[key]['form'] === '0') && (pkmnCount[mapData.pokemons[key]['pokemon_id']] === 0 || !pkmnCount[mapData.pokemons[key]['pokemon_id']])) {
+                if ((mapData.pokemons[key]['form'] === 0) && (pkmnCount[mapData.pokemons[key]['pokemon_id']] === 0 || !pkmnCount[mapData.pokemons[key]['pokemon_id']])) {
                     pkmnCount[mapData.pokemons[key]['pokemon_id']] = {
                         'ID': mapData.pokemons[key]['pokemon_id'],
                         'Form': mapData.pokemons[key]['form'],
                         'Count': 1,
                         'Name': i8ln(mapData.pokemons[key]['pokemon_name'])
                     }
-                } else if (mapData.pokemons[key]['form'] === '0') {
+                } else if (mapData.pokemons[key]['form'] === 0) {
                     pkmnCount[mapData.pokemons[key]['pokemon_id']].Count += 1
                 }
                 if ((mapData.pokemons[key]['form'] > 0) && (pkmnCount[mapData.pokemons[key]['form']] === 0 || !pkmnCount[mapData.pokemons[key]['form']])) {
@@ -111,6 +111,13 @@ function countMarkers(map) { // eslint-disable-line no-unused-vars
             thisRaidIsVisible = currentVisibleMap.contains(thisRaidLocation)
             if (thisRaidIsVisible) {
                 if (mapData.gyms[key]['raid_end'] && mapData.gyms[key]['raid_end'] > Date.now()) {
+                    if (mapData.gyms[key]['raid_level'] === '8') {
+                        if (raidCount[8] === 0 || !raidCount[8]) {
+                            raidCount[8] = 1
+                        } else {
+                            raidCount[8] += 1
+                        }
+                    }
                     if (mapData.gyms[key]['raid_level'] === '7') {
                         if (raidCount[7] === 0 || !raidCount[7]) {
                             raidCount[7] = 1
@@ -182,6 +189,8 @@ function countMarkers(map) { // eslint-disable-line no-unused-vars
                     raidListString += '<tr><td><img src="' + getIcon(iconpath.raid, 'raid/egg', '.png', '6') + '" style="height:48px;"/></td><td style="vertical-align:middle;">6</td><td style="vertical-align:middle;">' + raidCount[i] + '</td><td style="vertical-align:middle;">' + Math.round(raidCount[i] * 100 / raidTotal * 10) / 10 + '%</td></tr>'
                 } else if (i === 7) {
                     raidListString += '<tr><td><img src="' + getIcon(iconpath.raid, 'raid/egg', '.png', '7') + '" style="height:48px;"/></td><td style="vertical-align:middle;">7</td><td style="vertical-align:middle;">' + raidCount[i] + '</td><td style="vertical-align:middle;">' + Math.round(raidCount[i] * 100 / raidTotal * 10) / 10 + '%</td></tr>'
+                } else if (i === 8) {
+                    raidListString += '<tr><td><img src="' + getIcon(iconpath.raid, 'raid/egg', '.png', '8') + '" style="height:48px;"/></td><td style="vertical-align:middle;">8</td><td style="vertical-align:middle;">' + raidCount[i] + '</td><td style="vertical-align:middle;">' + Math.round(raidCount[i] * 100 / raidTotal * 10) / 10 + '%</td></tr>'
                 }
             }
         }
