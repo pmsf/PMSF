@@ -3288,6 +3288,10 @@
           {
             "type": "Fire",
             "color": "#f08030"
+          },
+          {
+            "type": "Rock",
+            "color": "#b8a038"
           }
         ]
       }
@@ -3340,6 +3344,10 @@
           {
             "type": "Fire",
             "color": "#f08030"
+          },
+          {
+            "type": "Rock",
+            "color": "#b8a038"
           }
         ]
       }
@@ -11492,12 +11500,12 @@
         "protoform": "2788",
         "formtypes": [
           {
-            "type": "Poison",
-            "color": "#a040a0"
+            "type": "Dark",
+            "color": "#707070"
           },
           {
-            "type": "Water",
-            "color": "#6890f0"
+            "type": "Poison",
+            "color": "#a040a0"
           }
         ]
       }
@@ -11738,12 +11746,12 @@
         "protoform": "2794",
         "formtypes": [
           {
-            "type": "Dark",
-            "color": "#707070"
+            "type": "Fighting",
+            "color": "#c03028"
           },
           {
-            "type": "Ice",
-            "color": "#98d8d8"
+            "type": "Poison",
+            "color": "#a040a0"
           }
         ]
       }
@@ -33056,8 +33064,8 @@
             "color": "#a890f0"
           },
           {
-            "type": "Normal",
-            "color": "#8a8a59"
+            "type": "Psychic",
+            "color": "#f85888"
           }
         ]
       }
