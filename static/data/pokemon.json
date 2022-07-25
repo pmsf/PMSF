@@ -7812,8 +7812,8 @@
             "color": "#a890f0"
           },
           {
-            "type": "Ice",
-            "color": "#98d8d8"
+            "type": "Psychic",
+            "color": "#f85888"
           }
         ]
       }
@@ -7880,8 +7880,8 @@
         "protoform": "2800",
         "formtypes": [
           {
-            "type": "Electric",
-            "color": "#f8d030"
+            "type": "Fighting",
+            "color": "#c03028"
           },
           {
             "type": "Flying",
@@ -7952,8 +7952,8 @@
         "protoform": "2799",
         "formtypes": [
           {
-            "type": "Fire",
-            "color": "#f08030"
+            "type": "Dark",
+            "color": "#707070"
           },
           {
             "type": "Flying",
