@@ -3535,7 +3535,7 @@ function searchForItem(lat, lon, term, type, field) {
                     'term': term,
                     'lat': lat,
                     'lon': lon,
-                    'quests_with_ar' : showQuestsWithTaskAR
+                    'quests_with_ar': showQuestsWithTaskAR
                 },
                 error: function error(xhr) {
                     // Display error toast
@@ -7312,9 +7312,6 @@ $(function () {
 
     $('#quests-with_ar').change(function () {
         Store.set('showQuestsWithTaskAR', this.checked)
-        var options = {
-            'duration': 1000
-        }
         return buildSwitchChangeListener(mapData, ['pokestops'], 'showQuestsWithTaskAR').bind(this)()
     })
 

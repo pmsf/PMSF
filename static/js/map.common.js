@@ -541,7 +541,7 @@ var mapData = {
     pois: {}
 }
 
-function getPokemonSprite(index, sprite, displayHeight, weather = 0, encounterForm = 0, pokemonCostume = 0, attack = 0, defense = 0, stamina = 0, gender = 0) {
+function getPokemonSprite(index, sprite, displayHeight, weather = 0, encounterForm = 0, pokemonCostume = 0, attack = 0, defense = 0, stamina = 0, gender = 0, level = 0) {
     displayHeight = Math.max(displayHeight, 3)
     var scale = displayHeight / sprite.iconHeight
     // Crop icon just a tiny bit to avoid bleedover from neighbor
@@ -551,20 +551,15 @@ function getPokemonSprite(index, sprite, displayHeight, weather = 0, encounterFo
     var scaledIconCenterOffset = [scale * sprite.iconWidth / 2, scale * sprite.iconHeight / 2]
     var pokemonId = index + 1
     var iv = 100 * (attack + defense + stamina) / 45
-    var html = ''
-    if (weather === 0 || noWeatherIcons) {
-        html = '<img src="' + getIcon(iconpath.pokemon, 'pokemon', '.png', pokemonId, 0, encounterForm, pokemonCostume, gender) + '" style="width:' + scaledIconSizeWidth + 'px;height:auto;'
-        if (iv === 100 && !noIvShadow) {
-            html += 'filter:drop-shadow(0 0 10px red)drop-shadow(0 0 10px red);-webkit-filter:drop-shadow(0 0 10px red)drop-shadow(0 0 10px red);'
-        }
-        html += '"/>'
-    } else if (noWeatherIcons === false) {
-        html = '<img src="' + getIcon(iconpath.pokemon, 'pokemon', '.png', pokemonId, 0, encounterForm, pokemonCostume, gender) + '" style="width:' + scaledIconSizeWidth + 'px;height:auto;'
-        if (iv === 100 && !noIvShadow) {
-            html += 'filter:drop-shadow(0 0 10px red)drop-shadow(0 0 10px red);-webkit-filter:drop-shadow(0 0 10px red)drop-shadow(0 0 10px red);'
-        }
-        html += '"/>' +
-        '<img src="static/weather/a-' + weather + '.png" style="width:' + scaledWeatherIconSizeWidth + 'px;height:auto;position:absolute;top:-' + scaledWeatherIconOffset + 'px;left:' + scaledWeatherIconSizeWidth + 'px;"/>'
+    var html = '<img src="' + getIcon(iconpath.pokemon, 'pokemon', '.png', pokemonId, 0, encounterForm, pokemonCostume, gender) + '" style="width:' + scaledIconSizeWidth + 'px;height:auto;'
+    if (!no100IvShadow && iv === 100) {
+        html += 'filter:drop-shadow(0 0 10px red)drop-shadow(0 0 10px red);-webkit-filter:drop-shadow(0 0 10px red)drop-shadow(0 0 10px red);'
+    } else if (!no0IvShadow && iv === 0 && level > 0) {
+        html += 'filter:drop-shadow(0 0 10px black)drop-shadow(0 0 10px black);-webkit-filter:drop-shadow(0 0 10px black)drop-shadow(0 0 10px black);'
+    }
+    html += '"/>'
+    if (noWeatherIcons === false && weather !== 0) {
+        html += '<img src="static/weather/a-' + weather + '.png" style="width:' + scaledWeatherIconSizeWidth + 'px;height:auto;position:absolute;top:-' + scaledWeatherIconOffset + 'px;left:' + scaledWeatherIconSizeWidth + 'px;"/>'
     }
     var pokemonIcon = L.divIcon({
         iconAnchor: scaledIconCenterOffset,
@@ -585,7 +580,7 @@ function setupPokemonMarker(item, map, isBounceDisabled) {
     var attack = item['individual_attack']
     var defense = item['individual_defense']
     var stamina = item['individual_stamina']
-    var icon = getPokemonSprite(pokemonIndex, pokemonSprites, iconSize, item['weather_boosted_condition'], item['form'], item['costume'], item['individual_attack'], item['individual_defense'], item['individual_stamina'], item['gender'])
+    var icon = getPokemonSprite(pokemonIndex, pokemonSprites, iconSize, item['weather_boosted_condition'], item['form'], item['costume'], item['individual_attack'], item['individual_defense'], item['individual_stamina'], item['gender'], item['level'])
 
     var animationDisabled = false
     if (isBounceDisabled === true) {
