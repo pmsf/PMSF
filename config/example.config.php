@@ -228,6 +228,7 @@ $noHighLevelData = false;                                           // true/fals
 $noCatchRates = false;                                              // true/false
 $noRarityDisplay = false;                                           // true/false
 $noWeatherIcons = true;                                             // true/false
+$no0IvShadow = false;                                               // true/false
 $no100IvShadow = false;                                             // true/false
 $noHideSingleMarker = false;                                        // true/false
 
