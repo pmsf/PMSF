@@ -144,10 +144,13 @@ $rereids = array();
 
 $debug['1_before_functions'] = microtime(true) - $timing['start'];
 
-global $noPokemon;
+global $noPokemon, $pokemonToExclude;
 if (!$noPokemon) {
     if ($d["lastpokemon"] == "true") {
         $eids = !empty($_POST['eids']) ? explode(",", $_POST['eids']) : array();
+        if (count($pokemonToExclude)) {
+            $eids = array_unique(array_merge($eids, $pokemonToExclude));
+        }
         if ($lastpokemon != 'true') {
             $d["pokemons"] = $scanner->get_active($eids, $minIv, $minLevel, $exMinIv, $bigKarp, $tinyRat, $despawnTimeType, $pokemonGender, $swLat, $swLng, $neLat, $neLng, 0, 0, 0, 0, 0, $enc_id);
         } else {
