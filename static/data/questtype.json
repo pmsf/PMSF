@@ -151,7 +151,7 @@
     "text": "QUEST_CHANGE_POKEMON_FORM"
   },
   "55": {
-    "text": "QUEST_BATTLE_EVENT_NPC"
+    "text": "Battle {0} Challenger(s)"
   },
   "56": {
     "text": "Earn {0} points powering up a Pokéstop or Gym"
