@@ -392,7 +392,7 @@ if (strtolower($map) === "rdm") {
                                                 if (! $noHidePokemon) { ?>
                                                     <div class="tab-pane fade<?php echo (($firstTabContent == 1) ? " show active" : ""); ?>" id="exclude-pokemon" role="tabpanel" aria-labelledby="exclude-pokemon-tab">
                                                         <div class="scroll-container">
-                                                            <?php pokemonFilterImages($noPokemonNames, $noPokemonNumbers, '', [], 2); ?>
+                                                            <?php pokemonFilterImages($noPokemonNames, $noPokemonNumbers, '', $pokemonToExclude, 2); ?>
                                                         </div>
                                                         <div class="dropdown-divider"></div>
                                                         <a class="btn btn-secondary select-all" href="#"><?php echo i8ln('All') ?></a>
@@ -404,7 +404,7 @@ if (strtolower($map) === "rdm") {
                                                 if (! $noExcludeMinIV) { ?>
                                                     <div class="tab-pane fade<?php echo (($firstTabContent == 1) ? " show active" : ""); ?>" id="exclude-min-iv" role="tabpanel" aria-labelledby="exclude-min-iv-tab">
                                                         <div class="scroll-container">
-                                                            <?php pokemonFilterImages($noPokemonNames, $noPokemonNumbers, '', [], 3); ?>
+                                                            <?php pokemonFilterImages($noPokemonNames, $noPokemonNumbers, '', $pokemonToExclude, 3); ?>
                                                         </div>
                                                         <div class="dropdown-divider"></div>
                                                         <a class="btn btn-secondary select-all" href="#"><?php echo i8ln('All') ?></a>
@@ -1097,7 +1097,7 @@ if (strtolower($map) === "rdm") {
                                             <div class="tab-content" id="notifyPokemonContent">
                                                 <div class="tab-pane fade show active" id="notify-pokemon" role="tabpanel" aria-labelledby="notify-pokemon-tab">
                                                     <div class="scroll-container">
-                                                        <?php pokemonFilterImages($noPokemonNames, $noPokemonNumbers, '', [], 4); ?>
+                                                        <?php pokemonFilterImages($noPokemonNames, $noPokemonNumbers, '', $pokemonToExclude, 4); ?>
                                                     </div>
                                                     <div class="dropdown-divider"></div>
                                                     <a class="btn btn-secondary select-all notify-pokemon-button" href="#"><?php echo i8ln('All') ?></a>

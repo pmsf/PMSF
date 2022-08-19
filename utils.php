@@ -524,7 +524,10 @@ function getIcon($iconRepo, $folder, $fileType, $iconKeyId, ...$varArgs) {
 
 function checkIndex($repo, $subfolder = '') {
     if (!is_dir('.cache')) {
-        mkdir('.cache', 0744);
+        if (!mkdir('.cache', 0744)) {
+            echo('<script type="text/javascript">alert("Missing UICONS .cache folder. Cannot continue.\n\nhttps://github.com/pmsf/PMSF/wiki/Getting-Started#uicons-cache-folder")</script>');
+            die();
+        }
     }
     $indexFile = '.cache/' . preg_replace('~[/:]~', '_', $repo) . preg_replace('~[/:]~', '_', $subfolder) . 'index.json';
     if (isset($checkIndexCache[$indexFile])) {

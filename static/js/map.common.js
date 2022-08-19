@@ -541,7 +541,7 @@ var mapData = {
     pois: {}
 }
 
-function getPokemonSprite(index, sprite, displayHeight, weather = 0, encounterForm = 0, pokemonCostume = 0, attack = 0, defense = 0, stamina = 0, gender = 0, level = 0) {
+function getPokemonSprite(index, sprite, displayHeight, weather = 0, encounterForm = 0, pokemonCostume = 0, attack = 0, defense = 0, stamina = 0, gender = 0) {
     displayHeight = Math.max(displayHeight, 3)
     var scale = displayHeight / sprite.iconHeight
     // Crop icon just a tiny bit to avoid bleedover from neighbor
@@ -554,7 +554,7 @@ function getPokemonSprite(index, sprite, displayHeight, weather = 0, encounterFo
     var html = '<img src="' + getIcon(iconpath.pokemon, 'pokemon', '.png', pokemonId, 0, encounterForm, pokemonCostume, gender) + '" style="width:' + scaledIconSizeWidth + 'px;height:auto;'
     if (!no100IvShadow && iv === 100) {
         html += 'filter:drop-shadow(0 0 10px red)drop-shadow(0 0 10px red);-webkit-filter:drop-shadow(0 0 10px red)drop-shadow(0 0 10px red);'
-    } else if (!no0IvShadow && iv === 0 && level > 0) {
+    } else if (!no0IvShadow && iv === 0 && attack != null && defense != null && stamina != null) {
         html += 'filter:drop-shadow(0 0 10px black)drop-shadow(0 0 10px black);-webkit-filter:drop-shadow(0 0 10px black)drop-shadow(0 0 10px black);'
     }
     html += '"/>'
@@ -580,7 +580,7 @@ function setupPokemonMarker(item, map, isBounceDisabled) {
     var attack = item['individual_attack']
     var defense = item['individual_defense']
     var stamina = item['individual_stamina']
-    var icon = getPokemonSprite(pokemonIndex, pokemonSprites, iconSize, item['weather_boosted_condition'], item['form'], item['costume'], item['individual_attack'], item['individual_defense'], item['individual_stamina'], item['gender'], item['level'])
+    var icon = getPokemonSprite(pokemonIndex, pokemonSprites, iconSize, item['weather_boosted_condition'], item['form'], item['costume'], item['individual_attack'], item['individual_defense'], item['individual_stamina'], item['gender'])
 
     var animationDisabled = false
     if (isBounceDisabled === true) {
