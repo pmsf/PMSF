@@ -2011,7 +2011,7 @@ function formatSpawnTime(seconds) {
 
 function spawnpointLabel(item) {
     var str = ''
-    if (item.time > 0) {
+    if (item.time !== null) {
         str += '<div><b>' + i8ln('Spawn Point') + '</b></div>' +
         '<div>' + i8ln('Despawn time') + ': xx:' + formatSpawnTime(item.time) + '</div>'
     } else {
@@ -3061,7 +3061,7 @@ function deletePoi(event) { // eslint-disable-line no-unused-vars
 
 function setupSpawnpointMarker(item) {
     var color = ''
-    if (item['time'] > 0) {
+    if (item['time'] !== null) {
         color = 'green'
     } else {
         color = 'red'
@@ -5351,7 +5351,7 @@ function updateSpawnPoints() {
     $.each(mapData.spawnpoints, function (key, value) {
         if (map.getBounds().contains(value.marker.getLatLng())) {
             var color = ''
-            if (value['time'] > 0) {
+            if (value['time'] !== null) {
                 color = 'green'
             } else {
                 color = 'red'
