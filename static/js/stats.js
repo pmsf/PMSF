@@ -298,7 +298,7 @@ function countMarkers(map) { // eslint-disable-line no-unused-vars
             var thisSpawnpointLocation = {lat: mapData.spawnpoints[key]['latitude'], lng: mapData.spawnpoints[key]['longitude']}
             thisSpawnpointIsVisible = currentVisibleMap.contains(thisSpawnpointLocation)
             if (thisSpawnpointIsVisible) {
-                if (mapData.spawnpoints[key]['time'] === 0) {
+                if (mapData.spawnpoints[key]['time'] === null) {
                     if (spawnpointCount[2] === 0 || !spawnpointCount[2]) {
                         spawnpointCount[2] = 1
                     } else {
