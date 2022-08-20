@@ -91,6 +91,11 @@ var StoreOptions = {
             default: notifyLevel,
             type: StoreTypes.Number
         },
+    'remember_text_min_ll_rank':
+        {
+            default: minLLRank,
+            type: StoreTypes.Number
+        },
     'remember_text_min_gl_rank':
         {
             default: minGLRank,

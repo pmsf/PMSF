@@ -84,6 +84,7 @@
     "directionProvider": true,
     "hidePokemon": true,
     "excludeMinIV": true,
+    "minLLRank": true,
     "minGLRank": true,
     "minULRank": true,
     "minIV": true,
