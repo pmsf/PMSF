@@ -27,6 +27,7 @@ class RDM extends Scanner
         if (!$noHighLevelData) {
             if ($this->columnExists("pokemon","pvp")) {
                 $rdmPvP = ",
+                json_extract(`pvp`,'$.little') AS pvp_rankings_little_league,
                 json_extract(`pvp`,'$.great') AS pvp_rankings_great_league,
                 json_extract(`pvp`,'$.ultra') AS pvp_rankings_ultra_league";
             } else {
@@ -150,6 +151,7 @@ class RDM extends Scanner
         if (!$noHighLevelData) {
             if ($this->columnExists("pokemon","pvp")) {
                 $rdmPvP = ",
+                json_extract(`pvp`,'$.little') AS pvp_rankings_little_league,
                 json_extract(`pvp`,'$.great') AS pvp_rankings_great_league,
                 json_extract(`pvp`,'$.ultra') AS pvp_rankings_ultra_league";
             } else {
@@ -285,6 +287,7 @@ class RDM extends Scanner
             $pokemon["individual_defense"] = isset($pokemon["individual_defense"]) ? intval($pokemon["individual_defense"]) : null;
             $pokemon["individual_stamina"] = isset($pokemon["individual_stamina"]) ? intval($pokemon["individual_stamina"]) : null;
 
+            $pokemon["pvp_rankings_little_league"] = isset($pokemon["pvp_rankings_little_league"]) ? $pokemon["pvp_rankings_little_league"] : null;
             $pokemon["pvp_rankings_great_league"] = isset($pokemon["pvp_rankings_great_league"]) ? $pokemon["pvp_rankings_great_league"] : null;
             $pokemon["pvp_rankings_ultra_league"] = isset($pokemon["pvp_rankings_ultra_league"]) ? $pokemon["pvp_rankings_ultra_league"] : null;
 

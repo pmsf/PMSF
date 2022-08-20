@@ -8,6 +8,7 @@ var $selectPokemonNotify
 var $selectRarityNotify
 var $textPerfectionNotify
 var $textLevelNotify
+var $textMinLLRank
 var $textMinGLRank
 var $textMinULRank
 var $textMinIV
@@ -57,6 +58,7 @@ var excludedRaidboss = []
 var excludedRaidegg = []
 var notifiedMinPerfection = null
 var notifiedMinLevel = null
+var minLLRank = null
 var minGLRank = null
 var minULRank = null
 var minIV = null
@@ -1351,6 +1353,39 @@ function pokemonLabel(item) {
     '</a>'
 
     if (!noPvp) {
+        if (item['pvp_rankings_little_league'] !== undefined && item['pvp_rankings_little_league'] !== null) {
+            contentstring += '<br>'
+            contentstring += '<b>' + i8ln('Little League') + ':</b>' + '<br>'
+            var littleLeague = JSON.parse(item['pvp_rankings_little_league'])
+            $.each(littleLeague, function (index, ranking) {
+                let pokemonName = ''
+                $.each(pokedex[ranking.pokemon]['forms'], function (index, form) {
+                    if (ranking.form === form['protoform'] && form['nameform'] !== 'Normal') {
+                        pokemonName = i8ln(form['nameform']) + ' ' + i8ln(pokedex[ranking.pokemon]['name'])
+                    }
+                })
+                if (pokemonName === '') {
+                    pokemonName = i8ln(pokedex[ranking.pokemon]['name'])
+                }
+
+                let infoString
+                if (ranking.rank === null) {
+                    infoString = i8ln('CP too high')
+                } else {
+                    infoString = '#' + ranking.rank
+                }
+                if (ranking.cp !== null) {
+                    infoString += ' @' + ranking.cp + i8ln('CP') + ' (' + i8ln('Lvl') + ' ' + (ranking.level) + ')'
+                }
+
+                let color = ''
+                if (ranking.rank === 1) {
+                    color = 'color:green'
+                }
+                contentstring += '<small style="font-size: 11px;' + color + '"><b>' + pokemonName + ':</b> ' + infoString + '</small><br>'
+            })
+        }
+
         if (item['pvp_rankings_great_league'] !== undefined && item['pvp_rankings_great_league'] !== null) {
             contentstring += '<br>'
             contentstring += '<b>' + i8ln('Great League') + ':</b>' + '<br>'
@@ -3169,8 +3204,17 @@ function clearStaleMarkers() {
     $.each(mapData.pokemons, function (key, value) {
         var pvpFiltered = false
 
-        if (minGLRank > 0 || minULRank > 0) {
+        if (minLLRank > 0 || minGLRank > 0 || minULRank > 0) {
             pvpFiltered = true
+            if (minLLRank > 0 && pvpFiltered) {
+                var littleLeague = JSON.parse(mapData.pokemons[key]['pvp_rankings_little_league'])
+                $.each(littleLeague, function (index, ranking) {
+                    if (ranking.rank !== null && ranking.rank <= minLLRank) {
+                        pvpFiltered = false
+                        return false
+                    }
+                })
+            }
             if (minGLRank > 0 && pvpFiltered) {
                 var greatLeague = JSON.parse(mapData.pokemons[key]['pvp_rankings_great_league'])
                 $.each(greatLeague, function (index, ranking) {
@@ -4768,8 +4812,17 @@ function processPokemons(i, item) {
             }
         }
         if (encounterId !== item['encounter_id']) {
-            if (minGLRank > 0 || minULRank > 0) {
+            if (minLLRank > 0 || minGLRank > 0 || minULRank > 0) {
                 var pvpFiltered = true
+                if (minLLRank > 0 && pvpFiltered) {
+                    var littleLeague = JSON.parse(item['pvp_rankings_little_league'])
+                    $.each(littleLeague, function (index, ranking) {
+                        if (ranking.rank !== null && ranking.rank <= minLLRank) {
+                            pvpFiltered = false
+                            return false // same as 'break'
+                        }
+                    })
+                }
                 if (minGLRank > 0 && pvpFiltered) {
                     var greatLeague = JSON.parse(item['pvp_rankings_great_league'])
                     $.each(greatLeague, function (index, ranking) {
@@ -6471,6 +6524,7 @@ $(function () {
 })
 
 $(function () {
+    minLLRank = Store.get('remember_text_min_ll_rank')
     minGLRank = Store.get('remember_text_min_gl_rank')
     minULRank = Store.get('remember_text_min_ul_rank')
     minIV = Store.get('remember_text_min_iv')
@@ -6542,6 +6596,7 @@ $(function () {
     $selectPokemonNotify = $('#notify-pokemon .search-number')
     $selectRarityNotify = $('#notify-rarity')
     $textPerfectionNotify = $('#notify-perfection')
+    $textMinLLRank = $('#min-ll-rank')
     $textMinGLRank = $('#min-gl-rank')
     $textMinULRank = $('#min-ul-rank')
     $textMinIV = $('#min-iv')
@@ -6686,6 +6741,13 @@ $(function () {
             updateMap()
             Store.set('remember_select_exclude_min_iv', excludedMinIV)
         })
+        $textMinLLRank.on('change', function (e) {
+            minLLRank = Math.max(0, Math.min(parseInt($textMinLLRank.val(), 0) || 0, 100))
+            $textMinLLRank.val(minLLRank)
+            Store.set('remember_text_min_ll_rank', minLLRank)
+            lastpokemon = false
+            updateMap()
+        })
         $textMinGLRank.on('change', function (e) {
             minGLRank = Math.max(0, Math.min(parseInt($textMinGLRank.val(), 0) || 0, 100))
             $textMinGLRank.val(minGLRank)
@@ -6815,6 +6877,7 @@ $(function () {
         $selectRarityNotify.val(Store.get('remember_select_rarity_notify'))
         $textPerfectionNotify.val(Store.get('remember_text_perfection_notify'))
         $textLevelNotify.val(Store.get('remember_text_level_notify'))
+        $textMinLLRank.val(Store.get('remember_text_min_ll_rank'))
         $textMinGLRank.val(Store.get('remember_text_min_gl_rank'))
         $textMinULRank.val(Store.get('remember_text_min_ul_rank'))
         $textMinIV.val(Store.get('remember_text_min_iv'))

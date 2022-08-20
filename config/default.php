@@ -219,6 +219,7 @@ $adminUsers = [];                                                   // You can a
 //-----------------------------------------------------
 
 /* Marker Settings */
+$noMinLLRank = false;                                               // true/false
 $noMinGLRank = false;                                               // true/false
 $noMinULRank = false;                                               // true/false
 $noExcludeMinIV = true;                                             // true/false
@@ -260,6 +261,7 @@ $noPvp = false;                                                     // true/fals
 
 $excludeMinIV = '[]';                                               // [] for empty
 
+$minLLRank = '0';                                                   // "0" for empty or a number
 $minGLRank = '0';                                                   // "0" for empty or a number
 $minULRank = '0';                                                   // "0" for empty or a number
 

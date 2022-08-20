@@ -273,6 +273,7 @@ class RocketMap_MAD extends RocketMap
             $pokemon["individual_defense"] = isset($pokemon["individual_defense"]) ? intval($pokemon["individual_defense"]) : null;
             $pokemon["individual_stamina"] = isset($pokemon["individual_stamina"]) ? intval($pokemon["individual_stamina"]) : null;
 
+            $pokemon["pvp_rankings_little_league"] = null;
             $pokemon["pvp_rankings_great_league"] = null;
             $pokemon["pvp_rankings_ultra_league"] = null;
 
