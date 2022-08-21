@@ -318,7 +318,7 @@ class RocketMap_MAD extends RocketMap
     public function get_weather_by_cell_id($cell_id)
     {
         global $db;
-        $query = "SELECT s2_cell_id, gameplay_weather FROM weather WHERE s2_cell_id = :cell_id";
+        $query = "SELECT s2_cell_id, gameplay_weather, UNIX_TIMESTAMP(CONVERT_TZ(last_updated, '+00:00', @@global.time_zone)) AS updated FROM weather WHERE s2_cell_id = :cell_id";
         $params = [':cell_id' => intval((float)$cell_id)]; // use float to intval because RM is signed int
         $weather_info = $db->query($query, $params)->fetchAll(\PDO::FETCH_ASSOC);
         if ($weather_info) {
@@ -334,7 +334,7 @@ class RocketMap_MAD extends RocketMap
     public function get_weather($updated = null)
     {
         global $db;
-        $query = "SELECT s2_cell_id, gameplay_weather FROM weather";
+        $query = "SELECT s2_cell_id, gameplay_weather, UNIX_TIMESTAMP(CONVERT_TZ(last_updated, '+00:00', @@global.time_zone)) AS updated FROM weather";
         $weathers = $db->query($query)->fetchAll(\PDO::FETCH_ASSOC);
         $data = array();
         foreach ($weathers as $weather) {
