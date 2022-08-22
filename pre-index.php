@@ -292,7 +292,7 @@ if (strtolower($map) === "rdm") {
                                             <div class="dropdown-divider"></div>
                                             <div class="form-check form-switch">
                                                 <input class="form-check-input" id="no-zero-iv-switch" type="checkbox" name="no-zero-iv-switch">
-                                                <label class="form-check-label"  for="no-zero-iv-switch"><?php echo i8ln('Show 0%IV (Override MinIV)') ?></label>
+                                                <label class="form-check-label"  for="no-zero-iv-switch"><?php echo i8ln('Show 0%IV (Ignore Filters)') ?></label>
                                             </div>
                                         <?php
                                         }
