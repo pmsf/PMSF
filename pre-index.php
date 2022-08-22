@@ -268,7 +268,7 @@ if (strtolower($map) === "rdm") {
                                             <div class="dropdown-divider"></div>
                                             <div class="form-check form-switch">
                                                 <input class="form-check-input" id="missing-iv-only-switch" type="checkbox" name="missing-iv-only-switch">
-                                                <label class="form-check-label"  for="missing-iv-only-switch"><?php echo i8ln('Only Missing IV') ?></label>
+                                                <label class="form-check-label" for="missing-iv-only-switch"><?php echo i8ln('Only Missing IV') ?></label>
                                             </div>
                                         <?php
                                         }
@@ -284,7 +284,7 @@ if (strtolower($map) === "rdm") {
                                             <div class="dropdown-divider"></div>
                                             <div class="form-check form-switch">
                                                 <input class="form-check-input" id="big-karp-switch" type="checkbox" name="big-karp-switch">
-                                                <label class="form-check-label"  for="big-karp-switch"><?php echo i8ln('Only Big Magikarp') ?></label>
+                                                <label class="form-check-label" for="big-karp-switch"><?php echo i8ln('Only Big Magikarp') ?></label>
                                             </div>
                                         <?php
                                         }
@@ -292,7 +292,15 @@ if (strtolower($map) === "rdm") {
                                             <div class="dropdown-divider"></div>
                                             <div class="form-check form-switch">
                                                 <input class="form-check-input" id="no-zero-iv-switch" type="checkbox" name="no-zero-iv-switch">
-                                                <label class="form-check-label"  for="no-zero-iv-switch"><?php echo i8ln('Show 0%IV (Ignore Filters)') ?></label>
+                                                <label class="form-check-label" for="no-zero-iv-switch"><?php echo i8ln('Show 0%IV (Ignore Filters)') ?></label>
+                                            </div>
+                                        <?php
+                                        }
+                                        if (! $noHundoIvToggle) { ?>
+                                            <div class="dropdown-divider"></div>
+                                            <div class="form-check form-switch">
+                                                <input class="form-check-input" id="no-hundo-iv-switch" type="checkbox" name="no-hundo-iv-switch">
+                                                <label class="form-check-label" for="no-hundo-iv-switch"><?php echo i8ln('Show 100%IV (Ignore Filters)') ?></label>
                                             </div>
                                         <?php
                                         }
@@ -1623,6 +1631,7 @@ include('modals.php');
     var showBigKarp = <?php echo $noBigKarp === true ? 'true' : 'false' ?>;
     var showTinyRat = <?php echo $noTinyRat === true ? 'true' : 'false' ?>;
     var showZeroIv = <?php echo $noZeroIvToggle === true ? 'true' : 'false' ?>;
+    var showHundoIv = <?php echo $noHundoIvToggle === true ? 'true' : 'false' ?>;
     var showDespawnTimeType = <?php echo $noDespawnTimeType ? 0 : $showDespawnTimeType ?>;
     var showPokemonGender = <?php echo $noPokemonGender ? 0 : $showPokemonGender ?>;
     var hidePokemonCoords = <?php echo $hidePokemonCoords === true ? 'true' : 'false' ?>;

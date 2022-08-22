@@ -4,7 +4,7 @@ namespace Scanner;
 
 class RocketMap_MAD extends RocketMap
 {
-    public function get_active($eids, $minIv, $minLevel, $exMinIv, $bigKarp, $tinyRat, $zeroIv, $despawnTimeType, $gender, $swLat, $swLng, $neLat, $neLng, $tstamp = 0, $oSwLat = 0, $oSwLng = 0, $oNeLat = 0, $oNeLng = 0, $encId = 0)
+    public function get_active($eids, $minIv, $minLevel, $exMinIv, $bigKarp, $tinyRat, $zeroIv, $hundoIv, $despawnTimeType, $gender, $swLat, $swLng, $neLat, $neLng, $tstamp = 0, $oSwLat = 0, $oSwLng = 0, $oNeLat = 0, $oNeLng = 0, $encId = 0)
     {
         global $db;
         $conds = array();
@@ -116,14 +116,19 @@ class RocketMap_MAD extends RocketMap
         if ($encId != 0) {
             $encSql = " OR (encounter_id = " . $encId . " AND p.latitude > '" . $swLat . "' AND p.longitude > '" . $swLng . "' AND p.latitude < '" . $neLat . "' AND p.longitude < '" . $neLng . "' AND disappear_time > '" . $params[':time'] . "')";
         }
+        $tmpSQL = ($tstamp > 0) ? " AND last_modified > '" . $params[':lastUpdated'] . "'" : "";
         $zeroSql = '';
         if (!$noHighLevelData && !empty($zeroIv) && $zeroIv === 'true') {
-            $zeroSql = " OR (individual_attack = 0 AND individual_defense = 0 AND individual_stamina = 0 AND disappear_time > '" . $params[':time'] . "')";
+            $zeroSql = " OR (individual_attack = 0 AND individual_defense = 0 AND individual_stamina = 0 AND disappear_time > '" . $params[':time'] . "'" . $tmpSQL . ")";
         }
-        return $this->query_active($select, $conds, $params, $encSql, $zeroSql);
+        $hundoSql = '';
+        if (!$noHighLevelData && !empty($hundoIv) && $hundoIv === 'true') {
+            $hundoSql = " OR (individual_attack = 15 AND individual_defense = 15 AND individual_stamina = 15 AND disappear_time > '" . $params[':time'] . "'" . $tmpSQL . ")";
+        }
+        return $this->query_active($select, $conds, $params, $encSql, $zeroSql, $hundoSql);
     }
 
-    public function get_active_by_id($ids, $minIv, $minLevel, $exMinIv, $bigKarp, $tinyRat, $zeroIv, $despawnTimeType, $gender, $swLat, $swLng, $neLat, $neLng)
+    public function get_active_by_id($ids, $minIv, $minLevel, $exMinIv, $bigKarp, $tinyRat, $zeroIv, $hundoIv, $despawnTimeType, $gender, $swLat, $swLng, $neLat, $neLng)
     {
         global $db;
         $conds = array();
@@ -229,10 +234,14 @@ class RocketMap_MAD extends RocketMap
         if (!$noHighLevelData && !empty($zeroIv) && $zeroIv === 'true') {
             $zeroSql = " OR (individual_attack = 0 AND individual_defense = 0 AND individual_stamina = 0 AND disappear_time > '" . $params[':time'] . "')";
         }
-        return $this->query_active($select, $conds, $params, '', $zeroSql);
+        $hundoSql = '';
+        if (!$noHighLevelData && !empty($hundoIv) && $hundoIv === 'true') {
+            $hundoSql = " OR (individual_attack = 15 AND individual_defense = 15 AND individual_stamina = 15 AND disappear_time > '" . $params[':time'] . "')";
+        }
+        return $this->query_active($select, $conds, $params, '', $zeroSql, $hundoSql);
     }
 
-    public function query_active($select, $conds, $params, $encSql = '', $zeroSql = '')
+    public function query_active($select, $conds, $params, $encSql = '', $zeroSql = '', $hundoSql = '')
     {
         global $db;
 
@@ -242,7 +251,7 @@ class RocketMap_MAD extends RocketMap
         WHERE :conditions ORDER BY p.latitude, p.longitude";
 
         $query = str_replace(":select", $select, $query);
-        $query = str_replace(":conditions", '(' . join(" AND ", $conds) . ')' . $encSql . $zeroSql, $query);
+        $query = str_replace(":conditions", '(' . join(" AND ", $conds) . ')' . $encSql . $zeroSql . $hundoSql, $query);
         $pokemons = $db->query($query, $params)->fetchAll(\PDO::FETCH_ASSOC);
 
         $data = array();

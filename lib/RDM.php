@@ -4,7 +4,7 @@ namespace Scanner;
 
 class RDM extends Scanner
 {
-    public function get_active($eids, $minIv, $minLevel, $exMinIv, $bigKarp, $tinyRat, $zeroIv, $despawnTimeType, $gender, $swLat, $swLng, $neLat, $neLng, $tstamp = 0, $oSwLat = 0, $oSwLng = 0, $oNeLat = 0, $oNeLng = 0, $encId = 0)
+    public function get_active($eids, $minIv, $minLevel, $exMinIv, $bigKarp, $tinyRat, $zeroIv, $hundoIv, $despawnTimeType, $gender, $swLat, $swLng, $neLat, $neLng, $tstamp = 0, $oSwLat = 0, $oSwLng = 0, $oNeLat = 0, $oNeLng = 0, $encId = 0)
     {
         global $db;
         $conds = array();
@@ -125,14 +125,19 @@ class RDM extends Scanner
         if ($encId != 0) {
             $encSql = " OR (id = " . $encId . " AND lat > '" . $swLat . "' AND lon > '" . $swLng . "' AND lat < '" . $neLat . "' AND lon < '" . $neLng . "' AND expire_timestamp > '" . $params[':time'] . "')";
         }
+        $tmpSQL = ($tstamp > 0) ? " AND updated > " . $params[':lastUpdated'] : '';
         $zeroSql = '';
         if (!$noHighLevelData && !empty($zeroIv) && $zeroIv === 'true') {
-            $zeroSql = " OR (atk_iv = 0 AND def_iv = 0 AND sta_iv = 0 AND expire_timestamp > '" . $params[':time'] . "')";
+            $zeroSql = " OR (atk_iv = 0 AND def_iv = 0 AND sta_iv = 0 AND expire_timestamp > '" . $params[':time'] . "'" . $tmpSQL . ")";
         }
-        return $this->query_active($select, $conds, $params, $encSql, $zeroSql);
+        $hundoSql = '';
+        if (!$noHighLevelData && !empty($hundoIv) && $hundoIv === 'true') {
+            $hundoSql = " OR (atk_iv = 15 AND def_iv = 15 AND sta_iv = 15 AND expire_timestamp > '" . $params[':time'] . "'" . $tmpSQL . ")";
+        }
+        return $this->query_active($select, $conds, $params, $encSql, $zeroSql, $hundoSql);
     }
 
-    public function get_active_by_id($ids, $minIv, $minLevel, $exMinIv, $bigKarp, $tinyRat, $zeroIv, $despawnTimeType, $gender, $swLat, $swLng, $neLat, $neLng)
+    public function get_active_by_id($ids, $minIv, $minLevel, $exMinIv, $bigKarp, $tinyRat, $zeroIv, $hundoIv, $despawnTimeType, $gender, $swLat, $swLng, $neLat, $neLng)
     {
         global $db;
         $conds = array();
@@ -246,10 +251,14 @@ class RDM extends Scanner
         if (!$noHighLevelData && !empty($zeroIv) && $zeroIv === 'true') {
             $zeroSql = " OR (atk_iv = 0 AND def_iv = 0 AND sta_iv = 0 AND expire_timestamp > '" . $params[':time'] . "')";
         }
-        return $this->query_active($select, $conds, $params, '', $zeroSql);
+        $hundoSql = '';
+        if (!$noHighLevelData && !empty($hundoIv) && $hundoIv === 'true') {
+            $hundoSql = " OR (atk_iv = 15 AND def_iv = 15 AND sta_iv = 15 AND expire_timestamp > '" . $params[':time'] . "')";
+        }
+        return $this->query_active($select, $conds, $params, '', $zeroSql, $hundoSql);
     }
 
-    public function query_active($select, $conds, $params, $encSql = '', $zeroSql = '')
+    public function query_active($select, $conds, $params, $encSql = '', $zeroSql = '', $hundoSql = '')
     {
         global $db;
 
@@ -258,7 +267,7 @@ class RDM extends Scanner
         WHERE :conditions ORDER BY lat, lon ";
 
         $query = str_replace(":select", $select, $query);
-        $query = str_replace(":conditions", '(' . join(" AND ", $conds) . ')' . $encSql . $zeroSql, $query);
+        $query = str_replace(":conditions", '(' . join(" AND ", $conds) . ')' . $encSql . $zeroSql . $hundoSql, $query);
         $pokemons = $db->query($query, $params)->fetchAll(\PDO::FETCH_ASSOC);
         $data = array();
         $i = 0;
