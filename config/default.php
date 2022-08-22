@@ -271,6 +271,7 @@ $minLevel = '0';                                                    // "0" for e
 $noMissingIVOnly = true;                                            // true/false
 $noBigKarp = false;                                                 // true/false
 $noTinyRat = false;                                                 // true/false
+$noZeroIvToggle = false;                                            // true/false
 $noDespawnTimeType = true;                                          // true/false
 $showDespawnTimeType = 0;                                           // 0 = All, 1 = Verified, 2 = Unverified, 3 = Unverified + Nearby (Nearby = no spawn point)
 $noPokemonGender = false;                                           // true/false
