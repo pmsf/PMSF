@@ -296,6 +296,11 @@ var StoreOptions = {
             default: showZeroIv,
             type: StoreTypes.Boolean
         },
+    'showHundoIv':
+        {
+            default: showHundoIv,
+            type: StoreTypes.Boolean
+        },
     'showDespawnTimeType':
         {
             default: showDespawnTimeType,

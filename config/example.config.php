@@ -272,6 +272,7 @@ $noMissingIVOnly = true;                                            // true/fals
 $noBigKarp = false;                                                 // true/false
 $noTinyRat = false;                                                 // true/false
 $noZeroIvToggle = false;                                            // true/false
+$noHundoIvToggle = false;                                           // true/false
 $noDespawnTimeType = true;                                          // true/false
 $showDespawnTimeType = 0;                                           // 0 = All, 1 = Verified, 2 = Unverified, 3 = Unverified + Nearby (Nearby = no spawn point)
 $noPokemonGender = false;                                           // true/false

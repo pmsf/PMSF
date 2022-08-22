@@ -92,6 +92,7 @@
     "showBigKarp": true,
     "showTinyRat": true,
     "showZeroIv": true,
+    "showHundoIv": true,
     "showDespawnTimeType": true,
     "showPokemonGender": true,
     "hidePokemonCoords": true,
