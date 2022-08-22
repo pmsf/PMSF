@@ -291,6 +291,11 @@ var StoreOptions = {
             default: showTinyRat,
             type: StoreTypes.Boolean
         },
+    'showZeroIv':
+        {
+            default: showZeroIv,
+            type: StoreTypes.Boolean
+        },
     'showDespawnTimeType':
         {
             default: showDespawnTimeType,

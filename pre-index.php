@@ -288,6 +288,14 @@ if (strtolower($map) === "rdm") {
                                             </div>
                                         <?php
                                         }
+                                        if (! $noZeroIvToggle) { ?>
+                                            <div class="dropdown-divider"></div>
+                                            <div class="form-check form-switch">
+                                                <input class="form-check-input" id="no-zero-iv-switch" type="checkbox" name="no-zero-iv-switch">
+                                                <label class="form-check-label"  for="no-zero-iv-switch"><?php echo i8ln('Show 0%IV (Override MinIV)') ?></label>
+                                            </div>
+                                        <?php
+                                        }
                                         if (! $noDespawnTimeType) { ?>
                                             <div class="dropdown-divider"></div>
                                             <div class="form-floating">
@@ -1614,6 +1622,7 @@ include('modals.php');
     var onlyTriggerGyms = <?php echo $onlyTriggerGyms === true ? 'true' : 'false' ?>;
     var showBigKarp = <?php echo $noBigKarp === true ? 'true' : 'false' ?>;
     var showTinyRat = <?php echo $noTinyRat === true ? 'true' : 'false' ?>;
+    var showZeroIv = <?php echo $noZeroIvToggle === true ? 'true' : 'false' ?>;
     var showDespawnTimeType = <?php echo $noDespawnTimeType ? 0 : $showDespawnTimeType ?>;
     var showPokemonGender = <?php echo $noPokemonGender ? 0 : $showPokemonGender ?>;
     var hidePokemonCoords = <?php echo $hidePokemonCoords === true ? 'true' : 'false' ?>;
