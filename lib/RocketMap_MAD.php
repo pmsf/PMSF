@@ -117,13 +117,14 @@ class RocketMap_MAD extends RocketMap
             $encSql = " OR (encounter_id = " . $encId . " AND p.latitude > '" . $swLat . "' AND p.longitude > '" . $swLng . "' AND p.latitude < '" . $neLat . "' AND p.longitude < '" . $neLng . "' AND disappear_time > '" . $params[':time'] . "')";
         }
         $tmpSQL = ($tstamp > 0) ? " AND last_modified > '" . $params[':lastUpdated'] . "'" : "";
+        $tmpSQL .= (!$noBoundaries && !$showPokemonsOutsideBoundaries) ? " AND (ST_WITHIN(point(p.latitude,p.longitude),ST_GEOMFROMTEXT('POLYGON(( " . $boundaries . " ))')))" : '';
         $zeroSql = '';
         if (!$noHighLevelData && !empty($zeroIv) && $zeroIv === 'true') {
-            $zeroSql = " OR (individual_attack = 0 AND individual_defense = 0 AND individual_stamina = 0 AND disappear_time > '" . $params[':time'] . "'" . $tmpSQL . ")";
+            $zeroSql = " OR (individual_attack = 0 AND individual_defense = 0 AND individual_stamina = 0 AND p.latitude > " . $swLat . " AND p.longitude > " . $swLng . " AND p.latitude < " . $neLat . " AND p.longitude < " . $neLng . " AND disappear_time > '" . $params[':time'] . "'" . $tmpSQL . ")";
         }
         $hundoSql = '';
         if (!$noHighLevelData && !empty($hundoIv) && $hundoIv === 'true') {
-            $hundoSql = " OR (individual_attack = 15 AND individual_defense = 15 AND individual_stamina = 15 AND disappear_time > '" . $params[':time'] . "'" . $tmpSQL . ")";
+            $hundoSql = " OR (individual_attack = 15 AND individual_defense = 15 AND individual_stamina = 15 AND p.latitude > " . $swLat . " AND p.longitude > " . $swLng . " AND p.latitude < " . $neLat . " AND p.longitude < " . $neLng . " AND disappear_time > '" . $params[':time'] . "'" . $tmpSQL . ")";
         }
         return $this->query_active($select, $conds, $params, $encSql, $zeroSql, $hundoSql);
     }
@@ -230,13 +231,14 @@ class RocketMap_MAD extends RocketMap
         if (!empty($gender) && ($gender == 1 || $gender == 2)) {
            $conds[] = 'gender = ' . $gender;
         }
+        $tmpSQL = (!$noBoundaries && !$showPokemonsOutsideBoundaries) ? " AND (ST_WITHIN(point(p.latitude,p.longitude),ST_GEOMFROMTEXT('POLYGON(( " . $boundaries . " ))')))" : '';
         $zeroSql = '';
         if (!$noHighLevelData && !empty($zeroIv) && $zeroIv === 'true') {
-            $zeroSql = " OR (individual_attack = 0 AND individual_defense = 0 AND individual_stamina = 0 AND disappear_time > '" . $params[':time'] . "')";
+            $zeroSql = " OR (individual_attack = 0 AND individual_defense = 0 AND individual_stamina = 0 AND p.latitude > " . $swLat . " AND p.longitude > " . $swLng . " AND p.latitude < " . $neLat . " AND p.longitude < " . $neLng . " AND disappear_time > '" . $params[':time'] . "'" . $tmpSQL . ")";
         }
         $hundoSql = '';
         if (!$noHighLevelData && !empty($hundoIv) && $hundoIv === 'true') {
-            $hundoSql = " OR (individual_attack = 15 AND individual_defense = 15 AND individual_stamina = 15 AND disappear_time > '" . $params[':time'] . "')";
+            $hundoSql = " OR (individual_attack = 15 AND individual_defense = 15 AND individual_stamina = 15 AND p.latitude > " . $swLat . " AND p.longitude > " . $swLng . " AND p.latitude < " . $neLat . " AND p.longitude < " . $neLng . " AND disappear_time > '" . $params[':time'] . "'" . $tmpSQL . ")";
         }
         return $this->query_active($select, $conds, $params, '', $zeroSql, $hundoSql);
     }
