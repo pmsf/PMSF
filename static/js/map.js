@@ -3205,9 +3205,9 @@ function addListeners(marker) {
 function clearStaleMarkers() {
     $.each(mapData.pokemons, function (key, value) {
         var pvpFiltered = false
-        var monsIgnoreFilters = ((mapData.pokemons[key]['individual_attack'] !== null && mapData.pokemons[key]['individual_defense'] !== null && mapData.pokemons[key]['individual_stamina'] !== null) && ((Store.get('showZeroIv') === true && mapData.pokemons[key]['individual_attack'] === 0 && mapData.pokemons[key]['individual_defense'] === 0 && mapData.pokemons[key]['individual_stamina'] === 0) || (Store.get('showHundoIv') === true && mapData.pokemons[key]['individual_attack'] === 15 && mapData.pokemons[key]['individual_defense'] === 15 && mapData.pokemons[key]['individual_stamina'] === 15)))
+        var ignoreFiltersZeroHundo = ((mapData.pokemons[key]['individual_attack'] !== null && mapData.pokemons[key]['individual_defense'] !== null && mapData.pokemons[key]['individual_stamina'] !== null) && ((Store.get('showZeroIv') === true && mapData.pokemons[key]['individual_attack'] === 0 && mapData.pokemons[key]['individual_defense'] === 0 && mapData.pokemons[key]['individual_stamina'] === 0) || (Store.get('showHundoIv') === true && mapData.pokemons[key]['individual_attack'] === 15 && mapData.pokemons[key]['individual_defense'] === 15 && mapData.pokemons[key]['individual_stamina'] === 15)))
 
-        if ((minLLRank > 0 || minGLRank > 0 || minULRank > 0) && !monsIgnoreFilters) {
+        if ((minLLRank > 0 || minGLRank > 0 || minULRank > 0) && !ignoreFiltersZeroHundo) {
             pvpFiltered = true
             if (minLLRank > 0 && pvpFiltered) {
                 var littleLeague = JSON.parse(mapData.pokemons[key]['pvp_rankings_little_league'])
@@ -3243,7 +3243,7 @@ function clearStaleMarkers() {
                 (excludedPokemon.indexOf(mapData.pokemons[key]['pokemon_id']) >= 0 ||
                     isTemporaryHidden(mapData.pokemons[key]['pokemon_id']) ||
                     (pvpFiltered) ||
-                    (((((mapData.pokemons[key]['individual_attack'] + mapData.pokemons[key]['individual_defense'] + mapData.pokemons[key]['individual_stamina']) / 45 * 100) < minIV && !monsIgnoreFilters) || (((mapType === 'rdm' && mapData.pokemons[key]['level'] < minLevel) || (mapType === 'rocketmap' && !isNaN(minLevel) && (mapData.pokemons[key]['cp_multiplier'] < cpMultiplier[minLevel - 1]))) && !monsIgnoreFilters)) && !excludedMinIV.includes(mapData.pokemons[key]['pokemon_id']) && Store.get('showMissingIVOnly') === false) ||
+                    (((((mapData.pokemons[key]['individual_attack'] + mapData.pokemons[key]['individual_defense'] + mapData.pokemons[key]['individual_stamina']) / 45 * 100) < minIV && !ignoreFiltersZeroHundo) || (((mapType === 'rdm' && mapData.pokemons[key]['level'] < minLevel) || (mapType === 'rocketmap' && !isNaN(minLevel) && (mapData.pokemons[key]['cp_multiplier'] < cpMultiplier[minLevel - 1]))) && !ignoreFiltersZeroHundo)) && !excludedMinIV.includes(mapData.pokemons[key]['pokemon_id']) && Store.get('showMissingIVOnly') === false) ||
                     (Store.get('showMissingIVOnly') === true && mapData.pokemons[key]['individual_attack'] !== null) ||
                     (Store.get('showBigKarp') === true && mapData.pokemons[key]['pokemon_id'] === 129 && (mapData.pokemons[key]['weight'] < 13.14 || mapData.pokemons[key]['weight'] === null)) ||
                     (Store.get('showTinyRat') === true && mapData.pokemons[key]['pokemon_id'] === 19 && (mapData.pokemons[key]['weight'] > 2.40 || mapData.pokemons[key]['weight'] === null)) ||
@@ -4819,8 +4819,8 @@ function processPokemons(i, item) {
             }
         }
         if (encounterId !== item['encounter_id']) {
-            var monsIgnoreFilters = ((item['individual_attack'] !== null && item['individual_defense'] !== null && item['individual_stamina'] !== null) && ((Store.get('showZeroIv') === true && item['individual_attack'] === 0 && item['individual_defense'] === 0 && item['individual_stamina'] === 0) || (Store.get('showHundoIv') === true && item['individual_attack'] === 15 && item['individual_defense'] === 15 && item['individual_stamina'] === 15)))
-            if ((minLLRank > 0 || minGLRank > 0 || minULRank > 0) && !monsIgnoreFilters) {
+            var ignoreFiltersZeroHundo = ((item['individual_attack'] !== null && item['individual_defense'] !== null && item['individual_stamina'] !== null) && ((Store.get('showZeroIv') === true && item['individual_attack'] === 0 && item['individual_defense'] === 0 && item['individual_stamina'] === 0) || (Store.get('showHundoIv') === true && item['individual_attack'] === 15 && item['individual_defense'] === 15 && item['individual_stamina'] === 15)))
+            if ((minLLRank > 0 || minGLRank > 0 || minULRank > 0) && !ignoreFiltersZeroHundo) {
                 var pvpFiltered = true
                 if (minLLRank > 0 && pvpFiltered) {
                     var littleLeague = JSON.parse(item['pvp_rankings_little_league'])

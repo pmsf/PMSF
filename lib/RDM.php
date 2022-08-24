@@ -126,13 +126,15 @@ class RDM extends Scanner
             $encSql = " OR (id = " . $encId . " AND lat > '" . $swLat . "' AND lon > '" . $swLng . "' AND lat < '" . $neLat . "' AND lon < '" . $neLng . "' AND expire_timestamp > '" . $params[':time'] . "')";
         }
         $tmpSQL = ($tstamp > 0) ? " AND updated > " . $params[':lastUpdated'] : '';
+        $tmpSQL .= (!$noBoundaries && !$showPokemonsOutsideBoundaries) ? " AND (ST_WITHIN(point(lat, lon),ST_GEOMFROMTEXT('POLYGON(( " . $boundaries . " ))')))" : '';
         $zeroSql = '';
         if (!$noHighLevelData && !empty($zeroIv) && $zeroIv === 'true') {
-            $zeroSql = " OR (atk_iv = 0 AND def_iv = 0 AND sta_iv = 0 AND expire_timestamp > '" . $params[':time'] . "'" . $tmpSQL . ")";
+            $zeroSql = " OR (atk_iv = 0 AND def_iv = 0 AND sta_iv = 0 AND lat > " . $swLat . " AND lon > " . $swLng . " AND lat < " . $neLat . " AND lon < " . $neLng . " AND expire_timestamp > '" . $params[':time'] . "'" . $tmpSQL . ")";
         }
+
         $hundoSql = '';
         if (!$noHighLevelData && !empty($hundoIv) && $hundoIv === 'true') {
-            $hundoSql = " OR (atk_iv = 15 AND def_iv = 15 AND sta_iv = 15 AND expire_timestamp > '" . $params[':time'] . "'" . $tmpSQL . ")";
+            $hundoSql = " OR (atk_iv = 15 AND def_iv = 15 AND sta_iv = 15 AND lat > " . $swLat . " AND lon > " . $swLng . " AND lat < " . $neLat . " AND lon < " . $neLng . " AND expire_timestamp > '" . $params[':time'] . "'" . $tmpSQL . ")";
         }
         return $this->query_active($select, $conds, $params, $encSql, $zeroSql, $hundoSql);
     }
@@ -247,13 +249,14 @@ class RDM extends Scanner
         if (!empty($gender) && ($gender == 1 || $gender == 2)) {
            $conds[] = 'gender = ' . $gender;
         }
+        $tmpSQL = (!$noBoundaries && !$showPokemonsOutsideBoundaries) ? " AND (ST_WITHIN(point(lat, lon),ST_GEOMFROMTEXT('POLYGON(( " . $boundaries . " ))')))" : '';
         $zeroSql = '';
         if (!$noHighLevelData && !empty($zeroIv) && $zeroIv === 'true') {
-            $zeroSql = " OR (atk_iv = 0 AND def_iv = 0 AND sta_iv = 0 AND expire_timestamp > '" . $params[':time'] . "')";
+            $zeroSql = " OR (atk_iv = 0 AND def_iv = 0 AND sta_iv = 0 AND lat > " . $swLat . " AND lon > " . $swLng . " AND lat < " . $neLat . " AND lon < " . $neLng . " AND expire_timestamp > '" . $params[':time'] . "'" . $tmpSQL . ")";
         }
         $hundoSql = '';
         if (!$noHighLevelData && !empty($hundoIv) && $hundoIv === 'true') {
-            $hundoSql = " OR (atk_iv = 15 AND def_iv = 15 AND sta_iv = 15 AND expire_timestamp > '" . $params[':time'] . "')";
+            $hundoSql = " OR (atk_iv = 15 AND def_iv = 15 AND sta_iv = 15 AND lat > " . $swLat . " AND lon > " . $swLng . " AND lat < " . $neLat . " AND lon < " . $neLng . " AND expire_timestamp > '" . $params[':time'] . "'" . $tmpSQL . ")";
         }
         return $this->query_active($select, $conds, $params, '', $zeroSql, $hundoSql);
     }
