@@ -2494,5 +2494,21 @@
     "duration": 0,
     "energy": 0,
     "dps": 0
+  },
+  "374": {
+    "name": "Fusion Bolt",
+    "type": "Electric",
+    "damage": 0,
+    "duration": 0,
+    "energy": 0,
+    "dps": 0
+  },
+  "375": {
+    "name": "Fusion Flare",
+    "type": "Fire",
+    "damage": 0,
+    "duration": 0,
+    "energy": 0,
+    "dps": 0
   }
 }
