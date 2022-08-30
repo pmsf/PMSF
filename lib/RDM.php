@@ -4,54 +4,10 @@ namespace Scanner;
 
 class RDM extends Scanner
 {
-    public function get_active($eids, $minIv, $minLevel, $exMinIv, $bigKarp, $tinyRat, $zeroIv, $hundoIv, $despawnTimeType, $gender, $swLat, $swLng, $neLat, $neLng, $tstamp = 0, $oSwLat = 0, $oSwLng = 0, $oNeLat = 0, $oNeLng = 0, $encId = 0)
+    public function get_active($eids, $minIv, $minLevel, $minLLRank, $minGLRank, $minULRank, $exMinIv, $bigKarp, $tinyRat, $zeroIv, $hundoIv, $independantPvpAndStats, $despawnTimeType, $gender, $missingIvOnly, $swLat, $swLng, $neLat, $neLng, $tstamp = 0, $oSwLat = 0, $oSwLng = 0, $oNeLat = 0, $oNeLng = 0, $encId = 0)
     {
-        global $db;
         $conds = array();
         $params = array();
-
-        $select = "pokemon_id,
-        expire_timestamp AS disappear_time,
-        id AS encounter_id,
-        spawn_id,
-        lat AS latitude,
-        lon AS longitude,
-        gender,
-        form,
-        weather AS weather_boosted_condition,
-        costume,
-        first_seen_timestamp,
-        expire_timestamp_verified";
-
-        global $noHighLevelData;
-        if (!$noHighLevelData) {
-            if ($this->columnExists("pokemon","pvp")) {
-                $rdmPvP = ",
-                json_extract(`pvp`,'$.little') AS pvp_rankings_little_league,
-                json_extract(`pvp`,'$.great') AS pvp_rankings_great_league,
-                json_extract(`pvp`,'$.ultra') AS pvp_rankings_ultra_league";
-            } else {
-                $rdmPvP = ",
-                pvp_rankings_great_league,
-                pvp_rankings_ultra_league";
-            }
-
-            $select .= ",
-            weight,
-            size AS height,
-            atk_iv AS individual_attack,
-            def_iv AS individual_defense,
-            sta_iv AS individual_stamina,
-            move_1,
-            move_2,
-            cp,
-            level,
-            capture_1 AS catch_rate_1,
-            capture_2 AS catch_rate_2,
-            capture_3 AS catch_rate_3
-            $rdmPvP
-            ";
-        }
 
         $conds[] = "lat > :swLat AND lon > :swLng AND lat < :neLat AND lon < :neLng AND expire_timestamp > :time";
         $params[':swLat'] = $swLat;
@@ -76,11 +32,11 @@ class RDM extends Scanner
             $params[':lastUpdated'] = $tstamp;
         }
         $tmpSQL = '';
-        if (!empty($tinyRat) && $tinyRat === 'true' && ($key = array_search("19", $eids)) === false) {
+        if ($tinyRat === true && ($key = array_search("19", $eids)) === false) {
             $tmpSQL .= ' OR (pokemon_id = 19 AND weight < 2.41)';
             $eids[] = "19";
         }
-        if (!empty($bigKarp) && $bigKarp === 'true' && ($key = array_search("129", $eids)) === false) {
+        if ($bigKarp === true && ($key = array_search("129", $eids)) === false) {
             $tmpSQL .= ' OR (pokemon_id = 129 AND weight > 13.13)';
             $eids[] = "129";
         }
@@ -95,18 +51,76 @@ class RDM extends Scanner
             $pkmn_in = substr($pkmn_in, 0, -1);
             $conds[] = "(pokemon_id NOT IN ( $pkmn_in )" . $tmpSQL . ")";
         }
-        if (!empty($minIv) && !is_nan((float)$minIv) && $minIv != 0) {
-            if (empty($exMinIv)) {
-                $conds[] = 'iv >= ' . $minIv;
-            } else {
-                $conds[] = '(iv >= ' . $minIv . ' OR pokemon_id IN(' . $exMinIv . '))';
+        if (!empty($despawnTimeType)) {
+            if ($despawnTimeType == 1) {
+               $conds[] = 'expire_timestamp_verified = 1';
+            } elseif ($despawnTimeType == 2) {
+               $conds[] = '(expire_timestamp_verified = 0 AND spawn_id IS NOT NULL)';
+            } elseif ($despawnTimeType == 3) {
+               $conds[] = 'expire_timestamp_verified = 0';
             }
         }
-        if (!empty($minLevel) && !is_nan((float)$minLevel) && $minLevel != 0) {
-            if (empty($exMinIv)) {
-                $conds[] = 'level >= ' . $minLevel;
+        if (!empty($gender) && ($gender == 1 || $gender == 2)) {
+           $conds[] = 'gender = ' . $gender;
+        }
+        if ($missingIvOnly) {
+            $conds[] = '(atk_iv IS NULL OR def_iv IS NULL OR sta_iv IS NULL)';
+        } else if (($minLLRank === 0 && $minGLRank === 0 && $minULRank === 0) || !$independantPvpAndStats) {
+            $zeroIvSql = ($zeroIv) ? ' OR (atk_iv = 0 AND def_iv = 0 AND sta_iv = 0)' : '';
+            $hundoIvSql = ($hundoIv) ? ' OR (atk_iv = 15 AND def_iv = 15 AND sta_iv = 15)' : '';
+            $exMinIvSql = (!empty($exMinIv)) ? ' OR pokemon_id IN(' . $exMinIv . ')' : '';
+            if ($minIv !== 0) {
+                $conds[] = '(iv >= ' . $minIv . $zeroIvSql . $hundoIvSql . $exMinIvSql . ')';
+            }
+            if ($minLevel !== 0) {
+                $conds[] = '(level >= ' . $minLevel . $zeroIvSql . $hundoIvSql . $exMinIvSql . ')';
+            }
+        }
+        $encSql = '';
+        if ($encId != 0) {
+            $encSql = " OR (id = " . $encId . " AND lat > '" . $swLat . "' AND lon > '" . $swLng . "' AND lat < '" . $neLat . "' AND lon < '" . $neLng . "' AND expire_timestamp > '" . $params[':time'] . "')";
+        }
+        return $this->query_active($conds, $params, $minIv, $minLevel, $minLLRank, $minGLRank, $minULRank, $exMinIv, $zeroIv, $hundoIv, $independantPvpAndStats, $missingIvOnly, $encSql);
+    }
+
+    public function get_active_by_id($ids, $minIv, $minLevel, $minLLRank, $minGLRank, $minULRank, $exMinIv, $bigKarp, $tinyRat, $zeroIv, $hundoIv, $independantPvpAndStats, $despawnTimeType, $gender, $missingIvOnly, $swLat, $swLng, $neLat, $neLng)
+    {
+        $conds = array();
+        $params = array();
+
+        $conds[] = "lat > :swLat AND lon > :swLng AND lat < :neLat AND lon < :neLng AND expire_timestamp > :time";
+        $params[':swLat'] = $swLat;
+        $params[':swLng'] = $swLng;
+        $params[':neLat'] = $neLat;
+        $params[':neLng'] = $neLng;
+        $params[':time'] = time();
+
+        global $noBoundaries, $boundaries, $showPokemonsOutsideBoundaries;
+        if (!$noBoundaries && !$showPokemonsOutsideBoundaries) {
+            $conds[] = "(ST_WITHIN(point(lat, lon),ST_GEOMFROMTEXT('POLYGON(( " . $boundaries . " ))')))";
+        }
+        if (count($ids)) {
+            $tmpSQL = '';
+            if ($tinyRat === true && ($key = array_search("19", $ids)) !== false) {
+                $tmpSQL .= ' OR (pokemon_id = 19 AND weight < 2.41)';
+                unset($ids[$key]);
+            }
+            if ($bigKarp === true && ($key = array_search("129", $ids)) !== false) {
+                $tmpSQL .= ' OR (pokemon_id = 129 AND weight > 13.13)';
+                unset($ids[$key]);
+            }
+            $pkmn_in = '';
+            $i = 1;
+            foreach ($ids as $id) {
+                $params[':qry_' . $i . "_"] = $id;
+                $pkmn_in .= ':qry_' . $i . "_,";
+                $i++;
+            }
+            if (count($ids)) {
+                $pkmn_in = substr($pkmn_in, 0, -1);
+                $conds[] = "(pokemon_id IN ( $pkmn_in )" . $tmpSQL . ")";
             } else {
-                $conds[] = '(level >= ' . $minLevel . ' OR pokemon_id IN(' . $exMinIv . ') )';
+                $conds[] = str_replace("OR", "", $tmpSQL);
             }
         }
         if (!empty($despawnTimeType)) {
@@ -121,34 +135,43 @@ class RDM extends Scanner
         if (!empty($gender) && ($gender == 1 || $gender == 2)) {
            $conds[] = 'gender = ' . $gender;
         }
-        $encSql = '';
-        if ($encId != 0) {
-            $encSql = " OR (id = " . $encId . " AND lat > '" . $swLat . "' AND lon > '" . $swLng . "' AND lat < '" . $neLat . "' AND lon < '" . $neLng . "' AND expire_timestamp > '" . $params[':time'] . "')";
+        if ($missingIvOnly) {
+            $conds[] = '(atk_iv IS NULL OR def_iv IS NULL OR sta_iv IS NULL)';
+        } else if (($minLLRank === 0 && $minGLRank === 0 && $minULRank === 0) || !$independantPvpAndStats) {
+            $zeroIvSql = ($zeroIv) ? ' OR (atk_iv = 0 AND def_iv = 0 AND sta_iv = 0)' : '';
+            $hundoIvSql = ($hundoIv) ? ' OR (atk_iv = 15 AND def_iv = 15 AND sta_iv = 15)' : '';
+            $exMinIvSql = (!empty($exMinIv)) ? ' OR pokemon_id IN(' . $exMinIv . ')' : '';
+            if ($minIv !== 0) {
+                $conds[] = '(iv >= ' . $minIv . $zeroIvSql . $hundoIvSql . $exMinIvSql . ')';
+            }
+            if ($minLevel !== 0) {
+                $conds[] = '(level >= ' . $minLevel . $zeroIvSql . $hundoIvSql . $exMinIvSql . ')';
+            }
         }
-        $tmpSQL = ($tstamp > 0) ? " AND updated > " . $params[':lastUpdated'] : '';
-        $tmpSQL .= (!$noBoundaries && !$showPokemonsOutsideBoundaries) ? " AND (ST_WITHIN(point(lat, lon),ST_GEOMFROMTEXT('POLYGON(( " . $boundaries . " ))')))" : '';
-        $zeroSql = '';
-        if (!$noHighLevelData && !empty($zeroIv) && $zeroIv === 'true') {
-            $zeroSql = " OR (atk_iv = 0 AND def_iv = 0 AND sta_iv = 0 AND lat > " . $swLat . " AND lon > " . $swLng . " AND lat < " . $neLat . " AND lon < " . $neLng . " AND expire_timestamp > '" . $params[':time'] . "'" . $tmpSQL . ")";
-        }
-
-        $hundoSql = '';
-        if (!$noHighLevelData && !empty($hundoIv) && $hundoIv === 'true') {
-            $hundoSql = " OR (atk_iv = 15 AND def_iv = 15 AND sta_iv = 15 AND lat > " . $swLat . " AND lon > " . $swLng . " AND lat < " . $neLat . " AND lon < " . $neLng . " AND expire_timestamp > '" . $params[':time'] . "'" . $tmpSQL . ")";
-        }
-        return $this->query_active($select, $conds, $params, $encSql, $zeroSql, $hundoSql);
+        return $this->query_active($conds, $params, $minIv, $minLevel, $minLLRank, $minGLRank, $minULRank, $exMinIv, $zeroIv, $hundoIv, $independantPvpAndStats, $missingIvOnly, '');
     }
 
-    public function get_active_by_id($ids, $minIv, $minLevel, $exMinIv, $bigKarp, $tinyRat, $zeroIv, $hundoIv, $despawnTimeType, $gender, $swLat, $swLng, $neLat, $neLng)
+    private function getBestPvpRank($json)
     {
-        global $db;
-        $conds = array();
-        $params = array();
+        $best = 9999;
+        $ranks = json_decode($json, true);
+        foreach ($ranks as $rank) {
+            if (isset($rank["rank"]) && (int)$rank["rank"] < $best) {
+                $best = intval($rank["rank"]);
+            }
+        }
+        return ($best < 9999 ? $best : null);
+    }
+
+    public function query_active($conds, $params, $minIv, $minLevel, $minLLRank, $minGLRank, $minULRank, $exMinIv, $zeroIv, $hundoIv, $independantPvpAndStats, $missingIvOnly, $encSql = '')
+    {
+        global $db, $noHighLevelData, $noPvp;
 
         $select = "pokemon_id,
         expire_timestamp AS disappear_time,
         id AS encounter_id,
         spawn_id,
+        seen_type,
         lat AS latitude,
         lon AS longitude,
         gender,
@@ -158,7 +181,6 @@ class RDM extends Scanner
         first_seen_timestamp,
         expire_timestamp_verified";
 
-        global $noHighLevelData;
         if (!$noHighLevelData) {
             if ($this->columnExists("pokemon","pvp")) {
                 $rdmPvP = ",
@@ -181,6 +203,7 @@ class RDM extends Scanner
             move_2,
             cp,
             level,
+            iv,
             capture_1 AS catch_rate_1,
             capture_2 AS catch_rate_2,
             capture_3 AS catch_rate_3
@@ -188,159 +211,140 @@ class RDM extends Scanner
             ";
         }
 
-        $conds[] = "lat > :swLat AND lon > :swLng AND lat < :neLat AND lon < :neLng AND expire_timestamp > :time";
-        $params[':swLat'] = $swLat;
-        $params[':swLng'] = $swLng;
-        $params[':neLat'] = $neLat;
-        $params[':neLng'] = $neLng;
-        $params[':time'] = time();
-
-        global $noBoundaries, $boundaries, $showPokemonsOutsideBoundaries;
-        if (!$noBoundaries && !$showPokemonsOutsideBoundaries) {
-            $conds[] = "(ST_WITHIN(point(lat, lon),ST_GEOMFROMTEXT('POLYGON(( " . $boundaries . " ))')))";
-        }
-        if (count($ids)) {
-            $tmpSQL = '';
-            if (!empty($tinyRat) && $tinyRat === 'true' && ($key = array_search("19", $ids)) !== false) {
-                $tmpSQL .= ' OR (pokemon_id = 19 AND weight < 2.41)';
-                unset($ids[$key]);
-            }
-            if (!empty($bigKarp) && $bigKarp === 'true' && ($key = array_search("129", $ids)) !== false) {
-                $tmpSQL .= ' OR (pokemon_id = 129 AND weight > 13.13)';
-                unset($ids[$key]);
-            }
-            $pkmn_in = '';
-            $i = 1;
-            foreach ($ids as $id) {
-                $params[':qry_' . $i . "_"] = $id;
-                $pkmn_in .= ':qry_' . $i . "_,";
-                $i++;
-            }
-            if (count($ids)) {
-                $pkmn_in = substr($pkmn_in, 0, -1);
-                $conds[] = "(pokemon_id IN ( $pkmn_in )" . $tmpSQL . ")";
-            } else {
-                $conds[] = str_replace("OR", "", $tmpSQL);
-            }
-        }
-        if (!empty($minIv) && !is_nan((float)$minIv) && $minIv != 0) {
-            if (empty($exMinIv)) {
-                $conds[] = '(iv >= ' . $minIv;
-            } else {
-                $conds[] = '(iv >= ' . $minIv . ' OR pokemon_id IN(' . $exMinIv . '))';
-            }
-        }
-        if (!empty($minLevel) && !is_nan((float)$minLevel) && $minLevel != 0) {
-            if (empty($exMinIv)) {
-                $conds[] = 'level >= ' . $minLevel;
-            } else {
-                $conds[] = '(level >= ' . $minLevel . ' OR pokemon_id IN(' . $exMinIv . ') )';
-            }
-        }
-        if (!empty($despawnTimeType)) {
-            if ($despawnTimeType == 1) {
-               $conds[] = 'expire_timestamp_verified = 1';
-            } elseif ($despawnTimeType == 2) {
-               $conds[] = '(expire_timestamp_verified = 0 AND spawn_id IS NOT NULL)';
-            } elseif ($despawnTimeType == 3) {
-               $conds[] = 'expire_timestamp_verified = 0';
-            }
-        }
-        if (!empty($gender) && ($gender == 1 || $gender == 2)) {
-           $conds[] = 'gender = ' . $gender;
-        }
-        $tmpSQL = (!$noBoundaries && !$showPokemonsOutsideBoundaries) ? " AND (ST_WITHIN(point(lat, lon),ST_GEOMFROMTEXT('POLYGON(( " . $boundaries . " ))')))" : '';
-        $zeroSql = '';
-        if (!$noHighLevelData && !empty($zeroIv) && $zeroIv === 'true') {
-            $zeroSql = " OR (atk_iv = 0 AND def_iv = 0 AND sta_iv = 0 AND lat > " . $swLat . " AND lon > " . $swLng . " AND lat < " . $neLat . " AND lon < " . $neLng . " AND expire_timestamp > '" . $params[':time'] . "'" . $tmpSQL . ")";
-        }
-        $hundoSql = '';
-        if (!$noHighLevelData && !empty($hundoIv) && $hundoIv === 'true') {
-            $hundoSql = " OR (atk_iv = 15 AND def_iv = 15 AND sta_iv = 15 AND lat > " . $swLat . " AND lon > " . $swLng . " AND lat < " . $neLat . " AND lon < " . $neLng . " AND expire_timestamp > '" . $params[':time'] . "'" . $tmpSQL . ")";
-        }
-        return $this->query_active($select, $conds, $params, '', $zeroSql, $hundoSql);
-    }
-
-    public function query_active($select, $conds, $params, $encSql = '', $zeroSql = '', $hundoSql = '')
-    {
-        global $db;
-
         $query = "SELECT :select
         FROM pokemon
         WHERE :conditions ORDER BY lat, lon ";
 
         $query = str_replace(":select", $select, $query);
-        $query = str_replace(":conditions", '(' . join(" AND ", $conds) . ')' . $encSql . $zeroSql . $hundoSql, $query);
+        $query = str_replace(":conditions", '(' . join(" AND ", $conds) . ')' . $encSql, $query);
         $pokemons = $db->query($query, $params)->fetchAll(\PDO::FETCH_ASSOC);
+
         $data = array();
         $i = 0;
         $lastlat = 0;
         $lastlon = 0;
         $lasti = 0;
+        $keepDefault = ($noHighLevelData || ($minIv === 0 && $minLevel === 0 && $minLLRank === 0 && $minGLRank === 0 && $minULRank === 0));
+        $exMinIvArray = array();
+        if (!empty($exMinIv)) {
+            $tmpArray = array_map('intval', explode(",", $exMinIv));
+            $exMinIvArray = array_combine($tmpArray, $tmpArray);
+            unset($tmpArray);
+        }
 
         foreach ($pokemons as $pokemon) {
-            // Jitter pokemon when they have no spawn_id
-            if (empty($pokemon['spawn_id'])) {
-                $pokemon["latitude"] = floatval($pokemon["latitude"]);
-                $pokemon["longitude"] = floatval($pokemon["longitude"]);
-                $lastlat = floatval($pokemon["latitude"]);
-                $lastlon = floatval($pokemon["longitude"]);
-                if (abs($pokemon["latitude"] - $lastlat) < 0.0001 && abs($pokemon["longitude"] - $lastlon) < 0.0001) {
-                    $lasti = $lasti + 1;
-                } else {
-                    $lasti = 0;
+            $keepMons = $keepDefault;
+
+            if ($missingIvOnly) {
+                $keepMons = ($pokemon["individual_attack"] === null || $pokemon["individual_defense"] === null || $pokemon["individual_stamina"] === null);
+            } else if (!$noHighLevelData) {
+                if (!$noPvp) {
+                    $bestLLRank = (isset($pokemon["pvp_rankings_little_league"])) ? $this->getBestPvpRank($pokemon["pvp_rankings_little_league"]) : null;
+                    $bestGLRank = (isset($pokemon["pvp_rankings_great_league"])) ? $this->getBestPvpRank($pokemon["pvp_rankings_great_league"]) : null;
+                    $bestULRank = (isset($pokemon["pvp_rankings_ultra_league"])) ? $this->getBestPvpRank($pokemon["pvp_rankings_ultra_league"]) : null;
                 }
-                $pokemon["latitude"] = $pokemon["latitude"] + 0.0003*cos(deg2rad($lasti*45));
-                $pokemon["longitude"] = $pokemon["longitude"] + 0.0003*sin(deg2rad($lasti*45));
-            } else {
-                $pokemon["latitude"] = floatval($pokemon["latitude"]);
-                $pokemon["longitude"] = floatval($pokemon["longitude"]);
-            }
-            $pokemon["expire_timestamp_verified"] = intval($pokemon["expire_timestamp_verified"]);
-            $pokemon["first_seen_timestamp"] = intval($pokemon["first_seen_timestamp"] * 1000);
-            $pokemon["disappear_time"] = $pokemon["disappear_time"] * 1000;
 
-            $pokemon["weight"] = isset($pokemon["weight"]) ? floatval($pokemon["weight"]) : null;
-            $pokemon["height"] = isset($pokemon["height"]) ? floatval($pokemon["height"]) : null;
-
-            $pokemon["individual_attack"] = isset($pokemon["individual_attack"]) ? intval($pokemon["individual_attack"]) : null;
-            $pokemon["individual_defense"] = isset($pokemon["individual_defense"]) ? intval($pokemon["individual_defense"]) : null;
-            $pokemon["individual_stamina"] = isset($pokemon["individual_stamina"]) ? intval($pokemon["individual_stamina"]) : null;
-
-            $pokemon["pvp_rankings_little_league"] = isset($pokemon["pvp_rankings_little_league"]) ? $pokemon["pvp_rankings_little_league"] : null;
-            $pokemon["pvp_rankings_great_league"] = isset($pokemon["pvp_rankings_great_league"]) ? $pokemon["pvp_rankings_great_league"] : null;
-            $pokemon["pvp_rankings_ultra_league"] = isset($pokemon["pvp_rankings_ultra_league"]) ? $pokemon["pvp_rankings_ultra_league"] : null;
-
-            $pokemon["weather_boosted_condition"] = isset($pokemon["weather_boosted_condition"]) ? intval($pokemon["weather_boosted_condition"]) : 0;
-
-            $pokemon["pokemon_id"] = intval($pokemon["pokemon_id"]);
-            $pokemon["form"] = intval($pokemon["form"]);
-            $pokemon["costume"] = intval($pokemon["costume"]);
-            $pokemon["gender"] = intval($pokemon["gender"]);
-            $pokemon["pokemon_name"] = i8ln($this->data[$pokemon["pokemon_id"]]['name']);
-            $pokemon["pokemon_rarity"] = i8ln($this->data[$pokemon["pokemon_id"]]['rarity']);
-
-            if (isset($pokemon["form"]) && $pokemon["form"] > 0) {
-                $forms = $this->data[$pokemon["pokemon_id"]]["forms"];
-                foreach ($forms as $f => $v) {
-                    if ($pokemon["form"] === intval($v['protoform'])) {
-                        $types = $v['formtypes'];
-                        $pokemon["form_name"] = $v['nameform'];
-                        foreach ($v['formtypes'] as $ft => $v) {
-                            $types[$ft]['type'] = $v['type'];
+                if (!$keepMons) {
+                    if (isset($pokemon["iv"])) {
+                        if ($pokemon["iv"] == 100.0 && $hundoIv === true) {
+                            $keepMons = true;
+                        } else if ($pokemon["iv"] == 0.0 && $zeroIv === true) {
+                            $keepMons = true;
                         }
-                        $pokemon["pokemon_types"] = $types;
+                    }
+
+                    if (!$keepMons) {
+                        $keepPvp = true;
+                        if ($minLLRank > 0 || $minGLRank > 0 || $minULRank > 0) {
+                            $keepPvp = false;
+                            if ($minLLRank > 0 && $bestLLRank !== null && $bestLLRank <= $minLLRank) {
+                                $keepPvp = true;
+                            } else if ($minGLRank > 0 && $bestGLRank !== null && $bestGLRank <= $minGLRank) {
+                                $keepPvp = true;
+                            } else if ($minULRank > 0 && $bestULRank !== null && $bestULRank <= $minULRank) {
+                                $keepPvp = true;
+                            }
+                            $keepMons = ($independantPvpAndStats && $keepPvp);
+                        }
+
+                        if (!$keepMons) {
+                            $keepMinIvLevel = ((!empty($exMinIv) && isset($exMinIvArray[intval($pokemon["pokemon_id"])])) || (($minIv === 0 || (isset($pokemon["iv"]) && $pokemon["iv"] >= $minIv)) && ($minLevel === 0 || (isset($pokemon["level"]) && intval($pokemon["level"]) >= $minLevel))));
+                            $keepMons = (($independantPvpAndStats && $keepMinIvLevel) || (!$independantPvpAndStats && $keepMinIvLevel && $keepPvp));
+                        }
                     }
                 }
-            } else {
-                $types = $this->data[$pokemon["pokemon_id"]]["types"];
-                foreach ($types as $k => $v) {
-                    $types[$k]['type'] = $v['type'];
-                }
-                $pokemon["pokemon_types"] = $types;
             }
 
-            $data[] = $pokemon;
+            if ($keepMons) {
+                // Jitter for nearby that would otherwise stack on top of each other
+                if ($pokemon['seen_type'] === 'nearby_cell' || $pokemon['seen_type'] === 'nearby_stop') {
+                    $pokemon["latitude"] = floatval($pokemon["latitude"]);
+                    $pokemon["longitude"] = floatval($pokemon["longitude"]);
+                    $lastlat = floatval($pokemon["latitude"]);
+                    $lastlon = floatval($pokemon["longitude"]);
+                    if (abs($pokemon["latitude"] - $lastlat) < 0.0001 && abs($pokemon["longitude"] - $lastlon) < 0.0001) {
+                        $lasti = $lasti + 1;
+                    } else {
+                        $lasti = 0;
+                    }
+                    $pokemon["latitude"] = $pokemon["latitude"] + 0.0003*cos(deg2rad($lasti*45));
+                    $pokemon["longitude"] = $pokemon["longitude"] + 0.0003*sin(deg2rad($lasti*45));
+                } else {
+                    $pokemon["latitude"] = floatval($pokemon["latitude"]);
+                    $pokemon["longitude"] = floatval($pokemon["longitude"]);
+                }
+                $pokemon["expire_timestamp_verified"] = intval($pokemon["expire_timestamp_verified"]);
+                $pokemon["first_seen_timestamp"] = intval($pokemon["first_seen_timestamp"] * 1000);
+                $pokemon["disappear_time"] = $pokemon["disappear_time"] * 1000;
+
+                $pokemon["weight"] = isset($pokemon["weight"]) ? floatval($pokemon["weight"]) : null;
+                $pokemon["height"] = isset($pokemon["height"]) ? floatval($pokemon["height"]) : null;
+
+                $pokemon["individual_attack"] = isset($pokemon["individual_attack"]) ? intval($pokemon["individual_attack"]) : null;
+                $pokemon["individual_defense"] = isset($pokemon["individual_defense"]) ? intval($pokemon["individual_defense"]) : null;
+                $pokemon["individual_stamina"] = isset($pokemon["individual_stamina"]) ? intval($pokemon["individual_stamina"]) : null;
+
+                $pokemon["iv"] = isset($pokemon["iv"]) ? floatval($pokemon["iv"]) : null;
+                $pokemon["level"] = isset($pokemon["level"]) ? intval($pokemon["level"]) : null;
+
+                $pokemon["pvp_rankings_little_league"] = isset($pokemon["pvp_rankings_little_league"]) ? $pokemon["pvp_rankings_little_league"] : null;
+                $pokemon["pvp_rankings_great_league"] = isset($pokemon["pvp_rankings_great_league"]) ? $pokemon["pvp_rankings_great_league"] : null;
+                $pokemon["pvp_rankings_ultra_league"] = isset($pokemon["pvp_rankings_ultra_league"]) ? $pokemon["pvp_rankings_ultra_league"] : null;
+                $pokemon["pvp_rankings_little_league_best"] = isset($bestLLRank) ? $bestLLRank : null;
+                $pokemon["pvp_rankings_great_league_best"] = isset($bestGLRank) ? $bestGLRank : null;
+                $pokemon["pvp_rankings_ultra_league_best"] = isset($bestULRank) ? $bestULRank : null;
+
+                $pokemon["weather_boosted_condition"] = isset($pokemon["weather_boosted_condition"]) ? intval($pokemon["weather_boosted_condition"]) : 0;
+
+                $pokemon["pokemon_id"] = intval($pokemon["pokemon_id"]);
+                $pokemon["form"] = intval($pokemon["form"]);
+                $pokemon["costume"] = intval($pokemon["costume"]);
+                $pokemon["gender"] = intval($pokemon["gender"]);
+                $pokemon["pokemon_name"] = i8ln($this->data[$pokemon["pokemon_id"]]['name']);
+                $pokemon["pokemon_rarity"] = i8ln($this->data[$pokemon["pokemon_id"]]['rarity']);
+
+                if (isset($pokemon["form"]) && $pokemon["form"] > 0) {
+                    $forms = $this->data[$pokemon["pokemon_id"]]["forms"];
+                    foreach ($forms as $f => $v) {
+                        if ($pokemon["form"] === intval($v['protoform'])) {
+                            $types = $v['formtypes'];
+                            $pokemon["form_name"] = $v['nameform'];
+                            foreach ($v['formtypes'] as $ft => $v) {
+                                $types[$ft]['type'] = $v['type'];
+                            }
+                            $pokemon["pokemon_types"] = $types;
+                        }
+                    }
+                } else {
+                    $types = $this->data[$pokemon["pokemon_id"]]["types"];
+                    foreach ($types as $k => $v) {
+                        $types[$k]['type'] = $v['type'];
+                    }
+                    $pokemon["pokemon_types"] = $types;
+                }
+
+                $data[] = $pokemon;
+            }
             unset($pokemons[$i]);
             $i++;
         }

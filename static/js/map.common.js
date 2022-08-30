@@ -301,6 +301,11 @@ var StoreOptions = {
             default: showHundoIv,
             type: StoreTypes.Boolean
         },
+    'showIndependantPvpAndStats':
+        {
+            default: showIndependantPvpAndStats,
+            type: StoreTypes.Boolean
+        },
     'showDespawnTimeType':
         {
             default: showDespawnTimeType,
@@ -556,7 +561,7 @@ var mapData = {
     pois: {}
 }
 
-function getPokemonSprite(index, sprite, displayHeight, weather = 0, encounterForm = 0, pokemonCostume = 0, attack = 0, defense = 0, stamina = 0, gender = 0) {
+function getPokemonSprite(index, sprite, displayHeight, weather = 0, encounterForm = 0, pokemonCostume = 0, attack = 0, defense = 0, stamina = 0, gender = 0, bestLLRank = 0, bestGLRank = 0, bestULRank = 0) {
     displayHeight = Math.max(displayHeight, 3)
     var scale = displayHeight / sprite.iconHeight
     // Crop icon just a tiny bit to avoid bleedover from neighbor
@@ -565,12 +570,14 @@ function getPokemonSprite(index, sprite, displayHeight, weather = 0, encounterFo
     var scaledWeatherIconOffset = scaledIconSizeWidth * 0.2
     var scaledIconCenterOffset = [scale * sprite.iconWidth / 2, scale * sprite.iconHeight / 2]
     var pokemonId = index + 1
-    var iv = 100 * (attack + defense + stamina) / 45
+    var iv = (attack + defense + stamina) / 0.45
     var html = '<img src="' + getIcon(iconpath.pokemon, 'pokemon', '.png', pokemonId, 0, encounterForm, pokemonCostume, gender) + '" style="width:' + scaledIconSizeWidth + 'px;height:auto;'
     if (!no100IvShadow && iv === 100) {
         html += 'filter:drop-shadow(0 0 10px red)drop-shadow(0 0 10px red);-webkit-filter:drop-shadow(0 0 10px red)drop-shadow(0 0 10px red);'
     } else if (!no0IvShadow && iv === 0 && attack != null && defense != null && stamina != null) {
         html += 'filter:drop-shadow(0 0 10px black)drop-shadow(0 0 10px black);-webkit-filter:drop-shadow(0 0 10px black)drop-shadow(0 0 10px black);'
+    } else if (!noPvpShadow && (bestLLRank === 1 || bestGLRank === 1 || bestULRank === 1)) {
+        html += 'filter:drop-shadow(0 0 10px blue)drop-shadow(0 0 10px blue);-webkit-filter:drop-shadow(0 0 10px blue)drop-shadow(0 0 10px blue);'
     }
     html += '"/>'
     if (noWeatherIcons === false && weather !== 0) {
@@ -591,11 +598,7 @@ function setupPokemonMarker(item, map, isBounceDisabled) {
         iconSize += Store.get('iconNotifySizeModifier')
     }
     var pokemonIndex = item['pokemon_id'] - 1
-    var pokemonCostume = item['costume']
-    var attack = item['individual_attack']
-    var defense = item['individual_defense']
-    var stamina = item['individual_stamina']
-    var icon = getPokemonSprite(pokemonIndex, pokemonSprites, iconSize, item['weather_boosted_condition'], item['form'], item['costume'], item['individual_attack'], item['individual_defense'], item['individual_stamina'], item['gender'])
+    var icon = getPokemonSprite(pokemonIndex, pokemonSprites, iconSize, item['weather_boosted_condition'], item['form'], item['costume'], item['individual_attack'], item['individual_defense'], item['individual_stamina'], item['gender'], item['pvp_rankings_little_league_best'], item['pvp_rankings_great_league_best'], item['pvp_rankings_ultra_league_best'])
 
     var animationDisabled = false
     if (isBounceDisabled === true) {
@@ -606,8 +609,8 @@ function setupPokemonMarker(item, map, isBounceDisabled) {
 }
 
 function isNotifiedPokemon(item) {
-    var level = item['level']
-    var iv = getIv(item['individual_attack'], item['individual_defense'], item['individual_stamina'])
+    var level = (item['level'] != null) ? item['level'] : 1
+    var iv = (item['iv'] != null) ? item['iv'] : false
     var notifiedMinPerfection = Store.get('remember_text_perfection_notify')
     var notifiedMinLevel = Store.get('remember_text_level_notify')
     var notifiedPokemon = Store.get('remember_select_notify')

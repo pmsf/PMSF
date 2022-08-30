@@ -30,17 +30,25 @@ $dustamount = isset($_POST['dustamount']) ? $_POST['dustamount'] : false;
 $nestavg = isset($_POST['nestavg']) ? $_POST['nestavg'] : false;
 $reloaddustamount = !empty($_POST['reloaddustamount']) ? $_POST['reloaddustamount'] : false;
 $newportals = !empty($_POST['newportals']) ? $_POST['newportals'] : 0;
-$minIv = isset($_POST['minIV']) ? floatval($_POST['minIV']) : false;
+$minIv = isset($_POST['minIV']) ? intval($_POST['minIV']) : 0;
 $prevMinIv = !empty($_POST['prevMinIV']) ? $_POST['prevMinIV'] : false;
-$minLevel = isset($_POST['minLevel']) ? intval($_POST['minLevel']) : false;
+$minLevel = isset($_POST['minLevel']) ? intval($_POST['minLevel']) : 0;
 $prevMinLevel = !empty($_POST['prevMinLevel']) ? $_POST['prevMinLevel'] : false;
 $exMinIv = !empty($_POST['exMinIV']) ? $_POST['exMinIV'] : '';
-$bigKarp = !empty($_POST['bigKarp']) ? $_POST['bigKarp'] : false;
-$tinyRat = !empty($_POST['tinyRat']) ? $_POST['tinyRat'] : false;
-$zeroIv = !empty($_POST['zeroIv']) ? $_POST['zeroIv'] : false;
-$hundoIv = !empty($_POST['hundoIv']) ? $_POST['hundoIv'] : false;
+$bigKarp = (!empty($_POST['bigKarp']) && $_POST['bigKarp'] == 'true') ? true : false;
+$tinyRat = (!empty($_POST['tinyRat']) && $_POST['tinyRat'] == 'true') ? true : false;
+$zeroIv  = (!empty($_POST['zeroIv'])  && $_POST['zeroIv']  == 'true') ? true : false;
+$hundoIv = (!empty($_POST['hundoIv']) && $_POST['hundoIv'] == 'true') ? true : false;
+$independantPvpAndStats = (!empty($_POST['independantPvpAndStats']) && $_POST['independantPvpAndStats'] == 'true') ? true : false;
+$minLLRank = isset($_POST['minLLRank']) ? intval($_POST['minLLRank']) : 0;
+$prevMinLLRank = !empty($_POST['prevMinLLRank']) ? $_POST['prevMinLLRank'] : false;
+$minGLRank = isset($_POST['minGLRank']) ? intval($_POST['minGLRank']) : 0;
+$prevMinGLRank = !empty($_POST['prevMinGLRank']) ? $_POST['prevMinGLRank'] : false;
+$minULRank = isset($_POST['minULRank']) ? intval($_POST['minULRank']) : 0;
+$prevMinULRank = !empty($_POST['prevMinULRank']) ? $_POST['prevMinULRank'] : false;
 $despawnTimeType = !empty($_POST['despawnTimeType']) ? $_POST['despawnTimeType'] : 0;
 $pokemonGender = !empty($_POST['pokemonGender']) ? $_POST['pokemonGender'] : 0;
+$missingIvOnly = (!empty($_POST['missingIvOnly']) && $_POST['missingIvOnly'] == 'true') ? true : false;
 $lastpokemon = !empty($_POST['lastpokemon']) ? $_POST['lastpokemon'] : false;
 $lastgyms = !empty($_POST['lastgyms']) ? $_POST['lastgyms'] : false;
 $lastpokestops = !empty($_POST['lastpokestops']) ? $_POST['lastpokestops'] : false;
@@ -67,7 +75,7 @@ $loadPokemonStats = !empty($_POST['loadPokemonStats']) ? $_POST['loadPokemonStat
 $loadRewardStats = !empty($_POST['loadRewardStats']) ? $_POST['loadRewardStats'] : false;
 $loadShinyStats = !empty($_POST['loadShinyStats']) ? $_POST['loadShinyStats'] : false;
 
-if ($minIv < $prevMinIv || $minLevel < $prevMinLevel) {
+if ($minIv < $prevMinIv || $minLevel < $prevMinLevel || $minLLRank < $prevMinLLRank || $minGLRank < $prevMinGLRank || $minULRank < $prevMinULRank) {
     $lastpokemon = false;
 }
 $enc_id = !empty($_POST['encId']) ? $_POST['encId'] : null;
@@ -154,22 +162,26 @@ if (!$noPokemon) {
             $eids = array_unique(array_merge($eids, $pokemonToExclude));
         }
         if ($lastpokemon != 'true') {
-            $d["pokemons"] = $scanner->get_active($eids, $minIv, $minLevel, $exMinIv, $bigKarp, $tinyRat, $zeroIv, $hundoIv, $despawnTimeType, $pokemonGender, $swLat, $swLng, $neLat, $neLng, 0, 0, 0, 0, 0, $enc_id);
+            $d["pokemons"] = $scanner->get_active($eids, $minIv, $minLevel, $minLLRank, $minGLRank, $minULRank, $exMinIv, $bigKarp, $tinyRat, $zeroIv, $hundoIv, $independantPvpAndStats, $despawnTimeType, $pokemonGender, $missingIvOnly, $swLat, $swLng, $neLat, $neLng, 0, 0, 0, 0, 0, $enc_id);
         } else {
             if ($newarea) {
-                $d["pokemons"] = $scanner->get_active($eids, $minIv, $minLevel, $exMinIv, $bigKarp, $tinyRat, $zeroIv, $hundoIv, $despawnTimeType, $pokemonGender, $swLat, $swLng, $neLat, $neLng, 0, $oSwLat, $oSwLng, $oNeLat, $oNeLng, $enc_id);
+                $d["pokemons"] = $scanner->get_active($eids, $minIv, $minLevel, $minLLRank, $minGLRank, $minULRank, $exMinIv, $bigKarp, $tinyRat, $zeroIv, $hundoIv, $independantPvpAndStats, $despawnTimeType, $pokemonGender, $missingIvOnly, $swLat, $swLng, $neLat, $neLng, 0, $oSwLat, $oSwLng, $oNeLat, $oNeLng, $enc_id);
             } else {
-                $d["pokemons"] = $scanner->get_active($eids, $minIv, $minLevel, $exMinIv, $bigKarp, $tinyRat, $zeroIv, $hundoIv, $despawnTimeType, $pokemonGender, $swLat, $swLng, $neLat, $neLng, $timestamp, 0, 0, 0, 0, $enc_id);
+                $d["pokemons"] = $scanner->get_active($eids, $minIv, $minLevel, $minLLRank, $minGLRank, $minULRank, $exMinIv, $bigKarp, $tinyRat, $zeroIv, $hundoIv, $independantPvpAndStats, $despawnTimeType, $pokemonGender, $missingIvOnly, $swLat, $swLng, $neLat, $neLng, $timestamp, 0, 0, 0, 0, $enc_id);
             }
         }
         $d["preMinIV"] = $minIv;
         $d["preMinLevel"] = $minLevel;
+        $d["preMinLLRank"] = $minLLRank;
+        $d["preMinGLRank"] = $minGLRank;
+        $d["preMinULRank"] = $minULRank;
+
         if (!empty($_POST['reids'])) {
             $reids = !empty($_POST['reids']) ? array_unique(explode(",", $_POST['reids'])) : array();
 
             $reidsDiff = array_diff($reids, $eids);
             if (count($reidsDiff)) {
-                $d["pokemons"] = array_merge($d["pokemons"], $scanner->get_active_by_id($reidsDiff, $minIv, $minLevel, $exMinIv, $bigKarp, $tinyRat, $zeroIv, $hundoIv, $despawnTimeType, $pokemonGender, $swLat, $swLng, $neLat, $neLng));
+                $d["pokemons"] = array_merge($d["pokemons"], $scanner->get_active_by_id($reidsDiff, $minIv, $minLevel, $minLLRank, $minGLRank, $minULRank, $exMinIv, $bigKarp, $tinyRat, $zeroIv, $hundoIv, $independantPvpAndStats, $despawnTimeType, $pokemonGender, $missingIvOnly, $swLat, $swLng, $neLat, $neLng));
             }
 
             $d["reids"] = $reids;

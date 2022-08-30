@@ -4,40 +4,12 @@ namespace Scanner;
 
 class RocketMap_MAD extends RocketMap
 {
-    public function get_active($eids, $minIv, $minLevel, $exMinIv, $bigKarp, $tinyRat, $zeroIv, $hundoIv, $despawnTimeType, $gender, $swLat, $swLng, $neLat, $neLng, $tstamp = 0, $oSwLat = 0, $oSwLng = 0, $oNeLat = 0, $oNeLng = 0, $encId = 0)
+    public function get_active($eids, $minIv, $minLevel, $minLLRank, $minGLRank, $minULRank, $exMinIv, $bigKarp, $tinyRat, $zeroIv, $hundoIv, $independantPvpAndStats, $despawnTimeType, $gender, $missingIvOnly, $swLat, $swLng, $neLat, $neLng, $tstamp = 0, $oSwLat = 0, $oSwLng = 0, $oNeLat = 0, $oNeLng = 0, $encId = 0)
     {
         global $db;
         $conds = array();
         $params = array();
         $float = $db->info()['driver'] == 'pgsql' ? "::float" : "";
-
-        $select = "ts.calc_endminsec AS expire_timestamp_verified,
-        pokemon_id,
-        Unix_timestamp(Convert_tz(disappear_time, '+00:00', @@global.time_zone)) AS disappear_time,
-        encounter_id,
-        p.latitude,
-        p.longitude,
-        gender,
-        form,
-        weather_boosted_condition,
-        costume,
-        seen_type";
-        global $noHighLevelData;
-        if (!$noHighLevelData) {
-            $select .= ",
-            weight,
-            height,
-            individual_attack,
-            individual_defense,
-            individual_stamina,
-            move_1,
-            move_2,
-            cp,
-            cp_multiplier,
-            catch_prob_1 AS catch_rate_1,
-            catch_prob_2 AS catch_rate_2,
-            catch_prob_3 AS catch_rate_3";
-        }
 
         $conds[] = "p.latitude > :swLat AND p.longitude > :swLng AND p.latitude < :neLat AND p.longitude < :neLng AND disappear_time > :time";
         $params[':swLat'] = $swLat;
@@ -85,21 +57,6 @@ class RocketMap_MAD extends RocketMap
             $pkmn_in = substr($pkmn_in, 0, -1);
             $conds[] = "(pokemon_id NOT IN ( $pkmn_in )" . $tmpSQL . ")";
         }
-        if (!empty($minIv) && !is_nan((float)$minIv) && $minIv != 0) {
-            $minIv = $minIv * .45;
-            if (empty($exMinIv)) {
-                $conds[] = '(individual_attack' . $float . ' + individual_defense' . $float . ' + individual_stamina' . $float . ') >= ' . $minIv;
-            } else {
-                $conds[] = '((individual_attack' . $float . ' + individual_defense' . $float . ' + individual_stamina' . $float . ') >= ' . $minIv . ' OR pokemon_id IN(' . $exMinIv . ') )';
-            }
-        }
-        if (!empty($minLevel) && !is_nan((float)$minLevel) && $minLevel != 0) {
-            if (empty($exMinIv)) {
-                $conds[] = 'cp_multiplier >= ' . $this->cpMultiplier[$minLevel];
-            } else {
-                $conds[] = '(cp_multiplier >= ' . $this->cpMultiplier[$minLevel] . ' OR pokemon_id IN(' . $exMinIv . ') )';
-            }
-        }
         if (!empty($despawnTimeType)) {
             if ($despawnTimeType == 1) {
                $conds[] = 'ts.calc_endminsec IS NOT NULL';
@@ -112,57 +69,32 @@ class RocketMap_MAD extends RocketMap
         if (!empty($gender) && ($gender == 1 || $gender == 2)) {
            $conds[] = 'gender = ' . $gender;
         }
+        if ($missingIvOnly) {
+            $conds[] = '(individual_attack IS NULL OR individual_defense IS NULL OR individual_stamina IS NULL)';
+        } else  {
+            $zeroIvSql = ($zeroIv) ? ' OR (individual_attack = 0 AND individual_defense = 0 AND individual_stamina = 0)' : '';
+            $hundoIvSql = ($hundoIv) ? ' OR (individual_attack = 15 AND individual_defense = 15 AND individual_stamina = 15)' : '';
+            $exMinIvSql = (!empty($exMinIv)) ? ' OR pokemon_id IN(' . $exMinIv . ')' : '';
+            if ($minIv !== 0) {
+                $conds[] = '((individual_attack' . $float . ' + individual_defense' . $float . ' + individual_stamina' . $float . ') >= ' . ($minIv * .45) . $zeroIvSql . $hundoIvSql . $exMinIvSql . ')';
+            }
+            if ($minLevel !== 0) {
+                $conds[] = '(cp_multiplier >= ' . $this->cpMultiplier[$minLevel] . $zeroIvSql . $hundoIvSql . $exMinIvSql . ')';
+            }
+        }
         $encSql = '';
         if ($encId != 0) {
             $encSql = " OR (encounter_id = " . $encId . " AND p.latitude > '" . $swLat . "' AND p.longitude > '" . $swLng . "' AND p.latitude < '" . $neLat . "' AND p.longitude < '" . $neLng . "' AND disappear_time > '" . $params[':time'] . "')";
         }
-        $tmpSQL = ($tstamp > 0) ? " AND last_modified > '" . $params[':lastUpdated'] . "'" : "";
-        $tmpSQL .= (!$noBoundaries && !$showPokemonsOutsideBoundaries) ? " AND (ST_WITHIN(point(p.latitude,p.longitude),ST_GEOMFROMTEXT('POLYGON(( " . $boundaries . " ))')))" : '';
-        $zeroSql = '';
-        if (!$noHighLevelData && !empty($zeroIv) && $zeroIv === 'true') {
-            $zeroSql = " OR (individual_attack = 0 AND individual_defense = 0 AND individual_stamina = 0 AND p.latitude > " . $swLat . " AND p.longitude > " . $swLng . " AND p.latitude < " . $neLat . " AND p.longitude < " . $neLng . " AND disappear_time > '" . $params[':time'] . "'" . $tmpSQL . ")";
-        }
-        $hundoSql = '';
-        if (!$noHighLevelData && !empty($hundoIv) && $hundoIv === 'true') {
-            $hundoSql = " OR (individual_attack = 15 AND individual_defense = 15 AND individual_stamina = 15 AND p.latitude > " . $swLat . " AND p.longitude > " . $swLng . " AND p.latitude < " . $neLat . " AND p.longitude < " . $neLng . " AND disappear_time > '" . $params[':time'] . "'" . $tmpSQL . ")";
-        }
-        return $this->query_active($select, $conds, $params, $encSql, $zeroSql, $hundoSql);
+        return $this->query_active($conds, $params, $minIv, $minLevel, $minLLRank, $minGLRank, $minULRank, $exMinIv, $zeroIv, $hundoIv, $independantPvpAndStats, $missingIvOnly, $encSql);
     }
 
-    public function get_active_by_id($ids, $minIv, $minLevel, $exMinIv, $bigKarp, $tinyRat, $zeroIv, $hundoIv, $despawnTimeType, $gender, $swLat, $swLng, $neLat, $neLng)
+    public function get_active_by_id($ids, $minIv, $minLevel, $minLLRank, $minGLRank, $minULRank, $exMinIv, $bigKarp, $tinyRat, $zeroIv, $hundoIv, $independantPvpAndStats, $despawnTimeType, $gender, $missingIvOnly, $swLat, $swLng, $neLat, $neLng)
     {
         global $db;
         $conds = array();
         $params = array();
         $float = $db->info()['driver'] == 'pgsql' ? "::float" : "";
-
-        $select = "ts.calc_endminsec AS expire_timestamp_verified,
-        pokemon_id,
-        Unix_timestamp(Convert_tz(disappear_time, '+00:00', @@global.time_zone)) AS disappear_time,
-        encounter_id,
-        p.latitude,
-        p.longitude,
-        gender,
-        form,
-        weather_boosted_condition,
-        costume,
-        seen_type";
-        global $noHighLevelData;
-        if (!$noHighLevelData) {
-            $select .= ",
-            weight,
-            height,
-            individual_attack,
-            individual_defense,
-            individual_stamina,
-            move_1,
-            move_2,
-            cp,
-            cp_multiplier,
-            catch_prob_1 AS catch_rate_1,
-            catch_prob_2 AS catch_rate_2,
-            catch_prob_3 AS catch_rate_3";
-        }
 
         $conds[] = "p.latitude > :swLat AND p.longitude > :swLng AND p.latitude < :neLat AND p.longitude < :neLng AND disappear_time > :time";
         $params[':swLat'] = $swLat;
@@ -203,22 +135,6 @@ class RocketMap_MAD extends RocketMap
                 $conds[] = str_replace("OR", "", $tmpSQL);
             }
         }
-
-        if (!empty($minIv) && !is_nan((float)$minIv) && $minIv != 0) {
-            $minIv = $minIv * .45;
-            if (empty($exMinIv)) {
-                $conds[] = '(individual_attack' . $float . ' + individual_defense' . $float . ' + individual_stamina' . $float . ') >= ' . $minIv;
-            } else {
-                $conds[] = '((individual_attack' . $float . ' + individual_defense' . $float . ' + individual_stamina' . $float . ') >= ' . $minIv . ' OR pokemon_id IN(' . $exMinIv . ') )';
-            }
-        }
-        if (!empty($minLevel) && !is_nan((float)$minLevel) && $minLevel != 0) {
-            if (empty($exMinIv)) {
-                $conds[] = 'cp_multiplier >= ' . $this->cpMultiplier[$minLevel];
-            } else {
-                $conds[] = '(cp_multiplier >= ' . $this->cpMultiplier[$minLevel] . ' OR pokemon_id IN(' . $exMinIv . ') )';
-            }
-        }
         if (!empty($despawnTimeType)) {
             if ($despawnTimeType == 1) {
                $conds[] = 'ts.calc_endminsec IS NOT NULL';
@@ -231,21 +147,55 @@ class RocketMap_MAD extends RocketMap
         if (!empty($gender) && ($gender == 1 || $gender == 2)) {
            $conds[] = 'gender = ' . $gender;
         }
-        $tmpSQL = (!$noBoundaries && !$showPokemonsOutsideBoundaries) ? " AND (ST_WITHIN(point(p.latitude,p.longitude),ST_GEOMFROMTEXT('POLYGON(( " . $boundaries . " ))')))" : '';
-        $zeroSql = '';
-        if (!$noHighLevelData && !empty($zeroIv) && $zeroIv === 'true') {
-            $zeroSql = " OR (individual_attack = 0 AND individual_defense = 0 AND individual_stamina = 0 AND p.latitude > " . $swLat . " AND p.longitude > " . $swLng . " AND p.latitude < " . $neLat . " AND p.longitude < " . $neLng . " AND disappear_time > '" . $params[':time'] . "'" . $tmpSQL . ")";
+        if ($missingIvOnly) {
+            $conds[] = '(individual_attack IS NULL OR individual_defense IS NULL OR individual_stamina IS NULL)';
+        } else {
+            $zeroIvSql = ($zeroIv) ? ' OR (individual_attack = 0 AND individual_defense = 0 AND individual_stamina = 0)' : '';
+            $hundoIvSql = ($hundoIv) ? ' OR (individual_attack = 15 AND individual_defense = 15 AND individual_stamina = 15)' : '';
+            $exMinIvSql = (!empty($exMinIv)) ? ' OR pokemon_id IN(' . $exMinIv . ')' : '';
+            if ($minIv !== 0) {
+                $conds[] = '((individual_attack' . $float . ' + individual_defense' . $float . ' + individual_stamina' . $float . ') >= ' . ($minIv * .45) . $zeroIvSql . $hundoIvSql . $exMinIvSql . ')';
+            }
+            if ($minLevel !== 0) {
+                $conds[] = '(cp_multiplier >= ' . $this->cpMultiplier[$minLevel] . $zeroIvSql . $hundoIvSql . $exMinIvSql . ')';
+            }
         }
-        $hundoSql = '';
-        if (!$noHighLevelData && !empty($hundoIv) && $hundoIv === 'true') {
-            $hundoSql = " OR (individual_attack = 15 AND individual_defense = 15 AND individual_stamina = 15 AND p.latitude > " . $swLat . " AND p.longitude > " . $swLng . " AND p.latitude < " . $neLat . " AND p.longitude < " . $neLng . " AND disappear_time > '" . $params[':time'] . "'" . $tmpSQL . ")";
-        }
-        return $this->query_active($select, $conds, $params, '', $zeroSql, $hundoSql);
+        return $this->query_active($conds, $params, $minIv, $minLevel, $minLLRank, $minGLRank, $minULRank, $exMinIv, $zeroIv, $hundoIv, $independantPvpAndStats, $missingIvOnly, '');
     }
 
-    public function query_active($select, $conds, $params, $encSql = '', $zeroSql = '', $hundoSql = '')
+    public function query_active($conds, $params, $minIv, $minLevel, $minLLRank, $minGLRank, $minULRank, $exMinIv, $zeroIv, $hundoIv, $independantPvpAndStats, $missingIvOnly, $encSql = '')
     {
-        global $db;
+        global $db, $noHighLevelData;
+
+
+        $select = "ts.calc_endminsec AS expire_timestamp_verified,
+        pokemon_id,
+        Unix_timestamp(Convert_tz(disappear_time, '+00:00', @@global.time_zone)) AS disappear_time,
+        encounter_id,
+        p.latitude,
+        p.longitude,
+        gender,
+        form,
+        weather_boosted_condition,
+        costume,
+        seen_type";
+
+        if (!$noHighLevelData) {
+            $select .= ",
+            weight,
+            height,
+            individual_attack,
+            individual_defense,
+            individual_stamina,
+            move_1,
+            move_2,
+            cp,
+            IFNULL(IF(cp_multiplier < 0.734, ROUND(58.35178527 * cp_multiplier * cp_multiplier - 2.838007664 * cp_multiplier + 0.8539209906), ROUND(171.0112688 * cp_multiplier - 95.20425243)), NULL) as level,
+            IFNULL((individual_attack + individual_defense + individual_stamina) / 0.45, NULL) as iv,
+            catch_prob_1 AS catch_rate_1,
+            catch_prob_2 AS catch_rate_2,
+            catch_prob_3 AS catch_rate_3";
+        }
 
         $query = "SELECT :select
         FROM pokemon p
@@ -253,7 +203,7 @@ class RocketMap_MAD extends RocketMap
         WHERE :conditions ORDER BY p.latitude, p.longitude";
 
         $query = str_replace(":select", $select, $query);
-        $query = str_replace(":conditions", '(' . join(" AND ", $conds) . ')' . $encSql . $zeroSql . $hundoSql, $query);
+        $query = str_replace(":conditions", '(' . join(" AND ", $conds) . ')' . $encSql, $query);
         $pokemons = $db->query($query, $params)->fetchAll(\PDO::FETCH_ASSOC);
 
         $data = array();
@@ -263,6 +213,7 @@ class RocketMap_MAD extends RocketMap
         $lasti = 0;
 
         foreach ($pokemons as $pokemon) {
+            // Jitter for nearby that would otherwise stack on top of each other
             if ($pokemon['seen_type'] === 'nearby_cell' || $pokemon['seen_type'] === 'nearby_stop') {
                 $pokemon["latitude"] = floatval($pokemon["latitude"]);
                 $pokemon["longitude"] = floatval($pokemon["longitude"]);
@@ -290,9 +241,15 @@ class RocketMap_MAD extends RocketMap
             $pokemon["individual_defense"] = isset($pokemon["individual_defense"]) ? intval($pokemon["individual_defense"]) : null;
             $pokemon["individual_stamina"] = isset($pokemon["individual_stamina"]) ? intval($pokemon["individual_stamina"]) : null;
 
+            $pokemon["iv"] = isset($pokemon["iv"]) ? floatval($pokemon["iv"]) : null;
+            $pokemon["level"] = isset($pokemon["level"]) ? intval($pokemon["level"]) : null;
+
             $pokemon["pvp_rankings_little_league"] = null;
             $pokemon["pvp_rankings_great_league"] = null;
             $pokemon["pvp_rankings_ultra_league"] = null;
+            $pokemon["pvp_rankings_little_league_best"] = null;
+            $pokemon["pvp_rankings_great_league_best"] = null;
+            $pokemon["pvp_rankings_ultra_league_best"] = null;
 
             $pokemon["weather_boosted_condition"] = intval($pokemon["weather_boosted_condition"]);
 
@@ -302,7 +259,6 @@ class RocketMap_MAD extends RocketMap
             $pokemon["gender"] = intval($pokemon["gender"]);
             $pokemon["pokemon_name"] = i8ln($this->data[$pokemon["pokemon_id"]]['name']);
             $pokemon["pokemon_rarity"] = i8ln($this->data[$pokemon["pokemon_id"]]['rarity']);
-            $pokemon["cp_multiplier"] = isset($pokemon["cp_multiplier"]) ? floatval($pokemon["cp_multiplier"]) : null;
 
             if (isset($pokemon["form"]) && $pokemon["form"] > 0) {
                 $forms = $this->data[$pokemon["pokemon_id"]]["forms"];
