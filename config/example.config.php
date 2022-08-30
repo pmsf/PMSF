@@ -231,6 +231,7 @@ $noRarityDisplay = false;                                           // true/fals
 $noWeatherIcons = true;                                             // true/false
 $no0IvShadow = false;                                               // true/false
 $no100IvShadow = false;                                             // true/false
+$noPvpShadow = false;                                               // true/false
 $noHideSingleMarker = false;                                        // true/false
 
 /* Notification Settings */
@@ -273,6 +274,7 @@ $noBigKarp = false;                                                 // true/fals
 $noTinyRat = false;                                                 // true/false
 $noZeroIvToggle = false;                                            // true/false
 $noHundoIvToggle = false;                                           // true/false
+$noIndependantPvpAndStatsToggle = false;                            // true/false
 $noDespawnTimeType = true;                                          // true/false
 $showDespawnTimeType = 0;                                           // 0 = All, 1 = Verified, 2 = Unverified, 3 = Unverified + Nearby (Nearby = no spawn point)
 $noPokemonGender = false;                                           // true/false
