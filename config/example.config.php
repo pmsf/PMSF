@@ -219,6 +219,7 @@ $adminUsers = ['admin@example.com', 'Superadmin#13337'];            // You can a
 //-----------------------------------------------------
 
 /* Marker Settings */
+$noMinLLRank = false;                                               // true/false
 $noMinGLRank = false;                                               // true/false
 $noMinULRank = false;                                               // true/false
 $noExcludeMinIV = false;                                            // true/false
@@ -260,6 +261,7 @@ $noPvp = false;                                                     // true/fals
 
 $excludeMinIV = '[131, 143, 147, 148, 149, 248]';                   // [] for empty
 
+$minLLRank = '0';                                                   // "0" for empty or a number
 $minGLRank = '0';                                                   // "0" for empty or a number
 $minULRank = '0';                                                   // "0" for empty or a number
 
@@ -269,6 +271,8 @@ $minLevel = '0';                                                    // "0" for e
 $noMissingIVOnly = true;                                            // true/false
 $noBigKarp = false;                                                 // true/false
 $noTinyRat = false;                                                 // true/false
+$noZeroIvToggle = false;                                            // true/false
+$noHundoIvToggle = false;                                           // true/false
 $noDespawnTimeType = true;                                          // true/false
 $showDespawnTimeType = 0;                                           // 0 = All, 1 = Verified, 2 = Unverified, 3 = Unverified + Nearby (Nearby = no spawn point)
 $noPokemonGender = false;                                           // true/false

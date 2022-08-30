@@ -8,6 +8,7 @@ var $selectPokemonNotify
 var $selectRarityNotify
 var $textPerfectionNotify
 var $textLevelNotify
+var $textMinLLRank
 var $textMinGLRank
 var $textMinULRank
 var $textMinIV
@@ -57,6 +58,7 @@ var excludedRaidboss = []
 var excludedRaidegg = []
 var notifiedMinPerfection = null
 var notifiedMinLevel = null
+var minLLRank = null
 var minGLRank = null
 var minULRank = null
 var minIV = null
@@ -1062,6 +1064,8 @@ function initSidebar() {
     $('#missing-iv-only-switch').prop('checked', Store.get('showMissingIVOnly'))
     $('#big-karp-switch').prop('checked', Store.get('showBigKarp'))
     $('#tiny-rat-switch').prop('checked', Store.get('showTinyRat'))
+    $('#no-zero-iv-switch').prop('checked', Store.get('showZeroIv'))
+    $('#no-hundo-iv-switch').prop('checked', Store.get('showHundoIv'))
     $('#despawn-time-type-select').val(Store.get('showDespawnTimeType'))
     $('#pokemon-gender-select').val(Store.get('showPokemonGender'))
     $('#pokestops-switch').prop('checked', Store.get('showPokestops'))
@@ -1351,6 +1355,39 @@ function pokemonLabel(item) {
     '</a>'
 
     if (!noPvp) {
+        if (item['pvp_rankings_little_league'] !== undefined && item['pvp_rankings_little_league'] !== null) {
+            contentstring += '<br>'
+            contentstring += '<b>' + i8ln('Little League') + ':</b>' + '<br>'
+            var littleLeague = JSON.parse(item['pvp_rankings_little_league'])
+            $.each(littleLeague, function (index, ranking) {
+                let pokemonName = ''
+                $.each(pokedex[ranking.pokemon]['forms'], function (index, form) {
+                    if (ranking.form === form['protoform'] && form['nameform'] !== 'Normal') {
+                        pokemonName = i8ln(form['nameform']) + ' ' + i8ln(pokedex[ranking.pokemon]['name'])
+                    }
+                })
+                if (pokemonName === '') {
+                    pokemonName = i8ln(pokedex[ranking.pokemon]['name'])
+                }
+
+                let infoString
+                if (ranking.rank === null) {
+                    infoString = i8ln('CP too high')
+                } else {
+                    infoString = '#' + ranking.rank
+                }
+                if (ranking.cp !== null) {
+                    infoString += ' @' + ranking.cp + i8ln('CP') + ' (' + i8ln('Lvl') + ' ' + (ranking.level) + ')'
+                }
+
+                let color = ''
+                if (ranking.rank === 1) {
+                    color = 'color:green'
+                }
+                contentstring += '<small style="font-size: 11px;' + color + '"><b>' + pokemonName + ':</b> ' + infoString + '</small><br>'
+            })
+        }
+
         if (item['pvp_rankings_great_league'] !== undefined && item['pvp_rankings_great_league'] !== null) {
             contentstring += '<br>'
             contentstring += '<b>' + i8ln('Great League') + ':</b>' + '<br>'
@@ -2011,7 +2048,7 @@ function formatSpawnTime(seconds) {
 
 function spawnpointLabel(item) {
     var str = ''
-    if (item.time > 0) {
+    if (item.time !== null) {
         str += '<div><b>' + i8ln('Spawn Point') + '</b></div>' +
         '<div>' + i8ln('Despawn time') + ': xx:' + formatSpawnTime(item.time) + '</div>'
     } else {
@@ -3061,7 +3098,7 @@ function deletePoi(event) { // eslint-disable-line no-unused-vars
 
 function setupSpawnpointMarker(item) {
     var color = ''
-    if (item['time'] > 0) {
+    if (item['time'] !== null) {
         color = 'green'
     } else {
         color = 'red'
@@ -3168,9 +3205,19 @@ function addListeners(marker) {
 function clearStaleMarkers() {
     $.each(mapData.pokemons, function (key, value) {
         var pvpFiltered = false
+        var ignoreFiltersZeroHundo = ((mapData.pokemons[key]['individual_attack'] !== null && mapData.pokemons[key]['individual_defense'] !== null && mapData.pokemons[key]['individual_stamina'] !== null) && ((Store.get('showZeroIv') === true && mapData.pokemons[key]['individual_attack'] === 0 && mapData.pokemons[key]['individual_defense'] === 0 && mapData.pokemons[key]['individual_stamina'] === 0) || (Store.get('showHundoIv') === true && mapData.pokemons[key]['individual_attack'] === 15 && mapData.pokemons[key]['individual_defense'] === 15 && mapData.pokemons[key]['individual_stamina'] === 15)))
 
-        if (minGLRank > 0 || minULRank > 0) {
+        if ((minLLRank > 0 || minGLRank > 0 || minULRank > 0) && !ignoreFiltersZeroHundo) {
             pvpFiltered = true
+            if (minLLRank > 0 && pvpFiltered) {
+                var littleLeague = JSON.parse(mapData.pokemons[key]['pvp_rankings_little_league'])
+                $.each(littleLeague, function (index, ranking) {
+                    if (ranking.rank !== null && ranking.rank <= minLLRank) {
+                        pvpFiltered = false
+                        return false
+                    }
+                })
+            }
             if (minGLRank > 0 && pvpFiltered) {
                 var greatLeague = JSON.parse(mapData.pokemons[key]['pvp_rankings_great_league'])
                 $.each(greatLeague, function (index, ranking) {
@@ -3196,7 +3243,7 @@ function clearStaleMarkers() {
                 (excludedPokemon.indexOf(mapData.pokemons[key]['pokemon_id']) >= 0 ||
                     isTemporaryHidden(mapData.pokemons[key]['pokemon_id']) ||
                     (pvpFiltered) ||
-                    ((((mapData.pokemons[key]['individual_attack'] + mapData.pokemons[key]['individual_defense'] + mapData.pokemons[key]['individual_stamina']) / 45 * 100 < minIV) || ((mapType === 'rdm' && mapData.pokemons[key]['level'] < minLevel) || (mapType === 'rocketmap' && !isNaN(minLevel) && (mapData.pokemons[key]['cp_multiplier'] < cpMultiplier[minLevel - 1])))) && !excludedMinIV.includes(mapData.pokemons[key]['pokemon_id']) && Store.get('showMissingIVOnly') === false) ||
+                    (((((mapData.pokemons[key]['individual_attack'] + mapData.pokemons[key]['individual_defense'] + mapData.pokemons[key]['individual_stamina']) / 45 * 100) < minIV && !ignoreFiltersZeroHundo) || (((mapType === 'rdm' && mapData.pokemons[key]['level'] < minLevel) || (mapType === 'rocketmap' && !isNaN(minLevel) && (mapData.pokemons[key]['cp_multiplier'] < cpMultiplier[minLevel - 1]))) && !ignoreFiltersZeroHundo)) && !excludedMinIV.includes(mapData.pokemons[key]['pokemon_id']) && Store.get('showMissingIVOnly') === false) ||
                     (Store.get('showMissingIVOnly') === true && mapData.pokemons[key]['individual_attack'] !== null) ||
                     (Store.get('showBigKarp') === true && mapData.pokemons[key]['pokemon_id'] === 129 && (mapData.pokemons[key]['weight'] < 13.14 || mapData.pokemons[key]['weight'] === null)) ||
                     (Store.get('showTinyRat') === true && mapData.pokemons[key]['pokemon_id'] === 19 && (mapData.pokemons[key]['weight'] > 2.40 || mapData.pokemons[key]['weight'] === null)) ||
@@ -3340,6 +3387,8 @@ function loadRawData() {
     var loadMinLevel = Store.get('remember_text_min_level')
     var bigKarp = Boolean(Store.get('showBigKarp'))
     var tinyRat = Boolean(Store.get('showTinyRat'))
+    var zeroIv = Boolean(Store.get('showZeroIv'))
+    var hundoIv = Boolean(Store.get('showHundoIv'))
     var despawnTimeType = Store.get('showDespawnTimeType')
     var pokemonGender = Store.get('showPokemonGender')
     var exEligible = Boolean(Store.get('exEligible'))
@@ -3409,6 +3458,8 @@ function loadRawData() {
             'prevMinLevel': prevMinLevel,
             'bigKarp': bigKarp,
             'tinyRat': tinyRat,
+            'zeroIv': zeroIv,
+            'hundoIv': hundoIv,
             'despawnTimeType': despawnTimeType,
             'pokemonGender': pokemonGender,
             'swLat': swLat,
@@ -4768,8 +4819,18 @@ function processPokemons(i, item) {
             }
         }
         if (encounterId !== item['encounter_id']) {
-            if (minGLRank > 0 || minULRank > 0) {
+            var ignoreFiltersZeroHundo = ((item['individual_attack'] !== null && item['individual_defense'] !== null && item['individual_stamina'] !== null) && ((Store.get('showZeroIv') === true && item['individual_attack'] === 0 && item['individual_defense'] === 0 && item['individual_stamina'] === 0) || (Store.get('showHundoIv') === true && item['individual_attack'] === 15 && item['individual_defense'] === 15 && item['individual_stamina'] === 15)))
+            if ((minLLRank > 0 || minGLRank > 0 || minULRank > 0) && !ignoreFiltersZeroHundo) {
                 var pvpFiltered = true
+                if (minLLRank > 0 && pvpFiltered) {
+                    var littleLeague = JSON.parse(item['pvp_rankings_little_league'])
+                    $.each(littleLeague, function (index, ranking) {
+                        if (ranking.rank !== null && ranking.rank <= minLLRank) {
+                            pvpFiltered = false
+                            return false // same as 'break'
+                        }
+                    })
+                }
                 if (minGLRank > 0 && pvpFiltered) {
                     var greatLeague = JSON.parse(item['pvp_rankings_great_league'])
                     $.each(greatLeague, function (index, ranking) {
@@ -5351,7 +5412,7 @@ function updateSpawnPoints() {
     $.each(mapData.spawnpoints, function (key, value) {
         if (map.getBounds().contains(value.marker.getLatLng())) {
             var color = ''
-            if (value['time'] > 0) {
+            if (value['time'] !== null) {
                 color = 'green'
             } else {
                 color = 'red'
@@ -6471,6 +6532,7 @@ $(function () {
 })
 
 $(function () {
+    minLLRank = Store.get('remember_text_min_ll_rank')
     minGLRank = Store.get('remember_text_min_gl_rank')
     minULRank = Store.get('remember_text_min_ul_rank')
     minIV = Store.get('remember_text_min_iv')
@@ -6542,6 +6604,7 @@ $(function () {
     $selectPokemonNotify = $('#notify-pokemon .search-number')
     $selectRarityNotify = $('#notify-rarity')
     $textPerfectionNotify = $('#notify-perfection')
+    $textMinLLRank = $('#min-ll-rank')
     $textMinGLRank = $('#min-gl-rank')
     $textMinULRank = $('#min-ul-rank')
     $textMinIV = $('#min-iv')
@@ -6686,6 +6749,13 @@ $(function () {
             updateMap()
             Store.set('remember_select_exclude_min_iv', excludedMinIV)
         })
+        $textMinLLRank.on('change', function (e) {
+            minLLRank = Math.max(0, Math.min(parseInt($textMinLLRank.val(), 0) || 0, 100))
+            $textMinLLRank.val(minLLRank)
+            Store.set('remember_text_min_ll_rank', minLLRank)
+            lastpokemon = false
+            updateMap()
+        })
         $textMinGLRank.on('change', function (e) {
             minGLRank = Math.max(0, Math.min(parseInt($textMinGLRank.val(), 0) || 0, 100))
             $textMinGLRank.val(minGLRank)
@@ -6726,6 +6796,16 @@ $(function () {
         })
         $('#big-karp-switch').on('change', function (e) {
             Store.set('showBigKarp', this.checked)
+            lastpokemon = false
+            updateMap()
+        })
+        $('#no-zero-iv-switch').on('change', function (e) {
+            Store.set('showZeroIv', this.checked)
+            lastpokemon = false
+            updateMap()
+        })
+        $('#no-hundo-iv-switch').on('change', function (e) {
+            Store.set('showHundoIv', this.checked)
             lastpokemon = false
             updateMap()
         })
@@ -6815,6 +6895,7 @@ $(function () {
         $selectRarityNotify.val(Store.get('remember_select_rarity_notify'))
         $textPerfectionNotify.val(Store.get('remember_text_perfection_notify'))
         $textLevelNotify.val(Store.get('remember_text_level_notify'))
+        $textMinLLRank.val(Store.get('remember_text_min_ll_rank'))
         $textMinGLRank.val(Store.get('remember_text_min_gl_rank'))
         $textMinULRank.val(Store.get('remember_text_min_ul_rank'))
         $textMinIV.val(Store.get('remember_text_min_iv'))

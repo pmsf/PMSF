@@ -91,6 +91,11 @@ var StoreOptions = {
             default: notifyLevel,
             type: StoreTypes.Number
         },
+    'remember_text_min_ll_rank':
+        {
+            default: minLLRank,
+            type: StoreTypes.Number
+        },
     'remember_text_min_gl_rank':
         {
             default: minGLRank,
@@ -284,6 +289,16 @@ var StoreOptions = {
     'showTinyRat':
         {
             default: showTinyRat,
+            type: StoreTypes.Boolean
+        },
+    'showZeroIv':
+        {
+            default: showZeroIv,
+            type: StoreTypes.Boolean
+        },
+    'showHundoIv':
+        {
+            default: showHundoIv,
             type: StoreTypes.Boolean
         },
     'showDespawnTimeType':

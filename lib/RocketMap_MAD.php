@@ -4,7 +4,7 @@ namespace Scanner;
 
 class RocketMap_MAD extends RocketMap
 {
-    public function get_active($eids, $minIv, $minLevel, $exMinIv, $bigKarp, $tinyRat, $despawnTimeType, $gender, $swLat, $swLng, $neLat, $neLng, $tstamp = 0, $oSwLat = 0, $oSwLng = 0, $oNeLat = 0, $oNeLng = 0, $encId = 0)
+    public function get_active($eids, $minIv, $minLevel, $exMinIv, $bigKarp, $tinyRat, $zeroIv, $hundoIv, $despawnTimeType, $gender, $swLat, $swLng, $neLat, $neLng, $tstamp = 0, $oSwLat = 0, $oSwLng = 0, $oNeLat = 0, $oNeLng = 0, $encId = 0)
     {
         global $db;
         $conds = array();
@@ -116,11 +116,20 @@ class RocketMap_MAD extends RocketMap
         if ($encId != 0) {
             $encSql = " OR (encounter_id = " . $encId . " AND p.latitude > '" . $swLat . "' AND p.longitude > '" . $swLng . "' AND p.latitude < '" . $neLat . "' AND p.longitude < '" . $neLng . "' AND disappear_time > '" . $params[':time'] . "')";
         }
-
-        return $this->query_active($select, $conds, $params, $encSql);
+        $tmpSQL = ($tstamp > 0) ? " AND last_modified > '" . $params[':lastUpdated'] . "'" : "";
+        $tmpSQL .= (!$noBoundaries && !$showPokemonsOutsideBoundaries) ? " AND (ST_WITHIN(point(p.latitude,p.longitude),ST_GEOMFROMTEXT('POLYGON(( " . $boundaries . " ))')))" : '';
+        $zeroSql = '';
+        if (!$noHighLevelData && !empty($zeroIv) && $zeroIv === 'true') {
+            $zeroSql = " OR (individual_attack = 0 AND individual_defense = 0 AND individual_stamina = 0 AND p.latitude > " . $swLat . " AND p.longitude > " . $swLng . " AND p.latitude < " . $neLat . " AND p.longitude < " . $neLng . " AND disappear_time > '" . $params[':time'] . "'" . $tmpSQL . ")";
+        }
+        $hundoSql = '';
+        if (!$noHighLevelData && !empty($hundoIv) && $hundoIv === 'true') {
+            $hundoSql = " OR (individual_attack = 15 AND individual_defense = 15 AND individual_stamina = 15 AND p.latitude > " . $swLat . " AND p.longitude > " . $swLng . " AND p.latitude < " . $neLat . " AND p.longitude < " . $neLng . " AND disappear_time > '" . $params[':time'] . "'" . $tmpSQL . ")";
+        }
+        return $this->query_active($select, $conds, $params, $encSql, $zeroSql, $hundoSql);
     }
 
-    public function get_active_by_id($ids, $minIv, $minLevel, $exMinIv, $bigKarp, $tinyRat, $despawnTimeType, $gender, $swLat, $swLng, $neLat, $neLng)
+    public function get_active_by_id($ids, $minIv, $minLevel, $exMinIv, $bigKarp, $tinyRat, $zeroIv, $hundoIv, $despawnTimeType, $gender, $swLat, $swLng, $neLat, $neLng)
     {
         global $db;
         $conds = array();
@@ -222,11 +231,19 @@ class RocketMap_MAD extends RocketMap
         if (!empty($gender) && ($gender == 1 || $gender == 2)) {
            $conds[] = 'gender = ' . $gender;
         }
-
-        return $this->query_active($select, $conds, $params);
+        $tmpSQL = (!$noBoundaries && !$showPokemonsOutsideBoundaries) ? " AND (ST_WITHIN(point(p.latitude,p.longitude),ST_GEOMFROMTEXT('POLYGON(( " . $boundaries . " ))')))" : '';
+        $zeroSql = '';
+        if (!$noHighLevelData && !empty($zeroIv) && $zeroIv === 'true') {
+            $zeroSql = " OR (individual_attack = 0 AND individual_defense = 0 AND individual_stamina = 0 AND p.latitude > " . $swLat . " AND p.longitude > " . $swLng . " AND p.latitude < " . $neLat . " AND p.longitude < " . $neLng . " AND disappear_time > '" . $params[':time'] . "'" . $tmpSQL . ")";
+        }
+        $hundoSql = '';
+        if (!$noHighLevelData && !empty($hundoIv) && $hundoIv === 'true') {
+            $hundoSql = " OR (individual_attack = 15 AND individual_defense = 15 AND individual_stamina = 15 AND p.latitude > " . $swLat . " AND p.longitude > " . $swLng . " AND p.latitude < " . $neLat . " AND p.longitude < " . $neLng . " AND disappear_time > '" . $params[':time'] . "'" . $tmpSQL . ")";
+        }
+        return $this->query_active($select, $conds, $params, '', $zeroSql, $hundoSql);
     }
 
-    public function query_active($select, $conds, $params, $encSql = '')
+    public function query_active($select, $conds, $params, $encSql = '', $zeroSql = '', $hundoSql = '')
     {
         global $db;
 
@@ -236,7 +253,7 @@ class RocketMap_MAD extends RocketMap
         WHERE :conditions ORDER BY p.latitude, p.longitude";
 
         $query = str_replace(":select", $select, $query);
-        $query = str_replace(":conditions", '(' . join(" AND ", $conds) . ')' . $encSql, $query);
+        $query = str_replace(":conditions", '(' . join(" AND ", $conds) . ')' . $encSql . $zeroSql . $hundoSql, $query);
         $pokemons = $db->query($query, $params)->fetchAll(\PDO::FETCH_ASSOC);
 
         $data = array();
@@ -273,6 +290,7 @@ class RocketMap_MAD extends RocketMap
             $pokemon["individual_defense"] = isset($pokemon["individual_defense"]) ? intval($pokemon["individual_defense"]) : null;
             $pokemon["individual_stamina"] = isset($pokemon["individual_stamina"]) ? intval($pokemon["individual_stamina"]) : null;
 
+            $pokemon["pvp_rankings_little_league"] = null;
             $pokemon["pvp_rankings_great_league"] = null;
             $pokemon["pvp_rankings_ultra_league"] = null;
 
@@ -559,6 +577,7 @@ class RocketMap_MAD extends RocketMap
         $query = "SELECT latitude,
         longitude,
         spawnpoint AS spawnpoint_id,
+        calc_endminsec AS calc_endminsec,
         (SUBSTRING_INDEX(SUBSTRING_INDEX(calc_endminsec, ':', 1), ' ', -1)*60) + (SUBSTRING_INDEX(SUBSTRING_INDEX(calc_endminsec, ':', -1), ' ', -1)) AS time
         FROM trs_spawn
         WHERE :conditions";
@@ -569,7 +588,7 @@ class RocketMap_MAD extends RocketMap
         foreach ($spawnpoints as $spawnpoint) {
             $spawnpoint["latitude"] = floatval($spawnpoint["latitude"]);
             $spawnpoint["longitude"] = floatval($spawnpoint["longitude"]);
-            $spawnpoint["time"] = intval($spawnpoint["time"]);
+            $spawnpoint["time"] = is_null($spawnpoint["calc_endminsec"]) ? null : intval($spawnpoint["time"]);
             $data[] = $spawnpoint;
             unset($spawnpoints[$i]);
             $i++;
