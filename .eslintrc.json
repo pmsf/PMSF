@@ -196,6 +196,7 @@
     "enableQuests": true,
     "enableScanPolygon": true,
     "turf": true,
+    "noScanPolygon": true,
     "geoJSONfile": true,
     "enablePoi": true,
     "noDeletePoi": true,
