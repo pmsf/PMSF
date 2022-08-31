@@ -888,10 +888,9 @@ function showS2Cells(level, style) {
 }
 
 function buildScanPolygons() {
-    if (!Store.get(['showScanPolygon'])) {
+    if (!Store.get(['showScanPolygon']) || geoJSONfile.trim() === '') {
         return false
     }
-
     $.getJSON(geoJSONfile, function (data) {
         var geoPolys = L.geoJson(data, {
             onEachFeature: function (features, featureLayer) {
@@ -904,7 +903,7 @@ function buildScanPolygons() {
 }
 
 function buildNestPolygons() {
-    if (!Store.get(['showNestPolygon']) || !Store.get(['showNests'])) {
+    if (!Store.get(['showNestPolygon']) || !Store.get(['showNests']) || nestGeoJSONfile.trim() === '') {
         return false
     }
 
@@ -6541,11 +6540,13 @@ $(function () {
         })
     })
 
-    $.getJSON(geoJSONfile).done(function (data) {
-        $.each(data.features, function (key, value) {
-            scanAreas.push(value)
+    if (noScanPolygon !== true && geoJSONfile.trim() !== '') {
+        $.getJSON(geoJSONfile).done(function (data) {
+            $.each(data.features, function (key, value) {
+                scanAreas.push(value)
+            })
         })
-    })
+    }
 
     $selectExclude = $('#exclude-pokemon .search-number')
     $selectExcludeMinIV = $('#exclude-min-iv .search-number')
