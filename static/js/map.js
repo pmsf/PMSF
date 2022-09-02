@@ -1373,6 +1373,11 @@ function pokemonLabel(item) {
                 }
                 if (ranking.cp !== null) {
                     infoString += ' @' + ranking.cp + i8ln('CP') + ' (' + i8ln('Lvl') + ' ' + (ranking.level) + ')'
+                    if (!noPvpCapText) {
+                        infoString += ' [' + i8ln('Cap') + ' ' + (ranking.cap) + ']'
+                    }
+                }
+                if (ranking.cp !== null) {
                 }
 
                 let color = ''
@@ -1406,6 +1411,9 @@ function pokemonLabel(item) {
                 }
                 if (ranking.cp !== null) {
                     infoString += ' @' + ranking.cp + i8ln('CP') + ' (' + i8ln('Lvl') + ' ' + (ranking.level) + ')'
+                    if (!noPvpCapText) {
+                        infoString += ' [' + i8ln('Cap') + ' ' + (ranking.cap) + ']'
+                    }
                 }
 
                 let color = ''
@@ -1439,6 +1447,9 @@ function pokemonLabel(item) {
                 }
                 if (ranking.cp !== null) {
                     infoString += ' @' + ranking.cp + i8ln('CP') + ' (' + i8ln('Lvl') + ' ' + (ranking.level) + ')'
+                    if (!noPvpCapText) {
+                        infoString += ' [' + i8ln('Cap') + ' ' + (ranking.cap) + ']'
+                    }
                 }
 
                 let color = ''

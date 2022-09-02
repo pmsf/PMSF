@@ -1712,6 +1712,7 @@ include('modals.php');
     var noDarkMode = <?php echo $noDarkMode === true ? 'true' : 'false' ?>;
     var noCatchRates = <?php echo $noCatchRates === true ? 'true' : 'false' ?>;
     var noPvp = <?php echo $noPvp === true ? 'true' : 'false' ?>;
+    var noPvpCapText = <?php echo $noPvpCapText === true ? 'true' : 'false' ?>;
     var noHideSingleMarker = <?php echo $noHideSingleMarker === true ? 'true' : 'false' ?>;
     var enableJSDebug = <?php echo $enableJSDebug === true ? 'true' : 'false' ?>;
     // When A Setting Is Disabled, Ensure Filtering Is Also Disabled to Prevent Invisible Filtering

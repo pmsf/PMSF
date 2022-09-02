@@ -252,6 +252,7 @@
     "processRewardStats": true,
     "processShinyStats": true,
     "noPvp": true,
+    "noPvpCapText": true,
     "noHideSingleMarker": true,
     "enableJSDebug": true
   }

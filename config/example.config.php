@@ -259,15 +259,20 @@ $pokemonToExclude = [];
 $pokemonGenSearchString = 'generation';                             // When custom string is used translations do not work.
 
 $noPvp = false;                                                     // true/false
-
-$excludeMinIV = '[131, 143, 147, 148, 149, 248]';                   // [] for empty
-
+$noPvpCapText = false;                                              // Add [Cap XX] text in popup. true/false
 $minLLRank = '0';                                                   // "0" for empty or a number
 $minGLRank = '0';                                                   // "0" for empty or a number
 $minULRank = '0';                                                   // "0" for empty or a number
+$globalRankLimitLL = 4096;                                          // 0 = Dynamic limit according to active user filter, 1 to 4096(max) = Fixed limit
+$globalRankLimitGL = 4096;                                          // 0 = Dynamic limit according to active user filter, 1 to 4096(max) = Fixed limit
+$globalRankLimitUL = 4096;                                          // 0 = Dynamic limit according to active user filter, 1 to 4096(max) = Fixed limit
+$globalCpLimitLL = 0;                                               // 0 = no limit or a number like 450
+$globalCpLimitGL = 0;                                               // 0 = no limit or a number like 1400
+$globalCpLimitUL = 0;                                               // 0 = no limit or a number like 2400
 
 $minIV = '0';                                                       // "0" for empty or a number
 $minLevel = '0';                                                    // "0" for empty or a number
+$excludeMinIV = '[131, 143, 147, 148, 149, 248]';                   // [] for empty
 
 $noMissingIVOnly = true;                                            // true/false
 $noBigKarp = false;                                                 // true/false
