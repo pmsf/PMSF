@@ -151,21 +151,32 @@ class RDM extends Scanner
         return $this->query_active($conds, $params, $minIv, $minLevel, $minLLRank, $minGLRank, $minULRank, $exMinIv, $zeroIv, $hundoIv, $independantPvpAndStats, $missingIvOnly, '');
     }
 
-    private function getBestPvpRank($json)
+    private function getValidPvpRanks_UpdateBestRank($json, $minCp, $maxRank, &$bestRank)
     {
         $best = 9999;
-        $ranks = json_decode($json, true);
-        foreach ($ranks as $rank) {
-            if (isset($rank["rank"]) && (int)$rank["rank"] < $best) {
-                $best = intval($rank["rank"]);
+        $rankings = json_decode($json, true);
+
+        foreach ($rankings as $key => $rank) {
+            if (isset($rank["rank"]) && isset($rank["cp"]) && (int)$rank["rank"] <= $maxRank && (int)$rank["cp"] >= $minCp) {
+                if ((int)$rank["rank"] < $best) {
+                    $best = intval($rank["rank"]);
+                }
+            } else {
+                unset($rankings[$key]);
             }
         }
-        return ($best < 9999 ? $best : null);
+        if ($best === 9999) {
+            $bestRank = null;
+            return null;
+        } else {
+            $bestRank = $best;
+            return json_encode($rankings);
+        }
     }
 
     public function query_active($conds, $params, $minIv, $minLevel, $minLLRank, $minGLRank, $minULRank, $exMinIv, $zeroIv, $hundoIv, $independantPvpAndStats, $missingIvOnly, $encSql = '')
     {
-        global $db, $noHighLevelData, $noPvp;
+        global $db, $noHighLevelData, $noPvp, $globalRankLimitLL, $globalRankLimitGL, $globalRankLimitUL, $globalCpLimitLL, $globalCpLimitGL, $globalCpLimitUL;
 
         $select = "pokemon_id,
         expire_timestamp AS disappear_time,
@@ -224,7 +235,11 @@ class RDM extends Scanner
         $lastlat = 0;
         $lastlon = 0;
         $lasti = 0;
+
         $keepDefault = ($noHighLevelData || ($minIv === 0 && $minLevel === 0 && $minLLRank === 0 && $minGLRank === 0 && $minULRank === 0));
+        $thisRankLimitLL = ($globalRankLimitLL === 0) ? $minLLRank : $globalRankLimitLL;
+        $thisRankLimitGL = ($globalRankLimitGL === 0) ? $minGLRank : $globalRankLimitGL;
+        $thisRankLimitUL = ($globalRankLimitUL === 0) ? $minULRank : $globalRankLimitUL;
         $exMinIvArray = array();
         if (!empty($exMinIv)) {
             $tmpArray = array_map('intval', explode(",", $exMinIv));
@@ -234,14 +249,17 @@ class RDM extends Scanner
 
         foreach ($pokemons as $pokemon) {
             $keepMons = $keepDefault;
+            $bestLLRank = null;
+            $bestGLRank = null;
+            $bestULRank = null;
 
             if ($missingIvOnly) {
                 $keepMons = ($pokemon["individual_attack"] === null || $pokemon["individual_defense"] === null || $pokemon["individual_stamina"] === null);
             } else if (!$noHighLevelData) {
                 if (!$noPvp) {
-                    $bestLLRank = (isset($pokemon["pvp_rankings_little_league"])) ? $this->getBestPvpRank($pokemon["pvp_rankings_little_league"]) : null;
-                    $bestGLRank = (isset($pokemon["pvp_rankings_great_league"])) ? $this->getBestPvpRank($pokemon["pvp_rankings_great_league"]) : null;
-                    $bestULRank = (isset($pokemon["pvp_rankings_ultra_league"])) ? $this->getBestPvpRank($pokemon["pvp_rankings_ultra_league"]) : null;
+                    $pokemon["pvp_rankings_little_league"] = (isset($pokemon["pvp_rankings_little_league"])) ? $this->getValidPvpRanks_UpdateBestRank($pokemon["pvp_rankings_little_league"], $globalCpLimitLL, $thisRankLimitLL, $bestLLRank) : null;
+                    $pokemon["pvp_rankings_great_league"] = (isset($pokemon["pvp_rankings_great_league"])) ? $this->getValidPvpRanks_UpdateBestRank($pokemon["pvp_rankings_great_league"], $globalCpLimitGL, $thisRankLimitGL, $bestGLRank) : null;
+                    $pokemon["pvp_rankings_ultra_league"] = (isset($pokemon["pvp_rankings_ultra_league"])) ? $this->getValidPvpRanks_UpdateBestRank($pokemon["pvp_rankings_ultra_league"], $globalCpLimitUL, $thisRankLimitUL, $bestULRank) : null;
                 }
 
                 if (!$keepMons) {
@@ -310,9 +328,9 @@ class RDM extends Scanner
                 $pokemon["pvp_rankings_little_league"] = isset($pokemon["pvp_rankings_little_league"]) ? $pokemon["pvp_rankings_little_league"] : null;
                 $pokemon["pvp_rankings_great_league"] = isset($pokemon["pvp_rankings_great_league"]) ? $pokemon["pvp_rankings_great_league"] : null;
                 $pokemon["pvp_rankings_ultra_league"] = isset($pokemon["pvp_rankings_ultra_league"]) ? $pokemon["pvp_rankings_ultra_league"] : null;
-                $pokemon["pvp_rankings_little_league_best"] = isset($bestLLRank) ? $bestLLRank : null;
-                $pokemon["pvp_rankings_great_league_best"] = isset($bestGLRank) ? $bestGLRank : null;
-                $pokemon["pvp_rankings_ultra_league_best"] = isset($bestULRank) ? $bestULRank : null;
+                $pokemon["pvp_rankings_little_league_best"] = isset($bestLLRank) ? intval($bestLLRank) : null;
+                $pokemon["pvp_rankings_great_league_best"] = isset($bestGLRank) ? intval($bestGLRank) : null;
+                $pokemon["pvp_rankings_ultra_league_best"] = isset($bestULRank) ? intval($bestULRank) : null;
 
                 $pokemon["weather_boosted_condition"] = isset($pokemon["weather_boosted_condition"]) ? intval($pokemon["weather_boosted_condition"]) : 0;
 
