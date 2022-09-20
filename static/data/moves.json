@@ -2510,5 +2510,13 @@
     "duration": 0,
     "energy": 0,
     "dps": 0
+  },
+  "376": {
+    "name": "Poltergeist",
+    "type": "Ghost",
+    "damage": 0,
+    "duration": 0,
+    "energy": 0,
+    "dps": 0
   }
 }
