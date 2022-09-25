@@ -583,7 +583,7 @@ class RDM extends Scanner
     public function query_stops($conds, $params, $quests_with_ar)
     {
         global $db;
-        $rdmGrunts = ($this->columnExists("pokestop","grunt_type")) ? "" : " LEFT JOIN (SELECT `pokestop_id` AS pokestop_id_incident, MIN(`character`) AS grunt_type, `expiration` AS incident_expire_timestamp FROM incident WHERE `expiration` > UNIX_TIMESTAMP() GROUP BY `pokestop_id_incident`) AS i ON i.`pokestop_id_incident` = p.`id` ";
+        $rdmGrunts = ($this->columnExists("incident","pokestop_id")) ? " LEFT JOIN (SELECT `pokestop_id` AS pokestop_id_incident, MIN(`character`) AS grunt_type, `expiration` AS incident_expire_timestamp FROM incident WHERE `expiration` > UNIX_TIMESTAMP() GROUP BY `pokestop_id_incident`) AS i ON i.`pokestop_id_incident` = p.`id` " : "";
 
         $ar_string = ($quests_with_ar === true) ? "" : "alternative_";
         $query = "SELECT id AS pokestop_id,
@@ -1036,10 +1036,10 @@ class RDM extends Scanner
                 $data[] = $pokestop['reward_item_id'];
             }
         } elseif ($type === 'gruntlist') {
-            if ($this->columnExists("pokestop","grunt_type")) {
-                $pokestops = $db->query("SELECT distinct grunt_type FROM pokestop WHERE grunt_type > 0 AND incident_expire_timestamp > UNIX_TIMESTAMP() order by grunt_type;")->fetchAll(\PDO::FETCH_ASSOC);
-            } else {
+            if ($this->columnExists("incident","pokestop_id")) {
                 $pokestops = $db->query("SELECT distinct `character` AS grunt_type FROM incident WHERE `expiration` > UNIX_TIMESTAMP() ORDER BY `character`;")->fetchAll(\PDO::FETCH_ASSOC);
+            } else {
+                $pokestops = $db->query("SELECT distinct grunt_type FROM pokestop WHERE grunt_type > 0 AND incident_expire_timestamp > UNIX_TIMESTAMP() order by grunt_type;")->fetchAll(\PDO::FETCH_ASSOC);
             }
             $data = array();
             foreach ($pokestops as $pokestop) {
