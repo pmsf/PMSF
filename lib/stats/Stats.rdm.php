@@ -274,6 +274,8 @@ class RDM extends Stats
           $questReward["name"] = i8ln($this->items[$reward['quest_item_id']]["name"]);
         } elseif ($reward["quest_reward_type"] == 3) {
           $questReward["name"] = i8ln('Stardust');
+        } elseif ($reward["quest_reward_type"] == 1) {
+          $questReward["name"] = i8ln('XP');
         }
         $data[] = $questReward;
       }

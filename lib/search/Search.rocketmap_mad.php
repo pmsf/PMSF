@@ -94,6 +94,9 @@ class RocketMap_MAD extends Search
         $data = array();
         foreach ($rewards as $reward) {
             switch ($reward["quest_reward_type"]) {
+                case 1:
+                    $reward["reward_amount"] = 0;
+                    break;
                 case 2:
                     $reward["reward_amount"] = intval($reward["reward_item_amount"]);
                     break;
