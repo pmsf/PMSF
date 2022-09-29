@@ -392,6 +392,11 @@ function processRewardStats(i, item) { // eslint-disable-line no-unused-vars
     var hiddenName = '<span style="display: none;">' + item['name'] + '</span>'
 
     switch (item['quest_reward_type']) {
+        case 1:
+            reward = '<img src="' + getIcon(iconpath.reward, 'reward/experience', '.png', item['quest_reward_amount']) + '" style="width:40px;">' +
+            hiddenName
+            type = i8ln('XP')
+            break
         case 2:
             reward = '<img src="' + getIcon(iconpath.reward, 'reward/item', '.png', item['quest_item_id'], item['quest_reward_amount']) + '" style="width:40px;">' +
             hiddenName
