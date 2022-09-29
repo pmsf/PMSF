@@ -838,6 +838,9 @@ class RocketMap_MAD extends RocketMap
                 $pokestop["grunt_type"] = null;
             }
             switch ($pokestop["quest_reward_type"]) {
+                case 1:
+                    $pokestop["reward_amount"] = 0;
+                    break;
                 case 2:
                     $pokestop["reward_amount"] = intval($pokestop["reward_item_amount"]);
                     break;
