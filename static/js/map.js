@@ -1640,6 +1640,9 @@ function getReward(item) {
         styleStr = 'position:absolute;height:35px;right:55%;top:85px;'
     }
     switch (item['quest_reward_type']) {
+        case 1:
+            rewardImage = '<img style="' + styleStr + '" src="' + getIcon(iconpath.reward, 'reward/experience', '.png', item['reward_amount']) + '"/>'
+            break
         case 2:
             rewardImage = '<img style="' + styleStr + '" src="' + getIcon(iconpath.reward, 'reward/item', '.png', item['reward_item_id'], item['reward_amount']) + '"/>'
             break
@@ -1883,7 +1886,13 @@ function pokestopLabel(item) {
             i8ln('Quest') + ': <b>' +
             i8ln(questStr) +
             '</b></div>'
-        if (item['quest_reward_type'] === 2) {
+        if (item['quest_reward_type'] === 1) {
+            str += '<div>' +
+            i8ln('Reward') + ': <b>' +
+            item['reward_amount'] + ' ' +
+            i8ln('XP') +
+            '</b></div>'
+        } else if (item['quest_reward_type'] === 2) {
             str += '<div>' +
             i8ln('Reward') + ': <b>' +
             item['reward_amount'] + ' ' +
@@ -2020,7 +2029,9 @@ function pokestopLabel(item) {
             reward = item['reward_pokemon_name']
         } else if (item['reward_item_id'] > 0) {
             reward = item['reward_amount'] + ' ' + item['reward_item_name']
-        } else {
+        } else if (item['quest_reward_type'] === 1) {
+            reward = item['reward_amount'] + ' ' + i8ln('XP')
+        } else if (item['quest_reward_type'] === 3) {
             reward = item['reward_amount'] + ' ' + i8ln('Stardust')
         }
         str += '<a href="whatsapp://send?text=' + encodeURIComponent(item['pokestop_name']) + '%0A%2AQuest:%20' + quest + '%2A%0A%2AReward:%20' + reward + '%2A%0Ahttps://www.google.com/maps/search/?api=1%26query=' + item['latitude'] + ',' + item['longitude'] + '" data-action="share/whatsapp/share">' +
@@ -2542,6 +2553,18 @@ function getPokestopMarkerIcon(item) {
                     className: 'stop-quest-marker',
                     html: html
                 })
+            } else if (item['quest_reward_type'] === 1) {
+                html = '<div style="position:relative;">' +
+                    '<img src="' + getIcon(iconpath.pokestop, 'pokestop', '.png', markerStr, 0, 1) + '" style="width:50px;height:72;top:-35px;right:10px;"/>' +
+                    '<img src="' + getIcon(iconpath.reward, 'reward/experience', '.png', item['reward_amount']) + '" style="width:30px;height:auto;position:absolute;top:4px;left:0px;"/>' +
+                    '</div>'
+                stopMarker = L.divIcon({
+                    iconSize: [31, 31],
+                    iconAnchor: [25, 45],
+                    popupAnchor: [0, -35],
+                    className: 'stop-quest-marker',
+                    html: html
+                })
             }
         } else if (!noLures && item['lure_expiration'] > Date.now()) {
             html = '<div><img src="' + getIcon(iconpath.pokestop, 'pokestop', '.png', item['lure_id']) + '" style="width:50px;height:72;top:-35px;right:10px;"/><div>'
@@ -2643,6 +2666,18 @@ function getPokestopMarkerIcon(item) {
             html = '<div style="position:relative;">' +
                 '<img src="' + getIcon(iconpath.pokestop, 'pokestop', '.png', markerStr, 0, 1) + '" style="width:50px;height:72;top:-35px;right:10px;"/>' +
                 '<img src="' + getIcon(iconpath.reward, 'reward/item', '.png', item['reward_item_id'], item['reward_amount']) + '" style="width:30px;height:auto;position:absolute;top:4px;left:0px;"/>' +
+                '</div>'
+            stopMarker = L.divIcon({
+                iconSize: [31, 31],
+                iconAnchor: [25, 45],
+                popupAnchor: [0, -35],
+                className: 'stop-quest-marker',
+                html: html
+            })
+        } else if (item['quest_reward_type'] === 1) {
+            html = '<div style="position:relative;">' +
+                '<img src="' + getIcon(iconpath.pokestop, 'pokestop', '.png', markerStr, 0, 1) + '" style="width:50px;height:72;top:-35px;right:10px;"/>' +
+                '<img src="' + getIcon(iconpath.reward, 'reward/experience', '.png', item['reward_amount']) + '" style="width:30px;height:auto;position:absolute;top:4px;left:0px;"/>' +
                 '</div>'
             stopMarker = L.divIcon({
                 iconSize: [31, 31],
@@ -3617,6 +3652,9 @@ function searchForItem(lat, lon, term, type, field) {
                             }
                             if (element.quest_reward_type === 3) {
                                 html += '<span style="background:url(' + getIcon(iconpath.reward, 'reward/stardust', '.png', element.reward_amount) + ') no-repeat;" class="i-icon" ></span>'
+                            }
+                            if (element.quest_reward_type === 1) {
+                                html += '<span style="background:url(' + getIcon(iconpath.reward, 'reward/experience', '.png', element.reward_amount) + ') no-repeat;" class="i-icon" ></span>'
                             }
                             if (element.quest_reward_type === 12) {
                                 html += '<span style="background:url(' + getIcon(iconpath.reward, 'reward/mega_resource', '.png', element.reward_pokemon_id, element.reward_amount) + ') no-repeat;" class="i-icon" ></span>'
@@ -7897,6 +7935,27 @@ function getIcon(iconRepo, folder, fileType, iconKeyId, ...varArgs) {
                 } else {
                     if (enableJSDebug) {
                         console.log('Repo is missing reward->stardust icon: ' + requestedIcon)
+                    }
+                }
+            }
+            break
+        case 'reward/experience':
+            if (iconpath['rewardIndex'] === undefined) {
+                if (enableJSDebug) {
+                    console.log('No rewardIndex? Houston, we have a problem.')
+                }
+            } else if (iconpath['rewardIndex']['experience'] === undefined) {
+                if (enableJSDebug) {
+                    console.log('No rewardIndex->experience? Houston, we have a problem.')
+                }
+            } else {
+                const xpAmount = iconKeyId
+                requestedIcon = `${xpAmount}${fileType}`
+                if (iconpath['rewardIndex']['experience'].includes(requestedIcon)) {
+                    icon = requestedIcon
+                } else {
+                    if (enableJSDebug) {
+                        console.log('Repo is missing reward->experience icon: ' + requestedIcon)
                     }
                 }
             }
