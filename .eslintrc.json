@@ -233,6 +233,7 @@
     "noLastScan": true,
     "noDarkMode": true,
     "defaultDustAmount": true,
+    "defaultXpAmount": true,
     "noCatchRates": true,
     "nestAvgDefault": true,
     "noHideSingleMarker": true,

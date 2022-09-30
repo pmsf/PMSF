@@ -693,8 +693,16 @@ if (strtolower($map) === "rdm") {
                                                     if (! $noQuestsStardust) { ?>
                                                         <div class="dropdown-divider"></div>
                                                         <div class="dustslider">
-                                                            <input type="range" class="form-range" min="0" max="3500" value="500" class="slider" id="dustrange">
+                                                            <input type="range" class="form-range" min="0" max="3500" step="10" value="500" class="slider" id="dustrange">
                                                             <p><?php echo i8ln('Show stardust ') ?><span id="dustvalue"></span></p>
+                                                        </div>
+                                                    <?php } ?>
+                                                    <?php
+                                                    if (! $noQuestsXP) { ?>
+                                                        <div class="dropdown-divider"></div>
+                                                        <div class="xpslider">
+                                                            <input type="range" class="form-range" min="0" max="5000" step="10" value="500" class="slider" id="xprange">
+                                                            <p><?php echo i8ln('Show XP ') ?><span id="xpvalue"></span></p>
                                                         </div>
                                                     <?php } ?>
                                                 </div>
@@ -1708,6 +1716,7 @@ include('modals.php');
     var makeItBang = <?php echo $makeItBang === true ? 'true' : 'false' ?>;
     var showYourLove = <?php echo $showYourLove === true ? 'true' : 'false' ?>;
     var defaultDustAmount = <?php echo $defaultDustAmount; ?>;
+    var defaultXpAmount = <?php echo $defaultXpAmount; ?>;
     var nestAvgDefault = <?php echo $nestAvgDefault; ?>;
     var noDarkMode = <?php echo $noDarkMode === true ? 'true' : 'false' ?>;
     var noCatchRates = <?php echo $noCatchRates === true ? 'true' : 'false' ?>;

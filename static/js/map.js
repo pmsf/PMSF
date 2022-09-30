@@ -89,6 +89,8 @@ var rbreids = []
 var rereids = []
 var dustamount
 var reloaddustamount
+var xpamount
+var reloadxpamount
 var nestavg
 var toastdelayslider
 
@@ -1080,6 +1082,8 @@ function initSidebar() {
     $('#quests-filter-wrapper').toggle(Store.get('showQuests'))
     $('#dustvalue').text(Store.get('showDustAmount'))
     $('#dustrange').val(Store.get('showDustAmount'))
+    $('#xpvalue').text(Store.get('showXpAmount'))
+    $('#xprange').val(Store.get('showXpAmount'))
     $('#nestrange').val(Store.get('showNestAvg'))
     $('#nestavg').text(Store.get('showNestAvg'))
     $('#start-at-user-location-switch').prop('checked', Store.get('startAtUserLocation'))
@@ -1856,7 +1860,7 @@ function pokestopLabel(item) {
             '<img src="static/sprites/misc/teamRocket.png" style="position:absolute;height:30px;left:55%;">' +
             '<img src="' + getIcon(iconpath.invasion, 'invasion', '.png', item['grunt_type']) + '" style="position:absolute;height:35px;right:55%;top:85px;">'
         }
-    } else if (!noQuests && item['quest_type'] !== 0 && lastMidnight < Number(item['quest_timestamp'])) {
+    } else if (!noQuests && item['quest_type'] > 0 && lastMidnight < Number(item['quest_timestamp'])) {
         stopName = '<b class="pokestop-quest-name">' + item['pokestop_name'] + '</b>'
         if (item['url'] !== null) {
             stopImage = '<img class="pokestop-quest-image" id="' + item['pokestop_id'] + '" src="' + item['url'] + '" onclick="openFullscreenModal(document.getElementById(\'' + item['pokestop_id'] + '\').src)"/>' +
@@ -1879,7 +1883,7 @@ function pokestopLabel(item) {
         '<div>' + stopName + '</div>' +
         '<div>' + stopImage
 
-    if (!noQuests && item['quest_type'] !== null && typeof questtypeList[item['quest_type']] !== 'undefined' && lastMidnight < Number(item['quest_timestamp'])) {
+    if (!noQuests && item['quest_type'] > 0 && typeof questtypeList[item['quest_type']] !== 'undefined' && lastMidnight < Number(item['quest_timestamp'])) {
         var questStr = getQuest(item)
         str += getReward(item) + '</div>' +
             '<div>' +
@@ -1928,7 +1932,7 @@ function pokestopLabel(item) {
     } else {
         str += '</div>'
     }
-    if (!noQuests && item['quest_type'] !== null && typeof questtypeList[item['quest_type']] === 'undefined' && lastMidnight < Number(item['quest_timestamp'])) {
+    if (!noQuests && item['quest_type'] > 0 && typeof questtypeList[item['quest_type']] === 'undefined' && lastMidnight < Number(item['quest_timestamp'])) {
         console.log('Undefined Quest Type: ' + item['quest_type'])
         str += '<div>' + i8ln('Error: Undefined Quest Type') + ': ' + item['quest_type'] + '</div>'
     }
@@ -2022,7 +2026,7 @@ function pokestopLabel(item) {
                 '<button onclick="copyCoordsToClipboard(this.previousElementSibling);" class="small-tight">' + 'Copy' + '</button> '
     }
     str += '<a href="./?lat=' + item['latitude'] + '&lon=' + item['longitude'] + '&zoom=18&stopId=' + item['pokestop_id'] + '"><i class="far fa-share-square" aria-hidden="true" style="position:relative;top:3px;left:0px;color:#26c300;font-size:20px;"></i></a>'
-    if (!noQuests && !noWhatsappLink && item['quest_type'] !== null && lastMidnight < Number(item['quest_timestamp'])) {
+    if (!noQuests && !noWhatsappLink && item['quest_type'] > 0 && lastMidnight < Number(item['quest_timestamp'])) {
         var quest = getQuest(item)
         var reward = ''
         if (item['reward_pokemon_id'] > 0) {
@@ -2038,7 +2042,7 @@ function pokestopLabel(item) {
             '<i class="fab fa-whatsapp" style="position:relative;top:3px;left:5px;color:#26c300;font-size:20px;"></i></a>'
     }
     str += '</center></div>'
-    if (!noQuests && item['quest_type'] !== null && lastMidnight < Number(item['quest_timestamp'])) {
+    if (!noQuests && item['quest_type'] > 0 && lastMidnight < Number(item['quest_timestamp'])) {
         str += '<center><div>' +
             i8ln('Quest found') + ': ' + getDateStr(item['quest_timestamp'] * 1000) + ' ' + getTimeStr(item['quest_timestamp'] * 1000) +
             '</div></center>'
@@ -2483,7 +2487,7 @@ function getPokestopMarkerIcon(item) {
                 className: 'stop-rocket-marker',
                 html: html
             })
-        } else if (!noQuests && item['quest_reward_type'] !== null && lastMidnight < Number(item['quest_timestamp'])) {
+        } else if (!noQuests && item['quest_reward_type'] > 0 && lastMidnight < Number(item['quest_timestamp'])) {
             if (!noLures && item['lure_expiration'] > Date.now()) {
                 markerStr = item['lure_id']
             }
@@ -2604,7 +2608,7 @@ function getPokestopMarkerIcon(item) {
             className: 'stop-rocket-marker',
             html: html
         })
-    } else if (Store.get(['showQuests']) && !noQuests && item['quest_reward_type'] !== null && lastMidnight < Number(item['quest_timestamp'])) {
+    } else if (Store.get(['showQuests']) && !noQuests && item['quest_reward_type'] > 0 && lastMidnight < Number(item['quest_timestamp'])) {
         if (!noLures && item['lure_expiration'] > Date.now()) {
             markerStr = item['lure_id']
         }
@@ -3398,6 +3402,7 @@ function loadRawData() {
     var loadQuests = Store.get('showQuests')
     var showQuestsWithTaskAR = Store.get('showQuestsWithTaskAR')
     var loadDustamount = Store.get('showDustAmount')
+    var loadXpamount = Store.get('showXpAmount')
     var loadNestAvg = Store.get('showNestAvg')
     var loadNests = Store.get('showNests')
     var loadCommunities = Store.get('showCommunities')
@@ -3453,6 +3458,8 @@ function loadRawData() {
             'quests_with_ar': showQuestsWithTaskAR,
             'dustamount': loadDustamount,
             'reloaddustamount': reloaddustamount,
+            'xpamount': loadXpamount,
+            'reloadxpamount': reloadxpamount,
             'nestavg': loadNestAvg,
             'nests': loadNests,
             'lastnests': lastnests,
@@ -4332,6 +4339,7 @@ function manualQuestData(event) { // eslint-disable-line no-unused-vars
     var item = $('#itemReward').val()
     var itemamount = $('#itemAmount').val()
     var dust = $('#dustAmount').val()
+    var xp = $('#xpAmount').val()
     var pokestopId = $('#questpokestopid').val()
     if (pokestopId && pokestopId !== '') {
         if (confirm(i8ln('I confirm this is an accurate sighting of a quest'))) {
@@ -4356,6 +4364,7 @@ function manualQuestData(event) { // eslint-disable-line no-unused-vars
                     'item': item,
                     'itemamount': itemamount,
                     'dust': dust,
+                    'xp': xp,
                     'pokestopId': pokestopId
                 },
                 error: function error() {
@@ -4733,25 +4742,35 @@ function openQuestModal(event) { // eslint-disable-line no-unused-vars
             }
         })
         $('#rewardTypeList').change(function () {
-            if ($(this).val() === '2') {
+            if ($(this).val() === '1') {
+                $('#itemRewardList').collapse('hide')
+                $('#itemAmountList').collapse('hide')
+                $('#dustAmountList').collapse('hide')
+                $('#xpAmountList').collapse('show')
+                $('#pokeRewardList').collapse('hide')
+            } else if ($(this).val() === '2') {
                 $('#itemRewardList').collapse('show')
                 $('#itemAmountList').collapse('show')
                 $('#dustAmountList').collapse('hide')
+                $('#xpAmountList').collapse('hide')
                 $('#pokeRewardList').collapse('hide')
             } else if ($(this).val() === '3') {
                 $('#itemRewardList').collapse('hide')
                 $('#itemAmountList').collapse('hide')
                 $('#dustAmountList').collapse('show')
+                $('#xpAmountList').collapse('hide')
                 $('#pokeRewardList').collapse('hide')
             } else if ($(this).val() === '7') {
                 $('#itemRewardList').collapse('hide')
                 $('#itemAmountList').collapse('hide')
                 $('#dustAmountList').collapse('hide')
+                $('#xpAmountList').collapse('hide')
                 $('#pokeRewardList').collapse('show')
             } else {
                 $('#itemRewardList').collapse('hide')
                 $('#itemAmountList').collapse('hide')
                 $('#dustAmountList').collapse('hide')
+                $('#xpAmountList').collapse('hide')
                 $('#pokeRewardList').collapse('hide')
             }
         })
@@ -5066,9 +5085,9 @@ function pokestopMeetsQuestFilter(pokestop, lastMidnight) {
         return false
     } else if (pokestop['quest_reward_type'] === 2 && pokestop['reward_item_id'] > 0 && questsExcludedItem.indexOf(pokestop['reward_item_id']) > -1) {
         return false
-    } else if (pokestop['quest_reward_type'] === 3 && Number(pokestop['reward_amount']) < Number(Store.get('showDustAmount'))) {
+    } else if (pokestop['quest_reward_type'] === 3 && (Store.get('showDustAmount') === 0 || Number(pokestop['reward_amount']) < Number(Store.get('showDustAmount')))) {
         return false
-    } else if (pokestop['quest_reward_type'] === 3 && Store.get('showDustAmount') === 0) {
+    } else if (pokestop['quest_reward_type'] === 1 && (Store.get('showXpAmount') === 0 || Number(pokestop['reward_amount']) < Number(Store.get('showXpAmount')))) {
         return false
     } else {
         return true
@@ -5570,6 +5589,7 @@ function updateMap() {
                 }, reincludedRaidegg)
             }
             reloaddustamount = false
+            reloadxpamount = false
 
             timestamp = result.timestamp
             lastUpdateTime = Date.now()
@@ -7408,6 +7428,18 @@ $(function () {
         } else {
             $('#dustvalue').text(i8ln('above') + ' ' + dustamount)
             reloaddustamount = true
+            setTimeout(function () { updateMap() }, 2000)
+        }
+    })
+    $('#xprange').on('input', function () {
+        xpamount = $(this).val()
+        Store.set('showXpAmount', xpamount)
+        if (xpamount === '0') {
+            $('#xpvalue').text(i8ln('Off'))
+            setTimeout(function () { updateMap() }, 2000)
+        } else {
+            $('#xpvalue').text(i8ln('above') + ' ' + xpamount)
+            reloadxpamount = true
             setTimeout(function () { updateMap() }, 2000)
         }
     })

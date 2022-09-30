@@ -55,6 +55,9 @@ class RDM extends Search
         if (!empty($forms)) {
             $conds[] = "json_extract(json_extract(`".$ar_string."quest_rewards`,'$[*].info.form_id'),'$[0]') IN (" . implode(',', $forms) . ")";
         }
+        if (strpos(strtolower(i8ln('XP')), strtolower($term)) !== false) {
+            $conds[] = $ar_string."quest_reward_type = 1";
+        }
         if (strpos(strtolower(i8ln('Stardust')), strtolower($term)) !== false) {
             $conds[] = $ar_string."quest_reward_type = 3";
         }
