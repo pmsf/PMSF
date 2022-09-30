@@ -813,6 +813,12 @@
                                     <option value="2000">2000</option>
                                 </select>
                             </div>
+                            <div class="collapse" id="xpAmountList">
+                                <select id="xpAmount" name="xpAmount" class="form-select" aria-label="XP amount">
+                                    <option selected><?php echo i8ln('Select XP amount'); ?></option>
+                                    <option value="700">700</option>
+                                </select>
+                            </div>
                         </label>
                         <button type="button" class="btn btn-primary btn-sm" onclick="manualQuestData(event);" class="submitting-quest"><i class="fas fa-binoculars"></i> <?php echo i8ln('Submit Quest'); ?></button>
                     </div>

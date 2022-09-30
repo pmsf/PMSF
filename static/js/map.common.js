@@ -351,6 +351,11 @@ var StoreOptions = {
             default: defaultDustAmount,
             type: StoreTypes.Number
         },
+    'showXpAmount':
+        {
+            default: defaultXpAmount,
+            type: StoreTypes.Number
+        },
     'showNestAvg':
         {
             default: nestAvgDefault,

@@ -53,6 +53,9 @@ class RocketMap_MAD extends Search
         if (!empty($forms)) {
             $conds[] = "json_extract(json_extract(`quest_reward`,'$[*].pokemon_encounter.pokemon_display.form_value'),'$[0]') IN (" . implode(',', $forms) . ")";
         }
+        if (strpos(strtolower(i8ln('XP')), strtolower($term)) !== false) {
+            $conds[] = "tq.quest_reward_type = 1";
+        }
         if (strpos(strtolower(i8ln('Stardust')), strtolower($term)) !== false) {
             $conds[] = "tq.quest_reward_type = 3";
         }
@@ -79,6 +82,7 @@ class RocketMap_MAD extends Search
         json_extract(json_extract(`quest_reward`,'$[*].pokemon_encounter.pokemon_display.is_shiny'),'$[0]') AS reward_pokemon_shiny,
         json_extract(json_extract(`quest_reward`,'$[*].candy.pokemon_id'),'$[0]') AS reward_candy_pokemon_id,
         json_extract(json_extract(`quest_reward`,'$[*].candy.amount'),'$[0]') AS reward_candy_amount,
+        json_extract(json_extract(`quest_reward`,'$[*].exp'),'$[0]') AS reward_xp_amount,
         ROUND(( 3959 * acos( cos( radians(:lat) ) * cos( radians( latitude ) ) * cos( radians( longitude ) - radians(:lon) ) + sin( radians(:lat) ) * sin( radians( latitude ) ) ) ),2) AS distance
         FROM pokestop p
         LEFT JOIN trs_quest tq ON tq.GUID = p.pokestop_id
@@ -95,7 +99,7 @@ class RocketMap_MAD extends Search
         foreach ($rewards as $reward) {
             switch ($reward["quest_reward_type"]) {
                 case 1:
-                    $reward["reward_amount"] = 0;
+                    $reward["reward_amount"] = intval($reward["reward_xp_amount"]);
                     break;
                 case 2:
                     $reward["reward_amount"] = intval($reward["reward_item_amount"]);
