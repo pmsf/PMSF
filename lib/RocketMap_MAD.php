@@ -640,7 +640,7 @@ class RocketMap_MAD extends RocketMap
             }
             $xpSQL = '';
             if (!empty($xpamount) && !is_nan((float)$xpamount) && $xpamount > 0) {
-                $xpSQL .= " OR (tq.quest_reward_type = 1 AND json_extract(json_extract(`tq.quest_reward`,'$[*].exp'),'$[0]') >= :xpamount)";
+                $xpSQL .= " OR (tq.quest_reward_type = 1 AND tq.quest_stardust >= :xpamount)";
                 $params[':xpamount'] = intval($xpamount);
             }
             $conds[] = "((" . $pokemonSQL . ") OR (" . $itemSQL . ") OR (" . $energySQL . ") OR (" . $candySQL . ")" . $dustSQL . $xpSQL . ")";
@@ -736,7 +736,7 @@ class RocketMap_MAD extends RocketMap
                 $params[':dustamount'] = intval($dustamount);
             }
             if ($reloadxpamount == "true") {
-                $tmpSQL .= "(tq.quest_reward_type = 1 AND json_extract(json_extract(`tq.quest_reward`,'$[*].exp'),'$[0]') > :xpamount)";
+                $tmpSQL .= "(tq.quest_reward_type = 1 AND tq.quest_stardust > :xpamount)";
                 $params[':xpamount'] = intval($xpamount);
             }
             $conds[] = $tmpSQL;
@@ -787,8 +787,7 @@ class RocketMap_MAD extends RocketMap
         tq.quest_item_amount AS reward_item_amount,
         tq.quest_stardust AS reward_dust_amount,
         json_extract(json_extract(`quest_reward`,'$[*].candy.amount'),'$[0]') AS reward_candy_amount,
-        json_extract(json_extract(`quest_reward`,'$[*].candy.pokemon_id'),'$[0]') AS reward_candy_pokemon_id,
-        json_extract(json_extract(`quest_reward`,'$[*].exp'),'$[0]') AS reward_xp_amount
+        json_extract(json_extract(`quest_reward`,'$[*].candy.pokemon_id'),'$[0]') AS reward_candy_pokemon_id
         FROM pokestop p
         LEFT JOIN trs_quest tq ON tq.GUID = p.pokestop_id
         WHERE :conditions";
@@ -817,7 +816,7 @@ class RocketMap_MAD extends RocketMap
             }
             switch ($pokestop["quest_reward_type"]) {
                 case 1:
-                    $pokestop["reward_amount"] = intval($pokestop["reward_xp_amount"]);
+                    $pokestop["reward_amount"] = intval($pokestop["reward_dust_amount"]);
                     break;
                 case 2:
                     $pokestop["reward_amount"] = intval($pokestop["reward_item_amount"]);

@@ -212,7 +212,6 @@ class RocketMap_MAD extends Stats
           tq.quest_pokemon_costume_id AS quest_pokemon_costume,
           tq.quest_item_amount AS quest_item_amount,
           tq.quest_stardust AS quest_dust_amount,
-          json_extract(json_extract(`tq.quest_reward`,'$[*].exp'),'$[0]') AS quest_xp_amount,
           tq.quest_reward_type AS quest_reward_type
         FROM trs_quest tq
         LEFT JOIN pokestop p ON p.pokestop_id = tq.GUID
@@ -253,7 +252,7 @@ class RocketMap_MAD extends Stats
           $questReward["quest_reward_amount"] = $reward["quest_dust_amount"];
         } elseif ($reward["quest_reward_type"] == 1) {
           $questReward["name"] = i8ln('XP');
-          $questReward["quest_reward_amount"] = $reward["quest_xp_amount"];
+          $questReward["quest_reward_amount"] = $reward["quest_dust_amount"];
         }
         
         $data[] = $questReward;
