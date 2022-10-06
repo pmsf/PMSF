@@ -47,13 +47,16 @@ class RDM extends Search
             }
         }
         if (!empty($presids)) {
-            $conds[] = "json_extract(json_extract(`".$ar_string."quest_rewards`,'$[*].info.pokemon_id'),'$[0]') IN (" . implode(',', $presids) . ")";
+            $conds[] = $ar_string."quest_pokemon_id IN (" . implode(',', $presids) . ")";
         }
         if (!empty($iresids)) {
             $conds[] = $ar_string."quest_item_id IN (" . implode(',', $iresids) . ")";
         }
         if (!empty($forms)) {
             $conds[] = "json_extract(json_extract(`".$ar_string."quest_rewards`,'$[*].info.form_id'),'$[0]') IN (" . implode(',', $forms) . ")";
+        }
+        if (strpos(strtolower(i8ln('XP')), strtolower($term)) !== false) {
+            $conds[] = $ar_string."quest_reward_type = 1";
         }
         if (strpos(strtolower(i8ln('Stardust')), strtolower($term)) !== false) {
             $conds[] = $ar_string."quest_reward_type = 3";
@@ -72,9 +75,9 @@ class RDM extends Search
         url,
         ".$ar_string."quest_type AS quest_type,
         ".$ar_string."quest_reward_type AS quest_reward_type,
-        json_extract(json_extract(`".$ar_string."quest_rewards`,'$[*].info.pokemon_id'),'$[0]') AS reward_pokemon_id,
+        ".$ar_string."quest_pokemon_id AS reward_pokemon_id,
         ".$ar_string."quest_item_id AS reward_item_id,
-        json_extract(json_extract(`".$ar_string."quest_rewards`,'$[*].info.amount'),'$[0]') AS reward_amount,
+        ".$ar_string."quest_reward_amount AS reward_amount,
         json_extract(json_extract(`".$ar_string."quest_rewards`,'$[*].info.form_id'),'$[0]') AS reward_pokemon_formid,
         json_extract(json_extract(`".$ar_string."quest_rewards`,'$[*].info.costume_id'),'$[0]') AS reward_pokemon_costumeid,
         json_extract(json_extract(`".$ar_string."quest_rewards`,'$[*].info.gender_id'),'$[0]') AS reward_pokemon_genderid,

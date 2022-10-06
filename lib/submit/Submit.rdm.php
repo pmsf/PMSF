@@ -366,7 +366,7 @@ class RDM extends Submit
         }
     }
 
-    public function submit_quest($pokestopId, $questType, $questTarget, $conditionType, $catchPokemonType, $catchPokemon, $raidLevel, $throwType, $curveThrow, $rewardType, $encounter, $item, $itemAmount, $dust, $loggedUser)
+    public function submit_quest($pokestopId, $questType, $questTarget, $conditionType, $catchPokemonType, $catchPokemon, $raidLevel, $throwType, $curveThrow, $rewardType, $encounter, $item, $itemAmount, $dust, $xp, $loggedUser)
     {
         global $db, $noManualQuests, $noPokestops, $noDiscordSubmitLogChannel, $discordSubmitLogChannelUrl;
         if ($noManualQuests === true || $noPokestops === true) {
@@ -436,7 +436,14 @@ class RDM extends Submit
                 );
             }
 
-            if ($rewardType === '2') {
+            if ($rewardType === '1') {
+                $jsonRewards = json_encode(array(
+                    'info' => array(
+                        'amount' => intval($xp)
+                    ),
+                    'type' => intval($rewardType)
+                ));
+            } elseif ($rewardType === '2') {
                 $jsonRewards = json_encode(array(
                     'info' => array(
                         'amount' => intval($itemAmount),

@@ -552,7 +552,7 @@ class RocketMap_MAD extends RocketMap
         return $data;
     }
 
-    public function get_stops($geids, $qpeids, $qeeids, $qceids, $qieids, $swLat, $swLng, $neLat, $neLng, $tstamp = 0, $oSwLat = 0, $oSwLng = 0, $oNeLat = 0, $oNeLng = 0, $lured = false, $rocket = false, $quests, $dustamount, $quests_with_ar)
+    public function get_stops($geids, $qpeids, $qeeids, $qceids, $qieids, $swLat, $swLng, $neLat, $neLng, $tstamp = 0, $oSwLat = 0, $oSwLng = 0, $oNeLat = 0, $oNeLng = 0, $lured = false, $rocket = false, $quests, $dustamount, $xpamount, $quests_with_ar)
     {
         $conds = array();
         $params = array();
@@ -635,17 +635,15 @@ class RocketMap_MAD extends RocketMap
             }
             $dustSQL = '';
             if (!empty($dustamount) && !is_nan((float)$dustamount) && $dustamount > 0) {
-                $dustSQL .= "OR (quest_reward_type = 3 AND tq.quest_stardust >= :amount)";
-                $params[':amount'] = intval($dustamount);
-                $params[':swLat'] = $swLat;
-                $params[':swLng'] = $swLng;
-                $params[':neLat'] = $neLat;
-                $params[':neLng'] = $neLng;
-                if (!$noBoundaries) {
-                    $dustSQL .= " AND (ST_WITHIN(point(latitude,longitude),ST_GEOMFROMTEXT('POLYGON(( " . $boundaries . " ))')))";
-                }
+                $dustSQL .= " OR (tq.quest_reward_type = 3 AND tq.quest_stardust >= :dustamount)";
+                $params[':dustamount'] = intval($dustamount);
             }
-            $conds[] = "(" . $pokemonSQL . " OR " . $itemSQL . " OR " . $energySQL . " OR " . $candySQL . ")" . $dustSQL . "";
+            $xpSQL = '';
+            if (!empty($xpamount) && !is_nan((float)$xpamount) && $xpamount > 0) {
+                $xpSQL .= " OR (tq.quest_reward_type = 1 AND tq.quest_stardust >= :xpamount)";
+                $params[':xpamount'] = intval($xpamount);
+            }
+            $conds[] = "((" . $pokemonSQL . ") OR (" . $itemSQL . ") OR (" . $energySQL . ") OR (" . $candySQL . ")" . $dustSQL . $xpSQL . ")";
         }
         if (!empty($rocket) && $rocket === 'true') {
             $rocketSQL = '';
@@ -674,7 +672,7 @@ class RocketMap_MAD extends RocketMap
         return $this->query_stops($conds, $params, $quests_with_ar);
     }
 
-    public function get_stops_quest($greids, $qpreids, $qereids, $qcreids, $qireids, $swLat, $swLng, $neLat, $neLng, $tstamp = 0, $oSwLat = 0, $oSwLng = 0, $oNeLat = 0, $oNeLng = 0, $lures, $rocket, $quests, $dustamount, $reloaddustamount, $quests_with_ar)
+    public function get_stops_quest($greids, $qpreids, $qereids, $qcreids, $qireids, $swLat, $swLng, $neLat, $neLng, $tstamp = 0, $oSwLat = 0, $oSwLng = 0, $oNeLat = 0, $oNeLng = 0, $lures, $rocket, $quests, $dustamount, $reloaddustamount, $xpamount, $reloadxpamount, $quests_with_ar)
     {
         $conds = array();
         $params = array();
@@ -734,8 +732,12 @@ class RocketMap_MAD extends RocketMap
                 $tmpSQL .= "tq.quest_item_id IN ( $item_in )";
             }
             if ($reloaddustamount == "true") {
-                $tmpSQL .= "tq.quest_stardust > :amount";
-                $params[':amount'] = intval($dustamount);
+                $tmpSQL .= "(tq.quest_reward_type = 3 AND tq.quest_stardust > :dustamount)";
+                $params[':dustamount'] = intval($dustamount);
+            }
+            if ($reloadxpamount == "true") {
+                $tmpSQL .= "(tq.quest_reward_type = 1 AND tq.quest_stardust > :xpamount)";
+                $params[':xpamount'] = intval($xpamount);
             }
             $conds[] = $tmpSQL;
         }
@@ -759,7 +761,7 @@ class RocketMap_MAD extends RocketMap
 
     public function query_stops($conds, $params, $quests_with_ar)
     {
-        global $db;
+        global $db, $noQuests, $noQuestsPokemon, $noQuestsItems, $noQuestsEnergy, $noQuestsCandy, $noQuestsStardust, $noQuestsXP;
 
         $query = "SELECT Unix_timestamp(Convert_tz(lure_expiration, '+00:00', @@global.time_zone)) AS lure_expiration,
         Unix_timestamp(Convert_tz(incident_expiration, '+00:00', @@global.time_zone)) AS incident_expiration,
@@ -814,7 +816,7 @@ class RocketMap_MAD extends RocketMap
             }
             switch ($pokestop["quest_reward_type"]) {
                 case 1:
-                    $pokestop["reward_amount"] = 0;
+                    $pokestop["reward_amount"] = intval($pokestop["reward_dust_amount"]);
                     break;
                 case 2:
                     $pokestop["reward_amount"] = intval($pokestop["reward_item_amount"]);
@@ -839,6 +841,19 @@ class RocketMap_MAD extends RocketMap
             }
             $pokestop["latitude"] = floatval($pokestop["latitude"]);
             $pokestop["longitude"] = floatval($pokestop["longitude"]);
+            if ($noQuests ||
+            ($noQuestsEnergy && intval($pokestop["quest_reward_type"]) === 12) ||
+            ($noQuestsPokemon && intval($pokestop["quest_reward_type"]) === 7) ||
+            ($noQuestsCandy && intval($pokestop["quest_reward_type"]) === 4) ||
+            ($noQuestsStardust && intval($pokestop["quest_reward_type"]) === 3) ||
+            ($noQuestsItems && intval($pokestop["quest_reward_type"]) === 2) ||
+            ($noQuestsXP && intval($pokestop["quest_reward_type"]) === 1)) {
+                $pokestop["quest_type"] = 0;
+                $pokestop["quest_reward_type"] = 0;
+            } else {
+                $pokestop["quest_type"] = intval($pokestop["quest_type"]);
+                $pokestop["quest_reward_type"] = intval($pokestop["quest_reward_type"]);
+            }
             $pokestop["lure_expiration"] = !empty($pokestop["lure_expiration"]) ? $pokestop["lure_expiration"] * 1000 : null;
             $pokestop["incident_expiration"] = !empty($pokestop["incident_expiration"]) ? $pokestop["incident_expiration"] * 1000 : null;
             $pokestop["grunt_type_name"] = empty($grunttype_pid) ? null : i8ln($this->grunttype[$grunttype_pid]["type"]);
@@ -847,11 +862,9 @@ class RocketMap_MAD extends RocketMap
             $pokestop["second_reward"] = empty($this->grunttype[$grunttype_pid]["second_reward"]) ? null : $this->grunttype[$grunttype_pid]["second_reward"];
             $pokestop["lure_id"] = intval($pokestop["lure_id"]);
             $pokestop["url"] = ! empty($pokestop["url"]) ? preg_replace("/^http:/i", "https:", $pokestop["url"]) : null;
-            $pokestop["quest_type"] = intval($pokestop["quest_type"]);
             $pokestop["quest_condition_type"] = 0;
             $pokestop["quest_condition_type_1"] = 0;
             $pokestop["quest_condition_info"] = null;
-            $pokestop["quest_reward_type"] = intval($pokestop["quest_reward_type"]);
             $pokestop["quest_target"] = 0;
             $pokestop["reward_pokemon_name"] = empty($mon_pid) ? null : i8ln($this->data[$mon_pid]["name"]);
             $pokestop["reward_pokemon_formid"] = intval($pokestop["reward_pokemon_formid"]);

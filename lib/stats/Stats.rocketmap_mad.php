@@ -252,7 +252,7 @@ class RocketMap_MAD extends Stats
           $questReward["quest_reward_amount"] = $reward["quest_dust_amount"];
         } elseif ($reward["quest_reward_type"] == 1) {
           $questReward["name"] = i8ln('XP');
-          $questReward["quest_reward_amount"] = 0;
+          $questReward["quest_reward_amount"] = $reward["quest_dust_amount"];
         }
         
         $data[] = $questReward;

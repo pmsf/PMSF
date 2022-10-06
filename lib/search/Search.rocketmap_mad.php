@@ -53,6 +53,9 @@ class RocketMap_MAD extends Search
         if (!empty($forms)) {
             $conds[] = "json_extract(json_extract(`quest_reward`,'$[*].pokemon_encounter.pokemon_display.form_value'),'$[0]') IN (" . implode(',', $forms) . ")";
         }
+        if (strpos(strtolower(i8ln('XP')), strtolower($term)) !== false) {
+            $conds[] = "tq.quest_reward_type = 1";
+        }
         if (strpos(strtolower(i8ln('Stardust')), strtolower($term)) !== false) {
             $conds[] = "tq.quest_reward_type = 3";
         }
@@ -95,7 +98,7 @@ class RocketMap_MAD extends Search
         foreach ($rewards as $reward) {
             switch ($reward["quest_reward_type"]) {
                 case 1:
-                    $reward["reward_amount"] = 0;
+                    $reward["reward_amount"] = intval($reward["reward_dust_amount"]);
                     break;
                 case 2:
                     $reward["reward_amount"] = intval($reward["reward_item_amount"]);
