@@ -106,7 +106,7 @@
 
     function candyFilterImages($noPokemonNames, $noPokemonNumbers, $onClick = '', $candyToExclude = array(), $num = 0)
     {
-        global $mons, $iconFolderArray, $numberOfPokemon, $copyrightSafe;
+        global $mons, $copyrightSafe, $iconFolderArray, $numberOfPokemon;
         if (empty($mons)) {
             $json = file_get_contents('static/dist/data/pokemon.min.json');
             $mons = json_decode($json, true);
