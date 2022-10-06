@@ -663,11 +663,11 @@ function logFailure($logFailure) {
     global $logFailedLogin;
     file_put_contents($logFailedLogin, $logFailure, FILE_APPEND);
 }
-function checkAccessLevelDiscord ($userId, $guilds) {
+function checkAccessLevelDiscord($userId, $guilds) {
     global $discordUsers, $guildRoles, $discord;
     $accessRole = '';
     foreach ($guildRoles['guildIDS'] as $guild => $guildRoles) {
-        $isMember = in_array($guild , array_column($guilds, 'id'));
+        $isMember = (is_array($guilds) && in_array($guild , array_column($guilds, 'id')));
         if ($isMember) {
             $getMemberDetails = $discord->guild->getGuildMember(['guild.id' => $guild, 'user.id' => intval($userId)]);
             foreach ($getMemberDetails->roles as $role) {
@@ -691,7 +691,7 @@ function checkAccessLevelDiscord ($userId, $guilds) {
     }
     return $accessRole;
 }
-function checkAccessLevelPatreon ($accessToken, $userId) {
+function checkAccessLevelPatreon($accessToken, $userId) {
     global $patreonTiers;
     $member = patreon_call($accessToken, '/api/oauth2/v2/members/' . $userId . '?include=currently_entitled_tiers,user&fields%5Bmember%5D=full_name,patron_status&fields%5Btier%5D=title&fields%5Buser%5D=full_name,hide_pledges');
 

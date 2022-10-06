@@ -8,6 +8,7 @@ var $selectPokemonNotify
 var $selectRarityNotify
 var $textPerfectionNotify
 var $textLevelNotify
+var $textMinLLRank
 var $textMinGLRank
 var $textMinULRank
 var $textMinIV
@@ -57,11 +58,15 @@ var excludedRaidboss = []
 var excludedRaidegg = []
 var notifiedMinPerfection = null
 var notifiedMinLevel = null
+var minIV = null
+var minLLRank = null
 var minGLRank = null
 var minULRank = null
-var minIV = null
 var prevMinIV = null
 var prevMinLevel = null
+var prevMinLLRank = null
+var prevMinGLRank = null
+var prevMinULRank = null
 var onlyPokemon = 0
 var directionProvider
 
@@ -84,6 +89,8 @@ var rbreids = []
 var rereids = []
 var dustamount
 var reloaddustamount
+var xpamount
+var reloadxpamount
 var nestavg
 var toastdelayslider
 
@@ -152,7 +159,6 @@ createjs.Sound.registerSound('static/sounds/ding.mp3', 'ding')
 
 var pokemonTypes = ['unset', 'Normal', 'Fighting', 'Flying', 'Poison', 'Ground', 'Rock', 'Bug', 'Ghost', 'Steel', 'Fire', 'Water', 'Grass', 'Electric', 'Psychic', 'Ice', 'Dragon', 'Dark', 'Fairy']
 var genderType = ['♂', '♀', '⚲']
-var cpMultiplier = [0.094, 0.16639787, 0.21573247, 0.25572005, 0.29024988, 0.3210876, 0.34921268, 0.37523559, 0.39956728, 0.42250001, 0.44310755, 0.46279839, 0.48168495, 0.49985844, 0.51739395, 0.53435433, 0.55079269, 0.56675452, 0.58227891, 0.59740001, 0.61215729, 0.62656713, 0.64065295, 0.65443563, 0.667934, 0.68116492, 0.69414365, 0.70688421, 0.71939909, 0.7317, 0.73776948, 0.74378943, 0.74976104, 0.75568551, 0.76156384, 0.76739717, 0.7731865, 0.77893275, 0.7846369, 0.79030001]
 var throwType = JSON.parse('{"10": "Nice", "11": "Great", "12": "Excellent"}')
 var gruntCharacterTypes = ['unset', 'Team Leader(s)', 'Team GO Rocket Grunt(s)', 'Arlo', 'Cliff', 'Sierra', 'Giovanni']
 var weatherTexts = ['None', 'Clear', 'Rain', 'Partly Cloudy', 'Cloudy', 'Windy', 'Snow', 'Fog']
@@ -884,10 +890,9 @@ function showS2Cells(level, style) {
 }
 
 function buildScanPolygons() {
-    if (!Store.get(['showScanPolygon'])) {
+    if (!Store.get(['showScanPolygon']) || geoJSONfile.trim() === '') {
         return false
     }
-
     $.getJSON(geoJSONfile, function (data) {
         var geoPolys = L.geoJson(data, {
             onEachFeature: function (features, featureLayer) {
@@ -900,7 +905,7 @@ function buildScanPolygons() {
 }
 
 function buildNestPolygons() {
-    if (!Store.get(['showNestPolygon']) || !Store.get(['showNests'])) {
+    if (!Store.get(['showNestPolygon']) || !Store.get(['showNests']) || nestGeoJSONfile.trim() === '') {
         return false
     }
 
@@ -1062,6 +1067,9 @@ function initSidebar() {
     $('#missing-iv-only-switch').prop('checked', Store.get('showMissingIVOnly'))
     $('#big-karp-switch').prop('checked', Store.get('showBigKarp'))
     $('#tiny-rat-switch').prop('checked', Store.get('showTinyRat'))
+    $('#no-zero-iv-switch').prop('checked', Store.get('showZeroIv'))
+    $('#no-hundo-iv-switch').prop('checked', Store.get('showHundoIv'))
+    $('#no-independant-pvp-switch').prop('checked', Store.get('showIndependantPvpAndStats'))
     $('#despawn-time-type-select').val(Store.get('showDespawnTimeType'))
     $('#pokemon-gender-select').val(Store.get('showPokemonGender'))
     $('#pokestops-switch').prop('checked', Store.get('showPokestops'))
@@ -1074,6 +1082,8 @@ function initSidebar() {
     $('#quests-filter-wrapper').toggle(Store.get('showQuests'))
     $('#dustvalue').text(Store.get('showDustAmount'))
     $('#dustrange').val(Store.get('showDustAmount'))
+    $('#xpvalue').text(Store.get('showXpAmount'))
+    $('#xprange').val(Store.get('showXpAmount'))
     $('#nestrange').val(Store.get('showNestAvg'))
     $('#nestavg').text(Store.get('showNestAvg'))
     $('#start-at-user-location-switch').prop('checked', Store.get('startAtUserLocation'))
@@ -1217,9 +1227,7 @@ function pokemonLabel(item) {
     var form = item['form']
     var costume = item['costume']
     var cp = item['cp']
-    var cpMultiplier = item['cp_multiplier']
     var weatherBoostedCondition = item['weather_boosted_condition']
-    var level = item['level']
 
     $.each(types, function (index, type) {
         typesDisplay += '<img src="' + getIcon(iconpath.type, 'type', '.png', getKeyByValue(pokemonTypes, type.type)) + '" style="height:20px;">'
@@ -1227,13 +1235,8 @@ function pokemonLabel(item) {
 
     var details = ''
     if (atk != null && def != null && sta != null) {
-        var iv = getIv(atk, def, sta)
-        var pokemonLevel
-        if (level != null) {
-            pokemonLevel = level
-        } else {
-            pokemonLevel = getPokemonLevel(cpMultiplier)
-        }
+        var iv = (item['iv'] != null) ? item['iv'] : false
+        var pokemonLevel = (item['level'] != null) ? item['level'] : 1
         if (pMove1 !== 'unknown') {
             pMoveType1 = '<img style="position:relative;top:3px;left:2px;height:15px;" src="' + getIcon(iconpath.type, 'type', '.png', getKeyByValue(pokemonTypes, moves[item['move_1']]['type'])) + '">'
         }
@@ -1351,6 +1354,44 @@ function pokemonLabel(item) {
     '</a>'
 
     if (!noPvp) {
+        if (item['pvp_rankings_little_league'] !== undefined && item['pvp_rankings_little_league'] !== null) {
+            contentstring += '<br>'
+            contentstring += '<b>' + i8ln('Little League') + ':</b>' + '<br>'
+            var littleLeague = JSON.parse(item['pvp_rankings_little_league'])
+            $.each(littleLeague, function (index, ranking) {
+                let pokemonName = ''
+                $.each(pokedex[ranking.pokemon]['forms'], function (index, form) {
+                    if (ranking.form === form['protoform'] && form['nameform'] !== 'Normal') {
+                        pokemonName = i8ln(form['nameform']) + ' ' + i8ln(pokedex[ranking.pokemon]['name'])
+                    }
+                })
+                if (pokemonName === '') {
+                    pokemonName = i8ln(pokedex[ranking.pokemon]['name'])
+                }
+
+                let infoString
+                if (ranking.rank === null) {
+                    infoString = i8ln('CP too high')
+                } else {
+                    infoString = '#' + ranking.rank
+                }
+                if (ranking.cp !== null) {
+                    infoString += ' @' + ranking.cp + i8ln('CP') + ' (' + i8ln('Lvl') + ' ' + (ranking.level) + ')'
+                    if (!noPvpCapText) {
+                        infoString += ' [' + i8ln('Cap') + ' ' + (ranking.cap) + ']'
+                    }
+                }
+                if (ranking.cp !== null) {
+                }
+
+                let color = ''
+                if (ranking.rank === 1) {
+                    color = 'color:green'
+                }
+                contentstring += '<small style="font-size: 11px;' + color + '"><b>' + pokemonName + ':</b> ' + infoString + '</small><br>'
+            })
+        }
+
         if (item['pvp_rankings_great_league'] !== undefined && item['pvp_rankings_great_league'] !== null) {
             contentstring += '<br>'
             contentstring += '<b>' + i8ln('Great League') + ':</b>' + '<br>'
@@ -1374,6 +1415,9 @@ function pokemonLabel(item) {
                 }
                 if (ranking.cp !== null) {
                     infoString += ' @' + ranking.cp + i8ln('CP') + ' (' + i8ln('Lvl') + ' ' + (ranking.level) + ')'
+                    if (!noPvpCapText) {
+                        infoString += ' [' + i8ln('Cap') + ' ' + (ranking.cap) + ']'
+                    }
                 }
 
                 let color = ''
@@ -1407,6 +1451,9 @@ function pokemonLabel(item) {
                 }
                 if (ranking.cp !== null) {
                     infoString += ' @' + ranking.cp + i8ln('CP') + ' (' + i8ln('Lvl') + ' ' + (ranking.level) + ')'
+                    if (!noPvpCapText) {
+                        infoString += ' [' + i8ln('Cap') + ' ' + (ranking.cap) + ']'
+                    }
                 }
 
                 let color = ''
@@ -1813,7 +1860,7 @@ function pokestopLabel(item) {
             '<img src="static/sprites/misc/teamRocket.png" style="position:absolute;height:30px;left:55%;">' +
             '<img src="' + getIcon(iconpath.invasion, 'invasion', '.png', item['grunt_type']) + '" style="position:absolute;height:35px;right:55%;top:85px;">'
         }
-    } else if (!noQuests && item['quest_type'] !== 0 && lastMidnight < Number(item['quest_timestamp'])) {
+    } else if (!noQuests && item['quest_type'] > 0 && lastMidnight < Number(item['quest_timestamp'])) {
         stopName = '<b class="pokestop-quest-name">' + item['pokestop_name'] + '</b>'
         if (item['url'] !== null) {
             stopImage = '<img class="pokestop-quest-image" id="' + item['pokestop_id'] + '" src="' + item['url'] + '" onclick="openFullscreenModal(document.getElementById(\'' + item['pokestop_id'] + '\').src)"/>' +
@@ -1836,7 +1883,7 @@ function pokestopLabel(item) {
         '<div>' + stopName + '</div>' +
         '<div>' + stopImage
 
-    if (!noQuests && item['quest_type'] !== null && typeof questtypeList[item['quest_type']] !== 'undefined' && lastMidnight < Number(item['quest_timestamp'])) {
+    if (!noQuests && item['quest_type'] > 0 && typeof questtypeList[item['quest_type']] !== 'undefined' && lastMidnight < Number(item['quest_timestamp'])) {
         var questStr = getQuest(item)
         str += getReward(item) + '</div>' +
             '<div>' +
@@ -1885,7 +1932,7 @@ function pokestopLabel(item) {
     } else {
         str += '</div>'
     }
-    if (!noQuests && item['quest_type'] !== null && typeof questtypeList[item['quest_type']] === 'undefined' && lastMidnight < Number(item['quest_timestamp'])) {
+    if (!noQuests && item['quest_type'] > 0 && typeof questtypeList[item['quest_type']] === 'undefined' && lastMidnight < Number(item['quest_timestamp'])) {
         console.log('Undefined Quest Type: ' + item['quest_type'])
         str += '<div>' + i8ln('Error: Undefined Quest Type') + ': ' + item['quest_type'] + '</div>'
     }
@@ -1979,7 +2026,7 @@ function pokestopLabel(item) {
                 '<button onclick="copyCoordsToClipboard(this.previousElementSibling);" class="small-tight">' + 'Copy' + '</button> '
     }
     str += '<a href="./?lat=' + item['latitude'] + '&lon=' + item['longitude'] + '&zoom=18&stopId=' + item['pokestop_id'] + '"><i class="far fa-share-square" aria-hidden="true" style="position:relative;top:3px;left:0px;color:#26c300;font-size:20px;"></i></a>'
-    if (!noQuests && !noWhatsappLink && item['quest_type'] !== null && lastMidnight < Number(item['quest_timestamp'])) {
+    if (!noQuests && !noWhatsappLink && item['quest_type'] > 0 && lastMidnight < Number(item['quest_timestamp'])) {
         var quest = getQuest(item)
         var reward = ''
         if (item['reward_pokemon_id'] > 0) {
@@ -1995,7 +2042,7 @@ function pokestopLabel(item) {
             '<i class="fab fa-whatsapp" style="position:relative;top:3px;left:5px;color:#26c300;font-size:20px;"></i></a>'
     }
     str += '</center></div>'
-    if (!noQuests && item['quest_type'] !== null && lastMidnight < Number(item['quest_timestamp'])) {
+    if (!noQuests && item['quest_type'] > 0 && lastMidnight < Number(item['quest_timestamp'])) {
         str += '<center><div>' +
             i8ln('Quest found') + ': ' + getDateStr(item['quest_timestamp'] * 1000) + ' ' + getTimeStr(item['quest_timestamp'] * 1000) +
             '</div></center>'
@@ -2022,7 +2069,7 @@ function formatSpawnTime(seconds) {
 
 function spawnpointLabel(item) {
     var str = ''
-    if (item.time > 0) {
+    if (item.time !== null) {
         str += '<div><b>' + i8ln('Spawn Point') + '</b></div>' +
         '<div>' + i8ln('Despawn time') + ': xx:' + formatSpawnTime(item.time) + '</div>'
     } else {
@@ -2108,25 +2155,6 @@ function isRangeActive(map) {
     return Store.get('showRanges')
 }
 
-function getIv(atk, def, stm) {
-    if (atk !== null) {
-        return 100.0 * (atk + def + stm) / 45
-    }
-
-    return false
-}
-
-function getPokemonLevel(cpMultiplier) {
-    if (cpMultiplier < 0.734) {
-        var pokemonLevel = 58.35178527 * cpMultiplier * cpMultiplier - 2.838007664 * cpMultiplier + 0.8539209906
-    } else {
-        pokemonLevel = 171.0112688 * cpMultiplier - 95.20425243
-    }
-    pokemonLevel = Math.round(pokemonLevel) * 2 / 2
-
-    return pokemonLevel
-}
-
 function lpad(str, len, padstr) {
     return Array(Math.max(len - String(str).length + 1, 0)).join(padstr) + str
 }
@@ -2158,8 +2186,8 @@ function getTimeUntil(time) {
 }
 
 function getNotifyText(item) {
-    var iv = getIv(item['individual_attack'], item['individual_defense'], item['individual_stamina'])
-    var level = (item['level'] != null) ? item['level'] : getPokemonLevel(item['cp_multiplier'])
+    var iv = (item['iv'] != null) ? item['iv'] : false
+    var level = (item['level'] != null) ? item['level'] : 1
     var find = ['<prc>', '<pkm>', '<lv>', '<atk>', '<def>', '<sta>']
     var replace = [iv ? iv.toFixed(1) : '', item['pokemon_name'], level, item['individual_attack'], item['individual_defense'], item['individual_stamina']]
     var ntitle = repArray(iv ? notifyIvTitle : notifyNoIvTitle, find, replace)
@@ -2215,7 +2243,7 @@ function customizePokemonMarker(marker, item, skipNotification) {
     }
 
     if (item['individual_attack'] != null) {
-        var perfection = getIv(item['individual_attack'], item['individual_defense'], item['individual_stamina'])
+        var perfection = (item['iv'] != null) ? item['iv'] : false
         if (notifiedMinPerfection > 0 && perfection >= notifiedMinPerfection) {
             if (!skipNotification) {
                 checkAndCreateSound(item['pokemon_id'])
@@ -2227,9 +2255,8 @@ function customizePokemonMarker(marker, item, skipNotification) {
         }
     }
 
-    if (item['level'] != null || item['cp_multiplier'] != null) {
-        var level = (item['level'] != null) ? item['level'] : getPokemonLevel(item['cp_multiplier'])
-        if (notifiedMinLevel > 0 && level >= notifiedMinLevel) {
+    if (item['level'] != null) {
+        if (notifiedMinLevel > 0 && item['level'] >= notifiedMinLevel) {
             if (!skipNotification) {
                 checkAndCreateSound(item['pokemon_id'])
                 sendNotification(getNotifyText(item).fav_title, getNotifyText(item).fav_text, getIcon(iconpath.pokemon, 'pokemon', '.png', pokemonId, 0, pokemonForm, pokemonCostume), item['latitude'], item['longitude'])
@@ -2460,7 +2487,7 @@ function getPokestopMarkerIcon(item) {
                 className: 'stop-rocket-marker',
                 html: html
             })
-        } else if (!noQuests && item['quest_reward_type'] !== null && lastMidnight < Number(item['quest_timestamp'])) {
+        } else if (!noQuests && item['quest_reward_type'] > 0 && lastMidnight < Number(item['quest_timestamp'])) {
             if (!noLures && item['lure_expiration'] > Date.now()) {
                 markerStr = item['lure_id']
             }
@@ -2581,7 +2608,7 @@ function getPokestopMarkerIcon(item) {
             className: 'stop-rocket-marker',
             html: html
         })
-    } else if (Store.get(['showQuests']) && !noQuests && item['quest_reward_type'] !== null && lastMidnight < Number(item['quest_timestamp'])) {
+    } else if (Store.get(['showQuests']) && !noQuests && item['quest_reward_type'] > 0 && lastMidnight < Number(item['quest_timestamp'])) {
         if (!noLures && item['lure_expiration'] > Date.now()) {
             markerStr = item['lure_id']
         }
@@ -3096,7 +3123,7 @@ function deletePoi(event) { // eslint-disable-line no-unused-vars
 
 function setupSpawnpointMarker(item) {
     var color = ''
-    if (item['time'] > 0) {
+    if (item['time'] !== null) {
         color = 'green'
     } else {
         color = 'red'
@@ -3202,37 +3229,49 @@ function addListeners(marker) {
 
 function clearStaleMarkers() {
     $.each(mapData.pokemons, function (key, value) {
-        var pvpFiltered = false
+        var keepMons = false
+        if (Store.get('showMissingIVOnly') === true) {
+            keepMons = (mapData.pokemons[key]['individual_attack'] === null || mapData.pokemons[key]['individual_defense'] === null || mapData.pokemons[key]['individual_stamina'] === null)
+        } else {
+            keepMons = (minIV === 0 && minLevel === 0 && minLLRank === 0 && minGLRank === 0 && minULRank === 0)
 
-        if (minGLRank > 0 || minULRank > 0) {
-            pvpFiltered = true
-            if (minGLRank > 0 && pvpFiltered) {
-                var greatLeague = JSON.parse(mapData.pokemons[key]['pvp_rankings_great_league'])
-                $.each(greatLeague, function (index, ranking) {
-                    if (ranking.rank !== null && ranking.rank <= minGLRank) {
-                        pvpFiltered = false
-                        return false
+            if (!keepMons) {
+                if (mapData.pokemons[key]['individual_attack'] !== null && mapData.pokemons[key]['individual_defense'] !== null && mapData.pokemons[key]['individual_stamina'] !== null) {
+                    if (Store.get('showZeroIv') === true && mapData.pokemons[key]['individual_attack'] === 0 && mapData.pokemons[key]['individual_defense'] === 0 && mapData.pokemons[key]['individual_stamina'] === 0) {
+                        keepMons = true
+                    } else if (Store.get('showHundoIv') === true && mapData.pokemons[key]['individual_attack'] === 15 && mapData.pokemons[key]['individual_defense'] === 15 && mapData.pokemons[key]['individual_stamina'] === 15) {
+                        keepMons = true
                     }
-                })
-            }
-            if (minULRank > 0 && pvpFiltered) {
-                var ultraLeague = JSON.parse(mapData.pokemons[key]['pvp_rankings_ultra_league'])
-                $.each(ultraLeague, function (index, ranking) {
-                    if (ranking.rank !== null && ranking.rank <= minULRank) {
-                        pvpFiltered = false
-                        return false
+                }
+
+                if (!keepMons) {
+                    var keepPvp = true
+                    if (minLLRank > 0 || minGLRank > 0 || minULRank > 0) {
+                        keepPvp = false
+                        if (minLLRank > 0 && mapData.pokemons[key]['pvp_rankings_little_league_best'] !== null && mapData.pokemons[key]['pvp_rankings_little_league_best'] <= minLLRank) {
+                            keepPvp = true
+                        } else if (minGLRank > 0 && mapData.pokemons[key]['pvp_rankings_great_league_best'] !== null && mapData.pokemons[key]['pvp_rankings_great_league_best'] <= minGLRank) {
+                            keepPvp = true
+                        } else if (minULRank > 0 && mapData.pokemons[key]['pvp_rankings_ultra_league_best'] !== null && mapData.pokemons[key]['pvp_rankings_ultra_league_best'] <= minULRank) {
+                            keepPvp = true
+                        }
+                        keepMons = (Store.get('showIndependantPvpAndStats') === true && keepPvp)
                     }
-                })
+
+                    if (!keepMons) {
+                        var keepMinIvLvl = (excludedMinIV.includes(mapData.pokemons[key]['pokemon_id']) === true || ((minIV === 0 || (mapData.pokemons[key]['iv'] !== null && mapData.pokemons[key]['iv'] >= minIV)) && (minLevel === 0 || (mapData.pokemons[key]['level'] !== null && mapData.pokemons[key]['level'] >= minLevel))))
+                        keepMons = ((Store.get('showIndependantPvpAndStats') === true && keepMinIvLvl) || (Store.get('showIndependantPvpAndStats') === false && keepMinIvLvl && keepPvp))
+                    }
+                }
             }
         }
+
         if (
             mapData.pokemons[key]['disappear_time'] < new Date().getTime() ||
             (
                 (excludedPokemon.indexOf(mapData.pokemons[key]['pokemon_id']) >= 0 ||
                     isTemporaryHidden(mapData.pokemons[key]['pokemon_id']) ||
-                    (pvpFiltered) ||
-                    ((((mapData.pokemons[key]['individual_attack'] + mapData.pokemons[key]['individual_defense'] + mapData.pokemons[key]['individual_stamina']) / 45 * 100 < minIV) || ((mapType === 'rdm' && mapData.pokemons[key]['level'] < minLevel) || (mapType === 'rocketmap' && !isNaN(minLevel) && (mapData.pokemons[key]['cp_multiplier'] < cpMultiplier[minLevel - 1])))) && !excludedMinIV.includes(mapData.pokemons[key]['pokemon_id']) && Store.get('showMissingIVOnly') === false) ||
-                    (Store.get('showMissingIVOnly') === true && mapData.pokemons[key]['individual_attack'] !== null) ||
+                    (keepMons === false) ||
                     (Store.get('showBigKarp') === true && mapData.pokemons[key]['pokemon_id'] === 129 && (mapData.pokemons[key]['weight'] < 13.14 || mapData.pokemons[key]['weight'] === null)) ||
                     (Store.get('showTinyRat') === true && mapData.pokemons[key]['pokemon_id'] === 19 && (mapData.pokemons[key]['weight'] > 2.40 || mapData.pokemons[key]['weight'] === null)) ||
                     (Store.get('showDespawnTimeType') === 1 && mapData.pokemons[key]['expire_timestamp_verified'] === 0) ||
@@ -3363,6 +3402,7 @@ function loadRawData() {
     var loadQuests = Store.get('showQuests')
     var showQuestsWithTaskAR = Store.get('showQuestsWithTaskAR')
     var loadDustamount = Store.get('showDustAmount')
+    var loadXpamount = Store.get('showXpAmount')
     var loadNestAvg = Store.get('showNestAvg')
     var loadNests = Store.get('showNests')
     var loadCommunities = Store.get('showCommunities')
@@ -3375,8 +3415,15 @@ function loadRawData() {
     var loadMinLevel = Store.get('remember_text_min_level')
     var bigKarp = Boolean(Store.get('showBigKarp'))
     var tinyRat = Boolean(Store.get('showTinyRat'))
+    var zeroIv = Boolean(Store.get('showZeroIv'))
+    var hundoIv = Boolean(Store.get('showHundoIv'))
+    var independantPvpAndStats = Boolean(Store.get('showIndependantPvpAndStats'))
+    var minLLRank = Store.get('remember_text_min_ll_rank')
+    var minGLRank = Store.get('remember_text_min_gl_rank')
+    var minULRank = Store.get('remember_text_min_ul_rank')
     var despawnTimeType = Store.get('showDespawnTimeType')
     var pokemonGender = Store.get('showPokemonGender')
+    var missingIvOnly = Store.get('showMissingIVOnly')
     var exEligible = Boolean(Store.get('exEligible'))
     var bounds = map.getBounds()
     var swPoint = bounds.getSouthWest()
@@ -3391,14 +3438,6 @@ function loadRawData() {
     var loadPokemonStats = $('#nav-pokemon-stats-tab').hasClass('active') && statsOpen
     var loadRewardStats = $('#nav-reward-stats-tab').hasClass('active') && statsOpen
     var loadShinyStats = $('#nav-shiny-stats-tab').hasClass('active') && statsOpen
-
-    if (Store.get('showMissingIVOnly') === true) {
-        // Need to ignore the configured IV/Level options if we only want Pokemon missing IV info
-        loadMinIV = 0
-        loadMinLevel = 0
-        prevMinIV = null
-        prevMinLevel = null
-    }
 
     return $.ajax({
         url: 'raw_data',
@@ -3419,6 +3458,8 @@ function loadRawData() {
             'quests_with_ar': showQuestsWithTaskAR,
             'dustamount': loadDustamount,
             'reloaddustamount': reloaddustamount,
+            'xpamount': loadXpamount,
+            'reloadxpamount': reloadxpamount,
             'nestavg': loadNestAvg,
             'nests': loadNests,
             'lastnests': lastnests,
@@ -3444,8 +3485,18 @@ function loadRawData() {
             'prevMinLevel': prevMinLevel,
             'bigKarp': bigKarp,
             'tinyRat': tinyRat,
+            'zeroIv': zeroIv,
+            'hundoIv': hundoIv,
+            'independantPvpAndStats': independantPvpAndStats,
+            'minLLRank': minLLRank,
+            'prevMinLLRank': prevMinLLRank,
+            'minGLRank': minGLRank,
+            'prevMinGLRank': prevMinGLRank,
+            'minULRank': minULRank,
+            'prevMinULRank': prevMinULRank,
             'despawnTimeType': despawnTimeType,
             'pokemonGender': pokemonGender,
+            'missingIvOnly': missingIvOnly,
             'swLat': swLat,
             'swLng': swLng,
             'neLat': neLat,
@@ -4288,6 +4339,7 @@ function manualQuestData(event) { // eslint-disable-line no-unused-vars
     var item = $('#itemReward').val()
     var itemamount = $('#itemAmount').val()
     var dust = $('#dustAmount').val()
+    var xp = $('#xpAmount').val()
     var pokestopId = $('#questpokestopid').val()
     if (pokestopId && pokestopId !== '') {
         if (confirm(i8ln('I confirm this is an accurate sighting of a quest'))) {
@@ -4312,6 +4364,7 @@ function manualQuestData(event) { // eslint-disable-line no-unused-vars
                     'item': item,
                     'itemamount': itemamount,
                     'dust': dust,
+                    'xp': xp,
                     'pokestopId': pokestopId
                 },
                 error: function error() {
@@ -4689,25 +4742,35 @@ function openQuestModal(event) { // eslint-disable-line no-unused-vars
             }
         })
         $('#rewardTypeList').change(function () {
-            if ($(this).val() === '2') {
+            if ($(this).val() === '1') {
+                $('#itemRewardList').collapse('hide')
+                $('#itemAmountList').collapse('hide')
+                $('#dustAmountList').collapse('hide')
+                $('#xpAmountList').collapse('show')
+                $('#pokeRewardList').collapse('hide')
+            } else if ($(this).val() === '2') {
                 $('#itemRewardList').collapse('show')
                 $('#itemAmountList').collapse('show')
                 $('#dustAmountList').collapse('hide')
+                $('#xpAmountList').collapse('hide')
                 $('#pokeRewardList').collapse('hide')
             } else if ($(this).val() === '3') {
                 $('#itemRewardList').collapse('hide')
                 $('#itemAmountList').collapse('hide')
                 $('#dustAmountList').collapse('show')
+                $('#xpAmountList').collapse('hide')
                 $('#pokeRewardList').collapse('hide')
             } else if ($(this).val() === '7') {
                 $('#itemRewardList').collapse('hide')
                 $('#itemAmountList').collapse('hide')
                 $('#dustAmountList').collapse('hide')
+                $('#xpAmountList').collapse('hide')
                 $('#pokeRewardList').collapse('show')
             } else {
                 $('#itemRewardList').collapse('hide')
                 $('#itemAmountList').collapse('hide')
                 $('#dustAmountList').collapse('hide')
+                $('#xpAmountList').collapse('hide')
                 $('#pokeRewardList').collapse('hide')
             }
         })
@@ -4802,35 +4865,6 @@ function processPokemons(i, item) {
                 delete mapData.pokemons[item['encounter_id']]
             } else {
                 // in mapData and appears up to date, skip
-                return true
-            }
-        }
-        if (encounterId !== item['encounter_id']) {
-            if (minGLRank > 0 || minULRank > 0) {
-                var pvpFiltered = true
-                if (minGLRank > 0 && pvpFiltered) {
-                    var greatLeague = JSON.parse(item['pvp_rankings_great_league'])
-                    $.each(greatLeague, function (index, ranking) {
-                        if (ranking.rank !== null && ranking.rank <= minGLRank) {
-                            pvpFiltered = false
-                            return false // same as 'break'
-                        }
-                    })
-                }
-                if (minULRank > 0 && pvpFiltered) {
-                    var ultraLeague = JSON.parse(item['pvp_rankings_ultra_league'])
-                    $.each(ultraLeague, function (index, ranking) {
-                        if (ranking.rank !== null && ranking.rank <= minULRank) {
-                            pvpFiltered = false
-                            return false // same as 'break'
-                        }
-                    })
-                }
-                if (pvpFiltered) {
-                    return true
-                }
-            }
-            if (Store.get('showMissingIVOnly') === true && item['individual_attack'] !== null) {
                 return true
             }
         }
@@ -5051,9 +5085,9 @@ function pokestopMeetsQuestFilter(pokestop, lastMidnight) {
         return false
     } else if (pokestop['quest_reward_type'] === 2 && pokestop['reward_item_id'] > 0 && questsExcludedItem.indexOf(pokestop['reward_item_id']) > -1) {
         return false
-    } else if (pokestop['quest_reward_type'] === 3 && Number(pokestop['reward_amount']) < Number(Store.get('showDustAmount'))) {
+    } else if (pokestop['quest_reward_type'] === 3 && (Store.get('showDustAmount') === 0 || Number(pokestop['reward_amount']) < Number(Store.get('showDustAmount')))) {
         return false
-    } else if (pokestop['quest_reward_type'] === 3 && Store.get('showDustAmount') === 0) {
+    } else if (pokestop['quest_reward_type'] === 1 && (Store.get('showXpAmount') === 0 || Number(pokestop['reward_amount']) < Number(Store.get('showXpAmount')))) {
         return false
     } else {
         return true
@@ -5389,7 +5423,7 @@ function updateSpawnPoints() {
     $.each(mapData.spawnpoints, function (key, value) {
         if (map.getBounds().contains(value.marker.getLatLng())) {
             var color = ''
-            if (value['time'] > 0) {
+            if (value['time'] !== null) {
                 color = 'green'
             } else {
                 color = 'red'
@@ -5502,6 +5536,10 @@ function updateMap() {
 
             prevMinIV = result.preMinIV
             prevMinLevel = result.preMinLevel
+            prevMinLLRank = result.preMinLLRank
+            prevMinGLRank = result.preMinGLRank
+            prevMinULRank = result.preMinULRank
+
             reids = result.reids
             qpreids = result.qpreids
             qireids = result.qireids
@@ -5551,6 +5589,7 @@ function updateMap() {
                 }, reincludedRaidegg)
             }
             reloaddustamount = false
+            reloadxpamount = false
 
             timestamp = result.timestamp
             lastUpdateTime = Date.now()
@@ -6509,6 +6548,7 @@ $(function () {
 })
 
 $(function () {
+    minLLRank = Store.get('remember_text_min_ll_rank')
     minGLRank = Store.get('remember_text_min_gl_rank')
     minULRank = Store.get('remember_text_min_ul_rank')
     minIV = Store.get('remember_text_min_iv')
@@ -6569,17 +6609,20 @@ $(function () {
         })
     })
 
-    $.getJSON(geoJSONfile).done(function (data) {
-        $.each(data.features, function (key, value) {
-            scanAreas.push(value)
+    if (noScanPolygon !== true && geoJSONfile.trim() !== '') {
+        $.getJSON(geoJSONfile).done(function (data) {
+            $.each(data.features, function (key, value) {
+                scanAreas.push(value)
+            })
         })
-    })
+    }
 
     $selectExclude = $('#exclude-pokemon .search-number')
     $selectExcludeMinIV = $('#exclude-min-iv .search-number')
     $selectPokemonNotify = $('#notify-pokemon .search-number')
     $selectRarityNotify = $('#notify-rarity')
     $textPerfectionNotify = $('#notify-perfection')
+    $textMinLLRank = $('#min-ll-rank')
     $textMinGLRank = $('#min-gl-rank')
     $textMinULRank = $('#min-ul-rank')
     $textMinIV = $('#min-iv')
@@ -6724,6 +6767,13 @@ $(function () {
             updateMap()
             Store.set('remember_select_exclude_min_iv', excludedMinIV)
         })
+        $textMinLLRank.on('change', function (e) {
+            minLLRank = Math.max(0, Math.min(parseInt($textMinLLRank.val(), 0) || 0, 100))
+            $textMinLLRank.val(minLLRank)
+            Store.set('remember_text_min_ll_rank', minLLRank)
+            lastpokemon = false
+            updateMap()
+        })
         $textMinGLRank.on('change', function (e) {
             minGLRank = Math.max(0, Math.min(parseInt($textMinGLRank.val(), 0) || 0, 100))
             $textMinGLRank.val(minGLRank)
@@ -6764,6 +6814,21 @@ $(function () {
         })
         $('#big-karp-switch').on('change', function (e) {
             Store.set('showBigKarp', this.checked)
+            lastpokemon = false
+            updateMap()
+        })
+        $('#no-zero-iv-switch').on('change', function (e) {
+            Store.set('showZeroIv', this.checked)
+            lastpokemon = false
+            updateMap()
+        })
+        $('#no-hundo-iv-switch').on('change', function (e) {
+            Store.set('showHundoIv', this.checked)
+            lastpokemon = false
+            updateMap()
+        })
+        $('#no-independant-pvp-switch').on('change', function (e) {
+            Store.set('showIndependantPvpAndStats', this.checked)
             lastpokemon = false
             updateMap()
         })
@@ -6853,6 +6918,7 @@ $(function () {
         $selectRarityNotify.val(Store.get('remember_select_rarity_notify'))
         $textPerfectionNotify.val(Store.get('remember_text_perfection_notify'))
         $textLevelNotify.val(Store.get('remember_text_level_notify'))
+        $textMinLLRank.val(Store.get('remember_text_min_ll_rank'))
         $textMinGLRank.val(Store.get('remember_text_min_gl_rank'))
         $textMinULRank.val(Store.get('remember_text_min_ul_rank'))
         $textMinIV.val(Store.get('remember_text_min_iv'))
@@ -7362,6 +7428,18 @@ $(function () {
         } else {
             $('#dustvalue').text(i8ln('above') + ' ' + dustamount)
             reloaddustamount = true
+            setTimeout(function () { updateMap() }, 2000)
+        }
+    })
+    $('#xprange').on('input', function () {
+        xpamount = $(this).val()
+        Store.set('showXpAmount', xpamount)
+        if (xpamount === '0') {
+            $('#xpvalue').text(i8ln('Off'))
+            setTimeout(function () { updateMap() }, 2000)
+        } else {
+            $('#xpvalue').text(i8ln('above') + ' ' + xpamount)
+            reloadxpamount = true
             setTimeout(function () { updateMap() }, 2000)
         }
     })

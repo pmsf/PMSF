@@ -264,15 +264,15 @@ if (strtolower($map) === "rdm") {
                                         </div>
                                         <div id="pokemon-filter-wrapper" style="display:none">
                                         <?php
-                                        if (! $noMissingIVOnly) { ?>
+                                        if (! $noHighLevelData && ! $noMissingIVOnly) { ?>
                                             <div class="dropdown-divider"></div>
                                             <div class="form-check form-switch">
                                                 <input class="form-check-input" id="missing-iv-only-switch" type="checkbox" name="missing-iv-only-switch">
-                                                <label class="form-check-label"  for="missing-iv-only-switch"><?php echo i8ln('Only Missing IV') ?></label>
+                                                <label class="form-check-label" for="missing-iv-only-switch"><?php echo i8ln('Only Missing IV') ?></label>
                                             </div>
                                         <?php
                                         }
-                                        if (! $noTinyRat) { ?>
+                                        if (! $noHighLevelData && ! $noTinyRat) { ?>
                                             <div class="dropdown-divider"></div>
                                             <div class="form-check form-switch">
                                                 <input class="form-check-input" id="tiny-rat-switch" type="checkbox" name="tiny-rat-switch">
@@ -280,11 +280,35 @@ if (strtolower($map) === "rdm") {
                                             </div>
                                         <?php
                                         }
-                                        if (! $noBigKarp) { ?>
+                                        if (! $noHighLevelData && ! $noBigKarp) { ?>
                                             <div class="dropdown-divider"></div>
                                             <div class="form-check form-switch">
                                                 <input class="form-check-input" id="big-karp-switch" type="checkbox" name="big-karp-switch">
-                                                <label class="form-check-label"  for="big-karp-switch"><?php echo i8ln('Only Big Magikarp') ?></label>
+                                                <label class="form-check-label" for="big-karp-switch"><?php echo i8ln('Only Big Magikarp') ?></label>
+                                            </div>
+                                        <?php
+                                        }
+                                        if (! $noHighLevelData && ! $noZeroIvToggle) { ?>
+                                            <div class="dropdown-divider"></div>
+                                            <div class="form-check form-switch">
+                                                <input class="form-check-input" id="no-zero-iv-switch" type="checkbox" name="no-zero-iv-switch">
+                                                <label class="form-check-label" for="no-zero-iv-switch"><?php echo i8ln('Ignore Filters for 0%IV') ?></label>
+                                            </div>
+                                        <?php
+                                        }
+                                        if (! $noHighLevelData && ! $noHundoIvToggle) { ?>
+                                            <div class="dropdown-divider"></div>
+                                            <div class="form-check form-switch">
+                                                <input class="form-check-input" id="no-hundo-iv-switch" type="checkbox" name="no-hundo-iv-switch">
+                                                <label class="form-check-label" for="no-hundo-iv-switch"><?php echo i8ln('Ignore Filters for 100%IV') ?></label>
+                                            </div>
+                                        <?php
+                                        }
+                                        if (! $noHighLevelData && ! $noPvp && ! $noIndependantPvpAndStatsToggle) { ?>
+                                            <div class="dropdown-divider"></div>
+                                            <div class="form-check form-switch">
+                                                <input class="form-check-input" id="no-independant-pvp-switch" type="checkbox" name="no-independant-pvp-switch">
+                                                <label class="form-check-label" for="no-independant-pvp-switch"><?php echo i8ln('Independant PVP and IV/LVL Filters') ?></label>
                                             </div>
                                         <?php
                                         }
@@ -313,11 +337,20 @@ if (strtolower($map) === "rdm") {
                                             </div>
                                         <?php
                                         }
-                                        if (! $noMinGLRank || ! $noMinULRank) { ?>
+                                        if (! $noHighLevelData && ! $noPvp && (! $noMinLLRank || ! $noMinGLRank || ! $noMinULRank)) { ?>
                                             <div class="dropdown-divider"></div>
                                             <div class="overflow-hidden">
                                                 <div class="row gx-3">
                                                 <?php
+                                                if (! $noMinLLRank) { ?>
+                                                    <div class="col" >
+                                                        <div class="p-1 border bg-light">
+                                                            <input id="min-ll-rank" type="number" min="0" max="100" name="min-ll-rank"/>
+                                                            <label for="min-ll-rank"><?php echo i8ln('Min LLR') ?></label>
+                                                        </div>
+                                                    </div>
+                                                <?php
+                                                }
                                                 if (! $noMinGLRank) { ?>
                                                     <div class="col" >
                                                         <div class="p-1 border bg-light">
@@ -340,7 +373,7 @@ if (strtolower($map) === "rdm") {
                                             </div>
                                         <?php
                                         }
-                                        if (! $noMinIV || ! $noMinLevel) { ?>
+                                        if (! $noHighLevelData && (! $noMinIV || ! $noMinLevel)) { ?>
                                             <div class="dropdown-divider"></div>
                                             <div class="overflow-hidden">
                                                 <div class="row gx-3">
@@ -378,7 +411,7 @@ if (strtolower($map) === "rdm") {
                                                 <?php
                                                     $firstTab++;
                                                 }
-                                                if (! $noExcludeMinIV) { ?>
+                                                if (! $noHighLevelData && ! $noExcludeMinIV) { ?>
                                                     <li class="nav-item" role="presentation">
                                                         <button class="nav-link<?php echo (($firstTab == 1) ? " active" : ""); ?>" id="exclude-min-iv-tab" data-bs-toggle="tab" data-bs-target="#exclude-min-iv" type="button" role="tab" aria-controls="exclude-min-iv" aria-selected="false"><?php echo i8ln('Excl. Min IV/Lvl') ?></button>
                                                     </li>
@@ -660,8 +693,16 @@ if (strtolower($map) === "rdm") {
                                                     if (! $noQuestsStardust) { ?>
                                                         <div class="dropdown-divider"></div>
                                                         <div class="dustslider">
-                                                            <input type="range" class="form-range" min="0" max="3500" value="500" class="slider" id="dustrange">
+                                                            <input type="range" class="form-range" min="0" max="3500" step="10" value="500" class="slider" id="dustrange">
                                                             <p><?php echo i8ln('Show stardust ') ?><span id="dustvalue"></span></p>
+                                                        </div>
+                                                    <?php } ?>
+                                                    <?php
+                                                    if (! $noQuestsXP) { ?>
+                                                        <div class="dropdown-divider"></div>
+                                                        <div class="xpslider">
+                                                            <input type="range" class="form-range" min="0" max="5000" step="10" value="500" class="slider" id="xprange">
+                                                            <p><?php echo i8ln('Show XP ') ?><span id="xpvalue"></span></p>
                                                         </div>
                                                     <?php } ?>
                                                 </div>
@@ -1531,11 +1572,12 @@ include('modals.php');
     var mapStyle = '<?php echo $mapStyle ?>';
     var mapStyleList = <?php echo json_encode($mapStyleList) ?>;
     var hidePokemon = <?php echo $noHidePokemon ? '[]' : $hidePokemon ?>;
-    var minGLRank = <?php echo $noMinGLRank ? '""' : $minGLRank ?>;
-    var minULRank = <?php echo $noMinULRank ? '""' : $minULRank ?>;
+    var minLLRank = <?php echo ($noHighLevelData || $noPvp || $noMinLLRank) ? '""' : $minLLRank ?>;
+    var minGLRank = <?php echo ($noHighLevelData || $noPvp || $noMinGLRank) ? '""' : $minGLRank ?>;
+    var minULRank = <?php echo ($noHighLevelData || $noPvp || $noMinULRank) ? '""' : $minULRank ?>;
     var excludeMinIV = <?php echo $noExcludeMinIV ? '[]' : $excludeMinIV ?>;
-    var minIV = <?php echo $noMinIV ? '""' : $minIV ?>;
-    var minLevel = <?php echo $noMinLevel ? '""' : $minLevel ?>;
+    var minIV = <?php echo ($noHighLevelData || $noMinIV) ? '""' : $minIV ?>;
+    var minLevel = <?php echo ($noHighLevelData || $noMinLevel) ? '""' : $minLevel ?>;
     var notifyPokemon = <?php echo $noNotifyPokemon ? '[]' : $notifyPokemon ?>;
     var notifyRarity = <?php echo $noNotifyRarity ? '[]' : $notifyRarity ?>;
     var notifyIv = <?php echo $noNotifyIv ? '""' : $notifyIv ?>;
@@ -1580,8 +1622,9 @@ include('modals.php');
     var enableLiveScan = <?php echo $noLiveScanLocation ? 'false' : $enableLiveScan ?>;
     var deviceOfflineAfterSeconds = <?php echo $deviceOfflineAfterSeconds ?>;
     var enableRanges = <?php echo $noRanges ? 'false' : $enableRanges ?>;
+    var noScanPolygon = <?php echo $noScanPolygon === true ? 'true' : 'false' ?>;
     var enableScanPolygon = <?php echo $noScanPolygon ? 'false' : $enableScanPolygon ?>;
-    var geoJSONfile = '<?php echo $noScanPolygon ? '' : $geoJSONfile ?>';
+    var geoJSONfile = '<?php echo $noScanPolygon ? '' : (!empty($geoJSONfile) ? $geoJSONfile : '') ?>';
     var notifySound = <?php echo $noNotifySound ? 'false' : $notifySound ?>;
     var criesSound = <?php echo $noCriesSound ? 'false' : $criesSound ?>;
     var enableStartMe = <?php echo $noStartMe ? 'false' : $enableStartMe ?>;
@@ -1599,8 +1642,12 @@ include('modals.php');
     var triggerGyms = <?php echo $triggerGyms ?>;
     var noExGyms = <?php echo $noExGyms === true ? 'true' : 'false' ?>;
     var onlyTriggerGyms = <?php echo $onlyTriggerGyms === true ? 'true' : 'false' ?>;
-    var showBigKarp = <?php echo $noBigKarp === true ? 'true' : 'false' ?>;
-    var showTinyRat = <?php echo $noTinyRat === true ? 'true' : 'false' ?>;
+    var showBigKarp = <?php echo (!$noHighLevelData && !$noBigKarp) ? 'true' : 'false' ?>;
+    var showTinyRat = <?php echo (!$noHighLevelData && !$noTinyRat) ? 'true' : 'false' ?>;
+    var showZeroIv = <?php echo (!$noHighLevelData && !$noZeroIvToggle) ? 'true' : 'false' ?>;
+    var showHundoIv = <?php echo (!$noHighLevelData && !$noHundoIvToggle) ? 'true' : 'false' ?>;
+    var showMissingIVOnly = <?php echo (!$noHighLevelData && !$noMissingIVOnly ) ? 'true' : 'false' ?>;
+    var showIndependantPvpAndStats = <?php echo (!$noHighLevelData && !$noPvp && !$noIndependantPvpAndStatsToggle) ? 'true' : 'false' ?>;
     var showDespawnTimeType = <?php echo $noDespawnTimeType ? 0 : $showDespawnTimeType ?>;
     var showPokemonGender = <?php echo $noPokemonGender ? 0 : $showPokemonGender ?>;
     var hidePokemonCoords = <?php echo $hidePokemonCoords === true ? 'true' : 'false' ?>;
@@ -1649,6 +1696,7 @@ include('modals.php');
     var noWeatherIcons = <?php echo $noWeatherIcons === true ? 'true' : 'false' ?>;
     var no0IvShadow = <?php echo $no0IvShadow === true ? 'true' : 'false' ?>;
     var no100IvShadow = <?php echo $no100IvShadow === true ? 'true' : 'false' ?>;
+    var noPvpShadow = <?php echo $noPvpShadow === true ? 'true' : 'false' ?>;
     var noRaidTimer = <?php echo $noRaidTimer === true ? 'true' : 'false' ?>;
     var enableRaidTimer = <?php echo $noRaidTimer ? 'false' : $enableRaidTimer ?>;
     var noRocketTimer = <?php echo $noTeamRocketTimer === true ? 'true' : 'false' ?>;
@@ -1668,12 +1716,27 @@ include('modals.php');
     var makeItBang = <?php echo $makeItBang === true ? 'true' : 'false' ?>;
     var showYourLove = <?php echo $showYourLove === true ? 'true' : 'false' ?>;
     var defaultDustAmount = <?php echo $defaultDustAmount; ?>;
+    var defaultXpAmount = <?php echo $defaultXpAmount; ?>;
     var nestAvgDefault = <?php echo $nestAvgDefault; ?>;
     var noDarkMode = <?php echo $noDarkMode === true ? 'true' : 'false' ?>;
     var noCatchRates = <?php echo $noCatchRates === true ? 'true' : 'false' ?>;
     var noPvp = <?php echo $noPvp === true ? 'true' : 'false' ?>;
+    var noPvpCapText = <?php echo $noPvpCapText === true ? 'true' : 'false' ?>;
     var noHideSingleMarker = <?php echo $noHideSingleMarker === true ? 'true' : 'false' ?>;
     var enableJSDebug = <?php echo $enableJSDebug === true ? 'true' : 'false' ?>;
+    // When A Setting Is Disabled, Ensure Filtering Is Also Disabled to Prevent Invisible Filtering
+    if (minIV === "") { localStorage.setItem('remember_text_min_iv', <?php echo $minIV; ?>) }
+    if (minLevel === "") { localStorage.setItem('remember_text_min_level', <?php echo $minLevel; ?>) }
+    if (minLLRank === "") { localStorage.setItem('remember_text_min_ll_rank', <?php echo $minLLRank; ?>) }
+    if (minGLRank === "") { localStorage.setItem('remember_text_min_gl_rank', <?php echo $minGLRank; ?>) }
+    if (minULRank === "") { localStorage.setItem('remember_text_min_ul_rank', <?php echo $minULRank; ?>) }
+    if (String(showBigKarp) !== String(localStorage.getItem('showBigKarp'))) { localStorage.setItem('showBigKarp', false) }
+    if (String(showTinyRat) !== String(localStorage.getItem('showTinyRat'))) { localStorage.setItem('showTinyRat', false) }
+    if (String(showZeroIv) !== String(localStorage.getItem('showZeroIv'))) { localStorage.setItem('showZeroIv', false) }
+    if (String(showHundoIv) !== String(localStorage.getItem('showHundoIv'))) { localStorage.setItem('showHundoIv', false) }
+    if (String(showMissingIVOnly) !== String(localStorage.getItem('showMissingIVOnly'))) { localStorage.setItem('showMissingIVOnly', false) }
+    if (String(showIndependantPvpAndStats) !== String(localStorage.getItem('showIndependantPvpAndStats'))) { localStorage.setItem('showIndependantPvpAndStats', false) }
+
 </script>
 <script src="static/dist/js/map.common.min.js"></script>
 <script src="static/dist/js/map.min.js"></script>

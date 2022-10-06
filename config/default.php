@@ -219,6 +219,7 @@ $adminUsers = [];                                                   // You can a
 //-----------------------------------------------------
 
 /* Marker Settings */
+$noMinLLRank = false;                                               // true/false
 $noMinGLRank = false;                                               // true/false
 $noMinULRank = false;                                               // true/false
 $noExcludeMinIV = true;                                             // true/false
@@ -230,6 +231,7 @@ $noRarityDisplay = false;                                           // true/fals
 $noWeatherIcons = true;                                             // true/false
 $no0IvShadow = false;                                               // true/false
 $no100IvShadow = false;                                             // true/false
+$noPvpShadow = false;                                               // true/false
 $noHideSingleMarker = false;                                        // true/false
 
 /* Notification Settings */
@@ -257,18 +259,27 @@ $pokemonToExclude = [];
 $pokemonGenSearchString = 'generation';                             // When custom string is used translations do not work.
 
 $noPvp = false;                                                     // true/false
-
-$excludeMinIV = '[]';                                               // [] for empty
-
-$minGLRank = '0';                                                   // "0" for empty or a number
-$minULRank = '0';                                                   // "0" for empty or a number
+$noPvpCapText = false;                                              // Add [Cap XX] text in popup. true/false
+$minLLRank = '0';                                                   // Default user interface filter value. '0' for empty or a number
+$minGLRank = '0';                                                   // Default user interface filter value. '0' for empty or a number
+$minULRank = '0';                                                   // Default user interface filter value. '0' for empty or a number
+$globalRankLimitLL = 4096;                                          // 0 = Dynamic limit according to active user filter, 1 to 4096(max) = Fixed limit
+$globalRankLimitGL = 4096;                                          // 0 = Dynamic limit according to active user filter, 1 to 4096(max) = Fixed limit
+$globalRankLimitUL = 4096;                                          // 0 = Dynamic limit according to active user filter, 1 to 4096(max) = Fixed limit
+$globalCpLimitLL = 0;                                               // 0 = no limit or a number like 450
+$globalCpLimitGL = 0;                                               // 0 = no limit or a number like 1400
+$globalCpLimitUL = 0;                                               // 0 = no limit or a number like 2400
 
 $minIV = '0';                                                       // "0" for empty or a number
 $minLevel = '0';                                                    // "0" for empty or a number
+$excludeMinIV = '[131, 143, 147, 148, 149, 248]';                   // [] for empty
 
 $noMissingIVOnly = true;                                            // true/false
 $noBigKarp = false;                                                 // true/false
 $noTinyRat = false;                                                 // true/false
+$noZeroIvToggle = false;                                            // true/false
+$noHundoIvToggle = false;                                           // true/false
+$noIndependantPvpAndStatsToggle = false;                            // true/false
 $noDespawnTimeType = true;                                          // true/false
 $showDespawnTimeType = 0;                                           // 0 = All, 1 = Verified, 2 = Unverified, 3 = Unverified + Nearby (Nearby = no spawn point)
 $noPokemonGender = false;                                           // true/false
@@ -335,9 +346,11 @@ $noQuestsItems = false;                                             // true/fals
 $noQuestsEnergy = false;                                            // true/false
 $noQuestsCandy = false;                                             // true/false
 $noQuestsStardust = false;                                          // true/false
-$noItemNames = false;                                                // true/false
+$noQuestsXP = false;                                                // true/false
+$noItemNames = false;                                               // true/false
 $noItemNumbers = true;                                              // true/false
 $defaultDustAmount = 500;
+$defaultXpAmount = 500;
 $hideQuestsPokemon = '[]';                                          // Pokemon ids will default be hidden in the menu every user is able to change this personaly
 $excludeQuestsPokemon = [];                                         // All Pokémon in this array will not be shown in the filter.
 $generateExcludeQuestsPokemon = true;                               // Generate $excludeQuestsPokemon based on active quests in database
