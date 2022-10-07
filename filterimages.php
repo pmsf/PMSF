@@ -130,7 +130,7 @@
                 <span style="display:none" class="name">' . i8ln($name) . '</span>
                 <span style="display:none" class="id">' . $k . '</span>';
                 if (! $copyrightSafe) {
-                    echo '<img class="rewardfilter" data-type="candy" data-candyid="' . $k . '" loading="lazy" src="' . getIcon($iconFolderArray['reward'], 'reward/mega_resource/', '.png', $k) . '"/>';
+                    echo '<img class="rewardfilter" data-type="candy" data-candyid="' . $k . '" loading="lazy" src="' . getIcon($iconFolderArray['reward'], 'reward/candy/', '.png', $k) . '"/>';
                     echo '<img class="pkmnfilter" data-pkmnid="' . $k . '" loading="lazy" src="' . getIcon($iconFolderArray['pokemon'], 'pokemon/', '.png', $k) . '"/>';
                 } else {
                     echo '<img loading="lazy" src="static/sprites/pokemon/' . $k . '.png"/>';
