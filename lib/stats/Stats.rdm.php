@@ -213,7 +213,6 @@ class RDM extends Stats
               COUNT(*) as count,
               quest_item_id,
               quest_pokemon_id,
-              quest_pokemon_id AS quest_energy_pokemon_id,
               json_extract(json_extract(`quest_rewards`,'$[*].info.form_id'),'$[0]') AS quest_pokemon_form,
               json_extract(json_extract(`quest_rewards`,'$[*].info.costume_id'),'$[0]') AS quest_pokemon_costume,
               quest_reward_amount AS quest_reward_amount,
@@ -225,13 +224,12 @@ class RDM extends Stats
             $total = $db->query("SELECT COUNT(quest_reward_type) AS total FROM pokestop WHERE quest_reward_type IS NOT NULL $geofenceSQL")->fetch();
       } else {
           $rewards = $db->query("
-          SELECT COUNT(*) as count, quest_item_id, quest_pokemon_id,quest_energy_pokemon_id, quest_pokemon_form, quest_pokemon_costume, quest_reward_amount, quest_reward_type
+          SELECT COUNT(*) as count, quest_item_id, quest_pokemon_id, quest_pokemon_form, quest_pokemon_costume, quest_reward_amount, quest_reward_type
           FROM
           (
             SELECT
               quest_item_id,
               quest_pokemon_id,
-              quest_pokemon_id AS quest_energy_pokemon_id,
               json_extract(json_extract(`quest_rewards`,'$[*].info.form_id'),'$[0]') AS quest_pokemon_form,
               json_extract(json_extract(`quest_rewards`,'$[*].info.costume_id'),'$[0]') AS quest_pokemon_costume,
               quest_reward_amount AS quest_reward_amount,
@@ -242,7 +240,6 @@ class RDM extends Stats
             SELECT
               alternative_quest_item_id AS quest_item_id,
               alternative_quest_pokemon_id AS quest_pokemon_id,
-              alternative_quest_pokemon_id AS quest_energy_pokemon_id,
               json_extract(json_extract(`alternative_quest_rewards`,'$[*].info.form_id'),'$[0]') AS quest_pokemon_form,
               json_extract(json_extract(`alternative_quest_rewards`,'$[*].info.costume_id'),'$[0]') AS quest_pokemon_costume,
               alternative_quest_reward_amount AS quest_reward_amount,
@@ -258,7 +255,6 @@ class RDM extends Stats
       $data = array();
       foreach ($rewards as $reward) {
         $questReward["quest_pokemon_id"] = intval($reward["quest_pokemon_id"]);
-        $questReward["quest_energy_pokemon_id"] = intval($reward["quest_energy_pokemon_id"]);
         $questReward["quest_pokemon_form"] = intval($reward["quest_pokemon_form"]);
         $questReward["quest_pokemon_costume"] = intval($reward["quest_pokemon_costume"]);
         $questReward["quest_item_id"] = intval($reward["quest_item_id"]);
@@ -267,7 +263,7 @@ class RDM extends Stats
         $questReward["count"] = $reward["count"];
         $questReward["percentage"] = round(100 / $total["total"] * $reward["count"], 3) . '%';
         if ($reward["quest_reward_type"] == 12) {
-          $questReward["name"] = i8ln($this->data[$reward['quest_energy_pokemon_id']]["name"]);
+          $questReward["name"] = i8ln($this->data[$reward['quest_pokemon_id']]["name"]);
         } elseif ($reward["quest_reward_type"] == 7) {
           $questReward["name"] = i8ln($this->data[$reward['quest_pokemon_id']]["name"]);
         } elseif ($reward["quest_reward_type"] == 2) {
