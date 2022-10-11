@@ -2518,5 +2518,13 @@
     "duration": 0,
     "energy": 0,
     "dps": 0
+  },
+  "377": {
+    "name": "High Horsepower",
+    "type": "Ground",
+    "damage": 0,
+    "duration": 0,
+    "energy": 0,
+    "dps": 0
   }
 }
