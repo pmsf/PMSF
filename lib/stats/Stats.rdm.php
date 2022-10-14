@@ -81,7 +81,7 @@ class RDM extends Stats
     {
       global $db, $noBoundaries, $boundaries, $noQuestsARTaskToggle;
 
-      $rdmGrunts = ($this->columnExists("pokestop","grunt_type")) ? "" : " LEFT JOIN (SELECT `pokestop_id` AS pokestop_id_incident, MIN(`character`) AS grunt_type, `expiration` AS incident_expire_timestamp FROM incident WHERE `expiration` > UNIX_TIMESTAMP() GROUP BY `pokestop_id_incident`) AS i ON i.`pokestop_id_incident` = p.`id` ";
+      $rdmGrunts = ($this->columnExists("incident","pokestop_id")) ? " LEFT JOIN (SELECT `pokestop_id` AS pokestop_id_incident, MIN(`character`) AS grunt_type, `expiration` AS incident_expire_timestamp FROM incident WHERE `expiration` > UNIX_TIMESTAMP() GROUP BY `pokestop_id_incident`) AS i ON i.`pokestop_id_incident` = p.`id` " : "";
       $alternative_quests = ($noQuestsARTaskToggle) ? "" : " SUM(alternative_quest_type IS NOT NULL) AS alternative_quest, ";
 
       $geofenceSQL = '';
@@ -208,51 +208,51 @@ class RDM extends Stats
       }
 
       if ($noQuestsARTaskToggle) {
-      $rewards = $db->query("
-        SELECT
-          COUNT(*) as count,
-          quest_item_id,
-          quest_pokemon_id,
-          json_extract(json_extract(`quest_rewards`,'$[*].info.pokemon_id'),'$[0]') AS quest_energy_pokemon_id,
-          json_extract(json_extract(`quest_rewards`,'$[*].info.form_id'),'$[0]') AS quest_pokemon_form,
-          json_extract(json_extract(`quest_rewards`,'$[*].info.costume_id'),'$[0]') AS quest_pokemon_costume,
-          json_extract(json_extract(`quest_rewards`,'$[*].info.amount'),'$[0]') AS quest_reward_amount,
-          quest_reward_type
-        FROM pokestop
-        WHERE quest_reward_type IS NOT NULL $geofenceSQL
-        GROUP BY quest_reward_type, quest_item_id, quest_reward_amount, quest_pokemon_id, quest_pokemon_form, quest_pokemon_costume
-        ORDER BY quest_reward_type, quest_item_id, CAST(quest_reward_amount AS UNSIGNED), quest_pokemon_id, quest_pokemon_form, quest_pokemon_costume;");
-        $total = $db->query("SELECT COUNT(quest_reward_type) AS total FROM pokestop WHERE quest_reward_type IS NOT NULL $geofenceSQL")->fetch();
+          $rewards = $db->query("
+            SELECT
+              COUNT(*) as count,
+              quest_item_id,
+              quest_pokemon_id,
+              quest_pokemon_id AS quest_energy_pokemon_id,
+              json_extract(json_extract(`quest_rewards`,'$[*].info.form_id'),'$[0]') AS quest_pokemon_form,
+              json_extract(json_extract(`quest_rewards`,'$[*].info.costume_id'),'$[0]') AS quest_pokemon_costume,
+              quest_reward_amount AS quest_reward_amount,
+              quest_reward_type
+            FROM pokestop
+            WHERE quest_reward_type IS NOT NULL $geofenceSQL
+            GROUP BY quest_reward_type, quest_item_id, quest_reward_amount, quest_pokemon_id, quest_pokemon_form, quest_pokemon_costume
+            ORDER BY quest_reward_type, quest_item_id, CAST(quest_reward_amount AS UNSIGNED), quest_pokemon_id, quest_pokemon_form, quest_pokemon_costume;");
+            $total = $db->query("SELECT COUNT(quest_reward_type) AS total FROM pokestop WHERE quest_reward_type IS NOT NULL $geofenceSQL")->fetch();
       } else {
-      $rewards = $db->query("
-      SELECT COUNT(*) as count, quest_item_id, quest_pokemon_id,quest_energy_pokemon_id, quest_pokemon_form, quest_pokemon_costume, quest_reward_amount, quest_reward_type
-      FROM
-      (
-        SELECT
-          quest_item_id,
-          quest_pokemon_id,
-          json_extract(json_extract(`quest_rewards`,'$[*].info.pokemon_id'),'$[0]') AS quest_energy_pokemon_id,
-          json_extract(json_extract(`quest_rewards`,'$[*].info.form_id'),'$[0]') AS quest_pokemon_form,
-          json_extract(json_extract(`quest_rewards`,'$[*].info.costume_id'),'$[0]') AS quest_pokemon_costume,
-          json_extract(json_extract(`quest_rewards`,'$[*].info.amount'),'$[0]') AS quest_reward_amount,
-          quest_reward_type
-        FROM pokestop
-        WHERE quest_reward_type IS NOT NULL $geofenceSQL
-      UNION ALL
-        SELECT
-          alternative_quest_item_id AS quest_item_id,
-          alternative_quest_pokemon_id AS quest_pokemon_id,
-          json_extract(json_extract(`alternative_quest_rewards`,'$[*].info.pokemon_id'),'$[0]') AS quest_energy_pokemon_id,
-          json_extract(json_extract(`alternative_quest_rewards`,'$[*].info.form_id'),'$[0]') AS quest_pokemon_form,
-          json_extract(json_extract(`alternative_quest_rewards`,'$[*].info.costume_id'),'$[0]') AS quest_pokemon_costume,
-          json_extract(json_extract(`alternative_quest_rewards`,'$[*].info.amount'),'$[0]') AS quest_reward_amount,
-          alternative_quest_reward_type AS quest_reward_type
-        FROM pokestop
-        WHERE alternative_quest_reward_type IS NOT NULL $geofenceSQL
-      ) combined
-      GROUP BY quest_reward_type, quest_item_id, quest_reward_amount, quest_pokemon_id, quest_pokemon_form, quest_pokemon_costume
-      ORDER BY quest_reward_type, quest_item_id, CAST(quest_reward_amount AS UNSIGNED), quest_pokemon_id, quest_pokemon_form, quest_pokemon_costume;");
-      $total = $db->query("SELECT (COUNT(quest_reward_type)+COUNT(alternative_quest_reward_type)) AS total FROM pokestop WHERE quest_reward_type IS NOT NULL OR alternative_quest_reward_type IS NOT NULL $geofenceSQL")->fetch();
+          $rewards = $db->query("
+          SELECT COUNT(*) as count, quest_item_id, quest_pokemon_id,quest_energy_pokemon_id, quest_pokemon_form, quest_pokemon_costume, quest_reward_amount, quest_reward_type
+          FROM
+          (
+            SELECT
+              quest_item_id,
+              quest_pokemon_id,
+              quest_pokemon_id AS quest_energy_pokemon_id,
+              json_extract(json_extract(`quest_rewards`,'$[*].info.form_id'),'$[0]') AS quest_pokemon_form,
+              json_extract(json_extract(`quest_rewards`,'$[*].info.costume_id'),'$[0]') AS quest_pokemon_costume,
+              quest_reward_amount AS quest_reward_amount,
+              quest_reward_type
+            FROM pokestop
+            WHERE quest_reward_type IS NOT NULL $geofenceSQL
+          UNION ALL
+            SELECT
+              alternative_quest_item_id AS quest_item_id,
+              alternative_quest_pokemon_id AS quest_pokemon_id,
+              alternative_quest_pokemon_id AS quest_energy_pokemon_id,
+              json_extract(json_extract(`alternative_quest_rewards`,'$[*].info.form_id'),'$[0]') AS quest_pokemon_form,
+              json_extract(json_extract(`alternative_quest_rewards`,'$[*].info.costume_id'),'$[0]') AS quest_pokemon_costume,
+              alternative_quest_reward_amount AS quest_reward_amount,
+              alternative_quest_reward_type AS quest_reward_type
+            FROM pokestop
+            WHERE alternative_quest_reward_type IS NOT NULL $geofenceSQL
+          ) combined
+          GROUP BY quest_reward_type, quest_item_id, quest_reward_amount, quest_pokemon_id, quest_pokemon_form, quest_pokemon_costume
+          ORDER BY quest_reward_type, quest_item_id, CAST(quest_reward_amount AS UNSIGNED), quest_pokemon_id, quest_pokemon_form, quest_pokemon_costume;");
+          $total = $db->query("SELECT (COUNT(quest_reward_type)+COUNT(alternative_quest_reward_type)) AS total FROM pokestop WHERE quest_reward_type IS NOT NULL OR alternative_quest_reward_type IS NOT NULL $geofenceSQL")->fetch();
       }
 
       $data = array();
@@ -274,6 +274,8 @@ class RDM extends Stats
           $questReward["name"] = i8ln($this->items[$reward['quest_item_id']]["name"]);
         } elseif ($reward["quest_reward_type"] == 3) {
           $questReward["name"] = i8ln('Stardust');
+        } elseif ($reward["quest_reward_type"] == 1) {
+          $questReward["name"] = i8ln('XP');
         }
         $data[] = $questReward;
       }

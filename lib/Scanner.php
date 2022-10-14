@@ -27,10 +27,10 @@ class Scanner
     public function columnExists($table = '', $column = '')
     {
         global $db;
-        if (empty($table) || empty($column)) {
-            return false;
+        if (!empty($table) && !empty($column) && (count($db->query("SHOW TABLES LIKE '$table';")->fetchAll(\PDO::FETCH_ASSOC)) > 0) && (count($db->query("SHOW COLUMNS FROM `$table` WHERE LOWER(`Field`) = LOWER('$column');")->fetchAll(\PDO::FETCH_ASSOC)) > 0)) {
+            return true;
         }
-        return (count($db->query("SHOW COLUMNS FROM `$table` WHERE LOWER(`Field`) = LOWER('$column');")->fetchAll(\PDO::FETCH_ASSOC)) > 0) ? true : false;
+        return false;
     }
 
     /**

@@ -1562,6 +1562,56 @@
             "color": "#f8d030"
           }
         ]
+      },
+      {
+        "nameform": "WCS 2022",
+        "protoform": "2806",
+        "formtypes": [
+          {
+            "type": "Electric",
+            "color": "#f8d030"
+          }
+        ]
+      },
+      {
+        "nameform": "T-Shirt 1",
+        "protoform": "2813",
+        "formtypes": [
+          {
+            "type": "Electric",
+            "color": "#f8d030"
+          }
+        ]
+      },
+      {
+        "nameform": "T-Shirt 2",
+        "protoform": "2814",
+        "formtypes": [
+          {
+            "type": "Electric",
+            "color": "#f8d030"
+          }
+        ]
+      },
+      {
+        "nameform": "Flying 1",
+        "protoform": "2815",
+        "formtypes": [
+          {
+            "type": "Electric",
+            "color": "#f8d030"
+          }
+        ]
+      },
+      {
+        "nameform": "Flying 2",
+        "protoform": "2816",
+        "formtypes": [
+          {
+            "type": "Electric",
+            "color": "#f8d030"
+          }
+        ]
       }
     ]
   },
@@ -3288,6 +3338,10 @@
           {
             "type": "Fire",
             "color": "#f08030"
+          },
+          {
+            "type": "Rock",
+            "color": "#b8a038"
           }
         ]
       }
@@ -3340,6 +3394,10 @@
           {
             "type": "Fire",
             "color": "#f08030"
+          },
+          {
+            "type": "Rock",
+            "color": "#b8a038"
           }
         ]
       }
@@ -7812,8 +7870,8 @@
             "color": "#a890f0"
           },
           {
-            "type": "Ice",
-            "color": "#98d8d8"
+            "type": "Psychic",
+            "color": "#f85888"
           }
         ]
       }
@@ -7880,8 +7938,8 @@
         "protoform": "2800",
         "formtypes": [
           {
-            "type": "Electric",
-            "color": "#f8d030"
+            "type": "Fighting",
+            "color": "#c03028"
           },
           {
             "type": "Flying",
@@ -7952,8 +8010,8 @@
         "protoform": "2799",
         "formtypes": [
           {
-            "type": "Fire",
-            "color": "#f08030"
+            "type": "Dark",
+            "color": "#707070"
           },
           {
             "type": "Flying",
@@ -11492,12 +11550,12 @@
         "protoform": "2788",
         "formtypes": [
           {
-            "type": "Poison",
-            "color": "#a040a0"
+            "type": "Dark",
+            "color": "#707070"
           },
           {
-            "type": "Water",
-            "color": "#6890f0"
+            "type": "Poison",
+            "color": "#a040a0"
           }
         ]
       }
@@ -11738,12 +11796,12 @@
         "protoform": "2794",
         "formtypes": [
           {
-            "type": "Dark",
-            "color": "#707070"
+            "type": "Fighting",
+            "color": "#c03028"
           },
           {
-            "type": "Ice",
-            "color": "#98d8d8"
+            "type": "Poison",
+            "color": "#a040a0"
           }
         ]
       }
@@ -33056,8 +33114,8 @@
             "color": "#a890f0"
           },
           {
-            "type": "Normal",
-            "color": "#8a8a59"
+            "type": "Psychic",
+            "color": "#f85888"
           }
         ]
       }
@@ -35922,6 +35980,16 @@
             "color": "#7038f8"
           }
         ]
+      },
+      {
+        "nameform": "Normal",
+        "protoform": "2810",
+        "formtypes": [
+          {
+            "type": "Dragon",
+            "color": "#7038f8"
+          }
+        ]
       }
     ]
   },
@@ -35938,6 +36006,16 @@
       {
         "nameform": "Hisuian",
         "protoform": "2791",
+        "formtypes": [
+          {
+            "type": "Dragon",
+            "color": "#7038f8"
+          }
+        ]
+      },
+      {
+        "nameform": "Normal",
+        "protoform": "2811",
         "formtypes": [
           {
             "type": "Dragon",
@@ -36156,6 +36234,16 @@
       {
         "nameform": "Hisuian",
         "protoform": "2795",
+        "formtypes": [
+          {
+            "type": "Ice",
+            "color": "#98d8d8"
+          }
+        ]
+      },
+      {
+        "nameform": "Normal",
+        "protoform": "2812",
         "formtypes": [
           {
             "type": "Ice",
@@ -36414,6 +36502,20 @@
       {
         "nameform": "Hisuian",
         "protoform": "2785",
+        "formtypes": [
+          {
+            "type": "Ghost",
+            "color": "#705898"
+          },
+          {
+            "type": "Grass",
+            "color": "#78c850"
+          }
+        ]
+      },
+      {
+        "nameform": "Normal",
+        "protoform": "2809",
         "formtypes": [
           {
             "type": "Ghost",
@@ -39775,22 +39877,6 @@
         "type": "Rock",
         "color": "#b8a038"
       }
-    ],
-    "forms": [
-      {
-        "nameform": "Normal",
-        "protoform": "2806",
-        "formtypes": [
-          {
-            "type": "Bug",
-            "color": "#a8b820"
-          },
-          {
-            "type": "Rock",
-            "color": "#b8a038"
-          }
-        ]
-      }
     ]
   },
   "901": {
@@ -39805,22 +39891,6 @@
         "type": "Normal",
         "color": "#8a8a59"
       }
-    ],
-    "forms": [
-      {
-        "nameform": "Normal",
-        "protoform": "2807",
-        "formtypes": [
-          {
-            "type": "Ground",
-            "color": "#e0c068"
-          },
-          {
-            "type": "Normal",
-            "color": "#8a8a59"
-          }
-        ]
-      }
     ]
   },
   "902": {
@@ -39834,6 +39904,36 @@
       {
         "type": "Water",
         "color": "#6890f0"
+      }
+    ],
+    "forms": [
+      {
+        "nameform": "Normal",
+        "protoform": "2807",
+        "formtypes": [
+          {
+            "type": "Ghost",
+            "color": "#705898"
+          },
+          {
+            "type": "Water",
+            "color": "#6890f0"
+          }
+        ]
+      },
+      {
+        "nameform": "Female",
+        "protoform": "2808",
+        "formtypes": [
+          {
+            "type": "Ghost",
+            "color": "#705898"
+          },
+          {
+            "type": "Water",
+            "color": "#6890f0"
+          }
+        ]
       }
     ]
   },

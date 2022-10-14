@@ -250,6 +250,9 @@ class RocketMap_MAD extends Stats
         } elseif ($reward["quest_reward_type"] == 3) {
           $questReward["name"] = i8ln('Stardust');
           $questReward["quest_reward_amount"] = $reward["quest_dust_amount"];
+        } elseif ($reward["quest_reward_type"] == 1) {
+          $questReward["name"] = i8ln('XP');
+          $questReward["quest_reward_amount"] = $reward["quest_dust_amount"];
         }
         
         $data[] = $questReward;

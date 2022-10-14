@@ -4,40 +4,12 @@ namespace Scanner;
 
 class RocketMap_MAD extends RocketMap
 {
-    public function get_active($eids, $minIv, $minLevel, $exMinIv, $bigKarp, $tinyRat, $despawnTimeType, $gender, $swLat, $swLng, $neLat, $neLng, $tstamp = 0, $oSwLat = 0, $oSwLng = 0, $oNeLat = 0, $oNeLng = 0, $encId = 0)
+    public function get_active($eids, $minIv, $minLevel, $minLLRank, $minGLRank, $minULRank, $exMinIv, $bigKarp, $tinyRat, $zeroIv, $hundoIv, $independantPvpAndStats, $despawnTimeType, $gender, $missingIvOnly, $swLat, $swLng, $neLat, $neLng, $tstamp = 0, $oSwLat = 0, $oSwLng = 0, $oNeLat = 0, $oNeLng = 0, $encId = 0)
     {
         global $db;
         $conds = array();
         $params = array();
         $float = $db->info()['driver'] == 'pgsql' ? "::float" : "";
-
-        $select = "ts.calc_endminsec AS expire_timestamp_verified,
-        pokemon_id,
-        Unix_timestamp(Convert_tz(disappear_time, '+00:00', @@global.time_zone)) AS disappear_time,
-        encounter_id,
-        p.latitude,
-        p.longitude,
-        gender,
-        form,
-        weather_boosted_condition,
-        costume,
-        seen_type";
-        global $noHighLevelData;
-        if (!$noHighLevelData) {
-            $select .= ",
-            weight,
-            height,
-            individual_attack,
-            individual_defense,
-            individual_stamina,
-            move_1,
-            move_2,
-            cp,
-            cp_multiplier,
-            catch_prob_1 AS catch_rate_1,
-            catch_prob_2 AS catch_rate_2,
-            catch_prob_3 AS catch_rate_3";
-        }
 
         $conds[] = "p.latitude > :swLat AND p.longitude > :swLng AND p.latitude < :neLat AND p.longitude < :neLng AND disappear_time > :time";
         $params[':swLat'] = $swLat;
@@ -85,21 +57,6 @@ class RocketMap_MAD extends RocketMap
             $pkmn_in = substr($pkmn_in, 0, -1);
             $conds[] = "(pokemon_id NOT IN ( $pkmn_in )" . $tmpSQL . ")";
         }
-        if (!empty($minIv) && !is_nan((float)$minIv) && $minIv != 0) {
-            $minIv = $minIv * .45;
-            if (empty($exMinIv)) {
-                $conds[] = '(individual_attack' . $float . ' + individual_defense' . $float . ' + individual_stamina' . $float . ') >= ' . $minIv;
-            } else {
-                $conds[] = '((individual_attack' . $float . ' + individual_defense' . $float . ' + individual_stamina' . $float . ') >= ' . $minIv . ' OR pokemon_id IN(' . $exMinIv . ') )';
-            }
-        }
-        if (!empty($minLevel) && !is_nan((float)$minLevel) && $minLevel != 0) {
-            if (empty($exMinIv)) {
-                $conds[] = 'cp_multiplier >= ' . $this->cpMultiplier[$minLevel];
-            } else {
-                $conds[] = '(cp_multiplier >= ' . $this->cpMultiplier[$minLevel] . ' OR pokemon_id IN(' . $exMinIv . ') )';
-            }
-        }
         if (!empty($despawnTimeType)) {
             if ($despawnTimeType == 1) {
                $conds[] = 'ts.calc_endminsec IS NOT NULL';
@@ -112,48 +69,32 @@ class RocketMap_MAD extends RocketMap
         if (!empty($gender) && ($gender == 1 || $gender == 2)) {
            $conds[] = 'gender = ' . $gender;
         }
+        if ($missingIvOnly) {
+            $conds[] = '(individual_attack IS NULL OR individual_defense IS NULL OR individual_stamina IS NULL)';
+        } else  {
+            $zeroIvSql = ($zeroIv) ? ' OR (individual_attack = 0 AND individual_defense = 0 AND individual_stamina = 0)' : '';
+            $hundoIvSql = ($hundoIv) ? ' OR (individual_attack = 15 AND individual_defense = 15 AND individual_stamina = 15)' : '';
+            $exMinIvSql = (!empty($exMinIv)) ? ' OR pokemon_id IN(' . $exMinIv . ')' : '';
+            if ($minIv !== 0) {
+                $conds[] = '((individual_attack' . $float . ' + individual_defense' . $float . ' + individual_stamina' . $float . ') >= ' . ($minIv * .45) . $zeroIvSql . $hundoIvSql . $exMinIvSql . ')';
+            }
+            if ($minLevel !== 0) {
+                $conds[] = '(cp_multiplier >= ' . $this->cpMultiplier[$minLevel] . $zeroIvSql . $hundoIvSql . $exMinIvSql . ')';
+            }
+        }
         $encSql = '';
         if ($encId != 0) {
             $encSql = " OR (encounter_id = " . $encId . " AND p.latitude > '" . $swLat . "' AND p.longitude > '" . $swLng . "' AND p.latitude < '" . $neLat . "' AND p.longitude < '" . $neLng . "' AND disappear_time > '" . $params[':time'] . "')";
         }
-
-        return $this->query_active($select, $conds, $params, $encSql);
+        return $this->query_active($conds, $params, $minIv, $minLevel, $minLLRank, $minGLRank, $minULRank, $exMinIv, $zeroIv, $hundoIv, $independantPvpAndStats, $missingIvOnly, $encSql);
     }
 
-    public function get_active_by_id($ids, $minIv, $minLevel, $exMinIv, $bigKarp, $tinyRat, $despawnTimeType, $gender, $swLat, $swLng, $neLat, $neLng)
+    public function get_active_by_id($ids, $minIv, $minLevel, $minLLRank, $minGLRank, $minULRank, $exMinIv, $bigKarp, $tinyRat, $zeroIv, $hundoIv, $independantPvpAndStats, $despawnTimeType, $gender, $missingIvOnly, $swLat, $swLng, $neLat, $neLng)
     {
         global $db;
         $conds = array();
         $params = array();
         $float = $db->info()['driver'] == 'pgsql' ? "::float" : "";
-
-        $select = "ts.calc_endminsec AS expire_timestamp_verified,
-        pokemon_id,
-        Unix_timestamp(Convert_tz(disappear_time, '+00:00', @@global.time_zone)) AS disappear_time,
-        encounter_id,
-        p.latitude,
-        p.longitude,
-        gender,
-        form,
-        weather_boosted_condition,
-        costume,
-        seen_type";
-        global $noHighLevelData;
-        if (!$noHighLevelData) {
-            $select .= ",
-            weight,
-            height,
-            individual_attack,
-            individual_defense,
-            individual_stamina,
-            move_1,
-            move_2,
-            cp,
-            cp_multiplier,
-            catch_prob_1 AS catch_rate_1,
-            catch_prob_2 AS catch_rate_2,
-            catch_prob_3 AS catch_rate_3";
-        }
 
         $conds[] = "p.latitude > :swLat AND p.longitude > :swLng AND p.latitude < :neLat AND p.longitude < :neLng AND disappear_time > :time";
         $params[':swLat'] = $swLat;
@@ -194,22 +135,6 @@ class RocketMap_MAD extends RocketMap
                 $conds[] = str_replace("OR", "", $tmpSQL);
             }
         }
-
-        if (!empty($minIv) && !is_nan((float)$minIv) && $minIv != 0) {
-            $minIv = $minIv * .45;
-            if (empty($exMinIv)) {
-                $conds[] = '(individual_attack' . $float . ' + individual_defense' . $float . ' + individual_stamina' . $float . ') >= ' . $minIv;
-            } else {
-                $conds[] = '((individual_attack' . $float . ' + individual_defense' . $float . ' + individual_stamina' . $float . ') >= ' . $minIv . ' OR pokemon_id IN(' . $exMinIv . ') )';
-            }
-        }
-        if (!empty($minLevel) && !is_nan((float)$minLevel) && $minLevel != 0) {
-            if (empty($exMinIv)) {
-                $conds[] = 'cp_multiplier >= ' . $this->cpMultiplier[$minLevel];
-            } else {
-                $conds[] = '(cp_multiplier >= ' . $this->cpMultiplier[$minLevel] . ' OR pokemon_id IN(' . $exMinIv . ') )';
-            }
-        }
         if (!empty($despawnTimeType)) {
             if ($despawnTimeType == 1) {
                $conds[] = 'ts.calc_endminsec IS NOT NULL';
@@ -222,13 +147,55 @@ class RocketMap_MAD extends RocketMap
         if (!empty($gender) && ($gender == 1 || $gender == 2)) {
            $conds[] = 'gender = ' . $gender;
         }
-
-        return $this->query_active($select, $conds, $params);
+        if ($missingIvOnly) {
+            $conds[] = '(individual_attack IS NULL OR individual_defense IS NULL OR individual_stamina IS NULL)';
+        } else {
+            $zeroIvSql = ($zeroIv) ? ' OR (individual_attack = 0 AND individual_defense = 0 AND individual_stamina = 0)' : '';
+            $hundoIvSql = ($hundoIv) ? ' OR (individual_attack = 15 AND individual_defense = 15 AND individual_stamina = 15)' : '';
+            $exMinIvSql = (!empty($exMinIv)) ? ' OR pokemon_id IN(' . $exMinIv . ')' : '';
+            if ($minIv !== 0) {
+                $conds[] = '((individual_attack' . $float . ' + individual_defense' . $float . ' + individual_stamina' . $float . ') >= ' . ($minIv * .45) . $zeroIvSql . $hundoIvSql . $exMinIvSql . ')';
+            }
+            if ($minLevel !== 0) {
+                $conds[] = '(cp_multiplier >= ' . $this->cpMultiplier[$minLevel] . $zeroIvSql . $hundoIvSql . $exMinIvSql . ')';
+            }
+        }
+        return $this->query_active($conds, $params, $minIv, $minLevel, $minLLRank, $minGLRank, $minULRank, $exMinIv, $zeroIv, $hundoIv, $independantPvpAndStats, $missingIvOnly, '');
     }
 
-    public function query_active($select, $conds, $params, $encSql = '')
+    public function query_active($conds, $params, $minIv, $minLevel, $minLLRank, $minGLRank, $minULRank, $exMinIv, $zeroIv, $hundoIv, $independantPvpAndStats, $missingIvOnly, $encSql = '')
     {
-        global $db;
+        global $db, $noHighLevelData;
+
+
+        $select = "ts.calc_endminsec AS expire_timestamp_verified,
+        pokemon_id,
+        Unix_timestamp(Convert_tz(disappear_time, '+00:00', @@global.time_zone)) AS disappear_time,
+        encounter_id,
+        p.latitude,
+        p.longitude,
+        gender,
+        form,
+        weather_boosted_condition,
+        costume,
+        seen_type";
+
+        if (!$noHighLevelData) {
+            $select .= ",
+            weight,
+            height,
+            individual_attack,
+            individual_defense,
+            individual_stamina,
+            move_1,
+            move_2,
+            cp,
+            IFNULL(IF(cp_multiplier < 0.734, ROUND(58.35178527 * cp_multiplier * cp_multiplier - 2.838007664 * cp_multiplier + 0.8539209906), ROUND(171.0112688 * cp_multiplier - 95.20425243)), NULL) as level,
+            IFNULL((individual_attack + individual_defense + individual_stamina) / 0.45, NULL) as iv,
+            catch_prob_1 AS catch_rate_1,
+            catch_prob_2 AS catch_rate_2,
+            catch_prob_3 AS catch_rate_3";
+        }
 
         $query = "SELECT :select
         FROM pokemon p
@@ -246,6 +213,7 @@ class RocketMap_MAD extends RocketMap
         $lasti = 0;
 
         foreach ($pokemons as $pokemon) {
+            // Jitter for nearby that would otherwise stack on top of each other
             if ($pokemon['seen_type'] === 'nearby_cell' || $pokemon['seen_type'] === 'nearby_stop') {
                 $pokemon["latitude"] = floatval($pokemon["latitude"]);
                 $pokemon["longitude"] = floatval($pokemon["longitude"]);
@@ -273,8 +241,15 @@ class RocketMap_MAD extends RocketMap
             $pokemon["individual_defense"] = isset($pokemon["individual_defense"]) ? intval($pokemon["individual_defense"]) : null;
             $pokemon["individual_stamina"] = isset($pokemon["individual_stamina"]) ? intval($pokemon["individual_stamina"]) : null;
 
+            $pokemon["iv"] = isset($pokemon["iv"]) ? floatval($pokemon["iv"]) : null;
+            $pokemon["level"] = isset($pokemon["level"]) ? intval($pokemon["level"]) : null;
+
+            $pokemon["pvp_rankings_little_league"] = null;
             $pokemon["pvp_rankings_great_league"] = null;
             $pokemon["pvp_rankings_ultra_league"] = null;
+            $pokemon["pvp_rankings_little_league_best"] = null;
+            $pokemon["pvp_rankings_great_league_best"] = null;
+            $pokemon["pvp_rankings_ultra_league_best"] = null;
 
             $pokemon["weather_boosted_condition"] = intval($pokemon["weather_boosted_condition"]);
 
@@ -284,7 +259,6 @@ class RocketMap_MAD extends RocketMap
             $pokemon["gender"] = intval($pokemon["gender"]);
             $pokemon["pokemon_name"] = i8ln($this->data[$pokemon["pokemon_id"]]['name']);
             $pokemon["pokemon_rarity"] = i8ln($this->data[$pokemon["pokemon_id"]]['rarity']);
-            $pokemon["cp_multiplier"] = isset($pokemon["cp_multiplier"]) ? floatval($pokemon["cp_multiplier"]) : null;
 
             if (isset($pokemon["form"]) && $pokemon["form"] > 0) {
                 $forms = $this->data[$pokemon["pokemon_id"]]["forms"];
@@ -317,7 +291,7 @@ class RocketMap_MAD extends RocketMap
     public function get_weather_by_cell_id($cell_id)
     {
         global $db;
-        $query = "SELECT s2_cell_id, gameplay_weather FROM weather WHERE s2_cell_id = :cell_id";
+        $query = "SELECT s2_cell_id, gameplay_weather, UNIX_TIMESTAMP(CONVERT_TZ(last_updated, '+00:00', @@global.time_zone)) AS updated FROM weather WHERE s2_cell_id = :cell_id";
         $params = [':cell_id' => intval((float)$cell_id)]; // use float to intval because RM is signed int
         $weather_info = $db->query($query, $params)->fetchAll(\PDO::FETCH_ASSOC);
         if ($weather_info) {
@@ -333,7 +307,7 @@ class RocketMap_MAD extends RocketMap
     public function get_weather($updated = null)
     {
         global $db;
-        $query = "SELECT s2_cell_id, gameplay_weather FROM weather";
+        $query = "SELECT s2_cell_id, gameplay_weather, UNIX_TIMESTAMP(CONVERT_TZ(last_updated, '+00:00', @@global.time_zone)) AS updated FROM weather";
         $weathers = $db->query($query)->fetchAll(\PDO::FETCH_ASSOC);
         $data = array();
         foreach ($weathers as $weather) {
@@ -559,6 +533,7 @@ class RocketMap_MAD extends RocketMap
         $query = "SELECT latitude,
         longitude,
         spawnpoint AS spawnpoint_id,
+        calc_endminsec AS calc_endminsec,
         (SUBSTRING_INDEX(SUBSTRING_INDEX(calc_endminsec, ':', 1), ' ', -1)*60) + (SUBSTRING_INDEX(SUBSTRING_INDEX(calc_endminsec, ':', -1), ' ', -1)) AS time
         FROM trs_spawn
         WHERE :conditions";
@@ -569,7 +544,7 @@ class RocketMap_MAD extends RocketMap
         foreach ($spawnpoints as $spawnpoint) {
             $spawnpoint["latitude"] = floatval($spawnpoint["latitude"]);
             $spawnpoint["longitude"] = floatval($spawnpoint["longitude"]);
-            $spawnpoint["time"] = intval($spawnpoint["time"]);
+            $spawnpoint["time"] = is_null($spawnpoint["calc_endminsec"]) ? null : intval($spawnpoint["time"]);
             $data[] = $spawnpoint;
             unset($spawnpoints[$i]);
             $i++;
@@ -577,7 +552,7 @@ class RocketMap_MAD extends RocketMap
         return $data;
     }
 
-    public function get_stops($geids, $qpeids, $qeeids, $qceids, $qieids, $swLat, $swLng, $neLat, $neLng, $tstamp = 0, $oSwLat = 0, $oSwLng = 0, $oNeLat = 0, $oNeLng = 0, $lured = false, $rocket = false, $quests, $dustamount, $quests_with_ar)
+    public function get_stops($geids, $qpeids, $qeeids, $qceids, $qieids, $swLat, $swLng, $neLat, $neLng, $tstamp = 0, $oSwLat = 0, $oSwLng = 0, $oNeLat = 0, $oNeLng = 0, $lured = false, $rocket = false, $quests, $dustamount, $xpamount, $quests_with_ar)
     {
         $conds = array();
         $params = array();
@@ -660,17 +635,15 @@ class RocketMap_MAD extends RocketMap
             }
             $dustSQL = '';
             if (!empty($dustamount) && !is_nan((float)$dustamount) && $dustamount > 0) {
-                $dustSQL .= "OR (quest_reward_type = 3 AND tq.quest_stardust >= :amount)";
-                $params[':amount'] = intval($dustamount);
-                $params[':swLat'] = $swLat;
-                $params[':swLng'] = $swLng;
-                $params[':neLat'] = $neLat;
-                $params[':neLng'] = $neLng;
-                if (!$noBoundaries) {
-                    $dustSQL .= " AND (ST_WITHIN(point(latitude,longitude),ST_GEOMFROMTEXT('POLYGON(( " . $boundaries . " ))')))";
-                }
+                $dustSQL .= " OR (tq.quest_reward_type = 3 AND tq.quest_stardust >= :dustamount)";
+                $params[':dustamount'] = intval($dustamount);
             }
-            $conds[] = "(" . $pokemonSQL . " OR " . $itemSQL . " OR " . $energySQL . " OR " . $candySQL . ")" . $dustSQL . "";
+            $xpSQL = '';
+            if (!empty($xpamount) && !is_nan((float)$xpamount) && $xpamount > 0) {
+                $xpSQL .= " OR (tq.quest_reward_type = 1 AND tq.quest_stardust >= :xpamount)";
+                $params[':xpamount'] = intval($xpamount);
+            }
+            $conds[] = "((" . $pokemonSQL . ") OR (" . $itemSQL . ") OR (" . $energySQL . ") OR (" . $candySQL . ")" . $dustSQL . $xpSQL . ")";
         }
         if (!empty($rocket) && $rocket === 'true') {
             $rocketSQL = '';
@@ -699,7 +672,7 @@ class RocketMap_MAD extends RocketMap
         return $this->query_stops($conds, $params, $quests_with_ar);
     }
 
-    public function get_stops_quest($greids, $qpreids, $qereids, $qcreids, $qireids, $swLat, $swLng, $neLat, $neLng, $tstamp = 0, $oSwLat = 0, $oSwLng = 0, $oNeLat = 0, $oNeLng = 0, $lures, $rocket, $quests, $dustamount, $reloaddustamount, $quests_with_ar)
+    public function get_stops_quest($greids, $qpreids, $qereids, $qcreids, $qireids, $swLat, $swLng, $neLat, $neLng, $tstamp = 0, $oSwLat = 0, $oSwLng = 0, $oNeLat = 0, $oNeLng = 0, $lures, $rocket, $quests, $dustamount, $reloaddustamount, $xpamount, $reloadxpamount, $quests_with_ar)
     {
         $conds = array();
         $params = array();
@@ -759,8 +732,12 @@ class RocketMap_MAD extends RocketMap
                 $tmpSQL .= "tq.quest_item_id IN ( $item_in )";
             }
             if ($reloaddustamount == "true") {
-                $tmpSQL .= "tq.quest_stardust > :amount";
-                $params[':amount'] = intval($dustamount);
+                $tmpSQL .= "(tq.quest_reward_type = 3 AND tq.quest_stardust > :dustamount)";
+                $params[':dustamount'] = intval($dustamount);
+            }
+            if ($reloadxpamount == "true") {
+                $tmpSQL .= "(tq.quest_reward_type = 1 AND tq.quest_stardust > :xpamount)";
+                $params[':xpamount'] = intval($xpamount);
             }
             $conds[] = $tmpSQL;
         }
@@ -784,7 +761,7 @@ class RocketMap_MAD extends RocketMap
 
     public function query_stops($conds, $params, $quests_with_ar)
     {
-        global $db;
+        global $db, $noQuests, $noQuestsPokemon, $noQuestsItems, $noQuestsEnergy, $noQuestsCandy, $noQuestsStardust, $noQuestsXP;
 
         $query = "SELECT Unix_timestamp(Convert_tz(lure_expiration, '+00:00', @@global.time_zone)) AS lure_expiration,
         Unix_timestamp(Convert_tz(incident_expiration, '+00:00', @@global.time_zone)) AS incident_expiration,
@@ -838,6 +815,9 @@ class RocketMap_MAD extends RocketMap
                 $pokestop["grunt_type"] = null;
             }
             switch ($pokestop["quest_reward_type"]) {
+                case 1:
+                    $pokestop["reward_amount"] = intval($pokestop["reward_dust_amount"]);
+                    break;
                 case 2:
                     $pokestop["reward_amount"] = intval($pokestop["reward_item_amount"]);
                     break;
@@ -861,6 +841,19 @@ class RocketMap_MAD extends RocketMap
             }
             $pokestop["latitude"] = floatval($pokestop["latitude"]);
             $pokestop["longitude"] = floatval($pokestop["longitude"]);
+            if ($noQuests ||
+            ($noQuestsEnergy && intval($pokestop["quest_reward_type"]) === 12) ||
+            ($noQuestsPokemon && intval($pokestop["quest_reward_type"]) === 7) ||
+            ($noQuestsCandy && intval($pokestop["quest_reward_type"]) === 4) ||
+            ($noQuestsStardust && intval($pokestop["quest_reward_type"]) === 3) ||
+            ($noQuestsItems && intval($pokestop["quest_reward_type"]) === 2) ||
+            ($noQuestsXP && intval($pokestop["quest_reward_type"]) === 1)) {
+                $pokestop["quest_type"] = 0;
+                $pokestop["quest_reward_type"] = 0;
+            } else {
+                $pokestop["quest_type"] = intval($pokestop["quest_type"]);
+                $pokestop["quest_reward_type"] = intval($pokestop["quest_reward_type"]);
+            }
             $pokestop["lure_expiration"] = !empty($pokestop["lure_expiration"]) ? $pokestop["lure_expiration"] * 1000 : null;
             $pokestop["incident_expiration"] = !empty($pokestop["incident_expiration"]) ? $pokestop["incident_expiration"] * 1000 : null;
             $pokestop["grunt_type_name"] = empty($grunttype_pid) ? null : i8ln($this->grunttype[$grunttype_pid]["type"]);
@@ -869,11 +862,9 @@ class RocketMap_MAD extends RocketMap
             $pokestop["second_reward"] = empty($this->grunttype[$grunttype_pid]["second_reward"]) ? null : $this->grunttype[$grunttype_pid]["second_reward"];
             $pokestop["lure_id"] = intval($pokestop["lure_id"]);
             $pokestop["url"] = ! empty($pokestop["url"]) ? preg_replace("/^http:/i", "https:", $pokestop["url"]) : null;
-            $pokestop["quest_type"] = intval($pokestop["quest_type"]);
             $pokestop["quest_condition_type"] = 0;
             $pokestop["quest_condition_type_1"] = 0;
             $pokestop["quest_condition_info"] = null;
-            $pokestop["quest_reward_type"] = intval($pokestop["quest_reward_type"]);
             $pokestop["quest_target"] = 0;
             $pokestop["reward_pokemon_name"] = empty($mon_pid) ? null : i8ln($this->data[$mon_pid]["name"]);
             $pokestop["reward_pokemon_formid"] = intval($pokestop["reward_pokemon_formid"]);

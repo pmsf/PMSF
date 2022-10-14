@@ -2470,5 +2470,61 @@
     "duration": 0,
     "energy": 0,
     "dps": 0
+  },
+  "371": {
+    "name": "Shadow Force",
+    "type": "Ghost",
+    "damage": 0,
+    "duration": 0,
+    "energy": 0,
+    "dps": 0
+  },
+  "372": {
+    "name": "Meteor Beam",
+    "type": "Rock",
+    "damage": 0,
+    "duration": 0,
+    "energy": 0,
+    "dps": 0
+  },
+  "373": {
+    "name": "Water Shuriken",
+    "type": "Water",
+    "damage": 0,
+    "duration": 0,
+    "energy": 0,
+    "dps": 0
+  },
+  "374": {
+    "name": "Fusion Bolt",
+    "type": "Electric",
+    "damage": 0,
+    "duration": 0,
+    "energy": 0,
+    "dps": 0
+  },
+  "375": {
+    "name": "Fusion Flare",
+    "type": "Fire",
+    "damage": 0,
+    "duration": 0,
+    "energy": 0,
+    "dps": 0
+  },
+  "376": {
+    "name": "Poltergeist",
+    "type": "Ghost",
+    "damage": 0,
+    "duration": 0,
+    "energy": 0,
+    "dps": 0
+  },
+  "377": {
+    "name": "High Horsepower",
+    "type": "Ground",
+    "damage": 0,
+    "duration": 0,
+    "energy": 0,
+    "dps": 0
   }
 }

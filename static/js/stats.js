@@ -25,14 +25,14 @@ function countMarkers(map) { // eslint-disable-line no-unused-vars
             thisPokeIsVisible = currentVisibleMap.contains(thisPokeLocation)
             if (thisPokeIsVisible) {
                 pkmnTotal++
-                if ((mapData.pokemons[key]['form'] === '0') && (pkmnCount[mapData.pokemons[key]['pokemon_id']] === 0 || !pkmnCount[mapData.pokemons[key]['pokemon_id']])) {
+                if ((mapData.pokemons[key]['form'] === 0) && (pkmnCount[mapData.pokemons[key]['pokemon_id']] === 0 || !pkmnCount[mapData.pokemons[key]['pokemon_id']])) {
                     pkmnCount[mapData.pokemons[key]['pokemon_id']] = {
                         'ID': mapData.pokemons[key]['pokemon_id'],
                         'Form': mapData.pokemons[key]['form'],
                         'Count': 1,
                         'Name': i8ln(mapData.pokemons[key]['pokemon_name'])
                     }
-                } else if (mapData.pokemons[key]['form'] === '0') {
+                } else if (mapData.pokemons[key]['form'] === 0) {
                     pkmnCount[mapData.pokemons[key]['pokemon_id']].Count += 1
                 }
                 if ((mapData.pokemons[key]['form'] > 0) && (pkmnCount[mapData.pokemons[key]['form']] === 0 || !pkmnCount[mapData.pokemons[key]['form']])) {
@@ -298,7 +298,7 @@ function countMarkers(map) { // eslint-disable-line no-unused-vars
             var thisSpawnpointLocation = {lat: mapData.spawnpoints[key]['latitude'], lng: mapData.spawnpoints[key]['longitude']}
             thisSpawnpointIsVisible = currentVisibleMap.contains(thisSpawnpointLocation)
             if (thisSpawnpointIsVisible) {
-                if (mapData.spawnpoints[key]['time'] === 0) {
+                if (mapData.spawnpoints[key]['time'] === null) {
                     if (spawnpointCount[2] === 0 || !spawnpointCount[2]) {
                         spawnpointCount[2] = 1
                     } else {
@@ -392,6 +392,11 @@ function processRewardStats(i, item) { // eslint-disable-line no-unused-vars
     var hiddenName = '<span style="display: none;">' + item['name'] + '</span>'
 
     switch (item['quest_reward_type']) {
+        case 1:
+            reward = '<img src="' + getIcon(iconpath.reward, 'reward/experience', '.png', item['quest_reward_amount']) + '" style="width:40px;">' +
+            hiddenName
+            type = i8ln('XP')
+            break
         case 2:
             reward = '<img src="' + getIcon(iconpath.reward, 'reward/item', '.png', item['quest_item_id'], item['quest_reward_amount']) + '" style="width:40px;">' +
             hiddenName
