@@ -207,7 +207,6 @@ class RocketMap_MAD extends Stats
           COUNT(GUID) as count,
           tq.quest_item_id, 
           tq.quest_pokemon_id, 
-          tq.quest_pokemon_id AS quest_energy_pokemon_id,
           tq.quest_pokemon_form_id AS quest_pokemon_form,
           tq.quest_pokemon_costume_id AS quest_pokemon_costume,
           tq.quest_item_amount AS quest_item_amount,
@@ -230,7 +229,6 @@ class RocketMap_MAD extends Stats
       $data = array();
       foreach ($rewards as $reward) {
         $questReward["quest_pokemon_id"] = intval($reward["quest_pokemon_id"]);
-        $questReward["quest_energy_pokemon_id"] = intval($reward["quest_energy_pokemon_id"]);
         $questReward["quest_pokemon_form"] = intval($reward["quest_pokemon_form"]);
         $questReward["quest_pokemon_costume"] = intval($reward["quest_pokemon_costume"]);
         $questReward["quest_item_id"] = intval($reward["quest_item_id"]);
@@ -239,7 +237,7 @@ class RocketMap_MAD extends Stats
         $questReward["quest_reward_type"] = intval($reward["quest_reward_type"]);
         
         if ($reward["quest_reward_type"] == 12) {
-          $questReward["name"] = i8ln($this->data[$reward['quest_energy_pokemon_id']]["name"]);
+          $questReward["name"] = i8ln($this->data[$reward['quest_pokemon_id']]["name"]);
           $questReward["quest_reward_amount"] = $reward["quest_item_amount"];
         } elseif ($reward["quest_reward_type"] == 7) {
           $questReward["name"] = i8ln($this->data[$reward['quest_pokemon_id']]["name"]);
