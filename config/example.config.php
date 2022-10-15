@@ -117,7 +117,7 @@ $imgurCID = "";
 $numberOfPokemon = 905;
 $numberOfItem = 1602;
 $numberOfGrunt = 523;
-$numberOfEgg = 16;
+$numberOfEgg = 18;
 
 /* UserTimezone */
 #$userTimezone = "Etc/UTC";                                         // If different from server settings set php frontend timezone https://www.php.net/manual/en/timezones.php
@@ -304,7 +304,7 @@ $noActiveRaids = true;                                              // true/fals
 $activeRaids = 'false';                                             // true/false
 $noMinMaxRaidLevel = true;                                          // true/false
 $minRaidLevel = 1;
-$maxRaidLevel = 8;
+$maxRaidLevel = 9;
 $noRaidTimer = false;                                               // true/false
 $enableRaidTimer = 'false';                                         // true/false
 $noRaidbossNames = false;                                           // true/false

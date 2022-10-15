@@ -3312,7 +3312,7 @@ function clearStaleMarkers() {
     }
     if (!Store.get('showGyms') && Store.get('showRaids')) {
         $.each(mapData.gyms, function (key, value) {
-            if ((((excludedRaidboss.indexOf(Number(mapData.gyms[key]['raid_pokemon_id'])) > -1) && mapData.gyms[key]['raid_pokemon_id'] > 0) && (mapData.gyms[key]['raid_start'] < new Date().getTime() && mapData.gyms[key]['raid_end'] > new Date().getTime())) || ((excludedRaidegg.indexOf(Number(mapData.gyms[key]['raid_level'])) > -1) && mapData.gyms[key]['raid_start'] > new Date().getTime()) || ((excludedRaidegg.indexOf(Number(mapData.gyms[key]['raid_level']) + 8) > -1) && (mapData.gyms[key]['raid_start'] < new Date().getTime() && (mapData.gyms[key]['raid_pokemon_id'] <= 0)))) {
+            if ((((excludedRaidboss.indexOf(Number(mapData.gyms[key]['raid_pokemon_id'])) > -1) && mapData.gyms[key]['raid_pokemon_id'] > 0) && (mapData.gyms[key]['raid_start'] < new Date().getTime() && mapData.gyms[key]['raid_end'] > new Date().getTime())) || ((excludedRaidegg.indexOf(Number(mapData.gyms[key]['raid_level'])) > -1) && mapData.gyms[key]['raid_start'] > new Date().getTime()) || ((excludedRaidegg.indexOf(Number(mapData.gyms[key]['raid_level']) + 9) > -1) && (mapData.gyms[key]['raid_start'] < new Date().getTime() && (mapData.gyms[key]['raid_pokemon_id'] <= 0)))) {
                 if (mapData.gyms[key].marker.rangeCircle) {
                     markers.removeLayer(mapData.gyms[key].marker.rangeCircle)
                     delete mapData.gyms[key].marker.rangeCircle
@@ -5245,7 +5245,7 @@ function processGyms(i, item) {
             }
         }
         // Remove Broken Raid eggs from gym
-        if (excludedRaidegg.indexOf(Number(item['raid_level']) + 8) > -1) {
+        if (excludedRaidegg.indexOf(Number(item['raid_level']) + 9) > -1) {
             if (item['raid_pokemon_id'] <= 0) {
                 if (item['raid_start'] < time) {
                     if (item['raid_end'] > time) {
