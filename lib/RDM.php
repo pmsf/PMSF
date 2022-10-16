@@ -585,7 +585,7 @@ class RDM extends Scanner
     public function query_stops($conds, $params, $quests_with_ar)
     {
         global $db, $noQuests, $noQuestsPokemon, $noQuestsItems, $noQuestsEnergy, $noQuestsCandy, $noQuestsStardust, $noQuestsXP;
-        $rdmGrunts = ($this->columnExists("incident","pokestop_id")) ? " LEFT JOIN (SELECT `pokestop_id` AS pokestop_id_incident, MIN(`character`) AS grunt_type, `expiration` AS incident_expire_timestamp FROM incident WHERE `expiration` > UNIX_TIMESTAMP() GROUP BY `pokestop_id_incident`) AS i ON i.`pokestop_id_incident` = p.`id` " : "";
+        $rdmGrunts = ($this->columnExists("incident","pokestop_id")) ? " LEFT JOIN (SELECT `pokestop_id` AS pokestop_id_incident, MIN(`character`) AS grunt_type, `expiration` AS incident_expire_timestamp FROM `incident` WHERE `expiration` > UNIX_TIMESTAMP() GROUP BY `pokestop_id_incident`, `expiration`) AS i ON i.`pokestop_id_incident` = p.`id` " : "";
 
         $ar_string = ($quests_with_ar === true) ? "" : "alternative_";
         $query = "SELECT id AS pokestop_id,
