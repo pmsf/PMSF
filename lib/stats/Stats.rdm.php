@@ -81,7 +81,7 @@ class RDM extends Stats
     {
       global $db, $noBoundaries, $boundaries, $noQuestsARTaskToggle;
 
-      $rdmGrunts = ($this->columnExists("incident","pokestop_id")) ? " LEFT JOIN (SELECT `pokestop_id` AS pokestop_id_incident, MIN(`character`) AS grunt_type, `expiration` AS incident_expire_timestamp FROM `incident` WHERE `expiration` > UNIX_TIMESTAMP() GROUP BY `pokestop_id_incident`, `expiration`) AS i ON i.`pokestop_id_incident` = p.`id` " : "";
+      $rdmGrunts = ($this->columnExists("incident","pokestop_id")) ? " LEFT JOIN (SELECT `pokestop_id` AS pokestop_id_incident, MIN(`character`) AS grunt_type, IF(MIN(`character`) IN (41,42,43,44), MAX(`expiration`), MIN(`expiration`)) AS incident_expire_timestamp FROM `incident` WHERE `expiration` > UNIX_TIMESTAMP() GROUP BY `pokestop_id_incident`) AS i ON i.`pokestop_id_incident` = p.`id` " : "";
       $alternative_quests = ($noQuestsARTaskToggle) ? "" : " SUM(alternative_quest_type IS NOT NULL) AS alternative_quest, ";
 
       $geofenceSQL = '';
