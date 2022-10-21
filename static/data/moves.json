@@ -2526,5 +2526,13 @@
     "duration": 0,
     "energy": 0,
     "dps": 0
+  },
+  "378": {
+    "name": "Glaciate",
+    "type": "Ice",
+    "damage": 0,
+    "duration": 0,
+    "energy": 0,
+    "dps": 0
   }
 }
