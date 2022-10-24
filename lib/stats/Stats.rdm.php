@@ -81,7 +81,7 @@ class RDM extends Stats
     {
       global $db, $noBoundaries, $boundaries, $noQuestsARTaskToggle;
 
-      $rdmGrunts = ($this->columnExists("incident","pokestop_id")) ? " LEFT JOIN (SELECT `pokestop_id` AS pokestop_id_incident, MIN(`character`) AS grunt_type, IF(MIN(`character`) IN (41,42,43,44), MAX(`expiration`), MIN(`expiration`)) AS incident_expire_timestamp FROM `incident` WHERE `expiration` > UNIX_TIMESTAMP() GROUP BY `pokestop_id_incident`) AS i ON i.`pokestop_id_incident` = p.`id` " : "";
+      $rdmGrunts = ($this->columnExists("incident","pokestop_id")) ? "(SELECT COUNT(DISTINCT `pokestop_id`) FROM `incident` WHERE `expiration` > UNIX_TIMESTAMP()) AS rocket," : "SUM(incident_expire_timestamp > UNIX_TIMESTAMP()) AS rocket,";
       $alternative_quests = ($noQuestsARTaskToggle) ? "" : " SUM(alternative_quest_type IS NOT NULL) AS alternative_quest, ";
 
       $geofenceSQL = '';
@@ -93,14 +93,13 @@ class RDM extends Stats
         SELECT
           SUM(quest_type IS NOT NULL) AS quest,
           $alternative_quests
-          SUM(incident_expire_timestamp > UNIX_TIMESTAMP()) AS rocket,
+          $rdmGrunts
           SUM(lure_expire_timestamp > UNIX_TIMESTAMP() AND lure_id = 501) AS normal_lure,
           SUM(lure_expire_timestamp > UNIX_TIMESTAMP() AND lure_id = 502) AS glacial_lure,
           SUM(lure_expire_timestamp > UNIX_TIMESTAMP() AND lure_id = 503) AS mossy_lure,
           SUM(lure_expire_timestamp > UNIX_TIMESTAMP() AND lure_id = 504) AS magnetic_lure,
           SUM(lure_expire_timestamp > UNIX_TIMESTAMP() AND lure_id = 505) AS rainy_lure
         FROM pokestop p
-        $rdmGrunts
         $geofenceSQL"
       )->fetch();
 
