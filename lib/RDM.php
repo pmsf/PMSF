@@ -379,7 +379,7 @@ class RDM extends Scanner
         $params[':neLat'] = $neLat;
         $params[':neLng'] = $neLng;
         global $noBoundaries, $boundaries, $hideDeleted, $showStopsOutsideBoundaries;
-        $ar_string = ($quests_with_ar === true) ? "" : "alternative_";
+        $questPrefix = ($quests_with_ar === true) ? "quest" : "alternative_quest";
         if (!$noBoundaries && !$showStopsOutsideBoundaries) {
             $conds[] = "(ST_WITHIN(point(lat, lon),ST_GEOMFROMTEXT('POLYGON(( " . $boundaries . " ))')))";
         }
@@ -397,9 +397,9 @@ class RDM extends Scanner
                     $p++;
                 }
                 $pkmn_in = substr($pkmn_in, 0, -1);
-                $pokemonSQL .= $ar_string."quest_pokemon_id NOT IN ( $pkmn_in ) AND ".$ar_string."quest_reward_type = 7";
+                $pokemonSQL .= "{$questPrefix}_pokemon_id NOT IN ( $pkmn_in ) AND {$questPrefix}_reward_type = 7";
             } else {
-                $pokemonSQL .= $ar_string."quest_reward_type = 7";
+                $pokemonSQL .= "{$questPrefix}_reward_type = 7";
             }
             $energySQL = '';
             if (count($qeeids)) {
@@ -411,9 +411,9 @@ class RDM extends Scanner
                     $p++;
                 }
                 $pkmn_in = substr($pkmn_in, 0, -1);
-                $energySQL .= $ar_string."quest_pokemon_id NOT IN ( $pkmn_in ) AND ".$ar_string."quest_reward_type = 12";
+                $energySQL .= "{$questPrefix}_pokemon_id NOT IN ( $pkmn_in ) AND {$questPrefix}_reward_type = 12";
             } else {
-                $energySQL .= $ar_string."quest_reward_type = 12";
+                $energySQL .= "{$questPrefix}_reward_type = 12";
             }
             $candySQL = '';
             if (count($qceids)) {
@@ -425,9 +425,9 @@ class RDM extends Scanner
                     $p++;
                 }
                 $pkmn_in = substr($pkmn_in, 0, -1);
-                $candySQL .= $ar_string."quest_pokemon_id NOT IN ( $pkmn_in ) AND ".$ar_string."quest_reward_type = 4";
+                $candySQL .= "{$questPrefix}_pokemon_id NOT IN ( $pkmn_in ) AND {$questPrefix}_reward_type = 4";
             } else {
-                $candySQL .= $ar_string."quest_reward_type = 4";
+                $candySQL .= "{$questPrefix}_reward_type = 4";
             }
             $itemSQL = '';
             if (count($qieids)) {
@@ -439,18 +439,18 @@ class RDM extends Scanner
                     $i++;
                 }
                 $item_in = substr($item_in, 0, -1);
-                $itemSQL .= $ar_string."quest_item_id NOT IN ( $item_in )";
+                $itemSQL .= "{$questPrefix}_item_id NOT IN ( $item_in )";
             } else {
-                $itemSQL .= $ar_string."quest_item_id IS NOT NULL";
+                $itemSQL .= "{$questPrefix}_item_id IS NOT NULL";
             }
             $dustSQL = '';
             if (!empty($dustamount) && !is_nan((float)$dustamount) && $dustamount > 0) {
-                $dustSQL .= " OR (".$ar_string."quest_reward_type = 3 AND ".$ar_string."quest_reward_amount >= :dustamount)";
+                $dustSQL .= " OR ({$questPrefix}_reward_type = 3 AND {$questPrefix}_reward_amount >= :dustamount)";
                 $params[':dustamount'] = intval($dustamount);
             }
             $xpSQL = '';
             if (!empty($xpamount) && !is_nan((float)$xpamount) && $xpamount > 0) {
-                $xpSQL .= " OR (".$ar_string."quest_reward_type = 1 AND ".$ar_string."quest_reward_amount >= :xpamount)";
+                $xpSQL .= " OR ({$questPrefix}_reward_type = 1 AND {$questPrefix}_reward_amount >= :xpamount)";
                 $params[':xpamount'] = intval($xpamount);
             }
             $conds[] = "((" . $pokemonSQL . ") OR (" . $itemSQL . ") OR (" . $energySQL . ") OR (" . $candySQL . ")" . $dustSQL . $xpSQL . ")";
@@ -502,7 +502,7 @@ class RDM extends Scanner
         $params[':neLng'] = $neLng;
 
         global $noBoundaries, $boundaries, $hideDeleted;
-        $ar_string = ($quests_with_ar === true) ? "" : "alternative_";
+        $questPrefix = ($quests_with_ar === true) ? "quest" : "alternative_quest";
         if (!$noBoundaries) {
             $conds[] = "(ST_WITHIN(point(lat, lon),ST_GEOMFROMTEXT('POLYGON(( " . $boundaries . " ))')))";
         }
@@ -520,7 +520,7 @@ class RDM extends Scanner
                     $p++;
                 }
                 $pkmn_in = substr($pkmn_in, 0, -1);
-                $tmpSQL .= $ar_string."quest_pokemon_id IN ( $pkmn_in ) AND ".$ar_string."quest_reward_type = 7";
+                $tmpSQL .= "{$questPrefix}_pokemon_id IN ( $pkmn_in ) AND {$questPrefix}_reward_type = 7";
             }
             if (count($qereids)) {
                 $pkmn_in = '';
@@ -531,7 +531,7 @@ class RDM extends Scanner
                     $p++;
                 }
                 $pkmn_in = substr($pkmn_in, 0, -1);
-                $tmpSQL .= $ar_string."quest_pokemon_id IN ( $pkmn_in ) AND ".$ar_string."quest_reward_type = 12";
+                $tmpSQL .= "{$questPrefix}_pokemon_id IN ( $pkmn_in ) AND {$questPrefix}_reward_type = 12";
             }
             if (count($qcreids)) {
                 $pkmn_in = '';
@@ -542,7 +542,7 @@ class RDM extends Scanner
                     $p++;
                 }
                 $pkmn_in = substr($pkmn_in, 0, -1);
-                $tmpSQL .= $ar_string."quest_pokemon_id IN ( $pkmn_in ) AND ".$ar_string."quest_reward_type = 4";
+                $tmpSQL .= "{$questPrefix}_pokemon_id IN ( $pkmn_in ) AND {$questPrefix}_reward_type = 4";
             }
             if (count($qireids)) {
                 $item_in = '';
@@ -553,14 +553,14 @@ class RDM extends Scanner
                     $i++;
                 }
                 $item_in = substr($item_in, 0, -1);
-                $tmpSQL .= $ar_string."quest_item_id IN ( $item_in )";
+                $tmpSQL .= "{$questPrefix}_item_id IN ( $item_in )";
             }
             if ($reloaddustamount == "true") {
-                $tmpSQL .= "(".$ar_string."quest_reward_type = 3 AND ".$ar_string."quest_reward_amount >= :dustamount)";
+                $tmpSQL .= "({$questPrefix}_reward_type = 3 AND {$questPrefix}_reward_amount >= :dustamount)";
                 $params[':dustamount'] = intval($dustamount);
             }
             if ($reloadxpamount == "true") {
-                $tmpSQL .= "(".$ar_string."quest_reward_type = 1 AND ".$ar_string."quest_reward_amount >= :xpamount)";
+                $tmpSQL .= "({$questPrefix}_reward_type = 1 AND {$questPrefix}_reward_amount >= :xpamount)";
                 $params[':xpamount'] = intval($xpamount);
             }
             $conds[] = $tmpSQL;
