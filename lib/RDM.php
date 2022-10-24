@@ -617,7 +617,7 @@ class RDM extends Scanner
                 json_extract(json_extract(`{$questPrefix}_rewards`,'$[*].info.costume_id'),'$[0]') AS reward_pokemon_costumeid,
                 json_extract(json_extract(`{$questPrefix}_rewards`,'$[*].info.gender_id'),'$[0]') AS reward_pokemon_genderid,
                 json_extract(json_extract(`{$questPrefix}_rewards`,'$[*].info.shiny'),'$[0]') AS reward_pokemon_shiny
-            FROM pokestop AS p
+            FROM `pokestop` AS p
             LEFT JOIN `incident` AS i ON i.`pokestop_id` = p.`id` AND i.`expiration` > UNIX_TIMESTAMP()
             WHERE :conditions";
         } else {
@@ -648,7 +648,7 @@ class RDM extends Scanner
                 json_extract(json_extract(`{$questPrefix}_rewards`,'$[*].info.costume_id'),'$[0]') AS reward_pokemon_costumeid,
                 json_extract(json_extract(`{$questPrefix}_rewards`,'$[*].info.gender_id'),'$[0]') AS reward_pokemon_genderid,
                 json_extract(json_extract(`{$questPrefix}_rewards`,'$[*].info.shiny'),'$[0]') AS reward_pokemon_shiny
-            FROM pokestop AS p
+            FROM `pokestop` AS p
             WHERE :conditions";
         }
         
