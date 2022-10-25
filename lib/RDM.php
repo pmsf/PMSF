@@ -53,15 +53,15 @@ class RDM extends Scanner
         }
         if (!empty($despawnTimeType)) {
             if ($despawnTimeType == 1) {
-               $conds[] = 'expire_timestamp_verified = 1';
+                $conds[] = 'expire_timestamp_verified = 1';
             } elseif ($despawnTimeType == 2) {
-               $conds[] = '(expire_timestamp_verified = 0 AND spawn_id IS NOT NULL)';
+                $conds[] = '(expire_timestamp_verified = 0 AND spawn_id IS NOT NULL)';
             } elseif ($despawnTimeType == 3) {
-               $conds[] = 'expire_timestamp_verified = 0';
+                $conds[] = 'expire_timestamp_verified = 0';
             }
         }
         if (!empty($gender) && ($gender == 1 || $gender == 2)) {
-           $conds[] = 'gender = ' . $gender;
+            $conds[] = 'gender = ' . $gender;
         }
         if ($missingIvOnly) {
             $conds[] = '(atk_iv IS NULL OR def_iv IS NULL OR sta_iv IS NULL)';
@@ -125,15 +125,15 @@ class RDM extends Scanner
         }
         if (!empty($despawnTimeType)) {
             if ($despawnTimeType == 1) {
-               $conds[] = 'expire_timestamp_verified = 1';
+                $conds[] = 'expire_timestamp_verified = 1';
             } elseif ($despawnTimeType == 2) {
-               $conds[] = '(expire_timestamp_verified = 0 AND spawn_id IS NOT NULL)';
+                $conds[] = '(expire_timestamp_verified = 0 AND spawn_id IS NOT NULL)';
             } elseif ($despawnTimeType == 3) {
-               $conds[] = 'expire_timestamp_verified = 0';
+                $conds[] = 'expire_timestamp_verified = 0';
             }
         }
         if (!empty($gender) && ($gender == 1 || $gender == 2)) {
-           $conds[] = 'gender = ' . $gender;
+            $conds[] = 'gender = ' . $gender;
         }
         if ($missingIvOnly) {
             $conds[] = '(atk_iv IS NULL OR def_iv IS NULL OR sta_iv IS NULL)';
@@ -651,7 +651,7 @@ class RDM extends Scanner
             FROM `pokestop` AS p
             WHERE :conditions";
         }
-        
+
         $query = str_replace(":conditions", join(" AND ", $conds), $query);
         $pokestops = $db->query($query, $params)->fetchAll(\PDO::FETCH_ASSOC);
         $data = array();
@@ -695,13 +695,15 @@ class RDM extends Scanner
                 }
                 $pokestop["latitude"] = floatval($pokestop["latitude"]);
                 $pokestop["longitude"] = floatval($pokestop["longitude"]);
-                if ($noQuests ||
-                ($noQuestsEnergy && intval($pokestop["quest_reward_type"]) === 12) ||
-                ($noQuestsPokemon && intval($pokestop["quest_reward_type"]) === 7) ||
-                ($noQuestsCandy && intval($pokestop["quest_reward_type"]) === 4) ||
-                ($noQuestsStardust && intval($pokestop["quest_reward_type"]) === 3) ||
-                ($noQuestsItems && intval($pokestop["quest_reward_type"]) === 2) ||
-                ($noQuestsXP && intval($pokestop["quest_reward_type"]) === 1)) {
+                if (
+                    $noQuests ||
+                    ($noQuestsEnergy && intval($pokestop["quest_reward_type"]) === 12) ||
+                    ($noQuestsPokemon && intval($pokestop["quest_reward_type"]) === 7) ||
+                    ($noQuestsCandy && intval($pokestop["quest_reward_type"]) === 4) ||
+                    ($noQuestsStardust && intval($pokestop["quest_reward_type"]) === 3) ||
+                    ($noQuestsItems && intval($pokestop["quest_reward_type"]) === 2) ||
+                    ($noQuestsXP && intval($pokestop["quest_reward_type"]) === 1)
+                ) {
                     $pokestop["quest_type"] = 0;
                     $pokestop["quest_reward_type"] = 0;
                 } else {
@@ -720,7 +722,7 @@ class RDM extends Scanner
                 $pokestop["reward_item_id"] = intval($pokestop["reward_item_id"]);
                 $pokestop["reward_item_name"] = empty($item_pid) ? null : i8ln($this->items[$item_pid]["name"]);
                 $pokestop["reward_amount"] = intval($pokestop["reward_amount"]);
-                $pokestop["url"] = ! empty($pokestop["url"]) ? preg_replace("/^http:/i", "https:", $pokestop["url"]) : null;
+                $pokestop["url"] = !empty($pokestop["url"]) ? preg_replace("/^http:/i", "https:", $pokestop["url"]) : null;
                 $pokestop["lure_expiration"] = $pokestop["lure_expiration"] * 1000;
                 $pokestop["incident_expiration"] = $pokestop["incident_expiration"] * 1000;
                 $pokestop["lure_id"] = intval($pokestop["lure_id"]);
@@ -864,7 +866,7 @@ class RDM extends Scanner
             $gym["last_scanned"] = $gym["last_scanned"] * 1000;
             $gym["raid_start"] = $gym["raid_start"] * 1000;
             $gym["raid_end"] = $gym["raid_end"] * 1000;
-            $gym["url"] = ! empty($gym["url"]) ? preg_replace("/^http:/i", "https:", $gym["url"]) : null;
+            $gym["url"] = !empty($gym["url"]) ? preg_replace("/^http:/i", "https:", $gym["url"]) : null;
             $gym["park"] = $noExEligible ? 0 : intval($gym["park"]);
             if (isset($gym["raid_pokemon_form"]) && $gym["raid_pokemon_form"] > 0) {
                 $forms = $this->data[$gym["raid_pokemon_id"]]["forms"];
@@ -1064,7 +1066,7 @@ class RDM extends Scanner
     public function generated_exclude_list($type)
     {
         global $db, $userTimezone, $noQuestsARTaskToggle;
-        $curdate = new \DateTime(null, new \DateTimeZone($userTimezone) );
+        $curdate = new \DateTime(null, new \DateTimeZone($userTimezone));
         if ($type === 'pokemonlist') {
             if ($noQuestsARTaskToggle) {
                 $pokestops = $db->query("SELECT distinct quest_pokemon_id AS reward_pokemon_id FROM pokestop WHERE quest_pokemon_id > 0 AND DATE(FROM_UNIXTIME(quest_timestamp)) = '" . $curdate->format('Y-m-d') . "' AND quest_reward_type = 7 order by quest_pokemon_id;")->fetchAll(\PDO::FETCH_ASSOC);
