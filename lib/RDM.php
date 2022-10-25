@@ -1066,7 +1066,7 @@ class RDM extends Scanner
     public function generated_exclude_list($type)
     {
         global $db, $userTimezone, $noQuestsARTaskToggle;
-        $curdate = new \DateTime(null, new \DateTimeZone($userTimezone));
+        $curdate = new \DateTime('', new \DateTimeZone($userTimezone));
         if ($type === 'pokemonlist') {
             if ($noQuestsARTaskToggle) {
                 $pokestops = $db->query("SELECT distinct quest_pokemon_id AS reward_pokemon_id FROM pokestop WHERE quest_pokemon_id > 0 AND DATE(FROM_UNIXTIME(quest_timestamp)) = '" . $curdate->format('Y-m-d') . "' AND quest_reward_type = 7 order by quest_pokemon_id;")->fetchAll(\PDO::FETCH_ASSOC);
