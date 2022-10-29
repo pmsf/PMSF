@@ -176,7 +176,7 @@ function createUserAccount($user, $password, $newExpireTimestamp)
 
             return true;
             $subject = "[{$title}] - " . i8ln('Welcome') . "";
-            $message .= i8ln('Dear') . " {$user},<br><br>";
+            $message = i8ln('Dear') . " {$user},<br><br>";
             $message .= i8ln('Your account has been created') . "<br>";
             if ($discordUrl) {
                 $message .= i8ln('For support, ask your questions in the ') . "<a href='{$discordUrl}'>" . i8ln('discord guild') . "</a>!<br><br>";
@@ -219,7 +219,7 @@ function resetUserPassword($user, $password, $resetType)
             "login_system" => 'native'
         ]);
         $subject = "[{$title}] - Password Reset";
-        $message .= i8ln('Dear') . " {$user},<br><br>";
+        $message = i8ln('Dear') . " {$user},<br><br>";
         $message .= i8ln('Your password has been reset') . "<br>";
         $message .= i8ln('If you haven\'t requested a new password you can ignore this email.') . "<br>";
         $message .= i8ln('Your old password is still working.') . "<br><br>";
