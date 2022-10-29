@@ -59,19 +59,19 @@ class RocketMap_MAD extends RocketMap
         }
         if (!empty($despawnTimeType)) {
             if ($despawnTimeType == 1) {
-               $conds[] = 'ts.calc_endminsec IS NOT NULL';
+                $conds[] = 'ts.calc_endminsec IS NOT NULL';
             } elseif ($despawnTimeType == 2) {
-               $conds[] = '(ts.calc_endminsec IS NULL AND spawnpoint_id IS NOT NULL)';
+                $conds[] = '(ts.calc_endminsec IS NULL AND spawnpoint_id IS NOT NULL)';
             } elseif ($despawnTimeType == 3) {
-               $conds[] = 'ts.calc_endminsec IS NULL';
+                $conds[] = 'ts.calc_endminsec IS NULL';
             }
         }
         if (!empty($gender) && ($gender == 1 || $gender == 2)) {
-           $conds[] = 'gender = ' . $gender;
+            $conds[] = 'gender = ' . $gender;
         }
         if ($missingIvOnly) {
             $conds[] = '(individual_attack IS NULL OR individual_defense IS NULL OR individual_stamina IS NULL)';
-        } else  {
+        } else {
             $zeroIvSql = ($zeroIv) ? ' OR (individual_attack = 0 AND individual_defense = 0 AND individual_stamina = 0)' : '';
             $hundoIvSql = ($hundoIv) ? ' OR (individual_attack = 15 AND individual_defense = 15 AND individual_stamina = 15)' : '';
             $exMinIvSql = (!empty($exMinIv)) ? ' OR pokemon_id IN(' . $exMinIv . ')' : '';
@@ -137,15 +137,15 @@ class RocketMap_MAD extends RocketMap
         }
         if (!empty($despawnTimeType)) {
             if ($despawnTimeType == 1) {
-               $conds[] = 'ts.calc_endminsec IS NOT NULL';
+                $conds[] = 'ts.calc_endminsec IS NOT NULL';
             } elseif ($despawnTimeType == 2) {
-               $conds[] = '(ts.calc_endminsec IS NULL AND spawnpoint_id IS NOT NULL)';
+                $conds[] = '(ts.calc_endminsec IS NULL AND spawnpoint_id IS NOT NULL)';
             } elseif ($despawnTimeType == 3) {
-               $conds[] = 'ts.calc_endminsec IS NULL';
+                $conds[] = 'ts.calc_endminsec IS NULL';
             }
         }
         if (!empty($gender) && ($gender == 1 || $gender == 2)) {
-           $conds[] = 'gender = ' . $gender;
+            $conds[] = 'gender = ' . $gender;
         }
         if ($missingIvOnly) {
             $conds[] = '(individual_attack IS NULL OR individual_defense IS NULL OR individual_stamina IS NULL)';
@@ -445,7 +445,7 @@ class RocketMap_MAD extends RocketMap
             $gym["last_scanned"] = $gym["last_scanned"] * 1000;
             $gym["raid_start"] = $gym["raid_start"] * 1000;
             $gym["raid_end"] = $gym["raid_end"] * 1000;
-            $gym["url"] = ! empty($gym["url"]) ? preg_replace("/^http:/i", "https:", $gym["url"]) : null;
+            $gym["url"] = !empty($gym["url"]) ? preg_replace("/^http:/i", "https:", $gym["url"]) : null;
             $gym["park"] = $noExEligible ? 0 : intval($gym["park"]);
             if (isset($gym["raid_pokemon_form"]) && $gym["raid_pokemon_form"] > 0) {
                 $forms = $this->data[$gym["raid_pokemon_id"]]["forms"];
@@ -841,13 +841,15 @@ class RocketMap_MAD extends RocketMap
             }
             $pokestop["latitude"] = floatval($pokestop["latitude"]);
             $pokestop["longitude"] = floatval($pokestop["longitude"]);
-            if ($noQuests ||
-            ($noQuestsEnergy && intval($pokestop["quest_reward_type"]) === 12) ||
-            ($noQuestsPokemon && intval($pokestop["quest_reward_type"]) === 7) ||
-            ($noQuestsCandy && intval($pokestop["quest_reward_type"]) === 4) ||
-            ($noQuestsStardust && intval($pokestop["quest_reward_type"]) === 3) ||
-            ($noQuestsItems && intval($pokestop["quest_reward_type"]) === 2) ||
-            ($noQuestsXP && intval($pokestop["quest_reward_type"]) === 1)) {
+            if (
+                $noQuests ||
+                ($noQuestsEnergy && intval($pokestop["quest_reward_type"]) === 12) ||
+                ($noQuestsPokemon && intval($pokestop["quest_reward_type"]) === 7) ||
+                ($noQuestsCandy && intval($pokestop["quest_reward_type"]) === 4) ||
+                ($noQuestsStardust && intval($pokestop["quest_reward_type"]) === 3) ||
+                ($noQuestsItems && intval($pokestop["quest_reward_type"]) === 2) ||
+                ($noQuestsXP && intval($pokestop["quest_reward_type"]) === 1)
+            ) {
                 $pokestop["quest_type"] = 0;
                 $pokestop["quest_reward_type"] = 0;
             } else {
@@ -861,7 +863,7 @@ class RocketMap_MAD extends RocketMap
             $pokestop["encounters"] = empty($this->grunttype[$grunttype_pid]["encounters"]) ? null : $this->grunttype[$grunttype_pid]["encounters"];
             $pokestop["second_reward"] = empty($this->grunttype[$grunttype_pid]["second_reward"]) ? null : $this->grunttype[$grunttype_pid]["second_reward"];
             $pokestop["lure_id"] = intval($pokestop["lure_id"]);
-            $pokestop["url"] = ! empty($pokestop["url"]) ? preg_replace("/^http:/i", "https:", $pokestop["url"]) : null;
+            $pokestop["url"] = !empty($pokestop["url"]) ? preg_replace("/^http:/i", "https:", $pokestop["url"]) : null;
             $pokestop["quest_condition_type"] = 0;
             $pokestop["quest_condition_type_1"] = 0;
             $pokestop["quest_condition_info"] = null;
@@ -884,7 +886,7 @@ class RocketMap_MAD extends RocketMap
     public function generated_exclude_list($type)
     {
         global $db, $userTimezone;
-        $curdate = new \DateTime(null, new \DateTimeZone($userTimezone) );
+        $curdate = new \DateTime('', new \DateTimeZone($userTimezone));
         if ($type === 'pokemonlist') {
             $pokestops = $db->query("SELECT distinct quest_pokemon_id AS reward_pokemon_id FROM trs_quest WHERE quest_pokemon_id > 0 AND DATE(FROM_UNIXTIME(quest_timestamp)) = '" . $curdate->format('Y-m-d') . "' AND quest_reward_type = 7 order by quest_pokemon_id;")->fetchAll(\PDO::FETCH_ASSOC);
             $data = array();
@@ -892,23 +894,13 @@ class RocketMap_MAD extends RocketMap
                 $data[] = $pokestop['reward_pokemon_id'];
             }
         } elseif ($type === 'energylist') {
-            $pokestops = $db->query("
-                SELECT distinct
-                    quest_pokemon_id AS reward_pokemon_id
-                FROM trs_quest
-                WHERE quest_reward_type = 12;"
-            )->fetchAll(\PDO::FETCH_ASSOC);
+            $pokestops = $db->query("SELECT distinct quest_pokemon_id AS reward_pokemon_id FROM trs_quest WHERE quest_reward_type = 12;")->fetchAll(\PDO::FETCH_ASSOC);
             $data = array();
             foreach ($pokestops as $pokestop) {
                 $data[] = $pokestop['reward_pokemon_id'];
             }
         } elseif ($type === 'candylist') {
-            $pokestops = $db->query("
-                SELECT distinct
-                    quest_pokemon_id AS reward_pokemon_id
-                FROM trs_quest
-                WHERE quest_reward_type = 4;"
-            )->fetchAll(\PDO::FETCH_ASSOC);
+            $pokestops = $db->query("SELECT distinct quest_pokemon_id AS reward_pokemon_id FROM trs_quest WHERE quest_reward_type = 4;")->fetchAll(\PDO::FETCH_ASSOC);
             $data = array();
             foreach ($pokestops as $pokestop) {
                 $data[] = $pokestop['reward_pokemon_id'];
@@ -960,7 +952,6 @@ class RocketMap_MAD extends RocketMap
         global $hideDeviceAfterMinutes;
         if ($hideDeviceAfterMinutes > 0) {
             $conds[] = "lastProtoDateTime > UNIX_TIMESTAMP( NOW() - INTERVAL " . $hideDeviceAfterMinutes . " MINUTE)";
-
         }
         return $this->query_scanlocation($conds, $params);
     }
