@@ -5864,7 +5864,7 @@ function sendToastPokemon(title, text, icon, lat, lon) {
         autohide: (Store.get('toastPokemonDelay') !== 0),
         delay: Store.get('toastPokemonDelay')
     })
-    $('.toast-header.' + identifier).css('background-color', 'var(--bs-green)')
+    $('.toast-header.' + identifier).css('background-color', 'var(--bs-yellow)')
     $('#toast-pokemon-' + identifier).toast('show')
 }
 function cleanOldToasts() {
