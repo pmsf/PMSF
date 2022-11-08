@@ -336,6 +336,11 @@ var StoreOptions = {
             default: enableRocket,
             type: StoreTypes.Boolean
         },
+    'showEventStops':
+        {
+            default: enableEventStops,
+            type: StoreTypes.Boolean
+        },
     'showQuests':
         {
             default: enableQuests,
@@ -514,6 +519,11 @@ var StoreOptions = {
     'showRocketTimer':
         {
             default: enableRocketTimer,
+            type: StoreTypes.Boolean
+        },
+    'showEventStopsTimer':
+        {
+            default: enableEventStopsTimer,
             type: StoreTypes.Boolean
         },
     'oldMotd':
