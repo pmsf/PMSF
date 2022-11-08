@@ -327,6 +327,11 @@ $enableAllPokestops = 'false';                                      // true/fals
 $noLures = false;                                                   // true/false
 $enableLured = 'false';                                             // true/false
 
+$noEventStops = false;                                              // true/false
+$enableEventStops = 'false';                                        // true/false
+$noEventStopsTimer = false;                                         // true/false
+$enableEventStopsTimer = 'false';                                   // true/false
+
 $noTeamRocket = false;                                              // true/false
 $enableTeamRocket = 'false';                                        // true/false
 $noTeamRocketTimer = false;                                         // true/false
