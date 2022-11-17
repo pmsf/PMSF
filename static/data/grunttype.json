@@ -145,7 +145,8 @@
     "second_reward": "false",
     "encounters": {
       "first": [
-        "66",
+        "106",
+        "107",
         "296"
       ],
       "second": [
@@ -153,7 +154,7 @@
         "107"
       ],
       "third": [
-        "67",
+        "68",
         "106",
         "107"
       ]
@@ -166,14 +167,13 @@
   "18": {
     "type": "Fire",
     "grunt": "Female",
-    "second_reward": "true",
+    "second_reward": "false",
     "encounters": {
       "first": [
         "155",
         "322"
       ],
       "second": [
-        "126",
         "156"
       ],
       "third": [
@@ -193,7 +193,7 @@
     "second_reward": "false",
     "encounters": {
       "first": [
-        "198",
+        "177",
         "396",
         "580"
       ],
@@ -219,14 +219,14 @@
   "23": {
     "type": "Grass",
     "grunt": "Male",
-    "second_reward": "true",
+    "second_reward": "false",
     "encounters": {
       "first": [
         "152",
         "331"
       ],
       "second": [
-        "332"
+        "153"
       ],
       "third": [
         "154",
@@ -242,19 +242,19 @@
   "25": {
     "type": "Ground",
     "grunt": "Male",
-    "second_reward": "true",
+    "second_reward": "false",
     "encounters": {
       "first": [
-        "74",
+        "50",
         "449"
       ],
       "second": [
-        "75",
+        "50",
         "449"
       ],
       "third": [
         "76",
-        "323",
+        "95",
         "450"
       ]
     }
@@ -312,8 +312,7 @@
       ],
       "third": [
         "20",
-        "217",
-        "400"
+        "217"
       ]
     }
   },
@@ -351,8 +350,7 @@
     "second_reward": "true",
     "encounters": {
       "first": [
-        "63",
-        "203"
+        "177"
       ],
       "second": [
         "203",
@@ -375,37 +373,34 @@
     "second_reward": "true",
     "encounters": {
       "first": [
-        "185",
-        "246"
+        "95",
+        "185"
       ],
       "second": [
-        "75",
         "345",
         "347"
       ],
       "third": [
         "76",
-        "247",
-        "248"
+        "95"
       ]
     }
   },
   "38": {
     "type": "Water",
     "grunt": "Female",
-    "second_reward": "true",
+    "second_reward": "false",
     "encounters": {
       "first": [
         "158",
-        "258"
+        "320"
       ],
       "second": [
-        "159",
-        "259"
+        "159"
       ],
       "third": [
         "160",
-        "260"
+        "321"
       ]
     }
   },
@@ -436,17 +431,17 @@
     "second_reward": "false",
     "encounters": {
       "first": [
-        "1"
+        "66"
       ],
       "second": [
-        "3",
-        "139",
-        "169"
+        "127",
+        "169",
+        "591"
       ],
       "third": [
+        "142",
         "248",
-        "260",
-        "389"
+        "323"
       ]
     }
   },
@@ -456,17 +451,17 @@
     "second_reward": "false",
     "encounters": {
       "first": [
-        "4"
+        "303"
       ],
       "second": [
         "6",
-        "303",
-        "373"
+        "373",
+        "398"
       ],
       "third": [
-        "208",
-        "212",
-        "282"
+        "149",
+        "210",
+        "212"
       ]
     }
   },
@@ -476,17 +471,17 @@
     "second_reward": "false",
     "encounters": {
       "first": [
-        "7"
+        "302"
       ],
       "second": [
-        "9",
-        "131",
-        "257"
+        "330",
+        "332",
+        "430"
       ],
       "third": [
-        "31",
+        "143",
         "229",
-        "452"
+        "346"
       ]
     }
   },
@@ -496,7 +491,7 @@
     "second_reward": "false",
     "encounters": {
       "first": [
-        "381"
+        "150"
       ],
       "second": [],
       "third": []
@@ -534,18 +529,16 @@
     "second_reward": "false",
     "encounters": {
       "first": [
-        "200",
-        "302",
-        "355"
+        "622"
       ],
       "second": [
         "354",
         "356"
       ],
       "third": [
-        "302",
         "354",
-        "477"
+        "477",
+        "623"
       ]
     }
   },
