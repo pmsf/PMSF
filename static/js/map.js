@@ -1778,6 +1778,9 @@ function getQuest(item) {
                         str = str.replace('Throw(s)', 'Curveball Throw(s)')
                     }
                     break
+                case 21:
+                    str = str.replace('Catch {0}', 'Catch {0} different species of')
+                    break
                 case 22:
                     str = str.replace('Win', 'Battle a Team Leader').replace('pvp battle(s)', 'times')
                     break
@@ -1810,6 +1813,9 @@ function getQuest(item) {
                     if (item['quest_type'] === 28) {
                         str = str.replace('Snapshot(s)', 'Snapshot(s) of your Buddy')
                     }
+                    break
+                case 46:
+                    str = str.replace('{0} gift(s)', '{0} gift(s) with a sticker')
                     break
             }
         } else if (item['quest_type'] > 0) {
