@@ -36238,6 +36238,10 @@
           {
             "type": "Ice",
             "color": "#98d8d8"
+          },
+          {
+            "type": "Rock",
+            "color": "#b8a038"
           }
         ]
       },
