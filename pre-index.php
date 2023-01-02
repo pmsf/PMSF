@@ -528,6 +528,25 @@ if (strtolower($map) === "rdm") {
                                                 </div>
                                             <?php
                                             }
+                                            if (! $noEventStops) { ?>
+                                                <div class="dropdown-divider"></div>
+                                                <div class="form-check form-switch">
+                                                    <input class="form-check-input" id="eventstops-switch" type="checkbox" name="eventstops-switch">
+                                                    <label class="form-check-label" for="eventstops-switch"><?php echo i8ln('Event Pokéstops only') ?></label>
+                                                </div>
+                                                <div id="eventstops-wrapper" style="display:none">
+                                                <?php
+                                                if (! $noEventStopsTimer) { ?>
+                                                    <div class="dropdown-divider"></div>
+                                                    <div class="form-check form-switch">
+                                                        <input class="form-check-input" id="eventstops-timer-switch" type="checkbox" name="eventstops-timer-switch">
+                                                        <label class="form-check-label" for="eventstops-timer-switch"><?php echo i8ln('Event Pokéstops timer') ?></label>
+                                                    </div>
+                                                <?php
+                                                } ?>
+                                                </div>
+                                            <?php
+                                            }
                                             if (! $noTeamRocket) { ?>
                                                 <div class="dropdown-divider"></div>
                                                 <div class="form-check form-switch">
@@ -1606,10 +1625,12 @@ include('modals.php');
     var enablePokemon = <?php echo $noPokemon ? 'false' : $enablePokemon ?>;
     var enablePokestops = <?php echo $noPokestops ? 'false' : $enablePokestops ?>;
     var enableLured = <?php echo $noLures ? 'false' : $enableLured ?>;
+    var enableEventStops = <?php echo $noEventStops ? 'false' : $enableEventStops ?>;
     var enableRocket = <?php echo $noTeamRocket ? 'false' : $enableTeamRocket ?>;
     var noQuests = <?php echo $noQuests === true ? 'true' : 'false' ?>;
     var noQuestsARTaskToggle = <?php echo $noQuestsARTaskToggle === true ? 'true' : 'false' ?>;
     var noLures = <?php echo $noLures === true ? 'true' : 'false' ?>;
+    var noEventStops = <?php echo $noEventStops === true ? 'true' : 'false' ?>;
     var noTeamRocket = <?php echo $noTeamRocket === true ? 'true' : 'false' ?>;
     var hideGrunts = <?php echo $noTeamRocket ? '[]' : $hideGrunts ?>;
     var noAllPokestops = <?php echo $noAllPokestops === true ? 'true' : 'false' ?>;
@@ -1704,6 +1725,8 @@ include('modals.php');
     var enableRaidTimer = <?php echo $noRaidTimer ? 'false' : $enableRaidTimer ?>;
     var noRocketTimer = <?php echo $noTeamRocketTimer === true ? 'true' : 'false' ?>;
     var enableRocketTimer = <?php echo $noTeamRocketTimer ? 'false' : $enableTeamRocketTimer ?>;
+    var noEventStopsTimer = <?php echo $noEventStopsTimer === true ? 'true' : 'false' ?>;
+    var enableEventStopsTimer = <?php echo $noEventStopsTimer ? 'false' : $enableEventStopsTimer ?>;
     var enableNestPolygon = <?php echo $noNestPolygon ? 'false' : $enableNestPolygon ?>;
     var noNestPolygon = <?php echo $noNestPolygon === true ? 'true' : 'false' ?>;
     var nestGeoJSONfile = '<?php echo $noNestPolygon ? '' : (!empty($nestGeoJSONfile) ? $nestGeoJSONfile : '') ?>';

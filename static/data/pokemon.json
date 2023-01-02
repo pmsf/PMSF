@@ -32390,6 +32390,16 @@
             "color": "#98d8d8"
           }
         ]
+      },
+      {
+        "nameform": "Winter 2020",
+        "protoform": "2820",
+        "formtypes": [
+          {
+            "type": "Ice",
+            "color": "#98d8d8"
+          }
+        ]
       }
     ]
   },
@@ -36238,6 +36248,10 @@
           {
             "type": "Ice",
             "color": "#98d8d8"
+          },
+          {
+            "type": "Rock",
+            "color": "#b8a038"
           }
         ]
       },

@@ -204,9 +204,10 @@ class RDM extends Scanner
                 pvp_rankings_ultra_league";
             }
 
+            $sqlHeightColumn = ($this->columnExists("pokemon","height") ? "height," : "size AS height,");
             $select .= ",
             weight,
-            size AS height,
+            $sqlHeightColumn
             atk_iv AS individual_attack,
             def_iv AS individual_defense,
             sta_iv AS individual_stamina,
@@ -369,7 +370,7 @@ class RDM extends Scanner
         return $data;
     }
 
-    public function get_stops($geids, $qpeids, $qeeids, $qceids, $qieids, $swLat, $swLng, $neLat, $neLng, $tstamp = 0, $oSwLat = 0, $oSwLng = 0, $oNeLat = 0, $oNeLng = 0, $lures, $rocket, $quests, $dustamount, $xpamount, $quests_with_ar)
+    public function get_stops($geids, $qpeids, $qeeids, $qceids, $qieids, $swLat, $swLng, $neLat, $neLng, $tstamp = 0, $oSwLat = 0, $oSwLng = 0, $oNeLat = 0, $oNeLng = 0, $lures, $eventstops, $rocket, $quests, $dustamount, $xpamount, $quests_with_ar)
     {
         $conds = array();
         $params = array();
@@ -491,7 +492,7 @@ class RDM extends Scanner
         return $this->query_stops($conds, $params, $quests_with_ar);
     }
 
-    public function get_stops_quest($greids, $qpreids, $qereids, $qcreids, $qireids, $swLat, $swLng, $neLat, $neLng, $tstamp = 0, $oSwLat = 0, $oSwLng = 0, $oNeLat = 0, $oNeLng = 0, $lures, $rocket, $quests, $dustamount, $reloaddustamount, $xpamount, $reloadxpamount, $quests_with_ar)
+    public function get_stops_quest($greids, $qpreids, $qereids, $qcreids, $qireids, $swLat, $swLng, $neLat, $neLng, $tstamp = 0, $oSwLat = 0, $oSwLng = 0, $oNeLat = 0, $oNeLng = 0, $lures, $eventstops, $rocket, $quests, $dustamount, $reloaddustamount, $xpamount, $reloadxpamount, $quests_with_ar)
     {
         $conds = array();
         $params = array();
@@ -586,7 +587,7 @@ class RDM extends Scanner
 
     public function query_stops($conds, $params, $quests_with_ar)
     {
-        global $db, $noQuests, $noQuestsPokemon, $noQuestsItems, $noQuestsEnergy, $noQuestsCandy, $noQuestsStardust, $noQuestsXP;
+        global $db, $noQuests, $noQuestsPokemon, $noQuestsItems, $noQuestsEnergy, $noQuestsCandy, $noQuestsStardust, $noQuestsXP, $noEventStops, $noLures, $noTeamRocket;
 
         $questPrefix = ($quests_with_ar === true) ? "quest" : "alternative_quest";
         if ($this->columnExists("incident","pokestop_id")) {
@@ -602,6 +603,7 @@ class RDM extends Scanner
                 p.`lure_expire_timestamp` AS lure_expiration,
                 i.`character` AS grunt_type,
                 i.`expiration` AS incident_expiration,
+                i.`display_type` AS incident_display_type,
                 `{$questPrefix}_type` AS quest_type,
                 `{$questPrefix}_timestamp` AS quest_timestamp,
                 `{$questPrefix}_target` AS quest_target,
@@ -678,23 +680,11 @@ class RDM extends Scanner
                     }
                 }
             } else {
-                $item_pid = $pokestop["reward_item_id"];
-                if ($item_pid == "0") {
-                    $item_pid = null;
-                    $pokestop["reward_item_id"] = null;
-                }
-                $mon_pid = $pokestop["reward_pokemon_id"];
-                if ($mon_pid == "0") {
-                    $mon_pid = null;
-                    $pokestop["reward_pokemon_id"] = null;
-                }
-                $grunttype_pid = $pokestop["grunt_type"];
-                if ($grunttype_pid == "0") {
-                    $grunttype_pid = null;
-                    $pokestop["grunt_type"] = null;
-                }
+                $pokestop["url"] = !empty($pokestop["url"]) ? preg_replace("/^http:/i", "https:", $pokestop["url"]) : null;
+                $pokestop["last_seen"] = $pokestop["last_seen"] * 1000;
                 $pokestop["latitude"] = floatval($pokestop["latitude"]);
                 $pokestop["longitude"] = floatval($pokestop["longitude"]);
+
                 if (
                     $noQuests ||
                     ($noQuestsEnergy && intval($pokestop["quest_reward_type"]) === 12) ||
@@ -706,31 +696,81 @@ class RDM extends Scanner
                 ) {
                     $pokestop["quest_type"] = 0;
                     $pokestop["quest_reward_type"] = 0;
+                    $pokestop["quest_condition_type"] = 0;
+                    $pokestop["quest_condition_type_1"] = 0;
+                    $pokestop["quest_target"] = 0;
+                    $pokestop["reward_pokemon_id"] = 0;
+                    $pokestop["reward_pokemon_name"] = null;
+                    $pokestop["reward_pokemon_formid"] = 0;
+                    $pokestop["reward_pokemon_costumeid"] = 0;
+                    $pokestop["reward_pokemon_genderid"] = 0;
+                    $pokestop["reward_pokemon_shiny"] = 0;
+                    $pokestop["reward_item_id"] = 0;
+                    $pokestop["reward_item_name"] = null;
+                    $pokestop["reward_amount"] = 0;
                 } else {
+                    $item_pid = $pokestop["reward_item_id"];
+                    if ($item_pid == "0") {
+                        $item_pid = null;
+                        $pokestop["reward_item_id"] = null;
+                    }
+                    $mon_pid = $pokestop["reward_pokemon_id"];
+                    if ($mon_pid == "0") {
+                        $mon_pid = null;
+                        $pokestop["reward_pokemon_id"] = null;
+                    }
                     $pokestop["quest_type"] = intval($pokestop["quest_type"]);
                     $pokestop["quest_reward_type"] = intval($pokestop["quest_reward_type"]);
+                    $pokestop["quest_condition_type"] = intval($pokestop["quest_condition_type"]);
+                    $pokestop["quest_condition_type_1"] = intval($pokestop["quest_condition_type_1"]);
+                    $pokestop["quest_target"] = intval($pokestop["quest_target"]);
+                    $pokestop["reward_pokemon_id"] = intval($pokestop["reward_pokemon_id"]);
+                    $pokestop["reward_pokemon_name"] = empty($mon_pid) ? null : i8ln($this->data[$mon_pid]["name"]);
+                    $pokestop["reward_pokemon_formid"] = intval($pokestop["reward_pokemon_formid"]);
+                    $pokestop["reward_pokemon_costumeid"] = intval($pokestop["reward_pokemon_costumeid"]);
+                    $pokestop["reward_pokemon_genderid"] = intval($pokestop["reward_pokemon_genderid"]);
+                    $pokestop["reward_pokemon_shiny"] = intval($pokestop["reward_pokemon_shiny"]);
+                    $pokestop["reward_item_id"] = intval($pokestop["reward_item_id"]);
+                    $pokestop["reward_item_name"] = empty($item_pid) ? null : i8ln($this->items[$item_pid]["name"]);
+                    $pokestop["reward_amount"] = intval($pokestop["reward_amount"]);
                 }
-                $pokestop["quest_condition_type"] = intval($pokestop["quest_condition_type"]);
-                $pokestop["quest_condition_type_1"] = intval($pokestop["quest_condition_type_1"]);
-                $pokestop["quest_target"] = intval($pokestop["quest_target"]);
-                $pokestop["reward_pokemon_id"] = intval($pokestop["reward_pokemon_id"]);
-                $pokestop["reward_pokemon_name"] = empty($mon_pid) ? null : i8ln($this->data[$mon_pid]["name"]);
-                $pokestop["reward_pokemon_formid"] = intval($pokestop["reward_pokemon_formid"]);
-                $pokestop["reward_pokemon_costumeid"] = intval($pokestop["reward_pokemon_costumeid"]);
-                $pokestop["reward_pokemon_genderid"] = intval($pokestop["reward_pokemon_genderid"]);
-                $pokestop["reward_pokemon_shiny"] = intval($pokestop["reward_pokemon_shiny"]);
-                $pokestop["reward_item_id"] = intval($pokestop["reward_item_id"]);
-                $pokestop["reward_item_name"] = empty($item_pid) ? null : i8ln($this->items[$item_pid]["name"]);
-                $pokestop["reward_amount"] = intval($pokestop["reward_amount"]);
-                $pokestop["url"] = !empty($pokestop["url"]) ? preg_replace("/^http:/i", "https:", $pokestop["url"]) : null;
-                $pokestop["lure_expiration"] = $pokestop["lure_expiration"] * 1000;
-                $pokestop["incident_expiration"] = $pokestop["incident_expiration"] * 1000;
-                $pokestop["lure_id"] = intval($pokestop["lure_id"]);
-                $pokestop["grunt_type_name"] = empty($grunttype_pid) ? null : i8ln($this->grunttype[$grunttype_pid]["type"]);
-                $pokestop["grunt_type_gender"] = empty($grunttype_pid) ? null : i8ln($this->grunttype[$grunttype_pid]["grunt"]);
-                $pokestop["encounters"] = empty($this->grunttype[$grunttype_pid]["encounters"]) ? null : $this->grunttype[$grunttype_pid]["encounters"];
-                $pokestop["second_reward"] = empty($this->grunttype[$grunttype_pid]["second_reward"]) ? null : $this->grunttype[$grunttype_pid]["second_reward"];
-                $pokestop["last_seen"] = $pokestop["last_seen"] * 1000;
+
+                if ($noLures) {
+                    $pokestop["lure_id"] = 0;
+                    $pokestop["lure_expiration"] = 0;
+                } else {
+                    $pokestop["lure_id"] = intval($pokestop["lure_id"]);
+                    $pokestop["lure_expiration"] = $pokestop["lure_expiration"] * 1000;
+                }
+
+                if ($noEventStops || !isset($pokestop["grunt_type"]) || !(isset($pokestop["incident_display_type"]) && intval($pokestop["incident_display_type"]) === 7)) {
+                    $pokestop["eventstops_id"] = 0;
+                    $pokestop["eventstops_expiration"] = 0;
+                } else {
+                    $pokestop["eventstops_id"] = intval($pokestop["grunt_type"]);
+                    $pokestop["eventstops_expiration"] = $pokestop["incident_expiration"] * 1000;
+                    $pokestop["grunt_type"] = null;
+                }
+
+                if ($noTeamRocket || !isset($pokestop["grunt_type"])) {
+                    $pokestop["grunt_type"] = null;
+                    $pokestop["grunt_type_name"] = null;
+                    $pokestop["grunt_type_gender"] = null;
+                    $pokestop["encounters"] = null;
+                    $pokestop["second_reward"] = null;
+                    $pokestop["incident_expiration"] = null;
+                } else {
+                    $grunttype_pid = $pokestop["grunt_type"];
+                    if ($grunttype_pid == "0") {
+                        $grunttype_pid = null;
+                        $pokestop["grunt_type"] = null;
+                    }
+                    $pokestop["grunt_type_name"] = empty($grunttype_pid) ? null : i8ln($this->grunttype[$grunttype_pid]["type"]);
+                    $pokestop["grunt_type_gender"] = empty($grunttype_pid) ? null : i8ln($this->grunttype[$grunttype_pid]["grunt"]);
+                    $pokestop["encounters"] = empty($this->grunttype[$grunttype_pid]["encounters"]) ? null : $this->grunttype[$grunttype_pid]["encounters"];
+                    $pokestop["second_reward"] = empty($this->grunttype[$grunttype_pid]["second_reward"]) ? null : $this->grunttype[$grunttype_pid]["second_reward"];
+                    $pokestop["incident_expiration"] = $pokestop["incident_expiration"] * 1000;
+                }
 
                 $data[$pokestop["pokestop_id"]] = $pokestop;
             }
