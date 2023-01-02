@@ -117,6 +117,7 @@
     "enableAllPokestops": true,
     "enableLured": true,
     "enableRocket": true,
+    "enableEventStops": true,
     "showWeather": true,
     "enableWeatherOverlay": true,
     "enableScannedLocations": true,
@@ -192,6 +193,7 @@
     "noQuestsARTaskToggle": true,
     "noLures": true,
     "noTeamRocket": true,
+    "noEventStops": true,
     "noAllPokestops": true,
     "enableQuests": true,
     "enableScanPolygon": true,
@@ -206,6 +208,8 @@
     "noRaidTimer": true,
     "enableRocketTimer": true,
     "noRocketTimer": true,
+    "enableEventStopsTimer": true,
+    "noEventStopsTimer": true,
     "enableNestPolygon": true,
     "nestGeoJSONfile": true,
     "queryInterval": true,
@@ -254,7 +258,6 @@
     "processShinyStats": true,
     "noPvp": true,
     "noPvpCapText": true,
-    "noHideSingleMarker": true,
     "enableJSDebug": true
   }
 }

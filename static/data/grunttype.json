@@ -42,7 +42,7 @@
   "7": {
     "type": "Bug",
     "grunt": "Male",
-    "second_reward": "false",
+    "second_reward": "true",
     "encounters": {
       "first": [
         "13",
@@ -70,7 +70,7 @@
   "10": {
     "type": "Dark",
     "grunt": "Female",
-    "second_reward": "false",
+    "second_reward": "true",
     "encounters": {
       "first": [
         "19",
@@ -296,7 +296,7 @@
   "31": {
     "type": "Normal",
     "grunt": "Male",
-    "second_reward": "false",
+    "second_reward": "true",
     "encounters": {
       "first": [
         "19",
@@ -318,7 +318,7 @@
   "32": {
     "type": "Poison",
     "grunt": "Female",
-    "second_reward": "false",
+    "second_reward": "true",
     "encounters": {
       "first": [
         "32",
@@ -346,7 +346,7 @@
   "35": {
     "type": "Psychic",
     "grunt": "Male",
-    "second_reward": "false",
+    "second_reward": "true",
     "encounters": {
       "first": [
         "177"
@@ -369,7 +369,7 @@
   "37": {
     "type": "Rock",
     "grunt": "Male",
-    "second_reward": "false",
+    "second_reward": "true",
     "encounters": {
       "first": [
         "95",
@@ -544,7 +544,7 @@
   "49": {
     "type": "Electric",
     "grunt": "Female",
-    "second_reward": "false",
+    "second_reward": "true",
     "encounters": {
       "first": [
         "179",

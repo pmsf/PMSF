@@ -234,7 +234,7 @@ class RocketMap extends Scanner
         return $data;
     }
 
-    public function get_stops($geids, $qpeids, $qeeids, $qceids, $qieids, $swLat, $swLng, $neLat, $neLng, $tstamp = 0, $oSwLat = 0, $oSwLng = 0, $oNeLat = 0, $oNeLng = 0, $lured = false, $rocket = false, $quests, $dustamount, $xpamount, $quests_with_ar)
+    public function get_stops($geids, $qpeids, $qeeids, $qceids, $qieids, $swLat, $swLng, $neLat, $neLng, $tstamp = 0, $oSwLat = 0, $oSwLng = 0, $oNeLat = 0, $oNeLng = 0, $lured = false, $eventstops = false, $rocket = false, $quests, $dustamount, $xpamount, $quests_with_ar)
     {
         $conds = array();
         $params = array();
