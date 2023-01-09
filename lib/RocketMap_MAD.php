@@ -857,7 +857,7 @@ class RocketMap_MAD extends RocketMap
                 $pokestop["quest_reward_type"] = intval($pokestop["quest_reward_type"]);
             }
 
-            if (!$noEventStops && isset($pokestop["grunt_type"]) && intval($pokestop["grunt_type"] === 352)) {
+            if (!$noEventStops && isset($pokestop["grunt_type"]) && intval($pokestop["grunt_type"]) === 352) {
                 $pokestop["eventstops_id"] = 8;
                 $pokestop["eventstops_expiration"] = !empty($pokestop["incident_expiration"]) ? $pokestop["incident_expiration"] * 1000 : null;
                 $pokestop["grunt_type"] = null;
