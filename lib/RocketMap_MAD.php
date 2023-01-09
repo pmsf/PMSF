@@ -761,7 +761,7 @@ class RocketMap_MAD extends RocketMap
 
     public function query_stops($conds, $params, $quests_with_ar)
     {
-        global $db, $noQuests, $noQuestsPokemon, $noQuestsItems, $noQuestsEnergy, $noQuestsCandy, $noQuestsStardust, $noQuestsXP;
+        global $db, $noQuests, $noQuestsPokemon, $noQuestsItems, $noQuestsEnergy, $noQuestsCandy, $noQuestsStardust, $noQuestsXP, $noEventStops;
 
         $query = "SELECT Unix_timestamp(Convert_tz(lure_expiration, '+00:00', @@global.time_zone)) AS lure_expiration,
         Unix_timestamp(Convert_tz(incident_expiration, '+00:00', @@global.time_zone)) AS incident_expiration,
@@ -857,7 +857,7 @@ class RocketMap_MAD extends RocketMap
                 $pokestop["quest_reward_type"] = intval($pokestop["quest_reward_type"]);
             }
 
-            if (!$noEventStops && isset($pokestop["grunt_type"]) && intval($pokestop["grunt_type"] === 352)) {
+            if (!$noEventStops && isset($pokestop["grunt_type"]) && intval($pokestop["grunt_type"]) === 352) {
                 $pokestop["eventstops_id"] = 8;
                 $pokestop["eventstops_expiration"] = !empty($pokestop["incident_expiration"]) ? $pokestop["incident_expiration"] * 1000 : null;
                 $pokestop["grunt_type"] = null;
