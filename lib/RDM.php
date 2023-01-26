@@ -204,12 +204,10 @@ class RDM extends Scanner
                 pvp_rankings_ultra_league";
             }
 
-            $sqlHeightColumn = ($this->columnExists("pokemon","height") ? "height," : "size AS height,");
-            $sqlSizeColumn = ($this->columnExists("pokemon","size") ? "size," : "");
+            $sqlHeightSizeColumn = ($this->columnExists("pokemon","height") ? "height, size," : "size AS height,");
             $select .= ",
             weight,
-            $sqlHeightColumn
-            $sqlSizeColumn
+            $sqlHeightSizeColumn
             atk_iv AS individual_attack,
             def_iv AS individual_defense,
             sta_iv AS individual_stamina,
