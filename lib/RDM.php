@@ -743,13 +743,13 @@ class RDM extends Scanner
                     $pokestop["lure_expiration"] = $pokestop["lure_expiration"] * 1000;
                 }
 
-                if ($noEventStops || !isset($pokestop["grunt_type"]) || !(isset($pokestop["incident_display_type"]) && intval($pokestop["incident_display_type"]) === 7)) {
-                    $pokestop["eventstops_id"] = 0;
-                    $pokestop["eventstops_expiration"] = 0;
-                } else {
-                    $pokestop["eventstops_id"] = intval($pokestop["grunt_type"]);
+                if (!$noEventStops && isset($pokestop["incident_display_type"]) && intval($pokestop["incident_display_type"] >= 7)) {
+                    $pokestop["eventstops_id"] = intval($pokestop["incident_display_type"]);
                     $pokestop["eventstops_expiration"] = $pokestop["incident_expiration"] * 1000;
                     $pokestop["grunt_type"] = null;
+                } else {
+                    $pokestop["eventstops_id"] = 0;
+                    $pokestop["eventstops_expiration"] = 0;
                 }
 
                 if ($noTeamRocket || !isset($pokestop["grunt_type"])) {
