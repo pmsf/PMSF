@@ -2542,5 +2542,21 @@
     "duration": 0,
     "energy": 0,
     "dps": 0
+  },
+  "380": {
+    "name": "Boomburst",
+    "type": "Normal",
+    "damage": 0,
+    "duration": 0,
+    "energy": 0,
+    "dps": 0
+  },
+  "381": {
+    "name": "Double Iron Bash",
+    "type": "Steel",
+    "damage": 0,
+    "duration": 0,
+    "energy": 0,
+    "dps": 0
   }
 }
