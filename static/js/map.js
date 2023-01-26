@@ -1256,6 +1256,11 @@ function pokemonLabel(item) {
             '</div>'
         }
 
+        var size = ''
+        if (item['size'] != null) {
+            size = ' | <span style="color: white; border-radius: 5px; background: #5A5A5A; padding: 1px 4px 1px 4px;">' + i8ln(item['size']) + '</span>'
+        }
+
         details +=
             '<div style="position:absolute;top:90px;left:80px;"><div>' +
             i8ln('IV') + ': <b>' + iv.toFixed(1) + '%</b> (<b>' + atk + '</b>/<b>' + def + '</b>/<b>' + sta + '</b>)' +
@@ -1265,7 +1270,7 @@ function pokemonLabel(item) {
             '<div style="position:absolute;top:125px;">' +
             '<div>' + i8ln('Quick') + ': <b>' + pMove1 + '</b>' + pMoveType1 + '</div>' +
             '<div>' + i8ln('Charge') + ': <b>' + pMove2 + '</b>' + pMoveType2 + '</div>' +
-            '<div>' + i8ln('Weight') + ': <b>' + weight + '</b>' + ' | ' + i8ln('Height') + ': <b>' + height + '</b></div>' +
+            '<div>' + i8ln('Weight') + ': <b>' + weight + '</b>' + ' | ' + i8ln('Height') + ': <b>' + height + '</b>' + size + '</div>' +
             catchRates +
             '</div>'
     }
