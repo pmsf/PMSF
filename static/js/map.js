@@ -1952,7 +1952,15 @@ function pokestopLabel(item) {
         str += '<div>' + i8ln('Error: Undefined Quest Type') + ': ' + item['quest_type'] + '</div>'
     }
     if (!noEventStops && item['eventstops_expiration'] > Date.now()) {
-        var eventType = '<img style="padding:5px;position:relative;left:0px;top:12px;height:40px;" src="static/sprites/misc/EventStopsCoin.png"/>'
+        var eventType = ''
+        if (item['eventstops_id'] === 7) {
+            eventType = '<img src="static/sprites/misc/EventStopsCoin.png" style="padding:5px;position:relative;left:0px;top:12px;height:40px;"/>'
+        } else if (item['eventstops_id'] === 8) {
+            eventType = '<img src="' + getIcon(iconpath.pokemon, 'pokemon', '.png', 352) + '" style="padding:5px;position:relative;left:0px;top:12px;height:40px;"/>'
+        } else {
+            console.log('Unknown Event Type: ' + item['eventstops_id'])
+            eventType = i8ln('Unknown Event Type') + ': ' + item['eventstops_id']
+        }
         eventEndStr = getTimeStr(item['eventstops_expiration'])
         str +=
         '<div>' + i8ln('Event Type') + ': <b>' + eventType + '</b></div>' +
@@ -2512,9 +2520,14 @@ function getPokestopMarkerIcon(item) {
                 html: html
             })
         } else if (!noEventStops && item['eventstops_expiration'] > Date.now()) {
-            html = '<div><img src="static/sprites/misc/EventStops.png" style="width:50px;height:72;top:-35px;right:10px;"/><div>'
-            if (item['eventstops_id'] === 0) {
+            if (!noLures && item['lure_expiration'] > Date.now()) {
+                markerStr = item['lure_id']
+            }
+            html = '<div><img src="' + getIcon(iconpath.pokestop, 'pokestop', '.png', markerStr, item['eventstops_id']) + '" style="width:50px;height:72;top:-35px;right:10px;"/><div>'
+            if (item['eventstops_id'] === 7) {
                 html += '<img src="static/sprites/misc/EventStopsCoin.png" style="width:25px;height:auto;position:absolute;top:4px;left:0px;"/></div>'
+            } else if (item['eventstops_id'] === 8) {
+                html += '<img src="' + getIcon(iconpath.pokemon, 'pokemon', '.png', 352) + '" style="width:25px;height:auto;position:absolute;top:4px;left:0px;"/></div>'
             } else {
                 html += '</div>'
             }
@@ -2649,10 +2662,16 @@ function getPokestopMarkerIcon(item) {
             className: 'stop-rocket-marker',
             html: html
         })
-    } else if (Store.get(['showEventStops']) && !noLures && item['eventstops_expiration'] > Date.now()) {
-        html = '<div><img src="static/sprites/misc/EventStops.png" style="width:50px;height:72;top:-35px;right:10px;"/><div>'
-        if (item['eventstops_id'] === 0) {
+    } else if (Store.get(['showEventStops']) && !noEventStops && item['eventstops_expiration'] > Date.now()) {
+        if (!noLures && item['lure_expiration'] > Date.now()) {
+            markerStr = item['lure_id']
+        }
+        html = '<div><img src="' + getIcon(iconpath.pokestop, 'pokestop', '.png', markerStr, item['eventstops_id']) + '" style="width:50px;height:72;top:-35px;right:10px;"/><div>'
+
+        if (item['eventstops_id'] === 7) {
             html += '<img src="static/sprites/misc/EventStopsCoin.png" style="width:25px;height:auto;position:absolute;top:4px;left:0px;"/></div>'
+        } else if (item['eventstops_id'] === 8) {
+            html += '<img src="' + getIcon(iconpath.pokemon, 'pokemon', '.png', 352) + '" style="width:25px;height:auto;position:absolute;top:4px;left:0px;"/></div>'
         } else {
             html += '</div>'
         }
@@ -7967,7 +7986,7 @@ function getIcon(iconRepo, folder, fileType, iconKeyId, ...varArgs) {
                 }
             } else {
                 const lureId = iconKeyId
-                const invasionId = typeof varArgs[0] === 'undefined' ? [''] : varArgs[0] === 0 ? [''] : ['_i', '']
+                const invasionId = typeof varArgs[0] === 'undefined' ? [''] : varArgs[0] === 0 ? [''] : ['_i' + varArgs[0], '_i', '']
                 const questId = typeof varArgs[1] === 'undefined' ? [''] : varArgs[1] === 0 ? [''] : ['_q', '']
                 search:
                 for (const invasion of invasionId) {

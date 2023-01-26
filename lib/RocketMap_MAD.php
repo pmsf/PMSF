@@ -761,7 +761,7 @@ class RocketMap_MAD extends RocketMap
 
     public function query_stops($conds, $params, $quests_with_ar)
     {
-        global $db, $noQuests, $noQuestsPokemon, $noQuestsItems, $noQuestsEnergy, $noQuestsCandy, $noQuestsStardust, $noQuestsXP;
+        global $db, $noQuests, $noQuestsPokemon, $noQuestsItems, $noQuestsEnergy, $noQuestsCandy, $noQuestsStardust, $noQuestsXP, $noEventStops;
 
         $query = "SELECT Unix_timestamp(Convert_tz(lure_expiration, '+00:00', @@global.time_zone)) AS lure_expiration,
         Unix_timestamp(Convert_tz(incident_expiration, '+00:00', @@global.time_zone)) AS incident_expiration,
@@ -856,14 +856,27 @@ class RocketMap_MAD extends RocketMap
                 $pokestop["quest_type"] = intval($pokestop["quest_type"]);
                 $pokestop["quest_reward_type"] = intval($pokestop["quest_reward_type"]);
             }
-            $pokestop["eventstops_id"] = 0;
-            $pokestop["eventstops_expiration"] = 0;
+
+            if (!$noEventStops && isset($pokestop["grunt_type"]) && intval($pokestop["grunt_type"]) === 352) {
+                $pokestop["eventstops_id"] = 8;
+                $pokestop["eventstops_expiration"] = !empty($pokestop["incident_expiration"]) ? $pokestop["incident_expiration"] * 1000 : null;
+                $pokestop["grunt_type"] = null;
+                $pokestop["grunt_type_name"] = null;
+                $pokestop["grunt_type_gender"] = null;
+                $pokestop["encounters"] = null;
+                $pokestop["second_reward"] = null;
+                $pokestop["incident_expiration"] = null;
+            } else {
+                $pokestop["eventstops_id"] = 0;
+                $pokestop["eventstops_expiration"] = 0;
+                $pokestop["grunt_type_name"] = empty($grunttype_pid) ? null : i8ln($this->grunttype[$grunttype_pid]["type"]);
+                $pokestop["grunt_type_gender"] = empty($grunttype_pid) ? null : i8ln($this->grunttype[$grunttype_pid]["grunt"]);
+                $pokestop["encounters"] = empty($this->grunttype[$grunttype_pid]["encounters"]) ? null : $this->grunttype[$grunttype_pid]["encounters"];
+                $pokestop["second_reward"] = empty($this->grunttype[$grunttype_pid]["second_reward"]) ? null : $this->grunttype[$grunttype_pid]["second_reward"];
+                $pokestop["incident_expiration"] = !empty($pokestop["incident_expiration"]) ? $pokestop["incident_expiration"] * 1000 : null;
+            }
+
             $pokestop["lure_expiration"] = !empty($pokestop["lure_expiration"]) ? $pokestop["lure_expiration"] * 1000 : null;
-            $pokestop["incident_expiration"] = !empty($pokestop["incident_expiration"]) ? $pokestop["incident_expiration"] * 1000 : null;
-            $pokestop["grunt_type_name"] = empty($grunttype_pid) ? null : i8ln($this->grunttype[$grunttype_pid]["type"]);
-            $pokestop["grunt_type_gender"] = empty($grunttype_pid) ? null : i8ln($this->grunttype[$grunttype_pid]["grunt"]);
-            $pokestop["encounters"] = empty($this->grunttype[$grunttype_pid]["encounters"]) ? null : $this->grunttype[$grunttype_pid]["encounters"];
-            $pokestop["second_reward"] = empty($this->grunttype[$grunttype_pid]["second_reward"]) ? null : $this->grunttype[$grunttype_pid]["second_reward"];
             $pokestop["lure_id"] = intval($pokestop["lure_id"]);
             $pokestop["url"] = !empty($pokestop["url"]) ? preg_replace("/^http:/i", "https:", $pokestop["url"]) : null;
             $pokestop["quest_condition_type"] = 0;
