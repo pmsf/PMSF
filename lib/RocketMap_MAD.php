@@ -180,10 +180,12 @@ class RocketMap_MAD extends RocketMap
         costume,
         seen_type";
 
+        $sqlSizeColumn = ($this->columnExists("pokemon","size") ? "size," : "");
         if (!$noHighLevelData) {
             $select .= ",
             weight,
             height,
+            $sqlSizeColumn
             individual_attack,
             individual_defense,
             individual_stamina,
@@ -211,6 +213,7 @@ class RocketMap_MAD extends RocketMap
         $lastlat = 0;
         $lastlon = 0;
         $lasti = 0;
+        $pokemonSizeArray = array(1 => "XXS", 2 => "XS", 3 => "M", 4 => "XL", 5 => "XXL");
 
         foreach ($pokemons as $pokemon) {
             // Jitter for nearby that would otherwise stack on top of each other
@@ -236,6 +239,7 @@ class RocketMap_MAD extends RocketMap
 
             $pokemon["weight"] = isset($pokemon["weight"]) ? floatval($pokemon["weight"]) : null;
             $pokemon["height"] = isset($pokemon["height"]) ? floatval($pokemon["height"]) : null;
+            $pokemon["size"] = (isset($pokemon["size"]) && isset($pokemonSizeArray[$pokemon["size"]])) ? $pokemonSizeArray[$pokemon["size"]] : null;
 
             $pokemon["individual_attack"] = isset($pokemon["individual_attack"]) ? intval($pokemon["individual_attack"]) : null;
             $pokemon["individual_defense"] = isset($pokemon["individual_defense"]) ? intval($pokemon["individual_defense"]) : null;
