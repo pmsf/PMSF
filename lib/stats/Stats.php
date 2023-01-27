@@ -17,6 +17,18 @@ class Stats
      * @var array|mixed
      */
     public $moves = [];
+    /**
+     * $items
+     * Used for items
+     * @var array|mixed
+     */
+    public $items = [];
+    /**
+     * $grunttype
+     * Used for grunttype
+     * @var array|mixed
+     */
+    public $grunttype = [];
 
     /**
      * columnExists()
