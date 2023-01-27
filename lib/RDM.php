@@ -236,7 +236,6 @@ class RDM extends Scanner
         $lastlat = 0;
         $lastlon = 0;
         $lasti = 0;
-        $pokemonSizeArray = array(1 => "XXS", 2 => "XS", 3 => "M", 4 => "XL", 5 => "XXL");
 
         $keepDefault = ($noHighLevelData || ($minIv === 0 && $minLevel === 0 && $minLLRank === 0 && $minGLRank === 0 && $minULRank === 0));
         $thisRankLimitLL = ($globalRankLimitLL === 0) ? $minLLRank : $globalRankLimitLL;
@@ -319,7 +318,7 @@ class RDM extends Scanner
 
                 $pokemon["weight"] = isset($pokemon["weight"]) ? floatval($pokemon["weight"]) : null;
                 $pokemon["height"] = isset($pokemon["height"]) ? floatval($pokemon["height"]) : null;
-                $pokemon["size"] = (isset($pokemon["size"]) && isset($pokemonSizeArray[$pokemon["size"]])) ? $pokemonSizeArray[$pokemon["size"]] : null;
+                $pokemon["size"] = (isset($pokemon["size"]) && isset($this->pokemonSize[$pokemon["size"]])) ? $this->pokemonSize[$pokemon["size"]] : null;
 
                 $pokemon["individual_attack"] = isset($pokemon["individual_attack"]) ? intval($pokemon["individual_attack"]) : null;
                 $pokemon["individual_defense"] = isset($pokemon["individual_defense"]) ? intval($pokemon["individual_defense"]) : null;
