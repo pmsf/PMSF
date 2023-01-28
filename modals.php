@@ -730,6 +730,7 @@
                                     <option value="7">7</option>
                                     <option value="8">8</option>
                                     <option value="9">9</option>
+                                    <option value="10">10</option>
                                 </select>
                             </div>
                             <div class="collapse" id="throwTypeList">
@@ -852,6 +853,7 @@
                                 <span class="pokemon-icon-sprite" data-value="egg_7" data-label="Level 7" onclick="pokemonRaidFilter(event);"><span class="egg_7 inner-bg" style="background: url('static/sprites/raid/egg/7.png');background-size:100%"></span><span class="egg-number">7</span></span>
                                 <span class="pokemon-icon-sprite" data-value="egg_8" data-label="Level 8" onclick="pokemonRaidFilter(event);"><span class="egg_8 inner-bg" style="background: url('static/sprites/raid/egg/8.png');background-size:100%"></span><span class="egg-number">8</span></span>
                                 <span class="pokemon-icon-sprite" data-value="egg_9" data-label="Level 9" onclick="pokemonRaidFilter(event);"><span class="egg_9 inner-bg" style="background: url('static/sprites/raid/egg/9.png');background-size:100%"></span><span class="egg-number">9</span></span>
+                                <span class="pokemon-icon-sprite" data-value="egg_10" data-label="Level 10" onclick="pokemonRaidFilter(event);"><span class="egg_10 inner-bg" style="background: url('static/sprites/raid/egg/10.png');background-size:100%"></span><span class="egg-number">10</span></span>
                                 <?php
                                 $pokemonJson = file_get_contents('static/dist/data/pokemon.min.json');
                                 $pokemon = json_decode($pokemonJson, true);
