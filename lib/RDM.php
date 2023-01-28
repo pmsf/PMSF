@@ -663,9 +663,11 @@ class RDM extends Scanner
         foreach ($pokestops as $pokestop) {
             if (isset($data[$pokestop["pokestop_id"]])) {
                 // duplicate stop due to multiple incidents. everything already processed but need to make sure same grunt is always returned to frontend until multiple invasion support.
-                if (isset($pokestop["grunt_type"]) && intval($pokestop["grunt_type"]) > 0) {
+                if (!$noTeamRocket && isset($pokestop["grunt_type"]) && intval($pokestop["grunt_type"]) > 0) {
                     $updateGrunt = false;
-                    if (intval($data[$pokestop["pokestop_id"]]["grunt_type"] === 44) && (intval($pokestop["grunt_type"]) < 44 || intval($pokestop["grunt_type"]) > 44)) {
+                    if (!isset($data[$pokestop['pokestop_id']]['grunt_type'])) {
+                        $updateGrunt = true;
+                    } elseif (intval($data[$pokestop["pokestop_id"]]["grunt_type"] === 44) && (intval($pokestop["grunt_type"]) < 44 || intval($pokestop["grunt_type"]) > 44)) {
                         $updateGrunt = true;
                     } elseif (in_array(intval($data[$pokestop["pokestop_id"]]["grunt_type"]), [41,42,43]) && (intval($pokestop["grunt_type"]) < 41 || intval($pokestop["grunt_type"]) > 44)) {
                         $updateGrunt = true;
@@ -678,7 +680,11 @@ class RDM extends Scanner
                         $data[$pokestop["pokestop_id"]]["grunt_type_gender"] = i8ln($this->grunttype[$pokestop["grunt_type"]]["grunt"]);
                         $data[$pokestop["pokestop_id"]]["encounters"] = empty($this->grunttype[$pokestop["grunt_type"]]["encounters"]) ? null : $this->grunttype[$pokestop["grunt_type"]]["encounters"];
                         $data[$pokestop["pokestop_id"]]["second_reward"] = empty($this->grunttype[$pokestop["grunt_type"]]["second_reward"]) ? null : $this->grunttype[$pokestop["grunt_type"]]["second_reward"];
+                        $data[$pokestop["pokestop_id"]]["incident_expiration"] = $pokestop["incident_expiration"] * 1000;
                     }
+                } elseif (!$noEventStops && isset($pokestop["incident_display_type"]) && intval($pokestop["incident_display_type"] >= 7)) {
+                    $data[$pokestop["pokestop_id"]]["eventstops_id"] = intval($pokestop["incident_display_type"]);
+                    $data[$pokestop["pokestop_id"]]["eventstops_expiration"] = !empty($pokestop["incident_expiration"]) ? $pokestop["incident_expiration"] * 1000 : null;
                 }
             } else {
                 $pokestop["url"] = !empty($pokestop["url"]) ? preg_replace("/^http:/i", "https:", $pokestop["url"]) : null;
