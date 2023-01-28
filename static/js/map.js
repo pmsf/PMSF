@@ -1376,6 +1376,9 @@ function pokemonLabel(item) {
                 if (pokemonName === '') {
                     pokemonName = i8ln(pokedex[ranking.pokemon]['name'])
                 }
+                if (ranking.evolution !== undefined && ranking.evolution > 0) {
+                    pokemonName = i8ln('Mega') + ' ' + pokemonName
+                }
 
                 let infoString
                 if (ranking.rank === null) {
@@ -1414,6 +1417,9 @@ function pokemonLabel(item) {
                 if (pokemonName === '') {
                     pokemonName = i8ln(pokedex[ranking.pokemon]['name'])
                 }
+                if (ranking.evolution !== undefined && ranking.evolution > 0) {
+                    pokemonName = i8ln('Mega') + ' ' + pokemonName
+                }
 
                 let infoString
                 if (ranking.rank === null) {
@@ -1449,6 +1455,9 @@ function pokemonLabel(item) {
                 })
                 if (pokemonName === '') {
                     pokemonName = i8ln(pokedex[ranking.pokemon]['name'])
+                }
+                if (ranking.evolution !== undefined && ranking.evolution > 0) {
+                    pokemonName = i8ln('Mega') + ' ' + pokemonName
                 }
 
                 let infoString
