@@ -72,6 +72,8 @@ class RocketMap_MAD extends Stats
     {
       global $db, $noBoundaries, $boundaries;
 
+      $madGrunts = ($this->columnExists("pokestop_incident","pokestop_id")) ? "(SELECT COUNT(DISTINCT `pokestop_id`) FROM `pokestop_incident` WHERE `incident_expiration` > UTC_TIMESTAMP()) AS rocket," : "SUM(incident_expiration > UTC_TIMESTAMP()) AS rocket,";
+
       $whereGeofenceSQL = '';
       $andGeofenceSQL = '';
       if (!$noBoundaries) {
@@ -81,7 +83,7 @@ class RocketMap_MAD extends Stats
 
       $pokestops = $db->query("
         SELECT
-          SUM(incident_expiration > UTC_TIMESTAMP()) AS rocket,
+          $madGrunts
           SUM(lure_expiration > UTC_TIMESTAMP() AND active_fort_modifier = 501) AS normal_lure,
           SUM(lure_expiration > UTC_TIMESTAMP() AND active_fort_modifier = 502) AS glacial_lure,
           SUM(lure_expiration > UTC_TIMESTAMP() AND active_fort_modifier = 503) AS mossy_lure,
