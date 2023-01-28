@@ -45,48 +45,58 @@
     "level": "9"
   },
   "10": {
-    "type": "2",
-    "image_name": "hatched_normal",
-    "level": "1"
+    "type": "1",
+    "image_name": "primal",
+    "level": "10"
   },
   "11": {
     "type": "2",
     "image_name": "hatched_normal",
-    "level": "2"
+    "level": "1"
   },
   "12": {
     "type": "2",
-    "image_name": "hatched_rare",
-    "level": "3"
+    "image_name": "hatched_normal",
+    "level": "2"
   },
   "13": {
     "type": "2",
     "image_name": "hatched_rare",
-    "level": "4"
+    "level": "3"
   },
   "14": {
+    "type": "2",
+    "image_name": "hatched_rare",
+    "level": "4"
+  },
+  "15": {
     "type": "2",
     "image_name": "hatched_legendary",
     "level": "5"
   },
-  "15": {
+  "16": {
     "type": "2",
     "image_name": "hatched_mega",
     "level": "6"
   },
-  "16": {
+  "17": {
     "type": "2",
     "image_name": "hatched_mega_legendary",
     "level": "7"
   },
-  "17": {
+  "18": {
     "type": "2",
     "image_name": "hatched_ultra_beast",
     "level": "8"
   },
-  "18": {
+  "19": {
     "type": "2",
     "image_name": "hatched_elite",
     "level": "9"
+  },
+  "20": {
+    "type": "2",
+    "image_name": "hatched_primal",
+    "level": "10"
   }
 }

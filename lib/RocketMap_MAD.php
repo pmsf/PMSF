@@ -180,10 +180,12 @@ class RocketMap_MAD extends RocketMap
         costume,
         seen_type";
 
+        $sqlSizeColumn = ($this->columnExists("pokemon","size") ? "size," : "");
         if (!$noHighLevelData) {
             $select .= ",
             weight,
             height,
+            $sqlSizeColumn
             individual_attack,
             individual_defense,
             individual_stamina,
@@ -236,6 +238,7 @@ class RocketMap_MAD extends RocketMap
 
             $pokemon["weight"] = isset($pokemon["weight"]) ? floatval($pokemon["weight"]) : null;
             $pokemon["height"] = isset($pokemon["height"]) ? floatval($pokemon["height"]) : null;
+            $pokemon["size"] = (isset($pokemon["size"]) && isset($this->pokemonSize[$pokemon["size"]])) ? $this->pokemonSize[$pokemon["size"]] : null;
 
             $pokemon["individual_attack"] = isset($pokemon["individual_attack"]) ? intval($pokemon["individual_attack"]) : null;
             $pokemon["individual_defense"] = isset($pokemon["individual_defense"]) ? intval($pokemon["individual_defense"]) : null;

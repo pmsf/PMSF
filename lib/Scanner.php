@@ -18,10 +18,28 @@ class Scanner
      * @var array|mixed
      */
     public $moves = [];
+    /**
+     * $items
+     * Used for items
+     * @var array|mixed
+     */
+    public $items = [];
+    /**
+     * $grunttype
+     * Used for grunttype
+     * @var array|mixed
+     */
+    public $grunttype = [];
+    /**
+     * $pokemonSize
+     * Used for Pokemon sizes
+     * @var array|string
+     */
+    public $pokemonSize = [];
 
     /**
      * columnExists()
-     * Used for backward compatibility (backend agnostic)
+     * Used for backward compatibility
      * Returns true if column exists in table
      */
     public function columnExists($table = '', $column = '')
@@ -54,5 +72,7 @@ class Scanner
         $json_grunttype = "static/data/grunttype.json";
         $json_contents = file_get_contents($json_grunttype);
         $this->grunttype = json_decode($json_contents, true);
+
+        $this->pokemonSize = array(1 => "XXS", 2 => "XS", 3 => "M", 4 => "XL", 5 => "XXL");
     }
 }

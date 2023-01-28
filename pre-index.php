@@ -870,6 +870,7 @@ if (strtolower($map) === "rdm") {
                                                     <option value="7">7</option>
                                                     <option value="8">8</option>
                                                     <option value="9">9</option>
+                                                    <option value="10">10</option>
                                                 </select>
                                                 <label for="min-level-raids-filter-switch"><?php echo i8ln('Minimum Raid Level') ?></label>
                                             </div>
@@ -885,6 +886,7 @@ if (strtolower($map) === "rdm") {
                                                     <option value="7">7</option>
                                                     <option value="8">8</option>
                                                     <option value="9">9</option>
+                                                    <option value="10">10</option>
                                                 </select>
                                                 <label for="max-level-raids-filter-switch"><?php echo i8ln('Maximum Raid Level') ?></label>
                                             </div>
@@ -916,7 +918,7 @@ if (strtolower($map) === "rdm") {
                                                     </div>
                                                     <div class="tab-pane fade" id="exclude-raidegg" role="tabpanel" aria-labelledby="exclude-raidegg-tab">
                                                         <div class="scroll-container">
-                                                            <?php raideggFilterImages($noRaideggNumbers, '', $excludeRaidegg, 18); ?>
+                                                            <?php raideggFilterImages($noRaideggNumbers, '', $excludeRaidegg, 20); ?>
                                                         </div>
                                                         <div class="dropdown-divider"></div>
                                                         <a class="btn btn-secondary select-all-egg" href="#"><?php echo i8ln('All') ?></a>
@@ -1234,6 +1236,7 @@ if (strtolower($map) === "rdm") {
                                                 <option value="7">7</option>
                                                 <option value="8">8</option>
                                                 <option value="9">9</option>
+                                                <option value="10">10</option>
                                             </select>
                                             <label for="notify-raid"><?php echo i8ln('Notify of Minimum Raid Level') ?></label>
                                         </div>
