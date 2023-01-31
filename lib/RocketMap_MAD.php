@@ -776,6 +776,16 @@ class RocketMap_MAD extends RocketMap
     {
         global $db, $noQuests, $noQuestsPokemon, $noQuestsItems, $noQuestsEnergy, $noQuestsCandy, $noQuestsStardust, $noQuestsXP, $noEventStops, $noLures, $noTeamRocket;
 
+        if ($this->columnExists("trs_quest","layer")) {
+            if ($quests_with_ar) {
+                $sqlQuestLayer = " AND tq.layer = 1 ";
+            } else {
+                $sqlQuestLayer = " AND tq.layer = 0 ";
+            }
+        } else {
+            $sqlQuestLayer = "";
+        }
+
         if ($this->columnExists("pokestop_incident","pokestop_id")) {
             $query = "
             SELECT
@@ -806,7 +816,7 @@ class RocketMap_MAD extends RocketMap
                 json_extract(json_extract(tq.`quest_reward`,'$[*].candy.amount'),'$[0]') AS reward_candy_amount,
                 json_extract(json_extract(tq.`quest_reward`,'$[*].candy.pokemon_id'),'$[0]') AS reward_candy_pokemon_id
             FROM pokestop p
-            LEFT JOIN trs_quest tq ON tq.GUID = p.pokestop_id
+            LEFT JOIN trs_quest tq ON tq.GUID = p.pokestop_id $sqlQuestLayer
             LEFT JOIN pokestop_incident i ON i.pokestop_id = p.pokestop_id AND i.incident_expiration > UTC_TIMESTAMP()
             WHERE :conditions";
         } else {
@@ -838,7 +848,7 @@ class RocketMap_MAD extends RocketMap
                 json_extract(json_extract(`quest_reward`,'$[*].candy.amount'),'$[0]') AS reward_candy_amount,
                 json_extract(json_extract(`quest_reward`,'$[*].candy.pokemon_id'),'$[0]') AS reward_candy_pokemon_id
             FROM pokestop p
-            LEFT JOIN trs_quest tq ON tq.GUID = p.pokestop_id
+            LEFT JOIN trs_quest tq ON tq.GUID = p.pokestop_id $sqlQuestLayer
             WHERE :conditions";
         }
 
