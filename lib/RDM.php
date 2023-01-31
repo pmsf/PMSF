@@ -702,6 +702,7 @@ class RDM extends Scanner
                     ($noQuestsXP && intval($pokestop["quest_reward_type"]) === 1)
                 ) {
                     $pokestop["quest_type"] = 0;
+                    $pokestop["quest_with_artask"] = null;
                     $pokestop["quest_reward_type"] = 0;
                     $pokestop["quest_condition_type"] = 0;
                     $pokestop["quest_condition_type_1"] = 0;
@@ -727,6 +728,7 @@ class RDM extends Scanner
                         $pokestop["reward_pokemon_id"] = null;
                     }
                     $pokestop["quest_type"] = intval($pokestop["quest_type"]);
+                    $pokestop["quest_with_artask"] = $quests_with_ar;
                     $pokestop["quest_reward_type"] = intval($pokestop["quest_reward_type"]);
                     $pokestop["quest_condition_type"] = intval($pokestop["quest_condition_type"]);
                     $pokestop["quest_condition_type_1"] = intval($pokestop["quest_condition_type_1"]);

@@ -1914,7 +1914,14 @@ function pokestopLabel(item) {
 
     if (!noQuests && item['quest_type'] > 0 && typeof questtypeList[item['quest_type']] !== 'undefined' && lastMidnight < Number(item['quest_timestamp'])) {
         var questStr = getQuest(item)
+        var questArStr = ''
+        if (item['quest_with_artask'] === true) {
+            questArStr = '<div><span class="pokestop-quest-artext">' + i8ln('With AR-Scan Task') + '</span></div>'
+        } else if (item['quest_with_artask'] === false) {
+            questArStr = '<div><span class="pokestop-quest-artext">' + i8ln('Without AR-Scan Task') + '</span></div>'
+        }
         str += getReward(item) + '</div>' +
+            questArStr +
             '<div>' +
             i8ln('Quest') + ': <b>' +
             i8ln(questStr) +
