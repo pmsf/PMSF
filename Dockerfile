@@ -6,7 +6,7 @@
 # - mount access-config.php to /var/www/html/config/access-config.php
 # - Also mount every other configuration file necessary into the according directory.
 
-FROM thecodingmachine/php:7.4-v4-apache-node12
+FROM thecodingmachine/php:7.4-v4-apache-node16
 
 RUN git clone -b develop https://github.com/pmsf/PMSF.git .
 RUN composer install
