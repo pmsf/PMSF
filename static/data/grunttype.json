@@ -42,18 +42,20 @@
   "7": {
     "type": "Bug",
     "grunt": "Male",
-    "second_reward": "true",
+    "second_reward": "false",
     "encounters": {
       "first": [
-        "13",
-        "213"
+        "213",
+        "451",
+        "595"
       ],
       "second": [
-        "15",
-        "451"
+        "13",
+        "14",
+        "15"
       ],
       "third": [
-        "127",
+        "15",
         "205",
         "212"
       ]
@@ -70,14 +72,16 @@
   "10": {
     "type": "Dark",
     "grunt": "Female",
-    "second_reward": "true",
+    "second_reward": "false",
     "encounters": {
       "first": [
         "19",
+        "198",
         "509"
       ],
       "second": [
         "20",
+        "198",
         "434"
       ],
       "third": [
@@ -97,7 +101,6 @@
     "second_reward": "false",
     "encounters": {
       "first": [
-        "103",
         "147"
       ],
       "second": [
@@ -146,7 +149,6 @@
     "encounters": {
       "first": [
         "106",
-        "107",
         "296"
       ],
       "second": [
@@ -155,8 +157,7 @@
       ],
       "third": [
         "68",
-        "106",
-        "107"
+        "106"
       ]
     }
   },
@@ -170,10 +171,12 @@
     "second_reward": "false",
     "encounters": {
       "first": [
+        "37",
         "155",
         "322"
       ],
       "second": [
+        "126",
         "156"
       ],
       "third": [
@@ -193,12 +196,13 @@
     "second_reward": "false",
     "encounters": {
       "first": [
+        "41",
         "177",
-        "396",
         "580"
       ],
       "second": [
         "42",
+        "178",
         "397"
       ],
       "third": [
@@ -222,10 +226,12 @@
     "second_reward": "false",
     "encounters": {
       "first": [
+        "43",
         "152",
         "331"
       ],
       "second": [
+        "44",
         "153"
       ],
       "third": [
@@ -246,6 +252,7 @@
     "encounters": {
       "first": [
         "50",
+        "74",
         "449"
       ],
       "second": [
@@ -253,6 +260,7 @@
         "449"
       ],
       "third": [
+        "76",
         "450"
       ]
     }
@@ -264,10 +272,12 @@
     "encounters": {
       "first": [
         "27",
+        "37",
         "220"
       ],
       "second": [
         "28",
+        "38",
         "459"
       ],
       "third": [
@@ -287,7 +297,24 @@
   },
   "29": {
     "type": "Steel",
-    "grunt": "Male"
+    "grunt": "Male",
+    "second_reward": "false",
+    "encounters": {
+      "first": [
+        "27",
+        "50",
+        "304"
+      ],
+      "second": [
+        "27",
+        "305",
+        "375"
+      ],
+      "third": [
+        "212",
+        "306"
+      ]
+    }
   },
   "30": {
     "type": "Normal",
@@ -296,17 +323,17 @@
   "31": {
     "type": "Normal",
     "grunt": "Male",
-    "second_reward": "true",
+    "second_reward": "false",
     "encounters": {
       "first": [
-        "19",
         "293",
-        "504"
+        "504",
+        "519"
       ],
       "second": [
+        "19",
         "20",
-        "294",
-        "399"
+        "294"
       ],
       "third": [
         "20",
@@ -318,10 +345,9 @@
   "32": {
     "type": "Poison",
     "grunt": "Female",
-    "second_reward": "true",
+    "second_reward": "false",
     "encounters": {
       "first": [
-        "32",
         "41",
         "590"
       ],
@@ -346,10 +372,12 @@
   "35": {
     "type": "Psychic",
     "grunt": "Male",
-    "second_reward": "true",
+    "second_reward": "false",
     "encounters": {
       "first": [
-        "177"
+        "63",
+        "177",
+        "325"
       ],
       "second": [
         "203",
@@ -369,19 +397,22 @@
   "37": {
     "type": "Rock",
     "grunt": "Male",
-    "second_reward": "true",
+    "second_reward": "false",
     "encounters": {
       "first": [
         "95",
-        "185"
+        "345",
+        "347"
       ],
       "second": [
+        "75",
         "345",
         "347"
       ],
       "third": [
         "76",
-        "95"
+        "95",
+        "208"
       ]
     }
   },
@@ -391,13 +422,16 @@
     "second_reward": "false",
     "encounters": {
       "first": [
+        "54",
         "158",
         "320"
       ],
       "second": [
+        "55",
         "159"
       ],
       "third": [
+        "55",
         "160",
         "321"
       ]
@@ -430,16 +464,16 @@
     "second_reward": "false",
     "encounters": {
       "first": [
-        "66"
+        "81"
       ],
       "second": [
+        "3",
         "127",
-        "169",
-        "591"
+        "139"
       ],
       "third": [
-        "142",
         "248",
+        "319",
         "323"
       ]
     }
@@ -450,16 +484,15 @@
     "second_reward": "false",
     "encounters": {
       "first": [
-        "303"
+        "32"
       ],
       "second": [
-        "6",
-        "373",
-        "398"
+        "169",
+        "208",
+        "346"
       ],
       "third": [
-        "149",
-        "210",
+        "6",
         "212"
       ]
     }
@@ -470,17 +503,17 @@
     "second_reward": "false",
     "encounters": {
       "first": [
-        "302"
+        "374"
       ],
       "second": [
-        "330",
-        "332",
-        "430"
+        "131",
+        "319",
+        "330"
       ],
       "third": [
-        "143",
+        "65",
         "229",
-        "346"
+        "275"
       ]
     }
   },
@@ -490,7 +523,7 @@
     "second_reward": "false",
     "encounters": {
       "first": [
-        "150"
+        "379"
       ],
       "second": [],
       "third": []
@@ -528,6 +561,7 @@
     "second_reward": "false",
     "encounters": {
       "first": [
+        "355",
         "622"
       ],
       "second": [
@@ -544,20 +578,21 @@
   "49": {
     "type": "Electric",
     "grunt": "Female",
-    "second_reward": "true",
+    "second_reward": "false",
     "encounters": {
       "first": [
         "179",
-        "403"
+        "403",
+        "522"
       ],
       "second": [
         "100",
         "125"
       ],
       "third": [
-        "125",
         "181",
-        "405"
+        "405",
+        "523"
       ]
     }
   },
