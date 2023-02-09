@@ -1377,7 +1377,20 @@ function pokemonLabel(item) {
                     pokemonName = i8ln(pokedex[ranking.pokemon]['name'])
                 }
                 if (ranking.evolution !== undefined && ranking.evolution > 0) {
-                    pokemonName = i8ln('Mega') + ' ' + pokemonName
+                    switch (ranking.evolution) {
+                        case 1:
+                            pokemonName = i8ln('Mega') + ' ' + pokemonName
+                            break
+                        case 2:
+                            pokemonName = i8ln('Mega X') + ' ' + pokemonName
+                            break
+                        case 3:
+                            pokemonName = i8ln('Mega Y') + ' ' + pokemonName
+                            break
+                        case 4:
+                            pokemonName = i8ln('Primal') + ' ' + pokemonName
+                            break
+                    }
                 }
 
                 let infoString
@@ -1418,7 +1431,20 @@ function pokemonLabel(item) {
                     pokemonName = i8ln(pokedex[ranking.pokemon]['name'])
                 }
                 if (ranking.evolution !== undefined && ranking.evolution > 0) {
-                    pokemonName = i8ln('Mega') + ' ' + pokemonName
+                    switch (ranking.evolution) {
+                        case 1:
+                            pokemonName = i8ln('Mega') + ' ' + pokemonName
+                            break
+                        case 2:
+                            pokemonName = i8ln('Mega X') + ' ' + pokemonName
+                            break
+                        case 3:
+                            pokemonName = i8ln('Mega Y') + ' ' + pokemonName
+                            break
+                        case 4:
+                            pokemonName = i8ln('Primal') + ' ' + pokemonName
+                            break
+                    }
                 }
 
                 let infoString
@@ -1457,7 +1483,20 @@ function pokemonLabel(item) {
                     pokemonName = i8ln(pokedex[ranking.pokemon]['name'])
                 }
                 if (ranking.evolution !== undefined && ranking.evolution > 0) {
-                    pokemonName = i8ln('Mega') + ' ' + pokemonName
+                    switch (ranking.evolution) {
+                        case 1:
+                            pokemonName = i8ln('Mega') + ' ' + pokemonName
+                            break
+                        case 2:
+                            pokemonName = i8ln('Mega X') + ' ' + pokemonName
+                            break
+                        case 3:
+                            pokemonName = i8ln('Mega Y') + ' ' + pokemonName
+                            break
+                        case 4:
+                            pokemonName = i8ln('Primal') + ' ' + pokemonName
+                            break
+                    }
                 }
 
                 let infoString
@@ -1539,6 +1578,9 @@ function gymLabel(item) {
                         break
                     case 3:
                         raidStr += ' Mega Y'
+                        break
+                    case 4:
+                        raidStr += ' Primal'
                         break
                 }
             }
@@ -1914,7 +1956,14 @@ function pokestopLabel(item) {
 
     if (!noQuests && item['quest_type'] > 0 && typeof questtypeList[item['quest_type']] !== 'undefined' && lastMidnight < Number(item['quest_timestamp'])) {
         var questStr = getQuest(item)
+        var questArStr = ''
+        if (item['quest_with_artask'] === true) {
+            questArStr = '<div><span class="pokestop-quest-artext">' + i8ln('With AR-Scan Task') + '</span></div>'
+        } else if (item['quest_with_artask'] === false) {
+            questArStr = '<div><span class="pokestop-quest-artext">' + i8ln('Without AR-Scan Task') + '</span></div>'
+        }
         str += getReward(item) + '</div>' +
+            questArStr +
             '<div>' +
             i8ln('Quest') + ': <b>' +
             i8ln(questStr) +
