@@ -1256,6 +1256,11 @@ function pokemonLabel(item) {
             '</div>'
         }
 
+        var size = ''
+        if (item['size'] != null) {
+            size = ' | <span style="color: white; border-radius: 5px; background: #5A5A5A; padding: 1px 4px 1px 4px;">' + i8ln(item['size']) + '</span>'
+        }
+
         details +=
             '<div style="position:absolute;top:90px;left:80px;"><div>' +
             i8ln('IV') + ': <b>' + iv.toFixed(1) + '%</b> (<b>' + atk + '</b>/<b>' + def + '</b>/<b>' + sta + '</b>)' +
@@ -1265,7 +1270,7 @@ function pokemonLabel(item) {
             '<div style="position:absolute;top:125px;">' +
             '<div>' + i8ln('Quick') + ': <b>' + pMove1 + '</b>' + pMoveType1 + '</div>' +
             '<div>' + i8ln('Charge') + ': <b>' + pMove2 + '</b>' + pMoveType2 + '</div>' +
-            '<div>' + i8ln('Weight') + ': <b>' + weight + '</b>' + ' | ' + i8ln('Height') + ': <b>' + height + '</b></div>' +
+            '<div>' + i8ln('Weight') + ': <b>' + weight + '</b>' + ' | ' + i8ln('Height') + ': <b>' + height + '</b>' + size + '</div>' +
             catchRates +
             '</div>'
     }
@@ -1371,6 +1376,22 @@ function pokemonLabel(item) {
                 if (pokemonName === '') {
                     pokemonName = i8ln(pokedex[ranking.pokemon]['name'])
                 }
+                if (ranking.evolution !== undefined && ranking.evolution > 0) {
+                    switch (ranking.evolution) {
+                        case 1:
+                            pokemonName = i8ln('Mega') + ' ' + pokemonName
+                            break
+                        case 2:
+                            pokemonName = i8ln('Mega X') + ' ' + pokemonName
+                            break
+                        case 3:
+                            pokemonName = i8ln('Mega Y') + ' ' + pokemonName
+                            break
+                        case 4:
+                            pokemonName = i8ln('Primal') + ' ' + pokemonName
+                            break
+                    }
+                }
 
                 let infoString
                 if (ranking.rank === null) {
@@ -1409,6 +1430,22 @@ function pokemonLabel(item) {
                 if (pokemonName === '') {
                     pokemonName = i8ln(pokedex[ranking.pokemon]['name'])
                 }
+                if (ranking.evolution !== undefined && ranking.evolution > 0) {
+                    switch (ranking.evolution) {
+                        case 1:
+                            pokemonName = i8ln('Mega') + ' ' + pokemonName
+                            break
+                        case 2:
+                            pokemonName = i8ln('Mega X') + ' ' + pokemonName
+                            break
+                        case 3:
+                            pokemonName = i8ln('Mega Y') + ' ' + pokemonName
+                            break
+                        case 4:
+                            pokemonName = i8ln('Primal') + ' ' + pokemonName
+                            break
+                    }
+                }
 
                 let infoString
                 if (ranking.rank === null) {
@@ -1444,6 +1481,22 @@ function pokemonLabel(item) {
                 })
                 if (pokemonName === '') {
                     pokemonName = i8ln(pokedex[ranking.pokemon]['name'])
+                }
+                if (ranking.evolution !== undefined && ranking.evolution > 0) {
+                    switch (ranking.evolution) {
+                        case 1:
+                            pokemonName = i8ln('Mega') + ' ' + pokemonName
+                            break
+                        case 2:
+                            pokemonName = i8ln('Mega X') + ' ' + pokemonName
+                            break
+                        case 3:
+                            pokemonName = i8ln('Mega Y') + ' ' + pokemonName
+                            break
+                        case 4:
+                            pokemonName = i8ln('Primal') + ' ' + pokemonName
+                            break
+                    }
                 }
 
                 let infoString
@@ -1525,6 +1578,9 @@ function gymLabel(item) {
                         break
                     case 3:
                         raidStr += ' Mega Y'
+                        break
+                    case 4:
+                        raidStr += ' Primal'
                         break
                 }
             }
@@ -1900,7 +1956,14 @@ function pokestopLabel(item) {
 
     if (!noQuests && item['quest_type'] > 0 && typeof questtypeList[item['quest_type']] !== 'undefined' && lastMidnight < Number(item['quest_timestamp'])) {
         var questStr = getQuest(item)
+        var questArStr = ''
+        if (item['quest_with_artask'] === true) {
+            questArStr = '<div><span class="pokestop-quest-artext">' + i8ln('With AR-Scan Task') + '</span></div>'
+        } else if (item['quest_with_artask'] === false) {
+            questArStr = '<div><span class="pokestop-quest-artext">' + i8ln('Without AR-Scan Task') + '</span></div>'
+        }
         str += getReward(item) + '</div>' +
+            questArStr +
             '<div>' +
             i8ln('Quest') + ': <b>' +
             i8ln(questStr) +
@@ -3389,7 +3452,7 @@ function clearStaleMarkers() {
     }
     if (!Store.get('showGyms') && Store.get('showRaids')) {
         $.each(mapData.gyms, function (key, value) {
-            if ((((excludedRaidboss.indexOf(Number(mapData.gyms[key]['raid_pokemon_id'])) > -1) && mapData.gyms[key]['raid_pokemon_id'] > 0) && (mapData.gyms[key]['raid_start'] < new Date().getTime() && mapData.gyms[key]['raid_end'] > new Date().getTime())) || ((excludedRaidegg.indexOf(Number(mapData.gyms[key]['raid_level'])) > -1) && mapData.gyms[key]['raid_start'] > new Date().getTime()) || ((excludedRaidegg.indexOf(Number(mapData.gyms[key]['raid_level']) + 9) > -1) && (mapData.gyms[key]['raid_start'] < new Date().getTime() && (mapData.gyms[key]['raid_pokemon_id'] <= 0)))) {
+            if ((((excludedRaidboss.indexOf(Number(mapData.gyms[key]['raid_pokemon_id'])) > -1) && mapData.gyms[key]['raid_pokemon_id'] > 0) && (mapData.gyms[key]['raid_start'] < new Date().getTime() && mapData.gyms[key]['raid_end'] > new Date().getTime())) || ((excludedRaidegg.indexOf(Number(mapData.gyms[key]['raid_level'])) > -1) && mapData.gyms[key]['raid_start'] > new Date().getTime()) || ((excludedRaidegg.indexOf(Number(mapData.gyms[key]['raid_level']) + 10) > -1) && (mapData.gyms[key]['raid_start'] < new Date().getTime() && (mapData.gyms[key]['raid_pokemon_id'] <= 0)))) {
                 if (mapData.gyms[key].marker.rangeCircle) {
                     markers.removeLayer(mapData.gyms[key].marker.rangeCircle)
                     delete mapData.gyms[key].marker.rangeCircle
@@ -5350,7 +5413,7 @@ function processGyms(i, item) {
             }
         }
         // Remove Broken Raid eggs from gym
-        if (excludedRaidegg.indexOf(Number(item['raid_level']) + 9) > -1) {
+        if (excludedRaidegg.indexOf(Number(item['raid_level']) + 10) > -1) {
             if (item['raid_pokemon_id'] <= 0) {
                 if (item['raid_start'] < time) {
                     if (item['raid_end'] > time) {
