@@ -88,7 +88,8 @@ class RocketMap_MAD extends Stats
           SUM(lure_expiration > UTC_TIMESTAMP() AND active_fort_modifier = 502) AS glacial_lure,
           SUM(lure_expiration > UTC_TIMESTAMP() AND active_fort_modifier = 503) AS mossy_lure,
           SUM(lure_expiration > UTC_TIMESTAMP() AND active_fort_modifier = 504) AS magnetic_lure,
-          SUM(lure_expiration > UTC_TIMESTAMP() AND active_fort_modifier = 505) AS rainy_lure
+          SUM(lure_expiration > UTC_TIMESTAMP() AND active_fort_modifier = 505) AS rainy_lure,
+          SUM(lure_expiration > UTC_TIMESTAMP() AND active_fort_modifier = 506) AS sparkly_lure
         FROM pokestop
         $whereGeofenceSQL"
       )->fetch();
@@ -110,6 +111,7 @@ class RocketMap_MAD extends Stats
       $pokestop['mossy_lure'] = $pokestops['mossy_lure'];
       $pokestop['magnetic_lure'] = $pokestops['magnetic_lure'];
       $pokestop['rainy_lure'] = $pokestops['rainy_lure'];
+      $pokestop['sparkly_lure'] = $pokestops['sparkly_lure'];
 
       $data[] = $pokestop;
       return $data;

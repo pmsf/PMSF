@@ -98,7 +98,8 @@ class RDM extends Stats
           SUM(lure_expire_timestamp > UNIX_TIMESTAMP() AND lure_id = 502) AS glacial_lure,
           SUM(lure_expire_timestamp > UNIX_TIMESTAMP() AND lure_id = 503) AS mossy_lure,
           SUM(lure_expire_timestamp > UNIX_TIMESTAMP() AND lure_id = 504) AS magnetic_lure,
-          SUM(lure_expire_timestamp > UNIX_TIMESTAMP() AND lure_id = 505) AS rainy_lure
+          SUM(lure_expire_timestamp > UNIX_TIMESTAMP() AND lure_id = 505) AS rainy_lure,
+          SUM(lure_expire_timestamp > UNIX_TIMESTAMP() AND lure_id = 506) AS sparkly_lure
         FROM pokestop p
         $geofenceSQL"
       )->fetch();
@@ -112,6 +113,7 @@ class RDM extends Stats
       $pokestop['mossy_lure'] = $pokestops['mossy_lure'];
       $pokestop['magnetic_lure'] = $pokestops['magnetic_lure'];
       $pokestop['rainy_lure'] = $pokestops['rainy_lure'];
+      $pokestop['sparkly_lure'] = $pokestops['sparkly_lure'];
 
       $data[] = $pokestop;
       return $data;
