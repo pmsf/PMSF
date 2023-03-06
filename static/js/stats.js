@@ -232,6 +232,13 @@ function countMarkers(map) { // eslint-disable-line no-unused-vars
             }
             if (thisPokestopIsVisible) {
                 if (mapData.pokestops[key]['incident_expiration'] && mapData.pokestops[key]['incident_expiration'] > Date.now()) {
+                    if (pokestopCount[8] === 0 || !pokestopCount[8]) {
+                        pokestopCount[8] = 1
+                    } else {
+                        pokestopCount[8] += 1
+                    }
+                }
+                if (mapData.pokestops[key]['lure_expiration'] && mapData.pokestops[key]['lure_expiration'] > Date.now() && mapData.pokestops[key]['lure_id'] === 506) {
                     if (pokestopCount[7] === 0 || !pokestopCount[7]) {
                         pokestopCount[7] = 1
                     } else {
@@ -300,6 +307,8 @@ function countMarkers(map) { // eslint-disable-line no-unused-vars
                 } else if (i === 6) {
                     pokestopListString += '<tr><td><img src="' + getIcon(iconpath.pokestop, 'pokestop', '.png', '505') + '" style="height:48px;"/></td><td style="vertical-align:middle;">' + i8ln('Rainy Lure') + '</td><td style="vertical-align:middle;">' + pokestopCount[i] + '</td><td style="vertical-align:middle;">' + Math.round(pokestopCount[i] * 100 / pokestopTotal * 10) / 10 + '%</td></tr>'
                 } else if (i === 7) {
+                    pokestopListString += '<tr><td><img src="' + getIcon(iconpath.pokestop, 'pokestop', '.png', '506') + '" style="height:48px;"/></td><td style="vertical-align:middle;">' + i8ln('Golden Lure') + '</td><td style="vertical-align:middle;">' + pokestopCount[i] + '</td><td style="vertical-align:middle;">' + Math.round(pokestopCount[i] * 100 / pokestopTotal * 10) / 10 + '%</td></tr>'
+                } else if (i === 8) {
                     pokestopListString += '<tr><td><img src="' + getIcon(iconpath.pokestop, 'pokestop', '.png', '0', 1) + '" style="height:48px;"/></td><td style="vertical-align:middle;">' + i8ln('Team Rocket') + '</td><td style="vertical-align:middle;">' + pokestopCount[i] + '</td><td style="vertical-align:middle;">' + Math.round(pokestopCount[i] * 100 / pokestopTotal * 10) / 10 + '%</td></tr>'
                 }
             }
@@ -373,6 +382,7 @@ function processPokestopStats(i, item) { // eslint-disable-line no-unused-vars
     $('h4.mossy-lure-count').html(item['mossy_lure'])
     $('h4.magnetic-lure-count').html(item['magnetic_lure'])
     $('h4.rainy-lure-count').html(item['rainy_lure'])
+    $('h4.sparkly-lure-count').html(item['sparkly_lure'])
 }
 
 function processSpawnpointStats(i, item) { // eslint-disable-line no-unused-vars

@@ -2043,6 +2043,8 @@ function pokestopLabel(item) {
             lureType += i8ln('Magnetic')
         } else if (item['lure_id'] === 505) {
             lureType += i8ln('Rainy')
+        } else if (item['lure_id'] === 506) {
+            lureType += i8ln('Golden')
         }
         lureEndStr = getTimeStr(item['lure_expiration'])
         str +=
