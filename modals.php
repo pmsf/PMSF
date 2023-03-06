@@ -1171,6 +1171,15 @@
                                                     </div>
                                                 </div>
                                             </div>
+                                            <div class="col-md-3">
+                                                <div class="list-group">
+                                                    <div class="list-group-item">
+                                                        <img src="static/images/stats/sparkly-lure.png" width="64" height="64" />
+                                                        <h4 class="sparkly-lure-count"><?php echo i8ln('Loading...'); ?> <i class="fas fa-spinner fa-spin"></i></h4>
+                                                        <p><?php echo i8ln('Golden Lure'); ?></p>
+                                                    </div>
+                                                </div>
+                                            </div>
                                         </div>
                                     </div>
                                 </div>
