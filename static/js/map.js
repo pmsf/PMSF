@@ -1870,6 +1870,11 @@ function getQuest(item) {
                         str = str.replace('Snapshot(s)', 'Snapshot(s) of your Buddy')
                     }
                     break
+                case 41:
+                    if (item['quest_type'] === 27 && questinfo !== null && parseInt(questinfo['combat_type']) === 6) {
+                        str = 'Battle in GO Battle League {0} times'
+                    }
+                    break
                 case 46:
                     str = str.replace('{0} gift(s)', '{0} gift(s) with a sticker')
                     break
