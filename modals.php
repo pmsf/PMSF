@@ -91,9 +91,6 @@
                 if ($noDiscordLogin === false) {
                     echo "<button class='btn btn-primary' type='button' onclick=\"location.href='./login?action=discord-login';\" value='Login with discord'><i class='fab fa-discord'></i> " . i8ln('Login with Discord') . "</button>";
                 }
-                if ($noFacebookLogin === false) {
-                    echo "<button class='btn btn-primary' type='button' onclick=\"location.href='./login?action=facebook-login';\" value='Login with facebook'><i class='fab fa-facebook'></i> " . i8ln('Login with Facebook') . "</button>";
-                }
                 if ($noGroupmeLogin === false) {
                     echo "<button class='btn btn-primary' type='button' onclick=\"location.href='./login?action=groupme-login';\" value='Login with groupme'><i class='fas fa-smile'></i> " . i8ln('Login with Groupme') . "</button>";
                 }

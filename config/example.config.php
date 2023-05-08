@@ -176,13 +176,6 @@ $guildRoles = [
     ]
 ];
 
-/* Facebook Auth */
-$noFacebookLogin = true;                                            // true/false
-$facebookAppId = '';                                                // Facebook App ID
-$facebookAppSecret = '';                                            // Facebook App Secret
-$facebookAppRedirectUri = 'https://Yourdomain.com/login?callback=facebook'; // Callback url make sure this is the same as set in Facebook app config
-$facebookAccessLevel = '1';                                         // Accesslevel used in access-config.php
-
 /* Groupme Auth */
 $noGroupmeLogin = true;                                             // true/false
 $groupmeClientId = '';
@@ -799,7 +792,7 @@ $db = new Medoo([
 //]);
 
 // DONT EDIT THE CODE BELOW UNLESS YOU KNOW WHAT YOUR ARE DOING
-if (($noNativeLogin === false || $noDiscordLogin === false || $noFacebookLogin === false || $noPatreonLogin === false) && !empty($_SESSION['user']->user)) {
+if (($noNativeLogin === false || $noDiscordLogin === false || $noPatreonLogin === false) && !empty($_SESSION['user']->user)) {
     if (file_exists('config/access-config.php')) {
         include 'config/access-config.php';
     }
