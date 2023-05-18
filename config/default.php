@@ -142,7 +142,7 @@ $imgurCID = "";
 $numberOfPokemon = 1008;
 $numberOfItem = 1602;
 $numberOfGrunt = 523;
-$numberOfEgg = 20;
+$numberOfEgg = 30;
 
 /* UserTimezone */
 $userTimezone = date_default_timezone_get();
@@ -275,8 +275,8 @@ $minLevel = '0';                                                    // "0" for e
 $excludeMinIV = '[131, 143, 147, 148, 149, 248]';                   // [] for empty
 
 $noMissingIVOnly = true;                                            // true/false
-$noBigKarp = false;                                                 // true/false
-$noTinyRat = false;                                                 // true/false
+$noBigKarp = true;                                                  // true/false
+$noTinyRat = true;                                                  // true/false
 $noZeroIvToggle = false;                                            // true/false
 $noHundoIvToggle = false;                                           // true/false
 $noIndependantPvpAndStatsToggle = false;                            // true/false
@@ -304,7 +304,7 @@ $noActiveRaids = true;                                              // true/fals
 $activeRaids = 'false';                                             // true/false
 $noMinMaxRaidLevel = true;                                          // true/false
 $minRaidLevel = 1;
-$maxRaidLevel = 10;
+$maxRaidLevel = 15;
 $noRaidTimer = false;                                               // true/false
 $enableRaidTimer = 'false';                                         // true/false
 $noRaidbossNames = false;                                           // true/false

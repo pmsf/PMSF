@@ -111,6 +111,41 @@ function countMarkers(map) { // eslint-disable-line no-unused-vars
             thisRaidIsVisible = currentVisibleMap.contains(thisRaidLocation)
             if (thisRaidIsVisible) {
                 if (mapData.gyms[key]['raid_end'] && mapData.gyms[key]['raid_end'] > Date.now()) {
+                    if (mapData.gyms[key]['raid_level'] === '15') {
+                        if (raidCount[15] === 0 || !raidCount[15]) {
+                            raidCount[15] = 1
+                        } else {
+                            raidCount[15] += 1
+                        }
+                    }
+                    if (mapData.gyms[key]['raid_level'] === '14') {
+                        if (raidCount[14] === 0 || !raidCount[14]) {
+                            raidCount[14] = 1
+                        } else {
+                            raidCount[14] += 1
+                        }
+                    }
+                    if (mapData.gyms[key]['raid_level'] === '13') {
+                        if (raidCount[13] === 0 || !raidCount[13]) {
+                            raidCount[13] = 1
+                        } else {
+                            raidCount[13] += 1
+                        }
+                    }
+                    if (mapData.gyms[key]['raid_level'] === '12') {
+                        if (raidCount[12] === 0 || !raidCount[12]) {
+                            raidCount[12] = 1
+                        } else {
+                            raidCount[12] += 1
+                        }
+                    }
+                    if (mapData.gyms[key]['raid_level'] === '11') {
+                        if (raidCount[11] === 0 || !raidCount[11]) {
+                            raidCount[11] = 1
+                        } else {
+                            raidCount[11] += 1
+                        }
+                    }
                     if (mapData.gyms[key]['raid_level'] === '10') {
                         if (raidCount[10] === 0 || !raidCount[10]) {
                             raidCount[10] = 1
@@ -209,6 +244,16 @@ function countMarkers(map) { // eslint-disable-line no-unused-vars
                     raidListString += '<tr><td><img src="' + getIcon(iconpath.raid, 'raid/egg', '.png', '9') + '" style="height:48px;"/></td><td style="vertical-align:middle;">9</td><td style="vertical-align:middle;">' + raidCount[i] + '</td><td style="vertical-align:middle;">' + Math.round(raidCount[i] * 100 / raidTotal * 10) / 10 + '%</td></tr>'
                 } else if (i === 10) {
                     raidListString += '<tr><td><img src="' + getIcon(iconpath.raid, 'raid/egg', '.png', '10') + '" style="height:48px;"/></td><td style="vertical-align:middle;">10</td><td style="vertical-align:middle;">' + raidCount[i] + '</td><td style="vertical-align:middle;">' + Math.round(raidCount[i] * 100 / raidTotal * 10) / 10 + '%</td></tr>'
+                } else if (i === 11) {
+                    raidListString += '<tr><td><img src="' + getIcon(iconpath.raid, 'raid/egg', '.png', '11') + '" style="height:48px;"/></td><td style="vertical-align:middle;">11</td><td style="vertical-align:middle;">' + raidCount[i] + '</td><td style="vertical-align:middle;">' + Math.round(raidCount[i] * 100 / raidTotal * 10) / 10 + '%</td></tr>'
+                } else if (i === 12) {
+                    raidListString += '<tr><td><img src="' + getIcon(iconpath.raid, 'raid/egg', '.png', '12') + '" style="height:48px;"/></td><td style="vertical-align:middle;">12</td><td style="vertical-align:middle;">' + raidCount[i] + '</td><td style="vertical-align:middle;">' + Math.round(raidCount[i] * 100 / raidTotal * 10) / 10 + '%</td></tr>'
+                } else if (i === 13) {
+                    raidListString += '<tr><td><img src="' + getIcon(iconpath.raid, 'raid/egg', '.png', '13') + '" style="height:48px;"/></td><td style="vertical-align:middle;">13</td><td style="vertical-align:middle;">' + raidCount[i] + '</td><td style="vertical-align:middle;">' + Math.round(raidCount[i] * 100 / raidTotal * 10) / 10 + '%</td></tr>'
+                } else if (i === 14) {
+                    raidListString += '<tr><td><img src="' + getIcon(iconpath.raid, 'raid/egg', '.png', '14') + '" style="height:48px;"/></td><td style="vertical-align:middle;">14</td><td style="vertical-align:middle;">' + raidCount[i] + '</td><td style="vertical-align:middle;">' + Math.round(raidCount[i] * 100 / raidTotal * 10) / 10 + '%</td></tr>'
+                } else if (i === 15) {
+                    raidListString += '<tr><td><img src="' + getIcon(iconpath.raid, 'raid/egg', '.png', '15') + '" style="height:48px;"/></td><td style="vertical-align:middle;">15</td><td style="vertical-align:middle;">' + raidCount[i] + '</td><td style="vertical-align:middle;">' + Math.round(raidCount[i] * 100 / raidTotal * 10) / 10 + '%</td></tr>'
                 }
             }
         }
