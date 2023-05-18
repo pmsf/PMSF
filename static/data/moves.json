@@ -2566,5 +2566,21 @@
     "duration": 0,
     "energy": 0,
     "dps": 0
+  },
+  "383": {
+    "name": "Liquidation",
+    "type": "Water",
+    "damage": 0,
+    "duration": 0,
+    "energy": 0,
+    "dps": 0
+  },
+  "385": {
+    "name": "Leafage",
+    "type": "Grass",
+    "damage": 0,
+    "duration": 0,
+    "energy": 0,
+    "dps": 0
   }
 }
