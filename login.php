@@ -523,10 +523,6 @@ if (!empty($_POST['refresh'])) {
     echo $json;
     die();
 }
-if (!empty($_POST['signed_request'])) {
-    $request = parse_signed_request($_POST['signed_request']);
-    $manualdb->delete('users', ['id' => $request['user_id']]);
-}
 
 function request($request, $access_token) {
     $info_request = curl_init();
