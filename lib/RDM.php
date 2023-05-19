@@ -4,7 +4,7 @@ namespace Scanner;
 
 class RDM extends Scanner
 {
-    public function get_active($eids, $minIv, $minLevel, $minLLRank, $minGLRank, $minULRank, $exMinIv, $bigKarp, $tinyRat, $zeroIv, $hundoIv, $independantPvpAndStats, $despawnTimeType, $gender, $missingIvOnly, $swLat, $swLng, $neLat, $neLng, $tstamp = 0, $oSwLat = 0, $oSwLng = 0, $oNeLat = 0, $oNeLng = 0, $encId = 0)
+    public function get_active($eids, $minIv, $minLevel, $minLLRank, $minGLRank, $minULRank, $exMinIv, $bigKarp, $tinyRat, $zeroIv, $hundoIv, $xxs, $xxl, $independantPvpAndStats, $despawnTimeType, $gender, $missingIvOnly, $swLat, $swLng, $neLat, $neLng, $tstamp = 0, $oSwLat = 0, $oSwLng = 0, $oNeLat = 0, $oNeLng = 0, $encId = 0)
     {
         $conds = array();
         $params = array();
@@ -68,22 +68,24 @@ class RDM extends Scanner
         } else if (($minLLRank === 0 && $minGLRank === 0 && $minULRank === 0) || !$independantPvpAndStats) {
             $zeroIvSql = ($zeroIv) ? ' OR (atk_iv = 0 AND def_iv = 0 AND sta_iv = 0)' : '';
             $hundoIvSql = ($hundoIv) ? ' OR (atk_iv = 15 AND def_iv = 15 AND sta_iv = 15)' : '';
+            $xxsSql = ($xxs && $this->columnExists("pokemon","height")) ? ' OR (size = 1)' : '';
+            $xxlSql = ($xxl && $this->columnExists("pokemon","height")) ? ' OR (size = 5)' : '';
             $exMinIvSql = (!empty($exMinIv)) ? ' OR pokemon_id IN(' . $exMinIv . ')' : '';
             if ($minIv !== 0) {
-                $conds[] = '(iv >= ' . $minIv . $zeroIvSql . $hundoIvSql . $exMinIvSql . ')';
+                $conds[] = '(iv >= ' . $minIv . $zeroIvSql . $hundoIvSql . $xxsSql . $xxlSql . $exMinIvSql . ')';
             }
             if ($minLevel !== 0) {
-                $conds[] = '(level >= ' . $minLevel . $zeroIvSql . $hundoIvSql . $exMinIvSql . ')';
+                $conds[] = '(level >= ' . $minLevel . $zeroIvSql . $hundoIvSql . $xxsSql . $xxlSql . $exMinIvSql . ')';
             }
         }
         $encSql = '';
         if ($encId != 0) {
             $encSql = " OR (id = " . $encId . " AND lat > '" . $swLat . "' AND lon > '" . $swLng . "' AND lat < '" . $neLat . "' AND lon < '" . $neLng . "' AND expire_timestamp > '" . $params[':time'] . "')";
         }
-        return $this->query_active($conds, $params, $minIv, $minLevel, $minLLRank, $minGLRank, $minULRank, $exMinIv, $zeroIv, $hundoIv, $independantPvpAndStats, $missingIvOnly, $encSql);
+        return $this->query_active($conds, $params, $minIv, $minLevel, $minLLRank, $minGLRank, $minULRank, $exMinIv, $zeroIv, $hundoIv, $xxs, $xxl, $independantPvpAndStats, $missingIvOnly, $encSql);
     }
 
-    public function get_active_by_id($ids, $minIv, $minLevel, $minLLRank, $minGLRank, $minULRank, $exMinIv, $bigKarp, $tinyRat, $zeroIv, $hundoIv, $independantPvpAndStats, $despawnTimeType, $gender, $missingIvOnly, $swLat, $swLng, $neLat, $neLng)
+    public function get_active_by_id($ids, $minIv, $minLevel, $minLLRank, $minGLRank, $minULRank, $exMinIv, $bigKarp, $tinyRat, $zeroIv, $hundoIv, $xxs, $xxl, $independantPvpAndStats, $despawnTimeType, $gender, $missingIvOnly, $swLat, $swLng, $neLat, $neLng)
     {
         $conds = array();
         $params = array();
@@ -140,15 +142,17 @@ class RDM extends Scanner
         } else if (($minLLRank === 0 && $minGLRank === 0 && $minULRank === 0) || !$independantPvpAndStats) {
             $zeroIvSql = ($zeroIv) ? ' OR (atk_iv = 0 AND def_iv = 0 AND sta_iv = 0)' : '';
             $hundoIvSql = ($hundoIv) ? ' OR (atk_iv = 15 AND def_iv = 15 AND sta_iv = 15)' : '';
+            $xxsSql = ($xxs && $this->columnExists("pokemon","height")) ? ' OR (size = 1)' : '';
+            $xxlSql = ($xxl && $this->columnExists("pokemon","height")) ? ' OR (size = 5)' : '';
             $exMinIvSql = (!empty($exMinIv)) ? ' OR pokemon_id IN(' . $exMinIv . ')' : '';
             if ($minIv !== 0) {
-                $conds[] = '(iv >= ' . $minIv . $zeroIvSql . $hundoIvSql . $exMinIvSql . ')';
+                $conds[] = '(iv >= ' . $minIv . $zeroIvSql . $hundoIvSql . $xxsSql . $xxlSql . $exMinIvSql . ')';
             }
             if ($minLevel !== 0) {
-                $conds[] = '(level >= ' . $minLevel . $zeroIvSql . $hundoIvSql . $exMinIvSql . ')';
+                $conds[] = '(level >= ' . $minLevel . $zeroIvSql . $hundoIvSql . $xxsSql . $xxlSql . $exMinIvSql . ')';
             }
         }
-        return $this->query_active($conds, $params, $minIv, $minLevel, $minLLRank, $minGLRank, $minULRank, $exMinIv, $zeroIv, $hundoIv, $independantPvpAndStats, $missingIvOnly, '');
+        return $this->query_active($conds, $params, $minIv, $minLevel, $minLLRank, $minGLRank, $minULRank, $exMinIv, $zeroIv, $hundoIv, $xxs, $xxl, $independantPvpAndStats, $missingIvOnly, '');
     }
 
     private function getValidPvpRanks_UpdateBestRank($json, $minCp, $maxRank, &$bestRank)
@@ -174,7 +178,7 @@ class RDM extends Scanner
         }
     }
 
-    public function query_active($conds, $params, $minIv, $minLevel, $minLLRank, $minGLRank, $minULRank, $exMinIv, $zeroIv, $hundoIv, $independantPvpAndStats, $missingIvOnly, $encSql = '')
+    public function query_active($conds, $params, $minIv, $minLevel, $minLLRank, $minGLRank, $minULRank, $exMinIv, $zeroIv, $hundoIv, $xxs, $xxl, $independantPvpAndStats, $missingIvOnly, $encSql = '')
     {
         global $db, $noHighLevelData, $noPvp, $globalRankLimitLL, $globalRankLimitGL, $globalRankLimitUL, $globalCpLimitLL, $globalCpLimitGL, $globalCpLimitUL;
 
@@ -273,22 +277,32 @@ class RDM extends Scanner
                     }
 
                     if (!$keepMons) {
-                        $keepPvp = true;
-                        if ($minLLRank > 0 || $minGLRank > 0 || $minULRank > 0) {
-                            $keepPvp = false;
-                            if ($minLLRank > 0 && $bestLLRank !== null && $bestLLRank <= $minLLRank) {
-                                $keepPvp = true;
-                            } else if ($minGLRank > 0 && $bestGLRank !== null && $bestGLRank <= $minGLRank) {
-                                $keepPvp = true;
-                            } else if ($minULRank > 0 && $bestULRank !== null && $bestULRank <= $minULRank) {
-                                $keepPvp = true;
+                        if (isset($pokemon["size"])) {
+                            if (intval($pokemon["size"]) === 1 && $xxs === true) {
+                                $keepMons = true;
+                            } else if (intval($pokemon["size"]) === 5 && $xxl === true) {
+                                $keepMons = true;
                             }
-                            $keepMons = ($independantPvpAndStats && $keepPvp);
                         }
 
                         if (!$keepMons) {
-                            $keepMinIvLevel = ((!empty($exMinIv) && isset($exMinIvArray[intval($pokemon["pokemon_id"])])) || (($minIv === 0 || (isset($pokemon["iv"]) && $pokemon["iv"] >= $minIv)) && ($minLevel === 0 || (isset($pokemon["level"]) && intval($pokemon["level"]) >= $minLevel))));
-                            $keepMons = (($independantPvpAndStats && $keepMinIvLevel) || (!$independantPvpAndStats && $keepMinIvLevel && $keepPvp));
+                            $keepPvp = true;
+                            if ($minLLRank > 0 || $minGLRank > 0 || $minULRank > 0) {
+                                $keepPvp = false;
+                                if ($minLLRank > 0 && $bestLLRank !== null && $bestLLRank <= $minLLRank) {
+                                    $keepPvp = true;
+                                } else if ($minGLRank > 0 && $bestGLRank !== null && $bestGLRank <= $minGLRank) {
+                                    $keepPvp = true;
+                                } else if ($minULRank > 0 && $bestULRank !== null && $bestULRank <= $minULRank) {
+                                    $keepPvp = true;
+                                }
+                                $keepMons = ($independantPvpAndStats && $keepPvp);
+                            }
+
+                            if (!$keepMons) {
+                                $keepMinIvLevel = ((!empty($exMinIv) && isset($exMinIvArray[intval($pokemon["pokemon_id"])])) || (($minIv === 0 || (isset($pokemon["iv"]) && $pokemon["iv"] >= $minIv)) && ($minLevel === 0 || (isset($pokemon["level"]) && intval($pokemon["level"]) >= $minLevel))));
+                                $keepMons = (($independantPvpAndStats && $keepMinIvLevel) || (!$independantPvpAndStats && $keepMinIvLevel && $keepPvp));
+                            }
                         }
                     }
                 }

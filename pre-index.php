@@ -304,6 +304,22 @@ if (strtolower($map) === "rdm") {
                                             </div>
                                         <?php
                                         }
+                                        if (! $noHighLevelData && ! $noXXSToggle) { ?>
+                                            <div class="dropdown-divider"></div>
+                                            <div class="form-check form-switch">
+                                                <input class="form-check-input" id="no-xxs-switch" type="checkbox" name="no-xxs-switch">
+                                                <label class="form-check-label" for="no-xxs-switch"><?php echo i8ln('Ignore Filters for XXS') ?></label>
+                                            </div>
+                                        <?php
+                                        }
+                                        if (! $noHighLevelData && ! $noXXLToggle) { ?>
+                                            <div class="dropdown-divider"></div>
+                                            <div class="form-check form-switch">
+                                                <input class="form-check-input" id="no-xxl-switch" type="checkbox" name="no-xxl-switch">
+                                                <label class="form-check-label" for="no-xxl-switch"><?php echo i8ln('Ignore Filters for XXL') ?></label>
+                                            </div>
+                                        <?php
+                                        }
                                         if (! $noHighLevelData && ! $noPvp && ! $noIndependantPvpAndStatsToggle) { ?>
                                             <div class="dropdown-divider"></div>
                                             <div class="form-check form-switch">
@@ -1688,6 +1704,8 @@ include('modals.php');
     var showTinyRat = <?php echo (!$noHighLevelData && !$noTinyRat) ? 'true' : 'false' ?>;
     var showZeroIv = <?php echo (!$noHighLevelData && !$noZeroIvToggle) ? 'true' : 'false' ?>;
     var showHundoIv = <?php echo (!$noHighLevelData && !$noHundoIvToggle) ? 'true' : 'false' ?>;
+    var showXXS = <?php echo (!$noHighLevelData && !$noXXSToggle) ? 'true' : 'false' ?>;
+    var showXXL = <?php echo (!$noHighLevelData && !$noXXLToggle) ? 'true' : 'false' ?>;
     var showMissingIVOnly = <?php echo (!$noHighLevelData && !$noMissingIVOnly ) ? 'true' : 'false' ?>;
     var showIndependantPvpAndStats = <?php echo (!$noHighLevelData && !$noPvp && !$noIndependantPvpAndStatsToggle) ? 'true' : 'false' ?>;
     var showDespawnTimeType = <?php echo $noDespawnTimeType ? 0 : $showDespawnTimeType ?>;
@@ -1778,6 +1796,8 @@ include('modals.php');
     if (String(showTinyRat) !== String(localStorage.getItem('showTinyRat'))) { localStorage.setItem('showTinyRat', false) }
     if (String(showZeroIv) !== String(localStorage.getItem('showZeroIv'))) { localStorage.setItem('showZeroIv', false) }
     if (String(showHundoIv) !== String(localStorage.getItem('showHundoIv'))) { localStorage.setItem('showHundoIv', false) }
+    if (String(showXXS) !== String(localStorage.getItem('showXXS'))) { localStorage.setItem('showXXS', false) }
+    if (String(showXXL) !== String(localStorage.getItem('showXXL'))) { localStorage.setItem('showXXL', false) }
     if (String(showMissingIVOnly) !== String(localStorage.getItem('showMissingIVOnly'))) { localStorage.setItem('showMissingIVOnly', false) }
     if (String(showIndependantPvpAndStats) !== String(localStorage.getItem('showIndependantPvpAndStats'))) { localStorage.setItem('showIndependantPvpAndStats', false) }
 
