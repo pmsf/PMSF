@@ -93,6 +93,8 @@
     "showTinyRat": true,
     "showZeroIv": true,
     "showHundoIv": true,
+    "showXXS": true,
+    "showXXL": true,
     "showIndependantPvpAndStats": true,
     "showDespawnTimeType": true,
     "showPokemonGender": true,
