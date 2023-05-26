@@ -301,6 +301,16 @@ var StoreOptions = {
             default: showHundoIv,
             type: StoreTypes.Boolean
         },
+    'showXXS':
+        {
+            default: showXXS,
+            type: StoreTypes.Boolean
+        },
+    'showXXL':
+        {
+            default: showXXL,
+            type: StoreTypes.Boolean
+        },
     'showIndependantPvpAndStats':
         {
             default: showIndependantPvpAndStats,

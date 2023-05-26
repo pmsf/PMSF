@@ -42,6 +42,8 @@ $bigKarp = (!empty($_POST['bigKarp']) && $_POST['bigKarp'] == 'true') ? true : f
 $tinyRat = (!empty($_POST['tinyRat']) && $_POST['tinyRat'] == 'true') ? true : false;
 $zeroIv  = (!empty($_POST['zeroIv'])  && $_POST['zeroIv']  == 'true') ? true : false;
 $hundoIv = (!empty($_POST['hundoIv']) && $_POST['hundoIv'] == 'true') ? true : false;
+$xxs  = (!empty($_POST['xxs'])  && $_POST['xxs']  == 'true') ? true : false;
+$xxl = (!empty($_POST['xxl']) && $_POST['xxl'] == 'true') ? true : false;
 $independantPvpAndStats = (!empty($_POST['independantPvpAndStats']) && $_POST['independantPvpAndStats'] == 'true') ? true : false;
 $minLLRank = isset($_POST['minLLRank']) ? intval($_POST['minLLRank']) : 0;
 $prevMinLLRank = !empty($_POST['prevMinLLRank']) ? $_POST['prevMinLLRank'] : false;
@@ -165,12 +167,12 @@ if (!$noPokemon) {
             $eids = array_unique(array_merge($eids, $pokemonToExclude));
         }
         if ($lastpokemon != 'true') {
-            $d["pokemons"] = $scanner->get_active($eids, $minIv, $minLevel, $minLLRank, $minGLRank, $minULRank, $exMinIv, $bigKarp, $tinyRat, $zeroIv, $hundoIv, $independantPvpAndStats, $despawnTimeType, $pokemonGender, $missingIvOnly, $swLat, $swLng, $neLat, $neLng, 0, 0, 0, 0, 0, $enc_id);
+            $d["pokemons"] = $scanner->get_active($eids, $minIv, $minLevel, $minLLRank, $minGLRank, $minULRank, $exMinIv, $bigKarp, $tinyRat, $zeroIv, $hundoIv, $xxs, $xxl, $independantPvpAndStats, $despawnTimeType, $pokemonGender, $missingIvOnly, $swLat, $swLng, $neLat, $neLng, 0, 0, 0, 0, 0, $enc_id);
         } else {
             if ($newarea) {
-                $d["pokemons"] = $scanner->get_active($eids, $minIv, $minLevel, $minLLRank, $minGLRank, $minULRank, $exMinIv, $bigKarp, $tinyRat, $zeroIv, $hundoIv, $independantPvpAndStats, $despawnTimeType, $pokemonGender, $missingIvOnly, $swLat, $swLng, $neLat, $neLng, 0, $oSwLat, $oSwLng, $oNeLat, $oNeLng, $enc_id);
+                $d["pokemons"] = $scanner->get_active($eids, $minIv, $minLevel, $minLLRank, $minGLRank, $minULRank, $exMinIv, $bigKarp, $tinyRat, $zeroIv, $hundoIv, $xxs, $xxl, $independantPvpAndStats, $despawnTimeType, $pokemonGender, $missingIvOnly, $swLat, $swLng, $neLat, $neLng, 0, $oSwLat, $oSwLng, $oNeLat, $oNeLng, $enc_id);
             } else {
-                $d["pokemons"] = $scanner->get_active($eids, $minIv, $minLevel, $minLLRank, $minGLRank, $minULRank, $exMinIv, $bigKarp, $tinyRat, $zeroIv, $hundoIv, $independantPvpAndStats, $despawnTimeType, $pokemonGender, $missingIvOnly, $swLat, $swLng, $neLat, $neLng, $timestamp, 0, 0, 0, 0, $enc_id);
+                $d["pokemons"] = $scanner->get_active($eids, $minIv, $minLevel, $minLLRank, $minGLRank, $minULRank, $exMinIv, $bigKarp, $tinyRat, $zeroIv, $hundoIv, $xxs, $xxl, $independantPvpAndStats, $despawnTimeType, $pokemonGender, $missingIvOnly, $swLat, $swLng, $neLat, $neLng, $timestamp, 0, 0, 0, 0, $enc_id);
             }
         }
         $d["preMinIV"] = $minIv;
@@ -184,7 +186,7 @@ if (!$noPokemon) {
 
             $reidsDiff = array_diff($reids, $eids);
             if (count($reidsDiff)) {
-                $d["pokemons"] = array_merge($d["pokemons"], $scanner->get_active_by_id($reidsDiff, $minIv, $minLevel, $minLLRank, $minGLRank, $minULRank, $exMinIv, $bigKarp, $tinyRat, $zeroIv, $hundoIv, $independantPvpAndStats, $despawnTimeType, $pokemonGender, $missingIvOnly, $swLat, $swLng, $neLat, $neLng));
+                $d["pokemons"] = array_merge($d["pokemons"], $scanner->get_active_by_id($reidsDiff, $minIv, $minLevel, $minLLRank, $minGLRank, $minULRank, $exMinIv, $bigKarp, $tinyRat, $zeroIv, $hundoIv, $xxs, $xxl, $independantPvpAndStats, $despawnTimeType, $pokemonGender, $missingIvOnly, $swLat, $swLng, $neLat, $neLng));
             }
 
             $d["reids"] = $reids;
