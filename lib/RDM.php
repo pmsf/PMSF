@@ -876,6 +876,7 @@ class RDM extends Scanner
         global $db, $noTeams, $noExEligible, $noInBattle;
 
         $rdmAvailableSlots = ($this->columnExists("gym","available_slots")) ? "available_slots" : "availble_slots";
+        $rdmAlignment = ($this->columnExists("gym","raid_pokemon_alignment")) ? "raid_pokemon_alignment," : "";
 
         $query = "SELECT id AS gym_id,
         lat AS latitude,
@@ -897,6 +898,7 @@ class RDM extends Scanner
         raid_pokemon_cp,
         raid_pokemon_gender,
         raid_pokemon_evolution,
+        $rdmAlignment
         ex_raid_eligible AS park,
         in_battle
         FROM gym
@@ -921,6 +923,7 @@ class RDM extends Scanner
             $gym["raid_pokemon_costume"] = intval($gym["raid_pokemon_costume"]);
             $gym["raid_pokemon_evolution"] = intval($gym["raid_pokemon_evolution"]);
             $gym["raid_pokemon_gender"] = intval($gym["raid_pokemon_gender"]);
+            $gym["raid_pokemon_alignment"] = isset($gym["raid_pokemon_alignment"]) ? intval($gym["raid_pokemon_alignment"]) : null;
             $gym["latitude"] = floatval($gym["latitude"]);
             $gym["longitude"] = floatval($gym["longitude"]);
             $gym["slots_available"] = $noTeams ? 0 : intval($gym["slots_available"]);
@@ -954,6 +957,7 @@ class RDM extends Scanner
                             $gym["raid_pokemon_cp"] = null;
                             $gym["raid_pokemon_gender"] = null;
                             $gym["raid_pokemon_evolution"] = null;
+                            $gym["raid_pokemon_alignment"] = null;
                             break;
                         }
                     }
@@ -972,6 +976,7 @@ class RDM extends Scanner
                             $gym["raid_pokemon_cp"] = null;
                             $gym["raid_pokemon_gender"] = null;
                             $gym["raid_pokemon_evolution"] = null;
+                            $gym["raid_pokemon_alignment"] = null;
                             break;
                         }
                     }
