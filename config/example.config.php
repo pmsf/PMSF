@@ -279,6 +279,8 @@ $noBigKarp = true;                                                  // true/fals
 $noTinyRat = true;                                                  // true/false
 $noZeroIvToggle = false;                                            // true/false
 $noHundoIvToggle = false;                                           // true/false
+$noXXSToggle = false;                                               // true/false
+$noXXLToggle = false;                                               // true/false
 $noIndependantPvpAndStatsToggle = false;                            // true/false
 $noDespawnTimeType = true;                                          // true/false
 $showDespawnTimeType = 0;                                           // 0 = All, 1 = Verified, 2 = Unverified, 3 = Unverified + Nearby (Nearby = no spawn point)

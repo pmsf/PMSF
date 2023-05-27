@@ -1070,6 +1070,8 @@ function initSidebar() {
     $('#tiny-rat-switch').prop('checked', Store.get('showTinyRat'))
     $('#no-zero-iv-switch').prop('checked', Store.get('showZeroIv'))
     $('#no-hundo-iv-switch').prop('checked', Store.get('showHundoIv'))
+    $('#no-xxs-switch').prop('checked', Store.get('showXXS'))
+    $('#no-xxl-switch').prop('checked', Store.get('showXXL'))
     $('#no-independant-pvp-switch').prop('checked', Store.get('showIndependantPvpAndStats'))
     $('#despawn-time-type-select').val(Store.get('showDespawnTimeType'))
     $('#pokemon-gender-select').val(Store.get('showPokemonGender'))
@@ -3392,22 +3394,32 @@ function clearStaleMarkers() {
                 }
 
                 if (!keepMons) {
-                    var keepPvp = true
-                    if (minLLRank > 0 || minGLRank > 0 || minULRank > 0) {
-                        keepPvp = false
-                        if (minLLRank > 0 && mapData.pokemons[key]['pvp_rankings_little_league_best'] !== null && mapData.pokemons[key]['pvp_rankings_little_league_best'] <= minLLRank) {
-                            keepPvp = true
-                        } else if (minGLRank > 0 && mapData.pokemons[key]['pvp_rankings_great_league_best'] !== null && mapData.pokemons[key]['pvp_rankings_great_league_best'] <= minGLRank) {
-                            keepPvp = true
-                        } else if (minULRank > 0 && mapData.pokemons[key]['pvp_rankings_ultra_league_best'] !== null && mapData.pokemons[key]['pvp_rankings_ultra_league_best'] <= minULRank) {
-                            keepPvp = true
+                    if (mapData.pokemons[key]['size'] !== null) {
+                        if (Store.get('showXXS') === true && mapData.pokemons[key]['size'] === 'XXS') {
+                            keepMons = true
+                        } else if (Store.get('showXXL') === true && mapData.pokemons[key]['size'] === 'XXL') {
+                            keepMons = true
                         }
-                        keepMons = (Store.get('showIndependantPvpAndStats') === true && keepPvp)
                     }
 
                     if (!keepMons) {
-                        var keepMinIvLvl = (excludedMinIV.includes(mapData.pokemons[key]['pokemon_id']) === true || ((minIV === 0 || (mapData.pokemons[key]['iv'] !== null && mapData.pokemons[key]['iv'] >= minIV)) && (minLevel === 0 || (mapData.pokemons[key]['level'] !== null && mapData.pokemons[key]['level'] >= minLevel))))
-                        keepMons = ((Store.get('showIndependantPvpAndStats') === true && keepMinIvLvl) || (Store.get('showIndependantPvpAndStats') === false && keepMinIvLvl && keepPvp))
+                        var keepPvp = true
+                        if (minLLRank > 0 || minGLRank > 0 || minULRank > 0) {
+                            keepPvp = false
+                            if (minLLRank > 0 && mapData.pokemons[key]['pvp_rankings_little_league_best'] !== null && mapData.pokemons[key]['pvp_rankings_little_league_best'] <= minLLRank) {
+                                keepPvp = true
+                            } else if (minGLRank > 0 && mapData.pokemons[key]['pvp_rankings_great_league_best'] !== null && mapData.pokemons[key]['pvp_rankings_great_league_best'] <= minGLRank) {
+                                keepPvp = true
+                            } else if (minULRank > 0 && mapData.pokemons[key]['pvp_rankings_ultra_league_best'] !== null && mapData.pokemons[key]['pvp_rankings_ultra_league_best'] <= minULRank) {
+                                keepPvp = true
+                            }
+                            keepMons = (Store.get('showIndependantPvpAndStats') === true && keepPvp)
+                        }
+
+                        if (!keepMons) {
+                            var keepMinIvLvl = (excludedMinIV.includes(mapData.pokemons[key]['pokemon_id']) === true || ((minIV === 0 || (mapData.pokemons[key]['iv'] !== null && mapData.pokemons[key]['iv'] >= minIV)) && (minLevel === 0 || (mapData.pokemons[key]['level'] !== null && mapData.pokemons[key]['level'] >= minLevel))))
+                            keepMons = ((Store.get('showIndependantPvpAndStats') === true && keepMinIvLvl) || (Store.get('showIndependantPvpAndStats') === false && keepMinIvLvl && keepPvp))
+                        }
                     }
                 }
             }
@@ -3565,6 +3577,8 @@ function loadRawData() {
     var tinyRat = Boolean(Store.get('showTinyRat'))
     var zeroIv = Boolean(Store.get('showZeroIv'))
     var hundoIv = Boolean(Store.get('showHundoIv'))
+    var xxs = Boolean(Store.get('showXXS'))
+    var xxl = Boolean(Store.get('showXXL'))
     var independantPvpAndStats = Boolean(Store.get('showIndependantPvpAndStats'))
     var minLLRank = Store.get('remember_text_min_ll_rank')
     var minGLRank = Store.get('remember_text_min_gl_rank')
@@ -3636,6 +3650,8 @@ function loadRawData() {
             'tinyRat': tinyRat,
             'zeroIv': zeroIv,
             'hundoIv': hundoIv,
+            'xxs': xxs,
+            'xxl': xxl,
             'independantPvpAndStats': independantPvpAndStats,
             'minLLRank': minLLRank,
             'prevMinLLRank': prevMinLLRank,
@@ -6999,6 +7015,16 @@ $(function () {
         })
         $('#no-hundo-iv-switch').on('change', function (e) {
             Store.set('showHundoIv', this.checked)
+            lastpokemon = false
+            updateMap()
+        })
+        $('#no-xxs-switch').on('change', function (e) {
+            Store.set('showXXS', this.checked)
+            lastpokemon = false
+            updateMap()
+        })
+        $('#no-xxl-switch').on('change', function (e) {
+            Store.set('showXXL', this.checked)
             lastpokemon = false
             updateMap()
         })
