@@ -1554,7 +1554,7 @@ function gymLabel(item) {
     var raidStarted = item['raid_pokemon_id'] != null
 
     var numStars = (item['raid_level'] >= 11 && item['raid_level'] <= 15) ? (item['raid_level'] - 10) : item['raid_level']
-    var shadowRaid = ((item['raid_level'] >= 11 && item['raid_level'] <= 15) || parseInt(item['raid_pokemon_alignment']) === 1) ? i8ln('Shadow') + ' ' : ''
+    var shadowStr = ((item['raid_level'] >= 11 && item['raid_level'] <= 15) || parseInt(item['raid_pokemon_alignment']) === 1) ? i8ln('Shadow') + ' ' : ''
 
     var raidStr = ''
     var raidIcon = ''
@@ -1564,7 +1564,7 @@ function gymLabel(item) {
         for (i = 0; i < numStars; i++) {
             levelStr += '★'
         }
-        raidStr = '<h3 style="margin-bottom: 0">Raid ' + shadowRaid + levelStr
+        raidStr = '<h3 style="margin-bottom: 0">Raid ' + shadowStr + levelStr
         if (raidStarted) {
             var cpStr = ''
             if (item.raid_pokemon_cp > 0) {
@@ -8051,6 +8051,7 @@ function getIcon(iconRepo, folder, fileType, iconKeyId, ...varArgs) {
                     console.log('No pokemonIndex? Houston, we have a problem.')
                 }
             } else {
+                /* varArgs order = evolution, form, costume, gender, shiny, alignment */
                 const pokemonId = iconKeyId
                 const evolutionId = typeof varArgs[0] === 'undefined' ? [''] : varArgs[0] === 0 ? [''] : ['_e' + varArgs[0], '']
                 const formId = typeof varArgs[1] === 'undefined' ? [''] : varArgs[1] === 0 ? [''] : ['_f' + varArgs[1], '']
