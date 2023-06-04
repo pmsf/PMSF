@@ -1548,19 +1548,23 @@ function gymLabel(item) {
     var gender = item['raid_pokemon_gender']
     var evolution = item['raid_pokemon_evolution']
     var costume = item['raid_pokemon_costume']
+    var alignment = item['raid_pokemon_alignment']
 
     var raidSpawned = item['raid_level'] != null
     var raidStarted = item['raid_pokemon_id'] != null
+
+    var numStars = (item['raid_level'] >= 11 && item['raid_level'] <= 15) ? (item['raid_level'] - 10) : item['raid_level']
+    var shadowStr = ((item['raid_level'] >= 11 && item['raid_level'] <= 15) || parseInt(item['raid_pokemon_alignment']) === 1) ? i8ln('Shadow') + ' ' : ''
 
     var raidStr = ''
     var raidIcon = ''
     var i = 0
     if (raidSpawned && item.raid_end > Date.now()) {
         var levelStr = ''
-        for (i = 0; i < item['raid_level']; i++) {
+        for (i = 0; i < numStars; i++) {
             levelStr += '★'
         }
-        raidStr = '<h3 style="margin-bottom: 0">Raid ' + levelStr
+        raidStr = '<h3 style="margin-bottom: 0">Raid ' + shadowStr + levelStr
         if (raidStarted) {
             var cpStr = ''
             if (item.raid_pokemon_cp > 0) {
@@ -1606,7 +1610,7 @@ function gymLabel(item) {
             raidStr += '<a href="javascript:removeGymMarker(\'' + item['gym_id'] + '\')" title="' + i8ln('Hide this Gym') + '"><i class="fas fa-eye-slash" style="font-size:15px;"></i></a>'
         }
         if (raidStarted) {
-            raidIcon = '<img style="width: 70px;" src="' + getIcon(iconpath.pokemon, 'pokemon', '.png', pokemonid, evolution, form, costume) + '"/>'
+            raidIcon = '<img style="width: 70px;" src="' + getIcon(iconpath.pokemon, 'pokemon', '.png', pokemonid, evolution, form, costume, gender, 0, alignment) + '"/>'
         } else if (item.raid_start <= Date.now()) {
             raidIcon = '<img src="' + getIcon(iconpath.raid, 'raid/egg', '.png', item['raid_level'], 1) + '" style="height:70px;">'
         } else {
@@ -2381,6 +2385,8 @@ function getGymMarkerIcon(item) {
     var evolutionId = item['raid_pokemon_evolution']
     var formId = item['raid_pokemon_form']
     var costumeId = item['raid_pokemon_costume']
+    var genderId = item['raid_pokemon_gender']
+    var alignmentId = item['raid_pokemon_alignment']
     var team = item.team_id
     var fortMarker = ''
     var exIcon = (((park !== '0' && onlyTriggerGyms === false && park) || triggerGyms.includes(item['gym_id'])) && (noExGyms === false)) ? '<img src="static/images/ex.png" style="position:absolute;right:25px;bottom:2px;"/>' : ''
@@ -2392,7 +2398,7 @@ function getGymMarkerIcon(item) {
             '<img src="' + getIcon(iconpath.gym, 'gym', '.png', team, level, item['in_battle'], park) + '" style="width:50px;height:auto;"/>' +
             exIcon +
             inBattle +
-            '<img src="' + getIcon(iconpath.pokemon, 'pokemon', '.png', pokemonid, evolutionId, formId, costumeId) + '" style="width:50px;height:auto;position:absolute;top:-15px;right:0px;"/>' +
+            '<img src="' + getIcon(iconpath.pokemon, 'pokemon', '.png', pokemonid, evolutionId, formId, costumeId, genderId, 0, alignmentId) + '" style="width:50px;height:auto;position:absolute;top:-15px;right:0px;"/>' +
             '</div>'
         if (noRaidTimer === false && Store.get(['showRaidTimer'])) {
             html += '<div class="gym-icon-raid-timer"><span class="icon-countdown" style="padding: .25rem!important; white-space: nowrap;" disappears-at="' + item['raid_end'] + '" end>' + generateRemainingTimer(item['raid_end'], 'end') + '</span></div>'
@@ -2482,7 +2488,9 @@ function setupGymMarker(item) {
             var evolutionid = item['raid_pokemon_evolution']
             var formid = item['raid_pokemon_form']
             var costumeid = item['raid_pokemon_costume']
-            icon = getIcon(iconpath.pokemon, 'pokemon', '.png', pokemonid, evolutionid, formid, costumeid)
+            var genderid = item['raid_pokemon_gender']
+            var alignmentid = item['raid_pokemon_alignment']
+            icon = getIcon(iconpath.pokemon, 'pokemon', '.png', pokemonid, evolutionid, formid, costumeid, genderid, 0, alignmentid)
             checkAndCreateSound(item.raid_pokemon_id)
         } else if (item.raid_start <= Date.now()) {
             icon = getIcon(iconpath.raid, 'raid/egg', '.png', item['raid_level'], 1)
@@ -2516,8 +2524,10 @@ function updateGymMarker(item, marker) {
                 var evolutionid = item['raid_pokemon_evolution']
                 var formid = item['raid_pokemon_form']
                 var costumeid = item['raid_pokemon_costume']
+                var genderid = item['raid_pokemon_gender']
+                var alignmentid = item['raid_pokemon_alignment']
 
-                icon = getIcon(iconpath.pokemon, 'pokemon', '.png', pokemonid, evolutionid, formid, costumeid)
+                icon = getIcon(iconpath.pokemon, 'pokemon', '.png', pokemonid, evolutionid, formid, costumeid, genderid, 0, alignmentid)
                 checkAndCreateSound(item.raid_pokemon_id)
             } else if (item.raid_start <= Date.now()) {
                 icon = getIcon(iconpath.raid, 'raid/egg', '.png', item['raid_level'], 1)
@@ -8041,33 +8051,37 @@ function getIcon(iconRepo, folder, fileType, iconKeyId, ...varArgs) {
                     console.log('No pokemonIndex? Houston, we have a problem.')
                 }
             } else {
+                /* varArgs order = evolution, form, costume, gender, shiny, alignment */
                 const pokemonId = iconKeyId
                 const evolutionId = typeof varArgs[0] === 'undefined' ? [''] : varArgs[0] === 0 ? [''] : ['_e' + varArgs[0], '']
                 const formId = typeof varArgs[1] === 'undefined' ? [''] : varArgs[1] === 0 ? [''] : ['_f' + varArgs[1], '']
                 const costumeId = typeof varArgs[2] === 'undefined' ? [''] : varArgs[2] === 0 ? [''] : ['_c' + varArgs[2], '']
                 const genderId = typeof varArgs[3] === 'undefined' ? [''] : varArgs[3] === 0 ? [''] : ['_g' + varArgs[3], '']
                 const shinyId = typeof varArgs[4] === 'undefined' ? [''] : varArgs[4] === 0 ? [''] : ['_s', '']
+                const alignmentId = typeof varArgs[5] === 'undefined' ? [''] : varArgs[5] === 0 ? [''] : ['_a' + varArgs[5], '']
                 search:
                 for (const evolution of evolutionId) {
                     for (const form of formId) {
                         for (const costume of costumeId) {
                             for (const gender of genderId) {
-                                for (const shiny of shinyId) {
-                                    requestedIcon = `${pokemonId}${evolution}${form}${costume}${gender}${shiny}${fileType}`
-                                    if (iconpath['pokemonIndex'].includes(requestedIcon)) {
-                                        if (!firstTry) {
+                                for (const alignment of alignmentId) {
+                                    for (const shiny of shinyId) {
+                                        requestedIcon = `${pokemonId}${evolution}${form}${costume}${gender}${alignment}${shiny}${fileType}`
+                                        if (iconpath['pokemonIndex'].includes(requestedIcon)) {
+                                            if (!firstTry) {
+                                                if (enableJSDebug) {
+                                                    console.log('Repo has fallback pokemon icon! Returning: ' + requestedIcon)
+                                                }
+                                            }
+                                            icon = requestedIcon
+                                            break search
+                                        } else {
                                             if (enableJSDebug) {
-                                                console.log('Repo has fallback pokemon icon! Returning: ' + requestedIcon)
+                                                console.log('Repo is missing ' + (firstTry ? 'optimal' : 'fallback') + ' pokemon icon: ' + requestedIcon)
                                             }
                                         }
-                                        icon = requestedIcon
-                                        break search
-                                    } else {
-                                        if (enableJSDebug) {
-                                            console.log('Repo is missing ' + (firstTry ? 'optimal' : 'fallback') + ' pokemon icon: ' + requestedIcon)
-                                        }
+                                        firstTry = false
                                     }
-                                    firstTry = false
                                 }
                             }
                         }

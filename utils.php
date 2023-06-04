@@ -412,24 +412,32 @@ function getIcon($iconRepo, $folder, $fileType, $iconKeyId, ...$varArgs) {
             }
             break;
         case 'pokemon/':
-            /* varArgs order = evolution, form, costume, gender, shiny */
+            /* varArgs order = evolution, form, costume, gender, shiny, alignment */
             $pokemonId = $iconKeyId;
             $evolutionId = isset($varArgs[0]) ? ["_e{$varArgs[0]}", ''] : [''];
             $formId = isset($varArgs[1]) ? ["_f{$varArgs[1]}", ''] : [''];
             $costumeId = isset($varArgs[2]) ? ["_c{$varArgs[2]}", ''] : [''];
             $genderId = isset($varArgs[3]) ? ["_g{$varArgs[3]}", ''] : [''];
             $shinyId = isset($varArgs[4]) ? ["_s", ''] : [''];
+            $alignmentId = isset($varArgs[5]) ? ["_a{$varArgs[5]}", ''] : [''];
             $requestedIcon = $pokemonId . (isset($evolutionId[0]) ? $evolutionId[0] : '') . (isset($formId[0]) ? $formId[0] : '') . (isset($costumeId[0]) ? $costumeId[0] : '') . (isset($genderId[0]) ? $genderId[0] : '') . (isset($shinyId[0]) ? $shinyId[0] : '') . $fileType;
             if (array_search($requestedIcon, $availableArray) !== false) {
                 $icon = $requestedIcon;
             } else {
-                /* dont care about costume, gender, shiny if requestedIcon is not available for now*/
                 foreach ($evolutionId as $evolution) {
                     foreach ($formId as $form) {
-                        $searchIcon = $pokemonId . $evolution . $form . $fileType;
-                        if (array_search($searchIcon, $availableArray) !== false) {
-                            $icon = $searchIcon;
-                            break 2;
+                        foreach ($costumeId as $costume) {
+                            foreach ($genderId as $gender) {
+                                foreach ($alignmentId as $alignment) {
+                                    foreach ($shinyId as $shiny) {
+                                        $searchIcon = $pokemonId . $evolution . $form . $costume . $gender . $alignment . $shiny . $fileType;
+                                        if (array_search($searchIcon, $availableArray) !== false) {
+                                            $icon = $searchIcon;
+                                            break 2;
+                                        }
+                                    }
+                                }
+                            }
                         }
                     }
                 }
