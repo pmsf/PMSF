@@ -1612,6 +1612,46 @@
             "color": "#f8d030"
           }
         ]
+      },
+      {
+        "nameform": "Summer 2023 A",
+        "protoform": "3002",
+        "formtypes": [
+          {
+            "type": "Electric",
+            "color": "#f8d030"
+          }
+        ]
+      },
+      {
+        "nameform": "Summer 2023 B",
+        "protoform": "3003",
+        "formtypes": [
+          {
+            "type": "Electric",
+            "color": "#f8d030"
+          }
+        ]
+      },
+      {
+        "nameform": "Summer 2023 C",
+        "protoform": "3004",
+        "formtypes": [
+          {
+            "type": "Electric",
+            "color": "#f8d030"
+          }
+        ]
+      },
+      {
+        "nameform": "Summer 2023 D",
+        "protoform": "3005",
+        "formtypes": [
+          {
+            "type": "Electric",
+            "color": "#f8d030"
+          }
+        ]
       }
     ]
   },
@@ -7046,6 +7086,36 @@
             "color": "#8a8a59"
           }
         ]
+      },
+      {
+        "nameform": "Paldea Combat",
+        "protoform": "3006",
+        "formtypes": [
+          {
+            "type": "Normal",
+            "color": "#8a8a59"
+          }
+        ]
+      },
+      {
+        "nameform": "Paldea Blaze",
+        "protoform": "3007",
+        "formtypes": [
+          {
+            "type": "Normal",
+            "color": "#8a8a59"
+          }
+        ]
+      },
+      {
+        "nameform": "Paldea Aqua",
+        "protoform": "3008",
+        "formtypes": [
+          {
+            "type": "Normal",
+            "color": "#8a8a59"
+          }
+        ]
       }
     ]
   },
@@ -7750,6 +7820,20 @@
       {
         "nameform": "Purified",
         "protoform": "1112",
+        "formtypes": [
+          {
+            "type": "Flying",
+            "color": "#a890f0"
+          },
+          {
+            "type": "Rock",
+            "color": "#b8a038"
+          }
+        ]
+      },
+      {
+        "nameform": "Summer 2023",
+        "protoform": "3001",
         "formtypes": [
           {
             "type": "Flying",
@@ -10394,6 +10478,20 @@
       {
         "nameform": "Purified",
         "protoform": "1228",
+        "formtypes": [
+          {
+            "type": "Ground",
+            "color": "#e0c068"
+          },
+          {
+            "type": "Water",
+            "color": "#6890f0"
+          }
+        ]
+      },
+      {
+        "nameform": "Paldea",
+        "protoform": "3009",
         "formtypes": [
           {
             "type": "Ground",
@@ -36424,6 +36522,34 @@
             "color": "#e0c068"
           }
         ]
+      },
+      {
+        "nameform": "Complete Ten Percent",
+        "protoform": "2823",
+        "formtypes": [
+          {
+            "type": "Dragon",
+            "color": "#7038f8"
+          },
+          {
+            "type": "Ground",
+            "color": "#e0c068"
+          }
+        ]
+      },
+      {
+        "nameform": "Complete Fifty Percent",
+        "protoform": "2824",
+        "formtypes": [
+          {
+            "type": "Dragon",
+            "color": "#7038f8"
+          },
+          {
+            "type": "Ground",
+            "color": "#e0c068"
+          }
+        ]
       }
     ]
   },
@@ -40215,6 +40341,28 @@
         "type": "Normal",
         "color": "#8a8a59"
       }
+    ],
+    "forms": [
+      {
+        "nameform": "Normal",
+        "protoform": "2981",
+        "formtypes": [
+          {
+            "type": "Normal",
+            "color": "#8a8a59"
+          }
+        ]
+      },
+      {
+        "nameform": "Female",
+        "protoform": "2982",
+        "formtypes": [
+          {
+            "type": "Normal",
+            "color": "#8a8a59"
+          }
+        ]
+      }
     ]
   },
   "917": {
@@ -40317,6 +40465,28 @@
         "type": "Normal",
         "color": "#8a8a59"
       }
+    ],
+    "forms": [
+      {
+        "nameform": "Family Of Three",
+        "protoform": "2983",
+        "formtypes": [
+          {
+            "type": "Normal",
+            "color": "#8a8a59"
+          }
+        ]
+      },
+      {
+        "nameform": "Family Of Four",
+        "protoform": "2984",
+        "formtypes": [
+          {
+            "type": "Normal",
+            "color": "#8a8a59"
+          }
+        ]
+      }
     ]
   },
   "926": {
@@ -40392,6 +40562,64 @@
       {
         "type": "Normal",
         "color": "#8a8a59"
+      }
+    ],
+    "forms": [
+      {
+        "nameform": "Green",
+        "protoform": "2985",
+        "formtypes": [
+          {
+            "type": "Flying",
+            "color": "#a890f0"
+          },
+          {
+            "type": "Normal",
+            "color": "#8a8a59"
+          }
+        ]
+      },
+      {
+        "nameform": "Blue",
+        "protoform": "2986",
+        "formtypes": [
+          {
+            "type": "Flying",
+            "color": "#a890f0"
+          },
+          {
+            "type": "Normal",
+            "color": "#8a8a59"
+          }
+        ]
+      },
+      {
+        "nameform": "Yellow",
+        "protoform": "2987",
+        "formtypes": [
+          {
+            "type": "Flying",
+            "color": "#a890f0"
+          },
+          {
+            "type": "Normal",
+            "color": "#8a8a59"
+          }
+        ]
+      },
+      {
+        "nameform": "White",
+        "protoform": "2988",
+        "formtypes": [
+          {
+            "type": "Flying",
+            "color": "#a890f0"
+          },
+          {
+            "type": "Normal",
+            "color": "#8a8a59"
+          }
+        ]
       }
     ]
   },
@@ -40787,6 +41015,28 @@
         "type": "Water",
         "color": "#6890f0"
       }
+    ],
+    "forms": [
+      {
+        "nameform": "Zero",
+        "protoform": "2989",
+        "formtypes": [
+          {
+            "type": "Water",
+            "color": "#6890f0"
+          }
+        ]
+      },
+      {
+        "nameform": "Hero",
+        "protoform": "2990",
+        "formtypes": [
+          {
+            "type": "Water",
+            "color": "#6890f0"
+          }
+        ]
+      }
     ]
   },
   "965": {
@@ -40959,6 +41209,50 @@
         "type": "Water",
         "color": "#6890f0"
       }
+    ],
+    "forms": [
+      {
+        "nameform": "Curly",
+        "protoform": "2991",
+        "formtypes": [
+          {
+            "type": "Dragon",
+            "color": "#7038f8"
+          },
+          {
+            "type": "Water",
+            "color": "#6890f0"
+          }
+        ]
+      },
+      {
+        "nameform": "Droopy",
+        "protoform": "2992",
+        "formtypes": [
+          {
+            "type": "Dragon",
+            "color": "#7038f8"
+          },
+          {
+            "type": "Water",
+            "color": "#6890f0"
+          }
+        ]
+      },
+      {
+        "nameform": "Stretchy",
+        "protoform": "2993",
+        "formtypes": [
+          {
+            "type": "Dragon",
+            "color": "#7038f8"
+          },
+          {
+            "type": "Water",
+            "color": "#6890f0"
+          }
+        ]
+      }
     ]
   },
   "979": {
@@ -41011,6 +41305,28 @@
         "type": "Normal",
         "color": "#8a8a59"
       }
+    ],
+    "forms": [
+      {
+        "nameform": "Two",
+        "protoform": "2994",
+        "formtypes": [
+          {
+            "type": "Normal",
+            "color": "#8a8a59"
+          }
+        ]
+      },
+      {
+        "nameform": "Three",
+        "protoform": "2995",
+        "formtypes": [
+          {
+            "type": "Normal",
+            "color": "#8a8a59"
+          }
+        ]
+      }
     ]
   },
   "983": {
@@ -41028,7 +41344,7 @@
     ]
   },
   "984": {
-    "name": "Great-tusk",
+    "name": "Greattusk",
     "rarity": "",
     "types": [
       {
@@ -41042,7 +41358,7 @@
     ]
   },
   "985": {
-    "name": "Scream-tail",
+    "name": "Screamtail",
     "rarity": "",
     "types": [
       {
@@ -41056,7 +41372,7 @@
     ]
   },
   "986": {
-    "name": "Brute-bonnet",
+    "name": "Brutebonnet",
     "rarity": "",
     "types": [
       {
@@ -41070,7 +41386,7 @@
     ]
   },
   "987": {
-    "name": "Flutter-mane",
+    "name": "Fluttermane",
     "rarity": "",
     "types": [
       {
@@ -41084,7 +41400,7 @@
     ]
   },
   "988": {
-    "name": "Slither-wing",
+    "name": "Slitherwing",
     "rarity": "",
     "types": [
       {
@@ -41098,7 +41414,7 @@
     ]
   },
   "989": {
-    "name": "Sandy-shocks",
+    "name": "Sandyshocks",
     "rarity": "",
     "types": [
       {
@@ -41112,7 +41428,7 @@
     ]
   },
   "990": {
-    "name": "Iron-treads",
+    "name": "Irontreads",
     "rarity": "",
     "types": [
       {
@@ -41126,7 +41442,7 @@
     ]
   },
   "991": {
-    "name": "Iron-bundle",
+    "name": "Ironbundle",
     "rarity": "",
     "types": [
       {
@@ -41140,7 +41456,7 @@
     ]
   },
   "992": {
-    "name": "Iron-hands",
+    "name": "Ironhands",
     "rarity": "",
     "types": [
       {
@@ -41154,7 +41470,7 @@
     ]
   },
   "993": {
-    "name": "Iron-jugulis",
+    "name": "Ironjugulis",
     "rarity": "",
     "types": [
       {
@@ -41168,7 +41484,7 @@
     ]
   },
   "994": {
-    "name": "Iron-moth",
+    "name": "Ironmoth",
     "rarity": "",
     "types": [
       {
@@ -41182,7 +41498,7 @@
     ]
   },
   "995": {
-    "name": "Iron-thorns",
+    "name": "Ironthorns",
     "rarity": "",
     "types": [
       {
@@ -41290,7 +41606,7 @@
     ]
   },
   "1001": {
-    "name": "Wo-chien",
+    "name": "Wochien",
     "rarity": "",
     "types": [
       {
@@ -41304,7 +41620,7 @@
     ]
   },
   "1002": {
-    "name": "Chien-pao",
+    "name": "Chienpao",
     "rarity": "",
     "types": [
       {
@@ -41318,7 +41634,7 @@
     ]
   },
   "1003": {
-    "name": "Ting-lu",
+    "name": "Tinglu",
     "rarity": "",
     "types": [
       {
@@ -41332,7 +41648,7 @@
     ]
   },
   "1004": {
-    "name": "Chi-yu",
+    "name": "Chiyu",
     "rarity": "",
     "types": [
       {
@@ -41346,7 +41662,7 @@
     ]
   },
   "1005": {
-    "name": "Roaring-moon",
+    "name": "Roaringmoon",
     "rarity": "",
     "types": [
       {
@@ -41360,7 +41676,7 @@
     ]
   },
   "1006": {
-    "name": "Iron-valiant",
+    "name": "Ironvaliant",
     "rarity": "",
     "types": [
       {
@@ -41385,6 +41701,22 @@
         "type": "Fighting",
         "color": "#c03028"
       }
+    ],
+    "forms": [
+      {
+        "nameform": "Apex",
+        "protoform": "2996",
+        "formtypes": [
+          {
+            "type": "Dragon",
+            "color": "#7038f8"
+          },
+          {
+            "type": "Fighting",
+            "color": "#c03028"
+          }
+        ]
+      }
     ]
   },
   "1008": {
@@ -41398,6 +41730,22 @@
       {
         "type": "Electric",
         "color": "#f8d030"
+      }
+    ],
+    "forms": [
+      {
+        "nameform": "Ultimate",
+        "protoform": "2997",
+        "formtypes": [
+          {
+            "type": "Dragon",
+            "color": "#7038f8"
+          },
+          {
+            "type": "Electric",
+            "color": "#f8d030"
+          }
+        ]
       }
     ]
   }
