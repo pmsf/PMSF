@@ -206,7 +206,7 @@ if (isset($_GET['action'])) {
 
 if (isset($_GET['callback'])) {
     if ($_GET['callback'] == 'discord') {
-        if ($_GET['code']) {
+        if (isset($_GET['code'])) {
             $token_request = 'https://discord.com/api/oauth2/token';
             $token = curl_init();
             curl_setopt_array($token, [
