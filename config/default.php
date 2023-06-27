@@ -180,13 +180,6 @@ $discordUsers = [];
 $guildRoles = [];
 
 
-/* Facebook Auth */
-$noFacebookLogin = true;                                            // true/false
-$facebookAppId = '';                                                // Facebook App ID
-$facebookAppSecret = '';                                            // Facebook App Secret
-$facebookAppRedirectUri = '';                                       // Callback url make sure this is the same as set in Facebook app config
-$facebookAccessLevel = '1';                                         // Accesslevel used in access-config.php
-
 /* Groupme Auth */
 $noGroupmeLogin = true;                                             // true/false
 $groupmeClientId = '';
