@@ -162,7 +162,7 @@ if (strtolower($map) === "rdm") {
     <link rel="stylesheet" href="node_modules/leaflet.markercluster/dist/MarkerCluster.Default.css" />
     <link href='static/css/leaflet.fullscreen.css' rel='stylesheet' />
     <!-- Flag Icons -->
-    <link rel="stylesheet" href="node_modules/flag-icon-css/css/flag-icon.min.css" />
+    <link rel="stylesheet" href="node_modules/flag-icons/css/flag-icons.min.css" />
 </head>
 <body id="top">
 <div class="loader"></div>
