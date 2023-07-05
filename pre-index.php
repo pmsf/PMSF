@@ -532,7 +532,7 @@ if (strtolower($map) === "rdm") {
                                                 <div class="dropdown-divider"></div>
                                                 <div class="form-check form-switch">
                                                     <input class="form-check-input" id="allPokestops-switch" type="checkbox" name="allPokestops-switch">
-                                                    <label class="form-check-label" for="allPpokestops-switch"><?php echo i8ln('All Pokéstops') ?></label>
+                                                    <label class="form-check-label" for="allPokestops-switch"><?php echo i8ln('All Pokéstops') ?></label>
                                                 </div>
                                             <?php
                                             }
@@ -1335,7 +1335,7 @@ if (strtolower($map) === "rdm") {
                                                         }
                                                     } ?>
                                                 </select>
-                                                <label for="mapstyle"><?php echo i8ln('Map Style') ?></label>
+                                                <label for="map-style"><?php echo i8ln('Map Style') ?></label>
                                             </div>
                                         <?php }
                                         if (! $noDirectionProvider) { ?>
@@ -1416,7 +1416,7 @@ if (strtolower($map) === "rdm") {
                                                         echo '<option value="' . $k  . '">' . i8ln($markerStyle['name']) . '</option>';
                                                     } ?>
                                                 </select>
-                                                <label for="locationmarker"><?php echo i8ln('Location Icon Marker') ?></label>
+                                                <label for="locationmarker-style"><?php echo i8ln('Location Icon Marker') ?></label>
                                             </div>
                                         <?php } ?>
                                     </div>
