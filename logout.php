@@ -11,15 +11,6 @@ if (isset($_GET['action'])) {
         }
         die();
     }
-    if ($_GET['action'] == 'facebook-logout') {
-        destroyCookiesAndSessions();
-        if (isset($_GET['reason']) && $_GET['reason'] == 'change') {
-            header('Location: ./login?action=login&error=access-change');
-        } else {
-            header('Location: .');
-        }
-        die();
-    }
     if ($_GET['action'] == 'native-logout') {
         destroyCookiesAndSessions();
         if (isset($_GET['reason']) && $_GET['reason'] == 'change') {

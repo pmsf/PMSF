@@ -10,7 +10,6 @@ PokeMap Standalone Frontend or PMSF for short is a PHP Map Interface for RDM, MA
 ### oAuth:
 * Discord
 * Patreon
-* Facebook
 * Groupme
 
 ### Database:
