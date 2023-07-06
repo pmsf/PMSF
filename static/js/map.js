@@ -2612,8 +2612,6 @@ function getPokestopMarkerIcon(item) {
                 html += '<img src="static/sprites/misc/EventStopsCoin.png" style="width:25px;height:auto;position:absolute;top:4px;left:0px;"/></div>'
             } else if (item['eventstops_id'] === 8) {
                 html += '<img src="' + getIcon(iconpath.pokemon, 'pokemon', '.png', 352) + '" style="width:25px;height:auto;position:absolute;top:4px;left:0px;"/></div>'
-            } else if (item['eventstops_id'] === 9) {
-                html += i8ln('Showcase') + '</div>'
             } else {
                 html += '</div>'
             }
@@ -2758,8 +2756,6 @@ function getPokestopMarkerIcon(item) {
             html += '<img src="static/sprites/misc/EventStopsCoin.png" style="width:25px;height:auto;position:absolute;top:4px;left:0px;"/></div>'
         } else if (item['eventstops_id'] === 8) {
             html += '<img src="' + getIcon(iconpath.pokemon, 'pokemon', '.png', 352) + '" style="width:25px;height:auto;position:absolute;top:4px;left:0px;"/></div>'
-        } else if (item['eventstops_id'] === 9) {
-            html += i8ln('Showcase') + '</div>'
         } else {
             html += '</div>'
         }
