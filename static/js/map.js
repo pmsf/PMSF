@@ -2031,6 +2031,8 @@ function pokestopLabel(item) {
             eventType = '<img src="static/sprites/misc/EventStopsCoin.png" style="padding:5px;position:relative;left:0px;top:12px;height:40px;"/>'
         } else if (item['eventstops_id'] === 8) {
             eventType = '<img src="' + getIcon(iconpath.pokemon, 'pokemon', '.png', 352) + '" style="padding:5px;position:relative;left:0px;top:12px;height:40px;"/>'
+        } else if (item['eventstops_id'] === 9) {
+            eventType = i8ln('Showcase')
         } else {
             console.log('Unknown Event Type: ' + item['eventstops_id'])
             eventType = i8ln('Unknown Event Type') + ': ' + item['eventstops_id']
@@ -2610,6 +2612,8 @@ function getPokestopMarkerIcon(item) {
                 html += '<img src="static/sprites/misc/EventStopsCoin.png" style="width:25px;height:auto;position:absolute;top:4px;left:0px;"/></div>'
             } else if (item['eventstops_id'] === 8) {
                 html += '<img src="' + getIcon(iconpath.pokemon, 'pokemon', '.png', 352) + '" style="width:25px;height:auto;position:absolute;top:4px;left:0px;"/></div>'
+            } else if (item['eventstops_id'] === 9) {
+                html += i8ln('Showcase') + '</div>'
             } else {
                 html += '</div>'
             }
@@ -2754,6 +2758,8 @@ function getPokestopMarkerIcon(item) {
             html += '<img src="static/sprites/misc/EventStopsCoin.png" style="width:25px;height:auto;position:absolute;top:4px;left:0px;"/></div>'
         } else if (item['eventstops_id'] === 8) {
             html += '<img src="' + getIcon(iconpath.pokemon, 'pokemon', '.png', 352) + '" style="width:25px;height:auto;position:absolute;top:4px;left:0px;"/></div>'
+        } else if (item['eventstops_id'] === 9) {
+            html += i8ln('Showcase') + '</div>'
         } else {
             html += '</div>'
         }

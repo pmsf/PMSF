@@ -102,9 +102,6 @@ if (isset($_GET['action'])) {
                     if ($noDiscordLogin === false) {
                         $html .= "<button type='button' style='background-color: #1877f2; margin: 2px' onclick=\"location.href='./login?action=discord-login';\" value='Login with discord'><i class='fab fa-discord'></i>&nbsp" . i8ln('Login with Discord') . "</button>";
                     }
-                    if ($noFacebookLogin === false) {
-                        $html .= "<button type='button' style='background-color: #1877f2; margin: 2px' onclick=\"location.href='./login?action=facebook-login';\" value='Login with facebook'><i class='fab fa-facebook'></i>&nbsp" . i8ln('Login with Facebook') . "</button>";
-                    }
                     if ($noGroupmeLogin === false) {
                         $html .= "<button type='button' style='background-color: #1877f2; margin: 2px' onclick=\"location.href='./login?action=groupme-login';\" value='Login with groupme'><i class='fas fa-smile'></i>&nbsp" . i8ln('Login with Groupme') . "</button>";
                     }
@@ -117,7 +114,7 @@ if (isset($_GET['action'])) {
                         $html .= "<button type='button' style='background-color: #4CAF50; margin: 2px' onclick=\"location.href='./register?action=account';\" value='Register'><i class='fas fa-user'></i>&nbsp" . i8ln('Register') . "</button>";
                         $html .= "<button type='button' style='background-color: #4CAF50; margin: 2px' onclick=\"location.href='./register?action=password-reset';\" value='Forgot password?'><i class='fas fa-lock'></i>&nbsp" . i8ln('Forgot Password') . "</button>";
                     }
-                    if ($noNativeLogin && $noDiscordLogin && $noFacebookLogin && $noPatreonLogin) {
+                    if ($noNativeLogin && $noDiscordLogin && $noPatreonLogin) {
                         header("Location: ./");
                         die();
                     }
@@ -198,19 +195,6 @@ if (isset($_GET['action'])) {
         header('Location: https://www.patreon.com/oauth2/authorize' . '?' . http_build_query($params));
         die();
     }
-    if ($_GET['action'] == 'facebook-login') {
-        $fb = new Facebook\Facebook([
-           'app_id' => $facebookAppId,
-           'app_secret' => $facebookAppSecret,
-           'default_graph_version' => 'v2.10',
-        ]);
-
-        $helper = $fb->getRedirectLoginHelper();
-        $loginUrl = $helper->getLoginUrl($facebookAppRedirectUri);
-
-        header("Location: {$loginUrl}");
-        die();
-    }
     if ($_GET['action'] == 'groupme-login') {
         header("Location: https://oauth.groupme.com/oauth/authorize?client_id=" . $groupmeClientId);
         die();
@@ -222,7 +206,7 @@ if (isset($_GET['action'])) {
 
 if (isset($_GET['callback'])) {
     if ($_GET['callback'] == 'discord') {
-        if ($_GET['code']) {
+        if (isset($_GET['code'])) {
             $token_request = 'https://discord.com/api/oauth2/token';
             $token = curl_init();
             curl_setopt_array($token, [
@@ -348,100 +332,6 @@ if (isset($_GET['callback'])) {
                 header("Location: .?login=true");
                 die();
             }
-        }
-    }
-    if ($_GET['callback'] == 'facebook') {
-        if ($_GET['code']) {
-            $fb = new Facebook\Facebook([
-                'app_id' => $facebookAppId,
-                'app_secret' => $facebookAppSecret,
-                'default_graph_version' => 'v2.10',
-            ]);
-            $helper = $fb->getRedirectLoginHelper();
-
-            try {
-                $accessToken = $helper->getAccessToken();
-            } catch(Facebook\Exceptions\FacebookResponseException $e) {
-                echo 'Graph returned an error: ' . $e->getMessage();
-                exit;
-            } catch(Facebook\Exceptions\FacebookSDKException $e) {
-                echo 'Facebook SDK returned an error: ' . $e->getMessage();
-                exit;
-            }
-
-            if (! isset($accessToken)) {
-                if ($helper->getError()) {
-                    header('HTTP/1.0 401 Unauthorized');
-                    echo "Error: " . $helper->getError() . "\n";
-                    echo "Error Code: " . $helper->getErrorCode() . "\n";
-                    echo "Error Reason: " . $helper->getErrorReason() . "\n";
-                    echo "Error Description: " . $helper->getErrorDescription() . "\n";
-                } else {
-                    header('HTTP/1.0 400 Bad Request');
-                    echo 'Bad request';
-                }
-                exit;
-            }
-            $oAuth2Client = $fb->getOAuth2Client();
-
-            $tokenMetadata = $oAuth2Client->debugToken($accessToken);
-
-            $tokenMetadata->validateExpiration();
-
-            if (! $accessToken->isLongLived()) {
-                try {
-                    $accessToken = $oAuth2Client->getLongLivedAccessToken($accessToken);
-                } catch (Facebook\Exceptions\FacebookSDKException $e) {
-                    echo "<p>Error getting long-lived access token: " . $e->getMessage() . "</p>\n\n";
-                    exit;
-                }
-            }
-            $userToken = $accessToken->getValue();
-
-            try {
-                $response = $fb->get('/me?fields=id,name,picture', $userToken);
-            } catch(Facebook\Exceptions\FacebookResponseException $e) {
-                echo 'Graph returned an error: ' . $e->getMessage();
-                exit;
-            } catch(Facebook\Exceptions\FacebookSDKException $e) {
-                echo 'Facebook SDK returned an error: ' . $e->getMessage();
-                exit;
-            }
-
-            $user = $response->getGraphUser();
-            if ($manualdb->has('users', ['id' => $user['id'], 'login_system' => 'facebook'])) {
-                $manualdb->update('users', [
-                    'session_token' => $_SESSION['token'],
-                    'session_id' => $userToken,
-                    'expire_timestamp' => time() + $sessionLifetime,
-                    'user' => $user['name'],
-                    'access_level' => $facebookAccessLevel,
-                    'avatar' => $user['picture']['url'],
-                    'last_loggedin' => time()
-                ], [
-                    'id' => $user['id'],
-                    'login_system' => 'facebook'
-                ]);
-            } else {
-                $manualdb->insert('users', [
-                    'session_token' => $_SESSION['token'],
-                    'session_id' => $userToken,
-                    'id' => $user['id'],
-                    'user' => $user['name'],
-                    'access_level' => $facebookAccessLevel,
-                    'avatar' => $user['picture']['url'],
-                    'expire_timestamp' => time() + $sessionLifetime,
-                    'login_system' => 'facebook',
-                    'last_loggedin' => time()
-                ]);
-            }
-            setcookie("LoginCookie", $userToken, time() + $sessionLifetime);
-            setcookie("LoginEngine", 'facebook', time() + $sessionLifetime);
-            if ($useLoginCookie) {
-                setrawcookie("LoginSession", $_SESSION['token'], time() + $sessionLifetime);
-            }
-            header("Location: .?login=true");
-            die();
         }
     }
     if ($_GET['callback'] == 'groupme') {
@@ -633,10 +523,6 @@ if (!empty($_POST['refresh'])) {
     echo $json;
     die();
 }
-if (!empty($_POST['signed_request'])) {
-    $request = parse_signed_request($_POST['signed_request']);
-    $manualdb->delete('users', ['id' => $request['user_id']]);
-}
 
 function request($request, $access_token) {
     $info_request = curl_init();
@@ -703,27 +589,6 @@ function checkAccessLevelPatreon($accessToken, $userId) {
         }
     }
     return $accessLevel;
-}
-function parse_signed_request($signed_request) {
-    global $facebookAppSecret;
-    list($encoded_sig, $payload) = explode('.', $signed_request, 2);
-
-    $secret = $facebookAppSecret;
-
-    $sig = base64_url_decode($encoded_sig);
-    $data = json_decode(base64_url_decode($payload), true);
-
-    $expected_sig = hash_hmac('sha256', $payload, $secret, $raw = true);
-    if ($sig !== $expected_sig) {
-        error_log('Bad Signed JSON signature!');
-        return null;
-    }
-
-    return $data;
-}
-
-function base64_url_decode($input) {
-    return base64_decode(strtr($input, '-_', '+/'));
 }
 
 function patreon_call($bearer, $api) {
