@@ -1652,6 +1652,56 @@
             "color": "#f8d030"
           }
         ]
+      },
+      {
+        "nameform": "Summer 2023 E",
+        "protoform": "3010",
+        "formtypes": [
+          {
+            "type": "Electric",
+            "color": "#f8d030"
+          }
+        ]
+      },
+      {
+        "nameform": "Flying 03",
+        "protoform": "3011",
+        "formtypes": [
+          {
+            "type": "Electric",
+            "color": "#f8d030"
+          }
+        ]
+      },
+      {
+        "nameform": "Jeju",
+        "protoform": "3012",
+        "formtypes": [
+          {
+            "type": "Electric",
+            "color": "#f8d030"
+          }
+        ]
+      },
+      {
+        "nameform": "Doctor",
+        "protoform": "3013",
+        "formtypes": [
+          {
+            "type": "Electric",
+            "color": "#f8d030"
+          }
+        ]
+      },
+      {
+        "nameform": "Wcs 2023",
+        "protoform": "3014",
+        "formtypes": [
+          {
+            "type": "Electric",
+            "color": "#f8d030"
+          }
+        ]
       }
     ]
   },
