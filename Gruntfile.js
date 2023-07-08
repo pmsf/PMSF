@@ -24,7 +24,7 @@ module.exports = function (grunt) {
         babel: {
             options: {
                 sourceMap: true,
-                presets: ['@babel/present-env']
+                presets: ['@babel/preset-env']
             },
             prod: {
                 files: {
