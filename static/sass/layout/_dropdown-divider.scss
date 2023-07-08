@@ -1,0 +1,7 @@
+hr.dropdown-divider {
+  height: 0;
+  margin: 0.5rem 0;
+  overflow: hidden;
+  border-top: 1px solid rgba(0,0,0,.15);
+  opacity: 1; // Revisit in v6 to de-dupe styles that conflict with <hr> element
+}
