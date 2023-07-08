@@ -2598,5 +2598,29 @@
     "duration": 0,
     "energy": 0,
     "dps": 0
+  },
+  "387": {
+    "name": "Geomancy",
+    "type": "Fairy",
+    "damage": 0,
+    "duration": 0,
+    "energy": 0,
+    "dps": 0
+  },
+  "388": {
+    "name": "Spacial Rend",
+    "type": "Dragon",
+    "damage": 0,
+    "duration": 0,
+    "energy": 0,
+    "dps": 0
+  },
+  "389": {
+    "name": "Oblivion Wing",
+    "type": "Flying",
+    "damage": 0,
+    "duration": 0,
+    "energy": 0,
+    "dps": 0
   }
 }
