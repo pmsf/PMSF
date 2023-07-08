@@ -2031,6 +2031,8 @@ function pokestopLabel(item) {
             eventType = '<img src="static/sprites/misc/EventStopsCoin.png" style="padding:5px;position:relative;left:0px;top:12px;height:40px;"/>'
         } else if (item['eventstops_id'] === 8) {
             eventType = '<img src="' + getIcon(iconpath.pokemon, 'pokemon', '.png', 352) + '" style="padding:5px;position:relative;left:0px;top:12px;height:40px;"/>'
+        } else if (item['eventstops_id'] === 9) {
+            eventType = i8ln('Showcase')
         } else {
             console.log('Unknown Event Type: ' + item['eventstops_id'])
             eventType = i8ln('Unknown Event Type') + ': ' + item['eventstops_id']
