@@ -43,7 +43,7 @@ if ($blockIframe) {
 if (strtolower($map) === "rdm") {
     $getList = new \Scanner\RDM();
 } elseif (strtolower($map) === "golbat") {
-    $getList = new \Scanner\Golbat_MAD();
+    $getList = new \Scanner\Golbat();
 } elseif (strtolower($map) === "rocketmap") {
     if (strtolower($fork) === "mad") {
         $getList = new \Scanner\RocketMap_MAD();
