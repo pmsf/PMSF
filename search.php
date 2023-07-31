@@ -26,6 +26,13 @@ if (strtolower($map) === "rdm") {
         $dbname = "gym";
     }
     $search = new \Search\RDM();
+} elseif (strtolower($map) === "golbat") {
+    if ($action === "pokestops") {
+        $dbname = "pokestop";
+    } elseif ($action === "forts") {
+        $dbname = "gym";
+    }
+    $search = new \Search\Golbat();
 } elseif (strtolower($map) === "rocketmap") {
     if ($action === "pokestops") {
         $dbname = "pokestop";
