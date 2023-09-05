@@ -3,6 +3,6 @@
         "nesbot/carbon": "^2.35",
         "restcord/restcord": "^0.5.0",
         "monolog/monolog": "^2.2.0",
-        "catfan/medoo": "^1.7.10"
+        "catfan/medoo": "^2.1.10"
     }
 }

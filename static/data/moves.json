@@ -2622,5 +2622,37 @@
     "duration": 0,
     "energy": 0,
     "dps": 0
+  },
+  "390": {
+    "name": "Natures Madness",
+    "type": "Fairy",
+    "damage": 0,
+    "duration": 0,
+    "energy": 0,
+    "dps": 0
+  },
+  "391": {
+    "name": "Triple Axel",
+    "type": "Ice",
+    "damage": 0,
+    "duration": 0,
+    "energy": 0,
+    "dps": 0
+  },
+  "392": {
+    "name": "Trailblaze",
+    "type": "Grass",
+    "damage": 0,
+    "duration": 0,
+    "energy": 0,
+    "dps": 0
+  },
+  "393": {
+    "name": "Scorching Sands",
+    "type": "Ground",
+    "damage": 0,
+    "duration": 0,
+    "energy": 0,
+    "dps": 0
   }
 }
