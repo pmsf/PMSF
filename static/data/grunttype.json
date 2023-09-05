@@ -777,6 +777,14 @@
     "type": "WillowB",
     "grunt": "Male"
   },
+  "93": {
+    "type": "Traveler",
+    "grunt": "Male"
+  },
+  "94": {
+    "type": "Explorer",
+    "grunt": "Male"
+  },
   "500": {
     "type": "Event NPC 0",
     "grunt": ""
