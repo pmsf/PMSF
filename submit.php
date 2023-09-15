@@ -62,9 +62,9 @@ $d['status'] = "ok";
 $d["timestamp"] = $now->getTimestamp();
 
 if (strtolower($map) === "rdm") {
-    if (strtolower($fork) === "default" || strtolower($fork) === "beta") {
-        $submit = new \Submit\RDM();
-    }
+    $submit = new \Submit\RDM();
+} elseif (strtolower($map) === "golbat") {
+    $submit = new \Submit\Golbat();
 } elseif (strtolower($map) === "rocketmap") {
     if (strtolower($fork) === "mad") {
         $submit = new \Submit\Rocketmap_MAD();

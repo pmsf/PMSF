@@ -758,8 +758,8 @@ $enableJSDebug = false;                                             // true/fals
 // DATABASE CONFIG
 //-----------------------------------------------------
 
-$map = "rdm";                                                       // rdm / rocketmap
-$fork = "default";                                                  // default / mad
+$map = "rdm";                                                       // rdm / rocketmap / golbat
+$fork = "default";                                                  // default / mad / default
 $queryInterval = '5000';                                            // Interval between raw_data requests.
 
 $db = new Medoo([
