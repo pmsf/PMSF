@@ -2284,9 +2284,11 @@ function getTimeUntil(time) {
     var sec = Math.floor(tdiff / 1000 % 60)
     var min = Math.floor(tdiff / 1000 / 60 % 60)
     var hour = Math.floor(tdiff / (1000 * 60 * 60) % 24)
+    var day = Math.floor(tdiff / (1000 * 60 * 60 * 24))
 
     return {
         'total': tdiff,
+        'day': day,
         'hour': hour,
         'min': min,
         'sec': sec,
@@ -5914,6 +5916,7 @@ function redrawPokemon(pokemonList) {
 var updateLabelDiffTime = function updateLabelDiffTime() {
     $('.label-countdown').each(function (index, element) {
         var disappearsAt = getTimeUntil(parseInt(element.getAttribute('disappears-at')))
+        var days = disappearsAt.day
         var hours = disappearsAt.hour
         var minutes = disappearsAt.min
         var seconds = disappearsAt.sec
@@ -5928,6 +5931,9 @@ var updateLabelDiffTime = function updateLabelDiffTime() {
             }
         } else {
             timestring = '('
+            if (days > 0) {
+                timestring += days + 'd '
+            }
             if (hours > 0) {
                 timestring += hours + 'h '
             }
@@ -5939,6 +5945,7 @@ var updateLabelDiffTime = function updateLabelDiffTime() {
     })
     $('.icon-countdown').each(function (index, element) {
         var disappearsAt = getTimeUntil(parseInt(element.getAttribute('disappears-at')))
+        var days = disappearsAt.day
         var hours = disappearsAt.hour
         var minutes = disappearsAt.min
         var seconds = disappearsAt.sec
@@ -5952,6 +5959,9 @@ var updateLabelDiffTime = function updateLabelDiffTime() {
                 timestring = i8ln('expired')
             }
         } else {
+            if (days > 0) {
+                timestring += days + 'd '
+            }
             if (hours > 0) {
                 timestring += hours + 'h '
             }
@@ -5964,6 +5974,7 @@ var updateLabelDiffTime = function updateLabelDiffTime() {
 
 function generateRemainingTimer(timestamp, type) {
     var disappearsAt = getTimeUntil(parseInt(timestamp))
+    var days = disappearsAt.day
     var hours = disappearsAt.hour
     var minutes = disappearsAt.min
     var seconds = disappearsAt.sec
@@ -5977,6 +5988,9 @@ function generateRemainingTimer(timestamp, type) {
             timestring = i8ln('expired')
         }
     } else {
+        if (days > 0) {
+            timestring += days + 'd '
+        }
         if (hours > 0) {
             timestring += hours + 'h '
         }
