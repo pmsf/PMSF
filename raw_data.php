@@ -388,8 +388,10 @@ if (!$noSpawnPoints) {
 }
 $debug['9_after_spawnpoints'] = microtime(true) - $timing['start'];
 
+
+// there is no device information in Golbat's database
 global $noLiveScanLocation;
-if (!$noLiveScanLocation) {
+if (!$noLiveScanLocation && strtolower($map) !== "golbat") {
     if ($d["lastscanlocations"] == "true") {
         if ($newarea) {
             $d["scanlocations"] = $scanner->get_scanlocation($swLat, $swLng, $neLat, $neLng, 0, $oSwLat, $oSwLng, $oNeLat, $oNeLng);
