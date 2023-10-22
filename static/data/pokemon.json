@@ -1614,6 +1614,46 @@
         ]
       },
       {
+        "nameform": "Gotour 2024 A",
+        "protoform": "2825",
+        "formtypes": [
+          {
+            "type": "Electric",
+            "color": "#f8d030"
+          }
+        ]
+      },
+      {
+        "nameform": "Gotour 2024 B",
+        "protoform": "2826",
+        "formtypes": [
+          {
+            "type": "Electric",
+            "color": "#f8d030"
+          }
+        ]
+      },
+      {
+        "nameform": "Gotour 2024 A 02",
+        "protoform": "2827",
+        "formtypes": [
+          {
+            "type": "Electric",
+            "color": "#f8d030"
+          }
+        ]
+      },
+      {
+        "nameform": "Gotour 2024 B 02",
+        "protoform": "2828",
+        "formtypes": [
+          {
+            "type": "Electric",
+            "color": "#f8d030"
+          }
+        ]
+      },
+      {
         "nameform": "Summer 2023 A",
         "protoform": "3002",
         "formtypes": [
@@ -37052,6 +37092,16 @@
       {
         "nameform": "Dusk",
         "protoform": "2737",
+        "formtypes": [
+          {
+            "type": "Rock",
+            "color": "#b8a038"
+          }
+        ]
+      },
+      {
+        "nameform": "Normal",
+        "protoform": "2831",
         "formtypes": [
           {
             "type": "Rock",

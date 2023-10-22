@@ -2654,5 +2654,13 @@
     "duration": 0,
     "energy": 0,
     "dps": 0
+  },
+  "394": {
+    "name": "Roar Of Time",
+    "type": "Dragon",
+    "damage": 0,
+    "duration": 0,
+    "energy": 0,
+    "dps": 0
   }
 }
