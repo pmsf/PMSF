@@ -166,7 +166,7 @@
       "first": [
         "106",
         "107",
-        "237"
+        "215"
       ],
       "second": [
         "106",
@@ -189,8 +189,8 @@
     "encounters": {
       "first": [
         "37",
-        "255",
-        "322"
+        "322",
+        "607"
       ],
       "second": [
         "126",
@@ -244,7 +244,7 @@
     "encounters": {
       "first": [
         "43",
-        "252",
+        "69",
         "331"
       ],
       "second": [
@@ -265,14 +265,14 @@
   "25": {
     "type": "Ground",
     "grunt": "Male",
-    "second_reward": "false",
+    "second_reward": "true",
     "encounters": {
       "first": [
         "194",
-        "231"
+        "529"
       ],
       "second": [
-        "232",
+        "111",
         "449"
       ],
       "third": [
@@ -416,8 +416,8 @@
     "encounters": {
       "first": [
         "74",
-        "345",
-        "347"
+        "408",
+        "410"
       ],
       "second": [
         "75",
@@ -437,8 +437,8 @@
     "encounters": {
       "first": [
         "54",
-        "258",
-        "320"
+        "90",
+        "339"
       ],
       "second": [
         "55",
@@ -478,7 +478,7 @@
     "second_reward": "false",
     "encounters": {
       "first": [
-        "142"
+        "147"
       ],
       "second": [
         "199",
@@ -498,7 +498,7 @@
     "second_reward": "false",
     "encounters": {
       "first": [
-        "190"
+        "69"
       ],
       "second": [
         "65",
@@ -518,17 +518,17 @@
     "second_reward": "false",
     "encounters": {
       "first": [
-        "74"
+        "302"
       ],
       "second": [
-        "208",
-        "282",
-        "302"
+        "89",
+        "227",
+        "282"
       ],
       "third": [
         "71",
         "130",
-        "229"
+        "230"
       ]
     }
   },
@@ -568,9 +568,9 @@
     "second_reward": "false",
     "encounters": {
       "first": [
+        "92",
         "353",
-        "355",
-        "425"
+        "355"
       ],
       "second": [
         "354",
@@ -578,7 +578,7 @@
         "622"
       ],
       "third": [
-        "354",
+        "94",
         "477",
         "623"
       ]
