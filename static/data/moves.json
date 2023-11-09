@@ -2662,5 +2662,37 @@
     "duration": 0,
     "energy": 0,
     "dps": 0
+  },
+  "395": {
+    "name": "Bleakwind Storm",
+    "type": "Flying",
+    "damage": 0,
+    "duration": 0,
+    "energy": 0,
+    "dps": 0
+  },
+  "396": {
+    "name": "Sandsear Storm",
+    "type": "Ground",
+    "damage": 0,
+    "duration": 0,
+    "energy": 0,
+    "dps": 0
+  },
+  "397": {
+    "name": "Wildbolt Storm",
+    "type": "Electric",
+    "damage": 0,
+    "duration": 0,
+    "energy": 0,
+    "dps": 0
+  },
+  "398": {
+    "name": "Spirit Shackle",
+    "type": "Ghost",
+    "damage": 0,
+    "duration": 0,
+    "energy": 0,
+    "dps": 0
   }
 }
