@@ -25938,6 +25938,20 @@
             "color": "#b8b8d0"
           }
         ]
+      },
+      {
+        "nameform": "Origin",
+        "protoform": "2829",
+        "formtypes": [
+          {
+            "type": "Dragon",
+            "color": "#7038f8"
+          },
+          {
+            "type": "Steel",
+            "color": "#b8b8d0"
+          }
+        ]
       }
     ]
   },
@@ -25986,6 +26000,20 @@
       {
         "nameform": "Purified",
         "protoform": "1861",
+        "formtypes": [
+          {
+            "type": "Dragon",
+            "color": "#7038f8"
+          },
+          {
+            "type": "Water",
+            "color": "#6890f0"
+          }
+        ]
+      },
+      {
+        "nameform": "Origin",
+        "protoform": "2830",
         "formtypes": [
           {
             "type": "Dragon",
