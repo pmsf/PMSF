@@ -268,7 +268,7 @@
     "second_reward": "true",
     "encounters": {
       "first": [
-        "194",
+        "111",
         "529"
       ],
       "second": [
@@ -528,7 +528,7 @@
       "third": [
         "71",
         "130",
-        "230"
+        "229"
       ]
     }
   },
@@ -590,9 +590,8 @@
     "second_reward": "true",
     "encounters": {
       "first": [
-        "179",
-        "403",
-        "522"
+        "81",
+        "179"
       ],
       "second": [
         "74",
