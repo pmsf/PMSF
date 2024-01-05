@@ -13,25 +13,7 @@
   },
   "4": {
     "type": "Grunt",
-    "grunt": "Male",
-    "second_reward": "false",
-    "encounters": {
-      "first": [
-        "1",
-        "4",
-        "7"
-      ],
-      "second": [
-        "153",
-        "156",
-        "159"
-      ],
-      "third": [
-        "254",
-        "257",
-        "260"
-      ]
-    }
+    "grunt": "Male"
   },
   "5": {
     "type": "Grunt",
@@ -347,11 +329,9 @@
       ],
       "second": [
         "19",
-        "20",
         "432"
       ],
       "third": [
-        "20",
         "217",
         "400"
       ]
@@ -367,8 +347,7 @@
         "590"
       ],
       "second": [
-        "30",
-        "33"
+        "30"
       ],
       "third": [
         "89",
@@ -436,7 +415,6 @@
     "second_reward": "false",
     "encounters": {
       "first": [
-        "54",
         "90",
         "339"
       ],
@@ -534,7 +512,15 @@
   },
   "44": {
     "type": "Giovanni or Decoy",
-    "grunt": "Male"
+    "grunt": "Male",
+    "second_reward": "false",
+    "encounters": {
+      "first": [
+        "486"
+      ],
+      "second": [],
+      "third": []
+    }
   },
   "45": {
     "type": "Decoy",
@@ -543,7 +529,7 @@
   "46": {
     "type": "Decoy",
     "grunt": "Female",
-    "second_reward": "true",
+    "second_reward": "false",
     "encounters": {
       "first": [
         "69"
@@ -578,7 +564,6 @@
         "622"
       ],
       "third": [
-        "94",
         "477",
         "623"
       ]
