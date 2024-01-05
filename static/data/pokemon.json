@@ -8702,6 +8702,10 @@
           {
             "type": "Fire",
             "color": "#f08030"
+          },
+          {
+            "type": "Ghost",
+            "color": "#705898"
           }
         ]
       }
@@ -27110,6 +27114,10 @@
         "protoform": "2787",
         "formtypes": [
           {
+            "type": "Dark",
+            "color": "#707070"
+          },
+          {
             "type": "Water",
             "color": "#6890f0"
           }
@@ -36790,8 +36798,8 @@
         "protoform": "2785",
         "formtypes": [
           {
-            "type": "Ghost",
-            "color": "#705898"
+            "type": "Fighting",
+            "color": "#c03028"
           },
           {
             "type": "Grass",
