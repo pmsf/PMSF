@@ -2082,7 +2082,7 @@ function pokestopLabel(item) {
         '</b></div>'
         if (!noInvasionEncounterData && item['encounters'] !== null) {
             gruntReward +=
-            '<input class="button" name="button" type="button" onclick="showHideGruntEncounter()" value="' + i8ln('Show / Hide Possible Rewards') + '" style="margin-top:2px;outline:none;font-size:9pt">' +
+            '<input class="button" name="button" type="button" onclick="showHideGruntEncounter()" value="' + (item['encounters_confirmed'] == 1 ? i8ln('Show / Hide Confirmed Rewards') : i8ln('Show / Hide Possible Rewards')) + '" style="margin-top:2px;outline:none;font-size:9pt">' +
             '<div class="grunt-encounter-wrapper" style="display:none;background-color:#ccc;border-radius:10px;border:1px solid black">'
             if (item['second_reward'] === 'false') {
                 gruntReward += '<center>' +

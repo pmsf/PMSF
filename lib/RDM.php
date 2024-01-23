@@ -693,6 +693,7 @@ class RDM extends Scanner
                         $data[$pokestop["pokestop_id"]]["grunt_type_name"] = i8ln($this->grunttype[$pokestop["grunt_type"]]["type"]);
                         $data[$pokestop["pokestop_id"]]["grunt_type_gender"] = i8ln($this->grunttype[$pokestop["grunt_type"]]["grunt"]);
                         $data[$pokestop["pokestop_id"]]["encounters"] = empty($this->grunttype[$pokestop["grunt_type"]]["encounters"]) ? null : $this->grunttype[$pokestop["grunt_type"]]["encounters"];
+                        $data[$pokestop["pokestop_id"]]["encounters_confirmed"] = 0;
                         $data[$pokestop["pokestop_id"]]["second_reward"] = empty($this->grunttype[$pokestop["grunt_type"]]["second_reward"]) ? null : $this->grunttype[$pokestop["grunt_type"]]["second_reward"];
                         $data[$pokestop["pokestop_id"]]["incident_expiration"] = $pokestop["incident_expiration"] * 1000;
                     }
@@ -780,6 +781,7 @@ class RDM extends Scanner
                     $pokestop["grunt_type_name"] = null;
                     $pokestop["grunt_type_gender"] = null;
                     $pokestop["encounters"] = null;
+                    $pokestop["encounters_confirmed"] = 0;
                     $pokestop["second_reward"] = null;
                     $pokestop["incident_expiration"] = null;
                 } else {
@@ -791,6 +793,7 @@ class RDM extends Scanner
                     $pokestop["grunt_type_name"] = empty($grunttype_pid) ? null : i8ln($this->grunttype[$grunttype_pid]["type"]);
                     $pokestop["grunt_type_gender"] = empty($grunttype_pid) ? null : i8ln($this->grunttype[$grunttype_pid]["grunt"]);
                     $pokestop["encounters"] = empty($this->grunttype[$grunttype_pid]["encounters"]) ? null : $this->grunttype[$grunttype_pid]["encounters"];
+                    $pokestop["encounters_confirmed"] = 0;
                     $pokestop["second_reward"] = empty($this->grunttype[$grunttype_pid]["second_reward"]) ? null : $this->grunttype[$grunttype_pid]["second_reward"];
                     $pokestop["incident_expiration"] = $pokestop["incident_expiration"] * 1000;
                 }
