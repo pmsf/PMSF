@@ -41,9 +41,9 @@ if ($blockIframe) {
     header('X-Frame-Options: DENY');
 }
 if (strtolower($map) === "rdm") {
-    if (strtolower($fork) === "default" || strtolower($fork) === "beta") {
-        $getList = new \Scanner\RDM();
-    }
+    $getList = new \Scanner\RDM();
+} elseif (strtolower($map) === "golbat") {
+    $getList = new \Scanner\Golbat();
 } elseif (strtolower($map) === "rocketmap") {
     if (strtolower($fork) === "mad") {
         $getList = new \Scanner\RocketMap_MAD();
@@ -162,7 +162,7 @@ if (strtolower($map) === "rdm") {
     <link rel="stylesheet" href="node_modules/leaflet.markercluster/dist/MarkerCluster.Default.css" />
     <link href='static/css/leaflet.fullscreen.css' rel='stylesheet' />
     <!-- Flag Icons -->
-    <link rel="stylesheet" href="node_modules/flag-icon-css/css/flag-icon.min.css" />
+    <link rel="stylesheet" href="node_modules/flag-icons/css/flag-icons.min.css" />
 </head>
 <body id="top">
 <div class="loader"></div>
@@ -265,7 +265,7 @@ if (strtolower($map) === "rdm") {
                                         <div id="pokemon-filter-wrapper" style="display:none">
                                         <?php
                                         if (! $noHighLevelData && ! $noMissingIVOnly) { ?>
-                                            <div class="dropdown-divider"></div>
+                                            <hr class="dropdown-divider">
                                             <div class="form-check form-switch">
                                                 <input class="form-check-input" id="missing-iv-only-switch" type="checkbox" name="missing-iv-only-switch">
                                                 <label class="form-check-label" for="missing-iv-only-switch"><?php echo i8ln('Only Missing IV') ?></label>
@@ -273,7 +273,7 @@ if (strtolower($map) === "rdm") {
                                         <?php
                                         }
                                         if (! $noHighLevelData && ! $noTinyRat) { ?>
-                                            <div class="dropdown-divider"></div>
+                                            <hr class="dropdown-divider">
                                             <div class="form-check form-switch">
                                                 <input class="form-check-input" id="tiny-rat-switch" type="checkbox" name="tiny-rat-switch">
                                                 <label class="form-check-label" for="tiny-rat-switch"><?php echo i8ln('Only Tiny Rattata') ?></label>
@@ -281,7 +281,7 @@ if (strtolower($map) === "rdm") {
                                         <?php
                                         }
                                         if (! $noHighLevelData && ! $noBigKarp) { ?>
-                                            <div class="dropdown-divider"></div>
+                                            <hr class="dropdown-divider">
                                             <div class="form-check form-switch">
                                                 <input class="form-check-input" id="big-karp-switch" type="checkbox" name="big-karp-switch">
                                                 <label class="form-check-label" for="big-karp-switch"><?php echo i8ln('Only Big Magikarp') ?></label>
@@ -289,7 +289,7 @@ if (strtolower($map) === "rdm") {
                                         <?php
                                         }
                                         if (! $noHighLevelData && ! $noZeroIvToggle) { ?>
-                                            <div class="dropdown-divider"></div>
+                                            <hr class="dropdown-divider">
                                             <div class="form-check form-switch">
                                                 <input class="form-check-input" id="no-zero-iv-switch" type="checkbox" name="no-zero-iv-switch">
                                                 <label class="form-check-label" for="no-zero-iv-switch"><?php echo i8ln('Ignore Filters for 0%IV') ?></label>
@@ -297,7 +297,7 @@ if (strtolower($map) === "rdm") {
                                         <?php
                                         }
                                         if (! $noHighLevelData && ! $noHundoIvToggle) { ?>
-                                            <div class="dropdown-divider"></div>
+                                            <hr class="dropdown-divider">
                                             <div class="form-check form-switch">
                                                 <input class="form-check-input" id="no-hundo-iv-switch" type="checkbox" name="no-hundo-iv-switch">
                                                 <label class="form-check-label" for="no-hundo-iv-switch"><?php echo i8ln('Ignore Filters for 100%IV') ?></label>
@@ -305,7 +305,7 @@ if (strtolower($map) === "rdm") {
                                         <?php
                                         }
                                         if (! $noHighLevelData && ! $noXXSToggle) { ?>
-                                            <div class="dropdown-divider"></div>
+                                            <hr class="dropdown-divider">
                                             <div class="form-check form-switch">
                                                 <input class="form-check-input" id="no-xxs-switch" type="checkbox" name="no-xxs-switch">
                                                 <label class="form-check-label" for="no-xxs-switch"><?php echo i8ln('Ignore Filters for XXS') ?></label>
@@ -313,7 +313,7 @@ if (strtolower($map) === "rdm") {
                                         <?php
                                         }
                                         if (! $noHighLevelData && ! $noXXLToggle) { ?>
-                                            <div class="dropdown-divider"></div>
+                                            <hr class="dropdown-divider">
                                             <div class="form-check form-switch">
                                                 <input class="form-check-input" id="no-xxl-switch" type="checkbox" name="no-xxl-switch">
                                                 <label class="form-check-label" for="no-xxl-switch"><?php echo i8ln('Ignore Filters for XXL') ?></label>
@@ -321,7 +321,7 @@ if (strtolower($map) === "rdm") {
                                         <?php
                                         }
                                         if (! $noHighLevelData && ! $noPvp && ! $noIndependantPvpAndStatsToggle) { ?>
-                                            <div class="dropdown-divider"></div>
+                                            <hr class="dropdown-divider">
                                             <div class="form-check form-switch">
                                                 <input class="form-check-input" id="no-independant-pvp-switch" type="checkbox" name="no-independant-pvp-switch">
                                                 <label class="form-check-label" for="no-independant-pvp-switch"><?php echo i8ln('Independant PVP and IV/LVL Filters') ?></label>
@@ -329,7 +329,7 @@ if (strtolower($map) === "rdm") {
                                         <?php
                                         }
                                         if (! $noDespawnTimeType) { ?>
-                                            <div class="dropdown-divider"></div>
+                                            <hr class="dropdown-divider">
                                             <div class="form-floating">
                                                 <select class="form-select" aria-label="despawn-time-type-filter" name="despawn-time-type-select" id="despawn-time-type-select">
                                                     <option value="0"><?php echo i8ln('All') ?></option>
@@ -342,7 +342,7 @@ if (strtolower($map) === "rdm") {
                                         <?php
                                         }
                                         if (! $noPokemonGender) { ?>
-                                            <div class="dropdown-divider"></div>
+                                            <hr class="dropdown-divider">
                                             <div class="form-floating">
                                                 <select class="form-select" aria-label="pokemon-gender-filter" name="pokemon-gender-select" id="pokemon-gender-select">
                                                     <option value="0"><?php echo i8ln('All') ?></option>
@@ -354,7 +354,7 @@ if (strtolower($map) === "rdm") {
                                         <?php
                                         }
                                         if (! $noHighLevelData && ! $noPvp && (! $noMinLLRank || ! $noMinGLRank || ! $noMinULRank)) { ?>
-                                            <div class="dropdown-divider"></div>
+                                            <hr class="dropdown-divider">
                                             <div class="overflow-hidden">
                                                 <div class="row gx-3">
                                                 <?php
@@ -390,7 +390,7 @@ if (strtolower($map) === "rdm") {
                                         <?php
                                         }
                                         if (! $noHighLevelData && (! $noMinIV || ! $noMinLevel)) { ?>
-                                            <div class="dropdown-divider"></div>
+                                            <hr class="dropdown-divider">
                                             <div class="overflow-hidden">
                                                 <div class="row gx-3">
                                                 <?php
@@ -443,7 +443,7 @@ if (strtolower($map) === "rdm") {
                                                         <div class="scroll-container">
                                                             <?php pokemonFilterImages($noPokemonNames, $noPokemonNumbers, '', $pokemonToExclude, 2); ?>
                                                         </div>
-                                                        <div class="dropdown-divider"></div>
+                                                        <hr class="dropdown-divider">
                                                         <a class="btn btn-secondary select-all" href="#"><?php echo i8ln('All') ?></a>
                                                         <a class="btn btn-secondary hide-all" href="#"><?php echo i8ln('None') ?></a>
                                                     </div>
@@ -455,7 +455,7 @@ if (strtolower($map) === "rdm") {
                                                         <div class="scroll-container">
                                                             <?php pokemonFilterImages($noPokemonNames, $noPokemonNumbers, '', $pokemonToExclude, 3); ?>
                                                         </div>
-                                                        <div class="dropdown-divider"></div>
+                                                        <hr class="dropdown-divider">
                                                         <a class="btn btn-secondary select-all" href="#"><?php echo i8ln('All') ?></a>
                                                         <a class="btn btn-secondary hide-all" href="#"><?php echo i8ln('None') ?></a>
                                                     </div>
@@ -470,7 +470,7 @@ if (strtolower($map) === "rdm") {
                                     }
                                     if (! $noNests) {
                                         if (! $noPokemon) { ?>
-                                        <div class="dropdown-divider"></div>
+                                        <hr class="dropdown-divider">
                                         <?php
                                         } ?>
                                         <div class="form-check form-switch">
@@ -480,14 +480,14 @@ if (strtolower($map) === "rdm") {
                                         <div id="nest-filter-wrapper" style="display:none">
                                             <?php
                                             if (! $noNestPolygon) { ?>
-                                                <div class="dropdown-divider"></div>
+                                                <hr class="dropdown-divider">
                                                 <div class="form-check form-switch">
                                                     <input class="form-check-input" id="nest-polygon-switch" type="checkbox" name="nest-polygon-switch">
                                                     <label class="form-check-label" for="nest-polygon-switch"><?php echo i8ln('Nest Polygon') ?></label>
                                                 </div>
                                             <?php }
                                             if (! $noNestsAvg) { ?>
-                                                <div class="dropdown-divider"></div>
+                                                <hr class="dropdown-divider">
                                                 <div class="nestslider-div">
                                                     <input type="range" class="form-range" min="0" max="<?php echo $nestAvgMax ?>" value="<?php echo $nestAvgDefault ?>" id="nestrange">
                                                     <p><?php echo i8ln('Show nest average. ') ?><span id="nestavg"></span></p>
@@ -529,15 +529,15 @@ if (strtolower($map) === "rdm") {
                                         <div id="pokestops-filter-wrapper" style="display:none">
                                             <?php
                                             if (! $noAllPokestops) { ?>
-                                                <div class="dropdown-divider"></div>
+                                                <hr class="dropdown-divider">
                                                 <div class="form-check form-switch">
                                                     <input class="form-check-input" id="allPokestops-switch" type="checkbox" name="allPokestops-switch">
-                                                    <label class="form-check-label" for="allPpokestops-switch"><?php echo i8ln('All Pokéstops') ?></label>
+                                                    <label class="form-check-label" for="allPokestops-switch"><?php echo i8ln('All Pokéstops') ?></label>
                                                 </div>
                                             <?php
                                             }
                                             if (! $noLures) { ?>
-                                                <div class="dropdown-divider"></div>
+                                                <hr class="dropdown-divider">
                                                 <div class="form-check form-switch">
                                                     <input class="form-check-input" id="lures-switch" type="checkbox" name="lures-switch">
                                                     <label class="form-check-label" for="lures-switch"><?php echo i8ln('Lured Pokéstops only') ?></label>
@@ -545,7 +545,7 @@ if (strtolower($map) === "rdm") {
                                             <?php
                                             }
                                             if (! $noEventStops) { ?>
-                                                <div class="dropdown-divider"></div>
+                                                <hr class="dropdown-divider">
                                                 <div class="form-check form-switch">
                                                     <input class="form-check-input" id="eventstops-switch" type="checkbox" name="eventstops-switch">
                                                     <label class="form-check-label" for="eventstops-switch"><?php echo i8ln('Event Pokéstops only') ?></label>
@@ -553,7 +553,7 @@ if (strtolower($map) === "rdm") {
                                                 <div id="eventstops-wrapper" style="display:none">
                                                 <?php
                                                 if (! $noEventStopsTimer) { ?>
-                                                    <div class="dropdown-divider"></div>
+                                                    <hr class="dropdown-divider">
                                                     <div class="form-check form-switch">
                                                         <input class="form-check-input" id="eventstops-timer-switch" type="checkbox" name="eventstops-timer-switch">
                                                         <label class="form-check-label" for="eventstops-timer-switch"><?php echo i8ln('Event Pokéstops timer') ?></label>
@@ -564,7 +564,7 @@ if (strtolower($map) === "rdm") {
                                             <?php
                                             }
                                             if (! $noTeamRocket) { ?>
-                                                <div class="dropdown-divider"></div>
+                                                <hr class="dropdown-divider">
                                                 <div class="form-check form-switch">
                                                     <input class="form-check-input" id="rocket-switch" type="checkbox" name="rocket-switch">
                                                     <label class="form-check-label" for="rocket-switch"><?php echo i8ln('Rocket Pokéstops only') ?></label>
@@ -572,14 +572,14 @@ if (strtolower($map) === "rdm") {
                                                 <div id="rocket-wrapper" style="display:none">
                                                 <?php
                                                 if (! $noTeamRocketTimer) { ?>
-                                                    <div class="dropdown-divider"></div>
+                                                    <hr class="dropdown-divider">
                                                     <div class="form-check form-switch">
                                                         <input class="form-check-input" id="rocket-timer-switch" type="checkbox" name="rocket-timer-switch">
                                                         <label class="form-check-label" for="rocket-timer-switch"><?php echo i8ln('Rocket Pokéstops timer') ?></label>
                                                     </div>
                                                 <?php
                                                 } ?>
-                                                    <div class="dropdown-divider"></div>
+                                                    <hr class="dropdown-divider">
                                                     <div class="border with-radius">
                                                         <ul class="nav nav-tabs nav-fill" id="rocketHide" role="tablist">
                                                             <li class="nav-item" role="presentation">
@@ -596,7 +596,7 @@ if (strtolower($map) === "rdm") {
                                                                         gruntFilterImages($noGruntNumbers, '', $excludeGrunts, 10);
                                                                     } ?>
                                                                 </div>
-                                                                <div class="dropdown-divider"></div>
+                                                                <hr class="dropdown-divider">
                                                                 <a class="btn btn-secondary select-all-grunt" href="#"><?php echo i8ln('All') ?></a>
                                                                 <a class="btn btn-secondary hide-all-grunt" href="#"><?php echo i8ln('None') ?></a>
                                                             </div>
@@ -606,14 +606,14 @@ if (strtolower($map) === "rdm") {
                                             <?php
                                             }
                                             if (! $noQuests) { ?>
-                                                <div class="dropdown-divider"></div>
+                                                <hr class="dropdown-divider">
                                                 <div class="form-check form-switch">
                                                     <input class="form-check-input" id="quests-switch" type="checkbox" name="quests-switch">
                                                     <label class="form-check-label" for="quests-switch"><?php echo i8ln('Quest Pokéstops only') ?></label>
                                                 </div>
                                             <?php
                                             if (! $noQuestsARTaskToggle) { ?>
-                                                <div class="dropdown-divider"></div>
+                                                <hr class="dropdown-divider">
                                                 <div class="form-check form-switch">
                                                     <input class="form-check-input" id="quests-with_ar" type="checkbox" name="quests-with_ar">
                                                     <label class="form-check-label" for="quests-with_ar"><?php echo i8ln('With AR-Scan Task') ?></label>
@@ -621,7 +621,7 @@ if (strtolower($map) === "rdm") {
                                             <?php
                                             } ?>
                                                 <div id="quests-filter-wrapper" style="display:none">
-                                                    <div class="dropdown-divider"></div>
+                                                    <hr class="dropdown-divider">
                                                     <div class="border with-radius">
                                                         <ul class="nav nav-tabs nav-fill" id="questHide" role="tablist">
                                                             <?php
@@ -666,7 +666,7 @@ if (strtolower($map) === "rdm") {
                                                                             pokemonFilterImages($noPokemonNames, $noPokemonNumbers, '', $excludeQuestsPokemon, 8);
                                                                         } ?>
                                                                     </div>
-                                                                    <div class="dropdown-divider"></div>
+                                                                    <hr class="dropdown-divider">
                                                                     <a class="btn btn-secondary select-all" href="#"><?php echo i8ln('All') ?></a>
                                                                     <a class="btn btn-secondary hide-all" href="#"><?php echo i8ln('None') ?></a>
                                                                 </div>
@@ -683,7 +683,7 @@ if (strtolower($map) === "rdm") {
                                                                             itemFilterImages($noItemNames, $noItemNumbers, '', $excludeQuestsItem, 9);
                                                                         } ?>
                                                                     </div>
-                                                                    <div class="dropdown-divider"></div>
+                                                                    <hr class="dropdown-divider">
                                                                     <a class="btn btn-secondary select-all-item" href="#"><?php echo i8ln('All') ?></a>
                                                                     <a class="btn btn-secondary hide-all-item" href="#"><?php echo i8ln('None') ?></a>
                                                                 </div>
@@ -700,7 +700,7 @@ if (strtolower($map) === "rdm") {
                                                                             energyFilterImages($noPokemonNames, $noPokemonNumbers, '', $excludeQuestsEnergy, 9);
                                                                         } ?>
                                                                     </div>
-                                                                    <div class="dropdown-divider"></div>
+                                                                    <hr class="dropdown-divider">
                                                                     <a class="btn btn-secondary select-all-energy" href="#"><?php echo i8ln('All') ?></a>
                                                                     <a class="btn btn-secondary hide-all-energy" href="#"><?php echo i8ln('None') ?></a>
                                                                 </div>
@@ -717,7 +717,7 @@ if (strtolower($map) === "rdm") {
                                                                             candyFilterImages($noPokemonNames, $noPokemonNumbers, '', $excludeQuestsCandy, 13);
                                                                         } ?>
                                                                     </div>
-                                                                    <div class="dropdown-divider"></div>
+                                                                    <hr class="dropdown-divider">
                                                                     <a class="btn btn-secondary select-all-candy" href="#"><?php echo i8ln('All') ?></a>
                                                                     <a class="btn btn-secondary hide-all-candy" href="#"><?php echo i8ln('None') ?></a>
                                                                 </div>
@@ -726,7 +726,7 @@ if (strtolower($map) === "rdm") {
                                                     </div>
                                                     <?php
                                                     if (! $noQuestsStardust) { ?>
-                                                        <div class="dropdown-divider"></div>
+                                                        <hr class="dropdown-divider">
                                                         <div class="dustslider">
                                                             <input type="range" class="form-range" min="0" max="3500" step="10" value="500" class="slider" id="dustrange">
                                                             <p><?php echo i8ln('Show stardust ') ?><span id="dustvalue"></span></p>
@@ -734,7 +734,7 @@ if (strtolower($map) === "rdm") {
                                                     <?php } ?>
                                                     <?php
                                                     if (! $noQuestsXP) { ?>
-                                                        <div class="dropdown-divider"></div>
+                                                        <hr class="dropdown-divider">
                                                         <div class="xpslider">
                                                             <input type="range" class="form-range" min="0" max="5000" step="10" value="500" class="slider" id="xprange">
                                                             <p><?php echo i8ln('Show XP ') ?><span id="xpvalue"></span></p>
@@ -779,7 +779,7 @@ if (strtolower($map) === "rdm") {
                                         <div id="gyms-filter-wrapper" style="display:none">
                                         <?php
                                         if (! $noTeams) { ?>
-                                            <div class="dropdown-divider"></div>
+                                            <hr class="dropdown-divider">
                                             <div class="form-floating">
                                                 <select class="form-select" aria-label="teams-gyms-filter" name="team-gyms-filter-switch" id="team-gyms-only-switch">
                                                     <option value="0"><?php echo i8ln('All'); ?></option>
@@ -792,7 +792,7 @@ if (strtolower($map) === "rdm") {
                                         <?php
                                         }
                                         if (! $noOpenSpot) { ?>
-                                            <div class="dropdown-divider"></div>
+                                            <hr class="dropdown-divider">
                                             <div class="form-check form-switch">
                                                 <input class="form-check-input" id="open-gyms-only-switch" type="checkbox" name="open-gyms-only-switch">
                                                 <label class="form-check-label" for="open-gyms-only-switch"><?php echo i8ln('Open Spot') ?></label>
@@ -800,7 +800,7 @@ if (strtolower($map) === "rdm") {
                                         <?php
                                         }
                                         if (! $noMinMaxFreeSlots) { ?>
-                                            <div class="dropdown-divider"></div>
+                                            <hr class="dropdown-divider">
                                             <div class="form-floating">
                                                 <select class="form-select" aria-label="min-level-gyms-filter" name="min-level-gyms-filter-switch" id="min-level-gyms-filter-switch">
                                                     <option value="0">0</option>
@@ -813,7 +813,7 @@ if (strtolower($map) === "rdm") {
                                                 </select>
                                                 <label for="min-level-gyms-filter-switch"><?php echo i8ln('Minimum Free Slots'); ?></label>
                                             </div>
-                                            <div class="dropdown-divider"></div>
+                                            <hr class="dropdown-divider">
                                             <div class="form-floating">
                                                 <select class="form-select" aria-label="max-level-gyms-filter" name="max-level-gyms-filter-switch" id="max-level-gyms-filter-switch">
                                                     <option value="0">0</option>
@@ -829,7 +829,7 @@ if (strtolower($map) === "rdm") {
                                         <?php
                                         }
                                         if (! $noLastScan) { ?>
-                                            <div class="dropdown-divider"></div>
+                                            <hr class="dropdown-divider">
                                             <div class="form-floating">
                                                 <select class="form-select" aria-label="last-update-gyms-filter" name="last-update-gyms-switch" id="last-update-gyms-switch">
                                                     <option value="0"><?php echo i8ln('All'); ?></option>
@@ -848,7 +848,7 @@ if (strtolower($map) === "rdm") {
                                     }
                                     if (! $noRaids) {
                                         if (! $noGyms) { ?>
-                                        <div class="dropdown-divider"></div>
+                                        <hr class="dropdown-divider">
                                         <?php
                                         } ?>
                                         <div class="form-check form-switch">
@@ -858,7 +858,7 @@ if (strtolower($map) === "rdm") {
                                         <div id="raids-filter-wrapper" style="display:none">
                                         <?php
                                         if (! $noRaidTimer) { ?>
-                                            <div class="dropdown-divider"></div>
+                                            <hr class="dropdown-divider">
                                             <div class="form-check form-switch">
                                                 <input class="form-check-input" id="raid-timer-switch" type="checkbox" name="raid-timer-switch">
                                                 <label class="form-check-label" for="raid-timer-switch"><?php echo i8ln('Raids Timer') ?></label>
@@ -866,7 +866,7 @@ if (strtolower($map) === "rdm") {
                                         <?php
                                         }
                                         if (! $noActiveRaids) { ?>
-                                            <div class="dropdown-divider"></div>
+                                            <hr class="dropdown-divider">
                                             <div class="form-check form-switch">
                                                 <input class="form-check-input" id="active-raids-switch" type="checkbox" name="active-raids-switch">
                                                 <label class="form-check-label" for="active-raids-switch"><?php echo i8ln('Only Active Raids') ?></label>
@@ -874,7 +874,7 @@ if (strtolower($map) === "rdm") {
                                         <?php
                                         }
                                         if (! $noMinMaxRaidLevel) { ?>
-                                            <div class="dropdown-divider"></div>
+                                            <hr class="dropdown-divider">
                                             <div class="form-floating">
                                                 <select class="form-select" aria-label="min-level-raids-filter" name="min-level-raids-filter-switch" id="min-level-raids-filter-switch">
                                                     <option value="1">1</option>
@@ -895,7 +895,7 @@ if (strtolower($map) === "rdm") {
                                                 </select>
                                                 <label for="min-level-raids-filter-switch"><?php echo i8ln('Minimum Raid Level') ?></label>
                                             </div>
-                                            <div class="dropdown-divider"></div>
+                                            <hr class="dropdown-divider">
                                             <div class="form-floating">
                                                 <select class="form-select" aria-label="max-level-raids-filter" name="max-level-raids-filter-switch" id="max-level-raids-filter-switch">
                                                     <option value="1">1</option>
@@ -918,7 +918,7 @@ if (strtolower($map) === "rdm") {
                                             </div>
                                         <?php
                                         } ?>
-                                            <div class="dropdown-divider"></div>
+                                            <hr class="dropdown-divider">
                                             <div class="border with-radius">
                                                 <ul class="nav nav-tabs nav-fill" id="raidHide" role="tablist">
                                                     <li class="nav-item" role="presentation">
@@ -938,7 +938,7 @@ if (strtolower($map) === "rdm") {
                                                                 pokemonFilterImages($noRaidbossNames, $noRaidbossNumbers, '', $excludeRaidboss, 11);
                                                             } ?>
                                                         </div>
-                                                        <div class="dropdown-divider"></div>
+                                                        <hr class="dropdown-divider">
                                                         <a class="btn btn-secondary select-all" href="#"><?php echo i8ln('All') ?></a>
                                                         <a class="btn btn-secondary hide-all" href="#"><?php echo i8ln('None') ?></a>
                                                     </div>
@@ -946,7 +946,7 @@ if (strtolower($map) === "rdm") {
                                                         <div class="scroll-container">
                                                             <?php raideggFilterImages($noRaideggNumbers, '', $excludeRaidegg, 30); ?>
                                                         </div>
-                                                        <div class="dropdown-divider"></div>
+                                                        <hr class="dropdown-divider">
                                                         <a class="btn btn-secondary select-all-egg" href="#"><?php echo i8ln('All') ?></a>
                                                         <a class="btn btn-secondary hide-all-egg" href="#"><?php echo i8ln('None') ?></a>
                                                     </div>
@@ -956,7 +956,7 @@ if (strtolower($map) === "rdm") {
                                     <?php
                                     } ?>
                                         <div id="gyms-raid-filter-wrapper" style="display:none">
-                                            <div class="dropdown-divider"></div>
+                                            <hr class="dropdown-divider">
                                             <div class="form-check form-switch">
                                                 <input class="form-check-input" id="ex-eligible-switch" type="checkbox" name="ex-eligible-switch">
                                                 <label class="form-check-label" for="ex-eligible-switch"><?php echo i8ln('EX Eligible Only') ?></label>
@@ -1007,7 +1007,7 @@ if (strtolower($map) === "rdm") {
                                                 <label class="form-check-label" for="portals-switch"><?php echo i8ln('Portals') ?></label>
                                             </div>
                                             <div class="form-floating" id="new-portals-only-wrapper" style="display:none">
-                                               <div class="dropdown-divider"></div>
+                                               <hr class="dropdown-divider">
                                                 <select class="form-select" aria-label="new-portals-only-switch" name="new-portals-only-switch" id="new-portals-only-switch">
                                                     <option value = "0"><?php echo i8ln('All'); ?></option>
                                                     <option value = "1"><?php echo i8ln('Only new'); ?></option>
@@ -1017,7 +1017,7 @@ if (strtolower($map) === "rdm") {
                                         <?php }
                                         if (! $noPoi) {
                                             if (! $noPortals) { ?>
-                                            <div class="dropdown-divider"></div>
+                                            <hr class="dropdown-divider">
                                             <?php
                                             } ?>
                                             <div class="form-check form-switch">
@@ -1027,7 +1027,7 @@ if (strtolower($map) === "rdm") {
                                         <?php }
                                         if (! $noS2Cells) {
                                             if (! $noPortals || !$noPoi) { ?>
-                                            <div class="dropdown-divider"></div>
+                                            <hr class="dropdown-divider">
                                             <?php
                                             } ?>
                                             <div class="form-check form-switch">
@@ -1036,28 +1036,28 @@ if (strtolower($map) === "rdm") {
                                             </div>
                                             <div id="s2-switch-wrapper" style="display:none">
                                                 <?php if (! $noPlacementRanges) { ?>
-                                                <div class="dropdown-divider"></div>
+                                                <hr class="dropdown-divider">
                                                 <div class="form-check form-switch">
                                                     <input class="form-check-input" id="placement-ranges-switch" type="checkbox" name="placement-ranges-switch">
                                                     <label class="form-check-label" for="placement-ranges-switch"><?php echo i8ln('Placement Ranges') ?></label>
                                                 </div>
                                                 <?php } ?>
-                                                <div class="dropdown-divider"></div>
+                                                <hr class="dropdown-divider">
                                                 <div class="form-check form-switch">
                                                     <input class="form-check-input" id="s2-level13-switch" type="checkbox" name="s2-level13-switch">
                                                     <label class="form-check-label" for="s2-level13-switch"><?php echo i8ln('L13 - EX trigger') ?></label>
                                                 </div>
-                                                <div class="dropdown-divider"></div>
+                                                <hr class="dropdown-divider">
                                                 <div class="form-check form-switch">
                                                     <input class="form-check-input" id="s2-level14-switch" type="checkbox" name="s2-level14-switch">
                                                     <label class="form-check-label" for="s2-level14-switch"><?php echo i8ln('L14 - Gym placement') ?></label>
                                                 </div>
-                                                <div class="dropdown-divider"></div>
+                                                <hr class="dropdown-divider">
                                                 <div class="form-check form-switch">
                                                     <input class="form-check-input" id="s2-level15-switch" type="checkbox" name="s2-level15-switch">
                                                     <label class="form-check-label" for="s2-level15-switch"><?php echo i8ln('L15 - Nearby Pokémon') ?></label>
                                                 </div>
-                                                <div class="dropdown-divider"></div>
+                                                <hr class="dropdown-divider">
                                                 <div class="form-check form-switch">
                                                     <input class="form-check-input" id="s2-level17-switch" type="checkbox" name="s2-level17-switch">
                                                     <label class="form-check-label" for="s2-level17-switch"><?php echo i8ln('L17 - Pokéstop placement') ?></label>
@@ -1092,35 +1092,35 @@ if (strtolower($map) === "rdm") {
                                                 <input class="form-check-input" id="weather-switch" type="checkbox" name="weather-switch">
                                                 <label class="form-check-label" for="weather-switch"><?php echo i8ln('Weather Conditions') ?></label>
                                             </div>
-                                            <div class="dropdown-divider"></div>
+                                            <hr class="dropdown-divider">
                                         <?php }
                                         if (! $noSpawnPoints) { ?>
                                             <div class="form-check form-switch">
                                                 <input class="form-check-input" id="spawnpoints-switch" type="checkbox" name="spawnpoints-switch">
                                                 <label class="form-check-label" for="spawnpoints-switch"><?php echo i8ln('Spawn Points') ?></label>
                                             </div>
-                                            <div class="dropdown-divider"></div>
+                                            <hr class="dropdown-divider">
                                         <?php }
                                         if (! $noRanges) { ?>
                                             <div class="form-check form-switch">
                                                 <input class="form-check-input" id="ranges-switch" type="checkbox" name="ranges-switch">
                                                 <label class="form-check-label" for="ranges-switch"><?php echo i8ln('Ranges') ?></label>
                                             </div>
-                                            <div class="dropdown-divider"></div>
+                                            <hr class="dropdown-divider">
                                         <?php }
                                         if (! $noScanPolygon) { ?>
                                             <div class="form-check form-switch">
                                                 <input class="form-check-input" id="scan-area-switch" type="checkbox" name="scan-area-switch">
                                                 <label class="form-check-label" for="scan-area-switch"><?php echo i8ln('Scan Areas') ?></label>
                                             </div>
-                                            <div class="dropdown-divider"></div>
+                                            <hr class="dropdown-divider">
                                         <?php }
                                         if (! $noLiveScanLocation) { ?>
                                             <div class="form-check form-switch">
                                                 <input class="form-check-input" id="scan-location-switch" type="checkbox" name="scan-location-switch">
                                                 <label class="form-check-label" for="scan-location-switch"><?php echo i8ln('Real time scanner location') ?></label>
                                             </div>
-                                            <div class="dropdown-divider"></div>
+                                            <hr class="dropdown-divider">
                                         <?php }
                                         if (! $noSearchLocation) { ?>
                                             <div class="input-group input-group-sm" id="search-places">
@@ -1128,21 +1128,21 @@ if (strtolower($map) === "rdm") {
                                                 <input type="text" class="form-control" id="next-location" aria-describedby="next-location">
                                             </div>
                                             <ul id="search-places-results" class="search-results places-results"></ul>
-                                            <div class="dropdown-divider"></div>
+                                            <hr class="dropdown-divider">
                                         <?php }
                                         if (! $noStartMe) { ?>
                                             <div class="form-check form-switch">
                                                 <input class="form-check-input" id="start-at-user-location-switch" type="checkbox" name="start-at-user-location-switch">
                                                 <label class="form-check-label" for="start-at-user-location-switch"><?php echo i8ln('Start map at my position') ?></label>
                                             </div>
-                                            <div class="dropdown-divider"></div>
+                                            <hr class="dropdown-divider">
                                         <?php }
                                         if (! $noStartLast) { ?>
                                             <div class="form-check form-switch">
                                                 <input class="form-check-input" id="start-at-last-location-switch" type="checkbox" name="start-at-last-location-switch">
                                                 <label class="form-check-label" for="start-at-last-location-switch"><?php echo i8ln('Start map at last position') ?></label>
                                             </div>
-                                            <div class="dropdown-divider"></div>
+                                            <hr class="dropdown-divider">
                                         <?php }
                                         if (! $noFollowMe) { ?>
                                             <div class="form-check form-switch">
@@ -1151,7 +1151,7 @@ if (strtolower($map) === "rdm") {
                                             </div>
                                             <?php if (! $noSpawnArea) { ?>
                                             <div id="spawn-area-wrapper" style="display:none">
-                                                <div class="dropdown-divider"></div>
+                                                <hr class="dropdown-divider">
                                                 <div class="form-check form-switch">
                                                     <input class="form-check-input" id="spawn-area-switch" type="checkbox" name="spawn-area-switch">
                                                     <label class="form-check-label" for="spawn-area-switch"><?php echo i8ln('Spawn Area') ?></label>
@@ -1189,13 +1189,13 @@ if (strtolower($map) === "rdm") {
                                                     <div class="scroll-container">
                                                         <?php pokemonFilterImages($noPokemonNames, $noPokemonNumbers, '', $pokemonToExclude, 4); ?>
                                                     </div>
-                                                    <div class="dropdown-divider"></div>
+                                                    <hr class="dropdown-divider">
                                                     <a class="btn btn-secondary select-all notify-pokemon-button" href="#"><?php echo i8ln('All') ?></a>
                                                     <a class="btn btn-secondary hide-all notify-pokemon-button" href="#"><?php echo i8ln('None') ?></a>
                                                 </div>
                                             </div>
                                         </div>
-                                        <div class="dropdown-divider"></div>
+                                        <hr class="dropdown-divider">
                                     <?php }
                                     if (! $noNotifyRarity) { ?>
                                         <div class="form-floating">
@@ -1208,7 +1208,7 @@ if (strtolower($map) === "rdm") {
                                             </select>
                                             <label for="notify-rarity"><?php echo i8ln('Notify of Rarity'); ?></label>
                                         </div>
-                                        <div class="dropdown-divider"></div>
+                                        <hr class="dropdown-divider">
                                     <?php }
                                     if (! $noNotifyIv || ! $noNotifyLevel) { ?>
                                         <div class="overflow-hidden">
@@ -1232,7 +1232,7 @@ if (strtolower($map) === "rdm") {
                                                 <?php } ?>
                                             </div>
                                         </div>
-                                        <div class="dropdown-divider"></div>
+                                        <hr class="dropdown-divider">
                                     <?php }
                                     if (! $noNotifyNotification) { ?>
                                         <div class="form-check form-switch">
@@ -1240,14 +1240,14 @@ if (strtolower($map) === "rdm") {
                                             <label class="form-check-label" for="toast-switch"><?php echo i8ln('Notify with popup') ?></label>
                                         </div>
                                         <div id="toast-switch-wrapper" style="display:none">
-                                            <div class="dropdown-divider"></div>
+                                            <hr class="dropdown-divider">
                                             <div class="toast-slider">
                                                 <label for="toast-delay-slider" class="form-label"><?php echo i8ln('Popup close delay') ?></label>
                                                 <input type="range" class="form-range" min="0" max="20000" step="1000" id="toast-delay-slider">
                                             </div>
                                             <span id="toast-delay-set"></span>
                                         </div>
-                                        <div class="dropdown-divider"></div>
+                                        <hr class="dropdown-divider">
                                     <?php }
                                     if (! $noNotifyRaid) { ?>
                                         <div class="form-floating">
@@ -1271,7 +1271,7 @@ if (strtolower($map) === "rdm") {
                                             </select>
                                             <label for="notify-raid"><?php echo i8ln('Notify of Minimum Raid Level') ?></label>
                                         </div>
-                                        <div class="dropdown-divider"></div>
+                                        <hr class="dropdown-divider">
                                     <?php }
                                     if (! $noNotifySound) { ?>
                                         <div class="form-check form-switch">
@@ -1281,7 +1281,7 @@ if (strtolower($map) === "rdm") {
                                         <?php
                                         if (! $noCriesSound) { ?>
                                             <div id="cries-switch-wrapper" style="display:none">
-                                                <div class="dropdown-divider"></div>
+                                                <hr class="dropdown-divider">
                                                 <div class="form-check form-switch">
                                                     <input class="form-check-input" id="cries-switch" type="checkbox" name="cries-switch">
                                                     <label class="form-check-label" for="cries-switch"><?php echo i8ln('Use Pokémon cries') ?></label>
@@ -1290,7 +1290,7 @@ if (strtolower($map) === "rdm") {
                                         <?php }
                                     }
                                     if (! $noNotifyBounce) { ?>
-                                        <div class="dropdown-divider"></div>
+                                        <hr class="dropdown-divider">
                                         <div class="form-check form-switch">
                                             <input class="form-check-input" id="bounce-switch" type="checkbox" name="bounce-switch">
                                             <label class="form-check-label" for="bounce-switch"><?php echo i8ln('Bounce') ?></label>
@@ -1319,7 +1319,7 @@ if (strtolower($map) === "rdm") {
                                                 <input class="form-check-input" id="dark-mode-switch" type="checkbox" name="dark-mode-switch">
                                                 <label class="form-check-label" for="dark-mode-switch"><?php echo i8ln('Dark Mode') ?></label>
                                             </div>
-                                            <div class="dropdown-divider"></div>
+                                            <hr class="dropdown-divider">
                                         <?php }
                                         if (! $noMapStyle && ! $forcedTileServer) { ?>
                                             <div class="form-floating">
@@ -1335,7 +1335,7 @@ if (strtolower($map) === "rdm") {
                                                         }
                                                     } ?>
                                                 </select>
-                                                <label for="mapstyle"><?php echo i8ln('Map Style') ?></label>
+                                                <label for="map-style"><?php echo i8ln('Map Style') ?></label>
                                             </div>
                                         <?php }
                                         if (! $noDirectionProvider) { ?>
@@ -1416,7 +1416,7 @@ if (strtolower($map) === "rdm") {
                                                         echo '<option value="' . $k  . '">' . i8ln($markerStyle['name']) . '</option>';
                                                     } ?>
                                                 </select>
-                                                <label for="locationmarker"><?php echo i8ln('Location Icon Marker') ?></label>
+                                                <label for="locationmarker-style"><?php echo i8ln('Location Icon Marker') ?></label>
                                             </div>
                                         <?php } ?>
                                     </div>
