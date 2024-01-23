@@ -4,9 +4,9 @@ global $map, $fork;
 header('Content-Type: application/json');
 // init map
 if (strtolower($map) === "rdm") {
-    if (strtolower($fork) === "default" || strtolower($fork) === "beta") {
-        $scanner = new \Scanner\RDM();
-    }
+    $scanner = new \Scanner\RDM();
+} elseif (strtolower($map) === "golbat") {
+    $scanner = new \Scanner\Golbat();
 } elseif (strtolower($map) === "rocketmap") {
     if (strtolower($fork) === "mad") {
         $scanner = new \Scanner\RocketMap_MAD();

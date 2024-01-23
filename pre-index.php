@@ -41,9 +41,9 @@ if ($blockIframe) {
     header('X-Frame-Options: DENY');
 }
 if (strtolower($map) === "rdm") {
-    if (strtolower($fork) === "default" || strtolower($fork) === "beta") {
-        $getList = new \Scanner\RDM();
-    }
+    $getList = new \Scanner\RDM();
+} elseif (strtolower($map) === "golbat") {
+    $getList = new \Scanner\Golbat();
 } elseif (strtolower($map) === "rocketmap") {
     if (strtolower($fork) === "mad") {
         $getList = new \Scanner\RocketMap_MAD();

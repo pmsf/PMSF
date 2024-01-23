@@ -16,20 +16,25 @@ require_once(__DIR__ . '/../utils.php');
 
 
 $libs[] = "Scanner.php";
+$libs[] = "Golbat.php";
 $libs[] = "RDM.php";
 $libs[] = "RocketMap.php";
 $libs[] = "RocketMap_MAD.php";
 $libs[] = "search/Search.php";
+$libs[] = "search/Search.golbat.php";
 $libs[] = "search/Search.rdm.php";
 $libs[] = "search/Search.rocketmap_mad.php";
 $libs[] = "submit/Submit.php";
 $libs[] = "submit/Manual.php";
+$libs[] = "submit/Submit.golbat.php";
 $libs[] = "submit/Submit.rdm.php";
 $libs[] = "submit/Submit.rocketmap_mad.php";
 $libs[] = "Manual.php";
 $libs[] = "stats/Stats.php";
+$libs[] = "stats/Stats.golbat.php";
 $libs[] = "stats/Stats.rdm.php";
 $libs[] = "stats/Stats.rocketmap_mad.php";
+
 // Include libraries
 foreach ($libs as $file) {
     include(__DIR__ . '/../lib/' . $file);
