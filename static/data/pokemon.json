@@ -41984,5 +41984,235 @@
         ]
       }
     ]
+  },
+  "1009": {
+    "name": "Walking-wake",
+    "rarity": "",
+    "types": [
+      {
+        "type": "Dragon",
+        "color": "#7038f8"
+      },
+      {
+        "type": "Water",
+        "color": "#6890f0"
+      }
+    ]
+  },
+  "1010": {
+    "name": "Iron-leaves",
+    "rarity": "",
+    "types": [
+      {
+        "type": "Grass",
+        "color": "#78c850"
+      },
+      {
+        "type": "Psychic",
+        "color": "#f85888"
+      }
+    ]
+  },
+  "1011": {
+    "name": "Dipplin",
+    "rarity": "",
+    "types": [
+      {
+        "type": "Dragon",
+        "color": "#7038f8"
+      },
+      {
+        "type": "Grass",
+        "color": "#78c850"
+      }
+    ]
+  },
+  "1012": {
+    "name": "Poltchageist",
+    "rarity": "",
+    "types": [
+      {
+        "type": "Ghost",
+        "color": "#705898"
+      },
+      {
+        "type": "Grass",
+        "color": "#78c850"
+      }
+    ]
+  },
+  "1013": {
+    "name": "Sinistcha",
+    "rarity": "",
+    "types": [
+      {
+        "type": "Ghost",
+        "color": "#705898"
+      },
+      {
+        "type": "Grass",
+        "color": "#78c850"
+      }
+    ]
+  },
+  "1014": {
+    "name": "Okidogi",
+    "rarity": "",
+    "types": [
+      {
+        "type": "Fighting",
+        "color": "#c03028"
+      },
+      {
+        "type": "Poison",
+        "color": "#a040a0"
+      }
+    ]
+  },
+  "1015": {
+    "name": "Munkidori",
+    "rarity": "",
+    "types": [
+      {
+        "type": "Poison",
+        "color": "#a040a0"
+      },
+      {
+        "type": "Psychic",
+        "color": "#f85888"
+      }
+    ]
+  },
+  "1016": {
+    "name": "Fezandipiti",
+    "rarity": "",
+    "types": [
+      {
+        "type": "Fairy",
+        "color": "#e898e8"
+      },
+      {
+        "type": "Poison",
+        "color": "#a040a0"
+      }
+    ]
+  },
+  "1017": {
+    "name": "Ogerpon",
+    "rarity": "",
+    "types": [
+      {
+        "type": "Grass",
+        "color": "#78c850"
+      }
+    ]
+  },
+  "1018": {
+    "name": "Archaludon",
+    "rarity": "",
+    "types": [
+      {
+        "type": "Dragon",
+        "color": "#7038f8"
+      },
+      {
+        "type": "Steel",
+        "color": "#b8b8d0"
+      }
+    ]
+  },
+  "1019": {
+    "name": "Hydrapple",
+    "rarity": "",
+    "types": [
+      {
+        "type": "Dragon",
+        "color": "#7038f8"
+      },
+      {
+        "type": "Grass",
+        "color": "#78c850"
+      }
+    ]
+  },
+  "1020": {
+    "name": "Gouging-fire",
+    "rarity": "",
+    "types": [
+      {
+        "type": "Dragon",
+        "color": "#7038f8"
+      },
+      {
+        "type": "Fire",
+        "color": "#f08030"
+      }
+    ]
+  },
+  "1021": {
+    "name": "Raging-bolt",
+    "rarity": "",
+    "types": [
+      {
+        "type": "Dragon",
+        "color": "#7038f8"
+      },
+      {
+        "type": "Electric",
+        "color": "#f8d030"
+      }
+    ]
+  },
+  "1022": {
+    "name": "Iron-boulder",
+    "rarity": "",
+    "types": [
+      {
+        "type": "Psychic",
+        "color": "#f85888"
+      },
+      {
+        "type": "Rock",
+        "color": "#b8a038"
+      }
+    ]
+  },
+  "1023": {
+    "name": "Iron-crown",
+    "rarity": "",
+    "types": [
+      {
+        "type": "Psychic",
+        "color": "#f85888"
+      },
+      {
+        "type": "Steel",
+        "color": "#b8b8d0"
+      }
+    ]
+  },
+  "1024": {
+    "name": "Terapagos",
+    "rarity": "",
+    "types": [
+      {
+        "type": "Normal",
+        "color": "#8a8a59"
+      }
+    ]
+  },
+  "1025": {
+    "name": "Pecharunt",
+    "rarity": "",
+    "types": [
+      {
+        "type": "Ghost",
+        "color": "#705898"
+      },
+      {
+        "type": "Poison",
+        "color": "#a040a0"
+      }
+    ]
   }
 }
