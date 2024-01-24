@@ -144,7 +144,7 @@ $appIconPath = 'static/appicons/';
 $imgurCID = "";
 
 /* Counts */
-$numberOfPokemon = 1008;
+$numberOfPokemon = 1025;
 $numberOfItem = 1602;
 $numberOfGrunt = 523;
 $numberOfEgg = 30;
