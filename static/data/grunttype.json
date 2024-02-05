@@ -140,10 +140,10 @@
   "14": {
     "type": "Fairy",
     "grunt": "Female",
-    "second_reward": "true",
+    "second_reward": "false",
     "encounters": {
       "first": [
-        "37",
+        "209",
         "280",
         "303"
       ],
