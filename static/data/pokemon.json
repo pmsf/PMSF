@@ -1754,6 +1754,16 @@
         ]
       },
       {
+        "nameform": "Horizons",
+        "protoform": "2842",
+        "formtypes": [
+          {
+            "type": "Electric",
+            "color": "#f8d030"
+          }
+        ]
+      },
+      {
         "nameform": "Summer 2023 A",
         "protoform": "3002",
         "formtypes": [

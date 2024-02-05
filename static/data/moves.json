@@ -2694,5 +2694,45 @@
     "duration": 0,
     "energy": 0,
     "dps": 0
+  },
+  "399": {
+    "name": "Volt Tackle",
+    "type": "Electric",
+    "damage": 0,
+    "duration": 0,
+    "energy": 0,
+    "dps": 0
+  },
+  "400": {
+    "name": "Darkest Lariat",
+    "type": "Dark",
+    "damage": 0,
+    "duration": 0,
+    "energy": 0,
+    "dps": 0
+  },
+  "401": {
+    "name": "Psywave",
+    "type": "Psychic",
+    "damage": 0,
+    "duration": 0,
+    "energy": 0,
+    "dps": 0
+  },
+  "402": {
+    "name": "Metal Sound",
+    "type": "Steel",
+    "damage": 0,
+    "duration": 0,
+    "energy": 0,
+    "dps": 0
+  },
+  "403": {
+    "name": "Sand Attack",
+    "type": "Ground",
+    "damage": 0,
+    "duration": 0,
+    "energy": 0,
+    "dps": 0
   }
 }
