@@ -605,8 +605,8 @@ class Golbat extends Scanner
         global $db, $noQuests, $noQuestsPokemon, $noQuestsItems, $noQuestsEnergy, $noQuestsCandy, $noQuestsStardust, $noQuestsXP, $noEventStops, $noLures, $noTeamRocket;
 
         $questPrefix = ($quests_with_ar === true) ? "quest" : "alternative_quest";
-        if ($this->columnExists("incident","pokestop_id")) {
-            $query = "
+
+        $query = "
             SELECT
                 p.`id` AS pokestop_id,
                 p.`lat` AS latitude,
@@ -619,6 +619,9 @@ class Golbat extends Scanner
                 i.`character` AS grunt_type,
                 i.`expiration` AS incident_expiration,
                 i.`display_type` AS incident_display_type,
+                i.`slot_1_pokemon_id`,
+                i.`slot_2_pokemon_id`,
+                i.`slot_3_pokemon_id`,
                 `{$questPrefix}_type` AS quest_type,
                 `{$questPrefix}_timestamp` AS quest_timestamp,
                 `{$questPrefix}_target` AS quest_target,
@@ -637,37 +640,6 @@ class Golbat extends Scanner
             FROM `pokestop` AS p
             LEFT JOIN `incident` AS i ON i.`pokestop_id` = p.`id` AND i.`expiration` > UNIX_TIMESTAMP()
             WHERE :conditions";
-        } else {
-            $query = "
-            SELECT
-                p.`id` AS pokestop_id,
-                p.`lat` AS latitude,
-                p.`lon` AS longitude,
-                p.`name` AS pokestop_name,
-                p.`url`,
-                p.`updated` AS last_seen,
-                p.`lure_id`,
-                p.`lure_expire_timestamp` AS lure_expiration,
-                p.`grunt_type`,
-                p.`incident_expire_timestamp` AS incident_expiration,
-                `{$questPrefix}_type` AS quest_type,
-                `{$questPrefix}_timestamp` AS quest_timestamp,
-                `{$questPrefix}_target` AS quest_target,
-                `{$questPrefix}_rewards` AS quest_rewards,
-                `{$questPrefix}_item_id` AS reward_item_id,
-                json_extract(json_extract(`{$questPrefix}_conditions`,'$[*].type'),'$[0]') AS quest_condition_type,
-                json_extract(json_extract(`{$questPrefix}_conditions`,'$[*].type'),'$[1]') AS quest_condition_type_1,
-                json_extract(json_extract(`{$questPrefix}_conditions`,'$[*].info'),'$[0]') AS quest_condition_info,
-                `{$questPrefix}_reward_type` AS quest_reward_type,
-                `{$questPrefix}_reward_amount` AS reward_amount,
-                `{$questPrefix}_pokemon_id` AS reward_pokemon_id,
-                json_extract(json_extract(`{$questPrefix}_rewards`,'$[*].info.form_id'),'$[0]') AS reward_pokemon_formid,
-                json_extract(json_extract(`{$questPrefix}_rewards`,'$[*].info.costume_id'),'$[0]') AS reward_pokemon_costumeid,
-                json_extract(json_extract(`{$questPrefix}_rewards`,'$[*].info.gender_id'),'$[0]') AS reward_pokemon_genderid,
-                json_extract(json_extract(`{$questPrefix}_rewards`,'$[*].info.shiny'),'$[0]') AS reward_pokemon_shiny
-            FROM `pokestop` AS p
-            WHERE :conditions";
-        }
 
         $query = str_replace(":conditions", join(" AND ", $conds), $query);
         $pokestops = $db->query($query, $params)->fetchAll(\PDO::FETCH_ASSOC);
@@ -692,9 +664,15 @@ class Golbat extends Scanner
                         $data[$pokestop["pokestop_id"]]["grunt_type"] = $pokestop["grunt_type"];
                         $data[$pokestop["pokestop_id"]]["grunt_type_name"] = i8ln($this->grunttype[$pokestop["grunt_type"]]["type"]);
                         $data[$pokestop["pokestop_id"]]["grunt_type_gender"] = i8ln($this->grunttype[$pokestop["grunt_type"]]["grunt"]);
-                        $data[$pokestop["pokestop_id"]]["encounters"] = empty($this->grunttype[$pokestop["grunt_type"]]["encounters"]) ? null : $this->grunttype[$pokestop["grunt_type"]]["encounters"];
                         $data[$pokestop["pokestop_id"]]["second_reward"] = empty($this->grunttype[$pokestop["grunt_type"]]["second_reward"]) ? null : $this->grunttype[$pokestop["grunt_type"]]["second_reward"];
                         $data[$pokestop["pokestop_id"]]["incident_expiration"] = $pokestop["incident_expiration"] * 1000;
+                        if (!empty($pokestop["slot_1_pokemon_id"])) {
+                            $data[$pokestop["pokestop_id"]]["encounters"] = array("first" => array($pokestop["slot_1_pokemon_id"]), "second" => array($pokestop["slot_2_pokemon_id"]), "third" => array($pokestop["slot_3_pokemon_id"]));
+                            $data[$pokestop["pokestop_id"]]["encounters_confirmed"] = 1;
+                        } else {
+                            $data[$pokestop["pokestop_id"]]["encounters"] = empty($this->grunttype[$pokestop["grunt_type"]]["encounters"]) ? null : $this->grunttype[$pokestop["grunt_type"]]["encounters"];
+                            $data[$pokestop["pokestop_id"]]["encounters_confirmed"] = 0;
+                        }
                     }
                 } elseif (!$noEventStops && isset($pokestop["incident_display_type"]) && intval($pokestop["incident_display_type"] >= 7)) {
                     $data[$pokestop["pokestop_id"]]["eventstops_id"] = intval($pokestop["incident_display_type"]);
@@ -780,6 +758,7 @@ class Golbat extends Scanner
                     $pokestop["grunt_type_name"] = null;
                     $pokestop["grunt_type_gender"] = null;
                     $pokestop["encounters"] = null;
+                    $pokestop["encounters_confirmed"] = 0;
                     $pokestop["second_reward"] = null;
                     $pokestop["incident_expiration"] = null;
                 } else {
@@ -790,9 +769,15 @@ class Golbat extends Scanner
                     }
                     $pokestop["grunt_type_name"] = empty($grunttype_pid) ? null : i8ln($this->grunttype[$grunttype_pid]["type"]);
                     $pokestop["grunt_type_gender"] = empty($grunttype_pid) ? null : i8ln($this->grunttype[$grunttype_pid]["grunt"]);
-                    $pokestop["encounters"] = empty($this->grunttype[$grunttype_pid]["encounters"]) ? null : $this->grunttype[$grunttype_pid]["encounters"];
                     $pokestop["second_reward"] = empty($this->grunttype[$grunttype_pid]["second_reward"]) ? null : $this->grunttype[$grunttype_pid]["second_reward"];
                     $pokestop["incident_expiration"] = $pokestop["incident_expiration"] * 1000;
+                    if (!empty($pokestop["slot_1_pokemon_id"])) {
+                        $pokestop["encounters"] = array("first" => array($pokestop["slot_1_pokemon_id"]), "second" => array($pokestop["slot_2_pokemon_id"]), "third" => array($pokestop["slot_3_pokemon_id"]));
+                        $pokestop["encounters_confirmed"] = 1;
+                    } else {
+                        $pokestop["encounters"] = empty($this->grunttype[$grunttype_pid]["encounters"]) ? null : $this->grunttype[$grunttype_pid]["encounters"];
+                        $pokestop["encounters_confirmed"] = 0;
+                    }
                 }
 
                 $data[$pokestop["pokestop_id"]] = $pokestop;
