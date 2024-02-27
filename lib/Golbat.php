@@ -1,9 +1,230 @@
 <?php
 
 namespace Scanner;
+use Location\Coordinate;
+use Location\Polygon;
 
 class Golbat extends Scanner
 {
+    public function get_active_api($eids, $minIv, $minLevel, $minLLRank, $minGLRank, $minULRank, $exMinIv, $bigKarp, $tinyRat, $zeroIv, $hundoIv, $xxs, $xxl, $independantPvpAndStats, $despawnTimeType, $gender, $missingIvOnly, $swLat, $swLng, $neLat, $neLng, $tstamp = 0, $oSwLat = 0, $oSwLng = 0, $oNeLat = 0, $oNeLng = 0, $encId = 0)
+    {
+        global $numberOfPokemon, $golbatApiUrl, $golbatApiSecret, $golbatApiLimit, $golbatApiBasicAuthUser, $golbatApiBasicAuthPass;
+        global $noHighLevelData, $noPvp, $globalRankLimitLL, $globalRankLimitGL, $globalRankLimitUL, $globalCpLimitLL, $globalCpLimitGL, $globalCpLimitUL;
+        global $noBoundaries, $boundaries, $showPokemonsOutsideBoundaries;
+
+        $wantedId = array();
+        foreach(array_diff(range(1, $numberOfPokemon), $eids) as $id) {
+            $wantedId[] = [ "id" => $id ];
+        }
+
+        $filters = array();
+        if ($independantPvpAndStats) {
+            $filters[] = [ "pokemon" => $wantedId, "iv" => [ "min" => intval($minIv), "max" => 100 ], "level" => [ "min" => intval($minLevel), "max" => 35 ] ];
+            $filters[] = [ "pokemon" => $wantedId, "pvp_little" => [ "min" => 1, "max" => intval($minLLRank) ] ];
+            $filters[] = [ "pokemon" => $wantedId, "pvp_great"  => [ "min" => 1, "max" => intval($minGLRank) ] ];
+            $filters[] = [ "pokemon" => $wantedId, "pvp_ultra"  => [ "min" => 1, "max" => intval($minULRank) ] ];
+        } else {
+            $filters[] = [ "pokemon" => $wantedId, "iv" => [ "min" => intval($minIv), "max" => 100 ], "level" => [ "min" => intval($minLevel), "max" => 35 ], "pvp_little"  => [ "min" => 1, "max" => intval($minLLRank) ] ];
+            $filters[] = [ "pokemon" => $wantedId, "iv" => [ "min" => intval($minIv), "max" => 100 ], "level" => [ "min" => intval($minLevel), "max" => 35 ], "pvp_great"   => [ "min" => 1, "max" => intval($minGLRank) ] ];
+            $filters[] = [ "pokemon" => $wantedId, "iv" => [ "min" => intval($minIv), "max" => 100 ], "level" => [ "min" => intval($minLevel), "max" => 35 ], "pvp_ultra"   => [ "min" => 1, "max" => intval($minULRank) ] ];
+        }
+        if ($xxs) $filters[] = [ "pokemon" => $wantedId, "size" => [ "min" => 1, "max" => 1 ] ];
+        if ($xxl) $filters[] = [ "pokemon" => $wantedId, "size" => [ "min" => 5, "max" => 5 ] ];
+        if ($zeroIv) $filters[] = [ "pokemon" => $wantedId, "iv" => [ "min" => 0, "max" => 0 ] ];
+        if ($hundoIv) $filters[] = [ "pokemon" => $wantedId, "iv" => [ "min" => 100, "max" => 100 ] ];
+
+        $payload = [
+            "min" => [ "latitude" => floatval($swLat), "longitude" => floatval($swLng) ],
+            "max" => [ "latitude" => floatval($neLat), "longitude" => floatval($neLng) ],
+            "limit" => intval($golbatApiLimit),
+            "filters" => $filters
+        ];
+
+        $c = curl_init();
+        curl_setopt($c, CURLOPT_URL, $golbatApiUrl . "/api/pokemon/v2/scan");
+        curl_setopt($c, CURLOPT_POST, true);
+        curl_setopt($c, CURLOPT_HTTPHEADER, ["Accept: application/json", "Content-Type: application/json", "X-Golbat-Secret: $golbatApiSecret"]);
+        if ($golbatApiBasicAuthUser != '' && $golbatApiBasicAuthPass != '') curl_setopt($c, CURLOPT_USERPWD, "{$golbatApiBasicAuthUser}:{$golbatApiBasicAuthPass}");
+        curl_setopt($c, CURLOPT_SSL_VERIFYPEER, false);
+        curl_setopt($c, CURLOPT_RETURNTRANSFER, true);
+        curl_setopt($c, CURLOPT_POSTFIELDS, json_encode($payload));
+        $results = curl_exec($c);
+        curl_close($c);
+        if ($results === false) {
+            return array();
+        }
+
+        $pokemons = json_decode($results, true);
+        if (empty($pokemons)) {
+            return array();
+        }
+
+        if (!$noBoundaries && !$showPokemonsOutsideBoundaries) {
+            $boundariesPolygon = new Polygon();
+            foreach(explode(",", $boundaries) as $coords) {
+                $coords = explode(" ",trim($coords));
+                $boundariesPolygon->addPoint(new Coordinate(floatval($coords[0]),floatval($coords[1])));
+            }
+        }
+
+        $data = array();
+        $i = 0;
+        $lastlat = 0;
+        $lastlon = 0;
+        $lasti = 0;
+        $thisRankLimitLL = ($globalRankLimitLL === 0) ? $minLLRank : $globalRankLimitLL;
+        $thisRankLimitGL = ($globalRankLimitGL === 0) ? $minGLRank : $globalRankLimitGL;
+        $thisRankLimitUL = ($globalRankLimitUL === 0) ? $minULRank : $globalRankLimitUL;
+        foreach ($pokemons as $pokemon) {
+            if ($pokemon["updated"] < $tstamp) {
+                continue;
+            }
+
+            if (!$noBoundaries && !$showPokemonsOutsideBoundaries && !($boundariesPolygon->contains(new Coordinate(floatval($pokemon["lat"]), floatval($pokemon["lon"]))))) {
+                continue;
+            }
+
+            if (!empty($gender) && (($gender == 1 && $pokemon["gender"] != 1) || ($gender == 2 && $pokemon["gender"] != 2))) {
+                continue;
+            }
+
+            if (!empty($despawnTimeType)) {
+                if ($despawnTimeType == 1 && $pokemon["expire_timestamp_verified"] == false) {
+                    continue;
+                } elseif (($despawnTimeType == 2 || $despawnTimeType == 3) && $pokemon["expire_timestamp_verified"] == true) {
+                    continue;
+                } elseif ($despawnTimeType == 3 && empty($pokemon["spawn_id"])) {
+                    continue;
+                }
+            }
+
+            // Universal Mapping
+            $pokemon["encounter_id"] = intval($pokemon["id"]);
+            $pokemon["latitude"] = floatval($pokemon["lat"]);
+            $pokemon["longitude"] = floatval($pokemon["lon"]);
+            $pokemon["expire_timestamp_verified"] = intval($pokemon["expire_timestamp_verified"]);
+            $pokemon["first_seen_timestamp"] = intval($pokemon["first_seen_timestamp"] * 1000);
+            $pokemon["disappear_time"] = intval($pokemon["expire_timestamp"] * 1000);
+            $pokemon["pokemon_id"] = intval($pokemon["pokemon_id"]);
+            $pokemon["form"] = intval($pokemon["form"]);
+            $pokemon["costume"] = intval($pokemon["costume"]);
+            $pokemon["pokemon_name"] = i8ln($this->data[$pokemon["pokemon_id"]]['name']);
+            $pokemon["pokemon_rarity"] = i8ln($this->data[$pokemon["pokemon_id"]]['rarity']);
+
+            // Form name and type(s)
+            if (isset($pokemon["form"]) && $pokemon["form"] > 0) {
+                $forms = $this->data[$pokemon["pokemon_id"]]["forms"];
+                foreach ($forms as $f => $v) {
+                    if ($pokemon["form"] === intval($v['protoform'])) {
+                        $types = $v['formtypes'];
+                        $pokemon["form_name"] = $v['nameform'];
+                        foreach ($v['formtypes'] as $ft => $v) {
+                            $types[$ft]['type'] = $v['type'];
+                        }
+                        $pokemon["pokemon_types"] = $types;
+                    }
+                }
+            } else {
+                $types = $this->data[$pokemon["pokemon_id"]]["types"];
+                foreach ($types as $k => $v) {
+                    $types[$k]['type'] = $v['type'];
+                }
+                $pokemon["pokemon_types"] = $types;
+            }
+
+            // Jitter for nearby that would otherwise stack on top of each other
+            if ($pokemon['seen_type'] === 'nearby_cell' || $pokemon['seen_type'] === 'nearby_stop') {
+                $pokemon["latitude"] = floatval($pokemon["latitude"]);
+                $pokemon["longitude"] = floatval($pokemon["longitude"]);
+                $lastlat = floatval($pokemon["latitude"]);
+                $lastlon = floatval($pokemon["longitude"]);
+                if (abs($pokemon["latitude"] - $lastlat) < 0.0001 && abs($pokemon["longitude"] - $lastlon) < 0.0001) {
+                    $lasti = $lasti + 1;
+                } else {
+                    $lasti = 0;
+                }
+                $pokemon["latitude"] = $pokemon["latitude"] + 0.0003*cos(deg2rad($lasti*45));
+                $pokemon["longitude"] = $pokemon["longitude"] + 0.0003*sin(deg2rad($lasti*45));
+            } else {
+                $pokemon["latitude"] = floatval($pokemon["latitude"]);
+                $pokemon["longitude"] = floatval($pokemon["longitude"]);
+            }
+
+            // HighLevelData Mapping or Removal
+            if ($noHighLevelData) {
+                $pokemon["weight"] = null;
+                $pokemon["height"] = null;
+                $pokemon["size"] = null;
+                $pokemon["individual_attack"] = null;
+                $pokemon["individual_defense"] = null;
+                $pokemon["individual_stamina"] = null;
+                $pokemon["move_1"] = null;
+                $pokemon["move_2"] = null;
+                $pokemon["cp"] = null;
+                $pokemon["level"] = null;
+                $pokemon["iv"] = null;
+                $pokemon["gender"] = null;
+                $pokemon["display_pokemon_id"] = null;
+                $pokemon["is_ditto"] = null;
+                $pokemon["shiny"] = null;
+                $pokemon["weather_boosted_condition"] = 0;
+                $pokemon["catch_rate_1"] = null;
+                $pokemon["catch_rate_2"] = null;
+                $pokemon["catch_rate_3"] = null;
+                $pokemon["pvp_rankings_little_league"] = null;
+                $pokemon["pvp_rankings_great_league"]  = null;
+                $pokemon["pvp_rankings_ultra_league"]  = null;
+                $pokemon["pvp_rankings_little_league_best"] = null;
+                $pokemon["pvp_rankings_great_league_best"] = null;
+                $pokemon["pvp_rankings_ultra_league_best"] = null;
+            } else {
+                $pokemon["weight"] = isset($pokemon["weight"]) ? floatval($pokemon["weight"]) : null;
+                $pokemon["height"] = isset($pokemon["height"]) ? floatval($pokemon["height"]) : null;
+                $pokemon["size"] = (isset($pokemon["size"]) && isset($this->pokemonSize[$pokemon["size"]])) ? $this->pokemonSize[$pokemon["size"]] : null;
+                $pokemon["individual_attack"]  = isset($pokemon["atk_iv"]) ? intval($pokemon["atk_iv"]) : null;
+                $pokemon["individual_defense"] = isset($pokemon["def_iv"]) ? intval($pokemon["def_iv"]) : null;
+                $pokemon["individual_stamina"] = isset($pokemon["sta_iv"]) ? intval($pokemon["sta_iv"]) : null;
+                $pokemon["level"] = isset($pokemon["level"]) ? intval($pokemon["level"]) : null;
+                $pokemon["iv"] = isset($pokemon["iv"]) ? floatval($pokemon["iv"]) : null;
+                $pokemon["gender"] = intval($pokemon["gender"]);
+                $pokemon["weather_boosted_condition"] = isset($pokemon["weather"]) ? intval($pokemon["weather"]) : 0;
+                $pokemon["catch_rate_1"] = isset($pokemon["capture_1"]) ? floatval($pokemon["capture_1"]) : null;
+                $pokemon["catch_rate_2"] = isset($pokemon["capture_2"]) ? floatval($pokemon["capture_2"]) : null;
+                $pokemon["catch_rate_3"] = isset($pokemon["capture_3"]) ? floatval($pokemon["capture_3"]) : null;
+                $bestLLRank = null;
+                $bestGLRank = null;
+                $bestULRank = null;
+                $pokemon["pvp_rankings_little_league"] = (!$noPvp && isset($pokemon["pvp"]["little"])) ? $this->getValidPvpRanks_UpdateBestRank(json_encode($pokemon["pvp"]["little"]), $globalCpLimitLL, $thisRankLimitLL, $bestLLRank) : null;
+                $pokemon["pvp_rankings_great_league"]  = (!$noPvp && isset($pokemon["pvp"]["great"]))  ? $this->getValidPvpRanks_UpdateBestRank(json_encode($pokemon["pvp"]["great"]),  $globalCpLimitGL, $thisRankLimitGL, $bestGLRank) : null;
+                $pokemon["pvp_rankings_ultra_league"]  = (!$noPvp && isset($pokemon["pvp"]["ultra"]))  ? $this->getValidPvpRanks_UpdateBestRank(json_encode($pokemon["pvp"]["ultra"]),  $globalCpLimitUL, $thisRankLimitUL, $bestULRank) : null;
+                $pokemon["pvp_rankings_little_league_best"] = (!$noPvp && isset($bestLLRank)) ? intval($bestLLRank) : null;
+                $pokemon["pvp_rankings_great_league_best"]  = (!$noPvp && isset($bestGLRank)) ? intval($bestGLRank) : null;
+                $pokemon["pvp_rankings_ultra_league_best"]  = (!$noPvp && isset($bestULRank)) ? intval($bestULRank) : null;
+            }
+
+            // Remove Golbat Only Keys
+            unset($pokemon["username"]);
+            unset($pokemon["id"]);
+            unset($pokemon["lat"]);
+            unset($pokemon["lon"]);
+            unset($pokemon["expire_timestamp"]);
+            unset($pokemon["atk_iv"]);
+            unset($pokemon["def_iv"]);
+            unset($pokemon["sta_iv"]);
+            unset($pokemon["weather"]);
+            unset($pokemon["capture_1"]);
+            unset($pokemon["capture_2"]);
+            unset($pokemon["capture_3"]);
+            unset($pokemon["pvp"]);
+
+            // Save!
+            $data[] = $pokemon;
+            unset($pokemons[$i]);
+            $i++;
+        }
+        return $data;
+    }
+
     public function get_active($eids, $minIv, $minLevel, $minLLRank, $minGLRank, $minULRank, $exMinIv, $bigKarp, $tinyRat, $zeroIv, $hundoIv, $xxs, $xxl, $independantPvpAndStats, $despawnTimeType, $gender, $missingIvOnly, $swLat, $swLng, $neLat, $neLng, $tstamp = 0, $oSwLat = 0, $oSwLng = 0, $oNeLat = 0, $oNeLng = 0, $encId = 0)
     {
         $conds = array();
@@ -605,7 +826,6 @@ class Golbat extends Scanner
         global $db, $noQuests, $noQuestsPokemon, $noQuestsItems, $noQuestsEnergy, $noQuestsCandy, $noQuestsStardust, $noQuestsXP, $noEventStops, $noLures, $noTeamRocket;
 
         $questPrefix = ($quests_with_ar === true) ? "quest" : "alternative_quest";
-
         $query = "
             SELECT
                 p.`id` AS pokestop_id,

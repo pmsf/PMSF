@@ -1,6 +1,10 @@
 <?php
 
 namespace Search;
+use Location\Coordinate;
+use Location\Polygon;
+use Location\Factory\BoundsFactory;
+use Location\Bearing\BearingSpherical;
 
 class Golbat extends Search
 {
@@ -161,12 +165,22 @@ class Golbat extends Search
         return $data;
     }
 
+    private function getDistance($latFrom, $lonFrom, $latTo, $lonTo, $unitMultiplier = 1.853) {
+        // km[1.853] mi[1.1515]
+        $rad = M_PI / 180;
+        $theta = $lonFrom - $lonTo;
+        $dist = sin($latFrom * $rad) * sin($latTo * $rad) +  cos($latFrom * $rad) * cos($latTo * $rad) * cos($theta * $rad);
+        return acos($dist) / $rad * 60 *  $unitMultiplier;
+    }
+
     public function search_pokemon($lat, $lon, $term)
     {
         global $db, $defaultUnit, $maxSearchResults, $noBoundaries, $boundaries, $numberOfPokemon;
+        global $map, $golbatApiUrl, $golbatApiSecret, $golbatApiLimit, $golbatApiBasicAuthUser, $golbatApiBasicAuthPass;
 
         $json = file_get_contents('static/dist/data/pokemon.min.json');
         $mons = json_decode($json, true);
+        $data = [];
         $resids = [];
         foreach ($mons as $k => $mon) {
             if ($k > $numberOfPokemon) {
@@ -186,21 +200,82 @@ class Golbat extends Search
         if (empty($resids)) {
             http_response_code(404);
         }
-        if (!$noBoundaries) {
-            $coords = " AND (ST_WITHIN(point(lat,lon),ST_GEOMFROMTEXT('POLYGON(( " . $boundaries . " ))'))) ";
+
+        if (strtolower($map) == "golbat" && $golbatApiUrl != '' && $golbatApiSecret != '') {
+            $bounds = BoundsFactory::expandFromCenterCoordinate(new Coordinate(floatval($lat), floatval($lon)), 10 * 1000, new BearingSpherical());
+            $payload = [
+                "min" => [ "latitude" => floatval($bounds->getNorthWest()->getLat()), "longitude" => floatval($bounds->getNorthWest()->getLng()) ],
+                "max" => [ "latitude" => floatval($bounds->getSouthEast()->getLat()), "longitude" => floatval($bounds->getSouthEast()->getLng()) ],
+                "center" => [ "latitude" => floatval($lat), "longitude" => floatval($lon) ],
+                "limit" => intval($maxSearchResults),
+                "searchIds" => $resids
+            ];
+
+            $c = curl_init();
+            curl_setopt($c, CURLOPT_URL, $golbatApiUrl . "/api/pokemon/search");
+            curl_setopt($c, CURLOPT_POST, true);
+            curl_setopt($c, CURLOPT_HTTPHEADER, ["Accept: application/json", "Content-Type: application/json", "X-Golbat-Secret: $golbatApiSecret"]);
+            if ($golbatApiBasicAuthUser != '' && $golbatApiBasicAuthPass != '') curl_setopt($c, CURLOPT_USERPWD, "{$golbatApiBasicAuthUser}:{$golbatApiBasicAuthPass}");
+            curl_setopt($c, CURLOPT_SSL_VERIFYPEER, false);
+            curl_setopt($c, CURLOPT_RETURNTRANSFER, true);
+            curl_setopt($c, CURLOPT_POSTFIELDS, json_encode($payload));
+            $results = curl_exec($c);
+            curl_close($c);
+            if ($results === false) {
+                http_response_code(404);
+                return array();
+            }
+
+            $pokemons = json_decode($results, true);
+            if (empty($pokemons)) {
+                http_response_code(404);
+                return array();
+            }
+
+            if (!$noBoundaries) {
+                $boundariesPolygon = new Polygon();
+                foreach(explode(",", $boundaries) as $coords) {
+                    $coords = explode(" ",trim($coords));
+                    $boundariesPolygon->addPoint(new Coordinate(floatval($coords[0]),floatval($coords[1])));
+                }
+            }
+
+            foreach ($pokemons as $p) {
+                if (!$noBoundaries && !($boundariesPolygon->contains(new Coordinate(floatval($p["lat"]), floatval($p["lon"]))))) {
+                    continue;
+                }
+                $data[] = [
+                    "pokemon_id" => $p["pokemon_id"],
+                    "name" => $mons[$p['pokemon_id']]['name'],
+                    "lat" => $p["lat"],
+                    "lon" => $p["lon"],
+                    "distance" => round($this->getDistance(floatval($lat), floatval($lon), floatval($p["lat"]), floatval($p["lon"]), ($defaultUnit == "mi" ? 1.1515 : 1.853)),2)
+                ];
+            }
+
+            usort($data, function ($a, $b) {
+                if ($a["distance"] == $b["distance"]) {
+                    return 0;
+                }
+                return ($a["distance"] < $b["distance"]) ? -1 : 1;
+            });
         } else {
-            $coords = "";
-        }
+            if (!$noBoundaries) {
+                $coords = " AND (ST_WITHIN(point(lat,lon),ST_GEOMFROMTEXT('POLYGON(( " . $boundaries . " ))'))) ";
+            } else {
+                $coords = "";
+            }
 
-        $query = "SELECT pokemon_id,lat,lon,
-        ROUND(( 3959 * acos( cos( radians(:lat) ) * cos( radians( lat ) ) * cos( radians( lon ) - radians(:lon) ) + sin( radians(:lat) ) * sin( radians( lat ) ) ) ),2) AS distance
-        FROM pokemon WHERE expire_timestamp > UNIX_TIMESTAMP(NOW()) AND pokemon_id IN (" . implode(',', $resids) . ") " . $coords . "ORDER BY distance LIMIT " . $maxSearchResults . "";
+            $query = "SELECT pokemon_id,lat,lon,
+            ROUND(( 3959 * acos( cos( radians(:lat) ) * cos( radians( lat ) ) * cos( radians( lon ) - radians(:lon) ) + sin( radians(:lat) ) * sin( radians( lat ) ) ) ),2) AS distance
+            FROM pokemon WHERE expire_timestamp > UNIX_TIMESTAMP(NOW()) AND pokemon_id IN (" . implode(',', $resids) . ") " . $coords . "ORDER BY distance LIMIT " . $maxSearchResults . "";
 
-        $data = $db->query($query, [ ':lat' => $lat, ':lon' => $lon])->fetchAll();
-        foreach ($data as $k => $p) {
-            $data[$k]['name'] = $mons[$p['pokemon_id']]['name'];
-            if ($defaultUnit === "km") {
-                $data[$k]['distance'] = round($data[$k]['distance'] * 1.60934, 2);
+            $data = $db->query($query, [ ':lat' => $lat, ':lon' => $lon])->fetchAll();
+            foreach ($data as $k => $p) {
+                $data[$k]['name'] = $mons[$p['pokemon_id']]['name'];
+                if ($defaultUnit === "km") {
+                    $data[$k]['distance'] = round($data[$k]['distance'] * 1.60934, 2);
+                }
             }
         }
         return $data;

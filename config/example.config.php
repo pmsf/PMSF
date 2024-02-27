@@ -762,6 +762,12 @@ $map = "rdm";                                                       // rdm / roc
 $fork = "default";                                                  // default / mad / default
 $queryInterval = '5000';                                            // Interval between raw_data requests.
 
+$golbatApiUrl = '';                                                 // Ex: 'http://127.0.0.1:9001'. If both $golbatApiUrl and $golbatApiSecret are set, PMSF will use Golbat's API instead of the db.
+$golbatApiSecret = '';                                              // Golbat api_secret
+$golbatApiLimit = 5000;                                             // Golbat API result limit
+$golbatApiBasicAuthUser = '';                                       // Set only if Golbat is behind Basic Auth
+$golbatApiBasicAuthPass = '';                                       // Set only if Golbat is behind Basic Auth
+
 $db = new Medoo([
     'database_type' => 'mysql',
     'database_name' => 'scannerdb',
