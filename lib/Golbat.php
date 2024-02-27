@@ -99,7 +99,7 @@ class Golbat extends Scanner
             }
 
             // Universal Mapping
-            $pokemon["encounter_id"] = intval($pokemon["id"]);
+            $pokemon["encounter_id"] = $pokemon["id"];
             $pokemon["latitude"] = floatval($pokemon["lat"]);
             $pokemon["longitude"] = floatval($pokemon["lon"]);
             $pokemon["expire_timestamp_verified"] = intval($pokemon["expire_timestamp_verified"]);
