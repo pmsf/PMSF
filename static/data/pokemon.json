@@ -1764,6 +1764,26 @@
         ]
       },
       {
+        "nameform": "Gofest 2024 Stiara",
+        "protoform": "2843",
+        "formtypes": [
+          {
+            "type": "Electric",
+            "color": "#f8d030"
+          }
+        ]
+      },
+      {
+        "nameform": "Gofest 2024 Mtiara",
+        "protoform": "2844",
+        "formtypes": [
+          {
+            "type": "Electric",
+            "color": "#f8d030"
+          }
+        ]
+      },
+      {
         "nameform": "Summer 2023 A",
         "protoform": "3002",
         "formtypes": [
@@ -7572,6 +7592,26 @@
             "color": "#8a8a59"
           }
         ]
+      },
+      {
+        "nameform": "Gofest 2024 Stiara",
+        "protoform": "2845",
+        "formtypes": [
+          {
+            "type": "Normal",
+            "color": "#8a8a59"
+          }
+        ]
+      },
+      {
+        "nameform": "Gofest 2024 Mtiara",
+        "protoform": "2846",
+        "formtypes": [
+          {
+            "type": "Normal",
+            "color": "#8a8a59"
+          }
+        ]
       }
     ]
   },
@@ -10806,6 +10846,16 @@
             "color": "#f85888"
           }
         ]
+      },
+      {
+        "nameform": "Gofest 2024 Sscarf",
+        "protoform": "2847",
+        "formtypes": [
+          {
+            "type": "Psychic",
+            "color": "#f85888"
+          }
+        ]
       }
     ]
   },
@@ -10842,6 +10892,16 @@
       {
         "nameform": "Purified",
         "protoform": "1237",
+        "formtypes": [
+          {
+            "type": "Dark",
+            "color": "#707070"
+          }
+        ]
+      },
+      {
+        "nameform": "Gofest 2024 Mscarf",
+        "protoform": "2848",
         "formtypes": [
           {
             "type": "Dark",

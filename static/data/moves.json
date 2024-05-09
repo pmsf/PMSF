@@ -2734,5 +2734,29 @@
     "duration": 0,
     "energy": 0,
     "dps": 0
+  },
+  "404": {
+    "name": "Sunsteel Strike",
+    "type": "Steel",
+    "damage": 1,
+    "duration": 0,
+    "energy": 0,
+    "dps": 0
+  },
+  "405": {
+    "name": "Moongeist Beam",
+    "type": "Ghost",
+    "damage": 1,
+    "duration": 0,
+    "energy": 0,
+    "dps": 0
+  },
+  "408": {
+    "name": "High Jump Kick",
+    "type": "Fighting",
+    "damage": 0,
+    "duration": 0,
+    "energy": 0,
+    "dps": 0
   }
 }
